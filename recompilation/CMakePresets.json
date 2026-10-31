@@ -1,0 +1,96 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "linux-clang",
+      "displayName": "Linux x86_64, clang",
+      "description": "A static library and the layout tests, built with clang on an LP64 Linux host",
+      "inherits": "base",
+      "cacheVariables": {
+        "DDON_PLATFORM": "linux",
+        "CMAKE_CXX_COMPILER": "$env{DDON_CXX}"
+      }
+    },
+    {
+      "name": "windows-clang",
+      "displayName": "Windows x86_64, MSYS2 clang64",
+      "description": "A static library and the layout tests, built on Windows with MSYS2's clang64 clang (MinGW target, Itanium C++ ABI, libc++)",
+      "inherits": "base",
+      "cacheVariables": {
+        "DDON_PLATFORM": "windows",
+        "CMAKE_CXX_COMPILER": "$env{DDON_CXX}"
+      }
+    },
+    {
+      "name": "ps4-orbis",
+      "displayName": "PS4, Orbis SDK",
+      "description": "A static library for the PS4, built with orbis-clang++ and orbis-ar from SCE_ORBIS_SDK_DIR; the layout test is compiled, not run",
+      "inherits": "base",
+      "cacheVariables": {
+        "DDON_PLATFORM": "ps4",
+        "CMAKE_CXX_COMPILER": "$env{SCE_ORBIS_SDK_DIR}/host_tools/bin/orbis-clang++.exe",
+        "CMAKE_AR": "$env{SCE_ORBIS_SDK_DIR}/host_tools/bin/orbis-ar.exe",
+        "CMAKE_TRY_COMPILE_TARGET_TYPE": "STATIC_LIBRARY"
+      }
+    },
+    {
+      "name": "ps4-openorbis",
+      "displayName": "PS4, OpenOrbis toolchain",
+      "description": "A static library for the PS4, built with clang against the open OpenOrbis toolchain in OO_PS4_TOOLCHAIN; the layout test is compiled, not run",
+      "inherits": "base",
+      "cacheVariables": {
+        "DDON_PLATFORM": "openorbis",
+        "CMAKE_CXX_COMPILER": "$env{DDON_CXX}"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "linux-clang",
+      "configurePreset": "linux-clang"
+    },
+    {
+      "name": "windows-clang",
+      "configurePreset": "windows-clang"
+    },
+    {
+      "name": "ps4-orbis",
+      "configurePreset": "ps4-orbis"
+    },
+    {
+      "name": "ps4-openorbis",
+      "configurePreset": "ps4-openorbis"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "linux-clang",
+      "configurePreset": "linux-clang",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "windows-clang",
+      "configurePreset": "windows-clang",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

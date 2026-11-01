@@ -14,6 +14,7 @@
 #include "cZoneIndoorHandle.h"
 #include "cZoneListenerLight.h"
 #include "cZoneListenerMulti.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "../../XFramework/nZone.h"
 #include "rFreeF32Tbl.h"
@@ -254,7 +255,7 @@ sWeatherManager::sWeatherManager() {
     /* stub */
 }
 
-sWeatherManager::~sWeatherManager() {
+__attribute__((noinline)) sWeatherManager::~sWeatherManager() {
     DDON_STUB("sWeatherManager::~sWeatherManager")
     /* stub */
 }
@@ -1341,8 +1342,46 @@ __attribute__((weak)) void sWeatherManager::callbackZoneIndoorNotifiedSnd(const 
 }
 
 __attribute__((weak)) bool sWeatherManager::callbackZoneIndoorAnalyzeScr(cZoneContents& contents) {
-    DDON_STUB("sWeatherManager::callbackZoneIndoorAnalyzeScr")
-    return {};
+    u32 dti_id = contents.getDTI().getID();
+    if (dti_id == cZoneIndoorLight::DTI.mID) {
+        f32 rate = mDayNightBlendRate;
+        mZoneIndoorInfiniteLightRate.to = static_cast<cZoneIndoorLight*>(&contents)->getLightInfiniteRate();
+        mZoneIndoorHemiLightRate.to = nDDOMath::lerp(static_cast<cZoneIndoorLight*>(&contents)->getLightHemiRateDay(), static_cast<cZoneIndoorLight*>(&contents)->getLightHemiRateNight(), rate);
+        mZoneIndoorHemiLightRevRate.to = nDDOMath::lerp(static_cast<cZoneIndoorLight*>(&contents)->getLightHemiRateDayRev(), static_cast<cZoneIndoorLight*>(&contents)->getLightHemiRateNightRev(), rate);
+        mZoneIndoorSubLightRate.to = nDDOMath::lerp(static_cast<cZoneIndoorLight*>(&contents)->getLightSubRateDay(), static_cast<cZoneIndoorLight*>(&contents)->getLightSubRateNight(), rate);
+        mZoneIndoorLightIn = true;
+        bool t0 = static_cast<cZoneIndoorLight*>(&contents)->isUseSkyFogParam();
+        mZoneIsUseSkyColorFog = t0;
+        if (t0) {
+            const cIndoorSkyFogParam* DayDataPtr = static_cast<cZoneIndoorLight*>(&contents)->getDayFogParam(static_cast<u32>(getWeatherID()));
+            const cIndoorSkyFogParam* NightDataPtr = static_cast<cZoneIndoorLight*>(&contents)->getNightFogParam(static_cast<u32>(getWeatherID()));
+            if (DayDataPtr != nullptr) {
+                if (NightDataPtr != nullptr) {
+                    mZoneSkyColorFogDayParam.setupFromCopy(DayDataPtr);
+                    mZoneSkyColorFogNightParam.setupFromCopy(NightDataPtr);
+                    mZoneSkyColorFogUseFrame = static_cast<cZoneIndoorLight*>(&contents)->getSkyColorFogUseFrame();
+                } else {
+                    mZoneIsUseSkyColorFog = false;
+                }
+            } else {
+                mZoneIsUseSkyColorFog = false;
+            }
+            return true;
+        } else {
+            return true;
+        }
+    } else {
+        if (dti_id != cZoneIndoorGrassOff::DTI.mID) {
+            if (dti_id == cZoneIndoorWindCtrl::DTI.mID) {
+                mZoneIndoorWindCtrlOff = true;
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
 }
 
 __attribute__((weak)) void sWeatherManager::updateOption() {

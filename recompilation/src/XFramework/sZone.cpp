@@ -42,7 +42,7 @@ sZone::sZone() {
     /* stub */
 }
 
-sZone::~sZone() {
+__attribute__((noinline)) sZone::~sZone() {
     DDON_STUB("sZone::~sZone")
     /* stub */
 }

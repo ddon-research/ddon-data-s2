@@ -252,7 +252,7 @@ sPrimitive::sPrimitive(u32 vb_size, u32 tag_size) {
     /* stub */
 }
 
-sPrimitive::~sPrimitive() {
+__attribute__((noinline)) sPrimitive::~sPrimitive() {
     DDON_STUB("sPrimitive::~sPrimitive")
     /* stub */
 }

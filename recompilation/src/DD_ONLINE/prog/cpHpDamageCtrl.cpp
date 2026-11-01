@@ -136,7 +136,7 @@ cpHpDamageCtrl::cpHpDamageCtrl() {
     /* stub */
 }
 
-cpHpDamageCtrl::~cpHpDamageCtrl() {
+__attribute__((noinline)) cpHpDamageCtrl::~cpHpDamageCtrl() {
     DDON_STUB("cpHpDamageCtrl::~cpHpDamageCtrl")
     /* stub */
 }
@@ -162,45 +162,38 @@ __attribute__((weak)) void cpHpDamageCtrl::before() {
 }
 
 void cpHpDamageCtrl::update() {
-    uDDOModel* t0 = mpModel;
     u32 v0_0;
     unsigned int i0_3;
     f32 f0;
-    if (t0 != nullptr) {
-        f32 deltaTime = t0->getDeltaTime();
-        mShakeInfo.update(deltaTime);
-        mDownInfo.update(deltaTime);
-        mRageShrinkInfo.update(deltaTime);
-        u32 t2 = mParentRegionStatusArray.mLength;
-        if (t2 == 0) {
-            f0 = deltaTime;
+    if (mpModel != nullptr) {
+        f32 t0 = mpModel->getDeltaTime();
+        mShakeInfo.update(t0);
+        mDownInfo.update(t0);
+        mRageShrinkInfo.update(t0);
+        if (mParentRegionStatusArray.mLength == 0) {
+            f0 = t0;
             goto region_4825f3;
         } else {
-            f0 = deltaTime;
-            v0_0 = t2;
+            f0 = t0;
+            v0_0 = mParentRegionStatusArray.mLength;
             i0_3 = 0;
         }
     } else {
-        float t1 = 1.0f;
-        mShakeInfo.update(t1);
-        mDownInfo.update(t1);
-        mRageShrinkInfo.update(t1);
-        u32 t2 = mParentRegionStatusArray.mLength;
-        if (t2 == 0) {
-            f0 = t1;
+        mShakeInfo.update(1.0f);
+        mDownInfo.update(1.0f);
+        mRageShrinkInfo.update(1.0f);
+        if (mParentRegionStatusArray.mLength == 0) {
+            f0 = 1.0f;
             goto region_4825f3;
         } else {
-            f0 = t1;
-            v0_0 = t2;
+            f0 = 1.0f;
+            v0_0 = mParentRegionStatusArray.mLength;
             i0_3 = 0;
         }
     }
     for (;;) {
-        MtObject* * t3 = mParentRegionStatusArray.mpArray;
-        MtObject* t4 = t3[i0_3];
-        if (t4 != nullptr) {
-            f32 t5 = f0;
-            static_cast<cParentRegionStatus*>(t4)->update(t5);
+        if (mParentRegionStatusArray.mpArray[i0_3] != nullptr) {
+            static_cast<cParentRegionStatus*>(mParentRegionStatusArray.mpArray[i0_3])->update(f0);
             if ((i0_3 + 1u) < mParentRegionStatusArray.mLength) {
                 v0_0 = mParentRegionStatusArray.mLength;
                 i0_3 += 1u;
@@ -219,10 +212,8 @@ void cpHpDamageCtrl::update() {
     if (mChildRegionStatusArray.mLength != 0) {
         u32 v2_0 = mChildRegionStatusArray.mLength;
         for (unsigned int i2_3 = 0;;) {
-            MtObject* * t6 = mChildRegionStatusArray.mpArray;
-            MtObject* t7 = t6[i2_3];
-            if (t7 != nullptr) {
-                static_cast<cChildRegionStatus*>(t7)->update();
+            if (mChildRegionStatusArray.mpArray[i2_3] != nullptr) {
+                static_cast<cChildRegionStatus*>(mChildRegionStatusArray.mpArray[i2_3])->update();
                 if ((i2_3 + 1u) < mChildRegionStatusArray.mLength) {
                     v2_0 = mChildRegionStatusArray.mLength;
                     i2_3 += 1u;

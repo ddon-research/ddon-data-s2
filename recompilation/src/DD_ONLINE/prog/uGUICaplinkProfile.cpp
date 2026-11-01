@@ -125,7 +125,7 @@ inline void uGUICaplinkProfile::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkProfile::DTI)->memFree(p_addr);
 }
 
-uGUICaplinkProfile::~uGUICaplinkProfile() {
+__attribute__((noinline)) uGUICaplinkProfile::~uGUICaplinkProfile() {
     DDON_STUB("uGUICaplinkProfile::~uGUICaplinkProfile")
     /* stub */
 }
@@ -214,9 +214,35 @@ __attribute__((weak)) void uGUICaplinkProfile::setupList() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUICaplinkProfile::setupInfo() {
-    DDON_STUB("uGUICaplinkProfile::setupInfo")
-    /* stub */
+void uGUICaplinkProfile::setupInfo() {
+    cGUIObjMessage* t0 = mInfo.mpObjMsgTitle;
+    setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 56u), 0u, false);
+    cGUIObjMessage* t1 = mInfo.mpObjMsgNameTitle;
+    setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 64u), 0u, false);
+    cGUIObjMessage* t2 = mInfo.mpObjMsgIdTitle;
+    setObjectMessage(static_cast<cGUIObject*>(t2), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 63u), 0u, false);
+    cGUIObjMessage* t3 = mInfo.mpObjMsgCommentTitle;
+    setObjectMessage(static_cast<cGUIObject*>(t3), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 62u), 0u, false);
+    bool t4 = sCaplinkManager::getInstance()->isMyUniqueId(reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 7556))));
+    sCaplinkManager* t5 = sCaplinkManager::getInstance();
+    if (t4) {
+        setObjectMessageFit(mInfo.mpObjMsgId, reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t5) + 9724))), 33ul);
+        setObjectMessageFit(mInfo.mpObjMsgComment, reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t5) + 10116))), 513ul);
+        setObjectMessageFit(mInfo.mpObjMsgName, reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t5) + 9764))), 81ul);
+        mInfo.mProfIcon.request(t5->mMyProfile.mIconIndex);
+    } else {
+        setObjectMessageFit(mInfo.mpObjMsgId, &t5->mUserProfileGetAns.mUserProfile.mUniqueId[0], 33ul);
+        setObjectMessageFit(mInfo.mpObjMsgComment, &t5->mUserProfileGetAns.mUserProfile.mComment[0], 513ul);
+        setObjectMessageFit(mInfo.mpObjMsgName, &t5->mUserProfileGetAns.mUserProfile.mNickname[0], 81ul);
+        if (t5->mUserProfileGetAns.mUserProfile.mIconNormalUrl[0] != 0) {
+            mInfo.mProfIcon.request(sCaplinkManager::getInstance()->getIconIndex(&t5->mUserProfileGetAns.mUserProfile.mIconNormalUrl[0]));
+        }
+    }
+    if (mpPageCtrl != nullptr) {
+        mInfo.mDot.setCurrentPos(static_cast<u32>(mpPageCtrl->getCurrentPos()));
+    } else {
+        mInfo.mDot.setCurrentPos(0u);
+    }
 }
 
 void uGUICaplinkProfile::setupGame() {

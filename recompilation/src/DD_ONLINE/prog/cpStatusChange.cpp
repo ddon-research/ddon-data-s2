@@ -204,7 +204,7 @@ bool cpStatusChange::repeat_ExecFunc(u32 repeatCount, u32 index) {
                         if (v0_11 != nullptr) {
                             *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_11) + 25) = 1;
                             *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_11) + 28) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_11) + 28)) + 1u;
-                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_11) + 8) = static_cast<unsigned int>(static_cast<unsigned long>((t0->mRepeatSetting - 5u) <= 1u) + 3);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_11) + 8) = static_cast<unsigned int>(((t0->mRepeatSetting - 5u) <= 1u) ? 4 : 3);
                             setChangeStatusBit(t0->mChangeStatus, t0->mSelectNo, t0->mBitContrlCommand);
                             setConText(t0->mGroupNo, t0->mGroupSubNo);
                             checkNextGroup(t0->mGroupNo, t0->mGroupSubNo, t0->mNextGroupSubNo, t0->mNextGroupSubOneGo);

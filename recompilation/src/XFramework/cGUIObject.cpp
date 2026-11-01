@@ -519,7 +519,7 @@ cGUIObjMessage::cGUIObjMessage() {
     /* stub */
 }
 
-cGUIObjMessage::~cGUIObjMessage() {
+__attribute__((noinline)) cGUIObjMessage::~cGUIObjMessage() {
     DDON_STUB("cGUIObjMessage::~cGUIObjMessage")
     /* stub */
 }
@@ -802,14 +802,66 @@ __attribute__((weak)) rGUIFont* cGUIObjMessage::getFont(u32 index) const {
     return nullptr;
 }
 
-__attribute__((weak)) u32 cGUIObjMessage::getLineNum(u32 pageIndex) const {
-    DDON_STUB("cGUIObjMessage::getLineNum")
-    return {};
+u32 cGUIObjMessage::getLineNum(u32 pageIndex) const {
+    nGUI::MTAG* pMTag = cGUIMessageAnalyzer::getPage(mpMTag, pageIndex);
+    unsigned int v1_0;
+    if (pMTag != nullptr) {
+        unsigned int i0_0 = 0;
+        for (nGUI::MTAG* v0_1 = pMTag;;) {
+            if (v0_1->pNext == nullptr) {
+                v1_0 = i0_0;
+                break;
+            } else {
+                if (v0_1->pNext->type == 11) {
+                    v1_0 = i0_0;
+                    break;
+                } else {
+                    if (v0_1->pNext->type == 21) {
+                        i0_0 += 1u;
+                    }
+                    v0_1 = v0_1->pNext;
+                }
+            }
+        }
+    } else {
+        v1_0 = 0;
+    }
+    return v1_0;
 }
 
-__attribute__((weak)) f32 cGUIObjMessage::getLineHeight(u32 lineIndex, u32 pageIndex) const {
-    DDON_STUB("cGUIObjMessage::getLineHeight")
-    return {};
+f32 cGUIObjMessage::getLineHeight(u32 lineIndex, u32 pageIndex) const {
+    nGUI::MTAG* pMTag = cGUIMessageAnalyzer::getPage(mpMTag, pageIndex);
+    f32 v1_9;
+    if (pMTag == nullptr) {
+        v1_9 = 0.0f;
+    } else {
+        float v0_9 = -1.0f;
+        nGUI::MTAG* v0_0 = pMTag;
+        for (unsigned int i0_1 = 0;;) {
+            if (v0_0->pNext == nullptr) {
+                v1_9 = v0_9;
+                break;
+            } else {
+                if (v0_0->pNext->type == 11) {
+                    v1_9 = v0_9;
+                    break;
+                } else {
+                    if (v0_0->pNext->type != 21) {
+                        v0_0 = v0_0->pNext;
+                    } else {
+                        if (lineIndex != i0_1) {
+                            v0_0 = v0_0->pNext;
+                            i0_1 += 1u;
+                        } else {
+                            v1_9 = v0_0->pNext->height;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return v1_9;
 }
 
 u32 cGUIObjMessage::getLineCharCount(u32 lineIndex, u32 pageIndex, bool countIcon) const {
@@ -1333,7 +1385,7 @@ __attribute__((weak)) void cGUIObjRoot::createProperty(MtPropertyList& s) {
 
 void cGUIObjRoot::msgInit() {
     u32 i = 0;
-    if (static_cast<unsigned short>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpAnimation) + 4)) != 0) {
+    if (mpAnimation->objectNum != 0) {
         do {
             mpObject[i]->init();
             i += 1u;
@@ -1728,7 +1780,7 @@ void cGUIObject::setObjectInfo(nGUI::OBJECT* pObjectInfo, nGUI::PARAM_WORK* pPar
         unsigned int i0_0 = 0;
         for (nGUI::PARAM_WORK* p0_2 = pParamWork;;) {
             p0_2->pOwner = static_cast<MtObject*>(this);
-            if ((i0_0 + 1u) < static_cast<unsigned char>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 92)) >> 52)) {
+            if ((i0_0 + 1u) < mAnimateParamNum) {
                 i0_0 += 1u;
                 p0_2 += 1;
             } else {

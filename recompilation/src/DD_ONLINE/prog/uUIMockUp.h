@@ -224,3 +224,8 @@ private:
 inline void uUIMockUp::useEmotion() {
     this->mIsUseEmotion = true;
 }
+
+inline void uUIMockUp::setupCameraDist() {
+    this->mCamDist = this->mCamDistDef + (100.0f * ((this->mModelHeight + -140.0f) / 70.0f));
+    this->mCamYOfs = this->mCamYOfsDef + (20.0f * ((this->mModelHeight + -140.0f) / 70.0f));
+}

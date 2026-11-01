@@ -37,7 +37,7 @@ uScrollCollisionGeometry::uScrollCollisionGeometry() {
     /* stub */
 }
 
-uScrollCollisionGeometry::~uScrollCollisionGeometry() {
+__attribute__((noinline)) uScrollCollisionGeometry::~uScrollCollisionGeometry() {
     DDON_STUB("uScrollCollisionGeometry::~uScrollCollisionGeometry")
     /* stub */
 }

@@ -31,7 +31,7 @@ nCaplink::Object::Object() {
     /* stub */
 }
 
-nCaplink::Object::~Object() {
+__attribute__((noinline)) nCaplink::Object::~Object() {
     DDON_STUB("nCaplink::Object::~Object")
     /* stub */
 }

@@ -34,7 +34,7 @@ inline void uGUIPhotoUpload::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPhotoUpload::DTI)->memFree(p_addr);
 }
 
-uGUIPhotoUpload::~uGUIPhotoUpload() {
+__attribute__((noinline)) uGUIPhotoUpload::~uGUIPhotoUpload() {
     DDON_STUB("uGUIPhotoUpload::~uGUIPhotoUpload")
     /* stub */
 }

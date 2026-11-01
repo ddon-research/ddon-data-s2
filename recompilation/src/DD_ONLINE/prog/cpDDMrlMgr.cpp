@@ -39,7 +39,7 @@ cpDDMrlMgr::cpDDMrlMgr() {
     /* stub */
 }
 
-cpDDMrlMgr::~cpDDMrlMgr() {
+__attribute__((noinline)) cpDDMrlMgr::~cpDDMrlMgr() {
     DDON_STUB("cpDDMrlMgr::~cpDDMrlMgr")
     /* stub */
 }

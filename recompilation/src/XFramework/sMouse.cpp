@@ -43,10 +43,6 @@ MtUI* sMouse::createUI(MtProperty& prop) {
     return this->cSystem::createUI(prop);
 }
 
-s32 sMouse::getAxisZ(sMouse::TYPE type) const {
-    return mState[type].az;
-}
-
 void sMouse::setPosition(const MtPoint& pos, sMouse::TYPE type) {
     mState[type].pos.x = pos.x;
     mState[type].pos.y = pos.y;

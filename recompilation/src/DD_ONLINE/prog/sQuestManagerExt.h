@@ -1470,6 +1470,13 @@ inline sQuestManagerExt::cFunctionInfo::cFunctionInfo() {
     this->mpFuncMgr = nullptr;
 }
 
+inline sQuestManagerExt::cSystemLogNode::cSystemLogNode() {
+    this->mFilter = 20;
+    this->mIsDelete = false;
+    this->mWithAnnounce = false;
+    this->mIsWarning = false;
+}
+
 inline f32 sQuestManagerExt::cTimer::getMeasuringTime() const {
     return this->mMeasuringTime;
 }

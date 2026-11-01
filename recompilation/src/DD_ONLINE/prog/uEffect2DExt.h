@@ -20,6 +20,7 @@ class MtVector3;
 class cDraw;
 class cEfcHandle;
 class cParticle2DGenerator;
+class sEffectExt;
 class uDDOModel;
 
 // Declarations
@@ -38,6 +39,7 @@ using u8 = unsigned char;
 
 class uEffect2DExt : public uEffect2D
 {
+    friend class sEffectExt;
 public:
     class MyDTI;
     struct CORRECT_COLOR_PARAM;

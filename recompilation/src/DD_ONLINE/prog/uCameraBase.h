@@ -21,6 +21,7 @@ class MtUI;
 class MtVector3;
 class MtVector4;
 class cDraw;
+namespace nFsm { class cCameraCtrl; }
 
 // Declarations
 class cCameraQuake;
@@ -185,6 +186,7 @@ public:
 
 class uCameraBase : public uCamera
 {
+    friend class nFsm::cCameraCtrl;
 public:
     enum FOV_TYPE
     {

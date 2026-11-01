@@ -264,3 +264,20 @@ public:
     static const u32 MAX_LINK = 8;
     static const u32 MAX_NEST = 6;
 };
+
+inline rNavigationMesh::rNavigationMesh() {
+    this->mpNode = nullptr;
+    this->mNumberOfNode = 0;
+    this->mNumberOfVertex = 0;
+    this->mpWallDistance = nullptr;
+    this->mpNearWall = nullptr;
+    this->mpPolygonVertex = nullptr;
+    this->mpQuadTree = nullptr;
+    this->mpNodeBuffer = nullptr;
+    this->mNumberOfTotalLink = 0;
+    this->mNumberOfTotalIndex = 0;
+    this->mNumberOfNodeInfo = 0;
+    this->mNumberOfTotalAttribute = 0;
+    this->mpNodeInfo = nullptr;
+    this->::cResource::mAttr = 22;
+}

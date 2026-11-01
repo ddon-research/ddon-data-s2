@@ -97,3 +97,8 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline cTbl2ChatMacro::cTbl2ChatMacro() {
+    this->mCmdId = 0;
+    this->mHelpMsgId = 0;
+}

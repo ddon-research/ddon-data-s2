@@ -46,7 +46,7 @@ inline void uGUIPopDetail01::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPopDetail01::DTI)->memFree(p_addr);
 }
 
-uGUIPopDetail01::~uGUIPopDetail01() {
+__attribute__((noinline)) uGUIPopDetail01::~uGUIPopDetail01() {
     DDON_STUB("uGUIPopDetail01::~uGUIPopDetail01")
     /* stub */
 }

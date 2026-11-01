@@ -44,7 +44,7 @@ sObjCondition::sObjCondition() {
     /* stub */
 }
 
-sObjCondition::~sObjCondition() {
+__attribute__((noinline)) sObjCondition::~sObjCondition() {
     DDON_STUB("sObjCondition::~sObjCondition")
     /* stub */
 }

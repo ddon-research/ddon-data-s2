@@ -22,7 +22,7 @@ inline void cShlGroupParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cShlGroupParam::DTI)->memFree(p_addr);
 }
 
-cShlGroupParam::~cShlGroupParam() {
+__attribute__((noinline)) cShlGroupParam::~cShlGroupParam() {
     DDON_STUB("cShlGroupParam::~cShlGroupParam")
     /* stub */
 }
@@ -61,7 +61,7 @@ inline void rShlParamList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rShlParamList::DTI)->memFree(p_addr);
 }
 
-rShlParamList::~rShlParamList() {
+__attribute__((noinline)) rShlParamList::~rShlParamList() {
     DDON_STUB("rShlParamList::~rShlParamList")
     /* stub */
 }

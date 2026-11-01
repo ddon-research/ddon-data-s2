@@ -40,7 +40,7 @@ MtUI* nDraw::Scene::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-nDraw::Scene::~Scene() {
+__attribute__((noinline)) nDraw::Scene::~Scene() {
     DDON_STUB("nDraw::Scene::~Scene")
     /* stub */
 }

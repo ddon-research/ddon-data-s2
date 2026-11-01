@@ -20,7 +20,7 @@ inline void cEventParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEventParam::DTI)->memFree(p_addr);
 }
 
-cEventParam::~cEventParam() {
+__attribute__((noinline)) cEventParam::~cEventParam() {
     DDON_STUB("cEventParam::~cEventParam")
     /* stub */
 }
@@ -35,9 +35,8 @@ __attribute__((weak)) void cEventParam::setFileName(const MtString& name) {
     /* stub */
 }
 
-__attribute__((weak)) MT_CTSTR cEventParam::getFileName() const {
-    DDON_STUB("cEventParam::getFileName")
-    return {};
+MT_CTSTR cEventParam::getFileName() const {
+    return mFname.ptr();
 }
 
 cEventParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -6,7 +6,10 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../XFramework/nZone.h"
 #include "../../XFramework/rZone.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
 #include "uSoundSequenceSe.h"
 #include "uSoundZoneBase.h"
 #ifndef DDON_STUB
@@ -28,9 +31,28 @@ inline void cSoundGeneratorListener::operator delete(void* p_addr) {
 cSoundGeneratorListener::~cSoundGeneratorListener() {
 }
 
-__attribute__((weak)) void cSoundGeneratorListener::notified(const nZone::cLayoutElement& e) {
-    DDON_STUB("cSoundGeneratorListener::notified")
-    /* stub */
+void cSoundGeneratorListener::notified(const nZone::cLayoutElement& e) {
+    MtObject* v0_3 = e.getExtendObj();
+    if (v0_3 != nullptr) {
+        const MtDTI& t0 = e.mpShapeInfo->getDTI();
+        MT_CTSTR v0_1 = nZone::ShapeInfoGlobal::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                if (!static_cast<sSoundExt*>(sSound::getInstance())->mIsGlobalGeneratorZoneOut) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_3) + 16) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_3) + 16)) | 1;
+                }
+                return;
+            }
+        }
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_3) + 16) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_3) + 16)) | 1;
+        static_cast<sSoundExt*>(sSound::getInstance())->mIsOtherGeneratorZoneIn = true;
+    }
 }
 
 cSoundGeneratorListener::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

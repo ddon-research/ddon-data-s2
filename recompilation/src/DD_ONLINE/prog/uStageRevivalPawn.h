@@ -152,3 +152,27 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline u32 uStageRevivalPawn::getRevivalNpcId() const {
+    return this->mRevivalNpcId.NpcId;
+}
+
+inline void uStageRevivalPawn::reqRevivalNpcId(u32 id) {
+    this->mReqRevivalNpcId.NpcId = id;
+}
+
+inline u32 uStageRevivalPawn::getReqRevivalNpcIdPrivate() const {
+    return this->mReqRevivalNpcId.NpcId;
+}
+
+inline void uStageRevivalPawn::setReqRevivalNpcIdPrivate(u32 NewValue) {
+    this->mReqRevivalNpcId.NpcId = NewValue;
+}
+
+inline void uStageRevivalPawn::setRevivingNpcIdPrivate(u32 NewValue) {
+    this->mRevivingNpcId.NpcId = NewValue;
+}
+
+inline u32 uStageRevivalPawn::getRevivalNpcIdPrivate() const {
+    return this->mRevivalNpcId.NpcId;
+}

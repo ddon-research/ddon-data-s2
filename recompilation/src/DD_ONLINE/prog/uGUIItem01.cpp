@@ -32,6 +32,107 @@
 #define DDON_STUB(name)
 #endif
 
+const MtDTI& uGUIItem01::getDTI() const {
+    return uGUIItem01::DTI;
+}
+
+inline MtAllocator* uGUIItem01::getAllocator() {
+    return MtMemoryAllocator::getAllocator(uGUIItem01::DTI);
+}
+
+void* uGUIItem01::operator new(size_t sz, u32 align) {
+    return uGUIItem01::getAllocator()->memAlloc(sz, align, uGUIItem01::DTI.getID());
+}
+
+uGUIItem01::~uGUIItem01() {
+    DDON_STUB("uGUIItem01::~uGUIItem01")
+    /* stub */
+}
+
+__attribute__((weak)) void uGUIItem01::setup() {
+    DDON_STUB("uGUIItem01::setup")
+    /* stub */
+}
+
+__attribute__((weak)) void uGUIItem01::move() {
+    DDON_STUB("uGUIItem01::move")
+    /* stub */
+}
+
+void uGUIItem01::adjustScale() {
+    this->uGUIItemBase01::adjustScale();
+}
+
+__attribute__((weak)) void uGUIItem01::loadItem() {
+    DDON_STUB("uGUIItem01::loadItem")
+    /* stub */
+}
+
+void uGUIItem01::setTitle() {
+    MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 19u);
+    MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 20u);
+    setObjectMessage(static_cast<cGUIObject*>(mData.mpOBJ_msg_top_m_top00), t0, 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mData.mpOBJ_msg_top_m_top01), t1, 0u, false);
+    if (mData.mpOBJ_msg_top_m_top00 == nullptr) {
+        return;
+    }
+    if (mData.mpOBJ_msg_top_m_top01 == nullptr) {
+        return;
+    }
+    mData.mpOBJ_msg_top_m_top01->setPositionX(mData.mpOBJ_msg_top_m_top00->getMessageWidth() + 20.0f);
+}
+
+void uGUIItem01::updateDetail() {
+    this->uGUIItemBase01::updateDetail();
+    setGuideBtn();
+}
+
+void uGUIItem01::updateExit() {
+    mIsEndShareUnitUse = true;
+    endShareUnit();
+    end();
+    sItemManager::getInstance()->sendSortData(false);
+}
+
+__attribute__((weak)) void uGUIItem01::setupGuideBtn() {
+    DDON_STUB("uGUIItem01::setupGuideBtn")
+    /* stub */
+}
+
+__attribute__((weak)) void uGUIItem01::setGuideBtn() {
+    DDON_STUB("uGUIItem01::setGuideBtn")
+    /* stub */
+}
+
+__attribute__((weak)) void uGUIItem01::setWindowMouseOver() {
+    DDON_STUB("uGUIItem01::setWindowMouseOver")
+    /* stub */
+}
+
+__attribute__((weak)) bool uGUIItem01::isExecuteDecide() {
+    DDON_STUB("uGUIItem01::isExecuteDecide")
+    return {};
+}
+
+__attribute__((weak)) u32 uGUIItem01::evCtrlCatch(cControl::Message* msg) {
+    DDON_STUB("uGUIItem01::evCtrlCatch")
+    return {};
+}
+
+u32 uGUIItem01::evCtrlStart(cControl::Message* msg) {
+    if (isFocus()) {
+        if (!isCatchMode()) {
+            setFlowId(10u);
+        }
+    }
+    return 0;
+}
+
+__attribute__((weak)) MtObject* uGUIItem01::MyDTI::newInstance() const {
+    DDON_STUB("uGUIItem01::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& uGUIItemBase01::getDTI() const {
     return uGUIItemBase01::DTI;
 }
@@ -40,7 +141,7 @@ inline void uGUIItemBase01::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIItemBase01::DTI)->memFree(p_addr);
 }
 
-uGUIItemBase01::~uGUIItemBase01() {
+__attribute__((noinline)) uGUIItemBase01::~uGUIItemBase01() {
     DDON_STUB("uGUIItemBase01::~uGUIItemBase01")
     /* stub */
 }
@@ -941,9 +1042,43 @@ u32 uGUIItemBase01::evCtrlMouseOut(cControl::Message* msg) {
     return 0;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evCtrlLBRB(cControl::Message* msg) {
-    DDON_STUB("uGUIItemBase01::evCtrlLBRB")
-    return {};
+u32 uGUIItemBase01::evCtrlLBRB(cControl::Message* msg) {
+    s32 j0;
+    if (msg != nullptr) {
+        if (mpCtrlH != nullptr) {
+            if (mpCtrlTab != nullptr) {
+                const MtDTI& t0 = getDTI();
+                if (t0.getID() == uGUIItem01::DTI.mID) {
+                    catchCancel(false);
+                    setFlowId(2u);
+                }
+                sItemManager::cItemBag::ITEM_CATEGORY cat = getTab2Category();
+                if (cat == sItemManager::cItemBag::ITEM_CATEGORY_ALL_ITEM) {
+                    if (mpCtrlTab != nullptr) {
+                        j0 = mpCtrlTab->getCurrentPos();
+                    } else {
+                        j0 = 0;
+                    }
+                    mPageTabNo = j0;
+                } else {
+                    mPageTabNo = 0;
+                }
+                mServerStorageTypeOld = mServerStorageType;
+                mServerStorageType = sItemManager::getInstance()->getItemNetStorageType(mStorageType, cat);
+                if (mpCtrlMatrix != nullptr) {
+                    u32 t1 = getItemDrawNum();
+                    if (static_cast<unsigned int>(mMatrixSelPos) < t1) {
+                        mpCtrlMatrix->setCurrentPos(mMatrixSelPos, false);
+                    } else {
+                        mpCtrlMatrix->setCurrentPos(0, false);
+                        mMatrixSelPos = 0;
+                    }
+                }
+                settingItemInit();
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) u32 uGUIItemBase01::evCtrlSubWindow(cControl::Message* msg) {

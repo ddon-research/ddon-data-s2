@@ -28,6 +28,7 @@ class cEfcHandle;
 class cParticle;
 class cParticleGenerator;
 class cParticleManager;
+class sEffectExt;
 class uDDOModel;
 
 // Declarations
@@ -49,6 +50,7 @@ using u8 = unsigned char;
 
 class uEffectExt : public uEffect
 {
+    friend class sEffectExt;
 public:
     enum
     {

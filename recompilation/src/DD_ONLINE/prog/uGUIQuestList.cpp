@@ -43,7 +43,7 @@ inline void uGUIQuestList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIQuestList::DTI)->memFree(p_addr);
 }
 
-uGUIQuestList::~uGUIQuestList() {
+__attribute__((noinline)) uGUIQuestList::~uGUIQuestList() {
     DDON_STUB("uGUIQuestList::~uGUIQuestList")
     /* stub */
 }

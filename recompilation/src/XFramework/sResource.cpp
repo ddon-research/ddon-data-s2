@@ -33,7 +33,7 @@ sResource::sResource(u32 ringbufsize) {
     /* stub */
 }
 
-sResource::~sResource() {
+__attribute__((noinline)) sResource::~sResource() {
     DDON_STUB("sResource::~sResource")
     /* stub */
 }

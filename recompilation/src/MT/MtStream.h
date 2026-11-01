@@ -12,6 +12,8 @@ class MtAllocator;
 class MtDTI;
 class MtFile;
 class MtObject;
+namespace nNetwork { class Connect; }
+namespace nNetwork { class Session; }
 
 // Declarations
 class MtFileStream;
@@ -136,6 +138,8 @@ public:
 
 class MtMemoryStream : public MtStream
 {
+    friend class nNetwork::Connect;
+    friend class nNetwork::Session;
 public:
     enum MODE
     {

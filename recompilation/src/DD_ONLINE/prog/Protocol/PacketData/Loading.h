@@ -96,5 +96,12 @@ public:
     static MyDTI DTI;
 };
 
+inline CDataLoadingInfoSchedule::CDataLoadingInfoSchedule() {
+    this->m_llEndDateTime = 0;
+    this->m_llBeginDateTime = 0;
+    this->m_unImageId = 0;
+    this->m_unPriority = 0;
+}
+
 inline CDataLoadingInfoSchedules::CDataLoadingInfoSchedules() {
 }

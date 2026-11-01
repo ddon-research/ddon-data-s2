@@ -2,6 +2,7 @@
 #include <new>
 #include <_pthread.h>
 #include <stdlib.h>
+#include <string.h>
 #include "sUnit.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
@@ -392,9 +393,54 @@ void sUnit::setDefaultUnitGroup(cUnit* punit) {
     punit->mUnitGroup = punit->getDefaultUnitGroup();
 }
 
-__attribute__((weak)) void sUnit::setUnitGroup(cUnit* punit, u32 group) {
-    DDON_STUB("sUnit::setUnitGroup")
-    /* stub */
+void sUnit::setUnitGroup(cUnit* punit, u32 group) {
+    if (punit == nullptr) {
+        return;
+    }
+    if (group < mGroupCount) {
+        if (group > 15u) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            if (((static_cast<unsigned long>(punit->mUnitGroup) >> static_cast<unsigned long>(group & 63u)) & 1ul) == 0) {
+                punit->mUnitGroup = static_cast<u64>(static_cast<unsigned long>(punit->mUnitGroup) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(group) & 63)));
+                u32 t0 = mUnitGroup[group].mUnits.mLength;
+                u32 t1 = mUnitGroup[group].mUnits.mBufsiz;
+                if (t0 < t1) {
+                    mUnitGroup[group].mUnits.mLength = t0 + 1u;
+                    mUnitGroup[group].mUnits.mpArray[t0] = static_cast<MtObject*>(punit);
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                            abort();
+                        }
+                    }
+                } else {
+                    void* t2 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t1 + 32u) * 8, 16u);
+                    memset(t2, 0, static_cast<size_t>(t1 + 32u) * 8);
+                    memcpy(t2, static_cast<const void*>(mUnitGroup[group].mUnits.mpArray), static_cast<size_t>(mUnitGroup[group].mUnits.mLength) * 8);
+                    MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mUnitGroup[group].mUnits.mpArray));
+                    mUnitGroup[group].mUnits.mpArray = static_cast<MtObject* *>(t2);
+                    mUnitGroup[group].mUnits.mBufsiz = t1 + 32u;
+                    u32 t3 = mUnitGroup[group].mUnits.mLength;
+                    mUnitGroup[group].mUnits.mLength = t3 + 1u;
+                    mUnitGroup[group].mUnits.mpArray[t3] = static_cast<MtObject*>(punit);
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                            abort();
+                        }
+                    }
+                }
+            } else {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sUnit::removeUnitGroup(cUnit* punit, u32 group) {

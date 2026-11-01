@@ -60,9 +60,48 @@ void uGUIEntryBoardInfo::kill() {
     mpGUIRes = nullptr;
 }
 
-__attribute__((weak)) bool uGUIEntryBoardInfo::setProc(uGUIEntryBoardInfo::PR proc, bool force) {
-    DDON_STUB("uGUIEntryBoardInfo::setProc")
-    return {};
+bool uGUIEntryBoardInfo::setProc(uGUIEntryBoardInfo::PR proc, bool force) {
+    if (mProc == proc) {
+        if (!force) {
+            return false;
+        }
+    }
+    mProc = proc;
+    if (proc == PR_SELECT) {
+        if (mpVCtrl != nullptr) {
+            u32 v0_4 = mDataArray.size();
+            if (v0_4 != 0) {
+                s32 v0_5 = mpVCtrl->getCurrentPos();
+                MtObject* * v0_2 = mDataArray.getBuffer();
+                for (unsigned int i0_3 = 0;;) {
+                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_3)]) + 1048) = static_cast<unsigned int>(i0_3 == static_cast<unsigned int>(v0_5));
+                    if (v0_4 != (i0_3 + 1u)) {
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    } else {
+        if (proc == PR_VIEW) {
+            u32 v2_0 = mDataArray.size();
+            if (v2_0 != 0) {
+                MtObject* * v2_1 = mDataArray.getBuffer();
+                for (unsigned int i2_2 = 0;;) {
+                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[static_cast<int>(i2_2)]) + 1048) = 0;
+                    if ((i2_2 + 1u) < v2_0) {
+                        i2_2 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2056) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2048) = 745;
+    return true;
 }
 
 __attribute__((weak)) void uGUIEntryBoardInfo::updateMember() {

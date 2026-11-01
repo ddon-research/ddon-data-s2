@@ -12,6 +12,26 @@
 #define DDON_STUB(name)
 #endif
 
+const MtDTI& cEffectStatus::getDTI() const {
+    return cEffectStatus::DTI;
+}
+
+inline void* cEffectStatus::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cEffectStatus::DTI)->memAlloc(sz, align, cEffectStatus::DTI.getID());
+}
+
+inline void cEffectStatus::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cEffectStatus::DTI)->memFree(p_addr);
+}
+
+cEffectStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cEffectStatus::MyDTI cEffectStatus::DTI("cEffectStatus", &::MtObject::DTI, 40ul, 0u, 0u);
+
+MtObject* cEffectStatus::MyDTI::newInstance() const {
+    return new (16u) cEffectStatus;
+}
+
 const MtDTI& cpEffectStatusManager::getDTI() const {
     return cpEffectStatusManager::DTI;
 }

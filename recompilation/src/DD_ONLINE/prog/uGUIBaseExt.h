@@ -14,10 +14,10 @@ class MtAllocator;
 class MtDTI;
 class MtObject;
 class cResource;
-namespace nGUIBaseExt { struct ResInfo; }
 class rGUI;
 
 // Declarations
+namespace nGUIBaseExt { struct ResInfo; }
 class uGUIBaseExt;
 class uGUIBaseExtHud;
 class uGUIBaseExtWindow;
@@ -31,6 +31,15 @@ using size_t = _Sizet;
 using time_t = long int;
 using t64 = time_t;
 using u32 = unsigned int;
+
+namespace nGUIBaseExt {
+    struct ResInfo
+    {
+    public:
+        MT_CTSTR mArcTagName;  // offset: 0x0
+        MT_CTSTR mSearchName;  // offset: 0x8
+    };
+}  // namespace nGUIBaseExt
 
 class uGUIBaseExt : public uGUIBase
 {

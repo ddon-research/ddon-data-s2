@@ -50,8 +50,31 @@ sCameraExt::sCameraExt() {
 }
 
 sCameraExt::~sCameraExt() {
-    DDON_STUB("sCameraExt::~sCameraExt")
-    /* stub */
+    if (mprParamListTemplate != nullptr) {
+        mprParamListTemplate->release();
+        mprParamListTemplate = nullptr;
+    }
+    if (mprLargeCameraParam != nullptr) {
+        mprLargeCameraParam->release();
+        mprLargeCameraParam = nullptr;
+    }
+    if (mprQuakeList != nullptr) {
+        mprQuakeList->release();
+        mprQuakeList = nullptr;
+    }
+    if (mprParamListJob != nullptr) {
+        mprParamListJob->release();
+        mprParamListJob = nullptr;
+    }
+    if (mprParamListCmnAct != nullptr) {
+        mprParamListCmnAct->release();
+        mprParamListCmnAct = nullptr;
+    }
+    if (mprParamListCmnEvt == nullptr) {
+        return;
+    }
+    mprParamListCmnEvt->release();
+    mprParamListCmnEvt = nullptr;
 }
 
 MtUI* sCameraExt::createUI(MtProperty& prop) {

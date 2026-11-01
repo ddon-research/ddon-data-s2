@@ -127,7 +127,7 @@ sEffectExt::sEffectExt() {
     /* stub */
 }
 
-sEffectExt::~sEffectExt() {
+__attribute__((noinline)) sEffectExt::~sEffectExt() {
     DDON_STUB("sEffectExt::~sEffectExt")
     /* stub */
 }
@@ -393,9 +393,58 @@ __attribute__((weak)) void sEffectExt::getEffect(cEfcHandle* pHandle, MtTypedArr
     /* stub */
 }
 
-__attribute__((weak)) void sEffectExt::getEffect2D(cEfcHandle* pHandle, MtTypedArray<uEffect2DExt>* pArray) {
-    DDON_STUB("sEffectExt::getEffect2D")
-    /* stub */
+void sEffectExt::getEffect2D(cEfcHandle* pHandle, MtTypedArray<uEffect2DExt>* pArray) {
+    if (pHandle != nullptr) {
+        if (pHandle->UnitType == 1) {
+            if (mpEffect2D != nullptr) {
+                u64 v0_1 = pHandle->getUniqueID();
+                uEffect2DExt* v0_0 = mpEffect2D;
+                uEffect2DExt* v1_1;
+                for (;;) {
+                    if (v0_1 == v0_0->mUniqueID) {
+                        if (v0_0 != nullptr) {
+                            long unsigned int v1_0 = pHandle->GroupID[0];
+                            v1_1 = v0_0;
+                            for (;;) {
+                                if (v1_0 != v1_1->mGroupID) {
+                                    if (v1_1->mpGroupNext != nullptr) {
+                                        v1_1 = v1_1->mpGroupNext;
+                                    } else {
+                                        break;
+                                    }
+                                } else {
+                                    if (v1_1 != nullptr) {
+                                        u32 t0 = pArray->mLength;
+                                        u32 t1 = pArray->mBufsiz;
+                                        if (t0 < t1) {
+                                            pArray->mLength = t0 + 1u;
+                                            pArray->mpArray[t0] = static_cast<MtObject*>(v1_1);
+                                        } else {
+                                            void* t2 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t1 + 32u) * 8, 16u);
+                                            memset(t2, 0, static_cast<size_t>(t1 + 32u) * 8);
+                                            memcpy(t2, static_cast<const void*>(pArray->mpArray), static_cast<size_t>(pArray->mLength) * 8);
+                                            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(pArray->mpArray));
+                                            pArray->mpArray = static_cast<MtObject* *>(t2);
+                                            pArray->mBufsiz = t1 + 32u;
+                                            u32 t3 = pArray->mLength;
+                                            pArray->mLength = t3 + 1u;
+                                            pArray->mpArray[t3] = static_cast<MtObject*>(v1_1);
+                                        }
+                                    }
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    if (v0_0->mpNext != nullptr) {
+                        v0_0 = v0_0->mpNext;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sEffectExt::getCameraEffect(cEfcHandle* pHandle, MtTypedArray<uEfCam>* pArray) {
@@ -646,9 +695,42 @@ void sEffectExt::epvSetTimer(cEfcHandle* pHandle, u32 timer) {
     }
 }
 
-__attribute__((weak)) void sEffectExt::epvSetTransparency(cEfcHandle* pHandle, f32 rate) {
-    DDON_STUB("sEffectExt::epvSetTransparency")
-    /* stub */
+void sEffectExt::epvSetTransparency(cEfcHandle* pHandle, f32 rate) {
+    if (pHandle != nullptr) {
+        uEffectExt* t0 = getEffect(pHandle, 0u);
+        if (t0 != nullptr) {
+            t0->mCorrectColorParam.mTransparency = static_cast<unsigned int>(static_cast<long>(256.0f * rate));
+        }
+        long v0_9 = static_cast<long>(256.0f * rate);
+        uEffectExt* t1 = getEffect(pHandle, 1u);
+        if (t1 != nullptr) {
+            t1->mCorrectColorParam.mTransparency = static_cast<unsigned int>(v0_9);
+        }
+        uEffectExt* t2 = getEffect(pHandle, 2u);
+        if (t2 != nullptr) {
+            t2->mCorrectColorParam.mTransparency = static_cast<unsigned int>(v0_9);
+        }
+        uEffectExt* t3 = getEffect(pHandle, 3u);
+        if (t3 != nullptr) {
+            t3->mCorrectColorParam.mTransparency = static_cast<unsigned int>(v0_9);
+        }
+        uEffectExt* t4 = getEffect(pHandle, 4u);
+        if (t4 != nullptr) {
+            t4->mCorrectColorParam.mTransparency = static_cast<unsigned int>(v0_9);
+        }
+        uEffectExt* t5 = getEffect(pHandle, 5u);
+        if (t5 != nullptr) {
+            t5->mCorrectColorParam.mTransparency = static_cast<unsigned int>(v0_9);
+        }
+        uEffectExt* t6 = getEffect(pHandle, 6u);
+        if (t6 != nullptr) {
+            t6->mCorrectColorParam.mTransparency = static_cast<unsigned int>(v0_9);
+        }
+        uEffectExt* t7 = getEffect(pHandle, 7u);
+        if (t7 != nullptr) {
+            t7->mCorrectColorParam.mTransparency = static_cast<unsigned int>(v0_9);
+        }
+    }
 }
 
 void sEffectExt::epvSetPos(cEfcHandle* pHandle, const MtVector3& pos) {
@@ -1150,7 +1232,7 @@ inline void sEffectExt::cZoneEffectUnit::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sEffectExt::cZoneEffectUnit::DTI)->memFree(p_addr);
 }
 
-sEffectExt::cZoneEffectUnit::~cZoneEffectUnit() {
+__attribute__((noinline)) sEffectExt::cZoneEffectUnit::~cZoneEffectUnit() {
     DDON_STUB("sEffectExt::cZoneEffectUnit::~cZoneEffectUnit")
     /* stub */
 }

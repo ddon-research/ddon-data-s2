@@ -849,7 +849,13 @@ protected:
     bool infinite;  // offset: 0x60
 };
 
+inline MtAABB::MtAABB() {
+}
+
 inline MtAABB4::MtAABB4() {
+}
+
+inline MtCapsule::MtCapsule() {
 }
 
 inline MtCone::MtCone() {
@@ -858,7 +864,13 @@ inline MtCone::MtCone() {
 inline MtFrustum::MtFrustum() {
 }
 
+inline MtLineSegment::MtLineSegment() {
+}
+
 inline MtLineSegment4::MtLineSegment4() {
+}
+
+inline MtOBB::MtOBB() {
 }
 
 inline MtPlane::MtPlane() {
@@ -874,4 +886,7 @@ inline MtSphere::MtSphere() {
 }
 
 inline MtTorus::MtTorus() {
+}
+
+inline MtTriangle::MtTriangle() {
 }

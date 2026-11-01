@@ -221,6 +221,15 @@ public:
     static MyDTI DTI;
 };
 
+inline CDataGameServerListInfo::CDataGameServerListInfo() {
+    this->m_usId = 0;
+    this->m_usPort = 0;
+    this->m_bIsHide = false;
+    this->m_unLoginNum = 0;
+    this->m_unTrafficLevel = 0;
+    this->m_unMaxLoginNum = 0;
+}
+
 inline CDataGameTime::CDataGameTime() {
     this->m_usYear = 0;
     this->m_ucWDay = 0;
@@ -238,4 +247,15 @@ inline CDataURLInfo::CDataURLInfo() {
 
 inline CDataWeatherForecast::CDataWeatherForecast() {
     this->m_unWeather = 0;
+}
+
+inline CDataWorldInfo::CDataWorldInfo() {
+    this->m_usId = 0;
+    this->m_ucDragonType = 0;
+    this->m_ucSetType = 0;
+    this->m_unTemp2 = 0;
+    this->m_unTemp3 = 0;
+    this->m_unTemp0 = 0;
+    this->m_unTemp1 = 0;
+    this->m_ucCycleContentsState = 0;
 }

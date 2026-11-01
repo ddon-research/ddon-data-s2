@@ -48,6 +48,7 @@ class rGUI;
 class rGUIMessage;
 class rTexture;
 class uDDOModel;
+class uGUIGameMenu;
 class uGUIPopCmd01;
 
 // Declarations
@@ -64,6 +65,7 @@ using u32 = unsigned int;
 
 class uGUIMap : public uGUIBase
 {
+    friend class uGUIGameMenu;
 public:
     enum OM_REFERENCE_TYPE
     {
@@ -950,4 +952,9 @@ inline s32 uGUIMap::getLandType() {
 
 inline uGUIMap::cLandId::cLandId() {
     this->mLandId = 0;
+}
+
+inline uGUIMap::stChkWork::stChkWork() {
+    this->mIdx = -1;
+    this->mDist = 0.0f;
 }

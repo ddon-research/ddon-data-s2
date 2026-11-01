@@ -67,7 +67,7 @@ __attribute__((weak)) bool uGUIChat::setLog(cGUIObjMessage* objMessage, sChat::s
     return {};
 }
 
-uGUIChat::~uGUIChat() {
+__attribute__((noinline)) uGUIChat::~uGUIChat() {
     DDON_STUB("uGUIChat::~uGUIChat")
     /* stub */
 }

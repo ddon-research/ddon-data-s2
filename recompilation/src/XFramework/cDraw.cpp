@@ -349,7 +349,7 @@ __attribute__((weak)) cDraw::TAG* cDraw::sortCommand(cDraw::TAG* tag, s32 n, cDr
 void cDraw::nextBuffer(size_t size) {
     void* t0 = (sRender::mpInstance)->sRender::allocDrawBuffer(static_cast<u32>((size + 4095ul) & 0xFFFFF000ul));
     if ((mpBuffer = static_cast<u8*>(t0)) != nullptr) {
-        mpBufferEnd = static_cast<u8*>(t0) + ((size + 4095ul) & 0xFFFFFFFFFFFFF000ul);
+        mpBufferEnd = &mpBuffer[(size + 4095ul) & 0xFFFFFFFFFFFFF000ul];
     } else {
         mpBufferEnd = nullptr;
     }

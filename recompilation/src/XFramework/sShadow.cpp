@@ -172,18 +172,131 @@ __attribute__((weak)) void sShadow::setupManagedShadow(cDraw* pdraw) {
     /* stub */
 }
 
-__attribute__((weak)) void sShadow::setResourceNumber(u32 num) {
-    DDON_STUB("sShadow::setResourceNumber")
-    /* stub */
+void sShadow::setResourceNumber(u32 num) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
+    if (mResourceNum != ((num <= 16u) ? num : 16u)) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        mResourceGroup[0].releaseResources();
+        mResourceGroup[1].releaseResources();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        mResourceNum = (num <= 16u) ? num : 16u;
+        if (mResourceGroup[0].mResourceNum != ((num <= 16u) ? num : 16u)) {
+            mResourceGroup[0].releaseResources();
+            mResourceGroup[0].mResourceNum = (num <= 16u) ? num : 16u;
+            mResourceGroup[0].acquireResources();
+        }
+        if (mResourceGroup[1].mResourceNum != ((num <= 16u) ? num : 16u)) {
+            mResourceGroup[1].releaseResources();
+            mResourceGroup[1].mResourceNum = (num <= 16u) ? num : 16u;
+            mResourceGroup[1].acquireResources();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        mResourceGroup[0].acquireResources();
+        mResourceGroup[1].acquireResources();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+    }
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
+    }
+    return;
+    abort();
 }
 
 u32 sShadow::getResourceNumber() const {
     return mResourceNum;
 }
 
-__attribute__((weak)) void sShadow::setCacheEnabledViewNumber(u32 num) {
-    DDON_STUB("sShadow::setCacheEnabledViewNumber")
-    /* stub */
+void sShadow::setCacheEnabledViewNumber(u32 num) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
+    u32 v1_7;
+    if (num > 2u) {
+        v1_7 = 2;
+    } else {
+        v1_7 = (num == 0) ? 1u : num;
+    }
+    if (mCacheEnabledViewNumber != v1_7) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        mResourceGroup[0].releaseResources();
+        mResourceGroup[1].releaseResources();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        mCacheEnabledViewNumber = v1_7;
+        if (mResourceGroup[0].mCachedViewNum != ((v1_7 <= 2u) ? v1_7 : 2u)) {
+            mResourceGroup[0].releaseResources();
+            mResourceGroup[0].mCachedViewNum = (v1_7 <= 2u) ? v1_7 : 2u;
+            mResourceGroup[0].acquireResources();
+        }
+        u32 v4_9 = (v1_7 <= 2u) ? v1_7 : 2u;
+        if (mResourceGroup[1].mCachedViewNum != v4_9) {
+            mResourceGroup[1].releaseResources();
+            mResourceGroup[1].mCachedViewNum = v4_9;
+            mResourceGroup[1].acquireResources();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        mResourceGroup[0].acquireResources();
+        mResourceGroup[1].acquireResources();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+    }
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
+    }
+    return;
+    abort();
 }
 
 u32 sShadow::getCacheEnabledViewNumber() const {
@@ -219,9 +332,62 @@ __attribute__((weak)) void sShadow::invalidateAllShadowMapCache() {
     /* stub */
 }
 
-__attribute__((weak)) void sShadow::setShadowMapCacheEnable(bool enable) {
-    DDON_STUB("sShadow::setShadowMapCacheEnable")
-    /* stub */
+void sShadow::setShadowMapCacheEnable(bool enable) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
+    if (mShadowMapCacheEnable != enable) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        mResourceGroup[0].releaseResources();
+        mResourceGroup[1].releaseResources();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        mShadowMapCacheEnable = enable;
+        if (mResourceGroup[0].mShadowMapCacheEnable != enable) {
+            mResourceGroup[0].releaseResources();
+            mResourceGroup[0].mShadowMapCacheEnable = enable;
+            mResourceGroup[0].acquireResources();
+        }
+        if (mResourceGroup[1].mShadowMapCacheEnable != enable) {
+            mResourceGroup[1].releaseResources();
+            mResourceGroup[1].mShadowMapCacheEnable = enable;
+            mResourceGroup[1].acquireResources();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        mResourceGroup[0].acquireResources();
+        mResourceGroup[1].acquireResources();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+    }
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
+    }
+    return;
+    abort();
 }
 
 bool sShadow::isShadowMapCacheEnable() const {
@@ -305,7 +471,7 @@ __attribute__((weak)) void sShadow::setShadowViewDistanceMulValue(f32 NewShadowD
     /* stub */
 }
 
-sShadow::~sShadow() {
+__attribute__((noinline)) sShadow::~sShadow() {
     DDON_STUB("sShadow::~sShadow")
     /* stub */
 }
@@ -530,7 +696,7 @@ inline void sShadow::Node::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sShadow::Node::DTI)->memFree(p_addr);
 }
 
-sShadow::Node::~Node() {
+__attribute__((noinline)) sShadow::Node::~Node() {
     DDON_STUB("sShadow::Node::~Node")
     /* stub */
 }

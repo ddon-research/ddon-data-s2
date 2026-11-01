@@ -40,7 +40,7 @@ inline void uGUIGPShopDialog::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIGPShopDialog::DTI)->memFree(p_addr);
 }
 
-uGUIGPShopDialog::~uGUIGPShopDialog() {
+__attribute__((noinline)) uGUIGPShopDialog::~uGUIGPShopDialog() {
     DDON_STUB("uGUIGPShopDialog::~uGUIGPShopDialog")
     /* stub */
 }

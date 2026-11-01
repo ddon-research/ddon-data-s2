@@ -31,7 +31,7 @@ uSky::uSky(u32 depth_map_width, u32 depth_map_height) {
     /* stub */
 }
 
-uSky::~uSky() {
+__attribute__((noinline)) uSky::~uSky() {
     DDON_STUB("uSky::~uSky")
     /* stub */
 }

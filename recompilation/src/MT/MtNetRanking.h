@@ -8,9 +8,9 @@
 #include "MtNetBuffer.h"
 #include "MtNetObject.h"
 #include "MtNetRequest.h"
-#include "../generated/shared/_rtc.h"
+#include "../generated/rCharacterEditCameraParam/_rtc.h"
 #include "../generated/shared/np_npid.h"
-#include "../generated/shared/np_ranking.h"
+#include "../generated/rCharacterEditCameraParam/np_ranking.h"
 
 // Forward declarations
 class MtAllocator;

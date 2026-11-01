@@ -1186,6 +1186,10 @@ inline uGUINewspaper::_infoMonsterList::_infoMonsterList() {
 inline uGUINewspaper::_infoItemList::_infoItemList() {
 }
 
+inline uGUINewspaper::cCycleContentsNewsInfo::cCycleContentsNewsInfo() {
+    this->mIndex = -1;
+}
+
 inline uGUINewspaper::_AreaInfo::_AreaInfo() {
 }
 

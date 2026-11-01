@@ -24,7 +24,7 @@
 #include "cPcTouchAction.h"
 #include "cUIObject.h"
 #include "nCharacterData.h"
-#include "../../generated/shared/nCharacterEdit.h"
+#include "nCharacterEdit.h"
 #include "../../generated/shared/nDDOModel.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nErosionEnemyBase.h"
@@ -124,6 +124,7 @@ class sGame;
 class sScenario;
 class sTalkManager;
 class uCharacter;
+class uCharacterEdit;
 class uGUI;
 class uGUIActionPalette;
 class uGUIAim;
@@ -230,6 +231,7 @@ class sGUIExt : public sGUI
     friend class sGame;
     friend class sScenario;
     friend class sTalkManager;
+    friend class uCharacterEdit;
     friend class uGUIBase;
     friend class uGUIBrowserBG;
     friend class uGUIChat;
@@ -3350,6 +3352,10 @@ inline f32 sGUIExt::getGainInfoNullOffsetPosY() {
 
 inline bool sGUIExt::isItemDetailVisibleDetail() {
     return this->mIsItemDetailVisibleDefault;
+}
+
+inline bool sGUIExt::isUseWindowActive() {
+    return this->mIsUseWindowActive;
 }
 
 inline const cGUIExtNetMgr::DogmaOrbInfo* sGUIExt::getDogmaOrbInfo() {

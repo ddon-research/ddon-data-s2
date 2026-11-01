@@ -141,6 +141,10 @@ inline void nDDOIO::writeData(MtDataWriter& w, s32 data) {
     w.writeS32(data);
 }
 
+inline void nDDOIO::writeData(MtDataWriter& w, cResPathBase& data) {
+    w.writeU64(data.mId);
+}
+
 inline void nDDOIO::writeData(MtDataWriter& w, u64 data) {
     w.writeU64(data);
 }

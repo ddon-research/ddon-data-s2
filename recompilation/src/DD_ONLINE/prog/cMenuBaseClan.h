@@ -2470,6 +2470,9 @@ public:
 inline cMenuApplyClan::cMenuApplyClan() {
 }
 
+inline cMenuApproveClan::cMenuApproveClan() {
+}
+
 inline cMenuApproveInvitedClan::cMenuApproveInvitedClan() {
 }
 
@@ -2491,7 +2494,19 @@ inline cMenuClanApplyManager::cMenuClanApplyManager() {
 inline cMenuClanApproveDirectInvite::cMenuClanApproveDirectInvite() {
 }
 
+inline cMenuClanAuthority::cMenuClanAuthority() {
+}
+
+inline cMenuClanChangeMaster::cMenuClanChangeMaster() {
+}
+
+inline cMenuClanDirectInvite::cMenuClanDirectInvite() {
+}
+
 inline cMenuClanDirectInvitedList::cMenuClanDirectInvitedList() {
+}
+
+inline cMenuClanExpelMember::cMenuClanExpelMember() {
 }
 
 inline cMenuClanHistory::cMenuClanHistory() {
@@ -2522,6 +2537,9 @@ inline cMenuClanScoutEntry::cMenuClanScoutEntry() {
 }
 
 inline cMenuClanScoutEntryList::cMenuClanScoutEntryList() {
+}
+
+inline cMenuClanSetMemberRank::cMenuClanSetMemberRank() {
 }
 
 inline cMenuEditClanComment::cMenuEditClanComment() {
@@ -2558,6 +2576,9 @@ inline cMenuGetMyClan::cMenuGetMyClan() {
 }
 
 inline cMenuGetMyScoutEntry::cMenuGetMyScoutEntry() {
+}
+
+inline cMenuInviteClan::cMenuInviteClan() {
 }
 
 inline cMenuQuitClan::cMenuQuitClan() {

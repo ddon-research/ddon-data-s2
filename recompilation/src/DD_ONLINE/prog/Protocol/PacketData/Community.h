@@ -207,6 +207,9 @@ public:
     static MyDTI DTI;
 };
 
+inline CDataCharacterName::CDataCharacterName() {
+}
+
 inline CDataJobBaseInfo::CDataJobBaseInfo() {
     this->m_ucJob = 0;
     this->m_ucLv = 0;

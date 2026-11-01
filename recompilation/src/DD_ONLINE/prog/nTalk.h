@@ -214,3 +214,8 @@ inline nTalk::cSelectData::cSelectData() {
     this->mParam0 = 0;
     this->mParam1 = 0;
 }
+
+inline nTalk::cSelectMember::cSelectMember() : mName() {
+    this->mSlot = 0;
+    this->mPawnId = 0;
+}

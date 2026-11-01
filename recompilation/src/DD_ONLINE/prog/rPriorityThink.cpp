@@ -146,8 +146,6 @@ inline void cPrioThkCode::operator delete(void* p_addr) {
 }
 
 cPrioThkCode::~cPrioThkCode() {
-    DDON_STUB("cPrioThkCode::~cPrioThkCode")
-    /* stub */
 }
 
 __attribute__((weak)) u32 cPrioThkCode::check(cPrioThkIO& io, uDDOModel& owner) {

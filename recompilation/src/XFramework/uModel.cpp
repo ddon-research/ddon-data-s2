@@ -36,7 +36,7 @@ uModel::uModel() {
     /* stub */
 }
 
-uModel::~uModel() {
+__attribute__((noinline)) uModel::~uModel() {
     DDON_STUB("uModel::~uModel")
     /* stub */
 }
@@ -513,7 +513,7 @@ void uModel::Joint::setConstraint(uModel::Constraint* pc) {
 }
 
 u32 uModel::Joint::getChildNum() const {
-    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 160)) >> 40);
+    return mChildNum;
 }
 
 __attribute__((weak)) u8 uModel::Joint::getCalcNo() {

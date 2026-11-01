@@ -12,6 +12,7 @@ class MtAllocator;
 class MtDTI;
 class MtPropertyList;
 class sGUI;
+class sRender;
 
 // Declarations
 namespace nDraw { class Resource; }
@@ -28,6 +29,7 @@ namespace nDraw {
     class Resource : public ::MtObject
     {
         friend class ::sGUI;
+        friend class ::sRender;
     public:
         class MyDTI;
     public:

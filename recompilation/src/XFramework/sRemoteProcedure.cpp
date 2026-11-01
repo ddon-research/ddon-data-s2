@@ -30,7 +30,7 @@ sRemoteProcedure::sRemoteProcedure() {
     /* stub */
 }
 
-sRemoteProcedure::~sRemoteProcedure() {
+__attribute__((noinline)) sRemoteProcedure::~sRemoteProcedure() {
     DDON_STUB("sRemoteProcedure::~sRemoteProcedure")
     /* stub */
 }

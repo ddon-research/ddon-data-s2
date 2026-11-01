@@ -11,6 +11,73 @@
 #define DDON_STUB(name)
 #endif
 
+const MtDTI& nNetwork::RpcNetSystem_Entry::getDTI() const {
+    return nNetwork::RpcNetSystem_Entry::DTI;
+}
+
+inline void nNetwork::RpcNetSystem_Entry::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::RpcNetSystem_Entry::DTI)->memFree(p_addr);
+}
+
+void nNetwork::RpcNetSystem_Entry::serialize(MtStream& stream) {
+    nNetwork::Coder cod(stream);
+    cod.::nNetwork::Coder::writeBit32(mEntry, 1u);
+}
+
+void nNetwork::RpcNetSystem_Entry::deserialize(MtStream& stream) {
+    nNetwork::Decoder dec(stream);
+    mEntry = dec.::nNetwork::Decoder::readBit32(1u) == 1;
+}
+
+nNetwork::RpcNetSystem_Entry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nNetwork::RpcNetSystem_Entry::MyDTI nNetwork::RpcNetSystem_Entry::DTI("nNetwork::RpcNetSystem_Entry", &::cRemoteCall::DTI, 16ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nNetwork::RpcNetSystem_Entry::MyDTI::newInstance() const {
+    DDON_STUB("nNetwork::RpcNetSystem_Entry::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nNetwork::RpcNetSystem_LinkState::getDTI() const {
+    return nNetwork::RpcNetSystem_LinkState::DTI;
+}
+
+inline void* nNetwork::RpcNetSystem_LinkState::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::RpcNetSystem_LinkState::DTI)->memAlloc(sz, align, ::nNetwork::RpcNetSystem_LinkState::DTI.mID);
+}
+
+inline void nNetwork::RpcNetSystem_LinkState::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::RpcNetSystem_LinkState::DTI)->memFree(p_addr);
+}
+
+nNetwork::RpcNetSystem_LinkState::~RpcNetSystem_LinkState() {
+    DDON_STUB("nNetwork::RpcNetSystem_LinkState::~RpcNetSystem_LinkState")
+    /* stub */
+}
+
+__attribute__((weak)) void nNetwork::RpcNetSystem_LinkState::serialize(MtStream& stream) {
+    DDON_STUB("nNetwork::RpcNetSystem_LinkState::serialize")
+    /* stub */
+}
+
+__attribute__((weak)) void nNetwork::RpcNetSystem_LinkState::deserialize(MtStream& stream) {
+    DDON_STUB("nNetwork::RpcNetSystem_LinkState::deserialize")
+    /* stub */
+}
+
+__attribute__((weak)) void nNetwork::RpcNetSystem_LinkState::init(const nNetwork::SessionDatabase* pdb, const nNetwork::Transport* pt) {
+    DDON_STUB("nNetwork::RpcNetSystem_LinkState::init")
+    /* stub */
+}
+
+nNetwork::RpcNetSystem_LinkState::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nNetwork::RpcNetSystem_LinkState::MyDTI nNetwork::RpcNetSystem_LinkState::DTI("nNetwork::RpcNetSystem_LinkState", &::cRemoteCall::DTI, 336ul, 0u, 0u);
+
+MtObject* nNetwork::RpcNetSystem_LinkState::MyDTI::newInstance() const {
+    return new (16u) ::nNetwork::RpcNetSystem_LinkState;
+}
+
 const MtDTI& nNetwork::RpcNetSystem_Match::getDTI() const {
     return nNetwork::RpcNetSystem_Match::DTI;
 }

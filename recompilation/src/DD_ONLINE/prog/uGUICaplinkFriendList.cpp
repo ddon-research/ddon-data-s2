@@ -40,7 +40,7 @@ inline void uGUICaplinkFriendList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkFriendList::DTI)->memFree(p_addr);
 }
 
-uGUICaplinkFriendList::~uGUICaplinkFriendList() {
+__attribute__((noinline)) uGUICaplinkFriendList::~uGUICaplinkFriendList() {
     DDON_STUB("uGUICaplinkFriendList::~uGUICaplinkFriendList")
     /* stub */
 }

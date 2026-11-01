@@ -11,6 +11,7 @@
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "cCharParamEnemy.h"
+#include "cChildRegionStatus.h"
 #include "cContextInstance.h"
 #include "cContextInterface.h"
 #include "cEvaluation.h"
@@ -57,6 +58,7 @@
 #include "sEnemyManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sObjCollision.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "../../XFramework/uBaseModel.h"
@@ -82,7 +84,7 @@ uEnemy::uEnemy() {
     /* stub */
 }
 
-uEnemy::~uEnemy() {
+__attribute__((noinline)) uEnemy::~uEnemy() {
     DDON_STUB("uEnemy::~uEnemy")
     /* stub */
 }
@@ -642,8 +644,71 @@ __attribute__((weak)) void uEnemy::callbackExceptiveAirShrink(cHitInfoAfter* pHi
 }
 
 __attribute__((weak)) void uEnemy::applyOcdAdjEm(cHitInfoAfter* pHitInfo) {
-    DDON_STUB("uEnemy::applyOcdAdjEm")
-    /* stub */
+    cAttackParam* t0 = pHitInfo->mCommonInfo.mpAttackParam;
+    if (t0 != nullptr) {
+        cChildRegionStatus* t1 = pHitInfo->mCommonInfo.mpChildRegion;
+        if (t1 != nullptr) {
+            cpOcdCtrl* t2 = getOcdCtrlPtr();
+            if (t2 != nullptr) {
+                if (t2->isUseSleepChangeTime()) {
+                    if (t2->isOcdActive(4099u)) {
+                        if ((mObjStatus & 0x10000000ul) != 0) {
+                            if (!t2->isOcdActive(4122u)) {
+                                if (mpCorePointCtrl != nullptr) {
+                                    if (t0->mAttackID == 8) {
+                                        if (mpCharParamEnemy != nullptr) {
+                                            if (mpCharParamEnemy->getCharParamEnemy() != nullptr) {
+                                                bool t3 = mpCharParamEnemy->getCharParamEnemy()->mIsDispDownGuage;
+                                                f32 t5 = sObjCollision::getInstance()->getSystemParam(sObjCollision::SLEEP_CHANCE_STAMINA_SHAKE);
+                                                if (t3) {
+                                                    pHitInfo->mBlowShrinkDmInfo.mDownDefenceAdj[3] = pHitInfo->mBlowShrinkDmInfo.mDownDefenceAdj[3] + t5;
+                                                } else {
+                                                    pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] = pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] + t5;
+                                                }
+                                            } else {
+                                                f32 t6 = sObjCollision::getInstance()->getSystemParam(sObjCollision::SLEEP_CHANCE_STAMINA_SHAKE);
+                                                pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] = pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] + t6;
+                                            }
+                                        } else {
+                                            f32 t6 = sObjCollision::getInstance()->getSystemParam(sObjCollision::SLEEP_CHANCE_STAMINA_SHAKE);
+                                            pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] = pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] + t6;
+                                        }
+                                    } else {
+                                        if (mpCorePointCtrl->isCorePointActive(t1->mNo, nRegionStatus::CORE_POINT_TYPE_CORE_POINT)) {
+                                            if (mpCharParamEnemy != nullptr) {
+                                                if (mpCharParamEnemy->getCharParamEnemy() != nullptr) {
+                                                    bool t4 = mpCharParamEnemy->getCharParamEnemy()->mIsDispDownGuage;
+                                                    f32 t5 = sObjCollision::getInstance()->getSystemParam(sObjCollision::SLEEP_CHANCE_STAMINA_CORE);
+                                                    if (t4) {
+                                                        pHitInfo->mBlowShrinkDmInfo.mDownDefenceAdj[3] = pHitInfo->mBlowShrinkDmInfo.mDownDefenceAdj[3] + t5;
+                                                    } else {
+                                                        pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] = pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] + t5;
+                                                    }
+                                                } else {
+                                                    f32 t6 = sObjCollision::getInstance()->getSystemParam(sObjCollision::SLEEP_CHANCE_STAMINA_CORE);
+                                                    pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] = pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] + t6;
+                                                }
+                                            } else {
+                                                f32 t6 = sObjCollision::getInstance()->getSystemParam(sObjCollision::SLEEP_CHANCE_STAMINA_CORE);
+                                                pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] = pHitInfo->mBlowShrinkDmInfo.mShakeDefenceAdj[3] + t6;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (t2->isOcdActive(4105u)) {
+                    f32 t7 = t2->getOcdFreeParam(4105u, 0u);
+                    if (t7 > 1.1920929e-7f) {
+                        pHitInfo->mBlowShrinkDmInfo.mShrinkDefenceAdj[3] = pHitInfo->mBlowShrinkDmInfo.mShrinkDefenceAdj[3] + (-1.0f + (1.0f / t7));
+                        pHitInfo->mBlowShrinkDmInfo.mBlowDefenceAdj[3] = pHitInfo->mBlowShrinkDmInfo.mBlowDefenceAdj[3] + (-1.0f + (1.0f / t7));
+                    }
+                }
+            }
+        }
+    }
 }
 
 void uEnemy::callbackChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL level, nErosionEnemyBase::EROSION_LEVEL oldLevel) {

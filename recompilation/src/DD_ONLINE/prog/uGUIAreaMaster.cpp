@@ -53,7 +53,7 @@ __attribute__((weak)) void uGUIAreaMaster::setupMouseCollision(cControl* pCtrl, 
     /* stub */
 }
 
-uGUIAreaMaster::~uGUIAreaMaster() {
+__attribute__((noinline)) uGUIAreaMaster::~uGUIAreaMaster() {
     DDON_STUB("uGUIAreaMaster::~uGUIAreaMaster")
     /* stub */
 }
@@ -323,9 +323,90 @@ __attribute__((weak)) void uGUIAreaMaster::createQuestList() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIAreaMaster::clearInfoVisible() {
-    DDON_STUB("uGUIAreaMaster::clearInfoVisible")
-    /* stub */
+void uGUIAreaMaster::clearInfoVisible() {
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullImg), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullLv), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullCondition), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullItemHeader), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullCaption), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullMonster), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullDeliveryItem), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullRewardHeader), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullReward), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullAP), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullNoItem), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullItem), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullBonus), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[0].mpInstNull), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[0].mpInstAnimSpecial), false);
+    mQuestInfo.mReward[0].mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[1].mpInstNull), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[1].mpInstAnimSpecial), false);
+    mQuestInfo.mReward[1].mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[2].mpInstNull), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[2].mpInstAnimSpecial), false);
+    mQuestInfo.mReward[2].mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[3].mpInstNull), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[3].mpInstAnimSpecial), false);
+    mQuestInfo.mReward[3].mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[4].mpInstNull), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[4].mpInstAnimSpecial), false);
+    mQuestInfo.mReward[4].mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[5].mpInstNull), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[5].mpInstAnimSpecial), false);
+    mQuestInfo.mReward[5].mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[6].mpInstNull), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mReward[6].mpInstAnimSpecial), false);
+    mQuestInfo.mReward[6].mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstAnimRewardBox[0]), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstAnimRewardBox[1]), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstAnimRewardBox[2]), false);
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mpObjMsgSelectReward), "", 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mpObjMsgRandomReward), "", 0u, false);
+    mQuestInfo.mRewardNum = 0;
+    for (unsigned int i0_3 = 0;;) {
+        setInstanceVisible(reinterpret_cast<cGUIInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i0_3) + 26672)), false);
+        setObjectMessage(reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i0_3) + 26688)), "", 0u, false);
+        setObjectMessage(reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i0_3) + 26696)), "", 0u, false);
+        setObjectMessage(reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i0_3) + 26704)), "", 0u, false);
+        if ((i0_3 + 40u) != 1200) {
+            i0_3 = i0_3 + 40u;
+        } else {
+            break;
+        }
+    }
+    mQuestInfo.mMonsterNum = 0;
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mDeliverItem[0].mpInstAnim), false);
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mDeliverItem[0].mpObjMsgName), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mDeliverItem[1].mpInstAnim), false);
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mDeliverItem[1].mpObjMsgName), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mDeliverItem[2].mpInstAnim), false);
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mDeliverItem[2].mpObjMsgName), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mDeliverItem[3].mpInstAnim), false);
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mDeliverItem[3].mpObjMsgName), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mDeliverItem[4].mpInstAnim), false);
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mDeliverItem[4].mpObjMsgName), "", 0u, false);
+    mQuestInfo.mDeliverItemNum = 0;
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mpObjMsgCaption), "", 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mpObjMsgClient), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mBonus[0].mpInstNull), false);
+    mQuestInfo.mBonus[0].mCharge.deleteData();
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mBonus[0].mpObjMsgTitle), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mBonus[1].mpInstNull), false);
+    mQuestInfo.mBonus[1].mCharge.deleteData();
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mBonus[1].mpObjMsgTitle), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mBonus[2].mpInstNull), false);
+    mQuestInfo.mBonus[2].mCharge.deleteData();
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mBonus[2].mpObjMsgTitle), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mBonus[3].mpInstNull), false);
+    mQuestInfo.mBonus[3].mCharge.deleteData();
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mBonus[3].mpObjMsgTitle), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mBonus[4].mpInstNull), false);
+    mQuestInfo.mBonus[4].mCharge.deleteData();
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mBonus[4].mpObjMsgTitle), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mBonus[5].mpInstNull), false);
+    mQuestInfo.mBonus[5].mCharge.deleteData();
+    setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mBonus[5].mpObjMsgTitle), "", 0u, false);
 }
 
 __attribute__((weak)) void uGUIAreaMaster::setupQuestInfo() {

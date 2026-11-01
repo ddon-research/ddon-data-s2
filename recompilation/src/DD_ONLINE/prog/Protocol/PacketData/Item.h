@@ -696,6 +696,13 @@ inline CDataJewelryEquipLimit::CDataJewelryEquipLimit() {
     this->m_ucEquipNumMax = 0;
 }
 
+inline CDataMoveItemUIDFromTo::CDataMoveItemUIDFromTo() {
+    this->m_unNum = 0;
+    this->m_ucSrcStorageType = 0;
+    this->m_ucDstStorageType = 0;
+    this->m_usSlotNo = 0;
+}
+
 inline CDataS2CCharacterEquipInfo::CDataS2CCharacterEquipInfo() {
     this->m_ucEquipCategory = 0;
     this->m_ucEquipType = 0;

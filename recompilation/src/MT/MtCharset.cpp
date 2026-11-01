@@ -6,14 +6,12 @@
 #define DDON_STUB(name)
 #endif
 
-__attribute__((weak)) u32 MtCharset::convertUTF8toSJIS(MT_CTSTR pUtf8Str, s32 nUtf8Len, char* pSjisBuffer, s32 nSjisLen) {
-    DDON_STUB("MtCharset::convertUTF8toSJIS")
-    return {};
+u32 MtCharset::convertUTF8toSJIS(MT_CTSTR pUtf8Str, s32 nUtf8Len, char* pSjisBuffer, s32 nSjisLen) {
+    return MtCharset::fromUTF8toSJIS(reinterpret_cast<const u8*>(pUtf8Str), nUtf8Len, pSjisBuffer, nSjisLen);
 }
 
-__attribute__((weak)) u32 MtCharset::convertSJIStoUTF8(const char* pSjisStr, s32 nSjisLen, MT_STR pUtf8Buffer, s32 nUtf8Len) {
-    DDON_STUB("MtCharset::convertSJIStoUTF8")
-    return {};
+u32 MtCharset::convertSJIStoUTF8(const char* pSjisStr, s32 nSjisLen, MT_STR pUtf8Buffer, s32 nUtf8Len) {
+    return MtCharset::fromSJIStoUTF8(pSjisStr, nSjisLen, reinterpret_cast<u8*>(pUtf8Buffer), nUtf8Len);
 }
 
 __attribute__((weak)) MtCharset::eEncodingType MtCharset::estimateCharEncoding(const void* pStringIn, s32 nLength) {

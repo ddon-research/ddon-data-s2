@@ -293,6 +293,14 @@ void host_resources_init() {
 // `MtMemoryAllocator::getAllocator` among them) find the host allocator.
 extern MtAllocator* ddon_allocator_types[64] __asm__("_ZN8MtMemory15mpAllocatorTypeE");
 
+// `MtString::mpAllocator`, which the bundle leaves undefined (relocated
+// bytes) and every string body reads. The game's startup sets it in
+// `MtMemoryAllocator::setDefaultAppAllocator()` (0x5adb80): at 0x5b0e6d
+// `mov 0x10(MtMemory::mpAllocatorType),%rax; mov %rax,MtString::mpAllocator`,
+// the table's entry 2 (026 plan-P138b). Defined here by symbol (it is
+// private), set from the same entry below.
+MtAllocator* ddon_string_allocator __asm__("_ZN8MtString11mpAllocatorE") = nullptr;
+
 // No body in the bundle (inline-only in the ELF), and the host allocator's
 // base: its members are the engine's bookkeeping, unused by the host heap.
 MtAllocator::MtAllocator() {}
@@ -304,5 +312,6 @@ void ddon_fixtures_init() {
     for (auto& allocator : ddon_allocator_types) {
         allocator = &host;
     }
+    ddon_string_allocator = ddon_allocator_types[2];
     host_resources_init();
 }

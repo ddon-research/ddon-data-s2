@@ -151,3 +151,9 @@ __attribute__((weak)) MtObject* uOmSwingModelInstancing::MyDTI::newInstance() co
     return nullptr;
 }
 
+template void uInstancing<uOmSwingModel, cInstancingFromMatrices>::kill();
+
+template void uInstancing<uOmSwingModel, cInstancingFromMatrices>::move();
+
+template void uInstancing<uOmSwingModel, cInstancingFromMatrices>::setup();
+

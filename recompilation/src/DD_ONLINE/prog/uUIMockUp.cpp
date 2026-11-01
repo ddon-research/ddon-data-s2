@@ -37,7 +37,7 @@ inline void uUIMockUp::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uUIMockUp::DTI)->memFree(p_addr);
 }
 
-uUIMockUp::~uUIMockUp() {
+__attribute__((noinline)) uUIMockUp::~uUIMockUp() {
     DDON_STUB("uUIMockUp::~uUIMockUp")
     /* stub */
 }

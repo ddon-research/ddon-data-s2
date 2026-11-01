@@ -29,7 +29,7 @@ inline void uGUIKeyConfig::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIKeyConfig::DTI)->memFree(p_addr);
 }
 
-uGUIKeyConfig::~uGUIKeyConfig() {
+__attribute__((noinline)) uGUIKeyConfig::~uGUIKeyConfig() {
     DDON_STUB("uGUIKeyConfig::~uGUIKeyConfig")
     /* stub */
 }

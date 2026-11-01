@@ -33,7 +33,7 @@ inline void uGUIPointer::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPointer::DTI)->memFree(p_addr);
 }
 
-uGUIPointer::~uGUIPointer() {
+__attribute__((noinline)) uGUIPointer::~uGUIPointer() {
     DDON_STUB("uGUIPointer::~uGUIPointer")
     /* stub */
 }

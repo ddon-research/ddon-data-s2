@@ -4,6 +4,7 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtStream.h"
 #include "../MT/MtString.h"
@@ -16,6 +17,10 @@
 
 const MtDTI& rGUI::getDTI() const {
     return rGUI::DTI;
+}
+
+inline void* rGUI::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rGUI::DTI)->memAlloc(sz, align, rGUI::DTI.mID);
 }
 
 rGUI::~rGUI() {
@@ -324,8 +329,7 @@ rGUI::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr
 
 rGUI::MyDTI rGUI::DTI("rGUI", &::cResource::DTI, 248ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rGUI::MyDTI::newInstance() const {
-    DDON_STUB("rGUI::MyDTI::newInstance")
-    return nullptr;
+MtObject* rGUI::MyDTI::newInstance() const {
+    return new (16u) rGUI;
 }
 

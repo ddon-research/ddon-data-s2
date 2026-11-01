@@ -8,8 +8,8 @@
 #include "MtNetCom.h"
 #include "MtNetObject.h"
 #include "MtString.h"
-#include "../generated/shared/_rtc.h"
-#include "../generated/shared/json2.h"
+#include "../generated/rCharacterEditCameraParam/_rtc.h"
+#include "../generated/rCharacterEditCameraParam/json2.h"
 #include "../generated/shared/np_npid.h"
 
 // Forward declarations

@@ -31,6 +31,7 @@ class cpChantCommand;
 class cpJob01;
 class cpJob06;
 class cpSlave;
+namespace nFsm { class cCameraCtrl; }
 struct pthread;
 class sApp;
 class sCollision;
@@ -42,6 +43,7 @@ class sNetwork;
 class sNetworkExt;
 class sObjCollision;
 class sOmManager;
+class sPadExt;
 class sVibration;
 class uCameraBase;
 class uControl;
@@ -80,6 +82,9 @@ using s64 = __int64_t;
 using size_t = _Sizet;
 using uintptr = __uintptr_t;
 
+// Functions the classes below befriend, declared first
+namespace nFsm { f32 getDeltaSec(); }
+
 class sMain : public cSystem
 {
     friend class cDDMaterialCtrl;
@@ -91,6 +96,8 @@ class sMain : public cSystem
     friend class cpJob01;
     friend class cpJob06;
     friend class cpSlave;
+    friend class nFsm::cCameraCtrl;
+    friend f32 nFsm::getDeltaSec();
     friend class sApp;
     friend class sCollision;
     friend class sContextManager;
@@ -101,6 +108,7 @@ class sMain : public cSystem
     friend class sNetworkExt;
     friend class sObjCollision;
     friend class sOmManager;
+    friend class sPadExt;
     friend class sVibration;
     friend class uCameraBase;
     friend class uControl;

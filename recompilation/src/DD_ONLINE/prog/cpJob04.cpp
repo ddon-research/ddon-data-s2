@@ -621,7 +621,7 @@ void cpJob04::setGuardBits(u32 isLv2) {
     } else {
         mGuardBitFlgs = mGuardBitFlgs | 7;
     }
-    mGuardBitProtectTimes = static_cast<s32>(static_cast<unsigned int>((static_cast<unsigned long>(isLv2 != 0) * 2) + 3ul));
+    mGuardBitProtectTimes = (isLv2 == 0) ? 3 : 5;
     mNowGuardTimes = mGuardBitProtectTimes;
 }
 

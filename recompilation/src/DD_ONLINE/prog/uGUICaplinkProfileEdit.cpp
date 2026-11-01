@@ -39,7 +39,7 @@ inline void uGUICaplinkProfileEdit::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::DTI)->memFree(p_addr);
 }
 
-uGUICaplinkProfileEdit::~uGUICaplinkProfileEdit() {
+__attribute__((noinline)) uGUICaplinkProfileEdit::~uGUICaplinkProfileEdit() {
     DDON_STUB("uGUICaplinkProfileEdit::~uGUICaplinkProfileEdit")
     /* stub */
 }

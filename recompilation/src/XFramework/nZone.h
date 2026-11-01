@@ -29,6 +29,8 @@ class MtQuaternion;
 class MtSphere;
 class MtTriangle;
 class MtVector3;
+class cSoundGeneratorListener;
+class cSoundTriggerListener;
 class cZoneContents;
 class cZoneLayout;
 namespace nCollisionUtil { struct LoadBuffer; }
@@ -36,6 +38,7 @@ class uSoundTrigger;
 
 // Declarations
 namespace nZone { class ShapeInfoBase; }
+namespace nZone { class ShapeInfoGlobal; }
 namespace nZone { class ShapeInfoOBB; }
 namespace nZone { class ShapeInfoPanel; }
 namespace nZone { class cAllocaterIntermediate; }
@@ -145,6 +148,49 @@ namespace nZone {
     public:
         f32 mDecay;  // offset: 0x8
         bool mIsNativeData;  // offset: 0xc
+        static MyDTI DTI;
+    };
+}  // namespace nZone
+
+namespace nZone {
+    class ShapeInfoGlobal : public nZone::ShapeInfoBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        ShapeInfoGlobal();
+        virtual ~ShapeInfoGlobal();
+        virtual nZone::ShapeInfoBase::SHAPE_TYPE getShapeType() const;  // vtable slot 8
+        virtual bool isHit(const MtVector3& pos) const;  // vtable slot 9
+        virtual bool isHitLineSegment(const MtLineSegment& ls) const;  // vtable slot 10
+        virtual bool isHitConvex(const MtGeomConvex& convex) const;  // vtable slot 11
+        virtual bool isIntersectAABB(const MtAABB& aabb) const;  // vtable slot 12
+        virtual bool getClosest(const MtVector3& pos, MtContact& contact) const;  // vtable slot 13
+        virtual MtVector3 getCenterPos() const;  // vtable slot 20
+        void* memAlloc(size_t);
+        void memFree(void*);
+        size_t memSize(void*);
+    public:
         static MyDTI DTI;
     };
 }  // namespace nZone
@@ -451,6 +497,8 @@ namespace nZone {
 namespace nZone {
     class cLayoutElement : public ::MtObject
     {
+        friend class ::cSoundGeneratorListener;
+        friend class ::cSoundTriggerListener;
         friend nZone::ShapeInfoBase* nSoundZone::getShapeFromZoneLayout(cZoneLayout* pZone, u32 index);
         friend class ::uSoundTrigger;
     public:

@@ -39,7 +39,7 @@ inline void uGUISystemMsg::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUISystemMsg::DTI)->memFree(p_addr);
 }
 
-uGUISystemMsg::~uGUISystemMsg() {
+__attribute__((noinline)) uGUISystemMsg::~uGUISystemMsg() {
     DDON_STUB("uGUISystemMsg::~uGUISystemMsg")
     /* stub */
 }
@@ -346,7 +346,7 @@ inline void uGUISystemMsg::cPageInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUISystemMsg::cPageInfo::DTI)->memFree(p_addr);
 }
 
-uGUISystemMsg::cPageInfo::~cPageInfo() {
+__attribute__((noinline)) uGUISystemMsg::cPageInfo::~cPageInfo() {
     DDON_STUB("uGUISystemMsg::cPageInfo::~cPageInfo")
     /* stub */
 }

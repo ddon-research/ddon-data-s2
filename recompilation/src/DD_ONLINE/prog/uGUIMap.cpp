@@ -47,7 +47,7 @@ inline void uGUIMap::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMap::DTI)->memFree(p_addr);
 }
 
-uGUIMap::~uGUIMap() {
+__attribute__((noinline)) uGUIMap::~uGUIMap() {
     DDON_STUB("uGUIMap::~uGUIMap")
     /* stub */
 }

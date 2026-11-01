@@ -44,7 +44,7 @@ inline void uGUICommunityList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICommunityList::DTI)->memFree(p_addr);
 }
 
-uGUICommunityList::~uGUICommunityList() {
+__attribute__((noinline)) uGUICommunityList::~uGUICommunityList() {
     DDON_STUB("uGUICommunityList::~uGUICommunityList")
     /* stub */
 }
@@ -275,7 +275,7 @@ uGUICommunityList::cTabData::cTabData() {
     /* stub */
 }
 
-uGUICommunityList::cTabData::~cTabData() {
+__attribute__((noinline)) uGUICommunityList::cTabData::~cTabData() {
     DDON_STUB("uGUICommunityList::cTabData::~cTabData")
     /* stub */
 }

@@ -5,6 +5,7 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDataWriter.h"
 #include "../MT/MtEaseCurve.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemory.h"
@@ -98,9 +99,53 @@ bool rEffectList::load(MtStream& in) {
     }
 }
 
-__attribute__((weak)) bool rEffectList::save(MtStream& out) {
-    DDON_STUB("rEffectList::save")
-    return {};
+bool rEffectList::save(MtStream& out) {
+    MtDataWriter w(out, 4096u, 4096u);
+    if (mpParamBuff != nullptr) {
+        u32 t0 = mParamBuffSize;
+        u8* pTempBuff = static_cast<u8*>(MtMemory::mpAllocatorType[7]->memAlloc(t0 + 48u, 16u));
+        if (pTempBuff != nullptr) {
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitJointParamOffset = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitParamOffset = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitGeneratorParamOffset = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitMoveParamOffset = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->EFLHeader3218 = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->EFLHeader321c = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->ListNum = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->JointNum = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitGeneratorType = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitMoveType = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->JointShare = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->EFLHeader0415 = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->EFLHeader1616 = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->ParamBuffSize = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->BaseFps = 0.0f;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->Magic = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->Version = 0;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->Magic = 0x4C4645;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->Version = 0x20120306;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->ParamBuffSize = mParamBuffSize;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->BaseFps = mBaseFps;
+            u32 t1 = mListNum;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->ListNum = t1;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->JointNum = mJointNum;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->JointShare = mJointShare;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitGeneratorType = mUnitGeneratorType;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitMoveType = mUnitMoveType;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitGeneratorParamOffset = mUnitGeneratorParamOffset;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitMoveParamOffset = mUnitMoveParamOffset;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitJointParamOffset = mUnitJointParamOffset;
+            reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitParamOffset = mUnitParamOffset;
+            memcpy(static_cast<void*>(&pTempBuff[48]), static_cast<const void*>(mpParamBuff), mParamBuffSize);
+            u32 writeSize = out.write(static_cast<const void*>(pTempBuff), t0 + 48u);
+            MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
+            return writeSize == (t0 + 48u);
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 void rEffectList::clear() {
@@ -184,8 +229,46 @@ rEffectList::~rEffectList() {
 }
 
 __attribute__((weak)) bool rEffectList::allocMemory(u32 ParamBuffSize) {
-    DDON_STUB("rEffectList::allocMemory")
-    return {};
+        if (ParamBuffSize == 0) {
+            return false;
+        }
+        freeMemory();
+        mResourceInfoNum = mListNum + (mUnitGeneratorType != 0 ? 1 : 0);
+        size_t t0 = mResourceInfoNum;
+        size_t t5 = t0 * sizeof(ResourceInfo) + sizeof(size_t);
+        size_t* t1 = static_cast<size_t*>(MtMemoryAllocator::getAllocator(rEffectList::DTI)->memAlloc(t5, 16));
+        *t1 = t0;
+        ResourceInfo* t2 = reinterpret_cast<ResourceInfo*>(t1 + 1);
+        if (t0 != 0) {
+            ResourceInfo* t4 = t2;
+            do {
+                u64* t3 = reinterpret_cast<u64*>(t4);
+                t3[13] = 0;
+                t3[12] = 0;
+                t3[11] = 0;
+                t3[10] = 0;
+                t3[9] = 0;
+                t3[8] = 0;
+                t3[7] = 0;
+                t3[6] = 0;
+                t3[5] = 0;
+                t3[4] = 0;
+                t3[3] = 0;
+                t3[2] = 0;
+                t3[1] = 0;
+                t3[0] = 0;
+                *reinterpret_cast<f32*>(&t3[14]) = 5.0f;
+                ++t4;
+            } while (t4 != t2 + t0);
+        }
+        mResourceInfo = t2;
+        mpParamBuff = static_cast<u8*>(MtMemoryAllocator::getAllocator(rEffectList::DTI)->memAlloc(ParamBuffSize, 16));
+        if (mpParamBuff == nullptr) {
+            return false;
+        }
+        memset(mpParamBuff, 0, ParamBuffSize);
+        mParamBuffSize = ParamBuffSize;
+        return true;
 }
 
 __attribute__((weak)) void rEffectList::setupResourceInfo() {
@@ -194,8 +277,26 @@ __attribute__((weak)) void rEffectList::setupResourceInfo() {
 }
 
 __attribute__((weak)) void rEffectList::freeMemory() {
-    DDON_STUB("rEffectList::freeMemory")
-    /* stub */
+        if (mResourceInfo != nullptr) {
+            for (u32 ctr = 0; ctr < mResourceInfoNum; ctr++) {
+                mResourceInfo[ctr].releaseResources();
+            }
+            if (mResourceInfo != nullptr) {
+                size_t* t0 = reinterpret_cast<size_t*>(mResourceInfo) - 1;
+                MtMemoryAllocator::getAllocator(rEffectList::DTI)->memFree(t0);
+            }
+            mResourceInfo = nullptr;
+            mResourceInfoNum = 0;
+        }
+        if (mpParamBuff != nullptr) {
+            MtMemoryAllocator::getAllocator(rEffectList::DTI)->memFree(mpParamBuff);
+            mpParamBuff = nullptr;
+        }
+        mParamBuffSize = 0;
+        if (mpSerialEffect != nullptr) {
+            mpSerialEffect->release();
+            mpSerialEffect = nullptr;
+        }
 }
 
 rEffectList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -259,9 +360,36 @@ void rEffectList::ResourceInfo::releaseResources() {
     }
 }
 
-__attribute__((weak)) void rEffectList::ResourceInfo::createGeneratorResources(rEffectList::EFL_GENERATOR* pGeneratorParam) {
-    DDON_STUB("rEffectList::ResourceInfo::createGeneratorResources")
-    /* stub */
+void rEffectList::ResourceInfo::createGeneratorResources(rEffectList::EFL_GENERATOR* pGeneratorParam) {
+    if (pGeneratorParam != nullptr) {
+        if (pGeneratorParam->RangeStripPathOffset != 0) {
+            if ((reinterpret_cast<char*>(pGeneratorParam) + pGeneratorParam->RangeStripPathOffset) != nullptr) {
+                if ((*(reinterpret_cast<char*>(pGeneratorParam) + pGeneratorParam->RangeStripPathOffset)) != 0) {
+                    if ((mpRangeStrip = static_cast<rEffectStrip*>((sResource::mpInstance)->create(rEffectStrip::DTI, &(*(reinterpret_cast<char*>(pGeneratorParam) + pGeneratorParam->RangeStripPathOffset)), 1u))) == nullptr) {
+                        mStatus = mStatus | 32u;
+                    }
+                }
+            }
+        }
+        if (pGeneratorParam->ExtVibrationPathOffset != 0) {
+            if ((reinterpret_cast<char*>(pGeneratorParam) + pGeneratorParam->ExtVibrationPathOffset) != nullptr) {
+                if ((*(reinterpret_cast<char*>(pGeneratorParam) + pGeneratorParam->ExtVibrationPathOffset)) != 0) {
+                    if ((mpExtVibration = static_cast<rVibration*>((sResource::mpInstance)->create(rVibration::DTI, &(*(reinterpret_cast<char*>(pGeneratorParam) + pGeneratorParam->ExtVibrationPathOffset)), 1u))) == nullptr) {
+                        mStatus = mStatus | 512u;
+                    }
+                }
+            }
+        }
+        if (pGeneratorParam->SoundRequestPathOffset != 0) {
+            if ((reinterpret_cast<char*>(pGeneratorParam) + pGeneratorParam->SoundRequestPathOffset) != nullptr) {
+                if ((*(reinterpret_cast<char*>(pGeneratorParam) + pGeneratorParam->SoundRequestPathOffset)) != 0) {
+                    if ((mpSoundRequest = static_cast<rSoundRequest*>((sResource::mpInstance)->create(rSoundRequest::DTI, &(*(reinterpret_cast<char*>(pGeneratorParam) + pGeneratorParam->SoundRequestPathOffset)), 1u))) == nullptr) {
+                        mStatus = mStatus | 1024u;
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void rEffectList::ResourceInfo::createParticleResources(rEffectList::EFL_PARTICLE_COMMON* pParticleParam, u32 ParticleType) {

@@ -25,7 +25,7 @@ sKeyboard::sKeyboard() {
     /* stub */
 }
 
-sKeyboard::~sKeyboard() {
+__attribute__((noinline)) sKeyboard::~sKeyboard() {
     DDON_STUB("sKeyboard::~sKeyboard")
     /* stub */
 }

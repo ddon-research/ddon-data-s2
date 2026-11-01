@@ -54,7 +54,7 @@ sEventManager::sEventManager() {
     /* stub */
 }
 
-sEventManager::~sEventManager() {
+__attribute__((noinline)) sEventManager::~sEventManager() {
     DDON_STUB("sEventManager::~sEventManager")
     /* stub */
 }
@@ -175,11 +175,11 @@ void sEventManager::reqPlay(s32 no) {
                     this->mRno = 1;
                 } else {
                     if (static_cast<unsigned char>(this->mRno) == 0) {
-                        this->mRno = static_cast<unsigned int>(((static_cast<unsigned long>(t0 == 2) * 5) + 1ul) | static_cast<unsigned long>(this->mRno & 0xFFFFFF00u));
+                        this->mRno = static_cast<unsigned int>(static_cast<unsigned long>((t0 == 2) ? 6 : 1) | static_cast<unsigned long>(this->mRno & 0xFFFFFF00u));
                         mReqEventNo = -1;
                         mEventNo = no;
                         mpParam = param;
-                        this->mRno = static_cast<unsigned char>((static_cast<unsigned long>(t0 == 2) * 5) + 1ul);
+                        this->mRno = static_cast<unsigned char>((t0 == 2) ? 6 : 1);
                     } else {
                         this->mRno = static_cast<unsigned char>(this->mRno);
                     }

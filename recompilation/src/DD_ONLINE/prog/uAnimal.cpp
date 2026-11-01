@@ -7,7 +7,6 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cAction.h"
-#include "cArcLoader.h"
 #include "../../XFramework/cUnit.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sMain.h"
@@ -42,7 +41,7 @@ void uAnimal::kill() {
     cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
     if (mArcTicket != t0) {
         sArchiveManager::getInstance()->returnTicket(mArcTicket);
-        mArcTicket = static_cast<TICKET>(t0);
+        mArcTicket = t0;
     }
     this->uDDOModel::kill();
 }

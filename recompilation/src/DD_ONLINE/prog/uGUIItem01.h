@@ -33,6 +33,7 @@ class uGUIItemIcon;
 class uGUIPopCmd01;
 
 // Declarations
+class uGUIItem01;
 class uGUIItemBase01;
 
 // Type aliases from DWARF
@@ -372,6 +373,66 @@ public:
     static const u32 DEFAULT_COL = 5;
     static const u32 MAX_PAGE = 2;
     static const u32 MAX_ITEM_NUM = 40;
+};
+
+class uGUIItem01 : public uGUIItemBase01
+{
+public:
+    enum ITM_GUIDE_BIT
+    {
+        ITM_CHECK = 1,
+        ITM_TRANS = 2,
+        ITM_CHECK_ALL = 4,
+        ITM_CHECK_ALL_CLEAR = 8,
+        ITM_CATCH = 16,
+        ITM_CHG_INF = 32,
+        ITM_SCM = 64,
+        ITM_BIT_MAX = 7,
+    };
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    uGUIItem01(u32 initFlags);
+    virtual ~uGUIItem01();
+    virtual void setup();  // vtable slot 6
+    virtual void move();  // vtable slot 9
+    virtual void adjustScale();  // vtable slot 84
+protected:
+    virtual void loadItem();  // vtable slot 139
+    virtual void setTitle();  // vtable slot 141
+    virtual void updateDetail();  // vtable slot 151
+    virtual void updateExit();  // vtable slot 113
+    virtual void setupGuideBtn();  // vtable slot 169
+    virtual void setGuideBtn();  // vtable slot 170
+    virtual void setWindowMouseOver();  // vtable slot 171
+    virtual bool isExecuteDecide();  // vtable slot 153
+    virtual u32 evCtrlCatch(cControl::Message* msg);  // vtable slot 178
+    virtual u32 evCtrlStart(cControl::Message* msg);  // vtable slot 182
+protected:
+    bool mIsSetDetailPos;  // offset: 0xf94
+    uGUIBase::cReferenceUIBtnGuide::stGuideBtnData mTblGuide[7];  // offset: 0xf98
+public:
+    static MyDTI DTI;
 };
 
 inline bool uGUIItemBase01::isCheckMode() {

@@ -35,9 +35,14 @@ inline void cpItemThrow::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cpItemThrow::DTI)->memFree(p_addr);
 }
 
-cpItemThrow::cpItemThrow() {
-    DDON_STUB("cpItemThrow::cpItemThrow")
-    /* stub */
+cpItemThrow::cpItemThrow() : mBackUpItemTblList() {
+    mIsItemMode = false;
+    mIsRequestThrowAct = false;
+    mpItemModel = nullptr;
+    mpHuman = nullptr;
+    mThrowItemUId = "";
+    mItemReqKeepTime = 0.0f;
+    mThrowItemId = 0;
 }
 
 cpItemThrow::~cpItemThrow() {
@@ -202,8 +207,7 @@ cpItemThrow::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 
 cpItemThrow::MyDTI cpItemThrow::DTI("cpItemThrow", &::cpComponent::DTI, 152ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpItemThrow::MyDTI::newInstance() const {
-    DDON_STUB("cpItemThrow::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpItemThrow::MyDTI::newInstance() const {
+    return new (16u) cpItemThrow;
 }
 

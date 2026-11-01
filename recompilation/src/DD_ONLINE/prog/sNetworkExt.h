@@ -603,6 +603,10 @@ inline cNetGameServer* sNetworkExt::getGameServer() {
     return this->mpGameServer;
 }
 
+inline bool sNetworkExt::isToLauncher() {
+    return this->mIsToLauncher;
+}
+
 inline s32 sNetworkExt::getSlot() {
     return this->mSlotNo;
 }

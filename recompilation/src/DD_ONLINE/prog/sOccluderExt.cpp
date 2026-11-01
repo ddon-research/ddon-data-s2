@@ -123,7 +123,7 @@ inline void sOccluderEx::Area::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sOccluderEx::Area::DTI)->memFree(p_addr);
 }
 
-sOccluderEx::Area::~Area() {
+__attribute__((noinline)) sOccluderEx::Area::~Area() {
     DDON_STUB("sOccluderEx::Area::~Area")
     /* stub */
 }

@@ -32,7 +32,7 @@ nNetwork::nRanking::Object::Object() {
     /* stub */
 }
 
-nNetwork::nRanking::Object::~Object() {
+__attribute__((noinline)) nNetwork::nRanking::Object::~Object() {
     DDON_STUB("nNetwork::nRanking::Object::~Object")
     /* stub */
 }

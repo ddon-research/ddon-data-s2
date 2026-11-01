@@ -31,7 +31,7 @@ inline void uGUITelop::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUITelop::DTI)->memFree(p_addr);
 }
 
-uGUITelop::~uGUITelop() {
+__attribute__((noinline)) uGUITelop::~uGUITelop() {
     DDON_STUB("uGUITelop::~uGUITelop")
     /* stub */
 }

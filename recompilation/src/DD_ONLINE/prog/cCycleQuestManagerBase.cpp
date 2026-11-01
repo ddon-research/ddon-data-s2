@@ -49,12 +49,34 @@ __attribute__((weak)) nQuest::QUEST_ID cCycleQuestManagerBase::getMainTaskQuestI
 }
 
 u32 cCycleQuestManagerBase::getCyclePurposeNum() const {
-    return static_cast<unsigned int>((static_cast<unsigned long>(mCyclePurpose[0] != -1) + static_cast<unsigned long>(mCyclePurpose[1] != -1)) + static_cast<unsigned long>(mCyclePurpose[2] != -1));
+    return static_cast<u32>(((mCyclePurpose[0] != -1) + (mCyclePurpose[1] != -1)) + (mCyclePurpose[2] != -1));
 }
 
-__attribute__((weak)) s32 cCycleQuestManagerBase::getCyclePurposeNo(u32 idx) const {
-    DDON_STUB("cCycleQuestManagerBase::getCyclePurposeNo")
-    return {};
+s32 cCycleQuestManagerBase::getCyclePurposeNo(u32 idx) const {
+    if (idx <= 2u) {
+        u32 i = 0;
+        for (unsigned int i0_2 = 0;;) {
+            if (mCyclePurpose[i] != -1) {
+                if (idx == i0_2) {
+                    return mCyclePurpose[i];
+                } else {
+                    if ((i + 1u) <= 2u) {
+                        i = i + 1u;
+                        i0_2 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                if ((i + 1u) <= 2u) {
+                    i = i + 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return -1;
 }
 
 void cCycleQuestManagerBase::addCyclePurposeNo(u32 purposeNo) {
@@ -492,7 +514,7 @@ __attribute__((weak)) nQuest::QUEST_ID cCycleQuestManagerBase::getQuestId(u32 pe
     __builtin_unreachable();
 }
 
-cCycleQuestManagerBase::~cCycleQuestManagerBase() {
+__attribute__((noinline)) cCycleQuestManagerBase::~cCycleQuestManagerBase() {
     DDON_STUB("cCycleQuestManagerBase::~cCycleQuestManagerBase")
     /* stub */
 }

@@ -180,5 +180,29 @@ __attribute__((weak)) MtObject* cOnceRequestEffectTypeSuperErosionCam::MyDTI::ne
     return nullptr;
 }
 
+const MtDTI& cOnceRequestEffectTypeSuperErosionCamData::getDTI() const {
+    return cOnceRequestEffectTypeSuperErosionCamData::DTI;
+}
+
+inline void cOnceRequestEffectTypeSuperErosionCamData::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cOnceRequestEffectTypeSuperErosionCamData::DTI)->memFree(p_addr);
+}
+
+void cOnceRequestEffectTypeSuperErosionCamData::init() {
+    mpEffect = nullptr;
+    mPriority = 0;
+    mIsDraw = true;
+    mpEnemy = nullptr;
+}
+
+cOnceRequestEffectTypeSuperErosionCamData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cOnceRequestEffectTypeSuperErosionCamData::MyDTI cOnceRequestEffectTypeSuperErosionCamData::DTI("cOnceRequestEffectTypeSuperErosionCamData", &::cOnceRequestEffectTypeData::DTI, 32ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cOnceRequestEffectTypeSuperErosionCamData::MyDTI::newInstance() const {
+    DDON_STUB("cOnceRequestEffectTypeSuperErosionCamData::MyDTI::newInstance")
+    return nullptr;
+}
+
 template MtTypedArray<cOnceRequestEffectTypeData>::~MtTypedArray();
 

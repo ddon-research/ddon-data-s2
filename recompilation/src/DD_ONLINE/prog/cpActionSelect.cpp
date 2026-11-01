@@ -38,7 +38,7 @@ cpActionSelect::cpActionSelect() {
     /* stub */
 }
 
-cpActionSelect::~cpActionSelect() {
+__attribute__((noinline)) cpActionSelect::~cpActionSelect() {
     DDON_STUB("cpActionSelect::~cpActionSelect")
     /* stub */
 }

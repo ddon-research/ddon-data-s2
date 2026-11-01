@@ -126,9 +126,81 @@ void sAreaHit::applyWorldOffset(const MtVector3& offset, const MtVector3& absolu
     }
 }
 
-__attribute__((weak)) cAreaHit* sAreaHit::create(AREAHIT_SHAPE_TYPE_ENUM shape, MtObject* pOwner) {
-    DDON_STUB("sAreaHit::create")
-    return nullptr;
+cAreaHit* sAreaHit::create(AREAHIT_SHAPE_TYPE_ENUM shape, MtObject* pOwner) {
+    cAreaHit* phit = static_cast<cAreaHit*>(cAreaHit::DTI.cAreaHit::MyDTI::newInstance());
+    if (phit != nullptr) {
+        phit->setup(shape, pOwner);
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+            }
+            u16 t1 = mUID;
+            mUID = static_cast<unsigned short>(t1 + 1);
+            phit->mUID = mUID;
+            u32 t2 = mArray.mLength;
+            u32 t3 = mArray.mBufsiz;
+            if (t2 < t3) {
+                mArray.mLength = t2 + 1u;
+                mArray.mpArray[t2] = static_cast<MtObject*>(phit);
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return phit;
+            } else {
+                void* t4 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t3 + 32u) * 8, 16u);
+                memset(t4, 0, static_cast<size_t>(t3 + 32u) * 8);
+                memcpy(t4, static_cast<const void*>(mArray.mpArray), static_cast<size_t>(mArray.mLength) * 8);
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
+                mArray.mpArray = static_cast<MtObject* *>(t4);
+                mArray.mBufsiz = t3 + 32u;
+                u32 t5 = mArray.mLength;
+                mArray.mLength = t5 + 1u;
+                mArray.mpArray[t5] = static_cast<MtObject*>(phit);
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return phit;
+            }
+        } else {
+            u16 t1 = mUID;
+            mUID = static_cast<unsigned short>(t1 + 1);
+            phit->mUID = mUID;
+            u32 t2 = mArray.mLength;
+            u32 t3 = mArray.mBufsiz;
+            if (t2 < t3) {
+                mArray.mLength = t2 + 1u;
+                mArray.mpArray[t2] = static_cast<MtObject*>(phit);
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return phit;
+            } else {
+                void* t4 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t3 + 32u) * 8, 16u);
+                memset(t4, 0, static_cast<size_t>(t3 + 32u) * 8);
+                memcpy(t4, static_cast<const void*>(mArray.mpArray), static_cast<size_t>(mArray.mLength) * 8);
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
+                mArray.mpArray = static_cast<MtObject* *>(t4);
+                mArray.mBufsiz = t3 + 32u;
+                u32 t5 = mArray.mLength;
+                mArray.mLength = t5 + 1u;
+                mArray.mpArray[t5] = static_cast<MtObject*>(phit);
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return phit;
+            }
+        }
+    } else {
+        return phit;
+    }
 }
 
 void sAreaHit::release(cAreaHit* p) {

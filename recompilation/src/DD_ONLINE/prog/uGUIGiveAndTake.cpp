@@ -40,7 +40,7 @@ inline void uGUIGiveAndTake::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIGiveAndTake::DTI)->memFree(p_addr);
 }
 
-uGUIGiveAndTake::~uGUIGiveAndTake() {
+__attribute__((noinline)) uGUIGiveAndTake::~uGUIGiveAndTake() {
     DDON_STUB("uGUIGiveAndTake::~uGUIGiveAndTake")
     /* stub */
 }

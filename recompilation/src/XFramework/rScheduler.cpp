@@ -67,7 +67,7 @@ __attribute__((weak)) bool rScheduler::load(MtStream& in) {
     return {};
 }
 
-rScheduler::~rScheduler() {
+__attribute__((noinline)) rScheduler::~rScheduler() {
     DDON_STUB("rScheduler::~rScheduler")
     /* stub */
 }

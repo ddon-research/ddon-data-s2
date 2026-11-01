@@ -568,6 +568,10 @@ inline MtAllocator* CDataClanUserParam::getAllocator() {
     return MtMemoryAllocator::getAllocator(CDataClanUserParam::DTI);
 }
 
+inline void* CDataClanUserParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataClanUserParam::DTI)->memAlloc(sz, align, CDataClanUserParam::DTI.getID());
+}
+
 __attribute__((weak)) void CDataClanUserParam::operator delete(void* p_addr) {
     CDataClanUserParam::getAllocator()->memFree(p_addr);
 }
@@ -576,9 +580,8 @@ CDataClanUserParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 CDataClanUserParam::MyDTI CDataClanUserParam::DTI("CDataClanUserParam", &::CPacketDataBase::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataClanUserParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataClanUserParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataClanUserParam::MyDTI::newInstance() const {
+    return new (16u) CDataClanUserParam;
 }
 
 const MtDTI& CDataClanValueInfo::getDTI() const {

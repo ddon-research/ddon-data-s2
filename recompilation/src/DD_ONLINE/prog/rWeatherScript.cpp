@@ -45,6 +45,10 @@ const MtDTI& cWeatherScriptCmd::getDTI() const {
     return cWeatherScriptCmd::DTI;
 }
 
+inline void* cWeatherScriptCmd::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cWeatherScriptCmd::DTI)->memAlloc(sz, align, cWeatherScriptCmd::DTI.getID());
+}
+
 inline void cWeatherScriptCmd::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cWeatherScriptCmd::DTI)->memFree(p_addr);
 }
@@ -91,9 +95,8 @@ cWeatherScriptCmd::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 cWeatherScriptCmd::MyDTI cWeatherScriptCmd::DTI("cWeatherScriptCmd", &::cWeatherObjectRes::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cWeatherScriptCmd::MyDTI::newInstance() const {
-    DDON_STUB("cWeatherScriptCmd::MyDTI::newInstance")
-    return nullptr;
+MtObject* cWeatherScriptCmd::MyDTI::newInstance() const {
+    return new (16u) cWeatherScriptCmd;
 }
 
 const MtDTI& cWeatherScriptCmds::getDTI() const {

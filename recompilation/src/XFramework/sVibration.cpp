@@ -26,7 +26,7 @@ sVibration::sVibration() {
     /* stub */
 }
 
-sVibration::~sVibration() {
+__attribute__((noinline)) sVibration::~sVibration() {
     DDON_STUB("sVibration::~sVibration")
     /* stub */
 }

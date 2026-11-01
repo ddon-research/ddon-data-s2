@@ -15,6 +15,7 @@ class MtDTI;
 class MtNetContext;
 class MtNetCore;
 class MtNetMediator;
+class MtNetRequestController;
 class MtPropertyList;
 
 // Declarations
@@ -264,6 +265,7 @@ class MtNetObject : public MtObject
     friend class MtNetContext;
     friend class MtNetCore;
     friend class MtNetMediator;
+    friend class MtNetRequestController;
 public:
     class MyDTI;
     class ScopedLock;

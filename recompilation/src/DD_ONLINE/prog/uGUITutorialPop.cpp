@@ -5,7 +5,6 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtString.h"
-#include "cArcLoader.h"
 #include "cControl.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/rGUI.h"
@@ -35,7 +34,7 @@ inline void uGUITutorialPop::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUITutorialPop::DTI)->memFree(p_addr);
 }
 
-uGUITutorialPop::~uGUITutorialPop() {
+__attribute__((noinline)) uGUITutorialPop::~uGUITutorialPop() {
     DDON_STUB("uGUITutorialPop::~uGUITutorialPop")
     /* stub */
 }
@@ -63,7 +62,7 @@ void uGUITutorialPop::kill() {
         cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
         if (mImgArcTicket != t1) {
             sArchiveManager::getInstance()->returnTicket(mImgArcTicket);
-            mImgArcTicket = static_cast<TICKET>(t1);
+            mImgArcTicket = t1;
         }
         if (mpTexImg != nullptr) {
             mpTexImg->release();
@@ -81,7 +80,7 @@ void uGUITutorialPop::kill() {
         cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
         if (mImgArcTicket != t1) {
             sArchiveManager::getInstance()->returnTicket(mImgArcTicket);
-            mImgArcTicket = static_cast<TICKET>(t1);
+            mImgArcTicket = t1;
         }
         if (mpTexImg != nullptr) {
             mpTexImg->release();

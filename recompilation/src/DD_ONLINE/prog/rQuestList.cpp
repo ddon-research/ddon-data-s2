@@ -26,7 +26,7 @@ inline void cQuestGroup::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cQuestGroup::DTI)->memFree(p_addr);
 }
 
-cQuestGroup::~cQuestGroup() {
+__attribute__((noinline)) cQuestGroup::~cQuestGroup() {
     DDON_STUB("cQuestGroup::~cQuestGroup")
     /* stub */
 }

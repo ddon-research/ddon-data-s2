@@ -106,9 +106,14 @@ __attribute__((weak)) bool nNetwork::Connect::tryFinal() {
     return {};
 }
 
-__attribute__((weak)) void nNetwork::Connect::sendMessage(s32 index, cRemoteCall& call) {
-    DDON_STUB("nNetwork::Connect::sendMessage")
-    /* stub */
+void nNetwork::Connect::sendMessage(s32 index, cRemoteCall& call) {
+    u8 buffer[1024];
+    MtMemoryStream stream(static_cast<void*>(buffer), 1024u, 2u);
+    ::cRemoteCall::writeOut(stream, call);
+    nNetwork::Session* t2 = mpSession;
+    u8* t3 = stream.mBuffer;
+    u32 t4 = stream.::MtMemoryStream::getPosition();
+    t2->put(static_cast<const void*>(t3), static_cast<s32>(t4), index, 0x30030u, 2u);
 }
 
 void nNetwork::Connect::recvMessage(s32 index, const void* data_ptr, u32 data_size) {

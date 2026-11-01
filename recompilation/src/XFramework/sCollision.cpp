@@ -50,7 +50,7 @@ sCollision::sCollision(bool FlgSetDefaultMaterialEnum, sCollision::cSystemInitia
     /* stub */
 }
 
-sCollision::~sCollision() {
+__attribute__((noinline)) sCollision::~sCollision() {
     DDON_STUB("sCollision::~sCollision")
     /* stub */
 }
@@ -1459,7 +1459,7 @@ sCollision::cSbcArrayBP::cSbcArrayBP() {
     /* stub */
 }
 
-sCollision::cSbcArrayBP::~cSbcArrayBP() {
+__attribute__((noinline)) sCollision::cSbcArrayBP::~cSbcArrayBP() {
     DDON_STUB("sCollision::cSbcArrayBP::~cSbcArrayBP")
     /* stub */
 }
@@ -1920,7 +1920,7 @@ sCollision::SbcObject::SbcObject() {
     /* stub */
 }
 
-sCollision::SbcObject::~SbcObject() {
+__attribute__((noinline)) sCollision::SbcObject::~SbcObject() {
     DDON_STUB("sCollision::SbcObject::~SbcObject")
     /* stub */
 }
@@ -2022,7 +2022,7 @@ sCollision::cSbcSkinMesh::cSbcSkinMesh() {
     /* stub */
 }
 
-sCollision::cSbcSkinMesh::~cSbcSkinMesh() {
+__attribute__((noinline)) sCollision::cSbcSkinMesh::~cSbcSkinMesh() {
     DDON_STUB("sCollision::cSbcSkinMesh::~cSbcSkinMesh")
     /* stub */
 }
@@ -2715,7 +2715,7 @@ sCollision::NodeList::NodeList() {
     /* stub */
 }
 
-sCollision::NodeList::~NodeList() {
+__attribute__((noinline)) sCollision::NodeList::~NodeList() {
     DDON_STUB("sCollision::NodeList::~NodeList")
     /* stub */
 }

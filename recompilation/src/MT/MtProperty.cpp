@@ -38,7 +38,7 @@ MtProperty::TYPE MtProperty::getType(MT_CTSTR name) {
             }
         }
     }
-    return static_cast<TYPE>(static_cast<unsigned int>(static_cast<unsigned long>(strcmp(name, "custom") == 0) * 128));
+    return static_cast<TYPE>((strcmp(name, "custom") == 0) * 128);
 }
 
 __attribute__((weak)) u32 MtProperty::getBytes() const {
@@ -63,8 +63,8 @@ void MtProperty::setCount(u32 count) {
     if ((mAttr & 128u) != 0) {
         (mpOwner->*mpSetCount)();
     } else {
-        if (static_cast<unsigned int>(static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 8)) - 24) <= 50) {
-            if (((0x4000000000011ul >> static_cast<unsigned long>(static_cast<unsigned int>(static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 8)) - 24) & 63)) & 1ul) == 0) {
+        if ((mType - 24u) <= 50u) {
+            if (((0x4000000000011ul >> static_cast<unsigned long>((mType - 24u) & 63u)) & 1ul) == 0) {
                 if (this->mCount >= count) {
                     this->mCount = count;
                 }

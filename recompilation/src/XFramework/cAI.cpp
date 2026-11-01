@@ -41,7 +41,7 @@ cAIGraph::cAIGraph() {
     mpLink = nullptr;
 }
 
-cAIGraph::~cAIGraph() {
+__attribute__((noinline)) cAIGraph::~cAIGraph() {
     DDON_STUB("cAIGraph::~cAIGraph")
     /* stub */
 }
@@ -250,7 +250,7 @@ cAIQuadTree::cAIQuadTree() {
     /* stub */
 }
 
-cAIQuadTree::~cAIQuadTree() {
+__attribute__((noinline)) cAIQuadTree::~cAIQuadTree() {
     DDON_STUB("cAIQuadTree::~cAIQuadTree")
     /* stub */
 }

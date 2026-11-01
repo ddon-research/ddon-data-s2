@@ -111,19 +111,197 @@ __attribute__((weak)) void cGUIMessageAnalyzer::addTagLineAlignment(nGUI::MTAG::
     /* stub */
 }
 
-__attribute__((weak)) nGUI::MTAG* cGUIMessageAnalyzer::getPage(nGUI::MTAG* pMTag, u32 pageIndex) {
-    DDON_STUB("cGUIMessageAnalyzer::getPage")
+nGUI::MTAG* cGUIMessageAnalyzer::getPage(nGUI::MTAG* pMTag, u32 pageIndex) {
+    if (pMTag != nullptr) {
+        unsigned int i0_0 = 0;
+        for (nGUI::MTAG* v0_2 = pMTag;;) {
+            if (v0_2->type == 11) {
+                if (pageIndex == i0_0) {
+                    return v0_2;
+                } else {
+                    if (v0_2->pNext != nullptr) {
+                        i0_0 += 1u;
+                        v0_2 = v0_2->pNext;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                if (v0_2->pNext != nullptr) {
+                    v0_2 = v0_2->pNext;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
     return nullptr;
 }
 
-__attribute__((weak)) nGUI::MTAG* cGUIMessageAnalyzer::getCharMTAG(nGUI::MTAG* pMTag, u32 index, bool countIcon) {
-    DDON_STUB("cGUIMessageAnalyzer::getCharMTAG")
+nGUI::MTAG* cGUIMessageAnalyzer::getCharMTAG(nGUI::MTAG* pMTag, u32 index, bool countIcon) {
+    if (countIcon) {
+        nGUI::MTAG* v0_1 = pMTag;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1 != nullptr) {
+                if ((v0_1->type - 4u) <= 1u) {
+                    if (index == i0_2) {
+                        return v0_1;
+                    } else {
+                        v0_1 = v0_1->pNext;
+                        i0_2 += 1u;
+                    }
+                } else {
+                    if (v0_1->type == 11) {
+                        if (pMTag != v0_1) {
+                            v0_1 = nullptr;
+                        } else {
+                            v0_1 = v0_1->pNext;
+                        }
+                    } else {
+                        v0_1 = v0_1->pNext;
+                    }
+                }
+            } else {
+                break;
+            }
+        }
+    } else {
+        nGUI::MTAG* v2_0 = pMTag;
+        for (unsigned int i2_2 = 0;;) {
+            if (v2_0 != nullptr) {
+                if (v2_0->type != 11) {
+                    if (v2_0->type == 4) {
+                        if (index == i2_2) {
+                            return v2_0;
+                        } else {
+                            v2_0 = v2_0->pNext;
+                            i2_2 += 1u;
+                        }
+                    } else {
+                        v2_0 = v2_0->pNext;
+                    }
+                } else {
+                    if (pMTag != v2_0) {
+                        v2_0 = nullptr;
+                    } else {
+                        v2_0 = v2_0->pNext;
+                    }
+                }
+            } else {
+                break;
+            }
+        }
+    }
     return nullptr;
 }
 
-__attribute__((weak)) u32 cGUIMessageAnalyzer::getLineCharCount(nGUI::MTAG* pMTag, u32 lineIndex, u32 pageIndex, bool countIcon) {
-    DDON_STUB("cGUIMessageAnalyzer::getLineCharCount")
-    return {};
+u32 cGUIMessageAnalyzer::getLineCharCount(nGUI::MTAG* pMTag, u32 lineIndex, u32 pageIndex, bool countIcon) {
+    unsigned int v10_0;
+    if (pMTag == nullptr) {
+        v10_0 = 0;
+    } else {
+        nGUI::MTAG* v0_0 = pMTag;
+        unsigned int i0_1 = 0;
+        unsigned int i4_0;
+        nGUI::MTAG* v4_1;
+        unsigned int i4_3;
+        unsigned int v6_0;
+        unsigned int v6_2;
+        unsigned int v8_0;
+        for (;;) {
+            if (v0_0->type != 11) {
+                v8_0 = i0_1;
+            } else {
+                if (pageIndex != i0_1) {
+                    v8_0 = i0_1 + 1u;
+                } else {
+                    if (v0_0 == nullptr) {
+                        v10_0 = 0;
+                    } else {
+                        nGUI::MTAG* v3_0 = v0_0->pNext;
+                        if (v3_0 == nullptr) {
+                            v10_0 = 0;
+                        } else {
+                            i4_0 = 0;
+                            v4_1 = v3_0;
+                            i4_3 = 0;
+                            for (;;) {
+                                if (i4_3 == (lineIndex + 1u)) {
+                                    if (v4_1->type <= 20u) {
+                                        if (v4_1->type != 4) {
+                                            if (v4_1->type == 5) {
+                                                if (i4_3 != (lineIndex + 1u)) {
+                                                    v6_0 = i4_0;
+                                                } else {
+                                                    if (!countIcon) {
+                                                        v6_0 = i4_0;
+                                                    } else {
+                                                        v6_0 = i4_0 + 1u;
+                                                    }
+                                                }
+                                                v6_2 = i4_3;
+                                            } else {
+                                                if (v4_1->type != 11) {
+                                                    v6_0 = i4_0;
+                                                    v6_2 = i4_3;
+                                                } else {
+                                                    v10_0 = i4_0;
+                                                    goto loop_107c210_end;
+                                                }
+                                            }
+                                        } else {
+                                            v6_0 = i4_0 + 1u;
+                                            v6_2 = i4_3;
+                                        }
+                                    } else {
+                                        if (v4_1->type == 21) {
+                                            v10_0 = i4_0;
+                                            goto loop_107c210_end;
+                                        } else {
+                                            v6_0 = i4_0;
+                                            v6_2 = i4_3;
+                                        }
+                                    }
+                                } else {
+                                    if (v4_1->type == 21) {
+                                        v6_0 = i4_0;
+                                        v6_2 = i4_3 + 1u;
+                                    } else {
+                                        if (v4_1->type != 11) {
+                                            v6_0 = i4_0;
+                                            v6_2 = i4_3;
+                                        } else {
+                                            v10_0 = i4_0;
+                                            goto loop_107c210_end;
+                                        }
+                                    }
+                                }
+                                if (v4_1->pNext != nullptr) {
+                                    i4_0 = v6_0;
+                                    v4_1 = v4_1->pNext;
+                                    i4_3 = v6_2;
+                                } else {
+                                    break;
+                                }
+                            }
+                            v10_0 = v6_0;
+                        }
+                        break;
+                    }
+                    break;
+                }
+            }
+            if (v0_0->pNext != nullptr) {
+                v0_0 = v0_0->pNext;
+                i0_1 = v8_0;
+            } else {
+                v10_0 = 0;
+                break;
+            }
+        }
+        loop_107c210_end:;
+    }
+    return v10_0;
 }
 
 __attribute__((weak)) MtFloat2 cGUIMessageAnalyzer::getCharPos(nGUI::MTAG* pMTag, u32 charIndex, u32 lineIndex, u32 pageIndex, bool countIcon) {

@@ -33,7 +33,7 @@ rSoundSubMixer::rSoundSubMixer() {
     /* stub */
 }
 
-rSoundSubMixer::~rSoundSubMixer() {
+__attribute__((noinline)) rSoundSubMixer::~rSoundSubMixer() {
     DDON_STUB("rSoundSubMixer::~rSoundSubMixer")
     /* stub */
 }

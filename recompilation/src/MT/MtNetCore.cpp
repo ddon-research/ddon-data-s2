@@ -26,7 +26,7 @@ MtNetCore::MtNetCore(void* param) {
     /* stub */
 }
 
-MtNetCore::~MtNetCore() {
+__attribute__((noinline)) MtNetCore::~MtNetCore() {
     DDON_STUB("MtNetCore::~MtNetCore")
     /* stub */
 }

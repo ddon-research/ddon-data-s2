@@ -95,3 +95,12 @@ public:
     MtString m_wstrCharLastName;  // offset: 0x20
     static MyDTI DTI;
 };
+
+inline CDataDLCLineupBought::CDataDLCLineupBought() {
+    this->m_unDLCLineupId = 0;
+    this->m_unNum = 0;
+}
+
+inline CDataDLCLineupHistory::CDataDLCLineupHistory() {
+    this->m_llUsedDate = 0;
+}

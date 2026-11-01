@@ -7,7 +7,6 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtString.h"
 #include "aStage.h"
-#include "cArcLoader.h"
 #include "../../XFramework/cArea.h"
 #include "cNetGameServer.h"
 #include "../../XFramework/cResource.h"
@@ -55,7 +54,7 @@ sNpcManager::sNpcManager() {
     /* stub */
 }
 
-sNpcManager::~sNpcManager() {
+__attribute__((noinline)) sNpcManager::~sNpcManager() {
     DDON_STUB("sNpcManager::~sNpcManager")
     /* stub */
 }
@@ -670,7 +669,7 @@ void sNpcManager::releaseExMotArc() {
         return;
     }
     sArchiveManager::getInstance()->returnTicket(mExMotTicket);
-    mExMotTicket = static_cast<TICKET>(t0);
+    mExMotTicket = t0;
 }
 
 cNpcMeetingPlace* sNpcManager::getMeetingPlace(u32 NpcId) {
@@ -975,7 +974,7 @@ void sNpcManager::releaseCoFullMotionArc() {
         return;
     }
     sArchiveManager::getInstance()->returnTicket(mFullTicket);
-    mFullTicket = static_cast<TICKET>(t0);
+    mFullTicket = t0;
 }
 
 bool sNpcManager::isFinishLoadCoMotionArc() {
@@ -1048,10 +1047,10 @@ void sNpcManager::loadFsmMotionArc() {
     cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
     if (t0 != t1) {
         sArchiveManager::getInstance()->returnTicket(t0);
-        mLiteTicket = static_cast<TICKET>(t1);
+        mLiteTicket = t1;
         if (mLiteTicket != mFullTicket) {
             sArchiveManager::getInstance()->returnTicket(mFullTicket);
-            mFullTicket = static_cast<TICKET>(t1);
+            mFullTicket = t1;
             TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
             mFsmTicket = t2;
             sArchiveManager* t3 = sArchiveManager::getInstance();
@@ -1092,18 +1091,18 @@ void sNpcManager::releaseCoMotionArc() {
     cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
     if (t0 != t1) {
         sArchiveManager::getInstance()->returnTicket(t0);
-        mLiteTicket = static_cast<TICKET>(t1);
+        mLiteTicket = t1;
         if (mLiteTicket != mFullTicket) {
             sArchiveManager::getInstance()->returnTicket(mFullTicket);
-            mFullTicket = static_cast<TICKET>(t1);
+            mFullTicket = t1;
             if (mFullTicket != mFsmTicket) {
                 sArchiveManager::getInstance()->returnTicket(mFsmTicket);
-                mFsmTicket = static_cast<TICKET>(t1);
+                mFsmTicket = t1;
             }
         } else {
             if (mLiteTicket != mFsmTicket) {
                 sArchiveManager::getInstance()->returnTicket(mFsmTicket);
-                mFsmTicket = static_cast<TICKET>(t1);
+                mFsmTicket = t1;
             }
         }
     } else {

@@ -4,6 +4,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "nDDOUtility.h"
 #include "nHumanMsg.h"
@@ -31,9 +32,11 @@ inline void uGUIHudCustomSkillPallet::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIHudCustomSkillPallet::DTI)->memFree(p_addr);
 }
 
-uGUIHudCustomSkillPallet::uGUIHudCustomSkillPallet() {
-    DDON_STUB("uGUIHudCustomSkillPallet::uGUIHudCustomSkillPallet")
-    /* stub */
+uGUIHudCustomSkillPallet::uGUIHudCustomSkillPallet() : mINST_msg_skillsets() {
+    mCustomSkillGroup = nHuman::CUSTOM_SKILL_GROUP_NONE;
+    mCustomSkillGroupSwitchRequest = nHuman::CUSTOM_SKILL_GROUP_NONE;
+    mEndType = 0;
+    mDefaultPriority = 0;
 }
 
 uGUIHudCustomSkillPallet::~uGUIHudCustomSkillPallet() {
@@ -144,8 +147,7 @@ uGUIHudCustomSkillPallet::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t si
 
 uGUIHudCustomSkillPallet::MyDTI uGUIHudCustomSkillPallet::DTI("uGUIHudCustomSkillPallet", &::uGUIBaseExtHud::DTI, 2352ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIHudCustomSkillPallet::MyDTI::newInstance() const {
-    DDON_STUB("uGUIHudCustomSkillPallet::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIHudCustomSkillPallet::MyDTI::newInstance() const {
+    return new (16u) uGUIHudCustomSkillPallet;
 }
 

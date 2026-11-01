@@ -72,7 +72,7 @@ sBakingJointOrder::sBakingJointOrder() {
     /* stub */
 }
 
-sBakingJointOrder::~sBakingJointOrder() {
+__attribute__((noinline)) sBakingJointOrder::~sBakingJointOrder() {
     DDON_STUB("sBakingJointOrder::~sBakingJointOrder")
     /* stub */
 }

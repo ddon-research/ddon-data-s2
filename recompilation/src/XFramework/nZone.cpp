@@ -166,6 +166,64 @@ __attribute__((weak)) MtObject* nZone::ShapeInfoBase::MyDTI::newInstance() const
     return nullptr;
 }
 
+const MtDTI& nZone::ShapeInfoGlobal::getDTI() const {
+    return nZone::ShapeInfoGlobal::DTI;
+}
+
+nZone::ShapeInfoGlobal::~ShapeInfoGlobal() {
+    DDON_STUB("nZone::ShapeInfoGlobal::~ShapeInfoGlobal")
+    /* stub */
+}
+
+nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoGlobal::getShapeType() const {
+    return SHAPE_TYPE_GLOBAL;
+}
+
+bool nZone::ShapeInfoGlobal::isHit(const MtVector3& pos) const {
+    return true;
+}
+
+bool nZone::ShapeInfoGlobal::isHitLineSegment(const MtLineSegment& ls) const {
+    return true;
+}
+
+bool nZone::ShapeInfoGlobal::isHitConvex(const MtGeomConvex& convex) const {
+    return true;
+}
+
+bool nZone::ShapeInfoGlobal::isIntersectAABB(const MtAABB& aabb) const {
+    return true;
+}
+
+bool nZone::ShapeInfoGlobal::getClosest(const MtVector3& pos, MtContact& contact) const {
+    contact.pos.x = pos.x;
+    contact.pos.y = pos.y;
+    contact.pos.z = pos.z;
+    contact.pos.pad_ = 0.0f;
+    contact.normal.x = ::MtVector3::Zero.x;
+    contact.normal.y = ::MtVector3::Zero.y;
+    contact.normal.z = ::MtVector3::Zero.z;
+    contact.normal.pad_ = 0.0f;
+    contact.distance = 0.0f;
+    contact.toi = 0.0f;
+    contact.bFind = true;
+    return true;
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoGlobal::getCenterPos() const {
+    DDON_STUB("nZone::ShapeInfoGlobal::getCenterPos")
+    __builtin_unreachable();
+}
+
+nZone::ShapeInfoGlobal::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nZone::ShapeInfoGlobal::MyDTI nZone::ShapeInfoGlobal::DTI("nZone::ShapeInfoGlobal", &::nZone::ShapeInfoBase::DTI, 16ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nZone::ShapeInfoGlobal::MyDTI::newInstance() const {
+    DDON_STUB("nZone::ShapeInfoGlobal::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& nZone::ShapeInfoOBB::getDTI() const {
     return nZone::ShapeInfoOBB::DTI;
 }

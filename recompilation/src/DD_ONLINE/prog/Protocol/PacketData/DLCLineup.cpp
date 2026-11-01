@@ -4,6 +4,7 @@
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
 #include "../../../../MT/MtMemoryAllocator.h"
+#include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -30,9 +31,8 @@ CDataDLCLineupBought::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 CDataDLCLineupBought::MyDTI CDataDLCLineupBought::DTI("CDataDLCLineupBought", &::CPacketDataBase::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataDLCLineupBought::MyDTI::newInstance() const {
-    DDON_STUB("CDataDLCLineupBought::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataDLCLineupBought::MyDTI::newInstance() const {
+    return new (16u) CDataDLCLineupBought;
 }
 
 const MtDTI& CDataDLCLineupHistory::getDTI() const {
@@ -55,8 +55,7 @@ CDataDLCLineupHistory::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 CDataDLCLineupHistory::MyDTI CDataDLCLineupHistory::DTI("CDataDLCLineupHistory", &::CPacketDataBase::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataDLCLineupHistory::MyDTI::newInstance() const {
-    DDON_STUB("CDataDLCLineupHistory::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataDLCLineupHistory::MyDTI::newInstance() const {
+    return new (16u) CDataDLCLineupHistory;
 }
 

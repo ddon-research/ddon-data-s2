@@ -6,16 +6,25 @@
 // Dependencies
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtObject.h"
+#include "nQuest.h"
 
 // Forward declarations
 class MtAllocator;
 class MtDTI;
+class MtObject;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
 namespace nQuest { class SCHEDULE_ID; }
 
 // Declarations
+class cQuestSvReqCycleContentsPlayEnd;
+class cQuestSvReqGetPartyQuestProgressInfo;
+class cQuestSvReqQuestCancel;
+class cQuestSvReqQuestCompleteFlagClear;
+class cQuestSvReqQuestOrder;
+class cQuestSvReqQuestProgress;
+class cQuestSvReqStartQuestTime;
 class cQuestSvRequest;
 
 // Type aliases from DWARF
@@ -96,3 +105,257 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+class cQuestSvReqCycleContentsPlayEnd : public cQuestSvRequest
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual u32 getComId() const;  // vtable slot 6
+    virtual bool serverRequest() const;  // vtable slot 8
+public:
+    static MyDTI DTI;
+};
+
+class cQuestSvReqGetPartyQuestProgressInfo : public cQuestSvRequest
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual u32 getComId() const;  // vtable slot 6
+    virtual bool serverRequest() const;  // vtable slot 8
+public:
+    static MyDTI DTI;
+};
+
+class cQuestSvReqQuestCancel : public cQuestSvRequest
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual u32 getComId() const;  // vtable slot 6
+    virtual bool serverRequest() const;  // vtable slot 8
+    nQuest::SCHEDULE_ID getScheduleId() const;
+    cQuestSvReqQuestCancel& setScheduleId(nQuest::SCHEDULE_ID scheduleId);
+    virtual bool isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const;  // vtable slot 7
+    virtual void resetParam();  // vtable slot 9
+    cQuestSvReqQuestCancel();
+protected:
+    nQuest::SCHEDULE_ID mScheduleId;  // offset: 0x28
+public:
+    static MyDTI DTI;
+};
+
+class cQuestSvReqQuestCompleteFlagClear : public cQuestSvRequest
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual u32 getComId() const;  // vtable slot 6
+    virtual bool serverRequest() const;  // vtable slot 8
+    nQuest::SCHEDULE_ID getScheduleId() const;
+    cQuestSvReqQuestCompleteFlagClear& setScheduleId(nQuest::SCHEDULE_ID scheduleId);
+    virtual bool isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const;  // vtable slot 7
+protected:
+    nQuest::SCHEDULE_ID mScheduleId;  // offset: 0x28
+public:
+    static MyDTI DTI;
+};
+
+class cQuestSvReqQuestOrder : public cQuestSvRequest
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual u32 getComId() const;  // vtable slot 6
+    virtual bool serverRequest() const;  // vtable slot 8
+    nQuest::SCHEDULE_ID getScheduleId() const;
+    cQuestSvReqQuestOrder& setScheduleId(nQuest::SCHEDULE_ID scheduleId);
+    virtual bool isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const;  // vtable slot 7
+    cQuestSvReqQuestOrder();
+protected:
+    nQuest::SCHEDULE_ID mScheduleId;  // offset: 0x28
+public:
+    static MyDTI DTI;
+};
+
+class cQuestSvReqQuestProgress : public cQuestSvRequest
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual u32 getComId() const;  // vtable slot 6
+    virtual bool serverRequest() const;  // vtable slot 8
+    nQuest::SCHEDULE_ID getScheduleId() const;
+    cQuestSvReqQuestProgress& setScheduleId(nQuest::SCHEDULE_ID scheduleId);
+    virtual bool isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const;  // vtable slot 7
+    u32 getProcessNo() const;
+    cQuestSvReqQuestProgress& setProcessNo(u32 x);
+    u32 getCharacterId() const;
+    cQuestSvReqQuestProgress& setCharacterId(u32 x);
+    virtual void resetParam();  // vtable slot 9
+    cQuestSvReqQuestProgress();
+protected:
+    nQuest::SCHEDULE_ID mScheduleId;  // offset: 0x28
+    u32 mProcessNo;  // offset: 0x38
+    u32 mCharacterId;  // offset: 0x3c
+public:
+    static MyDTI DTI;
+};
+
+class cQuestSvReqStartQuestTime : public cQuestSvRequest
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual u32 getComId() const;  // vtable slot 6
+    virtual bool serverRequest() const;  // vtable slot 8
+public:
+    static MyDTI DTI;
+};
+
+inline cQuestSvRequest::cQuestSvRequest() {
+    this->mRno0 = 0;
+    this->mpCallbackFunc = static_cast<cQuestSvRequest::PCallbackFunc>(0);
+    this->mpFromClass = nullptr;
+}

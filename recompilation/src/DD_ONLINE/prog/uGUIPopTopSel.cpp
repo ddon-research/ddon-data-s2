@@ -49,7 +49,7 @@ u32 uGUIPopTopSel::GetClanMode() {
     }
 }
 
-uGUIPopTopSel::~uGUIPopTopSel() {
+__attribute__((noinline)) uGUIPopTopSel::~uGUIPopTopSel() {
     DDON_STUB("uGUIPopTopSel::~uGUIPopTopSel")
     /* stub */
 }

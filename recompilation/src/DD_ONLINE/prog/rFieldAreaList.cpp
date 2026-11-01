@@ -28,9 +28,59 @@ __attribute__((weak)) u32 rFieldAreaList::getDispFieldAreaNum(u32 landId, u32 ar
     return {};
 }
 
-__attribute__((weak)) u32 rFieldAreaList::getDispFieldAreaId(u32 landId, u32 areaId, u32 idx) const {
-    DDON_STUB("rFieldAreaList::getDispFieldAreaId")
-    return {};
+u32 rFieldAreaList::getDispFieldAreaId(u32 landId, u32 areaId, u32 idx) const {
+    u32 v0_1 = mArrayNum;
+    if (v0_1 != 0) {
+        cFieldAreaInfo* v0_2 = mpArray;
+        cFieldAreaInfo* p0_0 = v0_2;
+        u32 i = 0;
+        for (unsigned int i0_4 = 0;;) {
+            if (p0_0->mLandId == landId) {
+                if (p0_0->mAreaId != 0) {
+                    if (p0_0->mAreaId == areaId) {
+                        if (idx == i0_4) {
+                            return v0_2[i].mFieldAreaId;
+                        } else {
+                            if ((i + 1u) < v0_1) {
+                                p0_0 += 1;
+                                i = i + 1u;
+                                i0_4 += 1u;
+                            } else {
+                                break;
+                            }
+                        }
+                    } else {
+                        if ((i + 1u) < v0_1) {
+                            p0_0 += 1;
+                            i = i + 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    if (idx == i0_4) {
+                        return v0_2[i].mFieldAreaId;
+                    } else {
+                        if ((i + 1u) < v0_1) {
+                            p0_0 += 1;
+                            i = i + 1u;
+                            i0_4 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            } else {
+                if ((i + 1u) < v0_1) {
+                    p0_0 += 1;
+                    i = i + 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfo(u32 fieldAreaId) const {
@@ -105,9 +155,65 @@ const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfoFromStageN
     return v4_0;
 }
 
-__attribute__((weak)) const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfoFromLandArea(u32 landId, u32 areaId, u32 idx) const {
-    DDON_STUB("rFieldAreaList::getFieldAreaInfoFromLandArea")
-    return nullptr;
+const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfoFromLandArea(u32 landId, u32 areaId, u32 idx) const {
+    u32 v0_1 = mArrayNum;
+    cFieldAreaInfo* v2_0;
+    if (v0_1 == 0) {
+        v2_0 = nullptr;
+    } else {
+        cFieldAreaInfo* v0_3 = mpArray;
+        cFieldAreaInfo* p0_0 = v0_3;
+        unsigned int i0_2 = 0;
+        for (u32 i = 0;;) {
+            if (p0_0->mLandId == landId) {
+                if (p0_0->mAreaId != 0) {
+                    if (p0_0->mAreaId == areaId) {
+                        if (idx != i0_2) {
+                            if ((i + 1u) < v0_1) {
+                                p0_0 += 1;
+                                i0_2 += 1u;
+                                i = i + 1u;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            v2_0 = &v0_3[i];
+                            return v2_0;
+                        }
+                    } else {
+                        if ((i + 1u) < v0_1) {
+                            p0_0 += 1;
+                            i = i + 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    if (idx != i0_2) {
+                        if ((i + 1u) < v0_1) {
+                            p0_0 += 1;
+                            i0_2 += 1u;
+                            i = i + 1u;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        v2_0 = &v0_3[i];
+                        return v2_0;
+                    }
+                }
+            } else {
+                if ((i + 1u) < v0_1) {
+                    p0_0 += 1;
+                    i = i + 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        v2_0 = nullptr;
+    }
+    return v2_0;
 }
 
 u32 rFieldAreaList::getFieldAreaIdFromBelongStage(s32 stageNo) const {
@@ -267,7 +373,7 @@ u32 rFieldAreaList::cFieldAreaInfo::getGMDIndex() const {
     return mGmdIdx;
 }
 
-rFieldAreaList::cFieldAreaInfo::~cFieldAreaInfo() {
+__attribute__((noinline)) rFieldAreaList::cFieldAreaInfo::~cFieldAreaInfo() {
     DDON_STUB("rFieldAreaList::cFieldAreaInfo::~cFieldAreaInfo")
     /* stub */
 }

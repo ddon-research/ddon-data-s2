@@ -39,8 +39,11 @@ class rGUI;
 class rGUIFont;
 class rGUIIconInfo;
 class rItemList;
+class uCharacterEdit;
 class uGUI;
+class uGUICharacterEditPopCard;
 class uGUIGameMenu;
+class uGUIJobSelect;
 class uGUIMap;
 class uGUIRetry;
 
@@ -66,7 +69,10 @@ class sGUI : public cSystem
     friend class cGUIObjPolygon;
     friend class cGUIObjTexture;
     friend class rItemList;
+    friend class uCharacterEdit;
+    friend class uGUICharacterEditPopCard;
     friend class uGUIGameMenu;
+    friend class uGUIJobSelect;
     friend class uGUIMap;
     friend class uGUIRetry;
 public:

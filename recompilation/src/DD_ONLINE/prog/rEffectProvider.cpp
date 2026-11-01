@@ -194,7 +194,7 @@ inline void rEffectProvider::EffectElement::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rEffectProvider::EffectElement::DTI)->memFree(p_addr);
 }
 
-rEffectProvider::EffectElement::~EffectElement() {
+__attribute__((noinline)) rEffectProvider::EffectElement::~EffectElement() {
     DDON_STUB("rEffectProvider::EffectElement::~EffectElement")
     /* stub */
 }

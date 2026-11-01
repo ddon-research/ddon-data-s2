@@ -22,7 +22,6 @@ inline cQuakeParam::cQuakeParam() {
     mTailTime = 0.0f;
     mHeadTime = 0.0f;
     mMainTime = 0.0f;
-    mName.value = nullptr;
     mMagnitude.x = MtVector3::Zero.x;
     mMagnitude.y = MtVector3::Zero.y;
     mMagnitude.z = MtVector3::Zero.z;

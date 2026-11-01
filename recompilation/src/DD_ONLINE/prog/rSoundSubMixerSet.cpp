@@ -97,7 +97,7 @@ inline void rSoundSubMixerSet::BasicSubMixers::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundSubMixerSet::BasicSubMixers::DTI)->memFree(p_addr);
 }
 
-rSoundSubMixerSet::BasicSubMixers::~BasicSubMixers() {
+__attribute__((noinline)) rSoundSubMixerSet::BasicSubMixers::~BasicSubMixers() {
     DDON_STUB("rSoundSubMixerSet::BasicSubMixers::~BasicSubMixers")
     /* stub */
 }

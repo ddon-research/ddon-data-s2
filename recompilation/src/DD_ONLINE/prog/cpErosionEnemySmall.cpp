@@ -6,7 +6,6 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextInterface.h"
-#include "cEmRandomCtrl.h"
 #include "cHitNode.h"
 #include "../../XFramework/cResource.h"
 #include "cpErosionEnemyBase.h"
@@ -20,8 +19,6 @@
 #include "sSoundExt.h"
 #include "sWorkRate.h"
 #include "uCharacter.h"
-#include "uControl.h"
-#include "uControlEnemy.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
@@ -144,58 +141,9 @@ void cpErosionEnemySmall::updateEfcHandle() {
     this->cpErosionEnemyBase::updateEfcHandle();
 }
 
-void cpErosionEnemySmall::setupBeforeContext(bool initSet) {
-    this->cpErosionEnemyBase::setupBeforeContext(initSet);
-    uControlEnemy* pEmCtrl = static_cast<uControlEnemy*>(mpEnemy->getCtrl());
-    if (pEmCtrl != nullptr) {
-        if (pEmCtrl->::uControl::mCtrlType == 32) {
-            u32 initErosionLevel = pEmCtrl->uControlEnemy::getErosionMode();
-            mErosionSmallMode = static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>((initErosionLevel <= 1u) ? initErosionLevel : 1u);
-            if (mpErosionSmallInfoRes != nullptr) {
-                if (mpErosionSmallInfoRes->getDataNum() != 0) {
-                    const cErosionSmallInfoRes* pData = mpErosionSmallInfoRes->getData(0u);
-                    if (pData != nullptr) {
-                        if (mErosionSmallMode == nErosionEnemySmall::EROSION_SMALL_MODE_SOURCE) {
-                            mErosionScaleRate = pData->cErosionSmallInfoRes::getScaleActiveRate();
-                        } else {
-                            cEmRandomCtrl randomCtrl;
-                            mErosionScaleRate = randomCtrl.cEmRandomCtrl::makeRandomErosionScale(pData->cErosionSmallInfoRes::getScaleInActiveMax(), pData->cErosionSmallInfoRes::getScaleInActiveMin(), mpEnemy);
-                        }
-                    }
-                }
-            }
-        } else {
-            mErosionSmallMode = nErosionEnemySmall::EROSION_SMALL_MODE_NORMAL;
-            if (mpErosionSmallInfoRes != nullptr) {
-                if (mpErosionSmallInfoRes->getDataNum() != 0) {
-                    const cErosionSmallInfoRes* pData = mpErosionSmallInfoRes->getData(0u);
-                    if (pData != nullptr) {
-                        if (mErosionSmallMode == nErosionEnemySmall::EROSION_SMALL_MODE_SOURCE) {
-                            mErosionScaleRate = pData->cErosionSmallInfoRes::getScaleActiveRate();
-                        } else {
-                            cEmRandomCtrl randomCtrl;
-                            mErosionScaleRate = randomCtrl.cEmRandomCtrl::makeRandomErosionScale(pData->cErosionSmallInfoRes::getScaleInActiveMax(), pData->cErosionSmallInfoRes::getScaleInActiveMin(), mpEnemy);
-                        }
-                    }
-                }
-            }
-        }
-    } else {
-        mErosionSmallMode = nErosionEnemySmall::EROSION_SMALL_MODE_NORMAL;
-        if (mpErosionSmallInfoRes != nullptr) {
-            if (mpErosionSmallInfoRes->getDataNum() != 0) {
-                const cErosionSmallInfoRes* pData = mpErosionSmallInfoRes->getData(0u);
-                if (pData != nullptr) {
-                    if (mErosionSmallMode == nErosionEnemySmall::EROSION_SMALL_MODE_SOURCE) {
-                        mErosionScaleRate = pData->cErosionSmallInfoRes::getScaleActiveRate();
-                    } else {
-                        cEmRandomCtrl randomCtrl;
-                        mErosionScaleRate = randomCtrl.cEmRandomCtrl::makeRandomErosionScale(pData->cErosionSmallInfoRes::getScaleInActiveMax(), pData->cErosionSmallInfoRes::getScaleInActiveMin(), mpEnemy);
-                    }
-                }
-            }
-        }
-    }
+__attribute__((weak)) void cpErosionEnemySmall::setupBeforeContext(bool initSet) {
+    DDON_STUB("cpErosionEnemySmall::setupBeforeContext")
+    /* stub */
 }
 
 __attribute__((weak)) void cpErosionEnemySmall::setupContextErosion(bool recvFlag, bool initSet) {

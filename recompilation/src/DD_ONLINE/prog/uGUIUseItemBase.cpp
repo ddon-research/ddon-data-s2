@@ -37,7 +37,7 @@ inline void uGUIUseItemBase::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIUseItemBase::DTI)->memFree(p_addr);
 }
 
-uGUIUseItemBase::~uGUIUseItemBase() {
+__attribute__((noinline)) uGUIUseItemBase::~uGUIUseItemBase() {
     DDON_STUB("uGUIUseItemBase::~uGUIUseItemBase")
     /* stub */
 }

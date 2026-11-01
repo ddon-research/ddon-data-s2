@@ -215,10 +215,13 @@ class MtObject;
 class MtString;
 class cGatherItemList;
 class cMenuCharacterList;
+class cMenuClanList;
 class cMenuEntryBoardItemList;
 class cNetGameServer;
 class sCraftManager;
 class sQuestManagerExt;
+class uGUIClanScout;
+class uGUIClanSearch;
 
 // Declarations
 namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES; }
@@ -3690,6 +3693,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES : public ::CPacketDataBase
     {
+        friend class ::uGUIClanScout;
     public:
         class MyDTI;
     public:
@@ -3734,6 +3738,8 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_CLAN_SEARCH_RES : public ::CPacketDataBase
     {
+        friend class ::cMenuClanList;
+        friend class ::uGUIClanSearch;
     public:
         class MyDTI;
     public:
@@ -23609,6 +23615,14 @@ inline nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::CPacket_S2C_GP_COURS
     this->m_unResult = 0;
     this->m_unVersion = 0;
     this->m_bIsReceived = false;
+}
+
+inline nUserSession::CPacket_S2C_GP_COURSE_START_NTC::CPacket_S2C_GP_COURSE_START_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+    this->m_unCourseID = 0;
+    this->m_ullFinishDateTime = 0;
+    this->m_unannounceType = 0;
 }
 
 inline nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::CPacket_S2C_GP_COURSE_START_PARTY_NTC() {

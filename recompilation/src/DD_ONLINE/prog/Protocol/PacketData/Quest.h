@@ -3228,6 +3228,9 @@ inline CDataRewardAbility::CDataRewardAbility() {
 inline CDataRewardBoxItem::CDataRewardBoxItem() {
     this->m_unItemId = 0;
     this->m_usNum = 0;
+    this->m_bIsHelp = false;
+    this->m_ucType = 0;
+    this->m_bIsCharge = false;
 }
 
 inline CDataRewardBoxRecord::CDataRewardBoxRecord() {

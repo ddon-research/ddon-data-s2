@@ -65,7 +65,7 @@ sSetManager::sSetManager() {
     /* stub */
 }
 
-sSetManager::~sSetManager() {
+__attribute__((noinline)) sSetManager::~sSetManager() {
     DDON_STUB("sSetManager::~sSetManager")
     /* stub */
 }

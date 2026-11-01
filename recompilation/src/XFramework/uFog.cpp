@@ -26,7 +26,7 @@ uFog::uFog() {
     /* stub */
 }
 
-uFog::~uFog() {
+__attribute__((noinline)) uFog::~uFog() {
     DDON_STUB("uFog::~uFog")
     /* stub */
 }

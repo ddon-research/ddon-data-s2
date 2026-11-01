@@ -821,14 +821,6 @@ inline void cpJob10::cSpiritManager::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::DTI)->memFree(p_addr);
 }
 
-inline void cpJob10::cSpiritManager::attack(f32 addval) {
-    mpStateNow->attack(addval);
-}
-
-inline void cpJob10::cSpiritManager::dodge() {
-    mpStateNow->dodge();
-}
-
 __attribute__((weak)) void cpJob10::cSpiritManager::addSpirit(f32 addval, f32 rate) {
     DDON_STUB("cpJob10::cSpiritManager::addSpirit")
     /* stub */

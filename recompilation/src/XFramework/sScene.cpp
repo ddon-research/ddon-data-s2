@@ -32,7 +32,7 @@ sScene::sScene(u32 max_pool) {
     /* stub */
 }
 
-sScene::~sScene() {
+__attribute__((noinline)) sScene::~sScene() {
     DDON_STUB("sScene::~sScene")
     /* stub */
 }

@@ -137,3 +137,7 @@ inline f32 rTexture::getInvWidth() const {
 inline f32 rTexture::getInvHeight() const {
     return this->mOrgInvHeight;
 }
+
+inline nDraw::Texture* rTexture::getHandle() const {
+    return this->mpTexture;
+}

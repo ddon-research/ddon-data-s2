@@ -28,7 +28,7 @@ cRemoteProcedure::cRemoteProcedure() {
     /* stub */
 }
 
-cRemoteProcedure::~cRemoteProcedure() {
+__attribute__((noinline)) cRemoteProcedure::~cRemoteProcedure() {
     DDON_STUB("cRemoteProcedure::~cRemoteProcedure")
     /* stub */
 }

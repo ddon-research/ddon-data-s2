@@ -191,5 +191,12 @@ inline MtColor::MtColor() {
 inline MtColorF::MtColorF() {
 }
 
+inline MtColorF::MtColorF(f32 _r, f32 _g, f32 _b) {
+    this->r = _r;
+    this->g = _g;
+    this->b = _b;
+    this->a = 1.0f;
+}
+
 inline MtColorHLS::MtColorHLS() {
 }

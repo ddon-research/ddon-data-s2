@@ -34,7 +34,7 @@ inline void uGUICaplinkTag::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkTag::DTI)->memFree(p_addr);
 }
 
-uGUICaplinkTag::~uGUICaplinkTag() {
+__attribute__((noinline)) uGUICaplinkTag::~uGUICaplinkTag() {
     DDON_STUB("uGUICaplinkTag::~uGUICaplinkTag")
     /* stub */
 }

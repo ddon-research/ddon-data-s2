@@ -18,6 +18,10 @@ const MtDTI& uCorePointSearch::getDTI() const {
     return uCorePointSearch::DTI;
 }
 
+inline void* uCorePointSearch::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uCorePointSearch::DTI)->memAlloc(sz, align, uCorePointSearch::DTI.getID());
+}
+
 inline void uCorePointSearch::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uCorePointSearch::DTI)->memFree(p_addr);
 }
@@ -101,9 +105,8 @@ uCorePointSearch::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 uCorePointSearch::MyDTI uCorePointSearch::DTI("uCorePointSearch", &::uDDOModel::DTI, 9392ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uCorePointSearch::MyDTI::newInstance() const {
-    DDON_STUB("uCorePointSearch::MyDTI::newInstance")
-    return nullptr;
+MtObject* uCorePointSearch::MyDTI::newInstance() const {
+    return new (16u) uCorePointSearch;
 }
 
 const MtDTI& uCorePointSearch::cCoreSearchInfo::getDTI() const {

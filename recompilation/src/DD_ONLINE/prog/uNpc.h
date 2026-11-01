@@ -157,3 +157,16 @@ public:
 inline void uNpc::setPartnerPawn() {
     this->mIsPartnerPawn = true;
 }
+
+inline uNpc::uNpc() {
+    this->mIsCreateLightComponent = false;
+    this->::uDDOModel::mUnitId = this->::uDDOModel::mUnitId | 128u;
+    this->mpPawnThink = nullptr;
+    this->mAge = 0;
+    this->::uHuman::mSex = 0;
+    this->mIsClassNameDispOld = false;
+    this->mIsPartnerPawn = false;
+    this->mNpcTblIndex = 0;
+    this->mShopId = 0;
+    this->mpFsmCtrl = nullptr;
+}

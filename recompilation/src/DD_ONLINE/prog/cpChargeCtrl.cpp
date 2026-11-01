@@ -28,9 +28,34 @@ inline void cpChargeCtrl::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cpChargeCtrl::DTI)->memFree(p_addr);
 }
 
-cpChargeCtrl::cpChargeCtrl() {
-    DDON_STUB("cpChargeCtrl::cpChargeCtrl")
-    /* stub */
+cpChargeCtrl::cpChargeCtrl() : mJustTimeMax() {
+    mIsCharging = false;
+    mNowChargeLevel = 0;
+    mCharge_Gi[4] = 0.0f;
+    mCharge_Gi[2] = 0.0f;
+    mCharge_Gi[3] = 0.0f;
+    mCharge_Gi[0] = 0.0f;
+    mCharge_Gi[1] = 0.0f;
+    mChargeSpeed_Gi[3] = 0.0f;
+    mChargeSpeed_Gi[4] = 0.0f;
+    mChargeSpeed_Gi[1] = 0.0f;
+    mChargeSpeed_Gi[2] = 0.0f;
+    mChargeMax_Gi[4] = 0.0f;
+    mChargeSpeed_Gi[0] = 0.0f;
+    mChargeMax_Gi[2] = 0.0f;
+    mChargeMax_Gi[3] = 0.0f;
+    mChargeMax_Gi[0] = 0.0f;
+    mChargeMax_Gi[1] = 0.0f;
+    mMaxChargeLevel = 1;
+    mChargeType = 0;
+    mMgcShortChargeHosei = 1.0f;
+    mPysShortChargeHosei = 1.0f;
+    mIsEnableGage = true;
+    mIsPoseCharge = false;
+    mpModel = nullptr;
+    mIsGoingNextLevel = false;
+    mIsJust = false;
+    mJustCheck = 7.0f;
 }
 
 cpChargeCtrl::~cpChargeCtrl() {
@@ -116,8 +141,7 @@ cpChargeCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, 
 
 cpChargeCtrl::MyDTI cpChargeCtrl::DTI("cpChargeCtrl", &::cpComponent::DTI, 200ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpChargeCtrl::MyDTI::newInstance() const {
-    DDON_STUB("cpChargeCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpChargeCtrl::MyDTI::newInstance() const {
+    return new (16u) cpChargeCtrl;
 }
 

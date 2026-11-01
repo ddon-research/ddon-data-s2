@@ -32,9 +32,8 @@ CDataLoadingInfoSchedule::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t si
 
 CDataLoadingInfoSchedule::MyDTI CDataLoadingInfoSchedule::DTI("CDataLoadingInfoSchedule", &::CPacketDataBase::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataLoadingInfoSchedule::MyDTI::newInstance() const {
-    DDON_STUB("CDataLoadingInfoSchedule::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataLoadingInfoSchedule::MyDTI::newInstance() const {
+    return new (16u) CDataLoadingInfoSchedule;
 }
 
 const MtDTI& CDataLoadingInfoSchedules::getDTI() const {

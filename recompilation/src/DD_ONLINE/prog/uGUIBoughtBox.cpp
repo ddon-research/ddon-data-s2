@@ -36,10 +36,12 @@ inline void uGUIBoughtBox::operator delete(void* p_addr) {
 }
 
 uGUIBoughtBox::~uGUIBoughtBox() {
-    if (!mIsBoughtBoxListOk) {
+    bool t0 = mIsBoughtBoxListOk;
+    if (!t0) {
         return;
     }
-    sItemManager::cItemBag* pBag = sItemManager::getInstance()->setLinkItem(nCharacterData::ITEM_BAG_TYPE_POST);
+    sItemManager* t1 = sItemManager::getInstance();
+    sItemManager::cItemBag* pBag = t1->setLinkItem(nCharacterData::ITEM_BAG_TYPE_POST);
     if (pBag == nullptr) {
         return;
     }

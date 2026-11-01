@@ -7,6 +7,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../XFramework/cUnit.h"
+#include "../../XFramework/cZoneContents.h"
 #include "../../XFramework/cZoneExtendObject.h"
 #include "../../XFramework/cZoneLayout.h"
 #include "../../XFramework/cZoneListener.h"
@@ -30,6 +31,7 @@ class uModel;
 // Declarations
 class cSoundLayoutInfo;
 class cSoundZoneListener;
+namespace nSoundZoneBase { class cSoundZoneContents; }
 class uSoundZoneBase;
 
 // Type aliases from DWARF
@@ -44,6 +46,7 @@ using u8 = unsigned char;
 
 class cSoundLayoutInfo : public cZoneExtendObject
 {
+    friend class uSoundZoneBase;
 public:
     enum ZONE_HIT
     {
@@ -133,6 +136,39 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+namespace nSoundZoneBase {
+    class cSoundZoneContents : public ::cZoneContents
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cSoundZoneContents();
+        virtual ~cSoundZoneContents();
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundZoneBase
 
 class uSoundZoneBase : public cUnit
 {

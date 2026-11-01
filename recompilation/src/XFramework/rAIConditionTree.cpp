@@ -20,6 +20,10 @@ const MtDTI& cAIDEnum::getDTI() const {
     return cAIDEnum::DTI;
 }
 
+inline void* cAIDEnum::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIDEnum::DTI)->memAlloc(sz, align, cAIDEnum::DTI.mID);
+}
+
 cAIDEnum::~cAIDEnum() {
     DDON_STUB("cAIDEnum::~cAIDEnum")
     /* stub */
@@ -34,9 +38,8 @@ cAIDEnum::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 
 
 cAIDEnum::MyDTI cAIDEnum::DTI("cAIDEnum", &::cAIObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIDEnum::MyDTI::newInstance() const {
-    DDON_STUB("cAIDEnum::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIDEnum::MyDTI::newInstance() const {
+    return new (16u) cAIDEnum;
 }
 
 const MtDTI& rAIConditionTree::getDTI() const {
@@ -415,7 +418,7 @@ inline void rAIConditionTree::VariableNode::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rAIConditionTree::VariableNode::DTI)->memFree(p_addr);
 }
 
-rAIConditionTree::VariableNode::~VariableNode() {
+__attribute__((noinline)) rAIConditionTree::VariableNode::~VariableNode() {
     DDON_STUB("rAIConditionTree::VariableNode::~VariableNode")
     /* stub */
 }

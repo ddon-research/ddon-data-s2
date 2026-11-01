@@ -56,7 +56,7 @@ bool rEffectAnim::load(MtStream& in) {
                                     mParamBuffSize = t0;
                                     unsigned int t2 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(reinterpret_cast<EAN_HEADER*>(pTempBuff)) + 12);
                                     mSeqNum = t2;
-                                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 116) = static_cast<unsigned int>((static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(reinterpret_cast<EAN_HEADER*>(pTempBuff)) + 12)) > 0xFFFFFFu) * 0x1000000) | static_cast<unsigned long>(t2 & 0xFFFFFFu));
+                                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 116) = static_cast<unsigned int>(static_cast<unsigned long>(((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(reinterpret_cast<EAN_HEADER*>(pTempBuff)) + 12)) > 0xFFFFFFu) * 16777216) | static_cast<unsigned long>(t2 & 0xFFFFFFu));
                                     memcpy(reinterpret_cast<void*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 120)), static_cast<const void*>(&pTempBuff[16]), t0);
                                     MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                                     return true;
@@ -72,7 +72,7 @@ bool rEffectAnim::load(MtStream& in) {
                                     mParamBuffSize = t0;
                                     unsigned int t2 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(reinterpret_cast<EAN_HEADER*>(pTempBuff)) + 12);
                                     mSeqNum = t2;
-                                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 116) = static_cast<unsigned int>((static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(reinterpret_cast<EAN_HEADER*>(pTempBuff)) + 12)) > 0xFFFFFFu) * 0x1000000) | static_cast<unsigned long>(t2 & 0xFFFFFFu));
+                                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 116) = static_cast<unsigned int>(static_cast<unsigned long>(((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(reinterpret_cast<EAN_HEADER*>(pTempBuff)) + 12)) > 0xFFFFFFu) * 16777216) | static_cast<unsigned long>(t2 & 0xFFFFFFu));
                                     memcpy(reinterpret_cast<void*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 120)), static_cast<const void*>(&pTempBuff[16]), t0);
                                     MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                                     return true;

@@ -110,11 +110,11 @@ void cSetInfoEnemy::copy(cSetInfo* p) {
     unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cSetInfoEnemy::DTI) + 8);
     for (const MtDTI* v0_0 = &t0;;) {
         if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
-            mPresetKind = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 68);
+            cSetInfoEnemy* pSie = static_cast<cSetInfoEnemy*>(p);
+            mPresetKind = pSie->mPresetKind;
             mGroup = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 72);
             mEmReactNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 76);
             mSubGroupNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 80);
-            cSetInfoEnemy* pSie = static_cast<cSetInfoEnemy*>(p);
             mReturnPoint2nd = pSie->mReturnPoint2nd;
             return;
         } else {

@@ -10,6 +10,7 @@
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
 #include "../../MT/MtTime.h"
+#include "cGUIUtility.h"
 #include "../../XFramework/cSystem.h"
 #include "nGUIExt.h"
 #include "../../XFramework/sGUI.h"
@@ -40,7 +41,7 @@ sChat::sChat() {
     /* stub */
 }
 
-sChat::~sChat() {
+__attribute__((noinline)) sChat::~sChat() {
     DDON_STUB("sChat::~sChat")
     /* stub */
 }
@@ -155,9 +156,8 @@ u32 sChat::getTellCharacterId() {
     return mTellCharacter.m_unCharacterID;
 }
 
-__attribute__((weak)) void sChat::makeTellCharacterName(MtString& rStr, nGUIExt::NAME_TYPE type) {
-    DDON_STUB("sChat::makeTellCharacterName")
-    /* stub */
+void sChat::makeTellCharacterName(MtString& rStr, nGUIExt::NAME_TYPE type) {
+    cGUIUtility::makeCharName(rStr, type, mTellCharacter.m_CharacterName.m_wstrFirstName.ptr(), mTellCharacter.m_CharacterName.m_wstrLastName.ptr(), mTellCharacter.m_wstrClanName.ptr());
 }
 
 __attribute__((weak)) void sChat::clearTellCharacterHistory() {

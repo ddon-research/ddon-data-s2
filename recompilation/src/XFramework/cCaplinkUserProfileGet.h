@@ -9,6 +9,7 @@
 
 // Forward declarations
 namespace nCaplink { class cUserProfile; }
+class uGUICaplinkProfile;
 
 // Declarations
 namespace nCaplink { class UserProfileGetAns; }
@@ -16,6 +17,7 @@ namespace nCaplink { class UserProfileGetAns; }
 namespace nCaplink {
     class UserProfileGetAns : public nCaplink::ContextListener
     {
+        friend class ::uGUICaplinkProfile;
     public:
         UserProfileGetAns();
         virtual void init();  // vtable slot 6

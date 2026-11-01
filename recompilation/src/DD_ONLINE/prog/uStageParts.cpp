@@ -50,7 +50,7 @@ uStagePartsCtrl::uStagePartsCtrl() {
     /* stub */
 }
 
-uStagePartsCtrl::~uStagePartsCtrl() {
+__attribute__((noinline)) uStagePartsCtrl::~uStagePartsCtrl() {
     DDON_STUB("uStagePartsCtrl::~uStagePartsCtrl")
     /* stub */
 }
@@ -178,9 +178,34 @@ s32 uStagePartsCtrl::getAreaNo(u32 idx) const {
     return -1;
 }
 
-__attribute__((weak)) bool uStagePartsCtrl::isSbc(const s32 x, const s32 z) const {
-    DDON_STUB("uStagePartsCtrl::isSbc")
-    return {};
+bool uStagePartsCtrl::isSbc(const s32 x, const s32 z) const {
+    if (z > -1) {
+        if (mpStageResource != nullptr) {
+            if (static_cast<unsigned int>(z) < mpStageResource->getAreaNum()) {
+                if (mpStageResource->getAreaNo(z) > -1) {
+                    unsigned int v0_1 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 136);
+                    if (v0_1 != 0) {
+                        unsigned long v0_2 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 152);
+                        for (u32 i = 0;;) {
+                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i * 8u)) + 0)) != 0) {
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i * 8u)) + 0)) + 512)) == static_cast<unsigned int>(z)) {
+                                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i * 8u)) + 0)) + 529)) != 0) {
+                                        return true;
+                                    }
+                                }
+                            }
+                            if ((i + 1u) < v0_1) {
+                                i = i + 1u;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }
 
 u32 uStagePartsCtrl::getAreaSize(u32 areaNo) const {

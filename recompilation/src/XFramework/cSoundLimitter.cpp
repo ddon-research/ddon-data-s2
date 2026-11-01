@@ -30,50 +30,19 @@ void cSoundLimitter::setEnable(const bool enable) {
     if (scePthreadMutexLock(&mParamSection.mCSection) != 0) {
         abort();
     }
-    f32 t1 = mThreshold;
-    float t2 = -96.0f;
-    if (t2 >= t1) {
+    f32 t0 = mThreshold;
+    if (-96.0f >= t0) {
         mThresholdRatio = 0.0f;
-        f32 t7 = mOutCeiling;
-        if (t2 >= (t7 - t1)) {
-            mOutCeilingRatio = 0.0f;
-            int t11 = scePthreadMutexUnlock(&mParamSection.mCSection);
-            if (t11 != 0) {
-                abort();
-            }
-        } else {
-            float t8 = 20.0f;
-            float t9 = 10.0f;
-            float t10 = powf(t9, (t7 - t1) / t8);
-            mOutCeilingRatio = t10;
-            int t11 = scePthreadMutexUnlock(&mParamSection.mCSection);
-            if (t11 != 0) {
-                abort();
-            }
-        }
     } else {
-        float t3 = 20.0f;
-        float t4 = 10.0f;
-        float t5 = powf(t4, t1 / t3);
-        float t6 = -96.0f;
-        mThresholdRatio = t5;
-        f32 t7 = mOutCeiling;
-        if (t6 >= (t7 - t1)) {
-            mOutCeilingRatio = 0.0f;
-            int t11 = scePthreadMutexUnlock(&mParamSection.mCSection);
-            if (t11 != 0) {
-                abort();
-            }
-        } else {
-            float t8 = 20.0f;
-            float t9 = 10.0f;
-            float t10 = powf(t9, (t7 - t1) / t8);
-            mOutCeilingRatio = t10;
-            int t11 = scePthreadMutexUnlock(&mParamSection.mCSection);
-            if (t11 != 0) {
-                abort();
-            }
-        }
+        mThresholdRatio = powf(10.0f, t0 / 20.0f);
+    }
+    if (-96.0f >= (mOutCeiling - t0)) {
+        mOutCeilingRatio = 0.0f;
+    } else {
+        mOutCeilingRatio = powf(10.0f, (mOutCeiling - t0) / 20.0f);
+    }
+    if (scePthreadMutexUnlock(&mParamSection.mCSection) != 0) {
+        abort();
     }
 }
 

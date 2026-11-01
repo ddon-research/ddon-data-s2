@@ -35,7 +35,7 @@ inline void uGUICaplinkTrophyList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::DTI)->memFree(p_addr);
 }
 
-uGUICaplinkTrophyList::~uGUICaplinkTrophyList() {
+__attribute__((noinline)) uGUICaplinkTrophyList::~uGUICaplinkTrophyList() {
     DDON_STUB("uGUICaplinkTrophyList::~uGUICaplinkTrophyList")
     /* stub */
 }

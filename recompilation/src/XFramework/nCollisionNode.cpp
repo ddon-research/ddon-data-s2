@@ -247,7 +247,7 @@ inline void nCollision::cCollisionNodeObject::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nCollision::cCollisionNodeObject::DTI)->memFree(p_addr);
 }
 
-nCollision::cCollisionNodeObject::~cCollisionNodeObject() {
+__attribute__((noinline)) nCollision::cCollisionNodeObject::~cCollisionNodeObject() {
     DDON_STUB("nCollision::cCollisionNodeObject::~cCollisionNodeObject")
     /* stub */
 }
@@ -481,7 +481,7 @@ inline void nCollision::cGeometryJointGroup::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nCollision::cGeometryJointGroup::DTI)->memFree(p_addr);
 }
 
-nCollision::cGeometryJointGroup::~cGeometryJointGroup() {
+__attribute__((noinline)) nCollision::cGeometryJointGroup::~cGeometryJointGroup() {
     DDON_STUB("nCollision::cGeometryJointGroup::~cGeometryJointGroup")
     /* stub */
 }

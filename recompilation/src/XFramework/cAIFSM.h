@@ -21,12 +21,14 @@ class cAIConditionTree;
 class cAICopiableParameter;
 class cAIFSMCluster;
 class cAIFSMNode;
+class cAIUserProcess;
 class cFSMCore;
 class rAIFSM;
 
 // Declarations
 class cAIFSM;
 class cAIFSMData;
+class cAIFSMProcessContainer;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -235,6 +237,45 @@ public:
     static const u32 STRM_SIZE_CORE_BASE = 3;
     static const u32 STRM_SIZE_CLUSTER = 3;
     static const u32 STRM_SIZE_TRANSITION_ONCE = 1;
+    static MyDTI DTI;
+};
+
+class cAIFSMProcessContainer : public cAIUserProcessContainer
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cAIFSMProcessContainer();
+    cAIFSMProcessContainer(MT_CTSTR n, const MtDTI* pFuncDTI, MT_CTSTR funcOwnerName, const MtDTI* pParamDTI, cAIUserProcessCallback::CALLBACK_FUNC pUpdateFunc, cAIUserProcessCallback::CALLBACK_FUNC pStateFunc, cAIUserProcessCallback::CALLBACK_FUNC pExitFunc, cAIUserProcessCallback::CALLBACK_FUNC pChangeFunc, cAIUserProcessCallback::CALLBACK_FUNC pExportFunc, cAIUserProcessCallback::CALLBACK_FUNC pImportFunc);
+    cAIFSMProcessContainer(MT_CTSTR n, MT_CTSTR toolname, const MtDTI* pFuncDTI, MT_CTSTR funcOwnerName, const MtDTI* pParamDTI, cAIUserProcessCallback::CALLBACK_FUNC pUpdateFunc, cAIUserProcessCallback::CALLBACK_FUNC pStateFunc, cAIUserProcessCallback::CALLBACK_FUNC pExitFunc, cAIUserProcessCallback::CALLBACK_FUNC pChangeFunc, cAIUserProcessCallback::CALLBACK_FUNC pExportFunc, cAIUserProcessCallback::CALLBACK_FUNC pImportFunc);
+    cAIFSMProcessContainer(MT_CTSTR n, const MtDTI* pFuncDTI, cAIUserProcessCallback::CALLBACK_FUNC pUpdateFunc, cAIUserProcessCallback::CALLBACK_FUNC pStateFunc, const MtDTI* pParamDTI, MT_CTSTR funcOwnerName);
+    cAIFSMProcessContainer(MT_CTSTR n, const MtDTI* pFuncDTI, cAIUserProcessCallback::CALLBACK_FUNC pUpdateFunc, cAIUserProcessCallback::CALLBACK_FUNC pStateFunc, cAIUserProcessCallback::CALLBACK_FUNC pExitFunc, const MtDTI* pParamDTI, MT_CTSTR funcOwnerName);
+    cAIFSMProcessContainer(MT_CTSTR n, cAIUserProcess* pUpdateObj, cAIUserProcess* pStateObj, const MtDTI* pParamDTI);
+    cAIFSMProcessContainer(MT_CTSTR n, cAIUserProcess* pUpdateObj, cAIUserProcess* pStateObj, cAIUserProcess* pExitObj, const MtDTI* pParamDTI);
+    virtual ~cAIFSMProcessContainer();
+protected:
+    void setProcessFunc(const MtDTI* pFuncDTI, MT_CTSTR funcOwnerName, const MtDTI* pParamDTI, cAIUserProcessCallback::CALLBACK_FUNC pUpdateFunc, cAIUserProcessCallback::CALLBACK_FUNC pStateFunc, cAIUserProcessCallback::CALLBACK_FUNC pExitFunc, cAIUserProcessCallback::CALLBACK_FUNC pChangeFunc, cAIUserProcessCallback::CALLBACK_FUNC pExportFunc, cAIUserProcessCallback::CALLBACK_FUNC pImportFunc);
+public:
     static MyDTI DTI;
 };
 

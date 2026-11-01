@@ -31,7 +31,7 @@ inline void uGUIPopRmcQuestInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPopRmcQuestInfo::DTI)->memFree(p_addr);
 }
 
-uGUIPopRmcQuestInfo::~uGUIPopRmcQuestInfo() {
+__attribute__((noinline)) uGUIPopRmcQuestInfo::~uGUIPopRmcQuestInfo() {
     DDON_STUB("uGUIPopRmcQuestInfo::~uGUIPopRmcQuestInfo")
     /* stub */
 }

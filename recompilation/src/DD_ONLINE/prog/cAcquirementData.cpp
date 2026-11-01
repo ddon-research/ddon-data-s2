@@ -8,7 +8,6 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
-#include "cArcLoader.h"
 #include "../../XFramework/cResource.h"
 #include "cUIObject.h"
 #include "rAcquirement.h"
@@ -40,7 +39,7 @@ cAcquirement::cNormalSkillData::cNormalSkillData() {
     /* stub */
 }
 
-cAcquirement::cNormalSkillData::~cNormalSkillData() {
+__attribute__((noinline)) cAcquirement::cNormalSkillData::~cNormalSkillData() {
     DDON_STUB("cAcquirement::cNormalSkillData::~cNormalSkillData")
     /* stub */
 }
@@ -171,7 +170,7 @@ void cAcquirement::cSkillDataBase::release() {
     cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
     if (mTicket != t0) {
         ::sArchiveManager::getInstance()->returnTicket(mTicket);
-        mTicket = static_cast<TICKET>(t0);
+        mTicket = t0;
     }
     mTag = 0;
     mJobId = 0;
@@ -192,7 +191,7 @@ bool cAcquirement::cSkillDataBase::updateLoad() {
             loadResource();
             if (t0 != mTicket) {
                 ::sArchiveManager::getInstance()->returnTicket(mTicket);
-                mTicket = static_cast<TICKET>(t0);
+                mTicket = t0;
             }
             if (::scePthreadMutexUnlock(&mCS.mCSection) != 0) {
                 ::abort();

@@ -27,7 +27,7 @@ inline void uGUIQuestBoardBase::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::DTI)->memFree(p_addr);
 }
 
-uGUIQuestBoardBase::~uGUIQuestBoardBase() {
+__attribute__((noinline)) uGUIQuestBoardBase::~uGUIQuestBoardBase() {
     DDON_STUB("uGUIQuestBoardBase::~uGUIQuestBoardBase")
     /* stub */
 }

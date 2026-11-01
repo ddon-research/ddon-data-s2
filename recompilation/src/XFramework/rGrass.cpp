@@ -30,7 +30,7 @@ rGrass::rGrass() {
     /* stub */
 }
 
-rGrass::~rGrass() {
+__attribute__((noinline)) rGrass::~rGrass() {
     DDON_STUB("rGrass::~rGrass")
     /* stub */
 }

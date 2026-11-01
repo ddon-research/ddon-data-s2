@@ -23,12 +23,6 @@ void* cTbl2ChatMacro::operator new(size_t sz, u32 align) {
     return cTbl2ChatMacro::getAllocator()->memAlloc(sz, align, cTbl2ChatMacro::DTI.getID());
 }
 
-cTbl2ChatMacro::cTbl2ChatMacro() {
-    mCmdId = 0;
-    mHelpMsgId = 0;
-    mMacro.value = nullptr;
-}
-
 cTbl2ChatMacro::~cTbl2ChatMacro() {
     DDON_STUB("cTbl2ChatMacro::~cTbl2ChatMacro")
     /* stub */
@@ -48,9 +42,8 @@ cTbl2ChatMacro::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 cTbl2ChatMacro::MyDTI cTbl2ChatMacro::DTI("cTbl2ChatMacro", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cTbl2ChatMacro::MyDTI::newInstance() const {
-    DDON_STUB("cTbl2ChatMacro::MyDTI::newInstance")
-    return nullptr;
+MtObject* cTbl2ChatMacro::MyDTI::newInstance() const {
+    return new (16u) cTbl2ChatMacro;
 }
 
 const MtDTI& rTbl2ChatMacro::getDTI() const {

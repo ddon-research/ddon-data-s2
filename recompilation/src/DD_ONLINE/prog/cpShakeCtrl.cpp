@@ -42,7 +42,7 @@ cpShakeCtrl::cpShakeCtrl() {
     /* stub */
 }
 
-cpShakeCtrl::~cpShakeCtrl() {
+__attribute__((noinline)) cpShakeCtrl::~cpShakeCtrl() {
     DDON_STUB("cpShakeCtrl::~cpShakeCtrl")
     /* stub */
 }

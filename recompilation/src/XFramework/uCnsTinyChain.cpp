@@ -470,7 +470,7 @@ void uCnsTinyChain::cChainNode::setRefJointNo(u32 no) {
 }
 
 u32 uCnsTinyChain::cChainNode::getRefJointNo() const {
-    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 12)) >> 40);
+    return mRefJntNo;
 }
 
 void uCnsTinyChain::cChainNode::setAngleMode(u32 mode) {

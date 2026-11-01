@@ -13,6 +13,7 @@
 #include "../../XFramework/cUnit.h"
 #include "cpTalk.h"
 #include "nCharacterData.h"
+#include "nFsm.h"
 #include "nQuest.h"
 #include "nTalk.h"
 #include "../../XFramework/rGUIMessage.h"
@@ -330,8 +331,43 @@ __attribute__((weak)) nQuest::QUEST_ID sTalkManager::getTargetQuestId() {
 }
 
 __attribute__((weak)) void sTalkManager::moveFSMEventMsg() {
-    DDON_STUB("sTalkManager::moveFSMEventMsg")
-    /* stub */
+    switch (static_cast<unsigned int>(mRno0 - 1)) {
+        case 0:
+        {
+            moveFSMEventMsg_CreateWindow();
+            break;
+        }
+        case 1:
+        {
+            updateDispPage();
+            if (static_cast<sGUIExt*>(sGUI::getInstance())->isTelopFSMEnd()) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->setVisibleTelop(false);
+                mEventMsgTimer = 0.0f;
+                mRno0 = 3;
+            }
+            break;
+        }
+        case 2:
+        {
+            f32 t0 = nFsm::getDeltaSec();
+            mEventMsgTimer = mEventMsgTimer + t0;
+            if (mEventMsgTimer >= mEventMsgWaitTime) {
+                mIsEndEventMsg = true;
+                mRno0 = 4;
+            }
+            break;
+        }
+        case 3:
+        {
+            mTalkType = 0;
+            mRno0 = 0;
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) void sTalkManager::moveFSMEventMsg_CreateWindow() {

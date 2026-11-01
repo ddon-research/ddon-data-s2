@@ -10,7 +10,6 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtSynchronize.h"
-#include "cArcLoader.h"
 #include "cPlayerLoadManager.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
@@ -826,7 +825,7 @@ void sSoundExt::releaseCommonData() {
         cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
         if (mBgmSystemTicket != t1) {
             sArchiveManager::getInstance()->returnTicket(mBgmSystemTicket);
-            mBgmSystemTicket = static_cast<TICKET>(t1);
+            mBgmSystemTicket = t1;
         }
         if (mprOptionData != nullptr) {
             mprOptionData->release();
@@ -837,7 +836,7 @@ void sSoundExt::releaseCommonData() {
         cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
         if (mBgmSystemTicket != t1) {
             sArchiveManager::getInstance()->returnTicket(mBgmSystemTicket);
-            mBgmSystemTicket = static_cast<TICKET>(t1);
+            mBgmSystemTicket = t1;
         }
         if (mprOptionData != nullptr) {
             mprOptionData->release();
@@ -1307,7 +1306,7 @@ void sSoundExt::returnTicketNoStopAtream() {
         return;
     }
     sArchiveManager::getInstance()->returnTicket(mBgmSystemTicket);
-    mBgmSystemTicket = static_cast<TICKET>(t0);
+    mBgmSystemTicket = t0;
 }
 
 __attribute__((weak)) bool sSoundExt::setNoStopStream(rSoundStreamRequest* pRequest, const MtDTI* pdti) {

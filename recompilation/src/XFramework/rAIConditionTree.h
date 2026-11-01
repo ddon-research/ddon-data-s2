@@ -751,6 +751,10 @@ public:
     static MyDTI DTI;
 };
 
+inline cAIDEnum::cAIDEnum() {
+    this->mId = 0;
+}
+
 inline rAIConditionTree::rAIConditionTree() {
     this->::cResource::mAttr = 18;
     this->mTreeNum = 0;

@@ -58,70 +58,9 @@ __attribute__((weak)) bool cCnsBoneScaleCtrl::setScaleCtrl(u32 no, uModel* pMode
     return {};
 }
 
-void cCnsBoneScaleCtrl::update(f32 deltatime) {
-    bool t0 = mbEnable;
-    if (!t0) {
-        return;
-    }
-    uCnsBoneScale* t1 = mpCnsBoneScale;
-    if (t1 == nullptr) {
-        return;
-    }
-    f32 t2 = mFrame;
-    mFrame = t2 + deltatime;
-    f32 t3 = mFrameMax;
-    if (mFrame > t3) {
-        mFrame = t3;
-        float t4 = 1.0f;
-        if (mFrame > t4) {
-            f32 t5 = mStartScale.x;
-            f32 t6 = mScale.x;
-            f32 t7 = mStartScale.y;
-            f32 t8 = mScale.y;
-            f32 t9 = mStartScale.z;
-            f32 t10 = mScale.z;
-            t1->mScl.x = (t5 * (t4 - (t3 / t3))) + (t6 * (t3 / t3));
-            t1->mScl.y = (t7 * (t4 - (t3 / t3))) + (t8 * (t3 / t3));
-            t1->mScl.z = (t9 * (t4 - (t3 / t3))) + (t10 * (t3 / t3));
-            t1->mScl.pad_ = 0.0f;
-        } else {
-            f32 t5 = mStartScale.x;
-            f32 t6 = mScale.x;
-            f32 t7 = mStartScale.y;
-            f32 t8 = mScale.y;
-            f32 t9 = mStartScale.z;
-            f32 t10 = mScale.z;
-            t1->mScl.x = (t4 * t6) + (t5 * (t4 - t4));
-            t1->mScl.y = (t4 * t8) + (t7 * (t4 - t4));
-            t1->mScl.z = (t4 * t10) + (t9 * (t4 - t4));
-            t1->mScl.pad_ = 0.0f;
-        }
-    } else {
-        float t4 = 1.0f;
-        if (t3 > t4) {
-            f32 t5 = mStartScale.x;
-            f32 t6 = mScale.x;
-            f32 t7 = mStartScale.y;
-            f32 t8 = mScale.y;
-            f32 t9 = mStartScale.z;
-            f32 t10 = mScale.z;
-            t1->mScl.x = (t5 * (t4 - ((t2 + deltatime) / t3))) + (t6 * ((t2 + deltatime) / t3));
-            t1->mScl.y = (t7 * (t4 - ((t2 + deltatime) / t3))) + (t8 * ((t2 + deltatime) / t3));
-            t1->mScl.z = (t9 * (t4 - ((t2 + deltatime) / t3))) + (t10 * ((t2 + deltatime) / t3));
-            t1->mScl.pad_ = 0.0f;
-        } else {
-            f32 t5 = mStartScale.x;
-            f32 t6 = mScale.x;
-            f32 t7 = mStartScale.y;
-            f32 t8 = mScale.y;
-            f32 t9 = mStartScale.z;
-            f32 t10 = mScale.z;
-            t1->mScl.x = (t4 * t6) + (t5 * (t4 - t4));
-            t1->mScl.y = (t4 * t8) + (t7 * (t4 - t4));
-            t1->mScl.z = (t4 * t10) + (t9 * (t4 - t4));
-            t1->mScl.pad_ = 0.0f;
-        }
-    }
+__attribute__((weak)) void cCnsBoneScaleCtrl::update(f32 deltatime) {
+    DDON_STUB("cCnsBoneScaleCtrl::update")
+    /* stub */
 }
 
 cCnsBoneScaleCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

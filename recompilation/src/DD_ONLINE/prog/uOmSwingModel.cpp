@@ -83,15 +83,11 @@ void uOmSwingModel::draw(cDraw* pdraw) {
 }
 
 void uOmSwingModel::updateLodDistance() {
-    sOmManager* t0 = sOmManager::getInstance();
-    f32 t1 = t0->mAQCLODScale;
-    if (t1 > 0.0f) {
-        rModel* t2 = mpModel;
-        s32 t3 = t2->mModelInfo.middist;
-        float t4 = 1.0f;
-        s32 t5 = t2->mModelInfo.lowdist;
-        mLODMidDist = (t4 / t1) * static_cast<float>(t3);
-        mLODLowDist = (t4 / t1) * static_cast<float>(t5);
+    f32 t0 = sOmManager::getInstance()->mAQCLODScale;
+    if (t0 > 0.0f) {
+        s32 t1 = mpModel->mModelInfo.lowdist;
+        mLODMidDist = (1.0f / t0) * static_cast<float>(mpModel->mModelInfo.middist);
+        mLODLowDist = (1.0f / t0) * static_cast<float>(t1);
     }
 }
 

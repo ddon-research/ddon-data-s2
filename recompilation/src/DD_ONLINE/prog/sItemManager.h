@@ -1479,6 +1479,21 @@ inline sItemManager::cItemBag::cGatheringItemData::cGatheringItemData() {
     this->mGroupId = 0;
 }
 
+inline sItemManager::cItemBag::cCraftStartData::cCraftStartData() {
+    this->mRecipeId = 0;
+    this->mMainPawnId = 0;
+    this->mCreateCount = 1;
+}
+
+inline sItemManager::cItemBag::cCraftUpGradeData::cCraftUpGradeData() {
+    this->mMainPawnId = 0;
+}
+
+inline sItemManager::cItemBag::cCraftColorChange::cCraftColorChange() {
+    this->mMainPawnId = 0;
+    this->mColor = 0;
+}
+
 inline sItemManager::cItemBag::cAreaMasterSuppyData::cAreaMasterSuppyData() {
     this->mAreaID = 0;
     this->mIsCancel = false;

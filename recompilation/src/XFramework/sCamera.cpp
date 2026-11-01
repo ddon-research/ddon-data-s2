@@ -30,7 +30,7 @@ sCamera::sCamera() {
     /* stub */
 }
 
-sCamera::~sCamera() {
+__attribute__((noinline)) sCamera::~sCamera() {
     DDON_STUB("sCamera::~sCamera")
     /* stub */
 }

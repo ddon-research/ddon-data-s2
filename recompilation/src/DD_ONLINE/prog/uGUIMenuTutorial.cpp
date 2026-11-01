@@ -38,7 +38,7 @@ inline void uGUIMenuTutorial::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMenuTutorial::DTI)->memFree(p_addr);
 }
 
-uGUIMenuTutorial::~uGUIMenuTutorial() {
+__attribute__((noinline)) uGUIMenuTutorial::~uGUIMenuTutorial() {
     DDON_STUB("uGUIMenuTutorial::~uGUIMenuTutorial")
     /* stub */
 }

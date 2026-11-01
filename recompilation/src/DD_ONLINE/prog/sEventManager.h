@@ -23,6 +23,7 @@ class cContextInstHm;
 class cEfcHandle;
 class cEventParam;
 class cQuestTask;
+namespace nFsm { class cCameraCtrl; }
 namespace nStage { struct stEventParam; }
 class rCameraParamList;
 class rEffectProvider;
@@ -55,6 +56,7 @@ using u32 = unsigned int;
 class sEventManager : public cSystem
 {
     friend class cQuestTask;
+    friend class nFsm::cCameraCtrl;
     friend class uCameraGame;
 public:
     enum SYNC_FLAG

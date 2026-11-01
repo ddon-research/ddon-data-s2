@@ -1076,6 +1076,16 @@ inline cMenuCreateEntryBoardItem::cMenuCreateEntryBoardItem() {
 inline cMenuEditCommentEntryBoardItem::cMenuEditCommentEntryBoardItem() {
 }
 
+inline cMenuEntryBoardInvite::cMenuEntryBoardInvite() {
+}
+
+inline cMenuEntryBoardItem::cMenuEntryBoardItem() {
+    this->mpBoardInfo = nullptr;
+}
+
+inline cMenuEntryBoardItemList::cMenuEntryBoardItemList() {
+}
+
 inline cMenuEntryBoardMember::cMenuEntryBoardMember() {
 }
 

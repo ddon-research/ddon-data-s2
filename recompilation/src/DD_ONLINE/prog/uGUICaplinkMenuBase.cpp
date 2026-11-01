@@ -32,7 +32,7 @@ inline void uGUICaplinkMenuBase::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkMenuBase::DTI)->memFree(p_addr);
 }
 
-uGUICaplinkMenuBase::~uGUICaplinkMenuBase() {
+__attribute__((noinline)) uGUICaplinkMenuBase::~uGUICaplinkMenuBase() {
     DDON_STUB("uGUICaplinkMenuBase::~uGUICaplinkMenuBase")
     /* stub */
 }
@@ -306,9 +306,45 @@ __attribute__((weak)) void uGUICaplinkMenuBase::addSubMenu(MT_CTSTR pMsg, bool i
     /* stub */
 }
 
-__attribute__((weak)) bool uGUICaplinkMenuBase::isEndSubMenu() {
-    DDON_STUB("uGUICaplinkMenuBase::isEndSubMenu")
-    return {};
+bool uGUICaplinkMenuBase::isEndSubMenu() {
+    unsigned int v2_3;
+    if (mpGUIPopCmd != nullptr) {
+        v2_3 = 0;
+    } else {
+        unsigned int v1_3;
+        if (mCmdVal.mLength == 0) {
+            v1_3 = 0;
+        } else {
+            u32 v0_0 = mCmdVal.mLength;
+            for (unsigned int i0_3 = 0;;) {
+                if (mCmdVal.mpArray[i0_3] != nullptr) {
+                    delete mCmdVal.mpArray[i0_3];
+                    if ((i0_3 + 1u) < mCmdVal.mLength) {
+                        v0_0 = mCmdVal.mLength;
+                        i0_3 += 1u;
+                    } else {
+                        v1_3 = i0_3 + 1u;
+                        break;
+                    }
+                } else {
+                    if ((i0_3 + 1u) < v0_0) {
+                        i0_3 += 1u;
+                    } else {
+                        v1_3 = i0_3 + 1u;
+                        break;
+                    }
+                }
+            }
+        }
+        if (mCmdVal.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mCmdVal.mpArray));
+        }
+        mCmdVal.mpArray = nullptr;
+        mCmdVal.mBufsiz = 0;
+        mCmdVal.mLength = 0;
+        v2_3 = (v1_3 & 0xFFFFFF00u) | 1u;
+    }
+    return static_cast<bool>(static_cast<unsigned char>(v2_3));
 }
 
 u32 uGUICaplinkMenuBase::callbackCmd(MtObject* pCaller, MtObject* pVal) {

@@ -147,3 +147,7 @@ protected:
     static const s32 MOUSE_MAX_CACHE = 64;
     static sMouse* mpInstance;
 };
+
+inline s32 sMouse::getAxisZ(sMouse::TYPE type) const {
+    return this->mState[type].az;
+}

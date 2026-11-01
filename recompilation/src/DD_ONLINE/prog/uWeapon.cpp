@@ -7,12 +7,15 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "../../generated/shared/nWeapon.h"
+#include "rArchiveListArray.h"
 #include "rDDOModelMontage.h"
 #include "../../XFramework/rModel.h"
 #include "rNpcConstItem.h"
+#include "rWeaponResTable.h"
 #include "sGame.h"
 #include "sNpcManager.h"
 #include "../../XFramework/uBaseModel.h"
@@ -144,9 +147,15 @@ __attribute__((weak)) void uWeapon::callbackUpdateMatrix() {
 __attribute__((weak)) void uWeapon::callbackSetMotion(u32 src, u32 mot_no, f32 hokan, f32 frame, f32 speed, u32 attr) {
 }
 
-__attribute__((weak)) u32 uWeapon::getNpcItemArcTag(u32 index) {
-    DDON_STUB("uWeapon::getNpcItemArcTag")
-    return {};
+u32 uWeapon::getNpcItemArcTag(u32 index) {
+    cNpcConstItem* pConstItem = sNpcManager::getInstance()->getNpcConstItem(index);
+    u32 mtag = pConstItem->cNpcConstItem::getMTag();
+    cWeaponResTable* pWepResData = sGame::getInstance()->getWepResData(mtag, 0u);
+    if (pWepResData != nullptr) {
+        return rArchiveListArray::convTagId(pWepResData->mArcTag.MtString::ptr());
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) void uWeapon::setParts(u8 partsPatern) {

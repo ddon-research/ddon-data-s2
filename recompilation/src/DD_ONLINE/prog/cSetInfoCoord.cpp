@@ -56,9 +56,8 @@ __attribute__((weak)) void cSetInfoCoord::copy(cSetInfo* p) {
     /* stub */
 }
 
-__attribute__((weak)) MT_CTSTR cSetInfoCoord::getcSetName() const {
-    DDON_STUB("cSetInfoCoord::getcSetName")
-    return {};
+MT_CTSTR cSetInfoCoord::getcSetName() const {
+    return mName.ptr();
 }
 
 __attribute__((weak)) void cSetInfoCoord::setcSetName(const MtString& name) {

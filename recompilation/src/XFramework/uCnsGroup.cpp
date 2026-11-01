@@ -215,7 +215,7 @@ uCnsGroup::cGroup::cGroup(uCnsGroup* pCnsGroup, u32 idx) {
     /* stub */
 }
 
-uCnsGroup::cGroup::~cGroup() {
+__attribute__((noinline)) uCnsGroup::cGroup::~cGroup() {
     DDON_STUB("uCnsGroup::cGroup::~cGroup")
     /* stub */
 }
@@ -239,9 +239,32 @@ void uCnsGroup::cGroup::setPri(u32 pri) {
     }
 }
 
-__attribute__((weak)) bool uCnsGroup::cGroup::update(bool resetFlg) {
-    DDON_STUB("uCnsGroup::cGroup::update")
-    return {};
+bool uCnsGroup::cGroup::update(bool resetFlg) {
+    mIsReady = false;
+    uModel* pModel = mpCnsGroup->getModel();
+    if (pModel != nullptr) {
+        if (mNodeNum != 0) {
+            for (unsigned int i0_3 = 0;;) {
+                cCnsChild* t0 = mpCnsChildlen;
+                if (!t0[i0_3].setConstraint(pModel, static_cast<s32>(getNode(i0_3)->mJointNo))) {
+                    remove(false);
+                    return false;
+                } else {
+                    if ((i0_3 + 1u) < mNodeNum) {
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            mIsReady = true;
+            init();
+        }
+    }
+    if (resetFlg) {
+        mpCnsGroup->reset();
+    }
+    return mIsReady;
 }
 
 void uCnsGroup::cGroup::remove(bool resetFlg) {

@@ -26,6 +26,8 @@
 #include "cQuestManagerBase.h"
 #include "cQuestPhaseManager.h"
 #include "cQuestPhaseState.h"
+#include "cQuestSvRequest.h"
+#include "cQuestSvRequestManager.h"
 #include "cQuestTask.h"
 #include "../../XFramework/cSystem.h"
 #include "nDDOUtility.h"
@@ -3521,9 +3523,15 @@ bool sQuestManagerExt::hasCycleContentsPlayEndNotice() const {
     return mHasCycleContentsPlayEndNotice;
 }
 
-__attribute__((weak)) void sQuestManagerExt::reqCycleContentsPlayEnd() {
-    DDON_STUB("sQuestManagerExt::reqCycleContentsPlayEnd")
-    /* stub */
+void sQuestManagerExt::reqCycleContentsPlayEnd() {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+        return;
+    }
+    cQuestSvRequest* pReq = cQuestSvRequestManager::pushRequest(cQuestSvReqCycleContentsPlayEnd::DTI);
+    if (pReq == nullptr) {
+        return;
+    }
+    pReq->cQuestSvRequest::setFromClass(static_cast<MtObject*>(this));
 }
 
 void sQuestManagerExt::resetHasCycleContentsPlayEndNotice() {
@@ -4630,7 +4638,7 @@ sQuestManagerExt::sQuestManagerExt() {
     /* stub */
 }
 
-sQuestManagerExt::~sQuestManagerExt() {
+__attribute__((noinline)) sQuestManagerExt::~sQuestManagerExt() {
     DDON_STUB("sQuestManagerExt::~sQuestManagerExt")
     /* stub */
 }
@@ -4783,6 +4791,10 @@ const MtDTI& sQuestManagerExt::cSystemLogNode::getDTI() const {
     return sQuestManagerExt::cSystemLogNode::DTI;
 }
 
+inline void* sQuestManagerExt::cSystemLogNode::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cSystemLogNode::DTI)->memAlloc(sz, align, sQuestManagerExt::cSystemLogNode::DTI.getID());
+}
+
 inline void sQuestManagerExt::cSystemLogNode::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sQuestManagerExt::cSystemLogNode::DTI)->memFree(p_addr);
 }
@@ -4797,7 +4809,7 @@ sQuestManagerExt::cSystemLogNode::cSystemLogNode(MT_CTSTR message, nQuest::QUEST
     /* stub */
 }
 
-sQuestManagerExt::cSystemLogNode::~cSystemLogNode() {
+__attribute__((noinline)) sQuestManagerExt::cSystemLogNode::~cSystemLogNode() {
     DDON_STUB("sQuestManagerExt::cSystemLogNode::~cSystemLogNode")
     /* stub */
 }
@@ -4806,9 +4818,8 @@ sQuestManagerExt::cSystemLogNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 sQuestManagerExt::cSystemLogNode::MyDTI sQuestManagerExt::cSystemLogNode::DTI("sQuestManagerExt::cSystemLogNode", &::MtObject::DTI, 56ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sQuestManagerExt::cSystemLogNode::MyDTI::newInstance() const {
-    DDON_STUB("sQuestManagerExt::cSystemLogNode::MyDTI::newInstance")
-    return nullptr;
+MtObject* sQuestManagerExt::cSystemLogNode::MyDTI::newInstance() const {
+    return new (16u) sQuestManagerExt::cSystemLogNode;
 }
 
 const MtDTI& sQuestManagerExt::cClearedQuestInfo::getDTI() const {

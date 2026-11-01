@@ -17,6 +17,8 @@
 #include "cQuestManagerBase.h"
 #include "cQuestPhaseManager.h"
 #include "cQuestPhaseState.h"
+#include "cQuestSvRequest.h"
+#include "cQuestSvRequestManager.h"
 #include "cQuestTaskParam.h"
 #include "cpOcdCtrl.h"
 #include "nDDOUtility.h"
@@ -215,7 +217,7 @@ cQuestPersonalData::cQuestPersonalData(const cQuestPersonalData& obj) {
     /* stub */
 }
 
-cQuestPersonalData::~cQuestPersonalData() {
+__attribute__((noinline)) cQuestPersonalData::~cQuestPersonalData() {
     DDON_STUB("cQuestPersonalData::~cQuestPersonalData")
     /* stub */
 }
@@ -1496,7 +1498,7 @@ cQuestTask::cQuestTask(cQuestManagerBase* pParent, u32 questType, nQuest::QUEST_
     /* stub */
 }
 
-cQuestTask::~cQuestTask() {
+__attribute__((noinline)) cQuestTask::~cQuestTask() {
     DDON_STUB("cQuestTask::~cQuestTask")
     /* stub */
 }
@@ -1866,7 +1868,7 @@ cQuestTask::cQuestProcess::cQuestProcess(const cQuestTask::cQuestProcess& obj) {
     /* stub */
 }
 
-cQuestTask::cQuestProcess::~cQuestProcess() {
+__attribute__((noinline)) cQuestTask::cQuestProcess::~cQuestProcess() {
     DDON_STUB("cQuestTask::cQuestProcess::~cQuestProcess")
     /* stub */
 }
@@ -2618,9 +2620,51 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsKilledTargetEnemySe
     return {};
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsKilledTargetEmSetGrpNoMarker(s32 flagNo, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsKilledTargetEmSetGrpNoMarker")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsKilledTargetEmSetGrpNoMarker(s32 flagNo, s32 param02, s32 param03, s32 param04) {
+    unsigned int i0_3;
+    unsigned int v0_11;
+    unsigned long v2_3;
+    if (nQuest::isContents(getQuestTask()->getQuestType())) {
+        if (sQuestManagerExt::getInstance()->isCycleContentsTimerZero()) {
+            v2_3 = 0;
+            return static_cast<bool>(static_cast<unsigned char>(v2_3));
+        } else {
+            v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+            if (v0_11 == 0) {
+                v2_3 = 0;
+                return static_cast<bool>(static_cast<unsigned char>(v2_3));
+            } else {
+                i0_3 = 0;
+            }
+        }
+    } else {
+        v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+        if (v0_11 == 0) {
+            v2_3 = 0;
+            return static_cast<bool>(static_cast<unsigned char>(v2_3));
+        } else {
+            i0_3 = 0;
+        }
+    }
+    for (;;) {
+        MtObject* t0 = mTargetEnemyInfo.getBuffer()[static_cast<int>(i0_3)];
+        if (flagNo != static_cast<int>(static_cast<nQuest::TargetEnemyInfoArray*>(t0)->getFlagNo())) {
+            if ((i0_3 + 1u) < v0_11) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        } else {
+            if (static_cast<nQuest::TargetEnemyInfoArray*>(t0)->isValid()) {
+                v2_3 = static_cast<unsigned long>(i0_3 & 0xFFFFFF00u) | static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 8)) == 0);
+            } else {
+                v2_3 = 0;
+            }
+            return static_cast<bool>(static_cast<unsigned char>(v2_3));
+        }
+    }
+    v2_3 = 0;
+    return static_cast<bool>(static_cast<unsigned char>(v2_3));
 }
 
 bool cQuestTask::cQuestProcess::checkIsLeftCycleTimer(s32 timeSec, s32 param02, s32 param03, s32 param04) {
@@ -2919,14 +2963,98 @@ bool cQuestTask::cQuestProcess::checkCraft(s32 param01, s32 param02, s32 param03
     return true;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsKilledTargetEnemySetGroupGmMain(s32 flagNo, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsKilledTargetEnemySetGroupGmMain")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsKilledTargetEnemySetGroupGmMain(s32 flagNo, s32 param02, s32 param03, s32 param04) {
+    unsigned int i0_3;
+    unsigned int v0_11;
+    unsigned long v2_3;
+    if (nQuest::isContents(getQuestTask()->getQuestType())) {
+        if (sQuestManagerExt::getInstance()->isCycleContentsTimerZero()) {
+            v2_3 = 0;
+            return static_cast<bool>(static_cast<unsigned char>(v2_3));
+        } else {
+            v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+            if (v0_11 == 0) {
+                v2_3 = 0;
+                return static_cast<bool>(static_cast<unsigned char>(v2_3));
+            } else {
+                i0_3 = 0;
+            }
+        }
+    } else {
+        v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+        if (v0_11 == 0) {
+            v2_3 = 0;
+            return static_cast<bool>(static_cast<unsigned char>(v2_3));
+        } else {
+            i0_3 = 0;
+        }
+    }
+    for (;;) {
+        MtObject* t0 = mTargetEnemyInfo.getBuffer()[static_cast<int>(i0_3)];
+        if (flagNo != static_cast<int>(static_cast<nQuest::TargetEnemyInfoArray*>(t0)->getFlagNo())) {
+            if ((i0_3 + 1u) < v0_11) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        } else {
+            if (static_cast<nQuest::TargetEnemyInfoArray*>(t0)->isValid()) {
+                v2_3 = static_cast<unsigned long>(i0_3 & 0xFFFFFF00u) | static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 8)) == 0);
+            } else {
+                v2_3 = 0;
+            }
+            return static_cast<bool>(static_cast<unsigned char>(v2_3));
+        }
+    }
+    v2_3 = 0;
+    return static_cast<bool>(static_cast<unsigned char>(v2_3));
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsKilledTargetEnemySetGroupGmSub(s32 flagNo, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsKilledTargetEnemySetGroupGmSub")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsKilledTargetEnemySetGroupGmSub(s32 flagNo, s32 param02, s32 param03, s32 param04) {
+    unsigned int i0_3;
+    unsigned int v0_11;
+    unsigned long v2_3;
+    if (nQuest::isContents(getQuestTask()->getQuestType())) {
+        if (sQuestManagerExt::getInstance()->isCycleContentsTimerZero()) {
+            v2_3 = 0;
+            return static_cast<bool>(static_cast<unsigned char>(v2_3));
+        } else {
+            v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+            if (v0_11 == 0) {
+                v2_3 = 0;
+                return static_cast<bool>(static_cast<unsigned char>(v2_3));
+            } else {
+                i0_3 = 0;
+            }
+        }
+    } else {
+        v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+        if (v0_11 == 0) {
+            v2_3 = 0;
+            return static_cast<bool>(static_cast<unsigned char>(v2_3));
+        } else {
+            i0_3 = 0;
+        }
+    }
+    for (;;) {
+        MtObject* t0 = mTargetEnemyInfo.getBuffer()[static_cast<int>(i0_3)];
+        if (flagNo != static_cast<int>(static_cast<nQuest::TargetEnemyInfoArray*>(t0)->getFlagNo())) {
+            if ((i0_3 + 1u) < v0_11) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        } else {
+            if (static_cast<nQuest::TargetEnemyInfoArray*>(t0)->isValid()) {
+                v2_3 = static_cast<unsigned long>(i0_3 & 0xFFFFFF00u) | static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 8)) == 0);
+            } else {
+                v2_3 = 0;
+            }
+            return static_cast<bool>(static_cast<unsigned char>(v2_3));
+        }
+    }
+    v2_3 = 0;
+    return static_cast<bool>(static_cast<unsigned char>(v2_3));
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::checkHasUsedKey(s32 stageNo, s32 groupNo, s32 setNo, s32 questId) {
@@ -3569,9 +3697,16 @@ bool cQuestTask::cQuestProcess::resultResetTutorialFlag(s32 param01, s32 param02
     return true;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::resultStartContentsTimer(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::resultStartContentsTimer")
-    return {};
+bool cQuestTask::cQuestProcess::resultStartContentsTimer(s32 param01, s32 param02, s32 param03, s32 param04) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+        cQuestSvRequest* pReq = cQuestSvRequestManager::pushRequest(cQuestSvReqStartQuestTime::DTI);
+        if (pReq != nullptr) {
+            pReq->cQuestSvRequest::setFromClass(static_cast<MtObject*>(this));
+        }
+        return true;
+    } else {
+        return true;
+    }
 }
 
 bool cQuestTask::cQuestProcess::resultMyQstFlagOff(s32 flagNo, s32 param02, s32 param03, s32 param04) {

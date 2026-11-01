@@ -31,7 +31,7 @@ cZoneLayout::cZoneLayout(const MtDTI* pGroupManagerDTI) {
     /* stub */
 }
 
-cZoneLayout::~cZoneLayout() {
+__attribute__((noinline)) cZoneLayout::~cZoneLayout() {
     DDON_STUB("cZoneLayout::~cZoneLayout")
     /* stub */
 }

@@ -19,6 +19,7 @@ struct SceImeKeycode;
 struct SceImeParamExtended;
 class cInputTextKeyboardHook;
 class cMenuEditClanMessage;
+class sBrowser;
 
 // Declarations
 class sKeyboardInterface;
@@ -39,6 +40,7 @@ using uint32_t = __uint32_t;
 class sKeyboardInterface : public cSystem
 {
     friend class cMenuEditClanMessage;
+    friend class sBrowser;
 public:
     enum MODE
     {

@@ -92,7 +92,7 @@ inline uControlNpc::uControlNpc() {
     mIsSelfDeleteContextInst = true;
 }
 
-uControlNpc::~uControlNpc() {
+__attribute__((noinline)) uControlNpc::~uControlNpc() {
     DDON_STUB("uControlNpc::~uControlNpc")
     /* stub */
 }
@@ -137,14 +137,78 @@ __attribute__((weak)) MT_CTSTR uControlNpc::getName() {
     return {};
 }
 
-__attribute__((weak)) bool uControlNpc::isDispClassName() {
-    DDON_STUB("uControlNpc::isDispClassName")
-    return {};
+bool uControlNpc::isDispClassName() {
+    if (!mIsForceListTalk) {
+        if (mLayout.mQuestId != 0) {
+            return false;
+        } else {
+            sNpcManager* t0 = sNpcManager::getInstance();
+            if (t0->isHaveFunction(static_cast<u32>(getNpcId()))) {
+                sNpcManager* t1 = sNpcManager::getInstance();
+                if (t1->isHaveEnableFunction(static_cast<u32>(getNpcId()))) {
+                    return (*mFSMFilePath.ptr()) == 0;
+                } else {
+                    return false;
+                }
+            } else {
+                return (*mFSMFilePath.ptr()) == 0;
+            }
+        }
+    } else {
+        sNpcManager* t0 = sNpcManager::getInstance();
+        if (t0->isHaveFunction(static_cast<u32>(getNpcId()))) {
+            sNpcManager* t1 = sNpcManager::getInstance();
+            if (t1->isHaveEnableFunction(static_cast<u32>(getNpcId()))) {
+                return (*mFSMFilePath.ptr()) == 0;
+            } else {
+                return false;
+            }
+        } else {
+            return (*mFSMFilePath.ptr()) == 0;
+        }
+    }
 }
 
-__attribute__((weak)) MT_CTSTR uControlNpc::getClassName() {
-    DDON_STUB("uControlNpc::getClassName")
-    return {};
+MT_CTSTR uControlNpc::getClassName() {
+    if (!mIsForceListTalk) {
+        if (mLayout.mQuestId != 0) {
+            return "";
+        } else {
+            sNpcManager* t0 = sNpcManager::getInstance();
+            if (t0->isHaveFunction(static_cast<u32>(getNpcId()))) {
+                sNpcManager* t1 = sNpcManager::getInstance();
+                if (t1->isHaveEnableFunction(static_cast<u32>(getNpcId()))) {
+                    if ((*mFSMFilePath.ptr()) == 0) {
+                        return mClassName.ptr();
+                    }
+                }
+                return "";
+            } else {
+                if ((*mFSMFilePath.ptr()) == 0) {
+                    return mClassName.ptr();
+                } else {
+                    return "";
+                }
+            }
+        }
+    } else {
+        sNpcManager* t0 = sNpcManager::getInstance();
+        if (t0->isHaveFunction(static_cast<u32>(getNpcId()))) {
+            sNpcManager* t1 = sNpcManager::getInstance();
+            if (t1->isHaveEnableFunction(static_cast<u32>(getNpcId()))) {
+                if ((*mFSMFilePath.ptr()) == 0) {
+                    return mClassName.ptr();
+                }
+            }
+            return "";
+        } else {
+            if ((*mFSMFilePath.ptr()) == 0) {
+                return mClassName.ptr();
+            } else {
+                return "";
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uControlNpc::setNpcName(MT_CTSTR name) {

@@ -37,7 +37,7 @@ uSimSoftBody::uSimSoftBody() {
     /* stub */
 }
 
-uSimSoftBody::~uSimSoftBody() {
+__attribute__((noinline)) uSimSoftBody::~uSimSoftBody() {
     DDON_STUB("uSimSoftBody::~uSimSoftBody")
     /* stub */
 }

@@ -7,6 +7,7 @@
 class cGeneralPoint;
 class cpJob06;
 class cpKeyCommand;
+class sGeneralPoint;
 
 // Declarations
 class cGeneralPointPtr;
@@ -20,6 +21,7 @@ class cGeneralPointPtr
 {
     friend class cpJob06;
     friend class cpKeyCommand;
+    friend class sGeneralPoint;
 public:
     cGeneralPointPtr();
     cGeneralPointPtr(const cGeneralPointPtr& src);

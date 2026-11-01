@@ -303,7 +303,7 @@ uGUIMyRoomPopup::uGUIMyRoomPopup() {
     /* stub */
 }
 
-uGUIMyRoomPopup::~uGUIMyRoomPopup() {
+__attribute__((noinline)) uGUIMyRoomPopup::~uGUIMyRoomPopup() {
     DDON_STUB("uGUIMyRoomPopup::~uGUIMyRoomPopup")
     /* stub */
 }

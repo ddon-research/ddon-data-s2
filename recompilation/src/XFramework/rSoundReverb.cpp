@@ -21,7 +21,7 @@ inline void rSoundReverb::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundReverb::DTI)->memFree(p_addr);
 }
 
-rSoundReverb::~rSoundReverb() {
+__attribute__((noinline)) rSoundReverb::~rSoundReverb() {
     DDON_STUB("rSoundReverb::~rSoundReverb")
     /* stub */
 }

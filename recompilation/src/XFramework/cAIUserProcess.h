@@ -14,11 +14,13 @@ class MtDTI;
 class MtObject;
 class MtPropertyList;
 class MtString;
+class cAISvUserProcess;
 
 // Declarations
 class cAICopiableParameter;
 class cAIUserProcess;
 class cAIUserProcessCallback;
+class cAIUserProcessContainer;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -64,6 +66,7 @@ public:
 
 class cAIUserProcess : public cAIObject
 {
+    friend class cAIUserProcessContainer;
 public:
     enum EXAMINE_RESULT
     {
@@ -150,6 +153,57 @@ public:
     virtual s32 process(MtObject* pOwner, MtObject* pParam, MtObject* pCaller);  // vtable slot 6
 protected:
     CALLBACK_FUNC mpFunc;  // offset: 0x30
+public:
+    static MyDTI DTI;
+};
+
+class cAIUserProcessContainer : public cAIObject
+{
+    friend class cAISvUserProcess;
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cAIUserProcessContainer(MT_CTSTR n);
+    virtual ~cAIUserProcessContainer();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    void setName(MT_CTSTR n);
+    MtString& getName();
+    void addProcess(cAIUserProcess* pProc);
+    void removeProcess(cAIUserProcess* pProc);
+    void eraseProcess(cAIUserProcess* pProcess);
+    void eraseProcessAll();
+    u32 getProcessNum();
+    void setProcessNum(u32 num);
+    cAIUserProcess* getProcess(u32 index);
+    cAIUserProcess* searchProcess(MT_CTSTR n);
+    void setProcess(cAIUserProcess* pc, u32 index);
+protected:
+    MtString mName;  // offset: 0x8
+    cAIUserProcess* mpProcessListTop;  // offset: 0x10
+    cAIUserProcess* mpProcessListBottom;  // offset: 0x18
+private:
+    cAIUserProcessContainer* mpPrev;  // offset: 0x20
+    cAIUserProcessContainer* mpNext;  // offset: 0x28
 public:
     static MyDTI DTI;
 };

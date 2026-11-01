@@ -110,9 +110,8 @@ void cCraftParam::setPlusParam(u8 plus, rItemList::rItemParam* pItemParam) {
     mCraftPlusParam = plus;
 }
 
-__attribute__((weak)) u32 cCraftParam::getElementEquipNum() const {
-    DDON_STUB("cCraftParam::getElementEquipNum")
-    return {};
+u32 cCraftParam::getElementEquipNum() const {
+    return static_cast<u32>(((((mCraftElementItemNo[0] != 0) - (mCraftElementItemNo[1] <= 0u)) - (mCraftElementItemNo[2] <= 0u)) - (mCraftElementItemNo[3] <= 0u)) + 3);
 }
 
 cCraftParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

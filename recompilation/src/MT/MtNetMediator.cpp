@@ -10,8 +10,8 @@
 #include "MtNetUtilityPS4.h"
 #include "MtString.h"
 #include "MtSynchronize.h"
-#include "../generated/shared/_rtc.h"
-#include "../generated/shared/np_auth.h"
+#include "../generated/rCharacterEditCameraParam/_rtc.h"
+#include "../generated/rCharacterEditCameraParam/np_auth.h"
 #include "../generated/shared/np_common.h"
 #include "../generated/shared/np_npid.h"
 #ifndef DDON_STUB
@@ -23,7 +23,7 @@ MtNetMediator::MtNetMediator() {
     /* stub */
 }
 
-MtNetMediator::~MtNetMediator() {
+__attribute__((noinline)) MtNetMediator::~MtNetMediator() {
     DDON_STUB("MtNetMediator::~MtNetMediator")
     /* stub */
 }

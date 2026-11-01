@@ -175,11 +175,15 @@ const MtDTI& cAIFSMNode::getDTI() const {
     return cAIFSMNode::DTI;
 }
 
+inline void* cAIFSMNode::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIFSMNode::DTI)->memAlloc(sz, align, cAIFSMNode::DTI.mID);
+}
+
 inline void cAIFSMNode::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAIFSMNode::DTI)->memFree(p_addr);
 }
 
-cAIFSMNode::~cAIFSMNode() {
+__attribute__((noinline)) cAIFSMNode::~cAIFSMNode() {
     DDON_STUB("cAIFSMNode::~cAIFSMNode")
     /* stub */
 }
@@ -265,13 +269,16 @@ cAIFSMNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u3
 
 cAIFSMNode::MyDTI cAIFSMNode::DTI("cAIFSMNode", &::cAIResource::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIFSMNode::MyDTI::newInstance() const {
-    DDON_STUB("cAIFSMNode::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIFSMNode::MyDTI::newInstance() const {
+    return new (16u) cAIFSMNode;
 }
 
 const MtDTI& rAIFSM::getDTI() const {
     return rAIFSM::DTI;
+}
+
+inline void* rAIFSM::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rAIFSM::DTI)->memAlloc(sz, align, rAIFSM::DTI.mID);
 }
 
 rAIFSM::~rAIFSM() {
@@ -337,8 +344,7 @@ rAIFSM::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 at
 
 rAIFSM::MyDTI rAIFSM::DTI("rAIFSM", &::cResource::DTI, 144ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rAIFSM::MyDTI::newInstance() const {
-    DDON_STUB("rAIFSM::MyDTI::newInstance")
-    return nullptr;
+MtObject* rAIFSM::MyDTI::newInstance() const {
+    return new (16u) rAIFSM;
 }
 

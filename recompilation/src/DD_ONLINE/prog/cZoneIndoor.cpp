@@ -2,10 +2,12 @@
 #include <new>
 #include "cZoneIndoor.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOMath.h"
+#include "uSoundTrigger.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -56,4 +58,83 @@ cIndoorSkyFogParam::MyDTI cIndoorSkyFogParam::DTI("cIndoorSkyFogParam", &::MtObj
 MtObject* cIndoorSkyFogParam::MyDTI::newInstance() const {
     return new (16u) cIndoorSkyFogParam;
 }
+
+const MtDTI& cZoneIndoorGrassOff::getDTI() const {
+    return cZoneIndoorGrassOff::DTI;
+}
+
+inline void* cZoneIndoorGrassOff::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cZoneIndoorGrassOff::DTI)->memAlloc(sz, align, cZoneIndoorGrassOff::DTI.getID());
+}
+
+inline void cZoneIndoorGrassOff::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cZoneIndoorGrassOff::DTI)->memFree(p_addr);
+}
+
+cZoneIndoorGrassOff::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cZoneIndoorGrassOff::MyDTI cZoneIndoorGrassOff::DTI("cZoneIndoorGrassOff", &::nSoundTrigger::cCategory::DTI, 32ul, 0u, 0u);
+
+MtObject* cZoneIndoorGrassOff::MyDTI::newInstance() const {
+    return new (16u) cZoneIndoorGrassOff;
+}
+
+const MtDTI& cZoneIndoorLight::getDTI() const {
+    return cZoneIndoorLight::DTI;
+}
+
+inline void cZoneIndoorLight::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cZoneIndoorLight::DTI)->memFree(p_addr);
+}
+
+__attribute__((noinline)) cZoneIndoorLight::~cZoneIndoorLight() {
+    DDON_STUB("cZoneIndoorLight::~cZoneIndoorLight")
+    /* stub */
+}
+
+__attribute__((weak)) const cIndoorSkyFogParam* cZoneIndoorLight::getDayFogParam(u32 WeatherId) {
+    DDON_STUB("cZoneIndoorLight::getDayFogParam")
+    return nullptr;
+}
+
+__attribute__((weak)) const cIndoorSkyFogParam* cZoneIndoorLight::getNightFogParam(u32 WeatherId) {
+    DDON_STUB("cZoneIndoorLight::getNightFogParam")
+    return nullptr;
+}
+
+__attribute__((weak)) void cZoneIndoorLight::createProperty(MtPropertyList& s) {
+    DDON_STUB("cZoneIndoorLight::createProperty")
+    /* stub */
+}
+
+cZoneIndoorLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cZoneIndoorLight::MyDTI cZoneIndoorLight::DTI("cZoneIndoorLight", &::nSoundTrigger::cCategory::DTI, 128ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cZoneIndoorLight::MyDTI::newInstance() const {
+    DDON_STUB("cZoneIndoorLight::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cZoneIndoorWindCtrl::getDTI() const {
+    return cZoneIndoorWindCtrl::DTI;
+}
+
+inline void* cZoneIndoorWindCtrl::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cZoneIndoorWindCtrl::DTI)->memAlloc(sz, align, cZoneIndoorWindCtrl::DTI.getID());
+}
+
+inline void cZoneIndoorWindCtrl::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cZoneIndoorWindCtrl::DTI)->memFree(p_addr);
+}
+
+cZoneIndoorWindCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cZoneIndoorWindCtrl::MyDTI cZoneIndoorWindCtrl::DTI("cZoneIndoorWindCtrl", &::nSoundTrigger::cCategory::DTI, 32ul, 0u, 0u);
+
+MtObject* cZoneIndoorWindCtrl::MyDTI::newInstance() const {
+    return new (16u) cZoneIndoorWindCtrl;
+}
+
+template MtTypedArray<cIndoorSkyFogParam>::~MtTypedArray();
 

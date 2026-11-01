@@ -358,6 +358,37 @@ __attribute__((weak)) MtObject* cContextInstHm::MyDTI::newInstance() const {
     return nullptr;
 }
 
+const MtDTI& cContextInstNpc::getDTI() const {
+    return cContextInstNpc::DTI;
+}
+
+cContextInstNpc::~cContextInstNpc() {
+    DDON_STUB("cContextInstNpc::~cContextInstNpc")
+    /* stub */
+}
+
+void cContextInstNpc::createProperty(MtPropertyList& s) {
+    this->cContextInstHm::createProperty(s);
+}
+
+MtUI* cContextInstNpc::createUI(MtProperty& prop) {
+    return this->cContext::createUI(prop);
+}
+
+__attribute__((weak)) void cContextInstNpc::reset() {
+    DDON_STUB("cContextInstNpc::reset")
+    /* stub */
+}
+
+cContextInstNpc::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cContextInstNpc::MyDTI cContextInstNpc::DTI("cContextInstNpc", &::cContextInstHm::DTI, 16784ul, 0x500A0000u, 0u);
+
+__attribute__((weak)) MtObject* cContextInstNpc::MyDTI::newInstance() const {
+    DDON_STUB("cContextInstNpc::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& cContextInstance::getDTI() const {
     return cContextInstance::DTI;
 }

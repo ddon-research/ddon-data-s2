@@ -6447,6 +6447,10 @@ inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_START_NTC::getAllocator(
     return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_START_NTC::DTI);
 }
 
+inline void* nUserSession::CPacket_S2C_GP_COURSE_START_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_START_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_START_NTC::DTI.getID());
+}
+
 __attribute__((weak)) void nUserSession::CPacket_S2C_GP_COURSE_START_NTC::operator delete(void* p_addr) {
     ::nUserSession::CPacket_S2C_GP_COURSE_START_NTC::getAllocator()->memFree(p_addr);
 }
@@ -6455,9 +6459,8 @@ nUserSession::CPacket_S2C_GP_COURSE_START_NTC::MyDTI::MyDTI(MT_CTSTR class_name,
 
 nUserSession::CPacket_S2C_GP_COURSE_START_NTC::MyDTI nUserSession::CPacket_S2C_GP_COURSE_START_NTC::DTI("CPacket_S2C_GP_COURSE_START_NTC", &::CPacketDataBase::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_COURSE_START_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_COURSE_START_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_COURSE_START_NTC::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_GP_COURSE_START_NTC;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::getDTI() const {

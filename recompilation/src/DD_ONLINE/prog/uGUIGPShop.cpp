@@ -88,7 +88,7 @@ __attribute__((weak)) void uGUIGPShop::setSystemMessageForBuy() {
     /* stub */
 }
 
-uGUIGPShop::~uGUIGPShop() {
+__attribute__((noinline)) uGUIGPShop::~uGUIGPShop() {
     DDON_STUB("uGUIGPShop::~uGUIGPShop")
     /* stub */
 }

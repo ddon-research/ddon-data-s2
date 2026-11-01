@@ -40,7 +40,7 @@ inline void uGUIMenuAreaInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::DTI)->memFree(p_addr);
 }
 
-uGUIMenuAreaInfo::~uGUIMenuAreaInfo() {
+__attribute__((noinline)) uGUIMenuAreaInfo::~uGUIMenuAreaInfo() {
     DDON_STUB("uGUIMenuAreaInfo::~uGUIMenuAreaInfo")
     /* stub */
 }

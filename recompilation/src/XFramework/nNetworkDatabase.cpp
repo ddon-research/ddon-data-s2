@@ -31,7 +31,7 @@ nNetwork::SessionDatabase::SessionDatabase() {
     /* stub */
 }
 
-nNetwork::SessionDatabase::~SessionDatabase() {
+__attribute__((noinline)) nNetwork::SessionDatabase::~SessionDatabase() {
     DDON_STUB("nNetwork::SessionDatabase::~SessionDatabase")
     /* stub */
 }

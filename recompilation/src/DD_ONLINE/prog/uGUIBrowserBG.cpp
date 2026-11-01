@@ -178,14 +178,10 @@ void uGUIBrowserBG::kill() {
 void uGUIBrowserBG::adjustScale() {
     this->uGUIBase::adjustScale();
     sGUI* t0 = sGUI::getInstance();
-    float t1 = 1.0f;
-    f32 t2 = cGUIUtility::getScaleForDefaultResolution(t1);
-    f32 t3 = mPos.x;
-    f32 t4 = mWebSizeW;
-    float t5 = 32.0f;
-    f32 t6 = mPos.y;
-    static_cast<sGUIExt*>(t0)->mBrowserDispPos.x = static_cast<int>(t3 - (t4 * t2));
-    static_cast<sGUIExt*>(t0)->mBrowserDispPos.y = static_cast<int>(t6 + (t5 * t2));
+    f32 t1 = cGUIUtility::getScaleForDefaultResolution(1.0f);
+    f32 t2 = mPos.y;
+    static_cast<sGUIExt*>(t0)->mBrowserDispPos.x = static_cast<int>(mPos.x - (mWebSizeW * t1));
+    static_cast<sGUIExt*>(t0)->mBrowserDispPos.y = static_cast<int>(t2 + (32.0f * t1));
 }
 
 bool uGUIBrowserBG::loadResource() {

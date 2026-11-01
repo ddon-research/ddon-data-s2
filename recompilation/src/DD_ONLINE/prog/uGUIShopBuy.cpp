@@ -42,7 +42,7 @@ inline void uGUIShopBuy::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIShopBuy::DTI)->memFree(p_addr);
 }
 
-uGUIShopBuy::~uGUIShopBuy() {
+__attribute__((noinline)) uGUIShopBuy::~uGUIShopBuy() {
     DDON_STUB("uGUIShopBuy::~uGUIShopBuy")
     /* stub */
 }

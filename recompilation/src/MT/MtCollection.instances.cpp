@@ -117,6 +117,7 @@
 #include "../DD_ONLINE/prog/rWaypoint.h"
 #include "../DD_ONLINE/prog/rWaypoint2.h"
 #include "../DD_ONLINE/prog/sAIPawnTalkMgr.h"
+#include "../DD_ONLINE/prog/sBazaarManager.h"
 #include "../DD_ONLINE/prog/sCaplinkManager.h"
 #include "../XFramework/sCollision.h"
 #include "../DD_ONLINE/prog/sControlManager.h"
@@ -142,12 +143,15 @@
 #include "../DD_ONLINE/prog/uGUIBase.h"
 #include "../DD_ONLINE/prog/uGUICaplinkFriendList.h"
 #include "../DD_ONLINE/prog/uGUICaplinkMenuBase.h"
+#include "../DD_ONLINE/prog/uGUICharaEditPartsWrap.h"
+#include "../DD_ONLINE/prog/uGUICharacterEdit.h"
 #include "../DD_ONLINE/prog/uGUICommunityList.h"
 #include "../DD_ONLINE/prog/uGUICredit.h"
 #include "../DD_ONLINE/prog/uGUIEntryBoard.h"
 #include "../DD_ONLINE/prog/uGUIEntryBoardInfo.h"
 #include "../DD_ONLINE/prog/uGUIGiveAndTake.h"
 #include "../DD_ONLINE/prog/uGUIItem01.h"
+#include "../DD_ONLINE/prog/uGUIJobSelect.h"
 #include "../DD_ONLINE/prog/uGUIMap.h"
 #include "../DD_ONLINE/prog/uGUIMenuTutorial.h"
 #include "../DD_ONLINE/prog/uGUIMissionInfo.h"
@@ -159,6 +163,7 @@
 #include "../DD_ONLINE/prog/uGUIPopDetail01.h"
 #include "../DD_ONLINE/prog/uGUIPopFilter.h"
 #include "../DD_ONLINE/prog/uGUIPopListDialog.h"
+#include "../DD_ONLINE/prog/uGUIQuestDelivery.h"
 #include "../DD_ONLINE/prog/uGUIRimWarp.h"
 #include "../DD_ONLINE/prog/uGUISystemMsg.h"
 #include "../DD_ONLINE/prog/uGUIsMenuBase.h"
@@ -624,8 +629,6 @@ template MtTypedArray<nCaplink::cAchievementRewardInfo>::~MtTypedArray();
 template MtTypedArray<nEquipAbilityInfo::cEquipAbilityData>::~MtTypedArray();
 
 template MtTypedArray<nQuest::SCHEDULE_ID>::~MtTypedArray();
-
-template MtTypedArray<nQuest::cGUIBoardData>::~MtTypedArray();
 
 template MtTypedArray<nQuest::cQuestMarker>::~MtTypedArray();
 

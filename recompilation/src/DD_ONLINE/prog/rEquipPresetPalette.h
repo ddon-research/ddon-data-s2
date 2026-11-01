@@ -6,7 +6,7 @@
 // Dependencies
 #include "../../MT/MtDTI.h"
 #include "cCharacterEditPaletteBase.h"
-#include "../../generated/shared/nCharacterEdit.h"
+#include "nCharacterEdit.h"
 #include "rTbl2.h"
 
 // Forward declarations

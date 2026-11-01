@@ -216,6 +216,15 @@ namespace nGUIExt {
 }  // namespace nGUIExt
 
 namespace nGUIExt {
+    enum QUEST_DISP_MODE
+    {
+        MODE_BOARD_QUEST = 0,
+        MODE_CLAN_MISSION = 1,
+        MODE_NUM = 2,
+    };
+}  // namespace nGUIExt
+
+namespace nGUIExt {
     enum REQ_DIALOG_TYPE
     {
         DIALOG_TYPE_NORMAL = 0,

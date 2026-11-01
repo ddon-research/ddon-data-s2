@@ -117,9 +117,59 @@ void cQuestSvRequestManager::release() {
     mQuestSvRequestQueue.mLength = 0;
 }
 
-__attribute__((weak)) void cQuestSvRequestManager::cancelQuestProgress() {
-    DDON_STUB("cQuestSvRequestManager::cancelQuestProgress")
-    /* stub */
+void cQuestSvRequestManager::cancelQuestProgress() {
+    if (mpQuestProgressReq != nullptr) {
+        if (!mpQuestProgressReq->waitsResult()) {
+            mpQuestProgressReq->resetParam();
+            u32 v0_0 = mQuestSvRequestQueue.mLength;
+            if (v0_0 != 0) {
+                cQuestSvReqQuestProgress* v0_5 = mpQuestProgressReq;
+                MtObject* * v0_1 = mQuestSvRequestQueue.mpArray;
+                unsigned int i0_3 = 0;
+                u32 v3_0;
+                unsigned int v4_1;
+                u32 v4_2;
+                unsigned int v4_3;
+                for (;;) {
+                    if (v0_5 == v0_1[i0_3]) {
+                        if (!mQuestSvRequestQueue.mAutoDelete) {
+                            v3_0 = v0_0;
+                        } else {
+                            if (v0_5 == nullptr) {
+                                v3_0 = v0_0;
+                            } else {
+                                delete v0_5;
+                                v3_0 = mQuestSvRequestQueue.mLength;
+                            }
+                        }
+                        if ((i0_3 + 1u) < v3_0) {
+                            v4_1 = i0_3 + 1u;
+                            v4_2 = v3_0;
+                            v4_3 = i0_3;
+                            for (;;) {
+                                mQuestSvRequestQueue.mpArray[v4_3] = mQuestSvRequestQueue.mpArray[v4_1];
+                                if (v4_2 != (v4_1 + 1u)) {
+                                    v4_3 = v4_1;
+                                    v4_1 = v4_1 + 1u;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                        mQuestSvRequestQueue.mLength = v3_0 - 1u;
+                        break;
+                    } else {
+                        if ((i0_3 + 1u) < v0_0) {
+                            i0_3 = i0_3 + 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            mpQuestProgressReq = nullptr;
+        }
+    }
 }
 
 cQuestSvRequestManager::cQuestSvRequestManager() {

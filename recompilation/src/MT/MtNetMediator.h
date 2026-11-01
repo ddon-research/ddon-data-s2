@@ -10,8 +10,8 @@
 #include "MtNetSession.h"
 #include "MtNetUtilityPS4.h"
 #include "MtString.h"
-#include "../generated/shared/_rtc.h"
-#include "../generated/shared/np_auth.h"
+#include "../generated/rCharacterEditCameraParam/_rtc.h"
+#include "../generated/rCharacterEditCameraParam/np_auth.h"
 #include "../generated/shared/np_common.h"
 #include "../generated/shared/np_npid.h"
 

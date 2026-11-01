@@ -44,6 +44,10 @@ inline MtAllocator* CDataCharacterName::getAllocator() {
     return MtMemoryAllocator::getAllocator(CDataCharacterName::DTI);
 }
 
+inline void* CDataCharacterName::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataCharacterName::DTI)->memAlloc(sz, align, CDataCharacterName::DTI.getID());
+}
+
 __attribute__((weak)) void CDataCharacterName::operator delete(void* p_addr) {
     CDataCharacterName::getAllocator()->memFree(p_addr);
 }
@@ -57,9 +61,8 @@ CDataCharacterName::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 CDataCharacterName::MyDTI CDataCharacterName::DTI("CDataCharacterName", &::CPacketDataBase::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataCharacterName::MyDTI::newInstance() const {
-    DDON_STUB("CDataCharacterName::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataCharacterName::MyDTI::newInstance() const {
+    return new (16u) CDataCharacterName;
 }
 
 const MtDTI& CDataCommunityCharacterBaseInfo::getDTI() const {

@@ -49,7 +49,7 @@ inline void cpJob06::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cpJob06::DTI)->memFree(p_addr);
 }
 
-cpJob06::~cpJob06() {
+__attribute__((noinline)) cpJob06::~cpJob06() {
     DDON_STUB("cpJob06::~cpJob06")
     /* stub */
 }
@@ -469,7 +469,7 @@ s32 cpJob06::getCS12SizeLevel(s32 size, bool isLv2) {
                 if (size <= 59) {
                     if (size <= 43) {
                         if (size <= 31) {
-                            return static_cast<s32>(static_cast<unsigned int>(static_cast<unsigned long>(size > 19) + 1));
+                            return (size <= 19) ? 1 : 2;
                         } else {
                             return 3;
                         }
@@ -489,7 +489,7 @@ s32 cpJob06::getCS12SizeLevel(s32 size, bool isLv2) {
         if (size <= 59) {
             if (size <= 43) {
                 if (size <= 31) {
-                    return static_cast<s32>(static_cast<unsigned int>(static_cast<unsigned long>(size > 19) + 1));
+                    return (size <= 19) ? 1 : 2;
                 } else {
                     return 3;
                 }

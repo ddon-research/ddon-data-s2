@@ -19,8 +19,7 @@ __attribute__((weak)) void nCaplink::ContextListener::operator delete(void* p_ad
 }
 
 nCaplink::ContextListener::ContextListener() {
-    DDON_STUB("nCaplink::ContextListener::ContextListener")
-    /* stub */
+    mStatus = 0;
 }
 
 nCaplink::ContextListener::~ContextListener() {
@@ -28,9 +27,20 @@ nCaplink::ContextListener::~ContextListener() {
     /* stub */
 }
 
-__attribute__((weak)) void nCaplink::ContextListener::init() {
-    DDON_STUB("nCaplink::ContextListener::init")
-    /* stub */
+void nCaplink::ContextListener::init() {
+    mStatus = 0;
+    mErrorType = 0;
+    mErrorCode = 0;
+    if (mDetailMessage.value == nullptr) {
+        return;
+    }
+    if (static_cast<const void*>("") == static_cast<const void*>(&mDetailMessage.value->str)) {
+        return;
+    }
+    if (::__atomic_fetch_add(&mDetailMessage.value->ref, -1, __ATOMIC_SEQ_CST) == 1) {
+        (::MtString::mpAllocator)->memFree(static_cast<void*>(mDetailMessage.value));
+    }
+    mDetailMessage.value = nullptr;
 }
 
 nCaplink::ContextListener::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

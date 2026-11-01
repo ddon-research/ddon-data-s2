@@ -71,7 +71,7 @@ uDDOModel::uDDOModel() {
     /* stub */
 }
 
-uDDOModel::~uDDOModel() {
+__attribute__((noinline)) uDDOModel::~uDDOModel() {
     DDON_STUB("uDDOModel::~uDDOModel")
     /* stub */
 }

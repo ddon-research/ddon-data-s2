@@ -4,7 +4,7 @@
 #include <cstddef>
 
 // Dependencies
-#include "np_npid.h"
+#include "../shared/np_npid.h"
 
 // Forward declarations
 struct SceNpId;

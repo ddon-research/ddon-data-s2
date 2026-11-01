@@ -194,6 +194,11 @@ public:
     static MyDTI DTI;
 };
 
+inline cWeatherScriptCmd::cWeatherScriptCmd() : mEnableStageNo(), mDisableStageNo() {
+    this->mBeginFrame = 0.0f;
+    this->mEndFrame = 0.0f;
+}
+
 inline cWeatherScriptIO::cWeatherScriptIO() {
     this->mWSCParams.::MtArray::mAutoDelete = true;
     this->mMoveFrame = 0.0f;

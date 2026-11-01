@@ -17,7 +17,7 @@ nNetwork::Transport::Transport() {
     /* stub */
 }
 
-nNetwork::Transport::~Transport() {
+__attribute__((noinline)) nNetwork::Transport::~Transport() {
     DDON_STUB("nNetwork::Transport::~Transport")
     /* stub */
 }

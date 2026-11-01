@@ -37,6 +37,11 @@ class uSoundSequenceSe;
 // Declarations
 class cSoundTriggerLayoutInfo;
 class cSoundTriggerListener;
+namespace nSoundTrigger { class cBaseContents; }
+namespace nSoundTrigger { class cCategory; }
+namespace nSoundTrigger { class cPlaySeqSeContents; }
+namespace nSoundTrigger { class cSeContents; }
+namespace nSoundTrigger { class cStreamContents; }
 class uSoundTrigger;
 
 namespace nSoundTrigger {
@@ -154,6 +159,185 @@ public:
     static MyDTI DTI;
 };
 
+namespace nSoundTrigger {
+    class cCategory : public nSoundZoneBase::cSoundZoneContents
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cCategory();
+        virtual ~cCategory();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundTrigger
+
+namespace nSoundTrigger {
+    class cPlaySeqSeContents : public nSoundTrigger::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cPlaySeqSeContents();
+        virtual ~cPlaySeqSeContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        void copyAToB();
+        void copyBToA();
+        rSoundSequenceSe* getSequenceSeResourceA() const;
+        void setSequenceSeResourceA(rSoundSequenceSe*);
+        rSoundSequenceSe* getSequenceSeResourceB() const;
+        void setSequenceSeResourceB(rSoundSequenceSe*);
+    private:
+        rSoundSequenceSe* mpSequenceSeA;  // offset: 0x20
+        rSoundSequenceSe* mpSequenceSeB;  // offset: 0x28
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundTrigger
+
+namespace nSoundTrigger {
+    class cSeContents : public nSoundTrigger::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cSeContents();
+        virtual ~cSeContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        void copyAToB();
+        void copyBToA();
+        u32 getRequestNoA() const;
+        void setRequestNoA(u32);
+        u32 getRequestNoB() const;
+        void setRequestNoB(u32);
+        rSoundRequest* getRequestResourceA() const;
+        void setRequestResourceA(rSoundRequest*);
+        rSoundRequest* getRequestResourceB() const;
+        void setRequestResourceB(rSoundRequest*);
+    private:
+        u32 mRequestNoA;  // offset: 0x1c
+        u32 mRequestNoB;  // offset: 0x20
+        rSoundRequest* mpRequestA;  // offset: 0x28
+        rSoundRequest* mpRequestB;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundTrigger
+
+namespace nSoundTrigger {
+    class cStreamContents : public nSoundTrigger::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cStreamContents();
+        virtual ~cStreamContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        void copyAToB();
+        void copyBToA();
+        u32 getStreamRequestNoA() const;
+        void setStreamRequestNoA(u32);
+        u32 getStreamRequestNoB() const;
+        void setStreamRequestNoB(u32);
+        rSoundStreamRequest* getStreamRequestResourceA() const;
+        void setStreamRequestResourceA(rSoundStreamRequest*);
+        rSoundStreamRequest* getStreamRequestResourceB() const;
+        void setStreamRequestResourceB(rSoundStreamRequest*);
+    private:
+        u32 mStreamRequestNoA;  // offset: 0x1c
+        u32 mStreamRequestNoB;  // offset: 0x20
+        rSoundStreamRequest* mpStreamRequestA;  // offset: 0x28
+        rSoundStreamRequest* mpStreamRequestB;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundTrigger
+
 class uSoundTrigger : public uSoundZoneBase
 {
 public:
@@ -257,6 +441,45 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+namespace nSoundTrigger {
+    class cBaseContents : public nSoundTrigger::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cBaseContents();
+        virtual ~cBaseContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        u32 getOption() const;
+        void setOption(u32);
+    private:
+        u32 mOption;  // offset: 0x1c
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundTrigger
 
 inline cSoundTriggerListener::cSoundTriggerListener() {
 }

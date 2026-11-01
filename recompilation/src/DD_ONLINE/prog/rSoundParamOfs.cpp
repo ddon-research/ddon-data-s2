@@ -3,6 +3,7 @@
 #include "rSoundParamOfs.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "rTbl2.h"
@@ -47,9 +48,169 @@ inline void rSoundParamOfs::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundParamOfs::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) bool rSoundParamOfs::loadData(MtDataReader& in, cSoundParamOfs* pData) {
-    DDON_STUB("rSoundParamOfs::loadData")
-    return {};
+bool rSoundParamOfs::loadData(MtDataReader& in, cSoundParamOfs* pData) {
+    pData->mVolume = in.readF32();
+    pData->mPitchShift = in.readS16();
+    pData->mProgramNo = in.readS32();
+    unsigned int v1_0;
+    unsigned long v2_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v1_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+    } else {
+        if (in.refill()) {
+            v1_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v2_1 = 0;
+            goto region_6ef520;
+        }
+    }
+    unsigned long t0;
+    t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t1;
+    t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0 + v1_0) + 0);
+    in.mSeekPt = v1_0 + 1u;
+    v2_1 = static_cast<unsigned long>(t1) | (t0 & 0xFFFFFFFFFFFFFF00ul);
+    region_6ef520:;
+    pData->mPriority = static_cast<s8>(static_cast<unsigned char>(v2_1));
+    unsigned int v4_0;
+    unsigned long v5_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v4_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+    } else {
+        if (in.refill()) {
+            v4_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v5_1 = 0;
+            goto region_6ef54d;
+        }
+    }
+    unsigned long t2;
+    t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t3;
+    t3 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2 + v4_0) + 0);
+    in.mSeekPt = v4_0 + 1u;
+    v5_1 = static_cast<unsigned long>(t3) | (t2 & 0xFFFFFFFFFFFFFF00ul);
+    region_6ef54d:;
+    pData->mGlobal = static_cast<s8>(static_cast<unsigned char>(v5_1));
+    unsigned int v7_0;
+    unsigned long v8_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v7_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+    } else {
+        if (in.refill()) {
+            v7_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v8_1 = 0;
+            goto region_6ef57a;
+        }
+    }
+    unsigned long t4;
+    t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t5;
+    t5 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t4 + v7_0) + 0);
+    in.mSeekPt = v7_0 + 1u;
+    v8_1 = static_cast<unsigned long>(t5) | (t4 & 0xFFFFFFFFFFFFFF00ul);
+    region_6ef57a:;
+    pData->mID1 = static_cast<s8>(static_cast<unsigned char>(v8_1));
+    unsigned int v10_0;
+    unsigned long v11_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v10_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+    } else {
+        if (in.refill()) {
+            v10_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v11_1 = 0;
+            goto region_6ef5a7;
+        }
+    }
+    unsigned long t6;
+    t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t7;
+    t7 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t6 + v10_0) + 0);
+    in.mSeekPt = v10_0 + 1u;
+    v11_1 = static_cast<unsigned long>(t7) | (t6 & 0xFFFFFFFFFFFFFF00ul);
+    region_6ef5a7:;
+    pData->mID2 = static_cast<s8>(static_cast<unsigned char>(v11_1));
+    unsigned int v13_0;
+    unsigned long v14_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v13_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+    } else {
+        if (in.refill()) {
+            v13_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v14_1 = 0;
+            goto region_6ef5d4;
+        }
+    }
+    unsigned long t8;
+    t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t9;
+    t9 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t8 + v13_0) + 0);
+    in.mSeekPt = v13_0 + 1u;
+    v14_1 = static_cast<unsigned long>(t9) | (t8 & 0xFFFFFFFFFFFFFF00ul);
+    region_6ef5d4:;
+    pData->mID3 = static_cast<s8>(static_cast<unsigned char>(v14_1));
+    unsigned int v16_0;
+    unsigned long v17_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v16_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+    } else {
+        if (in.refill()) {
+            v16_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v17_1 = 0;
+            goto region_6ef601;
+        }
+    }
+    unsigned long t10;
+    t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t11;
+    t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10 + v16_0) + 0);
+    in.mSeekPt = v16_0 + 1u;
+    v17_1 = static_cast<unsigned long>(t11) | (t10 & 0xFFFFFFFFFFFFFF00ul);
+    region_6ef601:;
+    pData->mLimit = static_cast<s8>(static_cast<unsigned char>(v17_1));
+    unsigned int v19_0;
+    unsigned long v20_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v19_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+    } else {
+        if (in.refill()) {
+            v19_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v20_1 = 0;
+            goto region_6ef62e;
+        }
+    }
+    unsigned long t12;
+    t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t13;
+    t13 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t12 + v19_0) + 0);
+    in.mSeekPt = v19_0 + 1u;
+    v20_1 = static_cast<unsigned long>(t13) | (t12 & 0xFFFFFFFFFFFFFF00ul);
+    region_6ef62e:;
+    pData->mCenterVol = static_cast<s8>(static_cast<unsigned char>(v20_1));
+    pData->mVolCurveId = in.readS16();
+    pData->mEffectCurveId = in.readS16();
+    pData->mLfeCurveId = in.readS16();
+    pData->mDirectionalCurveId = in.readS16();
+    unsigned int v22_0;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) >= (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        if (!in.refill()) {
+            pData->mSubmixer = 0;
+            return true;
+        } else {
+            v22_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        }
+    } else {
+        v22_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+    }
+    unsigned char t14 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16)) + v22_0) + 0);
+    in.mSeekPt = v22_0 + 1u;
+    pData->mSubmixer = static_cast<s8>(t14);
+    return true;
 }
 
 MT_CTSTR rSoundParamOfs::getExt() const {

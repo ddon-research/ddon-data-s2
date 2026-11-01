@@ -24,6 +24,7 @@
 #include "nDDOUtility.h"
 #include "nStage.h"
 #include "rCameraParamList.h"
+#include "rEventParam.h"
 #include "rOccluderExt.h"
 #include "rSoundAttributeSe.h"
 #include "rStageConnect.h"
@@ -39,6 +40,7 @@
 #include "sContextManager.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sEventManager.h"
 #include "sFlag.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
@@ -87,7 +89,7 @@ aStage::aStage() {
     /* stub */
 }
 
-aStage::~aStage() {
+__attribute__((noinline)) aStage::~aStage() {
     DDON_STUB("aStage::~aStage")
     /* stub */
 }
@@ -1035,9 +1037,58 @@ __attribute__((weak)) void aStage::stopMoveUnit(bool sleep) {
     /* stub */
 }
 
-__attribute__((weak)) void aStage::stopMoveUnitLight(bool sleep, s32 event_no) {
-    DDON_STUB("aStage::stopMoveUnitLight")
-    /* stub */
+void aStage::stopMoveUnitLight(bool sleep, s32 event_no) {
+    cEventParam* t0 = sEventManager::getInstance()->getEventParam(event_no);
+    if (t0 == nullptr) {
+        return;
+    } else {
+        u32 t1 = sWeatherManager::getInstance()->getWeatherTimeHour();
+        if (t0->getLightCtrl() == 0) {
+            return;
+        } else {
+            if (t0->getLightCtrl() == 3) {
+                if ((t1 - 4u) <= 15u) {
+                    return;
+                }
+            } else {
+                if (t0->getLightCtrl() == 2) {
+                    if ((t1 - 4u) > 15u) {
+                        return;
+                    }
+                }
+            }
+            uScheduler* pSchdl = mpLightSchdl;
+            if (pSchdl != nullptr) {
+                if (pSchdl->uScheduler::getUnitNum() != 0) {
+                    for (unsigned int i0_3 = 0;;) {
+                        cUnit* t2 = pSchdl->uScheduler::getUnit(i0_3);
+                        if (t2 != nullptr) {
+                            if (t2->isEnable()) {
+                                if (sleep) {
+                                    sUnit::getInstance()->setUnitGroup(t2, 55u);
+                                } else {
+                                    sUnit::getInstance()->removeUnitGroup(t2, 55u);
+                                }
+                            }
+                        }
+                        if ((i0_3 + 1u) < pSchdl->uScheduler::getUnitNum()) {
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (mpStageJointCtrl != nullptr) {
+        mpStageJointCtrl->stopMoveUnitLight(sleep);
+    } else {
+        if (mpStagePartsCtrl != nullptr) {
+            mpStagePartsCtrl->stopMoveUnitLight(sleep);
+        }
+    }
+    return;
 }
 
 __attribute__((weak)) void aStage::stopMoveUnitOm(bool sleep, s32 event_no) {
@@ -1170,7 +1221,7 @@ u32 aStage::getStageFeature(u32 idx) {
 }
 
 u32 aStage::getStageFeatureNum() {
-    return static_cast<unsigned char>((((static_cast<unsigned long>(mStageFeature[0] != 0) + static_cast<unsigned long>(mStageFeature[1] != 0)) + static_cast<unsigned long>(mStageFeature[2] != 0)) + static_cast<unsigned long>(mStageFeature[3] != 0)) + static_cast<unsigned long>(mStageFeature[4] != 0));
+    return static_cast<unsigned char>(((((mStageFeature[0] != 0) + (mStageFeature[1] != 0)) + (mStageFeature[2] != 0)) + (mStageFeature[3] != 0)) + (mStageFeature[4] != 0));
 }
 
 __attribute__((weak)) void aStage::initPlantTree(rPlantTree* pRes) {

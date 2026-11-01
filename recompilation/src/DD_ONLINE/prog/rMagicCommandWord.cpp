@@ -16,6 +16,10 @@ const MtDTI& cMagicCommandWord::getDTI() const {
     return cMagicCommandWord::DTI;
 }
 
+inline void* cMagicCommandWord::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMagicCommandWord::DTI)->memAlloc(sz, align, cMagicCommandWord::DTI.getID());
+}
+
 inline void cMagicCommandWord::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMagicCommandWord::DTI)->memFree(p_addr);
 }
@@ -29,9 +33,8 @@ cMagicCommandWord::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 cMagicCommandWord::MyDTI cMagicCommandWord::DTI("cMagicCommandWord", &::MtObject::DTI, 136ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMagicCommandWord::MyDTI::newInstance() const {
-    DDON_STUB("cMagicCommandWord::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMagicCommandWord::MyDTI::newInstance() const {
+    return new (16u) cMagicCommandWord;
 }
 
 const MtDTI& rMagicCommandWord::getDTI() const {

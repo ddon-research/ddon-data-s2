@@ -19,7 +19,7 @@ nNetwork::VoiceChat::VoiceChat() {
     /* stub */
 }
 
-nNetwork::VoiceChat::~VoiceChat() {
+__attribute__((noinline)) nNetwork::VoiceChat::~VoiceChat() {
     DDON_STUB("nNetwork::VoiceChat::~VoiceChat")
     /* stub */
 }

@@ -1624,6 +1624,9 @@ inline bool uHuman::cHealSeCaller::isStamina() const {
     return this->mIsStamina;
 }
 
+inline uHuman::cLimitActCtrl::cLimitActCtrl() : mLimitActList() {
+}
+
 inline uHuman::cBlendMotionCtrl::cBlendMotionCtrl() {
     this->mIsMotionEnd = false;
     this->mIsActive = false;

@@ -708,6 +708,22 @@ inline void cThinkMgrName::cThinkMgr::clrBit() {
     this->mTblBitCtrl = 0;
 }
 
+inline void cThinkMgrName::cThinkMgr::InitRev() {
+    this->mRevTblDat[3].uRetTbl.idx = 0;
+    this->mRevTblDat[2].uRetTbl.idx = 0;
+    this->mRevTblDat[3].pThinkTblRet = nullptr;
+    this->mRevTblDat[3].uRetTbl.offset_address = 0;
+    this->mRevTblDat[1].uRetTbl.idx = 0;
+    this->mRevTblDat[2].pThinkTblRet = nullptr;
+    this->mRevTblDat[2].uRetTbl.offset_address = 0;
+    this->mRevTblDat[0].uRetTbl.idx = 0;
+    this->mRevTblDat[1].pThinkTblRet = nullptr;
+    this->mRevTblDat[1].uRetTbl.offset_address = 0;
+    this->mRevCntN = 0;
+    this->mRevTblDat[0].pThinkTblRet = nullptr;
+    this->mRevTblDat[0].uRetTbl.offset_address = 0;
+}
+
 inline void cThinkMgrName::cThinkMgr::getbackNextFlgTbl() {
     this->mpOldTopSelectThinkTbl = this->mpTempOldSelectThinkTbl;
     this->mpOldSelectThinkTbl = this->mpTempOldTopSelectThinkTbl;

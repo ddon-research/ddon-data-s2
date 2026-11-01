@@ -97,3 +97,6 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline cMagicCommandWord::cMagicCommandWord() : mWord() {
+}

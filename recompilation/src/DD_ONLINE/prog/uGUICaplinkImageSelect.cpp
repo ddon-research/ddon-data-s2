@@ -32,7 +32,7 @@ inline void uGUICaplinkImageSelect::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkImageSelect::DTI)->memFree(p_addr);
 }
 
-uGUICaplinkImageSelect::~uGUICaplinkImageSelect() {
+__attribute__((noinline)) uGUICaplinkImageSelect::~uGUICaplinkImageSelect() {
     DDON_STUB("uGUICaplinkImageSelect::~uGUICaplinkImageSelect")
     /* stub */
 }

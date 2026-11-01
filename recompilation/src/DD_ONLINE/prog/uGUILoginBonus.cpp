@@ -40,7 +40,7 @@ inline void uGUILoginBonus::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUILoginBonus::DTI)->memFree(p_addr);
 }
 
-uGUILoginBonus::~uGUILoginBonus() {
+__attribute__((noinline)) uGUILoginBonus::~uGUILoginBonus() {
     DDON_STUB("uGUILoginBonus::~uGUILoginBonus")
     /* stub */
 }

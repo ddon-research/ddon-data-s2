@@ -5,7 +5,6 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
-#include "cArcLoader.h"
 #include "cUIObject.h"
 #include "../../XFramework/cUnit.h"
 #include "sArchiveManager.h"
@@ -34,7 +33,7 @@ inline void cGUIClanExecutor::operator delete(void* p_addr) {
 }
 
 cGUIClanExecutor::cGUIClanExecutor() {
-    mArc = static_cast<TICKET>(sArchiveManager::INVALID_TICKET);
+    mArc = sArchiveManager::INVALID_TICKET;
     mProc = PR_NONE;
     mOldProc = PR_NONE;
     mpUnitTopSel = nullptr;
@@ -62,7 +61,7 @@ cGUIClanExecutor::~cGUIClanExecutor() {
         return;
     }
     sArchiveManager::getInstance()->returnTicket(mArc);
-    mArc = static_cast<TICKET>(t0);
+    mArc = t0;
 }
 
 void cGUIClanExecutor::createProperty(MtPropertyList& s) {
@@ -106,7 +105,7 @@ void cGUIClanExecutor::start(u32 flags) {
         return;
     }
     sArchiveManager::getInstance()->returnTicket(mArc);
-    mArc = static_cast<TICKET>(t0);
+    mArc = t0;
 }
 
 MtObject* cGUIClanExecutor::MyDTI::newInstance() const {

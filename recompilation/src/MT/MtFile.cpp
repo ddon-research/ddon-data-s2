@@ -247,7 +247,7 @@ MtFile::FileInfo::FileInfo() {
     /* stub */
 }
 
-MtFile::FileInfo::~FileInfo() {
+__attribute__((noinline)) MtFile::FileInfo::~FileInfo() {
     DDON_STUB("MtFile::FileInfo::~FileInfo")
     /* stub */
 }

@@ -2,6 +2,7 @@
 #include <new>
 #include <_pthread.h>
 #include <stdlib.h>
+#include <string.h>
 #include "sUnitManager.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -14,6 +15,7 @@
 #include "../../XFramework/cUnit.h"
 #include "nCastUtility.h"
 #include "nLayout.h"
+#include "../../XFramework/sUnit.h"
 #include "../../XFramework/uBaseModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -32,7 +34,7 @@ sUnitManager::sUnitManager() {
     /* stub */
 }
 
-sUnitManager::~sUnitManager() {
+__attribute__((noinline)) sUnitManager::~sUnitManager() {
     DDON_STUB("sUnitManager::~sUnitManager")
     /* stub */
 }
@@ -86,9 +88,77 @@ __attribute__((weak)) bool sUnitManager::update() {
     return {};
 }
 
-__attribute__((weak)) void sUnitManager::addUnit(uBaseModel* p, u32 unique_id, u32 line, u64 unit_group, u32 add_type) {
-    DDON_STUB("sUnitManager::addUnit")
-    /* stub */
+void sUnitManager::addUnit(uBaseModel* p, u32 unique_id, u32 line, u64 unit_group, u32 add_type) {
+    if (p == nullptr) {
+        return;
+    }
+    if (add_type != 0) {
+        sUnit::getInstance()->addBottom(static_cast<MOVE_LINE>(line), static_cast<cUnit*>(p), unit_group);
+    } else {
+        sUnit::getInstance()->addTop(static_cast<MOVE_LINE>(line), static_cast<cUnit*>(p), unit_group);
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        u32 t0 = mAddArray.mLength;
+        u32 t1 = mAddArray.mBufsiz;
+        if (t0 < t1) {
+            mAddArray.mLength = t0 + 1u;
+            mAddArray.mpArray[t0] = static_cast<MtObject*>(p);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            p->mUnitParam = unique_id;
+        } else {
+            void* t2 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t1 + 32u) * 8, 16u);
+            memset(t2, 0, static_cast<size_t>(t1 + 32u) * 8);
+            memcpy(t2, static_cast<const void*>(mAddArray.mpArray), static_cast<size_t>(mAddArray.mLength) * 8);
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAddArray.mpArray));
+            mAddArray.mpArray = static_cast<MtObject* *>(t2);
+            mAddArray.mBufsiz = t1 + 32u;
+            u32 t3 = mAddArray.mLength;
+            mAddArray.mLength = t3 + 1u;
+            mAddArray.mpArray[t3] = static_cast<MtObject*>(p);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            p->mUnitParam = unique_id;
+        }
+    } else {
+        u32 t0 = mAddArray.mLength;
+        u32 t1 = mAddArray.mBufsiz;
+        if (t0 < t1) {
+            mAddArray.mLength = t0 + 1u;
+            mAddArray.mpArray[t0] = static_cast<MtObject*>(p);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            p->mUnitParam = unique_id;
+        } else {
+            void* t2 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t1 + 32u) * 8, 16u);
+            memset(t2, 0, static_cast<size_t>(t1 + 32u) * 8);
+            memcpy(t2, static_cast<const void*>(mAddArray.mpArray), static_cast<size_t>(mAddArray.mLength) * 8);
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAddArray.mpArray));
+            mAddArray.mpArray = static_cast<MtObject* *>(t2);
+            mAddArray.mBufsiz = t1 + 32u;
+            u32 t3 = mAddArray.mLength;
+            mAddArray.mLength = t3 + 1u;
+            mAddArray.mpArray[t3] = static_cast<MtObject*>(p);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            p->mUnitParam = unique_id;
+        }
+    }
 }
 
 __attribute__((weak)) estUnitType<uDDOModel, void> sUnitManager::newDDOModel(const MtDTI& dti, cUseComp* info) {
@@ -106,9 +176,89 @@ __attribute__((weak)) void sUnitManager::releaseUnit(uBaseModel* p) {
     /* stub */
 }
 
-__attribute__((weak)) void sUnitManager::releaseUnit(u32 uniqId) {
-    DDON_STUB("sUnitManager::releaseUnit")
-    /* stub */
+void sUnitManager::releaseUnit(u32 uniqId) {
+    uBaseModel* p = getLayoutUnit(uniqId);
+    if (p != nullptr) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        u32 v0_0 = mDelArray.mLength;
+        if (v0_0 != 0) {
+            MtObject* * v0_2 = mDelArray.mpArray;
+            unsigned int i0_1 = 0;
+            for (;;) {
+                if (p == v0_2[i0_1]) {
+                    break;
+                } else {
+                    if ((i0_1 + 1u) < v0_0) {
+                        i0_1 = i0_1 + 1u;
+                    } else {
+                        returnTicket(p->cUnit::getUnitParam());
+                        u32 t0 = mDelArray.mLength;
+                        u32 t1 = mDelArray.mBufsiz;
+                        if (t0 < t1) {
+                            mDelArray.mLength = t0 + 1u;
+                            mDelArray.mpArray[t0] = static_cast<MtObject*>(p);
+                        } else {
+                            void* t2 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t1 + 32u) * 8, 16u);
+                            memset(t2, 0, static_cast<size_t>(t1 + 32u) * 8);
+                            memcpy(t2, static_cast<const void*>(mDelArray.mpArray), static_cast<size_t>(mDelArray.mLength) * 8);
+                            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDelArray.mpArray));
+                            mDelArray.mpArray = static_cast<MtObject* *>(t2);
+                            mDelArray.mBufsiz = t1 + 32u;
+                            u32 t3 = mDelArray.mLength;
+                            mDelArray.mLength = t3 + 1u;
+                            mDelArray.mpArray[t3] = static_cast<MtObject*>(p);
+                        }
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                                return;
+                            }
+                        }
+                        return;
+                    }
+                }
+            }
+            if (i0_1 != 0xFFFFFFFFu) {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                        return;
+                    }
+                }
+                return;
+            }
+        }
+    } else {
+        return;
+    }
+    returnTicket(p->cUnit::getUnitParam());
+    u32 t0 = mDelArray.mLength;
+    u32 t1 = mDelArray.mBufsiz;
+    if (t0 < t1) {
+        mDelArray.mLength = t0 + 1u;
+        mDelArray.mpArray[t0] = static_cast<MtObject*>(p);
+    } else {
+        void* t2 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t1 + 32u) * 8, 16u);
+        memset(t2, 0, static_cast<size_t>(t1 + 32u) * 8);
+        memcpy(t2, static_cast<const void*>(mDelArray.mpArray), static_cast<size_t>(mDelArray.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDelArray.mpArray));
+        mDelArray.mpArray = static_cast<MtObject* *>(t2);
+        mDelArray.mBufsiz = t1 + 32u;
+        u32 t3 = mDelArray.mLength;
+        mDelArray.mLength = t3 + 1u;
+        mDelArray.mpArray[t3] = static_cast<MtObject*>(p);
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
 }
 
 __attribute__((weak)) void sUnitManager::releaseUnitAll() {

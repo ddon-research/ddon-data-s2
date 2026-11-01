@@ -4,6 +4,7 @@
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
 #include "../../../../MT/MtMemoryAllocator.h"
+#include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -30,8 +31,7 @@ CDataErrorMessage::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 CDataErrorMessage::MyDTI CDataErrorMessage::DTI("CDataErrorMessage", &::CPacketDataBase::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataErrorMessage::MyDTI::newInstance() const {
-    DDON_STUB("CDataErrorMessage::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataErrorMessage::MyDTI::newInstance() const {
+    return new (16u) CDataErrorMessage;
 }
 

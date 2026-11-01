@@ -124,9 +124,8 @@ MtUI* rTexDetailEdit::DetailParam::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) MT_CTSTR rTexDetailEdit::DetailParam::getPath() {
-    DDON_STUB("rTexDetailEdit::DetailParam::getPath")
-    return {};
+MT_CTSTR rTexDetailEdit::DetailParam::getPath() {
+    return mPath.ptr();
 }
 
 __attribute__((weak)) void rTexDetailEdit::DetailParam::setPath(const MtString& n) {

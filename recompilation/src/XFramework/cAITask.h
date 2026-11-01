@@ -15,6 +15,7 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 namespace nAI { class TaskPerformanceInfo; }
+class sAI;
 
 // Declarations
 class cAITask;
@@ -123,6 +124,7 @@ public:
 
 class cAITask : public cAIObject
 {
+    friend class sAI;
 public:
     enum TASK_STATUS
     {

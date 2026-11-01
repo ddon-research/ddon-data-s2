@@ -37,7 +37,7 @@ inline void uGUICredit::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICredit::DTI)->memFree(p_addr);
 }
 
-uGUICredit::~uGUICredit() {
+__attribute__((noinline)) uGUICredit::~uGUICredit() {
     DDON_STUB("uGUICredit::~uGUICredit")
     /* stub */
 }

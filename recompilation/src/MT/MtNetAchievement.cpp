@@ -14,7 +14,7 @@ MtNetAchievement::MtNetAchievement() {
     /* stub */
 }
 
-MtNetAchievement::~MtNetAchievement() {
+__attribute__((noinline)) MtNetAchievement::~MtNetAchievement() {
     DDON_STUB("MtNetAchievement::~MtNetAchievement")
     /* stub */
 }

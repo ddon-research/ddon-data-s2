@@ -245,7 +245,6 @@ inline rStageCustomPartsEx::HemiSphLight::HemiSphLight() {
     mNightRevColor.y = MtVector3::Zero.y;
     mNightRevColor.z = MtVector3::Zero.z;
     mNightRevColor.pad_ = 0.0f;
-    mComment.value = nullptr;
 }
 
 rStageCustomPartsEx::HemiSphLight::~HemiSphLight() {
@@ -280,7 +279,6 @@ inline rStageCustomPartsEx::InfiLight::InfiLight() {
     mNightColor.y = MtVector3::One.y;
     mNightColor.z = MtVector3::One.z;
     mNightColor.pad_ = 0.0f;
-    mComment.value = nullptr;
 }
 
 rStageCustomPartsEx::InfiLight::~InfiLight() {
@@ -314,7 +312,7 @@ inline void rStageCustomPartsEx::AreaParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rStageCustomPartsEx::AreaParam::DTI)->memFree(p_addr);
 }
 
-rStageCustomPartsEx::AreaParam::~AreaParam() {
+__attribute__((noinline)) rStageCustomPartsEx::AreaParam::~AreaParam() {
     DDON_STUB("rStageCustomPartsEx::AreaParam::~AreaParam")
     /* stub */
 }
@@ -344,7 +342,7 @@ inline void rStageCustomPartsEx::InfoEx::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rStageCustomPartsEx::InfoEx::DTI)->memFree(p_addr);
 }
 
-rStageCustomPartsEx::InfoEx::~InfoEx() {
+__attribute__((noinline)) rStageCustomPartsEx::InfoEx::~InfoEx() {
     DDON_STUB("rStageCustomPartsEx::InfoEx::~InfoEx")
     /* stub */
 }

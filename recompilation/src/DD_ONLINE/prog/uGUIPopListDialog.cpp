@@ -35,7 +35,7 @@ inline void uGUIPopListDialog::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPopListDialog::DTI)->memFree(p_addr);
 }
 
-uGUIPopListDialog::~uGUIPopListDialog() {
+__attribute__((noinline)) uGUIPopListDialog::~uGUIPopListDialog() {
     DDON_STUB("uGUIPopListDialog::~uGUIPopListDialog")
     /* stub */
 }

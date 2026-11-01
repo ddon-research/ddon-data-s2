@@ -15,7 +15,7 @@ MtNetContext::MtNetContext(s32 user_index) {
     /* stub */
 }
 
-MtNetContext::~MtNetContext() {
+__attribute__((noinline)) MtNetContext::~MtNetContext() {
     DDON_STUB("MtNetContext::~MtNetContext")
     /* stub */
 }

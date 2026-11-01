@@ -5,6 +5,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "cControl.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "rArchiveListArray.h"
@@ -212,7 +214,7 @@ void uGUIRetry::setEnable(u32 index, bool isEnable) {
             s32 t1 = t0->getCurrentPos();
             if (isEnable) {
                 cGUIInstAnimation* t2 = mItem[index].mpInstAnimText;
-                setSequenceId(t2, static_cast<unsigned int>((static_cast<unsigned long>(t1 == static_cast<int>(index)) * 3) + 1ul), false);
+                setSequenceId(t2, static_cast<u32>((t1 == static_cast<int>(index)) ? 4 : 1), false);
             } else {
                 cGUIInstAnimation* t2 = mItem[index].mpInstAnimText;
                 setSequenceId(t2, 7u, false);
@@ -220,7 +222,7 @@ void uGUIRetry::setEnable(u32 index, bool isEnable) {
         } else {
             if (isEnable) {
                 cGUIInstAnimation* t2 = mItem[index].mpInstAnimText;
-                setSequenceId(t2, static_cast<unsigned int>((static_cast<unsigned long>(index == 0) * 3) + 1ul), false);
+                setSequenceId(t2, static_cast<u32>((index == 0) ? 4 : 1), false);
             } else {
                 cGUIInstAnimation* t2 = mItem[index].mpInstAnimText;
                 setSequenceId(t2, 7u, false);
@@ -280,9 +282,23 @@ __attribute__((weak)) u32 uGUIRetry::evCtrlMouseClick(cControl::Message* msg) {
     return {};
 }
 
-__attribute__((weak)) void uGUIRetry::clearItem() {
-    DDON_STUB("uGUIRetry::clearItem")
-    /* stub */
+void uGUIRetry::clearItem() {
+    for (unsigned int i0_3 = 0;;) {
+        setInstanceVisible(reinterpret_cast<cGUIInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i0_3) + 2304)), false);
+        setInstanceVisible(reinterpret_cast<cGUIInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i0_3) + 2312)), false);
+        setObjectMessage(reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i0_3) + 2344)), "", 0u, false);
+        setObjectMessage(reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i0_3) + 2336)), "", 0u, false);
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i0_3) + 2360) = 0;
+        if ((i0_3 + 64u) != 320) {
+            i0_3 = i0_3 + 64u;
+        } else {
+            break;
+        }
+    }
+    setInstanceVisible(static_cast<cGUIInstance*>(mCount[0].mpInstAnim), false);
+    setObjectMessage(static_cast<cGUIObject*>(mCount[0].mpObjMsg), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mCount[1].mpInstAnim), false);
+    setObjectMessage(static_cast<cGUIObject*>(mCount[1].mpObjMsg), "", 0u, false);
 }
 
 uGUIRetry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -41,6 +41,7 @@ namespace nNetwork { namespace nAchievement { class Object; } }
 namespace nNetwork { namespace nRanking { class Object; } }
 namespace nNetwork { namespace nSharedMemory2 { class Object; } }
 namespace nSessionManager { class cNetSessionManager; }
+class sBazaarManager;
 class sEventManager;
 class sGame;
 class sNetworkExt;
@@ -68,6 +69,7 @@ class sNetwork : public cSystem
     friend class nNetwork::Session;
     friend class nNetwork::nRanking::Object;
     friend class nSessionManager::cNetSessionManager;
+    friend class sBazaarManager;
     friend class sEventManager;
     friend class sGame;
     friend class sNetworkExt;

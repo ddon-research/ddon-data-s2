@@ -92,7 +92,7 @@ nNetwork::nSharedMemory2::Object::Object() {
     /* stub */
 }
 
-nNetwork::nSharedMemory2::Object::~Object() {
+__attribute__((noinline)) nNetwork::nSharedMemory2::Object::~Object() {
     DDON_STUB("nNetwork::nSharedMemory2::Object::~Object")
     /* stub */
 }

@@ -57,7 +57,7 @@ sCraftManager::sCraftManager() {
     /* stub */
 }
 
-sCraftManager::~sCraftManager() {
+__attribute__((noinline)) sCraftManager::~sCraftManager() {
     DDON_STUB("sCraftManager::~sCraftManager")
     /* stub */
 }
@@ -716,7 +716,7 @@ void sCraftManager::clearPlusItemList() {
 }
 
 void sCraftManager::createPlusItemList(u32 type, u32 rank) {
-    mMaterialCache = static_cast<unsigned char>(static_cast<unsigned long>(mMaterialCache) | (static_cast<unsigned long>(type != 0) + 1));
+    mMaterialCache = static_cast<unsigned char>(static_cast<unsigned long>(mMaterialCache) | static_cast<unsigned long>((type == 0) ? 1 : 2));
     createPlusItemListSub(static_cast<rItemList::MATERIAL_CATEGORY>(static_cast<unsigned long>(type != 0) | 26), rank);
 }
 
@@ -1129,7 +1129,7 @@ sCraftManager::cCraftPawnCtrl::cCraftPawnCtrl() {
     /* stub */
 }
 
-sCraftManager::cCraftPawnCtrl::~cCraftPawnCtrl() {
+__attribute__((noinline)) sCraftManager::cCraftPawnCtrl::~cCraftPawnCtrl() {
     DDON_STUB("sCraftManager::cCraftPawnCtrl::~cCraftPawnCtrl")
     /* stub */
 }
@@ -1636,9 +1636,8 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::startUpGradeReq() {
     return {};
 }
 
-__attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::isTopping() {
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::isTopping")
-    return {};
+bool sCraftManager::cCraftPawnCtrl::isTopping() {
+    return (*mToppingUID.ptr()) != 0;
 }
 
 __attribute__((weak)) MT_CTSTR sCraftManager::cCraftPawnCtrl::getToppingItemName() {
@@ -1676,9 +1675,29 @@ __attribute__((weak)) void sCraftManager::cCraftPawnCtrl::setCraftElementUID(u32
     /* stub */
 }
 
-__attribute__((weak)) MT_CTSTR sCraftManager::cCraftPawnCtrl::getCraftElementUID(u32 slotNo) {
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::getCraftElementUID")
-    return {};
+MT_CTSTR sCraftManager::cCraftPawnCtrl::getCraftElementUID(u32 slotNo) {
+    switch (slotNo) {
+        case 0:
+        {
+            return mElementSlotNo1.ptr();
+        }
+        case 1:
+        {
+            return mElementSlotNo2.ptr();
+        }
+        case 2:
+        {
+            return mElementSlotNo3.ptr();
+        }
+        case 3:
+        {
+            return mElementSlotNo4.ptr();
+        }
+        default:
+        {
+            return nullptr;
+        }
+    }
 }
 
 __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::isElementGoldSub(sCraftManager::MENU_TYPE type) {
@@ -1710,9 +1729,8 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::startElementDetachReq(
     return {};
 }
 
-__attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::isColor() {
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::isColor")
-    return {};
+bool sCraftManager::cCraftPawnCtrl::isColor() {
+    return (*mColorSlotNo1.ptr()) != 0;
 }
 
 __attribute__((weak)) MT_CTSTR sCraftManager::cCraftPawnCtrl::getColorEfcName() {
@@ -1841,16 +1859,8 @@ const MtDTI& sCraftManager::cCraftUpGradeItemList::getDTI() const {
     return sCraftManager::cCraftUpGradeItemList::DTI;
 }
 
-inline sCraftManager::cCraftUpGradeItemList::cCraftUpGradeItemList() {
-    mCustomSortNo = 0;
-    mEquipPoint = 0;
-    mQuality = 0;
-    mElementNum = 0;
-    mSortNo = 0;
-    mItemNum = 0;
-    mItemId = 0;
-    mBagType = 0;
-    mWstrUID.value = nullptr;
+inline void* sCraftManager::cCraftUpGradeItemList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCraftManager::cCraftUpGradeItemList::DTI)->memAlloc(sz, align, sCraftManager::cCraftUpGradeItemList::DTI.getID());
 }
 
 sCraftManager::cCraftUpGradeItemList::~cCraftUpGradeItemList() {
@@ -1862,9 +1872,8 @@ sCraftManager::cCraftUpGradeItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* p
 
 sCraftManager::cCraftUpGradeItemList::MyDTI sCraftManager::cCraftUpGradeItemList::DTI("sCraftManager::cCraftUpGradeItemList", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sCraftManager::cCraftUpGradeItemList::MyDTI::newInstance() const {
-    DDON_STUB("sCraftManager::cCraftUpGradeItemList::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCraftManager::cCraftUpGradeItemList::MyDTI::newInstance() const {
+    return new (16u) sCraftManager::cCraftUpGradeItemList;
 }
 
 const MtDTI& sCraftManager::cCraftIrReductionData::getDTI() const {

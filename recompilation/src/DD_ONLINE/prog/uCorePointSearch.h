@@ -113,6 +113,12 @@ public:
     static MyDTI DTI;
 };
 
+inline uCorePointSearch::uCorePointSearch() {
+    this->mpOwnerHm = nullptr;
+    this->mpNode = nullptr;
+    this->::uDDOModel::mUnitId = this->::uDDOModel::mUnitId | 4096u;
+}
+
 inline void uCorePointSearch::setOwner(uHuman* pHm) {
     this->mpOwnerHm = pHm;
 }

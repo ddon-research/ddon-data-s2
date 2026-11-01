@@ -25,6 +25,7 @@ using uintptr = __uintptr_t;
 
 class MtNetRequest : public MtNetObject
 {
+    friend class MtNetRequestController;
 public:
     enum
     {

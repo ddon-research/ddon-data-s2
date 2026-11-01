@@ -52,8 +52,6 @@ inline void cPawnAIAction::operator delete(void* p_addr) {
 }
 
 cPawnAIAction::~cPawnAIAction() {
-    DDON_STUB("cPawnAIAction::~cPawnAIAction")
-    /* stub */
 }
 
 u32 cPawnAIAction::getPawnActID() const {

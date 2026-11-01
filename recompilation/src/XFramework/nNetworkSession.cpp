@@ -10,6 +10,8 @@
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtRandom.h"
+#include "../MT/MtStream.h"
+#include "cRemoteCall.h"
 #include "nNetworkCallback.h"
 #include "nNetworkConnect.h"
 #include "nNetworkDatabase.h"
@@ -206,9 +208,13 @@ __attribute__((weak)) bool nNetwork::Session::checkDst(s32 member_index, s32 dst
 __attribute__((weak)) void nNetwork::Session::updateMute(s32 member_index) {
 }
 
-__attribute__((weak)) void nNetwork::Session::sendMessage(s32 index, cRemoteCall& call) {
-    DDON_STUB("nNetwork::Session::sendMessage")
-    /* stub */
+void nNetwork::Session::sendMessage(s32 index, cRemoteCall& call) {
+    u8 buffer[1024];
+    MtMemoryStream stream(static_cast<void*>(buffer), 1024u, 2u);
+    ::cRemoteCall::writeOut(stream, call);
+    u8* t2 = stream.mBuffer;
+    u32 t3 = stream.::MtMemoryStream::getPosition();
+    put(static_cast<const void*>(t2), static_cast<s32>(t3), index, 16u, 3u);
 }
 
 __attribute__((weak)) void nNetwork::Session::recvMessage(s32 index, const void* data_ptr, u32 data_size) {

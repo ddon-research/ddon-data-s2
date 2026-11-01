@@ -15,6 +15,7 @@
 #include "sFlag.h"
 #include "uEnemy.h"
 #include "uGUIBase.h"
+#include "uGUICharacterEdit.h"
 #include "uGUIChat.h"
 #include "uGUIGauge.h"
 #include "uGUIGaugeArts.h"

@@ -7,6 +7,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
+#include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
@@ -156,9 +157,58 @@ __attribute__((weak)) bool uGUIBaseExt::loadArchive() {
     return {};
 }
 
-__attribute__((weak)) bool uGUIBaseExt::loadResource() {
-    DDON_STUB("uGUIBaseExt::loadResource")
-    return {};
+bool uGUIBaseExt::loadResource() {
+    const nGUIBaseExt::ResInfo* t0 = getGuiResInfo();
+    if (t0 != nullptr) {
+        const MT_CTSTR t1 = t0->mSearchName;
+        t64 t2 = getGuiResUpdateTime();
+        if (mpGUIRes == nullptr) {
+            u32 t3 = getArcTag(0u);
+            if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(t3, rArchiveListArray::convSearchId(t1), 129u, t2))) == nullptr) {
+                mpGUIRes;
+                return false;
+            }
+        }
+    }
+    u32 t4 = getGmdResNum();
+    if (((t4 <= 3u) ? t4 : 4u) != 0) {
+        unsigned int i0_3 = 0;
+        for (const u32 gmd_res_num = (t4 <= 3u) ? t4 : 4u;;) {
+            const nGUIBaseExt::ResInfo* t5 = getGmdResInfo(i0_3);
+            if (t5 != nullptr) {
+                if (!loadGMDarc(rArchiveListArray::convTagId(t5->mArcTagName), t5->mSearchName, i0_3)) {
+                    return false;
+                }
+            }
+            if ((i0_3 + 1u) < gmd_res_num) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    const u32 other_res_num = getResNum();
+    if (other_res_num != 0) {
+        for (unsigned int i2_3 = 0;;) {
+            const nGUIBaseExt::ResInfo* t6 = getResInfo(i2_3);
+            if (t6 != nullptr) {
+                ARC_TAGID t7 = rArchiveListArray::convTagId(t6->mArcTagName);
+                if (mResources.getBuffer()[static_cast<int>(i2_3)] == nullptr) {
+                    cResource* t8 = uiCreateResource(t7, rArchiveListArray::convSearchId(t6->mSearchName), 129u, 0l);
+                    mResources.getBuffer()[static_cast<int>(i2_3)] = static_cast<MtObject*>(t8);
+                    if (mResources.getBuffer()[static_cast<int>(i2_3)] == nullptr) {
+                        return false;
+                    }
+                }
+            }
+            if ((i2_3 + 1u) < other_res_num) {
+                i2_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    return true;
 }
 
 __attribute__((weak)) void uGUIBaseExt::setup() {

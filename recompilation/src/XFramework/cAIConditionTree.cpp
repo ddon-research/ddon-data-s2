@@ -351,7 +351,7 @@ inline void cAIConditionTree::VariableWorkNode::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAIConditionTree::VariableWorkNode::DTI)->memFree(p_addr);
 }
 
-cAIConditionTree::VariableWorkNode::~VariableWorkNode() {
+__attribute__((noinline)) cAIConditionTree::VariableWorkNode::~VariableWorkNode() {
     DDON_STUB("cAIConditionTree::VariableWorkNode::~VariableWorkNode")
     /* stub */
 }

@@ -40,7 +40,7 @@ cpShlShotCtrl::cpShlShotCtrl() {
     /* stub */
 }
 
-cpShlShotCtrl::~cpShlShotCtrl() {
+__attribute__((noinline)) cpShlShotCtrl::~cpShlShotCtrl() {
     DDON_STUB("cpShlShotCtrl::~cpShlShotCtrl")
     /* stub */
 }

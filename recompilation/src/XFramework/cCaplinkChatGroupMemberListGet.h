@@ -12,6 +12,7 @@
 class MtArray;
 class MtString;
 namespace nCaplink { class cUserBaseInfo; }
+class uGUICaplinkTalk;
 
 // Declarations
 namespace nCaplink { class ChatGroupMemberListGetAns; }
@@ -25,6 +26,7 @@ using u32 = unsigned int;
 namespace nCaplink {
     class ChatGroupMemberListGetAns : public nCaplink::ContextListener
     {
+        friend class ::uGUICaplinkTalk;
     public:
         ChatGroupMemberListGetAns();
         virtual void init();  // vtable slot 6

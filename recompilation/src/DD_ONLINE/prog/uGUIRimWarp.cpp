@@ -45,7 +45,7 @@ inline void uGUIRimWarp::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIRimWarp::DTI)->memFree(p_addr);
 }
 
-uGUIRimWarp::~uGUIRimWarp() {
+__attribute__((noinline)) uGUIRimWarp::~uGUIRimWarp() {
     DDON_STUB("uGUIRimWarp::~uGUIRimWarp")
     /* stub */
 }

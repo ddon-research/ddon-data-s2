@@ -26,7 +26,7 @@ sSavedata::sSavedata() {
     /* stub */
 }
 
-sSavedata::~sSavedata() {
+__attribute__((noinline)) sSavedata::~sSavedata() {
     DDON_STUB("sSavedata::~sSavedata")
     /* stub */
 }

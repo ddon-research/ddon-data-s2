@@ -381,6 +381,11 @@ public:
 inline MtPoint::MtPoint() {
 }
 
+inline MtPoint::MtPoint(s32 sx, s32 sy) {
+    this->x = sx;
+    this->y = sy;
+}
+
 inline MtPointF::MtPointF() {
 }
 
@@ -397,4 +402,9 @@ inline MtSize::MtSize() {
 }
 
 inline MtSizeF::MtSizeF() {
+}
+
+inline MtSizeF::MtSizeF(f32 sw, f32 sh) {
+    this->w = sw;
+    this->h = sh;
 }

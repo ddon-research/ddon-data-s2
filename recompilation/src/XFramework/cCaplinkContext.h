@@ -76,3 +76,7 @@ namespace nCaplink {
         static MyDTI DTI;
     };
 }  // namespace nCaplink
+
+inline s32 nCaplink::ContextListener::getStatus() const {
+    return this->mStatus;
+}

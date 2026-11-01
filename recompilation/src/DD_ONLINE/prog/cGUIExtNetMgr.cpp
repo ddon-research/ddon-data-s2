@@ -245,7 +245,7 @@ cGUIExtNetMgr::cGUIExtNetMgr() {
     /* stub */
 }
 
-cGUIExtNetMgr::~cGUIExtNetMgr() {
+__attribute__((noinline)) cGUIExtNetMgr::~cGUIExtNetMgr() {
     DDON_STUB("cGUIExtNetMgr::~cGUIExtNetMgr")
     /* stub */
 }

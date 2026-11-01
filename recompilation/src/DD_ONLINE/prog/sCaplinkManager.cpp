@@ -2,6 +2,7 @@
 #include <new>
 #include <_pthread.h>
 #include <stdlib.h>
+#include <string.h>
 #include "sCaplinkManager.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -36,6 +37,7 @@
 #include "../../XFramework/cCaplinkContentInviteTotalGet.h"
 #include "../../XFramework/cCaplinkContentListGet.h"
 #include "../../XFramework/cCaplinkContentTotalGet.h"
+#include "../../XFramework/cCaplinkContext.h"
 #include "../../XFramework/cCaplinkDataDef.h"
 #include "../../XFramework/cCaplinkFriendAttribute.h"
 #include "../../XFramework/cCaplinkFriendEntryCancel.h"
@@ -109,7 +111,7 @@ sCaplinkManager::sCaplinkManager() {
     /* stub */
 }
 
-sCaplinkManager::~sCaplinkManager() {
+__attribute__((noinline)) sCaplinkManager::~sCaplinkManager() {
     DDON_STUB("sCaplinkManager::~sCaplinkManager")
     /* stub */
 }
@@ -820,9 +822,112 @@ bool sCaplinkManager::isLoadingProfIcon(s32 id) {
     return false;
 }
 
-__attribute__((weak)) bool sCaplinkManager::setupProfIcon() {
-    DDON_STUB("sCaplinkManager::setupProfIcon")
-    return {};
+bool sCaplinkManager::setupProfIcon() {
+    if (mRnoProfIcon != 2) {
+        if (mRnoProfIcon == 1) {
+            sCaplinkManager::getInstance()->resourcePresetListGet(static_cast<s8>(0), static_cast<s32>(mUpdateOffset), static_cast<s32>(mUpdateCount));
+            mRnoProfIcon = 2;
+            return false;
+        } else {
+            if (mRnoProfIcon == 0) {
+                mUpdateOffset = 0;
+                mUpdateCount = 100;
+                mRnoProfIcon = 1;
+                return false;
+            } else {
+                mResourcePresetListGetAns.nCaplink::ContextListener::init();
+                mResourcePresetListGetAns.mResourceInfoTbl.mAutoDelete = true;
+                if (mResourcePresetListGetAns.mResourceInfoTbl.mLength == 0) {
+                    if (mResourcePresetListGetAns.mResourceInfoTbl.mpArray != nullptr) {
+                        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mResourcePresetListGetAns.mResourceInfoTbl.mpArray));
+                    }
+                    mResourcePresetListGetAns.mResourceInfoTbl.mpArray = nullptr;
+                    mResourcePresetListGetAns.mResourceInfoTbl.mBufsiz = 0;
+                    mResourcePresetListGetAns.mResourceInfoTbl.mLength = 0;
+                    return true;
+                } else {
+                    u32 v0_0 = mResourcePresetListGetAns.mResourceInfoTbl.mLength;
+                    for (unsigned int i0_3 = 0;;) {
+                        if (mResourcePresetListGetAns.mResourceInfoTbl.mpArray[i0_3] != nullptr) {
+                            delete mResourcePresetListGetAns.mResourceInfoTbl.mpArray[i0_3];
+                            if ((i0_3 + 1u) < mResourcePresetListGetAns.mResourceInfoTbl.mLength) {
+                                v0_0 = mResourcePresetListGetAns.mResourceInfoTbl.mLength;
+                                i0_3 += 1u;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            if ((i0_3 + 1u) < v0_0) {
+                                i0_3 += 1u;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    if (mResourcePresetListGetAns.mResourceInfoTbl.mpArray != nullptr) {
+                        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mResourcePresetListGetAns.mResourceInfoTbl.mpArray));
+                    }
+                    mResourcePresetListGetAns.mResourceInfoTbl.mpArray = nullptr;
+                    mResourcePresetListGetAns.mResourceInfoTbl.mBufsiz = 0;
+                    mResourcePresetListGetAns.mResourceInfoTbl.mLength = 0;
+                    return true;
+                }
+            }
+        }
+    } else {
+        if (mResourcePresetListGetAns.getStatus() != 0) {
+            if (mResourcePresetListGetAns.getStatus() == 3) {
+                mRnoProfIcon = 3;
+                return false;
+            } else {
+                if (mResourcePresetListGetAns.getStatus() != 2) {
+                    return false;
+                } else {
+                    mRnoProfIcon = 3;
+                    u32 v2_8 = mResourcePresetListGetAns.mResourceInfoTbl.mLength;
+                    if (v2_8 != 0) {
+                        for (u32 i = 0;;) {
+                            MtObject* t0 = mResourcePresetListGetAns.mResourceInfoTbl.mpArray[i];
+                            if (t0 != nullptr) {
+                                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 355)) != 0) {
+                                    unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 8);
+                                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)) == 6) {
+                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 16)) == 11) {
+                                            mProfIconNum = mProfIconNum + 1u;
+                                            addIconUrl(static_cast<s32>(t1), static_cast<s16>(6), static_cast<s16>(11), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 98))));
+                                        } else {
+                                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 16)) == 81) {
+                                                addIconUrl(static_cast<s32>(t1), static_cast<short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)), static_cast<s16>(81), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 98))));
+                                            }
+                                        }
+                                    } else {
+                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 16)) == 81) {
+                                            addIconUrl(static_cast<s32>(t1), static_cast<short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)), static_cast<s16>(81), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 98))));
+                                        }
+                                    }
+                                }
+                            }
+                            if (v2_8 != (i + 1u)) {
+                                i = i + 1u;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            mRnoProfIcon = 3;
+            return false;
+        }
+        if (static_cast<unsigned int>(mResourcePresetListGetAns.mTotal) < (mUpdateCount + mUpdateOffset)) {
+            return false;
+        } else {
+            mUpdateOffset = mUpdateCount + mUpdateOffset;
+        }
+        mRnoProfIcon = 1;
+        return false;
+    }
 }
 
 __attribute__((weak)) u32 sCaplinkManager::getFriendIndex(MT_CTSTR unique_id) {
@@ -840,9 +945,38 @@ __attribute__((weak)) void sCaplinkManager::deleteFriendData(MT_CTSTR unique_id)
     /* stub */
 }
 
-__attribute__((weak)) u32 sCaplinkManager::getContentIndex(MT_CTSTR content_id) {
-    DDON_STUB("sCaplinkManager::getContentIndex")
-    return {};
+u32 sCaplinkManager::getContentIndex(MT_CTSTR content_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    u32 v0_8 = mContentData.mLength;
+    if (content_id != nullptr) {
+        if (v0_8 == 0) {
+            return 0;
+        } else {
+            MtObject* * v0_9 = mContentData.getBuffer();
+            for (unsigned int i0_3 = 0;;) {
+                if (v0_9[static_cast<int>(i0_3)] != nullptr) {
+                    if (strcmp(reinterpret_cast<const char*>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_9[static_cast<int>(i0_3)]) + 8))), content_id) == 0) {
+                        return i0_3;
+                    }
+                }
+                if ((i0_3 + 1u) < v0_8) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return v0_8;
 }
 
 __attribute__((weak)) bool sCaplinkManager::isContentDisp(const sCaplinkManager::ContentBit& bit) {
@@ -865,9 +999,40 @@ __attribute__((weak)) void sCaplinkManager::setGroupChatData(const sCaplinkManag
     /* stub */
 }
 
-__attribute__((weak)) u32 sCaplinkManager::getGroupChatIndex(s8 id_type, MT_CTSTR unique_id) {
-    DDON_STUB("sCaplinkManager::getGroupChatIndex")
-    return {};
+u32 sCaplinkManager::getGroupChatIndex(s8 id_type, MT_CTSTR unique_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    u32 v0_9 = mGroupChatData.mLength;
+    if (unique_id != nullptr) {
+        if (v0_9 == 0) {
+            return 0;
+        } else {
+            MtObject* * v0_8 = mGroupChatData.getBuffer();
+            for (unsigned int i0_3 = 0;;) {
+                if (v0_8[static_cast<int>(i0_3)] != nullptr) {
+                    if (static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_8[static_cast<int>(i0_3)]) + 265)) == static_cast<unsigned int>(id_type)) {
+                        if (strcmp(reinterpret_cast<const char*>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_8[static_cast<int>(i0_3)]) + 8))), unique_id) == 0) {
+                            return i0_3;
+                        }
+                    }
+                }
+                if ((i0_3 + 1u) < v0_9) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return v0_9;
 }
 
 __attribute__((weak)) void sCaplinkManager::addChatMember(MT_CTSTR unique_id, MT_CTSTR nickname, MT_CTSTR icon) {
@@ -880,9 +1045,28 @@ __attribute__((weak)) void sCaplinkManager::deleteChatMember(MT_CTSTR unique_id)
     /* stub */
 }
 
-__attribute__((weak)) bool sCaplinkManager::isChatMember(MT_CTSTR unique_id) {
-    DDON_STUB("sCaplinkManager::isChatMember")
-    return {};
+bool sCaplinkManager::isChatMember(MT_CTSTR unique_id) {
+    if (unique_id != nullptr) {
+        unsigned int v0_9 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 11736);
+        if (v0_9 == 0) {
+            return false;
+        } else {
+            MtObject* * v0_8 = mChatMember.getBuffer();
+            for (unsigned int i0_3 = 0;;) {
+                if (v0_8[static_cast<int>(i0_3)] != nullptr) {
+                    if (strcmp(reinterpret_cast<const char*>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_8[static_cast<int>(i0_3)]) + 8))), unique_id) == 0) {
+                        return true;
+                    }
+                }
+                if ((i0_3 + 1u) < v0_9) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void sCaplinkManager::sortChatList() {

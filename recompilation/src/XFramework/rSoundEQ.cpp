@@ -21,7 +21,7 @@ inline void rSoundEQ::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundEQ::DTI)->memFree(p_addr);
 }
 
-rSoundEQ::~rSoundEQ() {
+__attribute__((noinline)) rSoundEQ::~rSoundEQ() {
     DDON_STUB("rSoundEQ::~rSoundEQ")
     /* stub */
 }

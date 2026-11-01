@@ -26,6 +26,7 @@ class cpObjCollisionBase;
 class cpPawnThink;
 class rAttackParam;
 class rCollNode;
+class sAIPawnNotice;
 class uDDOModel;
 
 // Declarations
@@ -43,6 +44,7 @@ class cHitNode : public MtObject
 {
     friend class cpObjCollisionBase;
     friend class cpPawnThink;
+    friend class sAIPawnNotice;
 public:
     class MyDTI;
 public:

@@ -22,6 +22,8 @@ class MtString;
 class MtVector3;
 class cArcLoaderBase;
 class cSndPitchLimitData;
+class cSoundGeneratorListener;
+class cSoundTriggerListener;
 class rSndPitchLimit;
 class rSoundAreaInfo;
 class rSoundAttributeSe;
@@ -100,6 +102,8 @@ public:
 
 class sSoundExt : public sSound
 {
+    friend class cSoundGeneratorListener;
+    friend class cSoundTriggerListener;
 public:
     enum SE_SEARCH_KEY
     {

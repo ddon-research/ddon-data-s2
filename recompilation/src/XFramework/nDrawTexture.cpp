@@ -92,7 +92,7 @@ u32 nDraw::Texture::getArrayCount() const {
 }
 
 u32 nDraw::Texture::getLevelCount() const {
-    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 42)) >> 40);
+    return mLevelCount;
 }
 
 nDraw::FORMAT_TYPE nDraw::Texture::getFormat() const {
@@ -176,7 +176,7 @@ void nDraw::Texture::registerScratchTexture() {
 __attribute__((weak)) void nDraw::Texture::unregisterScratchTexture() {
 }
 
-nDraw::Texture::~Texture() {
+__attribute__((noinline)) nDraw::Texture::~Texture() {
     DDON_STUB("nDraw::Texture::~Texture")
     /* stub */
 }

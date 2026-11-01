@@ -21,7 +21,7 @@ inline void rSoundAreaInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundAreaInfo::DTI)->memFree(p_addr);
 }
 
-rSoundAreaInfo::~rSoundAreaInfo() {
+__attribute__((noinline)) rSoundAreaInfo::~rSoundAreaInfo() {
     DDON_STUB("rSoundAreaInfo::~rSoundAreaInfo")
     /* stub */
 }

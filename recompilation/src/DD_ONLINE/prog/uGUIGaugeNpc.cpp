@@ -46,7 +46,7 @@ uGUIGaugeNpc::uGUIGaugeNpc() {
     /* stub */
 }
 
-uGUIGaugeNpc::~uGUIGaugeNpc() {
+__attribute__((noinline)) uGUIGaugeNpc::~uGUIGaugeNpc() {
     DDON_STUB("uGUIGaugeNpc::~uGUIGaugeNpc")
     /* stub */
 }

@@ -170,7 +170,7 @@ nSessionManager::cNetSessionManager::cNetSessionManager() {
     /* stub */
 }
 
-nSessionManager::cNetSessionManager::~cNetSessionManager() {
+__attribute__((noinline)) nSessionManager::cNetSessionManager::~cNetSessionManager() {
     DDON_STUB("nSessionManager::cNetSessionManager::~cNetSessionManager")
     /* stub */
 }

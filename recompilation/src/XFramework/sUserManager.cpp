@@ -24,7 +24,7 @@ inline void sUserManager::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sUserManager::DTI)->memFree(p_addr);
 }
 
-sUserManager::~sUserManager() {
+__attribute__((noinline)) sUserManager::~sUserManager() {
     DDON_STUB("sUserManager::~sUserManager")
     /* stub */
 }

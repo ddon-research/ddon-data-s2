@@ -16,6 +16,39 @@
 #define DDON_STUB(name)
 #endif
 
+const MtDTI& cShlBakuensenLogNode::getDTI() const {
+    return cShlBakuensenLogNode::DTI;
+}
+
+inline void* cShlBakuensenLogNode::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cShlBakuensenLogNode::DTI)->memAlloc(sz, align, cShlBakuensenLogNode::DTI.getID());
+}
+
+inline void cShlBakuensenLogNode::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cShlBakuensenLogNode::DTI)->memFree(p_addr);
+}
+
+cShlBakuensenLogNode::~cShlBakuensenLogNode() {
+}
+
+void cShlBakuensenLogNode::keepLog() {
+    this->cShlLogNode::keepLog();
+    adjustGround();
+}
+
+__attribute__((weak)) void cShlBakuensenLogNode::adjustGround() {
+    DDON_STUB("cShlBakuensenLogNode::adjustGround")
+    /* stub */
+}
+
+cShlBakuensenLogNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cShlBakuensenLogNode::MyDTI cShlBakuensenLogNode::DTI("cShlBakuensenLogNode", &::cShlLogNode::DTI, 64ul, 0u, 0u);
+
+MtObject* cShlBakuensenLogNode::MyDTI::newInstance() const {
+    return new (16u) cShlBakuensenLogNode;
+}
+
 const MtDTI& uBakuenseSpark::getDTI() const {
     return uBakuenseSpark::DTI;
 }
@@ -81,9 +114,8 @@ inline void uShlBakuensen::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uShlBakuensen::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) const MtDTI* uShlBakuensen::getLogNodeDTI() {
-    DDON_STUB("uShlBakuensen::getLogNodeDTI")
-    return nullptr;
+const MtDTI* uShlBakuensen::getLogNodeDTI() {
+    return &cShlBakuensenLogNode::DTI;
 }
 
 uShlBakuensen::~uShlBakuensen() {

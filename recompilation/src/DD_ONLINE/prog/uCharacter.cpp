@@ -63,7 +63,7 @@ uCharacter::uCharacter() {
     /* stub */
 }
 
-uCharacter::~uCharacter() {
+__attribute__((noinline)) uCharacter::~uCharacter() {
     DDON_STUB("uCharacter::~uCharacter")
     /* stub */
 }

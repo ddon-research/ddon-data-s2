@@ -79,6 +79,7 @@ using u8 = unsigned char;
 
 class uGUI : public uCoord
 {
+    friend class cGUIInstAnimation;
     friend class uGUIBase;
 public:
     class MyDTI;

@@ -28,7 +28,7 @@ cAIFSM::cAIFSM() {
     /* stub */
 }
 
-cAIFSM::~cAIFSM() {
+__attribute__((noinline)) cAIFSM::~cAIFSM() {
     DDON_STUB("cAIFSM::~cAIFSM")
     /* stub */
 }
@@ -170,7 +170,7 @@ inline void cAIFSM::Core::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAIFSM::Core::DTI)->memFree(p_addr);
 }
 
-cAIFSM::Core::~Core() {
+__attribute__((noinline)) cAIFSM::Core::~Core() {
     DDON_STUB("cAIFSM::Core::~Core")
     /* stub */
 }
@@ -823,6 +823,33 @@ cAIFSMData::ClusterLog::MyDTI cAIFSMData::ClusterLog::DTI("cAIFSMData::ClusterLo
 
 __attribute__((weak)) MtObject* cAIFSMData::ClusterLog::MyDTI::newInstance() const {
     DDON_STUB("cAIFSMData::ClusterLog::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cAIFSMProcessContainer::getDTI() const {
+    return cAIFSMProcessContainer::DTI;
+}
+
+void* cAIFSMProcessContainer::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIFSMProcessContainer::DTI)->memAlloc(sz, align, cAIFSMProcessContainer::DTI.mID);
+}
+
+cAIFSMProcessContainer::~cAIFSMProcessContainer() {
+    DDON_STUB("cAIFSMProcessContainer::~cAIFSMProcessContainer")
+    /* stub */
+}
+
+__attribute__((weak)) void cAIFSMProcessContainer::setProcessFunc(const MtDTI* pFuncDTI, MT_CTSTR funcOwnerName, const MtDTI* pParamDTI, cAIUserProcessCallback::CALLBACK_FUNC pUpdateFunc, cAIUserProcessCallback::CALLBACK_FUNC pStateFunc, cAIUserProcessCallback::CALLBACK_FUNC pExitFunc, cAIUserProcessCallback::CALLBACK_FUNC pChangeFunc, cAIUserProcessCallback::CALLBACK_FUNC pExportFunc, cAIUserProcessCallback::CALLBACK_FUNC pImportFunc) {
+    DDON_STUB("cAIFSMProcessContainer::setProcessFunc")
+    /* stub */
+}
+
+cAIFSMProcessContainer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cAIFSMProcessContainer::MyDTI cAIFSMProcessContainer::DTI("cAIFSMProcessContainer", &::cAIUserProcessContainer::DTI, 48ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cAIFSMProcessContainer::MyDTI::newInstance() const {
+    DDON_STUB("cAIFSMProcessContainer::MyDTI::newInstance")
     return nullptr;
 }
 

@@ -823,6 +823,36 @@ namespace nDDOUtility {
     };
 }  // namespace nDDOUtility
 
+inline nDDOUtility::cBitSet<10>::~cBitSet() {
+}
+
+inline nDDOUtility::cBitSet<11>::~cBitSet() {
+}
+
+inline nDDOUtility::cBitSet<128>::~cBitSet() {
+}
+
+inline nDDOUtility::cBitSet<22>::~cBitSet() {
+}
+
+inline nDDOUtility::cBitSet<256>::~cBitSet() {
+}
+
+inline nDDOUtility::cBitSet<32>::~cBitSet() {
+}
+
+inline nDDOUtility::cBitSet<33>::~cBitSet() {
+}
+
+inline nDDOUtility::cBitSet<3>::~cBitSet() {
+}
+
+inline nDDOUtility::cBitSet<4>::~cBitSet() {
+}
+
+inline nDDOUtility::cBitSet<5>::~cBitSet() {
+}
+
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"

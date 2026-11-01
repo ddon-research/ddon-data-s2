@@ -5,7 +5,6 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
-#include "cArcLoader.h"
 #include "cLayoutSet.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
@@ -33,7 +32,7 @@ inline void cSplitArc::operator delete(void* p_addr) {
 }
 
 cSplitArc::cSplitArc() {
-    mArcTicket = static_cast<TICKET>(sArchiveManager::INVALID_TICKET);
+    mArcTicket = sArchiveManager::INVALID_TICKET;
     mFno = 0xFF;
 }
 

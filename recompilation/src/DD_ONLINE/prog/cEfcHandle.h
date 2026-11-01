@@ -19,6 +19,7 @@ class cpJob08;
 class cpJob09;
 class cpJob10;
 class sEffectExt;
+class uCharacterEditBase;
 class uHuman;
 class uPlayer;
 class uShlAlchemy;
@@ -48,6 +49,7 @@ class cEfcHandle : public MtObject
     friend class cpJob09;
     friend class cpJob10;
     friend class sEffectExt;
+    friend class uCharacterEditBase;
     friend class uHuman;
     friend class uPlayer;
     friend class uShlAlchemy;

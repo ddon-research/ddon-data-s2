@@ -39,7 +39,7 @@ inline void uGUIMissionInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMissionInfo::DTI)->memFree(p_addr);
 }
 
-uGUIMissionInfo::~uGUIMissionInfo() {
+__attribute__((noinline)) uGUIMissionInfo::~uGUIMissionInfo() {
     DDON_STUB("uGUIMissionInfo::~uGUIMissionInfo")
     /* stub */
 }

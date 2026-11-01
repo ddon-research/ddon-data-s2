@@ -35,7 +35,7 @@ inline void uGUIPopCraftDetail::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPopCraftDetail::DTI)->memFree(p_addr);
 }
 
-uGUIPopCraftDetail::~uGUIPopCraftDetail() {
+__attribute__((noinline)) uGUIPopCraftDetail::~uGUIPopCraftDetail() {
     DDON_STUB("uGUIPopCraftDetail::~uGUIPopCraftDetail")
     /* stub */
 }

@@ -84,9 +84,94 @@ void cpLockOn::kill() {
     releaseLockOnTarget();
 }
 
-__attribute__((weak)) void cpLockOn::update() {
-    DDON_STUB("cpLockOn::update")
-    /* stub */
+void cpLockOn::update() {
+    if (!mActive) {
+        return;
+    } else {
+        switch (mRequestLockOffAll) {
+            case nLockOnTarget::STATE_NONE:
+            {
+                unsigned int v5_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+                if (v5_0 != 0) {
+                    MtObject* * v5_1 = mArray.getBuffer();
+                    for (unsigned int i5_2 = 0;;) {
+                        if (v5_1[static_cast<int>(i5_2)] != nullptr) {
+                            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v5_1[static_cast<int>(i5_2)]) + 144)) != 0) {
+                                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v5_1[static_cast<int>(i5_2)]) + 82) = 0;
+                            } else {
+                                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v5_1[static_cast<int>(i5_2)]) + 82) = 1;
+                            }
+                        }
+                        if (v5_0 != (i5_2 + 1u)) {
+                            i5_2 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+            case nLockOnTarget::STATE_ALL_OFF:
+            {
+                unsigned int v3_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+                if (v3_0 != 0) {
+                    MtObject* * v3_1 = mArray.getBuffer();
+                    for (unsigned int i3_2 = 0;;) {
+                        if (v3_1[static_cast<int>(i3_2)] != nullptr) {
+                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v3_1[static_cast<int>(i3_2)]) + 82) = 0;
+                        }
+                        if (v3_0 != (i3_2 + 1u)) {
+                            i3_2 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+            case nLockOnTarget::STATE_ALL_REF_ON:
+            {
+                unsigned int v1_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+                if (v1_0 != 0) {
+                    MtObject* * v1_1 = mArray.getBuffer();
+                    for (unsigned int i1_2 = 0;;) {
+                        if (v1_1[static_cast<int>(i1_2)] != nullptr) {
+                            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v1_1[static_cast<int>(i1_2)]) + 81) = 257;
+                        }
+                        if (v1_0 != (i1_2 + 1u)) {
+                            i1_2 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+            case nLockOnTarget::STATE_ALL_REF_OFF:
+            {
+                unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+                if (v0_0 != 0) {
+                    MtObject* * v0_1 = mArray.getBuffer();
+                    for (unsigned int i0_2 = 0;;) {
+                        if (v0_1[static_cast<int>(i0_2)] != nullptr) {
+                            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 81) = 0;
+                        }
+                        if (v0_0 != (i0_2 + 1u)) {
+                            i0_2 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
+    mRequestLockOffAll = nLockOnTarget::STATE_NONE;
 }
 
 void cpLockOn::after() {

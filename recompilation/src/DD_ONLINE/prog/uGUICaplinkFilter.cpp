@@ -32,7 +32,7 @@ inline void uGUICaplinkFilter::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkFilter::DTI)->memFree(p_addr);
 }
 
-uGUICaplinkFilter::~uGUICaplinkFilter() {
+__attribute__((noinline)) uGUICaplinkFilter::~uGUICaplinkFilter() {
     DDON_STUB("uGUICaplinkFilter::~uGUICaplinkFilter")
     /* stub */
 }

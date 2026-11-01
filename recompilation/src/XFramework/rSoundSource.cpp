@@ -26,7 +26,7 @@ rSoundSource::rSoundSource() {
     /* stub */
 }
 
-rSoundSource::~rSoundSource() {
+__attribute__((noinline)) rSoundSource::~rSoundSource() {
     DDON_STUB("rSoundSource::~rSoundSource")
     /* stub */
 }

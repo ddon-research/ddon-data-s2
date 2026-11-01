@@ -31,7 +31,7 @@ inline void uGUIMenuCmdPawn::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMenuCmdPawn::DTI)->memFree(p_addr);
 }
 
-uGUIMenuCmdPawn::~uGUIMenuCmdPawn() {
+__attribute__((noinline)) uGUIMenuCmdPawn::~uGUIMenuCmdPawn() {
     DDON_STUB("uGUIMenuCmdPawn::~uGUIMenuCmdPawn")
     /* stub */
 }

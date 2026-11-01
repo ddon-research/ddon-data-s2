@@ -4,6 +4,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -11,6 +12,10 @@
 
 const MtDTI& rNpcEditData::getDTI() const {
     return rNpcEditData::DTI;
+}
+
+inline void* rNpcEditData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rNpcEditData::DTI)->memAlloc(sz, align, rNpcEditData::DTI.getID());
 }
 
 inline void rNpcEditData::operator delete(void* p_addr) {
@@ -43,8 +48,7 @@ rNpcEditData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, 
 
 rNpcEditData::MyDTI rNpcEditData::DTI("rNpcEditData", &::cResource::DTI, 184ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rNpcEditData::MyDTI::newInstance() const {
-    DDON_STUB("rNpcEditData::MyDTI::newInstance")
-    return nullptr;
+MtObject* rNpcEditData::MyDTI::newInstance() const {
+    return new (16u) rNpcEditData;
 }
 

@@ -35,7 +35,7 @@ cpCheckWallCliff::cpCheckWallCliff() {
     /* stub */
 }
 
-cpCheckWallCliff::~cpCheckWallCliff() {
+__attribute__((noinline)) cpCheckWallCliff::~cpCheckWallCliff() {
     DDON_STUB("cpCheckWallCliff::~cpCheckWallCliff")
     /* stub */
 }

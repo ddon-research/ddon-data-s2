@@ -465,3 +465,20 @@ protected:
     _I mInstance;  // offset: 0x12e0
     bool mCache;  // offset: 0x27a0
 };
+
+template <typename _T, typename _I>
+void uInstancing<_T, _I>::kill() {
+    this->_T::kill();
+    this->mInstance._I::release();
+}
+
+template <typename _T, typename _I>
+void uInstancing<_T, _I>::move() {
+    this->_T::move();
+}
+
+template <typename _T, typename _I>
+void uInstancing<_T, _I>::setup() {
+    this->_T::setup();
+    (&this->mInstance)->setup();
+}

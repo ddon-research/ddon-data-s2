@@ -27,7 +27,7 @@ cAISvPathFinding::cAISvPathFinding() {
     /* stub */
 }
 
-cAISvPathFinding::~cAISvPathFinding() {
+__attribute__((noinline)) cAISvPathFinding::~cAISvPathFinding() {
     DDON_STUB("cAISvPathFinding::~cAISvPathFinding")
     /* stub */
 }

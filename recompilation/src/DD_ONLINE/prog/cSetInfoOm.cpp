@@ -78,8 +78,251 @@ MtUI* cSetInfoOm::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool cSetInfoOm::load(MtDataReader& r) {
-    DDON_STUB("cSetInfoOm::load")
-    return {};
+    unsigned int v0_1;
+    bool v1_0;
+    unsigned int v1_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+        v0_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+    } else {
+        if (r.refill()) {
+            v0_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+        } else {
+            v1_0 = false;
+            v1_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            goto region_56118a;
+        }
+    }
+    unsigned long t0;
+    t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
+    unsigned char t1;
+    t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0 + v0_1) + 0);
+    r.mSeekPt = v0_1 + 1u;
+    v1_0 = t1 != 0;
+    v1_1 = v0_1 + 1u;
+    region_56118a:;
+    mDisableEffect = v1_0;
+    unsigned int v2_1;
+    bool v3_0;
+    unsigned int v3_1;
+    if (v1_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+        v2_1 = v1_1;
+    } else {
+        if (r.refill()) {
+            v2_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+        } else {
+            v3_0 = false;
+            v3_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            goto region_5611b8;
+        }
+    }
+    unsigned long t2;
+    t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
+    unsigned char t3;
+    t3 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2 + v2_1) + 0);
+    r.mSeekPt = v2_1 + 1u;
+    v3_0 = t3 != 0;
+    v3_1 = v2_1 + 1u;
+    region_5611b8:;
+    mDisableOnlyEffect = v3_0;
+    unsigned int v4_1;
+    bool v5_0;
+    unsigned int v5_1;
+    if (v3_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+        v4_1 = v3_1;
+    } else {
+        if (r.refill()) {
+            v4_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+        } else {
+            v5_0 = false;
+            v5_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            goto region_5611e6;
+        }
+    }
+    unsigned long t4;
+    t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
+    unsigned char t5;
+    t5 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t4 + v4_1) + 0);
+    r.mSeekPt = v4_1 + 1u;
+    v5_0 = t5 != 0;
+    v5_1 = v4_1 + 1u;
+    region_5611e6:;
+    mOpenFlag = v5_0;
+    unsigned int v6_1;
+    bool v7_0;
+    unsigned int v7_1;
+    if (v5_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+        v6_1 = v5_1;
+    } else {
+        if (r.refill()) {
+            v6_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+        } else {
+            v7_0 = false;
+            v7_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            goto region_561214;
+        }
+    }
+    unsigned long t6;
+    t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
+    unsigned char t7;
+    t7 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t6 + v6_1) + 0);
+    r.mSeekPt = v6_1 + 1u;
+    v7_0 = t7 != 0;
+    v7_1 = v6_1 + 1u;
+    region_561214:;
+    mEnableSyncLight = v7_0;
+    unsigned int v9_1;
+    bool v10_0;
+    if (v7_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+        v9_1 = v7_1;
+    } else {
+        if (r.refill()) {
+            v9_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+        } else {
+            v10_0 = false;
+            goto region_561242;
+        }
+    }
+    unsigned long t8;
+    t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
+    unsigned char t9;
+    t9 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t8 + v9_1) + 0);
+    r.mSeekPt = v9_1 + 1u;
+    v10_0 = t9 != 0;
+    region_561242:;
+    mEnableZone = v10_0;
+    mInitMtnNo = r.readU32();
+    mAreaMasterNo = r.readU32();
+    mAreaReleaseNo = r.readU16();
+    unsigned int v11_1;
+    bool v12_0;
+    unsigned int v12_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+        v11_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+    } else {
+        if (r.refill()) {
+            v11_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+        } else {
+            v12_0 = false;
+            v12_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            goto region_56129b;
+        }
+    }
+    unsigned long t10;
+    t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
+    unsigned char t11;
+    t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10 + v11_1) + 0);
+    r.mSeekPt = v11_1 + 1u;
+    v12_0 = t11 != 0;
+    v12_1 = v11_1 + 1u;
+    region_56129b:;
+    mAreaReleaseON = v12_0;
+    unsigned int v14_1;
+    bool v15_0;
+    if (v12_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+        v14_1 = v12_1;
+    } else {
+        if (r.refill()) {
+            v14_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+        } else {
+            v15_0 = false;
+            goto region_5612c9;
+        }
+    }
+    unsigned long t12;
+    t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
+    unsigned char t13;
+    t13 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t12 + v14_1) + 0);
+    r.mSeekPt = v14_1 + 1u;
+    v15_0 = t13 != 0;
+    region_5612c9:;
+    mAreaReleaseOFF = v15_0;
+    mWarpPointId = r.readU32();
+    mKeyNo = r.readU32();
+    unsigned int v16_1;
+    bool v17_0;
+    unsigned int v17_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+        v16_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+    } else {
+        if (r.refill()) {
+            v16_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+        } else {
+            v17_0 = false;
+            v17_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            goto region_561314;
+        }
+    }
+    unsigned long t14;
+    t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
+    unsigned char t15;
+    t15 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t14 + v16_1) + 0);
+    r.mSeekPt = v16_1 + 1u;
+    v17_0 = t15 != 0;
+    v17_1 = v16_1 + 1u;
+    region_561314:;
+    mIsBreakLink = v17_0;
+    unsigned int v19_1;
+    bool v20_0;
+    if (v17_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+        v19_1 = v17_1;
+    } else {
+        if (r.refill()) {
+            v19_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+        } else {
+            v20_0 = false;
+            goto region_561342;
+        }
+    }
+    unsigned long t16;
+    t16 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
+    unsigned char t17;
+    t17 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t16 + v19_1) + 0);
+    r.mSeekPt = v19_1 + 1u;
+    v20_0 = t17 != 0;
+    region_561342:;
+    mIsBreakQuest = v20_0;
+    mBreakKind = r.readU16();
+    mBreakGroup = r.readU16();
+    mBreakID = r.readU16();
+    mQuestFlag = r.readU32();
+    unsigned int v21_1;
+    bool v22_0;
+    unsigned int v22_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+        v21_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+    } else {
+        if (r.refill()) {
+            v21_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+        } else {
+            v22_0 = false;
+            v22_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            goto region_5613aa;
+        }
+    }
+    unsigned long t18;
+    t18 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
+    unsigned char t19;
+    t19 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t18 + v21_1) + 0);
+    r.mSeekPt = v21_1 + 1u;
+    v22_0 = t19 != 0;
+    v22_1 = v21_1 + 1u;
+    region_5613aa:;
+    mIsNoSbc = v22_0;
+    unsigned int v24_1;
+    if (v22_1 >= (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+        if (!r.refill()) {
+            mIsMyQuest = false;
+            return this->cSetInfoCoord::load(r);
+        } else {
+            v24_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+        }
+    } else {
+        v24_1 = v22_1;
+    }
+    unsigned char t20 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16)) + v24_1) + 0);
+    r.mSeekPt = v24_1 + 1u;
+    mIsMyQuest = t20 != 0;
+    return this->cSetInfoCoord::load(r);
 }
 
 __attribute__((weak)) bool cSetInfoOm::save(MtDataWriter& w) {
@@ -1145,7 +1388,7 @@ void cSetInfoOmDoor::copy(cSetInfo* p) {
             mPRTPos.z = pSic->mPRTPos.z;
             mPRTPos.pad_ = 0.0f;
             mPRTScale = pSic->mPRTScale;
-            mTextType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 132);
+            mTextType = pSic->mTextType;
             mTextQuestNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 136);
             mTextNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 140);
             mQuestID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 144);

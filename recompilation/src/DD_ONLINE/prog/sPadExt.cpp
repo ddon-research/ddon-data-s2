@@ -7,6 +7,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "sInputManager.h"
+#include "../../XFramework/sMain.h"
 #include "../../XFramework/sPad.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -46,9 +47,13 @@ __attribute__((weak)) void sPadExt::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-__attribute__((weak)) void sPadExt::initRepeat() {
-    DDON_STUB("sPadExt::initRepeat")
-    /* stub */
+void sPadExt::initRepeat() {
+    mSysRepeadStDefault = static_cast<unsigned int>(static_cast<long>(12000.0f / sMain::getInstance()->getFps()));
+    mSysRepeadNxDefault = static_cast<unsigned int>(static_cast<long>(3000.0f / sMain::getInstance()->getFps()));
+    setRepeat(0u, static_cast<unsigned int>(static_cast<long>(12000.0f / sMain::getInstance()->getFps())), static_cast<unsigned int>(static_cast<long>(3000.0f / sMain::getInstance()->getFps())));
+    setRepeat(1u, mSysRepeadStDefault, mSysRepeadNxDefault);
+    setRepeat(2u, mSysRepeadStDefault, mSysRepeadNxDefault);
+    setRepeat(3u, mSysRepeadStDefault, mSysRepeadNxDefault);
 }
 
 void sPadExt::setGamePad(u32 id) {

@@ -544,3 +544,16 @@ private:
     static const u32 ATTR_USE_ALPHA_MASK = 1;
     static const u32 ATTR_3D = 2;
 };
+
+inline rGUI::rGUI() {
+    this->mpHeader = nullptr;
+    this->mAttr = 0;
+    this->mIsSetData = 0;
+    this->mBaseZ = 1;
+    this->mFramerateMode = 0;
+    this->mLanguageSettingNo = 0;
+    this->mpVertexBuffer = nullptr;
+    this->mpFontFilter = nullptr;
+    this->::cResource::mAttr = 16;
+    this->mpInstanceNeedObjectInfo = nullptr;
+}

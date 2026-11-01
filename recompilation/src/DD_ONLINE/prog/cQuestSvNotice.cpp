@@ -5,9 +5,42 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "Protocol/UserSession/S2C.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+const MtDTI& cQuestSvNotQuestPhase::getDTI() const {
+    return cQuestSvNotQuestPhase::DTI;
+}
+
+inline void* cQuestSvNotQuestPhase::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cQuestSvNotQuestPhase::DTI)->memAlloc(sz, align, cQuestSvNotQuestPhase::DTI.getID());
+}
+
+inline void cQuestSvNotQuestPhase::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cQuestSvNotQuestPhase::DTI)->memFree(p_addr);
+}
+
+void* cQuestSvNotQuestPhase::getNoticePacket() const {
+    return static_cast<void*>(mpPacket);
+}
+
+cQuestSvNotQuestPhase::~cQuestSvNotQuestPhase() {
+    if (mpPacket == nullptr) {
+        return;
+    }
+    delete mpPacket;
+    mpPacket = nullptr;
+}
+
+cQuestSvNotQuestPhase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cQuestSvNotQuestPhase::MyDTI cQuestSvNotQuestPhase::DTI("cQuestSvNotQuestPhase", &::cQuestSvNotice::DTI, 16ul, 0u, 0u);
+
+MtObject* cQuestSvNotQuestPhase::MyDTI::newInstance() const {
+    return new (16u) cQuestSvNotQuestPhase;
+}
 
 __attribute__((weak)) void cQuestSvNotice::createProperty(MtPropertyList& s) {
 }

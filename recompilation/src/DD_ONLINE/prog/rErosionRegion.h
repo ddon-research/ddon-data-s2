@@ -378,18 +378,6 @@ inline f32 cErosionSmallInfoRes::getCancelWaitTimer() const {
     return this->mCancelWaitTimer;
 }
 
-inline f32 cErosionSmallInfoRes::getScaleActiveRate() const {
-    return this->mScaleActiveRate;
-}
-
-inline f32 cErosionSmallInfoRes::getScaleInActiveMax() const {
-    return this->mScaleInActiveMax;
-}
-
-inline f32 cErosionSmallInfoRes::getScaleInActiveMin() const {
-    return this->mScaleInActiveMin;
-}
-
 inline cErosionSmallInfoRes::cErosionSmallInfoRes() {
     this->mCancelTimer = 360.0f;
     this->mCancelWaitTimer = 60.0f;

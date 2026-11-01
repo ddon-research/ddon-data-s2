@@ -159,6 +159,10 @@ const MtDTI& cMenuEntryBoardInvite::getDTI() const {
     return cMenuEntryBoardInvite::DTI;
 }
 
+inline void* cMenuEntryBoardInvite::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMenuEntryBoardInvite::DTI)->memAlloc(sz, align, cMenuEntryBoardInvite::DTI.getID());
+}
+
 cMenuEntryBoardInvite::~cMenuEntryBoardInvite() {
     DDON_STUB("cMenuEntryBoardInvite::~cMenuEntryBoardInvite")
     /* stub */
@@ -183,13 +187,16 @@ cMenuEntryBoardInvite::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 cMenuEntryBoardInvite::MyDTI cMenuEntryBoardInvite::DTI("cMenuEntryBoardInvite", &::cMenuBase::DTI, 208ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuEntryBoardInvite::MyDTI::newInstance() const {
-    DDON_STUB("cMenuEntryBoardInvite::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuEntryBoardInvite::MyDTI::newInstance() const {
+    return new (16u) cMenuEntryBoardInvite;
 }
 
 const MtDTI& cMenuEntryBoardItem::getDTI() const {
     return cMenuEntryBoardItem::DTI;
+}
+
+inline void* cMenuEntryBoardItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMenuEntryBoardItem::DTI)->memAlloc(sz, align, cMenuEntryBoardItem::DTI.getID());
 }
 
 cMenuEntryBoardItem::~cMenuEntryBoardItem() {
@@ -271,13 +278,16 @@ cMenuEntryBoardItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 cMenuEntryBoardItem::MyDTI cMenuEntryBoardItem::DTI("cMenuEntryBoardItem", &::cMenuBase::DTI, 272ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuEntryBoardItem::MyDTI::newInstance() const {
-    DDON_STUB("cMenuEntryBoardItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuEntryBoardItem::MyDTI::newInstance() const {
+    return new (16u) cMenuEntryBoardItem;
 }
 
 const MtDTI& cMenuEntryBoardItemList::getDTI() const {
     return cMenuEntryBoardItemList::DTI;
+}
+
+inline void* cMenuEntryBoardItemList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMenuEntryBoardItemList::DTI)->memAlloc(sz, align, cMenuEntryBoardItemList::DTI.getID());
 }
 
 inline void cMenuEntryBoardItemList::operator delete(void* p_addr) {
@@ -380,9 +390,8 @@ cMenuEntryBoardItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 cMenuEntryBoardItemList::MyDTI cMenuEntryBoardItemList::DTI("cMenuEntryBoardItemList", &::cMenuBase::DTI, 768ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuEntryBoardItemList::MyDTI::newInstance() const {
-    DDON_STUB("cMenuEntryBoardItemList::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuEntryBoardItemList::MyDTI::newInstance() const {
+    return new (16u) cMenuEntryBoardItemList;
 }
 
 const MtDTI& cMenuEntryBoardMember::getDTI() const {

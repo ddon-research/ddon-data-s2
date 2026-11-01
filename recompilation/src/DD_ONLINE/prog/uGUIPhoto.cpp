@@ -44,7 +44,7 @@ __attribute__((weak)) bool uGUIPhoto::isNoStartPhoto() {
     return {};
 }
 
-uGUIPhoto::~uGUIPhoto() {
+__attribute__((noinline)) uGUIPhoto::~uGUIPhoto() {
     DDON_STUB("uGUIPhoto::~uGUIPhoto")
     /* stub */
 }

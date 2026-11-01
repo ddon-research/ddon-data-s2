@@ -12,8 +12,10 @@
 #include "../../XFramework/cUnit.h"
 #include "cpDDMrlMgr.h"
 #include "../../generated/shared/nDDOMath.h"
+#include "nDrawDDMaterialStd.h"
 #include "../../XFramework/nDrawMaterial.h"
 #include "../../XFramework/nDrawMaterialStdEst.h"
+#include "../../XFramework/rTexture.h"
 #include "sEffectExt.h"
 #include "../../XFramework/sMain.h"
 #include "sOmManager.h"
@@ -44,7 +46,7 @@ cDDMaterialCtrl::cDDMaterialCtrl() {
     /* stub */
 }
 
-cDDMaterialCtrl::~cDDMaterialCtrl() {
+__attribute__((noinline)) cDDMaterialCtrl::~cDDMaterialCtrl() {
     DDON_STUB("cDDMaterialCtrl::~cDDMaterialCtrl")
     /* stub */
 }
@@ -331,9 +333,34 @@ inline void cDDMaterialCtrl::cShaderDataDamage::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDamage::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) bool cDDMaterialCtrl::cShaderDataDamage::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataDamage::isSetCommonState")
-    return {};
+bool cDDMaterialCtrl::cShaderDataDamage::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    unsigned long v2_0;
+    if (pm != nullptr) {
+        const MtDTI& t0 = pm->getDTI();
+        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&nDraw::DDMrlStdEstObj::DTI) + 8);
+        const MtDTI* v0_0 = &t0;
+        unsigned long v1_0;
+        TitleMaterial* v1_2;
+        for (;;) {
+            if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+                v1_0 = reinterpret_cast<unsigned long>(v0_0);
+                v1_2 = pm;
+                break;
+            } else {
+                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+                } else {
+                    v1_0 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32);
+                    v1_2 = nullptr;
+                    break;
+                }
+            }
+        }
+        v2_0 = (v1_0 & 0xFFFFFFFFFFFFFF00ul) | static_cast<unsigned long>(v1_2 != nullptr);
+    } else {
+        v2_0 = 0;
+    }
+    return static_cast<bool>(static_cast<unsigned char>(v2_0));
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataDamage::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
@@ -341,9 +368,30 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataDamage::setCommonState(cD
     /* stub */
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataDamage::setCommonCB(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataDamage::setCommonCB")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataDamage::setCommonCB(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    if (isSetCommonState(pm, pBaseModel, index)) {
+        const MtDTI& t0 = pm->getDTI();
+        MT_CTSTR v0_1 = nDraw::DDMrlStdEstObj::DTI.mName;
+        const MtDTI* v0_0 = &t0;
+        nDraw::DDMrlStdEstObj* p_mseo;
+        for (;;) {
+            if (v0_1 == v0_0->mName) {
+                p_mseo = static_cast<nDraw::DDMrlStdEstObj*>(pm);
+                break;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    p_mseo = nullptr;
+                    break;
+                }
+            }
+        }
+        p_mseo->mBaseShaderMode = getMyShaderMode();
+        p_mseo->mAlphaClipThreshold = getAlphaClipThreshold();
+        p_mseo->mBlendAlphaThreshold = getBlendAlphaThreshold();
+        p_mseo->mBlendAlphaBand = getBlendAlphaBand();
+    }
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataDamage::createProperty(MtPropertyList& s) {
@@ -456,14 +504,62 @@ bool cDDMaterialCtrl::cShaderDataStatusAilments::isEnd() {
     return mIsEnd;
 }
 
-__attribute__((weak)) bool cDDMaterialCtrl::cShaderDataStatusAilments::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataStatusAilments::isSetCommonState")
-    return {};
+bool cDDMaterialCtrl::cShaderDataStatusAilments::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    unsigned long v2_0;
+    if (pm != nullptr) {
+        const MtDTI& t0 = pm->getDTI();
+        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&nDraw::DDMrlStdEstObj::DTI) + 8);
+        const MtDTI* v0_0 = &t0;
+        unsigned long v1_0;
+        TitleMaterial* v1_2;
+        for (;;) {
+            if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+                v1_0 = reinterpret_cast<unsigned long>(v0_0);
+                v1_2 = pm;
+                break;
+            } else {
+                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+                } else {
+                    v1_0 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32);
+                    v1_2 = nullptr;
+                    break;
+                }
+            }
+        }
+        v2_0 = (v1_0 & 0xFFFFFFFFFFFFFF00ul) | static_cast<unsigned long>(v1_2 != nullptr);
+    } else {
+        v2_0 = 0;
+    }
+    return static_cast<bool>(static_cast<unsigned char>(v2_0));
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataStatusAilments::setCommonState")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataStatusAilments::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    const MtDTI* v0_0;
+    MT_CTSTR v0_1;
+    if (!isSetCommonState(pm, pBaseModel, index)) {
+        return;
+    } else {
+        const MtDTI& t0 = pm->getDTI();
+        v0_1 = nDraw::DDMrlStdEstObj::DTI.mName;
+        v0_0 = &t0;
+    }
+    for (;;) {
+        if (v0_1 == v0_0->mName) {
+            break;
+        } else {
+            v0_0 = v0_0->mpParent;
+        }
+    }
+    nDraw::DDMrlStdEstObj* p_mseo = static_cast<nDraw::DDMrlStdEstObj*>(pm);
+    p_mseo->mShaderMode = 2;
+    pm->setFunction(0x13F1FAF9u, 0xBE967AFAu);
+    pm->setFunction(0xC491CAFCu, 0x518F9AFDu);
+    pm->setFunction(0x77E03AFFu, 0xECC1FB00u);
+    pm->setFunction(0xC6DF3B02u, 0xC6DF3B02u);
+    setCommonCB(pm);
+    setExclusiveCB(pm);
+    setTextureForMaterial(pm);
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::setCommonCB(cDDMaterialCtrl::TitleMaterial* pm) {
@@ -471,9 +567,56 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::setCommon
     /* stub */
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::setTextureForMaterial(cDDMaterialCtrl::TitleMaterial* pm) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataStatusAilments::setTextureForMaterial")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataStatusAilments::setTextureForMaterial(cDDMaterialCtrl::TitleMaterial* pm) {
+    const MtDTI& t0 = pm->getDTI();
+    MT_CTSTR v0_1 = nDraw::DDMrlStdEstObj::DTI.mName;
+    if (v0_1 != t0.mName) {
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_0->mpParent == nullptr) {
+                return;
+            } else {
+                if (v0_1 != v0_0->mpParent->mName) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (pm == nullptr) {
+            return;
+        }
+    }
+    const rTexture* t1 = getStatusAilmentsTexture()->getNormalMap();
+    const rTexture* t2 = getStatusAilmentsTexture()->getSpecularMap();
+    if (getStatusAilmentsTexture()->getAlbedoMap() != nullptr) {
+        nDraw::DDMrlStdEstObj* p_mseo = static_cast<nDraw::DDMrlStdEstObj*>(pm);
+        p_mseo->mpAlbedoMapEx = getStatusAilmentsTexture()->getAlbedoMap()->getHandle();
+        if (t1 != nullptr) {
+            p_mseo->mpNormalMapEx = t1->getHandle();
+        } else {
+            p_mseo->mpNormalMapEx = nullptr;
+        }
+        if (t2 != nullptr) {
+            p_mseo->mpSpecularMapEx = t2->getHandle();
+        } else {
+            p_mseo->mpSpecularMapEx = nullptr;
+        }
+        return;
+    } else {
+        nDraw::DDMrlStdEstObj* p_mseo = static_cast<nDraw::DDMrlStdEstObj*>(pm);
+        p_mseo->mpAlbedoMapEx = nullptr;
+        if (t1 != nullptr) {
+            p_mseo->mpNormalMapEx = t1->getHandle();
+        } else {
+            p_mseo->mpNormalMapEx = nullptr;
+        }
+        if (t2 != nullptr) {
+            p_mseo->mpSpecularMapEx = t2->getHandle();
+        } else {
+            p_mseo->mpSpecularMapEx = nullptr;
+        }
+        return;
+    }
 }
 
 void cDDMaterialCtrl::cShaderDataStatusAilments::copy(cDDMaterialCtrl::cShaderData* sd) {
@@ -956,9 +1099,39 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataBloodStain::setCommonStat
     /* stub */
 }
 
-__attribute__((weak)) bool cDDMaterialCtrl::cShaderDataBloodStain::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataBloodStain::isSetCommonState")
-    return {};
+bool cDDMaterialCtrl::cShaderDataBloodStain::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    if (pm != nullptr) {
+        const MtDTI& t0 = pm->getDTI();
+        MT_CTSTR v0_1 = nDraw::DDMrlStdEstObj::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                if (static_cast<unsigned int>(pm->mID - 100) > 9) {
+                    if (static_cast<unsigned int>(pm->mID - 500) > 9) {
+                        if (pm->mID != 110) {
+                            if (pm->mID == 0x1FE) {
+                                return true;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 void cDDMaterialCtrl::cShaderDataBloodStain::requestPhase(u32 phase) {
@@ -1023,9 +1196,27 @@ u32 cDDMaterialCtrl::cShaderDataFireDamage::getMyShaderMode() {
     return 5;
 }
 
-__attribute__((weak)) bool cDDMaterialCtrl::cShaderDataFireDamage::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataFireDamage::isSetCommonState")
-    return {};
+bool cDDMaterialCtrl::cShaderDataFireDamage::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    if (pm != nullptr) {
+        const MtDTI& t0 = pm->getDTI();
+        MT_CTSTR v0_1 = nDraw::DDMrlStdEstObj::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                if (static_cast<unsigned short>(pm->mID + 65336) <= 99) {
+                    return true;
+                } else {
+                    break;
+                }
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 cDDMaterialCtrl::cShaderDataFireDamage::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1050,9 +1241,28 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataFire::init(uBaseModel* bm
     /* stub */
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataFire::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataFire::setCommonState")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataFire::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    if (isSetCommonState(pm, pBaseModel, index)) {
+        const MtDTI& t0 = pm->getDTI();
+        MT_CTSTR v0_1 = nDraw::DDMrlStdEstObj::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                break;
+            } else {
+                v0_0 = v0_0->mpParent;
+            }
+        }
+        nDraw::DDMrlStdEstObj* p_mseo = static_cast<nDraw::DDMrlStdEstObj*>(pm);
+        p_mseo->mShaderMode = 2;
+        pm->setFunction(0x13F1FAF9u, 0xBE967AFAu);
+        pm->setFunction(0xC491CAFCu, 0x518F9AFDu);
+        pm->setFunction(0x77E03AFFu, 0xECC1FB00u);
+        pm->setFunction(0xC6DF3B02u, 0xC6DF3B02u);
+        setCommonCB(pm);
+        setExclusiveCB(pm);
+        setTextureForMaterial(pm);
+        mIsCacheNone = true;
+    }
 }
 
 u32 cDDMaterialCtrl::cShaderDataFire::getAlimentsTextureId() {
@@ -1091,9 +1301,28 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataFreeze::init(uBaseModel* 
     /* stub */
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataFreeze::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataFreeze::setCommonState")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataFreeze::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    if (isSetCommonState(pm, pBaseModel, index)) {
+        const MtDTI& t0 = pm->getDTI();
+        MT_CTSTR v0_1 = nDraw::DDMrlStdEstObj::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                break;
+            } else {
+                v0_0 = v0_0->mpParent;
+            }
+        }
+        nDraw::DDMrlStdEstObj* p_mseo = static_cast<nDraw::DDMrlStdEstObj*>(pm);
+        p_mseo->mShaderMode = 2;
+        pm->setFunction(0x13F1FAF9u, 0xBE967AFAu);
+        pm->setFunction(0xC491CAFCu, 0x518F9AFDu);
+        pm->setFunction(0x77E03AFFu, 0xECC1FB00u);
+        pm->setFunction(0xC6DF3B02u, 0xC6DF3B02u);
+        setCommonCB(pm);
+        setExclusiveCB(pm);
+        setTextureForMaterial(pm);
+        mIsCacheNone = true;
+    }
 }
 
 u32 cDDMaterialCtrl::cShaderDataFreeze::getAlimentsTextureId() {
@@ -1167,9 +1396,28 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataWetOil::init(uBaseModel* 
     /* stub */
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataWetOil::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataWetOil::setCommonState")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataWetOil::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    if (isSetCommonState(pm, pBaseModel, index)) {
+        const MtDTI& t0 = pm->getDTI();
+        MT_CTSTR v0_1 = nDraw::DDMrlStdEstObj::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                break;
+            } else {
+                v0_0 = v0_0->mpParent;
+            }
+        }
+        nDraw::DDMrlStdEstObj* p_mseo = static_cast<nDraw::DDMrlStdEstObj*>(pm);
+        p_mseo->mShaderMode = 2;
+        pm->setFunction(0x13F1FAF9u, 0xBE967AFAu);
+        pm->setFunction(0xC491CAFCu, 0x518F9AFDu);
+        pm->setFunction(0x77E03AFFu, 0xECC1FB00u);
+        pm->setFunction(0xC6DF3B02u, 0xC6DF3B02u);
+        setCommonCB(pm);
+        setExclusiveCB(pm);
+        setTextureForMaterial(pm);
+        mIsCacheNone = true;
+    }
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataWetOil::setExclusiveCB(cDDMaterialCtrl::TitleMaterial* pm) {
@@ -1177,9 +1425,58 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataWetOil::setExclusiveCB(cD
     /* stub */
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataWetOil::setTextureForMaterial(cDDMaterialCtrl::TitleMaterial* pm) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataWetOil::setTextureForMaterial")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataWetOil::setTextureForMaterial(cDDMaterialCtrl::TitleMaterial* pm) {
+    const MtDTI& t0 = pm->getDTI();
+    MT_CTSTR v0_1 = nDraw::DDMrlStdEstObj::DTI.mName;
+    if (v0_1 != t0.mName) {
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_0->mpParent == nullptr) {
+                return;
+            } else {
+                if (v0_1 != v0_0->mpParent->mName) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (pm == nullptr) {
+            return;
+        }
+    }
+    const rTexture* t1 = getStatusAilmentsTexture()->getNormalMap();
+    const rTexture* t2 = getStatusAilmentsTexture()->getSpecularMap();
+    if (getStatusAilmentsTexture()->getAlbedoMap() != nullptr) {
+        nDraw::DDMrlStdEstObj* p_mseo = static_cast<nDraw::DDMrlStdEstObj*>(pm);
+        p_mseo->mpAlbedoMapEx = getStatusAilmentsTexture()->getAlbedoMap()->getHandle();
+        if (t1 != nullptr) {
+            p_mseo->mpNormalMapEx = t1->getHandle();
+        } else {
+            p_mseo->mpNormalMapEx = nullptr;
+        }
+        if (t2 != nullptr) {
+            p_mseo->mpSpecularMapEx = t2->getHandle();
+        } else {
+            p_mseo->mpSpecularMapEx = nullptr;
+        }
+        p_mseo->mpEnvMapEx = nullptr;
+        return;
+    } else {
+        nDraw::DDMrlStdEstObj* p_mseo = static_cast<nDraw::DDMrlStdEstObj*>(pm);
+        p_mseo->mpAlbedoMapEx = nullptr;
+        if (t1 != nullptr) {
+            p_mseo->mpNormalMapEx = t1->getHandle();
+        } else {
+            p_mseo->mpNormalMapEx = nullptr;
+        }
+        if (t2 != nullptr) {
+            p_mseo->mpSpecularMapEx = t2->getHandle();
+        } else {
+            p_mseo->mpSpecularMapEx = nullptr;
+        }
+        p_mseo->mpEnvMapEx = nullptr;
+        return;
+    }
 }
 
 u32 cDDMaterialCtrl::cShaderDataWetOil::getAlimentsTextureId() {
@@ -1218,9 +1515,28 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStone::init(uBaseModel* b
     /* stub */
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataStone::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataStone::setCommonState")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataStone::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    if (isSetCommonState(pm, pBaseModel, index)) {
+        const MtDTI& t0 = pm->getDTI();
+        MT_CTSTR v0_1 = nDraw::DDMrlStdEstObj::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                break;
+            } else {
+                v0_0 = v0_0->mpParent;
+            }
+        }
+        nDraw::DDMrlStdEstObj* p_mseo = static_cast<nDraw::DDMrlStdEstObj*>(pm);
+        p_mseo->mShaderMode = 2;
+        pm->setFunction(0x13F1FAF9u, 0xBE967AFAu);
+        pm->setFunction(0xC491CAFCu, 0x518F9AFDu);
+        pm->setFunction(0x77E03AFFu, 0xECC1FB00u);
+        pm->setFunction(0xC6DF3B02u, 0xC6DF3B02u);
+        setCommonCB(pm);
+        setExclusiveCB(pm);
+        setTextureForMaterial(pm);
+        mIsCacheNone = true;
+    }
 }
 
 u32 cDDMaterialCtrl::cShaderDataStone::getAlimentsTextureId() {
@@ -1437,7 +1753,7 @@ inline void cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::operator delete(
     MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI)->memFree(p_addr);
 }
 
-cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::~cShaderDataMaterialToDefaultColor() {
+__attribute__((noinline)) cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::~cShaderDataMaterialToDefaultColor() {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::~cShaderDataMaterialToDefaultColor")
     /* stub */
 }

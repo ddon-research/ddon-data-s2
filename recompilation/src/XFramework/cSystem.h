@@ -16,6 +16,8 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 class MtVector3;
+class cAIService;
+class sAI;
 class sAIPawnSys;
 class sArchiveManager;
 class sAreaHit;
@@ -27,11 +29,13 @@ class sCaplinkManager;
 class sChat;
 class sCollision;
 class sContextManager;
+class sControlManager;
 class sEffect;
 class sEffectExt;
 class sGUI;
 class sGUIExt;
 class sInputManager;
+class sLockOnManager;
 class sNetwork;
 class sObjCollision;
 class sOccluder;
@@ -40,7 +44,9 @@ class sPrimitive;
 class sQuestManagerExt;
 class sRender;
 class sResource;
+class sResourceExt;
 class sScene;
+class sSceneExt;
 class sSetManager;
 class sShadow;
 class sSound;
@@ -49,6 +55,7 @@ class sSoundManager;
 class sUnit;
 class sUnitManager;
 class sZone;
+class sZoneUnitCtrl;
 class uGUIMenuComm;
 
 // Declarations
@@ -63,6 +70,8 @@ using u32 = unsigned int;
 
 class cSystem : public MtObject
 {
+    friend class cAIService;
+    friend class sAI;
     friend class sAIPawnSys;
     friend class sArchiveManager;
     friend class sAreaHit;
@@ -74,11 +83,13 @@ class cSystem : public MtObject
     friend class sChat;
     friend class sCollision;
     friend class sContextManager;
+    friend class sControlManager;
     friend class sEffect;
     friend class sEffectExt;
     friend class sGUI;
     friend class sGUIExt;
     friend class sInputManager;
+    friend class sLockOnManager;
     friend class sNetwork;
     friend class sObjCollision;
     friend class sOccluder;
@@ -87,7 +98,9 @@ class cSystem : public MtObject
     friend class sQuestManagerExt;
     friend class sRender;
     friend class sResource;
+    friend class sResourceExt;
     friend class sScene;
+    friend class sSceneExt;
     friend class sSetManager;
     friend class sShadow;
     friend class sSound;
@@ -96,6 +109,7 @@ class cSystem : public MtObject
     friend class sUnit;
     friend class sUnitManager;
     friend class sZone;
+    friend class sZoneUnitCtrl;
     friend class uGUIMenuComm;
 public:
     class MyDTI;

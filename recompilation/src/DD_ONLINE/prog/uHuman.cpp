@@ -136,7 +136,7 @@ uHuman::uHuman() {
     /* stub */
 }
 
-uHuman::~uHuman() {
+__attribute__((noinline)) uHuman::~uHuman() {
     DDON_STUB("uHuman::~uHuman")
     /* stub */
 }
@@ -4933,6 +4933,10 @@ const MtDTI& uHuman::cLimitActCtrl::getDTI() const {
     return uHuman::cLimitActCtrl::DTI;
 }
 
+inline void* uHuman::cLimitActCtrl::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uHuman::cLimitActCtrl::DTI)->memAlloc(sz, align, uHuman::cLimitActCtrl::DTI.getID());
+}
+
 inline void uHuman::cLimitActCtrl::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uHuman::cLimitActCtrl::DTI)->memFree(p_addr);
 }
@@ -4965,9 +4969,8 @@ uHuman::cLimitActCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 uHuman::cLimitActCtrl::MyDTI uHuman::cLimitActCtrl::DTI("uHuman::cLimitActCtrl", &::MtObject::DTI, 136ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uHuman::cLimitActCtrl::MyDTI::newInstance() const {
-    DDON_STUB("uHuman::cLimitActCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* uHuman::cLimitActCtrl::MyDTI::newInstance() const {
+    return new (16u) uHuman::cLimitActCtrl;
 }
 
 const MtDTI& uHuman::cBlendMotionCtrl::getDTI() const {

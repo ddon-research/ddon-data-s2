@@ -278,3 +278,26 @@ inline cAIFSMCluster::cAIFSMCluster() {
     this->mNodeNum = 0;
     this->mpNodeList = nullptr;
 }
+
+inline cAIFSMNode::cAIFSMNode() {
+    this->mId = 0;
+    this->mUniqueId = 0;
+    this->mpProcessList = nullptr;
+    this->mLinkNum = 0;
+    this->mpLinkList = nullptr;
+    this->mpSubCluster = nullptr;
+    this->mProcessNum = 0;
+    this->mSetting = 1;
+    this->mUserAttribute = 0;
+    this->mExistConditionTrainsitionFromAll = false;
+    this->mConditionTrainsitionFromAllId = 0;
+    this->mUIPos = 0;
+    this->mColorType = 0;
+}
+
+inline rAIFSM::rAIFSM() {
+    this->::cResource::mAttr = 18;
+    this->mFSMAttribute = 0;
+    this->mpConditionTree = nullptr;
+    this->mpRootCluster = nullptr;
+}

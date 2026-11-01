@@ -6,7 +6,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cCharacterEditPaletteBase.h"
-#include "../../generated/shared/nCharacterEdit.h"
+#include "nCharacterEdit.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB

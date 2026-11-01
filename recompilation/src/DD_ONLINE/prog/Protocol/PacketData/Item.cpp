@@ -338,9 +338,8 @@ CDataMoveItemUIDFromTo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 CDataMoveItemUIDFromTo::MyDTI CDataMoveItemUIDFromTo::DTI("CDataMoveItemUIDFromTo", &::CPacketDataBase::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataMoveItemUIDFromTo::MyDTI::newInstance() const {
-    DDON_STUB("CDataMoveItemUIDFromTo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataMoveItemUIDFromTo::MyDTI::newInstance() const {
+    return new (16u) CDataMoveItemUIDFromTo;
 }
 
 const MtDTI& CDataS2CCharacterEquipInfo::getDTI() const {

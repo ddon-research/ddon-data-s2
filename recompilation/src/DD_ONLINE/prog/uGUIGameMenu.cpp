@@ -19,11 +19,28 @@
 #include "sBrowser.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sGame.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "sUnitExt.h"
 #include "uGUIBase.h"
+#include "uGUIBoughtBox.h"
 #include "uGUICaplinkTopMenu.h"
+#include "uGUIGPShop.h"
+#include "uGUIGPShopDialog.h"
 #include "uGUIInfo.h"
+#include "uGUILoginBonus.h"
+#include "uGUIMap.h"
+#include "uGUIMenuAreaInfo.h"
+#include "uGUIMenuCmdPawn.h"
+#include "uGUIMenuComm.h"
+#include "uGUIMenuTutorial.h"
+#include "uGUINewspaper.h"
+#include "uGUIOption.h"
+#include "uGUIPSStore.h"
+#include "uGUIPhoto.h"
+#include "uGUIPhotoAlbum.h"
+#include "uGUIQuestList.h"
 #include "uGUISystemMsg.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -37,7 +54,7 @@ inline void uGUIGameMenu::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIGameMenu::DTI)->memFree(p_addr);
 }
 
-uGUIGameMenu::~uGUIGameMenu() {
+__attribute__((noinline)) uGUIGameMenu::~uGUIGameMenu() {
     DDON_STUB("uGUIGameMenu::~uGUIGameMenu")
     /* stub */
 }
@@ -63,39 +80,50 @@ void uGUIGameMenu::move() {
     this->uGUIBase::move();
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectPawnOrder() {
-    DDON_STUB("uGUIGameMenu::evSelectPawnOrder")
-    /* stub */
+void uGUIGameMenu::evSelectPawnOrder() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIMenuCmdPawn), 18u, sUnitExt::GPT_UI_SUB);
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectOptionSys() {
-    DDON_STUB("uGUIGameMenu::evSelectOptionSys")
-    /* stub */
+void uGUIGameMenu::evSelectOptionSys() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIOption), 18u, sUnitExt::GPT_UI_SUB);
+    if (mUnitWatcher.getUnit() == nullptr) {
+        return;
+    }
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mUnitWatcher.getUnit()) + 2400) = 0;
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectOptionChr() {
-    DDON_STUB("uGUIGameMenu::evSelectOptionChr")
-    /* stub */
+void uGUIGameMenu::evSelectOptionChr() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIOption), 18u, sUnitExt::GPT_UI_SUB);
+    if (mUnitWatcher.getUnit() == nullptr) {
+        return;
+    }
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mUnitWatcher.getUnit()) + 2400) = 2;
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectMap() {
-    DDON_STUB("uGUIGameMenu::evSelectMap")
-    /* stub */
+void uGUIGameMenu::evSelectMap() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIMap), 18u, sUnitExt::GPT_UI_SUB);
+    uGUIMap* pMap = static_cast<uGUIMap*>(mUnitWatcher.getUnit());
+    if (pMap == nullptr) {
+        return;
+    }
+    sGUI* t6 = sGUI::getInstance();
+    static_cast<sGUIExt*>(t6)->setFocusMap(pMap);
+    sGame* t8 = sGame::getInstance();
+    s32 t9 = t8->getStageNo();
+    u32 t10 = t8->getLandIdFromStage(t9);
+    pMap->mLandType = static_cast<s32>(t10);
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectAreaInfo() {
-    DDON_STUB("uGUIGameMenu::evSelectAreaInfo")
-    /* stub */
+void uGUIGameMenu::evSelectAreaInfo() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIMenuAreaInfo), 18u, sUnitExt::GPT_UI_SUB);
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectNewsPaper() {
-    DDON_STUB("uGUIGameMenu::evSelectNewsPaper")
-    /* stub */
+void uGUIGameMenu::evSelectNewsPaper() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUINewspaper), 18u, sUnitExt::GPT_UI_SUB);
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectQuest() {
-    DDON_STUB("uGUIGameMenu::evSelectQuest")
-    /* stub */
+void uGUIGameMenu::evSelectQuest() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIQuestList), 18u, sUnitExt::GPT_UI_SUB);
 }
 
 __attribute__((weak)) void uGUIGameMenu::evSelectRimWarp() {
@@ -108,9 +136,15 @@ __attribute__((weak)) void uGUIGameMenu::evSelectReturnExitGame() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectTutorial() {
-    DDON_STUB("uGUIGameMenu::evSelectTutorial")
-    /* stub */
+void uGUIGameMenu::evSelectTutorial() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIMenuTutorial), 18u, sUnitExt::GPT_UI_SUB);
+    if (mUnitWatcher.getUnit() == nullptr) {
+        return;
+    }
+    if (mSubMode != 1) {
+        return;
+    }
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mUnitWatcher.getUnit()) + 6344) = 1;
 }
 
 __attribute__((weak)) void uGUIGameMenu::evSelectManual() {
@@ -123,19 +157,16 @@ __attribute__((weak)) void uGUIGameMenu::evSelectSupport() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectPhoto() {
-    DDON_STUB("uGUIGameMenu::evSelectPhoto")
-    /* stub */
+void uGUIGameMenu::evSelectPhoto() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIPhoto), 18u, sUnitExt::GPT_UI_SUB);
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectPhotoAlbum() {
-    DDON_STUB("uGUIGameMenu::evSelectPhotoAlbum")
-    /* stub */
+void uGUIGameMenu::evSelectPhotoAlbum() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIPhotoAlbum), 18u, sUnitExt::GPT_UI_SUB);
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectShopGP() {
-    DDON_STUB("uGUIGameMenu::evSelectShopGP")
-    /* stub */
+void uGUIGameMenu::evSelectShopGP() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIGPShop), 18u, sUnitExt::GPT_UI_SUB);
 }
 
 __attribute__((weak)) void uGUIGameMenu::evSelectShopStatus() {
@@ -143,9 +174,8 @@ __attribute__((weak)) void uGUIGameMenu::evSelectShopStatus() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectShopCharge() {
-    DDON_STUB("uGUIGameMenu::evSelectShopCharge")
-    /* stub */
+void uGUIGameMenu::evSelectShopCharge() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIGPShopDialog), 18u, sUnitExt::GPT_UI_SUB);
 }
 
 __attribute__((weak)) void uGUIGameMenu::evSelectInputCode() {
@@ -153,34 +183,44 @@ __attribute__((weak)) void uGUIGameMenu::evSelectInputCode() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectPSStore() {
-    DDON_STUB("uGUIGameMenu::evSelectPSStore")
-    /* stub */
+void uGUIGameMenu::evSelectPSStore() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIPSStore), 18u, sUnitExt::GPT_UI_SUB);
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectMenuCommMyPhrase() {
-    DDON_STUB("uGUIGameMenu::evSelectMenuCommMyPhrase")
-    /* stub */
+void uGUIGameMenu::evSelectMenuCommMyPhrase() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIMenuComm), 18u, sUnitExt::GPT_UI_SUB);
+    if (mUnitWatcher.getUnit() == nullptr) {
+        return;
+    }
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mUnitWatcher.getUnit()) + 13768) = 0;
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectMenuCommTmpPhrase() {
-    DDON_STUB("uGUIGameMenu::evSelectMenuCommTmpPhrase")
-    /* stub */
+void uGUIGameMenu::evSelectMenuCommTmpPhrase() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIMenuComm), 18u, sUnitExt::GPT_UI_SUB);
+    if (mUnitWatcher.getUnit() == nullptr) {
+        return;
+    }
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mUnitWatcher.getUnit()) + 13768) = 1;
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectMenuCommEmotion() {
-    DDON_STUB("uGUIGameMenu::evSelectMenuCommEmotion")
-    /* stub */
+void uGUIGameMenu::evSelectMenuCommEmotion() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIMenuComm), 18u, sUnitExt::GPT_UI_SUB);
+    if (mUnitWatcher.getUnit() == nullptr) {
+        return;
+    }
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mUnitWatcher.getUnit()) + 13768) = 2;
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectMenuBoughtBox() {
-    DDON_STUB("uGUIGameMenu::evSelectMenuBoughtBox")
-    /* stub */
+void uGUIGameMenu::evSelectMenuBoughtBox() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUIBoughtBox), 18u, sUnitExt::GPT_UI_SUB);
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectLoginBonus() {
-    DDON_STUB("uGUIGameMenu::evSelectLoginBonus")
-    /* stub */
+void uGUIGameMenu::evSelectLoginBonus() {
+    mUnitWatcher.addUnit(static_cast<uGUIBase*>(new (16u) uGUILoginBonus), 19u, sUnitExt::GPT_UI_SUB);
+    if (mUnitWatcher.getUnit() == nullptr) {
+        return;
+    }
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mUnitWatcher.getUnit()) + 11800) = 1;
 }
 
 void uGUIGameMenu::evSelectTimeEvent() {

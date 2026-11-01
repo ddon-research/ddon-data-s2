@@ -9,6 +9,7 @@
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "cEquipData.h"
+#include "cGUIUtility.h"
 #include "cItemParam.h"
 #include "cUIObject.h"
 #include "../../XFramework/cUnit.h"
@@ -87,9 +88,17 @@ bool nGUIItem::cItem::isThrowItem() {
     return (mprItemParam != nullptr) && ((mprItemParam->mCategory == 1) && (mprItemParam->getUseType() == ::rItemList::USE_CATEGORY_THROW));
 }
 
-__attribute__((weak)) MT_CTSTR nGUIItem::cItem::getName() {
-    DDON_STUB("nGUIItem::cItem::getName")
-    return {};
+MT_CTSTR nGUIItem::cItem::getName() {
+    if (mpParam != nullptr) {
+        ::cGUIUtility::makeItemName(mItemNameTmp, mpParam);
+        return mItemNameTmp.ptr();
+    } else {
+        if (mprItemParam != nullptr) {
+            return mprItemParam->getItemName();
+        } else {
+            return nullptr;
+        }
+    }
 }
 
 u32 nGUIItem::cItem::getNum() const {
@@ -330,7 +339,7 @@ inline void nGUIItem::cItemList::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nGUIItem::cItemList::DTI)->memFree(p_addr);
 }
 
-nGUIItem::cItemList::~cItemList() {
+__attribute__((noinline)) nGUIItem::cItemList::~cItemList() {
     DDON_STUB("nGUIItem::cItemList::~cItemList")
     /* stub */
 }

@@ -27,11 +27,15 @@ class uGUICaplinkMessage;
 class uGUICaplinkProfile;
 class uGUICaplinkTalk;
 class uGUICaplinkTopMenu;
+class uGUICharaEditPartsWrap;
+class uGUICharacterEdit;
 class uGUIChat;
+class uGUIClanSearch;
 class uGUIContentsBoard;
 class uGUIDialogTextBox;
 class uGUIGPConfirm;
 class uGUIGiveAndTake;
+class uGUIJobSelect;
 class uGUILoginBonus;
 class uGUIMap;
 class uGUIMissionInfo;
@@ -40,6 +44,7 @@ class uGUIOption;
 class uGUIPSStore;
 class uGUIPhotoAlbum;
 class uGUIPopFilter;
+class uGUIQuestBoard;
 class uGUIRimWarp;
 class uGUIShopBuy;
 
@@ -67,11 +72,15 @@ class cControl : public MtObject
     friend class uGUICaplinkProfile;
     friend class uGUICaplinkTalk;
     friend class uGUICaplinkTopMenu;
+    friend class uGUICharaEditPartsWrap;
+    friend class uGUICharacterEdit;
     friend class uGUIChat;
+    friend class uGUIClanSearch;
     friend class uGUIContentsBoard;
     friend class uGUIDialogTextBox;
     friend class uGUIGPConfirm;
     friend class uGUIGiveAndTake;
+    friend class uGUIJobSelect;
     friend class uGUILoginBonus;
     friend class uGUIMap;
     friend class uGUIMissionInfo;
@@ -80,6 +89,7 @@ class cControl : public MtObject
     friend class uGUIPSStore;
     friend class uGUIPhotoAlbum;
     friend class uGUIPopFilter;
+    friend class uGUIQuestBoard;
     friend class uGUIRimWarp;
     friend class uGUIShopBuy;
 public:

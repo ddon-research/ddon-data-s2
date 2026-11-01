@@ -1307,6 +1307,17 @@ inline sCraftManager::cCraftRankUp::cCraftRankUp() {
     this->mAddCraftPoint = 0;
 }
 
+inline sCraftManager::cCraftUpGradeItemList::cCraftUpGradeItemList() {
+    this->mCustomSortNo = 0;
+    this->mEquipPoint = 0;
+    this->mQuality = 0;
+    this->mElementNum = 0;
+    this->mSortNo = 0;
+    this->mItemNum = 0;
+    this->mItemId = 0;
+    this->mBagType = 0;
+}
+
 inline u32 sCraftManager::cCraftUpGradeItemList::getItemNum() const {
     return this->mItemNum;
 }

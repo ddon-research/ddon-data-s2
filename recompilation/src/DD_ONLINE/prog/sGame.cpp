@@ -181,7 +181,7 @@ sGame::sGame() {
     /* stub */
 }
 
-sGame::~sGame() {
+__attribute__((noinline)) sGame::~sGame() {
     DDON_STUB("sGame::~sGame")
     /* stub */
 }

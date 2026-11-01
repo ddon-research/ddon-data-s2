@@ -38,7 +38,7 @@ sGUI::sGUI(u32 tempMTagCount, u32 polygonCount, u32 indexBuffer) {
     /* stub */
 }
 
-sGUI::~sGUI() {
+__attribute__((noinline)) sGUI::~sGUI() {
     DDON_STUB("sGUI::~sGUI")
     /* stub */
 }

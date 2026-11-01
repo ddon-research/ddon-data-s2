@@ -2550,6 +2550,13 @@ namespace nQuest {
 
 }  // namespace nQuest
 
+inline nQuest::cOrderCondition::cOrderCondition() {
+    this->mConditionType = 0;
+    this->mIsMsgCreated = false;
+    this->mConditionParam1 = 0;
+    this->mConditionParam2 = 0;
+}
+
 inline nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::cDeliverCharacterInfo() {
     this->mCharacterId = 0;
     this->mItemNum = 0;
@@ -2605,6 +2612,11 @@ inline nQuest::cCycleContentsResultRewardInfo::cCycleContentsResultRewardInfo() 
     this->mType = 0;
     this->mParam01 = 0;
     this->mParam02 = 0;
+}
+
+inline nQuest::cCycleContentsRankingInfo::cCycleContentsRankingInfo() {
+    this->mPoint = 0;
+    this->mRank = 0;
 }
 
 inline nQuest::cCycleContentsRankingRewardInfo::cCycleContentsRankingRewardInfo() {

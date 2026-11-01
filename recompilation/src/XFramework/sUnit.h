@@ -26,6 +26,9 @@ class cGUIContentsExecutor;
 class cUnit;
 class sRender;
 class sScene;
+class sUnitExt;
+class uCharacterEdit;
+class uCharacterEditBase;
 class uScrollCollisionGeometryModel;
 
 // Declarations
@@ -120,6 +123,9 @@ class sUnit : public cSystem
     friend class cGUIContentsExecutor;
     friend class sRender;
     friend class sScene;
+    friend class sUnitExt;
+    friend class uCharacterEdit;
+    friend class uCharacterEditBase;
     friend class uScrollCollisionGeometryModel;
 public:
     class MyDTI;

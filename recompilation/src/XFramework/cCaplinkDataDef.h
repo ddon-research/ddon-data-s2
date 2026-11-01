@@ -12,6 +12,8 @@
 class MtAllocator;
 class MtDTI;
 class MtObject;
+class uGUICaplinkProfile;
+class uGUICaplinkTalk;
 
 // Declarations
 namespace nCaplink { class cAchievementExtendedInfo; }
@@ -203,6 +205,8 @@ namespace nCaplink {
 namespace nCaplink {
     class cUserBaseInfo : public ::MtObject
     {
+        friend class ::uGUICaplinkProfile;
+        friend class ::uGUICaplinkTalk;
     public:
         class MyDTI;
     public:
@@ -245,6 +249,7 @@ namespace nCaplink {
 namespace nCaplink {
     class cUserProfile : public nCaplink::cUserBaseInfo
     {
+        friend class ::uGUICaplinkProfile;
     public:
         class MyDTI;
     public:

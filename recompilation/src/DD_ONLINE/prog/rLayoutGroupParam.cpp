@@ -888,9 +888,15 @@ __attribute__((weak)) bool cGroupParam::cUnitData::load(MtDataReader& r) {
     return {};
 }
 
-__attribute__((weak)) bool cGroupParam::cUnitData::save(MtDataWriter& w) {
-    DDON_STUB("cGroupParam::cUnitData::save")
-    return {};
+bool cGroupParam::cUnitData::save(MtDataWriter& w) {
+    w.writeString(name.ptr());
+    bool t0 = isBelong;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
+    w.mSeekPt = w.mSeekPt + 1u;
+    return true;
 }
 
 cGroupParam::cUnitData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

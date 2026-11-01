@@ -20,6 +20,7 @@ class cFSMBase;
 class cQuestTask;
 namespace nLayout { class cGameDataCache; }
 namespace nSessionManager { class cNetSessionManager; }
+class uCharacterEdit;
 
 // Declarations
 class sFlag;
@@ -43,6 +44,7 @@ class sFlag : public cSystem
     friend void nDDOUtility::requestOnTutorialFlg(s32 questTarget);
     friend class nLayout::cGameDataCache;
     friend class nSessionManager::cNetSessionManager;
+    friend class uCharacterEdit;
 public:
     enum
     {

@@ -49,7 +49,7 @@ inline void uGUIOption::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIOption::DTI)->memFree(p_addr);
 }
 
-uGUIOption::~uGUIOption() {
+__attribute__((noinline)) uGUIOption::~uGUIOption() {
     DDON_STUB("uGUIOption::~uGUIOption")
     /* stub */
 }
@@ -554,171 +554,67 @@ __attribute__((weak)) u32 uGUIOption::getDataType(u32 uCtgr, u32 uTab, u32 uCapt
 }
 
 void uGUIOption::updateReflectionData(const cStorageData::stOptionDataSystem* pOptionSys, const cCharacterData::stOptionData* pOptionChr) {
-    sRender* t0 = sRender::getInstance();
-    if (t0 == nullptr) {
+    if (sRender::getInstance() == nullptr) {
         return;
     }
-    sSound* t1 = sSound::mpInstance;
-    if (t1 == nullptr) {
+    if ((sSound::mpInstance) == nullptr) {
         return;
     }
-    sSavedata* t2 = sSavedata::mpInstance;
-    if (t2 == nullptr) {
+    if ((sSavedata::mpInstance) == nullptr) {
         return;
     }
-    sPad* t3 = sPad::mpInstance;
-    if (t3 == nullptr) {
+    if ((sPad::mpInstance) == nullptr) {
         return;
     }
-    bool t4 = mIsEndLoadResource;
-    if (!t4) {
+    if (!mIsEndLoadResource) {
         return;
     }
-    u32 t5 = mOptionType;
-    if (t5 != 0) {
-        if (t5 == 1) {
+    if (mOptionType != 0) {
+        if (mOptionType == 1) {
             if (pOptionSys != nullptr) {
-                const u8 t6 = pOptionSys->mGamma;
-                float t7 = 0.4f;
-                float t8 = 100.0f;
-                float t9 = 1.0f;
-                t0->mDACGamma = t9 + ((t7 * static_cast<float>(t6 - 50)) / t8);
-                t0->mUpdateGamma = true;
-                const u8 t10 = pOptionSys->mVolChatRcv;
-                static_cast<sSoundExt*>(t1)->setOptVolume(0u, 0u, static_cast<float>(t10) / t8);
-                sSound* t11 = sSound::getInstance();
-                const u8 t12 = pOptionSys->mVolSysSE;
-                float t13 = 100.0f;
-                static_cast<sSoundExt*>(t11)->setOptVolume(0u, 2u, static_cast<float>(t12) / t13);
-                sSound* t14 = sSound::getInstance();
-                const u8 t15 = pOptionSys->mVolVoiceNpc;
-                float t16 = 100.0f;
-                static_cast<sSoundExt*>(t14)->setOptVolume(1u, 0u, static_cast<float>(t15) / t16);
-                sSound* t17 = sSound::getInstance();
-                const u8 t18 = pOptionSys->mVolVoicePawn;
-                float t19 = 100.0f;
-                static_cast<sSoundExt*>(t17)->setOptVolume(1u, 1u, static_cast<float>(t18) / t19);
-                sSound* t20 = sSound::getInstance();
-                const u8 t21 = pOptionSys->mVolVoicePl;
-                float t22 = 100.0f;
-                static_cast<sSoundExt*>(t20)->setOptVolume(1u, 2u, static_cast<float>(t21) / t22);
-                sSound* t23 = sSound::getInstance();
-                const u8 t24 = pOptionSys->mVolVoicePt;
-                float t25 = 100.0f;
-                static_cast<sSoundExt*>(t23)->setOptVolume(1u, 3u, static_cast<float>(t24) / t25);
-                sSound* t26 = sSound::getInstance();
-                const u8 t27 = pOptionSys->mVolVoiceEm;
-                float t28 = 100.0f;
-                static_cast<sSoundExt*>(t26)->setOptVolume(1u, 4u, static_cast<float>(t27) / t28);
-                sSound* t29 = sSound::getInstance();
-                const u8 t30 = pOptionSys->mVolVoiceSCC;
-                float t31 = 100.0f;
-                static_cast<sSoundExt*>(t29)->setOptVolume(1u, 5u, static_cast<float>(t30) / t31);
-                sSound* t32 = sSound::getInstance();
-                const u8 t33 = pOptionSys->mVolBGMBattle;
-                float t34 = 100.0f;
-                static_cast<sSoundExt*>(t32)->setOptVolume(2u, 0u, static_cast<float>(t33) / t34);
-                sSound* t35 = sSound::getInstance();
-                const u8 t36 = pOptionSys->mVolBGMOther;
-                float t37 = 100.0f;
-                static_cast<sSoundExt*>(t35)->setOptVolume(2u, 1u, static_cast<float>(t36) / t37);
-                sSound* t38 = sSound::getInstance();
-                const u8 t39 = pOptionSys->mVolSEEnv;
-                float t40 = 100.0f;
-                static_cast<sSoundExt*>(t38)->setOptVolume(3u, 0u, static_cast<float>(t39) / t40);
-                sSound* t41 = sSound::getInstance();
-                const u8 t42 = pOptionSys->mVolSEEm;
-                float t43 = 100.0f;
-                static_cast<sSoundExt*>(t41)->setOptVolume(3u, 1u, static_cast<float>(t42) / t43);
-                sSound* t44 = sSound::getInstance();
-                const u8 t45 = pOptionSys->mVolSEPl;
-                float t46 = 100.0f;
-                static_cast<sSoundExt*>(t44)->setOptVolume(3u, 2u, static_cast<float>(t45) / t46);
-                sSound* t47 = sSound::getInstance();
-                const u8 t48 = pOptionSys->mVolSEPt;
-                float t49 = 100.0f;
-                static_cast<sSoundExt*>(t47)->setOptVolume(3u, 3u, static_cast<float>(t48) / t49);
-                sSound* t50 = sSound::getInstance();
-                const u8 t51 = pOptionSys->mVolSEOther;
-                float t52 = 100.0f;
-                static_cast<sSoundExt*>(t50)->setOptVolume(3u, 4u, static_cast<float>(t51) / t52);
-                sPad* t55 = sPad::getInstance();
-                if (t55 != nullptr) {
-                    const bool t56 = pOptionSys->mPadVibration;
-                    static_cast<sPadExt*>(t55)->setVibrationEnable(t56);
+                sRender::getInstance()->mDACGamma = 1.0f + ((0.4f * static_cast<float>(pOptionSys->mGamma - 50)) / 100.0f);
+                sRender::getInstance()->mUpdateGamma = true;
+                static_cast<sSoundExt*>(sSound::mpInstance)->setOptVolume(0u, 0u, static_cast<float>(pOptionSys->mVolChatRcv) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(0u, 2u, static_cast<float>(pOptionSys->mVolSysSE) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 0u, static_cast<float>(pOptionSys->mVolVoiceNpc) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 1u, static_cast<float>(pOptionSys->mVolVoicePawn) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 2u, static_cast<float>(pOptionSys->mVolVoicePl) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 3u, static_cast<float>(pOptionSys->mVolVoicePt) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 4u, static_cast<float>(pOptionSys->mVolVoiceEm) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 5u, static_cast<float>(pOptionSys->mVolVoiceSCC) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(2u, 0u, static_cast<float>(pOptionSys->mVolBGMBattle) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(2u, 1u, static_cast<float>(pOptionSys->mVolBGMOther) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(3u, 0u, static_cast<float>(pOptionSys->mVolSEEnv) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(3u, 1u, static_cast<float>(pOptionSys->mVolSEEm) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(3u, 2u, static_cast<float>(pOptionSys->mVolSEPl) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(3u, 3u, static_cast<float>(pOptionSys->mVolSEPt) / 100.0f);
+                static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(3u, 4u, static_cast<float>(pOptionSys->mVolSEOther) / 100.0f);
+                if (sPad::getInstance() != nullptr) {
+                    static_cast<sPadExt*>(sPad::getInstance())->setVibrationEnable(pOptionSys->mPadVibration);
                 }
             }
         }
     } else {
         if (pOptionSys != nullptr) {
-            const u8 t6 = pOptionSys->mGamma;
-            float t7 = 0.4f;
-            float t8 = 100.0f;
-            float t9 = 1.0f;
-            t0->mDACGamma = t9 + ((t7 * static_cast<float>(t6 - 50)) / t8);
-            t0->mUpdateGamma = true;
-            const u8 t10 = pOptionSys->mVolChatRcv;
-            static_cast<sSoundExt*>(t1)->setOptVolume(0u, 0u, static_cast<float>(t10) / t8);
-            sSound* t11 = sSound::getInstance();
-            const u8 t12 = pOptionSys->mVolSysSE;
-            float t13 = 100.0f;
-            static_cast<sSoundExt*>(t11)->setOptVolume(0u, 2u, static_cast<float>(t12) / t13);
-            sSound* t14 = sSound::getInstance();
-            const u8 t15 = pOptionSys->mVolVoiceNpc;
-            float t16 = 100.0f;
-            static_cast<sSoundExt*>(t14)->setOptVolume(1u, 0u, static_cast<float>(t15) / t16);
-            sSound* t17 = sSound::getInstance();
-            const u8 t18 = pOptionSys->mVolVoicePawn;
-            float t19 = 100.0f;
-            static_cast<sSoundExt*>(t17)->setOptVolume(1u, 1u, static_cast<float>(t18) / t19);
-            sSound* t20 = sSound::getInstance();
-            const u8 t21 = pOptionSys->mVolVoicePl;
-            float t22 = 100.0f;
-            static_cast<sSoundExt*>(t20)->setOptVolume(1u, 2u, static_cast<float>(t21) / t22);
-            sSound* t23 = sSound::getInstance();
-            const u8 t24 = pOptionSys->mVolVoicePt;
-            float t25 = 100.0f;
-            static_cast<sSoundExt*>(t23)->setOptVolume(1u, 3u, static_cast<float>(t24) / t25);
-            sSound* t26 = sSound::getInstance();
-            const u8 t27 = pOptionSys->mVolVoiceEm;
-            float t28 = 100.0f;
-            static_cast<sSoundExt*>(t26)->setOptVolume(1u, 4u, static_cast<float>(t27) / t28);
-            sSound* t29 = sSound::getInstance();
-            const u8 t30 = pOptionSys->mVolVoiceSCC;
-            float t31 = 100.0f;
-            static_cast<sSoundExt*>(t29)->setOptVolume(1u, 5u, static_cast<float>(t30) / t31);
-            sSound* t32 = sSound::getInstance();
-            const u8 t33 = pOptionSys->mVolBGMBattle;
-            float t34 = 100.0f;
-            static_cast<sSoundExt*>(t32)->setOptVolume(2u, 0u, static_cast<float>(t33) / t34);
-            sSound* t35 = sSound::getInstance();
-            const u8 t36 = pOptionSys->mVolBGMOther;
-            float t37 = 100.0f;
-            static_cast<sSoundExt*>(t35)->setOptVolume(2u, 1u, static_cast<float>(t36) / t37);
-            sSound* t38 = sSound::getInstance();
-            const u8 t39 = pOptionSys->mVolSEEnv;
-            float t40 = 100.0f;
-            static_cast<sSoundExt*>(t38)->setOptVolume(3u, 0u, static_cast<float>(t39) / t40);
-            sSound* t41 = sSound::getInstance();
-            const u8 t42 = pOptionSys->mVolSEEm;
-            float t43 = 100.0f;
-            static_cast<sSoundExt*>(t41)->setOptVolume(3u, 1u, static_cast<float>(t42) / t43);
-            sSound* t44 = sSound::getInstance();
-            const u8 t45 = pOptionSys->mVolSEPl;
-            float t46 = 100.0f;
-            static_cast<sSoundExt*>(t44)->setOptVolume(3u, 2u, static_cast<float>(t45) / t46);
-            sSound* t47 = sSound::getInstance();
-            const u8 t48 = pOptionSys->mVolSEPt;
-            float t49 = 100.0f;
-            static_cast<sSoundExt*>(t47)->setOptVolume(3u, 3u, static_cast<float>(t48) / t49);
-            sSound* t50 = sSound::getInstance();
-            const u8 t51 = pOptionSys->mVolSEOther;
-            float t52 = 100.0f;
-            static_cast<sSoundExt*>(t50)->setOptVolume(3u, 4u, static_cast<float>(t51) / t52);
-            sPad* t55 = sPad::getInstance();
-            if (t55 != nullptr) {
-                const bool t56 = pOptionSys->mPadVibration;
-                static_cast<sPadExt*>(t55)->setVibrationEnable(t56);
+            sRender::getInstance()->mDACGamma = 1.0f + ((0.4f * static_cast<float>(pOptionSys->mGamma - 50)) / 100.0f);
+            sRender::getInstance()->mUpdateGamma = true;
+            static_cast<sSoundExt*>(sSound::mpInstance)->setOptVolume(0u, 0u, static_cast<float>(pOptionSys->mVolChatRcv) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(0u, 2u, static_cast<float>(pOptionSys->mVolSysSE) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 0u, static_cast<float>(pOptionSys->mVolVoiceNpc) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 1u, static_cast<float>(pOptionSys->mVolVoicePawn) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 2u, static_cast<float>(pOptionSys->mVolVoicePl) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 3u, static_cast<float>(pOptionSys->mVolVoicePt) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 4u, static_cast<float>(pOptionSys->mVolVoiceEm) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(1u, 5u, static_cast<float>(pOptionSys->mVolVoiceSCC) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(2u, 0u, static_cast<float>(pOptionSys->mVolBGMBattle) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(2u, 1u, static_cast<float>(pOptionSys->mVolBGMOther) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(3u, 0u, static_cast<float>(pOptionSys->mVolSEEnv) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(3u, 1u, static_cast<float>(pOptionSys->mVolSEEm) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(3u, 2u, static_cast<float>(pOptionSys->mVolSEPl) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(3u, 3u, static_cast<float>(pOptionSys->mVolSEPt) / 100.0f);
+            static_cast<sSoundExt*>(sSound::getInstance())->setOptVolume(3u, 4u, static_cast<float>(pOptionSys->mVolSEOther) / 100.0f);
+            if (sPad::getInstance() != nullptr) {
+                static_cast<sPadExt*>(sPad::getInstance())->setVibrationEnable(pOptionSys->mPadVibration);
             }
         }
     }

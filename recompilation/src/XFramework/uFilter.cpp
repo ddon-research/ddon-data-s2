@@ -185,7 +185,7 @@ inline void uDOFFilter::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uDOFFilter::DTI)->memFree(p_addr);
 }
 
-uDOFFilter::~uDOFFilter() {
+__attribute__((noinline)) uDOFFilter::~uDOFFilter() {
     DDON_STUB("uDOFFilter::~uDOFFilter")
     /* stub */
 }
@@ -410,7 +410,7 @@ uMotionBlurFilter::uMotionBlurFilter() {
     /* stub */
 }
 
-uMotionBlurFilter::~uMotionBlurFilter() {
+__attribute__((noinline)) uMotionBlurFilter::~uMotionBlurFilter() {
     DDON_STUB("uMotionBlurFilter::~uMotionBlurFilter")
     /* stub */
 }

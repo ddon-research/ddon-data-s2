@@ -22,7 +22,7 @@ inline void rCameraParamList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rCameraParamList::DTI)->memFree(p_addr);
 }
 
-rCameraParamList::~rCameraParamList() {
+__attribute__((noinline)) rCameraParamList::~rCameraParamList() {
     DDON_STUB("rCameraParamList::~rCameraParamList")
     /* stub */
 }

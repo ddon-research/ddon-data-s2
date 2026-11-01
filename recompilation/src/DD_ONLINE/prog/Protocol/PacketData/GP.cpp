@@ -130,9 +130,8 @@ CDataGPCourseValid::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 CDataGPCourseValid::MyDTI CDataGPCourseValid::DTI("CDataGPCourseValid", &::CPacketDataBase::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataGPCourseValid::MyDTI::newInstance() const {
-    DDON_STUB("CDataGPCourseValid::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGPCourseValid::MyDTI::newInstance() const {
+    return new (16u) CDataGPCourseValid;
 }
 
 const MtDTI& CDataGPDetail::getDTI() const {
@@ -270,6 +269,10 @@ inline MtAllocator* CDataGPShopLineupElementBase::getAllocator() {
     return MtMemoryAllocator::getAllocator(CDataGPShopLineupElementBase::DTI);
 }
 
+inline void* CDataGPShopLineupElementBase::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataGPShopLineupElementBase::DTI)->memAlloc(sz, align, CDataGPShopLineupElementBase::DTI.getID());
+}
+
 __attribute__((weak)) void CDataGPShopLineupElementBase::operator delete(void* p_addr) {
     CDataGPShopLineupElementBase::getAllocator()->memFree(p_addr);
 }
@@ -278,9 +281,8 @@ CDataGPShopLineupElementBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 
 CDataGPShopLineupElementBase::MyDTI CDataGPShopLineupElementBase::DTI("CDataGPShopLineupElementBase", &::CPacketDataBase::DTI, 56ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataGPShopLineupElementBase::MyDTI::newInstance() const {
-    DDON_STUB("CDataGPShopLineupElementBase::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGPShopLineupElementBase::MyDTI::newInstance() const {
+    return new (16u) CDataGPShopLineupElementBase;
 }
 
 const MtDTI& CDataGPShopLineupElementCourse::getDTI() const {

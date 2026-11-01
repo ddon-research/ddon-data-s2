@@ -35,7 +35,7 @@ sScreenShot::sScreenShot() {
     /* stub */
 }
 
-sScreenShot::~sScreenShot() {
+__attribute__((noinline)) sScreenShot::~sScreenShot() {
     DDON_STUB("sScreenShot::~sScreenShot")
     /* stub */
 }

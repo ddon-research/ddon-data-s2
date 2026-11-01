@@ -86,3 +86,8 @@ public:
     u32 mItem;  // offset: 0xb0
     static MyDTI DTI;
 };
+
+inline rNpcEditData::rNpcEditData() : mEquip() {
+    this->::cResource::mAttr = 18;
+    this->mItem = 0;
+}

@@ -63,6 +63,7 @@ class cGUIObjTexture;
 class cGUIObjTextureRef;
 class cGUIObjTextureSet;
 class cGUIObject;
+class cGUIPageList;
 class cGUIVariable;
 class cInputTextKeyboardHook;
 class cItemParam;
@@ -87,6 +88,8 @@ class rSoundRequest;
 class rTexture;
 class sGUIExt;
 class sTalkManager;
+class uCharacterEdit;
+class uEditSaveLoadFlow;
 class uGUIAim;
 class uGUIAreaMaster;
 class uGUIBoughtBox;
@@ -97,8 +100,13 @@ class uGUICaplinkMenuBase;
 class uGUICaplinkProfile;
 class uGUICaplinkTalk;
 class uGUICaplinkTrophyReceive;
+class uGUICharaEditPartsWrap;
+class uGUICharacterEdit;
+class uGUICharacterEditPopCard;
 class uGUIChargesHUD;
 class uGUIChat;
+class uGUIClanScout;
+class uGUIClanSearch;
 class uGUICommunityList;
 class uGUIContentsBoard;
 class uGUIGPShop;
@@ -107,7 +115,9 @@ class uGUIGaugeEnemy;
 class uGUIGaugeSkill;
 class uGUIGiveAndTake;
 class uGUIInfo;
+class uGUIItem01;
 class uGUIItemBase01;
+class uGUIJobSelect;
 class uGUIKeyConfig;
 class uGUIMenuAreaInfo;
 class uGUIMenuComm;
@@ -120,8 +130,13 @@ class uGUIPhoto;
 class uGUIPhotoAlbum;
 class uGUIPopCmd01;
 class uGUIPopNumber01;
+class uGUIQuestBoard;
+class uGUIQuestDelivery;
+class uGUIQuestInfo;
 class uGUIQuestList;
+class uGUIRankingBoard;
 class uGUIRetry;
+class uGUISaveListComment;
 class uGUIShopBuy;
 class uGUIShopTitle;
 class uGUISystemMsg;
@@ -162,6 +177,8 @@ class uGUIBase : public uGUI
     friend class cMenuOnlineShop;
     friend class sGUIExt;
     friend class sTalkManager;
+    friend class uCharacterEdit;
+    friend class uEditSaveLoadFlow;
     friend class uGUIAim;
     friend class uGUIAreaMaster;
     friend class uGUIBoughtBox;
@@ -169,20 +186,31 @@ class uGUIBase : public uGUI
     friend class uGUIBrowserBG;
     friend class uGUICaplinkFriendList;
     friend class uGUICaplinkMenuBase;
+    friend class uGUICaplinkProfile;
     friend class uGUICaplinkTalk;
     friend class uGUICaplinkTrophyReceive;
+    friend class uGUICharaEditPartsWrap;
+    friend class uGUICharacterEdit;
     friend class uGUIChat;
+    friend class uGUIClanScout;
+    friend class uGUIClanSearch;
     friend class uGUICommunityList;
     friend class uGUIGPShop;
     friend class uGUIGaugeEnemy;
+    friend class uGUIItem01;
     friend class uGUIItemBase01;
+    friend class uGUIJobSelect;
     friend class uGUIKeyConfig;
     friend class uGUIMenuAreaInfo;
     friend class uGUIMenuTutorial;
     friend class uGUINewspaper;
     friend class uGUIOption;
     friend class uGUIPopCmd01;
+    friend class uGUIQuestDelivery;
+    friend class uGUIQuestInfo;
+    friend class uGUIRankingBoard;
     friend class uGUIRetry;
+    friend class uGUISaveListComment;
     friend class uGUIShopBuy;
     friend class uGUISystemMsg;
     friend class uGUIUseItemBase;
@@ -458,6 +486,7 @@ public:
     class cSupportBase : public MtObject
     {
         friend class uGUIBase;
+        friend class uGUICharaEditPartsWrap;
     public:
         class MyDTI;
     public:
@@ -1499,12 +1528,16 @@ public:
         friend class uGUIBoxGachaInfo;
         friend class uGUIBrowserBG;
         friend class uGUICaplinkProfile;
+        friend class uGUICaplinkTalk;
         friend class uGUIGPShop;
         friend class uGUIGameMenu;
         friend class uGUINewspaper;
         friend class uGUINpcWindow;
         friend class uGUIPhoto;
+        friend class uGUIQuestBoard;
+        friend class uGUIQuestInfo;
         friend class uGUIQuestList;
+        friend class uGUIRankingBoard;
     public:
         class MyDTI;
     public:
@@ -1592,6 +1625,7 @@ public:
 public:
     class cReferenceUIVlCursor : public uGUIBase::cSupportInstAnim
     {
+        friend class cGUIPageList;
         friend class uGUIBase;
     public:
         enum TYPE
@@ -4525,6 +4559,7 @@ public:
 public:
     class cReferenceUIRadioButton : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUICharaEditPartsWrap;
     public:
         enum MODE
         {
@@ -4645,6 +4680,7 @@ public:
         friend class uGUICaplinkFriendList;
         friend class uGUICaplinkTalk;
         friend class uGUIPhotoAlbum;
+        friend class uGUIRankingBoard;
     public:
         enum
         {
@@ -4797,6 +4833,7 @@ public:
 public:
     class cReferenceUIEditSlider : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUICharaEditPartsWrap;
     public:
         class MyDTI;
     public:
@@ -4930,6 +4967,7 @@ public:
     class cScrollCtrl
     {
         friend class uGUICaplinkProfile;
+        friend class uGUIQuestInfo;
         friend class uGUIQuestList;
     public:
         cScrollCtrl();
@@ -4978,6 +5016,10 @@ public:
         friend class uGUIMenuTutorial;
         friend class uGUIMyRoom;
         friend class uGUINewspaper;
+        friend class uGUIQuestBoard;
+        friend class uGUIQuestDelivery;
+        friend class uGUIQuestInfo;
+        friend class uGUIRankingBoard;
         friend class uGUISystemMsg;
     public:
         using SetupFunc = void(uGUIBase::*)(uGUIBase::cScrollListItemBase*, uGUIBase::cScrollListInfoBase*, u32);
@@ -5123,6 +5165,8 @@ public:
 public:
     class cReferenceUIPullDown : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUICharaEditPartsWrap;
+        friend class uGUICharacterEditPopCard;
         friend class uGUIKeyConfig;
         friend class uGUIMenuComm;
     public:
@@ -6102,6 +6146,14 @@ inline bool uGUIBase::cScrollList::isInputEvent() const {
     return this->mIsInputEvent;
 }
 
+inline cGUIInstNull* uGUIBase::cScrollCtrl::getInstNullScroll() {
+    return this->mpInstNullScroll;
+}
+
+inline bool uGUIBase::cReferenceUIScrollBar::isDrag() {
+    return this->mDragEnable;
+}
+
 inline uGUIBase::cCalcMovePos::~cCalcMovePos() {
 }
 
@@ -6124,12 +6176,23 @@ inline s32 uGUIBase::cMatrix::getRow() const {
     return this->mRow;
 }
 
+inline uGUIBase* uGUIBase::cUnitWatcher::getUnit() {
+    return this->mpUnit;
+}
+
 inline bool uGUIBase::cTexRefJpegDownloader::isReplaceTex() const {
     return this->mIsReplaceTex;
 }
 
 inline bool uGUIBase::cImageDownloader::isFail() {
     return this->mIsFail;
+}
+
+inline uGUIBase::cReferenceUIChargesInfo::cData::cData() {
+    this->mIsScroll = false;
+    this->mDispF = 0;
+    this->mChargesEft = 0;
+    this->mEndTime = 0;
 }
 
 inline uGUIBase::cReferenceUIClanEmblem::guiDataObj::guiDataObj() {
@@ -6148,6 +6211,14 @@ inline uGUIBase::cReferenceUIPageDot::cPageDotWork::cPageDotWork() {
     this->mpInst = nullptr;
 }
 
+inline uGUIBase::cVerticalList* uGUIBase::cReferenceUIRadioButton::getCtrl() {
+    return this->mpCtrl;
+}
+
 inline bool uGUIBase::cReferenceUIRadioButton::cObject::isSelect() {
     return this->mIsSelect;
+}
+
+inline s32 uGUIBase::cReferenceUIEditSlider::getSliderPos() {
+    return this->mPos;
 }

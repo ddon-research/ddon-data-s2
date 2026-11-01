@@ -12,6 +12,7 @@
 #include "cGUIObject.h"
 #include "nGUI.h"
 #include "nGUIDraw.h"
+#include "rGUI.h"
 #include "sCamera.h"
 #include "uGUI.h"
 #ifndef DDON_STUB
@@ -313,8 +314,68 @@ u32 cGUIInstAnimation::getResourceId() const {
 }
 
 __attribute__((weak)) void cGUIInstAnimation::setAnimationId(u32 id) {
-    DDON_STUB("cGUIInstAnimation::setAnimationId")
-    /* stub */
+    if (mAnimationId == id) {
+        if (mpObjRoot != nullptr) {
+            return;
+        }
+    }
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 232)) >> 8) & 2u) != 0) {
+        if (mpObjRoot != nullptr) {
+            delete mpObjRoot;
+            mpObjRoot = nullptr;
+        }
+    }
+    unsigned int v1_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 232);
+    if (((v1_0 >> 8) & 4u) != 0) {
+        cGUIObject* * t0 = mpObject;
+        if (t0 != nullptr) {
+            MtMemoryAllocator::getAllocator(cGUIInstance::DTI)->memFree(static_cast<void*>(t0));
+            mpObject = nullptr;
+        }
+    }
+    mAnimationId = id;
+    rGUI* pResource;
+    if (id == 0xFFFFFFFFu) {
+        return;
+    } else {
+        rGUI* v3_0 = mpResource;
+        u32 v3_3 = mResourceId;
+        if (v3_3 == 0xFFFFFFFFu) {
+            pResource = v3_0;
+        } else {
+            if (v3_0 == nullptr) {
+                return;
+            } else {
+                nGUI::GUIRESOURCE* v4_0 = v3_0->getGUIResourceFromId(v3_3);
+                if (v4_0 == nullptr) {
+                    return;
+                }
+                pResource = static_cast<rGUI*>(v4_0->pResource);
+            }
+        }
+    }
+    cGUIObjRoot* v6_0;
+    if (pResource == nullptr) {
+        return;
+    } else {
+        bool IsAllocByPlacementNew = false;
+        v6_0 = cGUIInstAnimation::createAnimation(mpUnit, pResource, id, mpObject, IsAllocByPlacementNew);
+        mpObjRoot = v6_0;
+        unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 232);
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 232) = static_cast<unsigned int>((static_cast<unsigned long>(!IsAllocByPlacementNew) * 1024) | static_cast<unsigned long>(t1 & 0xFFFFFBFFu));
+        if (mpObjRoot == nullptr) {
+            return;
+        } else {
+            if (mpUnit->mIsPlacementNewMode) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 232) = static_cast<unsigned int>(((static_cast<unsigned long>(!IsAllocByPlacementNew) * 1024) | static_cast<unsigned long>(t1 & 0xFFFFFBFFu)) & 0xFFFFFDFFul);
+            }
+        }
+    }
+    v6_0->setInstanceId(mId);
+    if (mpObjRoot != nullptr) {
+        mpObjRoot->setParentResolutionAdjust((((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) >> 16) & 15u) == 0) ? ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) >> 20) : ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) >> 16)) & 15u);
+    }
+    return;
 }
 
 u32 cGUIInstAnimation::getAnimationId() const {
@@ -443,7 +504,7 @@ u32 cGUIInstAnimation::getFrameCount() const {
 
 void cGUIInstAnimation::setResolutionAdjust(u32 type) {
     unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144);
-    if (((t0 >> 16) & 15u) == type) {
+    if (mResolutionAdjust == type) {
         return;
     }
     *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144) = ((type & 15u) * 0x10000u) | (t0 & 0xFFF0FFFFu);
@@ -639,9 +700,13 @@ u32 cGUIInstNull::getColorControl() const {
     return mColorControl;
 }
 
-__attribute__((weak)) void cGUIInstNull::setResolutionAdjust(u32 type) {
-    DDON_STUB("cGUIInstNull::setResolutionAdjust")
-    /* stub */
+void cGUIInstNull::setResolutionAdjust(u32 type) {
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144);
+    if (mResolutionAdjust != type) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144) = ((type & 15u) * 0x10000u) | (t0 & 0xFFF0FFFFu);
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
+        setChildResolutionAdjust(static_cast<cGUIInstance*>(this), (((((((type & 15u) * 0x10000u) | (t0 & 0xFFF0FFFFu)) >> 16) & 15u) == 0) ? (t0 >> 20) : ((((type & 15u) * 0x10000u) | (t0 & 0xFFF0FFFFu)) >> 16)) & 15u);
+    }
 }
 
 u32 cGUIInstNull::getResolutionAdjust() const {

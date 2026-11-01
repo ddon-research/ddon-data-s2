@@ -32,41 +32,15 @@ cEffectCorrectParam::~cEffectCorrectParam() {
 }
 
 void cEffectCorrectParam::lerpEffectColorParam(stEffectColorParam* pDst, const stEffectColorParam& a, const stEffectColorParam& b, f32 rate) {
-    const u32 t0 = a.Color.rgba;
-    const u32 t1 = b.Color.rgba;
-    float t2 = 256.0f;
-    pDst->Color.rgba = static_cast<u32>(((static_cast<unsigned long>((((((t1 >> 8) & 255u) - ((t0 >> 8) & 255u)) * static_cast<int>(t2 * rate)) + (t0 & 0xFFFFFF00u)) & 0xFF00u) | static_cast<unsigned long>((((t0 >> 16) * 0x10000u) + ((((((t1 >> 16) & 255u) - ((t0 >> 16) & 255u)) * static_cast<int>(t2 * rate)) >> 8) * 0x10000u)) & 0xFF0000u)) | static_cast<unsigned long>(static_cast<unsigned char>(t0 + (static_cast<unsigned int>((static_cast<unsigned char>(t1) - static_cast<unsigned char>(t0)) * static_cast<int>(t2 * rate)) >> 8)))) | static_cast<unsigned long>(((t0 >> 24) * 0x1000000u) + (((((t1 >> 24) - (t0 >> 24)) * static_cast<int>(t2 * rate)) >> 8) * 0x1000000u)));
-    const f32 t3 = a.ColorBlend;
-    const f32 t4 = b.ColorBlend;
-    f32 t5 = nDDOMath::lerp(t3, t4, rate);
-    pDst->ColorBlend = t5;
-    const f32 t6 = a.Intensity;
-    const f32 t7 = b.Intensity;
-    f32 t8 = nDDOMath::lerp(t6, t7, rate);
-    pDst->Intensity = t8;
-    const f32 t9 = a.IntensityBlend;
-    const f32 t10 = b.IntensityBlend;
-    f32 t11 = nDDOMath::lerp(t9, t10, rate);
-    pDst->IntensityBlend = t11;
-    const f32 t12 = a.EnvMapPowerScale;
-    const f32 t13 = b.EnvMapPowerScale;
-    f32 t14 = nDDOMath::lerp(t12, t13, rate);
-    pDst->EnvMapPowerScale = t14;
-    const u32 t15 = a.ShadowColor.rgba;
-    const u32 t16 = b.ShadowColor.rgba;
-    pDst->ShadowColor.rgba = static_cast<u32>(((static_cast<unsigned long>((((((t16 >> 8) & 255u) - ((t15 >> 8) & 255u)) * static_cast<int>(t2 * rate)) + (t15 & 0xFFFFFF00u)) & 0xFF00u) | static_cast<unsigned long>((((t15 >> 16) * 0x10000u) + ((((((t16 >> 16) & 255u) - ((t15 >> 16) & 255u)) * static_cast<int>(t2 * rate)) >> 8) * 0x10000u)) & 0xFF0000u)) | static_cast<unsigned long>(static_cast<unsigned char>(t15 + (static_cast<unsigned int>((static_cast<unsigned char>(t16) - static_cast<unsigned char>(t15)) * static_cast<int>(t2 * rate)) >> 8)))) | static_cast<unsigned long>(((t15 >> 24) * 0x1000000u) + (((((t16 >> 24) - (t15 >> 24)) * static_cast<int>(t2 * rate)) >> 8) * 0x1000000u)));
-    const f32 t17 = a.ShadowColorBlend;
-    const f32 t18 = b.ShadowColorBlend;
-    f32 t19 = nDDOMath::lerp(t17, t18, rate);
-    pDst->ShadowColorBlend = t19;
-    const f32 t20 = a.ShadowIntensity;
-    const f32 t21 = b.ShadowIntensity;
-    f32 t22 = nDDOMath::lerp(t20, t21, rate);
-    pDst->ShadowIntensity = t22;
-    const f32 t23 = a.ShadowIntensityBlend;
-    const f32 t24 = b.ShadowIntensityBlend;
-    f32 t26 = nDDOMath::lerp(t23, t24, rate);
-    pDst->ShadowIntensityBlend = t26;
+    pDst->Color.rgba = static_cast<u32>(((static_cast<unsigned long>((((((b.Color.rgba >> 8) & 255u) - ((a.Color.rgba >> 8) & 255u)) * static_cast<int>(256.0f * rate)) + (a.Color.rgba & 0xFFFFFF00u)) & 0xFF00u) | static_cast<unsigned long>((((a.Color.rgba >> 16) * 0x10000u) + ((((((b.Color.rgba >> 16) & 255u) - ((a.Color.rgba >> 16) & 255u)) * static_cast<int>(256.0f * rate)) >> 8) * 0x10000u)) & 0xFF0000u)) | static_cast<unsigned long>(static_cast<unsigned char>(a.Color.rgba + (static_cast<unsigned int>((static_cast<unsigned char>(b.Color.rgba) - static_cast<unsigned char>(a.Color.rgba)) * static_cast<int>(256.0f * rate)) >> 8)))) | static_cast<unsigned long>(((a.Color.rgba >> 24) * 0x1000000u) + (((((b.Color.rgba >> 24) - (a.Color.rgba >> 24)) * static_cast<int>(256.0f * rate)) >> 8) * 0x1000000u)));
+    pDst->ColorBlend = nDDOMath::lerp(a.ColorBlend, b.ColorBlend, rate);
+    pDst->Intensity = nDDOMath::lerp(a.Intensity, b.Intensity, rate);
+    pDst->IntensityBlend = nDDOMath::lerp(a.IntensityBlend, b.IntensityBlend, rate);
+    pDst->EnvMapPowerScale = nDDOMath::lerp(a.EnvMapPowerScale, b.EnvMapPowerScale, rate);
+    pDst->ShadowColor.rgba = static_cast<u32>(((static_cast<unsigned long>((((((b.ShadowColor.rgba >> 8) & 255u) - ((a.ShadowColor.rgba >> 8) & 255u)) * static_cast<int>(256.0f * rate)) + (a.ShadowColor.rgba & 0xFFFFFF00u)) & 0xFF00u) | static_cast<unsigned long>((((a.ShadowColor.rgba >> 16) * 0x10000u) + ((((((b.ShadowColor.rgba >> 16) & 255u) - ((a.ShadowColor.rgba >> 16) & 255u)) * static_cast<int>(256.0f * rate)) >> 8) * 0x10000u)) & 0xFF0000u)) | static_cast<unsigned long>(static_cast<unsigned char>(a.ShadowColor.rgba + (static_cast<unsigned int>((static_cast<unsigned char>(b.ShadowColor.rgba) - static_cast<unsigned char>(a.ShadowColor.rgba)) * static_cast<int>(256.0f * rate)) >> 8)))) | static_cast<unsigned long>(((a.ShadowColor.rgba >> 24) * 0x1000000u) + (((((b.ShadowColor.rgba >> 24) - (a.ShadowColor.rgba >> 24)) * static_cast<int>(256.0f * rate)) >> 8) * 0x1000000u)));
+    pDst->ShadowColorBlend = nDDOMath::lerp(a.ShadowColorBlend, b.ShadowColorBlend, rate);
+    pDst->ShadowIntensity = nDDOMath::lerp(a.ShadowIntensity, b.ShadowIntensity, rate);
+    pDst->ShadowIntensityBlend = nDDOMath::lerp(a.ShadowIntensityBlend, b.ShadowIntensityBlend, rate);
 }
 
 cEffectCorrectParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -86,7 +60,7 @@ inline void rWeatherEffectParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rWeatherEffectParam::DTI)->memFree(p_addr);
 }
 
-rWeatherEffectParam::~rWeatherEffectParam() {
+__attribute__((noinline)) rWeatherEffectParam::~rWeatherEffectParam() {
     DDON_STUB("rWeatherEffectParam::~rWeatherEffectParam")
     /* stub */
 }

@@ -252,7 +252,7 @@ u32 sSoundManager::getStgState() {
     if (mBtlStateSnd[0] == 0) {
         if (!mIsEvent_222) {
             if (mIsBar_222) {
-                return static_cast<unsigned int>((static_cast<unsigned long>(!static_cast<sSoundExt*>(sSound::getInstance())->checkStreamVoice(mprStg, mStgReqNo)) * 8) + 3ul);
+                return static_cast<u32>(!static_cast<sSoundExt*>(sSound::getInstance())->checkStreamVoice(mprStg, mStgReqNo) ? 11 : 3);
             } else {
                 rSoundAreaInfo* t0 = getSAR();
                 if (t0 != nullptr) {

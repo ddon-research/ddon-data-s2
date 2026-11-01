@@ -10,6 +10,7 @@
 // Forward declarations
 class MtArray;
 namespace nCaplink { class cResourceInfo; }
+class sCaplinkManager;
 
 // Declarations
 namespace nCaplink { class ResourcePresetListGetAns; }
@@ -21,6 +22,7 @@ using u32 = unsigned int;
 namespace nCaplink {
     class ResourcePresetListGetAns : public nCaplink::ContextListener
     {
+        friend class ::sCaplinkManager;
     public:
         ResourcePresetListGetAns();
         virtual void init();  // vtable slot 6

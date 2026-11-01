@@ -19,6 +19,7 @@ class MtPropertyList;
 class MtString;
 class MtUI;
 class MtVector3;
+class sAI;
 
 // Declarations
 class cAIService;
@@ -32,6 +33,7 @@ using u32 = unsigned int;
 
 class cAIService : public cAIObject
 {
+    friend class sAI;
 public:
     enum ATTRIBUTE
     {

@@ -20,6 +20,7 @@ class cGUIUtility;
 class cLayoutSet;
 class cNetGameServer;
 class cQuestTask;
+namespace nFsm { class cCameraCtrl; }
 namespace nSessionManager { class cNetSessionManager; }
 class sGUIExt;
 class sGame;
@@ -55,6 +56,7 @@ class sArea : public cSystem
     friend class cLayoutSet;
     friend class cNetGameServer;
     friend class cQuestTask;
+    friend class nFsm::cCameraCtrl;
     friend class nSessionManager::cNetSessionManager;
     friend class sGUIExt;
     friend class sGame;

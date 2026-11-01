@@ -60,9 +60,8 @@ __attribute__((weak)) cpComponent* cpComponent::find(MT_CTSTR name, bool from_ro
     return nullptr;
 }
 
-__attribute__((weak)) MT_CTSTR cpComponent::getName() {
-    DDON_STUB("cpComponent::getName")
-    return {};
+MT_CTSTR cpComponent::getName() {
+    return mName.ptr();
 }
 
 __attribute__((weak)) void cpComponent::setName(const MtString& name) {

@@ -382,5 +382,9 @@ inline void cGameHttpClient::setContentLength(s32 value) {
     this->mContentLength = value;
 }
 
+inline cGameHttpClient::cServerEnvironmentInfo::cServerEnvironmentInfo() {
+    this->mRomVersion = 0;
+}
+
 inline cGameHttpClient::hLoginBackDoor::hLoginBackDoor() {
 }

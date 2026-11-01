@@ -224,7 +224,7 @@ inline void rItemList::rItemParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rItemList::rItemParam::DTI)->memFree(p_addr);
 }
 
-rItemList::rItemParam::~rItemParam() {
+__attribute__((noinline)) rItemList::rItemParam::~rItemParam() {
     DDON_STUB("rItemList::rItemParam::~rItemParam")
     /* stub */
 }
@@ -825,152 +825,67 @@ __attribute__((weak)) bool rItemList::rProtectorParam::load(MtDataReader& in, rI
 }
 
 bool rItemList::rProtectorParam::save(MtDataWriter& out) {
-    u32 t0 = mModelTagId;
-    unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 24);
-    out.writeU32(t0);
-    u32 t4 = mPowerRev;
-    unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-    unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 24);
-    out.writeU32(t4);
-    u32 t8 = mChance;
-    unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-    unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 24);
-    out.writeU32(t8);
-    u32 t12 = mDefense;
-    unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-    unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t13) + 24);
-    out.writeU32(t12);
-    u32 t16 = mMagicDefense;
-    unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-    unsigned long t19 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t17) + 24);
-    out.writeU32(t16);
-    u32 t20 = mDurability;
-    unsigned long t21 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-    unsigned long t23 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t21) + 24);
-    out.writeU32(t20);
-    u32 t24 = mAttack;
-    unsigned long t25 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-    unsigned long t27 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t25) + 24);
-    out.writeU32(t24);
-    u32 t28 = mMagicAttack;
-    unsigned long t29 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-    unsigned long t31 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t29) + 24);
-    out.writeU32(t28);
-    unsigned long t32 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-    u16 t33 = mWeight;
-    unsigned long t35 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t32) + 16);
-    out.writeU16(t33);
-    unsigned long t36 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-    u16 t37 = mMaxHpRev;
-    unsigned long t39 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t36) + 16);
-    out.writeU16(t37);
-    unsigned long t40 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-    u16 t41 = mMaxStRev;
-    unsigned long t43 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t40) + 16);
-    out.writeU16(t41);
-    u8 t44 = mColorNo;
-    u32 t45 = out.mSeekPt;
-    u32 t46 = out.mBufsiz;
-    if (t45 >= t46) {
-        unsigned long t47 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-        unsigned long t49 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t47) + 112);
+    out.writeU32(mModelTagId);
+    out.writeU32(mPowerRev);
+    out.writeU32(mChance);
+    out.writeU32(mDefense);
+    out.writeU32(mMagicDefense);
+    out.writeU32(mDurability);
+    out.writeU32(mAttack);
+    out.writeU32(mMagicAttack);
+    out.writeU16(mWeight);
+    out.writeU16(mMaxHpRev);
+    out.writeU16(mMaxStRev);
+    u8 t1 = mColorNo;
+    if (out.mSeekPt >= out.mBufsiz) {
         out.flush();
-        u32 t50 = out.mSeekPt;
-        u8* t51 = out.mBuffer;
-        t51[t50] = t44;
-    } else {
-        u8* t51 = out.mBuffer;
-        t51[t45] = t44;
     }
-    u32 t52 = out.mSeekPt;
-    out.mSeekPt = t52 + 1u;
-    u8 t53 = mSex;
-    u32 t54 = out.mBufsiz;
-    if (out.mSeekPt >= t54) {
-        unsigned long t55 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-        unsigned long t57 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t55) + 112);
+    out.mBuffer[out.mSeekPt] = t1;
+    u32 t2 = out.mSeekPt;
+    out.mSeekPt = t2 + 1u;
+    u8 t3 = mSex;
+    if (out.mSeekPt >= out.mBufsiz) {
         out.flush();
-        u32 t58 = out.mSeekPt;
-        u8* t59 = out.mBuffer;
-        t59[t58] = t53;
+        out.mBuffer[out.mSeekPt] = t3;
     } else {
-        u8* t59 = out.mBuffer;
-        t59[t52 + 1u] = t53;
+        out.mBuffer[t2 + 1u] = t3;
     }
-    u32 t60 = out.mSeekPt;
-    out.mSeekPt = t60 + 1u;
-    u8 t61 = mModelParts;
-    u32 t62 = out.mBufsiz;
-    if (out.mSeekPt >= t62) {
-        unsigned long t63 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-        unsigned long t65 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t63) + 112);
+    u32 t4 = out.mSeekPt;
+    out.mSeekPt = t4 + 1u;
+    u8 t5 = mModelParts;
+    if (out.mSeekPt >= out.mBufsiz) {
         out.flush();
-        u32 t66 = out.mSeekPt;
-        u8* t67 = out.mBuffer;
-        t67[t66] = t61;
+        out.mBuffer[out.mSeekPt] = t5;
     } else {
-        u8* t67 = out.mBuffer;
-        t67[t60 + 1u] = t61;
+        out.mBuffer[t4 + 1u] = t5;
     }
-    u32 t68 = out.mSeekPt;
-    out.mSeekPt = t68 + 1u;
-    u8 t69 = mEleSlot;
-    u32 t70 = out.mBufsiz;
-    if (out.mSeekPt >= t70) {
-        unsigned long t71 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-        unsigned long t73 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t71) + 112);
+    u32 t6 = out.mSeekPt;
+    out.mSeekPt = t6 + 1u;
+    u8 t7 = mEleSlot;
+    if (out.mSeekPt >= out.mBufsiz) {
         out.flush();
-        u32 t74 = out.mSeekPt;
-        u8* t75 = out.mBuffer;
-        t75[t74] = t69;
+        out.mBuffer[out.mSeekPt] = t7;
     } else {
-        u8* t75 = out.mBuffer;
-        t75[t68 + 1u] = t69;
+        out.mBuffer[t6 + 1u] = t7;
     }
-    u32 t76 = out.mSeekPt;
-    out.mSeekPt = t76 + 1u;
-    u8 t77 = mEquipParamS8Num;
-    u32 t78 = out.mBufsiz;
-    unsigned int i0_3;
-    u32 v1_0;
-    if (out.mSeekPt >= t78) {
-        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
-        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+    u32 t8 = out.mSeekPt;
+    out.mSeekPt = t8 + 1u;
+    u8 t9 = mEquipParamS8Num;
+    if (out.mSeekPt >= out.mBufsiz) {
         out.flush();
-        u32 t82 = out.mSeekPt;
-        u8* t83 = out.mBuffer;
-        t83[t82] = t77;
-        u32 t84 = out.mSeekPt;
-        out.mSeekPt = t84 + 1u;
-        if (mEquipParamS8Num == 0) {
-            v1_0 = t82;
-            return true;
-        } else {
-            i0_3 = 0;
-        }
+        out.mBuffer[out.mSeekPt] = t9;
     } else {
-        u8* t83 = out.mBuffer;
-        t83[t76 + 1u] = t77;
-        u32 t84 = out.mSeekPt;
-        out.mSeekPt = t84 + 1u;
-        if (mEquipParamS8Num == 0) {
-            v1_0 = t76 + 1u;
-            return true;
-        } else {
-            i0_3 = 0;
-        }
+        out.mBuffer[t8 + 1u] = t9;
     }
-    for (;;) {
-        rEquipParamS8* t85 = mpEquipParamS8List;
-        unsigned long t86 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&t85[i0_3]) + 0);
-        unsigned long t88 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t86) + 56);
-        t85[i0_3].save(out);
-        if ((i0_3 + 1u) < mEquipParamS8Num) {
-            i0_3 += 1u;
-        } else {
-            v1_0 = mEquipParamS8Num;
-            break;
+    out.mSeekPt = out.mSeekPt + 1u;
+    if (mEquipParamS8Num != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            mpEquipParamS8List[i0_3].save(out);
+            if ((i0_3 + 1u) < mEquipParamS8Num) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
         }
     }
     return true;

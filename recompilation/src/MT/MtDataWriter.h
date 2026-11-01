@@ -11,6 +11,7 @@ struct MtFloat3;
 struct MtFloat4;
 class MtStream;
 class cEditParam;
+class cGroupParam;
 class cSetInfoEnemy;
 class cSetInfoOmBowlOfLife;
 class cSetInfoOmGather;
@@ -54,6 +55,7 @@ using uintptr = __uintptr_t;
 class MtDataWriter
 {
     friend class cEditParam;
+    friend class cGroupParam;
     friend class cSetInfoEnemy;
     friend class cSetInfoOmBowlOfLife;
     friend class cSetInfoOmGather;

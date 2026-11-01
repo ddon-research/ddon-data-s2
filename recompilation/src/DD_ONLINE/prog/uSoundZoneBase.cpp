@@ -7,6 +7,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cUnit.h"
+#include "../../XFramework/cZoneContents.h"
 #include "../../XFramework/cZoneExtendObject.h"
 #include "../../XFramework/cZoneLayout.h"
 #include "../../XFramework/cZoneListener.h"
@@ -110,6 +111,32 @@ cSoundZoneListener::MyDTI cSoundZoneListener::DTI("cSoundZoneListener", &::cZone
 __attribute__((weak)) MtObject* cSoundZoneListener::MyDTI::newInstance() const {
     DDON_STUB("cSoundZoneListener::MyDTI::newInstance")
     return nullptr;
+}
+
+const MtDTI& nSoundZoneBase::cSoundZoneContents::getDTI() const {
+    return nSoundZoneBase::cSoundZoneContents::DTI;
+}
+
+inline void* nSoundZoneBase::cSoundZoneContents::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nSoundZoneBase::cSoundZoneContents::DTI)->memAlloc(sz, align, ::nSoundZoneBase::cSoundZoneContents::DTI.getID());
+}
+
+inline void nSoundZoneBase::cSoundZoneContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundZoneBase::cSoundZoneContents::DTI)->memFree(p_addr);
+}
+
+nSoundZoneBase::cSoundZoneContents::cSoundZoneContents() {
+}
+
+nSoundZoneBase::cSoundZoneContents::~cSoundZoneContents() {
+}
+
+nSoundZoneBase::cSoundZoneContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundZoneBase::cSoundZoneContents::MyDTI nSoundZoneBase::cSoundZoneContents::DTI("nSoundZoneBase::cSoundZoneContents", &::cZoneContents::DTI, 32ul, 0u, 0u);
+
+MtObject* nSoundZoneBase::cSoundZoneContents::MyDTI::newInstance() const {
+    return new (16u) ::nSoundZoneBase::cSoundZoneContents;
 }
 
 const MtDTI& uSoundZoneBase::getDTI() const {
@@ -304,7 +331,7 @@ void uSoundZoneBase::clearZoneHit() {
                 for (unsigned int i0_3 = 0;;) {
                     cSoundLayoutInfo* t1 = nSoundZone::getLayoutInfoFromZoneLayout(pZone, i0_3);
                     if (t1 != nullptr) {
-                        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t1) + 15) = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t1) + 15)) & 64767;
+                        t1->mZoneHit = t1->mZoneHit & 0xFFFFFFFCu;
                     }
                     if (layoutNum != (i0_3 + 1u)) {
                         i0_3 += 1u;

@@ -40,7 +40,7 @@ uSoundSubMixer::uSoundSubMixer() {
     /* stub */
 }
 
-uSoundSubMixer::~uSoundSubMixer() {
+__attribute__((noinline)) uSoundSubMixer::~uSoundSubMixer() {
     DDON_STUB("uSoundSubMixer::~uSoundSubMixer")
     /* stub */
 }
@@ -54,9 +54,139 @@ __attribute__((weak)) void uSoundSubMixer::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-__attribute__((weak)) void uSoundSubMixer::clear() {
-    DDON_STUB("uSoundSubMixer::clear")
-    /* stub */
+void uSoundSubMixer::clear() {
+    if (mFaderParam.mLength != 0) {
+        u32 v0_0 = mFaderParam.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mFaderParam.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mFaderParam.mpArray[i0_3];
+                v1_0 = mFaderParam.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mFaderParam.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mFaderParam.mpArray));
+    }
+    mFaderParam.mpArray = nullptr;
+    mFaderParam.mBufsiz = 0;
+    mFaderParam.mLength = 0;
+    if (mCalcFaderSubMixers.mLength != 0) {
+        u32 v4_0 = mCalcFaderSubMixers.mLength;
+        unsigned int i4_3 = 0;
+        u32 v5_0;
+        for (;;) {
+            if (mCalcFaderSubMixers.mpArray[i4_3] == nullptr) {
+                v5_0 = v4_0;
+            } else {
+                delete mCalcFaderSubMixers.mpArray[i4_3];
+                v5_0 = mCalcFaderSubMixers.mLength;
+            }
+            if ((i4_3 + 1u) < v5_0) {
+                v4_0 = v5_0;
+                i4_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mCalcFaderSubMixers.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mCalcFaderSubMixers.mpArray));
+    }
+    mCalcFaderSubMixers.mpArray = nullptr;
+    mCalcFaderSubMixers.mBufsiz = 0;
+    mCalcFaderSubMixers.mLength = 0;
+    if (mCurrentSubMixers.mLength != 0) {
+        u32 v8_0 = mCurrentSubMixers.mLength;
+        unsigned int i8_3 = 0;
+        u32 v9_0;
+        for (;;) {
+            if (mCurrentSubMixers.mpArray[i8_3] == nullptr) {
+                v9_0 = v8_0;
+            } else {
+                delete mCurrentSubMixers.mpArray[i8_3];
+                v9_0 = mCurrentSubMixers.mLength;
+            }
+            if ((i8_3 + 1u) < v9_0) {
+                v8_0 = v9_0;
+                i8_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mCurrentSubMixers.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mCurrentSubMixers.mpArray));
+    }
+    mCurrentSubMixers.mpArray = nullptr;
+    mCurrentSubMixers.mBufsiz = 0;
+    mCurrentSubMixers.mLength = 0;
+    mCalcSendSubMixer.rSoundSubMixer::clear();
+    if (mpSimpleCurveResource[0] != nullptr) {
+        mpSimpleCurveResource[0]->cResource::release();
+        mpSimpleCurveResource[0] = nullptr;
+    }
+    if (mpSimpleCurveResource[1] != nullptr) {
+        mpSimpleCurveResource[1]->cResource::release();
+        mpSimpleCurveResource[1] = nullptr;
+    }
+    if (mpSimpleCurveResource[2] != nullptr) {
+        mpSimpleCurveResource[2]->cResource::release();
+        mpSimpleCurveResource[2] = nullptr;
+    }
+    if (mpSimpleCurveResource[3] != nullptr) {
+        mpSimpleCurveResource[3]->cResource::release();
+        mpSimpleCurveResource[3] = nullptr;
+    }
+    if (mpSubMixerResource[0] != nullptr) {
+        mpSubMixerResource[0]->cResource::release();
+        mpSubMixerResource[0] = nullptr;
+    }
+    if (mpSubMixerResource[1] != nullptr) {
+        mpSubMixerResource[1]->cResource::release();
+        mpSubMixerResource[1] = nullptr;
+    }
+    if (mpSubMixerResource[2] != nullptr) {
+        mpSubMixerResource[2]->cResource::release();
+        mpSubMixerResource[2] = nullptr;
+    }
+    if (mpSubMixerResource[3] != nullptr) {
+        mpSubMixerResource[3]->cResource::release();
+        mpSubMixerResource[3] = nullptr;
+    }
+    if (mpSubMixerResource[4] != nullptr) {
+        mpSubMixerResource[4]->cResource::release();
+        mpSubMixerResource[4] = nullptr;
+    }
+    if (mpSubMixerResource[5] != nullptr) {
+        mpSubMixerResource[5]->cResource::release();
+        mpSubMixerResource[5] = nullptr;
+    }
+    if (mpSubMixerResource[6] != nullptr) {
+        mpSubMixerResource[6]->cResource::release();
+        mpSubMixerResource[6] = nullptr;
+    }
+    if (mpSubMixerResource[7] != nullptr) {
+        mpSubMixerResource[7]->cResource::release();
+        mpSubMixerResource[7] = nullptr;
+    }
+    if (mpInitSubMixerResource != nullptr) {
+        mpInitSubMixerResource->release();
+        mpInitSubMixerResource = nullptr;
+    }
+    mCalcFaderNum = 0;
+    mCurrentSubMixerNum = 0;
+    mCalcFaderSubMixerNum = 0;
+    mFaderNum = 0;
 }
 
 __attribute__((weak)) void uSoundSubMixer::move() {

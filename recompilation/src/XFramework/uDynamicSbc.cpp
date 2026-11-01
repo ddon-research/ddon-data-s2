@@ -10,6 +10,7 @@
 #include "nCollision.h"
 #include "rDynamicSbc.h"
 #include "sCollision.h"
+#include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -39,9 +40,29 @@ void uDynamicSbc::setup() {
     this->cUnit::setup();
 }
 
-__attribute__((weak)) void uDynamicSbc::move() {
-    DDON_STUB("uDynamicSbc::move")
-    /* stub */
+void uDynamicSbc::move() {
+    if (mpOwner != nullptr) {
+        u32 i = 0;
+        uModel* v0_1 = mpOwner;
+        uModel* v1_1;
+        for (;;) {
+            mFlgPartsActive[i] = ((static_cast<unsigned long>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(reinterpret_cast<char*>(v0_1) + ((i >> 3) & 0x1FFFFFFCu)) + 324)) >> static_cast<unsigned long>(i & 31u)) & 1ul) != 0;
+            v1_1 = mpOwner;
+            if ((i + 1u) != 256) {
+                i = i + 1u;
+                v0_1 = v1_1;
+            } else {
+                break;
+            }
+        }
+        if (v1_1 != nullptr) {
+            if (v1_1->mBeFlag > 2u) {
+                mpOwner = nullptr;
+                clear();
+                return;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uDynamicSbc::sync() {

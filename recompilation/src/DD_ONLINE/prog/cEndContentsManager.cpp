@@ -69,12 +69,34 @@ __attribute__((weak)) u32 cEndContentsManager::getEndContentsEntryNpcId(u32 Grou
 }
 
 u32 cEndContentsManager::getEndContentsPurposeNum() const {
-    return static_cast<unsigned int>((static_cast<unsigned long>(mEndContentsPurpose[0] != -1) + static_cast<unsigned long>(mEndContentsPurpose[1] != -1)) + static_cast<unsigned long>(mEndContentsPurpose[2] != -1));
+    return static_cast<u32>(((mEndContentsPurpose[0] != -1) + (mEndContentsPurpose[1] != -1)) + (mEndContentsPurpose[2] != -1));
 }
 
-__attribute__((weak)) s32 cEndContentsManager::getEndContentsPurposeNo(u32 idx) const {
-    DDON_STUB("cEndContentsManager::getEndContentsPurposeNo")
-    return {};
+s32 cEndContentsManager::getEndContentsPurposeNo(u32 idx) const {
+    if (idx <= 2u) {
+        u32 i = 0;
+        for (unsigned int i0_2 = 0;;) {
+            if (mEndContentsPurpose[i] != -1) {
+                if (idx == i0_2) {
+                    return mEndContentsPurpose[i];
+                } else {
+                    if ((i + 1u) <= 2u) {
+                        i = i + 1u;
+                        i0_2 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                if ((i + 1u) <= 2u) {
+                    i = i + 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return -1;
 }
 
 void cEndContentsManager::addEndContentsPurposeNo(u32 purposeNo) {
@@ -269,7 +291,7 @@ void cEndContentsManager::getQuestList() {
     this->cQuestManagerBase::getQuestList();
 }
 
-cEndContentsManager::~cEndContentsManager() {
+__attribute__((noinline)) cEndContentsManager::~cEndContentsManager() {
     DDON_STUB("cEndContentsManager::~cEndContentsManager")
     /* stub */
 }

@@ -37,7 +37,7 @@ uEffect2D::uEffect2D() {
     /* stub */
 }
 
-uEffect2D::~uEffect2D() {
+__attribute__((noinline)) uEffect2D::~uEffect2D() {
     DDON_STUB("uEffect2D::~uEffect2D")
     /* stub */
 }
@@ -334,13 +334,13 @@ __attribute__((weak)) void uEffect2D::doFinish() {
 }
 
 void uEffect2D::doRestart() {
-    if (static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312)) == 0) {
+    if (mGeneratorNum == 0) {
         mStatus = (mStatus & 36812u) | 1u;
         mTimeInterpolationRate = 1.0f;
         mIntTimeInterpolationRate = 256;
         mTimer = 0;
-        mGeneratorNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312);
-        mGeneratorMoveNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312);
+        mGeneratorNum = mGeneratorNum;
+        mGeneratorMoveNum = mGeneratorNum;
         mLifeTimer = (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 304)) >> 32;
         return;
     }
@@ -349,13 +349,13 @@ void uEffect2D::doRestart() {
         mGenerator[ctr].restart();
         mGenerator[ctr].closeParticleAll();
         ctr += 1u;
-    } while (ctr < static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312)));
+    } while (ctr < mGeneratorNum);
     mStatus = (mStatus & 36812u) | 1u;
     mTimeInterpolationRate = 1.0f;
     mIntTimeInterpolationRate = 256;
     mTimer = 0;
-    mGeneratorNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312);
-    mGeneratorMoveNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312);
+    mGeneratorNum = mGeneratorNum;
+    mGeneratorMoveNum = mGeneratorNum;
     mLifeTimer = (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 304)) >> 32;
 }
 

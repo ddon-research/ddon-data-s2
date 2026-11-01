@@ -68,7 +68,7 @@ cpScrCollision::cpScrCollision() {
     /* stub */
 }
 
-cpScrCollision::~cpScrCollision() {
+__attribute__((noinline)) cpScrCollision::~cpScrCollision() {
     DDON_STUB("cpScrCollision::~cpScrCollision")
     /* stub */
 }

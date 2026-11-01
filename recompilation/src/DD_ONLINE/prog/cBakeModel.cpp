@@ -27,8 +27,30 @@ const MtDTI& cBakeModel::getDTI() const {
     return cBakeModel::DTI;
 }
 
+inline void* cBakeModel::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cBakeModel::DTI)->memAlloc(sz, align, cBakeModel::DTI.getID());
+}
+
 inline void cBakeModel::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cBakeModel::DTI)->memFree(p_addr);
+}
+
+cBakeModel::cBakeModel() {
+    mStat = 0;
+    mpPrimitiveInfo = nullptr;
+    mPrimitiveInfoNum = 0;
+    mTempVertexBufferSize = 0;
+    mpTempVertexBuffer = nullptr;
+    mpIndexBuffer = nullptr;
+    mpVertexBuffer = nullptr;
+    mpModel = nullptr;
+    mMaterialNum = 0;
+    mpaNukiMaterials = nullptr;
+    mpaMaterials = nullptr;
+    memset(static_cast<void*>(&mConvertJointForCE[0]), 0, 1025ul);
+    memset(static_cast<void*>(&mpCommandCache[0]), 0, 1152ul);
+    memset(static_cast<void*>(&mCacheThread[0]), 255, 384ul);
+    mQuantPosScale = 1.0f;
 }
 
 void cBakeModel::initialize() {
@@ -159,9 +181,8 @@ cBakeModel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u3
 
 cBakeModel::MyDTI cBakeModel::DTI("cBakeModel", &::MtObject::DTI, 2992ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cBakeModel::MyDTI::newInstance() const {
-    DDON_STUB("cBakeModel::MyDTI::newInstance")
-    return nullptr;
+MtObject* cBakeModel::MyDTI::newInstance() const {
+    return new (16u) cBakeModel;
 }
 
 void cBakeModelEx::initialize() {

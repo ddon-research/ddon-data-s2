@@ -47,6 +47,42 @@ namespace nCharacter {
 }  // namespace nCharacter
 
 namespace nCharacter {
+    enum E_EDIT_PALETTE_PARAM_TYPE
+    {
+        EDIT_PALETTE_PARAM_TYPE_NONE = 0,
+        EDIT_PALETTE_PARAM_TYPE_HAIR_COLOR = 1,
+        EDIT_PALETTE_PARAM_TYPE_HAIR_PARTS = 2,
+        EDIT_PALETTE_PARAM_TYPE_MAKEUP_PARTS = 3,
+        EDIT_PALETTE_PARAM_TYPE_SCAR_PARTS = 4,
+        EDIT_PALETTE_PARAM_TYPE_PERSONALITY = 5,
+        EDIT_PALETTE_PARAM_TYPE_EYE_PRESET = 6,
+        EDIT_PALETTE_PARAM_TYPE_EYEBROW_PARTS = 7,
+        EDIT_PALETTE_PARAM_TYPE_NOSE_PRESET = 8,
+        EDIT_PALETTE_PARAM_TYPE_MOUTH_PRESET = 9,
+        EDIT_PALETTE_PARAM_TYPE_BEARD_PARTS = 10,
+        EDIT_PALETTE_PARAM_TYPE_SKIN_COLOR = 11,
+        EDIT_PALETTE_PARAM_TYPE_MAKEUP_COLOR = 12,
+        EDIT_PALETTE_PARAM_TYPE_VOICE_PL_MALE = 13,
+        EDIT_PALETTE_PARAM_TYPE_VOICE_PL_FEMALE = 14,
+        EDIT_PALETTE_PARAM_TYPE_VOICE_PAWN_MALE = 15,
+        EDIT_PALETTE_PARAM_TYPE_VOICE_PAWN_FEMALE = 16,
+        EDIT_PALETTE_PARAM_TYPE_SPEECH_FREQ = 17,
+        EDIT_PALETTE_PARAM_TYPE_NUM = 18,
+    };
+}  // namespace nCharacter
+
+namespace nCharacter {
+    enum E_EDIT_UPDATE_TYPE
+    {
+        EDIT_UPDATE_TYPE_NONE = 0,
+        EDIT_UPDATE_TYPE_PAY = 1,
+        EDIT_UPDATE_TYPE_FREE = 2,
+        EDIT_UPDATE_TYPE_ALL = 3,
+        EDIT_UPDATE_TYPE_PAWN_REWARD = 4,
+    };
+}  // namespace nCharacter
+
+namespace nCharacter {
     enum E_ONLINE_STATUS
     {
         ONLINE_STATUS_NONE = 0,
@@ -550,6 +586,9 @@ inline CDataCharacterMessage::CDataCharacterMessage() {
 
 inline CDataCharacterMsgSet::CDataCharacterMsgSet() {
     this->m_unSetNo = 0;
+}
+
+inline CDataCharacterSearchParam::CDataCharacterSearchParam() {
 }
 
 inline CDataCommunicationShortCut::CDataCommunicationShortCut() {

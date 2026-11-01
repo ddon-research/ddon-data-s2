@@ -1,16 +1,28 @@
 {
   "bundle": {
-    "golden": "golden/026-t190",
-    "name": "output_2026-10-30_026_merge190",
-    "rendered": 22066
+    "golden": "golden/026-t233",
+    "name": "output_2026-10-31_026_merge233",
+    "rendered": 23049
   },
   "census": {
-    "approximate": 3903,
+    "approximate": 4192,
     "includes_to_regroup": 0,
-    "proven": 18163,
-    "stubs": 18730
+    "proven": 18857,
+    "stubs": 19081
   },
   "files": [
+    {
+      "bundle": "rAIFSM/cAISvUserProcess.cpp",
+      "detail": "XFramework/cAISvUserProcess.h",
+      "origin": "dwarf",
+      "src": "XFramework/cAISvUserProcess.cpp"
+    },
+    {
+      "bundle": "rAIFSM/cAISvUserProcess.h",
+      "detail": "XFramework/cAISvUserProcess.h",
+      "origin": "dwarf",
+      "src": "XFramework/cAISvUserProcess.h"
+    },
     {
       "bundle": "rAIPawnEmParam/rAIPawnEmParam.cpp",
       "detail": "DD_ONLINE/prog/rAIPawnEmParam.h",
@@ -156,6 +168,18 @@
       "src": "DD_ONLINE/prog/rBrowserFont.h"
     },
     {
+      "bundle": "rCameraParamList/cCameraGameNml.cpp",
+      "detail": "DD_ONLINE/prog/cCameraGameNml.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cCameraGameNml.cpp"
+    },
+    {
+      "bundle": "rCameraParamList/cCameraGameNml.h",
+      "detail": "DD_ONLINE/prog/cCameraGameNml.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cCameraGameNml.h"
+    },
+    {
       "bundle": "rCameraQuakeList/rCameraQuakeList.cpp",
       "detail": "DD_ONLINE/prog/rCameraQuakeList.h",
       "origin": "dwarf",
@@ -276,6 +300,132 @@
       "src": "MT/MtCharset.h"
     },
     {
+      "bundle": "rCharacterEditCameraParam/MtNetCom.cpp",
+      "detail": "MT/MtNetCom.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetCom.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetCom.h",
+      "detail": "MT/MtNetCom.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetCom.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetMediator.cpp",
+      "detail": "MT/MtNetMediator.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetMediator.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetMediator.h",
+      "detail": "MT/MtNetMediator.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetMediator.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetPS4PsnContext.cpp",
+      "detail": "MT/MtNetPS4PsnContext.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetPS4PsnContext.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetPS4PsnContext.h",
+      "detail": "MT/MtNetPS4PsnContext.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetPS4PsnContext.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetPS4PsnSocket.cpp",
+      "detail": "MT/MtNetPS4PsnSocket.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetPS4PsnSocket.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetPS4PsnSocket.h",
+      "detail": "MT/MtNetPS4PsnSocket.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetPS4PsnSocket.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetRanking.cpp",
+      "detail": "MT/MtNetRanking.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetRanking.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetRanking.h",
+      "detail": "MT/MtNetRanking.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetRanking.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetSocket.cpp",
+      "detail": "MT/MtNetSocket.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetSocket.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetSocket.h",
+      "detail": "MT/MtNetSocket.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetSocket.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetStorage2.cpp",
+      "detail": "MT/MtNetStorage2.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetStorage2.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetStorage2.h",
+      "detail": "MT/MtNetStorage2.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetStorage2.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetUtilityPS4.cpp",
+      "detail": "MT/MtNetUtilityPS4.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetUtilityPS4.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/MtNetUtilityPS4.h",
+      "detail": "MT/MtNetUtilityPS4.h",
+      "origin": "dwarf",
+      "src": "MT/MtNetUtilityPS4.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/_rtc.h",
+      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/_rtc.h",
+      "origin": "generated",
+      "src": "generated/rCharacterEditCameraParam/_rtc.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/aBase.cpp",
+      "detail": "DD_ONLINE/prog/aBase.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/aBase.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/aBase.h",
+      "detail": "DD_ONLINE/prog/aBase.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/aBase.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/aGame.cpp",
+      "detail": "DD_ONLINE/prog/aGame.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/aGame.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/aGame.h",
+      "detail": "DD_ONLINE/prog/aGame.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/aGame.h"
+    },
+    {
       "bundle": "rCharacterEditCameraParam/aStage.cpp",
       "detail": "DD_ONLINE/prog/aStage.h",
       "origin": "dwarf",
@@ -384,6 +534,18 @@
       "src": "DD_ONLINE/prog/cCursor.h"
     },
     {
+      "bundle": "rCharacterEditCameraParam/cEditChargeInfoUpdator.cpp",
+      "detail": "DD_ONLINE/prog/cEditChargeInfoUpdator.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cEditChargeInfoUpdator.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/cEditChargeInfoUpdator.h",
+      "detail": "DD_ONLINE/prog/cEditChargeInfoUpdator.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cEditChargeInfoUpdator.h"
+    },
+    {
       "bundle": "rCharacterEditCameraParam/cEmWorkRateCtrl.cpp",
       "detail": "DD_ONLINE/prog/cEmWorkRateCtrl.h",
       "origin": "dwarf",
@@ -406,6 +568,18 @@
       "detail": "DD_ONLINE/prog/cEndContentsManager.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/cEndContentsManager.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/cFSMOrderParam.cpp",
+      "detail": "DD_ONLINE/prog/cFSMOrderParam.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cFSMOrderParam.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/cFSMOrderParam.h",
+      "detail": "DD_ONLINE/prog/cFSMOrderParam.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cFSMOrderParam.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/cFurniture.cpp",
@@ -514,6 +688,18 @@
       "detail": "DD_ONLINE/prog/cGUIObjTextureRef.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/cGUIObjTextureRef.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/cGUIPageList.cpp",
+      "detail": "DD_ONLINE/prog/cGUIPageList.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cGUIPageList.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/cGUIPageList.h",
+      "detail": "DD_ONLINE/prog/cGUIPageList.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cGUIPageList.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/cGUIUtility.cpp",
@@ -660,18 +846,6 @@
       "src": "DD_ONLINE/prog/cQuestResourceLoadManager.h"
     },
     {
-      "bundle": "rCharacterEditCameraParam/cQuestSvRequest.cpp",
-      "detail": "DD_ONLINE/prog/cQuestSvRequest.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cQuestSvRequest.cpp"
-    },
-    {
-      "bundle": "rCharacterEditCameraParam/cQuestSvRequest.h",
-      "detail": "DD_ONLINE/prog/cQuestSvRequest.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cQuestSvRequest.h"
-    },
-    {
       "bundle": "rCharacterEditCameraParam/cQuestSvRequestManager.cpp",
       "detail": "DD_ONLINE/prog/cQuestSvRequestManager.h",
       "origin": "dwarf",
@@ -718,6 +892,30 @@
       "detail": "DD_ONLINE/prog/cServerUIClientControl.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/cServerUIClientControl.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/cStateMachine.cpp",
+      "detail": "XFramework/cStateMachine.h",
+      "origin": "dwarf",
+      "src": "XFramework/cStateMachine.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/cStateMachine.h",
+      "detail": "XFramework/cStateMachine.h",
+      "origin": "dwarf",
+      "src": "XFramework/cStateMachine.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/cStateMachineBase.cpp",
+      "detail": "XFramework/cStateMachineBase.h",
+      "origin": "dwarf",
+      "src": "XFramework/cStateMachineBase.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/cStateMachineBase.h",
+      "detail": "XFramework/cStateMachineBase.h",
+      "origin": "dwarf",
+      "src": "XFramework/cStateMachineBase.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/cUserManagerListener.cpp",
@@ -792,18 +990,6 @@
       "src": "DD_ONLINE/prog/cpErosionEnemySmall.h"
     },
     {
-      "bundle": "rCharacterEditCameraParam/cpMotionFilter.cpp",
-      "detail": "DD_ONLINE/prog/cpMotionFilter.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cpMotionFilter.cpp"
-    },
-    {
-      "bundle": "rCharacterEditCameraParam/cpMotionFilter.h",
-      "detail": "DD_ONLINE/prog/cpMotionFilter.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cpMotionFilter.h"
-    },
-    {
       "bundle": "rCharacterEditCameraParam/cpReaction.cpp",
       "detail": "DD_ONLINE/prog/cpReaction.h",
       "origin": "dwarf",
@@ -840,6 +1026,18 @@
       "src": "DD_ONLINE/prog/cpTinyChain.h"
     },
     {
+      "bundle": "rCharacterEditCameraParam/json2.cpp",
+      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/json2.h",
+      "origin": "generated",
+      "src": "generated/rCharacterEditCameraParam/json2.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/json2.h",
+      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/json2.h",
+      "origin": "generated",
+      "src": "generated/rCharacterEditCameraParam/json2.h"
+    },
+    {
       "bundle": "rCharacterEditCameraParam/mouse.h",
       "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/mouse.h",
       "origin": "generated",
@@ -862,6 +1060,18 @@
       "detail": "no class with a decl_file",
       "origin": "generated",
       "src": "generated/rCharacterEditCameraParam/nErosionEnemySmall.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/nFsm.cpp",
+      "detail": "DD_ONLINE/prog/nFsm.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/nFsm.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/nFsm.h",
+      "detail": "DD_ONLINE/prog/nFsm.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/nFsm.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/nFurnitureMenuFlow.cpp",
@@ -942,10 +1152,76 @@
       "src": "DD_ONLINE/prog/nMenuKeyConfig.h"
     },
     {
+      "bundle": "rCharacterEditCameraParam/nNetworkRanking.cpp",
+      "detail": "XFramework/nNetworkRanking.h",
+      "origin": "dwarf",
+      "src": "XFramework/nNetworkRanking.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/nNetworkRanking.h",
+      "detail": "XFramework/nNetworkRanking.h",
+      "origin": "dwarf",
+      "src": "XFramework/nNetworkRanking.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/nNetworkSharedMemory2.cpp",
+      "detail": "XFramework/nNetworkSharedMemory2.h",
+      "origin": "dwarf",
+      "src": "XFramework/nNetworkSharedMemory2.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/nNetworkSharedMemory2.h",
+      "detail": "XFramework/nNetworkSharedMemory2.h",
+      "origin": "dwarf",
+      "src": "XFramework/nNetworkSharedMemory2.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/nNetworkStorage.cpp",
+      "detail": "XFramework/nNetworkStorage.h",
+      "origin": "dwarf",
+      "src": "XFramework/nNetworkStorage.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/nNetworkStorage.h",
+      "detail": "XFramework/nNetworkStorage.h",
+      "origin": "dwarf",
+      "src": "XFramework/nNetworkStorage.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/nNetworkVoiceChat.cpp",
+      "detail": "XFramework/nNetworkVoiceChat.h",
+      "origin": "dwarf",
+      "src": "XFramework/nNetworkVoiceChat.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/nNetworkVoiceChat.h",
+      "detail": "XFramework/nNetworkVoiceChat.h",
+      "origin": "dwarf",
+      "src": "XFramework/nNetworkVoiceChat.h"
+    },
+    {
       "bundle": "rCharacterEditCameraParam/nStatusEnemy.h",
       "detail": "no class with a decl_file",
       "origin": "generated",
       "src": "generated/rCharacterEditCameraParam/nStatusEnemy.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/np_auth.h",
+      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_auth.h",
+      "origin": "generated",
+      "src": "generated/rCharacterEditCameraParam/np_auth.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/np_party.h",
+      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_party.h",
+      "origin": "generated",
+      "src": "generated/rCharacterEditCameraParam/np_party.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/np_ranking.h",
+      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_ranking.h",
+      "origin": "generated",
+      "src": "generated/rCharacterEditCameraParam/np_ranking.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/rCharacterEditCameraParam.cpp",
@@ -972,18 +1248,6 @@
       "src": "DD_ONLINE/prog/rCraftRecipe.h"
     },
     {
-      "bundle": "rCharacterEditCameraParam/rTextureJpeg.cpp",
-      "detail": "XFramework/rTextureJpeg.h",
-      "origin": "dwarf",
-      "src": "XFramework/rTextureJpeg.cpp"
-    },
-    {
-      "bundle": "rCharacterEditCameraParam/rTextureJpeg.h",
-      "detail": "XFramework/rTextureJpeg.h",
-      "origin": "dwarf",
-      "src": "XFramework/rTextureJpeg.h"
-    },
-    {
       "bundle": "rCharacterEditCameraParam/sAreaHit.cpp",
       "detail": "DD_ONLINE/prog/sAreaHit.h",
       "origin": "dwarf",
@@ -994,6 +1258,18 @@
       "detail": "DD_ONLINE/prog/sAreaHit.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/sAreaHit.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/sBazaarManager.cpp",
+      "detail": "DD_ONLINE/prog/sBazaarManager.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sBazaarManager.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/sBazaarManager.h",
+      "detail": "DD_ONLINE/prog/sBazaarManager.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sBazaarManager.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/sBrowser.cpp",
@@ -1042,6 +1318,18 @@
       "detail": "DD_ONLINE/prog/sDialogBase.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/sDialogBase.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/sHttpClient.cpp",
+      "detail": "DD_ONLINE/prog/sHttpClient.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sHttpClient.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/sHttpClient.h",
+      "detail": "DD_ONLINE/prog/sHttpClient.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sHttpClient.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/sIME.cpp",
@@ -1176,16 +1464,16 @@
       "src": "DD_ONLINE/prog/sScenario.h"
     },
     {
-      "bundle": "rCharacterEditCameraParam/sScreenShot.cpp",
-      "detail": "DD_ONLINE/prog/sScreenShot.h",
+      "bundle": "rCharacterEditCameraParam/sSceneExt.cpp",
+      "detail": "DD_ONLINE/prog/sSceneExt.h",
       "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sScreenShot.cpp"
+      "src": "DD_ONLINE/prog/sSceneExt.cpp"
     },
     {
-      "bundle": "rCharacterEditCameraParam/sScreenShot.h",
-      "detail": "DD_ONLINE/prog/sScreenShot.h",
+      "bundle": "rCharacterEditCameraParam/sSceneExt.h",
+      "detail": "DD_ONLINE/prog/sSceneExt.h",
       "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sScreenShot.h"
+      "src": "DD_ONLINE/prog/sSceneExt.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/sSoundManager.cpp",
@@ -1210,6 +1498,18 @@
       "detail": "XFramework/sUserManager.h",
       "origin": "dwarf",
       "src": "XFramework/sUserManager.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/sZoneUnitCtrl.cpp",
+      "detail": "DD_ONLINE/prog/sZoneUnitCtrl.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sZoneUnitCtrl.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/sZoneUnitCtrl.h",
+      "detail": "DD_ONLINE/prog/sZoneUnitCtrl.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sZoneUnitCtrl.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/snj_browser.h",
@@ -1284,18 +1584,6 @@
       "src": "XFramework/uCnsGroup.h"
     },
     {
-      "bundle": "rCharacterEditCameraParam/uCnsMotFilter.cpp",
-      "detail": "DD_ONLINE/prog/uCnsMotFilter.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/uCnsMotFilter.cpp"
-    },
-    {
-      "bundle": "rCharacterEditCameraParam/uCnsMotFilter.h",
-      "detail": "DD_ONLINE/prog/uCnsMotFilter.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/uCnsMotFilter.h"
-    },
-    {
       "bundle": "rCharacterEditCameraParam/uCnsScaleFix.cpp",
       "detail": "DD_ONLINE/prog/uCnsScaleFix.h",
       "origin": "dwarf",
@@ -1318,6 +1606,18 @@
       "detail": "XFramework/uCnsTinyChain.h",
       "origin": "dwarf",
       "src": "XFramework/uCnsTinyChain.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uEditSaveLoadFlow.cpp",
+      "detail": "DD_ONLINE/prog/uEditSaveLoadFlow.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uEditSaveLoadFlow.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uEditSaveLoadFlow.h",
+      "detail": "DD_ONLINE/prog/uEditSaveLoadFlow.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uEditSaveLoadFlow.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/uEnemy.cpp",
@@ -1632,6 +1932,42 @@
       "src": "DD_ONLINE/prog/uGUICaplinkTrophyTop.h"
     },
     {
+      "bundle": "rCharacterEditCameraParam/uGUICharaEditPartsWrap.cpp",
+      "detail": "DD_ONLINE/prog/uGUICharaEditPartsWrap.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUICharaEditPartsWrap.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUICharaEditPartsWrap.h",
+      "detail": "DD_ONLINE/prog/uGUICharaEditPartsWrap.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUICharaEditPartsWrap.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUICharacterEdit.cpp",
+      "detail": "DD_ONLINE/prog/uGUICharacterEdit.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUICharacterEdit.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUICharacterEdit.h",
+      "detail": "DD_ONLINE/prog/uGUICharacterEdit.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUICharacterEdit.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUICharacterEditPopCard.cpp",
+      "detail": "DD_ONLINE/prog/uGUICharacterEditPopCard.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUICharacterEditPopCard.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUICharacterEditPopCard.h",
+      "detail": "DD_ONLINE/prog/uGUICharacterEditPopCard.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUICharacterEditPopCard.h"
+    },
+    {
       "bundle": "rCharacterEditCameraParam/uGUIChargesHUD.cpp",
       "detail": "DD_ONLINE/prog/uGUIChargesHUD.h",
       "origin": "dwarf",
@@ -1654,6 +1990,30 @@
       "detail": "DD_ONLINE/prog/uGUIChat.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/uGUIChat.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIClanScout.cpp",
+      "detail": "DD_ONLINE/prog/uGUIClanScout.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIClanScout.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIClanScout.h",
+      "detail": "DD_ONLINE/prog/uGUIClanScout.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIClanScout.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIClanSearch.cpp",
+      "detail": "DD_ONLINE/prog/uGUIClanSearch.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIClanSearch.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIClanSearch.h",
+      "detail": "DD_ONLINE/prog/uGUIClanSearch.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIClanSearch.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/uGUICommunityList.cpp",
@@ -1978,6 +2338,18 @@
       "detail": "DD_ONLINE/prog/uGUIItem01.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/uGUIItem01.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIJobSelect.cpp",
+      "detail": "DD_ONLINE/prog/uGUIJobSelect.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIJobSelect.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIJobSelect.h",
+      "detail": "DD_ONLINE/prog/uGUIJobSelect.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIJobSelect.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/uGUIKeyConfig.cpp",
@@ -2376,6 +2748,18 @@
       "src": "DD_ONLINE/prog/uGUIQuestActive.h"
     },
     {
+      "bundle": "rCharacterEditCameraParam/uGUIQuestBoard.cpp",
+      "detail": "DD_ONLINE/prog/uGUIQuestBoard.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIQuestBoard.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIQuestBoard.h",
+      "detail": "DD_ONLINE/prog/uGUIQuestBoard.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIQuestBoard.h"
+    },
+    {
       "bundle": "rCharacterEditCameraParam/uGUIQuestBoardBase.cpp",
       "detail": "DD_ONLINE/prog/uGUIQuestBoardBase.h",
       "origin": "dwarf",
@@ -2386,6 +2770,30 @@
       "detail": "DD_ONLINE/prog/uGUIQuestBoardBase.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/uGUIQuestBoardBase.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIQuestDelivery.cpp",
+      "detail": "DD_ONLINE/prog/uGUIQuestDelivery.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIQuestDelivery.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIQuestDelivery.h",
+      "detail": "DD_ONLINE/prog/uGUIQuestDelivery.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIQuestDelivery.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIQuestInfo.cpp",
+      "detail": "DD_ONLINE/prog/uGUIQuestInfo.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIQuestInfo.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIQuestInfo.h",
+      "detail": "DD_ONLINE/prog/uGUIQuestInfo.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIQuestInfo.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/uGUIQuestList.cpp",
@@ -2424,6 +2832,18 @@
       "src": "DD_ONLINE/prog/uGUIRankUp.h"
     },
     {
+      "bundle": "rCharacterEditCameraParam/uGUIRankingBoard.cpp",
+      "detail": "DD_ONLINE/prog/uGUIRankingBoard.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIRankingBoard.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUIRankingBoard.h",
+      "detail": "DD_ONLINE/prog/uGUIRankingBoard.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIRankingBoard.h"
+    },
+    {
       "bundle": "rCharacterEditCameraParam/uGUIRetry.cpp",
       "detail": "DD_ONLINE/prog/uGUIRetry.h",
       "origin": "dwarf",
@@ -2458,6 +2878,18 @@
       "detail": "DD_ONLINE/prog/uGUIRimWarp.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/uGUIRimWarp.h"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUISaveListComment.cpp",
+      "detail": "DD_ONLINE/prog/uGUISaveListComment.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUISaveListComment.cpp"
+    },
+    {
+      "bundle": "rCharacterEditCameraParam/uGUISaveListComment.h",
+      "detail": "DD_ONLINE/prog/uGUISaveListComment.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUISaveListComment.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/uGUIServerUIBase.cpp",
@@ -2650,18 +3082,6 @@
       "detail": "DD_ONLINE/prog/uSoundOcclusion.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/uSoundOcclusion.h"
-    },
-    {
-      "bundle": "rCharacterEditCameraParam/uSoundTrigger.cpp",
-      "detail": "DD_ONLINE/prog/uSoundTrigger.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/uSoundTrigger.cpp"
-    },
-    {
-      "bundle": "rCharacterEditCameraParam/uSoundTrigger.h",
-      "detail": "DD_ONLINE/prog/uSoundTrigger.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/uSoundTrigger.h"
     },
     {
       "bundle": "rCharacterEditCameraParam/uStageCraftPawnCtrl.cpp",
@@ -3714,6 +4134,54 @@
       "src": "DD_ONLINE/prog/cSetInfoOm.h"
     },
     {
+      "bundle": "rLayout/cpOmComponent.cpp",
+      "detail": "DD_ONLINE/prog/cpOmComponent.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cpOmComponent.cpp"
+    },
+    {
+      "bundle": "rLayout/cpOmComponent.h",
+      "detail": "DD_ONLINE/prog/cpOmComponent.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cpOmComponent.h"
+    },
+    {
+      "bundle": "rLayout/cpOmGather.cpp",
+      "detail": "DD_ONLINE/prog/cpOmGather.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cpOmGather.cpp"
+    },
+    {
+      "bundle": "rLayout/cpOmGather.h",
+      "detail": "DD_ONLINE/prog/cpOmGather.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cpOmGather.h"
+    },
+    {
+      "bundle": "rLayout/sEventManager.cpp",
+      "detail": "DD_ONLINE/prog/sEventManager.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sEventManager.cpp"
+    },
+    {
+      "bundle": "rLayout/sEventManager.h",
+      "detail": "DD_ONLINE/prog/sEventManager.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sEventManager.h"
+    },
+    {
+      "bundle": "rLayout/sVibrationExt.cpp",
+      "detail": "DD_ONLINE/prog/sVibrationExt.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sVibrationExt.cpp"
+    },
+    {
+      "bundle": "rLayout/sVibrationExt.h",
+      "detail": "DD_ONLINE/prog/sVibrationExt.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sVibrationExt.h"
+    },
+    {
       "bundle": "rLayout/uFog.cpp",
       "detail": "XFramework/uFog.h",
       "origin": "dwarf",
@@ -3724,6 +4192,18 @@
       "detail": "XFramework/uFog.h",
       "origin": "dwarf",
       "src": "XFramework/uFog.h"
+    },
+    {
+      "bundle": "rLayout/uGUIEventSkip.cpp",
+      "detail": "DD_ONLINE/prog/uGUIEventSkip.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIEventSkip.cpp"
+    },
+    {
+      "bundle": "rLayout/uGUIEventSkip.h",
+      "detail": "DD_ONLINE/prog/uGUIEventSkip.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uGUIEventSkip.h"
     },
     {
       "bundle": "rLayout/uSky.cpp",
@@ -4182,18 +4662,6 @@
       "src": "DD_ONLINE/prog/cpVibration.h"
     },
     {
-      "bundle": "rPawnAIAction/sGeneralPoint.cpp",
-      "detail": "DD_ONLINE/prog/sGeneralPoint.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sGeneralPoint.cpp"
-    },
-    {
-      "bundle": "rPawnAIAction/sGeneralPoint.h",
-      "detail": "DD_ONLINE/prog/sGeneralPoint.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sGeneralPoint.h"
-    },
-    {
       "bundle": "rPawnAIAction/sObjCollision.cpp",
       "detail": "DD_ONLINE/prog/sObjCollision.h",
       "origin": "dwarf",
@@ -4204,18 +4672,6 @@
       "detail": "DD_ONLINE/prog/sObjCollision.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/sObjCollision.h"
-    },
-    {
-      "bundle": "rPawnAIAction/sVibrationExt.cpp",
-      "detail": "DD_ONLINE/prog/sVibrationExt.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sVibrationExt.cpp"
-    },
-    {
-      "bundle": "rPawnAIAction/sVibrationExt.h",
-      "detail": "DD_ONLINE/prog/sVibrationExt.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sVibrationExt.h"
     },
     {
       "bundle": "rPawnAIAction/uCnsShakeCtrl.cpp",
@@ -4396,6 +4852,18 @@
       "detail": "DD_ONLINE/prog/rShlParamList.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/rShlParamList.h"
+    },
+    {
+      "bundle": "rShlParamList/sLockOnManager.cpp",
+      "detail": "DD_ONLINE/prog/sLockOnManager.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sLockOnManager.cpp"
+    },
+    {
+      "bundle": "rShlParamList/sLockOnManager.h",
+      "detail": "DD_ONLINE/prog/sLockOnManager.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sLockOnManager.h"
     },
     {
       "bundle": "rShotReqInfo/rShotReqInfo.cpp",
@@ -4600,18 +5068,6 @@
       "detail": "DD_ONLINE/prog/rStageConnect.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/rStageConnect.h"
-    },
-    {
-      "bundle": "rStageConnect/sArea.cpp",
-      "detail": "XFramework/sArea.h",
-      "origin": "dwarf",
-      "src": "XFramework/sArea.cpp"
-    },
-    {
-      "bundle": "rStageConnect/sArea.h",
-      "detail": "XFramework/sArea.h",
-      "origin": "dwarf",
-      "src": "XFramework/sArea.h"
     },
     {
       "bundle": "rStageConnect/sAreaExt.cpp",
@@ -5730,18 +6186,6 @@
       "src": "MT/MtNetBuffer.h"
     },
     {
-      "bundle": "shared/MtNetCom.cpp",
-      "detail": "MT/MtNetCom.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetCom.cpp"
-    },
-    {
-      "bundle": "shared/MtNetCom.h",
-      "detail": "MT/MtNetCom.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetCom.h"
-    },
-    {
       "bundle": "shared/MtNetContext.cpp",
       "detail": "MT/MtNetContext.h",
       "origin": "dwarf",
@@ -5778,18 +6222,6 @@
       "src": "MT/MtNetDevice.h"
     },
     {
-      "bundle": "shared/MtNetMediator.cpp",
-      "detail": "MT/MtNetMediator.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetMediator.cpp"
-    },
-    {
-      "bundle": "shared/MtNetMediator.h",
-      "detail": "MT/MtNetMediator.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetMediator.h"
-    },
-    {
       "bundle": "shared/MtNetObject.cpp",
       "detail": "MT/MtNetObject.h",
       "origin": "dwarf",
@@ -5814,42 +6246,6 @@
       "src": "MT/MtNetP2p.h"
     },
     {
-      "bundle": "shared/MtNetPS4PsnContext.cpp",
-      "detail": "MT/MtNetPS4PsnContext.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetPS4PsnContext.cpp"
-    },
-    {
-      "bundle": "shared/MtNetPS4PsnContext.h",
-      "detail": "MT/MtNetPS4PsnContext.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetPS4PsnContext.h"
-    },
-    {
-      "bundle": "shared/MtNetPS4PsnSocket.cpp",
-      "detail": "MT/MtNetPS4PsnSocket.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetPS4PsnSocket.cpp"
-    },
-    {
-      "bundle": "shared/MtNetPS4PsnSocket.h",
-      "detail": "MT/MtNetPS4PsnSocket.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetPS4PsnSocket.h"
-    },
-    {
-      "bundle": "shared/MtNetRanking.cpp",
-      "detail": "MT/MtNetRanking.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetRanking.cpp"
-    },
-    {
-      "bundle": "shared/MtNetRanking.h",
-      "detail": "MT/MtNetRanking.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetRanking.h"
-    },
-    {
       "bundle": "shared/MtNetRequest.cpp",
       "detail": "MT/MtNetRequest.h",
       "origin": "dwarf",
@@ -5872,42 +6268,6 @@
       "detail": "MT/MtNetSession.h",
       "origin": "dwarf",
       "src": "MT/MtNetSession.h"
-    },
-    {
-      "bundle": "shared/MtNetSocket.cpp",
-      "detail": "MT/MtNetSocket.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetSocket.cpp"
-    },
-    {
-      "bundle": "shared/MtNetSocket.h",
-      "detail": "MT/MtNetSocket.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetSocket.h"
-    },
-    {
-      "bundle": "shared/MtNetStorage2.cpp",
-      "detail": "MT/MtNetStorage2.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetStorage2.cpp"
-    },
-    {
-      "bundle": "shared/MtNetStorage2.h",
-      "detail": "MT/MtNetStorage2.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetStorage2.h"
-    },
-    {
-      "bundle": "shared/MtNetUtilityPS4.cpp",
-      "detail": "MT/MtNetUtilityPS4.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetUtilityPS4.cpp"
-    },
-    {
-      "bundle": "shared/MtNetUtilityPS4.h",
-      "detail": "MT/MtNetUtilityPS4.h",
-      "origin": "dwarf",
-      "src": "MT/MtNetUtilityPS4.h"
     },
     {
       "bundle": "shared/MtObject.cpp",
@@ -6366,12 +6726,6 @@
       "src": "DD_ONLINE/prog/Protocol/PacketData/Weather.h"
     },
     {
-      "bundle": "shared/_rtc.h",
-      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/_rtc.h",
-      "origin": "generated",
-      "src": "generated/shared/_rtc.h"
-    },
-    {
       "bundle": "shared/audioout.h",
       "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/audioout.h",
       "origin": "generated",
@@ -6652,18 +7006,6 @@
       "detail": "DD_ONLINE/prog/cCamInterporate.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/cCamInterporate.h"
-    },
-    {
-      "bundle": "shared/cCameraGameNml.cpp",
-      "detail": "DD_ONLINE/prog/cCameraGameNml.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cCameraGameNml.cpp"
-    },
-    {
-      "bundle": "shared/cCameraGameNml.h",
-      "detail": "DD_ONLINE/prog/cCameraGameNml.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cCameraGameNml.h"
     },
     {
       "bundle": "shared/cCaplink.cpp",
@@ -8718,6 +9060,18 @@
       "src": "DD_ONLINE/prog/cQuestSvNoticeManager.h"
     },
     {
+      "bundle": "shared/cQuestSvRequest.cpp",
+      "detail": "DD_ONLINE/prog/cQuestSvRequest.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cQuestSvRequest.cpp"
+    },
+    {
+      "bundle": "shared/cQuestSvRequest.h",
+      "detail": "DD_ONLINE/prog/cQuestSvRequest.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cQuestSvRequest.h"
+    },
+    {
       "bundle": "shared/cQuestTask.cpp",
       "detail": "DD_ONLINE/prog/cQuestTask.h",
       "origin": "dwarf",
@@ -8980,30 +9334,6 @@
       "detail": "DD_ONLINE/prog/cState.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/cState.h"
-    },
-    {
-      "bundle": "shared/cStateMachine.cpp",
-      "detail": "XFramework/cStateMachine.h",
-      "origin": "dwarf",
-      "src": "XFramework/cStateMachine.cpp"
-    },
-    {
-      "bundle": "shared/cStateMachine.h",
-      "detail": "XFramework/cStateMachine.h",
-      "origin": "dwarf",
-      "src": "XFramework/cStateMachine.h"
-    },
-    {
-      "bundle": "shared/cStateMachineBase.cpp",
-      "detail": "XFramework/cStateMachineBase.h",
-      "origin": "dwarf",
-      "src": "XFramework/cStateMachineBase.cpp"
-    },
-    {
-      "bundle": "shared/cStateMachineBase.h",
-      "detail": "XFramework/cStateMachineBase.h",
-      "origin": "dwarf",
-      "src": "XFramework/cStateMachineBase.h"
     },
     {
       "bundle": "shared/cSwing.cpp",
@@ -9786,6 +10116,18 @@
       "src": "DD_ONLINE/prog/cpLockOn.h"
     },
     {
+      "bundle": "shared/cpMotionFilter.cpp",
+      "detail": "DD_ONLINE/prog/cpMotionFilter.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cpMotionFilter.cpp"
+    },
+    {
+      "bundle": "shared/cpMotionFilter.h",
+      "detail": "DD_ONLINE/prog/cpMotionFilter.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cpMotionFilter.h"
+    },
+    {
       "bundle": "shared/cpMotionSe.cpp",
       "detail": "DD_ONLINE/prog/cpMotionSe.h",
       "origin": "dwarf",
@@ -9832,30 +10174,6 @@
       "detail": "DD_ONLINE/prog/cpOcdCtrl.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/cpOcdCtrl.h"
-    },
-    {
-      "bundle": "shared/cpOmComponent.cpp",
-      "detail": "DD_ONLINE/prog/cpOmComponent.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cpOmComponent.cpp"
-    },
-    {
-      "bundle": "shared/cpOmComponent.h",
-      "detail": "DD_ONLINE/prog/cpOmComponent.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cpOmComponent.h"
-    },
-    {
-      "bundle": "shared/cpOmGather.cpp",
-      "detail": "DD_ONLINE/prog/cpOmGather.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cpOmGather.cpp"
-    },
-    {
-      "bundle": "shared/cpOmGather.h",
-      "detail": "DD_ONLINE/prog/cpOmGather.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cpOmGather.h"
     },
     {
       "bundle": "shared/cpPawnThink.cpp",
@@ -10158,18 +10476,6 @@
       "src": "generated/shared/ime_types.h"
     },
     {
-      "bundle": "shared/json2.cpp",
-      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/json2.h",
-      "origin": "generated",
-      "src": "generated/shared/json2.cpp"
-    },
-    {
-      "bundle": "shared/json2.h",
-      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/json2.h",
-      "origin": "generated",
-      "src": "generated/shared/json2.h"
-    },
-    {
       "bundle": "shared/lwcue_base.cpp",
       "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnmx/lwcue_base.h",
       "origin": "generated",
@@ -10216,6 +10522,18 @@
       "detail": "XFramework/nAI.h",
       "origin": "dwarf",
       "src": "XFramework/nAI.h"
+    },
+    {
+      "bundle": "shared/nAITaskPerformance.cpp",
+      "detail": "XFramework/nAITaskPerformance.h",
+      "origin": "dwarf",
+      "src": "XFramework/nAITaskPerformance.cpp"
+    },
+    {
+      "bundle": "shared/nAITaskPerformance.h",
+      "detail": "XFramework/nAITaskPerformance.h",
+      "origin": "dwarf",
+      "src": "XFramework/nAITaskPerformance.h"
     },
     {
       "bundle": "shared/nAbility.h",
@@ -10284,10 +10602,16 @@
       "src": "DD_ONLINE/prog/nCharacterData.h"
     },
     {
+      "bundle": "shared/nCharacterEdit.cpp",
+      "detail": "DD_ONLINE/prog/nCharacterEdit.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/nCharacterEdit.cpp"
+    },
+    {
       "bundle": "shared/nCharacterEdit.h",
-      "detail": "no class with a decl_file",
-      "origin": "generated",
-      "src": "generated/shared/nCharacterEdit.h"
+      "detail": "DD_ONLINE/prog/nCharacterEdit.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/nCharacterEdit.h"
     },
     {
       "bundle": "shared/nCollision.cpp",
@@ -10416,6 +10740,30 @@
       "src": "XFramework/nDrawConstantTable.h"
     },
     {
+      "bundle": "shared/nDrawDDMaterialStd.cpp",
+      "detail": "DD_ONLINE/prog/nDrawDDMaterialStd.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/nDrawDDMaterialStd.cpp"
+    },
+    {
+      "bundle": "shared/nDrawDDMaterialStd.h",
+      "detail": "DD_ONLINE/prog/nDrawDDMaterialStd.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/nDrawDDMaterialStd.h"
+    },
+    {
+      "bundle": "shared/nDrawInputLayout.cpp",
+      "detail": "XFramework/nDrawInputLayout.h",
+      "origin": "dwarf",
+      "src": "XFramework/nDrawInputLayout.cpp"
+    },
+    {
+      "bundle": "shared/nDrawInputLayout.h",
+      "detail": "XFramework/nDrawInputLayout.h",
+      "origin": "dwarf",
+      "src": "XFramework/nDrawInputLayout.h"
+    },
+    {
       "bundle": "shared/nDrawMaterial.cpp",
       "detail": "XFramework/nDrawMaterial.h",
       "origin": "dwarf",
@@ -10498,6 +10846,12 @@
       "detail": "XFramework/nDrawScene.h",
       "origin": "dwarf",
       "src": "XFramework/nDrawScene.h"
+    },
+    {
+      "bundle": "shared/nDrawShader.h",
+      "detail": "XFramework/nDrawShader.h",
+      "origin": "dwarf",
+      "src": "XFramework/nDrawShader.h"
     },
     {
       "bundle": "shared/nDrawTexture.cpp",
@@ -10842,18 +11196,6 @@
       "src": "XFramework/nNetworkQueue.h"
     },
     {
-      "bundle": "shared/nNetworkRanking.cpp",
-      "detail": "XFramework/nNetworkRanking.h",
-      "origin": "dwarf",
-      "src": "XFramework/nNetworkRanking.cpp"
-    },
-    {
-      "bundle": "shared/nNetworkRanking.h",
-      "detail": "XFramework/nNetworkRanking.h",
-      "origin": "dwarf",
-      "src": "XFramework/nNetworkRanking.h"
-    },
-    {
       "bundle": "shared/nNetworkRemoteCalls.cpp",
       "detail": "XFramework/nNetworkRemoteCalls.h",
       "origin": "dwarf",
@@ -10926,30 +11268,6 @@
       "src": "XFramework/nNetworkSessionListener.h"
     },
     {
-      "bundle": "shared/nNetworkSharedMemory2.cpp",
-      "detail": "XFramework/nNetworkSharedMemory2.h",
-      "origin": "dwarf",
-      "src": "XFramework/nNetworkSharedMemory2.cpp"
-    },
-    {
-      "bundle": "shared/nNetworkSharedMemory2.h",
-      "detail": "XFramework/nNetworkSharedMemory2.h",
-      "origin": "dwarf",
-      "src": "XFramework/nNetworkSharedMemory2.h"
-    },
-    {
-      "bundle": "shared/nNetworkStorage.cpp",
-      "detail": "XFramework/nNetworkStorage.h",
-      "origin": "dwarf",
-      "src": "XFramework/nNetworkStorage.cpp"
-    },
-    {
-      "bundle": "shared/nNetworkStorage.h",
-      "detail": "XFramework/nNetworkStorage.h",
-      "origin": "dwarf",
-      "src": "XFramework/nNetworkStorage.h"
-    },
-    {
       "bundle": "shared/nNetworkTagChecker.cpp",
       "detail": "XFramework/nNetworkTagChecker.h",
       "origin": "dwarf",
@@ -10984,18 +11302,6 @@
       "detail": "XFramework/nNetworkUtil.h",
       "origin": "dwarf",
       "src": "XFramework/nNetworkUtil.h"
-    },
-    {
-      "bundle": "shared/nNetworkVoiceChat.cpp",
-      "detail": "XFramework/nNetworkVoiceChat.h",
-      "origin": "dwarf",
-      "src": "XFramework/nNetworkVoiceChat.cpp"
-    },
-    {
-      "bundle": "shared/nNetworkVoiceChat.h",
-      "detail": "XFramework/nNetworkVoiceChat.h",
-      "origin": "dwarf",
-      "src": "XFramework/nNetworkVoiceChat.h"
     },
     {
       "bundle": "shared/nObjCollision.cpp",
@@ -11214,12 +11520,6 @@
       "src": "generated/shared/ngs2_system.h"
     },
     {
-      "bundle": "shared/np_auth.h",
-      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_auth.h",
-      "origin": "generated",
-      "src": "generated/shared/np_auth.h"
-    },
-    {
       "bundle": "shared/np_common.h",
       "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_common.h",
       "origin": "generated",
@@ -11230,18 +11530,6 @@
       "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_npid.h",
       "origin": "generated",
       "src": "generated/shared/np_npid.h"
-    },
-    {
-      "bundle": "shared/np_party.h",
-      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_party.h",
-      "origin": "generated",
-      "src": "generated/shared/np_party.h"
-    },
-    {
-      "bundle": "shared/np_ranking.h",
-      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_ranking.h",
-      "origin": "generated",
-      "src": "generated/shared/np_ranking.h"
     },
     {
       "bundle": "shared/np_trophy.h",
@@ -12138,6 +12426,18 @@
       "src": "XFramework/rScheduler.h"
     },
     {
+      "bundle": "shared/rShaderPackage.cpp",
+      "detail": "XFramework/rShaderPackage.h",
+      "origin": "dwarf",
+      "src": "XFramework/rShaderPackage.cpp"
+    },
+    {
+      "bundle": "shared/rShaderPackage.h",
+      "detail": "XFramework/rShaderPackage.h",
+      "origin": "dwarf",
+      "src": "XFramework/rShaderPackage.h"
+    },
+    {
       "bundle": "shared/rShlLimit.cpp",
       "detail": "DD_ONLINE/prog/rShlLimit.h",
       "origin": "dwarf",
@@ -12426,6 +12726,18 @@
       "src": "XFramework/rTexture.h"
     },
     {
+      "bundle": "shared/rTextureJpeg.cpp",
+      "detail": "XFramework/rTextureJpeg.h",
+      "origin": "dwarf",
+      "src": "XFramework/rTextureJpeg.cpp"
+    },
+    {
+      "bundle": "shared/rTextureJpeg.h",
+      "detail": "XFramework/rTextureJpeg.h",
+      "origin": "dwarf",
+      "src": "XFramework/rTextureJpeg.h"
+    },
+    {
       "bundle": "shared/rTutorialList.cpp",
       "detail": "DD_ONLINE/prog/rTutorialList.h",
       "origin": "dwarf",
@@ -12558,6 +12870,18 @@
       "src": "DD_ONLINE/prog/rkThinkData.h"
     },
     {
+      "bundle": "shared/sAI.cpp",
+      "detail": "XFramework/sAI.h",
+      "origin": "dwarf",
+      "src": "XFramework/sAI.cpp"
+    },
+    {
+      "bundle": "shared/sAI.h",
+      "detail": "XFramework/sAI.h",
+      "origin": "dwarf",
+      "src": "XFramework/sAI.h"
+    },
+    {
       "bundle": "shared/sAIPawnNotice.cpp",
       "detail": "DD_ONLINE/prog/sAIPawnNotice.h",
       "origin": "dwarf",
@@ -12616,6 +12940,18 @@
       "detail": "DD_ONLINE/prog/sArchiveManager.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/sArchiveManager.h"
+    },
+    {
+      "bundle": "shared/sArea.cpp",
+      "detail": "XFramework/sArea.h",
+      "origin": "dwarf",
+      "src": "XFramework/sArea.cpp"
+    },
+    {
+      "bundle": "shared/sArea.h",
+      "detail": "XFramework/sArea.h",
+      "origin": "dwarf",
+      "src": "XFramework/sArea.h"
     },
     {
       "bundle": "shared/sBakingJointOrder.cpp",
@@ -12762,18 +13098,6 @@
       "src": "DD_ONLINE/prog/sEnvMapManager.h"
     },
     {
-      "bundle": "shared/sEventManager.cpp",
-      "detail": "DD_ONLINE/prog/sEventManager.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sEventManager.cpp"
-    },
-    {
-      "bundle": "shared/sEventManager.h",
-      "detail": "DD_ONLINE/prog/sEventManager.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sEventManager.h"
-    },
-    {
       "bundle": "shared/sFlag.cpp",
       "detail": "DD_ONLINE/prog/sFlag.h",
       "origin": "dwarf",
@@ -12822,6 +13146,18 @@
       "src": "DD_ONLINE/prog/sGame.h"
     },
     {
+      "bundle": "shared/sGeneralPoint.cpp",
+      "detail": "DD_ONLINE/prog/sGeneralPoint.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sGeneralPoint.cpp"
+    },
+    {
+      "bundle": "shared/sGeneralPoint.h",
+      "detail": "DD_ONLINE/prog/sGeneralPoint.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sGeneralPoint.h"
+    },
+    {
       "bundle": "shared/sGpuParticle.cpp",
       "detail": "XFramework/sGpuParticle.h",
       "origin": "dwarf",
@@ -12832,18 +13168,6 @@
       "detail": "XFramework/sGpuParticle.h",
       "origin": "dwarf",
       "src": "XFramework/sGpuParticle.h"
-    },
-    {
-      "bundle": "shared/sHttpClient.cpp",
-      "detail": "DD_ONLINE/prog/sHttpClient.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sHttpClient.cpp"
-    },
-    {
-      "bundle": "shared/sHttpClient.h",
-      "detail": "DD_ONLINE/prog/sHttpClient.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sHttpClient.h"
     },
     {
       "bundle": "shared/sItemManager.cpp",
@@ -12868,18 +13192,6 @@
       "detail": "DD_ONLINE/prog/sKeyboardInterface.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/sKeyboardInterface.h"
-    },
-    {
-      "bundle": "shared/sLockOnManager.cpp",
-      "detail": "DD_ONLINE/prog/sLockOnManager.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sLockOnManager.cpp"
-    },
-    {
-      "bundle": "shared/sLockOnManager.h",
-      "detail": "DD_ONLINE/prog/sLockOnManager.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/sLockOnManager.h"
     },
     {
       "bundle": "shared/sMain.cpp",
@@ -13086,6 +13398,18 @@
       "src": "XFramework/sResource.h"
     },
     {
+      "bundle": "shared/sResourceExt.cpp",
+      "detail": "DD_ONLINE/prog/sResourceExt.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sResourceExt.cpp"
+    },
+    {
+      "bundle": "shared/sResourceExt.h",
+      "detail": "DD_ONLINE/prog/sResourceExt.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sResourceExt.h"
+    },
+    {
       "bundle": "shared/sSavedata.cpp",
       "detail": "XFramework/sSavedata.h",
       "origin": "dwarf",
@@ -13122,6 +13446,18 @@
       "src": "XFramework/sScene.h"
     },
     {
+      "bundle": "shared/sScreenShot.cpp",
+      "detail": "DD_ONLINE/prog/sScreenShot.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sScreenShot.cpp"
+    },
+    {
+      "bundle": "shared/sScreenShot.h",
+      "detail": "DD_ONLINE/prog/sScreenShot.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sScreenShot.h"
+    },
+    {
       "bundle": "shared/sSetManager.cpp",
       "detail": "DD_ONLINE/prog/sSetManager.h",
       "origin": "dwarf",
@@ -13132,6 +13468,18 @@
       "detail": "DD_ONLINE/prog/sSetManager.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/sSetManager.h"
+    },
+    {
+      "bundle": "shared/sShader2.cpp",
+      "detail": "XFramework/sShader2.h",
+      "origin": "dwarf",
+      "src": "XFramework/sShader2.cpp"
+    },
+    {
+      "bundle": "shared/sShader2.h",
+      "detail": "XFramework/sShader2.h",
+      "origin": "dwarf",
+      "src": "XFramework/sShader2.h"
     },
     {
       "bundle": "shared/sShadow.cpp",
@@ -13216,6 +13564,18 @@
       "detail": "XFramework/sUnit.h",
       "origin": "dwarf",
       "src": "XFramework/sUnit.h"
+    },
+    {
+      "bundle": "shared/sUnitExt.cpp",
+      "detail": "DD_ONLINE/prog/sUnitExt.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sUnitExt.cpp"
+    },
+    {
+      "bundle": "shared/sUnitExt.h",
+      "detail": "DD_ONLINE/prog/sUnitExt.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/sUnitExt.h"
     },
     {
       "bundle": "shared/sUnitManager.cpp",
@@ -13488,6 +13848,18 @@
       "src": "DD_ONLINE/prog/uCnsLegCtrl.h"
     },
     {
+      "bundle": "shared/uCnsMotFilter.cpp",
+      "detail": "DD_ONLINE/prog/uCnsMotFilter.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uCnsMotFilter.cpp"
+    },
+    {
+      "bundle": "shared/uCnsMotFilter.h",
+      "detail": "DD_ONLINE/prog/uCnsMotFilter.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uCnsMotFilter.h"
+    },
+    {
       "bundle": "shared/uCnsTurnUpper.cpp",
       "detail": "DD_ONLINE/prog/uCnsTurnUpper.h",
       "origin": "dwarf",
@@ -13726,18 +14098,6 @@
       "detail": "DD_ONLINE/prog/uGUIBase.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/uGUIBase.h"
-    },
-    {
-      "bundle": "shared/uGUIEventSkip.cpp",
-      "detail": "DD_ONLINE/prog/uGUIEventSkip.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/uGUIEventSkip.cpp"
-    },
-    {
-      "bundle": "shared/uGUIEventSkip.h",
-      "detail": "DD_ONLINE/prog/uGUIEventSkip.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/uGUIEventSkip.h"
     },
     {
       "bundle": "shared/uGUIGaugeNpc.cpp",
@@ -14172,6 +14532,18 @@
       "src": "DD_ONLINE/prog/uSoundSequenceSe.h"
     },
     {
+      "bundle": "shared/uSoundTrigger.cpp",
+      "detail": "DD_ONLINE/prog/uSoundTrigger.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uSoundTrigger.cpp"
+    },
+    {
+      "bundle": "shared/uSoundTrigger.h",
+      "detail": "DD_ONLINE/prog/uSoundTrigger.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/uSoundTrigger.h"
+    },
+    {
       "bundle": "shared/uSoundZoneBase.cpp",
       "detail": "DD_ONLINE/prog/uSoundZoneBase.h",
       "origin": "dwarf",
@@ -14274,8 +14646,8 @@
       "src": "ZLIB/1.2.8/zlib.h"
     }
   ],
-  "from_dwarf": 2279,
-  "generated": 98,
+  "from_dwarf": 2342,
+  "generated": 97,
   "notes": "stripped",
   "originals_with_several_headers": {}
 }

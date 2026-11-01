@@ -1245,9 +1245,23 @@ bool cContextInterface::isPawn(const cContextInstHm* pInst) {
     return (pInst != nullptr) && (pInst->mHumanType == 1);
 }
 
-__attribute__((weak)) bool cContextInterface::isNpc(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::isNpc")
-    return {};
+bool cContextInterface::isNpc(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstNpc::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return true;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) f32 cContextInterface::getEnchantRate(const cContextInstance* pInst, const cContextCharacter* pChara) {
@@ -1907,9 +1921,11 @@ bool cContextInterface::isShlReqSlave(const cContextInstance* pInst, const cCont
     }
 }
 
-__attribute__((weak)) void cContextInterface::setIsShlReqSlave(cContextInstance* pInst, cContextCharacter* pChara, bool flg, u32 index) {
-    DDON_STUB("cContextInterface::setIsShlReqSlave")
-    /* stub */
+void cContextInterface::setIsShlReqSlave(cContextInstance* pInst, cContextCharacter* pChara, bool flg, u32 index) {
+    if (pChara == nullptr) {
+        return;
+    }
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(reinterpret_cast<char*>(pChara) + index) + 1065) = static_cast<unsigned char>(flg);
 }
 
 __attribute__((weak)) bool cContextInterface::isShotReqNoAct(const cContextInstance* pInst, const cContextCharacter* pChara) {
@@ -1973,9 +1989,11 @@ __attribute__((weak)) u8 cContextInterface::getShlLockOnId(const cContextInstanc
     return {};
 }
 
-__attribute__((weak)) void cContextInterface::setShlLockOnId(cContextInstance* pInst, cContextCharacter* pChara, u8 id, u32 index) {
-    DDON_STUB("cContextInterface::setShlLockOnId")
-    /* stub */
+void cContextInterface::setShlLockOnId(cContextInstance* pInst, cContextCharacter* pChara, u8 id, u32 index) {
+    if (pChara == nullptr) {
+        return;
+    }
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(reinterpret_cast<char*>(pChara) + index) + 1056) = id;
 }
 
 void cContextInterface::setShlShotReceiveNum(cContextInstance* pInst, cContextCharacter* pChara, u8 num) {

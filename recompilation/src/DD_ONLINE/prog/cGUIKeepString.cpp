@@ -23,8 +23,8 @@ void* cGUIKeepString::operator new(size_t sz, u32 align) {
 }
 
 cGUIKeepString::cGUIKeepString() {
-    DDON_STUB("cGUIKeepString::cGUIKeepString")
-    /* stub */
+    mType = 0;
+    mArg = 0;
 }
 
 cGUIKeepString::~cGUIKeepString() {
@@ -41,8 +41,7 @@ cGUIKeepString::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 cGUIKeepString::MyDTI cGUIKeepString::DTI("cGUIKeepString", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cGUIKeepString::MyDTI::newInstance() const {
-    DDON_STUB("cGUIKeepString::MyDTI::newInstance")
-    return nullptr;
+MtObject* cGUIKeepString::MyDTI::newInstance() const {
+    return new (16u) cGUIKeepString;
 }
 

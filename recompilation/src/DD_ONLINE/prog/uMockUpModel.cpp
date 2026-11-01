@@ -5,7 +5,6 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtSynchronize.h"
-#include "cArcLoader.h"
 #include "cCharacterData.h"
 #include "cComponentManager.h"
 #include "cContextInterface.h"
@@ -48,7 +47,7 @@ uMockUpModel::uMockUpModel() {
     /* stub */
 }
 
-uMockUpModel::~uMockUpModel() {
+__attribute__((noinline)) uMockUpModel::~uMockUpModel() {
     DDON_STUB("uMockUpModel::~uMockUpModel")
     /* stub */
 }
@@ -309,13 +308,13 @@ __attribute__((weak)) bool uMockUpModel::resetEquipReq(u8 category) {
         cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
         if (mReq[index].mTicket != t0) {
             sArchiveManager::getInstance()->returnTicket(mReq[index].mTicket);
-            mReq[index].mTicket = static_cast<TICKET>(t0);
+            mReq[index].mTicket = t0;
             mReq[index].mIsLoading = false;
             if (mReq[index].mNowItem.mId != 0) {
                 cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
                 if (t0 != t1) {
-                    sArchiveManager::getInstance()->returnTicket(static_cast<TICKET>(t0));
-                    mReq[index].mTicket = static_cast<TICKET>(t1);
+                    sArchiveManager::getInstance()->returnTicket(t0);
+                    mReq[index].mTicket = t1;
                 }
                 mReq[index].mNowItem.mId = 0;
                 mReq[index].mNowItem.mCraftElementItemNo[2] = 0;
@@ -396,7 +395,7 @@ __attribute__((weak)) bool uMockUpModel::resetEquipReq(u8 category) {
                 cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
                 if (mReq[index].mTicket != t1) {
                     sArchiveManager::getInstance()->returnTicket(mReq[index].mTicket);
-                    mReq[index].mTicket = static_cast<TICKET>(t1);
+                    mReq[index].mTicket = t1;
                 }
                 mReq[index].mNowItem.mId = 0;
                 mReq[index].mNowItem.mCraftElementItemNo[2] = 0;
@@ -478,7 +477,7 @@ __attribute__((weak)) bool uMockUpModel::resetEquipReq(u8 category) {
             cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
             if (mReq[index].mTicket != t1) {
                 sArchiveManager::getInstance()->returnTicket(mReq[index].mTicket);
-                mReq[index].mTicket = static_cast<TICKET>(t1);
+                mReq[index].mTicket = t1;
             }
             mReq[index].mNowItem.mId = 0;
             mReq[index].mNowItem.mCraftElementItemNo[2] = 0;

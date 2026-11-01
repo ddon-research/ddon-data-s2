@@ -56,7 +56,7 @@ cBrowserPS4::cBrowserPS4() {
     /* stub */
 }
 
-cBrowserPS4::~cBrowserPS4() {
+__attribute__((noinline)) cBrowserPS4::~cBrowserPS4() {
     DDON_STUB("cBrowserPS4::~cBrowserPS4")
     /* stub */
 }

@@ -35,7 +35,7 @@ inline void uGUIActionPalette::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIActionPalette::DTI)->memFree(p_addr);
 }
 
-uGUIActionPalette::~uGUIActionPalette() {
+__attribute__((noinline)) uGUIActionPalette::~uGUIActionPalette() {
     DDON_STUB("uGUIActionPalette::~uGUIActionPalette")
     /* stub */
 }

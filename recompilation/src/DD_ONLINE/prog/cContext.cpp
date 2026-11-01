@@ -64,7 +64,7 @@ cContextCharacter::cContextCharacter() {
     /* stub */
 }
 
-cContextCharacter::~cContextCharacter() {
+__attribute__((noinline)) cContextCharacter::~cContextCharacter() {
     DDON_STUB("cContextCharacter::~cContextCharacter")
     /* stub */
 }

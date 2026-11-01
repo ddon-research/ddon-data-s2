@@ -48,7 +48,7 @@ sSound::sSound(u32 efx0, u32 efx1, sSound::SOUNDDRIVER_INIT_PARAM* pParams) {
     /* stub */
 }
 
-sSound::~sSound() {
+__attribute__((noinline)) sSound::~sSound() {
     DDON_STUB("sSound::~sSound")
     /* stub */
 }
@@ -1865,26 +1865,26 @@ bool sSound::Voice::isRequestIdMatching(uintptr requestID, u32 global, s32 ID_1,
                 if (mGlobal != 0) {
                     if (global != 3) {
                         if (global == 2) {
-                            return static_cast<unsigned int>(((static_cast<unsigned long>((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId)) + static_cast<unsigned long>((mID_1 == ID_1) || (ID_1 == -1))) + static_cast<unsigned long>((mID_2 == ID_2) || (ID_2 == -1))) + static_cast<unsigned long>((mID_3 == ID_3) || (ID_3 == -1))) == 4;
+                            return (((((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId)) + ((mID_1 == ID_1) || (ID_1 == -1))) + ((mID_2 == ID_2) || (ID_2 == -1))) + ((mID_3 == ID_3) || (ID_3 == -1))) == 4;
                         } else {
                             if (global == 1) {
-                                return static_cast<unsigned int>((static_cast<unsigned long>((mID_1 == ID_1) || (ID_1 == -1)) + static_cast<unsigned long>((mID_2 == ID_2) || (ID_2 == -1))) + static_cast<unsigned long>((mID_3 == ID_3) || (ID_3 == -1))) == 3;
+                                return ((((mID_1 == ID_1) || (ID_1 == -1)) + ((mID_2 == ID_2) || (ID_2 == -1))) + ((mID_3 == ID_3) || (ID_3 == -1))) == 3;
                             } else {
                                 return false;
                             }
                         }
                     } else {
                         if (mGlobal == 3) {
-                            return static_cast<unsigned int>(((static_cast<unsigned long>((requestID == 0) || (requestID == mRequestId)) + static_cast<unsigned long>((mID_1 == ID_1) || (ID_1 == -1))) + static_cast<unsigned long>((mID_2 == ID_2) || (ID_2 == -1))) + static_cast<unsigned long>((mID_3 == ID_3) || (ID_3 == -1))) == 4;
+                            return (((((requestID == 0) || (requestID == mRequestId)) + ((mID_1 == ID_1) || (ID_1 == -1))) + ((mID_2 == ID_2) || (ID_2 == -1))) + ((mID_3 == ID_3) || (ID_3 == -1))) == 4;
                         } else {
                             return false;
                         }
                     }
                 } else {
-                    return static_cast<unsigned int>((((static_cast<unsigned long>((requestID == 0) || (requestID == mRequestId)) + static_cast<unsigned long>((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId))) + static_cast<unsigned long>((mID_1 == ID_1) || (ID_1 == -1))) + static_cast<unsigned long>((mID_2 == ID_2) || (ID_2 == -1))) + static_cast<unsigned long>((mID_3 == ID_3) || (ID_3 == -1))) == 5;
+                    return ((((((requestID == 0) || (requestID == mRequestId)) + ((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId))) + ((mID_1 == ID_1) || (ID_1 == -1))) + ((mID_2 == ID_2) || (ID_2 == -1))) + ((mID_3 == ID_3) || (ID_3 == -1))) == 5;
                 }
             } else {
-                return static_cast<unsigned int>((((static_cast<unsigned long>((requestID == 0) || (requestID == mRequestId)) + static_cast<unsigned long>((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId))) + static_cast<unsigned long>((mID_1 == ID_1) || (ID_1 == -1))) + static_cast<unsigned long>((mID_2 == ID_2) || (ID_2 == -1))) + static_cast<unsigned long>((mID_3 == ID_3) || (ID_3 == -1))) == 5;
+                return ((((((requestID == 0) || (requestID == mRequestId)) + ((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId))) + ((mID_1 == ID_1) || (ID_1 == -1))) + ((mID_2 == ID_2) || (ID_2 == -1))) + ((mID_3 == ID_3) || (ID_3 == -1))) == 5;
             }
         }
     } else {
@@ -1893,26 +1893,26 @@ bool sSound::Voice::isRequestIdMatching(uintptr requestID, u32 global, s32 ID_1,
                 if (mGlobal != 0) {
                     if (global != 3) {
                         if (global == 2) {
-                            return static_cast<unsigned int>(((static_cast<unsigned long>((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId)) + static_cast<unsigned long>((mID_1 == ID_1) || (ID_1 == -1))) + static_cast<unsigned long>((mID_2 == ID_2) || (ID_2 == -1))) + static_cast<unsigned long>((mID_3 == ID_3) || (ID_3 == -1))) == 4;
+                            return (((((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId)) + ((mID_1 == ID_1) || (ID_1 == -1))) + ((mID_2 == ID_2) || (ID_2 == -1))) + ((mID_3 == ID_3) || (ID_3 == -1))) == 4;
                         } else {
                             if (global == 1) {
-                                return static_cast<unsigned int>((static_cast<unsigned long>((mID_1 == ID_1) || (ID_1 == -1)) + static_cast<unsigned long>((mID_2 == ID_2) || (ID_2 == -1))) + static_cast<unsigned long>((mID_3 == ID_3) || (ID_3 == -1))) == 3;
+                                return ((((mID_1 == ID_1) || (ID_1 == -1)) + ((mID_2 == ID_2) || (ID_2 == -1))) + ((mID_3 == ID_3) || (ID_3 == -1))) == 3;
                             } else {
                                 return false;
                             }
                         }
                     } else {
                         if (mGlobal == 3) {
-                            return static_cast<unsigned int>(((static_cast<unsigned long>((requestID == 0) || (requestID == mRequestId)) + static_cast<unsigned long>((mID_1 == ID_1) || (ID_1 == -1))) + static_cast<unsigned long>((mID_2 == ID_2) || (ID_2 == -1))) + static_cast<unsigned long>((mID_3 == ID_3) || (ID_3 == -1))) == 4;
+                            return (((((requestID == 0) || (requestID == mRequestId)) + ((mID_1 == ID_1) || (ID_1 == -1))) + ((mID_2 == ID_2) || (ID_2 == -1))) + ((mID_3 == ID_3) || (ID_3 == -1))) == 4;
                         } else {
                             return false;
                         }
                     }
                 } else {
-                    return static_cast<unsigned int>((((static_cast<unsigned long>((requestID == 0) || (requestID == mRequestId)) + static_cast<unsigned long>((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId))) + static_cast<unsigned long>((mID_1 == ID_1) || (ID_1 == -1))) + static_cast<unsigned long>((mID_2 == ID_2) || (ID_2 == -1))) + static_cast<unsigned long>((mID_3 == ID_3) || (ID_3 == -1))) == 5;
+                    return ((((((requestID == 0) || (requestID == mRequestId)) + ((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId))) + ((mID_1 == ID_1) || (ID_1 == -1))) + ((mID_2 == ID_2) || (ID_2 == -1))) + ((mID_3 == ID_3) || (ID_3 == -1))) == 5;
                 }
             } else {
-                return static_cast<unsigned int>((((static_cast<unsigned long>((requestID == 0) || (requestID == mRequestId)) + static_cast<unsigned long>((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId))) + static_cast<unsigned long>((mID_1 == ID_1) || (ID_1 == -1))) + static_cast<unsigned long>((mID_2 == ID_2) || (ID_2 == -1))) + static_cast<unsigned long>((mID_3 == ID_3) || (ID_3 == -1))) == 5;
+                return ((((((requestID == 0) || (requestID == mRequestId)) + ((thisId == 0xFFFFFFFFFFFFFFFFul) || (thisId == mThisId))) + ((mID_1 == ID_1) || (ID_1 == -1))) + ((mID_2 == ID_2) || (ID_2 == -1))) + ((mID_3 == ID_3) || (ID_3 == -1))) == 5;
             }
         } else {
             return false;
@@ -2057,7 +2057,7 @@ __attribute__((weak)) void sSound::VoiceAccessor::setSpeakerIntersectVolume(f32 
     /* stub */
 }
 
-sSound::NativeSystem::~NativeSystem() {
+__attribute__((noinline)) sSound::NativeSystem::~NativeSystem() {
     DDON_STUB("sSound::NativeSystem::~NativeSystem")
     /* stub */
 }
@@ -3176,7 +3176,7 @@ sSound::NGS2RoutingReverbEQ::NGS2RoutingReverbEQ() {
     /* stub */
 }
 
-sSound::NGS2RoutingReverbEQ::~NGS2RoutingReverbEQ() {
+__attribute__((noinline)) sSound::NGS2RoutingReverbEQ::~NGS2RoutingReverbEQ() {
     DDON_STUB("sSound::NGS2RoutingReverbEQ::~NGS2RoutingReverbEQ")
     /* stub */
 }
@@ -3676,7 +3676,7 @@ sSound::NativeVoicePoolPS4::NativeVoicePoolPS4() {
     /* stub */
 }
 
-sSound::NativeVoicePoolPS4::~NativeVoicePoolPS4() {
+__attribute__((noinline)) sSound::NativeVoicePoolPS4::~NativeVoicePoolPS4() {
     DDON_STUB("sSound::NativeVoicePoolPS4::~NativeVoicePoolPS4")
     /* stub */
 }

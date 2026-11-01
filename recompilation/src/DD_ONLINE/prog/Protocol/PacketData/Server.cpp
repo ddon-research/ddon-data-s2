@@ -31,9 +31,8 @@ CDataGameServerListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 CDataGameServerListInfo::MyDTI CDataGameServerListInfo::DTI("CDataGameServerListInfo", &::CPacketDataBase::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataGameServerListInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataGameServerListInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGameServerListInfo::MyDTI::newInstance() const {
+    return new (16u) CDataGameServerListInfo;
 }
 
 const MtDTI& CDataGameTime::getDTI() const {
@@ -116,6 +115,10 @@ inline MtAllocator* CDataWorldInfo::getAllocator() {
     return MtMemoryAllocator::getAllocator(CDataWorldInfo::DTI);
 }
 
+inline void* CDataWorldInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataWorldInfo::DTI)->memAlloc(sz, align, CDataWorldInfo::DTI.getID());
+}
+
 __attribute__((weak)) void CDataWorldInfo::operator delete(void* p_addr) {
     CDataWorldInfo::getAllocator()->memFree(p_addr);
 }
@@ -124,8 +127,7 @@ CDataWorldInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 CDataWorldInfo::MyDTI CDataWorldInfo::DTI("CDataWorldInfo", &::CPacketDataBase::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataWorldInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataWorldInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataWorldInfo::MyDTI::newInstance() const {
+    return new (16u) CDataWorldInfo;
 }
 

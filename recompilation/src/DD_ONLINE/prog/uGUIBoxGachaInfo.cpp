@@ -41,7 +41,7 @@ inline void uGUIBoxGachaInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIBoxGachaInfo::DTI)->memFree(p_addr);
 }
 
-uGUIBoxGachaInfo::~uGUIBoxGachaInfo() {
+__attribute__((noinline)) uGUIBoxGachaInfo::~uGUIBoxGachaInfo() {
     DDON_STUB("uGUIBoxGachaInfo::~uGUIBoxGachaInfo")
     /* stub */
 }

@@ -35,7 +35,7 @@ uGeometry2Group::uGeometry2Group() {
     /* stub */
 }
 
-uGeometry2Group::~uGeometry2Group() {
+__attribute__((noinline)) uGeometry2Group::~uGeometry2Group() {
     DDON_STUB("uGeometry2Group::~uGeometry2Group")
     /* stub */
 }

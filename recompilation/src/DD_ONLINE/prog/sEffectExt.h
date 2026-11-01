@@ -980,3 +980,15 @@ inline rEffectProvider* sEffectExt::getCommonEPV(u32 Type) const {
 inline void sEffectExt::setOthersTransparencyPercentage(f32 set) {
     this->mOthersTransparencyPercentage = set;
 }
+
+inline const rTexture* sEffectExt::cStatusAilmentsTexture::getAlbedoMap() {
+    return this->mpAlbedoMap;
+}
+
+inline const rTexture* sEffectExt::cStatusAilmentsTexture::getNormalMap() {
+    return this->mpNormalMap;
+}
+
+inline const rTexture* sEffectExt::cStatusAilmentsTexture::getSpecularMap() {
+    return this->mpSpecularMap;
+}

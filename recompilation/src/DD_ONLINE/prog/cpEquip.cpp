@@ -5,12 +5,17 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
+#include "cResPath.h"
 #include "../../XFramework/cResource.h"
 #include "cpComponent.h"
 #include "nCharacterData.h"
 #include "../../generated/shared/nWeapon.h"
+#include "rArchiveListArray.h"
 #include "rEquipPreset.h"
 #include "../../XFramework/rModel.h"
+#include "rWeaponResTable.h"
+#include "sArchiveManager.h"
 #include "sBakingJointOrder.h"
 #include "uArmor.h"
 #include "uDDOModel.h"
@@ -41,7 +46,7 @@ cpEquip::cpEquip() {
     /* stub */
 }
 
-cpEquip::~cpEquip() {
+__attribute__((noinline)) cpEquip::~cpEquip() {
     DDON_STUB("cpEquip::~cpEquip")
     /* stub */
 }
@@ -82,24 +87,24 @@ void cpEquip::move() {
         updateEquipPreset();
         mPresetOption = 0;
     }
-    mWeapon[0].move(static_cast<cpEquip* const>(this));
-    mWeapon[1].move(static_cast<cpEquip* const>(this));
-    mWeapon[2].move(static_cast<cpEquip* const>(this));
-    mWeapon[3].move(static_cast<cpEquip* const>(this));
-    mArmor[0].move(static_cast<cpEquip* const>(this));
-    mArmor[1].move(static_cast<cpEquip* const>(this));
-    mArmor[2].move(static_cast<cpEquip* const>(this));
-    mArmor[3].move(static_cast<cpEquip* const>(this));
-    mArmor[4].move(static_cast<cpEquip* const>(this));
-    mArmor[5].move(static_cast<cpEquip* const>(this));
-    mArmor[6].move(static_cast<cpEquip* const>(this));
-    mHair.move(static_cast<cpEquip* const>(this));
-    mMakeup.move(static_cast<cpEquip* const>(this));
-    mBeard.move(static_cast<cpEquip* const>(this));
-    mUnderwear.move(static_cast<cpEquip* const>(this));
-    mUnderwear2.move(static_cast<cpEquip* const>(this));
-    mLantern.move(static_cast<cpEquip* const>(this));
-    mNpcItem.move(static_cast<cpEquip* const>(this));
+    mWeapon[0].move(this);
+    mWeapon[1].move(this);
+    mWeapon[2].move(this);
+    mWeapon[3].move(this);
+    mArmor[0].move(this);
+    mArmor[1].move(this);
+    mArmor[2].move(this);
+    mArmor[3].move(this);
+    mArmor[4].move(this);
+    mArmor[5].move(this);
+    mArmor[6].move(this);
+    mHair.move(this);
+    mMakeup.move(this);
+    mBeard.move(this);
+    mUnderwear.move(this);
+    mUnderwear2.move(this);
+    mLantern.move(this);
+    mNpcItem.move(this);
 }
 
 void cpEquip::kill() {
@@ -843,9 +848,42 @@ __attribute__((weak)) void cpEquip::changeArmor(u64 ResId, u32 index, u8 partsPa
     /* stub */
 }
 
-__attribute__((weak)) void cpEquip::changeWeapon(nWeapon::WEAPON_CATEGORY wepCategory, u64 ResId, u32 index, u8 partsPatern, s8 colorPatern) {
-    DDON_STUB("cpEquip::changeWeapon")
-    /* stub */
+void cpEquip::changeWeapon(nWeapon::WEAPON_CATEGORY wepCategory, u64 ResId, u32 index, u8 partsPatern, s8 colorPatern) {
+    if (mpModel != nullptr) {
+        if (mpWeaponResTable != nullptr) {
+            if (mpWeaponResTable->getDataNum() != 0) {
+                unsigned int i0_9 = 0;
+                cWeaponResTable* pData;
+                for (;;) {
+                    pData = mpWeaponResTable->getData(i0_9);
+                    if (ResId == pData->mpModelRes.::cResPathBase::mId) {
+                        break;
+                    } else {
+                        if ((i0_9 + 1u) < mpWeaponResTable->getDataNum()) {
+                            i0_9 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                if (pData != nullptr) {
+                    ARC_TAGID t0 = rArchiveListArray::convTagId(pData->mArcTag.MtString::ptr());
+                    ARC_SEARCHID t1 = rArchiveListArray::convSearchId("RES_ID_MODEL");
+                    if (sArchiveManager::getInstance()->isEnableArcRes(t0, t1)) {
+                        uWeapon* t2 = uWeapon::createWeaponModel(wepCategory, pData, mpModel, nWeapon::MODEL_TYPE_PRIMARY, partsPatern, colorPatern);
+                        uWeapon* t3 = uWeapon::createWeaponModel(wepCategory, pData, mpModel, nWeapon::MODEL_TYPE_SECONDARY, static_cast<u8>(0), static_cast<s8>(-1));
+                        if (t2 != nullptr) {
+                            setWeapon(index, t2);
+                        }
+                        if (t3 != nullptr) {
+                            setWeapon(index + 2u, t3);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cpEquip::resetSimulation() {
@@ -984,7 +1022,7 @@ inline void cpEquip::cEquipInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cpEquip::cEquipInfo::DTI)->memFree(p_addr);
 }
 
-cpEquip::cEquipInfo::~cEquipInfo() {
+__attribute__((noinline)) cpEquip::cEquipInfo::~cEquipInfo() {
     DDON_STUB("cpEquip::cEquipInfo::~cEquipInfo")
     /* stub */
 }

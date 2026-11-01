@@ -455,6 +455,14 @@ inline uHuman* cpJob10::cSpiritManager::getHuman() const {
     return this->mpParent->::cpJobBase::mpHuman;
 }
 
+inline void cpJob10::cSpiritManager::attack(f32 addval) {
+    this->mpStateNow->attack(addval);
+}
+
+inline void cpJob10::cSpiritManager::dodge() {
+    this->mpStateNow->dodge();
+}
+
 inline void cpJob10::cSpiritManager::setSpirit_Gi(f32 NewValue) {
     this->mSpirit_Gi = NewValue;
 }

@@ -42,7 +42,7 @@ inline void uGUIPSStore::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPSStore::DTI)->memFree(p_addr);
 }
 
-uGUIPSStore::~uGUIPSStore() {
+__attribute__((noinline)) uGUIPSStore::~uGUIPSStore() {
     DDON_STUB("uGUIPSStore::~uGUIPSStore")
     /* stub */
 }

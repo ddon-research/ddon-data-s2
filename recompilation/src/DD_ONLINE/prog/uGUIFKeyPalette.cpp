@@ -33,7 +33,7 @@ inline void uGUIFKeyPalette::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIFKeyPalette::DTI)->memFree(p_addr);
 }
 
-uGUIFKeyPalette::~uGUIFKeyPalette() {
+__attribute__((noinline)) uGUIFKeyPalette::~uGUIFKeyPalette() {
     DDON_STUB("uGUIFKeyPalette::~uGUIFKeyPalette")
     /* stub */
 }

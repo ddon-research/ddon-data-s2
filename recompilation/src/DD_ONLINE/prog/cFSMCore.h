@@ -14,6 +14,7 @@ class MtDTI;
 class MtObject;
 class MtPropertyList;
 class cAIFSM;
+class uFSMTask;
 
 // Declarations
 class cFSMCore;
@@ -28,6 +29,7 @@ using u32 = unsigned int;
 
 class cFSMCore : public cAIObject
 {
+    friend class uFSMTask;
 public:
     class MyDTI;
 public:
@@ -86,6 +88,10 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline bool cFSMCore::isEnable() const {
+    return this->mIsEnable;
+}
 
 inline MtObject* cFSMCore::getOwner() const {
     return this->mpOwner;

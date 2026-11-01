@@ -2520,6 +2520,10 @@ inline f32 cDDMaterialCtrl::cShaderDataStatusAilments::getResetFactorS() {
     return this->mResetFactorS;
 }
 
+inline sEffectExt::cStatusAilmentsTexture* cDDMaterialCtrl::cShaderDataStatusAilments::getStatusAilmentsTexture() {
+    return this->mpTexture;
+}
+
 inline cDDMaterialCtrl::cShaderDataAnimation::cAnimData::cAnimData() {
     this->mAnimName[0] = 0;
     this->mCostFrame = 60.0f;

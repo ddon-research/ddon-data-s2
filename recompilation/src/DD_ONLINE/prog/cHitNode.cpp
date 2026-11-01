@@ -38,7 +38,7 @@ cHitNode::cHitNode() {
     /* stub */
 }
 
-cHitNode::~cHitNode() {
+__attribute__((noinline)) cHitNode::~cHitNode() {
     DDON_STUB("cHitNode::~cHitNode")
     /* stub */
 }

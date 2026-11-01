@@ -14,6 +14,7 @@ class MtProperty;
 class MtPropertyList;
 class MtStream;
 class MtUI;
+namespace nNetwork { class RpcNetSystem_LinkState; }
 namespace nNetwork { class RpcNetSystem_Match; }
 namespace nNetwork { class RpcNetSystem_RouteKey; }
 namespace nNetwork { class TagChecker; }
@@ -32,6 +33,7 @@ using u32 = unsigned int;
 
 class cRemoteCall : public MtObject
 {
+    friend class nNetwork::RpcNetSystem_LinkState;
     friend class nNetwork::RpcNetSystem_Match;
     friend class nNetwork::RpcNetSystem_RouteKey;
     friend class nNetwork::TagChecker;

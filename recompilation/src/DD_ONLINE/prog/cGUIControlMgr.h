@@ -17,6 +17,10 @@ class cControl;
 class cGUIInstance;
 class cGUIObject;
 class uGUIBase;
+class uGUIClanScout;
+class uGUIClanScoutBase;
+class uGUIClanSearch;
+class uGUIClanSearchBase;
 class uGUIPSStore;
 
 // Declarations
@@ -34,6 +38,10 @@ using u8 = unsigned char;
 
 class cGUIControlMgr : public cUIObject
 {
+    friend class uGUIClanScout;
+    friend class uGUIClanScoutBase;
+    friend class uGUIClanSearch;
+    friend class uGUIClanSearchBase;
     friend class uGUIPSStore;
 public:
     enum CONTROL_TYPE

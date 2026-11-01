@@ -25,7 +25,6 @@ class cAreaHit;
 class cBVHCollision;
 class cCharacterEditMuscle;
 class cChildRegionStatus;
-class cCnsBoneScaleCtrl;
 class cContextInterface;
 class cDamageMsg;
 class cDamageSeInfo;
@@ -62,6 +61,7 @@ class cpSlave;
 namespace nMarker { class cMarkerInfo; }
 namespace nShlBase { class cShlStickContextInfo; }
 namespace nShlStick { class cStickObjectCtrl; }
+namespace nZone { class ShapeInfoGlobal; }
 namespace nZone { class ShapeInfoPanel; }
 class rDungeonMarker;
 class rFieldAreaMarkerInfo;
@@ -105,6 +105,7 @@ struct MtFloat4x3;
 struct MtFloat4x4;
 struct MtHalf4;
 struct MtInt2;
+class MtMath;
 class MtMatrix;
 class MtQuaternion;
 class MtVector2;
@@ -266,6 +267,39 @@ public:
 public:
     s32 x;  // offset: 0x0
     s32 y;  // offset: 0x4
+};
+
+class MtMath
+{
+public:
+    static f32 sinT(f32 t);
+    static f32 cosT(f32 t);
+    static f32 sinI(u32 i);
+    static f32 cosI(u32 i);
+    static f32 sqrtT(f32);
+    static u32 randomT(u32 s);
+    static f32 randomTF(u32 s);
+    static u32 U32(f32);
+    static s32 S32(f32);
+    static s32 absi(s32 i);
+    static f32 absf(f32 f);
+    static s32 mini(s32 a, s32 b);
+    static s32 maxi(s32 a, s32 b);
+    static f32 clampGT1(f32 f);
+    static f32 clampLT0(f32 f);
+    static f32 clampGT0(f32);
+    static f32 clamp0_1(f32 f);
+    static f32 limitAngle(f32 r, f32 min, f32 max, bool* pIsOver);
+    static f32 lerp(f32 a, f32 b, f32 t);
+private:
+    MtMath();
+public:
+    static MtMath mInstance;
+private:
+    static f32 mTfsin[4096];
+    static s32 mTfsqrt[4096];
+    static u32 mTrandom[4096];
+    static f32 mTrandomF[4096];
 };
 
 class alignas(16) MtQuaternion
@@ -451,7 +485,6 @@ class alignas(16) MtVector3
     friend class cBVHCollision;
     friend class cCharacterEditMuscle;
     friend class cChildRegionStatus;
-    friend class cCnsBoneScaleCtrl;
     friend class cContextInterface;
     friend class cDamageMsg;
     friend class cDamageSeInfo;
@@ -488,6 +521,7 @@ class alignas(16) MtVector3
     friend class nMarker::cMarkerInfo;
     friend class nShlBase::cShlStickContextInfo;
     friend class nShlStick::cStickObjectCtrl;
+    friend class nZone::ShapeInfoGlobal;
     friend class nZone::ShapeInfoPanel;
     friend class rDungeonMarker;
     friend class rFieldAreaMarkerInfo;
@@ -822,6 +856,13 @@ inline MtFloat3x4::MtFloat3x4() {
 inline MtFloat4::MtFloat4() {
 }
 
+inline MtFloat4::MtFloat4(f32 _x, f32 _y, f32 _z, f32 _w) {
+    this->x = _x;
+    this->y = _y;
+    this->z = _z;
+    this->w = _w;
+}
+
 inline MtFloat4x3::MtFloat4x3() {
 }
 
@@ -832,6 +873,10 @@ inline MtHalf4::MtHalf4() {
 }
 
 inline MtInt2::MtInt2() {
+}
+
+inline s32 MtMath::absi(s32 i) {
+    return (i ^ (i >> 31)) - (i >> 31);
 }
 
 inline MtMatrix::MtMatrix() {

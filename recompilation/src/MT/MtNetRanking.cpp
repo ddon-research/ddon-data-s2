@@ -8,9 +8,9 @@
 #include "MtNetObject.h"
 #include "MtNetRequest.h"
 #include "MtObject.h"
-#include "../generated/shared/_rtc.h"
+#include "../generated/rCharacterEditCameraParam/_rtc.h"
 #include "../generated/shared/np_npid.h"
-#include "../generated/shared/np_ranking.h"
+#include "../generated/rCharacterEditCameraParam/np_ranking.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -37,7 +37,7 @@ MtNetRanking::MtNetRanking(MtNetContext* context) {
     /* stub */
 }
 
-MtNetRanking::~MtNetRanking() {
+__attribute__((noinline)) MtNetRanking::~MtNetRanking() {
     DDON_STUB("MtNetRanking::~MtNetRanking")
     /* stub */
 }

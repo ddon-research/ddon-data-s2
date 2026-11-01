@@ -31,8 +31,11 @@ struct pthread;
 class rArchive;
 class rCollision;
 class rEffectList;
+class rModel;
 class rNavigationMesh;
 class rSoundStreamRequest;
+class uCharacterEdit;
+class uCharacterEditBase;
 class uSky;
 struct z_stream_s;
 
@@ -62,8 +65,11 @@ class sResource : public cSystem
     friend class cResource;
     friend class rCollision;
     friend class rEffectList;
+    friend class rModel;
     friend class rNavigationMesh;
     friend class rSoundStreamRequest;
+    friend class uCharacterEdit;
+    friend class uCharacterEditBase;
     friend class uSky;
 public:
     enum MODE

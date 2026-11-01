@@ -39,7 +39,7 @@ sNetwork::sNetwork(MtNetCore::InitParam* param) {
     /* stub */
 }
 
-sNetwork::~sNetwork() {
+__attribute__((noinline)) sNetwork::~sNetwork() {
     DDON_STUB("sNetwork::~sNetwork")
     /* stub */
 }

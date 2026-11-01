@@ -43,7 +43,7 @@ uGUI::uGUI() {
     /* stub */
 }
 
-uGUI::~uGUI() {
+__attribute__((noinline)) uGUI::~uGUI() {
     DDON_STUB("uGUI::~uGUI")
     /* stub */
 }

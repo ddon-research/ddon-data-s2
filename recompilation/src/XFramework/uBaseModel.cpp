@@ -33,7 +33,7 @@ uBaseModel::uBaseModel() {
     /* stub */
 }
 
-uBaseModel::~uBaseModel() {
+__attribute__((noinline)) uBaseModel::~uBaseModel() {
     DDON_STUB("uBaseModel::~uBaseModel")
     /* stub */
 }

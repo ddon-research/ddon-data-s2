@@ -32,12 +32,16 @@ class MtObject;
 class MtStream;
 class MtThread;
 class cAIConditionTreeNode;
+class cAIDEnum;
 class cAIFSM;
 class cAIFSMCluster;
 class cAIFSMData;
+class cAIFSMNode;
+class cAIFSMProcessContainer;
 class cAIGraph;
 class cAIQuadTree;
 class cAIService;
+class cAISvUserProcess;
 class cAITaskJobPrim;
 class cAITaskJobPrimList;
 class cAITreeBase;
@@ -45,6 +49,7 @@ class cAIUserProcess;
 class cAIUserProcessCallback;
 class cBVHCollision;
 class cContextInterface;
+class cDDMaterialCtrl;
 class cDynamicBVHCollision;
 class cFSMUnit;
 class cGUIInstAnimation;
@@ -55,12 +60,15 @@ class cGridCollision;
 class cHttpClient;
 class cLayoutSetEnemy;
 class cLayoutSetOm;
+class cMenuBase;
 class cOmControl;
 class cPrim;
 class cPrimBuffer;
 class cPrimBufferManager;
 class cPrimTagList;
 class cPrimTexHandleManager;
+class cQuestSvReqQuestCancel;
+class cQuestSvReqQuestProgress;
 class cSetInfoCharacter;
 class cSetInfoGeneralPoint;
 class cSetInfoOm;
@@ -82,6 +90,8 @@ class cSetInfoOmText;
 class cSetInfoOmTreasureBox;
 class cSetInfoOmWall;
 class cSetInfoOmWarp;
+class cSoundGeneratorListener;
+class cSoundTriggerListener;
 class cUnit;
 class cWebsocketClient;
 class cZoneLayout;
@@ -92,6 +102,7 @@ class cpIKCtrl;
 class cpJob09;
 class cpJobBase;
 class cpSoftBody;
+namespace nAI { class TaskPerformanceInfo; }
 namespace nCaplink { class Object; }
 namespace nCaplink { class cAchievementExtendedInfo; }
 namespace nCaplink { class cAchievementListInfo; }
@@ -102,6 +113,7 @@ namespace nCaplink { class cWebsocketServerInfo; }
 namespace nCollision { class cCollisionNode; }
 namespace nDraw { class Animation; }
 namespace nDraw { class IndexBuffer; }
+namespace nDraw { class InputLayout; }
 namespace nDraw { class MaterialStdEst; }
 namespace nDraw { class OcclusionQuery; }
 namespace nDraw { class RasterizerState; }
@@ -110,6 +122,7 @@ namespace nDraw { class Texture; }
 namespace nDraw { class VertexBuffer; }
 namespace nNetwork { class Connect; }
 namespace nNetwork { class Match; }
+namespace nNetwork { class RpcNetSystem_LinkState; }
 namespace nNetwork { class RpcNetSystem_Match; }
 namespace nNetwork { class RpcNetSystem_RouteKey; }
 namespace nNetwork { class SessionDatabase; }
@@ -125,6 +138,7 @@ namespace nZone { class ShapeInfoPanel; }
 namespace nZone { class cContentsPool; }
 namespace nZone { class cLayoutElement; }
 class rAIConditionTree;
+class rAIFSM;
 class rAIPathBase;
 class rArchive;
 class rCameraList;
@@ -134,13 +148,17 @@ class rEffect2D;
 class rEffectAnim;
 class rEffectList;
 class rEffectStrip;
+class rGUI;
 class rGUIIconInfo;
 class rGUIMessage;
 class rGeometry2;
+class rModel;
 class rMotionList;
+class rNavigationMesh;
 class rOccluder;
 class rRenderTargetTexture;
 class rScheduler;
+class rShaderPackage;
 class rSoundBank;
 class rSoundCurveSet;
 class rSoundDirectionalSet;
@@ -161,8 +179,10 @@ class sPlatformUtil;
 class sPrimitive;
 class sRemoteProcedure;
 class sResource;
+class sShader2;
 class sShadow;
 class sUserManager;
+class sWeatherManager;
 class sZone;
 class uBaseModel;
 class uCharacter;
@@ -172,8 +192,10 @@ class uConstraint;
 class uDynamicSbc;
 class uEffect;
 class uEffect2D;
+class uFSMTask;
 class uFreeCamera;
 class uGUIBase;
+class uGUICharacterEdit;
 class uGUIItemBase01;
 class uGUIMap;
 class uGUIUseItemBase;
@@ -236,12 +258,16 @@ class MtDTI
     friend class MtStream;
     friend class MtThread;
     friend class cAIConditionTreeNode;
+    friend class cAIDEnum;
     friend class cAIFSM;
     friend class cAIFSMCluster;
     friend class cAIFSMData;
+    friend class cAIFSMNode;
+    friend class cAIFSMProcessContainer;
     friend class cAIGraph;
     friend class cAIQuadTree;
     friend class cAIService;
+    friend class cAISvUserProcess;
     friend class cAITaskJobPrim;
     friend class cAITaskJobPrimList;
     friend class cAITreeBase;
@@ -249,6 +275,7 @@ class MtDTI
     friend class cAIUserProcessCallback;
     friend class cBVHCollision;
     friend class cContextInterface;
+    friend class cDDMaterialCtrl;
     friend class cDynamicBVHCollision;
     friend class cFSMUnit;
     friend class cGUIInstAnimation;
@@ -259,12 +286,15 @@ class MtDTI
     friend class cHttpClient;
     friend class cLayoutSetEnemy;
     friend class cLayoutSetOm;
+    friend class cMenuBase;
     friend class cOmControl;
     friend class cPrim;
     friend class cPrimBuffer;
     friend class cPrimBufferManager;
     friend class cPrimTagList;
     friend class cPrimTexHandleManager;
+    friend class cQuestSvReqQuestCancel;
+    friend class cQuestSvReqQuestProgress;
     friend class cSetInfoCharacter;
     friend class cSetInfoGeneralPoint;
     friend class cSetInfoOm;
@@ -286,6 +316,8 @@ class MtDTI
     friend class cSetInfoOmTreasureBox;
     friend class cSetInfoOmWall;
     friend class cSetInfoOmWarp;
+    friend class cSoundGeneratorListener;
+    friend class cSoundTriggerListener;
     friend class cUnit;
     friend class cWebsocketClient;
     friend class cZoneLayout;
@@ -296,6 +328,7 @@ class MtDTI
     friend class cpJob09;
     friend class cpJobBase;
     friend class cpSoftBody;
+    friend class nAI::TaskPerformanceInfo;
     friend class nCaplink::Object;
     friend class nCaplink::cAchievementExtendedInfo;
     friend class nCaplink::cAchievementListInfo;
@@ -306,6 +339,7 @@ class MtDTI
     friend class nCollision::cCollisionNode;
     friend class nDraw::Animation;
     friend class nDraw::IndexBuffer;
+    friend class nDraw::InputLayout;
     friend class nDraw::MaterialStdEst;
     friend class nDraw::OcclusionQuery;
     friend class nDraw::RasterizerState;
@@ -314,6 +348,7 @@ class MtDTI
     friend class nDraw::VertexBuffer;
     friend class nNetwork::Connect;
     friend class nNetwork::Match;
+    friend class nNetwork::RpcNetSystem_LinkState;
     friend class nNetwork::RpcNetSystem_Match;
     friend class nNetwork::RpcNetSystem_RouteKey;
     friend class nNetwork::SessionDatabase;
@@ -329,6 +364,7 @@ class MtDTI
     friend class nZone::cContentsPool;
     friend class nZone::cLayoutElement;
     friend class rAIConditionTree;
+    friend class rAIFSM;
     friend class rAIPathBase;
     friend class rArchive;
     friend class rCameraList;
@@ -338,13 +374,17 @@ class MtDTI
     friend class rEffectAnim;
     friend class rEffectList;
     friend class rEffectStrip;
+    friend class rGUI;
     friend class rGUIIconInfo;
     friend class rGUIMessage;
     friend class rGeometry2;
+    friend class rModel;
     friend class rMotionList;
+    friend class rNavigationMesh;
     friend class rOccluder;
     friend class rRenderTargetTexture;
     friend class rScheduler;
+    friend class rShaderPackage;
     friend class rSoundBank;
     friend class rSoundCurveSet;
     friend class rSoundDirectionalSet;
@@ -365,8 +405,10 @@ class MtDTI
     friend class sPrimitive;
     friend class sRemoteProcedure;
     friend class sResource;
+    friend class sShader2;
     friend class sShadow;
     friend class sUserManager;
+    friend class sWeatherManager;
     friend class sZone;
     friend class uBaseModel;
     friend class uCharacter;
@@ -376,8 +418,10 @@ class MtDTI
     friend class uDynamicSbc;
     friend class uEffect;
     friend class uEffect2D;
+    friend class uFSMTask;
     friend class uFreeCamera;
     friend class uGUIBase;
+    friend class uGUICharacterEdit;
     friend class uGUIItemBase01;
     friend class uGUIMap;
     friend class uGUIUseItemBase;

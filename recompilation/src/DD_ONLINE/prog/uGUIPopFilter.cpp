@@ -35,7 +35,7 @@ inline void uGUIPopFilter::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPopFilter::DTI)->memFree(p_addr);
 }
 
-uGUIPopFilter::~uGUIPopFilter() {
+__attribute__((noinline)) uGUIPopFilter::~uGUIPopFilter() {
     DDON_STUB("uGUIPopFilter::~uGUIPopFilter")
     /* stub */
 }

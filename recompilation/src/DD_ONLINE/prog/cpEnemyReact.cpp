@@ -5,8 +5,13 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cHitInfoAfter.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
+#include "cpObjCollision.h"
+#include "rAttackParam.h"
+#include "rEnemyReactResEx.h"
+#include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -35,7 +40,7 @@ cpEnemyReact::cpEnemyReact() {
     /* stub */
 }
 
-cpEnemyReact::~cpEnemyReact() {
+__attribute__((noinline)) cpEnemyReact::~cpEnemyReact() {
     DDON_STUB("cpEnemyReact::~cpEnemyReact")
     /* stub */
 }
@@ -239,9 +244,102 @@ __attribute__((weak)) void cpEnemyReact::addTimer(f32 ftimer) {
     /* stub */
 }
 
-__attribute__((weak)) bool cpEnemyReact::checkCountConditions(u32 reactCheckType, rEnemyReactResEx* pRes, uDDOModel* pDdoModel, cHitInfoAfter* pHitInfoAfter, cHitInfo* pHitInfo) {
-    DDON_STUB("cpEnemyReact::checkCountConditions")
-    return {};
+bool cpEnemyReact::checkCountConditions(u32 reactCheckType, rEnemyReactResEx* pRes, uDDOModel* pDdoModel, cHitInfoAfter* pHitInfoAfter, cHitInfo* pHitInfo) {
+    bool b14_0;
+    if (pDdoModel != nullptr) {
+        if (pRes != nullptr) {
+            if (reactCheckType == 1) {
+                return pRes->mCountType[1];
+            }
+        } else {
+            b14_0 = false;
+            return b14_0;
+        }
+    } else {
+        b14_0 = false;
+        return b14_0;
+    }
+    if (reactCheckType == 2) {
+        return pRes->mCountType[0];
+    }
+    if ((reactCheckType & 0xFFFFFFFEu) == 4) {
+        if (pRes->mCountType[2]) {
+            if ((pDdoModel->mObjStatus & 512ul) != 0) {
+                b14_0 = true;
+                return b14_0;
+            }
+        }
+        cAttackParam* v3_1;
+        if (pHitInfoAfter == nullptr) {
+            v3_1 = nullptr;
+        } else {
+            v3_1 = pHitInfoAfter->mCommonInfo.mpAttackParam;
+        }
+        cAttackParam* v4_1;
+        if (pHitInfo == nullptr) {
+            v4_1 = v3_1;
+        } else {
+            v4_1 = pHitInfo->getAttackParam();
+        }
+        if (v4_1 != nullptr) {
+            if (pRes->mCountType[3]) {
+                if (v4_1->mAttackType2 == 0) {
+                    b14_0 = true;
+                    return b14_0;
+                }
+            }
+            if (pRes->mCountType[4]) {
+                if (v4_1->mAttackType2 == 1) {
+                    b14_0 = true;
+                    return b14_0;
+                }
+            }
+            if (pRes->mCountType[5]) {
+                if (v4_1->mAttackType2 == 2) {
+                    b14_0 = true;
+                    return b14_0;
+                }
+            }
+            if (pRes->mCountType[11]) {
+                if (v4_1->mElementType2 == 1) {
+                    b14_0 = true;
+                    return b14_0;
+                }
+            }
+            if (pRes->mCountType[6]) {
+                if (v4_1->mElementType2 == 2) {
+                    b14_0 = true;
+                    return b14_0;
+                }
+            }
+            if (pRes->mCountType[7]) {
+                if (v4_1->mElementType2 == 3) {
+                    b14_0 = true;
+                    return b14_0;
+                }
+            }
+            if (pRes->mCountType[8]) {
+                if (v4_1->mElementType2 == 4) {
+                    b14_0 = true;
+                    return b14_0;
+                }
+            }
+            if (pRes->mCountType[9]) {
+                if (v4_1->mElementType2 == 5) {
+                    b14_0 = true;
+                    return b14_0;
+                }
+            }
+            if (pRes->mCountType[10]) {
+                if (v4_1->mElementType2 == 6) {
+                    b14_0 = true;
+                    return b14_0;
+                }
+            }
+        }
+    }
+    b14_0 = false;
+    return b14_0;
 }
 
 __attribute__((weak)) bool cpEnemyReact::checkPlayType(u32 reactCheckType, rEnemyReactResEx* pRes, uDDOModel* pDdoModel, cHitInfoAfter* pHitInfoAfter, cHitInfo* pHitInfo) {

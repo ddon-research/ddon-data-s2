@@ -25,7 +25,7 @@ inline void uGUIServerUIBase::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIServerUIBase::DTI)->memFree(p_addr);
 }
 
-uGUIServerUIBase::~uGUIServerUIBase() {
+__attribute__((noinline)) uGUIServerUIBase::~uGUIServerUIBase() {
     DDON_STUB("uGUIServerUIBase::~uGUIServerUIBase")
     /* stub */
 }

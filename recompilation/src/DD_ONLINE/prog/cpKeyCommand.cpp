@@ -42,7 +42,7 @@ cpKeyCommand::cpKeyCommand() {
     /* stub */
 }
 
-cpKeyCommand::~cpKeyCommand() {
+__attribute__((noinline)) cpKeyCommand::~cpKeyCommand() {
     DDON_STUB("cpKeyCommand::~cpKeyCommand")
     /* stub */
 }

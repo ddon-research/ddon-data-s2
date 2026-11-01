@@ -46,7 +46,7 @@ inline void sNetworkExt::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sNetworkExt::DTI)->memFree(p_addr);
 }
 
-sNetworkExt::~sNetworkExt() {
+__attribute__((noinline)) sNetworkExt::~sNetworkExt() {
     DDON_STUB("sNetworkExt::~sNetworkExt")
     /* stub */
 }
@@ -312,9 +312,24 @@ __attribute__((weak)) MT_CTSTR sNetworkExt::getMyClanNickname() {
     return {};
 }
 
-__attribute__((weak)) bool sNetworkExt::isClanMember(u32 characterId) {
-    DDON_STUB("sNetworkExt::isClanMember")
-    return {};
+bool sNetworkExt::isClanMember(u32 characterId) {
+    u32 v0_1 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanMemberList.mLength;
+    if (v0_1 != 0) {
+        MtObject* * v0_4 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanMemberList.mpArray;
+        for (u32 i = 0;;) {
+            if (v0_4[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + 64)) == characterId) {
+                    return true;
+                }
+            }
+            if ((i + 1u) < v0_1) {
+                i = i + 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 const ClanMemberInfoVec& sNetworkExt::getMyClanMemberListRef() {
@@ -564,9 +579,24 @@ void sNetworkExt::clearFriendInfo() {
     v0_8->mApprovingFriendList.mLength = 0;
 }
 
-__attribute__((weak)) bool sNetworkExt::isFriend(u32 characterId) {
-    DDON_STUB("sNetworkExt::isFriend")
-    return {};
+bool sNetworkExt::isFriend(u32 characterId) {
+    u32 v0_1 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mFriendList.mLength;
+    if (v0_1 != 0) {
+        MtObject* * v0_4 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mFriendList.mpArray;
+        for (u32 i = 0;;) {
+            if (v0_4[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + 24)) == characterId) {
+                    return true;
+                }
+            }
+            if ((i + 1u) < v0_1) {
+                i = i + 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 void sNetworkExt::setFriendListMax(u32 num) {
@@ -695,9 +725,8 @@ const sNetworkExt::stEntryInvitedInfo* sNetworkExt::getEntryInviteInfoRecent() c
     return v1_0;
 }
 
-__attribute__((weak)) u32 sNetworkExt::getEntryInviteNum() {
-    DDON_STUB("sNetworkExt::getEntryInviteNum")
-    return {};
+u32 sNetworkExt::getEntryInviteNum() {
+    return static_cast<u32>((((((mEntryInvitedList[0].mHostInfo.m_unCharacterID != 0) - (mEntryInvitedList[1].mHostInfo.m_unCharacterID <= 0u)) - (mEntryInvitedList[2].mHostInfo.m_unCharacterID <= 0u)) - (mEntryInvitedList[3].mHostInfo.m_unCharacterID <= 0u)) - (mEntryInvitedList[4].mHostInfo.m_unCharacterID <= 0u)) + 4);
 }
 
 s32 sNetworkExt::getEntryInviteIdRecent() const {

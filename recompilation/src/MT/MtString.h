@@ -5,19 +5,15 @@
 
 // Forward declarations
 class MtAllocator;
-class cGameHttpClient;
-class cNetGameServer;
-class cQuakeParam;
-class cStageMap;
-class cTbl2ChatMacro;
-namespace nQuest { class cCycleContentsRankingInfo; }
-namespace nQuest { class cOrderCondition; }
-class rStageCustomPartsEx;
-class sCraftManager;
-class sItemManager;
+class MtDataWriter;
+class cAISvUserProcess;
+class cAIUserProcessContainer;
+class cMenuLostPawnRevive;
+namespace nCaplink { class ContextListener; }
+class sAI;
+class sBrowser;
 class sMain;
 class uGUIBase;
-class uGUIMissionResult;
 class uGUINewspaper;
 
 // Declarations
@@ -32,21 +28,20 @@ using s32 = int;
 using u32 = unsigned int;
 using u8 = unsigned char;
 
+// Functions the classes below befriend, declared first
+namespace nDDOIO { void writeData(MtDataWriter& w, const MtString& data); }
+
 class MtString
 {
-    friend class cGameHttpClient;
-    friend class cNetGameServer;
-    friend class cQuakeParam;
-    friend class cStageMap;
-    friend class cTbl2ChatMacro;
-    friend class nQuest::cCycleContentsRankingInfo;
-    friend class nQuest::cOrderCondition;
-    friend class rStageCustomPartsEx;
-    friend class sCraftManager;
-    friend class sItemManager;
+    friend class cAISvUserProcess;
+    friend class cAIUserProcessContainer;
+    friend class cMenuLostPawnRevive;
+    friend class nCaplink::ContextListener;
+    friend void nDDOIO::writeData(MtDataWriter& w, const MtString& data);
+    friend class sAI;
+    friend class sBrowser;
     friend class sMain;
     friend class uGUIBase;
-    friend class uGUIMissionResult;
     friend class uGUINewspaper;
 public:
     struct STRING;
@@ -145,4 +140,8 @@ protected:
 
 inline MtString::MtString() {
     this->value = nullptr;
+}
+
+inline MT_CTSTR MtString::ptr() const {
+    return (this->value == nullptr) ? "" : reinterpret_cast<MT_CTSTR>(this->value->str);
 }

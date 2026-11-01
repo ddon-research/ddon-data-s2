@@ -29,8 +29,28 @@ rAIPathBase::rAIPathBase() {
 }
 
 rAIPathBase::~rAIPathBase() {
-    DDON_STUB("rAIPathBase::~rAIPathBase")
-    /* stub */
+    if (mpHierarchyArea != nullptr) {
+        if (mNumberOfArea != 0) {
+            u16 v0_0 = mNumberOfArea;
+            HierarchyArea* * v0_1 = mpHierarchyArea;
+            for (unsigned int i0_3 = 0;;) {
+                if (v0_1[i0_3] != nullptr) {
+                    delete v0_1[i0_3];
+                    if ((i0_3 + 1u) >= mNumberOfArea) {
+                        break;
+                    }
+                    v0_0 = mNumberOfArea;
+                } else {
+                    if ((i0_3 + 1u) >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = mpHierarchyArea;
+                i0_3 += 1u;
+            }
+        }
+        MtMemoryAllocator::getAllocator(rAIPathBase::DTI)->memFree(static_cast<void*>(mpHierarchyArea));
+    }
 }
 
 MT_CTSTR rAIPathBase::getExt() const {
@@ -106,7 +126,7 @@ inline void rAIPathBase::HierarchyArea::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rAIPathBase::HierarchyArea::DTI)->memFree(p_addr);
 }
 
-rAIPathBase::HierarchyArea::~HierarchyArea() {
+__attribute__((noinline)) rAIPathBase::HierarchyArea::~HierarchyArea() {
     DDON_STUB("rAIPathBase::HierarchyArea::~HierarchyArea")
     /* stub */
 }

@@ -2,10 +2,10 @@
 
 ## What it is
 
-1220 headers and 1157 units reconstructed from DWARF and the ELF: every class's declaration, layout and virtual table as DWARF records them, and each method's body where the generator could render it.
+1251 headers and 1188 units reconstructed from DWARF and the ELF: every class's declaration, layout and virtual table as DWARF records them, and each method's body where the generator could render it.
 
-- **Reconstructed:** 18163 bodies rendered from the ELF and proven equal to it by recompiling with the game's own compiler release (SDK 2.500), and 3903 rendered bodies the generator marks approximate.
-- **Stubs:** 18730 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
+- **Reconstructed:** 18857 bodies rendered from the ELF and proven equal to it by recompiling with the game's own compiler release (SDK 2.500), and 4192 rendered bodies the generator marks approximate.
+- **Stubs:** 19081 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
 
 The generator's notes (its inferences, rulings, addresses, refusals and oracle verdicts) are stripped; only comments a reader of the source needs stay (file sections, member offsets, vtable slots, namespace ends, stub markers).
 
@@ -13,11 +13,17 @@ The generator's notes (its inferences, rulings, addresses, refusals and oracle v
 
 `src/` follows the original folders as DWARF records them. A header keeps its own name under its classes' original folder; several of our headers may come from one original file. A header with the name of another in the same folder carries its bundle folder in its name. These files have no original folder, so they live under `src/generated/`:
 
+- `src/generated/rCharacterEditCameraParam/_rtc.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/_rtc.h
 - `src/generated/rCharacterEditCameraParam/cPCGraphicOption.h`: no class with a decl_file
+- `src/generated/rCharacterEditCameraParam/json2.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/json2.h
+- `src/generated/rCharacterEditCameraParam/json2.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/json2.h
 - `src/generated/rCharacterEditCameraParam/mouse.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/mouse.h
 - `src/generated/rCharacterEditCameraParam/nEnemyAction.h`: no class with a decl_file
 - `src/generated/rCharacterEditCameraParam/nErosionEnemySmall.h`: no class with a decl_file
 - `src/generated/rCharacterEditCameraParam/nStatusEnemy.h`: no class with a decl_file
+- `src/generated/rCharacterEditCameraParam/np_auth.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_auth.h
+- `src/generated/rCharacterEditCameraParam/np_party.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_party.h
+- `src/generated/rCharacterEditCameraParam/np_ranking.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_ranking.h
 - `src/generated/rCharacterEditCameraParam/user_service_api.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/user_service/user_service_api.h
 - `src/generated/shared/ChatMsgType.h`: no class with a decl_file
 - `src/generated/shared/DDOAllocator.h`: no class with a decl_file
@@ -26,7 +32,6 @@ The generator's notes (its inferences, rulings, addresses, refusals and oracle v
 - `src/generated/shared/GpCourse.h`: no class with a decl_file
 - `src/generated/shared/GpCourseEffect.h`: no class with a decl_file
 - `src/generated/shared/Job.h`: no class with a decl_file
-- `src/generated/shared/_rtc.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/_rtc.h
 - `src/generated/shared/audioout.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/audioout.h
 - `src/generated/shared/basegfxcontext.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnmx/basegfxcontext.h
 - `src/generated/shared/basegfxcontext.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnmx/basegfxcontext.h
@@ -51,8 +56,6 @@ The generator's notes (its inferences, rulings, addresses, refusals and oracle v
 - `src/generated/shared/gpumem.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/gpumem.h
 - `src/generated/shared/ime_dialog.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/ime_dialog.h
 - `src/generated/shared/ime_types.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/libime/ime_types.h
-- `src/generated/shared/json2.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/json2.h
-- `src/generated/shared/json2.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/json2.h
 - `src/generated/shared/lwcue_base.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnmx/lwcue_base.h
 - `src/generated/shared/lwcue_base.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnmx/lwcue_base.h
 - `src/generated/shared/lwcue_graphics.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnmx/lwcue_graphics.h
@@ -63,7 +66,6 @@ The generator's notes (its inferences, rulings, addresses, refusals and oracle v
 - `src/generated/shared/nAction.h`: no class with a decl_file
 - `src/generated/shared/nCameraGame.h`: no class with a decl_file
 - `src/generated/shared/nCatch.h`: no class with a decl_file
-- `src/generated/shared/nCharacterEdit.h`: no class with a decl_file
 - `src/generated/shared/nCollisionDefine.h`: no class with a decl_file
 - `src/generated/shared/nDDOGame.h`: no class with a decl_file
 - `src/generated/shared/nDDOIO.cpp`: no class with a decl_file
@@ -94,11 +96,8 @@ The generator's notes (its inferences, rulings, addresses, refusals and oracle v
 - `src/generated/shared/ngs2_sce_mastering.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/ngs2/ngs2_sce_mastering.h
 - `src/generated/shared/ngs2_sce_reverb.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/ngs2/ngs2_sce_reverb.h
 - `src/generated/shared/ngs2_system.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/ngs2/ngs2_system.h
-- `src/generated/shared/np_auth.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_auth.h
 - `src/generated/shared/np_common.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_common.h
 - `src/generated/shared/np_npid.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_npid.h
-- `src/generated/shared/np_party.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_party.h
-- `src/generated/shared/np_ranking.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_ranking.h
 - `src/generated/shared/np_trophy.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_trophy.h
 - `src/generated/shared/regs.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/regs.h
 - `src/generated/shared/regs.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/regs.h

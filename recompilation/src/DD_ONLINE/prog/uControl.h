@@ -23,7 +23,6 @@ class cContextInterface;
 class cGroupParam;
 class cPlayerLoadManager;
 class cTagArcLoad;
-class cpErosionEnemySmall;
 class cpLayout;
 namespace nLayout { struct stLayoutID; }
 namespace nLayout { struct stSplitID; }
@@ -56,7 +55,6 @@ using u8 = unsigned char;
 class uControl : public cUnit
 {
     friend class cPlayerLoadManager;
-    friend class cpErosionEnemySmall;
     friend class cpLayout;
     friend class sControlManager;
     friend class sSetManager;

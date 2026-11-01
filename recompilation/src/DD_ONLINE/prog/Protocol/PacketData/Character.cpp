@@ -121,6 +121,10 @@ inline MtAllocator* CDataCharacterSearchParam::getAllocator() {
     return MtMemoryAllocator::getAllocator(CDataCharacterSearchParam::DTI);
 }
 
+inline void* CDataCharacterSearchParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataCharacterSearchParam::DTI)->memAlloc(sz, align, CDataCharacterSearchParam::DTI.getID());
+}
+
 __attribute__((weak)) void CDataCharacterSearchParam::operator delete(void* p_addr) {
     CDataCharacterSearchParam::getAllocator()->memFree(p_addr);
 }
@@ -129,9 +133,8 @@ CDataCharacterSearchParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 CDataCharacterSearchParam::MyDTI CDataCharacterSearchParam::DTI("CDataCharacterSearchParam", &::CPacketDataBase::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataCharacterSearchParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataCharacterSearchParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataCharacterSearchParam::MyDTI::newInstance() const {
+    return new (16u) CDataCharacterSearchParam;
 }
 
 const MtDTI& CDataCommunicationShortCut::getDTI() const {

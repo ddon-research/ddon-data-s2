@@ -44,7 +44,7 @@ cOmControl::cOmControl() {
     /* stub */
 }
 
-cOmControl::~cOmControl() {
+__attribute__((noinline)) cOmControl::~cOmControl() {
     DDON_STUB("cOmControl::~cOmControl")
     /* stub */
 }

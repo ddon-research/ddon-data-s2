@@ -50,8 +50,10 @@ namespace nDraw { class VertexBuffer; }
 namespace nPS4 { class PixelShaderObject; }
 namespace nPS4 { class VertexShaderObject; }
 struct pthread;
+class rModel;
 class sApp;
 class sGUIExt;
+class sShader2;
 namespace sce { namespace Gnm { class ClipControl; } }
 namespace sce { namespace Gnmx { class LightweightGfxContext; } }
 class uGUIOption;
@@ -99,8 +101,10 @@ class sRender : public cSystem
     friend class cDraw;
     friend class cStorageData;
     friend class cUnit;
+    friend class rModel;
     friend class sApp;
     friend class sGUIExt;
+    friend class sShader2;
     friend class uGUIOption;
     friend class uGUIPhoto;
     friend class uMotionBlurFilter;

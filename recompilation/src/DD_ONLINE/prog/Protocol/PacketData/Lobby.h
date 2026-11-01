@@ -100,3 +100,9 @@ public:
     u8 m_ucOnlineStatus;  // offset: 0x3f
     static MyDTI DTI;
 };
+
+inline CDataLobbyInfo::CDataLobbyInfo() {
+    this->m_unVersion = 0;
+    this->m_unMaxJoinNum = 0;
+    this->m_unJoinNum = 0;
+}

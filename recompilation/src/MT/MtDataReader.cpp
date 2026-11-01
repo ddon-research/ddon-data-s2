@@ -29,9 +29,168 @@ MtDataReader::~MtDataReader() {
     mStream.seek(static_cast<s32>(mSeekPt - mBufsiz), MtStream::ORG_CURRENT);
 }
 
-__attribute__((weak)) u32 MtDataReader::readString(MT_STR buf, u32 bufmax) {
-    DDON_STUB("MtDataReader::readString")
-    return {};
+u32 MtDataReader::readString(MT_STR buf, u32 bufmax) {
+    u32 t0 = mSeekPt;
+    u32 t1 = mBufsiz;
+    u32 v4_0;
+    u32 v4_7;
+    unsigned int v12_7;
+    if (t0 < t1) {
+        v4_0 = t1;
+        v4_7 = t0;
+    } else {
+        u32 v0_1;
+        if (t1 != 0) {
+            v0_1 = t1;
+        } else {
+            u32 t2 = mBufsizMax;
+            mBufsiz = t2;
+            v0_1 = t2;
+        }
+        u32 v0_3 = t1 - t0;
+        u32 v3_2;
+        if (t1 == t0) {
+            v3_2 = v0_1;
+        } else {
+            u8* t3 = mBuffer;
+            u8 t4 = t3[t0];
+            *t3 = t4;
+            if (v0_3 != 1) {
+                u32 v1_0 = t1 - t0;
+                for (unsigned int i1_1 = 1;;) {
+                    u32 t5 = mSeekPt;
+                    u8* t6 = mBuffer;
+                    u8 t7 = t6[i1_1 + t5];
+                    t6[i1_1] = t7;
+                    if (v1_0 != (i1_1 + 1u)) {
+                        i1_1 = i1_1 + 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            v3_2 = mBufsiz;
+        }
+        MtStream& t8 = mStream;
+        unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&t8) + 0);
+        u8* t10 = mBuffer;
+        unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 104);
+        u32 t11 = t8.read(static_cast<void*>(&t10[v0_3]), v3_2 - v0_3);
+        mBufsiz = v0_3 + t11;
+        mSeekPt = 0;
+        if (mBufsiz == 0) {
+            v12_7 = 0;
+            buf[v12_7] = 0;
+            return v12_7;
+        } else {
+            v4_0 = v0_3 + t11;
+            v4_7 = 0;
+        }
+    }
+    u8* t13 = mBuffer;
+    u8 t14 = t13[v4_7];
+    mSeekPt = v4_7 + 1u;
+    u32 v5_0;
+    u32 v5_1;
+    u8 v5_2;
+    unsigned int i5_7;
+    if (t14 == 0) {
+        v12_7 = 0;
+        buf[v12_7] = 0;
+        return v12_7;
+    } else {
+        v5_0 = v4_0;
+        v5_1 = v4_7 + 1u;
+        v5_2 = t14;
+        i5_7 = 0;
+    }
+    u32 v6_0;
+    u32 v6_1;
+    unsigned int v6_2;
+    u32 v7_2;
+    u32 v7_4;
+    u32 v8_0;
+    unsigned int i8_1;
+    u32 v10_2;
+    u32 v11_0;
+    u32 v11_1;
+    for (;;) {
+        if (i5_7 >= (bufmax - 1u)) {
+            v6_0 = v5_0;
+            v6_1 = v5_1;
+            v6_2 = i5_7;
+        } else {
+            buf[i5_7] = static_cast<char>(v5_2);
+            u32 t15 = mSeekPt;
+            u32 t16 = mBufsiz;
+            v6_0 = t16;
+            v6_1 = t15;
+            v6_2 = i5_7 + 1u;
+        }
+        if (v6_1 < v6_0) {
+            v11_0 = v6_0;
+            v11_1 = v6_1;
+        } else {
+            if (v6_0 != 0) {
+                v7_2 = v6_0;
+            } else {
+                u32 t17 = mBufsizMax;
+                mBufsiz = t17;
+                v7_2 = t17;
+            }
+            v7_4 = v6_0 - v6_1;
+            if (v6_0 == v6_1) {
+                v10_2 = v7_2;
+            } else {
+                u8* t18 = mBuffer;
+                *t18 = t18[v6_1];
+                if (v7_4 != 1) {
+                    v8_0 = v6_0 - v6_1;
+                    i8_1 = 1;
+                    for (;;) {
+                        u32 t19 = mSeekPt;
+                        u8* t20 = mBuffer;
+                        u8 t21 = t20[i8_1 + t19];
+                        t20[i8_1] = t21;
+                        if (v8_0 != (i8_1 + 1u)) {
+                            i8_1 = i8_1 + 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                v10_2 = mBufsiz;
+            }
+            MtStream& t22 = mStream;
+            unsigned long t23 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&t22) + 0);
+            u8* t24 = mBuffer;
+            unsigned long t26 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t23) + 104);
+            u32 t25 = t22.read(static_cast<void*>(&t24[v7_4]), v10_2 - v7_4);
+            mBufsiz = v7_4 + t25;
+            mSeekPt = 0;
+            if (mBufsiz == 0) {
+                v12_7 = v6_2;
+                break;
+            } else {
+                v11_0 = v7_4 + t25;
+                v11_1 = 0;
+            }
+        }
+        u8* t27 = mBuffer;
+        u8 t28 = t27[v11_1];
+        mSeekPt = v11_1 + 1u;
+        if (t28 != 0) {
+            v5_0 = v11_0;
+            v5_1 = v11_1 + 1u;
+            v5_2 = t28;
+            i5_7 = v6_2;
+        } else {
+            v12_7 = v6_2;
+            break;
+        }
+    }
+    buf[v12_7] = 0;
+    return v12_7;
 }
 
 u16 MtDataReader::readU16() {

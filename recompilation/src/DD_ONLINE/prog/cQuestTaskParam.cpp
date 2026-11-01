@@ -625,7 +625,7 @@ cQuestTaskParam::cQuestTaskParam() {
     /* stub */
 }
 
-cQuestTaskParam::~cQuestTaskParam() {
+__attribute__((noinline)) cQuestTaskParam::~cQuestTaskParam() {
     DDON_STUB("cQuestTaskParam::~cQuestTaskParam")
     /* stub */
 }

@@ -61,7 +61,7 @@ sPlatformUtil::sPlatformUtil() {
     /* stub */
 }
 
-sPlatformUtil::~sPlatformUtil() {
+__attribute__((noinline)) sPlatformUtil::~sPlatformUtil() {
     DDON_STUB("sPlatformUtil::~sPlatformUtil")
     /* stub */
 }

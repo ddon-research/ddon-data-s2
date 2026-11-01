@@ -33,7 +33,7 @@ uShadow::uShadow() {
     /* stub */
 }
 
-uShadow::~uShadow() {
+__attribute__((noinline)) uShadow::~uShadow() {
     DDON_STUB("uShadow::~uShadow")
     /* stub */
 }

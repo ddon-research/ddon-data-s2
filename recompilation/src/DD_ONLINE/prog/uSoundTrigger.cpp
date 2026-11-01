@@ -6,8 +6,11 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../XFramework/cZoneContents.h"
 #include "../../XFramework/cZoneLayout.h"
 #include "../../XFramework/nZone.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
 #include "uSoundSequenceSe.h"
 #include "uSoundZoneBase.h"
 #ifndef DDON_STUB
@@ -95,9 +98,28 @@ inline void cSoundTriggerListener::operator delete(void* p_addr) {
 cSoundTriggerListener::~cSoundTriggerListener() {
 }
 
-__attribute__((weak)) void cSoundTriggerListener::notified(const nZone::cLayoutElement& e) {
-    DDON_STUB("cSoundTriggerListener::notified")
-    /* stub */
+void cSoundTriggerListener::notified(const nZone::cLayoutElement& e) {
+    MtObject* v0_3 = e.getExtendObj();
+    if (v0_3 != nullptr) {
+        const MtDTI& t0 = e.mpShapeInfo->getDTI();
+        MT_CTSTR v0_1 = nZone::ShapeInfoGlobal::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                if (!static_cast<sSoundExt*>(sSound::getInstance())->mIsGlobalTriggerZoneOut) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_3) + 16) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_3) + 16)) | 1;
+                }
+                return;
+            }
+        }
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_3) + 16) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_3) + 16)) | 1;
+        static_cast<sSoundExt*>(sSound::getInstance())->mIsOtherTriggerZoneIn = true;
+    }
 }
 
 cSoundTriggerListener::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -106,6 +128,190 @@ cSoundTriggerListener::MyDTI cSoundTriggerListener::DTI("cSoundTriggerListener",
 
 MtObject* cSoundTriggerListener::MyDTI::newInstance() const {
     return new (16u) cSoundTriggerListener;
+}
+
+const MtDTI& nSoundTrigger::cBaseContents::getDTI() const {
+    return nSoundTrigger::cBaseContents::DTI;
+}
+
+nSoundTrigger::cBaseContents::~cBaseContents() {
+    DDON_STUB("nSoundTrigger::cBaseContents::~cBaseContents")
+    /* stub */
+}
+
+MtUI* nSoundTrigger::cBaseContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+__attribute__((weak)) void nSoundTrigger::cBaseContents::createProperty(MtPropertyList& s) {
+    DDON_STUB("nSoundTrigger::cBaseContents::createProperty")
+    /* stub */
+}
+
+nSoundTrigger::cBaseContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cBaseContents::MyDTI nSoundTrigger::cBaseContents::DTI("nSoundTrigger::cBaseContents", &::nSoundTrigger::cCategory::DTI, 32ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundTrigger::cBaseContents::MyDTI::newInstance() const {
+    DDON_STUB("nSoundTrigger::cBaseContents::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nSoundTrigger::cCategory::getDTI() const {
+    return nSoundTrigger::cCategory::DTI;
+}
+
+inline void nSoundTrigger::cCategory::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cCategory::DTI)->memFree(p_addr);
+}
+
+nSoundTrigger::cCategory::cCategory() {
+    setCategoryName("SoundTrigger");
+    setExtendObjectDTI(::cSoundTriggerLayoutInfo::DTI);
+    setBroadPhaseSearchMode(2u);
+    setAttribute(0x10000u, true);
+}
+
+nSoundTrigger::cCategory::~cCategory() {
+}
+
+MtUI* nSoundTrigger::cCategory::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+void nSoundTrigger::cCategory::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+}
+
+nSoundTrigger::cCategory::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cCategory::MyDTI nSoundTrigger::cCategory::DTI("nSoundTrigger::cCategory", &::nSoundZoneBase::cSoundZoneContents::DTI, 32ul, 0u, 1u);
+
+MtObject* nSoundTrigger::cCategory::MyDTI::newInstance() const {
+    return nullptr;
+}
+
+const MtDTI& nSoundTrigger::cPlaySeqSeContents::getDTI() const {
+    return nSoundTrigger::cPlaySeqSeContents::DTI;
+}
+
+inline void nSoundTrigger::cPlaySeqSeContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cPlaySeqSeContents::DTI)->memFree(p_addr);
+}
+
+nSoundTrigger::cPlaySeqSeContents::~cPlaySeqSeContents() {
+    DDON_STUB("nSoundTrigger::cPlaySeqSeContents::~cPlaySeqSeContents")
+    /* stub */
+}
+
+MtUI* nSoundTrigger::cPlaySeqSeContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+__attribute__((weak)) void nSoundTrigger::cPlaySeqSeContents::createProperty(MtPropertyList& s) {
+    DDON_STUB("nSoundTrigger::cPlaySeqSeContents::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void nSoundTrigger::cPlaySeqSeContents::copyAToB() {
+    DDON_STUB("nSoundTrigger::cPlaySeqSeContents::copyAToB")
+    /* stub */
+}
+
+__attribute__((weak)) void nSoundTrigger::cPlaySeqSeContents::copyBToA() {
+    DDON_STUB("nSoundTrigger::cPlaySeqSeContents::copyBToA")
+    /* stub */
+}
+
+nSoundTrigger::cPlaySeqSeContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cPlaySeqSeContents::MyDTI nSoundTrigger::cPlaySeqSeContents::DTI("nSoundTrigger::cPlaySeqSeContents", &::nSoundTrigger::cCategory::DTI, 48ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundTrigger::cPlaySeqSeContents::MyDTI::newInstance() const {
+    DDON_STUB("nSoundTrigger::cPlaySeqSeContents::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nSoundTrigger::cSeContents::getDTI() const {
+    return nSoundTrigger::cSeContents::DTI;
+}
+
+inline void nSoundTrigger::cSeContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cSeContents::DTI)->memFree(p_addr);
+}
+
+nSoundTrigger::cSeContents::~cSeContents() {
+    DDON_STUB("nSoundTrigger::cSeContents::~cSeContents")
+    /* stub */
+}
+
+MtUI* nSoundTrigger::cSeContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+__attribute__((weak)) void nSoundTrigger::cSeContents::createProperty(MtPropertyList& s) {
+    DDON_STUB("nSoundTrigger::cSeContents::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void nSoundTrigger::cSeContents::copyAToB() {
+    DDON_STUB("nSoundTrigger::cSeContents::copyAToB")
+    /* stub */
+}
+
+__attribute__((weak)) void nSoundTrigger::cSeContents::copyBToA() {
+    DDON_STUB("nSoundTrigger::cSeContents::copyBToA")
+    /* stub */
+}
+
+nSoundTrigger::cSeContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cSeContents::MyDTI nSoundTrigger::cSeContents::DTI("nSoundTrigger::cSeContents", &::nSoundTrigger::cCategory::DTI, 56ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundTrigger::cSeContents::MyDTI::newInstance() const {
+    DDON_STUB("nSoundTrigger::cSeContents::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nSoundTrigger::cStreamContents::getDTI() const {
+    return nSoundTrigger::cStreamContents::DTI;
+}
+
+inline void nSoundTrigger::cStreamContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cStreamContents::DTI)->memFree(p_addr);
+}
+
+nSoundTrigger::cStreamContents::~cStreamContents() {
+    DDON_STUB("nSoundTrigger::cStreamContents::~cStreamContents")
+    /* stub */
+}
+
+MtUI* nSoundTrigger::cStreamContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+__attribute__((weak)) void nSoundTrigger::cStreamContents::createProperty(MtPropertyList& s) {
+    DDON_STUB("nSoundTrigger::cStreamContents::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void nSoundTrigger::cStreamContents::copyAToB() {
+    DDON_STUB("nSoundTrigger::cStreamContents::copyAToB")
+    /* stub */
+}
+
+__attribute__((weak)) void nSoundTrigger::cStreamContents::copyBToA() {
+    DDON_STUB("nSoundTrigger::cStreamContents::copyBToA")
+    /* stub */
+}
+
+nSoundTrigger::cStreamContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cStreamContents::MyDTI nSoundTrigger::cStreamContents::DTI("nSoundTrigger::cStreamContents", &::nSoundTrigger::cCategory::DTI, 56ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundTrigger::cStreamContents::MyDTI::newInstance() const {
+    DDON_STUB("nSoundTrigger::cStreamContents::MyDTI::newInstance")
+    return nullptr;
 }
 
 const MtDTI& uSoundTrigger::getDTI() const {
@@ -129,7 +335,7 @@ uSoundTrigger::uSoundTrigger() {
     /* stub */
 }
 
-uSoundTrigger::~uSoundTrigger() {
+__attribute__((noinline)) uSoundTrigger::~uSoundTrigger() {
     DDON_STUB("uSoundTrigger::~uSoundTrigger")
     /* stub */
 }

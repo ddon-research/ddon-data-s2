@@ -46,7 +46,7 @@ sContextManager::sContextManager() {
     /* stub */
 }
 
-sContextManager::~sContextManager() {
+__attribute__((noinline)) sContextManager::~sContextManager() {
     DDON_STUB("sContextManager::~sContextManager")
     /* stub */
 }
@@ -320,9 +320,31 @@ cContextInstHm* sContextManager::getContextPartyPlayerIndex(u32 index, bool vali
     }
 }
 
-__attribute__((weak)) cContextInstHm* sContextManager::getContextPartyPlayerFromMemberIndex(s32 memberIndex) {
-    DDON_STUB("sContextManager::getContextPartyPlayerFromMemberIndex")
-    return nullptr;
+cContextInstHm* sContextManager::getContextPartyPlayerFromMemberIndex(s32 memberIndex) {
+    if (memberIndex != -1) {
+        u32 i = 0;
+        for (cContextInstHm* * p0_8 = &mpContextPartyPlayerList[0];;) {
+            if ((*p0_8) != nullptr) {
+                if ((*p0_8)->cContextInstance::isValid()) {
+                    if (memberIndex == cContextInterface::getMemberIndex(*p0_8)) {
+                        return *p0_8;
+                    }
+                }
+            }
+            if ((i + 1u) <= 7u) {
+                i += 1u;
+                p0_8 += 1;
+            } else {
+                break;
+            }
+        }
+    }
+    sGame* t0 = sGame::getInstance();
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(reinterpret_cast<char*>(t0) + t0->getSelfMemberIndex()) + 216)) == 0) {
+        return mpContextPlayer;
+    } else {
+        return nullptr;
+    }
 }
 
 __attribute__((weak)) const cContextInstHm* sContextManager::getContextPartyLeader() {

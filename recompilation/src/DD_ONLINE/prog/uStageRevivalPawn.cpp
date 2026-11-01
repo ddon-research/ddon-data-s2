@@ -141,14 +141,6 @@ void uStageRevivalPawn::updatePtr() {
 __attribute__((weak)) void uStageRevivalPawn::createProperty(MtPropertyList& s) {
 }
 
-u32 uStageRevivalPawn::getRevivalNpcId() const {
-    return mRevivalNpcId.NpcId;
-}
-
-void uStageRevivalPawn::reqRevivalNpcId(u32 id) {
-    mReqRevivalNpcId.NpcId = id;
-}
-
 bool uStageRevivalPawn::isReviveFinish() {
     if (mRno1 == 0) {
         if (mKillNpc[mIndex] != 0) {
@@ -175,22 +167,6 @@ __attribute__((weak)) void uStageRevivalPawn::watchLostPawnNpc() {
 __attribute__((weak)) void uStageRevivalPawn::moveRevivalLostPawn() {
     DDON_STUB("uStageRevivalPawn::moveRevivalLostPawn")
     /* stub */
-}
-
-inline u32 uStageRevivalPawn::getReqRevivalNpcIdPrivate() const {
-    return mReqRevivalNpcId.NpcId;
-}
-
-void uStageRevivalPawn::setReqRevivalNpcIdPrivate(u32 NewValue) {
-    mReqRevivalNpcId.NpcId = NewValue;
-}
-
-inline void uStageRevivalPawn::setRevivingNpcIdPrivate(u32 NewValue) {
-    mRevivingNpcId.NpcId = NewValue;
-}
-
-u32 uStageRevivalPawn::getRevivalNpcIdPrivate() const {
-    return mRevivalNpcId.NpcId;
 }
 
 uStageRevivalPawn::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

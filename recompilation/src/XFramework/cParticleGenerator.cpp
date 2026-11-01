@@ -30,7 +30,7 @@ cParticleGenerator::cParticleGenerator() {
     /* stub */
 }
 
-cParticleGenerator::~cParticleGenerator() {
+__attribute__((noinline)) cParticleGenerator::~cParticleGenerator() {
     DDON_STUB("cParticleGenerator::~cParticleGenerator")
     /* stub */
 }
@@ -825,9 +825,58 @@ __attribute__((weak)) bool cParticleGenerator::setIntervalFrame() {
     return {};
 }
 
-__attribute__((weak)) u32 cParticleGenerator::correctSetNum(u32 SetNum) {
-    DDON_STUB("cParticleGenerator::correctSetNum")
-    return {};
+u32 cParticleGenerator::correctSetNum(u32 SetNum) {
+    if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) >> 28) == 1) {
+        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 480);
+        if (mDecreaseWaitTimer == 0) {
+            if (SetNum <= 1u) {
+                if (SetNum != 0) {
+                    mDecreaseWaitTimer = 1;
+                    return SetNum;
+                } else {
+                    return 0;
+                }
+            } else {
+                if (mDecreaseModNum != 0) {
+                    mDecreaseModNum = 0;
+                    return mDecreaseModNum + (SetNum >> 1);
+                } else {
+                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 480) = ((SetNum & 1u) * 0x10000u) | (t0 & 0xFF00FFFFu);
+                    return SetNum >> 1;
+                }
+            }
+        } else {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 480) = static_cast<unsigned int>(static_cast<unsigned long>(t0 & 0xFFFF00FFu) | static_cast<unsigned long>(static_cast<unsigned short>(((t0 >> 8) * 256u) + 0xFF00u)));
+            return 0;
+        }
+    } else {
+        if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) >> 28) == 0) {
+            unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 480);
+            if (mDecreaseWaitTimer != 0) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 480) = static_cast<unsigned int>(static_cast<unsigned long>(t1 & 0xFFFF00FFu) | static_cast<unsigned long>(static_cast<unsigned short>(((t1 >> 8) * 256u) + 0xFF00u)));
+                return 0;
+            } else {
+                if (SetNum <= 3u) {
+                    if (SetNum != 0) {
+                        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 480) = static_cast<unsigned int>(static_cast<unsigned long>(t1 & 0xFFFF00FFu) | static_cast<unsigned long>(static_cast<unsigned short>((SetNum * 0xFF00u) + 768u)));
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    if (mDecreaseModNum != 0) {
+                        mDecreaseModNum = 0;
+                        return mDecreaseModNum + (SetNum >> 2);
+                    } else {
+                        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 480) = ((SetNum & 3u) * 0x10000u) | (t1 & 0xFF00FFFFu);
+                        return SetNum >> 2;
+                    }
+                }
+            }
+        } else {
+            return SetNum;
+        }
+    }
 }
 
 __attribute__((weak)) MtVector3 cParticleGenerator::calcParticleOfs(u32 SetNo, u32 RangeType, u32 RangeDivideNum, MtRangeF* pRange, uEffect* pChild) {

@@ -58,3 +58,8 @@ public:
     MtString m_wstrDevelopMessage;  // offset: 0x18
     static MyDTI DTI;
 };
+
+inline CDataErrorMessage::CDataErrorMessage() {
+    this->m_unMessageID = 0;
+    this->m_unErrorID = 0;
+}

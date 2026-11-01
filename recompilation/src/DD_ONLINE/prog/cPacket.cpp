@@ -45,7 +45,7 @@ MtObject* CPacketDataBase::MyDTI::newInstance() const {
     return new (16u) CPacketDataBase;
 }
 
-int nPacket::Read(CPacket& packet, u8& v) {
+__attribute__((weak)) int nPacket::Read(CPacket& packet, u8& v) {
     if (packet.m_pWriter >= (&packet.m_pReader[1])) {
         v = *packet.m_pReader;
         packet.m_pReader = &packet.m_pReader[1];
@@ -55,7 +55,7 @@ int nPacket::Read(CPacket& packet, u8& v) {
     }
 }
 
-int nPacket::Read(CPacket& packet, u32& v) {
+__attribute__((weak)) int nPacket::Read(CPacket& packet, u32& v) {
     if (packet.m_pWriter >= (&packet.m_pReader[4])) {
         v = (((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 255) * 0x1000000u) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 8) & 255u) * 0x10000u)) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 16) & 255u) * 256u)) | (([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 24) & 255u);
         packet.m_pReader = &packet.m_pReader[4];
@@ -65,7 +65,7 @@ int nPacket::Read(CPacket& packet, u32& v) {
     }
 }
 
-int nPacket::Read(CPacket& packet, u64& v) {
+__attribute__((weak)) int nPacket::Read(CPacket& packet, u64& v) {
     if (packet.m_pWriter >= (&packet.m_pReader[8])) {
         v = static_cast<u64>(([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) * 0x100000000000000ul) + (((((((([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 0xFF00) * 0x10000000000ul) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 0xFF0000) * 0x1000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) * 256) & 0xFF00000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 8) & 0xFF000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 24) & 0xFF0000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 40) & 0xFF00ul)) | ([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 56)));
         packet.m_pReader = &packet.m_pReader[8];
@@ -85,7 +85,7 @@ int nPacket::Read(CPacket& packet, s8& v) {
     }
 }
 
-int nPacket::Read(CPacket& packet, s32& v) {
+__attribute__((weak)) int nPacket::Read(CPacket& packet, s32& v) {
     if (packet.m_pWriter >= (&packet.m_pReader[4])) {
         v = static_cast<s32>((((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 255) * 0x1000000u) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 8) & 255u) * 0x10000u)) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 16) & 255u) * 256u)) | (([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 24) & 255u));
         packet.m_pReader = &packet.m_pReader[4];
@@ -95,7 +95,7 @@ int nPacket::Read(CPacket& packet, s32& v) {
     }
 }
 
-int nPacket::Read(CPacket& packet, s64& v) {
+__attribute__((weak)) int nPacket::Read(CPacket& packet, s64& v) {
     if (packet.m_pWriter >= (&packet.m_pReader[8])) {
         v = static_cast<s64>(([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) * 0x100000000000000ul) + (((((((([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 0xFF00) * 0x10000000000ul) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 0xFF0000) * 0x1000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) * 256) & 0xFF00000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 8) & 0xFF000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 24) & 0xFF0000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 40) & 0xFF00ul)) | ([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 56)));
         packet.m_pReader = &packet.m_pReader[8];
@@ -105,7 +105,7 @@ int nPacket::Read(CPacket& packet, s64& v) {
     }
 }
 
-int nPacket::Read(CPacket& packet, bool& v) {
+__attribute__((weak)) int nPacket::Read(CPacket& packet, bool& v) {
     if (packet.m_pWriter >= (&packet.m_pReader[1])) {
         v = static_cast<bool>(*packet.m_pReader);
         packet.m_pReader = &packet.m_pReader[1];
@@ -125,7 +125,7 @@ __attribute__((weak)) int nPacket::Read(CPacket& packet, f64& v) {
     return {};
 }
 
-int nPacket::Read(CPacket& packet, u16& v) {
+__attribute__((weak)) int nPacket::Read(CPacket& packet, u16& v) {
     if (packet.m_pWriter >= (&packet.m_pReader[2])) {
         v = static_cast<unsigned short>(static_cast<unsigned long>([](const void* p) -> unsigned short { typedef const unsigned short t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) * 256) | (static_cast<unsigned long>([](const void* p) -> unsigned short { typedef const unsigned short t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader))) >> 8));
         packet.m_pReader = &packet.m_pReader[2];

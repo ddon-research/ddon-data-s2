@@ -5,6 +5,7 @@
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
 #include "../../../../MT/MtMemoryAllocator.h"
+#include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -19,6 +20,10 @@ inline MtAllocator* CDataLobbyInfo::getAllocator() {
     return MtMemoryAllocator::getAllocator(CDataLobbyInfo::DTI);
 }
 
+inline void* CDataLobbyInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataLobbyInfo::DTI)->memAlloc(sz, align, CDataLobbyInfo::DTI.getID());
+}
+
 __attribute__((weak)) void CDataLobbyInfo::operator delete(void* p_addr) {
     CDataLobbyInfo::getAllocator()->memFree(p_addr);
 }
@@ -27,9 +32,8 @@ CDataLobbyInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 CDataLobbyInfo::MyDTI CDataLobbyInfo::DTI("CDataLobbyInfo", &::CPacketDataBase::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataLobbyInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataLobbyInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataLobbyInfo::MyDTI::newInstance() const {
+    return new (16u) CDataLobbyInfo;
 }
 
 const MtDTI& CDataLobbyMemberInfo::getDTI() const {

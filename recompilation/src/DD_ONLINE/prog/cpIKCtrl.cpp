@@ -123,7 +123,7 @@ cpIKCtrl::cpIKCtrl() {
     /* stub */
 }
 
-cpIKCtrl::~cpIKCtrl() {
+__attribute__((noinline)) cpIKCtrl::~cpIKCtrl() {
     DDON_STUB("cpIKCtrl::~cpIKCtrl")
     /* stub */
 }

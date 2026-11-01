@@ -29,7 +29,7 @@ cCraftRecipe::cCraftRecipe() {
     /* stub */
 }
 
-cCraftRecipe::~cCraftRecipe() {
+__attribute__((noinline)) cCraftRecipe::~cCraftRecipe() {
     DDON_STUB("cCraftRecipe::~cCraftRecipe")
     /* stub */
 }

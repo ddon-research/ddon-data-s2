@@ -38,7 +38,7 @@ inline void uGUIMissionResult::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMissionResult::DTI)->memFree(p_addr);
 }
 
-uGUIMissionResult::~uGUIMissionResult() {
+__attribute__((noinline)) uGUIMissionResult::~uGUIMissionResult() {
     DDON_STUB("uGUIMissionResult::~uGUIMissionResult")
     /* stub */
 }
@@ -480,19 +480,15 @@ const MtDTI& uGUIMissionResult::cPointList::getDTI() const {
     return uGUIMissionResult::cPointList::DTI;
 }
 
+inline void* uGUIMissionResult::cPointList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIMissionResult::cPointList::DTI)->memAlloc(sz, align, uGUIMissionResult::cPointList::DTI.getID());
+}
+
 inline void uGUIMissionResult::cPointList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMissionResult::cPointList::DTI)->memFree(p_addr);
 }
 
-inline uGUIMissionResult::cPointList::cPointList() {
-    mStrPtClass.value = nullptr;
-    mStrPt.value = nullptr;
-    mStrNumClass.value = nullptr;
-    mStrNum.value = nullptr;
-    mStrName.value = nullptr;
-}
-
-uGUIMissionResult::cPointList::~cPointList() {
+__attribute__((noinline)) uGUIMissionResult::cPointList::~cPointList() {
     DDON_STUB("uGUIMissionResult::cPointList::~cPointList")
     /* stub */
 }
@@ -501,9 +497,8 @@ uGUIMissionResult::cPointList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 uGUIMissionResult::cPointList::MyDTI uGUIMissionResult::cPointList::DTI("uGUIMissionResult::cPointList", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIMissionResult::cPointList::MyDTI::newInstance() const {
-    DDON_STUB("uGUIMissionResult::cPointList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIMissionResult::cPointList::MyDTI::newInstance() const {
+    return new (16u) uGUIMissionResult::cPointList;
 }
 
 const MtDTI& uGUIMissionResult::cItemList::getDTI() const {

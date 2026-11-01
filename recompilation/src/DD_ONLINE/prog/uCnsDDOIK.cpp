@@ -88,7 +88,7 @@ __attribute__((weak)) MtVector3 uCnsDDOIK::calcUpVectorArm(const MtVector3& Inne
     __builtin_unreachable();
 }
 
-uCnsDDOIK::~uCnsDDOIK() {
+__attribute__((noinline)) uCnsDDOIK::~uCnsDDOIK() {
     DDON_STUB("uCnsDDOIK::~uCnsDDOIK")
     /* stub */
 }
@@ -215,7 +215,7 @@ u32 uCnsDDOIK::getDependentJointNum() {
                 if (mUpVectorTargetModelEnable) {
                     if (mpUpVectorTargetModel != nullptr) {
                         if (mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)] != 0xFF) {
-                            return static_cast<unsigned int>(static_cast<unsigned long>(!((&mpEffectorTargetModel->mJoint[mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)]]) == nullptr)) + static_cast<unsigned long>(!((&mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]]) == nullptr)));
+                            return static_cast<u32>(!((&mpEffectorTargetModel->mJoint[mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)]]) == nullptr) + !((&mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]]) == nullptr));
                         }
                     }
                 }

@@ -24,7 +24,7 @@ inline void cGameHttpClient::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cGameHttpClient::DTI)->memFree(p_addr);
 }
 
-cGameHttpClient::~cGameHttpClient() {
+__attribute__((noinline)) cGameHttpClient::~cGameHttpClient() {
     DDON_STUB("cGameHttpClient::~cGameHttpClient")
     /* stub */
 }
@@ -116,11 +116,8 @@ const MtDTI& cGameHttpClient::cServerEnvironmentInfo::getDTI() const {
     return cGameHttpClient::cServerEnvironmentInfo::DTI;
 }
 
-inline cGameHttpClient::cServerEnvironmentInfo::cServerEnvironmentInfo() {
-    mRomVersion = 0;
-    mUraguchiURL.value = nullptr;
-    mUraguchiURN.value = nullptr;
-    mInfo.value = nullptr;
+inline void* cGameHttpClient::cServerEnvironmentInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cGameHttpClient::cServerEnvironmentInfo::DTI)->memAlloc(sz, align, cGameHttpClient::cServerEnvironmentInfo::DTI.getID());
 }
 
 cGameHttpClient::cServerEnvironmentInfo::~cServerEnvironmentInfo() {
@@ -132,9 +129,8 @@ cGameHttpClient::cServerEnvironmentInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI
 
 cGameHttpClient::cServerEnvironmentInfo::MyDTI cGameHttpClient::cServerEnvironmentInfo::DTI("cGameHttpClient::cServerEnvironmentInfo", &::MtObject::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cGameHttpClient::cServerEnvironmentInfo::MyDTI::newInstance() const {
-    DDON_STUB("cGameHttpClient::cServerEnvironmentInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cGameHttpClient::cServerEnvironmentInfo::MyDTI::newInstance() const {
+    return new (16u) cGameHttpClient::cServerEnvironmentInfo;
 }
 
 const MtDTI& sHttpClient::getDTI() const {
@@ -158,7 +154,7 @@ sHttpClient::sHttpClient() {
     /* stub */
 }
 
-sHttpClient::~sHttpClient() {
+__attribute__((noinline)) sHttpClient::~sHttpClient() {
     DDON_STUB("sHttpClient::~sHttpClient")
     /* stub */
 }

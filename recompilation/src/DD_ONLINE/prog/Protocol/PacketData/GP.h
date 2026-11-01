@@ -486,10 +486,17 @@ inline CDataCAPtoGPChangeElement::CDataCAPtoGPChangeElement() {
     this->m_unID = 0;
     this->m_unCAP = 0;
     this->m_unGP = 0;
+    this->m_unBackIconID = 0;
+    this->m_unFrameIconID = 0;
 }
 
 inline CDataGPCourseAvailable::CDataGPCourseAvailable() {
     this->m_unID = 0;
+    this->m_unBackIconID = 0;
+    this->m_unFrameIconID = 0;
+    this->m_unCourseID = 0;
+    this->m_unLineupID = 0;
+    this->m_ullUseLimitTime = 0;
 }
 
 inline CDataGPCourseEffectParam::CDataGPCourseEffectParam() {
@@ -497,6 +504,14 @@ inline CDataGPCourseEffectParam::CDataGPCourseEffectParam() {
     this->m_unParam1 = 0;
     this->m_unEffectUID = 0;
     this->m_unEffectID = 0;
+}
+
+inline CDataGPCourseValid::CDataGPCourseValid() {
+    this->m_unIconID = 0;
+    this->m_unID = 0;
+    this->m_unCourseID = 0;
+    this->m_ullEndTime = 0;
+    this->m_ullStartTime = 0;
 }
 
 inline CDataGPPeriod::CDataGPPeriod() {
@@ -514,4 +529,13 @@ inline CDataGPShopBuyHistoryElement::CDataGPShopBuyHistoryElement() {
 inline CDataGPShopDisplayType::CDataGPShopDisplayType() {
     this->m_unID = 0;
     this->m_unInGameUrlID = 0;
+}
+
+inline CDataGPShopLineupElementBase::CDataGPShopLineupElementBase() {
+    this->m_ucIconId = 0;
+    this->m_unInitialGP = 0;
+    this->m_unDiscountGP = 0;
+    this->m_unID = 0;
+    this->m_unGP = 0;
+    this->m_bIsInitialPrice = true;
 }

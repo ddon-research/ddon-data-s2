@@ -33,6 +33,7 @@ class rModel;
 class rSoundRequest;
 class rSoundStreamRequest;
 class rTexture;
+class uCharacterEditBase;
 class uCnsEdit;
 class uCnsScaleFix;
 class uMockUpModel;
@@ -55,6 +56,7 @@ using u8 = unsigned char;
 
 class cpCharacterEdit : public cpComponent
 {
+    friend class uCharacterEditBase;
     friend class uMockUpModel;
 public:
     enum

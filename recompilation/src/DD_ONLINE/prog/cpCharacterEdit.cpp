@@ -44,7 +44,7 @@ cpCharacterEdit::cpCharacterEdit() {
     /* stub */
 }
 
-cpCharacterEdit::~cpCharacterEdit() {
+__attribute__((noinline)) cpCharacterEdit::~cpCharacterEdit() {
     DDON_STUB("cpCharacterEdit::~cpCharacterEdit")
     /* stub */
 }

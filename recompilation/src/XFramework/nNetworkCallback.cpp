@@ -17,7 +17,7 @@ nNetwork::Callback::Callback() {
     /* stub */
 }
 
-nNetwork::Callback::~Callback() {
+__attribute__((noinline)) nNetwork::Callback::~Callback() {
     DDON_STUB("nNetwork::Callback::~Callback")
     /* stub */
 }
@@ -48,14 +48,22 @@ __attribute__((weak)) bool nNetwork::Callback::receive(u32 callback_index, s32 r
     return {};
 }
 
-__attribute__((weak)) void nNetwork::Callback::set(s32 index, nNetwork::ReceiverBase* r, bool buffering, bool route) {
-    DDON_STUB("nNetwork::Callback::set")
-    /* stub */
+void nNetwork::Callback::set(s32 index, nNetwork::ReceiverBase* r, bool buffering, bool route) {
+    if (r != nullptr) {
+        ::__atomic_fetch_add(&r->mRefCount, 1, __ATOMIC_SEQ_CST);
+    }
+    mEntry[index].mpReceiver = r;
+    mEntry[index].mBuffering = buffering;
+    mEntry[index].mRoute = route;
 }
 
-__attribute__((weak)) void nNetwork::Callback::clear(s32 index) {
-    DDON_STUB("nNetwork::Callback::clear")
-    /* stub */
+void nNetwork::Callback::clear(s32 index) {
+    if (mEntry[index].mpReceiver != nullptr) {
+        ::__atomic_fetch_add(&mEntry[index].mpReceiver->mRefCount, -1, __ATOMIC_SEQ_CST);
+    }
+    mEntry[index].mpReceiver = nullptr;
+    mEntry[index].mBuffering = false;
+    mEntry[index].mRoute = false;
 }
 
 void nNetwork::Callback::removeRoute(s32 route_index) {

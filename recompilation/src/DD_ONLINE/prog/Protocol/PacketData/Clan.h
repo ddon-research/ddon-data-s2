@@ -1080,6 +1080,12 @@ inline CDataClanScoutEntryParam::CDataClanScoutEntryParam() {
 
 inline CDataClanSearchParam::CDataClanSearchParam() {
     this->m_ucNameSearchType = 0;
+    this->m_unCharacteristic = 0;
+    this->m_unActiveDays = 0;
+    this->m_unActiveTime = 0;
+    this->m_usLv = 0;
+    this->m_usMemberNum = 0;
+    this->m_unMotto = 0;
 }
 
 inline CDataClanShopBuffInfo::CDataClanShopBuffInfo() {
@@ -1113,6 +1119,19 @@ inline CDataClanShopFunctionItem::CDataClanShopFunctionItem() {
 
 inline CDataClanShopLineupName::CDataClanShopLineupName() {
     this->m_unLineupID = 0;
+}
+
+inline CDataClanUserParam::CDataClanUserParam() {
+    this->m_bIsPublish = false;
+    this->m_unCharacteristic = 0;
+    this->m_unActiveDays = 0;
+    this->m_unActiveTime = 0;
+    this->m_ucEmblemMarkType = 0;
+    this->m_ucEmblemBaseType = 0;
+    this->m_ucEmblemBaseMainColor = 0;
+    this->m_ucEmblemBaseSubColor = 0;
+    this->m_unMotto = 0;
+    this->m_llCreated = 0;
 }
 
 inline CDataClanValueInfo::CDataClanValueInfo() {

@@ -25,6 +25,7 @@ class rGUIMessage;
 class uGUIAreaMaster;
 class uGUIPopDetail01;
 class uGUIPopNumber01;
+class uGUIQuestDelivery;
 class uGUISystemMsg;
 
 // Declarations
@@ -41,6 +42,7 @@ using u32 = unsigned int;
 class uGUIGiveAndTake : public uGUIBase
 {
     friend class uGUIAreaMaster;
+    friend class uGUIQuestDelivery;
 public:
     enum
     {

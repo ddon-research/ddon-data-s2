@@ -6,6 +6,12 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cFSMCore.h"
+#include "../../XFramework/cUnit.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -31,9 +37,12 @@ __attribute__((weak)) uFSMTask* cFSMTaskCtrl::getFSMTask(MT_CTSTR name) const {
     return nullptr;
 }
 
-__attribute__((weak)) uFSMTask* cFSMTaskCtrl::getFSMTask(u32 no) const {
-    DDON_STUB("cFSMTaskCtrl::getFSMTask")
-    return nullptr;
+uFSMTask* cFSMTaskCtrl::getFSMTask(u32 no) const {
+    if (no < mFSMTaskList.mLength) {
+        return static_cast<uFSMTask*>(mFSMTaskList.mpArray[no]);
+    } else {
+        return nullptr;
+    }
 }
 
 __attribute__((weak)) bool cFSMTaskCtrl::addFSMTaskOrderFromName(MT_CTSTR filePath, u32 starter) {
@@ -78,5 +87,98 @@ cFSMTaskCtrl::MyDTI cFSMTaskCtrl::DTI("cFSMTaskCtrl", &::MtObject::DTI, 56ul, 0u
 __attribute__((weak)) MtObject* cFSMTaskCtrl::MyDTI::newInstance() const {
     DDON_STUB("cFSMTaskCtrl::MyDTI::newInstance")
     return nullptr;
+}
+
+const MtDTI& uFSMTask::getDTI() const {
+    return uFSMTask::DTI;
+}
+
+inline void* uFSMTask::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uFSMTask::DTI)->memAlloc(sz, align, uFSMTask::DTI.getID());
+}
+
+inline void uFSMTask::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uFSMTask::DTI)->memFree(p_addr);
+}
+
+void uFSMTask::forcedTermination() {
+    if (mpCore == nullptr) {
+        return;
+    }
+    mpCore->mIsEnable = false;
+}
+
+__attribute__((weak)) MT_CTSTR uFSMTask::getFSMName() {
+    DDON_STUB("uFSMTask::getFSMName")
+    return {};
+}
+
+uFSMTask::~uFSMTask() {
+    if (mpCore == nullptr) {
+        return;
+    }
+    delete mpCore;
+    mpCore = nullptr;
+}
+
+__attribute__((weak)) MT_CTSTR uFSMTask::getName() {
+    DDON_STUB("uFSMTask::getName")
+    return {};
+}
+
+__attribute__((weak)) void uFSMTask::createProperty(MtPropertyList& s) {
+    DDON_STUB("uFSMTask::createProperty")
+    /* stub */
+}
+
+void uFSMTask::move() {
+    aStage* t0 = static_cast<sAreaExt*>(sArea::getInstance())->getCurrentStage();
+    if (t0 != nullptr) {
+        if (t0->isInit()) {
+            if (mpCore != nullptr) {
+                MtObject* v0_3 = mpCore->getOwner();
+                const MtDTI& t1 = v0_3->getDTI();
+                MT_CTSTR v0_1 = cUnit::DTI.mName;
+                for (const MtDTI* v0_0 = &t1;;) {
+                    if (v0_1 != v0_0->mName) {
+                        if (v0_0->mpParent != nullptr) {
+                            v0_0 = v0_0->mpParent;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if (v0_3 == nullptr) {
+                            break;
+                        } else {
+                            cUnit* pOwner = static_cast<cUnit*>(v0_3);
+                            if (static_cast<cUnit*>(v0_3)->isEnable()) {
+                                break;
+                            } else {
+                                if (mpCore != nullptr) {
+                                    delete mpCore;
+                                    mpCore = nullptr;
+                                }
+                                return;
+                            }
+                        }
+                    }
+                }
+                if (mpCore != nullptr) {
+                    if (mpCore->isEnable()) {
+                        mpCore->move();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+}
+
+uFSMTask::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+uFSMTask::MyDTI uFSMTask::DTI("uFSMTask", &::cUnit::DTI, 88ul, 0u, 0u);
+
+MtObject* uFSMTask::MyDTI::newInstance() const {
+    return new (16u) uFSMTask;
 }
 

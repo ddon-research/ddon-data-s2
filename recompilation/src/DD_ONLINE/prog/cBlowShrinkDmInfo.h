@@ -16,6 +16,7 @@ class cDmJobAdjParam;
 class cDmJobPawnAdjParam;
 class cDmLvPawnAdjParam;
 class uDDOModel;
+class uEnemy;
 
 // Declarations
 class cBlowShrinkDmInfo;
@@ -30,6 +31,7 @@ using u32 = unsigned int;
 
 class cBlowShrinkDmInfo : public MtObject
 {
+    friend class uEnemy;
 public:
     class MyDTI;
 public:

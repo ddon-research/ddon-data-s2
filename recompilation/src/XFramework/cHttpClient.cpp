@@ -24,11 +24,27 @@ __attribute__((weak)) void cHttpClient::operator delete(void* p_addr) {
 }
 
 cHttpClient::cHttpClient() {
-    DDON_STUB("cHttpClient::cHttpClient")
-    /* stub */
+    mEpollHandle = nullptr;
+    mState = 0;
+    mpListener = nullptr;
+    mRequestMethod = 0;
+    mIsReceivedHeader = false;
+    mpProxyServerName = nullptr;
+    mpRequestData = nullptr;
+    mpRequestUrl = nullptr;
+    mRequestId = 0;
+    mTemplateId = 0;
+    mConnectionId = 0;
+    mpUserAgentString = cHttpClient::mpDefaultUserAgent;
+    mSecurityFlags = 0;
+    mRedirectPolicy = 0;
+    mpCertificateData = nullptr;
+    mCertificateDataSize = 0;
+    mTimeout = 0;
+    mSocketLib = 8;
 }
 
-cHttpClient::~cHttpClient() {
+__attribute__((noinline)) cHttpClient::~cHttpClient() {
     DDON_STUB("cHttpClient::~cHttpClient")
     /* stub */
 }

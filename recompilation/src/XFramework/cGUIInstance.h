@@ -38,6 +38,7 @@ class rGUI;
 class uGUI;
 class uGUIActionPalette;
 class uGUIBase;
+class uGUIClanSearch;
 class uGUICommunityList;
 class uGUIFKeyPalette;
 class uGUIGauge;
@@ -229,6 +230,7 @@ class cGUIInstNull : public cGUIInstance
     friend class cGUIUtility;
     friend class uGUIActionPalette;
     friend class uGUIBase;
+    friend class uGUIClanSearch;
     friend class uGUIFKeyPalette;
     friend class uGUIGauge;
     friend class uGUIPhoto;

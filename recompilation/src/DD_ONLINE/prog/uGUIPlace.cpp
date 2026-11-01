@@ -208,8 +208,41 @@ void uGUIPlace::updateWait() {
 }
 
 __attribute__((weak)) bool uGUIPlace::updateStepDelay() {
-    DDON_STUB("uGUIPlace::updateStepDelay")
-    return {};
+    mTimer = getDeltaTime() + mTimer;
+    if (mTimer > mDelay) {
+        if (mpOBJ_test_message_Message != nullptr) {
+            setObjectMessage(static_cast<cGUIObject*>(mpOBJ_test_message_Message), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 2284))), 0u, false);
+            cGUIInstAnimation* t0 = mpINST_msg_place;
+            if (t0 != nullptr) {
+                t0->setSequenceId(1u);
+                t0->setSequenceId(2u);
+                if (mpINST_msg_place != nullptr) {
+                    mpINST_msg_place->setVisible(true);
+                    if (mpINST_msg_place != nullptr) {
+                        mpINST_msg_place->setExecute(true);
+                    }
+                }
+            }
+            mTimer = 0.0f;
+            return true;
+        } else {
+            cGUIInstAnimation* t0 = mpINST_msg_place;
+            if (t0 != nullptr) {
+                t0->setSequenceId(1u);
+                t0->setSequenceId(2u);
+                if (mpINST_msg_place != nullptr) {
+                    mpINST_msg_place->setVisible(true);
+                    if (mpINST_msg_place != nullptr) {
+                        mpINST_msg_place->setExecute(true);
+                    }
+                }
+            }
+            mTimer = 0.0f;
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 uGUIPlace::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

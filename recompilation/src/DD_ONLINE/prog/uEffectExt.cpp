@@ -40,7 +40,7 @@ uEffectExt::uEffectExt() {
     /* stub */
 }
 
-uEffectExt::~uEffectExt() {
+__attribute__((noinline)) uEffectExt::~uEffectExt() {
     DDON_STUB("uEffectExt::~uEffectExt")
     /* stub */
 }

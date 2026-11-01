@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
-#include "cArcLoader.h"
 #include "cUIObject.h"
 #include "../../XFramework/cUnit.h"
 #include "nNet.h"
@@ -93,7 +92,7 @@ __attribute__((weak)) void cGUIContentsExecutor::release() {
         cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
         if (mArc != t0) {
             sArchiveManager::getInstance()->returnTicket(mArc);
-            mArc = static_cast<TICKET>(t0);
+            mArc = t0;
         }
     }
 }

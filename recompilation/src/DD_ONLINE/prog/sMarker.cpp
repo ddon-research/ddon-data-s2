@@ -250,7 +250,7 @@ sMarker::sMarker() {
     /* stub */
 }
 
-sMarker::~sMarker() {
+__attribute__((noinline)) sMarker::~sMarker() {
     DDON_STUB("sMarker::~sMarker")
     /* stub */
 }

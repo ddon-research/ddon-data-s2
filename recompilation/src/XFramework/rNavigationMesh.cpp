@@ -20,11 +20,15 @@ const MtDTI& rNavigationMesh::getDTI() const {
     return rNavigationMesh::DTI;
 }
 
+inline void* rNavigationMesh::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rNavigationMesh::DTI)->memAlloc(sz, align, rNavigationMesh::DTI.mID);
+}
+
 inline void rNavigationMesh::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rNavigationMesh::DTI)->memFree(p_addr);
 }
 
-rNavigationMesh::~rNavigationMesh() {
+__attribute__((noinline)) rNavigationMesh::~rNavigationMesh() {
     DDON_STUB("rNavigationMesh::~rNavigationMesh")
     /* stub */
 }
@@ -124,9 +128,8 @@ rNavigationMesh::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 rNavigationMesh::MyDTI rNavigationMesh::DTI("rNavigationMesh", &::rAIPathBase::DTI, 240ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rNavigationMesh::MyDTI::newInstance() const {
-    DDON_STUB("rNavigationMesh::MyDTI::newInstance")
-    return nullptr;
+MtObject* rNavigationMesh::MyDTI::newInstance() const {
+    return new (16u) rNavigationMesh;
 }
 
 const MtDTI& rNavigationMesh::nodeData::getDTI() const {

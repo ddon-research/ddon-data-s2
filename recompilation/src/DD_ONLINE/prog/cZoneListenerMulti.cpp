@@ -344,7 +344,7 @@ inline void cZoneMultiStackNode::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cZoneMultiStackNode::DTI)->memFree(p_addr);
 }
 
-cZoneMultiStackNode::~cZoneMultiStackNode() {
+__attribute__((noinline)) cZoneMultiStackNode::~cZoneMultiStackNode() {
     DDON_STUB("cZoneMultiStackNode::~cZoneMultiStackNode")
     /* stub */
 }

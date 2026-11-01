@@ -48,7 +48,7 @@ cpOcdCtrl::cpOcdCtrl() {
     /* stub */
 }
 
-cpOcdCtrl::~cpOcdCtrl() {
+__attribute__((noinline)) cpOcdCtrl::~cpOcdCtrl() {
     DDON_STUB("cpOcdCtrl::~cpOcdCtrl")
     /* stub */
 }

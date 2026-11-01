@@ -60,7 +60,7 @@ uSoundOcclusion::uSoundOcclusion() {
     /* stub */
 }
 
-uSoundOcclusion::~uSoundOcclusion() {
+__attribute__((noinline)) uSoundOcclusion::~uSoundOcclusion() {
     DDON_STUB("uSoundOcclusion::~uSoundOcclusion")
     /* stub */
 }

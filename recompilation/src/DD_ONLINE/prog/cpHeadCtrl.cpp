@@ -37,7 +37,7 @@ cpHeadCtrl::cpHeadCtrl() {
     /* stub */
 }
 
-cpHeadCtrl::~cpHeadCtrl() {
+__attribute__((noinline)) cpHeadCtrl::~cpHeadCtrl() {
     DDON_STUB("cpHeadCtrl::~cpHeadCtrl")
     /* stub */
 }

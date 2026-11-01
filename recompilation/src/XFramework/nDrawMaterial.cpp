@@ -32,7 +32,7 @@ nDraw::Animation::Animation(const nDraw::Animation::ANIMATION_LIST* list) {
     /* stub */
 }
 
-nDraw::Animation::~Animation() {
+__attribute__((noinline)) nDraw::Animation::~Animation() {
     DDON_STUB("nDraw::Animation::~Animation")
     /* stub */
 }

@@ -108,8 +108,7 @@ nTalk::cSelectMember::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 nTalk::cSelectMember::MyDTI nTalk::cSelectMember::DTI("nTalk::cSelectMember", &::MtObject::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nTalk::cSelectMember::MyDTI::newInstance() const {
-    DDON_STUB("nTalk::cSelectMember::MyDTI::newInstance")
-    return nullptr;
+MtObject* nTalk::cSelectMember::MyDTI::newInstance() const {
+    return new (16u) ::nTalk::cSelectMember;
 }
 

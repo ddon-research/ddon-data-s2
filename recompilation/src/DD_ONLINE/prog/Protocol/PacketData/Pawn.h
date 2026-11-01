@@ -502,6 +502,9 @@ public:
 inline CDataFreeRentalPawnList::CDataFreeRentalPawnList() {
     this->m_unPawnId = 0;
     this->m_ullExpireDateTime = 0;
+    this->m_unLineupId = 0;
+    this->m_unFrameIconId = 0;
+    this->m_unBackIconId = 0;
 }
 
 inline CDataPartnerPawnData::CDataPartnerPawnData() {

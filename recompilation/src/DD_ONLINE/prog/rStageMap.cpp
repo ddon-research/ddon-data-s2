@@ -69,7 +69,6 @@ const MtDTI& cStageMap::cParam::getDTI() const {
 }
 
 inline cStageMap::cParam::cParam() {
-    mModelName.value = nullptr;
     mAreaNo = 0;
     mSize = 0.0f;
     mConnectPos.x = MtVector3::Zero.x;

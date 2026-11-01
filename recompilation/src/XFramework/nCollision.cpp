@@ -242,25 +242,25 @@ void nCollision::cScrCommonFilter::setScrGroup(u8 NewGroupIndex) {
 
 void nCollision::cScrCommonFilter::setScrGroupByBit(u32 GroupBit) {
     unsigned int i0_0 = 0;
-    unsigned int v1_0;
+    unsigned char v1_0;
     for (;;) {
         if (((static_cast<unsigned long>(GroupBit) >> static_cast<unsigned long>(i0_0 & 63u)) & 1ul) != 0) {
-            v1_0 = i0_0;
+            v1_0 = static_cast<unsigned char>(i0_0);
             break;
         } else {
             if (static_cast<unsigned char>(i0_0 + 1u) <= 31) {
                 i0_0 = i0_0 + 1u;
             } else {
-                v1_0 = i0_0 + 1u;
+                v1_0 = static_cast<unsigned char>(i0_0 + 1u);
                 break;
             }
         }
     }
-    mScrGroup = static_cast<unsigned int>(1ul << static_cast<unsigned long>(static_cast<unsigned char>(v1_0) & 63));
-    if (static_cast<unsigned char>(v1_0) == 32) {
+    mScrGroup = static_cast<unsigned int>(1ul << static_cast<unsigned long>(v1_0 & 63));
+    if (v1_0 == 32) {
         mScrGroupIndex = 0;
     } else {
-        mScrGroupIndex = static_cast<unsigned char>(v1_0);
+        mScrGroupIndex = v1_0;
     }
 }
 

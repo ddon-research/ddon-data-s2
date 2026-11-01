@@ -161,6 +161,8 @@ namespace nCaplink { class cChatUserInfo; }
 namespace nCaplink { class cUserBaseInfo; }
 namespace nCaplink { class cWebsocketServerInfo; }
 class sGUIExt;
+class uGUICaplinkProfile;
+class uGUICaplinkTalk;
 
 // Declarations
 class sCaplinkManager;
@@ -186,6 +188,8 @@ using u8 = unsigned char;
 class sCaplinkManager : public cSystem
 {
     friend class sGUIExt;
+    friend class uGUICaplinkProfile;
+    friend class uGUICaplinkTalk;
 public:
     enum
     {

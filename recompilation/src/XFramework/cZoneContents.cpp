@@ -14,8 +14,8 @@ const MtDTI& cZoneContents::getDTI() const {
 }
 
 cZoneContents::cZoneContents() {
-    DDON_STUB("cZoneContents::cZoneContents")
-    /* stub */
+    mFlgUse = false;
+    mIsNativeData = false;
 }
 
 cZoneContents::~cZoneContents() {

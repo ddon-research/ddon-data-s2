@@ -252,7 +252,7 @@ s32 sGpuParticle::ContextInfParticle::setTexture(cDraw* p_draw, rTexture* p_tex,
     return 1;
 }
 
-sGpuParticle::ContextInfParticle::~ContextInfParticle() {
+__attribute__((noinline)) sGpuParticle::ContextInfParticle::~ContextInfParticle() {
     DDON_STUB("sGpuParticle::ContextInfParticle::~ContextInfParticle")
     /* stub */
 }

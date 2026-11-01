@@ -22,6 +22,7 @@
 #include "rArchiveListArray.h"
 #include "../../XFramework/rCollision.h"
 #include "rEventParam.h"
+#include "rGatheringItem.h"
 #include "rObjCollision.h"
 #include "rOmParam.h"
 #include "../../XFramework/rRenderTargetTexture.h"
@@ -186,9 +187,90 @@ __attribute__((weak)) cOmControl* sOmManager::createOmInsCtrl(s32 omID) {
     return nullptr;
 }
 
-__attribute__((weak)) void sOmManager::releaseOmInsCtrl(cOmControl* pctrl) {
-    DDON_STUB("sOmManager::releaseOmInsCtrl")
-    /* stub */
+void sOmManager::releaseOmInsCtrl(cOmControl* pctrl) {
+    if (pctrl != nullptr) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        u32 v0_0 = mDelOmIns.mLength;
+        if (v0_0 != 0) {
+            MtObject* * v0_2 = mDelOmIns.mpArray;
+            unsigned int i0_1 = 0;
+            for (;;) {
+                if (pctrl == v0_2[i0_1]) {
+                    break;
+                } else {
+                    if ((i0_1 + 1u) < v0_0) {
+                        i0_1 = i0_1 + 1u;
+                    } else {
+                        returnTicket(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pctrl) + 224));
+                        u32 t0 = mDelOmIns.mLength;
+                        u32 t1 = mDelOmIns.mBufsiz;
+                        if (t0 < t1) {
+                            mDelOmIns.mLength = t0 + 1u;
+                            mDelOmIns.mpArray[t0] = static_cast<MtObject*>(pctrl);
+                        } else {
+                            void* t2 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t1 + 32u) * 8, 16u);
+                            memset(t2, 0, static_cast<size_t>(t1 + 32u) * 8);
+                            memcpy(t2, static_cast<const void*>(mDelOmIns.mpArray), static_cast<size_t>(mDelOmIns.mLength) * 8);
+                            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDelOmIns.mpArray));
+                            mDelOmIns.mpArray = static_cast<MtObject* *>(t2);
+                            mDelOmIns.mBufsiz = t1 + 32u;
+                            u32 t3 = mDelOmIns.mLength;
+                            mDelOmIns.mLength = t3 + 1u;
+                            mDelOmIns.mpArray[t3] = static_cast<MtObject*>(pctrl);
+                        }
+                        pctrl->reqKillCtrl();
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                                return;
+                            }
+                        }
+                        return;
+                    }
+                }
+            }
+            if (i0_1 != 0xFFFFFFFFu) {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                        return;
+                    }
+                }
+                return;
+            }
+        }
+    } else {
+        return;
+    }
+    returnTicket(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pctrl) + 224));
+    u32 t0 = mDelOmIns.mLength;
+    u32 t1 = mDelOmIns.mBufsiz;
+    if (t0 < t1) {
+        mDelOmIns.mLength = t0 + 1u;
+        mDelOmIns.mpArray[t0] = static_cast<MtObject*>(pctrl);
+    } else {
+        void* t2 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t1 + 32u) * 8, 16u);
+        memset(t2, 0, static_cast<size_t>(t1 + 32u) * 8);
+        memcpy(t2, static_cast<const void*>(mDelOmIns.mpArray), static_cast<size_t>(mDelOmIns.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDelOmIns.mpArray));
+        mDelOmIns.mpArray = static_cast<MtObject* *>(t2);
+        mDelOmIns.mBufsiz = t1 + 32u;
+        u32 t3 = mDelOmIns.mLength;
+        mDelOmIns.mLength = t3 + 1u;
+        mDelOmIns.mpArray[t3] = static_cast<MtObject*>(pctrl);
+    }
+    pctrl->reqKillCtrl();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
 }
 
 uOmSwingInstancing* sOmManager::getOmInsUnit(s32 omID) {
@@ -837,7 +919,7 @@ sOmManager::sOmManager() {
     /* stub */
 }
 
-sOmManager::~sOmManager() {
+__attribute__((noinline)) sOmManager::~sOmManager() {
     DDON_STUB("sOmManager::~sOmManager")
     /* stub */
 }
@@ -902,9 +984,51 @@ __attribute__((weak)) bool sOmManager::isStageInitOK() {
     return {};
 }
 
-__attribute__((weak)) u32 sOmManager::getGatheringItem(u32 type, u32* buff, u32 buff_size) {
-    DDON_STUB("sOmManager::getGatheringItem")
-    return {};
+u32 sOmManager::getGatheringItem(u32 type, u32* buff, u32 buff_size) {
+    unsigned int v1_7;
+    if (mprGatheringItem == nullptr) {
+        v1_7 = 0;
+    } else {
+        if (mprGatheringItem->getDataNum() == 0) {
+            v1_7 = 0;
+        } else {
+            unsigned int i0_9 = 0;
+            for (unsigned int i0_10 = 0;;) {
+                cGatheringItem* t0 = mprGatheringItem->getData(i0_10);
+                if (t0 != nullptr) {
+                    if (t0->mType == type) {
+                        if (buff != nullptr) {
+                            if (i0_9 < buff_size) {
+                                buff[i0_9] = t0->mItemNo;
+                            }
+                        }
+                        if ((i0_10 + 1u) < mprGatheringItem->getDataNum()) {
+                            i0_9 += 1u;
+                            i0_10 += 1u;
+                        } else {
+                            v1_7 = i0_9 + 1u;
+                            break;
+                        }
+                    } else {
+                        if ((i0_10 + 1u) < mprGatheringItem->getDataNum()) {
+                            i0_10 += 1u;
+                        } else {
+                            v1_7 = i0_9;
+                            break;
+                        }
+                    }
+                } else {
+                    if ((i0_10 + 1u) < mprGatheringItem->getDataNum()) {
+                        i0_10 += 1u;
+                    } else {
+                        v1_7 = i0_9;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return v1_7;
 }
 
 bool sOmManager::isQuestFlag(cOmControl* pctrl, u32 flagNo) const {

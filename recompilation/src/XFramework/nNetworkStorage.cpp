@@ -28,7 +28,7 @@ nNetwork::Storage::Storage() {
     /* stub */
 }
 
-nNetwork::Storage::~Storage() {
+__attribute__((noinline)) nNetwork::Storage::~Storage() {
     DDON_STUB("nNetwork::Storage::~Storage")
     /* stub */
 }

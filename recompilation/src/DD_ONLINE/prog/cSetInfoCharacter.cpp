@@ -7,6 +7,9 @@
 #include "../../MT/MtObject.h"
 #include "cSetInfo.h"
 #include "cSetInfoCoord.h"
+#include "../../XFramework/cUnit.h"
+#include "uCharacter.h"
+#include "uControl.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -48,9 +51,36 @@ MtUI* cSetInfoCharacter::createUI(MtProperty& prop) {
     return this->cSetInfoCoord::createUI(prop);
 }
 
-__attribute__((weak)) bool cSetInfoCharacter::applyInfo(cUnit* pu) const {
-    DDON_STUB("cSetInfoCharacter::applyInfo")
-    return {};
+bool cSetInfoCharacter::applyInfo(cUnit* pu) const {
+    if (this->cSetInfoCoord::applyInfo(pu)) {
+        const MtDTI& t0 = pu->getDTI();
+        MT_CTSTR v0_1 = uControl::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return true;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+        const MtDTI& t1 = pu->getDTI();
+        MT_CTSTR v2_1 = uCharacter::DTI.mName;
+        for (const MtDTI* v2_0 = &t1;;) {
+            if (v2_1 == v2_0->mName) {
+                return true;
+            } else {
+                if (v2_0->mpParent != nullptr) {
+                    v2_0 = v2_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 void cSetInfoCharacter::copy(cSetInfo* p) {

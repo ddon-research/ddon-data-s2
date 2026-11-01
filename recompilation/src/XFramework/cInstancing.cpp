@@ -10,6 +10,7 @@
 #include "rModel.h"
 #include "rTexture.h"
 #include "uBaseModel.h"
+#include "../DD_ONLINE/prog/uOmSwingModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

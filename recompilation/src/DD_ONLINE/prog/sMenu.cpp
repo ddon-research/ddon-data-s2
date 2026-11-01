@@ -40,7 +40,7 @@ sMenu::sMenu() {
     /* stub */
 }
 
-sMenu::~sMenu() {
+__attribute__((noinline)) sMenu::~sMenu() {
     DDON_STUB("sMenu::~sMenu")
     /* stub */
 }

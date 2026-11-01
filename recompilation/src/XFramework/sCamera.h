@@ -31,6 +31,7 @@ class rSceneTexture;
 class sCameraExt;
 class sGUIExt;
 class uCamera;
+class uCharacterEdit;
 class uDOFFilter;
 
 // Declarations
@@ -48,6 +49,7 @@ using u8 = unsigned char;
 class sCamera : public cSystem
 {
     friend class sGUIExt;
+    friend class uCharacterEdit;
     friend class uDOFFilter;
 public:
     enum VIEWPORT_NO

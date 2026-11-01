@@ -10,6 +10,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "Protocol/UserSession/S2C.h"
 #include "cCharacterData.h"
 #include "cMenuBase.h"
 #include "cMenuSupport.h"
@@ -22,6 +23,8 @@
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #include "uGUIBase.h"
+#include "uGUIClanScout.h"
+#include "uGUIClanSearch.h"
 #include "uGUISystemMsg.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -67,6 +70,10 @@ const MtDTI& cMenuApproveClan::getDTI() const {
     return cMenuApproveClan::DTI;
 }
 
+inline void* cMenuApproveClan::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMenuApproveClan::DTI)->memAlloc(sz, align, cMenuApproveClan::DTI.getID());
+}
+
 cMenuApproveClan::~cMenuApproveClan() {
     DDON_STUB("cMenuApproveClan::~cMenuApproveClan")
     /* stub */
@@ -91,9 +98,8 @@ cMenuApproveClan::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 cMenuApproveClan::MyDTI cMenuApproveClan::DTI("cMenuApproveClan", &::cMenuBase::DTI, 200ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuApproveClan::MyDTI::newInstance() const {
-    DDON_STUB("cMenuApproveClan::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuApproveClan::MyDTI::newInstance() const {
+    return new (16u) cMenuApproveClan;
 }
 
 const MtDTI& cMenuApproveInvitedClan::getDTI() const {
@@ -435,6 +441,10 @@ const MtDTI& cMenuClanAuthority::getDTI() const {
     return cMenuClanAuthority::DTI;
 }
 
+inline void* cMenuClanAuthority::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMenuClanAuthority::DTI)->memAlloc(sz, align, cMenuClanAuthority::DTI.getID());
+}
+
 cMenuClanAuthority::~cMenuClanAuthority() {
     DDON_STUB("cMenuClanAuthority::~cMenuClanAuthority")
     /* stub */
@@ -458,13 +468,16 @@ cMenuClanAuthority::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 cMenuClanAuthority::MyDTI cMenuClanAuthority::DTI("cMenuClanAuthority", &::cMenuBase::DTI, 216ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuClanAuthority::MyDTI::newInstance() const {
-    DDON_STUB("cMenuClanAuthority::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuClanAuthority::MyDTI::newInstance() const {
+    return new (16u) cMenuClanAuthority;
 }
 
 const MtDTI& cMenuClanChangeMaster::getDTI() const {
     return cMenuClanChangeMaster::DTI;
+}
+
+inline void* cMenuClanChangeMaster::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMenuClanChangeMaster::DTI)->memAlloc(sz, align, cMenuClanChangeMaster::DTI.getID());
 }
 
 cMenuClanChangeMaster::~cMenuClanChangeMaster() {
@@ -491,13 +504,16 @@ cMenuClanChangeMaster::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 cMenuClanChangeMaster::MyDTI cMenuClanChangeMaster::DTI("cMenuClanChangeMaster", &::cMenuBase::DTI, 200ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuClanChangeMaster::MyDTI::newInstance() const {
-    DDON_STUB("cMenuClanChangeMaster::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuClanChangeMaster::MyDTI::newInstance() const {
+    return new (16u) cMenuClanChangeMaster;
 }
 
 const MtDTI& cMenuClanDirectInvite::getDTI() const {
     return cMenuClanDirectInvite::DTI;
+}
+
+inline void* cMenuClanDirectInvite::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMenuClanDirectInvite::DTI)->memAlloc(sz, align, cMenuClanDirectInvite::DTI.getID());
 }
 
 cMenuClanDirectInvite::~cMenuClanDirectInvite() {
@@ -524,9 +540,8 @@ cMenuClanDirectInvite::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 cMenuClanDirectInvite::MyDTI cMenuClanDirectInvite::DTI("cMenuClanDirectInvite", &::cMenuBase::DTI, 200ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuClanDirectInvite::MyDTI::newInstance() const {
-    DDON_STUB("cMenuClanDirectInvite::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuClanDirectInvite::MyDTI::newInstance() const {
+    return new (16u) cMenuClanDirectInvite;
 }
 
 const MtDTI& cMenuClanDirectInvitedList::getDTI() const {
@@ -561,6 +576,10 @@ const MtDTI& cMenuClanExpelMember::getDTI() const {
     return cMenuClanExpelMember::DTI;
 }
 
+inline void* cMenuClanExpelMember::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMenuClanExpelMember::DTI)->memAlloc(sz, align, cMenuClanExpelMember::DTI.getID());
+}
+
 cMenuClanExpelMember::~cMenuClanExpelMember() {
     DDON_STUB("cMenuClanExpelMember::~cMenuClanExpelMember")
     /* stub */
@@ -585,9 +604,8 @@ cMenuClanExpelMember::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 cMenuClanExpelMember::MyDTI cMenuClanExpelMember::DTI("cMenuClanExpelMember", &::cMenuBase::DTI, 200ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuClanExpelMember::MyDTI::newInstance() const {
-    DDON_STUB("cMenuClanExpelMember::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuClanExpelMember::MyDTI::newInstance() const {
+    return new (16u) cMenuClanExpelMember;
 }
 
 const MtDTI& cMenuClanHistory::getDTI() const {
@@ -792,9 +810,19 @@ inline void cMenuClanList::operator delete(void* p_addr) {
 cMenuClanList::~cMenuClanList() {
 }
 
-__attribute__((weak)) void cMenuClanList::initClanList() {
-    DDON_STUB("cMenuClanList::initClanList")
-    /* stub */
+void cMenuClanList::initClanList() {
+    initMenu();
+    mMenuRno[0] = 0;
+    mSearchSetting.setDefaultData();
+    mSearchSetting.initSearchFilter(4);
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanSearchListPacket();
+    cMenuSupportList* pList = setupSupportList(256u, 4u, 5u);
+    if (pList != nullptr) {
+        pList->cMenuSupportList::addBelowMenu(4);
+        createList(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanSearchListPacket()->m_ClanList.mLength);
+    }
+    mIsSearchEnd = false;
+    mpGUIMenu = registerGUI(uGUIClanSearch::DTI, cMenuBase::DEFAULT_GUI_LINE, cMenuBase::DEFAULT_GUI_GROUP);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuClanList::moveClanList() {
@@ -921,9 +949,12 @@ inline void cMenuClanScoutEntryList::operator delete(void* p_addr) {
 cMenuClanScoutEntryList::~cMenuClanScoutEntryList() {
 }
 
-__attribute__((weak)) void cMenuClanScoutEntryList::initClanScoutEntryList() {
-    DDON_STUB("cMenuClanScoutEntryList::initClanScoutEntryList")
-    /* stub */
+void cMenuClanScoutEntryList::initClanScoutEntryList() {
+    initMenu();
+    mMenuRno[0] = 0;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanScoutEntryListPacket();
+    setupSupportList(256u, 10u, 0u);
+    mpGUIMenu = registerGUI(uGUIClanScout::DTI, cMenuBase::DEFAULT_GUI_LINE, cMenuBase::DEFAULT_GUI_GROUP);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuClanScoutEntryList::moveClanScoutEntryList() {
@@ -946,6 +977,10 @@ MtObject* cMenuClanScoutEntryList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuClanSetMemberRank::getDTI() const {
     return cMenuClanSetMemberRank::DTI;
+}
+
+inline void* cMenuClanSetMemberRank::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMenuClanSetMemberRank::DTI)->memAlloc(sz, align, cMenuClanSetMemberRank::DTI.getID());
 }
 
 cMenuClanSetMemberRank::~cMenuClanSetMemberRank() {
@@ -972,9 +1007,8 @@ cMenuClanSetMemberRank::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 cMenuClanSetMemberRank::MyDTI cMenuClanSetMemberRank::DTI("cMenuClanSetMemberRank", &::cMenuBase::DTI, 200ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuClanSetMemberRank::MyDTI::newInstance() const {
-    DDON_STUB("cMenuClanSetMemberRank::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuClanSetMemberRank::MyDTI::newInstance() const {
+    return new (16u) cMenuClanSetMemberRank;
 }
 
 const MtDTI& cMenuCreateClan::getDTI() const {
@@ -1631,6 +1665,10 @@ const MtDTI& cMenuInviteClan::getDTI() const {
     return cMenuInviteClan::DTI;
 }
 
+inline void* cMenuInviteClan::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMenuInviteClan::DTI)->memAlloc(sz, align, cMenuInviteClan::DTI.getID());
+}
+
 cMenuInviteClan::~cMenuInviteClan() {
     DDON_STUB("cMenuInviteClan::~cMenuInviteClan")
     /* stub */
@@ -1655,9 +1693,8 @@ cMenuInviteClan::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 cMenuInviteClan::MyDTI cMenuInviteClan::DTI("cMenuInviteClan", &::cMenuBase::DTI, 200ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuInviteClan::MyDTI::newInstance() const {
-    DDON_STUB("cMenuInviteClan::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuInviteClan::MyDTI::newInstance() const {
+    return new (16u) cMenuInviteClan;
 }
 
 const MtDTI& cMenuQuitClan::getDTI() const {

@@ -12,6 +12,7 @@ struct MtFloat3;
 struct MtFloat4;
 class MtStream;
 class cSetInfoEnemy;
+class cSetInfoOm;
 class cSetInfoOmGather;
 class cSetInfoOmTreasureBox;
 namespace nCollision { class cObjectBase; }
@@ -19,6 +20,8 @@ namespace nZone { class ShapeInfoBase; }
 namespace nZone { class ShapeInfoOBB; }
 namespace nZone { class ShapeInfoPanel; }
 class rJumpParamTbl;
+class rPrologueHmStatus;
+class rSoundParamOfs;
 
 // Declarations
 class MtDataReader;
@@ -44,6 +47,7 @@ using u8 = unsigned char;
 class MtDataReader
 {
     friend class cSetInfoEnemy;
+    friend class cSetInfoOm;
     friend class cSetInfoOmGather;
     friend class cSetInfoOmTreasureBox;
     friend class nCollision::cObjectBase;
@@ -51,6 +55,8 @@ class MtDataReader
     friend class nZone::ShapeInfoOBB;
     friend class nZone::ShapeInfoPanel;
     friend class rJumpParamTbl;
+    friend class rPrologueHmStatus;
+    friend class rSoundParamOfs;
 public:
     MtDataReader(MtStream& in, u32 bufsiz);
     virtual ~MtDataReader();

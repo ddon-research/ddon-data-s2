@@ -27,7 +27,7 @@ sPad::sPad(u32 PlatformAttribute) {
     /* stub */
 }
 
-sPad::~sPad() {
+__attribute__((noinline)) sPad::~sPad() {
     DDON_STUB("sPad::~sPad")
     /* stub */
 }

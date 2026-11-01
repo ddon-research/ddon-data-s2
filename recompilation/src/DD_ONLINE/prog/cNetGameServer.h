@@ -486,6 +486,8 @@ class sCraftManager;
 class sGame;
 class sNetworkExt;
 class sNpcManager;
+class sQuestManagerExt;
+class uCharacterEdit;
 class uGUIEntryBoardInfo;
 class uGUILoginBonus;
 class uGUIRimWarp;
@@ -2484,6 +2486,8 @@ class cNetGameServer : public MtObject
     friend class sGame;
     friend class sNetworkExt;
     friend class sNpcManager;
+    friend class sQuestManagerExt;
+    friend class uCharacterEdit;
     friend class uGUIEntryBoardInfo;
     friend class uGUILoginBonus;
     friend class uGUIRimWarp;
@@ -5282,6 +5286,22 @@ inline CharacterListElementVec& cNetGameServer::getGroupChatMemberListRef() {
 
 inline bool cNetGameServer::isResetInstanceArea() {
     return this->mIsResetInstanceArea;
+}
+
+inline cNetGameServer::cChatLog::cChatLog() {
+    this->mType = static_cast<nChatMsgType::E_CHAT_MSG_TYPE>(0);
+}
+
+inline cPawnListParam::cPawnListParam() {
+    this->m_unRentalCost = 0;
+    this->m_ullUpdated = 0;
+    this->m_ucAdventureCount = 0;
+    this->m_ucSex = 0;
+    this->m_ucState = 0;
+    this->m_ucShareRange = 0;
+    this->m_ucCraftCount = 0;
+    this->m_nPawnId = 0;
+    this->m_unSlotNo = 0;
 }
 
 inline cPawnVoiceData::cPawnVoiceData() {

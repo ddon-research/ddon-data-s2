@@ -450,6 +450,9 @@ inline uGUIMissionResult::cChargeEffectInfo::cChargeEffectInfo() {
     this->mEffectId = 0;
 }
 
+inline uGUIMissionResult::cPointList::cPointList() {
+}
+
 inline uGUIMissionResult::cItemList::cItemList() {
     this->mItemNo = 0;
     this->mItemNum = 0;

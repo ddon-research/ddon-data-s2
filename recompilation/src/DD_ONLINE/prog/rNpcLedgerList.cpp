@@ -53,7 +53,7 @@ inline rNpcLedgerList::rNpcLedgerList() {
     setAttribute(22u);
 }
 
-rNpcLedgerList::~rNpcLedgerList() {
+__attribute__((noinline)) rNpcLedgerList::~rNpcLedgerList() {
     DDON_STUB("rNpcLedgerList::~rNpcLedgerList")
     /* stub */
 }

@@ -397,3 +397,63 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uShadow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uShadow::setBackforwardViewDistance(f32 v) {
+    this->mBackforwardViewDistance = v;
+}
+
+inline u32 uShadow::getMapSize() const {
+    return this->mMapSizeOriginal;
+}
+
+inline u32 uShadow::getMapSizeTrue() const {
+    return this->mMapSize;
+}
+
+inline bool uShadow::isLimitRangeEnable() const {
+    return this->mLimitRangeEnable;
+}
+
+inline void uShadow::setLimitRangeEnable(bool enable) {
+    this->mLimitRangeEnable = enable;
+}
+
+inline bool uShadow::isMappedToLight() const {
+    return this->mMappedToLight;
+}
+
+inline u32 uShadow::getManagedType() const {
+    return this->mManagedType;
+}
+
+inline bool uShadow::getShadowMapCacheEnable() const {
+    return this->mShadowMapCacheEnable;
+}
+
+inline void uShadow::setNearClipDistance(f32 distance) {
+    this->mNearClipDistance = distance;
+}
+
+inline f32 uShadow::getNearClipDistance() const {
+    return this->mNearClipDistance;
+}
+
+inline bool uShadow::getPS3DisableMode() {
+    return this->mIsPS3Disable;
+}
+
+inline bool uShadow::getPS4DisableMode() {
+    return this->mIsPS4Disable;
+}
+
+inline bool uShadow::getPCDisableMode() {
+    return this->mIsPCDisable;
+}
+
+inline void* uShadow::cHardwareDispCtrlShadow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

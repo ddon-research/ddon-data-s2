@@ -320,12 +320,24 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataMailAttachmentInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataMailAttachmentInfo::CDataMailAttachmentInfo() {
     this->m_ullAttachmentId = 0;
     this->m_bIsReceived = false;
 }
 
+inline void* CDataMailAttachmentList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataMailAttachmentList::CDataMailAttachmentList() {
+}
+
+inline void* CDataMailGPInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataMailGPInfo::CDataMailGPInfo() {
@@ -333,19 +345,39 @@ inline CDataMailGPInfo::CDataMailGPInfo() {
     this->m_unType = 0;
 }
 
+inline void* CDataMailInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataMailItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataMailItemInfo::CDataMailItemInfo() {
     this->m_unItemId = 0;
     this->m_usNum = 0;
+}
+
+inline void* CDataMailLegendPawnInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataMailLegendPawnInfo::CDataMailLegendPawnInfo() {
     this->m_unPawnId = 0;
 }
 
+inline void* CDataMailOptionCourseInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataMailOptionCourseInfo::CDataMailOptionCourseInfo() {
     this->m_unOptionCourseId = 0;
     this->m_unOptionCourseLineupId = 0;
     this->m_unTime = 0;
+}
+
+inline void* CDataMailTextInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataMailTextInfo::CDataMailTextInfo() {

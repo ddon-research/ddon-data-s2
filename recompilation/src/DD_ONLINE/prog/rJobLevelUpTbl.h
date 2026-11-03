@@ -100,10 +100,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cIncreaseParam2::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cIncreaseParam2::cIncreaseParam2() {
     this->mMDef = 0;
     this->mDef = 0;
     this->mMAtk = 0;
     this->mLv = 0;
     this->mAtk = 0;
+}
+
+inline void* rJobLevelUpTbl2::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cIncreaseParam2::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cIncreaseParam2::DTI)->memFree(p_addr);
+}
+
+inline void* cIncreaseParam2::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cIncreaseParam2::DTI)->memAlloc(sz, align, ::cIncreaseParam2::DTI.::MtDTI::getID());
 }

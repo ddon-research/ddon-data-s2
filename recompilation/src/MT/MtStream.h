@@ -200,5 +200,17 @@ public:
     static MyDTI DTI;
 };
 
+inline void* MtFileStream::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtMemoryStream::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtStream::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline MtStream::MtStream() {
 }

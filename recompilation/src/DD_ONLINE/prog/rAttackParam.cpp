@@ -3,8 +3,10 @@
 #include "rAttackParam.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -154,13 +156,104 @@ inline void rAttackParam::operator delete(void* p_addr) {
 }
 
 rAttackParam::~rAttackParam() {
-    DDON_STUB("rAttackParam::~rAttackParam")
-    /* stub */
 }
 
 __attribute__((weak)) bool rAttackParam::loadData(MtDataReader& in, cAttackParam* pData) {
-    DDON_STUB("rAttackParam::loadData")
-    return {};
+        nDDOIO::readData(in, pData->mIndex);
+        nDDOIO::readData(in, pData->mPhysAttack2);
+        nDDOIO::readData(in, pData->mPhysAttackRate);
+        nDDOIO::readData(in, pData->mAttackType2);
+        nDDOIO::readData(in, pData->mWeaponBadStatusRate);
+        nDDOIO::readData(in, pData->mIsPhysAttackOnly);
+        nDDOIO::readData(in, pData->mMgcAttack2);
+        nDDOIO::readData(in, pData->mMgcAttackRate);
+        nDDOIO::readData(in, pData->mElementType2);
+        nDDOIO::readData(in, pData->mElement);
+        nDDOIO::readData(in, pData->mShrinkRate);
+        nDDOIO::readData(in, pData->mShrinkType2);
+        nDDOIO::readData(in, pData->mBlowRate);
+        nDDOIO::readData(in, pData->mBlowType2);
+        nDDOIO::readData(in, pData->mDownRate);
+        nDDOIO::readData(in, pData->mShakesRate);
+        nDDOIO::readData(in, pData->mClimbAttackFlag2);
+        nDDOIO::readData(in, pData->mClimbBonusRate);
+        nDDOIO::readData(in, pData->mClimbBonusRateShrink);
+        nDDOIO::readData(in, pData->mClimbBonusRateBlow);
+        nDDOIO::readData(in, pData->mClimbBonusRateShake);
+        nDDOIO::readData(in, pData->mClimbBonusRateDown);
+        nDDOIO::readData(in, pData->mHpUp);
+        nDDOIO::readData(in, pData->mHpUpRate);
+        nDDOIO::readData(in, pData->mStaminaUp);
+        nDDOIO::readData(in, pData->mStaminaUpRate);
+        nDDOIO::readData(in, pData->mSPReactionType2);
+        nDDOIO::readData(in, pData->mWindReactionLv2);
+        nDDOIO::readData(in, pData->mWindReactionSpeedZ);
+        nDDOIO::readData(in, pData->mWindReactionAccelerateZ);
+        nDDOIO::readData(in, pData->mWindReactionSpeedY);
+        nDDOIO::readData(in, pData->mWindReactionGravityY);
+        nDDOIO::readData(in, pData->mRangeType2);
+        nDDOIO::readData(in, pData->mAttackID);
+        nDDOIO::readData(in, pData->mWork2);
+        nDDOIO::readData(in, pData->mHitStopTime);
+        nDDOIO::readData(in, pData->mHitSlowRate);
+        nDDOIO::readData(in, pData->mHitStopFlag2);
+        nDDOIO::readData(in, pData->mDamageAngle);
+        nDDOIO::readData(in, pData->mDamageFlag);
+        nDDOIO::readData(in, pData->mGroundShrinkLv2);
+        nDDOIO::readData(in, pData->mGroundShrinkSpeedZ);
+        nDDOIO::readData(in, pData->mGroundShrinkAccelerateZ);
+        nDDOIO::readData(in, pData->mGroundShrinkSpeedY);
+        nDDOIO::readData(in, pData->mGroundShrinkGravityY);
+        nDDOIO::readData(in, pData->mAirShrinkLv2);
+        nDDOIO::readData(in, pData->mAirShrinkSpeedZ);
+        nDDOIO::readData(in, pData->mAirShrinkAccelerateZ);
+        nDDOIO::readData(in, pData->mAirShrinkSpeedY);
+        nDDOIO::readData(in, pData->mAirShrinkGravityY);
+        nDDOIO::readData(in, pData->mGroundBlowLv2);
+        nDDOIO::readData(in, pData->mGroundBlowSpeedZ);
+        nDDOIO::readData(in, pData->mGroundBlowAccelerateZ);
+        nDDOIO::readData(in, pData->mGroundBlowSpeedY);
+        nDDOIO::readData(in, pData->mGroundBlowGravityY);
+        nDDOIO::readData(in, pData->mAirBlowLv2);
+        nDDOIO::readData(in, pData->mAirBlowSpeedZ);
+        nDDOIO::readData(in, pData->mAirBlowAccelerateZ);
+        nDDOIO::readData(in, pData->mAirBlowSpeedY);
+        nDDOIO::readData(in, pData->mAirBlowGravityY);
+        nDDOIO::readData(in, pData->mBadOcdUID_1);
+        nDDOIO::readData(in, pData->mOcdEndurance_1);
+        nDDOIO::readData(in, pData->mBadOcdUID_2);
+        nDDOIO::readData(in, pData->mOcdEndurance_2);
+        nDDOIO::readData(in, pData->mBadOcdUID_3);
+        nDDOIO::readData(in, pData->mOcdEndurance_3);
+        nDDOIO::readData(in, pData->mBadOcdUID_4);
+        nDDOIO::readData(in, pData->mOcdEndurance_4);
+        nDDOIO::readData(in, pData->mBadOcdUID_5);
+        nDDOIO::readData(in, pData->mOcdEndurance_5);
+        nDDOIO::readData(in, pData->mGoodStatusFlag);
+        nDDOIO::readData(in, pData->mBadStatusFlag2);
+        nDDOIO::readData(in, pData->mGuardAngle);
+        nDDOIO::readData(in, pData->mGuardFlag2);
+        nDDOIO::readData(in, pData->mGuardActionRate);
+        nDDOIO::readData(in, pData->mGuardDefence2);
+        nDDOIO::readData(in, pData->mGuardAttackerReaction2);
+        nDDOIO::readData(in, pData->mMultiHit);
+        nDDOIO::readData(in, pData->mMultiHitResetTime2);
+        nDDOIO::readData(in, pData->mHitCollisionFlag2);
+        nDDOIO::readData(in, pData->mEffectType2);
+        nDDOIO::readData(in, pData->mEffectAngle2);
+        nDDOIO::readData(in, pData->mEffectFlag2);
+        nDDOIO::readData(in, pData->mSeType2);
+        nDDOIO::readData(in, pData->mSeSize2);
+        nDDOIO::readData(in, pData->mWepCategory2);
+        nDDOIO::readData(in, pData->mSeFlag2);
+        nDDOIO::readData(in, pData->mFlag3);
+        nDDOIO::readData(in, pData->mCatchType);
+        nDDOIO::readData(in, pData->mCatchFlag2);
+        nDDOIO::readData(in, pData->mCorePointDispTime2);
+        nDDOIO::readData(in, pData->mAbilityAttackFlag);
+        nDDOIO::readData(in, pData->mFreeBit);
+        nDDOIO::readData(in, pData->mDamageMin2);
+        return true;
 }
 
 MT_CTSTR rAttackParam::getExt() const {
@@ -172,8 +265,29 @@ u32 rAttackParam::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rAttackParam::loadCore(MtDataReader& r) {
-    DDON_STUB("rAttackParam::loadCore")
-    return {};
+        u32 dat_num;
+        this->::rTbl2Base::readDataValue(r, dat_num);
+        u32 t1 = dat_num;
+        if (this->mpData != nullptr) {
+            delete[] this->mpData;
+            this->mpData = nullptr;
+        }
+        this->mDataNum = 0u;
+        if (t1 != 0u) {
+            this->mpData = new (16u) cAttackParam[t1];
+            this->mDataNum = t1;
+        }
+        if (dat_num != 0u) {
+            u32 i = 0u;
+            cAttackParam* p_dat = this->mpData;
+            do {
+                if (!this->loadData(r, &p_dat[i])) {
+                    return false;
+                }
+                i += 1u;
+            } while (i < dat_num);
+        }
+        return true;
 }
 
 rAttackParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

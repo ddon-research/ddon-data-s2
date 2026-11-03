@@ -4,13 +4,19 @@
 #include <stdlib.h>
 #include "sSceneExt.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
 #include "rTexDetailEdit.h"
 #include "sArchiveManager.h"
+#include "sEnemyManager.h"
+#include "sFlag.h"
+#include "../../XFramework/sMain.h"
 #include "../../XFramework/sScene.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -72,7 +78,7 @@ void sSceneExt::loadTxd() {
         return;
     }
     loadTxd(pRes, TEXDETAIL_FILE);
-    pRes->cResource::release();
+    pRes->release();
 }
 
 __attribute__((weak)) void sSceneExt::loadTxd(rTexDetailEdit* pRes, sSceneExt::TEX_DETAIL_TYPE mode) {

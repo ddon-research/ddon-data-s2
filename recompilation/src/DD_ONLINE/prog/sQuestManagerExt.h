@@ -93,6 +93,7 @@ class uGUIContentsBoard;
 class uGUIEntryBoardInfo;
 class uGUIMissionInfo;
 class uGUIPopTopSel;
+class uHuman;
 class uOmModel;
 
 // Declarations
@@ -140,12 +141,14 @@ using uintptr = __uintptr_t;
 
 class sQuestManagerExt : public cSystem
 {
+    friend class cCycleQuestManagerBase;
     friend class cNetGameServer;
     friend class uGUIBase;
     friend class uGUIContentsBoard;
     friend class uGUIEntryBoardInfo;
     friend class uGUIMissionInfo;
     friend class uGUIPopTopSel;
+    friend class uHuman;
 public:
     enum QUEST_RET
     {
@@ -1426,6 +1429,10 @@ protected:
     static sQuestManagerExt* mpInstance;
 };
 
+inline void* sQuestManagerExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 sQuestManagerExt::getNowCallCycleContentsScheduleId() {
     return this->mNowCallCycleContentsScheduleId;
 }
@@ -1442,6 +1449,10 @@ inline sQuestManagerExt* sQuestManagerExt::getInstance() {
     return ::sQuestManagerExt::mpInstance;
 }
 
+inline void* sQuestManagerExt::cKilledEnemy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 sQuestManagerExt::cKilledEnemy::getKilledNum() const {
     return this->mKilledNum;
 }
@@ -1450,6 +1461,10 @@ inline sQuestManagerExt::cKilledEnemy::cKilledEnemy() {
     this->mStageNo = 0;
     this->mEnemyId = 0;
     this->mKilledNum = 1;
+}
+
+inline void* sQuestManagerExt::cManagerInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cQuestManagerBase* sQuestManagerExt::cManagerInfo::getQuestManager() {
@@ -1461,6 +1476,14 @@ inline sQuestManagerExt::cManagerInfo::cManagerInfo() {
     this->mpMgr = nullptr;
 }
 
+inline void* sQuestManagerExt::cTouchOmInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sQuestManagerExt::cFunctionInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestFunctionManagerBase* sQuestManagerExt::cFunctionInfo::getFunctionManager() {
     return this->mpFuncMgr;
 }
@@ -1470,11 +1493,26 @@ inline sQuestManagerExt::cFunctionInfo::cFunctionInfo() {
     this->mpFuncMgr = nullptr;
 }
 
+inline void* sQuestManagerExt::cSystemLogNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sQuestManagerExt::cSystemLogNode::cSystemLogNode() {
     this->mFilter = 20;
     this->mIsDelete = false;
     this->mWithAnnounce = false;
     this->mIsWarning = false;
+}
+
+inline void* sQuestManagerExt::cClearedQuestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline sQuestManagerExt::cClearedQuestInfo::cClearedQuestInfo() {
+}
+
+inline void* sQuestManagerExt::cTimer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline f32 sQuestManagerExt::cTimer::getMeasuringTime() const {
@@ -1505,10 +1543,22 @@ inline sQuestManagerExt::cTimer::cTimer() {
     this->mStartTime = 0;
 }
 
+inline void* sQuestManagerExt::cCallQuestAnnounce::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool sQuestManagerExt::cCallQuestAnnounce::isDelete() const {
     return this->mIsDelete;
 }
 
+inline void* sQuestManagerExt::cUnreleasedArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sQuestManagerExt::cUnreleasedArea::cUnreleasedArea() {
     this->mAreaId = 0;
+}
+
+inline void* sQuestManagerExt::cSayInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

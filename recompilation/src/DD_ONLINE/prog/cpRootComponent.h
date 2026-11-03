@@ -61,3 +61,7 @@ public:
     cDelegate_0<void> compMoveAfter;  // offset: 0x68
     static MyDTI DTI;
 };
+
+inline void* cpRootComponent::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

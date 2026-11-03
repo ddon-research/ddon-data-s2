@@ -82,3 +82,7 @@ namespace nShlStick {
         static MyDTI DTI;
     };
 }  // namespace nShlStick
+
+inline void* nShlStick::cStickObjectCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

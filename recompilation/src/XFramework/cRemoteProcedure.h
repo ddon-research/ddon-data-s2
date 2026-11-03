@@ -153,3 +153,7 @@ public:
 
 inline IStateMachineRpcReceiver::IStateMachineRpcReceiver() {
 }
+
+inline void* cRemoteProcedure::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

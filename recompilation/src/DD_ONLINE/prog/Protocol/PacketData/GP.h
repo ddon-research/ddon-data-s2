@@ -482,12 +482,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataCAPtoGPChangeElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCAPtoGPChangeElement::CDataCAPtoGPChangeElement() {
     this->m_unID = 0;
     this->m_unCAP = 0;
     this->m_unGP = 0;
     this->m_unBackIconID = 0;
     this->m_unFrameIconID = 0;
+}
+
+inline void* CDataGPCourseAvailable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataGPCourseAvailable::CDataGPCourseAvailable() {
@@ -499,11 +507,23 @@ inline CDataGPCourseAvailable::CDataGPCourseAvailable() {
     this->m_ullUseLimitTime = 0;
 }
 
+inline void* CDataGPCourseEffectParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataGPCourseEffectParam::CDataGPCourseEffectParam() {
     this->m_unParam0 = 0;
     this->m_unParam1 = 0;
     this->m_unEffectUID = 0;
     this->m_unEffectID = 0;
+}
+
+inline void* CDataGPCourseInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataGPCourseValid::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataGPCourseValid::CDataGPCourseValid() {
@@ -514,10 +534,22 @@ inline CDataGPCourseValid::CDataGPCourseValid() {
     this->m_ullStartTime = 0;
 }
 
+inline void* CDataGPDetail::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataGPPeriod::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataGPPeriod::CDataGPPeriod() {
     this->m_unGP = 0;
     this->m_bIsFreeGP = false;
     this->m_ullPeriod = 0;
+}
+
+inline void* CDataGPShopBuyHistoryElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataGPShopBuyHistoryElement::CDataGPShopBuyHistoryElement() {
@@ -526,9 +558,21 @@ inline CDataGPShopBuyHistoryElement::CDataGPShopBuyHistoryElement() {
     this->m_ullAcquisitionTime = 0;
 }
 
+inline void* CDataGPShopDisplayLineup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataGPShopDisplayType::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataGPShopDisplayType::CDataGPShopDisplayType() {
     this->m_unID = 0;
     this->m_unInGameUrlID = 0;
+}
+
+inline void* CDataGPShopLineupElementBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataGPShopLineupElementBase::CDataGPShopLineupElementBase() {
@@ -538,4 +582,8 @@ inline CDataGPShopLineupElementBase::CDataGPShopLineupElementBase() {
     this->m_unID = 0;
     this->m_unGP = 0;
     this->m_bIsInitialPrice = true;
+}
+
+inline void* CDataGPShopLineupElementCourse::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

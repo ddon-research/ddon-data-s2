@@ -135,6 +135,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpSlave::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void cpSlave::setRotTargetAngle(f32 angleY) {
+    this->mRotTargetAngle = angleY;
+}
+
 inline u32 cpSlave::getInterpolateType() {
     return (this->mInterpolateType == 0) ? 1u : this->mInterpolateType;
 }

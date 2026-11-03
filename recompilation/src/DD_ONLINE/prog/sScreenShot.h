@@ -249,6 +249,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* sScreenShot::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sScreenShot* sScreenShot::getInstance() {
     return ::sScreenShot::mpInstance;
 }

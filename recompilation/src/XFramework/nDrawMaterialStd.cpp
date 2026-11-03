@@ -2,10 +2,15 @@
 #include <new>
 #include "nDrawMaterialStd.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "cDraw.h"
 #include "nDraw.h"
 #include "nDrawMaterial.h"
+#include "nDrawResource.h"
+#include "sRender.h"
+#include "sScene.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

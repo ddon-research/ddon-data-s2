@@ -176,3 +176,7 @@ public:
     static const f32 DEFAULT_TARGET_MARKER_SCALE_MAGIC_BOW;
     static const f32 DEFAULT_TARGET_MARKER_SCALE_WIRE;
 };
+
+inline void* uGUIAim::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

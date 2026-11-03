@@ -110,6 +110,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cOcdDamageInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cOcdDamageInfo::setElementFinalType(cOcdDamageInfo::ELEMENT_FINAL_TYPE type) {
     this->mElementFinalType = type;
 }

@@ -275,3 +275,7 @@ namespace nNetwork {
         static MyDTI DTI;
     };
 }  // namespace nNetwork
+
+inline void* nNetwork::Session::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

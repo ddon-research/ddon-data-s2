@@ -143,6 +143,10 @@ private:
     static sAIPawnSys* mpInstance;
 };
 
+inline void* sAIPawnSys::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sAIPawnSys* sAIPawnSys::getInstance() {
     return ::sAIPawnSys::mpInstance;
 }

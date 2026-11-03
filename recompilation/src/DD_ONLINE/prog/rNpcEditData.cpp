@@ -3,9 +3,14 @@
 #include "rNpcEditData.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -35,8 +40,24 @@ __attribute__((weak)) void rNpcEditData::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) bool rNpcEditData::load(MtStream& in) {
-    DDON_STUB("rNpcEditData::load")
-    return {};
+        MtDataReader r(in, 4096u);
+        u32 header;
+        nDDOIO::readData(r, header);
+        if (header != 0x44454e) {
+            return false;
+        }
+        u32 dataVersion;
+        nDDOIO::readData(r, dataVersion);
+        if (dataVersion != 3) {
+            return false;
+        }
+        u32* t2 = this->mEquip;
+        u32 t1;
+        nDDOIO::readData(r, t1);
+        MtDataReader& t0 = r;
+        t0.read(t2, t1 * sizeof(u32));
+        nDDOIO::readData(r, this->mItem);
+        return true;
 }
 
 __attribute__((weak)) bool rNpcEditData::save(MtStream& out) {

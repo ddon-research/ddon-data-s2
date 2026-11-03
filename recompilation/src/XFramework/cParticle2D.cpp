@@ -4,9 +4,17 @@
 #include "../MT/MtColor.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtSpline.h"
+#include "cDraw.h"
+#include "cPrim.h"
+#include "cPrimTexHandle.h"
+#include "nEffect.h"
 #include "nPrim.h"
 #include "rEffect2D.h"
 #include "rEffectAnim.h"
+#include "rModel.h"
+#include "sEffect.h"
+#include "uEffect2D.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

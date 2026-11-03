@@ -6,6 +6,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cGUIInstance.h"
+#include "cGUIUtility.h"
 #include "nDDOUtility.h"
 #include "nHumanMsg.h"
 #include "../../XFramework/sGUI.h"

@@ -21,9 +21,14 @@ class cSetInfoOmTreasureBox;
 class cShopGoods;
 class cStorageDataEdit;
 namespace nCollision { class cObjectBase; }
+namespace nZone { class ShapeInfoAABB; }
 namespace nZone { class ShapeInfoBase; }
+namespace nZone { class ShapeInfoCapsule; }
+namespace nZone { class ShapeInfoCone; }
+namespace nZone { class ShapeInfoCylinder; }
 namespace nZone { class ShapeInfoOBB; }
 namespace nZone { class ShapeInfoPanel; }
+namespace nZone { class ShapeInfoSphere; }
 namespace nZone { class cLayoutElement; }
 class rItemList;
 class rMsgSet;
@@ -65,9 +70,14 @@ class MtDataWriter
     friend class cShopGoods;
     friend class cStorageDataEdit;
     friend class nCollision::cObjectBase;
+    friend class nZone::ShapeInfoAABB;
     friend class nZone::ShapeInfoBase;
+    friend class nZone::ShapeInfoCapsule;
+    friend class nZone::ShapeInfoCone;
+    friend class nZone::ShapeInfoCylinder;
     friend class nZone::ShapeInfoOBB;
     friend class nZone::ShapeInfoPanel;
+    friend class nZone::ShapeInfoSphere;
     friend class nZone::cLayoutElement;
     friend class rItemList;
     friend class rMsgSet;

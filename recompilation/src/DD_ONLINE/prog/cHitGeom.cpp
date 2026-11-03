@@ -2,13 +2,21 @@
 #include <new>
 #include "cHitGeom.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtGeomOBB.h"
 #include "../../MT/MtGeometry3D.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "cpObjCollision.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "rCollGeom.h"
+#include "uDDOModel.h"
+#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

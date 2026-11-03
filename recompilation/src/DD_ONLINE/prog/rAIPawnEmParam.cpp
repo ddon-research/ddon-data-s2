@@ -7,6 +7,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cAIObject.h"
+#include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "nDDOUtility.h"
 #include "rTbl2.h"
@@ -82,8 +83,10 @@ u32 rAIPawnEmParam::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rAIPawnEmParam::loadCore(MtDataReader& r) {
-    DDON_STUB("rAIPawnEmParam::loadCore")
-    return {};
+    this->mDistance = r.readF32();
+    this->mRangeSize = r.readF32();
+    this->mRootPoint = r.readU32();
+    return this->rTbl2<cAIPawnEmNode>::loadCore(r);
 }
 
 f32 rAIPawnEmParam::getDistance() const {

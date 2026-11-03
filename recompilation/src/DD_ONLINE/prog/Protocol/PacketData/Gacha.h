@@ -219,12 +219,28 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataGachaDrawGroupInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataGachaDrawGroupInfo::CDataGachaDrawGroupInfo() {
+}
+
+inline void* CDataGachaDrawInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataGachaDrawInfo::CDataGachaDrawInfo() {
     this->m_unNum = 0;
     this->m_bIsBonus = false;
+}
+
+inline void* CDataGachaInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataGachaItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataGachaItemInfo::CDataGachaItemInfo() {
@@ -233,6 +249,10 @@ inline CDataGachaItemInfo::CDataGachaItemInfo() {
     this->m_unEffect = 0;
     this->m_unItemId = 0;
     this->m_unItemNum = 0;
+}
+
+inline void* CDataGachaSettlementInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataGachaSettlementInfo::CDataGachaSettlementInfo() {

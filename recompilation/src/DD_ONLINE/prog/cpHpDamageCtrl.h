@@ -450,6 +450,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cDamageEffInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDamageSeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cpHpDamageCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cpHpDamageCtrl::getParentRegionNum() const {
     return this->mParentRegionStatusArray.::MtArray::mLength;
 }
@@ -538,6 +550,11 @@ inline void cpHpDamageCtrl::clearSoulAbsorpReqArray() {
     this->mSoulAbsorpReqArray.elems[7].mReqMsg.mDfdUID = 0;
     this->mSoulAbsorpReqArray.elems[7].mReqMsg.mHealVal = 0;
     this->mSoulAbsorpReqArray.elems[7].mIsSeted = false;
+}
+
+inline void cpHpDamageCtrl::resetDamageCheatCheckWork() {
+    this->mDamageCheatCheckSum = 0;
+    this->mDamageCheatCheckTimer = 0.0f;
 }
 
 inline HP_DATATYPE cpHpDamageCtrl::getDamageCheatCheckSum() const {

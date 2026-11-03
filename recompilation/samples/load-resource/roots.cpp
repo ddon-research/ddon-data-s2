@@ -18,6 +18,7 @@ extern const DdonRoot ddon_sample_rPartsCtrlTable;
 extern const DdonRoot ddon_sample_rRoomWearParam;
 extern const DdonRoot ddon_sample_rSndPitchLimit;
 extern const DdonRoot ddon_sample_rSoundOptData;
+extern const DdonRoot ddon_sample_rStarCatalog;
 extern const DdonRoot ddon_sample_rStartPosArea;
 extern const DdonRoot ddon_sample_rStatusGainTable;
 extern const DdonRoot ddon_sample_rVibration;
@@ -40,6 +41,7 @@ const DdonRoot* const ddon_sample_roots[] = {
     &ddon_sample_rRoomWearParam,
     &ddon_sample_rSndPitchLimit,
     &ddon_sample_rSoundOptData,
+    &ddon_sample_rStarCatalog,
     &ddon_sample_rStartPosArea,
     &ddon_sample_rStatusGainTable,
     &ddon_sample_rVibration,

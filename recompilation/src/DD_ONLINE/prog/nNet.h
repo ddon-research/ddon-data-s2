@@ -463,6 +463,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataClientPartyListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool nNet::cProgress::getWaitFlag() {
     return this->mWaitFlag;
 }

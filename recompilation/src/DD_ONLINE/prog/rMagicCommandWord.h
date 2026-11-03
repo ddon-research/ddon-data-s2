@@ -98,5 +98,25 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cMagicCommandWord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMagicCommandWord::cMagicCommandWord() : mWord() {
+}
+
+inline void* rMagicCommandWord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cMagicCommandWord::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMagicCommandWord::DTI)->memFree(p_addr);
+}
+
+inline void* cMagicCommandWord::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMagicCommandWord::DTI)->memAlloc(sz, align, ::cMagicCommandWord::DTI.::MtDTI::getID());
 }

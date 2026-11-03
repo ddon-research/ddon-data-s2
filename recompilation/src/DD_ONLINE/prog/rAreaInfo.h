@@ -105,6 +105,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rAreaInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAreaInfo::cAreaInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rAreaInfo::cAreaInfo::cAreaInfo() {
     this->mAreaId = 0;
     this->mPosX = 0;

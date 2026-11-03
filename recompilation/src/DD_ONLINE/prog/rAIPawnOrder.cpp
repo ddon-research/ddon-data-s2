@@ -48,8 +48,7 @@ inline void* rAIPawnOrder::operator new(size_t sz, u32 align) {
 }
 
 __attribute__((weak)) bool rAIPawnOrder::loadCore(MtDataReader& r) {
-    DDON_STUB("rAIPawnOrder::loadCore")
-    return {};
+        return this->rTbl2<cAIPawnOrderParam>::loadCore(r);
 }
 
 bool rAIPawnOrder::loadData(MtDataReader& in, cAIPawnOrderParam* pData) {

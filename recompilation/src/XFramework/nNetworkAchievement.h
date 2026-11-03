@@ -139,3 +139,7 @@ namespace nNetwork {
         };
     }  // namespace nAchievement
 }  // namespace nNetwork
+
+inline void* nNetwork::nAchievement::Object::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

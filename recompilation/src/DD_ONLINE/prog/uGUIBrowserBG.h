@@ -175,6 +175,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIBrowserBG::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nGUIExt::BROWSER_RESULT uGUIBrowserBG::getBrowserResult() {
     return this->mBrowserResult;
 }

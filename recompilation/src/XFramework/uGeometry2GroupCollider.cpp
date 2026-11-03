@@ -8,11 +8,13 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "cUnit.h"
 #include "nCollision.h"
 #include "sCollision.h"
 #include "uGeometry2Base.h"
 #include "uGeometry2Collider.h"
+#include "uGeometry2Group.h"
 #include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

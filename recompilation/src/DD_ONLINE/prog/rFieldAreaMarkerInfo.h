@@ -124,6 +124,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rFieldAreaMarkerInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rFieldAreaMarkerInfo::cMarkerInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rFieldAreaMarkerInfo::cMarkerInfo::cMarkerInfo() {
     this->mGroupNo = 0;
     this->mUniqueId = 0;

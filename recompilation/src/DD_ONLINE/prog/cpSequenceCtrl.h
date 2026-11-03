@@ -7,7 +7,7 @@
 #include "../../MT/MtDTI.h"
 #include "cDelegate.h"
 #include "cpComponent.h"
-#include "../../generated/shared/nSequence.h"
+#include "../../generated/rPawnAIAction/nSequence.h"
 #include "../../XFramework/uModel.h"
 
 // Forward declarations
@@ -130,3 +130,7 @@ private:
     static const s32 RangeMax = 10;
     static const s32 SeqCntMax = 10;
 };
+
+inline void* cpSequenceCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

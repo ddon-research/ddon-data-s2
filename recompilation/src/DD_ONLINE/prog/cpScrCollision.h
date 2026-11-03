@@ -190,6 +190,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cGroundAttrInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cpScrCollision::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cpScrCollision::getFilter() {
     return this->mFilter;
 }

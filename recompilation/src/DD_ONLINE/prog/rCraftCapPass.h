@@ -115,6 +115,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCraftCapPassData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCraftCapPassData::cCraftCapPassData() {
     this->mRecipeId = 0;
     this->mStartLv = 1;
@@ -122,4 +126,20 @@ inline cCraftCapPassData::cCraftCapPassData() {
     this->mVer = 0;
     this->mRound = 1;
     this->mType = 0;
+}
+
+inline void* rCraftCapPass::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCraftCapPassData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftCapPassData::DTI)->memFree(p_addr);
+}
+
+inline void* cCraftCapPassData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftCapPassData::DTI)->memAlloc(sz, align, ::cCraftCapPassData::DTI.::MtDTI::getID());
 }

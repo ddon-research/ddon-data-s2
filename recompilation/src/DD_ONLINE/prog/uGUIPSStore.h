@@ -389,3 +389,23 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUIPSStore::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPSStore::cStationListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPSStore::cHistoryListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPSStore::cStationListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPSStore::cHistoryListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

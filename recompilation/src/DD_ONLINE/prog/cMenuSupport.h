@@ -312,6 +312,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cMenuDialogFlow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 cMenuDialogFlow::getChoicePos() {
     return this->mChoice;
 }
@@ -324,8 +328,16 @@ inline u32 cMenuDialogFlow::getNextBasePointerPriority() {
     return this->mNextPointerPriority;
 }
 
+inline void* cMenuSupport::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuSupport::cMenuSupport() {
     this->mpParentMenu = nullptr;
+}
+
+inline void* cMenuSupportList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u32 cMenuSupportList::getSortListCount() {
@@ -336,12 +348,20 @@ inline bool cMenuSupportList::getRemakeListFlag() {
     return this->mIsRemakeList;
 }
 
+inline void cMenuSupportList::resetRemakeListFlag() {
+    this->mIsRemakeList = false;
+}
+
 inline void cMenuSupportList::reqRemake() {
     this->mReqRemake = true;
 }
 
 inline cMenuSupportList::stAddMenu* cMenuSupportList::getEmptyAddMenu() {
     return this->mpAddMenu;
+}
+
+inline void* cMenuSupportMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline s32 cMenuSupportMenu::getCursor() {

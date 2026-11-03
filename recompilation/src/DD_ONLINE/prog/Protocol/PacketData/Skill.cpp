@@ -61,6 +61,30 @@ __attribute__((weak)) MtObject* CDataAbilityParam::MyDTI::newInstance() const {
     return nullptr;
 }
 
+const MtDTI& CDataLearnNormalSkillParam::getDTI() const {
+    return CDataLearnNormalSkillParam::DTI;
+}
+
+inline MtAllocator* CDataLearnNormalSkillParam::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataLearnNormalSkillParam::DTI);
+}
+
+void* CDataLearnNormalSkillParam::operator new(size_t sz, u32 align) {
+    return CDataLearnNormalSkillParam::getAllocator()->memAlloc(sz, align, CDataLearnNormalSkillParam::DTI.getID());
+}
+
+__attribute__((weak)) void CDataLearnNormalSkillParam::operator delete(void* p_addr) {
+    CDataLearnNormalSkillParam::getAllocator()->memFree(p_addr);
+}
+
+CDataLearnNormalSkillParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataLearnNormalSkillParam::MyDTI CDataLearnNormalSkillParam::DTI("CDataLearnNormalSkillParam", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataLearnNormalSkillParam::MyDTI::newInstance() const {
+    return new (16u) CDataLearnNormalSkillParam;
+}
+
 const MtDTI& CDataLearnedAcquirementParam::getDTI() const {
     return CDataLearnedAcquirementParam::DTI;
 }

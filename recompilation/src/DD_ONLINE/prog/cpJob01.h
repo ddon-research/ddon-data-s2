@@ -93,6 +93,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpJob01::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cpJob01::cpJob01() {
     this->mIsGuardMode = false;
     this->mIsCaounterWait = false;

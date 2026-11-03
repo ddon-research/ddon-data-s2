@@ -293,6 +293,22 @@ private:
     static const u32 VIB_CONTROL_NUM = 8;
 };
 
+inline void* sVibration::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sVibration* sVibration::getInstance() {
     return ::sVibration::mpInstance;
+}
+
+inline rVibration* sVibration::getVibration() {
+    return this->mpVibration;
+}
+
+inline u32 sVibration::getPadViewportNo(u32 No) const {
+    return this->mPadViewportNo[No];
+}
+
+inline u32 sVibration::getPadNum() const {
+    return 4;
 }

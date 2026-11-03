@@ -728,6 +728,7 @@ public:
 public:
     class cItemBag : public MtObject
     {
+        friend class sItemManager;
     public:
         enum ITEM_CATEGORY
         {
@@ -1405,6 +1406,10 @@ private:
     static sItemManager* mpInstance;
 };
 
+inline void* sItemManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sItemManager* sItemManager::getInstance() {
     return ::sItemManager::mpInstance;
 }
@@ -1455,8 +1460,28 @@ inline MtTypedArray<cShopGoods>* sItemManager::cShop::getGoodsList() {
     return &this->mGoods;
 }
 
+inline void* sItemManager::stRequest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool sItemManager::stRequest::getResult() const {
     return this->mResult;
+}
+
+inline void* sItemManager::cItemBag::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 sItemManager::cItemBag::getUseItemSlotNum() {
+    return this->mUseItemSlotNum;
+}
+
+inline u32 sItemManager::cItemBag::getAllItemSlotNum() {
+    return this->mAllItemSlotNum;
+}
+
+inline void* sItemManager::cItemBag::cGetItemListData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sItemManager::cItemBag::cGetItemListData::cGetItemListData() {
@@ -1472,11 +1497,19 @@ inline sItemManager::cItemBag::cGetItemListData::cGetItemListData() {
     this->mItemNum = 0;
 }
 
+inline void* sItemManager::cItemBag::cGatheringItemData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sItemManager::cItemBag::cGatheringItemData::cGatheringItemData() {
     this->mLayerNo = 0;
     this->mPosId = 0;
     this->mStageId = 0;
     this->mGroupId = 0;
+}
+
+inline void* sItemManager::cItemBag::cCraftStartData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sItemManager::cItemBag::cCraftStartData::cCraftStartData() {
@@ -1485,8 +1518,16 @@ inline sItemManager::cItemBag::cCraftStartData::cCraftStartData() {
     this->mCreateCount = 1;
 }
 
+inline void* sItemManager::cItemBag::cCraftUpGradeData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sItemManager::cItemBag::cCraftUpGradeData::cCraftUpGradeData() {
     this->mMainPawnId = 0;
+}
+
+inline void* sItemManager::cItemBag::cCraftColorChange::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sItemManager::cItemBag::cCraftColorChange::cCraftColorChange() {
@@ -1494,14 +1535,26 @@ inline sItemManager::cItemBag::cCraftColorChange::cCraftColorChange() {
     this->mColor = 0;
 }
 
+inline void* sItemManager::cItemBag::cAreaMasterSuppyData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sItemManager::cItemBag::cAreaMasterSuppyData::cAreaMasterSuppyData() {
     this->mAreaID = 0;
     this->mIsCancel = false;
 }
 
+inline void* sItemManager::cSortParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sItemManager::cSortParam::cSortParam() {
     this->mSortType = 0;
     this->mSortDir = 0;
+}
+
+inline void* sItemManager::cItemParamList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sItemManager::cItemParamList::cItemParamList() {
@@ -1512,12 +1565,20 @@ inline cItemParam* sItemManager::cItemParamList::getItemParam() {
     return this->mpItemParam;
 }
 
+inline void* sItemManager::cEquipList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 sItemManager::cEquipList::getPawnId() {
     return this->mPawnId;
 }
 
 inline u32 sItemManager::cEquipList::getStorageType() {
     return this->mStorageType;
+}
+
+inline void* sItemManager::cEquipList::cEquipData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sItemManager::cEquipList::cEquipData::cEquipData() {
@@ -1527,16 +1588,32 @@ inline sItemManager::cEquipList::cEquipData::cEquipData() {
     this->mIsNone = false;
 }
 
+inline void* sItemManager::cChangeJob::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sItemManager::cChangeJob::cChangeJob() {
     this->mPawnId = 0;
     this->mJob = 0xFF;
     this->mpPacket = nullptr;
 }
 
+inline void* sItemManager::cGPDetail::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sItemManager::cHideEquip::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sItemManager::cHideEquip::cHideEquip() {
     this->mPlType = 0;
     this->mEquipType = 0;
     this->mIsHideOff = false;
+}
+
+inline void* sItemManager::cItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sItemManager::cItemList::cItemList() {

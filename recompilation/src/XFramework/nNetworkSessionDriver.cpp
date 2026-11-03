@@ -7,12 +7,16 @@
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
+#include "cRemoteCall.h"
 #include "nNetworkCallback.h"
 #include "nNetworkConnect.h"
 #include "nNetworkDatabase.h"
 #include "nNetworkMatch.h"
 #include "nNetworkSession.h"
+#include "nNetworkTagChecker.h"
 #include "nNetworkUtil.h"
+#include "sNetwork.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

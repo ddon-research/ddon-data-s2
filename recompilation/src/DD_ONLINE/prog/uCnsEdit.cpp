@@ -5,7 +5,10 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "cDelegate.h"
+#include "../../XFramework/cUnit.h"
 #include "../../XFramework/uConstraint.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB

@@ -884,6 +884,10 @@ namespace nLoginSession {
     };
 }  // namespace nLoginSession
 
+inline void* nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::CPacket_L2C_CLIENT_CHALLENGE_RES() {
     this->m_usError = 0;
     this->m_bIsReceived = false;
@@ -954,11 +958,19 @@ inline nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::CPacket_L2C_CLIENT_CHALL
     this->m_ucPasswordEnc[1] = 0;
 }
 
+inline void* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::CPacket_L2C_CREATE_CHARACTER_DATA_NTC() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_unCharacterID = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::CPacket_L2C_CREATE_CHARACTER_DATA_RES() {
@@ -968,10 +980,18 @@ inline nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::CPacket_L2C_CREATE_
     this->m_bIsReceived = false;
 }
 
+inline void* nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::CPacket_L2C_DECIDE_CHARACTER_ID_RES() {
@@ -982,15 +1002,27 @@ inline nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::CPacket_L2C_DECIDE_CH
     this->m_unCharacterID = 0;
 }
 
+inline void* nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::CPacket_L2C_DELETE_CHARACTER_INFO_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
+inline void* nLoginSession::CPacket_L2C_EJECTION_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nLoginSession::CPacket_L2C_EJECTION_NTC::CPacket_L2C_EJECTION_NTC() {
     this->m_usError = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::CPacket_L2C_GET_CHARACTER_LIST_RES() {
@@ -999,9 +1031,17 @@ inline nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::CPacket_L2C_GET_CHARAC
     this->m_bIsReceived = false;
 }
 
+inline void* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC() {
     this->m_usError = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES() {
@@ -1010,10 +1050,26 @@ inline nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::CPacket_L2C_GET_ER
     this->m_bIsReceived = false;
 }
 
+inline void* nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::CPacket_L2C_GET_GAME_SERVER_LIST_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::CPacket_L2C_GP_COURSE_GET_INFO_RES() {
@@ -1023,10 +1079,18 @@ inline nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::CPacket_L2C_GP_COURSE_
     this->m_bIsReceived = false;
 }
 
+inline void* nLoginSession::CPacket_L2C_LOGIN_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nLoginSession::CPacket_L2C_LOGIN_RES::CPacket_L2C_LOGIN_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::CPacket_L2C_LOGIN_WAIT_NUM_NTC() {
@@ -1035,10 +1099,22 @@ inline nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::CPacket_L2C_LOGIN_WAIT_NUM
     this->m_bIsReceived = false;
 }
 
+inline void* nLoginSession::CPacket_L2C_LOGOUT_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nLoginSession::CPacket_L2C_LOGOUT_RES::CPacket_L2C_LOGOUT_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nLoginSession::CPacket_L2C_PING_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nLoginSession::CPacket_L2C_PING_RES::CPacket_L2C_PING_RES() {

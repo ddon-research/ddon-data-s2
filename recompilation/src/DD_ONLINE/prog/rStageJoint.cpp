@@ -5,13 +5,17 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtStlAllocator.h"
 #include "../../MT/MtStlCustom.h"
 #include "../../MT/MtString.h"
 #include "cResPath.h"
 #include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "../../generated/shared/nZoneUnitCtrl.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -97,18 +101,14 @@ __attribute__((weak)) void rStageJoint::Param::setAreaNumX(u32 numX) {
     /* stub */
 }
 
-u32 rStageJoint::Param::getAreaNumX() const {
-    return mAreaNumX;
-}
+static auto ddon_emit_0x01ab3180 __attribute__((used)) = &rStageJoint::Param::getAreaNumX;
 
 __attribute__((weak)) void rStageJoint::Param::setAreaNumZ(u32 numZ) {
     DDON_STUB("rStageJoint::Param::setAreaNumZ")
     /* stub */
 }
 
-u32 rStageJoint::Param::getAreaNumZ() const {
-    return mAreaNumZ;
-}
+static auto ddon_emit_0x01ab3190 __attribute__((used)) = &rStageJoint::Param::getAreaNumZ;
 
 __attribute__((weak)) void rStageJoint::Param::setAreaData(s8 val, u32 idx) {
     DDON_STUB("rStageJoint::Param::setAreaData")
@@ -134,9 +134,7 @@ s8 rStageJoint::Param::getAreaData(u32 z, u32 x) const {
 __attribute__((weak)) void rStageJoint::Param::setAreaNum(u32) {
 }
 
-u32 rStageJoint::Param::getAreaNum() const {
-    return mAreaNumZ * mAreaNumX;
-}
+static auto ddon_emit_0x01ab31a0 __attribute__((used)) = &rStageJoint::Param::getAreaNum;
 
 rStageJoint::Param::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
@@ -152,8 +150,6 @@ const MtDTI& rStageJoint::Info::getDTI() const {
 }
 
 rStageJoint::Info::~Info() {
-    DDON_STUB("rStageJoint::Info::~Info")
-    /* stub */
 }
 
 __attribute__((weak)) void rStageJoint::Info::createProperty(MtPropertyList& s) {
@@ -174,9 +170,7 @@ void rStageJoint::Info::setModelName(const MtString& name) {
     snprintf(&mModel[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageJoint::Info::getModelName() const {
-    return &mModel[0];
-}
+static auto ddon_emit_0x01ab30f0 __attribute__((used)) = &rStageJoint::Info::getModelName;
 
 void rStageJoint::Info::setScrSbcName(const MtString& name, u32 idx) {
     snprintf(reinterpret_cast<char*>(mScrSbc[idx]), 64ul, "%s", name.ptr());
@@ -190,9 +184,7 @@ __attribute__((weak)) MT_CTSTR rStageJoint::Info::getScrSbcName(u32 idx) const {
 __attribute__((weak)) void rStageJoint::Info::setScrSbcNameNum(u32) {
 }
 
-u32 rStageJoint::Info::getScrSbcNameNum() const {
-    return 3;
-}
+static auto ddon_emit_0x01ab30b0 __attribute__((used)) = &rStageJoint::Info::getScrSbcNameNum;
 
 void rStageJoint::Info::setEffSbcName(const MtString& name, u32 idx) {
     snprintf(reinterpret_cast<char*>(mEffSbc[idx]), 64ul, "%s", name.ptr());
@@ -206,49 +198,37 @@ __attribute__((weak)) MT_CTSTR rStageJoint::Info::getEffSbcName(u32 idx) const {
 __attribute__((weak)) void rStageJoint::Info::setEffSbcNameNum(u32) {
 }
 
-u32 rStageJoint::Info::getEffSbcNameNum() const {
-    return 3;
-}
+static auto ddon_emit_0x01ab30d0 __attribute__((used)) = &rStageJoint::Info::getEffSbcNameNum;
 
 void rStageJoint::Info::setLightName(const MtString& name) {
     snprintf(&mLight[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageJoint::Info::getLightName() const {
-    return &mLight[0];
-}
+static auto ddon_emit_0x01ab3100 __attribute__((used)) = &rStageJoint::Info::getLightName;
 
 void rStageJoint::Info::setNaviMeshName(const MtString& name) {
     snprintf(&mNaviMesh[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageJoint::Info::getNaviMeshName() const {
-    return &mNaviMesh[0];
-}
+static auto ddon_emit_0x01ab3110 __attribute__((used)) = &rStageJoint::Info::getNaviMeshName;
 
 void rStageJoint::Info::setPlantTreeName(const MtString& name) {
     snprintf(&mPlantTree[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageJoint::Info::getPlantTreeName() const {
-    return &mPlantTree[0];
-}
+static auto ddon_emit_0x01ab3120 __attribute__((used)) = &rStageJoint::Info::getPlantTreeName;
 
 void rStageJoint::Info::setEpvName(const MtString& name) {
     snprintf(&mEpv[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageJoint::Info::getEpvName() const {
-    return &mEpv[0];
-}
+static auto ddon_emit_0x01ab3130 __attribute__((used)) = &rStageJoint::Info::getEpvName;
 
 void rStageJoint::Info::setSndInfoName(const MtString& name) {
     snprintf(&mSndInfo[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageJoint::Info::getSndInfoName() const {
-    return &mSndInfo[0];
-}
+static auto ddon_emit_0x01ab3140 __attribute__((used)) = &rStageJoint::Info::getSndInfoName;
 
 u64 rStageJoint::Info::getEfcColorZone() const {
     return mEfcColorZone.mId;

@@ -25,8 +25,11 @@ class CDataCraftProduct;
 class CDataCraftProductInfo;
 class CDataCraftProgress;
 class CDataCraftSkillAnalyzeResult;
+class CDataCraftSkillRate;
 class CDataCraftSupportPawnID;
 class CDataCraftTimeSaveCost;
+class CDataCurrentEquipInfo;
+class CDataEquipSlot;
 
 namespace nCraft {
     enum E_CRAFT_RECIPE_CATEGORY_TYPE
@@ -77,6 +80,7 @@ namespace nCraft {
 
 // Type aliases from DWARF
 using CCraftPawnInfo = CDataCraftPawnInfo;
+using CEquipSlot = CDataEquipSlot;
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
@@ -400,6 +404,40 @@ public:
     static MyDTI DTI;
 };
 
+class CDataCraftSkillRate : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataCraftSkillRate();
+    explicit CDataCraftSkillRate(u8, u8, u8);
+public:
+    u8 m_ucPawnType;  // offset: 0x8
+    u8 m_ucSkillType;  // offset: 0x9
+    u8 m_ucRate;  // offset: 0xa
+    static MyDTI DTI;
+};
+
 class CDataCraftSupportPawnID : public CPacketDataBase
 {
 public:
@@ -467,20 +505,108 @@ public:
     static MyDTI DTI;
 };
 
+class CDataEquipSlot : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataEquipSlot();
+    explicit CDataEquipSlot(u32, u32, u8, u8);
+public:
+    u32 m_unCharacterId;  // offset: 0x8
+    u32 m_unPawnId;  // offset: 0xc
+    u8 m_ucEquipType;  // offset: 0x10
+    u8 m_ucEquipSlotNo;  // offset: 0x11
+    static MyDTI DTI;
+};
+
+class CDataCurrentEquipInfo : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataCurrentEquipInfo();
+    explicit CDataCurrentEquipInfo(const char*, const CEquipSlot&);
+public:
+    MtString m_wstrItemUID;  // offset: 0x8
+    CEquipSlot m_EquipSlot;  // offset: 0x10
+    static MyDTI DTI;
+};
+
+inline void* CDataCraftColorant::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCraftColorant::CDataCraftColorant() {
     this->m_ucItemNum = 0;
+}
+
+inline void* CDataCraftElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataCraftElement::CDataCraftElement() {
     this->m_ucSlotNo = 0;
 }
 
+inline void* CDataCraftMaterial::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCraftMaterial::CDataCraftMaterial() {
     this->m_unItemNum = 0;
 }
 
+inline void* CDataCraftPawnInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCraftPawnInfo::CDataCraftPawnInfo() {
     this->m_unPawnID = 0;
+}
+
+inline void* CDataCraftPawnList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataCraftPawnList::CDataCraftPawnList() {
@@ -490,10 +616,18 @@ inline CDataCraftPawnList::CDataCraftPawnList() {
     this->m_unCraftExp = 0;
 }
 
+inline void* CDataCraftProduct::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCraftProduct::CDataCraftProduct() {
     this->m_unItemID = 0;
     this->m_unItemNum = 0;
     this->m_ucPlusValue = 0;
+}
+
+inline void* CDataCraftProductInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataCraftProductInfo::CDataCraftProductInfo() {
@@ -503,6 +637,10 @@ inline CDataCraftProductInfo::CDataCraftProductInfo() {
     this->m_unExp = 0;
     this->m_unExtraBonus = 0;
     this->m_bIsGreatSuccess = false;
+}
+
+inline void* CDataCraftProgress::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataCraftProgress::CDataCraftProgress() {
@@ -516,6 +654,10 @@ inline CDataCraftProgress::CDataCraftProgress() {
     this->m_unExp = 0;
 }
 
+inline void* CDataCraftSkillAnalyzeResult::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCraftSkillAnalyzeResult::CDataCraftSkillAnalyzeResult() {
     this->m_ucSkillType = 0;
     this->m_ucRate = 0;
@@ -523,8 +665,26 @@ inline CDataCraftSkillAnalyzeResult::CDataCraftSkillAnalyzeResult() {
     this->m_unValue2 = 0;
 }
 
+inline void* CDataCraftSkillRate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataCraftSkillRate::CDataCraftSkillRate() {
+    this->m_ucPawnType = 0;
+    this->m_ucSkillType = 0;
+    this->m_ucRate = 0;
+}
+
+inline void* CDataCraftSupportPawnID::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCraftSupportPawnID::CDataCraftSupportPawnID() {
     this->m_unPawnID = 0;
+}
+
+inline void* CDataCraftTimeSaveCost::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataCraftTimeSaveCost::CDataCraftTimeSaveCost() {
@@ -532,4 +692,22 @@ inline CDataCraftTimeSaveCost::CDataCraftTimeSaveCost() {
     this->m_ucType = 0;
     this->m_unPrice = 0;
     this->m_unSec = 0;
+}
+
+inline void* CDataCurrentEquipInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataCurrentEquipInfo::CDataCurrentEquipInfo() {
+}
+
+inline void* CDataEquipSlot::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataEquipSlot::CDataEquipSlot() {
+    this->m_ucEquipType = 0;
+    this->m_ucEquipSlotNo = 0;
+    this->m_unCharacterId = 0;
+    this->m_unPawnId = 0;
 }

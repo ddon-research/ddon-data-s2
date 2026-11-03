@@ -2,19 +2,30 @@
 #include <new>
 #include "uGUICaplinkTrophyTop.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "../../XFramework/cCaplinkContentAchievementListGet.h"
+#include "../../XFramework/cCaplinkContentAchievementRelationGet.h"
+#include "../../XFramework/cCaplinkContext.h"
 #include "cControl.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
 #include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "sCaplinkManager.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #include "uGUICaplinkProfile.h"
+#include "uGUICaplinkTopMenu.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -134,12 +145,12 @@ void uGUICaplinkTrophyTop::hideListItem(uGUIBase::cScrollListItemBase* pListItem
     setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgComment), "", 0u, false);
     setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgNum), "", 0u, false);
     if (pItem->mpInstAnimStamp != nullptr) {
-        pItem->mpInstAnimStamp->cGUIInstance::setVisible(false);
+        pItem->mpInstAnimStamp->setVisible(false);
     }
     if (pItem->mpInstAnimLoading != nullptr) {
-        pItem->mpInstAnimLoading->cGUIInstance::setVisible(false);
+        pItem->mpInstAnimLoading->setVisible(false);
     }
-    pItem->mIcon.cCaplinkProfIconLoader::clear();
+    pItem->mIcon.clear();
     cGUIUtility::setExecuteTree(static_cast<cGUIInstance*>(pListItem->mpInstBase), false);
 }
 
@@ -182,8 +193,6 @@ inline void uGUICaplinkTrophyTop::cListItem::operator delete(void* p_addr) {
 }
 
 uGUICaplinkTrophyTop::cListItem::~cListItem() {
-    DDON_STUB("uGUICaplinkTrophyTop::cListItem::~cListItem")
-    /* stub */
 }
 
 uGUICaplinkTrophyTop::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

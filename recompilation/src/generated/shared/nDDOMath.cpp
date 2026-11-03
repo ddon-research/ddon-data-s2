@@ -94,8 +94,10 @@ __attribute__((weak)) f32 nDDOMath::calcYZAngle(const MtVector3& v0, const MtVec
 }
 
 __attribute__((weak)) f32 nDDOMath::calcAngle(const MtVector3& v0, const MtVector3& v1) {
-    DDON_STUB("nDDOMath::calcAngle")
-    return {};
+        f32 cos = ((v1.x * v0.x) + (v1.y * v0.y) + (v1.z * v0.z)) / (sqrtf(((v0.x * v0.x) + (v0.y * v0.y)) + (v0.z * v0.z)) * sqrtf(((v1.x * v1.x) + (v1.y * v1.y)) + (v1.z * v1.z)));
+        cos = (cos > 1.0f) ? 1.0f : cos;
+        cos = (cos < -1.0f) ? -1.0f : cos;
+        return acosf(cos);
 }
 
 __attribute__((weak)) f32 nDDOMath::calcAngleSign(const MtVector3& v0, const MtVector3& v1, const MtVector3& Axis) {

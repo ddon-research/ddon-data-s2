@@ -6,9 +6,14 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetContext.h"
+#include "../MT/MtNetCore.h"
 #include "../MT/MtNetObject.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
+#include "nNetworkRanking.h"
+#include "nNetworkSessionDriver.h"
+#include "nNetworkStorage.h"
 #include "sNetwork.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

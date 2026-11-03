@@ -2,17 +2,202 @@
 #include <new>
 #include "cAISvPathFinding.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCollection.h"
+#include "../MT/MtCollision.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtGeometry3D.h"
 #include "../MT/MtMath.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtPropertyList.h"
 #include "cAI.h"
 #include "cAIService.h"
+#include "cResource.h"
+#include "rAIPathBase.h"
+#include "rNavigationMesh.h"
+#include "sAI.h"
+#include "sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+const MtDTI& cAISvNavPathFinding::getDTI() const {
+    return cAISvNavPathFinding::DTI;
+}
+
+inline void cAISvNavPathFinding::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAISvNavPathFinding::DTI)->memFree(p_addr);
+}
+
+__attribute__((noinline)) cAISvNavPathFinding::~cAISvNavPathFinding() {
+    DDON_STUB("cAISvNavPathFinding::~cAISvNavPathFinding")
+    /* stub */
+}
+
+__attribute__((weak)) void cAISvNavPathFinding::reset() {
+}
+
+__attribute__((weak)) void cAISvNavPathFinding::createProperty(MtPropertyList& s) {
+    DDON_STUB("cAISvNavPathFinding::createProperty")
+    /* stub */
+}
+
+MtUI* cAISvNavPathFinding::createUI(MtProperty& prop) {
+    return this->cAIService::createUI(prop);
+}
+
+__attribute__((weak)) void cAISvNavPathFinding::setNavigationMesh(rNavigationMesh* _pNavigationMesh) {
+    DDON_STUB("cAISvNavPathFinding::setNavigationMesh")
+    /* stub */
+}
+
+__attribute__((weak)) void cAISvNavPathFinding::removeNavigationMesh() {
+    DDON_STUB("cAISvNavPathFinding::removeNavigationMesh")
+    /* stub */
+}
+
+__attribute__((weak)) bool cAISvNavPathFinding::getJointEdge(u32 node0, u32 node1, MtLineSegment& line) {
+    DDON_STUB("cAISvNavPathFinding::getJointEdge")
+    return {};
+}
+
+cAIGraph::Node* cAISvNavPathFinding::getNode(bool useWorldOffset, const MtVector3& pos, f32 low, f32 high, bool f) {
+    return getNodeCore(useWorldOffset, pos, f, low, high, 0u, 0u, 0u, 0u);
+}
+
+__attribute__((weak)) MtTriangle cAISvNavPathFinding::getTriangle(cAIGraph::Node* pNode, bool useWorldOffset) {
+    DDON_STUB("cAISvNavPathFinding::getTriangle")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) bool cAISvNavPathFinding::AreaFunc(MtObject* adr1, u32& num, u32& index, f32& cost, u32& param, bool f) {
+    DDON_STUB("cAISvNavPathFinding::AreaFunc")
+    return {};
+}
+
+__attribute__((weak)) cAIGraph::Node* cAISvNavPathFinding::getNodeCore(bool useWorldOffset, const MtVector3& pos, bool f, f32 low, f32 high, u32 attr, u32 index, u32 boolean, u32 exception) {
+    DDON_STUB("cAISvNavPathFinding::getNodeCore")
+    return nullptr;
+}
+
+__attribute__((weak)) void cAISvNavPathFinding::getNodeToAABB(MtArray& a, const MtAABB& aabb, bool useWorldOffset) {
+    DDON_STUB("cAISvNavPathFinding::getNodeToAABB")
+    /* stub */
+}
+
+void cAISvNavPathFinding::setNumberOfVertex(u32 num) {
+    if (mpVertex != nullptr) {
+        MtMemoryAllocator::getAllocator(cAISvNavPathFinding::DTI)->memFree(static_cast<void*>(mpVertex));
+    }
+    if (mpNearWall != nullptr) {
+        MtMemoryAllocator::getAllocator(cAISvNavPathFinding::DTI)->memFree(static_cast<void*>(mpNearWall));
+    }
+    if (mpWallDistance != nullptr) {
+        MtMemoryAllocator::getAllocator(cAISvNavPathFinding::DTI)->memFree(static_cast<void*>(mpWallDistance));
+    }
+    if (num != 0) {
+        mpVertex = static_cast<MtVector3*>(MtMemoryAllocator::getAllocator(cAISvNavPathFinding::DTI)->memAlloc(static_cast<size_t>(num) * 16, 16u));
+        mpNearWall = static_cast<bool*>(MtMemoryAllocator::getAllocator(cAISvNavPathFinding::DTI)->memAlloc(num, 16u));
+        mpWallDistance = static_cast<u16*>(MtMemoryAllocator::getAllocator(cAISvNavPathFinding::DTI)->memAlloc(static_cast<size_t>(num) * 2, 16u));
+    }
+    mNumberOfVertex = static_cast<unsigned short>(num);
+}
+
+__attribute__((weak)) void cAISvNavPathFinding::setNavCell(rNavigationMesh::nodeData* pNode, u32 index, u32& vn, u32& pn) {
+    DDON_STUB("cAISvNavPathFinding::setNavCell")
+    /* stub */
+}
+
+__attribute__((weak)) void cAISvNavPathFinding::setTree(cAIQuadTree* pTree) {
+    DDON_STUB("cAISvNavPathFinding::setTree")
+    /* stub */
+}
+
+__attribute__((weak)) void cAISvNavPathFinding::setHashArea(u32 size) {
+    DDON_STUB("cAISvNavPathFinding::setHashArea")
+    /* stub */
+}
+
+__attribute__((weak)) bool cAISvNavPathFinding::intersection(cAISvNavPathFinding::navCell* node, const MtVector3& pos, f32* d) {
+    DDON_STUB("cAISvNavPathFinding::intersection")
+    return {};
+}
+
+__attribute__((weak)) cAIGraph::Node* cAISvNavPathFinding::getAroundNode(const MtVector3& pos, u32 attr, u32 index, u32 boolean) {
+    DDON_STUB("cAISvNavPathFinding::getAroundNode")
+    return nullptr;
+}
+
+__attribute__((weak)) bool cAISvNavPathFinding::intersectNode(cAIGraph::Node* pNode, const MtSphere& s, bool useWorldOffset) {
+    DDON_STUB("cAISvNavPathFinding::intersectNode")
+    return {};
+}
+
+__attribute__((weak)) bool cAISvNavPathFinding::intersectNode(cAIGraph::Node* pNode, const MtCapsule& c, bool useWorldOffset) {
+    DDON_STUB("cAISvNavPathFinding::intersectNode")
+    return {};
+}
+
+__attribute__((weak)) bool cAISvNavPathFinding::intersectNode(cAIGraph::Node* pNode, const MtAABB& a, bool useWorldOffset) {
+    DDON_STUB("cAISvNavPathFinding::intersectNode")
+    return {};
+}
+
+__attribute__((weak)) bool cAISvNavPathFinding::intersectNode(cAIGraph::Node* pNode, const MtOBB& o, bool useWorldOffset) {
+    DDON_STUB("cAISvNavPathFinding::intersectNode")
+    return {};
+}
+
+cAISvNavPathFinding::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cAISvNavPathFinding::MyDTI cAISvNavPathFinding::DTI("cAISvNavPathFinding", &::cAISvPathFinding::DTI, 240ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cAISvNavPathFinding::MyDTI::newInstance() const {
+    DDON_STUB("cAISvNavPathFinding::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cAISvNavPathFinding::navCell::getDTI() const {
+    return cAISvNavPathFinding::navCell::DTI;
+}
+
+inline void cAISvNavPathFinding::navCell::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAISvNavPathFinding::navCell::DTI)->memFree(p_addr);
+}
+
+cAISvNavPathFinding::navCell::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cAISvNavPathFinding::navCell::MyDTI cAISvNavPathFinding::navCell::DTI("cAISvNavPathFinding::navCell", &::MtObject::DTI, 32ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cAISvNavPathFinding::navCell::MyDTI::newInstance() const {
+    DDON_STUB("cAISvNavPathFinding::navCell::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cAISvNavPathFinding::NavArea::getDTI() const {
+    return cAISvNavPathFinding::NavArea::DTI;
+}
+
+cAISvNavPathFinding::NavArea::~NavArea() {
+    if (mpLink != nullptr) {
+        MtMemoryAllocator::getAllocator(cAISvPathFinding::DTI)->memFree(static_cast<void*>(mpLink));
+    }
+    if (mpChild == nullptr) {
+        return;
+    }
+    MtMemoryAllocator::getAllocator(cAISvPathFinding::DTI)->memFree(static_cast<void*>(mpChild));
+}
+
+cAISvNavPathFinding::NavArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cAISvNavPathFinding::NavArea::MyDTI cAISvNavPathFinding::NavArea::DTI("cAISvNavPathFinding::NavArea", &::MtObject::DTI, 48ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cAISvNavPathFinding::NavArea::MyDTI::newInstance() const {
+    DDON_STUB("cAISvNavPathFinding::NavArea::MyDTI::newInstance")
+    return nullptr;
+}
 
 const MtDTI& cAISvPathFinding::getDTI() const {
     return cAISvPathFinding::DTI;

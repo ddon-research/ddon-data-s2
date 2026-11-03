@@ -377,6 +377,14 @@ public:
     static const stBrowserSizeParam mBrowserSizeTable[4];
 };
 
+inline u32 cBrowserRequest::getRequest() {
+    return this->mRequest;
+}
+
+inline void* sBrowser::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sBrowser* sBrowser::getInstance() {
     return ::sBrowser::mpInstance;
 }
@@ -423,4 +431,8 @@ inline void sBrowser::setLoginServerPort(u32 port) {
 
 inline bool sBrowser::isInputEnable() {
     return this->mIsInputEnable;
+}
+
+inline u32 sBrowser::getFunctionButton() const {
+    return this->mFunctionButton;
 }

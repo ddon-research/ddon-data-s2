@@ -18,6 +18,7 @@ class MtString;
 // Declarations
 class CDataAbilityLevelParam;
 class CDataAbilityParam;
+class CDataLearnNormalSkillParam;
 class CDataLearnedAcquirementParam;
 class CDataNormalSkillParam;
 class CDataPresetAbilityParam;
@@ -106,6 +107,38 @@ public:
     u8 m_ucType;  // offset: 0xf
     u32 m_unCost;  // offset: 0x10
     MtTypedArray<CDataAbilityLevelParam> m_Param;  // offset: 0x18
+    static MyDTI DTI;
+};
+
+class CDataLearnNormalSkillParam : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataLearnNormalSkillParam();
+    explicit CDataLearnNormalSkillParam(u32);
+public:
+    u32 m_unSkillNo;  // offset: 0x8
     static MyDTI DTI;
 };
 
@@ -356,11 +389,31 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataAbilityLevelParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataAbilityLevelParam::CDataAbilityLevelParam() {
     this->m_ucLv = 0;
     this->m_unRequireJobLevel = 0;
     this->m_unRequireJobPoint = 0;
     this->m_bIsRelease = false;
+}
+
+inline void* CDataAbilityParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataLearnNormalSkillParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataLearnNormalSkillParam::CDataLearnNormalSkillParam() {
+    this->m_unSkillNo = 0;
+}
+
+inline void* CDataLearnedAcquirementParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataLearnedAcquirementParam::CDataLearnedAcquirementParam() {
@@ -371,6 +424,10 @@ inline CDataLearnedAcquirementParam::CDataLearnedAcquirementParam() {
     this->m_unAcquirementParamID = 0;
 }
 
+inline void* CDataNormalSkillParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataNormalSkillParam::CDataNormalSkillParam() {
     this->m_ucJob = 0;
     this->m_unSkillNo = 0;
@@ -378,8 +435,16 @@ inline CDataNormalSkillParam::CDataNormalSkillParam() {
     this->m_unPreSkillNo = 0;
 }
 
+inline void* CDataPresetAbilityParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataPresetAbilityParam::CDataPresetAbilityParam() {
     this->m_ucPresetNo = 0;
+}
+
+inline void* CDataReleaseAcquirementParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataReleaseAcquirementParam::CDataReleaseAcquirementParam() {
@@ -390,6 +455,10 @@ inline CDataReleaseAcquirementParam::CDataReleaseAcquirementParam() {
     this->m_unAcquirementParamID = 0;
 }
 
+inline void* CDataSetAcquirementParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataSetAcquirementParam::CDataSetAcquirementParam() {
     this->m_ucJob = 0;
     this->m_ucType = 0;
@@ -398,11 +467,19 @@ inline CDataSetAcquirementParam::CDataSetAcquirementParam() {
     this->m_ucAcquirementLv = 0;
 }
 
+inline void* CDataSkillLevelParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataSkillLevelParam::CDataSkillLevelParam() {
     this->m_ucLv = 0;
     this->m_unRequireJobLevel = 0;
     this->m_unRequireJobPoint = 0;
     this->m_bIsRelease = false;
+}
+
+inline void* CDataSkillParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataSkillParam::CDataSkillParam() {

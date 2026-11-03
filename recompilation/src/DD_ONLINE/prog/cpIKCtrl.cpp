@@ -6,10 +6,15 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "cDelegate.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "rIKCtrl.h"
+#include "sArchiveManager.h"
 #include "uCnsDDOIK.h"
 #include "uCnsIKHandle.h"
 #include "uCnsIKTarget.h"
@@ -72,9 +77,7 @@ void cIKHandle::setTargetJointDef(u32 JntNo) {
     }
 }
 
-u32 cIKHandle::getTargetJoint() {
-    return mTargetJntNo;
-}
+static auto ddon_emit_0x01a5a1f0 __attribute__((used)) = &cIKHandle::getTargetJoint;
 
 void cIKHandle::setBehavior(nIKCtrl::EFF_BEHAVIOR behavior) {
     mBehavior = static_cast<u32>(behavior);
@@ -254,9 +257,7 @@ void cpIKCtrl::setResource(rIKCtrl* pRes) {
     init();
 }
 
-rIKCtrl* cpIKCtrl::getResource() {
-    return mpResource;
-}
+static auto ddon_emit_0x01a5a210 __attribute__((used)) = &cpIKCtrl::getResource;
 
 void cpIKCtrl::checkResetIKHandle() {
     if (!mIsReset) {

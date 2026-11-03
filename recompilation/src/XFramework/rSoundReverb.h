@@ -143,3 +143,11 @@ protected:
     static const u32 NativeFileMagic = 1381385554;
     static const s32 NativeFileVersion = 1;
 };
+
+inline void* rSoundReverb::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rSoundReverb::cSoundReverbData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

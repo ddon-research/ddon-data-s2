@@ -155,6 +155,10 @@ private:
     static const stConvRetMsgNo convReturnMsgNoTbl[];
 };
 
+inline void* sDialogBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sDialogBase* sDialogBase::getInstance() {
     return ::sDialogBase::mpInstance;
 }

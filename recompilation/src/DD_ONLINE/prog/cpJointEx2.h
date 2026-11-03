@@ -62,3 +62,7 @@ public:
     rJointEx2* mpResource;  // offset: 0x58
     static MyDTI DTI;
 };
+
+inline void* cpJointEx2::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

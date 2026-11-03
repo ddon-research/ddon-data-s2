@@ -103,6 +103,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rAreaInfoJointArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAreaInfoJointArea::cAreaInfoJointArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rAreaInfoJointArea::cAreaInfoJointArea::cAreaInfoJointArea() {
     this->mMAJAId = 0;
     this->mAreaId = 0;

@@ -90,3 +90,11 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cAIObject::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIResource::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

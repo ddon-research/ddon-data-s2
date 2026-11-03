@@ -6,6 +6,8 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
+#include "cUnit.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -223,13 +225,9 @@ __attribute__((weak)) void nCollision::cScrCommonFilter::createPropertySupport(M
     /* stub */
 }
 
-u32 nCollision::cScrCommonFilter::getScrGroup() const {
-    return mScrGroup;
-}
+static auto ddon_emit_0x01b85450 __attribute__((used)) = &nCollision::cScrCommonFilter::getScrGroup;
 
-u8 nCollision::cScrCommonFilter::getScrGroupIndex() const {
-    return mScrGroupIndex;
-}
+static auto ddon_emit_0x01b85460 __attribute__((used)) = &nCollision::cScrCommonFilter::getScrGroupIndex;
 
 void nCollision::cScrCommonFilter::setScrGroup(u8 NewGroupIndex) {
     if (NewGroupIndex <= 32) {

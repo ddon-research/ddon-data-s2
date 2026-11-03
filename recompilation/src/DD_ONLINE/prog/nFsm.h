@@ -110,6 +110,10 @@ namespace nFsm {
 
 }  // namespace nFsm
 
+inline void* nFsm::cCameraCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool nFsm::cCameraCtrl::isDisable() const {
     return this->mRno0 != 0;
 }

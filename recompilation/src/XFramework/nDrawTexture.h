@@ -6,6 +6,7 @@
 // Dependencies
 #include "../MT/MtDTI.h"
 #include "../generated/shared/dataformats.h"
+#include "../generated/shared/depthrendertarget.h"
 #include "nDrawBuffer.h"
 #include "nDrawResource.h"
 #include "../generated/shared/rendertarget.h"
@@ -20,13 +21,14 @@ class MtPropertyList;
 class MtRect;
 class MtSize;
 class MtUI;
-namespace nDraw { class DepthStencilView; }
 namespace nDraw { struct MAPPED_TEXTURE; }
 namespace sce { namespace Gnm { class DataFormat; } }
+namespace sce { namespace Gnm { class DepthRenderTarget; } }
 namespace sce { namespace Gnm { class RenderTarget; } }
 namespace sce { namespace Gnm { class Texture; } }
 
 // Declarations
+namespace nDraw { class DepthStencilView; }
 namespace nDraw { class RenderTargetView; }
 namespace nDraw { class Texture; }
 
@@ -123,10 +125,63 @@ using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
 namespace nDraw { using GPUFORMAT_TYPE = sce::Gnm::DataFormat; }
+namespace nDraw { using HDepthStencil = sce::Gnm::DepthRenderTarget*; }
 namespace nDraw { using HRenderTarget = sce::Gnm::RenderTarget*; }
 namespace nDraw { using HTexture = sce::Gnm::Texture*; }
 using size_t = _Sizet;
 using u32 = unsigned int;
+
+namespace nDraw {
+    class DepthStencilView : public nDraw::Resource
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        DepthStencilView(nDraw::Texture* ptex, u32 subresource);
+        virtual ~DepthStencilView();
+        nDraw::HDepthStencil getHandle() const;
+        u32 getWidth() const;
+        u32 getHeight() const;
+        u32 getMiscFlags() const;
+        nDraw::Texture* getTexture() const;
+        u32 getSubResource() const;
+        nDraw::GPUFORMAT_TYPE getGPUFormat() const;
+    protected:
+        nDraw::Texture* mpTexture;  // offset: 0x18
+        nDraw::HDepthStencil mpHandle;  // offset: 0x20
+        u32 mWidth : 16;  // offset: 0x28
+        u32 mHeight : 16;  // offset: 0x28
+        u32 mSubResource;  // offset: 0x2c
+        u32 mMiscFlags;  // offset: 0x30
+        nDraw::GPUFORMAT_TYPE mGPUFormatType;  // offset: 0x34
+        sce::Gnm::DepthRenderTarget mDepthRenderTarget;  // offset: 0x38
+        void* mpHtileAddress;  // offset: 0x70
+        void* mpStencilAddress;  // offset: 0x78
+        void* mpDepthAddress;  // offset: 0x80
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nDraw
 
 namespace nDraw {
     class RenderTargetView : public nDraw::Resource
@@ -285,3 +340,43 @@ namespace nDraw {
         static MyDTI DTI;
     };
 }  // namespace nDraw
+
+inline void* nDraw::DepthStencilView::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nDraw::RenderTargetView::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nDraw::Texture::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 nDraw::Texture::getWidth() const {
+    return this->mWidth;
+}
+
+inline u32 nDraw::Texture::getDepth() const {
+    return this->mDepth;
+}
+
+inline u32 nDraw::Texture::getArrayCount() const {
+    return this->mArrayCount;
+}
+
+inline u32 nDraw::Texture::getLevelCount() const {
+    return this->mLevelCount;
+}
+
+inline nDraw::FORMAT_TYPE nDraw::Texture::getFormat() const {
+    return static_cast<nDraw::FORMAT_TYPE>(this->mFormatType);
+}
+
+inline bool nDraw::Texture::isSRGB() const {
+    return this->mSRGB;
+}
+
+inline u32 nDraw::Texture::getMiscFlags() const {
+    return this->mMiscFlags;
+}

@@ -70,3 +70,7 @@ public:
     static MyDTI DTI;
     static const u32 mMagic = 4997716;
 };
+
+inline void* rTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

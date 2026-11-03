@@ -116,6 +116,10 @@ private:
     static sGeneralPoint* mpInstance;
 };
 
+inline void* sGeneralPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sGeneralPoint* sGeneralPoint::getInstance() {
     return ::sGeneralPoint::mpInstance;
 }

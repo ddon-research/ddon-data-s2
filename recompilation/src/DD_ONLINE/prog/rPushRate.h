@@ -94,6 +94,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cPushRate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cPushRate::cPushRate() {
     this->mRate[4] = 0.0f;
     this->mRate[5] = 0.0f;
@@ -101,4 +105,20 @@ inline cPushRate::cPushRate() {
     this->mRate[3] = 0.0f;
     this->mRate[0] = 0.0f;
     this->mRate[1] = 0.0f;
+}
+
+inline void* rPushRate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cPushRate::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPushRate::DTI)->memFree(p_addr);
+}
+
+inline void* cPushRate::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPushRate::DTI)->memAlloc(sz, align, ::cPushRate::DTI.::MtDTI::getID());
 }

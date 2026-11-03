@@ -37,6 +37,7 @@ namespace nJobParam { class cHumanBaseInfo; }
 namespace nJobParam { class cJobInfo; }
 class sPlayerManager;
 class uHuman;
+class uHumanEnemy;
 class uNpc;
 
 // Declarations
@@ -64,6 +65,7 @@ class cContextPlayerInfo : public cContext
     friend class cPlActWpnBow;
     friend class sPlayerManager;
     friend class uHuman;
+    friend class uHumanEnemy;
     friend class uNpc;
 public:
     class MyDTI;
@@ -387,6 +389,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cContextPlayerInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline const nJobParam::cHumanBaseInfo& cContextPlayerInfo::getBaseInfo() const {
     return this->mBaseInfo;
 }
@@ -411,9 +417,17 @@ inline nHuman::CUSTOM_SKILL_GROUP cContextPlayerInfo::getNowCustomSkillGroup() c
     return this->mCurrentSkillPallet;
 }
 
+inline void* cContextPlayerInfo::cAbility::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cContextPlayerInfo::cAbility::cAbility() {
     this->mAbilityId = static_cast<nAbility::ABILITY_ID>(-1);
     this->mLevel = 1;
     this->mIsEnable = true;
     this->mIsUsed = false;
+}
+
+inline void* rJobBaseParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

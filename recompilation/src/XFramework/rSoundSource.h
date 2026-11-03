@@ -295,3 +295,7 @@ public:
     static const u32 mMaxChannelNum = 6;
     static MyDTI DTI;
 };
+
+inline void* rSoundSource::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -82,6 +82,10 @@ public:
     u32 mDataNum;  // offset: 0x78
 };
 
+inline void* rTbl2Base::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtDataReader.h"
 

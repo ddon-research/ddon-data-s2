@@ -84,3 +84,7 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cQuestSvRequestManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

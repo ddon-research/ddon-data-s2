@@ -279,6 +279,26 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCameraQuake::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uCameraBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline f32 uCameraBase::getFovAim() {
+    return this->mFovAim;
+}
+
+inline f32 uCameraBase::getRoll() {
+    return this->mRoll;
+}
+
+inline f32 uCameraBase::getRollAim() {
+    return this->mRollAim;
+}
+
 inline bool uCameraBase::isInitial() {
     return this->mbInitial;
 }

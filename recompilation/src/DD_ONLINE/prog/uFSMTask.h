@@ -135,6 +135,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cFSMTaskCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void cFSMTaskCtrl::setStage(aStage* pStage) {
+    this->mpStage = pStage;
+}
+
+inline void* uFSMTask::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uFSMTask::uFSMTask() {
     this->mType = 0;
     this->mpCore = nullptr;

@@ -7,9 +7,14 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "uCameraBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -46,8 +51,6 @@ inline cQuakeParam::cQuakeParam() {
 }
 
 cQuakeParam::~cQuakeParam() {
-    DDON_STUB("cQuakeParam::~cQuakeParam")
-    /* stub */
 }
 
 MtUI* cQuakeParam::createUI(MtProperty& prop) {
@@ -106,8 +109,32 @@ inline rCameraQuakeList::rCameraQuakeList() {
 }
 
 rCameraQuakeList::~rCameraQuakeList() {
-    DDON_STUB("rCameraQuakeList::~rCameraQuakeList")
-    /* stub */
+    if (mQuakeList.mLength != 0) {
+        u32 v0_0 = mQuakeList.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mQuakeList.mpArray[i0_3] != nullptr) {
+                delete mQuakeList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mQuakeList.mLength) {
+                    v0_0 = mQuakeList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mQuakeList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuakeList.mpArray));
+    }
+    mQuakeList.mpArray = nullptr;
+    mQuakeList.mBufsiz = 0;
+    mQuakeList.mLength = 0;
 }
 
 __attribute__((weak)) void rCameraQuakeList::createProperty(MtPropertyList& s) {
@@ -120,12 +147,12 @@ __attribute__((weak)) void rCameraQuakeList::clear() {
 
 bool rCameraQuakeList::load(MtStream& in) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
+    return sz.deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 bool rCameraQuakeList::save(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rCameraQuakeList::DTI));
+    return sz.serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rCameraQuakeList::DTI));
 }
 
 MT_CTSTR rCameraQuakeList::getExt() const {

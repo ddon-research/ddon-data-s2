@@ -156,3 +156,7 @@ public:
     static const u32 BUTTON_GUIDE_BIT_HUNTER = 1;
     static const u32 BUTTON_GUIDE_BIT_SHIELDSAGE = 2;
 };
+
+inline void* uGUIGaugeArts::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

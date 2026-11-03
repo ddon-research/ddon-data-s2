@@ -6,6 +6,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "../../XFramework/cResource.h"
 #include "rSoundSubMixer.h"
@@ -32,13 +34,11 @@ inline rSoundSubMixerSet::rSoundSubMixerSet() {
 }
 
 rSoundSubMixerSet::~rSoundSubMixerSet() {
-    DDON_STUB("rSoundSubMixerSet::~rSoundSubMixerSet")
-    /* stub */
 }
 
 bool rSoundSubMixerSet::load(MtStream& in) {
     MtSerializer sz(65536);
-    if (sz.MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
+    if (sz.deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
         mSubMixerLists.mAutoDelete = true;
         return true;
     } else {
@@ -48,7 +48,7 @@ bool rSoundSubMixerSet::load(MtStream& in) {
 
 bool rSoundSubMixerSet::save(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rSoundSubMixerSet::DTI));
+    return sz.serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rSoundSubMixerSet::DTI));
 }
 
 MT_CTSTR rSoundSubMixerSet::getExt() const {

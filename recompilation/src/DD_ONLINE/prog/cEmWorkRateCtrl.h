@@ -6,7 +6,7 @@
 // Dependencies
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtObject.h"
-#include "../../generated/rCharacterEditCameraParam/nStatusEnemy.h"
+#include "../../generated/shared/nStatusEnemy.h"
 
 // Forward declarations
 class MtAllocator;
@@ -77,3 +77,7 @@ private:
     static const u32 mRegionStatusPrio[5];
     static const u32 INVALID_STATUS_NO = 4294967295;
 };
+
+inline void* cEmWorkRateCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

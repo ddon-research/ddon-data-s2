@@ -77,6 +77,7 @@ public:
 public:
     class Particle
     {
+        friend class uSimpleEffect;
     public:
         Particle();
         virtual ~Particle();
@@ -245,3 +246,23 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uSimpleEffect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 uSimpleEffect::getListNo() const {
+    return this->mListNo;
+}
+
+inline rVertices* uSimpleEffect::getVertices() {
+    return this->mpVertices;
+}
+
+inline bool uSimpleEffect::getOfsInvalidMode() const {
+    return this->mOfsInvalidMode;
+}
+
+inline void uSimpleEffect::setOfsInvalidMode(bool Mode) {
+    this->mOfsInvalidMode = Mode;
+}

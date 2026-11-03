@@ -6,8 +6,10 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
 #include "cResource.h"
+#include "uFullbodyIKHuman2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -41,9 +43,7 @@ MtUI* rFullbodyIKHuman2::createUI(MtProperty& prop) {
     return this->cResource::createUI(prop);
 }
 
-u32 rFullbodyIKHuman2::getAssignedJointNum() {
-    return 24;
-}
+static auto ddon_emit_0x01b5b790 __attribute__((used)) = &rFullbodyIKHuman2::getAssignedJointNum;
 
 __attribute__((weak)) void rFullbodyIKHuman2::setAssignedJointNum(u32 Num) {
 }
@@ -62,12 +62,12 @@ rFullbodyIKHuman2::~rFullbodyIKHuman2() {
 
 bool rFullbodyIKHuman2::load(MtStream& in) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
+    return sz.deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 bool rFullbodyIKHuman2::save(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rFullbodyIKHuman2::DTI));
+    return sz.serializeBinary(out, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rFullbodyIKHuman2::DTI));
 }
 
 rFullbodyIKHuman2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

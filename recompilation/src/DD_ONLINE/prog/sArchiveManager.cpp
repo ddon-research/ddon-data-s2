@@ -6,7 +6,9 @@
 #include "sArchiveManager.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtFile.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
 #include "cArcLoader.h"
 #include "../../XFramework/cResource.h"
@@ -17,6 +19,7 @@
 #include "rArchiveListTag.h"
 #include "res_ptr.h"
 #include "../../XFramework/sResource.h"
+#include "sResourceExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -41,7 +44,7 @@ TICKET sArchiveManager::IssueTicket() {
     int32_t t0 = sceAtomicAdd32Relaxed(&mTicket3ReqIndex, 1);
     if (static_cast<unsigned int>(t0) <= 2047) {
         TICKET p_ticket = mTicket3Stack.elems[static_cast<unsigned int>(t0)];
-        p_ticket->cArcLoaderBase::clear();
+        p_ticket->clear();
         p_ticket->mTicketEnable = 1;
         return p_ticket;
     } else {
@@ -414,7 +417,7 @@ ARC_TAGID sArchiveManager::getArchiveListNodeOnTag(ARC_TAGID tagId, ARC_SEARCHID
         if (mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr != nullptr) {
             cArchiveListNode* p_node = mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr->searchListNode(tagId, searchId);
             if (p_node != nullptr) {
-                return p_node->cArchiveListNode::getTagId();
+                return p_node->getTagId();
             } else {
                 return 0;
             }

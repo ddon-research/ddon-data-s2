@@ -143,6 +143,18 @@ public:
     static const u32 ZONE_UNIT_HANDLE_MAX = 32;
 };
 
+inline void* cZCEFLControl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cZCEFLControl::getResourceSetNum() {
+    return this->mSetList.::MtArray::mLength;
+}
+
+inline void* cZCEFLControl::cResourceSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cZCEFLControl::cResourceSet::setResourceType(u32 type) {
     this->mResourceType = type;
 }
@@ -153,6 +165,10 @@ inline void cZCEFLControl::cResourceSet::setIndexNo(u32 index) {
 
 inline void cZCEFLControl::cResourceSet::setElementNo(u32 element) {
     this->mElementNo = element;
+}
+
+inline void* cZCEffectControl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cZCEffectControl::cZCEffectControl() {

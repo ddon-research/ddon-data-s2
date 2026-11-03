@@ -2,6 +2,7 @@
 #include <new>
 #include "cHumanActId.h"
 #include "../../generated/shared/nHuman.h"
+#include "nHumanMsg.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

@@ -238,3 +238,7 @@ public:
     static const s32 CUM_LIST_NUM = 10;
     static const s32 SEQ_LIST_NUM = 8;
 };
+
+inline void* uGUILoginBonus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

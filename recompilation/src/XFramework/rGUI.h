@@ -545,6 +545,10 @@ private:
     static const u32 ATTR_3D = 2;
 };
 
+inline void* rGUI::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rGUI::rGUI() {
     this->mpHeader = nullptr;
     this->mAttr = 0;
@@ -556,4 +560,20 @@ inline rGUI::rGUI() {
     this->mpFontFilter = nullptr;
     this->::cResource::mAttr = 16;
     this->mpInstanceNeedObjectInfo = nullptr;
+}
+
+inline u32 rGUI::getBaseZ() const {
+    return this->mBaseZ;
+}
+
+inline nGUI::LANGUAGE_SETTING rGUI::getLanguageSettingNo() const {
+    return static_cast<nGUI::LANGUAGE_SETTING>(this->mLanguageSettingNo);
+}
+
+inline nGUI::FRAMERATE_MODE rGUI::getFramerateMode() const {
+    return static_cast<nGUI::FRAMERATE_MODE>(this->mFramerateMode);
+}
+
+inline void rGUI::setFramerateMode(nGUI::FRAMERATE_MODE mode) {
+    this->mFramerateMode = mode;
 }

@@ -5,24 +5,40 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContext.h"
+#include "cContextInstance.h"
 #include "cContextInterface.h"
 #include "cEquipData.h"
+#include "cOcdParamRes.h"
+#include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpJob04.h"
+#include "cpJob07.h"
+#include "cpOcdCtrl.h"
 #include "../../generated/shared/nAbility.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nHuman.h"
 #include "nHumanMsg.h"
 #include "nJobParam.h"
+#include "nObjCondition.h"
+#include "rAbilityList.h"
 #include "rPlayerExpTable.h"
 #include "rTbl2.h"
+#include "sContextManager.h"
+#include "sEnemyManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sGame.h"
+#include "sObjCollision.h"
 #include "sPlayerManager.h"
+#include "sWeatherManager.h"
+#include "uControlNpc.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
+#include "uHumanEnemy.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -41,8 +57,7 @@ cContextPlayerInfo::cContextPlayerInfo() {
 }
 
 cContextPlayerInfo::~cContextPlayerInfo() {
-    DDON_STUB("cContextPlayerInfo::~cContextPlayerInfo")
-    /* stub */
+    mChargeEffectUID.clearRefChargeEffect();
 }
 
 __attribute__((weak)) void cContextPlayerInfo::reset() {
@@ -348,8 +363,8 @@ void cContextPlayerInfo::setNowCustomSkillGroup(nHuman::CUSTOM_SKILL_GROUP group
         mCurrentSkillPallet = group;
         uHuman* pHm = getOwner();
         if (pHm != nullptr) {
-            if (pHm->uDDOModel::isMaster()) {
-                if ((pHm->::uDDOModel::mUnitId & 8u) != 0) {
+            if (pHm->isMaster()) {
+                if ((pHm->uDDOModel::mUnitId & 8u) != 0) {
                     static_cast<sGUIExt*>(sGUI::getInstance())->updateFKeyPaletteGuide();
                 }
             }
@@ -918,9 +933,638 @@ inline void rJobBaseParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rJobBaseParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) bool rJobBaseParam::loadData(MtDataReader& in, nJobParam::cJobInfo* pData) {
-    DDON_STUB("rJobBaseParam::loadData")
-    return {};
+bool rJobBaseParam::loadData(MtDataReader& in, nJobParam::cJobInfo* pData) {
+    pData->mLv_pri = in.readU16();
+    pData->mExp_pri = in.readU64();
+    pData->mAtk_pri = in.readU32();
+    pData->mDef_pri = in.readU32();
+    pData->mMAtk_pri = in.readU32();
+    pData->mMDef_pri = in.readU32();
+    pData->mStrength_pri = in.readU32();
+    pData->mDownPower_pri = in.readU32();
+    pData->mShakePower_pri = in.readU32();
+    pData->mStanPower_pri = in.readU32();
+    pData->mConstitution_pri = in.readU32();
+    pData->mGuts_pri = in.readU32();
+    pData->mJobPoint_pri = in.readU64();
+    pData->mFireResist_pri = in.readS16();
+    pData->mIceResist_pri = in.readS16();
+    pData->mThunderResist_pri = in.readS16();
+    pData->mHolyResist_pri = in.readS16();
+    pData->mDarkResist_pri = in.readS16();
+    unsigned int v0_1;
+    unsigned char v1_0;
+    unsigned int v1_1;
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v0_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+    } else {
+        if (in.refill()) {
+            v0_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v1_0 = 0;
+            v1_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b476;
+        }
+    }
+    unsigned long t0;
+    t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t1;
+    t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0 + v0_1) + 0);
+    in.mSeekPt = v0_1 + 1u;
+    v1_0 = t1;
+    v1_1 = v0_1 + 1u;
+    region_6b476:;
+    pData->mSpreadResist_pri = v1_0;
+    unsigned int v2_1;
+    unsigned char v3_0;
+    unsigned int v3_1;
+    if (v1_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v2_1 = v1_1;
+    } else {
+        if (in.refill()) {
+            v2_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v3_0 = 0;
+            v3_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b4a0;
+        }
+    }
+    unsigned long t2;
+    t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t3;
+    t3 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2 + v2_1) + 0);
+    in.mSeekPt = v2_1 + 1u;
+    v3_0 = t3;
+    v3_1 = v2_1 + 1u;
+    region_6b4a0:;
+    pData->mFreezeResist_pri = v3_0;
+    unsigned int v4_1;
+    unsigned char v5_0;
+    unsigned int v5_1;
+    if (v3_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v4_1 = v3_1;
+    } else {
+        if (in.refill()) {
+            v4_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v5_0 = 0;
+            v5_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b4ca;
+        }
+    }
+    unsigned long t4;
+    t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t5;
+    t5 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t4 + v4_1) + 0);
+    in.mSeekPt = v4_1 + 1u;
+    v5_0 = t5;
+    v5_1 = v4_1 + 1u;
+    region_6b4ca:;
+    pData->mShockResist_pri = v5_0;
+    unsigned int v6_1;
+    unsigned char v7_0;
+    unsigned int v7_1;
+    if (v5_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v6_1 = v5_1;
+    } else {
+        if (in.refill()) {
+            v6_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v7_0 = 0;
+            v7_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b4f4;
+        }
+    }
+    unsigned long t6;
+    t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t7;
+    t7 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t6 + v6_1) + 0);
+    in.mSeekPt = v6_1 + 1u;
+    v7_0 = t7;
+    v7_1 = v6_1 + 1u;
+    region_6b4f4:;
+    pData->mAbsorbResist_pri = v7_0;
+    unsigned int v8_1;
+    unsigned char v9_0;
+    unsigned int v9_1;
+    if (v7_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v8_1 = v7_1;
+    } else {
+        if (in.refill()) {
+            v8_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v9_0 = 0;
+            v9_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b51e;
+        }
+    }
+    unsigned long t8;
+    t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t9;
+    t9 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t8 + v8_1) + 0);
+    in.mSeekPt = v8_1 + 1u;
+    v9_0 = t9;
+    v9_1 = v8_1 + 1u;
+    region_6b51e:;
+    pData->mDarkElmResist_pri = v9_0;
+    unsigned int v10_1;
+    unsigned char v11_0;
+    unsigned int v11_1;
+    if (v9_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v10_1 = v9_1;
+    } else {
+        if (in.refill()) {
+            v10_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v11_0 = 0;
+            v11_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b548;
+        }
+    }
+    unsigned long t10;
+    t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t11;
+    t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10 + v10_1) + 0);
+    in.mSeekPt = v10_1 + 1u;
+    v11_0 = t11;
+    v11_1 = v10_1 + 1u;
+    region_6b548:;
+    pData->mPoisonResist_pri = v11_0;
+    unsigned int v12_1;
+    unsigned char v13_0;
+    unsigned int v13_1;
+    if (v11_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v12_1 = v11_1;
+    } else {
+        if (in.refill()) {
+            v12_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v13_0 = 0;
+            v13_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b572;
+        }
+    }
+    unsigned long t12;
+    t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t13;
+    t13 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t12 + v12_1) + 0);
+    in.mSeekPt = v12_1 + 1u;
+    v13_0 = t13;
+    v13_1 = v12_1 + 1u;
+    region_6b572:;
+    pData->mSlowResist_pri = v13_0;
+    unsigned int v14_1;
+    unsigned char v15_0;
+    unsigned int v15_1;
+    if (v13_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v14_1 = v13_1;
+    } else {
+        if (in.refill()) {
+            v14_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v15_0 = 0;
+            v15_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b59c;
+        }
+    }
+    unsigned long t14;
+    t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t15;
+    t15 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t14 + v14_1) + 0);
+    in.mSeekPt = v14_1 + 1u;
+    v15_0 = t15;
+    v15_1 = v14_1 + 1u;
+    region_6b59c:;
+    pData->mSleepResist_pri = v15_0;
+    unsigned int v16_1;
+    unsigned char v17_0;
+    unsigned int v17_1;
+    if (v15_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v16_1 = v15_1;
+    } else {
+        if (in.refill()) {
+            v16_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v17_0 = 0;
+            v17_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b5c6;
+        }
+    }
+    unsigned long t16;
+    t16 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t17;
+    t17 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t16 + v16_1) + 0);
+    in.mSeekPt = v16_1 + 1u;
+    v17_0 = t17;
+    v17_1 = v16_1 + 1u;
+    region_6b5c6:;
+    pData->mStunResist_pri = v17_0;
+    unsigned int v18_1;
+    unsigned char v19_0;
+    unsigned int v19_1;
+    if (v17_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v18_1 = v17_1;
+    } else {
+        if (in.refill()) {
+            v18_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v19_0 = 0;
+            v19_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b5f0;
+        }
+    }
+    unsigned long t18;
+    t18 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t19;
+    t19 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t18 + v18_1) + 0);
+    in.mSeekPt = v18_1 + 1u;
+    v19_0 = t19;
+    v19_1 = v18_1 + 1u;
+    region_6b5f0:;
+    pData->mWetResist_pri = v19_0;
+    unsigned int v20_1;
+    unsigned char v21_0;
+    unsigned int v21_1;
+    if (v19_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v20_1 = v19_1;
+    } else {
+        if (in.refill()) {
+            v20_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v21_0 = 0;
+            v21_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b61a;
+        }
+    }
+    unsigned long t20;
+    t20 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t21;
+    t21 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t20 + v20_1) + 0);
+    in.mSeekPt = v20_1 + 1u;
+    v21_0 = t21;
+    v21_1 = v20_1 + 1u;
+    region_6b61a:;
+    pData->mOilResist_pri = v21_0;
+    unsigned int v22_1;
+    unsigned char v23_0;
+    unsigned int v23_1;
+    if (v21_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v22_1 = v21_1;
+    } else {
+        if (in.refill()) {
+            v22_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v23_0 = 0;
+            v23_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b644;
+        }
+    }
+    unsigned long t22;
+    t22 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t23;
+    t23 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t22 + v22_1) + 0);
+    in.mSeekPt = v22_1 + 1u;
+    v23_0 = t23;
+    v23_1 = v22_1 + 1u;
+    region_6b644:;
+    pData->mSealResist_pri = v23_0;
+    unsigned int v24_1;
+    unsigned char v25_0;
+    unsigned int v25_1;
+    if (v23_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v24_1 = v23_1;
+    } else {
+        if (in.refill()) {
+            v24_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v25_0 = 0;
+            v25_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b66e;
+        }
+    }
+    unsigned long t24;
+    t24 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t25;
+    t25 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t24 + v24_1) + 0);
+    in.mSeekPt = v24_1 + 1u;
+    v25_0 = t25;
+    v25_1 = v24_1 + 1u;
+    region_6b66e:;
+    pData->mCurseResist_pri = v25_0;
+    unsigned int v26_1;
+    unsigned char v27_0;
+    unsigned int v27_1;
+    if (v25_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v26_1 = v25_1;
+    } else {
+        if (in.refill()) {
+            v26_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v27_0 = 0;
+            v27_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b698;
+        }
+    }
+    unsigned long t26;
+    t26 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t27;
+    t27 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t26 + v26_1) + 0);
+    in.mSeekPt = v26_1 + 1u;
+    v27_0 = t27;
+    v27_1 = v26_1 + 1u;
+    region_6b698:;
+    pData->mSoftResist_pri = v27_0;
+    unsigned int v28_1;
+    unsigned char v29_0;
+    unsigned int v29_1;
+    if (v27_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v28_1 = v27_1;
+    } else {
+        if (in.refill()) {
+            v28_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v29_0 = 0;
+            v29_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b6c2;
+        }
+    }
+    unsigned long t28;
+    t28 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t29;
+    t29 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t28 + v28_1) + 0);
+    in.mSeekPt = v28_1 + 1u;
+    v29_0 = t29;
+    v29_1 = v28_1 + 1u;
+    region_6b6c2:;
+    pData->mStoneResist_pri = v29_0;
+    unsigned int v30_1;
+    unsigned char v31_0;
+    unsigned int v31_1;
+    if (v29_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v30_1 = v29_1;
+    } else {
+        if (in.refill()) {
+            v30_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v31_0 = 0;
+            v31_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b6ec;
+        }
+    }
+    unsigned long t30;
+    t30 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t31;
+    t31 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t30 + v30_1) + 0);
+    in.mSeekPt = v30_1 + 1u;
+    v31_0 = t31;
+    v31_1 = v30_1 + 1u;
+    region_6b6ec:;
+    pData->mGoldResist_pri = v31_0;
+    unsigned int v32_1;
+    unsigned char v33_0;
+    unsigned int v33_1;
+    if (v31_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v32_1 = v31_1;
+    } else {
+        if (in.refill()) {
+            v32_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v33_0 = 0;
+            v33_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b716;
+        }
+    }
+    unsigned long t32;
+    t32 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t33;
+    t33 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t32 + v32_1) + 0);
+    in.mSeekPt = v32_1 + 1u;
+    v33_0 = t33;
+    v33_1 = v32_1 + 1u;
+    region_6b716:;
+    pData->mFireReduceResist_pri = v33_0;
+    unsigned int v34_1;
+    unsigned char v35_0;
+    unsigned int v35_1;
+    if (v33_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v34_1 = v33_1;
+    } else {
+        if (in.refill()) {
+            v34_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v35_0 = 0;
+            v35_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b740;
+        }
+    }
+    unsigned long t34;
+    t34 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t35;
+    t35 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t34 + v34_1) + 0);
+    in.mSeekPt = v34_1 + 1u;
+    v35_0 = t35;
+    v35_1 = v34_1 + 1u;
+    region_6b740:;
+    pData->mIceReduceResist_pri = v35_0;
+    unsigned int v36_1;
+    unsigned char v37_0;
+    unsigned int v37_1;
+    if (v35_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v36_1 = v35_1;
+    } else {
+        if (in.refill()) {
+            v36_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v37_0 = 0;
+            v37_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b76a;
+        }
+    }
+    unsigned long t36;
+    t36 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t37;
+    t37 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t36 + v36_1) + 0);
+    in.mSeekPt = v36_1 + 1u;
+    v37_0 = t37;
+    v37_1 = v36_1 + 1u;
+    region_6b76a:;
+    pData->mThunderReduceResist_pri = v37_0;
+    unsigned int v38_1;
+    unsigned char v39_0;
+    unsigned int v39_1;
+    if (v37_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v38_1 = v37_1;
+    } else {
+        if (in.refill()) {
+            v38_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v39_0 = 0;
+            v39_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b794;
+        }
+    }
+    unsigned long t38;
+    t38 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t39;
+    t39 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t38 + v38_1) + 0);
+    in.mSeekPt = v38_1 + 1u;
+    v39_0 = t39;
+    v39_1 = v38_1 + 1u;
+    region_6b794:;
+    pData->mHolyReduceResist_pri = v39_0;
+    unsigned int v40_1;
+    unsigned char v41_0;
+    unsigned int v41_1;
+    if (v39_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v40_1 = v39_1;
+    } else {
+        if (in.refill()) {
+            v40_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v41_0 = 0;
+            v41_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b7be;
+        }
+    }
+    unsigned long t40;
+    t40 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t41;
+    t41 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t40 + v40_1) + 0);
+    in.mSeekPt = v40_1 + 1u;
+    v41_0 = t41;
+    v41_1 = v40_1 + 1u;
+    region_6b7be:;
+    pData->mDarkReduceResist_pri = v41_0;
+    unsigned int v42_1;
+    unsigned char v43_0;
+    unsigned int v43_1;
+    if (v41_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v42_1 = v41_1;
+    } else {
+        if (in.refill()) {
+            v42_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v43_0 = 0;
+            v43_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b7e8;
+        }
+    }
+    unsigned long t42;
+    t42 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t43;
+    t43 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t42 + v42_1) + 0);
+    in.mSeekPt = v42_1 + 1u;
+    v43_0 = t43;
+    v43_1 = v42_1 + 1u;
+    region_6b7e8:;
+    pData->mAtkDownResist_pri = v43_0;
+    unsigned int v44_1;
+    unsigned char v45_0;
+    unsigned int v45_1;
+    if (v43_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v44_1 = v43_1;
+    } else {
+        if (in.refill()) {
+            v44_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v45_0 = 0;
+            v45_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b812;
+        }
+    }
+    unsigned long t44;
+    t44 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t45;
+    t45 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t44 + v44_1) + 0);
+    in.mSeekPt = v44_1 + 1u;
+    v45_0 = t45;
+    v45_1 = v44_1 + 1u;
+    region_6b812:;
+    pData->mDefDownResist_pri = v45_0;
+    unsigned int v46_1;
+    unsigned char v47_0;
+    unsigned int v47_1;
+    if (v45_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v46_1 = v45_1;
+    } else {
+        if (in.refill()) {
+            v46_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v47_0 = 0;
+            v47_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b83c;
+        }
+    }
+    unsigned long t46;
+    t46 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t47;
+    t47 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t46 + v46_1) + 0);
+    in.mSeekPt = v46_1 + 1u;
+    v47_0 = t47;
+    v47_1 = v46_1 + 1u;
+    region_6b83c:;
+    pData->mMAtkDownResist_pri = v47_0;
+    unsigned int v48_1;
+    unsigned char v49_0;
+    unsigned int v49_1;
+    if (v47_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v48_1 = v47_1;
+    } else {
+        if (in.refill()) {
+            v48_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v49_0 = 0;
+            v49_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b866;
+        }
+    }
+    unsigned long t48;
+    t48 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t49;
+    t49 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t48 + v48_1) + 0);
+    in.mSeekPt = v48_1 + 1u;
+    v49_0 = t49;
+    v49_1 = v48_1 + 1u;
+    region_6b866:;
+    pData->mMDefDownResist_pri = v49_0;
+    unsigned int v50_1;
+    unsigned char v51_0;
+    unsigned int v51_1;
+    if (v49_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        v50_1 = v49_1;
+    } else {
+        if (in.refill()) {
+            v50_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        } else {
+            v51_0 = 0;
+            v51_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+            goto region_6b890;
+        }
+    }
+    unsigned long t50;
+    t50 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
+    unsigned char t51;
+    t51 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t50 + v50_1) + 0);
+    in.mSeekPt = v50_1 + 1u;
+    v51_0 = t51;
+    v51_1 = v50_1 + 1u;
+    region_6b890:;
+    pData->mErosionResist_pri = v51_0;
+    unsigned int v53_1;
+    if (v51_1 >= (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
+        if (!in.refill()) {
+            pData->mItemSealResist_pri = 0;
+            return true;
+        } else {
+            v53_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
+        }
+    } else {
+        v53_1 = v51_1;
+    }
+    unsigned char t52 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16)) + v53_1) + 0);
+    in.mSeekPt = v53_1 + 1u;
+    pData->mItemSealResist_pri = t52;
+    return true;
 }
 
 MT_CTSTR rJobBaseParam::getExt() const {

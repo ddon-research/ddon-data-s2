@@ -9,11 +9,16 @@
 #include "../../MT/MtString.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
 #include "nDDOUtility.h"
 #include "nInputText.h"
+#include "../../generated/shared/nUnicode.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sIMEPS4.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

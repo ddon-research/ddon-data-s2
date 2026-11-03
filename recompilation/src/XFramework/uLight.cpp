@@ -6,10 +6,13 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtPropertyList.h"
 #include "cLightVolume.h"
 #include "cResource.h"
 #include "cUnit.h"
+#include "nDrawResource.h"
 #include "rTexture.h"
+#include "sRender.h"
 #include "sScene.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -90,17 +93,11 @@ __attribute__((weak)) void uLight::setState(cDraw* pdraw, u32 slot, bool approx_
     /* stub */
 }
 
-bool uLight::getApproximateDisable() {
-    return mApproximateDisable;
-}
+static auto ddon_emit_0x01b62b80 __attribute__((used)) = &uLight::getApproximateDisable;
 
-void uLight::setApproximateDisable(bool diable) {
-    mApproximateDisable = diable;
-}
+static auto ddon_emit_0x01b62b90 __attribute__((used)) = &uLight::setApproximateDisable;
 
-u32 uLight::getAttr() const {
-    return mAttr;
-}
+static auto ddon_emit_0x01b62ae0 __attribute__((used)) = &uLight::getAttr;
 
 void uLight::setAttr(u32 attr) {
     if (mType == 0) {
@@ -110,13 +107,9 @@ void uLight::setAttr(u32 attr) {
     }
 }
 
-u32 uLight::getPriority() const {
-    return mPriority;
-}
+static auto ddon_emit_0x01b62af0 __attribute__((used)) = &uLight::getPriority;
 
-void uLight::setPriority(u32 v) {
-    mPriority = v;
-}
+static auto ddon_emit_0x01b62b00 __attribute__((used)) = &uLight::setPriority;
 
 bool uLight::getBoundary(MtSphere* pdst) {
     if ((mBound & 1u) != 0) {
@@ -188,17 +181,11 @@ void uLight::setPCDisableMode(bool set) {
     }
 }
 
-bool uLight::getPS3DisableMode() {
-    return mIsPS3Disable;
-}
+static auto ddon_emit_0x01b62bb0 __attribute__((used)) = &uLight::getPS3DisableMode;
 
-bool uLight::getPS4DisableMode() {
-    return mIsPS4Disable;
-}
+static auto ddon_emit_0x01b62bc0 __attribute__((used)) = &uLight::getPS4DisableMode;
 
-bool uLight::getPCDisableMode() {
-    return mIsPCDisable;
-}
+static auto ddon_emit_0x01b62bd0 __attribute__((used)) = &uLight::getPCDisableMode;
 
 uLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

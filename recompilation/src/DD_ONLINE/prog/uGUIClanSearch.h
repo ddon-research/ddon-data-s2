@@ -234,5 +234,17 @@ public:
     static const s32 DISP_CLAN_NUM_MAX = 4;
 };
 
+inline void* uGUIClanSearch::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIClanSearch::cGUIPageListSearchClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIClanSearch::cGUIPageListSearchClan::cGUIPageListSearchClan() {
+}
+
+inline void* uGUIClanSearchBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

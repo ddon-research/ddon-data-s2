@@ -107,9 +107,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEmScrAdjust::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEmScrAdjust::cEmScrAdjust() {
     this->mRadius = 30.0f;
     this->mHeight = 150.0f;
     this->mFallLimit = 50.0f;
     this->mNormalCheckRange = -1.0f;
+}
+
+inline void* rEmScrAdjust::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEmScrAdjust::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmScrAdjust::DTI)->memFree(p_addr);
+}
+
+inline void* cEmScrAdjust::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmScrAdjust::DTI)->memAlloc(sz, align, ::cEmScrAdjust::DTI.::MtDTI::getID());
 }

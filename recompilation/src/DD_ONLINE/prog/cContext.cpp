@@ -7,7 +7,11 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "cContextInterface.h"
 #include "cDamageMsg.h"
+#include "cHitInfoAfterLocal.h"
 #include "nHumanBow.h"
 #include "nHumanMsg.h"
 #include "nNetMsgData.h"
@@ -15,6 +19,7 @@
 #include "nRegionStatus.h"
 #include "nShlBase.h"
 #include "sContextManager.h"
+#include "sWorldOffset.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

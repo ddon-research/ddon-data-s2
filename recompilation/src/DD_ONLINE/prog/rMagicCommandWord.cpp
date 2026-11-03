@@ -5,7 +5,10 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "nDDOUtility.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -50,8 +53,10 @@ inline void rMagicCommandWord::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rMagicCommandWord::loadData(MtDataReader& in, cMagicCommandWord* pData) {
-    DDON_STUB("rMagicCommandWord::loadData")
-    return {};
+        for (s16 i = 0; i < 32; ++i) {
+            nDDOIO::readData(in, pData->mWord.elems[i]);
+        }
+        return true;
 }
 
 MT_CTSTR rMagicCommandWord::getExt() const {

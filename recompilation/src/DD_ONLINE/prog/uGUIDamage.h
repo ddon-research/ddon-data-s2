@@ -207,3 +207,7 @@ public:
 private:
     static const u32 TEXT_CORE_INFO_NUM = 256;
 };
+
+inline void* uGUIDamage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

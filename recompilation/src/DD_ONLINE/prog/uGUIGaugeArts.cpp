@@ -6,11 +6,30 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtString.h"
+#include "cContextPlayerInfo.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
+#include "cpComponent.h"
+#include "cpInput.h"
+#include "cpJob03.h"
+#include "cpJob05.h"
 #include "nDDOUtility.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "rItemList.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sInputManager.h"
+#include "sPlayerManager.h"
+#include "uDDOModel.h"
+#include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
+#include "uHuman.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -37,8 +56,11 @@ __attribute__((weak)) const MtVector2 uGUIGaugeArts::getGaugeMouseChantInfo() {
 }
 
 uGUIGaugeArts::~uGUIGaugeArts() {
-    DDON_STUB("uGUIGaugeArts::~uGUIGaugeArts")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 bool uGUIGaugeArts::loadResource() {

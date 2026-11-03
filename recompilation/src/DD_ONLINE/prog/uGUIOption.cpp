@@ -3,22 +3,41 @@
 #include "uGUIOption.h"
 #include "Protocol/PacketData/Character.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "cCharacterData.h"
+#include "cContextInstance.h"
+#include "cContextInterface.h"
 #include "cControl.h"
-#include "../../generated/rCharacterEditCameraParam/cPCGraphicOption.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "cGUIUtility.h"
+#include "cMenuBase.h"
+#include "cNetGameServer.h"
+#include "../../generated/shared/cPCGraphicOption.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
 #include "nMenuKeyConfig.h"
 #include "nNet.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "rTblMenuOption.h"
+#include "sContextManager.h"
+#include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sGame.h"
+#include "sInputManager.h"
+#include "../../XFramework/sKeyboard.h"
+#include "sKeyboardExt.h"
+#include "../../XFramework/sMain.h"
+#include "sMenu.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #include "../../XFramework/sPad.h"
 #include "sPadExt.h"
 #include "../../XFramework/sRender.h"
@@ -26,6 +45,7 @@
 #include "sSavedataExt.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "../../XFramework/sUnit.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #include "uGUISystemMsg.h"
@@ -480,9 +500,662 @@ u32 uGUIOption::evCtrlApplyApply(cControl::Message* msg) {
     return 0;
 }
 
-__attribute__((weak)) void* uGUIOption::getOptionParamHandle(u32 uIdx, u32 uType) {
-    DDON_STUB("uGUIOption::getOptionParamHandle")
-    return nullptr;
+void* uGUIOption::getOptionParamHandle(u32 uIdx, u32 uType) {
+    u8* v0_1;
+    u8* v0_2;
+    if (uType == 2) {
+        v0_1 = &static_cast<sSavedataExt*>(sSavedata::getInstance())->getStorageData().mOptionSys.mGamma;
+        v0_2 = &(sGame::mpInstance)->mCharData.mCharData.mOption.mOnlineStatus;
+    } else {
+        if (uType == 1) {
+            v0_1 = &mOptionSysInit.mGamma;
+            v0_2 = &mOptionChrInit.mOnlineStatus;
+        } else {
+            v0_1 = &mOptionSysTmp.mGamma;
+            v0_2 = &mOptionChrTmp.mOnlineStatus;
+        }
+    }
+    u8* v24_0;
+    if (static_cast<int>(uIdx) <= 66) {
+        switch (uIdx - 1u) {
+            case 0:
+            {
+                v24_0 = v0_1;
+                return static_cast<void*>(v24_0);
+            }
+            case 9:
+            {
+                v24_0 = &v0_1[1];
+                return static_cast<void*>(v24_0);
+            }
+            case 10:
+            {
+                v24_0 = &v0_1[2];
+                return static_cast<void*>(v24_0);
+            }
+            case 11:
+            {
+                v24_0 = &v0_1[3];
+                return static_cast<void*>(v24_0);
+            }
+            case 12:
+            {
+                v24_0 = &v0_1[4];
+                return static_cast<void*>(v24_0);
+            }
+            case 13:
+            {
+                v24_0 = &v0_1[5];
+                return static_cast<void*>(v24_0);
+            }
+            case 14:
+            {
+                v24_0 = &v0_1[6];
+                return static_cast<void*>(v24_0);
+            }
+            case 15:
+            {
+                v24_0 = &v0_1[7];
+                return static_cast<void*>(v24_0);
+            }
+            case 16:
+            {
+                v24_0 = &v0_1[8];
+                return static_cast<void*>(v24_0);
+            }
+            case 17:
+            {
+                v24_0 = &v0_1[9];
+                return static_cast<void*>(v24_0);
+            }
+            case 18:
+            {
+                v24_0 = &v0_1[11];
+                return static_cast<void*>(v24_0);
+            }
+            case 19:
+            {
+                v24_0 = &v0_1[12];
+                return static_cast<void*>(v24_0);
+            }
+            case 20:
+            {
+                v24_0 = &v0_1[13];
+                return static_cast<void*>(v24_0);
+            }
+            case 21:
+            {
+                v24_0 = &v0_1[14];
+                return static_cast<void*>(v24_0);
+            }
+            case 22:
+            {
+                v24_0 = &v0_1[16];
+                return static_cast<void*>(v24_0);
+            }
+            case 23:
+            {
+                v24_0 = &v0_2[38];
+                return static_cast<void*>(v24_0);
+            }
+            case 24:
+            {
+                v24_0 = &v0_2[41];
+                return static_cast<void*>(v24_0);
+            }
+            default:
+            {
+                v24_0 = nullptr;
+                return static_cast<void*>(v24_0);
+            }
+        }
+    }
+    u8* v23_8;
+    if (static_cast<int>(uIdx) <= 164) {
+        switch (uIdx - 67u) {
+            case 0:
+            {
+                v24_0 = v0_2;
+                return static_cast<void*>(v24_0);
+            }
+            case 1:
+            {
+                v24_0 = &v0_1[19];
+                return static_cast<void*>(v24_0);
+            }
+            case 2:
+            {
+                v24_0 = &v0_1[20];
+                return static_cast<void*>(v24_0);
+            }
+            case 3:
+            {
+                v24_0 = &v0_2[4];
+                return static_cast<void*>(v24_0);
+            }
+            case 4:
+            {
+                v24_0 = &v0_2[8];
+                return static_cast<void*>(v24_0);
+            }
+            case 5:
+            {
+                v24_0 = &v0_1[23];
+                return static_cast<void*>(v24_0);
+            }
+            case 7:
+            {
+                v24_0 = &v0_2[11];
+                return static_cast<void*>(v24_0);
+            }
+            case 8:
+            {
+                v24_0 = &v0_2[39];
+                return static_cast<void*>(v24_0);
+            }
+            case 9:
+            {
+                v24_0 = &v0_2[14];
+                return static_cast<void*>(v24_0);
+            }
+            case 10:
+            {
+                v24_0 = &v0_1[18];
+                return static_cast<void*>(v24_0);
+            }
+            case 12:
+            {
+                v24_0 = &v0_2[17];
+                return static_cast<void*>(v24_0);
+            }
+            case 13:
+            {
+                v24_0 = &v0_2[18];
+                return static_cast<void*>(v24_0);
+            }
+            case 14:
+            {
+                v24_0 = &v0_2[19];
+                return static_cast<void*>(v24_0);
+            }
+            case 15:
+            {
+                v24_0 = &v0_2[20];
+                return static_cast<void*>(v24_0);
+            }
+            case 16:
+            {
+                v24_0 = &v0_2[21];
+                return static_cast<void*>(v24_0);
+            }
+            case 17:
+            {
+                v23_8 = &((uType == 1) ? (&mSDTWorkInit.mChatFilter00) : (&mSDTWork.mChatFilter00))[4];
+                break;
+            }
+            case 18:
+            {
+                v24_0 = &v0_2[28];
+                return static_cast<void*>(v24_0);
+            }
+            case 19:
+            {
+                v24_0 = &v0_2[29];
+                return static_cast<void*>(v24_0);
+            }
+            case 20:
+            {
+                v24_0 = &v0_2[30];
+                return static_cast<void*>(v24_0);
+            }
+            case 21:
+            {
+                v23_8 = &((uType == 1) ? (&mSDTWorkInit.mChatFilter00) : (&mSDTWork.mChatFilter00))[6];
+                break;
+            }
+            case 22:
+            {
+                v24_0 = &v0_2[31];
+                return static_cast<void*>(v24_0);
+            }
+            case 23:
+            {
+                v24_0 = &v0_2[32];
+                return static_cast<void*>(v24_0);
+            }
+            case 24:
+            {
+                v24_0 = &v0_2[33];
+                return static_cast<void*>(v24_0);
+            }
+            case 25:
+            {
+                v24_0 = &v0_2[34];
+                return static_cast<void*>(v24_0);
+            }
+            case 26:
+            {
+                v24_0 = &v0_2[35];
+                return static_cast<void*>(v24_0);
+            }
+            case 27:
+            {
+                v24_0 = &v0_2[40];
+                return static_cast<void*>(v24_0);
+            }
+            case 28:
+            {
+                v24_0 = &v0_2[42];
+                return static_cast<void*>(v24_0);
+            }
+            case 29:
+            {
+                v24_0 = &v0_2[43];
+                return static_cast<void*>(v24_0);
+            }
+            case 30:
+            {
+                v24_0 = &v0_2[44];
+                return static_cast<void*>(v24_0);
+            }
+            case 31:
+            {
+                v24_0 = &v0_2[45];
+                return static_cast<void*>(v24_0);
+            }
+            case 33:
+            {
+                v24_0 = &v0_2[47];
+                return static_cast<void*>(v24_0);
+            }
+            case 34:
+            {
+                v24_0 = &v0_2[50];
+                return static_cast<void*>(v24_0);
+            }
+            case 35:
+            {
+                v24_0 = &v0_2[51];
+                return static_cast<void*>(v24_0);
+            }
+            case 36:
+            {
+                v24_0 = &v0_2[54];
+                return static_cast<void*>(v24_0);
+            }
+            case 37:
+            {
+                v24_0 = &v0_2[55];
+                return static_cast<void*>(v24_0);
+            }
+            case 38:
+            {
+                v24_0 = &v0_2[58];
+                return static_cast<void*>(v24_0);
+            }
+            case 39:
+            {
+                v24_0 = &v0_2[59];
+                return static_cast<void*>(v24_0);
+            }
+            case 40:
+            {
+                v24_0 = &v0_2[60];
+                return static_cast<void*>(v24_0);
+            }
+            case 43:
+            {
+                v24_0 = &v0_2[85];
+                return static_cast<void*>(v24_0);
+            }
+            case 44:
+            {
+                v24_0 = &v0_2[86];
+                return static_cast<void*>(v24_0);
+            }
+            case 45:
+            {
+                v24_0 = &v0_2[87];
+                return static_cast<void*>(v24_0);
+            }
+            case 46:
+            {
+                v24_0 = &v0_2[88];
+                return static_cast<void*>(v24_0);
+            }
+            case 47:
+            {
+                v24_0 = &v0_2[89];
+                return static_cast<void*>(v24_0);
+            }
+            case 48:
+            {
+                v24_0 = &v0_2[90];
+                return static_cast<void*>(v24_0);
+            }
+            case 49:
+            {
+                v24_0 = &v0_2[91];
+                return static_cast<void*>(v24_0);
+            }
+            default:
+            {
+                v24_0 = nullptr;
+                return static_cast<void*>(v24_0);
+            }
+        }
+    } else {
+        if (static_cast<int>(uIdx) > 181) {
+            if (static_cast<int>(uIdx) > 347) {
+                switch (uIdx - 348u) {
+                    case 0:
+                    {
+                        v24_0 = &v0_2[6];
+                        return static_cast<void*>(v24_0);
+                    }
+                    case 3:
+                    {
+                        v24_0 = &v0_2[7];
+                        return static_cast<void*>(v24_0);
+                    }
+                    case 6:
+                    {
+                        v24_0 = &v0_2[36];
+                        return static_cast<void*>(v24_0);
+                    }
+                    case 7:
+                    {
+                        v24_0 = &v0_2[12];
+                        return static_cast<void*>(v24_0);
+                    }
+                    default:
+                    {
+                        v24_0 = nullptr;
+                        return static_cast<void*>(v24_0);
+                    }
+                }
+            }
+            if (static_cast<int>(uIdx) <= 332) {
+                if (static_cast<int>(uIdx) <= 325) {
+                    if (static_cast<int>(uIdx) <= 317) {
+                        if (static_cast<int>(uIdx) <= 313) {
+                            if (static_cast<int>(uIdx) > 310) {
+                                if (uIdx != 311) {
+                                    v24_0 = nullptr;
+                                } else {
+                                    v24_0 = &v0_1[47];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) > 306) {
+                                if (uIdx != 307) {
+                                    v24_0 = nullptr;
+                                } else {
+                                    v24_0 = &v0_1[46];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) > 300) {
+                                if (uIdx != 301) {
+                                    v24_0 = nullptr;
+                                } else {
+                                    v24_0 = &v0_1[45];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) > 295) {
+                                if (uIdx != 296) {
+                                    v24_0 = nullptr;
+                                } else {
+                                    v24_0 = &v0_1[44];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) > 290) {
+                                if (uIdx != 291) {
+                                    v24_0 = nullptr;
+                                } else {
+                                    v24_0 = &v0_1[43];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) > 286) {
+                                if (uIdx != 287) {
+                                    v24_0 = nullptr;
+                                } else {
+                                    v24_0 = &v0_1[42];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) > 270) {
+                                if (uIdx != 271) {
+                                    if (uIdx == 272) {
+                                        v24_0 = &v0_1[40];
+                                    } else {
+                                        if (uIdx != 275) {
+                                            v24_0 = nullptr;
+                                        } else {
+                                            v24_0 = &v0_1[41];
+                                        }
+                                    }
+                                } else {
+                                    v24_0 = &v0_1[39];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) > 250) {
+                                if (uIdx != 251) {
+                                    v24_0 = nullptr;
+                                } else {
+                                    v24_0 = &v0_2[5];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) > 237) {
+                                if (uIdx != 238) {
+                                    v24_0 = nullptr;
+                                } else {
+                                    v24_0 = &v0_1[31];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) > 232) {
+                                if (uIdx != 233) {
+                                    v24_0 = nullptr;
+                                } else {
+                                    v24_0 = &v0_1[29];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) > 229) {
+                                if (uIdx != 230) {
+                                    v24_0 = nullptr;
+                                } else {
+                                    v24_0 = &v0_1[28];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) > 223) {
+                                if (uIdx != 224) {
+                                    v24_0 = nullptr;
+                                } else {
+                                    v24_0 = &v0_1[27];
+                                }
+                                return static_cast<void*>(v24_0);
+                            }
+                            if (static_cast<int>(uIdx) <= 200) {
+                                switch (uIdx - 182u) {
+                                    case 0:
+                                    {
+                                        v23_8 = (uType == 1) ? (&mSDTWorkInit.mChatFilter00) : (&mSDTWork.mChatFilter00);
+                                        break;
+                                    }
+                                    case 1:
+                                    {
+                                        v23_8 = &((uType == 1) ? (&mSDTWorkInit.mChatFilter00) : (&mSDTWork.mChatFilter00))[1];
+                                        break;
+                                    }
+                                    case 2:
+                                    {
+                                        v23_8 = &((uType == 1) ? (&mSDTWorkInit.mChatFilter00) : (&mSDTWork.mChatFilter00))[2];
+                                        break;
+                                    }
+                                    case 3:
+                                    {
+                                        v23_8 = &((uType == 1) ? (&mSDTWorkInit.mChatFilter00) : (&mSDTWork.mChatFilter00))[3];
+                                        break;
+                                    }
+                                    case 4:
+                                    {
+                                        v23_8 = &((uType == 1) ? (&mSDTWorkInit.mChatFilter00) : (&mSDTWork.mChatFilter00))[5];
+                                        break;
+                                    }
+                                    case 10:
+                                    {
+                                        v24_0 = &v0_2[93];
+                                        return static_cast<void*>(v24_0);
+                                    }
+                                    default:
+                                    {
+                                        v24_0 = nullptr;
+                                        return static_cast<void*>(v24_0);
+                                    }
+                                }
+                            } else {
+                                switch (uIdx - 201u) {
+                                    case 0:
+                                    {
+                                        v24_0 = &v0_1[17];
+                                        return static_cast<void*>(v24_0);
+                                    }
+                                    case 3:
+                                    {
+                                        v24_0 = &v0_2[37];
+                                        return static_cast<void*>(v24_0);
+                                    }
+                                    case 6:
+                                    {
+                                        v23_8 = reinterpret_cast<u8*>(&mMirrorParam_ScreenMode);
+                                        break;
+                                    }
+                                    case 7:
+                                    {
+                                        v23_8 = reinterpret_cast<u8*>(&mMirrorParam_ResolutionMode);
+                                        break;
+                                    }
+                                    case 11:
+                                    {
+                                        v24_0 = &v0_1[24];
+                                        return static_cast<void*>(v24_0);
+                                    }
+                                    case 12:
+                                    {
+                                        v24_0 = &v0_1[25];
+                                        return static_cast<void*>(v24_0);
+                                    }
+                                    default:
+                                    {
+                                        v24_0 = nullptr;
+                                        return static_cast<void*>(v24_0);
+                                    }
+                                }
+                            }
+                        } else {
+                            if (uIdx != 314) {
+                                v24_0 = nullptr;
+                            } else {
+                                v24_0 = &v0_1[48];
+                            }
+                            return static_cast<void*>(v24_0);
+                        }
+                    } else {
+                        if (uIdx != 318) {
+                            if (uIdx != 319) {
+                                v24_0 = nullptr;
+                                return static_cast<void*>(v24_0);
+                            }
+                            v23_8 = reinterpret_cast<u8*>(&mMirrorParam_IsVSync);
+                        } else {
+                            v24_0 = &v0_2[46];
+                            return static_cast<void*>(v24_0);
+                        }
+                    }
+                } else {
+                    if (uIdx != 326) {
+                        if (uIdx == 328) {
+                            v24_0 = &v0_2[94];
+                            return static_cast<void*>(v24_0);
+                        }
+                        if (uIdx != 329) {
+                            v24_0 = nullptr;
+                            return static_cast<void*>(v24_0);
+                        }
+                        v23_8 = &((uType == 1) ? (&mSDTWorkInit.mChatFilter00) : (&mSDTWork.mChatFilter00))[8];
+                    } else {
+                        v24_0 = &v0_1[49];
+                        return static_cast<void*>(v24_0);
+                    }
+                }
+            } else {
+                if (uIdx != 333) {
+                    v24_0 = nullptr;
+                    return static_cast<void*>(v24_0);
+                } else {
+                    v23_8 = &((uType == 1) ? (&mSDTWorkInit.mChatFilter00) : (&mSDTWork.mChatFilter00))[7];
+                }
+            }
+        } else {
+            switch (uIdx - 165u) {
+                case 0:
+                {
+                    v24_0 = &v0_1[10];
+                    return static_cast<void*>(v24_0);
+                }
+                case 1:
+                {
+                    v24_0 = &v0_1[15];
+                    return static_cast<void*>(v24_0);
+                }
+                case 2:
+                {
+                    v24_0 = &v0_1[21];
+                    return static_cast<void*>(v24_0);
+                }
+                case 3:
+                {
+                    v24_0 = &v0_1[22];
+                    return static_cast<void*>(v24_0);
+                }
+                case 6:
+                {
+                    v24_0 = &v0_2[52];
+                    return static_cast<void*>(v24_0);
+                }
+                case 7:
+                {
+                    v24_0 = &v0_2[57];
+                    return static_cast<void*>(v24_0);
+                }
+                case 8:
+                {
+                    v24_0 = &v0_2[53];
+                    return static_cast<void*>(v24_0);
+                }
+                case 9:
+                {
+                    v24_0 = &v0_2[56];
+                    return static_cast<void*>(v24_0);
+                }
+                default:
+                {
+                    v24_0 = nullptr;
+                    return static_cast<void*>(v24_0);
+                }
+            }
+        }
+    }
+    v24_0 = v23_8;
+    return static_cast<void*>(v24_0);
 }
 
 __attribute__((weak)) void uGUIOption::updateTab() {

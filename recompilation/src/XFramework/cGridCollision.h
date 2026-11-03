@@ -316,3 +316,7 @@ protected:
     MtFloat3 mRegistAABBMaxPos;  // offset: 0x10
     u32 mTraverseRefCount[19][2];  // offset: 0x1c
 };
+
+inline void* cGridCollisionRegistInfo::operator new(size_t sz, void* p) {
+    return p;
+}

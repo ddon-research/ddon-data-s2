@@ -142,6 +142,18 @@ public:
     static const u32 DATA_VERSION = 0;
 };
 
+inline void* rOmKey::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rOmKey::cOmKey::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rOmKey::cItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rOmKey::cItem::cItem() {
     this->mItemIndex = -1;
     this->mColor = 0;

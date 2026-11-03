@@ -102,10 +102,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCharacterEditTexturePalette::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCharacterEditTexturePalette::cCharacterEditTexturePalette() {
     this->mUID = 9999;
     this->mRandom = 0;
 }
 
+inline void* rCharacterEditTexturePalette::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rCharacterEditTexturePalette::rCharacterEditTexturePalette() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCharacterEditTexturePalette::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharacterEditTexturePalette::DTI)->memFree(p_addr);
+}
+
+inline void* cCharacterEditTexturePalette::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCharacterEditTexturePalette::DTI)->memAlloc(sz, align, ::cCharacterEditTexturePalette::DTI.::MtDTI::getID());
 }

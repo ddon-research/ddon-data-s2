@@ -193,10 +193,26 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rStageAdjoinList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageAdjoinList::cAdjoinInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rStageAdjoinList::cAdjoinInfo::cAdjoinInfo() {
     this->mDestinationStageNo = 0;
     this->mNextStageNo = 0;
     this->mPriority = 0;
+}
+
+inline void* rStageAdjoinList::cAdjoinInfo::cIndex::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageAdjoinList::cJumpPosition::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rStageAdjoinList::cJumpPosition::cJumpPosition() {

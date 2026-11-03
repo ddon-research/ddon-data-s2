@@ -376,3 +376,27 @@ public:
 private:
     static const u32 mCTType2TabTable[5];
 };
+
+inline void* uGUIGPShopDialog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIGPShopDialog::setOnlineShopOpen() {
+    this->mIsOnlineShopOpen = true;
+}
+
+inline void* uGUIGPShopDialog::cScrollLimitDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShopDialog::cScrollHistoryDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShopDialog::cScrollLimitItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShopDialog::cScrollHistoryItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

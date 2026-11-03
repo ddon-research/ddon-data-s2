@@ -153,3 +153,7 @@ public:
 private:
     static const s32 ROTINE_INIT = 0;
 };
+
+inline void* uEditSaveLoadFlow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

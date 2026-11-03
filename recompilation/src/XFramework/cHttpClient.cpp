@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetDevice.h"
+#include "../MT/MtNetMediator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtString.h"
 #ifndef DDON_STUB

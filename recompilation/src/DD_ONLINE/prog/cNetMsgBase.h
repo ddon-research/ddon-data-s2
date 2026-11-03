@@ -269,14 +269,30 @@ namespace nNetMsg {
     };
 }  // namespace nNetMsg
 
+inline void* nNetMsg::cCoder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nNetMsg::cCoder::cCoder() {
     this->mpCod = nullptr;
+}
+
+inline void* nNetMsg::cDecoder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nNetMsg::cDecoder::cDecoder() {
     this->mpDec = nullptr;
 }
 
-inline MtMemoryStream* nNetMsg::cNetMsgBase::getStream() {
-    return this->mpStream;
+inline void* nNetMsg::cNetMsgBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nNetMsg::cDecoder& nNetMsg::cNetMsgBase::getDecoder() {
+    return this->mDec;
+}
+
+inline void nNetMsg::cNetMsgBase::setAdr(nNetMsg::MSG_ADR adr) {
+    this->mAdr = adr;
 }

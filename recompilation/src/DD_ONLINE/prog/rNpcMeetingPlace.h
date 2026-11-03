@@ -95,8 +95,28 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cNpcMeetingPlace::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cNpcMeetingPlace::cNpcMeetingPlace() {
     this->mNpcId = 0;
     this->mStageNo = -1;
     this->mStartPosNo = 0;
+}
+
+inline void* rNpcMeetingPlace::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cNpcMeetingPlace::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNpcMeetingPlace::DTI)->memFree(p_addr);
+}
+
+inline void* cNpcMeetingPlace::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNpcMeetingPlace::DTI)->memAlloc(sz, align, ::cNpcMeetingPlace::DTI.::MtDTI::getID());
 }

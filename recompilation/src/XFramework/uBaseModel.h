@@ -365,10 +365,157 @@ protected:
     static const u32 MATERIAL_STACK_NUM = 4;
 };
 
+inline void* uBaseModel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rModel* uBaseModel::getModel() const {
+    return this->mpModel;
+}
+
+inline rMaterial* uBaseModel::getMaterialData() {
+    return this->mpMaterialData;
+}
+
+inline void uBaseModel::setVFCullLevel(uBaseModel::VFCULL_LEVEL level) {
+    this->mVFCullLevel = level;
+}
+
+inline s32 uBaseModel::getZPrepassDist() const {
+    return this->mZPrepassDist;
+}
+
+inline void uBaseModel::setZPrepassDist(s32 dist) {
+    this->mZPrepassDist = dist;
+}
+
+inline u32 uBaseModel::getDrawPriority() const {
+    return this->mDrawPriority;
+}
+
+inline void uBaseModel::setDrawPriority(u32 v) {
+    this->mDrawPriority = v;
+}
+
+inline s32 uBaseModel::getPriorityBias() const {
+    return this->mPriorityBias;
+}
+
+inline void uBaseModel::setPriorityBias(s32 b) {
+    this->mPriorityBias = b;
+    if (b > 0x7FFF0000) {
+        this->mPriorityBias = 0x7FFF0000;
+    } else {
+        if (b <= -2147418113) {
+            this->mPriorityBias = -2147418112;
+        }
+    }
+}
+
+inline uBaseModel::LOD_TYPE uBaseModel::getLODType() const {
+    return static_cast<uBaseModel::LOD_TYPE>(this->mLODType);
+}
+
+inline void uBaseModel::setLODType(uBaseModel::LOD_TYPE lod) {
+    this->mLODType = lod;
+}
+
+inline uBaseModel::SHADER_QUALITY uBaseModel::getShaderQuality() const {
+    return static_cast<uBaseModel::SHADER_QUALITY>(this->mShaderQuality);
+}
+
+inline void uBaseModel::setShaderQuality(uBaseModel::SHADER_QUALITY q) {
+    this->mShaderQuality = q;
+}
+
+inline u32 uBaseModel::getMaterialNum() const {
+    return this->mMaterialNum;
+}
+
 inline f32 uBaseModel::getTransparency() {
     return this->mTransparency;
 }
 
+inline void uBaseModel::setDissolveEnable(bool enable) {
+    this->mDissolveEnable = enable;
+}
+
+inline bool uBaseModel::getDissolveEnable() {
+    return this->mDissolveEnable;
+}
+
+inline void uBaseModel::setFixPosition(bool v) {
+    this->mFixPosition = v;
+}
+
+inline bool uBaseModel::isFixPosition() {
+    return this->mFixPosition;
+}
+
+inline void uBaseModel::setShaderAttributes(bool enable) {
+    this->mShaderAttributes = enable;
+}
+
+inline bool uBaseModel::isShaderAttributes() {
+    return this->mShaderAttributes;
+}
+
+inline void uBaseModel::setFlatTransparency(bool v) {
+    this->mFlatTransparency = v;
+}
+
+inline bool uBaseModel::isFlatTransparency() const {
+    return this->mFlatTransparency;
+}
+
+inline uBaseModel::CACHE_MODE uBaseModel::getCacheMode() {
+    return static_cast<uBaseModel::CACHE_MODE>(this->mCacheMode);
+}
+
 inline u32 uBaseModel::getLightGroup() const {
     return this->mLightGroup;
+}
+
+inline void uBaseModel::setLightAttr(u32 attr) {
+    this->mLightAttr = attr;
+}
+
+inline u32 uBaseModel::getLightAttr() const {
+    return this->mLightAttr;
+}
+
+inline u32 uBaseModel::getMaxLightNum() const {
+    return this->mMaxLightNum;
+}
+
+inline void uBaseModel::setMultiShadowReceive(bool enable) {
+    this->mMultiShadowReceive = enable;
+}
+
+inline bool uBaseModel::isMultiShadowReceive() const {
+    return this->mMultiShadowReceive;
+}
+
+inline void uBaseModel::setMaxNumGroup0MultiShadowReceive(u32 n) {
+    this->mMaxNumGroup0MultiShadowReceive = n;
+}
+
+inline u32 uBaseModel::getMaxNumGroup0MultiShadowReceive() const {
+    return this->mMaxNumGroup0MultiShadowReceive;
+}
+
+inline void uBaseModel::setMaxNumGroup1MultiShadowReceive(u32 n) {
+    this->mMaxNumGroup1MultiShadowReceive = n;
+}
+
+inline u32 uBaseModel::getMaxNumGroup1MultiShadowReceive() const {
+    return this->mMaxNumGroup1MultiShadowReceive;
+}
+
+inline void uBaseModel::setDebugFlags(u32 f) {
+    this->mDebugFlags = f;
+}
+
+inline u32 uBaseModel::getViewDraw() const {
+    return this->mViewDraw;
 }

@@ -133,9 +133,21 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataUIListCommand::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataUIListCommand::CDataUIListCommand() {
     this->m_unCommand = 0;
     this->m_unCommandResult = 0;
+}
+
+inline void* CDataUIListElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataUIListElementChild::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataUIListElementChild::CDataUIListElementChild() {

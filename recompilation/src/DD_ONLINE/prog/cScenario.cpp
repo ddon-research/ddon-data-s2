@@ -5,8 +5,14 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
 #include "cAreaHit.h"
+#include "cScenarioElement.h"
+#include "rScenario.h"
 #include "sAreaHit.h"
+#include "sInputManager.h"
 #include "sOmManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

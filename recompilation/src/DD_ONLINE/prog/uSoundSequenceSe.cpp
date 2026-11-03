@@ -2,14 +2,23 @@
 #include <new>
 #include "uSoundSequenceSe.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtRandom.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "../../XFramework/rSoundRequest.h"
 #include "rSoundSequenceSe.h"
+#include "sGame.h"
+#include "../../XFramework/sMain.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "../../XFramework/sUnit.h"
+#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -66,9 +75,7 @@ void uSoundSequenceSe::setCallPos(const MtVector3& pos) {
     mCallPos.pad_ = 0.0f;
 }
 
-rSoundSequenceSe* uSoundSequenceSe::getSequenceSe() {
-    return mpSequenceSe;
-}
+static auto ddon_emit_0x01b257e0 __attribute__((used)) = &uSoundSequenceSe::getSequenceSe;
 
 MOVE_LINE uSoundSequenceSe::getSeqSeUnitMoveLine() {
     return LINE_0;

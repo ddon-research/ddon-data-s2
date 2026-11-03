@@ -259,8 +259,32 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataEntryBoardItemSearchParameter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataEntryItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataEntryItemParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataEntryMemberData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataEntryRecruitData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataEntryRecruitData::CDataEntryRecruitData() {
     this->m_usID = 0;
+}
+
+inline void* CDataEntryRecruitJob::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataEntryRecruitJob::CDataEntryRecruitJob() {

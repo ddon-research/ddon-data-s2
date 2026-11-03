@@ -20,9 +20,12 @@ class MtProperty;
 class MtPropertyList;
 class MtSphere;
 class MtTriangle;
+class MtUI;
 class MtVector3;
+class cAITaskJobPrimList;
 
 // Declarations
+class cAIAStar;
 class cAIGraph;
 class cAIQuadTree;
 class cAITreeBase;
@@ -35,6 +38,7 @@ using MT_MFUNC32 = void(MtObject::*)(u32);
 using _Sizet = long unsigned int;
 using f32 = float;
 using s16 = short;
+using s32 = int;
 using size_t = _Sizet;
 using u16 = unsigned short;
 using u8 = unsigned char;
@@ -312,6 +316,160 @@ public:
     static MyDTI DTI;
 };
 
+class cAIAStar : public cAIGraph
+{
+public:
+    enum SEARCH_STATE
+    {
+        STATE_WAIT = 1,
+        STATE_SUCCSES = 2,
+        STATE_AREA_SUCCSES = 4,
+        STATE_CONTINUE = 8,
+        STATE_FAILED = 16,
+        STATE_FAILED_HEURISTIC = 48,
+        STATE_FAILED_SAME_NODE = 80,
+        STATE_FAILED_NONE_NODE = 144,
+        STATE_FAILED_MEMORY = 272,
+        STATE_AREA_FAILED = 528,
+    };
+    enum AStar_Status
+    {
+        STATE_CLEAR = 0,
+        STATE_OPEN = 1,
+        STATE_CLOSE = 2,
+    };
+public:
+    class MyDTI;
+    class AStarResult;
+    struct AStarNode;
+    class OpenList;
+public:
+    using NODE_COST_FUNC = void(MtObject::*)(MtObject*, f32&);
+    using LINK_FUNC = bool(MtObject::*)(MtObject*, MtObject*);
+    using HEURISTIC_COST_FUNC = f32(MtObject::*)(MtObject*, MtObject*);
+    using ASTAR_FUNC = bool(MtObject::*)(MtObject*);
+    using SIZE_FUNC = bool(MtObject::*)(MtObject*, u32);
+    using AREA_FUNC = bool(MtObject::*)(MtObject*, MtObject*, bool&, bool&, MtObject*);
+    using NODE_STATUS_FUNC = void(MtObject::*)(u8*, MtObject*, u32);
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    class AStarResult : public MtObject
+    {
+    public:
+        AStarResult();
+        virtual ~AStarResult();
+    public:
+        u8 mLinkIndex;  // offset: 0x8
+        cAIGraph::Node* mpNode;  // offset: 0x10
+        u32* mpData;  // offset: 0x18
+    };
+public:
+    struct AStarNode
+    {
+    public:
+        cAIAStar::AStarNode* mpNextNode;  // offset: 0x0
+        u32* mpData;  // offset: 0x8
+        cAIGraph::Node* mpAStar;  // offset: 0x10
+        f32 mTotalCost;  // offset: 0x18
+        f32 mHeuristic;  // offset: 0x1c
+        u32 mUTotal;  // offset: 0x20
+    };
+public:
+    class OpenList : public MtObject
+    {
+    public:
+        OpenList();
+        virtual ~OpenList();
+        cAIAStar::AStarNode* at(u32 index);
+        void add(cAIAStar::AStarNode* pobj);
+        void addSort(cAIAStar::AStarNode* pobj);
+        void replace(u32, cAIAStar::AStarNode*);
+        void erase(u32 index);
+        u32 length();
+        bool extendBuffer(s32 siz);
+        void clear();
+    protected:
+        cAIAStar::AStarNode* * mpArray;  // offset: 0x8
+        u32 mBufsiz;  // offset: 0x10
+        u32 mLength;  // offset: 0x14
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cAIAStar();
+    virtual ~cAIAStar();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void createJobList(cAITaskJobPrimList& list);  // vtable slot 6
+    u32 getNumberOfResult();
+    MtObject* getResult(u32 index, bool f);
+    AStarResult* getResult_Address();
+    MtObject* getResult_A(u32 index, u32& param);
+    void setEvaluateFunc(NODE_COST_FUNC func, MtObject* owner);
+    void setLinkFunc(LINK_FUNC func, MtObject* owner);
+    void setHeuristicFunc(HEURISTIC_COST_FUNC func, MtObject* owner);
+    void setAreaFunc(AREA_FUNC func, MtObject* owner);
+    void setNodeStatusFunc(NODE_STATUS_FUNC func, MtObject* owner);
+    void setFinishConditionFunc(ASTAR_FUNC, MtObject*);
+    void setSizeFunc(SIZE_FUNC func, MtObject* owner);
+    f32 getHeuristicSecurity();
+    void setHeuristicSecurity(f32 security);
+    f32 getCost();
+    bool areaInitialize(cAIGraph::Node* startNode, cAIGraph::Node* endNode, cAIGraph::Area* root);
+    bool nodeInitialize(cAIGraph::Node* startNode, cAIGraph::Node* endNode, u32 state, bool callback);
+    u32 AStar(cAIGraph::Node* startNode, cAIGraph::Node* endNode, f32* cost);
+    u32 search();
+    u32 search_callback();
+    void searchJob();
+protected:
+    bool AreaDecision(cAIGraph::Node* startNode, cAIGraph::Node* endNode);
+    cAIGraph::Node* searchNode(MtObject* node);
+protected:
+    f32 mSecurityCost;  // offset: 0xd0
+    AStarResult* mpResult;  // offset: 0xd8
+    u32 mNumberOfAStar;  // offset: 0xe0
+    MtObject* mpCOwner;  // offset: 0xe8
+    NODE_COST_FUNC mpCostFunction;  // offset: 0xf0
+    MtObject* mpLOwner;  // offset: 0x100
+    LINK_FUNC mpLinkFunction;  // offset: 0x108
+    MtObject* mpHOwner;  // offset: 0x118
+    HEURISTIC_COST_FUNC mpHeuristicFunction;  // offset: 0x120
+    MtObject* mpFOwner;  // offset: 0x130
+    ASTAR_FUNC mpFinishFunction;  // offset: 0x138
+    SIZE_FUNC mpSizeFunction;  // offset: 0x148
+    MtObject* mpLSOwner;  // offset: 0x158
+    cAIGraph::Area* mpRoot;  // offset: 0x160
+    MtObject* mpAOwner;  // offset: 0x168
+    AREA_FUNC mpAreaFunction;  // offset: 0x170
+    MtObject* mpSOwner;  // offset: 0x180
+    NODE_STATUS_FUNC mpStatusFunction;  // offset: 0x188
+    cAIGraph::Node* mpENode;  // offset: 0x198
+    AStarNode* mpHashTable;  // offset: 0x1a0
+    u8* mpStateFlag;  // offset: 0x1a8
+    u16 mIndex;  // offset: 0x1b0
+    f32 mCost;  // offset: 0x1b4
+    OpenList mOpenList;  // offset: 0x1b8
+public:
+    static MyDTI DTI;
+};
+
 class cAIQuadTree : public cAITreeBase
 {
 public:
@@ -368,10 +526,38 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAIAStar::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIGraph::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIGraph::Node::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIGraph::Area::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIQuadTree::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAITreeBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAITreeBase::cAITreeBase() {
     this->mNest = 0;
     this->mNumberOfNode = 0;
     this->mAxisPartition = 0;
     this->mpNode = nullptr;
     this->mDelete = true;
+}
+
+inline void* cAITreeBase::Node::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

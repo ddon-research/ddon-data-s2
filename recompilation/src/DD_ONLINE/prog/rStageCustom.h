@@ -128,8 +128,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rStageCustom::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 rStageCustom::getPartsDataNo() const {
     return this->mPartsDataNo;
+}
+
+inline void* rStageCustom::Area::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rStageCustom::Area::Area() {

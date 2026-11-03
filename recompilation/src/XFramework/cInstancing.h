@@ -466,6 +466,18 @@ protected:
     bool mCache;  // offset: 0x27a0
 };
 
+inline void* cInstancingCulling::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cInstancingDynamic::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cInstancingFromMatrices::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 template <typename _T, typename _I>
 void uInstancing<_T, _I>::kill() {
     this->_T::kill();

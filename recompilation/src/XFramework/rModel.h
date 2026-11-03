@@ -285,6 +285,14 @@ protected:
     static const s32 DATA_VERSION = 210;
 };
 
+inline void* rModel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline f32 rModel::getQuantPosScale() const {
+    return this->mQuantPosScale;
+}
+
 inline const rModel::JOINT_INFO* rModel::getJointInfo() const {
     return this->mJointInfo;
 }
@@ -295,4 +303,12 @@ inline u32 rModel::getJointNum() const {
 
 inline const MtMatrix* rModel::getJointInverseMatrix() const {
     return this->mImat;
+}
+
+inline nDraw::VertexBuffer* rModel::getVertexBuffer() const {
+    return this->mpVertexBuffer;
+}
+
+inline u32 rModel::getPrimitiveNum() const {
+    return this->mPrimitiveNum;
 }

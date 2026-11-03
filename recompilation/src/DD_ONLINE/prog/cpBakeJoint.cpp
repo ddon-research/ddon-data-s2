@@ -7,6 +7,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
+#include "cDDMaterialCtrl.h"
 #include "../../XFramework/cDraw.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
@@ -15,6 +16,7 @@
 #include "../../XFramework/rModel.h"
 #include "sBakingJointOrder.h"
 #include "../../XFramework/sScene.h"
+#include "../../XFramework/uBaseModel.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
@@ -30,8 +32,13 @@ inline void cpBakeJoint::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) u32 cpBakeJoint::getSkinJointNum() const {
-    DDON_STUB("cpBakeJoint::getSkinJointNum")
-    return {};
+        u32 Num = mSkinJointNum;
+        if (!mIsBaked) {
+            if (mpModel != nullptr) {
+                Num = mpModel->mJointNum;
+            }
+        }
+        return Num;
 }
 
 bool cpBakeJoint::setRenewalEnvelope() {

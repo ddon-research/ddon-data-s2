@@ -9,7 +9,13 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPropertyList.h"
 #include "cSystem.h"
+#include "sApp.h"
+#include "sMain.h"
+#include "sRender.h"
+#include "sUserManager.h"
+#include "sVibration.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

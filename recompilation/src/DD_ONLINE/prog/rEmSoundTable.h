@@ -110,6 +110,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEmSoundTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEmSoundTable::cEmSoundTable() {
     this->mIdx = 1;
     this->mSoundResNo = 0;
@@ -122,4 +126,16 @@ inline cEmSoundTable::cEmSoundTable() {
     this->mOffsetPos.pad_ = 0.0f;
     this->mOffsetPos.x = 0.0f;
     this->mOffsetPos.y = 0.0f;
+}
+
+inline void* rEmSoundTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEmSoundTable::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmSoundTable::DTI)->memFree(p_addr);
 }

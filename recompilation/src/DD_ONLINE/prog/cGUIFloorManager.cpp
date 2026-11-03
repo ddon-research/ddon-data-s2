@@ -4,10 +4,33 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cAreaHit.h"
+#include "cContextInterface.h"
 #include "../../XFramework/cResource.h"
 #include "rGUIMapSetting.h"
+#include "rStageMap.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sContextManager.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "sNpcManager.h"
+#include "sPlayerManager.h"
+#include "sUnitManager.h"
+#include "../../XFramework/uBaseModel.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uNpc.h"
+#include "uPlayer.h"
+#include "uStageParts.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -172,9 +195,7 @@ __attribute__((weak)) void cGUIFloorManager::cParam::setResource(rGUIMapSetting*
     /* stub */
 }
 
-rGUIMapSetting* cGUIFloorManager::cParam::getResource() {
-    return mpRes;
-}
+static auto ddon_emit_0x0198a500 __attribute__((used)) = &cGUIFloorManager::cParam::getResource;
 
 cGUIFloorManager::cParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

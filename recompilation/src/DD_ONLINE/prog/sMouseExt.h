@@ -98,3 +98,7 @@ public:
     STATE_EXT mStateExt;  // offset: 0xaa8
     static MyDTI DTI;
 };
+
+inline void* sMouseExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

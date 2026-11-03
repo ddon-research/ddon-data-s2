@@ -9,6 +9,8 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
+#include "../MT/MtSpline.h"
 #include "../MT/MtStream.h"
 #include "cResource.h"
 #ifndef DDON_STUB

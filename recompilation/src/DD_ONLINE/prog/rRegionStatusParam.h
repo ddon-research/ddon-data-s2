@@ -299,3 +299,47 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cChildRegionStatusParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cChildRegionStatusParamList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cParentRegionStatusParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rChildRegionStatusParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rChildRegionStatusParamList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rParentRegionStatusParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cChildRegionStatusParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParam::DTI)->memFree(p_addr);
+}
+
+inline void* cChildRegionStatusParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParam::DTI)->memAlloc(sz, align, ::cChildRegionStatusParam::DTI.::MtDTI::getID());
+}
+
+inline void* cChildRegionStatusParamList::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParamList::DTI)->memAlloc(sz, align, ::cChildRegionStatusParamList::DTI.::MtDTI::getID());
+}
+
+inline void* cParentRegionStatusParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cParentRegionStatusParam::DTI)->memAlloc(sz, align, ::cParentRegionStatusParam::DTI.::MtDTI::getID());
+}

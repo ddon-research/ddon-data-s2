@@ -6,6 +6,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../generated/shared/nDDOGame.h"
 #include "../../generated/shared/nDDOModel.h"
 #ifndef DDON_STUB
@@ -14,6 +16,10 @@
 
 const MtDTI& nHumanBow::cBowActParam::getDTI() const {
     return nHumanBow::cBowActParam::DTI;
+}
+
+inline void* nHumanBow::cBowActParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nHumanBow::cBowActParam::DTI)->memAlloc(sz, align, ::nHumanBow::cBowActParam::DTI.getID());
 }
 
 inline void nHumanBow::cBowActParam::operator delete(void* p_addr) {
@@ -203,8 +209,32 @@ nHumanBow::cBowActParam::cBowActParam() {
 }
 
 nHumanBow::cBowActParam::~cBowActParam() {
-    DDON_STUB("nHumanBow::cBowActParam::~cBowActParam")
-    /* stub */
+    if (shootCtrlList.mLength != 0) {
+        u32 v0_0 = shootCtrlList.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (shootCtrlList.mpArray[i0_3] != nullptr) {
+                delete shootCtrlList.mpArray[i0_3];
+                if ((i0_3 + 1u) < shootCtrlList.mLength) {
+                    v0_0 = shootCtrlList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (shootCtrlList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(shootCtrlList.mpArray));
+    }
+    shootCtrlList.mpArray = nullptr;
+    shootCtrlList.mBufsiz = 0;
+    shootCtrlList.mLength = 0;
 }
 
 void nHumanBow::cBowActParam::createProperty(MtPropertyList& s) {
@@ -238,8 +268,7 @@ nHumanBow::cBowActParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 nHumanBow::cBowActParam::MyDTI nHumanBow::cBowActParam::DTI("cBowActParam", &::MtObject::DTI, 424ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nHumanBow::cBowActParam::MyDTI::newInstance() const {
-    DDON_STUB("nHumanBow::cBowActParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* nHumanBow::cBowActParam::MyDTI::newInstance() const {
+    return new (16u) ::nHumanBow::cBowActParam;
 }
 

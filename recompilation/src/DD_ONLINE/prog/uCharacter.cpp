@@ -3,48 +3,119 @@
 #include "uCharacter.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
+#include "../../MT/MtCollision.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtRandom.h"
+#include "../../MT/MtString.h"
+#include "aStage.h"
+#include "../../XFramework/cAIPathTrace.h"
 #include "../../XFramework/cAISvPathFinding.h"
+#include "cActList.h"
+#include "../../XFramework/cArea.h"
+#include "cBlowShrinkDmInfo.h"
+#include "cComponentManager.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cDelegate.h"
+#include "cEvaluation.h"
+#include "cGUIUtility.h"
+#include "cGeneralPoint.h"
 #include "cGeneralPointPtr.h"
 #include "cGuardInfo.h"
 #include "cHitInfoAfter.h"
+#include "cHitInfoAfterLocal.h"
+#include "cHitNode.h"
+#include "cObjHitCache.h"
+#include "cOcdDamageInfo.h"
+#include "cOcdInfo.h"
 #include "../../XFramework/cResource.h"
+#include "cStaminaCtrl.h"
+#include "cThinkMgr.h"
 #include "../../XFramework/cUnit.h"
+#include "cpAIPawnEmChecker.h"
 #include "cpActionManager.h"
 #include "cpActionRequest.h"
+#include "cpActionSelect.h"
 #include "cpAltitudeFallCtrl.h"
+#include "cpCatchCtrl.h"
+#include "cpChargeCtrl.h"
+#include "cpCheckWallCliff.h"
+#include "cpComponent.h"
+#include "cpEnemyThink.h"
+#include "cpHeadCtrl.h"
+#include "cpHpDamageCtrl.h"
 #include "cpHugeble.h"
 #include "cpIKCtrl.h"
 #include "cpInvincibleCtrl.h"
 #include "cpJointEx2.h"
+#include "cpJointOrder.h"
 #include "cpLayout.h"
+#include "cpLegCtrl.h"
+#include "cpLockOn.h"
+#include "cpLockOnTargetManager.h"
+#include "cpMotionHistory.h"
 #include "cpMotionRate.h"
+#include "cpMotionSe.h"
 #include "cpObjCollision.h"
 #include "cpOcdCtrl.h"
+#include "cpPartsCtrl.h"
+#include "cpPathFinding.h"
+#include "cpPivotCtrl.h"
+#include "cpRegionStatusCtrl.h"
+#include "cpRotateCtrl.h"
+#include "cpScrCollision.h"
+#include "cpSequenceCtrl.h"
 #include "cpShakeCtrl.h"
+#include "cpSlave.h"
+#include "cpSoftBody.h"
 #include "cpStateManager.h"
+#include "cpTinyChain.h"
 #include "cpVibration.h"
+#include "cpWallMaria.h"
 #include "cpWorkRate.h"
+#include "nActionManager.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "../../generated/shared/nDDOModel.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nErosionEnemyBase.h"
+#include "nJobParam.h"
 #include "nObjCollision.h"
 #include "rAttackParam.h"
+#include "rCollNode.h"
+#include "../../XFramework/rGUIMessage.h"
 #include "rMotionParam.h"
+#include "rNamedParam.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "sChat.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGeneralPoint.h"
+#include "../../XFramework/sMain.h"
 #include "sObjCollision.h"
+#include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
 #include "sSetManager.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sWorkRate.h"
 #include "../../XFramework/uBaseModel.h"
 #include "uControl.h"
 #include "uControlEnemy.h"
+#include "uControlNpc.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
 #include "uGUIGaugeEnemy.h"
 #include "uGUIGaugeNpc.h"
+#include "uHuman.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -411,7 +482,7 @@ void uCharacter::clearOcdAll() {
         i0_3 = 1;
     }
     for (;;) {
-        pOcdCtrl->cpOcdCtrl::reqOcdCure(i0_3);
+        pOcdCtrl->reqOcdCure(i0_3);
         if ((i0_3 + 1u) != 28) {
             i0_3 += 1u;
         } else {
@@ -419,18 +490,18 @@ void uCharacter::clearOcdAll() {
         }
     }
     for (unsigned int i2_3 = 4097;;) {
-        pOcdCtrl->cpOcdCtrl::reqOcdCure(i2_3);
+        pOcdCtrl->reqOcdCure(i2_3);
         if ((i2_3 + 1u) != 4128) {
             i2_3 += 1u;
         } else {
             break;
         }
     }
-    pOcdCtrl->cpOcdCtrl::reqOcdCure(8193u);
-    pOcdCtrl->cpOcdCtrl::reqOcdCure(8194u);
-    pOcdCtrl->cpOcdCtrl::reqOcdCure(8195u);
-    pOcdCtrl->cpOcdCtrl::reqOcdCure(8196u);
-    pOcdCtrl->cpOcdCtrl::reqOcdCure(8197u);
+    pOcdCtrl->reqOcdCure(8193u);
+    pOcdCtrl->reqOcdCure(8194u);
+    pOcdCtrl->reqOcdCure(8195u);
+    pOcdCtrl->reqOcdCure(8196u);
+    pOcdCtrl->reqOcdCure(8197u);
 }
 
 __attribute__((weak)) void uCharacter::updateObjStatus() {

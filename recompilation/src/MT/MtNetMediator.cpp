@@ -3,6 +3,7 @@
 #include <_pthread.h>
 #include <stdlib.h>
 #include "MtNetMediator.h"
+#include "MtNetBuffer.h"
 #include "MtNetCom.h"
 #include "MtNetCore.h"
 #include "MtNetObject.h"
@@ -10,8 +11,8 @@
 #include "MtNetUtilityPS4.h"
 #include "MtString.h"
 #include "MtSynchronize.h"
-#include "../generated/rCharacterEditCameraParam/_rtc.h"
-#include "../generated/rCharacterEditCameraParam/np_auth.h"
+#include "../generated/shared/_rtc.h"
+#include "../generated/shared/np_auth.h"
 #include "../generated/shared/np_common.h"
 #include "../generated/shared/np_npid.h"
 #ifndef DDON_STUB
@@ -235,9 +236,7 @@ __attribute__((weak)) int MtNetMediator::getNpScoreContextId(SceUserServiceUserI
     return {};
 }
 
-s32 MtNetMediator::getNpScoreGameDataRankThreashold(s32 board_id) {
-    return 100;
-}
+static auto ddon_emit_0x00dba250 __attribute__((used)) = &MtNetMediator::getNpScoreGameDataRankThreashold;
 
 __attribute__((weak)) s32 MtNetMediator::createNpTssContextId(SceUserServiceUserId user_id, SceNpServiceLabel label) {
     DDON_STUB("MtNetMediator::createNpTssContextId")

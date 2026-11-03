@@ -67,3 +67,7 @@ public:
 protected:
     static const u32 DATA_VERSION = 538181632;
 };
+
+inline void* rBrowserFont::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "nDrawResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -28,9 +29,7 @@ nDraw::Buffer::Buffer(nDraw::USAGE_TYPE usage) {
 __attribute__((weak)) void nDraw::Buffer::resume() {
 }
 
-nDraw::USAGE_TYPE nDraw::Buffer::getUsageType() const {
-    return mUsageType;
-}
+static auto ddon_emit_0x01b82c90 __attribute__((used)) = &nDraw::Buffer::getUsageType;
 
 __attribute__((weak)) void nDraw::Buffer::createProperty(MtPropertyList& s) {
     DDON_STUB("nDraw::Buffer::createProperty")

@@ -6,9 +6,19 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "cDraw.h"
+#include "cPrim.h"
+#include "cPrimTexHandle.h"
+#include "cResource.h"
+#include "cUnit.h"
 #include "nPrim.h"
 #include "rEffectAnim.h"
 #include "rEffectList.h"
+#include "rVertices.h"
+#include "sEffect.h"
+#include "sPrimitive.h"
 #include "uBaseEffect.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -42,8 +52,24 @@ uSimpleEffect::uSimpleEffect() {
 }
 
 uSimpleEffect::~uSimpleEffect() {
-    DDON_STUB("uSimpleEffect::~uSimpleEffect")
-    /* stub */
+    if (mpParticle != nullptr) {
+        for (Particle* v0_5 = mpParticle;;) {
+            Particle* t0 = v0_5->mpNext;
+            delete v0_5;
+            if (t0 != nullptr) {
+                v0_5 = t0;
+            } else {
+                break;
+            }
+        }
+    }
+    mpParticle = nullptr;
+    mParticleNum = 0;
+    mParticleBuffSize = 0;
+    if (mpVertices != nullptr) {
+        mpVertices->release();
+        mpVertices = nullptr;
+    }
 }
 
 __attribute__((weak)) void uSimpleEffect::move() {
@@ -88,31 +114,23 @@ void uSimpleEffect::setEffectList(rEffectList* pEffectList) {
     mInitFlag = 1;
 }
 
-u32 uSimpleEffect::getListNo() const {
-    return mListNo;
-}
+static auto ddon_emit_0x01bbd090 __attribute__((used)) = &uSimpleEffect::getListNo;
 
 __attribute__((weak)) void uSimpleEffect::setListNo(u32 No) {
     DDON_STUB("uSimpleEffect::setListNo")
     /* stub */
 }
 
-rVertices* uSimpleEffect::getVertices() {
-    return mpVertices;
-}
+static auto ddon_emit_0x01bbd0a0 __attribute__((used)) = &uSimpleEffect::getVertices;
 
 __attribute__((weak)) void uSimpleEffect::setVertices(rVertices* pVertices) {
     DDON_STUB("uSimpleEffect::setVertices")
     /* stub */
 }
 
-bool uSimpleEffect::getOfsInvalidMode() const {
-    return mOfsInvalidMode;
-}
+static auto ddon_emit_0x01bbd050 __attribute__((used)) = &uSimpleEffect::getOfsInvalidMode;
 
-void uSimpleEffect::setOfsInvalidMode(bool Mode) {
-    mOfsInvalidMode = Mode;
-}
+static auto ddon_emit_0x01bbd060 __attribute__((used)) = &uSimpleEffect::setOfsInvalidMode;
 
 __attribute__((weak)) void uSimpleEffect::moveParticle(uSimpleEffect::Particle* pParticle) {
     DDON_STUB("uSimpleEffect::moveParticle")

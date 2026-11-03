@@ -7,6 +7,7 @@
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "MtPropertyList.h"
 #include "MtSynchronize.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

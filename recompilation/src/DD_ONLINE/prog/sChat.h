@@ -300,6 +300,18 @@ private:
     static const s32 mGroupToChatArea[24];
 };
 
+inline void* sChat::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sChat* sChat::getInstance() {
     return ::sChat::mpInstance;
+}
+
+inline s32 sChat::getChatArea() {
+    return this->mChatArea;
+}
+
+inline void sChat::setChatView() {
+    this->mTimer = 360.0f;
 }

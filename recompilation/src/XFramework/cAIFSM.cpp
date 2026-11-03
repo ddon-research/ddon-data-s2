@@ -3,14 +3,20 @@
 #include <string.h>
 #include "cAIFSM.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "../MT/MtString.h"
 #include "cAIConditionTree.h"
 #include "cAIObject.h"
 #include "cAIUserProcess.h"
 #include "cResource.h"
 #include "rAIFSM.h"
+#include "sAI.h"
+#include "sMain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -75,9 +81,7 @@ rAIFSM* cAIFSM::getResource(u32 index) {
     return nullptr;
 }
 
-u32 cAIFSM::getCoreNum() {
-    return mCoreNum;
-}
+static auto ddon_emit_0x01b6a720 __attribute__((used)) = &cAIFSM::getCoreNum;
 
 cAIFSM::Core* cAIFSM::getCore(u32 index) {
     if (mCoreList != nullptr) {
@@ -102,10 +106,11 @@ void cAIFSM::reset() {
             t0[i0_3].mClusterStackBottom = 0;
             if (t0[i0_3].mpResource != nullptr) {
                 t0[i0_3].pushCluster(t0[i0_3].mpResource->mpRootCluster);
+                u32 t1 = mCoreNum;
                 t0[i0_3].mIsReset = true;
                 t0[i0_3].mIsImported = false;
-                if ((i0_3 + 1u) < mCoreNum) {
-                    v0_0 = mCoreNum;
+                if ((i0_3 + 1u) < t1) {
+                    v0_0 = t1;
                     i0_3 += 1u;
                 } else {
                     break;
@@ -198,14 +203,50 @@ __attribute__((weak)) bool cAIFSM::Core::createClusterStack(u32 size) {
     return {};
 }
 
-__attribute__((weak)) void cAIFSM::Core::setStatus(u32 st) {
-    DDON_STUB("cAIFSM::Core::setStatus")
-    /* stub */
+void cAIFSM::Core::setStatus(u32 st) {
+    u32 t0 = mStatus;
+    mStatus = st;
+    if (t0 != st) {
+        if (mClusterStackBottom != 0) {
+            u32 v0_0 = mClusterStackBottom;
+            unsigned int i0_8 = 0;
+            unsigned int i1_3;
+            u32* v1_8;
+            u32 v3_0;
+            for (;;) {
+                mpCurrentClusterStack = &mClusterStack[i0_8];
+                cAIFSMNode* v1_9 = mClusterStack[i0_8].mpNode;
+                if (v1_9->mProcessNum == 0) {
+                    v3_0 = v0_0;
+                } else {
+                    i1_3 = 0;
+                    v1_8 = &mClusterStack[i0_8].mCurrentProcessNo;
+                    for (;;) {
+                        *v1_8 = i1_3;
+                        cAIFSMNodeProcess* t1 = v1_9->getProcess(i1_3);
+                        if (t1->mpStatusChangeProcess != nullptr) {
+                            t1->mpStatusChangeProcess->callProcessWithExamine(mpOwner->mpOwner, static_cast<MtObject*>(t1->mpParameter), static_cast<MtObject*>(this), true);
+                        }
+                        if ((i1_3 + 1u) < v1_9->mProcessNum) {
+                            i1_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                    v3_0 = mClusterStackBottom;
+                }
+                if ((i0_8 + 1u) < v3_0) {
+                    v0_0 = v3_0;
+                    i0_8 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
-u32 cAIFSM::Core::getStatus() {
-    return mStatus;
-}
+static auto ddon_emit_0x01b6a810 __attribute__((used)) = &cAIFSM::Core::getStatus;
 
 __attribute__((weak)) bool cAIFSM::Core::createClusterWorkList(u32 num) {
     DDON_STUB("cAIFSM::Core::createClusterWorkList")
@@ -440,7 +481,7 @@ inline void cAIFSMData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAIFSMData::DTI)->memFree(p_addr);
 }
 
-cAIFSMData::~cAIFSMData() {
+__attribute__((noinline)) cAIFSMData::~cAIFSMData() {
     if (mpCore != nullptr) {
         if (mCoreNum != 0) {
             u32 v0_0 = mCoreNum;
@@ -486,9 +527,7 @@ cAIFSMData::Core* cAIFSMData::getCore(u32 index) const {
     return nullptr;
 }
 
-u32 cAIFSMData::getCoreNum() const {
-    return mCoreNum;
-}
+static auto ddon_emit_0x01b6a820 __attribute__((used)) = &cAIFSMData::getCoreNum;
 
 void cAIFSMData::setCoreNum(u32 num) {
     if (mpCore != nullptr) {
@@ -547,7 +586,7 @@ inline void cAIFSMData::Core::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memFree(p_addr);
 }
 
-cAIFSMData::Core::~Core() {
+__attribute__((noinline)) cAIFSMData::Core::~Core() {
     if (mpCluster != nullptr) {
         if (mClusterNum != 0) {
             u32 v0_0 = mClusterNum;
@@ -603,9 +642,7 @@ __attribute__((weak)) void cAIFSMData::Core::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-u32 cAIFSMData::Core::getClusterNum() const {
-    return mClusterNum;
-}
+static auto ddon_emit_0x01b6a880 __attribute__((used)) = &cAIFSMData::Core::getClusterNum;
 
 void cAIFSMData::Core::setClusterNum(u32 num) {
     if (mpCluster != nullptr) {
@@ -696,13 +733,9 @@ __attribute__((weak)) bool cAIFSMData::Core::createClusterLogList(u32 num) {
     }
 }
 
-u32 cAIFSMData::Core::getClusterLogNum() const {
-    return mClusterLogNum;
-}
+static auto ddon_emit_0x01b6a890 __attribute__((used)) = &cAIFSMData::Core::getClusterLogNum;
 
-void cAIFSMData::Core::setClusterLogNum(u32 num) {
-    createClusterLogList(num);
-}
+static auto ddon_emit_0x01b6abc0 __attribute__((used)) = &cAIFSMData::Core::setClusterLogNum;
 
 cAIFSMData::ClusterLog* cAIFSMData::Core::getClusterLog(u32 index) const {
     if (mpClusterLog != nullptr) {
@@ -796,9 +829,7 @@ void cAIFSMData::ClusterLog::setTransitionOnceState(u32 id, u32 index) {
     }
 }
 
-u32 cAIFSMData::ClusterLog::getTransitionOnceStateNum() const {
-    return mTransitionOnceStateNum;
-}
+static auto ddon_emit_0x01b6a8a0 __attribute__((used)) = &cAIFSMData::ClusterLog::getTransitionOnceStateNum;
 
 void cAIFSMData::ClusterLog::setTransitionOnceStateNum(u32 num) {
     if (mTransitionOnceStateList != nullptr) {

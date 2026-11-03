@@ -137,3 +137,38 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* uScheduler::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rScheduler* uScheduler::getData() {
+    return this->mpScheduler;
+}
+
+inline void uScheduler::setFrame(u32 frame) {
+    if (this->mpScheduler == nullptr) {
+        return;
+    }
+    this->mFrame = static_cast<float>(frame);
+}
+
+inline u32 uScheduler::getFrame() const {
+    return static_cast<unsigned int>(static_cast<long>(this->mFrame));
+}
+
+inline f32 uScheduler::getFrameF() const {
+    return this->mFrame;
+}
+
+inline void uScheduler::setFrameF(f32 v) {
+    this->mFrame = v;
+}
+
+inline bool uScheduler::isPauseToFullStop() const {
+    return this->mPauseToFullStop;
+}
+
+inline bool uScheduler::isPauseToFullStopMoved() const {
+    return this->mPauseToFullStopMoved;
+}

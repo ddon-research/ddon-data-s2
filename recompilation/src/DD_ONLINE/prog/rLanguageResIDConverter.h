@@ -97,3 +97,7 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* rLanguageResIDConverter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

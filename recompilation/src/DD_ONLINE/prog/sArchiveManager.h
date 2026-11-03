@@ -170,6 +170,10 @@ private:
     static const u32 PACK_NUM = 64;
 };
 
+inline void* sArchiveManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sArchiveManager* sArchiveManager::getInstance() {
     return ::sArchiveManager::mpInstance;
 }

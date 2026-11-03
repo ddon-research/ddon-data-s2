@@ -7,10 +7,17 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
+#include "cDDMaterialCtrl.h"
 #include "../../XFramework/cResource.h"
+#include "cpDDMrlMgr.h"
 #include "nDDOUtility.h"
+#include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sWeatherManager.h"
+#include "sWorkRate.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -70,8 +77,32 @@ inline rOutlineParamList::rOutlineParamList() {
 }
 
 rOutlineParamList::~rOutlineParamList() {
-    DDON_STUB("rOutlineParamList::~rOutlineParamList")
-    /* stub */
+    if (mParamList.mLength != 0) {
+        u32 v0_0 = mParamList.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mParamList.mpArray[i0_3] != nullptr) {
+                delete mParamList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mParamList.mLength) {
+                    v0_0 = mParamList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mParamList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mParamList.mpArray));
+    }
+    mParamList.mpArray = nullptr;
+    mParamList.mBufsiz = 0;
+    mParamList.mLength = 0;
 }
 
 __attribute__((weak)) void rOutlineParamList::createProperty(MtPropertyList& s) {
@@ -84,12 +115,12 @@ __attribute__((weak)) void rOutlineParamList::clear() {
 
 bool rOutlineParamList::load(MtStream& in) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
+    return sz.deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 bool rOutlineParamList::save(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rOutlineParamList::DTI));
+    return sz.serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rOutlineParamList::DTI));
 }
 
 MT_CTSTR rOutlineParamList::getExt() const {

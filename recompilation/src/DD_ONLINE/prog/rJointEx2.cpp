@@ -3,9 +3,11 @@
 #include "rJointEx2.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -53,13 +55,19 @@ inline void rJointEx2::operator delete(void* p_addr) {
 }
 
 rJointEx2::~rJointEx2() {
-    DDON_STUB("rJointEx2::~rJointEx2")
-    /* stub */
 }
 
 __attribute__((weak)) bool rJointEx2::loadData(MtDataReader& r, cJointEx2* pData) {
-    DDON_STUB("rJointEx2::loadData")
-    return {};
+        nDDOIO::readData(r, pData->mJntNo);
+        nDDOIO::readData(r, pData->mRefJntNo);
+        nDDOIO::readData(r, pData->mAxis);
+        nDDOIO::readData(r, pData->mLimitAxis);
+        nDDOIO::readData(r, pData->mRate);
+        nDDOIO::readData(r, pData->mTwistRate);
+        pData->mRotAdd = r.readV3();
+        nDDOIO::readData(r, pData->mLimitMin);
+        nDDOIO::readData(r, pData->mLimitMax);
+        return true;
 }
 
 MT_CTSTR rJointEx2::getExt() const {
@@ -71,8 +79,7 @@ u32 rJointEx2::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rJointEx2::loadCore(MtDataReader& r) {
-    DDON_STUB("rJointEx2::loadCore")
-    return {};
+    return rTbl2<cJointEx2>::loadCore(r);
 }
 
 rJointEx2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -172,3 +172,11 @@ private:
     static const u32 LOGO_MAX = 4;
     static const u32 INVALID_LOGO = 255;
 };
+
+inline void* uGUICredit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICredit::cElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

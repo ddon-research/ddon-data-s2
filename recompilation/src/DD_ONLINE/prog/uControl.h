@@ -261,6 +261,10 @@ private:
     static const u32 BOSS_CONDITION_INTERVAL = 90;
 };
 
+inline void* uControl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool uControl::isPlayer() {
     return this->mCtrlType == 0;
 }
@@ -293,12 +297,46 @@ inline cContextInstance* uControl::getContextInst() {
     return this->mpContextInst;
 }
 
+inline void uControl::setContextInst(cContextInstance* pContextInst) {
+    this->mpContextInst = pContextInst;
+    this->mContextInterface.mpContextInstance = pContextInst;
+}
+
+inline void uControl::releaseSaveNetMessage() {
+    this->mIsSaveSendAct = false;
+}
+
+inline void uControl::updateSendInterval() {
+    this->mSendActIntervalTimer = 30.0f;
+    this->mIsSaveSendAct = false;
+}
+
+inline void uControl::setNpcId(s32 NpcId) {
+    this->mNpcId = NpcId;
+}
+
 inline u32 uControl::getUniqueId() {
     return this->mUniqueId;
 }
 
 inline u32 uControl::getUnitId() {
     return this->mUnitId;
+}
+
+inline u32 uControl::getLoadPriority() const {
+    return this->mLoadPriority;
+}
+
+inline u32 uControl::getBtlBgmReqNo() const {
+    return this->mBattleBgmReqNo;
+}
+
+inline u32 uControl::getNamedParamsId() const {
+    return this->mNamedParamsId;
+}
+
+inline void uControl::setSetNo(s32 no) {
+    this->mLayout.mSetNo = no;
 }
 
 inline s32 uControl::getSetNo() const {
@@ -311,4 +349,12 @@ inline const cGroupParam* uControl::getGroupParam() const {
 
 inline bool uControl::isFadeOut() {
     return this->mIsFadeOut;
+}
+
+inline void uControl::setDisableDispTimer(f32 Timer) {
+    this->mDisableDispTimer = Timer;
+}
+
+inline void uControl::setForceDispTimer(f32 Timer) {
+    this->mForceDispTimer = Timer;
 }

@@ -88,8 +88,8 @@ public:
     static MyDTI DTI;
 };
 
-inline void cGeneralPoint::setReqCategory(s32 category) {
-    this->mCategoryReq = category;
+inline void* cGeneralPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void cGeneralPoint::reqKill() {

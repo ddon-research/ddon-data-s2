@@ -21,6 +21,7 @@ class cpJob10;
 class sEffectExt;
 class uCharacterEditBase;
 class uHuman;
+class uHumanEnemy;
 class uPlayer;
 class uShlAlchemy;
 class uShlBakuensen;
@@ -51,6 +52,7 @@ class cEfcHandle : public MtObject
     friend class sEffectExt;
     friend class uCharacterEditBase;
     friend class uHuman;
+    friend class uHumanEnemy;
     friend class uPlayer;
     friend class uShlAlchemy;
     friend class uShlBakuensen;
@@ -128,6 +130,10 @@ public:
     static const u32 EFC_LIST_MAX = 8;
 };
 
+inline void* cEfcHandle::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEfcHandle::cEfcHandle() {
     this->UnitType = 5;
     this->GroupID[7] = 0xFFFFFFFFFFFFFFFFul;
@@ -160,4 +166,8 @@ inline u64 cEfcHandle::getUniqueID() const {
 
 inline void cEfcHandle::setOwner(cUnit* pOwner) {
     this->mpOwner = pOwner;
+}
+
+inline void cEfcHandle::addRef() {
+    this->mRefCount = this->mRefCount + 1u;
 }

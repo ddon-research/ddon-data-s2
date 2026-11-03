@@ -2,6 +2,7 @@
 #include <new>
 #include <string.h>
 #include "MtDTI.h"
+#include "MtCRC.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -83,7 +84,7 @@ MtDTI* MtDTI::getType(MT_CTSTR name) const {
             break;
         } else {
             if (strcmp(pt->mName, name) != 0) {
-                MtDTI* ppt = pt->MtDTI::getType(name);
+                MtDTI* ppt = pt->getType(name);
                 if (ppt != nullptr) {
                     v1_0 = ppt;
                     break;
@@ -103,7 +104,7 @@ void MtDTI::updateChildAlloc() {
     if (mpChild != nullptr) {
         for (MtDTI* p_child = mpChild;;) {
             p_child->mAllocatorIndex = mAllocatorIndex;
-            p_child->MtDTI::updateChildAlloc();
+            p_child->updateChildAlloc();
             if (p_child->mpNext != nullptr) {
                 p_child = p_child->mpNext;
             } else {

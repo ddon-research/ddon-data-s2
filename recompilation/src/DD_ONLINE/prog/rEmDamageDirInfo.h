@@ -103,6 +103,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEmDamageDirInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEmDamageDirInfo::cEmDamageDirInfo() {
     this->mEmCategory = 0;
     this->mDmReactionType = 263;
@@ -112,4 +116,20 @@ inline cEmDamageDirInfo::cEmDamageDirInfo() {
     this->mIsWeightSpeedXZ = false;
     this->mIsWeightSpeedY = false;
     this->mIsWeightAccXZ = false;
+}
+
+inline void* rEmDamageDirInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEmDamageDirInfo::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmDamageDirInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cEmDamageDirInfo::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmDamageDirInfo::DTI)->memAlloc(sz, align, ::cEmDamageDirInfo::DTI.::MtDTI::getID());
 }

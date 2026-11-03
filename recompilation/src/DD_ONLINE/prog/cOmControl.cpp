@@ -7,18 +7,59 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtSynchronize.h"
+#include "Protocol/PacketData/Stage.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cComponentManager.h"
+#include "cNetGameServer.h"
+#include "cNetSessionManager.h"
+#include "cOmComponent.h"
 #include "cResPath.h"
+#include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
 #include "cZoneIndoorHandle.h"
+#include "../../XFramework/cZoneLayout.h"
 #include "cZoneUnitCtrl.h"
+#include "cpComponent.h"
+#include "cpLayout.h"
+#include "cpOmGather.h"
+#include "cpTransparencyCtrl.h"
 #include "nLayout.h"
+#include "nQuest.h"
 #include "../../XFramework/rAIFSM.h"
 #include "../../XFramework/rCollision.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "rLayoutGroupParam.h"
 #include "rOmParam.h"
 #include "res_ptr.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
 #include "../../XFramework/sCollision.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #include "sOmManager.h"
+#include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
+#include "sSetManager.h"
+#include "sSoundManager.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sUnitManager.h"
+#include "sWeatherManager.h"
+#include "sWorldOffset.h"
 #include "../../XFramework/uBaseModel.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uOmInstancing.h"
 #include "uOmModel.h"
+#include "uOmSwingModel.h"
+#include "uPlayer.h"
+#include "uSoundGenerator.h"
+#include "uSoundZoneBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -218,8 +259,14 @@ __attribute__((weak)) void cOmControl::updateSbc(MtMatrix& mtx) {
 }
 
 __attribute__((weak)) void cOmControl::setActiveSbc(bool act, u32 type, u32 index, u32 parts) {
-    DDON_STUB("cOmControl::setActiveSbc")
-    /* stub */
+        if (type >= 2 || index >= 2) {
+            return;
+        }
+        sCollision::SBC_HANDLE handle = mhSbc[type][index];
+        if (handle == 0xFFFFFFFFu) {
+            return;
+        }
+        sCollision::getInstance()->setPartsActiveID(handle, parts, act);
 }
 
 void cOmControl::setActiveScrSbc(bool act) {
@@ -428,6 +475,15 @@ __attribute__((weak)) void cOmControl::moveMapIcon() {
 __attribute__((weak)) void cOmControl::initZone() {
     DDON_STUB("cOmControl::initZone")
     /* stub */
+}
+
+inline void cOmControl::eraseZone() {
+    (sWeatherManager::mpInstance)->sWeatherManager::eraseZoneIndoorRes(mhZone);
+    if (mpuSndGen == nullptr) {
+        return;
+    }
+    mpuSndGen->kill();
+    mpuSndGen = nullptr;
 }
 
 __attribute__((weak)) bool cOmControl::isNoZonePL(bool isLoad) {

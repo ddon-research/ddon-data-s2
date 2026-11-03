@@ -5,6 +5,7 @@
 #include "MtNetRequest.h"
 #include "MtNetDevice.h"
 #include "MtNetObject.h"
+#include "MtPropertyList.h"
 #include "MtSynchronize.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

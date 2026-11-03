@@ -134,6 +134,10 @@ namespace nNetBase {
     };
 }  // namespace nNetBase
 
+inline void* nNetBase::cNetBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline RPC_ID nNetBase::cNetBase::getRpcId() {
     return this->mRpcId;
 }

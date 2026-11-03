@@ -102,5 +102,21 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAIPawnActNoSwitch::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIPawnActNoSwitch::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rAIPawnActNoSwitch::rAIPawnActNoSwitch() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cAIPawnActNoSwitch::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIPawnActNoSwitch::DTI)->memAlloc(sz, align, ::cAIPawnActNoSwitch::DTI.::MtDTI::getID());
 }

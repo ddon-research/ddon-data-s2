@@ -128,6 +128,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cRoomWearParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cRoomWearParam::cRoomWearParam() {
     this->mWL_W = 0;
     this->mAC_W = 0;
@@ -145,4 +149,20 @@ inline cRoomWearParam::cRoomWearParam() {
     this->mAA_M = 0;
     this->mItem = 0;
     this->mType = 0;
+}
+
+inline void* rRoomWearParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cRoomWearParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cRoomWearParam::DTI)->memFree(p_addr);
+}
+
+inline void* cRoomWearParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cRoomWearParam::DTI)->memAlloc(sz, align, ::cRoomWearParam::DTI.::MtDTI::getID());
 }

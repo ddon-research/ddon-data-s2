@@ -4,9 +4,12 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDataReader.h"
+#include "../MT/MtDataWriter.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "cResource.h"
 #include "rSoundBank.h"
+#include "sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

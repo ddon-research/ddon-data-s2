@@ -101,10 +101,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cDmVecWeightParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cDmVecWeightParam::cDmVecWeightParam() {
     this->mWeightAdjAccY = 0.0f;
     this->mWeightAdjSpeedY = 0.0f;
     this->mWeightAdjAccXZ = 0.0f;
     this->mWeight = 0.0f;
     this->mWeightAdjSpeedXZ = 0.0f;
+}
+
+inline void* rDmVecWeightParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cDmVecWeightParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDmVecWeightParam::DTI)->memFree(p_addr);
+}
+
+inline void* cDmVecWeightParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDmVecWeightParam::DTI)->memAlloc(sz, align, ::cDmVecWeightParam::DTI.::MtDTI::getID());
 }

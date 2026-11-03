@@ -138,3 +138,11 @@ protected:
     static const u32 NativeFileMagic = 1381323077;
     static const s32 NativeFileVersion = 1;
 };
+
+inline void* rSoundEQ::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rSoundEQ::cEQData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

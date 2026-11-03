@@ -9,7 +9,11 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtRandom.h"
+#include "../../MT/MtSynchronize.h"
+#include "aStage.h"
 #include "cArcLoader.h"
+#include "cContextInterface.h"
+#include "cNetGameServer.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
 #include "cTalkMsgData.h"
@@ -22,6 +26,18 @@
 #include "res_ptr.h"
 #include "sAIPawnSys.h"
 #include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sChat.h"
+#include "sContextManager.h"
+#include "sFlag.h"
+#include "sGame.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
+#include "sWorldOffset.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -181,7 +197,7 @@ __attribute__((weak)) u32 sAIPawnTalkMgr::convTalkSituationFromMot(u32 motSituat
 u32 sAIPawnTalkMgr::lotAIPawnTalkMotioin(uDDOModel* pPawn, u32 motSituation, u32* pDstMoveType) {
     cAIPawnAutoMotionNode* p_node = lotPawnTalkMotNode(pPawn, motSituation);
     if (p_node != nullptr) {
-        u32 mot_act_no = p_node->cAIPawnAutoMotionNode::getEMotActionNo();
+        u32 mot_act_no = p_node->getEMotActionNo();
         if (pDstMoveType != nullptr) {
             *pDstMoveType = p_node->mWaitMoveType;
         }
@@ -268,14 +284,14 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
                     mTalkMsgData.reset();
                     mTalkMsgData.setMsgData(p_gmd);
                     mTalkMsgData.setMsgSetData(p_mss);
-                    p_gmd->cResource::release();
-                    p_mss->cResource::release();
+                    p_gmd->release();
+                    p_mss->release();
                 } else {
-                    p_gmd->cResource::release();
+                    p_gmd->release();
                 }
             } else {
                 if (p_mss != nullptr) {
-                    p_mss->cResource::release();
+                    p_mss->release();
                 }
             }
             break;
@@ -293,14 +309,14 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
                     mTalkMsgData.reset();
                     mTalkMsgData.setMsgData(p_gmd);
                     mTalkMsgData.setMsgSetData(p_mss);
-                    p_gmd->cResource::release();
-                    p_mss->cResource::release();
+                    p_gmd->release();
+                    p_mss->release();
                 } else {
-                    p_gmd->cResource::release();
+                    p_gmd->release();
                 }
             } else {
                 if (p_mss != nullptr) {
-                    p_mss->cResource::release();
+                    p_mss->release();
                 }
             }
             break;
@@ -318,14 +334,14 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
                     mTalkMsgData.reset();
                     mTalkMsgData.setMsgData(p_gmd);
                     mTalkMsgData.setMsgSetData(p_mss);
-                    p_gmd->cResource::release();
-                    p_mss->cResource::release();
+                    p_gmd->release();
+                    p_mss->release();
                 } else {
-                    p_gmd->cResource::release();
+                    p_gmd->release();
                 }
             } else {
                 if (p_mss != nullptr) {
-                    p_mss->cResource::release();
+                    p_mss->release();
                 }
             }
             break;
@@ -343,14 +359,14 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
                     mTalkMsgData.reset();
                     mTalkMsgData.setMsgData(p_gmd);
                     mTalkMsgData.setMsgSetData(p_mss);
-                    p_gmd->cResource::release();
-                    p_mss->cResource::release();
+                    p_gmd->release();
+                    p_mss->release();
                 } else {
-                    p_gmd->cResource::release();
+                    p_gmd->release();
                 }
             } else {
                 if (p_mss != nullptr) {
-                    p_mss->cResource::release();
+                    p_mss->release();
                 }
             }
             break;
@@ -368,14 +384,14 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
                     mTalkMsgData.reset();
                     mTalkMsgData.setMsgData(p_gmd);
                     mTalkMsgData.setMsgSetData(p_mss);
-                    p_gmd->cResource::release();
-                    p_mss->cResource::release();
+                    p_gmd->release();
+                    p_mss->release();
                 } else {
-                    p_gmd->cResource::release();
+                    p_gmd->release();
                 }
             } else {
                 if (p_mss != nullptr) {
-                    p_mss->cResource::release();
+                    p_mss->release();
                 }
             }
             break;
@@ -393,14 +409,14 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
                     mTalkMsgData.reset();
                     mTalkMsgData.setMsgData(p_gmd);
                     mTalkMsgData.setMsgSetData(p_mss);
-                    p_gmd->cResource::release();
-                    p_mss->cResource::release();
+                    p_gmd->release();
+                    p_mss->release();
                 } else {
-                    p_gmd->cResource::release();
+                    p_gmd->release();
                 }
             } else {
                 if (p_mss != nullptr) {
-                    p_mss->cResource::release();
+                    p_mss->release();
                 }
             }
             break;
@@ -418,14 +434,14 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
                     mTalkMsgData.reset();
                     mTalkMsgData.setMsgData(p_gmd);
                     mTalkMsgData.setMsgSetData(p_mss);
-                    p_gmd->cResource::release();
-                    p_mss->cResource::release();
+                    p_gmd->release();
+                    p_mss->release();
                 } else {
-                    p_gmd->cResource::release();
+                    p_gmd->release();
                 }
             } else {
                 if (p_mss != nullptr) {
-                    p_mss->cResource::release();
+                    p_mss->release();
                 }
             }
             break;
@@ -443,14 +459,14 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
                     mTalkMsgData.reset();
                     mTalkMsgData.setMsgData(p_gmd);
                     mTalkMsgData.setMsgSetData(p_mss);
-                    p_gmd->cResource::release();
-                    p_mss->cResource::release();
+                    p_gmd->release();
+                    p_mss->release();
                 } else {
-                    p_gmd->cResource::release();
+                    p_gmd->release();
                 }
             } else {
                 if (p_mss != nullptr) {
-                    p_mss->cResource::release();
+                    p_mss->release();
                 }
             }
             break;
@@ -466,14 +482,14 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
                     mTalkMsgData.reset();
                     mTalkMsgData.setMsgData(p_gmd);
                     mTalkMsgData.setMsgSetData(p_mss);
-                    p_gmd->cResource::release();
-                    p_mss->cResource::release();
+                    p_gmd->release();
+                    p_mss->release();
                 } else {
-                    p_gmd->cResource::release();
+                    p_gmd->release();
                 }
             } else {
                 if (p_mss != nullptr) {
-                    p_mss->cResource::release();
+                    p_mss->release();
                 }
             }
             break;

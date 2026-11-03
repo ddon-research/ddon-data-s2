@@ -3,6 +3,7 @@
 #include <string.h>
 #include "sIMEPS4.h"
 #include "../../generated/shared/ime_types.h"
+#include "../../generated/shared/nUnicode.h"
 #include "sIME.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

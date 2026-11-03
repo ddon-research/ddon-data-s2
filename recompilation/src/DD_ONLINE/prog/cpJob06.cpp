@@ -2,11 +2,15 @@
 #include <new>
 #include "cpJob06.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "cAction.h"
+#include "cContextPlayerInfo.h"
 #include "cEfcHandle.h"
+#include "cGeneralPoint.h"
 #include "cGeneralPointPtr.h"
 #include "cHitInfoAfter.h"
 #include "cHumanActId.h"
@@ -14,8 +18,13 @@
 #include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
 #include "cpChantCommand.h"
+#include "cpChargeCtrl.h"
+#include "cpComponent.h"
 #include "cpEffectProvider.h"
+#include "cpInput.h"
 #include "cpJobBase.h"
+#include "cpKeyCommand.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nHuman.h"
 #include "nHumanMsg.h"
@@ -27,8 +36,15 @@
 #include "../../XFramework/sMain.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "sShlManager.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sUnitManager.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
+#include "../../XFramework/uModel.h"
+#include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -50,8 +66,29 @@ inline void cpJob06::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) cpJob06::~cpJob06() {
-    DDON_STUB("cpJob06::~cpJob06")
-    /* stub */
+    if (mpAimEfcUnit != nullptr) {
+        sUnit::getInstance()->remove(static_cast<cUnit*>(mpAimEfcUnit));
+        if (mpAimEfcUnit != nullptr) {
+            delete mpAimEfcUnit;
+            mpAimEfcUnit = nullptr;
+        }
+    }
+    if (mpEfcCS12Unit != nullptr) {
+        sUnit::getInstance()->remove(static_cast<cUnit*>(mpEfcCS12Unit));
+        if (mpEfcCS12Unit != nullptr) {
+            delete mpEfcCS12Unit;
+            mpEfcCS12Unit = nullptr;
+        }
+    }
+    if (mpEfcCS14Unit == nullptr) {
+        return;
+    }
+    sUnit::getInstance()->remove(static_cast<cUnit*>(mpEfcCS14Unit));
+    if (mpEfcCS14Unit == nullptr) {
+        return;
+    }
+    delete mpEfcCS14Unit;
+    mpEfcCS14Unit = nullptr;
 }
 
 void cpJob06::setup() {
@@ -225,7 +262,7 @@ void cpJob06::makeDamageAttackInfo(cHitInfoAfter* pHitInfo) {
     if (pHitInfo->mCommonInfo.mpAttackParam->mAttackID != 71) {
         return;
     }
-    f32 t0 = pAttacker->uDDOModel::getMgcRate(pHitInfo->mCommonInfo.mAtkAdjustUniqueId);
+    f32 t0 = pAttacker->getMgcRate(pHitInfo->mCommonInfo.mAtkAdjustUniqueId);
     pHitInfo->mCommonInfo.mpAttackParam->mMgcAttackRate = pHitInfo->mCommonInfo.mpAttackParam->mMgcAttackRate * (1.0f + t0);
 }
 
@@ -234,7 +271,7 @@ void cpJob06::makeShlDamageAttackInfo(cHitInfoAfter* pHitInfo) {
     if (pAttacker == nullptr) {
         return;
     }
-    f32 t0 = pAttacker->uDDOModel::getMgcRate(pHitInfo->mCommonInfo.mAtkAdjustUniqueId);
+    f32 t0 = pAttacker->getMgcRate(pHitInfo->mCommonInfo.mAtkAdjustUniqueId);
     pHitInfo->mCommonInfo.mpAttackParam->mMgcAttackRate = pHitInfo->mCommonInfo.mpAttackParam->mMgcAttackRate * (1.0f + t0);
     if (pHitInfo->mCommonInfo.mpAttackParam->mAttackID != 61) {
         return;
@@ -677,8 +714,10 @@ void cpJob06::decreaseIceRemainingBullets(bool isAll) {
 }
 
 __attribute__((weak)) bool cpJob06::getIsCanShotIceShot() {
-    DDON_STUB("cpJob06::getIsCanShotIceShot")
-    return {};
+        if (mpHuman->getInputPtr()->mBtnInfo.on.padTrigger) {
+            return false;
+        }
+        return mIsCanShotIceShot;
 }
 
 bool cpJob06::isCanDispTargetMark() {

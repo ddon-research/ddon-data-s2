@@ -162,6 +162,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rFieldAreaList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rFieldAreaList::cFieldAreaInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rFieldAreaList::cFieldAreaInfo::cStageNo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rFieldAreaList::cFieldAreaInfo::cStageNo::cStageNo() {
     this->mStageNo = -1;
 }

@@ -3,6 +3,8 @@
 #include <_pthread.h>
 #include <stdlib.h>
 #include "MtNetContext.h"
+#include "MtNetCore.h"
+#include "MtNetDevice.h"
 #include "MtNetObject.h"
 #include "MtNetRequest.h"
 #include "MtSynchronize.h"

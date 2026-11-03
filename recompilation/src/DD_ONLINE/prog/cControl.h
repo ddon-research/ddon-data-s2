@@ -458,6 +458,10 @@ public:
     static const nKeyCustom::KB_CUSTOM tblKey[12];
 };
 
+inline void* cControl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool cControl::isExecuteMsgEvent() {
     return this->mIsExecuteMsgEvent;
 }
@@ -488,4 +492,28 @@ inline s32 cControl::getOldPos() const {
 
 inline s32 cControl::getBindPos() const {
     return this->mBindPos;
+}
+
+inline void* cControl::cMouseExecution::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cControl::cMouseExecution::cMouseTouchInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cControl::cMouseExecution::cMouseTouchInfo::cMouseTouchInfo() {
+    this->mFlg = 0;
+    this->mpObjMask = nullptr;
+    this->mpInstMask = nullptr;
+    this->mpObjMO = nullptr;
+    this->mpObjMT = nullptr;
+    this->mpInstMT = nullptr;
+    this->mPos = -1;
+    this->mMOType = 0;
+    this->mAnmType = 0;
+    this->msgMT = static_cast<nGUIExt::MSG_REASON>(46);
+    this->mClickVol = -1;
+    this->mpData = nullptr;
+    this->mLimitedReasonFlags = 0;
 }

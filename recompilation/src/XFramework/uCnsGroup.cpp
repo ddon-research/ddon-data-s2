@@ -5,7 +5,10 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "cResource.h"
+#include "cUnit.h"
 #include "uConstraint.h"
 #include "uModel.h"
 #ifndef DDON_STUB
@@ -308,9 +311,7 @@ __attribute__((weak)) void uCnsGroup::cGroup::setNodeNum(u32 num) {
     /* stub */
 }
 
-u32 uCnsGroup::cGroup::getNodeNum() {
-    return mNodeNum;
-}
+static auto ddon_emit_0x01bbd5c0 __attribute__((used)) = &uCnsGroup::cGroup::getNodeNum;
 
 __attribute__((weak)) void uCnsGroup::cGroup::resizeCnsChildlen() {
     DDON_STUB("uCnsGroup::cGroup::resizeCnsChildlen")

@@ -2,20 +2,37 @@
 #include <new>
 #include "uGUIAnnounce.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
+#include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive2D.h"
 #include "../../MT/MtString.h"
+#include "../../XFramework/cArea.h"
 #include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
+#include "cNetGameServer.h"
 #include "cNetSessionManager.h"
+#include "cPlDeadFlow.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "nQuest.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
+#include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sGame.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "../../XFramework/sPad.h"
+#include "sPadExt.h"
 #include "sQuestManagerExt.h"
+#include "sWorkRate.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
@@ -168,6 +185,24 @@ void uGUIAnnounce::updateEndWait() {
 
 void uGUIAnnounce::updateExit() {
     end();
+}
+
+inline void uGUIAnnounce::adjustWindowColor() {
+    if (mpObjColAdjWindow != nullptr) {
+        if (mColor != 0) {
+            mpObjColAdjWindow->mAmbientColor.rgba = 0xF0FC8;
+        } else {
+            mpObjColAdjWindow->mAmbientColor.rgba = 0xFF9B00;
+        }
+    }
+    if (mpObjColAdjText == nullptr) {
+        return;
+    }
+    if (mColor != 0) {
+        mpObjColAdjText->mAmbientColor.rgba = 166;
+    } else {
+        mpObjColAdjText->mAmbientColor.rgba = 0xA66200;
+    }
 }
 
 uGUIAnnounce::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

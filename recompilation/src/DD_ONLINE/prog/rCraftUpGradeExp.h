@@ -99,10 +99,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCraftUpGradeExpData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCraftUpGradeExpData::cCraftUpGradeExpData() {
     this->mExpMax = 0;
 }
 
 inline u64 cCraftUpGradeExpData::getExpMax() {
     return this->mExpMax;
+}
+
+inline void* rCraftUpGradeExp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCraftUpGradeExpData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftUpGradeExpData::DTI)->memFree(p_addr);
+}
+
+inline void* cCraftUpGradeExpData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftUpGradeExpData::DTI)->memAlloc(sz, align, ::cCraftUpGradeExpData::DTI.::MtDTI::getID());
 }

@@ -377,10 +377,41 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCaptrophyContentData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCaptrophyData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cCaptrophyData::cCaptrophyData() {
+    this->mId = -1;
+    this->mDifficulty = -1;
+    this->mComplete = -1;
+    this->mReceive = 0;
+}
+
+inline void* cCaptrophyRelationData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cCaptrophyRelationData::cCaptrophyRelationData() {
+    this->mReward.::MtArray::mAutoDelete = true;
+}
+
+inline void* cCaptrophyRewardData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCaptrophyRewardData::cCaptrophyRewardData() {
     this->mRewardType = -1;
     this->mRewardId = -1;
     this->mRewardNum = -1;
+}
+
+inline void* uGUICaplinkTopMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline s32 uGUICaplinkTopMenu::getChatIdType() {

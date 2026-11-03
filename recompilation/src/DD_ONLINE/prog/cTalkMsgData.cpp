@@ -7,11 +7,13 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtRandom.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "rMsgSet.h"
 #include "../../XFramework/rSoundStreamRequest.h"
+#include "sArchiveManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -180,9 +182,9 @@ MT_CTSTR cTalkMsgData::getMessage() {
         if (mpMsgData != nullptr) {
             rMsgSet::cMsgGroup* pGrpData = mpMsgSetData->getGroupData(mDispGrpNo);
             if (pGrpData != nullptr) {
-                rMsgSet::cMsgData* pMsgData = pGrpData->rMsgSet::cMsgGroup::getMsgData(mDispPageNo);
+                rMsgSet::cMsgData* pMsgData = pGrpData->getMsgData(mDispPageNo);
                 if (pMsgData != nullptr) {
-                    return mpMsgData->getMessage(pMsgData->rMsgSet::cMsgData::getGmdIndex());
+                    return mpMsgData->getMessage(pMsgData->getGmdIndex());
                 } else {
                     return "";
                 }
@@ -217,7 +219,7 @@ u32 cTalkMsgData::getTalkNpcId() {
         if (mpMsgData != nullptr) {
             rMsgSet::cMsgGroup* pGrpData = mpMsgSetData->getGroupData(mDispGrpNo);
             if (pGrpData != nullptr) {
-                return pGrpData->rMsgSet::cMsgGroup::getNpcId();
+                return pGrpData->getNpcId();
             } else {
                 return 0;
             }
@@ -251,7 +253,7 @@ u32 cTalkMsgData::getDispGrpType() {
         if (mpMsgData != nullptr) {
             rMsgSet::cMsgGroup* pGrpData = mpMsgSetData->getGroupData(mDispGrpNo);
             if (pGrpData != nullptr) {
-                return pGrpData->rMsgSet::cMsgGroup::getGroupType();
+                return pGrpData->getGroupType();
             } else {
                 return 0;
             }
@@ -268,10 +270,10 @@ u32 cTalkMsgData::getDispMsgType() {
         if (mpMsgData != nullptr) {
             rMsgSet::cMsgGroup* pGrpData = mpMsgSetData->getGroupData(mDispGrpNo);
             if (pGrpData != nullptr) {
-                if (getDispPageNo() < pGrpData->mMsgData.::MtArray::mLength) {
-                    rMsgSet::cMsgData* pMsgData = pGrpData->rMsgSet::cMsgGroup::getMsgData(getDispPageNo());
+                if (getDispPageNo() < pGrpData->mMsgData.mLength) {
+                    rMsgSet::cMsgData* pMsgData = pGrpData->getMsgData(getDispPageNo());
                     if (pMsgData != nullptr) {
-                        return pMsgData->rMsgSet::cMsgData::getMsgType();
+                        return pMsgData->getMsgType();
                     } else {
                         return 0;
                     }
@@ -293,9 +295,9 @@ s32 cTalkMsgData::getVoiceReqNo() {
     if (mpMsgSetData != nullptr) {
         rMsgSet::cMsgGroup* pGrp = mpMsgSetData->getGroupData(mDispGrpNo);
         if (pGrp != nullptr) {
-            rMsgSet::cMsgData* pMsgData = pGrp->rMsgSet::cMsgGroup::getMsgData(mDispPageNo - 1u);
+            rMsgSet::cMsgData* pMsgData = pGrp->getMsgData(mDispPageNo - 1u);
             if (pMsgData != nullptr) {
-                return pMsgData->rMsgSet::cMsgData::getVoiceReqNo();
+                return pMsgData->getVoiceReqNo();
             } else {
                 return -1;
             }
@@ -316,9 +318,9 @@ u32 cTalkMsgData::getSetMotionNo() {
     if (mpMsgSetData != nullptr) {
         rMsgSet::cMsgGroup* pGrp = mpMsgSetData->getGroupData(mDispGrpNo);
         if (pGrp != nullptr) {
-            rMsgSet::cMsgData* pMsgData = pGrp->rMsgSet::cMsgGroup::getMsgData(mDispPageNo - 1u);
+            rMsgSet::cMsgData* pMsgData = pGrp->getMsgData(mDispPageNo - 1u);
             if (pMsgData != nullptr) {
-                return pMsgData->rMsgSet::cMsgData::getSetMotionNo();
+                return pMsgData->getSetMotionNo();
             } else {
                 return 0;
             }

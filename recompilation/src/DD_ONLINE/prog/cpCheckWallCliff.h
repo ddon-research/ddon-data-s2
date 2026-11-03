@@ -124,3 +124,7 @@ public:
 private:
     static const s32 FALL_PREVENTION_POS_MAX = 4;
 };
+
+inline void* cpCheckWallCliff::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

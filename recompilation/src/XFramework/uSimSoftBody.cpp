@@ -2,14 +2,32 @@
 #include <new>
 #include "uSimSoftBody.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCollision.h"
+#include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtGeomSphere.h"
+#include "../MT/MtGeometry3D.h"
 #include "../MT/MtMath.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "cDraw.h"
+#include "cResource.h"
 #include "cUnit.h"
+#include "nCollisionNode.h"
+#include "nDrawInputLayout.h"
+#include "nDrawResource.h"
+#include "nDrawTexture.h"
+#include "nDrawVertexBuffer.h"
 #include "rModel.h"
 #include "sCollision.h"
+#include "sMain.h"
+#include "sRender.h"
+#include "sScene.h"
+#include "sShader2.h"
+#include "sUnit.h"
 #include "uBaseModel.h"
 #include "uCoord.h"
 #include "uModel.h"
@@ -101,18 +119,14 @@ __attribute__((weak)) void uSimSoftBody::setDeformWeightMap(rDeformWeightMap* p)
     /* stub */
 }
 
-rDeformWeightMap* uSimSoftBody::getDeformWeightMap() {
-    return mpResWeightMap;
-}
+static auto ddon_emit_0x01b64760 __attribute__((used)) = &uSimSoftBody::getDeformWeightMap;
 
 __attribute__((weak)) void uSimSoftBody::setSPS(rSoundPhysicsSoftBody* p) {
     DDON_STUB("uSimSoftBody::setSPS")
     /* stub */
 }
 
-rSoundPhysicsSoftBody* uSimSoftBody::getSPS() {
-    return mpResSPS;
-}
+static auto ddon_emit_0x01b64770 __attribute__((used)) = &uSimSoftBody::getSPS;
 
 __attribute__((weak)) void uSimSoftBody::createSimData() {
     DDON_STUB("uSimSoftBody::createSimData")
@@ -261,9 +275,7 @@ void uSimSoftBody::setColliderCollision(bool flag) {
     }
 }
 
-bool uSimSoftBody::getColliderCollision() {
-    return mColliderCollision;
-}
+static auto ddon_emit_0x01b64700 __attribute__((used)) = &uSimSoftBody::getColliderCollision;
 
 __attribute__((weak)) void uSimSoftBody::rebuildSkinningData(nDraw::VertexBuffer* pVB, const rModel::PRIMITIVE_INFO* pprim) {
     DDON_STUB("uSimSoftBody::rebuildSkinningData")

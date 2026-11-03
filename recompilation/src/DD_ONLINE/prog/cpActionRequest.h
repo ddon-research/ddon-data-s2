@@ -13,11 +13,13 @@ class MtDTI;
 class MtObject;
 class cAction;
 class cHumanActBase;
+class cpOmBase;
 namespace nSessionManager { class cNetSessionManager; }
 class uCharacter;
 class uDDOModel;
 class uEnemy;
 class uHuman;
+class uHumanEnemy;
 
 // Declarations
 class cpActionRequest;
@@ -34,11 +36,13 @@ class cpActionRequest : public cpComponent
 {
     friend class cAction;
     friend class cHumanActBase;
+    friend class cpOmBase;
     friend class nSessionManager::cNetSessionManager;
     friend class uCharacter;
     friend class uDDOModel;
     friend class uEnemy;
     friend class uHuman;
+    friend class uHumanEnemy;
 public:
     enum SET_ACT_TYPE
     {
@@ -163,6 +167,10 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* cpActionRequest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline u32 cpActionRequest::getDamageAction() {
     return this->mDamageAction;

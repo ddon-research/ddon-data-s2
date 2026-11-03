@@ -121,3 +121,11 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cActorLight::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rActorLight::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

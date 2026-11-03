@@ -105,6 +105,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rTutorialDialogMessage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rTutorialDialogMessage::cDialogPage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rTutorialDialogMessage::cDialogPage::cDialogPage() {
     this->mTextGmdIdx = 0;
     this->mImageId = 0;

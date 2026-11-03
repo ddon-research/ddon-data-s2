@@ -97,7 +97,27 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cStartPosArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cStartPosArea::cStartPosArea() {
     this->mStartPosNo = 0;
     this->mAreaId = 0;
+}
+
+inline void* rStartPosArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cStartPosArea::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStartPosArea::DTI)->memFree(p_addr);
+}
+
+inline void* cStartPosArea::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStartPosArea::DTI)->memAlloc(sz, align, ::cStartPosArea::DTI.::MtDTI::getID());
 }

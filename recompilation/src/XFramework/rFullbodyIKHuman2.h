@@ -140,3 +140,15 @@ public:
 protected:
     static const u16 DATA_VERSION = 0;
 };
+
+inline void* rFullbodyIKHuman2::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 rFullbodyIKHuman2::getAssignedJointNum() {
+    return 24;
+}
+
+inline void* rFullbodyIKHuman2::JointAssign::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

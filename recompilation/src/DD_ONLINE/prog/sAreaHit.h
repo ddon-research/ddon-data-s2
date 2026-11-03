@@ -103,6 +103,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* sAreaHit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sAreaHit* sAreaHit::getInstance() {
     return ::sAreaHit::mpInstance;
 }

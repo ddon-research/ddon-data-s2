@@ -3,14 +3,26 @@
 #include <string.h>
 #include "sPlayerManager.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cContextInstance.h"
 #include "cContextInterface.h"
 #include "cContextPlayerInfo.h"
+#include "cDelegate.h"
+#include "cNetGameServer.h"
 #include "cOcdParamRes.h"
 #include "cPlayerLoadManager.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpActionRequest.h"
+#include "cpBakeJoint.h"
 #include "nCastUtility.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nHuman.h"
 #include "nHumanBow.h"
@@ -25,6 +37,10 @@
 #include "sAreaExt.h"
 #include "sContextManager.h"
 #include "sGame.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sUnitExt.h"
 #include "sUnitManager.h"
 #include "../../XFramework/uBaseModel.h"
 #include "uDDOModel.h"
@@ -312,15 +328,15 @@ void sPlayerManager::recoveryPrologueStatus() {
     if (pInfo == nullptr) {
         return;
     }
-    pInfo->cContextPlayerInfo::resetCustomSkillPallet();
-    pInfo->cContextPlayerInfo::resetCustomSkillLv(static_cast<nHuman::JOB_ENUM>(pInfo->mCurrentJob_pri));
-    pInfo->cContextPlayerInfo::setCustomSkillPalletR(static_cast<const nHuman::CUSTOM_SKILL_ENUM>(mPrologueBackUpCustomSkill[0]), nHuman::CUSTOM_SKILL_PALLET_1, nHuman::CSUTOM_SKILL_GROUP_CURRENT);
-    pInfo->cContextPlayerInfo::setCustomSkillLv(static_cast<const nHuman::CUSTOM_SKILL_ENUM>(mPrologueBackUpCustomSkill[0]), static_cast<nHuman::HM_SKILL_LV>(mPrologueBackUpCustomSkill[1]));
-    pInfo->cContextPlayerInfo::resetNormalSkillLv(static_cast<const nHuman::JOB_ENUM>(pInfo->mCurrentJob_pri));
+    pInfo->resetCustomSkillPallet();
+    pInfo->resetCustomSkillLv(static_cast<nHuman::JOB_ENUM>(pInfo->mCurrentJob_pri));
+    pInfo->setCustomSkillPalletR(static_cast<const nHuman::CUSTOM_SKILL_ENUM>(mPrologueBackUpCustomSkill[0]), nHuman::CUSTOM_SKILL_PALLET_1, nHuman::CSUTOM_SKILL_GROUP_CURRENT);
+    pInfo->setCustomSkillLv(static_cast<const nHuman::CUSTOM_SKILL_ENUM>(mPrologueBackUpCustomSkill[0]), static_cast<nHuman::HM_SKILL_LV>(mPrologueBackUpCustomSkill[1]));
+    pInfo->resetNormalSkillLv(static_cast<const nHuman::JOB_ENUM>(pInfo->mCurrentJob_pri));
     u8 t0 = pInfo->mCurrentJob_pri;
     u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(t0));
     memcpy(static_cast<void*>(&pInfo->mJobInfoList.elems[(t1 <= 9u) ? t1 : 0u].mLv_pri), static_cast<const void*>(&mPrologueBackUpJobInfo.mLv_pri), 101ul);
-    pInfo->cContextPlayerInfo::calcStatus(t0);
+    pInfo->calcStatus(t0);
 }
 
 void sPlayerManager::createPrologueHmStatus() {

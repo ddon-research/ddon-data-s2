@@ -290,6 +290,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uStagePartsCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 uStagePartsCtrl::getNowZ() const {
     return this->mNowZ;
 }
@@ -306,6 +310,10 @@ inline rStageCustomPartsEx::InfiLight* uStagePartsCtrl::getInfiLight() const {
     return this->mpInfinityLight;
 }
 
+inline void* uStagePartsMdl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 uStagePartsMdl::getAreaIdx() const {
     return this->mAreaIdx;
 }
@@ -316,6 +324,10 @@ inline bool uStagePartsMdl::isSetResource() {
 
 inline uScheduler* uStagePartsMdl::getLightSdl() const {
     return this->mpLightSchdl;
+}
+
+inline s32 uStagePartsMdl::getNaviMeshHandle() const {
+    return this->mNavMeshSetHandle;
 }
 
 inline uSoundOcclusion* uStagePartsMdl::getSoundOcclusion() {

@@ -11,11 +11,15 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "cResource.h"
 #include "nEffect.h"
 #include "rEffectAnim.h"
 #include "rModel.h"
+#include "rRenderTargetTexture.h"
+#include "rTexture.h"
+#include "sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -40,8 +44,66 @@ MT_CTSTR rEffect2D::getExt() const {
 }
 
 __attribute__((weak)) bool rEffect2D::load(MtStream& in) {
-    DDON_STUB("rEffect2D::load")
-    return {};
+        bool result;
+        u32 fileSize = in.getLength();
+        if (fileSize == 0) {
+            return false;
+        }
+        u8* pTempBuff = static_cast<u8*>(MtMemory::mpAllocatorType[7]->memAlloc(fileSize, 16u));
+        if (pTempBuff == nullptr) {
+            return false;
+        }
+        u32 readSize = in.read(pTempBuff, fileSize);
+        if (readSize != fileSize) {
+            result = false;
+        } else {
+            E2D_HEADER* pHeader = reinterpret_cast<E2D_HEADER*>(pTempBuff);
+            if (pHeader->Magic != 0x443245) {
+                return false;
+            }
+            if (pHeader->Version != 0x20120306) {
+                return false;
+            }
+            mBaseFps = pHeader->BaseFps;
+            mListNum = pHeader->ListNum;
+            size_t t0 = pHeader->ParamBuffSize;
+            if (t0 == 0) {
+                result = false;
+            } else {
+                freeMemory();
+                size_t t1 = mListNum;
+                mResourceInfoNum = t1;
+                size_t t2 = t1 * sizeof(ResourceInfo) + sizeof(size_t);
+                size_t* t3 = static_cast<size_t*>(MtMemoryAllocator::getAllocator(rEffect2D::DTI)->memAlloc(t2, 16u));
+                *t3 = t1;
+                ResourceInfo* t4 = reinterpret_cast<ResourceInfo*>(t3 + 1);
+                if (t1 != 0) {
+                    ResourceInfo* t5 = t4;
+                    do {
+                        *reinterpret_cast<u32*>(t5) = 0;
+                        void** t6 = reinterpret_cast<void**>(t5);
+                        t6[4] = nullptr;
+                        t6[3] = nullptr;
+                        t6[2] = nullptr;
+                        t6[1] = nullptr;
+                        ++t5;
+                    } while (t5 != t4 + t1);
+                }
+                mResourceInfo = t4;
+                mpParamBuff = static_cast<u8*>(MtMemoryAllocator::getAllocator(rEffect2D::DTI)->memAlloc(t0, 16u));
+                if (mpParamBuff == nullptr) {
+                    result = false;
+                } else {
+                    memset(mpParamBuff, 0, t0);
+                    mParamBuffSize = t0;
+                    memcpy(mpParamBuff, pHeader + 1, t0);
+                    setupResourceInfo();
+                    result = true;
+                }
+            }
+        }
+        MtMemory::mpAllocatorType[7]->memFree(pTempBuff);
+        return result;
 }
 
 bool rEffect2D::save(MtStream& out) {
@@ -98,16 +160,12 @@ MtUI* rEffect2D::createUI(MtProperty& prop) {
     return this->cResource::createUI(prop);
 }
 
-u32 rEffect2D::getListNum() const {
-    return mListNum;
-}
+static auto ddon_emit_0x01b94dc0 __attribute__((used)) = &rEffect2D::getListNum;
 
 __attribute__((weak)) void rEffect2D::setDummyU32(u32) {
 }
 
-u32 rEffect2D::getResourceSize() const {
-    return (mParamBuffSize + (mResourceInfoNum * 48u)) + 208u;
-}
+static auto ddon_emit_0x01b94d90 __attribute__((used)) = &rEffect2D::getResourceSize;
 
 rEffect2D::~rEffect2D() {
     freeMemory();

@@ -168,8 +168,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cOcdImmuneParamRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cOcdImmuneParamRes::getOcdUID() const {
     return this->mOcdUID;
+}
+
+inline void* cOcdStatusParamRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void cOcdStatusParamRes::setOcdUID(u32 OcdUID) {

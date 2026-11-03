@@ -209,8 +209,16 @@ private:
     static sRemoteProcedure* mpInstance;
 };
 
+inline void* sRemoteProcedure::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sRemoteProcedure* sRemoteProcedure::getInstance() {
     return ::sRemoteProcedure::mpInstance;
+}
+
+inline void* sRemoteProcedure::cTemporaryRemoteCall::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sRemoteProcedure::cTemporaryRemoteCall::cTemporaryRemoteCall() {

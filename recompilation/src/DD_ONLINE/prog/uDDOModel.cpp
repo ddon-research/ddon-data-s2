@@ -7,35 +7,70 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
 #include "cArcLoader.h"
 #include "cBlowShrinkDmInfo.h"
 #include "cComponentManager.h"
+#include "cContextInstance.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cDDMaterialCtrl.h"
 #include "cDamageMsg.h"
 #include "cDelegate.h"
+#include "cGeneralPoint.h"
 #include "cGuardInfo.h"
 #include "cHitInfoAfter.h"
+#include "cHitInfoAfterLocal.h"
+#include "cHitNode.h"
+#include "cNetGameServer.h"
+#include "cOcdCustomReqInfo.h"
 #include "cOcdDamageInfo.h"
+#include "cParentRegionStatus.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "cpAISensor.h"
 #include "cpActionManager.h"
 #include "cpActionRequest.h"
+#include "cpActionSelect.h"
 #include "cpCatchCtrl.h"
+#include "cpChargeCtrl.h"
+#include "cpCheckWallCliff.h"
+#include "cpComponent.h"
 #include "cpDDMrlMgr.h"
+#include "cpEffectProvider.h"
+#include "cpEffectStatusManager.h"
+#include "cpEquip.h"
 #include "cpHpDamageCtrl.h"
 #include "cpHugeble.h"
+#include "cpInput.h"
 #include "cpInvincibleCtrl.h"
 #include "cpKeepAtkAdjust.h"
 #include "cpLayout.h"
 #include "cpLockOn.h"
+#include "cpLockOnTargetManager.h"
+#include "cpMotionHistory.h"
+#include "cpMotionSe.h"
+#include "cpNpc.h"
 #include "cpObjCollision.h"
 #include "cpOcdCtrl.h"
+#include "cpPartsCtrl.h"
+#include "cpPathFinding.h"
+#include "cpPawnThink.h"
 #include "cpPivotCtrl.h"
+#include "cpRegionStatusCtrl.h"
 #include "cpRotateCtrl.h"
 #include "cpSafePos.h"
 #include "cpScrCollision.h"
+#include "cpSequenceCtrl.h"
 #include "cpShlShotCtrl.h"
 #include "cpSlave.h"
+#include "cpSoftBody.h"
 #include "cpStateManager.h"
+#include "cpStatusChange.h"
+#include "cpTalk.h"
+#include "cpWorkRate.h"
 #include "ctl_storageArray.h"
 #include "../../generated/shared/nAction.h"
 #include "../../generated/shared/nCatch.h"
@@ -45,15 +80,34 @@
 #include "nObjCollision.h"
 #include "nObjCondition.h"
 #include "rAttackParam.h"
+#include "rCollNode.h"
 #include "../../XFramework/rMotionList.h"
+#include "rObjCollision.h"
+#include "rShlParamList.h"
 #include "sAIPawnNotice.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
 #include "sControlManager.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "sGeneralPoint.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sObjCollision.h"
 #include "sOmManager.h"
+#include "sPlayerManager.h"
 #include "sSetManager.h"
+#include "../../XFramework/uBaseModel.h"
 #include "uControl.h"
+#include "uControlEnemy.h"
 #include "uControlNpc.h"
+#include "../../XFramework/uCoord.h"
+#include "uHuman.h"
 #include "../../XFramework/uModel.h"
+#include "uPlayer.h"
 #include "uShlBase.h"
+#include "../../XFramework/uSimSoftBody.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -348,7 +402,7 @@ __attribute__((weak)) void uDDOModel::applyWorldOffset(const MtVector3& offset, 
 bool uDDOModel::invalidGroupKill() {
     cpLayout* pCpLayout = getLayoutPtr();
     if (pCpLayout != nullptr) {
-        if (pCpLayout->cpLayout::invalidGroupKill()) {
+        if (pCpLayout->invalidGroupKill()) {
             if ((this->mUnitId & 1154u) != 0) {
                 if (mpCtrl != nullptr) {
                     sControlManager::getInstance()->releaseUnit(mpCtrl);
@@ -656,7 +710,7 @@ void uDDOModel::callbackGuard_make(cHitInfo* pHitInfo) {
     if (pHpDamageCtr == nullptr) {
         return;
     }
-    pHpDamageCtr->cpHpDamageCtrl::callbackGuard_make(pHitInfo);
+    pHpDamageCtr->callbackGuard_make(pHitInfo);
 }
 
 void uDDOModel::callbackGuard_calc(cHitInfo* pHitInfo) {
@@ -987,13 +1041,6 @@ f32 uDDOModel::getBlPMax(const u32 index) const {
 
 u32 uDDOModel::getLv() {
     return static_cast<u32>(cContextInterface::getLv(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
-}
-
-void uDDOModel::setAcceleration(const MtVector3& acc) {
-    mAcceleration.x = acc.x;
-    mAcceleration.y = acc.y;
-    mAcceleration.z = acc.z;
-    mAcceleration.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void uDDOModel::callDamageFuncs(cHitInfo* pHitInfo) {

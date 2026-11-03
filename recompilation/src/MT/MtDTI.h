@@ -39,6 +39,8 @@ class cAIFSMData;
 class cAIFSMNode;
 class cAIFSMProcessContainer;
 class cAIGraph;
+class cAINavPathTrace;
+class cAIPathTrace;
 class cAIQuadTree;
 class cAIService;
 class cAISvUserProcess;
@@ -47,12 +49,15 @@ class cAITaskJobPrimList;
 class cAITreeBase;
 class cAIUserProcess;
 class cAIUserProcessCallback;
+class cAIUserProcessReference;
 class cBVHCollision;
+class cColliderNodeParam;
 class cContextInterface;
 class cDDMaterialCtrl;
 class cDynamicBVHCollision;
 class cFSMUnit;
 class cGUIInstAnimation;
+class cGUIInstRoot;
 class cGUIUtility;
 class cGeneralPoint;
 class cGeomConvexHull;
@@ -97,6 +102,7 @@ class cWebsocketClient;
 class cZoneLayout;
 class cpBakeJoint;
 class cpEquip;
+class cpHmHeadCtrl;
 class cpHumanWarpCtrl;
 class cpIKCtrl;
 class cpJob09;
@@ -108,13 +114,30 @@ namespace nCaplink { class cAchievementExtendedInfo; }
 namespace nCaplink { class cAchievementListInfo; }
 namespace nCaplink { class cAchievementRelationInfo; }
 namespace nCaplink { class cAchievementRewardInfo; }
+namespace nCaplink { class cChatGroupInfo; }
+namespace nCaplink { class cChatUserInfo; }
+namespace nCaplink { class cContentInfo; }
+namespace nCaplink { class cContentInviteAvailableUserInfo; }
+namespace nCaplink { class cContentInviteUserInfo; }
+namespace nCaplink { class cContentTagInfo; }
+namespace nCaplink { class cFreeTagInfo; }
+namespace nCaplink { class cFriendEntryInfo; }
+namespace nCaplink { class cFriendInfo; }
+namespace nCaplink { class cIgnoreUserInfo; }
+namespace nCaplink { class cNotifyAppInfo; }
+namespace nCaplink { class cResourceInfo; }
+namespace nCaplink { class cTagInfo; }
 namespace nCaplink { class cUserBaseInfo; }
+namespace nCaplink { class cUserContentInfo; }
 namespace nCaplink { class cWebsocketServerInfo; }
 namespace nCollision { class cCollisionNode; }
 namespace nDraw { class Animation; }
 namespace nDraw { class IndexBuffer; }
 namespace nDraw { class InputLayout; }
+namespace nDraw { class MaterialNull; }
+namespace nDraw { class MaterialStdDM; }
 namespace nDraw { class MaterialStdEst; }
+namespace nDraw { class MaterialStdPN; }
 namespace nDraw { class OcclusionQuery; }
 namespace nDraw { class RasterizerState; }
 namespace nDraw { class Scene; }
@@ -133,8 +156,14 @@ namespace nNetwork { class VoiceChat; }
 namespace nNetwork { namespace nAchievement { class Object; } }
 namespace nNetwork { namespace nRanking { class Object; } }
 namespace nNetwork { namespace nSharedMemory2 { class Object; } }
+namespace nZone { class ShapeInfoAABB; }
+namespace nZone { class ShapeInfoArea; }
+namespace nZone { class ShapeInfoCapsule; }
+namespace nZone { class ShapeInfoCone; }
+namespace nZone { class ShapeInfoCylinder; }
 namespace nZone { class ShapeInfoOBB; }
 namespace nZone { class ShapeInfoPanel; }
+namespace nZone { class ShapeInfoSphere; }
 namespace nZone { class cContentsPool; }
 namespace nZone { class cLayoutElement; }
 class rAIConditionTree;
@@ -166,6 +195,7 @@ class rSoundStreamSourcePackage;
 class rStarCatalog;
 class rSwingModel;
 class rTexture;
+class rVertices;
 class rVibration;
 class sApp;
 class sCollision;
@@ -194,6 +224,7 @@ class uEffect;
 class uEffect2D;
 class uFSMTask;
 class uFreeCamera;
+class uFullbodyIKHuman2;
 class uGUIBase;
 class uGUICharacterEdit;
 class uGUIItemBase01;
@@ -206,9 +237,14 @@ class uGeometry2GroupCollider;
 class uLight;
 class uModel;
 class uMotionBlurFilter;
+class uMultiBloomFilter;
+class uMultiBlurFilter;
+class uMultiColorCorrectFilter;
+class uMultiGodRaysFilter;
 class uScheduler;
 class uScreenSpace;
 class uScrollCollisionGeometry;
+class uScrollCollisionGeometryGroupModel;
 class uScrollCollisionGeometryModel;
 class uShadow;
 class uSimSoftBody;
@@ -265,6 +301,8 @@ class MtDTI
     friend class cAIFSMNode;
     friend class cAIFSMProcessContainer;
     friend class cAIGraph;
+    friend class cAINavPathTrace;
+    friend class cAIPathTrace;
     friend class cAIQuadTree;
     friend class cAIService;
     friend class cAISvUserProcess;
@@ -273,12 +311,15 @@ class MtDTI
     friend class cAITreeBase;
     friend class cAIUserProcess;
     friend class cAIUserProcessCallback;
+    friend class cAIUserProcessReference;
     friend class cBVHCollision;
+    friend class cColliderNodeParam;
     friend class cContextInterface;
     friend class cDDMaterialCtrl;
     friend class cDynamicBVHCollision;
     friend class cFSMUnit;
     friend class cGUIInstAnimation;
+    friend class cGUIInstRoot;
     friend class cGUIUtility;
     friend class cGeneralPoint;
     friend class cGeomConvexHull;
@@ -323,6 +364,7 @@ class MtDTI
     friend class cZoneLayout;
     friend class cpBakeJoint;
     friend class cpEquip;
+    friend class cpHmHeadCtrl;
     friend class cpHumanWarpCtrl;
     friend class cpIKCtrl;
     friend class cpJob09;
@@ -334,13 +376,30 @@ class MtDTI
     friend class nCaplink::cAchievementListInfo;
     friend class nCaplink::cAchievementRelationInfo;
     friend class nCaplink::cAchievementRewardInfo;
+    friend class nCaplink::cChatGroupInfo;
+    friend class nCaplink::cChatUserInfo;
+    friend class nCaplink::cContentInfo;
+    friend class nCaplink::cContentInviteAvailableUserInfo;
+    friend class nCaplink::cContentInviteUserInfo;
+    friend class nCaplink::cContentTagInfo;
+    friend class nCaplink::cFreeTagInfo;
+    friend class nCaplink::cFriendEntryInfo;
+    friend class nCaplink::cFriendInfo;
+    friend class nCaplink::cIgnoreUserInfo;
+    friend class nCaplink::cNotifyAppInfo;
+    friend class nCaplink::cResourceInfo;
+    friend class nCaplink::cTagInfo;
     friend class nCaplink::cUserBaseInfo;
+    friend class nCaplink::cUserContentInfo;
     friend class nCaplink::cWebsocketServerInfo;
     friend class nCollision::cCollisionNode;
     friend class nDraw::Animation;
     friend class nDraw::IndexBuffer;
     friend class nDraw::InputLayout;
+    friend class nDraw::MaterialNull;
+    friend class nDraw::MaterialStdDM;
     friend class nDraw::MaterialStdEst;
+    friend class nDraw::MaterialStdPN;
     friend class nDraw::OcclusionQuery;
     friend class nDraw::RasterizerState;
     friend class nDraw::Scene;
@@ -359,8 +418,14 @@ class MtDTI
     friend class nNetwork::nAchievement::Object;
     friend class nNetwork::nRanking::Object;
     friend class nNetwork::nSharedMemory2::Object;
+    friend class nZone::ShapeInfoAABB;
+    friend class nZone::ShapeInfoArea;
+    friend class nZone::ShapeInfoCapsule;
+    friend class nZone::ShapeInfoCone;
+    friend class nZone::ShapeInfoCylinder;
     friend class nZone::ShapeInfoOBB;
     friend class nZone::ShapeInfoPanel;
+    friend class nZone::ShapeInfoSphere;
     friend class nZone::cContentsPool;
     friend class nZone::cLayoutElement;
     friend class rAIConditionTree;
@@ -392,6 +457,7 @@ class MtDTI
     friend class rStarCatalog;
     friend class rSwingModel;
     friend class rTexture;
+    friend class rVertices;
     friend class rVibration;
     friend class sApp;
     friend class sCollision;
@@ -420,6 +486,7 @@ class MtDTI
     friend class uEffect2D;
     friend class uFSMTask;
     friend class uFreeCamera;
+    friend class uFullbodyIKHuman2;
     friend class uGUIBase;
     friend class uGUICharacterEdit;
     friend class uGUIItemBase01;
@@ -432,9 +499,14 @@ class MtDTI
     friend class uLight;
     friend class uModel;
     friend class uMotionBlurFilter;
+    friend class uMultiBloomFilter;
+    friend class uMultiBlurFilter;
+    friend class uMultiColorCorrectFilter;
+    friend class uMultiGodRaysFilter;
     friend class uScheduler;
     friend class uScreenSpace;
     friend class uScrollCollisionGeometry;
+    friend class uScrollCollisionGeometryGroupModel;
     friend class uScrollCollisionGeometryModel;
     friend class uShadow;
     friend class uSimSoftBody;
@@ -496,6 +568,10 @@ private:
 };
 
 inline MT_CTSTR MtDTI::getName() const {
+    return this->mName;
+}
+
+inline MtDTI::operator const char *() const {
     return this->mName;
 }
 

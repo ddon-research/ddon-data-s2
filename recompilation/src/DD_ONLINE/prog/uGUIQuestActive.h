@@ -240,3 +240,7 @@ private:
     static const u32 MAX_PURPOSE_NUM = 3;
     static const u32 MAX_CONTENT_PURPOSE_NUM = 3;
 };
+
+inline void* uGUIQuestActive::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

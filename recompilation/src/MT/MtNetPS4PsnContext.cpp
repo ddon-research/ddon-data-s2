@@ -9,6 +9,8 @@
 #include "MtNetObject.h"
 #include "MtNetRequest.h"
 #include "MtNetUtilityPS4.h"
+#include "MtPropertyList.h"
+#include "MtTime.h"
 #include "../generated/shared/np_common.h"
 #include "../generated/shared/np_npid.h"
 #ifndef DDON_STUB

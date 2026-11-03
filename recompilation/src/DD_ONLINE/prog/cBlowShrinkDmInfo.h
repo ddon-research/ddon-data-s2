@@ -15,6 +15,7 @@ class cAttackParam;
 class cDmJobAdjParam;
 class cDmJobPawnAdjParam;
 class cDmLvPawnAdjParam;
+class cpJob07;
 class uDDOModel;
 class uEnemy;
 
@@ -31,6 +32,7 @@ using u32 = unsigned int;
 
 class cBlowShrinkDmInfo : public MtObject
 {
+    friend class cpJob07;
     friend class uEnemy;
 public:
     class MyDTI;
@@ -129,6 +131,10 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* cBlowShrinkDmInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline nObjCollision::FORCE_REACTION_TYPE cBlowShrinkDmInfo::getForceDownType() const {
     return this->mForceDownType;

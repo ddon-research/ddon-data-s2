@@ -99,3 +99,19 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cCharacterEditColorDef::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rCharacterEditColorDef::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCharacterEditColorDef::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharacterEditColorDef::DTI)->memFree(p_addr);
+}

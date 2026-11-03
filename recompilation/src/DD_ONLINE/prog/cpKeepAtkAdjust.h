@@ -150,6 +150,10 @@ public:
     static const u32 KEEP_PARAM_NUM = 32;
 };
 
+inline void* cpKeepAtkAdjust::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpKeepAtkAdjust::resetActive() {
     this->mActive = false;
 }
@@ -160,6 +164,10 @@ inline u16 cpKeepAtkAdjust::getNowUniqueId() {
 
 inline void cpKeepAtkAdjust::setNowUniqueId(u16 uniqueId) {
     this->mNowUniqueId = uniqueId;
+}
+
+inline void* cpKeepAtkAdjust::cAtkAdjust::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cpKeepAtkAdjust::cAtkAdjust::cAtkAdjust() {

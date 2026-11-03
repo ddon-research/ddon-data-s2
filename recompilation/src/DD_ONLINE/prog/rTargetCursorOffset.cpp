@@ -21,6 +21,12 @@ inline void cTargetCursorOffset::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cTargetCursorOffset::DTI)->memFree(p_addr);
 }
 
+cTargetCursorOffset::cTargetCursorOffset() {
+    mId = 0;
+    mJointNo = -1;
+    mOffsetFromJoint = MtVector3::Zero;
+}
+
 cTargetCursorOffset::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cTargetCursorOffset::MyDTI cTargetCursorOffset::DTI("cTargetCursorOffset", &::cUIResource::DTI, 32ul, 0u, 0u);

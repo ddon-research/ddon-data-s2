@@ -79,3 +79,7 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* cEditChargeInfoUpdator::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

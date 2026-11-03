@@ -2,8 +2,13 @@
 #include <new>
 #include "uGUICaplinkTrophyList.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
+#include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
 #include "cControl.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
@@ -12,9 +17,12 @@
 #include "../../XFramework/cUnit.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #include "uGUICaplinkProfile.h"
+#include "uGUICaplinkTopMenu.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

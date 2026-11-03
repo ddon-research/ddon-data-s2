@@ -9,6 +9,7 @@
 #include "../MT/MtObject.h"
 #include "cAI.h"
 #include "cAIService.h"
+#include "rNavigationMesh.h"
 
 // Forward declarations
 class MtAABB;
@@ -17,18 +18,23 @@ class MtArray;
 class MtCapsule;
 class MtDTI;
 class MtGeometry;
+class MtLineSegment;
 class MtMatrix;
 class MtOBB;
 class MtObject;
 class MtProperty;
 class MtPropertyList;
 class MtSphere;
+class MtTriangle;
 class MtUI;
 class MtVector3;
 class cAIGraph;
 class cAIQuadTree;
+class rNavigationMesh;
+class sAIExt;
 
 // Declarations
+class cAISvNavPathFinding;
 class cAISvPathFinding;
 
 // Type aliases from DWARF
@@ -44,6 +50,7 @@ using u8 = unsigned char;
 
 class cAISvPathFinding : public cAIService
 {
+    friend class sAIExt;
 public:
     enum BOOLEAN
     {
@@ -235,3 +242,196 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+class cAISvNavPathFinding : public cAISvPathFinding
+{
+public:
+    class MyDTI;
+    class navCell;
+    class NavArea;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    class navCell : public MtObject
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        navCell();
+        virtual ~navCell() {}
+    public:
+        u16 mIndex;  // offset: 0x8
+        u8 mNumberOfIndex;  // offset: 0xa
+        u16* mpVertexIndex;  // offset: 0x10
+        u8* mpPortal;  // offset: 0x18
+        static MyDTI DTI;
+    };
+public:
+    class NavArea : public MtObject
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        NavArea();
+        virtual ~NavArea();
+    public:
+        s32 mIndex;  // offset: 0x8
+        u32 mAttribute;  // offset: 0xc
+        u16 mFirst;  // offset: 0x10
+        u16 mMiddle;  // offset: 0x12
+        u16 mLast;  // offset: 0x14
+        u8 mNumberOfLink;  // offset: 0x16
+        u8 mNumberOfChild;  // offset: 0x17
+        cAISvPathFinding::Link* mpLink;  // offset: 0x18
+        cAISvPathFinding::Link* mpChild;  // offset: 0x20
+        cAISvNavPathFinding::NavArea* mpParent;  // offset: 0x28
+        static MyDTI DTI;
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cAISvNavPathFinding();
+    virtual ~cAISvNavPathFinding();
+    virtual void reset();  // vtable slot 6
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    static cAISvNavPathFinding* getInstance();
+    static cAISvNavPathFinding* getInstance(MT_CTSTR);
+    void setNavigationMesh(rNavigationMesh* _pNavigationMesh);
+    void removeNavigationMesh();
+    bool isNavigationMesh();
+    u32 getNumberOfVertex();
+    MtVector3 getVertex(u32 index);
+    bool getNearWall(u32 index);
+    u16 getWallDistance(u32 index);
+    u32 getNumberOfCell();
+    navCell* getNavCell(u32 index);
+    bool getJointEdge(u32 node0, u32 node1, MtLineSegment& line);
+    void setAroundOffset(f32);
+    f32 getAroundOffset();
+    void setAroundLimit(f32);
+    f32 getAroundLimit();
+    cAIGraph::Node* getNode(bool useWorldOffset, const MtVector3& pos, bool f);
+    cAIGraph::Node* getNode(bool, const MtVector3&, u32, u32, u32, u32, bool);
+    cAIGraph::Node* getNode(bool useWorldOffset, const MtVector3& pos, f32 low, f32 high, bool f);
+    cAIGraph::Area* getArea(const MtVector3& pos, bool useWorldOffset);
+    cAIGraph::Area* getArea(cAIGraph::Node* pNode);
+    MtTriangle getTriangle(cAIGraph::Node* pNode, bool useWorldOffset);
+    MtTriangle getTriangle(cAISvPathFinding::Node* pNode, bool useWorldOffset);
+    u32 getAreaAttribute(cAIGraph::Area*);
+    virtual bool AreaFunc(MtObject* adr1, u32& num, u32& index, f32& cost, u32& param, bool f);  // vtable slot 11
+protected:
+    virtual cAIGraph::Node* getNodeCore(bool useWorldOffset, const MtVector3& pos, bool f, f32 low, f32 high, u32 attr, u32 index, u32 boolean, u32 exception);  // vtable slot 12
+    virtual void getNodeToAABB(MtArray& a, const MtAABB& aabb, bool useWorldOffset);  // vtable slot 13
+    void setNumberOfVertex(u32 num);
+    void setVertex(const MtVector3& pos, u32 index);
+    void setNearWall(bool f, u32 index);
+    void setWallDistance(u16 dis, u32 index);
+    void setNumberOfNavCell(u32 size);
+    void setNavCell(rNavigationMesh::nodeData* pNode, u32 index, u32& vn, u32& pn);
+    void setTree(cAIQuadTree* pTree);
+    void setHashArea(u32 size);
+    void setHashIndex(u32 size);
+    void setHashPortal(u32 size);
+    bool intersection(navCell* node, const MtVector3& pos, f32* d);
+    cAIGraph::Node* getAroundNode(const MtVector3& pos, u32 attr, u32 index, u32 boolean);
+    virtual bool intersectNode(cAIGraph::Node* pNode, const MtSphere& s, bool useWorldOffset);  // vtable slot 14
+    virtual bool intersectNode(cAIGraph::Node* pNode, const MtCapsule& c, bool useWorldOffset);  // vtable slot 15
+    virtual bool intersectNode(cAIGraph::Node* pNode, const MtAABB& a, bool useWorldOffset);  // vtable slot 16
+    virtual bool intersectNode(cAIGraph::Node* pNode, const MtOBB& o, bool useWorldOffset);  // vtable slot 17
+protected:
+    u16 mNumberOfVertex;  // offset: 0xa0
+    u16 mNumberOfCell;  // offset: 0xa2
+    MtVector3* mpVertex;  // offset: 0xa8
+    navCell* mpNavCell;  // offset: 0xb0
+    bool* mpNearWall;  // offset: 0xb8
+    u16* mpWallDistance;  // offset: 0xc0
+    bool mMeshEnable;  // offset: 0xc8
+    f32 mAroundOffset;  // offset: 0xcc
+    f32 mAroundLimitSq;  // offset: 0xd0
+    NavArea* mpArea;  // offset: 0xd8
+    u16* mpVertexIndex;  // offset: 0xe0
+    u8* mpPortal;  // offset: 0xe8
+public:
+    static MyDTI DTI;
+};
+
+inline void* cAISvNavPathFinding::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline bool cAISvNavPathFinding::isNavigationMesh() {
+    return this->mMeshEnable;
+}
+
+inline void* cAISvNavPathFinding::navCell::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAISvNavPathFinding::NavArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAISvPathFinding::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAISvPathFinding::Node::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

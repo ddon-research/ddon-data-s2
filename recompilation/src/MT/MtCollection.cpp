@@ -3,10 +3,13 @@
 #include <string.h>
 #include "MtCollection.h"
 #include "MtAllocator.h"
+#include "MtCRC.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "MtPropertyList.h"
 #include "MtString.h"
+#include "../DD_ONLINE/prog/cAreaReleaseManager.h"
 #include "../DD_ONLINE/prog/cControl.h"
 #include "../DD_ONLINE/prog/cCraftRecipe.h"
 #include "../DD_ONLINE/prog/cCycleQuestManagerBase.h"
@@ -59,6 +62,7 @@
 #include "../DD_ONLINE/prog/rQuestMarkerInfo.h"
 #include "../DD_ONLINE/prog/rQuestTextData.h"
 #include "../DD_ONLINE/prog/rSituationMsgCtrl.h"
+#include "../XFramework/rSoundDirectionalCurve.h"
 #include "../XFramework/rSoundEQ.h"
 #include "../DD_ONLINE/prog/rSoundMotionSe.h"
 #include "../XFramework/rSoundReverb.h"
@@ -117,12 +121,14 @@
 #include "../DD_ONLINE/prog/uGUIMouseOverCursor.h"
 #include "../DD_ONLINE/prog/uGUINewspaper.h"
 #include "../DD_ONLINE/prog/uGUIPhotoUpload.h"
+#include "../DD_ONLINE/prog/uGUIPick01.h"
 #include "../DD_ONLINE/prog/uGUIPopCmd01.h"
 #include "../DD_ONLINE/prog/uGUIPopDetail01.h"
 #include "../DD_ONLINE/prog/uGUIPopFilter.h"
 #include "../DD_ONLINE/prog/uGUIPopListDialog.h"
 #include "../DD_ONLINE/prog/uGUIQuestDelivery.h"
 #include "../DD_ONLINE/prog/uGUIRimWarp.h"
+#include "../DD_ONLINE/prog/uGUISkill.h"
 #include "../DD_ONLINE/prog/uGUISystemMsg.h"
 #include "../DD_ONLINE/prog/uGUIsMenuBase.h"
 #include "../XFramework/uScrollCollisionGeometry.h"
@@ -148,7 +154,7 @@ __attribute__((weak)) void MtArray::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-MtArray::~MtArray() {
+__attribute__((noinline)) MtArray::~MtArray() {
     if (mAutoDelete) {
         if (mLength != 0) {
             u32 v0_0 = mLength;
@@ -186,13 +192,9 @@ MtArray::~MtArray() {
     mBufsiz = 0;
 }
 
-void MtArray::setAutoDelete(bool f) {
-    mAutoDelete = f;
-}
+static auto ddon_emit_0x01be71d0 __attribute__((used)) = &MtArray::setAutoDelete;
 
-bool MtArray::isAutoDelete() const {
-    return mAutoDelete;
-}
+static auto ddon_emit_0x01be71c0 __attribute__((used)) = &MtArray::isAutoDelete;
 
 void MtArray::resize(u32 siz) {
     if (mBufsiz < siz) {
@@ -278,9 +280,7 @@ __attribute__((weak)) void MtArray::insert(MtObject* pobj, u32 index) {
     /* stub */
 }
 
-u32 MtArray::length() const {
-    return mLength;
-}
+static auto ddon_emit_0x01b31a50 __attribute__((used)) = &MtArray::length;
 
 __attribute__((weak)) void MtArray::sort(bool(*pfunc)(const MtObject*, const MtObject*, u32), const u32 param) {
     DDON_STUB("MtArray::sort")

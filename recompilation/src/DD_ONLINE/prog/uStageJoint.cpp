@@ -6,23 +6,63 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtStlAllocator.h"
 #include "../../MT/MtStlCustom.h"
 #include "../../MT/MtSynchronize.h"
+#include "aStage.h"
+#include "cArcLoader.h"
+#include "../../XFramework/cArea.h"
+#include "cContextInterface.h"
 #include "cOmControl.h"
+#include "cResPath.h"
+#include "../../XFramework/cResource.h"
 #include "cSplitBase.h"
 #include "cStageEpvCtrl.h"
 #include "../../XFramework/cUnit.h"
 #include "cZoneIndoorHandle.h"
+#include "../../XFramework/cZoneLayout.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nStage.h"
 #include "../../generated/shared/nZoneUnitCtrl.h"
+#include "rArchiveListArray.h"
+#include "../../XFramework/rCollision.h"
+#include "rEffectProvider.h"
+#include "../../XFramework/rNavigationMesh.h"
+#include "rPlantTree.h"
+#include "rScenario.h"
+#include "../../XFramework/rScheduler.h"
+#include "rSoundAreaInfo.h"
+#include "rStageInfo.h"
 #include "rStageJoint.h"
+#include "../../XFramework/rZone.h"
+#include "res_ptr.h"
+#include "../../XFramework/sAI.h"
+#include "sAIExt.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
 #include "../../XFramework/sCollision.h"
+#include "sContextManager.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "sGame.h"
 #include "sOmManager.h"
+#include "sPlayerManager.h"
+#include "sScenario.h"
+#include "sSetManager.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
 #include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sWeatherManager.h"
+#include "sWorldOffset.h"
+#include "sZoneUnitCtrl.h"
 #include "../../XFramework/uCoord.h"
+#include "uPlayer.h"
 #include "../../XFramework/uScheduler.h"
 #include "../../XFramework/uScrollCollisionGeometry.h"
 #include "uSoundGenerator.h"
@@ -220,10 +260,10 @@ void uStageJointCtrl::stopMoveUnitLight(bool sleep) {
                 if (pSchdl == nullptr) {
                     v3_0 = v0_0;
                 } else {
-                    if (pSchdl->uScheduler::getUnitNum() != 0) {
+                    if (pSchdl->getUnitNum() != 0) {
                         i1_3 = 0;
                         for (;;) {
-                            cUnit* t0 = pSchdl->uScheduler::getUnit(i1_3);
+                            cUnit* t0 = pSchdl->getUnit(i1_3);
                             if (t0 != nullptr) {
                                 if (t0->isEnable()) {
                                     if (sleep) {
@@ -233,7 +273,7 @@ void uStageJointCtrl::stopMoveUnitLight(bool sleep) {
                                     }
                                 }
                             }
-                            if ((i1_3 + 1u) < pSchdl->uScheduler::getUnitNum()) {
+                            if ((i1_3 + 1u) < pSchdl->getUnitNum()) {
                                 i1_3 += 1u;
                             } else {
                                 break;
@@ -331,8 +371,6 @@ inline void uStageJointMdl::operator delete(void* p_addr) {
 }
 
 uStageJointMdl::~uStageJointMdl() {
-    DDON_STUB("uStageJointMdl::~uStageJointMdl")
-    /* stub */
 }
 
 __attribute__((weak)) void uStageJointMdl::setup() {

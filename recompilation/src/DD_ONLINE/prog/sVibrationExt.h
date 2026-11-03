@@ -74,3 +74,7 @@ public:
     static MyDTI DTI;
     static const u32 RESOURCE_TYPE_NUM = 4;
 };
+
+inline void* sVibrationExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

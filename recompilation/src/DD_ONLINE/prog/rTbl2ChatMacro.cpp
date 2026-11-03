@@ -3,8 +3,11 @@
 #include "rTbl2ChatMacro.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -24,8 +27,6 @@ void* cTbl2ChatMacro::operator new(size_t sz, u32 align) {
 }
 
 cTbl2ChatMacro::~cTbl2ChatMacro() {
-    DDON_STUB("cTbl2ChatMacro::~cTbl2ChatMacro")
-    /* stub */
 }
 
 __attribute__((weak)) void cTbl2ChatMacro::createProperty(MtPropertyList& s) {

@@ -2,16 +2,21 @@
 #include <new>
 #include "cPrim.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive2D.h"
+#include "cDraw.h"
 #include "cPrimBuffer.h"
 #include "cPrimObj.h"
 #include "cPrimTagList.h"
 #include "cPrimTexHandle.h"
 #include "nDraw.h"
+#include "nDrawResource.h"
 #include "nPrim.h"
+#include "sPrimitive.h"
+#include "sScene.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

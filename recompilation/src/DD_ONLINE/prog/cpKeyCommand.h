@@ -209,8 +209,16 @@ public:
     static const s32 TBL_MAX = 8;
 };
 
+inline void* cpKeyCommand::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cpInput* cpKeyCommand::getCpInput() {
     return this->mpInput;
+}
+
+inline bool cpKeyCommand::isActiveCheckCommand() const {
+    return this->mIsActiveCheckCommand;
 }
 
 inline void cpKeyCommand::clearAttackLockOnTarget() {

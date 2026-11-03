@@ -8,8 +8,12 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "nNetworkCallback.h"
+#include "nNetworkDatabase.h"
+#include "nNetworkSession.h"
+#include "sNetwork.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -77,27 +81,21 @@ __attribute__((weak)) void nNetwork::VoiceChat::setSessionIndex(u32 index) {
     /* stub */
 }
 
-u32 nNetwork::VoiceChat::getSessionIndex() const {
-    return mSessionIndex;
-}
+static auto ddon_emit_0x01bd8740 __attribute__((used)) = &nNetwork::VoiceChat::getSessionIndex;
 
 __attribute__((weak)) void nNetwork::VoiceChat::setMicMute(bool f) {
     DDON_STUB("nNetwork::VoiceChat::setMicMute")
     /* stub */
 }
 
-bool nNetwork::VoiceChat::isMicMute() {
-    return mMicMute;
-}
+static auto ddon_emit_0x01bd8750 __attribute__((used)) = &nNetwork::VoiceChat::isMicMute;
 
 __attribute__((weak)) void nNetwork::VoiceChat::setSpeakerVolume(f32 vol) {
     DDON_STUB("nNetwork::VoiceChat::setSpeakerVolume")
     /* stub */
 }
 
-f32 nNetwork::VoiceChat::getSpeakerVolume() {
-    return mSpeakerVolume;
-}
+static auto ddon_emit_0x01bd8760 __attribute__((used)) = &nNetwork::VoiceChat::getSpeakerVolume;
 
 __attribute__((weak)) void nNetwork::VoiceChat::nativeInit() {
     DDON_STUB("nNetwork::VoiceChat::nativeInit")
@@ -146,23 +144,11 @@ __attribute__((weak)) void nNetwork::VoiceChat::Talker::createProperty(MtPropert
     /* stub */
 }
 
-void nNetwork::VoiceChat::Talker::init() {
-    mInit = true;
-    mLoopback = false;
-    mTask = mTask | 2u;
-}
+static auto ddon_emit_0x01bd8e90 __attribute__((used)) = &nNetwork::VoiceChat::Talker::init;
 
-void nNetwork::VoiceChat::Talker::final() {
-    mInit = false;
-    mLoopback = false;
-    mTask = mTask | 2u;
-}
+static auto ddon_emit_0x01bd8770 __attribute__((used)) = &nNetwork::VoiceChat::Talker::final;
 
-void nNetwork::VoiceChat::Talker::loopback() {
-    mInit = false;
-    mLoopback = true;
-    mTask = mTask | 2u;
-}
+static auto ddon_emit_0x01bd8ea0 __attribute__((used)) = &nNetwork::VoiceChat::Talker::loopback;
 
 nNetwork::VoiceChat::Talker::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

@@ -108,6 +108,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cPartnerReactParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cPartnerReactParam::cPartnerReactParam() {
     this->mIsNmlAct = false;
     this->mActNo = 0;
@@ -115,4 +119,20 @@ inline cPartnerReactParam::cPartnerReactParam() {
     this->mNpcMotNo2 = -1;
     this->mNpcMotNo3 = -1;
     this->mNpcMotNo4 = -1;
+}
+
+inline void* rPartnerReactParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cPartnerReactParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPartnerReactParam::DTI)->memFree(p_addr);
+}
+
+inline void* cPartnerReactParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPartnerReactParam::DTI)->memAlloc(sz, align, ::cPartnerReactParam::DTI.::MtDTI::getID());
 }

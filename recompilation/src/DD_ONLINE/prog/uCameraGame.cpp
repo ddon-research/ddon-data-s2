@@ -2,23 +2,68 @@
 #include <new>
 #include "uCameraGame.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtEaseCurve.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "../../MT/MtSynchronize.h"
 #include "aStage.h"
 #include "cCamInterporate.h"
+#include "cCameraGameNml.h"
+#include "cCameraGamePhoto.h"
+#include "cCameraGameTemplate.h"
+#include "cCameraGameTps.h"
+#include "../../XFramework/cSystem.h"
 #include "../../XFramework/cUnit.h"
+#include "cpHugeble.h"
+#include "cpStateManager.h"
 #include "../../generated/shared/nCameraGame.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
+#include "nLayout.h"
+#include "rCameraParamList.h"
+#include "../../XFramework/rCollisionHeightField.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
 #include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "../../XFramework/sCollision.h"
+#include "sEnemyManager.h"
 #include "sEventManager.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "sInputManager.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sMouse.h"
+#include "sMouseExt.h"
+#include "sNpcManager.h"
+#include "sOmManager.h"
+#include "../../XFramework/sPad.h"
+#include "sPadExt.h"
+#include "sPlayerManager.h"
+#include "../../XFramework/sSavedata.h"
+#include "sSavedataExt.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sUnitManager.h"
+#include "sWorkRate.h"
+#include "../../XFramework/uCamera.h"
 #include "uCameraBase.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
 #include "../../XFramework/uFilter.h"
+#include "uGUIGaugeArts.h"
+#include "uGUIGaugeArtsV01_03.h"
+#include "uGUIGaugeSorcery.h"
+#include "../../XFramework/uModel.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -79,8 +124,6 @@ __attribute__((weak)) void cCamExParam::createPropertyEx(MtPropertyList& s) {
 }
 
 cCamExParam::~cCamExParam() {
-    DDON_STUB("cCamExParam::~cCamExParam")
-    /* stub */
 }
 
 __attribute__((weak)) cCamExParam* cCamExParam::createParamInstanceFromType() {
@@ -99,6 +142,62 @@ cCamExParam::MyDTI cCamExParam::DTI("cCamExParam", &::MtObject::DTI, 480ul, 0u, 
 
 MtObject* cCamExParam::MyDTI::newInstance() const {
     return nullptr;
+}
+
+const MtDTI& cCamExParamSdr::getDTI() const {
+    return cCamExParamSdr::DTI;
+}
+
+__attribute__((weak)) void cCamExParamSdr::createProperty(MtPropertyList& s) {
+    DDON_STUB("cCamExParamSdr::createProperty")
+    /* stub */
+}
+
+cCamExParamSdr::~cCamExParamSdr() {
+}
+
+__attribute__((weak)) cCamImpBase* cCamExParamSdr::createCamImpInstance(uCameraGame* pCamera) const {
+    DDON_STUB("cCamExParamSdr::createCamImpInstance")
+    return nullptr;
+}
+
+__attribute__((weak)) void cCamExParamSdr::copy(const cCamExParam* pParam) {
+    DDON_STUB("cCamExParamSdr::copy")
+    /* stub */
+}
+
+cCamExParamSdr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cCamExParamSdr::MyDTI cCamExParamSdr::DTI("cCamExParamSdr", &::cCamExParam::DTI, 512ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cCamExParamSdr::MyDTI::newInstance() const {
+    DDON_STUB("cCamExParamSdr::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cCamExParamSdr::cSdrParam::getDTI() const {
+    return cCamExParamSdr::cSdrParam::DTI;
+}
+
+inline void* cCamExParamSdr::cSdrParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCamExParamSdr::cSdrParam::DTI)->memAlloc(sz, align, cCamExParamSdr::cSdrParam::DTI.getID());
+}
+
+inline void cCamExParamSdr::cSdrParam::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cCamExParamSdr::cSdrParam::DTI)->memFree(p_addr);
+}
+
+__attribute__((weak)) void cCamExParamSdr::cSdrParam::createProperty(MtPropertyList& s) {
+    DDON_STUB("cCamExParamSdr::cSdrParam::createProperty")
+    /* stub */
+}
+
+cCamExParamSdr::cSdrParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cCamExParamSdr::cSdrParam::MyDTI cCamExParamSdr::cSdrParam::DTI("cCamExParamSdr::cSdrParam", &::MtObject::DTI, 24ul, 0u, 0u);
+
+MtObject* cCamExParamSdr::cSdrParam::MyDTI::newInstance() const {
+    return new (16u) cCamExParamSdr::cSdrParam;
 }
 
 const MtDTI& cCamImpBase::getDTI() const {
@@ -210,6 +309,83 @@ cCamImpBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 cCamImpBase::MyDTI cCamImpBase::DTI("cCamImpBase", &::MtObject::DTI, 176ul, 0u, 1u);
 
 MtObject* cCamImpBase::MyDTI::newInstance() const {
+    return nullptr;
+}
+
+const MtDTI& cCamImpSdr::getDTI() const {
+    return cCamImpSdr::DTI;
+}
+
+inline void cCamImpSdr::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cCamImpSdr::DTI)->memFree(p_addr);
+}
+
+cCamImpSdr::~cCamImpSdr() {
+    if (mpImple == nullptr) {
+        return;
+    }
+    delete mpImple;
+    mpImple = nullptr;
+}
+
+__attribute__((weak)) void cCamImpSdr::initSub(MtVector3& cameraPos, MtVector3& targetPos, f32& angX, f32& angY) {
+    DDON_STUB("cCamImpSdr::initSub")
+    /* stub */
+}
+
+__attribute__((weak)) void cCamImpSdr::ctrlSub(MtVector3& idealCam, MtVector3& idealTar, f32& angX, f32& angY) {
+    DDON_STUB("cCamImpSdr::ctrlSub")
+    /* stub */
+}
+
+__attribute__((weak)) void cCamImpSdr::moveSub(MtVector3& idealCam, MtVector3& idealTar, f32& angX, f32& angY) {
+    DDON_STUB("cCamImpSdr::moveSub")
+    /* stub */
+}
+
+void cCamImpSdr::interporateSub(MtVector3& cameraPos, MtVector3& targetPos) {
+    cCamImpBase* t0 = mpImple;
+    if (t0 == nullptr) {
+        return;
+    }
+    if (t0->mIsInterporate) {
+        t0->mpC->exeInterporate();
+    }
+    t0->interporateSub(cameraPos, targetPos);
+}
+
+void cCamImpSdr::adjustSub(MtVector3& cameraPos, MtVector3& targetPos, MtVector3& idealCam, MtVector3& idealTar) {
+    if (mpImple == nullptr) {
+        return;
+    }
+    mpImple->adjust(cameraPos, targetPos, idealCam, idealTar);
+}
+
+void cCamImpSdr::finalSub() {
+    if (mpImple == nullptr) {
+        return;
+    }
+    mpImple->final(true);
+    if (mpImple == nullptr) {
+        return;
+    }
+    delete mpImple;
+    mpImple = nullptr;
+}
+
+nCameraGame::CAMERA_TYPE cCamImpSdr::getType() const {
+    return nCameraGame::TYPE_SDR;
+}
+
+__attribute__((weak)) void cCamImpSdr::createProperty(MtPropertyList& s) {
+}
+
+cCamImpSdr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cCamImpSdr::MyDTI cCamImpSdr::DTI("cCamImpSdr", &::cCamImpBase::DTI, 208ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cCamImpSdr::MyDTI::newInstance() const {
+    DDON_STUB("cCamImpSdr::MyDTI::newInstance")
     return nullptr;
 }
 
@@ -327,9 +503,9 @@ __attribute__((weak)) void uCameraGame::copy(const uCameraGame* pParam) {
 bool uCameraGame::isStageCamera(u32 no) const {
     aStage* pStage = static_cast<sAreaExt*>(sArea::getInstance())->getCurrentStage();
     if (pStage != nullptr) {
-        const cCamExParam* t0 = pStage->aStage::getCameraParamFld(no);
+        const cCamExParam* t0 = pStage->getCameraParamFld(no);
         if (mpImple->mpParam != t0) {
-            const cCamExParam* t1 = pStage->aStage::getCameraParamEvt(no);
+            const cCamExParam* t1 = pStage->getCameraParamEvt(no);
             if (mpImple->mpParam != t1) {
                 return false;
             } else {

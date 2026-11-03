@@ -789,6 +789,10 @@ private:
     static sBazaarManager* mpInstance;
 };
 
+inline void* sBazaarManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sBazaarManager* sBazaarManager::getInstance() {
     return ::sBazaarManager::mpInstance;
 }
@@ -817,6 +821,10 @@ inline sBazaarManager::cBazaarCharListCtrl* sBazaarManager::getBazaarCharListCtr
     return &this->mCharInfoCtrl;
 }
 
+inline sBazaarManager::cBazaarItemListCtrl* sBazaarManager::getBazaarItemListCtrl() {
+    return &this->mItemListCtrl;
+}
+
 inline sBazaarManager::cBazaarItemInfoCtrl* sBazaarManager::getBazaarItemInfoCtrl() {
     return &this->mItemInfoCtrl;
 }
@@ -837,6 +845,10 @@ inline void sBazaarManager::SetBazzarSearchSuccessionCautionTime(u32 time) {
     this->mBazzarSearchSuccessionCautionTime = time;
 }
 
+inline void* sBazaarManager::cBazaarCharListCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sBazaarManager::cBazaarCharListCtrl::cBazaarCharListCtrl() {
     this->mData.::MtArray::mAutoDelete = true;
     this->mSelectNo = -1;
@@ -844,6 +856,10 @@ inline sBazaarManager::cBazaarCharListCtrl::cBazaarCharListCtrl() {
     this->mAddNum = 0;
     this->mUpdateCnt = 0;
     this->mUpdateCntOld = 0;
+}
+
+inline void* sBazaarManager::cBazaarCharListData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sBazaarManager::cBazaarCharListData::cBazaarCharListData() {
@@ -872,13 +888,29 @@ inline u64 sBazaarManager::cBazaarCharListData::getBazaarId() {
     return this->mBazaarId;
 }
 
+inline void* sBazaarManager::cBazaarProceedsCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sBazaarManager::cBazaarProceedsCtrl::cBazaarProceedsCtrl() {
     this->mProceeds = 0;
+}
+
+inline void* sBazaarManager::cBazaarItemListCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sBazaarManager::cBazaarItemListCtrl::cBazaarItemListCtrl() {
     this->mItemList.::MtArray::mAutoDelete = true;
     this->mSelectNo = -1;
+}
+
+inline u32 sBazaarManager::cBazaarItemListCtrl::getListNum() {
+    return this->mItemList.::MtArray::mLength;
+}
+
+inline void* sBazaarManager::cBazaarItemListData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sBazaarManager::cBazaarItemListData::cBazaarItemListData() {
@@ -887,12 +919,8 @@ inline sBazaarManager::cBazaarItemListData::cBazaarItemListData() {
     this->mpItemParam = nullptr;
 }
 
-inline u32 sBazaarManager::cBazaarItemListData::getItemId() {
-    return this->mItemId;
-}
-
-inline void sBazaarManager::cBazaarItemListData::setEventNum(u16 num) {
-    this->mEventNum = num;
+inline void* sBazaarManager::cBazaarItemInfoCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sBazaarManager::cBazaarItemInfoCtrl::cBazaarItemInfoCtrl() {
@@ -902,6 +930,10 @@ inline sBazaarManager::cBazaarItemInfoCtrl::cBazaarItemInfoCtrl() {
     this->mpItemParam = nullptr;
     this->mSelectNo = -1;
     this->mProceedsResult = -1;
+}
+
+inline void* sBazaarManager::cBazaarItemInfoData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sBazaarManager::cBazaarItemInfoData::cBazaarItemInfoData() {
@@ -914,6 +946,10 @@ inline sBazaarManager::cBazaarItemInfoData::cBazaarItemInfoData() {
     this->mpItemParam = nullptr;
 }
 
+inline void* sBazaarManager::cBazaarItemHistoryData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sBazaarManager::cBazaarItemHistoryData::cBazaarItemHistoryData() {
     this->mItemId = 0;
     this->mpItemParam = nullptr;
@@ -922,11 +958,27 @@ inline sBazaarManager::cBazaarItemHistoryData::cBazaarItemHistoryData() {
     this->mCreated = 0;
 }
 
+inline u32 sBazaarManager::cBazaarItemHistoryData::getPrice() {
+    return this->mPrice;
+}
+
+inline s64 sBazaarManager::cBazaarItemHistoryData::getCreated() {
+    return this->mCreated;
+}
+
+inline void* sBazaarManager::cBazaarItemPrimLimit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sBazaarManager::cBazaarItemPrimLimit::cBazaarItemPrimLimit() {
     this->mHigh_pri = 0;
     this->mNumLimit = 0;
     this->mItemId_pri = 0;
     this->mLow_pri = 0;
+}
+
+inline void* sBazaarManager::cBazaarExhibitItemCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sBazaarManager::cBazaarExhibitItemCtrl::cBazaarExhibitItemCtrl() {

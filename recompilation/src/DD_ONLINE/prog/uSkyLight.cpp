@@ -5,6 +5,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "nWeather.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

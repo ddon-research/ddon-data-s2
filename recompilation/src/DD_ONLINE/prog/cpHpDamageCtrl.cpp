@@ -11,24 +11,55 @@
 #include "cBlowShrinkInfo.h"
 #include "cChildRegionStatus.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cDamageMsg.h"
 #include "cDelegate.h"
+#include "cGUIUtility.h"
 #include "cHitInfoAfter.h"
+#include "cHitInfoAfterLocal.h"
+#include "cOcdBase.h"
 #include "cParentRegionStatus.h"
+#include "../../XFramework/cResource.h"
+#include "cStaminaCtrl.h"
 #include "../../XFramework/cUnit.h"
+#include "cUnitDieInfo.h"
 #include "cpComponent.h"
 #include "cpErosionEnemy.h"
+#include "cpInvincibleCtrl.h"
+#include "cpMotionSe.h"
+#include "cpObjCollision.h"
+#include "cpOcdCtrl.h"
 #include "../../generated/shared/nDDOGame.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nErosionEnemy.h"
+#include "nJobParam.h"
 #include "nObjCollision.h"
 #include "nOcdMsg.h"
 #include "nRegionStatus.h"
 #include "rAttackParam.h"
+#include "rCollNode.h"
 #include "rRegionStatusParam.h"
+#include "rSoundHitInfo.h"
+#include "../../XFramework/rSoundRequest.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/sMain.h"
+#include "sObjCollision.h"
+#include "sQuestManagerExt.h"
+#include "sSetManager.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
+#include "sWorkRate.h"
+#include "uCharacter.h"
 #include "uControl.h"
 #include "uControlNpc.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uEnemy.h"
+#include "uHuman.h"
+#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -631,7 +662,7 @@ __attribute__((weak)) void cpHpDamageCtrl::regionErosionRegenerateCateInit() {
         cpErosionEnemy* pCpErosionEnemy = static_cast<uEnemy*>(mpModel)->getErosionEnemy();
         if (pCpErosionEnemy != nullptr) {
             if (pCpErosionEnemy->mErosionProgression == nErosionEnemy::EROSION_PROGRESSION_NONE) {
-                nRegionStatus::P_REGION_TYPE t1 = pCpErosionEnemy->cpErosionEnemy::getInactiveRegionNo_PriorityHigh();
+                nRegionStatus::P_REGION_TYPE t1 = pCpErosionEnemy->getInactiveRegionNo_PriorityHigh();
                 if (t1 != nRegionStatus::P_REGION_INVALID) {
                     regionRegenerate(t1);
                     return;
@@ -643,7 +674,7 @@ __attribute__((weak)) void cpHpDamageCtrl::regionErosionRegenerateCateInit() {
                         MtObject* t0 = mParentRegionStatusArray.mpArray[i];
                         if (t0 != nullptr) {
                             if (nErosionEnemy::isErosionRegion(static_cast<cParentRegionStatus*>(t0)->getRegionCategory())) {
-                                if (pCpErosionEnemy->cpErosionEnemy::isErosionRegionActiveInit(static_cast<cParentRegionStatus*>(t0)->getRegionCategory())) {
+                                if (pCpErosionEnemy->isErosionRegionActiveInit(static_cast<cParentRegionStatus*>(t0)->getRegionCategory())) {
                                     if (mpModel->isMaster()) {
                                         if (static_cast<cParentRegionStatus*>(t0)->isEnableRegenerate(true)) {
                                             static_cast<cParentRegionStatus*>(t0)->regenerateMaster(static_cast<cParentRegionStatus*>(t0)->getHpMax());
@@ -671,17 +702,17 @@ __attribute__((weak)) void cpHpDamageCtrl::regionErosionRegenerateCateInit() {
 
 void cpHpDamageCtrl::regionErosionRegeneratePriority() {
     uEnemy* pEnemy = static_cast<uEnemy*>(mpModel);
-    if ((pEnemy->::uDDOModel::mUnitId & 2u) == 0) {
+    if ((pEnemy->uDDOModel::mUnitId & 2u) == 0) {
         return;
     }
-    cpErosionEnemy* pCpErosionEnemy = pEnemy->uEnemy::getErosionEnemy();
+    cpErosionEnemy* pCpErosionEnemy = pEnemy->getErosionEnemy();
     if (pCpErosionEnemy == nullptr) {
         return;
     }
     if (pCpErosionEnemy->isErosionRegionActiveNone()) {
         regionErosionRegenerateCateInit();
     } else {
-        nRegionStatus::P_REGION_TYPE regionNo = pCpErosionEnemy->cpErosionEnemy::getInactiveRegionNo_PriorityHigh();
+        nRegionStatus::P_REGION_TYPE regionNo = pCpErosionEnemy->getInactiveRegionNo_PriorityHigh();
         if (regionNo != nRegionStatus::P_REGION_INVALID) {
             regionRegenerate(regionNo);
         }

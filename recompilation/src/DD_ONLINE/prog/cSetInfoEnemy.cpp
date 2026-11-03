@@ -5,10 +5,19 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtDataWriter.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "cSetInfo.h"
 #include "cSetInfoCharacter.h"
+#include "sWorldOffset.h"
+#include "uCharacter.h"
+#include "uControl.h"
+#include "uControlEnemy.h"
+#include "uDDOModel.h"
+#include "uEnemy.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -68,7 +77,7 @@ bool cSetInfoEnemy::load(MtDataReader& r) {
         if (r.refill()) {
             u32 t19 = r.mSeekPt;
             u8* t20 = r.mBuffer;
-            u8 t21 = t20[t16];
+            u8 t21 = t20[r.mSeekPt];
             r.mSeekPt = t19 + 1u;
             mReturnPoint2nd = t21 != 0;
             return this->cSetInfoCharacter::load(r);
@@ -78,7 +87,7 @@ bool cSetInfoEnemy::load(MtDataReader& r) {
         }
     } else {
         u8* t20 = r.mBuffer;
-        u8 t21 = t20[t16];
+        u8 t21 = t20[r.mSeekPt];
         r.mSeekPt = t16 + 1u;
         mReturnPoint2nd = t21 != 0;
         return this->cSetInfoCharacter::load(r);

@@ -1255,12 +1255,30 @@ private:
     static sCaplinkManager* mpInstance;
 };
 
+inline void* sCaplinkManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 sCaplinkManager::getFreeTagNum() {
     return this->mFreeTagNum;
 }
 
 inline u32 sCaplinkManager::getGroupChatNum() {
     return this->mGroupChatData.::MtArray::mLength;
+}
+
+inline u32 sCaplinkManager::getChatMemberNum() {
+    return this->mChatMember.::MtArray::mLength;
+}
+
+inline void sCaplinkManager::updateNotify() {
+    if (this->mNotifyAns.::nCaplink::ContextListener::mStatus != 0) {
+        if (this->mNotifyAns.::nCaplink::ContextListener::mStatus == 3) {
+            this->mRnoMain = 16;
+        }
+    } else {
+        this->mRnoMain = 16;
+    }
 }
 
 inline void sCaplinkManager::setConfirmInformation() {
@@ -1277,12 +1295,63 @@ inline sCaplinkManager* sCaplinkManager::getInstance() {
     return ::sCaplinkManager::mpInstance;
 }
 
+inline void* sCaplinkManager::cCaplinkListenerQueue::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool sCaplinkManager::cCaplinkListenerQueue::isEnd() {
     return this->mRno == 2;
 }
 
 inline bool sCaplinkManager::cCaplinkListenerQueue::isDispError() {
     return this->mErrorDialogHandle == 0xFFFFFFFFu;
+}
+
+inline void* sCaplinkManager::cProfile::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline sCaplinkManager::cProfile::cProfile() {
+    this->mNotifyFriend = -1;
+    this->mNotifyTimeline = -1;
+    this->mNotifyChat = -1;
+    this->mNotifyInvite = -1;
+    this->mNotifyMorning = -1;
+    this->mNotifyAfternoon = -1;
+    this->mNotifyEvening = -1;
+    this->mNotifyMidnight = -1;
+    this->mIconIndex = 0xFF;
+    this->mProfilePrivacy = -1;
+    this->mCaptalkPrivacy = -1;
+    this->mFindSearch = -1;
+    this->mContentVisible = -1;
+    this->mOnlinePrivacy = -1;
+    this->mNotifyAll = -1;
+    this->mNotifyProfile = -1;
+}
+
+inline void* sCaplinkManager::cIconUrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCaplinkManager::cProfIconLoader::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCaplinkManager::cContentData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCaplinkManager::cGroupChatData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCaplinkManager::cChatInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCaplinkManager::cChatJoin::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sCaplinkManager::cChatJoin::cChatJoin() {

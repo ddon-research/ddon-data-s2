@@ -3,6 +3,7 @@
 #include "nNetMsgData.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemory.h"
+#include "cNetMsgBase.h"
 #include "../../XFramework/nNetworkCoder.h"
 #include "nOcdMsg.h"
 #ifndef DDON_STUB

@@ -126,6 +126,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataEditInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataEditInfo::CDataEditInfo() {
     this->m_usMotionFilter = 0;
     this->m_usKoshiSize = 0;

@@ -3,9 +3,13 @@
 #include "rCatchInfoParam.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -49,8 +53,17 @@ inline void rCatchInfoParam::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rCatchInfoParam::loadData(MtDataReader& in, cCatchInfoParam* pData) {
-    DDON_STUB("rCatchInfoParam::loadData")
-    return {};
+        nDDOIO::readData(in, pData->mCatchType);
+        nDDOIO::readData(in, pData->mCatchActionTblNo);
+        nDDOIO::readData(in, pData->mIsConst);
+        nDDOIO::readData(in, pData->mRevAdjust);
+        nDDOIO::readData(in, pData->mConstScaleOff);
+        nDDOIO::readData(in, pData->mConstJointNo);
+        nDDOIO::readData(in, pData->mLoopTimer);
+        nDDOIO::readData(in, pData->mLeverGachaPoint);
+        nDDOIO::readData(in, pData->mIsCheckSlaveDist);
+        nDDOIO::readData(in, pData->mCheckSlaveDist);
+        return true;
 }
 
 MT_CTSTR rCatchInfoParam::getExt() const {

@@ -3,20 +3,35 @@
 #include "cpJob01.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cComponentManager.h"
+#include "cContextPlayerInfo.h"
 #include "cGuardInfo.h"
+#include "cHitInfoAfter.h"
 #include "cHumanActId.h"
 #include "cpActionManager.h"
+#include "cpActionRequest.h"
 #include "cpAltitudeFallCtrl.h"
+#include "cpComponent.h"
+#include "cpInput.h"
 #include "cpJobBase.h"
+#include "cpKeyCommand.h"
+#include "cpMotionSe.h"
 #include "cpObjCollision.h"
+#include "cpPawnThink.h"
+#include "cpShakeCtrl.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "nHumanMsg.h"
 #include "rAttackParam.h"
 #include "../../XFramework/sMain.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
+#include "uHumanEnemy.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -38,8 +53,6 @@ inline void cpJob01::operator delete(void* p_addr) {
 }
 
 cpJob01::~cpJob01() {
-    DDON_STUB("cpJob01::~cpJob01")
-    /* stub */
 }
 
 void cpJob01::setup() {

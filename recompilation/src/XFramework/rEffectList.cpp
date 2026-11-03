@@ -13,11 +13,13 @@
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "cResource.h"
 #include "nEffect.h"
 #include "rEffectAnim.h"
 #include "rEffectStrip.h"
+#include "rGrassWind.h"
 #include "rModel.h"
 #include "rRenderTargetTexture.h"
 #include "rSoundRequest.h"
@@ -178,25 +180,15 @@ MtUI* rEffectList::createUI(MtProperty& prop) {
     return this->cResource::createUI(prop);
 }
 
-f32 rEffectList::getBaseFps() const {
-    return mBaseFps;
-}
+static auto ddon_emit_0x01b94e80 __attribute__((used)) = &rEffectList::getBaseFps;
 
-u32 rEffectList::getListNum() const {
-    return mListNum;
-}
+static auto ddon_emit_0x01b94ea0 __attribute__((used)) = &rEffectList::getListNum;
 
-u32 rEffectList::getJointNum() const {
-    return mJointNum;
-}
+static auto ddon_emit_0x01b94eb0 __attribute__((used)) = &rEffectList::getJointNum;
 
-u32 rEffectList::getUnitGeneratorType() const {
-    return mUnitGeneratorType;
-}
+static auto ddon_emit_0x01b94ee0 __attribute__((used)) = &rEffectList::getUnitGeneratorType;
 
-u32 rEffectList::getUnitMoveType() const {
-    return mUnitMoveType;
-}
+static auto ddon_emit_0x01b94ef0 __attribute__((used)) = &rEffectList::getUnitMoveType;
 
 __attribute__((weak)) void rEffectList::setDummyU32(u32) {
 }
@@ -207,13 +199,9 @@ __attribute__((weak)) void rEffectList::setDummyF32(f32) {
 __attribute__((weak)) void rEffectList::setDummyBool(bool) {
 }
 
-bool rEffectList::isJointShare() const {
-    return (mJointShare & 15u) != 0;
-}
+static auto ddon_emit_0x01b94ec0 __attribute__((used)) = &rEffectList::isJointShare;
 
-u32 rEffectList::getResourceSize() const {
-    return (mParamBuffSize + (mResourceInfoNum * 120u)) + 184u;
-}
+static auto ddon_emit_0x01b94e50 __attribute__((used)) = &rEffectList::getResourceSize;
 
 bool rEffectList::isCullingParticle(u32 ParticleType) {
     if (ParticleType <= 26u) {
@@ -272,8 +260,36 @@ __attribute__((weak)) bool rEffectList::allocMemory(u32 ParamBuffSize) {
 }
 
 __attribute__((weak)) void rEffectList::setupResourceInfo() {
-    DDON_STUB("rEffectList::setupResourceInfo")
-    /* stub */
+        if (mResourceInfo == nullptr) {
+            return;
+        }
+        for (u32 ctr = 0; ctr < mListNum; ctr++) {
+            ResourceInfo* pResourceInfo = &mResourceInfo[ctr];
+            EFL_INDEX* pIndex = reinterpret_cast<EFL_INDEX*>(mpParamBuff) + ctr;
+            pResourceInfo->releaseResources();
+            pResourceInfo->createGeneratorResources(pIndex->GeneratorParamOffset != 0 ? reinterpret_cast<EFL_GENERATOR*>(mpParamBuff + pIndex->GeneratorParamOffset) : nullptr);
+            pResourceInfo->createMoveResources(pIndex->MoveParamOffset != 0 ? reinterpret_cast<EFL_MOVE_COMMON*>(mpParamBuff + pIndex->MoveParamOffset) : nullptr, pIndex->MoveType);
+            pResourceInfo->createParticleResources(pIndex->ParticleParamOffset != 0 ? reinterpret_cast<EFL_PARTICLE_COMMON*>(mpParamBuff + pIndex->ParticleParamOffset) : nullptr, pIndex->ParticleType);
+        }
+        if (mListNum < mResourceInfoNum) {
+            ResourceInfo* pResourceInfo = &mResourceInfo[mListNum];
+            pResourceInfo->releaseResources();
+            pResourceInfo->createGeneratorResources(mUnitGeneratorParamOffset != 0 ? reinterpret_cast<EFL_GENERATOR*>(mpParamBuff + mUnitGeneratorParamOffset) : nullptr);
+            pResourceInfo->createMoveResources(mUnitMoveParamOffset != 0 ? reinterpret_cast<EFL_MOVE_COMMON*>(mpParamBuff + mUnitMoveParamOffset) : nullptr, mUnitMoveType);
+        }
+        if (mpSerialEffect != nullptr) {
+            mpSerialEffect->release();
+            mpSerialEffect = nullptr;
+        }
+        if (mUnitParamOffset != 0 && (mpParamBuff + mUnitParamOffset) != nullptr) {
+            EFL_UNIT* t0 = reinterpret_cast<EFL_UNIT*>(mpParamBuff + mUnitParamOffset);
+            if (t0->SerialEffectParamOffset != 0) {
+                EFL_PARAM_SUB_EFFECT* t1 = reinterpret_cast<EFL_PARAM_SUB_EFFECT*>(reinterpret_cast<u8*>(t0) + t0->SerialEffectParamOffset);
+                if (t1 != nullptr && t1->EffectPath[0] != 0) {
+                    mpSerialEffect = static_cast<rEffectList*>((sResource::mpInstance)->create(rEffectList::DTI, t1->EffectPath, 1u));
+                }
+            }
+        }
 }
 
 __attribute__((weak)) void rEffectList::freeMemory() {
@@ -393,13 +409,216 @@ void rEffectList::ResourceInfo::createGeneratorResources(rEffectList::EFL_GENERA
 }
 
 __attribute__((weak)) void rEffectList::ResourceInfo::createParticleResources(rEffectList::EFL_PARTICLE_COMMON* pParticleParam, u32 ParticleType) {
-    DDON_STUB("rEffectList::ResourceInfo::createParticleResources")
-    /* stub */
+        if (pParticleParam == nullptr) {
+            return;
+        }
+        bool animFreeFlag = false;
+        bool primCommonFlag = false;
+        EFL_PARTICLE_PRIM_COMMON* pPrimCommonParam = static_cast<EFL_PARTICLE_PRIM_COMMON*>(pParticleParam);
+        u32 ctr;
+        switch (ParticleType) {
+        case PARTICLE_TYPE_BILLBOARD:
+        case PARTICLE_TYPE_TEXLINE:
+        case PARTICLE_TYPE_CLOTH_TEXLINE:
+        case PARTICLE_TYPE_BILLBOARD_STRIP:
+        case PARTICLE_TYPE_SIZE_BILLBOARD:
+        case PARTICLE_TYPE_LIGHT_SHAFT:
+            primCommonFlag = true;
+            break;
+        case PARTICLE_TYPE_ADHESION:
+            mTrait = mTrait | 2u;
+        case PARTICLE_TYPE_POLYLINE:
+        case PARTICLE_TYPE_POLYGON:
+        case PARTICLE_TYPE_CLOTH_POLYLINE:
+        case PARTICLE_TYPE_POLYGON_STRIP:
+        case PARTICLE_TYPE_CLOTH_POLYGON:
+        case PARTICLE_TYPE_AXIS_POLYGON:
+        case PARTICLE_TYPE_TRAIL:
+            primCommonFlag = true;
+            animFreeFlag = true;
+            break;
+        case PARTICLE_TYPE_MODEL: {
+            EFL_PARTICLE_MODEL* pModelParam = static_cast<EFL_PARTICLE_MODEL*>(pParticleParam);
+            if (pModelParam->ModelPath[0] != 0) {
+                if ((mpModel = static_cast<rModel*>((sResource::mpInstance)->create(rModel::DTI, pModelParam->ModelPath, 1u))) == nullptr) {
+                    mStatus = mStatus | STATUS_MOD_CREATE_FAILED;
+                }
+            } else {
+                mStatus = mStatus | STATUS_NO_MOD_CREATE;
+            }
+            EFL_PARAM_PAT_ANIM* pPatAnimParam = pModelParam->PatAnimParamOffset != 0 ? reinterpret_cast<EFL_PARAM_PAT_ANIM*>(reinterpret_cast<u8*>(pModelParam) + pModelParam->PatAnimParamOffset) : nullptr;
+            if (pModelParam->PatAnimParamOffset != 0) {
+                if (pPatAnimParam->AnimPath[0] != 0) {
+                    if ((mpAnim = static_cast<rEffectAnim*>((sResource::mpInstance)->create(rEffectAnim::DTI, pPatAnimParam->AnimPath, 1u))) == nullptr) {
+                        mStatus = mStatus | STATUS_EAN_CREATE_FAILED;
+                    }
+                } else {
+                    mStatus = mStatus | STATUS_NO_EAN_CREATE;
+                }
+            }
+            break;
+        }
+        case PARTICLE_TYPE_PRIM_MODEL: {
+            u32 primModelType = static_cast<EFL_PARTICLE_PRIM_MODEL*>(pParticleParam)->PrimModelType;
+            if (primModelType == PRIM_MODEL_TYPE_TEX_RING || primModelType == PRIM_MODEL_TYPE_TEX_SPHERE || primModelType == PRIM_MODEL_TYPE_TEX_GRID) {
+                primCommonFlag = true;
+                animFreeFlag = true;
+            }
+            break;
+        }
+        case PARTICLE_TYPE_LENS_FLARE: {
+            EFL_PARTICLE_LENS_FLARE* pLensFlareParam = static_cast<EFL_PARTICLE_LENS_FLARE*>(pParticleParam);
+            if (pLensFlareParam->AnimPath[0] != 0) {
+                if ((mpAnim = static_cast<rEffectAnim*>((sResource::mpInstance)->create(rEffectAnim::DTI, pLensFlareParam->AnimPath, 1u))) == nullptr) {
+                    mStatus = mStatus | STATUS_EAN_CREATE_FAILED;
+                }
+            } else {
+                mStatus = mStatus | STATUS_NO_EAN_CREATE;
+            }
+            createTexture(pLensFlareParam->BaseMapPath, 0);
+            break;
+        }
+        case PARTICLE_TYPE_MASS_BILLBOARD: {
+            EFL_PARTICLE_MASS_BILLBOARD* pMassBillboardParam = static_cast<EFL_PARTICLE_MASS_BILLBOARD*>(pParticleParam);
+            if (pMassBillboardParam->AnimPath[0] != 0) {
+                if ((mpAnim = static_cast<rEffectAnim*>((sResource::mpInstance)->create(rEffectAnim::DTI, pMassBillboardParam->AnimPath, 1u))) == nullptr) {
+                    mStatus = mStatus | STATUS_EAN_CREATE_FAILED;
+                }
+            } else {
+                mStatus = mStatus | STATUS_NO_EAN_CREATE;
+            }
+            createTexture(pMassBillboardParam->BaseMapPath, 0);
+            break;
+        }
+        case PARTICLE_TYPE_FILTER: {
+            EFL_PARTICLE_RADIAL_BLUR_FILTER* pRadialBlurFilterParam = static_cast<EFL_PARTICLE_RADIAL_BLUR_FILTER*>(pParticleParam);
+            if (pRadialBlurFilterParam->FilterType == 0 && pRadialBlurFilterParam->AlphaMapPath[0] != 0) {
+                createTexture(pRadialBlurFilterParam->AlphaMapPath, 0);
+            }
+            break;
+        }
+        case PARTICLE_TYPE_LIGHT:
+            mTrait = mTrait | 1u;
+            break;
+        case PARTICLE_TYPE_HIT:
+            mTrait = mTrait & ~8u;
+            break;
+        case PARTICLE_TYPE_CUSTOM: {
+            EFL_PARTICLE_CUSTOM* pCustomParam = static_cast<EFL_PARTICLE_CUSTOM*>(pParticleParam);
+            if (pCustomParam->AnimPath[0] != 0) {
+                if ((mpAnim = static_cast<rEffectAnim*>((sResource::mpInstance)->create(rEffectAnim::DTI, pCustomParam->AnimPath, 1u))) == nullptr) {
+                    mStatus = mStatus | STATUS_EAN_CREATE_FAILED;
+                }
+            }
+            for (u32 ctr = 0; ctr < 3; ctr++) {
+                if (pCustomParam->TexturePath[ctr][0] != 0) {
+                    createTexture(pCustomParam->TexturePath[ctr], ctr);
+                }
+            }
+            mFresnelFactor = static_cast<f32>(pCustomParam->FresnelFactorFix) / 1000.0f;
+            mFresnelBias = static_cast<f32>(pCustomParam->FresnelBiasFix) / 1000.0f;
+            mFresnelExponent = pCustomParam->FresnelExponent;
+            if ((pCustomParam->ParticleOptionFlag & PARTICLE_OPTION_FLAG_PARALLAX) != 0) {
+                mTrait = mTrait | 4u;
+            }
+            break;
+        }
+        case PARTICLE_TYPE_FORCE: {
+            EFL_PARTICLE_FORCE_COMMON* pForceParam = static_cast<EFL_PARTICLE_FORCE_COMMON*>(pParticleParam);
+            if (pForceParam->ForcePath[0] != 0) {
+                if ((mpForce = (sResource::mpInstance)->create(rGrassWind::DTI, pForceParam->ForcePath, 1u)) == nullptr) {
+                    mStatus = mStatus | STATUS_FRC_CREATE_FAILED;
+                }
+            } else {
+                mStatus = mStatus | STATUS_NO_FRC_CREATE;
+            }
+            mTrait = mTrait | 16u;
+            break;
+        }
+        case PARTICLE_TYPE_NODE_BILLBOARD: {
+            EFL_PARTICLE_MASS_BILLBOARD* pMassBillboardParam = static_cast<EFL_PARTICLE_MASS_BILLBOARD*>(pParticleParam);
+            if (pMassBillboardParam->AnimPath[0] != 0) {
+                if ((mpAnim = static_cast<rEffectAnim*>((sResource::mpInstance)->create(rEffectAnim::DTI, pMassBillboardParam->AnimPath, 1u))) == nullptr) {
+                    mStatus = mStatus | STATUS_EAN_CREATE_FAILED;
+                }
+            }
+            createTexture(pMassBillboardParam->BaseMapPath, 0);
+            break;
+        }
+        default:
+            break;
+        }
+        if (primCommonFlag) {
+            if (animFreeFlag) {
+                if (pPrimCommonParam->AnimPath[0] != 0) {
+                    if ((mpAnim = static_cast<rEffectAnim*>((sResource::mpInstance)->create(rEffectAnim::DTI, pPrimCommonParam->AnimPath, 1u))) == nullptr) {
+                        mStatus = mStatus | STATUS_EAN_CREATE_FAILED;
+                    }
+                }
+            } else {
+                if (pPrimCommonParam->AnimPath[0] != 0) {
+                    if ((mpAnim = static_cast<rEffectAnim*>((sResource::mpInstance)->create(rEffectAnim::DTI, pPrimCommonParam->AnimPath, 1u))) == nullptr) {
+                        mStatus = mStatus | STATUS_EAN_CREATE_FAILED;
+                    }
+                } else {
+                    mStatus = mStatus | STATUS_NO_EAN_CREATE;
+                }
+            }
+            for (ctr = 0; ctr < 3; ctr++) {
+                createTexture(pPrimCommonParam->TexturePath[ctr], ctr);
+            }
+            mFresnelFactor = static_cast<f32>(pPrimCommonParam->FresnelFactorFix) / 1000.0f;
+            mFresnelBias = static_cast<f32>(pPrimCommonParam->FresnelBiasFix) / 1000.0f;
+            mFresnelExponent = pPrimCommonParam->FresnelExponent;
+            if ((pPrimCommonParam->ParticleOptionFlag & PARTICLE_OPTION_FLAG_PARALLAX) != 0) {
+                mTrait = mTrait | 4u;
+            }
+        }
 }
 
 __attribute__((weak)) void rEffectList::ResourceInfo::createMoveResources(rEffectList::EFL_MOVE_COMMON* pMoveParam, u32 MoveType) {
-    DDON_STUB("rEffectList::ResourceInfo::createMoveResources")
-    /* stub */
+        if (pMoveParam == nullptr) {
+            return;
+        }
+        switch (MoveType) {
+        case MOVE_TYPE_PATH_STRIP: {
+            if (static_cast<EFL_MOVE_PATH_STRIP*>(pMoveParam)->PathStripPath[0] != 0) {
+                if ((mpPathStrip = static_cast<rEffectStrip*>((sResource::mpInstance)->create(rEffectStrip::DTI, static_cast<EFL_MOVE_PATH_STRIP*>(pMoveParam)->PathStripPath, 1u))) == nullptr) {
+                    mStatus = mStatus | STATUS_P_EFS_CREATE_FAILED;
+                }
+            } else {
+                mStatus = mStatus | STATUS_NO_P_EFS_CREATE;
+            }
+        }
+        case MOVE_TYPE_NONE:
+        case MOVE_TYPE_ADD:
+        case MOVE_TYPE_MUL:
+        case MOVE_TYPE_PATH_CHAIN:
+        case MOVE_TYPE_PATH_KEYFRAME:
+        case MOVE_TYPE_PATH_LINE:
+        case MOVE_TYPE_CUSTOM:
+        case MOVE_TYPE_SPIN: {
+            EFL_PARAM_COLL* pCollParam = pMoveParam->CollParamOffset != 0 ? reinterpret_cast<EFL_PARAM_COLL*>(reinterpret_cast<u8*>(pMoveParam) + pMoveParam->CollParamOffset) : nullptr;
+            if (pCollParam != nullptr) {
+                EFL_PARAM_SUB_EFFECT* pBounceEffectParam = pCollParam->BounceEffectParamOffset != 0 ? reinterpret_cast<EFL_PARAM_SUB_EFFECT*>(reinterpret_cast<u8*>(pCollParam) + pCollParam->BounceEffectParamOffset) : nullptr;
+                if (pBounceEffectParam != nullptr && pBounceEffectParam->EffectPath[0] != 0) {
+                    if ((mpBounceEffect = static_cast<rEffectList*>((sResource::mpInstance)->create(rEffectList::DTI, pBounceEffectParam->EffectPath, 1u))) == nullptr) {
+                        mStatus = mStatus | STATUS_B_EFL_CREATE_FAILED;
+                    }
+                }
+                EFL_PARAM_SUB_EFFECT* pFinishEffectParam = pCollParam->FinishEffectParamOffset != 0 ? reinterpret_cast<EFL_PARAM_SUB_EFFECT*>(reinterpret_cast<u8*>(pCollParam) + pCollParam->FinishEffectParamOffset) : nullptr;
+                if (pFinishEffectParam != nullptr && pFinishEffectParam->EffectPath[0] != 0) {
+                    if ((mpFinishEffect = static_cast<rEffectList*>((sResource::mpInstance)->create(rEffectList::DTI, pFinishEffectParam->EffectPath, 1u))) == nullptr) {
+                        mStatus = mStatus | STATUS_F_EFL_CREATE_FAILED;
+                    }
+                }
+                mTrait = mTrait | 8u;
+            }
+            break;
+        }
+        default:
+            break;
+        }
 }
 
 f32 rEffectList::ResourceInfo::getTextureInvW() const {
@@ -440,28 +659,30 @@ bool rEffectList::ResourceInfo::checkCreate() {
     return (mStatus & 0xFFFFFu) == 0;
 }
 
-void rEffectList::ResourceInfo::createTexture(MT_CHAR* pPath, u32 No) {
-    if ((*pPath) != 0) {
-        if ((mpTexture[No] = static_cast<rTexture*>((sResource::mpInstance)->create(rTexture::DTI, pPath, 128u))) == nullptr) {
-            if ((mpTexture[No] = static_cast<rTexture*>((sResource::mpInstance)->create(rRenderTargetTexture::DTI, pPath, 128u))) == nullptr) {
-                if ((mpTexture[No] = static_cast<rTexture*>((sResource::mpInstance)->create(rTexture::DTI, pPath, 1u))) == nullptr) {
-                    if ((mpTexture[No] = static_cast<rTexture*>((sResource::mpInstance)->create(rRenderTargetTexture::DTI, pPath, 1u))) != nullptr) {
-                        mStatus = static_cast<unsigned int>(static_cast<unsigned long>(mStatus) | (0x1000000ul << static_cast<unsigned long>(static_cast<unsigned char>(No) & 31)));
-                    } else {
-                        mStatus = static_cast<unsigned int>(static_cast<unsigned long>(mStatus) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(No) & 31)));
-                        if (No == 0) {
-                            mStatus = mStatus | 0x10000u;
-                        }
-                    }
-                }
-            } else {
-                mStatus = static_cast<unsigned int>(static_cast<unsigned long>(mStatus) | (0x1000000ul << static_cast<unsigned long>(static_cast<unsigned char>(No) & 31)));
+__attribute__((weak)) void rEffectList::ResourceInfo::createTexture(MT_CHAR* pPath, u32 No) {
+        if (pPath[0] != 0) {
+            mpTexture[No] = static_cast<rTexture*>((sResource::mpInstance)->create(rTexture::DTI, pPath, 128u));
+            if (mpTexture[No] != nullptr) {
+                return;
             }
+            mpTexture[No] = static_cast<rTexture*>((sResource::mpInstance)->create(rRenderTargetTexture::DTI, pPath, 128u));
+            if (mpTexture[No] != nullptr) {
+                mStatus |= STATUS_RTX_CREATE << No;
+                return;
+            }
+            mpTexture[No] = static_cast<rTexture*>((sResource::mpInstance)->create(rTexture::DTI, pPath, 1u));
+            if (mpTexture[No] != nullptr) {
+                return;
+            }
+            mpTexture[No] = static_cast<rTexture*>((sResource::mpInstance)->create(rRenderTargetTexture::DTI, pPath, 1u));
+            if (mpTexture[No] != nullptr) {
+                mStatus |= STATUS_RTX_CREATE << No;
+                return;
+            }
+            mStatus |= STATUS_TEX_CREATE_FAILED << No;
         }
-    } else {
         if (No == 0) {
-            mStatus = mStatus | 0x10000u;
+            mStatus |= STATUS_NO_TEX_CREATE;
         }
-    }
 }
 

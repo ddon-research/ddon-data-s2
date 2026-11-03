@@ -153,6 +153,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uStageRevivalPawn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 uStageRevivalPawn::getRevivalNpcId() const {
     return this->mRevivalNpcId.NpcId;
 }

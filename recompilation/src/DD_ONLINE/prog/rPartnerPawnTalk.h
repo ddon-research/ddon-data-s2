@@ -148,9 +148,21 @@ public:
     static const u8 DATA_VERSION = 1;
 };
 
+inline void* rPartnerPawnTalk::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rPartnerPawnTalk::InfoBinary::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rPartnerPawnTalk::InfoBinary::InfoBinary() {
     this->mpTalkList = nullptr;
     this->mTalkListNum = 0;
+}
+
+inline void* rPartnerPawnTalk::InfoBinary::TalkDataBinary::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rPartnerPawnTalk::InfoBinary::TalkDataBinary::TalkDataBinary() {

@@ -2,10 +2,81 @@
 #include <new>
 #include "cGUIVariable.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+const MtDTI& cGUIVarFloat::getDTI() const {
+    return cGUIVarFloat::DTI;
+}
+
+void* cGUIVarFloat::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+cGUIVarFloat::cGUIVarFloat() {
+    DDON_STUB("cGUIVarFloat::cGUIVarFloat")
+    /* stub */
+}
+
+cGUIVarFloat::~cGUIVarFloat() {
+    DDON_STUB("cGUIVarFloat::~cGUIVarFloat")
+    /* stub */
+}
+
+MtUI* cGUIVarFloat::createUI(MtProperty& prop) {
+    return this->MtObject::createUI(prop);
+}
+
+__attribute__((weak)) void cGUIVarFloat::createProperty(MtPropertyList& s) {
+    DDON_STUB("cGUIVarFloat::createProperty")
+    /* stub */
+}
+
+s32 cGUIVarFloat::getS32() const {
+    return static_cast<int>(mValue);
+}
+
+__attribute__((weak)) void cGUIVarFloat::set(f32 value, bool forceUpdate) {
+    DDON_STUB("cGUIVarFloat::set")
+    /* stub */
+}
+
+static auto ddon_emit_0x01b73940 __attribute__((used)) = &cGUIVarFloat::get;
+
+__attribute__((weak)) void cGUIVarFloat::setOld(f32 value) {
+}
+
+static auto ddon_emit_0x01b73950 __attribute__((used)) = &cGUIVarFloat::getOld;
+
+static auto ddon_emit_0x01b73980 __attribute__((used)) = &cGUIVarFloat::setInit;
+
+static auto ddon_emit_0x01b73970 __attribute__((used)) = &cGUIVarFloat::getInit;
+
+static auto ddon_emit_0x01b73930 __attribute__((used)) = &cGUIVarFloat::setMax;
+
+static auto ddon_emit_0x01b73920 __attribute__((used)) = &cGUIVarFloat::getMax;
+
+static auto ddon_emit_0x01b73910 __attribute__((used)) = &cGUIVarFloat::setMin;
+
+static auto ddon_emit_0x01b73900 __attribute__((used)) = &cGUIVarFloat::getMin;
+
+__attribute__((weak)) void cGUIVarFloat::setValue(f32 value) {
+    DDON_STUB("cGUIVarFloat::setValue")
+    /* stub */
+}
+
+cGUIVarFloat::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cGUIVarFloat::MyDTI cGUIVarFloat::DTI("cGUIVarFloat", &::cGUIVariable::DTI, 48ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cGUIVarFloat::MyDTI::newInstance() const {
+    DDON_STUB("cGUIVarFloat::MyDTI::newInstance")
+    return nullptr;
+}
 
 const MtDTI& cGUIVarInt::getDTI() const {
     return cGUIVarInt::DTI;
@@ -53,40 +124,24 @@ __attribute__((weak)) void cGUIVarInt::set(s32 value, bool forceUpdate) {
     /* stub */
 }
 
-s32 cGUIVarInt::get() const {
-    return mValue;
-}
+static auto ddon_emit_0x01b73800 __attribute__((used)) = &cGUIVarInt::get;
 
 __attribute__((weak)) void cGUIVarInt::setOld(s32 value) {
 }
 
-s32 cGUIVarInt::getOld() const {
-    return mOldValue;
-}
+static auto ddon_emit_0x01b73810 __attribute__((used)) = &cGUIVarInt::getOld;
 
-void cGUIVarInt::setInit(s32 value) {
-    mInitValue = value;
-}
+static auto ddon_emit_0x01b73840 __attribute__((used)) = &cGUIVarInt::setInit;
 
-s32 cGUIVarInt::getInit() const {
-    return mInitValue;
-}
+static auto ddon_emit_0x01b73830 __attribute__((used)) = &cGUIVarInt::getInit;
 
-void cGUIVarInt::setMax(s32 value) {
-    mMaxValue = value;
-}
+static auto ddon_emit_0x01b737f0 __attribute__((used)) = &cGUIVarInt::setMax;
 
-s32 cGUIVarInt::getMax() const {
-    return mMaxValue;
-}
+static auto ddon_emit_0x01b737e0 __attribute__((used)) = &cGUIVarInt::getMax;
 
-void cGUIVarInt::setMin(s32 value) {
-    mMinValue = value;
-}
+static auto ddon_emit_0x01b737d0 __attribute__((used)) = &cGUIVarInt::setMin;
 
-s32 cGUIVarInt::getMin() const {
-    return mMinValue;
-}
+static auto ddon_emit_0x01b737c0 __attribute__((used)) = &cGUIVarInt::getMin;
 
 __attribute__((weak)) void cGUIVarInt::setValue(s32 value) {
     DDON_STUB("cGUIVarInt::setValue")
@@ -122,13 +177,7 @@ const MT_CTSTR* cGUIVariable::getEventPropertyTooltip() {
     return nullptr;
 }
 
-void cGUIVariable::setLoopValue(bool v) {
-    if (v) {
-        mAttr = mAttr | 2u;
-    } else {
-        mAttr = mAttr & 65533u;
-    }
-}
+static auto ddon_emit_0x01b73790 __attribute__((used)) = &cGUIVariable::setLoopValue;
 
 bool cGUIVariable::isLoopValue() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 12)) & 2) >> 1);

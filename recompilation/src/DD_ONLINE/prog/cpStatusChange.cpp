@@ -6,15 +6,26 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../XFramework/cArea.h"
 #include "cBitCtrl.h"
+#include "cContextInterface.h"
 #include "cEmWorkRateCtrl.h"
 #include "cMethodConstantManagerBase.h"
 #include "../../XFramework/cResource.h"
+#include "cpActionManager.h"
 #include "cpComponent.h"
-#include "../../generated/rCharacterEditCameraParam/nStatusEnemy.h"
+#include "cpErosionEnemyBase.h"
+#include "cpObjCollision.h"
+#include "cpOcdCtrl.h"
+#include "cpPartsCtrl.h"
+#include "cpRegionStatusCtrl.h"
+#include "../../generated/shared/nStatusEnemy.h"
 #include "rDDOModelMontageEm.h"
 #include "rEmScaleTable.h"
 #include "rEnemyStatusChange.h"
+#include "../../XFramework/sArea.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uCharacter.h"
 #include "uDDOModel.h"
 #include "uEnemy.h"
 #include "../../XFramework/uModel.h"
@@ -46,7 +57,7 @@ cpStatusChange::cpStatusChange() {
     /* stub */
 }
 
-cpStatusChange::~cpStatusChange() {
+__attribute__((noinline)) cpStatusChange::~cpStatusChange() {
     if (mcStatusChange.mLength != 0) {
         u32 v0_0 = mcStatusChange.mLength;
         for (unsigned int i0_3 = 0;;) {

@@ -331,12 +331,28 @@ public:
     static const u32 ITEMLIST_NUM = 20;
 };
 
+inline void* uGUIGiveAndTake::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGiveAndTake::cItemInfoList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIGiveAndTake::cItemInfoList::cItemInfoList() {
     this->mItemNo = 0;
     this->mItemNum = 0;
 }
 
+inline void* uGUIGiveAndTake::cItemGiveList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIGiveAndTake::cItemGiveList::cItemGiveList() {
     this->mItemUID = nullptr;
     this->mItemNum = 0;
+}
+
+inline void* uGUIGiveAndTake::cItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

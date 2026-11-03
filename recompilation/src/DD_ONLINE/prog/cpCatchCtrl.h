@@ -240,12 +240,24 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCatchInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cCatchInfo::getCatchUid() {
     return this->mCatchUid;
 }
 
+inline void* cCaughtInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cCaughtInfo::getCatchUid() {
     return this->mCatchUid;
+}
+
+inline void* cpCatchCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void cpCatchCtrl::cancelCaughtActionReq() {

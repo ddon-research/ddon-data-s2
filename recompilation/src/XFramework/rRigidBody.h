@@ -152,3 +152,7 @@ public:
     static const u32 MAX_PART = 128;
     static MyDTI DTI;
 };
+
+inline void* rRigidBody::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

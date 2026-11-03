@@ -201,3 +201,7 @@ namespace nGUI {
         static SO_HANDLE DepthStencil[5][5];
     };
 }  // namespace nGUI
+
+inline void* nGUI::Draw::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

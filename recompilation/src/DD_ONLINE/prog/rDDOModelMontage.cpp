@@ -6,7 +6,16 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cBakeModel.h"
+#include "cComponentManager.h"
 #include "../../XFramework/cResource.h"
+#include "cpEquip.h"
+#include "../../XFramework/nDrawConstantTable.h"
+#include "../../XFramework/nDrawMaterial.h"
+#include "uArmor.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uDDOModel.h"
+#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -57,8 +66,17 @@ __attribute__((weak)) u32 rDDOModelMontage::applyMontage(uModel* pmod, u32 no) {
 }
 
 __attribute__((weak)) bool rDDOModelMontage::isModelTypeNP(u32 no) {
-    DDON_STUB("rDDOModelMontage::isModelTypeNP")
-    return {};
+        if (!mpHeader) {
+            return false;
+        }
+        if (mpHeader->montage_num == 0) {
+            return false;
+        }
+        MONTAGE* pmtg = mpHeader->mindex[mpHeader->mindex[no % mpHeader->montage_max] ? (no % mpHeader->montage_max) : 0];
+        if (!pmtg) {
+            return false;
+        }
+        return mpHeader->modelType == MODEL_TYPE_NP;
 }
 
 __attribute__((weak)) u32 rDDOModelMontage::applyParts(uModel* pmod, u32 no) {

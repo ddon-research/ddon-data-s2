@@ -5,7 +5,13 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
 #include "sBakingJointOrder.h"
+#include "../../XFramework/sMain.h"
 #include "../../XFramework/sUnit.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
@@ -74,14 +80,9 @@ __attribute__((weak)) void sUnitExt::evRemoveUnit(cUnit& unit) {
     /* stub */
 }
 
-bool sUnitExt::getCommandCacheFlag() {
-    return mIsUseCommandCache;
-}
+static auto ddon_emit_0x01acfb30 __attribute__((used)) = &sUnitExt::getCommandCacheFlag;
 
-void sUnitExt::setCommandCacheFlag(bool set) {
-    mIsUseCommandCache = set;
-    mbDrawCommandCacheEnableUpdate = set;
-}
+static auto ddon_emit_0x01acfb20 __attribute__((used)) = &sUnitExt::setCommandCacheFlag;
 
 void sUnitExt::forceFlushDrawCommandCache() {
     this->sUnit::forceFlushDrawCommandCache();

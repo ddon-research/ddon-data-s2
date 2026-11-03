@@ -133,6 +133,10 @@ private:
     static sPlatformUtil* mpInstance;
 };
 
+inline void* sPlatformUtil::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sPlatformUtil* sPlatformUtil::getInstance() {
     return ::sPlatformUtil::mpInstance;
 }

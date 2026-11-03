@@ -45,8 +45,6 @@ inline void rCharacterEditVoicePalette::operator delete(void* p_addr) {
 }
 
 rCharacterEditVoicePalette::~rCharacterEditVoicePalette() {
-    DDON_STUB("rCharacterEditVoicePalette::~rCharacterEditVoicePalette")
-    /* stub */
 }
 
 bool rCharacterEditVoicePalette::loadData(MtDataReader& r, cCharacterEditVoicePalette* pData) {

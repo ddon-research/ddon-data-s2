@@ -2,6 +2,7 @@
 #include <new>
 #include "cGUIControlMgr.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "cControl.h"
@@ -163,7 +164,7 @@ u32 cGUIControlMgr::addChildControl(u32 ParentMgrId, s32 MovePos, s32 TopOfs, uG
                             mControl[t0].mpScrollList = pScrollList;
                             cControl* pctrl = pScrollList->getCtrl();
                             if (pctrl != nullptr) {
-                                mControl[t0].mItemNum = static_cast<u32>(pctrl->cControl::getItemNum());
+                                mControl[t0].mItemNum = static_cast<u32>(pctrl->getItemNum());
                                 mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
                                 mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
                                 mControl[t0].mMovePos = MovePos;
@@ -184,7 +185,7 @@ u32 cGUIControlMgr::addChildControl(u32 ParentMgrId, s32 MovePos, s32 TopOfs, uG
                             mControl[t0].mpScrollList = pScrollList;
                             cControl* pctrl = pScrollList->getCtrl();
                             if (pctrl != nullptr) {
-                                mControl[t0].mItemNum = static_cast<u32>(pctrl->cControl::getItemNum());
+                                mControl[t0].mItemNum = static_cast<u32>(pctrl->getItemNum());
                                 mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
                                 mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
                                 mControl[t0].mMovePos = MovePos;
@@ -215,7 +216,7 @@ u32 cGUIControlMgr::addChildControl(u32 ParentMgrId, s32 MovePos, s32 TopOfs, uG
                             mControl[t0].mpScrollList = pScrollList;
                             cControl* pctrl = pScrollList->getCtrl();
                             if (pctrl != nullptr) {
-                                mControl[t0].mItemNum = static_cast<u32>(pctrl->cControl::getItemNum());
+                                mControl[t0].mItemNum = static_cast<u32>(pctrl->getItemNum());
                                 mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
                                 mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
                                 mControl[t0].mMovePos = MovePos;
@@ -236,7 +237,7 @@ u32 cGUIControlMgr::addChildControl(u32 ParentMgrId, s32 MovePos, s32 TopOfs, uG
                             mControl[t0].mpScrollList = pScrollList;
                             cControl* pctrl = pScrollList->getCtrl();
                             if (pctrl != nullptr) {
-                                mControl[t0].mItemNum = static_cast<u32>(pctrl->cControl::getItemNum());
+                                mControl[t0].mItemNum = static_cast<u32>(pctrl->getItemNum());
                                 mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
                                 mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
                                 mControl[t0].mMovePos = MovePos;

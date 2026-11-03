@@ -5,7 +5,7 @@
 
 // Dependencies
 #include "_rtc.h"
-#include "../shared/np_npid.h"
+#include "np_npid.h"
 
 // Forward declarations
 struct SceNpId;

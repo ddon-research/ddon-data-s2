@@ -275,5 +275,17 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUICaplinkProfile::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUICaplinkProfile::stVariable::stVariable() {
+}
+
+inline void* uGUICaplinkProfile::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkProfile::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

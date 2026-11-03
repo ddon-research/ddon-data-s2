@@ -264,6 +264,18 @@ public:
     static const MtString INVALID_PATH;
 };
 
+inline void* cZoneLayout::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cZoneLayout::cInGameGroupManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool cZoneLayout::cInGameGroupManager::isEnable() const {
     return this->mFlgEnable;
+}
+
+inline void* cZoneLayout::cDynamicBVHMaster::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

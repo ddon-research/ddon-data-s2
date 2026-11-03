@@ -142,11 +142,23 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cQuestSvNotQuestPhase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestSvNotQuestPhase::cQuestSvNotQuestPhase() {
     this->mpPacket = nullptr;
 }
 
+inline void* cQuestSvNotice::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestSvNotice::cQuestSvNotice() {
+}
+
+inline void* cQuestSvNoticeCallback::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cQuestSvNoticeCallback::cQuestSvNoticeCallback() {

@@ -108,3 +108,19 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cWepCateResTbl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rWepCateResTbl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cWepCateResTbl::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWepCateResTbl::DTI)->memAlloc(sz, align, ::cWepCateResTbl::DTI.::MtDTI::getID());
+}

@@ -4,11 +4,22 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtFilePath.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
 #include "cSetInfo.h"
+#include "cSetInfoCoord.h"
+#include "cSetInfoEnemy.h"
+#include "cSetInfoGeneralPoint.h"
+#include "cSetInfoNpc.h"
+#include "cSetInfoOm.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "nLayout.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -58,8 +69,7 @@ inline rLayout::rLayout() {
 }
 
 rLayout::~rLayout() {
-    DDON_STUB("rLayout::~rLayout")
-    /* stub */
+    destruct();
 }
 
 MT_CTSTR rLayout::getExt() const {

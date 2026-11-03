@@ -3,11 +3,35 @@
 #include "cCameraGameNml.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtEaseCurve.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
 #include "cCamInterporate.h"
+#include "cGeneralPoint.h"
+#include "cGeneralPointPtr.h"
+#include "cpCharacterEdit.h"
 #include "../../generated/shared/nCameraGame.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "../../XFramework/sArea.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "../../XFramework/sCollision.h"
+#include "sGame.h"
+#include "sInputManager.h"
+#include "sPlayerManager.h"
+#include "sWorkRate.h"
+#include "../../XFramework/uCamera.h"
+#include "uCameraBase.h"
 #include "uCameraGame.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -30,8 +54,6 @@ __attribute__((weak)) void cCamExParamNml::createProperty(MtPropertyList& s) {
 }
 
 cCamExParamNml::~cCamExParamNml() {
-    DDON_STUB("cCamExParamNml::~cCamExParamNml")
-    /* stub */
 }
 
 __attribute__((weak)) void cCamExParamNml::copy(const cCamExParam* pParam) {
@@ -53,11 +75,50 @@ __attribute__((weak)) MtObject* cCamExParamNml::MyDTI::newInstance() const {
     return nullptr;
 }
 
+const MtDTI& cCamExParamNml2::getDTI() const {
+    return cCamExParamNml2::DTI;
+}
+
+inline MtAllocator* cCamExParamNml2::getAllocator() {
+    return MtMemoryAllocator::getAllocator(cCamExParamNml2::DTI);
+}
+
+void* cCamExParamNml2::operator new(size_t sz, u32 align) {
+    return cCamExParamNml2::getAllocator()->memAlloc(sz, align, cCamExParamNml2::DTI.getID());
+}
+
+__attribute__((weak)) void cCamExParamNml2::createProperty(MtPropertyList& s) {
+    DDON_STUB("cCamExParamNml2::createProperty")
+    /* stub */
+}
+
+cCamExParamNml2::~cCamExParamNml2() {
+}
+
+__attribute__((weak)) void cCamExParamNml2::copy(const cCamExParam* pParam) {
+    DDON_STUB("cCamExParamNml2::copy")
+    /* stub */
+}
+
+__attribute__((weak)) cCamImpBase* cCamExParamNml2::createCamImpInstance(uCameraGame* pCamera) const {
+    DDON_STUB("cCamExParamNml2::createCamImpInstance")
+    return nullptr;
+}
+
+cCamExParamNml2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cCamExParamNml2::MyDTI cCamExParamNml2::DTI("cCamExParamNml2", &::cCamExParamNml::DTI, 576ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cCamExParamNml2::MyDTI::newInstance() const {
+    DDON_STUB("cCamExParamNml2::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& cCamImpNml::getDTI() const {
     return cCamImpNml::DTI;
 }
 
-MtAllocator* cCamImpNml::getAllocator() {
+inline MtAllocator* cCamImpNml::getAllocator() {
     return MtMemoryAllocator::getAllocator(cCamImpNml::DTI);
 }
 

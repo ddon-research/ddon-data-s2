@@ -139,6 +139,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIGaugeExp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGaugeExp::cGaugeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIGaugeExp::cGaugeInfo::cGaugeInfo() {
     this->mExpLatest = 0xFFFFFFFFFFFFFFFFul;
     this->mLvLatest = 0xFFFF;

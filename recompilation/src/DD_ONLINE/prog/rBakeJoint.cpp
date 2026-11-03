@@ -45,8 +45,6 @@ inline void rBakeJoint::operator delete(void* p_addr) {
 }
 
 rBakeJoint::~rBakeJoint() {
-    DDON_STUB("rBakeJoint::~rBakeJoint")
-    /* stub */
 }
 
 bool rBakeJoint::loadData(MtDataReader& r, cBakeJoint* pData) {

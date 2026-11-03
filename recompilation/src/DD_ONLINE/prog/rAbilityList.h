@@ -263,6 +263,10 @@ protected:
     static const u8 DATA_VERSION = 8;
 };
 
+inline void* cAbilityData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAbilityData::cAbilityData() {
     this->mParamArray.::MtArray::mAutoDelete = true;
 }
@@ -271,13 +275,25 @@ inline u32 cAbilityData::getParamNum() const {
     return this->mParamArray.::MtArray::mLength;
 }
 
+inline void* cAbilityParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAbilityParam::cAbilityParam() {
     this->mParamType = 0;
     this->mCorrectType = 0;
     this->mParamDataArray.::MtArray::mAutoDelete = true;
 }
 
+inline void* cAbilityParam::cParamData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAbilityParam::cParamData::cParamData() {
     this->mLv = 1;
     this->mParam = 0;
+}
+
+inline void* rAbilityList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -70,12 +70,15 @@ class rWepCateResTbl;
 class sAreaExt;
 class sCameraExt;
 class sGUIExt;
+class sItemManager;
 class sNetworkExt;
 class sPlayerManager;
+class sWeatherManager;
 class uControl;
 class uDDOModel;
 class uFade;
 class uGUIEngageInfo;
+class uGUIOption;
 class uGUIPhoto;
 class uHuman;
 
@@ -164,9 +167,12 @@ class sGame : public cSystem
     friend class sAreaExt;
     friend class sCameraExt;
     friend class sGUIExt;
+    friend class sItemManager;
     friend class sNetworkExt;
     friend class sPlayerManager;
+    friend class sWeatherManager;
     friend class uGUIEngageInfo;
+    friend class uGUIOption;
     friend class uGUIPhoto;
 public:
     enum ANNOUNCE_TIME
@@ -728,6 +734,14 @@ private:
     static const u32 KEEP_TEX_MAX = 32;
 };
 
+inline void* cChargeEffectUID::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sGame::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sGame* sGame::getInstance() {
     return ::sGame::mpInstance;
 }
@@ -805,6 +819,66 @@ inline void sGame::setChargeCourseVersion(u32 version) {
 
 inline nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES& sGame::PacketGPCourseInfo() {
     return this->mPacketGPCourseInfo;
+}
+
+inline u32 sGame::getUseItemSlotLimitByStorage() {
+    return this->mUseItemSlotLimitByStorage;
+}
+
+inline u32 sGame::getMaterialItemSlotLimitByStorage() {
+    return this->mMaterialItemSlotLimitByStorage;
+}
+
+inline u32 sGame::getArmItemSlotLimitByStorage() {
+    return this->mArmItemSlotLimitByStorage;
+}
+
+inline u32 sGame::getJobItemSlotLimitByStorage() {
+    return this->mJobItemSlotLimitByStorage;
+}
+
+inline u32 sGame::getAllItemSlotLimitByStorage() {
+    return this->mAllItemSlotLimitByStorage;
+}
+
+inline u32 sGame::getUseItemSlotLimitByStorageEx() {
+    return this->mUseItemSlotLimitByStorageEx;
+}
+
+inline u32 sGame::getMaterialItemSlotLimitByStorageEx() {
+    return this->mMaterialItemSlotLimitByStorageEx;
+}
+
+inline u32 sGame::getArmItemSlotLimitByStorageEx() {
+    return this->mArmItemSlotLimitByStorageEx;
+}
+
+inline u32 sGame::getJobItemSlotLimitByStorageEx() {
+    return this->mJobItemSlotLimitByStorageEx;
+}
+
+inline u32 sGame::getAllItemSlotLimitByStorageEx() {
+    return this->mAllItemSlotLimitByStorageEx;
+}
+
+inline u32 sGame::getUseItemSlotLimitByMyBag() {
+    return this->mUseItemSlotLimitByMyBag;
+}
+
+inline u32 sGame::getMaterialItemSlotLimitByMyBag() {
+    return this->mMaterialItemSlotLimitByMyBag;
+}
+
+inline u32 sGame::getArmItemSlotLimitByMyBag() {
+    return this->mArmItemSlotLimitByMyBag;
+}
+
+inline u32 sGame::getJobItemSlotLimitByMyBag() {
+    return this->mJobItemSlotLimitByMyBag;
+}
+
+inline u32 sGame::getKeyItemSlotLimitByMyBag() {
+    return this->mKeyItemSlotLimitByMyBag;
 }
 
 inline void sGame::setFadeType(s32 type) {

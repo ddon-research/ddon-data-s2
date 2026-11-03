@@ -144,3 +144,27 @@ inline void cStartPos::setAng(f32 ag) {
     this->ang.z = 0.0f;
     this->ang.pad_ = 0.0f;
 }
+
+inline void* rStartPos::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStartPos::Info::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 rStartPos::Info::getOfsPosNum() {
+    return 7;
+}
+
+inline f32 rStartPos::Info::getOfsAng(u32 idx) const {
+    return this->mOfsAng[idx];
+}
+
+inline void rStartPos::Info::setOfsAng(f32 ang, u32 idx) {
+    this->mOfsAng[idx] = ang;
+}
+
+inline u32 rStartPos::Info::getOfsAngNum() {
+    return 7;
+}

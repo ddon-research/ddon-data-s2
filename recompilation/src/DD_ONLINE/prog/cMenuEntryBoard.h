@@ -1067,53 +1067,121 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cMenuContentsExecutor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuContentsExecutor::cMenuContentsExecutor() {
+}
+
+inline void* cMenuCreateEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuCreateEntryBoardItem::cMenuCreateEntryBoardItem() {
 }
 
+inline void* cMenuEditCommentEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuEditCommentEntryBoardItem::cMenuEditCommentEntryBoardItem() {
 }
 
+inline void* cMenuEntryBoardInvite::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuEntryBoardInvite::cMenuEntryBoardInvite() {
+}
+
+inline void* cMenuEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuEntryBoardItem::cMenuEntryBoardItem() {
     this->mpBoardInfo = nullptr;
 }
 
+inline void* cMenuEntryBoardItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuEntryBoardItemList::cMenuEntryBoardItemList() {
+}
+
+inline void* cMenuEntryBoardMember::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuEntryBoardMember::cMenuEntryBoardMember() {
 }
 
+inline void* cMenuEntryBoardRecruit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuEntryBoardRecruit::cMenuEntryBoardRecruit() {
+}
+
+inline void* cMenuExtendEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuExtendEntryBoardItem::cMenuExtendEntryBoardItem() {
 }
 
+inline void* cMenuGetEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuGetEntryBoardItem::cMenuGetEntryBoardItem() {
+}
+
+inline void* cMenuInviteEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuInviteEntryBoardItem::cMenuInviteEntryBoardItem() {
 }
 
+inline void* cMenuJoinEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuJoinEntryBoardItem::cMenuJoinEntryBoardItem() {
+}
+
+inline void* cMenuLeaveEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuLeaveEntryBoardItem::cMenuLeaveEntryBoardItem() {
 }
 
+inline void* cMenuReadyEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuReadyEntryBoardItem::cMenuReadyEntryBoardItem() {
+}
+
+inline void* cMenuRecreateEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuRecreateEntryBoardItem::cMenuRecreateEntryBoardItem() {
 }
 
+inline void* cMenuReleasePassEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuReleasePassEntryBoardItem::cMenuReleasePassEntryBoardItem() {
+}
+
+inline void* cMenuStartEntryBoardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuStartEntryBoardItem::cMenuStartEntryBoardItem() {

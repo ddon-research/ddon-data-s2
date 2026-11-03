@@ -3,10 +3,14 @@
 #include <_pthread.h>
 #include <stdlib.h>
 #include "MtNetCore.h"
+#include "MtNetAchievement.h"
 #include "MtNetDevice.h"
 #include "MtNetMediator.h"
 #include "MtNetObject.h"
+#include "MtNetPS4PsnContext.h"
+#include "MtNetPS4PsnSocket.h"
 #include "MtNetRanking.h"
+#include "MtNetUtilityPS4.h"
 #include "MtSynchronize.h"
 #include "../generated/shared/np_common.h"
 #ifndef DDON_STUB

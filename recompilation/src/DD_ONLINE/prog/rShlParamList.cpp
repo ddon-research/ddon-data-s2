@@ -6,6 +6,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
@@ -40,9 +42,7 @@ const cShlParamBase* cShlGroupParam::getParam(u32 index) const {
     }
 }
 
-u32 cShlGroupParam::getParamNum() const {
-    return mShlList.mLength;
-}
+static auto ddon_emit_0x01ab0d60 __attribute__((used)) = &cShlGroupParam::getParamNum;
 
 cShlGroupParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
@@ -77,7 +77,7 @@ __attribute__((weak)) void rShlParamList::clear() {
 bool rShlParamList::load(MtStream& in) {
     MtSerializer sz(65536);
     bool b3_11;
-    if (sz.MtSerializer::deserializeBinary(in, static_cast<u16>(31), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) == nullptr) {
+    if (sz.deserializeBinary(in, static_cast<u16>(31), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) == nullptr) {
         b3_11 = false;
     } else {
         unsigned int v0_6 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120);
@@ -119,7 +119,7 @@ bool rShlParamList::load(MtStream& in) {
 
 bool rShlParamList::save(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(31), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rShlParamList::DTI));
+    return sz.serializeBinary(out, static_cast<u16>(31), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rShlParamList::DTI));
 }
 
 MT_CTSTR rShlParamList::getExt() const {

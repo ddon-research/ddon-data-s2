@@ -5,8 +5,13 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPropertyList.h"
 #include "cSystem.h"
-#include "../generated/rCharacterEditCameraParam/mouse.h"
+#include "../generated/shared/mouse.h"
+#include "sApp.h"
+#include "sMain.h"
+#include "sRender.h"
+#include "sUserManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

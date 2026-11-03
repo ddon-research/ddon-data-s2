@@ -5,9 +5,11 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtPropertyList.h"
 #include "cResource.h"
 #include "cUnit.h"
 #include "rConstraint.h"
+#include "sMain.h"
 #include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -167,9 +169,7 @@ void uConstraint::setPri(u32 Pri) {
     sortByPri();
 }
 
-u32 uConstraint::getPri() const {
-    return mPri;
-}
+static auto ddon_emit_0x01b68d90 __attribute__((used)) = &uConstraint::getPri;
 
 bool uConstraint::checkJointNo(uModel* pModel, s32 JntNo) {
     if (static_cast<unsigned int>(JntNo) > 255) {

@@ -139,3 +139,27 @@ MtObject* CDataJobBaseInfo::MyDTI::newInstance() const {
     return new (16u) CDataJobBaseInfo;
 }
 
+const MtDTI& CDataUpdateMatchingProfileInfo::getDTI() const {
+    return CDataUpdateMatchingProfileInfo::DTI;
+}
+
+inline MtAllocator* CDataUpdateMatchingProfileInfo::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataUpdateMatchingProfileInfo::DTI);
+}
+
+void* CDataUpdateMatchingProfileInfo::operator new(size_t sz, u32 align) {
+    return CDataUpdateMatchingProfileInfo::getAllocator()->memAlloc(sz, align, CDataUpdateMatchingProfileInfo::DTI.getID());
+}
+
+__attribute__((weak)) void CDataUpdateMatchingProfileInfo::operator delete(void* p_addr) {
+    CDataUpdateMatchingProfileInfo::getAllocator()->memFree(p_addr);
+}
+
+CDataUpdateMatchingProfileInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataUpdateMatchingProfileInfo::MyDTI CDataUpdateMatchingProfileInfo::DTI("CDataUpdateMatchingProfileInfo", &::CPacketDataBase::DTI, 24ul, 0u, 0u);
+
+MtObject* CDataUpdateMatchingProfileInfo::MyDTI::newInstance() const {
+    return new (16u) CDataUpdateMatchingProfileInfo;
+}
+

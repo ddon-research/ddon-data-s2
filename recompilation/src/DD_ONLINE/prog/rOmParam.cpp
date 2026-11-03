@@ -2,8 +2,10 @@
 #include <new>
 #include "rOmParam.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
@@ -25,6 +27,7 @@
 #include "../../XFramework/rSwingModel.h"
 #include "rTable.h"
 #include "../../XFramework/rZone.h"
+#include "uOmModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -34,8 +37,6 @@ const MtDTI& cOmParam::getDTI() const {
 }
 
 cOmParam::~cOmParam() {
-    DDON_STUB("cOmParam::~cOmParam")
-    /* stub */
 }
 
 __attribute__((weak)) void cOmParam::createProperty(MtPropertyList& s) {

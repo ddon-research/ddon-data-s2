@@ -96,7 +96,27 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cPlayerExpTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cPlayerExpTable::cPlayerExpTable() {
     this->mNeedExp = 0;
     this->mGainJobPoint = 0;
+}
+
+inline void* rPlayerExpTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cPlayerExpTable::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPlayerExpTable::DTI)->memFree(p_addr);
+}
+
+inline void* cPlayerExpTable::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPlayerExpTable::DTI)->memAlloc(sz, align, ::cPlayerExpTable::DTI.::MtDTI::getID());
 }

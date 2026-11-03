@@ -121,6 +121,10 @@ public:
     static const u32 INVALID_OWNER_ID = 4294967295;
 };
 
+inline void* cHitNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rCollNode* cHitNode::getCollNodeRes() const {
     return this->mpCollNodeRes;
 }
@@ -139,8 +143,4 @@ inline const cAttackParam* cHitNode::getAttackParam() const {
 
 inline u32 cHitNode::getUID() const {
     return this->mUID;
-}
-
-inline void cHitNode::kill() {
-    this->mKillReq = true;
 }

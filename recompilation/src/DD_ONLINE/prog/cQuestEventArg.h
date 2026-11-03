@@ -91,3 +91,11 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cQuestEventArg::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestEventArgEntryParty::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

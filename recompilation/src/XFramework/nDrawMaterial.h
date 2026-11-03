@@ -30,7 +30,9 @@ class cDraw;
 namespace nDraw { class BlendState; }
 namespace nDraw { class ConstantTable; }
 namespace nDraw { class DepthStencilState; }
+namespace nDraw { class MaterialStdDM; }
 namespace nDraw { class MaterialStdEst; }
+namespace nDraw { class MaterialStdPN; }
 namespace nDraw { class RasterizerState; }
 namespace nDraw { struct SHADER_STATE; }
 namespace nDraw { class Texture; }
@@ -384,7 +386,9 @@ namespace nDraw {
     class Material : public nDraw::Resource
     {
         friend class ::cDDMaterialCtrl;
+        friend class nDraw::MaterialStdDM;
         friend class nDraw::MaterialStdEst;
+        friend class nDraw::MaterialStdPN;
     public:
         enum SLOT_TYPE
         {
@@ -600,6 +604,34 @@ namespace nDraw {
         static MyDTI DTI;
     };
 }  // namespace nDraw
+
+inline void* nDraw::Animation::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nDraw::CBuffer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nDraw::CBufferSystem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nDraw::Material::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 nDraw::Material::getID() {
+    return this->mID;
+}
+
+inline void nDraw::Material::setID(u32 id) {
+    this->mID = static_cast<unsigned short>(id);
+}
+
+inline void nDraw::Material::setStencilRef(u8 ref) {
+    this->mStencilRef = ref;
+}
 
 inline nDraw::Animation* nDraw::Material::getAnimationData() const {
     return this->mpAnimation;

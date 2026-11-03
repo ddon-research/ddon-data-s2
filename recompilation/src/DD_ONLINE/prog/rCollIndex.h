@@ -97,9 +97,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCollIndex::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCollIndex::cCollIndex() {
     this->mNode = -1;
     this->mAttack = -1;
     this->mLinkID = 0;
     this->mLinkTop = false;
+}
+
+inline void* rCollIndex::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCollIndex::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCollIndex::DTI)->memFree(p_addr);
+}
+
+inline void* cCollIndex::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCollIndex::DTI)->memAlloc(sz, align, ::cCollIndex::DTI.::MtDTI::getID());
 }

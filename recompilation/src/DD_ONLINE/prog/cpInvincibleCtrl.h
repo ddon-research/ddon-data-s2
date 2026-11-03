@@ -221,6 +221,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpInvincibleCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cpInvincibleCtrl::getInvTypeFlagPrivate() const {
     return this->mInvTypeFlag;
 }
@@ -273,4 +277,8 @@ inline cpInvincibleCtrl::cInvInfo::cInvInfo() {
     this->mAttrCheatCheack = 0xFFFFFFFF;
     this->mPriority = 0;
     this->mPriorityCheatCheack = 0xFFFFFFFF;
+}
+
+inline void* cpInvincibleCtrl::cInvInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -5,7 +5,13 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cContextInterface.h"
+#include "cHitInfoAfter.h"
 #include "cOcdBase.h"
+#include "../../XFramework/cUnit.h"
+#include "cpOcdCtrl.h"
+#include "nOcdMsg.h"
+#include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

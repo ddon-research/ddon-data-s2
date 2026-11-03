@@ -106,6 +106,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpActionSelect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 cpActionSelect::getId() {
     return this->mId;
 }

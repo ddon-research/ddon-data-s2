@@ -386,6 +386,10 @@ protected:
     static const u8 DATA_VERSION = 5;
 };
 
+inline void* rStageCustomPartsEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rStageCustomPartsEx::rStageCustomPartsEx() {
     this->mChangeFrame = 60.0f;
     this->mpArrayColorFog = nullptr;
@@ -398,10 +402,34 @@ inline rStageCustomPartsEx::rStageCustomPartsEx() {
     this->mArrayPatternNum = 0;
 }
 
+inline f32 rStageCustomPartsEx::getChangeFrame() const {
+    return this->mChangeFrame;
+}
+
+inline void* rStageCustomPartsEx::Pattern::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rStageCustomPartsEx::Pattern::Pattern() {
     this->mColorFogNo = -1;
     this->mHemiSphLightNo = -1;
     this->mInfiLightNo = -1;
+}
+
+inline void* rStageCustomPartsEx::ColorFog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageCustomPartsEx::HemiSphLight::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageCustomPartsEx::InfiLight::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageCustomPartsEx::AreaParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rStageCustomPartsEx::AreaParam::AreaParam() {
@@ -411,9 +439,17 @@ inline rStageCustomPartsEx::AreaParam::AreaParam() {
     this->mAreaHitShapeList.::MtArray::mAutoDelete = true;
 }
 
+inline void* rStageCustomPartsEx::InfoEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rStageCustomPartsEx::InfoEx::InfoEx() {
     this->mAddVersion = 256;
     this->mAreaParamList.::MtArray::mAutoDelete = true;
+}
+
+inline void* rStageCustomPartsEx::FilterEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rStageCustomPartsEx::FilterEx::FilterEx() {

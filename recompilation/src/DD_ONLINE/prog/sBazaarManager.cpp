@@ -9,10 +9,21 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "../../MT/MtTime.h"
+#include "Protocol/UserSession/S2C.h"
+#include "cGUIUtility.h"
+#include "cItemParam.h"
 #include "cNetGameServer.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/rGUIMessage.h"
 #include "rItemList.h"
+#include "sChat.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sItemManager.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #ifndef DDON_STUB
@@ -420,6 +431,65 @@ void sBazaarManager::reqBazaarCharList() {
     }
 }
 
+inline void sBazaarManager::moveBazaarCharList() {
+    switch (mBazaarCharListTaskRno - 1u) {
+        case 0:
+        {
+            if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->getBazaarExhibitPossibleNum()) {
+                mBazaarCharListTaskRno = 2;
+            } else {
+                mBazaarCharListTaskRno = 5;
+            }
+            break;
+        }
+        case 1:
+        {
+            if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[440] != sNetworkExt::NET_STAT_REQ) {
+                if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[440] == sNetworkExt::NET_STAT_ERROR) {
+                    mBazaarCharListTaskRno = 5;
+                } else {
+                    mBazaarCharListTaskRno = 3;
+                }
+            }
+            break;
+        }
+        case 2:
+        {
+            if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->getBazaarCharacterInfo()) {
+                mBazaarCharListTaskRno = 4;
+            } else {
+                mBazaarCharListTaskRno = 5;
+            }
+            break;
+        }
+        case 3:
+        {
+            if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[430] != sNetworkExt::NET_STAT_REQ) {
+                if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[430] == sNetworkExt::NET_STAT_ERROR) {
+                    mBazaarCharListTaskRno = 5;
+                } else {
+                    mBazaarCharListTaskRno = 6;
+                }
+            }
+            break;
+        }
+        case 4:
+        {
+            mBazaarCharListTaskRno = 0;
+            break;
+        }
+        case 5:
+        {
+            mBazaarCharListTaskRno = 0;
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
 __attribute__((weak)) void sBazaarManager::setBazaarCharListToServer(void* packet) {
     DDON_STUB("sBazaarManager::setBazaarCharListToServer")
     /* stub */
@@ -631,6 +701,20 @@ __attribute__((weak)) bool sBazaarManager::reqGetAnExhibitItemProceeds() {
     return {};
 }
 
+inline void sBazaarManager::moveGetAnExhibitItemProceeds() {
+    if (mGetAnExhibitItemProceedsReqResult != 1) {
+        return;
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[437] == sNetworkExt::NET_STAT_REQ) {
+        return;
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[437] == sNetworkExt::NET_STAT_ERROR) {
+        mGetAnExhibitItemProceedsReqResult = 3;
+    } else {
+        mGetAnExhibitItemProceedsReqResult = 2;
+    }
+}
+
 __attribute__((weak)) void sBazaarManager::setBazaarGetAnExhibitItemProceedsToServer(void* packet) {
     DDON_STUB("sBazaarManager::setBazaarGetAnExhibitItemProceedsToServer")
     /* stub */
@@ -781,8 +865,6 @@ inline void* sBazaarManager::cBazaarCharListData::operator new(size_t sz, u32 al
 }
 
 sBazaarManager::cBazaarCharListData::~cBazaarCharListData() {
-    DDON_STUB("sBazaarManager::cBazaarCharListData::~cBazaarCharListData")
-    /* stub */
 }
 
 __attribute__((weak)) void sBazaarManager::cBazaarCharListData::createProperty(MtPropertyList& s) {
@@ -910,9 +992,7 @@ void sBazaarManager::cBazaarItemListCtrl::setSelectNo(s32 index) {
     mSelectNo = index;
 }
 
-u32 sBazaarManager::cBazaarItemListCtrl::getListNum() {
-    return mItemList.mLength;
-}
+static auto ddon_emit_0x01abd1a0 __attribute__((used)) = &sBazaarManager::cBazaarItemListCtrl::getListNum;
 
 __attribute__((weak)) u32 sBazaarManager::cBazaarItemListCtrl::getItemNo() {
     DDON_STUB("sBazaarManager::cBazaarItemListCtrl::getItemNo")
@@ -964,7 +1044,7 @@ inline void sBazaarManager::cBazaarItemInfoCtrl::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemInfoCtrl::DTI)->memFree(p_addr);
 }
 
-sBazaarManager::cBazaarItemInfoCtrl::~cBazaarItemInfoCtrl() {
+__attribute__((noinline)) sBazaarManager::cBazaarItemInfoCtrl::~cBazaarItemInfoCtrl() {
     if (mItemInfo.mLength != 0) {
         u32 v0_0 = mItemInfo.mLength;
         for (unsigned int i0_3 = 0;;) {
@@ -1155,8 +1235,6 @@ inline void* sBazaarManager::cBazaarItemInfoData::operator new(size_t sz, u32 al
 }
 
 sBazaarManager::cBazaarItemInfoData::~cBazaarItemInfoData() {
-    DDON_STUB("sBazaarManager::cBazaarItemInfoData::~cBazaarItemInfoData")
-    /* stub */
 }
 
 __attribute__((weak)) void sBazaarManager::cBazaarItemInfoData::createProperty(MtPropertyList& s) {

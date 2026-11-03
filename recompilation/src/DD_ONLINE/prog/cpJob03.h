@@ -274,8 +274,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpJob03::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cpJob03::getArrowNum() const {
     return this->mArrowNum_Gi;
+}
+
+inline u32 cpJob03::getArrowNumMax() const {
+    return this->mArrowNumMax_Gi;
 }
 
 inline void cpJob03::requestMoveSpline() {
@@ -292,6 +300,10 @@ inline rSoundRequest* cpJob03::getShlCommonSe() {
 
 inline f32 cpJob03::getPawnRange() const {
     return this->mRangePawn;
+}
+
+inline void cpJob03::setPawnRange(f32 range) {
+    this->mRangePawn = range;
 }
 
 inline f32 cpJob03::getRangeSpeed() {
@@ -324,4 +336,8 @@ inline f32 cpJob03::getCS14RendaRemainTime() const {
 
 inline void cpJob03::setCS14BeforeChargeLv(u32 lv) {
     this->mCS14BeforeChargeLv = lv;
+}
+
+inline void* cpJob03::uLineCtrlUnit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

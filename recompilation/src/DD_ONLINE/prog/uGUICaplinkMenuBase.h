@@ -192,8 +192,12 @@ protected:
     static const u32 val_num = 4;
 };
 
-inline u32 uGUICaplinkMenuBase::getSubMenuResult() {
-    return this->mSubResult;
+inline void* uGUICaplinkMenuBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkMenuBase::cCmdVal::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUICaplinkMenuBase::cCmdVal::cCmdVal() {

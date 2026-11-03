@@ -3,8 +3,12 @@
 #include "uCnsWeapon.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../XFramework/cUnit.h"
 #include "../../XFramework/uConstraint.h"
+#include "../../XFramework/uCoord.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

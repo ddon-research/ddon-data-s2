@@ -5,7 +5,9 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cDelegate.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionSelect.h"
 #include "cpComponent.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB

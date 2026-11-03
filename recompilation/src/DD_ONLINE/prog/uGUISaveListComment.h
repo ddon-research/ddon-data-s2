@@ -165,3 +165,7 @@ public:
 private:
     static const u32 SAVE_COMMENT_LENGTH = 22;
 };
+
+inline void* uGUISaveListComment::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

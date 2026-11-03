@@ -459,7 +459,23 @@ protected:
     static const stSaveDataInfo mSaveDataInfo[];
 };
 
+inline void* cStorageData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cStorageDataBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cStorageDataBase::cStorageDataBase() {
+}
+
+inline void* cStorageDataEdit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sSavedataExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline bool sSavedataExt::isCheckTrophySize() {

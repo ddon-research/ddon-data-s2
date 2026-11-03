@@ -8,13 +8,20 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
 #include "cControl.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
+#include "../../XFramework/cUnit.h"
 #include "nCharacterEdit.h"
 #include "nDDOUtility.h"
 #include "nGUIExt.h"
 #include "rCharacterEdit.h"
+#include "rSndPitchLimit.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/sMain.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "uCharacterEdit.h"
@@ -1590,9 +1597,20 @@ void uGUICharaEditPartsWrap::cPartsRadioSlider::evInputPartsOpen() {
     mSavePointerPos = static_cast<u32>(mRefSlider.getSliderPos());
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsRadioSlider::evInputPartsDecide() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsRadioSlider::evInputPartsDecide")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsRadioSlider::evInputPartsDecide() {
+    if (mRefRadioButton.mIsSelectForbit) {
+        return;
+    }
+    if (mpGuiCharacterEdit != nullptr) {
+        mpGuiCharacterEdit->evParts(static_cast<cPartsBase*>(this), nCharacterEdit::PARTS_EVENT_DECIDE, false);
+        uGUICharacterEdit* t0 = mpGuiCharacterEdit;
+        mSavePointerPos = static_cast<u32>(mRefSlider.getSliderPos());
+        if (t0 != nullptr) {
+            t0->reqestUndoRedo(static_cast<nCharacterEdit::EDIT_TYPE>(getEditType(0)));
+        }
+    } else {
+        mSavePointerPos = static_cast<u32>(mRefSlider.getSliderPos());
+    }
 }
 
 void uGUICharaEditPartsWrap::cPartsRadioSlider::evInputPartsClose() {

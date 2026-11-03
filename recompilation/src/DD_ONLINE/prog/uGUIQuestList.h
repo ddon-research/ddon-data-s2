@@ -689,8 +689,24 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIQuestList::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIQuestList::stRecommend::stRecommend() {
 }
 
 inline uGUIQuestList::stCaption::stCaption() {
+}
+
+inline void* uGUIQuestList::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIQuestList::cDetailInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

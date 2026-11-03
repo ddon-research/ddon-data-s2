@@ -221,6 +221,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataGameServerListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataGameServerListInfo::CDataGameServerListInfo() {
     this->m_usId = 0;
     this->m_usPort = 0;
@@ -228,6 +232,10 @@ inline CDataGameServerListInfo::CDataGameServerListInfo() {
     this->m_unLoginNum = 0;
     this->m_unTrafficLevel = 0;
     this->m_unMaxLoginNum = 0;
+}
+
+inline void* CDataGameTime::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataGameTime::CDataGameTime() {
@@ -241,12 +249,24 @@ inline CDataGameTime::CDataGameTime() {
     this->m_ucHour = 0;
 }
 
+inline void* CDataURLInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataURLInfo::CDataURLInfo() {
     this->m_unType = 0;
 }
 
+inline void* CDataWeatherForecast::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataWeatherForecast::CDataWeatherForecast() {
     this->m_unWeather = 0;
+}
+
+inline void* CDataWorldInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataWorldInfo::CDataWorldInfo() {

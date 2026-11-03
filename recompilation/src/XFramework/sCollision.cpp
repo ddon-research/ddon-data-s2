@@ -8,7 +8,9 @@
 #include "../MT/MtCollection.h"
 #include "../MT/MtCollision.h"
 #include "../MT/MtCollisionAllocator.h"
+#include "../MT/MtCollisionGjk.h"
 #include "../MT/MtCollisionMath.h"
+#include "../MT/MtCollisionPrimitive3D.h"
 #include "../MT/MtCollisionUtil.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
@@ -18,12 +20,17 @@
 #include "../MT/MtGeomOBB.h"
 #include "../MT/MtGeomSphere.h"
 #include "../MT/MtGeomTriangle.h"
+#include "../MT/MtGeometry3D.h"
 #include "../MT/MtMath.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
+#include "cBVHCollision.h"
+#include "cColliderParam.h"
 #include "cDynamicBVHCollision.h"
 #include "cResource.h"
 #include "cSystem.h"
@@ -33,6 +40,15 @@
 #include "rCollisionHeightField.h"
 #include "sMain.h"
 #include "uDynamicSbc.h"
+#include "uGeometry2.h"
+#include "uGeometry2Collider.h"
+#include "uGeometry2Group.h"
+#include "uGeometry2GroupCollider.h"
+#include "uGeometry3.h"
+#include "uScrollCollisionGeometry.h"
+#include "uScrollCollisionGeometryGroupModel.h"
+#include "uScrollCollisionGeometryModel.h"
+#include "uScrollCollisionSbc.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -1430,9 +1446,18 @@ __attribute__((weak)) bool sCollision::canSetCastConvexInfo(f32 toi, MtVector3& 
     return {};
 }
 
-__attribute__((weak)) void sCollision::callUsage() {
-    DDON_STUB("sCollision::callUsage")
-    /* stub */
+void sCollision::callUsage() {
+    uGeometry2::usage();
+    uGeometry2Collider::usage();
+    uGeometry2Group::usage();
+    uGeometry2GroupCollider::usage();
+    uGeometry3::usage();
+    uScrollCollisionGeometry::usage();
+    uScrollCollisionGeometryModel::usage();
+    uScrollCollisionGeometryGroupModel::usage();
+    uScrollCollisionSbc::usage();
+    cColliderNodeParam::usage();
+    cColliderGeometryParam::usage();
 }
 
 sCollision::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

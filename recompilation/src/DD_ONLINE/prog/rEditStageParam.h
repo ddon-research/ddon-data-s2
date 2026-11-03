@@ -260,8 +260,60 @@ public:
     static const u8 DATA_VERSION = 12;
 };
 
+inline void* rEditStageParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rEditStageParam::Info::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline MT_CTSTR rEditStageParam::Info::getModelName() const {
+    return &this->mModelSdl[0];
+}
+
+inline MT_CTSTR rEditStageParam::Info::getFilterName() const {
+    return &this->mFilterSdl[0];
+}
+
+inline MT_CTSTR rEditStageParam::Info::getLightName() const {
+    return &this->mLightSdl[0];
+}
+
+inline MT_CTSTR rEditStageParam::Info::getOmListName() const {
+    return &this->mOmListSdl[0];
+}
+
+inline MT_CTSTR rEditStageParam::Info::getWeatherStageInfoName() const {
+    return &this->mWeatherStageInfo[0];
+}
+
+inline MT_CTSTR rEditStageParam::Info::getWeatherParamInfoName() const {
+    return &this->mWeatherParamInfo[0];
+}
+
+inline void* rEditStageParam::Info::WeatherData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rEditStageParam::Info::WeatherData::WeatherData() {
     this->mWeatherID = 1;
     this->mHour = 12;
     this->mMinite = 0;
+}
+
+inline void* rEditStageParam::List::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline s8 rEditStageParam::List::getListNo(u32 idx) {
+    return this->mListTbl[idx];
+}
+
+inline void rEditStageParam::List::setListNo(s8 no, u32 idx) {
+    this->mListTbl[idx] = no;
+}
+
+inline u32 rEditStageParam::List::getListNoNum() {
+    return 8;
 }

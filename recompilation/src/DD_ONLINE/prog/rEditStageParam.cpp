@@ -3,15 +3,20 @@
 #include <stdio.h>
 #include "rEditStageParam.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
 #include "cResPath.h"
 #include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "rArchiveListArray.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -188,49 +193,37 @@ void rEditStageParam::Info::setModelName(const MtString& name) {
     snprintf(&mModelSdl[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rEditStageParam::Info::getModelName() const {
-    return &mModelSdl[0];
-}
+static auto ddon_emit_0x01a852c0 __attribute__((used)) = &rEditStageParam::Info::getModelName;
 
 void rEditStageParam::Info::setFilterName(const MtString& name) {
     snprintf(&mFilterSdl[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rEditStageParam::Info::getFilterName() const {
-    return &mFilterSdl[0];
-}
+static auto ddon_emit_0x01a852d0 __attribute__((used)) = &rEditStageParam::Info::getFilterName;
 
 void rEditStageParam::Info::setLightName(const MtString& name) {
     snprintf(&mLightSdl[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rEditStageParam::Info::getLightName() const {
-    return &mLightSdl[0];
-}
+static auto ddon_emit_0x01a852e0 __attribute__((used)) = &rEditStageParam::Info::getLightName;
 
 void rEditStageParam::Info::setOmListName(const MtString& name) {
     snprintf(&mOmListSdl[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rEditStageParam::Info::getOmListName() const {
-    return &mOmListSdl[0];
-}
+static auto ddon_emit_0x01a852f0 __attribute__((used)) = &rEditStageParam::Info::getOmListName;
 
 void rEditStageParam::Info::setWeatherStageInfoName(const MtString& name) {
     snprintf(&mWeatherStageInfo[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rEditStageParam::Info::getWeatherStageInfoName() const {
-    return &mWeatherStageInfo[0];
-}
+static auto ddon_emit_0x01a85300 __attribute__((used)) = &rEditStageParam::Info::getWeatherStageInfoName;
 
 void rEditStageParam::Info::setWeatherParamInfoName(const MtString& name) {
     snprintf(&mWeatherParamInfo[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rEditStageParam::Info::getWeatherParamInfoName() const {
-    return &mWeatherParamInfo[0];
-}
+static auto ddon_emit_0x01a85310 __attribute__((used)) = &rEditStageParam::Info::getWeatherParamInfoName;
 
 u64 rEditStageParam::Info::getSkyWepResId() const {
     return mpSkyWep.getResId();
@@ -311,17 +304,11 @@ __attribute__((weak)) void rEditStageParam::List::createProperty(MtPropertyList&
     /* stub */
 }
 
-s8 rEditStageParam::List::getListNo(u32 idx) {
-    return mListTbl[idx];
-}
+static auto ddon_emit_0x01a85330 __attribute__((used)) = &rEditStageParam::List::getListNo;
 
-void rEditStageParam::List::setListNo(s8 no, u32 idx) {
-    mListTbl[idx] = no;
-}
+static auto ddon_emit_0x01a85340 __attribute__((used)) = &rEditStageParam::List::setListNo;
 
-u32 rEditStageParam::List::getListNoNum() {
-    return 8;
-}
+static auto ddon_emit_0x01a85350 __attribute__((used)) = &rEditStageParam::List::getListNoNum;
 
 __attribute__((weak)) void rEditStageParam::List::setListNoNum(u32) {
 }

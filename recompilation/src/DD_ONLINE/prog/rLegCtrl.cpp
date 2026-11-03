@@ -3,6 +3,7 @@
 #include "rLegCtrl.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
@@ -44,8 +45,6 @@ inline void rLegCtrl::operator delete(void* p_addr) {
 }
 
 rLegCtrl::~rLegCtrl() {
-    DDON_STUB("rLegCtrl::~rLegCtrl")
-    /* stub */
 }
 
 bool rLegCtrl::loadData(MtDataReader& r, cLegCtrl* pData) {
@@ -62,8 +61,61 @@ u32 rLegCtrl::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rLegCtrl::loadCore(MtDataReader& r) {
-    DDON_STUB("rLegCtrl::loadCore")
-    return {};
+        nDDOIO::readData(r, this->mDisablePS3);
+        nDDOIO::readData(r, this->mDiffMax);
+        nDDOIO::readData(r, this->mDiffMin);
+        nDDOIO::readData(r, this->mCOGMin);
+        nDDOIO::readData(r, this->mDiffSpeed);
+        nDDOIO::readData(r, this->mPitchSpeed);
+        nDDOIO::readData(r, this->mFootDiffSpeed);
+        nDDOIO::readData(r, this->mResetDiffSpeed);
+        nDDOIO::readData(r, this->mResetFootDiffSpeed);
+        nDDOIO::readData(r, this->mHandBlend);
+        nDDOIO::readData(r, this->mHandHeight);
+        nDDOIO::readData(r, this->mHandToe);
+        nDDOIO::readData(r, this->mHandHeel);
+        nDDOIO::readData(r, this->mFootBlend);
+        nDDOIO::readData(r, this->mFootHeight);
+        nDDOIO::readData(r, this->mFootToe);
+        nDDOIO::readData(r, this->mFootHeel);
+        nDDOIO::readData(r, this->mCheckHeight);
+        nDDOIO::readData(r, this->mCheckHeightHand);
+        nDDOIO::readData(r, this->mLegType);
+        nDDOIO::readData(r, this->mFlag);
+        u32 dat_num;
+        this->::rTbl2Base::readDataValue(r, dat_num);
+        u32 t1 = dat_num;
+        cLegCtrl* t2 = this->mpData;
+        if (t2 != nullptr) {
+            MtMemoryAllocator::getAllocator(cLegCtrl::DTI)->memFree(reinterpret_cast<u8*>(t2) - 8);
+            this->mpData = nullptr;
+        }
+        this->mDataNum = 0u;
+        if (t1 != 0u) {
+            u64 t3 = t1;
+            u64 t9 = t3 * sizeof(cLegCtrl) + 8u;
+            u8* t4 = static_cast<u8*>(MtMemoryAllocator::getAllocator(cLegCtrl::DTI)->memAlloc(t9, 16u, cLegCtrl::DTI.getID()));
+            *reinterpret_cast<u64*>(t4) = t3;
+            cLegCtrl* t5 = reinterpret_cast<cLegCtrl*>(t4 + 8);
+            cLegCtrl* t6 = t5;
+            do {
+                new (t6) cLegCtrl;
+                ++t6;
+            } while (t6 != t5 + t3);
+            this->mpData = t5;
+            this->mDataNum = t1;
+        }
+        if (dat_num != 0u) {
+            u32 i = 0u;
+            cLegCtrl* p_dat = this->mpData;
+            do {
+                if (!this->loadData(r, &p_dat[i])) {
+                    return false;
+                }
+                i += 1u;
+            } while (i < dat_num);
+        }
+        return true;
 }
 
 rLegCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -155,6 +155,18 @@ public:
     static const u32 INVALID_ID = 4294967295;
 };
 
+inline void* rTblMenuComm::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rTblMenuComm::cDataList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rTblMenuComm::cData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rTblMenuComm::cData::cData() {
     this->mId = 0;
     this->mId2 = 0xFFFFFFFF;

@@ -234,8 +234,24 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUICaplinkTrophyList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUICaplinkTrophyList::setOwner(uGUICaplinkTopMenu* pOwner) {
+    this->mpOwner = pOwner;
+}
+
 inline uGUICaplinkTrophyList::stVariable::stVariable() {
 }
 
+inline void* uGUICaplinkTrophyList::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUICaplinkTrophyList::stDetail::stDetail() {
+}
+
+inline void* uGUICaplinkTrophyList::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -47,8 +47,6 @@ inline void rCharacterEditTexturePalette::operator delete(void* p_addr) {
 }
 
 rCharacterEditTexturePalette::~rCharacterEditTexturePalette() {
-    DDON_STUB("rCharacterEditTexturePalette::~rCharacterEditTexturePalette")
-    /* stub */
 }
 
 bool rCharacterEditTexturePalette::loadData(MtDataReader& r, cCharacterEditTexturePalette* pData) {

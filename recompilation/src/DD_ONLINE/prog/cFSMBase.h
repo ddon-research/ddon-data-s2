@@ -219,8 +219,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cFSMBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline MtObject* cFSMBase::getOwner() const {
     return this->::cFSMCore::mpOwner;
+}
+
+inline void* cFSMBase::cParamCallMessage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cFSMBase::cParamCallMessage::cParamCallMessage() {
@@ -231,4 +239,8 @@ inline cFSMBase::cParamCallMessage::cParamCallMessage() {
     this->mMsgWaitTime = 0.0f;
     this->mIsUseSerial = false;
     this->mIsHideMessage = false;
+}
+
+inline void* cFSMBase::cParamCallMessageFortDef_Common::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

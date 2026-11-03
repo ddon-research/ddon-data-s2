@@ -5,9 +5,13 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cDelegate.h"
+#include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
 #include "cpActionRequest.h"
 #include "cpPivotCtrl.h"
+#include "cpStateManager.h"
+#include "uControl.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB

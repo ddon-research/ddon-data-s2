@@ -4,15 +4,47 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cDelegate.h"
+#include "cEvaluation.h"
+#include "cHitNode.h"
 #include "cHumanActId.h"
+#include "cNetGameServer.h"
+#include "cStaminaCtrl.h"
+#include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpComponent.h"
+#include "cpInput.h"
 #include "cpJobBase.h"
+#include "cpKeyCommand.h"
+#include "cpShlShotCtrl.h"
 #include "cpStateManager.h"
 #include "nDDOUtility.h"
 #include "nHumanMsg.h"
+#include "rCollNode.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "sContextManager.h"
+#include "sEnemyManager.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sSetManager.h"
+#include "sShlManager.h"
+#include "sUnitManager.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uCharacter.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
+#include "../../XFramework/uModel.h"
+#include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -39,8 +71,6 @@ cpJob04::cpJob04() {
 }
 
 cpJob04::~cpJob04() {
-    DDON_STUB("cpJob04::~cpJob04")
-    /* stub */
 }
 
 void cpJob04::setup() {

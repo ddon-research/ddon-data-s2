@@ -4,16 +4,35 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cGUIFloorManager.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
 #include "nMarker.h"
 #include "nQuest.h"
+#include "rArchiveListArray.h"
+#include "rDungeonMarker.h"
+#include "rFieldAreaAdjoinList.h"
 #include "rFieldAreaList.h"
+#include "rFieldAreaMarkerInfo.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "rQuestMarkerInfo.h"
+#include "rStageAdjoinList.h"
+#include "rStageConnect.h"
 #include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
+#include "../../XFramework/uCoord.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -147,7 +166,7 @@ MT_CTSTR sMarker::getFieldAreaName(u32 fieldAreaId) const {
         const rFieldAreaList::cFieldAreaInfo* pInfo = mpFieldAreaList->getFieldAreaInfo(fieldAreaId);
         if (pInfo != nullptr) {
             rGUIMessage* t0 = mpFieldAreaName;
-            return t0->getMessage(pInfo->rFieldAreaList::cFieldAreaInfo::getGMDIndex());
+            return t0->getMessage(pInfo->getGMDIndex());
         } else {
             return "";
         }
@@ -191,9 +210,193 @@ void sMarker::initGame() {
     mpFieldAreaName = static_cast<rGUIMessage*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_FIELD_AREA_NAME", 1u, false));
 }
 
-__attribute__((weak)) void sMarker::finalGame() {
-    DDON_STUB("sMarker::finalGame")
-    /* stub */
+void sMarker::finalGame() {
+    if (mDungeonAdjoinMarkerInfoList.mLength != 0) {
+        u32 v0_0 = mDungeonAdjoinMarkerInfoList.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mDungeonAdjoinMarkerInfoList.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mDungeonAdjoinMarkerInfoList.mpArray[i0_3];
+                v1_0 = mDungeonAdjoinMarkerInfoList.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mDungeonAdjoinMarkerInfoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDungeonAdjoinMarkerInfoList.mpArray));
+    }
+    mDungeonAdjoinMarkerInfoList.mpArray = nullptr;
+    mDungeonAdjoinMarkerInfoList.mBufsiz = 0;
+    mDungeonAdjoinMarkerInfoList.mLength = 0;
+    if (mStageAdjoinMarkerInfoList.mLength != 0) {
+        u32 v4_0 = mStageAdjoinMarkerInfoList.mLength;
+        unsigned int i4_3 = 0;
+        u32 v5_0;
+        for (;;) {
+            if (mStageAdjoinMarkerInfoList.mpArray[i4_3] == nullptr) {
+                v5_0 = v4_0;
+            } else {
+                delete mStageAdjoinMarkerInfoList.mpArray[i4_3];
+                v5_0 = mStageAdjoinMarkerInfoList.mLength;
+            }
+            if ((i4_3 + 1u) < v5_0) {
+                v4_0 = v5_0;
+                i4_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mStageAdjoinMarkerInfoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mStageAdjoinMarkerInfoList.mpArray));
+    }
+    mStageAdjoinMarkerInfoList.mpArray = nullptr;
+    mStageAdjoinMarkerInfoList.mBufsiz = 0;
+    mStageAdjoinMarkerInfoList.mLength = 0;
+    if (mFieldAreaAdjoinMarkerInfoList.mLength != 0) {
+        u32 v8_0 = mFieldAreaAdjoinMarkerInfoList.mLength;
+        unsigned int i8_3 = 0;
+        u32 v9_0;
+        for (;;) {
+            if (mFieldAreaAdjoinMarkerInfoList.mpArray[i8_3] == nullptr) {
+                v9_0 = v8_0;
+            } else {
+                delete mFieldAreaAdjoinMarkerInfoList.mpArray[i8_3];
+                v9_0 = mFieldAreaAdjoinMarkerInfoList.mLength;
+            }
+            if ((i8_3 + 1u) < v9_0) {
+                v8_0 = v9_0;
+                i8_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mFieldAreaAdjoinMarkerInfoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mFieldAreaAdjoinMarkerInfoList.mpArray));
+    }
+    mFieldAreaAdjoinMarkerInfoList.mpArray = nullptr;
+    mFieldAreaAdjoinMarkerInfoList.mBufsiz = 0;
+    mFieldAreaAdjoinMarkerInfoList.mLength = 0;
+    if (mWarpAdjoinMarkerInfoList.mLength != 0) {
+        u32 v12_0 = mWarpAdjoinMarkerInfoList.mLength;
+        unsigned int i12_3 = 0;
+        u32 v13_0;
+        for (;;) {
+            if (mWarpAdjoinMarkerInfoList.mpArray[i12_3] == nullptr) {
+                v13_0 = v12_0;
+            } else {
+                delete mWarpAdjoinMarkerInfoList.mpArray[i12_3];
+                v13_0 = mWarpAdjoinMarkerInfoList.mLength;
+            }
+            if ((i12_3 + 1u) < v13_0) {
+                v12_0 = v13_0;
+                i12_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mWarpAdjoinMarkerInfoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mWarpAdjoinMarkerInfoList.mpArray));
+    }
+    mWarpAdjoinMarkerInfoList.mpArray = nullptr;
+    mWarpAdjoinMarkerInfoList.mBufsiz = 0;
+    mWarpAdjoinMarkerInfoList.mLength = 0;
+    if (mLoadResourceList.mLength != 0) {
+        u32 v16_0 = mLoadResourceList.mLength;
+        unsigned int i16_3 = 0;
+        u32 v17_0;
+        for (;;) {
+            if (mLoadResourceList.mpArray[i16_3] == nullptr) {
+                v17_0 = v16_0;
+            } else {
+                delete mLoadResourceList.mpArray[i16_3];
+                v17_0 = mLoadResourceList.mLength;
+            }
+            if ((i16_3 + 1u) < v17_0) {
+                v16_0 = v17_0;
+                i16_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mLoadResourceList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mLoadResourceList.mpArray));
+    }
+    mLoadResourceList.mpArray = nullptr;
+    mLoadResourceList.mBufsiz = 0;
+    mLoadResourceList.mLength = 0;
+    if (mpStageAdjoinListRes != nullptr) {
+        mpStageAdjoinListRes->release();
+        mpStageAdjoinListRes = nullptr;
+    }
+    if (mpFieldAreaAdjoinListRes != nullptr) {
+        mpFieldAreaAdjoinListRes->release();
+        mpFieldAreaAdjoinListRes = nullptr;
+    }
+    if (mpFieldAreaList != nullptr) {
+        mpFieldAreaList->release();
+        mpFieldAreaList = nullptr;
+    }
+    if (mpFieldAreaName != nullptr) {
+        mpFieldAreaName->release();
+        mpFieldAreaName = nullptr;
+    }
+    mStageNo = -1;
+    mFieldAreaId = -1;
+    if (mpStageMarkerInfo[0] != nullptr) {
+        mpStageMarkerInfo[0]->cResource::release();
+        mpStageMarkerInfo[0] = nullptr;
+    }
+    if (mpStageMarkerInfo[1] != nullptr) {
+        mpStageMarkerInfo[1]->cResource::release();
+        mpStageMarkerInfo[1] = nullptr;
+    }
+    if (mpStageMarkerInfo[2] != nullptr) {
+        mpStageMarkerInfo[2]->cResource::release();
+        mpStageMarkerInfo[2] = nullptr;
+    }
+    if (mpStageMarkerInfo[3] != nullptr) {
+        mpStageMarkerInfo[3]->cResource::release();
+        mpStageMarkerInfo[3] = nullptr;
+    }
+    if (mpFieldAreaMarkerInfo[0] != nullptr) {
+        mpFieldAreaMarkerInfo[0]->cResource::release();
+        mpFieldAreaMarkerInfo[0] = nullptr;
+    }
+    if (mpFieldAreaMarkerInfo[1] != nullptr) {
+        mpFieldAreaMarkerInfo[1]->cResource::release();
+        mpFieldAreaMarkerInfo[1] = nullptr;
+    }
+    if (mpFieldAreaMarkerInfo[2] != nullptr) {
+        mpFieldAreaMarkerInfo[2]->cResource::release();
+        mpFieldAreaMarkerInfo[2] = nullptr;
+    }
+    if (mpFieldAreaMarkerInfo[3] != nullptr) {
+        mpFieldAreaMarkerInfo[3]->cResource::release();
+        mpFieldAreaMarkerInfo[3] = nullptr;
+    }
+    cArcLoaderBase* v32_3 = sArchiveManager::INVALID_TICKET;
+    if (v32_3 != mTicket[0]) {
+        sArchiveManager::getInstance()->returnTicket(mTicket[0]);
+        mTicket[0] = v32_3;
+    }
+    mIsFinishLoad[0] = false;
+    if (v32_3 != mTicket[1]) {
+        sArchiveManager::getInstance()->returnTicket(mTicket[1]);
+        mTicket[1] = v32_3;
+    }
+    mIsFinishLoad[1] = false;
 }
 
 bool sMarker::hasChangedFieldAreaResource() const {

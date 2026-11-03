@@ -40,6 +40,7 @@ class cDayNightColorFogParam;
 class cDayNightLightParam;
 class cEffectCorrectParam;
 class cIndoorSkyFogParam;
+class cOmControl;
 class cUnit;
 class cWeatherCloudModel;
 class cWeatherFogInfo;
@@ -205,6 +206,7 @@ class sWeatherManager : public cSystem
 {
     friend class aStage;
     friend class cDDMaterialCtrl;
+    friend class cOmControl;
 public:
     enum WEATHER_PHASE
     {
@@ -663,6 +665,66 @@ protected:
     static sWeatherManager* mpInstance;
 };
 
+inline void* cCustomWeatherParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cCustomWeatherParam::getCustomWeatherID() const {
+    return this->mCustomWeatherID;
+}
+
+inline u32 cCustomWeatherParam::getCustomTime() const {
+    return this->mCustomWeatherTime;
+}
+
+inline f32 cCustomWeatherParam::getCustomShadowViewDistance() const {
+    return this->mCustomShadowViewDistance;
+}
+
+inline f32 cCustomWeatherParam::getCustomShadowDepthBias() const {
+    return this->mCustomShadowDepthBias;
+}
+
+inline f32 cCustomWeatherParam::getCustomShadowSlopeScaledDepthBias() const {
+    return this->mCustomShadowSlopeScaledDepthBias;
+}
+
+inline f32 cCustomWeatherParam::getCustomShadowDistanceScaledDepthBias() const {
+    return this->mCustomShadowDistanceScaledDepthBias;
+}
+
+inline f32 cCustomWeatherParam::getCustomShadowGroup0() const {
+    return this->mCustomShadowAtten.x;
+}
+
+inline f32 cCustomWeatherParam::getCustomShadowGroup1() const {
+    return this->mCustomShadowAtten.y;
+}
+
+inline f32 cCustomWeatherParam::getCustomGrassFadeBeginDistance() const {
+    return this->mCustomGrassFadeBeginDistance;
+}
+
+inline f32 cCustomWeatherParam::getCustomGrassFadeEndDistance() const {
+    return this->mCustomGrassFadeEndDistance;
+}
+
+inline f32 cCustomWeatherParam::getCustomFogStart() const {
+    return this->mCustomFogStart;
+}
+
+inline f32 cCustomWeatherParam::getCustomFogEnd() const {
+    return this->mCustomFogEnd;
+}
+
+inline f32 cCustomWeatherParam::getCustomFogExponentDensity() const {
+    return this->mCustomFogExponentDensity;
+}
+
+inline void* sWeatherManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sWeatherManager* sWeatherManager::getInstance() {
     return ::sWeatherManager::mpInstance;
 }
@@ -726,4 +788,35 @@ inline void sWeatherManager::setLightFogZoneChgFrame(f32 frame) {
 
 inline f32 sWeatherManager::getCloudHeightOffset() const {
     return this->mCloudHeightOffset;
+}
+
+inline void sWeatherManager::initZoneIndoorParam() {
+    this->mZoneIndoorInfiniteLightRate.now = 1.0f;
+    this->mZoneIndoorInfiniteLightRate.to = 1.0f;
+    this->mZoneIndoorInfiniteLightRate.toOld = 1.0f;
+    this->mZoneIndoorInfiniteLightRate.rate = 0.0f;
+    this->mZoneIndoorHemiLightRate.now = 1.0f;
+    this->mZoneIndoorHemiLightRate.to = 1.0f;
+    this->mZoneIndoorHemiLightRate.toOld = 1.0f;
+    this->mZoneIndoorHemiLightRate.rate = 0.0f;
+    this->mZoneIndoorHemiLightRevRate.now = 1.0f;
+    this->mZoneIndoorHemiLightRevRate.to = 1.0f;
+    this->mZoneIndoorHemiLightRevRate.toOld = 1.0f;
+    this->mZoneIndoorHemiLightRevRate.rate = 0.0f;
+    this->mZoneIndoorSubLightRate.now = 1.0f;
+    this->mZoneIndoorSubLightRate.to = 1.0f;
+    this->mZoneIndoorSubLightRate.toOld = 1.0f;
+    this->mZoneIndoorEfcBlend = 0.0f;
+    this->mZoneIndoorSubLightRate.rate = 0.0f;
+    this->mZoneIndoorEfcWeatherOff = false;
+    this->mZoneIndoorLightIn = false;
+    this->mZoneIndoorEfcEpvOff = false;
+    this->mZoneIndoorWindCtrlOff = false;
+    this->mZoneIndoorPosIsCameraToPl = 200.0f;
+    this->mZoneIndoorBlendFrame = 30.0f;
+    this->mZoneIndoorSoundReqNo = 0;
+    this->mZoneIndoorSoundReqNoOld = 0;
+    this->mZoneIsUseSkyColorFog = false;
+    this->mZoneIsUseSkyColorFogOld = false;
+    this->mZoneSkyColorFogUseFrame = 30.0f;
 }

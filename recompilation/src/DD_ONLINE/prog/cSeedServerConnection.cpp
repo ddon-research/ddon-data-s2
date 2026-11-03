@@ -3,11 +3,16 @@
 #include "cSeedServerConnection.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtNetCore.h"
 #include "../../MT/MtNetDevice.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtStream.h"
+#include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "../../MT/MtThread.h"
+#include "cPacket.h"
 #include "../../XFramework/sMain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

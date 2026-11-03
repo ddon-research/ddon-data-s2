@@ -307,3 +307,115 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* uEffect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uEffect::setUGInvalidMode(bool Mode) {
+    this->::uBaseEffect::mStatus = !Mode ? (this->::uBaseEffect::mStatus & 0xFFFDFFFFu) : (this->::uBaseEffect::mStatus | 0x20000u);
+}
+
+inline void uEffect::setSeStopMode(bool Mode) {
+    this->::uBaseEffect::mStatus = !Mode ? (this->::uBaseEffect::mStatus & 0xFFBFFFFFu) : (this->::uBaseEffect::mStatus | 0x400000u);
+}
+
+inline void uEffect::setParentSymmetryMode(bool Mode) {
+    this->::uBaseEffect::mStatus = !Mode ? (this->::uBaseEffect::mStatus & 0xFF7FFFFFu) : (this->::uBaseEffect::mStatus | 0x800000u);
+}
+
+inline void uEffect::setJointFixMode(bool Mode) {
+    this->::uBaseEffect::mStatus = !Mode ? (this->::uBaseEffect::mStatus & 0xFFFFBFFFu) : (this->::uBaseEffect::mStatus | 16384u);
+}
+
+inline void uEffect::setChainResetFlag(bool Flag) {
+    this->::uBaseEffect::mStatus = !Flag ? (this->::uBaseEffect::mStatus & 0xFFFEFFFFu) : (this->::uBaseEffect::mStatus | 0x10000u);
+}
+
+inline void uEffect::setJointUpdateFlag(bool Flag) {
+    this->::uBaseEffect::mStatus = !Flag ? (this->::uBaseEffect::mStatus & 0xFFFF7FFFu) : (this->::uBaseEffect::mStatus | 32768u);
+}
+
+inline f32 uEffect::getParticleScale() const {
+    return this->mParticleScale;
+}
+
+inline void uEffect::setParticleScale(f32 ParticleScale) {
+    this->mParticleScale = ParticleScale;
+}
+
+inline u32 uEffect::getLifeFrame() const {
+    return this->mLifeFrame;
+}
+
+inline u32 uEffect::getWaitFrame() const {
+    return this->mWaitFrame;
+}
+
+inline void uEffect::setWaitFrame(u32 WaitFrame) {
+    this->mWaitFrame = WaitFrame;
+}
+
+inline u32 uEffect::getChildLoopFrame() const {
+    return this->mChildLoopFrame;
+}
+
+inline void uEffect::setChildLoopFrame(u32 ChildLoopFrame) {
+    this->mChildLoopFrame = ChildLoopFrame;
+}
+
+inline u32 uEffect::getChildLifeFrame() const {
+    return this->mChildLifeFrame;
+}
+
+inline void uEffect::setChildLifeFrame(u32 ChildLifeFrame) {
+    this->mChildLifeFrame = ChildLifeFrame;
+}
+
+inline u32 uEffect::getChildWaitFrame() const {
+    return this->mChildWaitFrame;
+}
+
+inline void uEffect::setChildWaitFrame(u32 ChildWaitFrame) {
+    this->mChildWaitFrame = ChildWaitFrame;
+}
+
+inline u32 uEffect::getLightPriority() const {
+    return this->mLightPriority;
+}
+
+inline void uEffect::setLightPriority(u32 LightPriority) {
+    this->mLightPriority = LightPriority;
+}
+
+inline f32 uEffect::getWaitFrameCoef() const {
+    return this->mWaitFrameCoef;
+}
+
+inline void uEffect::setWaitFrameCoef(f32 WaitFrameCoef) {
+    this->mWaitFrameCoef = WaitFrameCoef;
+}
+
+inline u32 uEffect::getFlagBitNum() const {
+    return 32;
+}
+
+inline u32 uEffect::getGeneratorBuffSize() const {
+    return this->mGeneratorBuffSize;
+}
+
+inline u32 uEffect::getGeneratorNum() const {
+    return this->mGeneratorNum;
+}
+
+inline u32 uEffect::getGeneratorMoveNum() const {
+    return this->mGeneratorMoveNum;
+}
+
+inline u32 uEffect::getJointNum() const {
+    return this->mJointNum;
+}
+
+inline u32 uEffect::getJointMoveNum() const {
+    return this->mJointMoveNum;
+}

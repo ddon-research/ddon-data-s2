@@ -2,7 +2,9 @@
 #include <new>
 #include "uGUIBrowserBG.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtPrimitive2D.h"
 #include "cControl.h"
@@ -10,13 +12,17 @@
 #include "../../XFramework/cGUIObject.h"
 #include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
 #include "nGUIExt.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
 #include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/rTexture.h"
 #include "sBrowser.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "../../XFramework/sSavedata.h"
+#include "sSavedataExt.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
@@ -139,8 +145,15 @@ void uGUIBrowserBG::setBGDispOffMode(bool IsOn) {
 }
 
 uGUIBrowserBG::~uGUIBrowserBG() {
-    DDON_STUB("uGUIBrowserBG::~uGUIBrowserBG")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpGMDRes == nullptr) {
+        return;
+    }
+    mpGMDRes->release();
+    mpGMDRes = nullptr;
 }
 
 void uGUIBrowserBG::createProperty(MtPropertyList& s) {

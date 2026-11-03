@@ -128,14 +128,26 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataStampBonus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataStampBonus::CDataStampBonus() {
     this->m_unBonusType = 0;
     this->m_unBonusValue = 0;
 }
 
+inline void* CDataStampBonusDaily::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataStampBonusDaily::CDataStampBonusDaily() {
     this->m_usStampNum = 0;
     this->m_ucRecieveState = 0;
+}
+
+inline void* CDataStampBonusTotal::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataStampBonusTotal::CDataStampBonusTotal() {

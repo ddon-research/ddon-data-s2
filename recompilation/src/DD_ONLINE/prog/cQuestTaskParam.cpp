@@ -7,6 +7,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtTime.h"
+#include "Protocol/PacketData/Quest.h"
 #include "nQuest.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"

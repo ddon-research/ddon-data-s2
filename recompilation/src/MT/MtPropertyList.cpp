@@ -3,6 +3,7 @@
 #include <string.h>
 #include "MtPropertyList.h"
 #include "MtDTI.h"
+#include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "MtProperty.h"
 #ifndef DDON_STUB

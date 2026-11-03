@@ -117,3 +117,11 @@ public:
     MtTypedArray<cInfo> mInfoList;  // offset: 0x78
     static MyDTI DTI;
 };
+
+inline void* rQuestMarkerInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rQuestMarkerInfo::cInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

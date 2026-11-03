@@ -5,10 +5,14 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "nQuest.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -83,8 +87,14 @@ __attribute__((weak)) void rTutorialQuestGroup::createProperty(MtPropertyList& s
 }
 
 __attribute__((weak)) bool rTutorialQuestGroup::save(MtStream& out) {
-    DDON_STUB("rTutorialQuestGroup::save")
-    return {};
+        MtDataWriter w(out, 4096, 4096);
+        (&w)->writeU32(0x475154);
+        (&w)->writeU16(1);
+        (&w)->writeU32(mGroups.mLength);
+        for (u32 t1 = 0; t1 < mGroups.mLength; ++t1) {
+            static_cast<cGroup*>(mGroups.mpArray[(s32)t1])->save(w);
+        }
+        return true;
 }
 
 bool rTutorialQuestGroup::load(MtStream& in) {

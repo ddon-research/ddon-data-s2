@@ -180,3 +180,19 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cOnceRequestEffectType::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cOnceRequestEffectTypeData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cOnceRequestEffectTypeSuperErosionCam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cOnceRequestEffectTypeSuperErosionCamData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

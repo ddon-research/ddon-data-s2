@@ -241,6 +241,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCorePointInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCorePointInfo::cCorePointInfo() {
     this->mRegionNo = -1;
     this->mCorePointID = -1;
@@ -255,12 +259,20 @@ inline cCorePointInfo::cCorePointInfo() {
     this->mParentRegionNo = 11;
 }
 
+inline void* cCorePointReqestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCorePointReqestInfo::cCorePointReqestInfo() {
     this->mRegionNo = -1;
     this->mActiveTime = 0.0f;
     this->mCorePointID = -1;
     this->mIsReceive = false;
     this->mCreatedTime = 0;
+}
+
+inline void* cpCorePointCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void cpCorePointCtrl::corePpointActiveReqOff() {

@@ -3,9 +3,14 @@
 #include "rDeformWeightMap.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDataReader.h"
+#include "../MT/MtDataWriter.h"
 #include "../MT/MtMath.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "cResource.h"
+#include "nDrawTexture.h"
+#include "nDrawVertexBuffer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

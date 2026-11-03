@@ -190,6 +190,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cRage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cRage::cRage() {
     this->mMindStatusFrame = 0.0f;
     this->mNowMindStatus = 0;
@@ -199,4 +203,28 @@ inline cRage::cRage() {
     this->mStatusStartHpPer = 0;
     this->mStatusEndHpPer = 0;
     this->mEnable = true;
+}
+
+inline void* cpEnemyThink::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cThinkMgrName::cThinkMgr* cpEnemyThink::getcThink() {
+    return &this->mcThink;
+}
+
+inline void* rRageTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cRage::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cRage::DTI)->memFree(p_addr);
+}
+
+inline void* cRage::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cRage::DTI)->memAlloc(sz, align, ::cRage::DTI.::MtDTI::getID());
 }

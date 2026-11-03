@@ -152,6 +152,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCycleQuestSubCategoryManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::cCycleContentsTaskInfo() {
     this->mpTask = nullptr;
     this->mNoticeType = static_cast<nQuest::CYCLE_CONTENTS_NOTICE_TYPE>(0);

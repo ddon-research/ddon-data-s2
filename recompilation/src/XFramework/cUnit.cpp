@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "sRender.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -41,9 +42,7 @@ void cUnit::setup() {
     mpHardwareDispCtrl = createHardwareDispCtrl();
 }
 
-s32 cUnit::getMoveLine() const {
-    return static_cast<s32>(mMoveLine);
-}
+static auto ddon_emit_0x01b5bc80 __attribute__((used)) = &cUnit::getMoveLine;
 
 bool cUnit::checkUnitGroup(u32 group) const {
     return ((static_cast<unsigned long>(mUnitGroup) >> static_cast<unsigned long>(group & 63u)) & 1ul) != 0;
@@ -83,46 +82,24 @@ void cUnit::kill() {
     }
 }
 
-void cUnit::setFix(bool fix) {
-    if (fix) {
-        mUnitAttr = mUnitAttr | 8u;
-    } else {
-        mUnitAttr = mUnitAttr & 55u;
-    }
-}
+static auto ddon_emit_0x01b5bc00 __attribute__((used)) = &cUnit::setFix;
 
-void cUnit::setMove(bool move) {
-    if (move) {
-        mUnitAttr = mUnitAttr | 1u;
-    } else {
-        mUnitAttr = mUnitAttr & 62u;
-    }
-}
+static auto ddon_emit_0x01b5bb80 __attribute__((used)) = &cUnit::setMove;
 
 __attribute__((weak)) void cUnit::setDraw(bool draw) {
     DDON_STUB("cUnit::setDraw")
     /* stub */
 }
 
-void cUnit::setDrawMode(u32 draw_mode) {
-    mDrawMode = draw_mode;
-}
+static auto ddon_emit_0x01b5bc30 __attribute__((used)) = &cUnit::setDrawMode;
 
-u32 cUnit::getDrawMode() const {
-    return mDrawMode;
-}
+static auto ddon_emit_0x01b5bc20 __attribute__((used)) = &cUnit::getDrawMode;
 
-void cUnit::setDrawView(u32 draw_scene) {
-    mDrawView = draw_scene;
-}
+static auto ddon_emit_0x01b5bc50 __attribute__((used)) = &cUnit::setDrawView;
 
-u32 cUnit::getDrawView() const {
-    return mDrawView;
-}
+static auto ddon_emit_0x01b5bc40 __attribute__((used)) = &cUnit::getDrawView;
 
-u32 cUnit::getBeFlag() const {
-    return mBeFlag;
-}
+static auto ddon_emit_0x01b5bcb0 __attribute__((used)) = &cUnit::getBeFlag;
 
 bool cUnit::isFix() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 17)) & 32) >> 5);
@@ -174,9 +151,7 @@ __attribute__((weak)) cUnit::cHardwareDispCtrl* cUnit::createHardwareDispCtrl() 
     return nullptr;
 }
 
-cUnit::cHardwareDispCtrl* cUnit::getHardwareDispCtrl() {
-    return mpHardwareDispCtrl;
-}
+static auto ddon_emit_0x01b5bcd0 __attribute__((used)) = &cUnit::getHardwareDispCtrl;
 
 __attribute__((weak)) void cUnit::setHardwareDispCtrl(cUnit::cHardwareDispCtrl* set) {
 }

@@ -136,6 +136,26 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEnemyGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cEnemyGroup::cEmList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEnemyGroup::cEmList::cEmList() {
     this->mEmId = 0;
+}
+
+inline void* rEnemyGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cEnemyGroup::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyGroup::DTI)->memAlloc(sz, align, ::cEnemyGroup::DTI.::MtDTI::getID());
 }

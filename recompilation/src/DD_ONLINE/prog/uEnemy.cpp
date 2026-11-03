@@ -9,64 +9,141 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtRandom.h"
 #include "../../MT/MtString.h"
+#include "aStage.h"
+#include "../../XFramework/cAIPathTrace.h"
+#include "../../XFramework/cArea.h"
+#include "cBlowShrinkDmInfo.h"
+#include "cBlowShrinkInfo.h"
 #include "cCharParamEnemy.h"
 #include "cChildRegionStatus.h"
+#include "cComponentManager.h"
 #include "cContextInstance.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cDelegate.h"
 #include "cEvaluation.h"
 #include "cGuardInfo.h"
 #include "cHitInfoAfter.h"
 #include "cHitNode.h"
+#include "cNetGameServer.h"
+#include "cOcdBase.h"
+#include "cOcdCustomReqInfo.h"
+#include "cOcdDamageInfo.h"
+#include "cOcdInfo.h"
 #include "cParentRegionStatus.h"
 #include "../../XFramework/cResource.h"
+#include "cState.h"
+#include "cThinkMgr.h"
 #include "../../XFramework/cUnit.h"
+#include "cpAIPawnEmChecker.h"
+#include "cpAISensor.h"
 #include "cpActionManager.h"
 #include "cpActionRequest.h"
+#include "cpAltitudeFallCtrl.h"
+#include "cpCatchCtrl.h"
+#include "cpComponent.h"
 #include "cpCorePointCtrl.h"
+#include "cpDDMrlMgr.h"
+#include "cpEffectProvider.h"
 #include "cpEffectStatusManager.h"
+#include "cpEmMontageCtrl.h"
+#include "cpEnemyReact.h"
 #include "cpEnemyThink.h"
 #include "cpErosionEnemy.h"
 #include "cpErosionEnemyBase.h"
+#include "cpErosionEnemySmall.h"
+#include "cpFsmCtrl.h"
 #include "cpHeadCtrl.h"
 #include "cpHpDamageCtrl.h"
 #include "cpHugeble.h"
 #include "cpIKCtrl.h"
 #include "cpInvincibleCtrl.h"
+#include "cpJointEx2.h"
+#include "cpJointOrder.h"
+#include "cpLayout.h"
+#include "cpLegCtrl.h"
 #include "cpLockOn.h"
+#include "cpMotionHistory.h"
+#include "cpMotionSe.h"
+#include "cpNpc.h"
 #include "cpObjCollision.h"
 #include "cpOcdCtrl.h"
+#include "cpPartsCtrl.h"
+#include "cpPathFinding.h"
+#include "cpReaction.h"
+#include "cpRegionStatusCtrl.h"
+#include "cpRotateCtrl.h"
 #include "cpScrCollision.h"
+#include "cpSequenceCtrl.h"
 #include "cpShakeCtrl.h"
+#include "cpShlShotCtrl.h"
 #include "cpSlave.h"
 #include "cpSoftBody.h"
 #include "cpStateManager.h"
 #include "cpStatusChange.h"
+#include "cpStatusCheck.h"
+#include "cpTalk.h"
 #include "cpTinyChain.h"
+#include "cpTransparencyCtrl.h"
+#include "cpVibration.h"
+#include "cpWallMaria.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nEnemy.h"
 #include "../../generated/shared/nEnemyID.h"
 #include "../../generated/shared/nErosionEnemy.h"
 #include "../../generated/shared/nErosionEnemyBase.h"
+#include "nLayout.h"
 #include "nObjCollision.h"
 #include "nRegionStatus.h"
+#include "rArchiveListArray.h"
 #include "rAttackParam.h"
 #include "rCharParamEnemy.h"
 #include "rCollNode.h"
 #include "rEmStatusAdj.h"
+#include "rJointOrder.h"
+#include "rLayoutGroupParam.h"
+#include "rMotionParam.h"
+#include "rSoundAttributeSe.h"
+#include "../../XFramework/rSoundRequest.h"
+#include "res_ptr.h"
+#include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
+#include "sContextManager.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
 #include "sEnemyManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sGame.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #include "sObjCollision.h"
+#include "sObjCondition.h"
+#include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
+#include "sShlManager.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "sUnitManager.h"
+#include "sWeatherManager.h"
+#include "sWorkRate.h"
 #include "../../XFramework/uBaseModel.h"
 #include "uCharacter.h"
 #include "uCnsBoneScale.h"
 #include "uControl.h"
+#include "uControlNpc.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uHuman.h"
 #include "../../XFramework/uModel.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -256,7 +333,7 @@ void uEnemy::setupContextEnemyStatusChange(bool recvFlag) {
             cContextCharacter* v0_4 = mContextInterface.mpContextCharacter;
             for (cContextInstance* v0_5 = mContextInterface.mpContextInstance;;) {
                 u32 t0 = cContextInterface::getEnemyStatusGroup(v0_5, v0_4, i0_3);
-                pcStatusChange->cpStatusChange::setGroup_SubGroup(t0, cContextInterface::getEnemyStatusSubGroup(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter, i0_3));
+                pcStatusChange->setGroup_SubGroup(t0, cContextInterface::getEnemyStatusSubGroup(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter, i0_3));
                 if ((i0_3 + 1u) < cContextInterface::getEnemyStatusGroupNum(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter)) {
                     i0_3 += 1u;
                     v0_4 = mContextInterface.mpContextCharacter;
@@ -268,16 +345,16 @@ void uEnemy::setupContextEnemyStatusChange(bool recvFlag) {
                 }
             }
         }
-        pcStatusChange->cpStatusChange::setEnemyStatusChange(3u, cContextInterface::getEnemyBitCtrlCollision(v1_5, v1_4));
-        pcStatusChange->cpStatusChange::setEnemyStatusChange(2u, cContextInterface::getEnemyCtrRegionSelectNo(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
-        pcStatusChange->cpStatusChange::setEnemyStatusChange(4u, cContextInterface::getEnemyBitCtrParts(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
-        pcStatusChange->cpStatusChange::setEnemyStatusChange(5u, cContextInterface::getEnemyWorkRate(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
-        pcStatusChange->cpStatusChange::setEnemyStatusChange(7u, cContextInterface::getEnemyScale(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
-        pcStatusChange->cpStatusChange::setEnemyStatusChange(10u, cContextInterface::getEnemyBitCtrlMontage(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
-        pcStatusChange->cpStatusChange::setEnemyStatusChange(11u, cContextInterface::getEnemyBitCtrlSyncBit(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
+        pcStatusChange->setEnemyStatusChange(3u, cContextInterface::getEnemyBitCtrlCollision(v1_5, v1_4));
+        pcStatusChange->setEnemyStatusChange(2u, cContextInterface::getEnemyCtrRegionSelectNo(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
+        pcStatusChange->setEnemyStatusChange(4u, cContextInterface::getEnemyBitCtrParts(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
+        pcStatusChange->setEnemyStatusChange(5u, cContextInterface::getEnemyWorkRate(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
+        pcStatusChange->setEnemyStatusChange(7u, cContextInterface::getEnemyScale(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
+        pcStatusChange->setEnemyStatusChange(10u, cContextInterface::getEnemyBitCtrlMontage(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
+        pcStatusChange->setEnemyStatusChange(11u, cContextInterface::getEnemyBitCtrlSyncBit(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter));
         if (!recvFlag) {
-            pcStatusChange->cpStatusChange::checkStatusChangeBit(true);
-            pcStatusChange->cpStatusChange::copyStatusOldBit();
+            pcStatusChange->checkStatusChangeBit(true);
+            pcStatusChange->copyStatusOldBit();
             if (mpEffectStatusManager != nullptr) {
                 mpEffectStatusManager->after();
                 return;
@@ -564,11 +641,11 @@ void uEnemy::callbackRegionBreakMasterSlave(u32 regionNo) {
     if (pHpDamageCtrl == nullptr) {
         return;
     }
-    cParentRegionStatus* pRegion = pHpDamageCtrl->cpHpDamageCtrl::findParentRegionFromNo(regionNo);
+    cParentRegionStatus* pRegion = pHpDamageCtrl->findParentRegionFromNo(regionNo);
     if (pRegion == nullptr) {
         return;
     }
-    nRegionStatus::P_REGION_CATEGORY category = pRegion->cParentRegionStatus::getRegionCategory();
+    nRegionStatus::P_REGION_CATEGORY category = pRegion->getRegionCategory();
     if (nErosionEnemy::isErosionRegion(category)) {
         cpErosionEnemyBase* pErosionEnemy = getErosionEnemyBase();
         if (pErosionEnemy != nullptr) {
@@ -721,13 +798,13 @@ void uEnemy::callbackChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL 
 void uEnemy::callbackChangeErosionRealLevel(nErosionEnemyBase::EROSION_LEVEL level, nErosionEnemyBase::EROSION_LEVEL oldLevel) {
     cpStatusChange* pStatusChange = getStatusChangePtr();
     if (pStatusChange != nullptr) {
-        pStatusChange->cpStatusChange::callbackChangeStatus(nStatusEnemy::TYPE_EROSION_REAL_LEVEL, static_cast<u32>(level), 0u, 0.0f, 0.0f);
+        pStatusChange->callbackChangeStatus(nStatusEnemy::TYPE_EROSION_REAL_LEVEL, static_cast<u32>(level), 0u, 0.0f, 0.0f);
         cContextInstance* t0 = getContextInst();
         if (t0 != nullptr) {
             if ((this->uDDOModel::mUnitId & 2u) != 0) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 2981)) == 0) {
+                if (!static_cast<cContextInstEm*>(t0)->mFirstErosionAction) {
                     if (static_cast<int>(oldLevel) < static_cast<int>(level)) {
-                        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 2981) = 1;
+                        static_cast<cContextInstEm*>(t0)->mFirstErosionAction = true;
                     }
                 }
             }
@@ -736,9 +813,9 @@ void uEnemy::callbackChangeErosionRealLevel(nErosionEnemyBase::EROSION_LEVEL lev
         cContextInstance* t0 = getContextInst();
         if (t0 != nullptr) {
             if ((this->uDDOModel::mUnitId & 2u) != 0) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 2981)) == 0) {
+                if (!static_cast<cContextInstEm*>(t0)->mFirstErosionAction) {
                     if (static_cast<int>(oldLevel) < static_cast<int>(level)) {
-                        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 2981) = 1;
+                        static_cast<cContextInstEm*>(t0)->mFirstErosionAction = true;
                     }
                 }
             }
@@ -1406,6 +1483,23 @@ bool uEnemy::isErosionSuperEnemy() const {
 __attribute__((weak)) bool uEnemy::isErosionInitZero() const {
     DDON_STUB("uEnemy::isErosionInitZero")
     return {};
+}
+
+inline void uEnemy::setupEnchantMode() {
+    if (mpCharParamEnemy == nullptr) {
+        return;
+    }
+    if (mpCharParamEnemy->mpCharParamEnemy == nullptr) {
+        return;
+    }
+    if (!mpCharParamEnemy->mpCharParamEnemy->mIsUseEnchant) {
+        return;
+    }
+    if ((mpCharParamEnemy->mpCharParamEnemy->mEnchantType - 2u) <= 4u) {
+        if (mpDDMrlMgr != nullptr) {
+            mpDDMrlMgr->requestElementEmMode(mpCharParamEnemy->mpCharParamEnemy->mEnchantType);
+        }
+    }
 }
 
 bool uEnemy::isActiveRageShrink() const {

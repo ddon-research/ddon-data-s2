@@ -121,3 +121,23 @@ public:
     u32 mSeqNo;  // offset: 0xb0
     static MyDTI DTI;
 };
+
+inline void* cHeadCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rHeadCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cHeadCtrl::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHeadCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cHeadCtrl::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHeadCtrl::DTI)->memAlloc(sz, align, ::cHeadCtrl::DTI.::MtDTI::getID());
+}

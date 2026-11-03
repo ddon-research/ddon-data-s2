@@ -315,6 +315,82 @@ protected:
     static sEffect* mpInstance;
 };
 
+inline void* sEffect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sEffect* sEffect::getInstance() {
     return ::sEffect::mpInstance;
+}
+
+inline u32 sEffect::getEventRandomSeed() const {
+    return this->mEventRandomSeed;
+}
+
+inline f32 sEffect::getForcePower() const {
+    return this->mForcePower;
+}
+
+inline bool sEffect::isOcclusionParticleDraw() const {
+    return this->mOcclusionParticleDraw;
+}
+
+inline void sEffect::setOcclusionParticleDraw(bool Mode) {
+    this->mOcclusionParticleDraw = Mode;
+}
+
+inline void sEffect::setEffectVolume(u32 Volume) {
+    this->mParticleVolume = Volume;
+}
+
+inline u32 sEffect::getEffectVolume() const {
+    return this->mParticleVolume;
+}
+
+inline u32 sEffect::getKillNoMin() const {
+    return this->mKillNoMin;
+}
+
+inline u32 sEffect::getKillNoMax() const {
+    return this->mKillNoMax;
+}
+
+inline u32 sEffect::getCullingDistTblNum() const {
+    return 8;
+}
+
+inline u32 sEffect::getMultiBlurFilterDrawPriority() const {
+    return this->mMultiBlurFilterControl.mDrawPriority;
+}
+
+inline void sEffect::setMultiBlurFilterDrawPriority(u32 DrawPriority) {
+    this->mMultiBlurFilterControl.mDrawPriority = DrawPriority;
+}
+
+inline u32 sEffect::getMultiColorCorrectFilterDrawPriority() const {
+    return this->mMultiColorCorrectFilterControl.mDrawPriority;
+}
+
+inline void sEffect::setMultiColorCorrectFilterDrawPriority(u32 DrawPriority) {
+    this->mMultiColorCorrectFilterControl.mDrawPriority = DrawPriority;
+}
+
+inline u32 sEffect::getMultiGodRaysFilterDrawPriority() const {
+    return this->mMultiGodRaysFilterControl.mDrawPriority;
+}
+
+inline void sEffect::setMultiGodRaysFilterDrawPriority(u32 DrawPriority) {
+    this->mMultiGodRaysFilterControl.mDrawPriority = DrawPriority;
+}
+
+inline u32 sEffect::getMultiBloomFilterDrawPriority() const {
+    return this->mMultiBloomFilterControl.mDrawPriority;
+}
+
+inline void sEffect::setMultiBloomFilterDrawPriority(u32 DrawPriority) {
+    this->mMultiBloomFilterControl.mDrawPriority = DrawPriority;
+}
+
+inline u32 sEffect::getAdhesionDivideMax() const {
+    return this->mAdhesionDivideMax;
 }

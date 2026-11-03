@@ -9,30 +9,62 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtRandom.h"
+#include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cComponentManager.h"
 #include "cPlayerLoadManager.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
+#include "cpCharacterEdit.h"
+#include "cpComponent.h"
+#include "cpMotionSe.h"
 #include "../../generated/shared/nWeapon.h"
 #include "rArchiveListArray.h"
+#include "rCharacterEdit.h"
+#include "../../XFramework/rCollisionHeightField.h"
+#include "rSoundAreaInfo.h"
 #include "rSoundAttributeSe.h"
 #include "rSoundHitInfo.h"
 #include "rSoundOptData.h"
 #include "rSoundParamOfs.h"
 #include "../../XFramework/rSoundRequest.h"
+#include "../../XFramework/rSoundReverb.h"
 #include "../../XFramework/rSoundStreamRequest.h"
 #include "rSoundSubMixer.h"
 #include "rSoundSubMixerSet.h"
+#include "rStageInfo.h"
 #include "rWeaponResTable.h"
 #include "rWepCateResTbl.h"
+#include "res_ptr.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
+#include "../../XFramework/sCamera.h"
 #include "../../XFramework/sCollision.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "sGame.h"
+#include "../../XFramework/sMain.h"
+#include "sPlayerManager.h"
+#include "../../XFramework/sSavedata.h"
+#include "sSavedataExt.h"
 #include "../../XFramework/sSound.h"
+#include "sWeatherManager.h"
+#include "../../XFramework/uCamera.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uHuman.h"
+#include "../../XFramework/uModel.h"
+#include "uPlayer.h"
+#include "uShlBase.h"
 #include "uSoundOcclusion.h"
 #include "uSoundSubMixer.h"
+#include "uStageJoint.h"
+#include "uStageParts.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -73,7 +105,7 @@ inline void sSoundExt::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sSoundExt::DTI)->memFree(p_addr);
 }
 
-sSoundExt::~sSoundExt() {
+__attribute__((noinline)) sSoundExt::~sSoundExt() {
     if (mVoiceRequest.mLength != 0) {
         u32 v0_0 = mVoiceRequest.mLength;
         for (unsigned int i0_3 = 0;;) {
@@ -752,9 +784,36 @@ __attribute__((weak)) rSoundAreaInfo* sSoundExt::getSoundAreaInfo(const MtVector
     return nullptr;
 }
 
-__attribute__((weak)) rSoundAreaInfo* sSoundExt::getSoundAreaInfo(s8 areaNo) {
-    DDON_STUB("sSoundExt::getSoundAreaInfo")
-    return nullptr;
+rSoundAreaInfo* sSoundExt::getSoundAreaInfo(s8 areaNo) {
+    unsigned int v0_4 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sSound::getInstance()) + 295384);
+    unsigned long v2_0;
+    if (v0_4 == 0) {
+        v2_0 = 0;
+    } else {
+        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sSound::getInstance()) + 295400);
+        for (unsigned int i0_3 = 0;;) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_3 * 8u)) + 0)) != 0) {
+                if (static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_3 * 8u)) + 0)) + 24)) != static_cast<unsigned int>(areaNo)) {
+                    if ((i0_3 + 1u) < v0_4) {
+                        i0_3 = i0_3 + 1u;
+                    } else {
+                        break;
+                    }
+                } else {
+                    v2_0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_3 * 8u)) + 0)) + 8);
+                    return reinterpret_cast<rSoundAreaInfo*>(v2_0);
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_4) {
+                    i0_3 = i0_3 + 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        v2_0 = 0;
+    }
+    return reinterpret_cast<rSoundAreaInfo*>(v2_0);
 }
 
 __attribute__((weak)) rSoundAreaInfo* sSoundExt::getSAR(const MtVector3& targetPos) {
@@ -762,15 +821,18 @@ __attribute__((weak)) rSoundAreaInfo* sSoundExt::getSAR(const MtVector3& targetP
     return nullptr;
 }
 
-__attribute__((weak)) rSoundAreaInfo* sSoundExt::getSoundAreaInfoToInn() {
-    DDON_STUB("sSoundExt::getSoundAreaInfoToInn")
-    return nullptr;
+rSoundAreaInfo* sSoundExt::getSoundAreaInfoToInn() {
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 184)) != 0) {
+        return reinterpret_cast<rSoundAreaInfo*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 184)) + 328));
+    } else {
+        return nullptr;
+    }
 }
 
 rSoundRequest* sSoundExt::getSndWepCategoryResource(u32 wepCategory) {
     cWepCateResTbl* pRes = sGame::getInstance()->getWepCateResData(wepCategory);
     if (pRes != nullptr) {
-        u64 resId = pRes->cWepCateResTbl::getSndResId();
+        u64 resId = pRes->getSndResId();
         if (resId != 0) {
             return static_cast<rSoundRequest*>(sArchiveManager::getInstance()->createRes(resId, 1u, false));
         } else {
@@ -784,7 +846,7 @@ rSoundRequest* sSoundExt::getSndWepCategoryResource(u32 wepCategory) {
 rSoundRequest* sSoundExt::getSndWepResource(u32 itemId, u32 sex) {
     cWeaponResTable* pWepRes = cPlayerLoadManager::getWeaponArcTagEx(static_cast<unsigned short>(itemId), sex);
     if (pWepRes != nullptr) {
-        u64 resId = pWepRes->cWeaponResTable::getSndResId();
+        u64 resId = pWepRes->getSndResId();
         if (resId != 0) {
             return static_cast<rSoundRequest*>(sArchiveManager::getInstance()->createRes(resId, 1u, false));
         } else {
@@ -876,7 +938,7 @@ f32 sSoundExt::getParamOfsData(s32 index, u32 param) {
                 switch (param) {
                     case 0:
                     {
-                        return pParam->cSoundParamOfs::getVolume();
+                        return pParam->getVolume();
                     }
                     case 1:
                     {
@@ -1217,37 +1279,37 @@ void sSoundExt::changeSubMixer(u32 no) {
     if (mpSoundSubMixer != nullptr) {
         rSoundSubMixerSet::BasicSubMixers* pBasicSubMixer = getSoundSubMixerSetResource()->getBasicSubMixers(no);
         if (pBasicSubMixer != nullptr) {
-            if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource0() != nullptr) {
+            if (pBasicSubMixer->getResource0() != nullptr) {
                 uSoundSubMixer* t0 = mpSoundSubMixer;
-                t0->mergeSubMixer(static_cast<u8>(0), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource0());
+                t0->mergeSubMixer(static_cast<u8>(0), pBasicSubMixer->getResource0());
             }
-            if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource1() != nullptr) {
+            if (pBasicSubMixer->getResource1() != nullptr) {
                 uSoundSubMixer* t1 = mpSoundSubMixer;
-                t1->mergeSubMixer(static_cast<u8>(1), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource1());
+                t1->mergeSubMixer(static_cast<u8>(1), pBasicSubMixer->getResource1());
             }
-            if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource2() != nullptr) {
+            if (pBasicSubMixer->getResource2() != nullptr) {
                 uSoundSubMixer* t2 = mpSoundSubMixer;
-                t2->mergeSubMixer(static_cast<u8>(2), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource2());
+                t2->mergeSubMixer(static_cast<u8>(2), pBasicSubMixer->getResource2());
             }
-            if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource3() != nullptr) {
+            if (pBasicSubMixer->getResource3() != nullptr) {
                 uSoundSubMixer* t3 = mpSoundSubMixer;
-                t3->mergeSubMixer(static_cast<u8>(3), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource3());
+                t3->mergeSubMixer(static_cast<u8>(3), pBasicSubMixer->getResource3());
             }
-            if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource4() != nullptr) {
+            if (pBasicSubMixer->getResource4() != nullptr) {
                 uSoundSubMixer* t4 = mpSoundSubMixer;
-                t4->mergeSubMixer(static_cast<u8>(4), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource4());
+                t4->mergeSubMixer(static_cast<u8>(4), pBasicSubMixer->getResource4());
             }
-            if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource5() != nullptr) {
+            if (pBasicSubMixer->getResource5() != nullptr) {
                 uSoundSubMixer* t5 = mpSoundSubMixer;
-                t5->mergeSubMixer(static_cast<u8>(5), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource5());
+                t5->mergeSubMixer(static_cast<u8>(5), pBasicSubMixer->getResource5());
             }
-            if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource6() != nullptr) {
+            if (pBasicSubMixer->getResource6() != nullptr) {
                 uSoundSubMixer* t6 = mpSoundSubMixer;
-                t6->mergeSubMixer(static_cast<u8>(6), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource6());
+                t6->mergeSubMixer(static_cast<u8>(6), pBasicSubMixer->getResource6());
             }
-            if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource7() != nullptr) {
+            if (pBasicSubMixer->getResource7() != nullptr) {
                 uSoundSubMixer* t7 = mpSoundSubMixer;
-                t7->mergeSubMixer(static_cast<u8>(7), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource7());
+                t7->mergeSubMixer(static_cast<u8>(7), pBasicSubMixer->getResource7());
                 return;
             }
         }

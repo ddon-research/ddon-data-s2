@@ -98,7 +98,15 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cTbl2ChatMacro::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cTbl2ChatMacro::cTbl2ChatMacro() {
     this->mCmdId = 0;
     this->mHelpMsgId = 0;
+}
+
+inline void* rTbl2ChatMacro::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

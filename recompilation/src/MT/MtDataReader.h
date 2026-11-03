@@ -16,11 +16,21 @@ class cSetInfoOm;
 class cSetInfoOmGather;
 class cSetInfoOmTreasureBox;
 namespace nCollision { class cObjectBase; }
+namespace nZone { class ShapeInfoAABB; }
 namespace nZone { class ShapeInfoBase; }
+namespace nZone { class ShapeInfoCapsule; }
+namespace nZone { class ShapeInfoCone; }
+namespace nZone { class ShapeInfoCylinder; }
 namespace nZone { class ShapeInfoOBB; }
 namespace nZone { class ShapeInfoPanel; }
+namespace nZone { class ShapeInfoSphere; }
+class rAttackParam;
+class rHumanEnemyParam;
+class rJobBaseParam;
+class rJointOrder;
 class rJumpParamTbl;
 class rPrologueHmStatus;
+class rShopGoods;
 class rSoundParamOfs;
 
 // Declarations
@@ -51,11 +61,21 @@ class MtDataReader
     friend class cSetInfoOmGather;
     friend class cSetInfoOmTreasureBox;
     friend class nCollision::cObjectBase;
+    friend class nZone::ShapeInfoAABB;
     friend class nZone::ShapeInfoBase;
+    friend class nZone::ShapeInfoCapsule;
+    friend class nZone::ShapeInfoCone;
+    friend class nZone::ShapeInfoCylinder;
     friend class nZone::ShapeInfoOBB;
     friend class nZone::ShapeInfoPanel;
+    friend class nZone::ShapeInfoSphere;
+    friend class rAttackParam;
+    friend class rHumanEnemyParam;
+    friend class rJobBaseParam;
+    friend class rJointOrder;
     friend class rJumpParamTbl;
     friend class rPrologueHmStatus;
+    friend class rShopGoods;
     friend class rSoundParamOfs;
 public:
     MtDataReader(MtStream& in, u32 bufsiz);

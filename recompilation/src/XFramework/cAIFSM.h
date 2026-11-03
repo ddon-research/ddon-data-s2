@@ -660,6 +660,26 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAIFSM::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cAIFSM::getCoreNum() {
+    return this->mCoreNum;
+}
+
+inline void* cAIFSM::Core::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cAIFSM::Core::getStatus() {
+    return this->mStatus;
+}
+
+inline void* cAIFSM::Core::ClusterDriveInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAIFSM::Core::ClusterDriveInfo::ClusterDriveInfo() {
     this->mConditionWaitFlag = 0;
     this->mIsUpdated = false;
@@ -676,11 +696,23 @@ inline cAIFSM::Core::ClusterDriveInfo::ClusterDriveInfo() {
     this->mCurrentProcessNo = 0;
 }
 
+inline void* cAIFSM::Core::ClusterWork::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAIFSM::Core::ClusterWork::ClusterWork() {
     this->mTransitionOnceStateList = nullptr;
     this->mTransitionOnceStateListLength = 0;
     this->mTransitionOnceStateNum = 0;
     this->mpCluster = nullptr;
+}
+
+inline void* cAIFSM::Core::ClearTransitionFromAllOnceParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIFSMData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cAIFSMData::cAIFSMData() {
@@ -704,4 +736,40 @@ inline cAIFSMData::cAIFSMData() {
     this->mIFree[3] = 0;
     this->mIFree[0] = 0;
     this->mIFree[1] = 0;
+}
+
+inline u32 cAIFSMData::getCoreNum() const {
+    return this->mCoreNum;
+}
+
+inline void* cAIFSMData::Core::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cAIFSMData::Core::getClusterNum() const {
+    return this->mClusterNum;
+}
+
+inline u32 cAIFSMData::Core::getClusterLogNum() const {
+    return this->mClusterLogNum;
+}
+
+inline void cAIFSMData::Core::setClusterLogNum(u32 num) {
+    this->::cAIFSMData::Core::createClusterLogList(num);
+}
+
+inline void* cAIFSMData::Cluster::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIFSMData::ClusterLog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cAIFSMData::ClusterLog::getTransitionOnceStateNum() const {
+    return this->mTransitionOnceStateNum;
+}
+
+inline void* cAIFSMProcessContainer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

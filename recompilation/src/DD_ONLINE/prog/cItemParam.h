@@ -178,6 +178,22 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCraftParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cItemParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cItemParam::getItemNo() const {
     return this->mItemParam.mItemNo;
+}
+
+inline u32 cItemParam::getItemNum() const {
+    return this->mItemParam.mItemNum_Guard;
+}
+
+inline void cItemParam::setItemNum(u32 ItemNum) {
+    this->mItemParam.mItemNum_Guard = static_cast<unsigned short>(ItemNum);
 }

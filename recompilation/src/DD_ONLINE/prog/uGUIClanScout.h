@@ -217,5 +217,17 @@ protected:
     static const u32 COMMENT_BUFFER_SIZE = 1024;
 };
 
+inline void* uGUIClanScout::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIClanScout::cGUIPageListScoutEntry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIClanScout::cGUIPageListScoutEntry::cGUIPageListScoutEntry() {
+}
+
+inline void* uGUIClanScoutBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

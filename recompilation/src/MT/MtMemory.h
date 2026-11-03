@@ -18,6 +18,7 @@ namespace MtMemoryAllocator { class Initializer; }
 namespace MtNet { namespace Utility { namespace PS4 { class Json; } } }
 class MtObject;
 class cGeneralPointPtr;
+namespace nDraw { class DepthStencilView; }
 namespace nDraw { class IndexBuffer; }
 namespace nDraw { class VertexBuffer; }
 namespace nNetMsgData { namespace Head { struct stMsgHead; } }
@@ -27,12 +28,14 @@ class rEffect2D;
 class rEffectAnim;
 class rEffectList;
 class rEffectStrip;
+class rVertices;
 class rVibration;
 class sBrowser;
 class sItemManager;
 class sMain;
 class sRender;
 class sScreenShot;
+class uMovie;
 class uSoundOcclusion;
 
 // Declarations
@@ -61,6 +64,7 @@ class MtMemory
     friend class MtNet::Utility::PS4::Json;
     friend class MtObject;
     friend class cGeneralPointPtr;
+    friend class nDraw::DepthStencilView;
     friend class nDraw::IndexBuffer;
     friend class nDraw::VertexBuffer;
     friend nNetMsgData::Head::stMsgHead* nNetMsgData::Head::deserialize(nNetwork::Decoder& dec);
@@ -70,12 +74,14 @@ class MtMemory
     friend class rEffectAnim;
     friend class rEffectList;
     friend class rEffectStrip;
+    friend class rVertices;
     friend class rVibration;
     friend class sBrowser;
     friend class sItemManager;
     friend class sMain;
     friend class sRender;
     friend class sScreenShot;
+    friend class uMovie;
     friend class uSoundOcclusion;
 public:
     static void terminateAllocator();

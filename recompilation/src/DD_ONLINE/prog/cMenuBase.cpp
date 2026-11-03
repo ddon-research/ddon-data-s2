@@ -8,67 +8,128 @@
 #include "Protocol/PacketData/Common.h"
 #include "Protocol/PacketData/Community.h"
 #include "Protocol/PacketData/Craft.h"
+#include "Protocol/PacketData/Enemy.h"
 #include "Protocol/PacketData/Item.h"
+#include "Protocol/PacketData/JobMaster.h"
+#include "Protocol/PacketData/Mail.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtRandom.h"
 #include "../../MT/MtString.h"
+#include "Protocol/PacketData/Party.h"
 #include "Protocol/PacketData/Pawn.h"
+#include "Protocol/PacketData/QuickParty.h"
 #include "Protocol/UserSession/S2C.h"
+#include "Protocol/PacketData/Server.h"
 #include "Protocol/PacketData/SupportPoint.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
 #include "cCharacterData.h"
+#include "cContext.h"
 #include "cContextInstance.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cControl.h"
+#include "cCraftRecipe.h"
+#include "cCraftSkill.h"
 #include "cCursor.h"
 #include "cEndContentsManager.h"
+#include "cEquipData.h"
 #include "cGUIUtility.h"
+#include "cItemParam.h"
+#include "cKeyCustom.h"
+#include "cMenuBaseClan.h"
+#include "cMenuEntryBoard.h"
 #include "cMenuSupport.h"
+#include "cNetBase.h"
 #include "cNetGameServer.h"
 #include "cNetSessionManager.h"
+#include "cPRTManager.h"
 #include "cQuestManagerBase.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "cpTalk.h"
 #include "nCharacterData.h"
+#include "nDDOUtility.h"
 #include "nGUIExt.h"
 #include "nGUIKeyConfig.h"
+#include "nHumanMsg.h"
+#include "nJobParam.h"
 #include "nMenu.h"
 #include "nMenuKeyConfig.h"
 #include "nNet.h"
+#include "nQuest.h"
 #include "rArchiveListArray.h"
+#include "rCraftCapPass.h"
+#include "rCraftRecipe.h"
+#include "../../XFramework/rGUIMessage.h"
 #include "rItemList.h"
+#include "rKeyConfigTextTable.h"
+#include "sAIPawnSys.h"
+#include "sAIPawnTalkMgr.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
+#include "sBazaarManager.h"
+#include "sChat.h"
 #include "sContextManager.h"
 #include "sCraftManager.h"
+#include "sDialogBase.h"
+#include "sFlag.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sGame.h"
+#include "sInputManager.h"
 #include "sItemManager.h"
+#include "sKeyboardInterface.h"
+#include "../../XFramework/sMain.h"
 #include "sMenu.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "sNpcManager.h"
 #include "../../XFramework/sPad.h"
 #include "sPadExt.h"
 #include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
+#include "../../XFramework/sRender.h"
+#include "../../XFramework/sSavedata.h"
+#include "sSavedataExt.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
 #include "sSoundManager.h"
+#include "sTalkManager.h"
 #include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "uControl.h"
+#include "uControlNpc.h"
 #include "uDDOModel.h"
+#include "uGUIAreaMaster.h"
 #include "uGUIBase.h"
 #include "uGUIBaseExt.h"
 #include "uGUIBoughtBox.h"
+#include "uGUIBoxGachaInfo.h"
+#include "uGUICharacterEditPopCard.h"
+#include "uGUICommunityList.h"
+#include "uGUIDialogTextBox.h"
 #include "uGUIGPShop.h"
 #include "uGUIGPShopDialog.h"
 #include "uGUIKeyConfig.h"
 #include "uGUIMenuAreaInfo.h"
 #include "uGUINewspaper.h"
+#include "uGUIOption.h"
 #include "uGUIPopCmd01.h"
+#include "uGUIPopFilter.h"
 #include "uGUIPopTopSel.h"
 #include "uGUIRankUp.h"
+#include "uGUIRetry.h"
 #include "uGUISystemMsg.h"
 #include "uHuman.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -508,7 +569,7 @@ cMenuBase::cMenuBase() {
     mMenuSupportList.mAutoDelete = true;
 }
 
-cMenuBase::~cMenuBase() {
+__attribute__((noinline)) cMenuBase::~cMenuBase() {
     DDON_STUB("cMenuBase::~cMenuBase")
     /* stub */
 }
@@ -581,8 +642,17 @@ __attribute__((weak)) bool cMenuBase::isEnableMenu(s32 menuId) {
 }
 
 __attribute__((weak)) u32 cMenuBase::getNextBasePointerPrio() {
-    DDON_STUB("cMenuBase::getNextBasePointerPrio")
-    return {};
+        if (mCustomBasePrio != 0xFFFFFFFF) {
+            return mCustomBasePrio;
+        }
+        uGUIBase* pGUI = mpGUIMenu;
+        if (pGUI == nullptr) {
+            pGUI = mpRefGUI;
+            if (pGUI == nullptr) {
+                return 9;
+            }
+        }
+        return pGUI->mBasePointerPrio - pGUI->mPointerPrioRange;
 }
 
 __attribute__((weak)) bool cMenuBase::isCancel(u32 cancelSe) {
@@ -930,6 +1000,13 @@ void cMenuBase::moveSupportMenu(s32 cursorOrderId) {
     mpMenu->moveMenu(cursorOrderId);
 }
 
+inline void cMenuBase::clearMenuList() {
+    if (mpMenu == nullptr) {
+        return;
+    }
+    mpMenu->mMenuNum = 0;
+}
+
 void cMenuBase::createMenuListTbl(const s32* pTbl, u32 menuNum) {
     if (mpMenu == nullptr) {
         return;
@@ -1237,7 +1314,7 @@ void cMenuCharacterList::initCharacterList(uGUIBase* pGUIRefMenu) {
     cMenuSupportList* pList = setupSupportList(256u, 14u, 15u);
     if (pList != nullptr) {
         pList->mMenuTopId = 0;
-        pList->cMenuSupportList::addBelowMenu(14);
+        pList->addBelowMenu(14);
         nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCharacterSearchPacket();
         if (mpList != nullptr) {
             mpList->createList(t0->m_CharacterList.mLength);
@@ -3071,7 +3148,7 @@ void cMenuKeyConfig::onClose(uGUIKeyConfig& guiKeyConfig) {
             if (dialog_flow != nullptr) {
                 MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 482u);
                 MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 483u);
-                dialog_flow->cMenuDialogFlow::setDialog(nGUIExt::DIALOG_TYPE_ROW_BUTTON, t0, 1, t1, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 4u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                dialog_flow->setDialog(nGUIExt::DIALOG_TYPE_ROW_BUTTON, t0, 1, t1, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 4u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
                 mMenuRno[0] = 5;
                 guiKeyConfig.pauseInput(true);
             } else {
@@ -3095,7 +3172,7 @@ void cMenuKeyConfig::onInitialize(uGUIKeyConfig& guiKeyConfig, u32 categoryListI
         if (dialog_flow != nullptr) {
             MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 490u);
             MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
-            dialog_flow->cMenuDialogFlow::setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t0, 1, t1, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+            dialog_flow->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t0, 1, t1, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
             mMenuRno[0] = 4;
             guiKeyConfig.pauseInput(true);
         } else {
@@ -3115,7 +3192,7 @@ void cMenuKeyConfig::onBlankAll(uGUIKeyConfig& guiKeyConfig, u32 categoryListInd
         if (dialog_flow != nullptr) {
             MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 500u);
             MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
-            dialog_flow->cMenuDialogFlow::setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t0, 1, t1, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+            dialog_flow->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t0, 1, t1, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
             mMenuRno[0] = 8;
             guiKeyConfig.pauseInput(true);
         } else {
@@ -3315,9 +3392,14 @@ void cMenuKeyConfigSubMenuCategoryList::onShow(uGUIPopCmd01& subMenu) {
     subMenu.addItemSystemMenu(58u, uGUIPopBase::MODE_DEFAULT, -1);
 }
 
-__attribute__((weak)) void cMenuKeyConfigSubMenuCategoryList::onDecide(uGUIPopCmd01& subMenu) {
-    DDON_STUB("cMenuKeyConfigSubMenuCategoryList::onDecide")
-    /* stub */
+void cMenuKeyConfigSubMenuCategoryList::onDecide(uGUIPopCmd01& subMenu) {
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&subMenu) + 3216)) != 0) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&subMenu) + 3216)) + 3096)) <= 1u) {
+            mItemIndex = static_cast<ITEM_INDEX>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&subMenu) + 3216)) + 3096));
+        }
+    } else {
+        mItemIndex = ITEM_RENAME;
+    }
 }
 
 cMenuKeyConfigSubMenuCategoryList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -3359,9 +3441,14 @@ void cMenuKeyConfigSubMenuKeyList::onShow(uGUIPopCmd01& subMenu) {
     }
 }
 
-__attribute__((weak)) void cMenuKeyConfigSubMenuKeyList::onDecide(uGUIPopCmd01& subMenu) {
-    DDON_STUB("cMenuKeyConfigSubMenuKeyList::onDecide")
-    /* stub */
+void cMenuKeyConfigSubMenuKeyList::onDecide(uGUIPopCmd01& subMenu) {
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&subMenu) + 3216)) != 0) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&subMenu) + 3216)) + 3096)) <= 2u) {
+            mItemIndex = static_cast<ITEM_INDEX>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&subMenu) + 3216)) + 3096));
+        }
+    } else {
+        mItemIndex = ITEM_BLANK;
+    }
 }
 
 cMenuKeyConfigSubMenuKeyList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -6195,6 +6282,13 @@ void cMenuSearchFilter::exitMenu() {
     this->cMenuBase::exitMenu();
 }
 
+inline void cMenuSearchFilter::initSetting() {
+    if (mType != 5) {
+        return;
+    }
+    mpSetting->initSearchFilter(5);
+}
+
 __attribute__((weak)) void cMenuSearchFilter::initExcludeList() {
     DDON_STUB("cMenuSearchFilter::initExcludeList")
     /* stub */
@@ -6599,9 +6693,53 @@ __attribute__((weak)) void cMenuSubMenu::checkMenuPartsParam(cMenuSupportMenu* p
     /* stub */
 }
 
-__attribute__((weak)) void cMenuSubMenu::setBaseInfo(const CCommunityCharacterBaseInfo& info) {
-    DDON_STUB("cMenuSubMenu::setBaseInfo")
-    /* stub */
+void cMenuSubMenu::setBaseInfo(const CCommunityCharacterBaseInfo& info) {
+    mCharacterId = info.m_unCharacterID;
+    snprintf(&mCharacterName.mFirstName[0], 13ul, "%s", info.m_CharacterName.m_wstrFirstName.ptr());
+    snprintf(&mCharacterName.mLastName[0], 9ul, "%s", info.m_CharacterName.m_wstrLastName.ptr());
+    MtString::STRING* t1 = info.m_wstrClanName.value;
+    if (info.m_wstrClanName.ptr() == mClanNickname.ptr()) {
+        return;
+    }
+    if (mClanNickname.value != nullptr) {
+        if (sceAtomicAdd32Relaxed(&mClanNickname.value->ref, -1) == 1) {
+            (MtString::mpAllocator)->memFree(static_cast<void*>(mClanNickname.value));
+            mClanNickname.value = nullptr;
+            size_t t2 = strlen(info.m_wstrClanName.ptr());
+            if (static_cast<unsigned int>(t2) != 0) {
+                void* t3 = (MtString::mpAllocator)->memAlloc(static_cast<size_t>(static_cast<unsigned int>(t2)) + 12, 16u);
+                mClanNickname.value = static_cast<MtString::STRING*>(t3);
+                mClanNickname.value->ref = 1;
+                mClanNickname.value->length = static_cast<unsigned int>(t2);
+                strcpy(reinterpret_cast<char*>(mClanNickname.value->str), info.m_wstrClanName.ptr());
+            } else {
+                mClanNickname.value = nullptr;
+            }
+        } else {
+            mClanNickname.value = nullptr;
+            size_t t2 = strlen(info.m_wstrClanName.ptr());
+            if (static_cast<unsigned int>(t2) != 0) {
+                void* t3 = (MtString::mpAllocator)->memAlloc(static_cast<size_t>(static_cast<unsigned int>(t2)) + 12, 16u);
+                mClanNickname.value = static_cast<MtString::STRING*>(t3);
+                mClanNickname.value->ref = 1;
+                mClanNickname.value->length = static_cast<unsigned int>(t2);
+                strcpy(reinterpret_cast<char*>(mClanNickname.value->str), info.m_wstrClanName.ptr());
+            } else {
+                mClanNickname.value = nullptr;
+            }
+        }
+    } else {
+        size_t t2 = strlen(info.m_wstrClanName.ptr());
+        if (static_cast<unsigned int>(t2) != 0) {
+            void* t3 = (MtString::mpAllocator)->memAlloc(static_cast<size_t>(static_cast<unsigned int>(t2)) + 12, 16u);
+            mClanNickname.value = static_cast<MtString::STRING*>(t3);
+            mClanNickname.value->ref = 1;
+            mClanNickname.value->length = static_cast<unsigned int>(t2);
+            strcpy(reinterpret_cast<char*>(mClanNickname.value->str), info.m_wstrClanName.ptr());
+        } else {
+            mClanNickname.value = nullptr;
+        }
+    }
 }
 
 __attribute__((weak)) void cMenuSubMenu::setContextInfo(const cContextInstHm& context) {

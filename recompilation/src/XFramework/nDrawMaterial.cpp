@@ -9,8 +9,14 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
+#include "cDraw.h"
 #include "nDraw.h"
 #include "nDrawResource.h"
+#include "nDrawTexture.h"
+#include "sRender.h"
+#include "sScene.h"
+#include "sShader2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -78,16 +84,16 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
         } else {
             u32 v0_0 = (v0_5 * 8u) + 8u;
             u32 i = 0;
-            unsigned int v1_0;
+            u32 v1_0;
             u32 v1_2;
             u32 j;
-            unsigned int v2_0;
+            u32 v2_0;
             for (;;) {
                 nDraw::Animation::ANIMATION* v1_5 = list->animations[i];
                 if ((v1_5->param_num & 0xFFFFu) == 0) {
-                    v2_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) & 0x3FFFCu) * 2u)) + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) >> 18) * 4u)) + 24u;
+                    v2_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) & 0x3FFFCu) * 2u)) + (v1_5->cbuffer_num * 4u)) + 24u;
                 } else {
-                    v1_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) & 0x3FFFCu) * 2u)) + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) >> 18) * 4u)) + 24u;
+                    v1_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) & 0x3FFFCu) * 2u)) + (v1_5->cbuffer_num * 4u)) + 24u;
                     v1_2 = v1_5->param_num;
                     j = 0;
                     for (;;) {
@@ -95,10 +101,10 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
                             case 0:
                             {
                                 if ((j + 1u) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 12u;
+                                    v1_0 = (v1_0 + (v1_5->params[j]->key_num * 8u)) + 12u;
                                     j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 12u;
+                                    v2_0 = (v1_0 + (v1_5->params[j]->key_num * 8u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
@@ -106,10 +112,10 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
                             case 1:
                             {
                                 if ((j + 1u) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 20u)) + 12u;
+                                    v1_0 = (v1_0 + (v1_5->params[j]->key_num * 20u)) + 12u;
                                     j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 20u)) + 12u;
+                                    v2_0 = (v1_0 + (v1_5->params[j]->key_num * 20u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
@@ -117,10 +123,10 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
                             case 2:
                             {
                                 if ((j + 1u) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 12u;
+                                    v1_0 = (v1_0 + (v1_5->params[j]->key_num * 8u)) + 12u;
                                     j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 12u;
+                                    v2_0 = (v1_0 + (v1_5->params[j]->key_num * 8u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
@@ -139,10 +145,10 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
                             case 4:
                             {
                                 if ((j + 1u) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 80u)) + 12u;
+                                    v1_0 = (v1_0 + (v1_5->params[j]->key_num * 80u)) + 12u;
                                     j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 80u)) + 12u;
+                                    v2_0 = (v1_0 + (v1_5->params[j]->key_num * 80u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
@@ -150,10 +156,10 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
                             case 5:
                             {
                                 if ((j + 1u) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 8u;
+                                    v1_0 = (v1_0 + (v1_5->params[j]->key_num * 8u)) + 8u;
                                     j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 8u;
+                                    v2_0 = (v1_0 + (v1_5->params[j]->key_num * 8u)) + 8u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
@@ -161,10 +167,10 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
                             case 6:
                             {
                                 if ((j + 1u) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 24u)) + 12u;
+                                    v1_0 = (v1_0 + (v1_5->params[j]->key_num * 24u)) + 12u;
                                     j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 24u)) + 12u;
+                                    v2_0 = (v1_0 + (v1_5->params[j]->key_num * 24u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
@@ -172,10 +178,10 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
                             case 7:
                             {
                                 if ((j + 1u) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 24u)) + 12u;
+                                    v1_0 = (v1_0 + (v1_5->params[j]->key_num * 24u)) + 12u;
                                     j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 24u)) + 12u;
+                                    v2_0 = (v1_0 + (v1_5->params[j]->key_num * 24u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
@@ -308,13 +314,9 @@ __attribute__((weak)) nDraw::Material* nDraw::Material::duplicate() const {
     return nullptr;
 }
 
-u32 nDraw::Material::getID() {
-    return mID;
-}
+static auto ddon_emit_0x01b83090 __attribute__((used)) = &nDraw::Material::getID;
 
-void nDraw::Material::setID(u32 id) {
-    mID = static_cast<unsigned short>(id);
-}
+static auto ddon_emit_0x01b830a0 __attribute__((used)) = &nDraw::Material::setID;
 
 void nDraw::Material::update(f32 dt) {
     if (mpAnimation == nullptr) {
@@ -328,9 +330,7 @@ __attribute__((weak)) void nDraw::Material::setTechniqueState(cDraw* pdraw, u32 
     /* stub */
 }
 
-void nDraw::Material::setStencilRef(u8 ref) {
-    mStencilRef = ref;
-}
+static auto ddon_emit_0x01b83080 __attribute__((used)) = &nDraw::Material::setStencilRef;
 
 u8 nDraw::Material::getStencilRef() const {
     return static_cast<u8>(mStencilRef);
@@ -366,9 +366,9 @@ __attribute__((weak)) void nDraw::Material::setAnimationData(nDraw::Animation* p
     /* stub */
 }
 
-__attribute__((weak)) void nDraw::Material::setAnimation(nDraw::Material::SLOT_TYPE slot, s32 no) {
-    DDON_STUB("nDraw::Material::setAnimation")
-    /* stub */
+void nDraw::Material::setAnimation(nDraw::Material::SLOT_TYPE slot, s32 no) {
+    mAnimationState[slot].frame = 0.0f;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&mAnimationState[slot]) + 0) = static_cast<unsigned short>(no);
 }
 
 __attribute__((weak)) s32 nDraw::Material::getAnimation(nDraw::Material::SLOT_TYPE slot) {

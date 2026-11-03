@@ -8,7 +8,7 @@
 #include "../MT/MtStlAllocator.h"
 #include "../MT/MtStlCustom.h"
 #include "cSystem.h"
-#include "../generated/rCharacterEditCameraParam/user_service_api.h"
+#include "../generated/shared/user_service_api.h"
 
 // Forward declarations
 class MtAllocator;
@@ -153,3 +153,7 @@ public:
 private:
     static sUserManager* mpInstance;
 };
+
+inline void* sUserManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

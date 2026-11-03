@@ -91,6 +91,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpLayout::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 cpLayout::getSetNo() const {
     return this->mSetNo;
 }

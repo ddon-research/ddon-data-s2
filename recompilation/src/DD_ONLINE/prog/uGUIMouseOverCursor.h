@@ -137,3 +137,11 @@ public:
     static const u32 DUPLI_MAX = 1;
     static const u32 CNT_FADESTART = 3;
 };
+
+inline void* uGUIMouseOverCursor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMouseOverCursor::cMOC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

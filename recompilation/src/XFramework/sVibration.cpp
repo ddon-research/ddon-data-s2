@@ -5,9 +5,12 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "cResource.h"
 #include "cSystem.h"
 #include "rVibration.h"
+#include "sCamera.h"
 #include "sMain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -50,9 +53,7 @@ MtUI* sVibration::createUI(MtProperty& prop) {
     return this->cSystem::createUI(prop);
 }
 
-rVibration* sVibration::getVibration() {
-    return mpVibration;
-}
+static auto ddon_emit_0x01ba9540 __attribute__((used)) = &sVibration::getVibration;
 
 __attribute__((weak)) void sVibration::setVibration(rVibration* pVibration) {
     DDON_STUB("sVibration::setVibration")
@@ -120,9 +121,7 @@ __attribute__((weak)) MtMatrix sVibration::getCameraVibrationViewMatrix(u32 View
     __builtin_unreachable();
 }
 
-u32 sVibration::getPadViewportNo(u32 No) const {
-    return mPadViewportNo[No];
-}
+static auto ddon_emit_0x01ba9560 __attribute__((used)) = &sVibration::getPadViewportNo;
 
 void sVibration::setPadViewportNo(u32 ViewportNo, u32 No) {
     if (ViewportNo <= 7u) {
@@ -136,9 +135,7 @@ void sVibration::setPadViewportNo(u32 ViewportNo, u32 No) {
     }
 }
 
-u32 sVibration::getPadNum() const {
-    return 4;
-}
+static auto ddon_emit_0x01ba9570 __attribute__((used)) = &sVibration::getPadNum;
 
 u32 sVibration::getDefaultVibPad() const {
     return 1;

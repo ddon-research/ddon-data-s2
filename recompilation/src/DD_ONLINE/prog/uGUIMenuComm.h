@@ -240,3 +240,7 @@ public:
     static const u32 MSG_CTGR_MAX = 10;
     static const u32 MSG_LENGTH_MAX = 22;
 };
+
+inline void* uGUIMenuComm::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

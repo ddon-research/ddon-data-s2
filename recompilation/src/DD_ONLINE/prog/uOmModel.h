@@ -220,6 +220,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uOmModel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uOmShell::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uOmSimple::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uOmSimple::uOmSimple() {
     this->mpCtrl = nullptr;
     this->mbReqKill = false;

@@ -4,15 +4,255 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtGeomOBB.h"
+#include "../../MT/MtGeometry3D.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
+#include "aStage.h"
+#include "../../XFramework/cAISvPathFinding.h"
+#include "../../XFramework/cArea.h"
+#include "cComponentManager.h"
+#include "cContextInterface.h"
+#include "cDelegate.h"
+#include "cHitNode.h"
+#include "cItemParam.h"
+#include "cOmControl.h"
+#include "cTalkMsgData.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpActionRequest.h"
 #include "cpComponent.h"
+#include "cpObjCollision.h"
+#include "../../generated/shared/nDDOModel.h"
 #include "nQuest.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/sAI.h"
+#include "sAIExt.h"
+#include "../../XFramework/sArea.h"
+#include "sChat.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "sItemManager.h"
+#include "sOmManager.h"
+#include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
+#include "uDDOModel.h"
+#include "uGUIBase.h"
+#include "uGUISystemMsg.h"
+#include "../../XFramework/uModel.h"
 #include "uOmModel.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+const MtDTI& cpOmBase::getDTI() const {
+    return cpOmBase::DTI;
+}
+
+cpOmBase::cpOmBase() {
+    DDON_STUB("cpOmBase::cpOmBase")
+    /* stub */
+}
+
+cpOmBase::~cpOmBase() {
+    if (mpModel != nullptr) {
+        mpModel->uDDOModel::requestReleaseTouch(mpTouchUnit, nDDOModel::TOUCH_RELEASE_NONE);
+    }
+    mpTouchUnit = nullptr;
+    if (mpGUISingleton != nullptr) {
+        if (mpGUISingleton == static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->killSingletonMenu();
+        }
+    }
+    mpGUISingleton = nullptr;
+}
+
+void cpOmBase::move() {
+    uOmModel* puom = mpModel;
+    if (puom == nullptr) {
+        return;
+    }
+    cOmControl* pctrl = puom->getOmCtrl();
+    if (pctrl == nullptr) {
+        return;
+    }
+    setLinkNavExt(mbLinkNav, false, false);
+    if (pctrl->mLot.mAreaMasterNo == 0) {
+        return;
+    }
+    mbAreaMaster = sQuestManagerExt::getInstance()->isAreaRelease(static_cast<unsigned short>(pctrl->mLot.mAreaMasterNo));
+}
+
+__attribute__((weak)) void cpOmBase::kill() {
+    DDON_STUB("cpOmBase::kill")
+    /* stub */
+}
+
+void cpOmBase::updatePtr() {
+    this->cpComponent::updatePtr();
+    if (mpModel != nullptr) {
+        if (!mpModel->isEnable()) {
+            mpModel = nullptr;
+        }
+    }
+    if (mpTouchUnit != nullptr) {
+        if (!mpTouchUnit->isEnable()) {
+            mpTouchUnit = nullptr;
+        }
+    }
+    if (mpGUISingleton == nullptr) {
+        return;
+    }
+    if (mpGUISingleton->isEnable()) {
+        return;
+    }
+    mpGUISingleton = nullptr;
+}
+
+void cpOmBase::setOwner(MtObject* pOwner) {
+    mpOwner = pOwner;
+    mpModel = static_cast<uOmModel*>(pOwner);
+}
+
+__attribute__((weak)) void cpOmBase::createProperty(MtPropertyList& s) {
+    DDON_STUB("cpOmBase::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void cpOmBase::setTouch(uDDOModel* pUnit) {
+}
+
+__attribute__((weak)) void cpOmBase::finishTouch(nDDOModel::TOUCH_RELEASE_TYPE type) {
+}
+
+__attribute__((weak)) void cpOmBase::cancelTouch() {
+}
+
+__attribute__((weak)) bool cpOmBase::isCanTouch(uDDOModel* pu) {
+    DDON_STUB("cpOmBase::isCanTouch")
+    return {};
+}
+
+__attribute__((weak)) bool cpOmBase::isUIOpen() {
+    DDON_STUB("cpOmBase::isUIOpen")
+    return {};
+}
+
+__attribute__((weak)) bool cpOmBase::reqDialog(s32 dialogType, MT_CTSTR mainMsg, s32 defPos, MT_CTSTR choice1, MT_CTSTR choice2, MT_CTSTR choice3, MT_CTSTR choice4) {
+    DDON_STUB("cpOmBase::reqDialog")
+    return {};
+}
+
+__attribute__((weak)) bool cpOmBase::reqDialogEx(MT_CTSTR title, s32 defPos, MT_CTSTR* pselect, u32 selectNum) {
+    DDON_STUB("cpOmBase::reqDialogEx")
+    return {};
+}
+
+__attribute__((weak)) bool cpOmBase::reqText(u32 textType, u32 textNo, u32 questNo) {
+    DDON_STUB("cpOmBase::reqText")
+    return {};
+}
+
+__attribute__((weak)) cTalkMsgData* cpOmBase::getMsgData(u32 textType, u32 textNo, u32 questNo) {
+    DDON_STUB("cpOmBase::getMsgData")
+    return nullptr;
+}
+
+void cpOmBase::createGUISingleton(const MtDTI* pDTI) {
+    mpGUISingleton = static_cast<sGUIExt*>(sGUI::getInstance())->newSingletonMenu(pDTI);
+}
+
+void cpOmBase::deleteGUISingleton() {
+    if (mpGUISingleton != nullptr) {
+        if (mpGUISingleton == static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->killSingletonMenu();
+        }
+    }
+    mpGUISingleton = nullptr;
+}
+
+bool cpOmBase::isMoveGUISingleton() {
+    return (mpGUISingleton != nullptr) && (mpGUISingleton == static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu);
+}
+
+bool cpOmBase::isEndGUISingleton() {
+    if (mpGUISingleton != nullptr) {
+        if (mpGUISingleton == static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu) {
+            return mpGUISingleton->mResult == uGUIBase::RESULT_EXIT;
+        }
+    }
+    return true;
+}
+
+__attribute__((weak)) void cpOmBase::reqTextDialog(cTalkMsgData* pMsgData) {
+    DDON_STUB("cpOmBase::reqTextDialog")
+    /* stub */
+}
+
+__attribute__((weak)) void cpOmBase::initAction(uOmModel* puom) {
+}
+
+__attribute__((weak)) bool cpOmBase::hasKeyNo(u32 keyNo, bool isUse) {
+    DDON_STUB("cpOmBase::hasKeyNo")
+    return {};
+}
+
+void cpOmBase::setPLAct(u32 actNo, bool isLoop) {
+    uDDOModel* t0 = mpTouchUnit;
+    if (t0 == nullptr) {
+        return;
+    }
+    mbLoopAct = isLoop;
+    u32 actNoNow = t0->getActMgrPtr()->getActionNo();
+    if ((actNoNow - 196u) > 30u) {
+        if (actNoNow > 10u) {
+            if (actNoNow == 74) {
+                t0->getActionRequestPtr()->mTouchAction = actNo;
+                t0->getActionRequestPtr()->mTouchActionReq = actNo;
+            }
+        } else {
+            t0->getActionRequestPtr()->mTouchAction = actNo;
+            t0->getActionRequestPtr()->mTouchActionReq = actNo;
+        }
+    } else {
+        t0->getActionRequestPtr()->mTouchAction = actNo;
+        t0->getActionRequestPtr()->mTouchActionReq = actNo;
+    }
+}
+
+bool cpOmBase::getLinkNav() {
+    return mbLinkNav;
+}
+
+void cpOmBase::setLinkNav(bool islink) {
+    setLinkNavExt(islink, false, false);
+}
+
+void cpOmBase::setLinkNavEnd(bool islink) {
+    setLinkNavExt(islink, false, false);
+    mbNavEnd = true;
+}
+
+__attribute__((weak)) void cpOmBase::setLinkNavExt(bool islink, bool update_obb, bool force_update) {
+    DDON_STUB("cpOmBase::setLinkNavExt")
+    /* stub */
+}
+
+cpOmBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cpOmBase::MyDTI cpOmBase::DTI("cpOmBase", &::cpComponent::DTI, 240ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cpOmBase::MyDTI::newInstance() const {
+    DDON_STUB("cpOmBase::MyDTI::newInstance")
+    return nullptr;
+}
 
 const MtDTI& cpOmLadder::getDTI() const {
     return cpOmLadder::DTI;

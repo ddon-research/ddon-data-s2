@@ -251,10 +251,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIEntryBoardInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUIEntryBoardInfo::reqCancel() {
     this->mReqCancel = true;
 }
 
 inline void uGUIEntryBoardInfo::evChangeWindow() {
     this->mReqChangeWindow = true;
+}
+
+inline void* uGUIEntryBoardInfo::cData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -204,5 +204,13 @@ protected:
     static const u16 DATA_VERSION = 3396;
 };
 
+inline void* rGrassWind::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rGrassWind::cParamSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rGrassWind::cParams::cParams() {
 }

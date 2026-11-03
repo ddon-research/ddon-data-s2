@@ -7,9 +7,12 @@
 #include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "cCharacterData.h"
 #include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "rCharacterEdit.h"
 #include "sArchiveManager.h"
 #include "sSavedataExt.h"
@@ -952,13 +955,13 @@ void cEditParam::copyConstValue(u32 sex) {
         cResource* pRes = sArchiveManager::getInstance()->createRes("character_edit_common", "RES_ID_HUMAN_F_PRESET_EDT", 1u, false);
         if (pRes != nullptr) {
             copyConstValue(reinterpret_cast<const cEditParam*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pRes) + 112)));
-            pRes->cResource::release();
+            pRes->release();
         }
     } else {
         cResource* pRes = sArchiveManager::getInstance()->createRes("character_edit_common", "RES_ID_HUMAN_M_PRESET_EDT", 1u, false);
         if (pRes != nullptr) {
             copyConstValue(reinterpret_cast<const cEditParam*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pRes) + 112)));
-            pRes->cResource::release();
+            pRes->release();
         }
     }
 }
@@ -1449,9 +1452,8 @@ cEditParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u3
 
 cEditParam::MyDTI cEditParam::DTI("cEditParam", &::MtObject::DTI, 2128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cEditParam::MyDTI::newInstance() const {
-    DDON_STUB("cEditParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cEditParam::MyDTI::newInstance() const {
+    return new (16u) cEditParam;
 }
 
 const MtDTI& cEditValue::getDTI() const {

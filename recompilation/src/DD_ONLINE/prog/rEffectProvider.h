@@ -854,6 +854,25 @@ protected:
     static const u32 EP_VERSION = 20;
 };
 
+inline void* rEffectProvider::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rEffectProvider::rEffectProvider() {
+    this->::cResource::mAttr = 18;
+}
+
+inline void* rEffectProvider::INFO_PROV::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rEffectProvider::INFO_PROV::INFO_PROV() {
+}
+
+inline void* rEffectProvider::INFO_EFFECT::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rEffectProvider::INFO_EFFECT::INFO_EFFECT() {
     this->mpEffectIndex = nullptr;
     this->mEffectIndexNum = 0;
@@ -863,12 +882,137 @@ inline rEffectProvider::INFO_EFFECT::INFO_EFFECT() {
     this->mEventListNum = 0;
 }
 
+inline void* rEffectProvider::INFO_BASE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rEffectProvider::INFO_BASE::INFO_BASE() {
+}
+
+inline void* rEffectProvider::EffectIndex::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rEffectProvider::EffectIndex::EffectIndex() {
     this->mpEffectElement = nullptr;
     this->mEffectElementNum = 0;
+}
+
+inline void rEffectProvider::EffectIndex::setEffectElement(rEffectProvider::EffectElement* pEffectElement) {
+    this->mpEffectElement = pEffectElement;
+}
+
+inline void* rEffectProvider::EffectElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void rEffectProvider::EffectElement::setResourceType(u32 type) {
+    this->mResourceType = type;
+}
+
+inline void rEffectProvider::EffectElement::setEffectType(u32 type) {
+    this->mEffectType = type;
+}
+
+inline void* rEffectProvider::EffectParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void rEffectProvider::EffectParam::setSetType(u32 type) {
+    this->mSetType = type;
+}
+
+inline void rEffectProvider::EffectParam::setEndType(u32 type) {
+    this->mEndType = type;
+}
+
+inline void rEffectProvider::EffectParam::setGroupFlag(u32 GroupFlag) {
+    if (this->mGroupFlag == GroupFlag) {
+        return;
+    }
+    this->mGroupFlag = GroupFlag;
+}
+
+inline void rEffectProvider::EffectParam::setMaterialFlag(u32 MaterialFlag) {
+    if (this->mMaterialFlag == MaterialFlag) {
+        return;
+    }
+    this->mMaterialFlag = MaterialFlag;
+}
+
+inline void rEffectProvider::EffectParam::setOrder(u32 Order) {
+    if (this->mOrder == Order) {
+        return;
+    }
+    this->mOrder = Order;
+}
+
+inline void rEffectProvider::EffectParam::setLandLength(f32 val) {
+    this->mLandLength = val;
+}
+
+inline void rEffectProvider::EffectParam::setParentNo(u32 ParentNo) {
+    this->mParentNo = ParentNo;
+}
+
+inline void rEffectProvider::EffectParam::setPosType(u32 type) {
+    this->mPosType = type;
+}
+
+inline void rEffectProvider::EffectParam::setRotType(u32 type) {
+    this->mRotType = type;
+}
+
+inline void rEffectProvider::EffectParam::setJointNo(s32 JointNo) {
+    this->mJointNo = JointNo;
+}
+
+inline void rEffectProvider::EffectParam::setDefaultColorRate(f32 rate) {
+    this->mDefaultColorRate = rate;
+}
+
+inline void rEffectProvider::EffectParam::setDefaultColorMode(u32 mode) {
+    this->mDefaultColorMode = mode;
+}
+
+inline void rEffectProvider::EffectParam::setAlphaScale(f32 rate) {
+    this->mAlphaScale = rate;
+}
+
+inline void rEffectProvider::EffectParam::setLightPriority(u32 pri) {
+    this->mLightPriority = pri;
+}
+
+inline void rEffectProvider::EffectParam::setCustomFlag(u32 flag) {
+    this->mCustomFlag = flag;
+}
+
+inline void rEffectProvider::EffectParam::setParentRelationFlagFlag(u32 flag) {
+    this->mParentRelationFlag = flag;
+}
+
+inline void rEffectProvider::EffectParam::setE2DType(u32 type) {
+    this->mE2DType = type;
+}
+
+inline const cWeatherFlag& rEffectProvider::EffectParam::getWeatherOnBit() const {
+    return this->mWeatherOnBit;
+}
+
+inline void rEffectProvider::EffectParam::setZoneOnBit(u32 set) {
+    this->mZoneOnBit = set;
+}
+
+inline void rEffectProvider::EffectParam::setQuakeType(u32 set) {
+    this->mQuakeType = set;
+}
+
+inline void rEffectProvider::EffectParam::setCreateCost(u32 set) {
+    this->mCreateCost = set;
+}
+
+inline void* rEffectProvider::EffectMotSyncParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rEffectProvider::EffectMotSyncParam::EffectMotSyncParam() {
@@ -883,8 +1027,52 @@ inline rEffectProvider::EffectMotSyncParam::EffectMotSyncParam() {
     this->mEfcElementNo = 0xFFFF;
 }
 
+inline void rEffectProvider::EffectMotSyncParam::setMotionNo(u32 no) {
+    this->mMotionNo = no;
+}
+
+inline void rEffectProvider::EffectMotSyncParam::setBlendIndex(u32 index) {
+    this->mBlendIndex = index;
+}
+
+inline void rEffectProvider::EffectMotSyncParam::setStartFrame(f32 frame) {
+    this->mStartFrame = frame;
+}
+
+inline void rEffectProvider::EffectMotSyncParam::setEndFrame(f32 frame) {
+    this->mEndFrame = frame;
+}
+
+inline void rEffectProvider::EffectMotSyncParam::setInterval(f32 frame) {
+    this->mInterval = frame;
+}
+
+inline void rEffectProvider::EffectMotSyncParam::setEfcIndexNo(u32 no) {
+    this->mEfcIndexNo = no;
+}
+
+inline void rEffectProvider::EffectMotSyncParam::setEfcElementNo(u32 no) {
+    this->mEfcElementNo = no;
+}
+
+inline void* rEffectProvider::EffectEventParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rEffectProvider::EffectEventParam::EffectEventParam() {
     this->mEventWorkNo = 0;
     this->mEfcIndexNo = 0xFFFF;
     this->mEfcElementNo = 0xFFFF;
+}
+
+inline void rEffectProvider::EffectEventParam::setEventWorkNo(u32 no) {
+    this->mEventWorkNo = no;
+}
+
+inline void rEffectProvider::EffectEventParam::setEfcIndexNo(u32 no) {
+    this->mEfcIndexNo = no;
+}
+
+inline void rEffectProvider::EffectEventParam::setEfcElementNo(u32 no) {
+    this->mEfcElementNo = no;
 }

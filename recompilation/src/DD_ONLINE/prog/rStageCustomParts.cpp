@@ -9,6 +9,8 @@
 #include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
 #include "cResPath.h"
 #include "../../XFramework/cResource.h"
@@ -100,7 +102,7 @@ bool rStageCustomParts::save(MtStream& out) {
     w.MtDataWriter::writeU32(mArrayFilterNum);
     if (mArrayFilterNum != 0) {
         for (unsigned int i2_3 = 0;;) {
-            w.MtDataWriter::writeString(&mpArrayFilter[i2_3].mFilter[0]);
+            w.writeString(&mpArrayFilter[i2_3].mFilter[0]);
             if ((i2_3 + 1u) < mArrayFilterNum) {
                 i2_3 += 1u;
             } else {
@@ -224,8 +226,6 @@ rStageCustomParts::Info::Info() {
 }
 
 rStageCustomParts::Info::~Info() {
-    DDON_STUB("rStageCustomParts::Info::~Info")
-    /* stub */
 }
 
 __attribute__((weak)) void rStageCustomParts::Info::createProperty(MtPropertyList& s) {
@@ -285,9 +285,7 @@ void rStageCustomParts::Info::setModelName(const MtString& name) {
     snprintf(&mModel[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageCustomParts::Info::getModelName() const {
-    return &mModel[0];
-}
+static auto ddon_emit_0x01ab2cd0 __attribute__((used)) = &rStageCustomParts::Info::getModelName;
 
 void rStageCustomParts::Info::setScrSbcName(const MtString& name, u32 idx) {
     snprintf(reinterpret_cast<char*>(mScrSbc[idx]), 64ul, "%s", name.ptr());
@@ -301,9 +299,7 @@ __attribute__((weak)) MT_CTSTR rStageCustomParts::Info::getScrSbcName(u32 idx) c
 __attribute__((weak)) void rStageCustomParts::Info::setScrSbcNameNum(u32) {
 }
 
-u32 rStageCustomParts::Info::getScrSbcNameNum() const {
-    return 3;
-}
+static auto ddon_emit_0x01ab2cf0 __attribute__((used)) = &rStageCustomParts::Info::getScrSbcNameNum;
 
 void rStageCustomParts::Info::setEffSbcName(const MtString& name, u32 idx) {
     snprintf(reinterpret_cast<char*>(mEffSbc[idx]), 64ul, "%s", name.ptr());
@@ -317,41 +313,31 @@ __attribute__((weak)) MT_CTSTR rStageCustomParts::Info::getEffSbcName(u32 idx) c
 __attribute__((weak)) void rStageCustomParts::Info::setEffSbcNameNum(u32) {
 }
 
-u32 rStageCustomParts::Info::getEffSbcNameNum() const {
-    return 3;
-}
+static auto ddon_emit_0x01ab2d20 __attribute__((used)) = &rStageCustomParts::Info::getEffSbcNameNum;
 
 void rStageCustomParts::Info::setLightName(const MtString& name) {
     snprintf(&mLight[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageCustomParts::Info::getLightName() const {
-    return &mLight[0];
-}
+static auto ddon_emit_0x01ab2d40 __attribute__((used)) = &rStageCustomParts::Info::getLightName;
 
 void rStageCustomParts::Info::setNaviMeshName(const MtString& name) {
     snprintf(&mNaviMesh[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageCustomParts::Info::getNaviMeshName() const {
-    return &mNaviMesh[0];
-}
+static auto ddon_emit_0x01ab2d50 __attribute__((used)) = &rStageCustomParts::Info::getNaviMeshName;
 
 void rStageCustomParts::Info::setEpvName(const MtString& name) {
     snprintf(&mEpv[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageCustomParts::Info::getEpvName() const {
-    return &mEpv[0];
-}
+static auto ddon_emit_0x01ab2d60 __attribute__((used)) = &rStageCustomParts::Info::getEpvName;
 
 void rStageCustomParts::Info::setOccluderName(const MtString& name) {
     snprintf(&mOccluder[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageCustomParts::Info::getOccluderName() const {
-    return &mOccluder[0];
-}
+static auto ddon_emit_0x01ab2d70 __attribute__((used)) = &rStageCustomParts::Info::getOccluderName;
 
 u64 rStageCustomParts::Info::getEfcColorZone() const {
     return mEfcColorZone.mId;
@@ -426,9 +412,7 @@ void rStageCustomParts::Filter::setFilterName(const MtString& name) {
     snprintf(&mFilter[0], 64ul, "%s", name.ptr());
 }
 
-MT_CTSTR rStageCustomParts::Filter::getFilterName() const {
-    return &mFilter[0];
-}
+static auto ddon_emit_0x01ab2d90 __attribute__((used)) = &rStageCustomParts::Filter::getFilterName;
 
 rStageCustomParts::Filter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

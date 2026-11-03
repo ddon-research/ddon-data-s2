@@ -7,6 +7,11 @@
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/rVibration.h"
+#include "sInputManager.h"
+#include "../../XFramework/sPad.h"
+#include "sPadExt.h"
+#include "../../XFramework/sSavedata.h"
+#include "sSavedataExt.h"
 #include "../../XFramework/sVibration.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

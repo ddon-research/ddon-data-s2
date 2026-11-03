@@ -2,11 +2,13 @@
 #include <new>
 #include "nNetworkRoute.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetBuffer.h"
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtNetObject.h"
 #include "../MT/MtNetP2p.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

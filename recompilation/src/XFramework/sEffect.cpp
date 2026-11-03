@@ -8,17 +8,26 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtRandom.h"
 #include "../MT/MtSynchronize.h"
 #include "cSystem.h"
 #include "cWind.h"
 #include "nDrawMaterial.h"
 #include "nDrawMaterialStd.h"
+#include "rEffect2D.h"
+#include "rEffectAnim.h"
+#include "rEffectList.h"
+#include "rEffectStrip.h"
+#include "rVertices.h"
+#include "sApp.h"
 #include "sCollision.h"
 #include "sMain.h"
+#include "sRender.h"
 #include "sUnit.h"
 #include "uEffect.h"
 #include "uEffect2D.h"
+#include "uEffectEmitter.h"
 #include "uEffectFilter.h"
 #include "uSimpleEffect.h"
 #ifndef DDON_STUB
@@ -96,9 +105,7 @@ u32 sEffect::getRandomU32(u32 EventMode) {
     }
 }
 
-u32 sEffect::getEventRandomSeed() const {
-    return mEventRandomSeed;
-}
+static auto ddon_emit_0x01b9ef70 __attribute__((used)) = &sEffect::getEventRandomSeed;
 
 void sEffect::setEventRandomSeed(u32 Seed) {
     mEventRandomSeed = Seed;
@@ -206,9 +213,7 @@ __attribute__((weak)) void sEffect::setForceDir(const MtVector3& ForceDir) {
     /* stub */
 }
 
-f32 sEffect::getForcePower() const {
-    return mForcePower;
-}
+static auto ddon_emit_0x01b9f000 __attribute__((used)) = &sEffect::getForcePower;
 
 void sEffect::setForcePower(f32 ForcePower) {
     mForceVec.x = mForceDir.x * ForcePower;
@@ -256,21 +261,13 @@ f32 sEffect::getFps() {
     }
 }
 
-bool sEffect::isOcclusionParticleDraw() const {
-    return mOcclusionParticleDraw;
-}
+static auto ddon_emit_0x01b9ef80 __attribute__((used)) = &sEffect::isOcclusionParticleDraw;
 
-void sEffect::setOcclusionParticleDraw(bool Mode) {
-    mOcclusionParticleDraw = Mode;
-}
+static auto ddon_emit_0x01b9ef90 __attribute__((used)) = &sEffect::setOcclusionParticleDraw;
 
-void sEffect::setEffectVolume(u32 Volume) {
-    mParticleVolume = Volume;
-}
+static auto ddon_emit_0x01b9eaa0 __attribute__((used)) = &sEffect::setEffectVolume;
 
-u32 sEffect::getEffectVolume() const {
-    return mParticleVolume;
-}
+static auto ddon_emit_0x01b9ea90 __attribute__((used)) = &sEffect::getEffectVolume;
 
 uEffect* sEffect::newEffect() {
     return new (16u) uEffect;
@@ -284,13 +281,9 @@ uSimpleEffect* sEffect::newSimpleEffect() {
     return new (16u) uSimpleEffect;
 }
 
-u32 sEffect::getKillNoMin() const {
-    return mKillNoMin;
-}
+static auto ddon_emit_0x01b9eab0 __attribute__((used)) = &sEffect::getKillNoMin;
 
-u32 sEffect::getKillNoMax() const {
-    return mKillNoMax;
-}
+static auto ddon_emit_0x01b9eac0 __attribute__((used)) = &sEffect::getKillNoMax;
 
 void sEffect::setKillNoMin(u32 KillNoMin) {
     if (KillNoMin == 0) {
@@ -417,17 +410,11 @@ __attribute__((weak)) void sEffect::setCullingDist(f32 Dist, u32 No) {
     /* stub */
 }
 
-u32 sEffect::getCullingDistTblNum() const {
-    return 8;
-}
+static auto ddon_emit_0x01b9ef20 __attribute__((used)) = &sEffect::getCullingDistTblNum;
 
-u32 sEffect::getMultiBlurFilterDrawPriority() const {
-    return mMultiBlurFilterControl.mDrawPriority;
-}
+static auto ddon_emit_0x01b9eb30 __attribute__((used)) = &sEffect::getMultiBlurFilterDrawPriority;
 
-void sEffect::setMultiBlurFilterDrawPriority(u32 DrawPriority) {
-    mMultiBlurFilterControl.mDrawPriority = DrawPriority;
-}
+static auto ddon_emit_0x01b9eb40 __attribute__((used)) = &sEffect::setMultiBlurFilterDrawPriority;
 
 u32 sEffect::getMultiBlurFilterPass() const {
     return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 760)) >> 8) & 255u;
@@ -468,13 +455,9 @@ void sEffect::setMultiBlurFilter(void* pParam, rTexture* pAlphaMap) {
     }
 }
 
-u32 sEffect::getMultiColorCorrectFilterDrawPriority() const {
-    return mMultiColorCorrectFilterControl.mDrawPriority;
-}
+static auto ddon_emit_0x01b9ebb0 __attribute__((used)) = &sEffect::getMultiColorCorrectFilterDrawPriority;
 
-void sEffect::setMultiColorCorrectFilterDrawPriority(u32 DrawPriority) {
-    mMultiColorCorrectFilterControl.mDrawPriority = DrawPriority;
-}
+static auto ddon_emit_0x01b9ebc0 __attribute__((used)) = &sEffect::setMultiColorCorrectFilterDrawPriority;
 
 u32 sEffect::getMultiColorCorrectFilterPass() const {
     return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 832)) >> 8) & 255u;
@@ -515,13 +498,9 @@ void sEffect::setMultiColorCorrectFilter(void* pParam) {
     }
 }
 
-u32 sEffect::getMultiGodRaysFilterDrawPriority() const {
-    return mMultiGodRaysFilterControl.mDrawPriority;
-}
+static auto ddon_emit_0x01b9ec30 __attribute__((used)) = &sEffect::getMultiGodRaysFilterDrawPriority;
 
-void sEffect::setMultiGodRaysFilterDrawPriority(u32 DrawPriority) {
-    mMultiGodRaysFilterControl.mDrawPriority = DrawPriority;
-}
+static auto ddon_emit_0x01b9ec40 __attribute__((used)) = &sEffect::setMultiGodRaysFilterDrawPriority;
 
 u32 sEffect::getMultiGodRaysFilterPass() const {
     return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 904)) >> 8) & 255u;
@@ -562,13 +541,9 @@ void sEffect::setMultiGodRaysFilter(void* pParam) {
     }
 }
 
-u32 sEffect::getMultiBloomFilterDrawPriority() const {
-    return mMultiBloomFilterControl.mDrawPriority;
-}
+static auto ddon_emit_0x01b9ecb0 __attribute__((used)) = &sEffect::getMultiBloomFilterDrawPriority;
 
-void sEffect::setMultiBloomFilterDrawPriority(u32 DrawPriority) {
-    mMultiBloomFilterControl.mDrawPriority = DrawPriority;
-}
+static auto ddon_emit_0x01b9ecc0 __attribute__((used)) = &sEffect::setMultiBloomFilterDrawPriority;
 
 u32 sEffect::getMultiBloomFilterPass() const {
     return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 976)) >> 8) & 255u;
@@ -689,9 +664,7 @@ void sEffect::setAdhesionDivideMax(u32 Max) {
     }
 }
 
-u32 sEffect::getAdhesionDivideMax() const {
-    return mAdhesionDivideMax;
-}
+static auto ddon_emit_0x01b9ef40 __attribute__((used)) = &sEffect::getAdhesionDivideMax;
 
 sEffect::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

@@ -296,6 +296,10 @@ inline f32 AreaHitShape::getCkToward() const {
     return this->mCheckToward;
 }
 
+inline void* cAreaHit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cAreaHit::setOwner(MtObject* pOwner) {
     this->mpOwner = pOwner;
 }
@@ -306,6 +310,14 @@ inline bool cAreaHit::isEnable() {
 
 inline void cAreaHit::setAttribute(u32 attr) {
     this->mAttr = attr;
+}
+
+inline void cAreaHit::setCkRange(f32 r) {
+    this->mCkRange = r;
+}
+
+inline void cAreaHit::setCkToward(f32 r) {
+    this->mCkToward = r;
 }
 
 inline AreaHitShape* cAreaHit::getShapePtr() const {

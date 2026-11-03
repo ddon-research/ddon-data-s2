@@ -21,6 +21,7 @@ class cAICopiableParameter;
 class cAIUserProcess;
 class cAIUserProcessCallback;
 class cAIUserProcessContainer;
+class cAIUserProcessReference;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -208,5 +209,68 @@ public:
     static MyDTI DTI;
 };
 
+class cAIUserProcessReference : public cAIResource
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cAIUserProcessReference();
+    virtual ~cAIUserProcessReference();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    void setContainerName(MT_CTSTR);
+    MtString& getContainerName();
+    void setCategoryName(MT_CTSTR);
+    MtString& getCategoryName();
+    cAIUserProcessContainer* getProcessContainer();
+protected:
+    MtString mContainerName;  // offset: 0x8
+    MtString mCategoryName;  // offset: 0x10
+public:
+    static MyDTI DTI;
+};
+
+inline void* cAICopiableParameter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAICopiableParameter::cAICopiableParameter() {
+}
+
+inline void* cAIUserProcess::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIUserProcessCallback::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIUserProcessContainer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIUserProcessReference::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cAIUserProcessReference::cAIUserProcessReference() {
 }

@@ -8,8 +8,11 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "cDraw.h"
 #include "nDraw.h"
+#include "nEffect.h"
 #include "rEffectList.h"
+#include "sCamera.h"
 #include "sEffect.h"
 #include "sGpuParticle.h"
 #include "sVibration.h"
@@ -18,9 +21,21 @@
 #define DDON_STUB(name)
 #endif
 
-__attribute__((weak)) void cEffectJoint::constructParam(uEffect* pOwner) {
-    DDON_STUB("cEffectJoint::constructParam")
-    /* stub */
+void cEffectJoint::constructParam(uEffect* pOwner) {
+    mpOwner = pOwner;
+    if (pOwner->mpEffectList->mUnitJointParamOffset != 0) {
+        mpJointParam = reinterpret_cast<rEffectList::EFL_JOINT*>(&pOwner->mpEffectList->mpParamBuff[pOwner->mpEffectList->mUnitJointParamOffset]);
+    } else {
+        mpJointParam = nullptr;
+    }
+    mAllocBuffSize = 0;
+    mpAngle = nullptr;
+    mpKeyframe = nullptr;
+    mpExtendedBuff = nullptr;
+    mRno = 0;
+    mJointIndex = 0;
+    mJointNo = 0;
+    mStatus = 1;
 }
 
 __attribute__((weak)) void cEffectJoint::constructParam(uEffect* pOwner, u32 JointIndex, u32 JointNo) {

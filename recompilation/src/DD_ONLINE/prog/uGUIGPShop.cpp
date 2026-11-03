@@ -9,22 +9,32 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
+#include "Protocol/PacketData/Pawn.h"
+#include "Protocol/UserSession/S2C.h"
 #include "cControl.h"
 #include "cGUIControlMgr.h"
+#include "cGUIExtNetMgr.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "cNetGameServer.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
 #include "../../XFramework/rGUIMessage.h"
+#include "sChat.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sItemManager.h"
+#include "../../XFramework/sMain.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #include "sSoundManager.h"
+#include "../../XFramework/sUnit.h"
+#include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #include "uGUIGPConfirm.h"
 #include "uGUIGPShopDialog.h"
@@ -1168,7 +1178,7 @@ void uGUIGPShop::updateScrollNoUseListHide(uGUIBase::cScrollListItemBase* pDispI
         return;
     }
     setInstanceVisibleTree(static_cast<cGUIInstance*>(pdisp->mInst.pNull), false);
-    pdisp->::uGUIGPShop::cScrollStatusDispBase::mIndex = -1;
+    pdisp->mIndex = -1;
 }
 
 __attribute__((weak)) void uGUIGPShop::updateScrollHistoryListDisp(uGUIBase::cScrollListItemBase* pDispItem, uGUIBase::cScrollListInfoBase* pListItem, u32 Index) {
@@ -1184,7 +1194,7 @@ void uGUIGPShop::updateScrollHistoryListHide(uGUIBase::cScrollListItemBase* pDis
     if (pdisp->mInst.pInst == nullptr) {
         return;
     }
-    pdisp->mInst.pInst->cGUIInstance::setVisible(false);
+    pdisp->mInst.pInst->setVisible(false);
     pdisp->mIndex = -1;
 }
 
@@ -1205,9 +1215,66 @@ void uGUIGPShop::updateScrollShopListHide(uGUIBase::cScrollListItemBase* pDispIt
     pdisp->mIndex = -1;
 }
 
-__attribute__((weak)) void uGUIGPShop::setType(u32 Type) {
-    DDON_STUB("uGUIGPShop::setType")
-    /* stub */
+void uGUIGPShop::setType(u32 Type) {
+    mType = Type;
+    switch (Type) {
+        case 0:
+        {
+            setPlayingFlow(getFlow(4u), true);
+            cGUIObjMessage* t0 = mpTitleEng;
+            cGUIObjMessage* t1 = mpTitleJp;
+            MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 1u);
+            setWindowTitle(t0, t1, t2, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 2u));
+            play(0.0f);
+            break;
+        }
+        case 1:
+        {
+            setPlayingFlow(getFlow(12u), true);
+            cGUIObjMessage* t0 = mpTitleEng;
+            cGUIObjMessage* t1 = mpTitleJp;
+            MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 1u);
+            setWindowTitle(t0, t1, t2, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 2u));
+            play(0.0f);
+            break;
+        }
+        case 2:
+        {
+            setPlayingFlow(getFlow(6u), true);
+            cGUIObjMessage* t3 = mpTitleEng;
+            cGUIObjMessage* t4 = mpTitleJp;
+            MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u);
+            setWindowTitle(t3, t4, t5, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 48u));
+            play(0.0f);
+            break;
+        }
+        case 3:
+        {
+            setPlayingFlow(getFlow(9u), true);
+            cGUIObjMessage* t3 = mpTitleEng;
+            cGUIObjMessage* t4 = mpTitleJp;
+            MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u);
+            setWindowTitle(t3, t4, t5, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 48u));
+            play(0.0f);
+            break;
+        }
+        case 4:
+        {
+            setPlayingFlow(getFlow(8u), true);
+            cGUIObjMessage* t3 = mpTitleEng;
+            cGUIObjMessage* t4 = mpTitleJp;
+            MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u);
+            setWindowTitle(t3, t4, t5, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 48u));
+            play(0.0f);
+            break;
+        }
+        default:
+        {
+            play(0.0f);
+            break;
+        }
+    }
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShop::updateWait);
 }
 
 __attribute__((weak)) void uGUIGPShop::startType() {
@@ -1298,6 +1365,19 @@ __attribute__((weak)) void uGUIGPShop::setKeyStatus(u32 Mode) {
     }
 }
 
+inline void uGUIGPShop::setMenuCursorSequence(cGUIInstAnimation* pInst) {
+    if (mShopMenuCursor.mpInstance != nullptr) {
+        mShopMenuCursor.mpInstance->setVisible(false);
+    }
+    if (mStatusMenuCursor.mpInstance != nullptr) {
+        mStatusMenuCursor.mpInstance->setVisible(false);
+    }
+    if (pInst == nullptr) {
+        return;
+    }
+    pInst->setSequenceId(5u);
+}
+
 __attribute__((weak)) void uGUIGPShop::setDetail(bool IsDisp) {
     DDON_STUB("uGUIGPShop::setDetail")
     /* stub */
@@ -1353,6 +1433,12 @@ __attribute__((weak)) void uGUIGPShop::setButtonSequenceCore(cGUIInstAnimation* 
             }
         }
     }
+}
+
+inline void uGUIGPShop::toShopPage() {
+    mIsPageChange = true;
+    mType = 0;
+    mShopControl.setCurrentPos(0u, 1);
 }
 
 __attribute__((weak)) void uGUIGPShop::setBuyItemDialog() {
@@ -1547,14 +1633,94 @@ __attribute__((weak)) void uGUIGPShop::manageExecBrowser() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGPShop::changeShopMenu() {
-    DDON_STUB("uGUIGPShop::changeShopMenu")
-    /* stub */
+void uGUIGPShop::changeShopMenu() {
+    s32 t0 = mShopControl.getCurrentPos(0u);
+    if (t0 == 1) {
+        mType = 0;
+        setPlayingFlow(getFlow(4u), true);
+        cGUIObjMessage* t1 = mpTitleEng;
+        cGUIObjMessage* t2 = mpTitleJp;
+        MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 1u);
+        setWindowTitle(t1, t2, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 2u));
+        play(0.0f);
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShop::updateWait);
+        startType();
+    } else {
+        if (t0 == 0) {
+            mType = 1;
+            setPlayingFlow(getFlow(12u), true);
+            cGUIObjMessage* t1 = mpTitleEng;
+            cGUIObjMessage* t2 = mpTitleJp;
+            MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 1u);
+            setWindowTitle(t1, t2, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 2u));
+            play(0.0f);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShop::updateWait);
+            startType();
+        } else {
+            mGuide.clearGuide();
+            mGuide.addGuide(uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE_DECIDE);
+            mGuide.addGuide(nKeyCustom::KEY_CUSTOM_UI_Y, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 4u), nGUIExt::ICONTAGKB_2WAY, static_cast<MT_CTSTR>(nullptr), false);
+            mReqBrowserType = 1;
+        }
+    }
 }
 
-__attribute__((weak)) void uGUIGPShop::changeStatusList() {
-    DDON_STUB("uGUIGPShop::changeStatusList")
-    /* stub */
+void uGUIGPShop::changeStatusList() {
+    if (mStatusControl.getCurrentPos(0u) == 0) {
+        s32 t0 = mStatusControl.getCurrentPos(1u);
+        if (t0 != 2) {
+            if (t0 == 1) {
+                mType = 3;
+                setPlayingFlow(getFlow(9u), true);
+                cGUIObjMessage* t1 = mpTitleEng;
+                cGUIObjMessage* t2 = mpTitleJp;
+                MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u);
+                setWindowTitle(t1, t2, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 48u));
+                play(0.0f);
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShop::updateWait);
+                startType();
+                mReqBrowserType = 1;
+                mHoldBrowserType = 0;
+                mIsCAPChargeBrowserExec = false;
+            } else {
+                if (t0 == 0) {
+                    mType = 2;
+                    setPlayingFlow(getFlow(6u), true);
+                    cGUIObjMessage* t1 = mpTitleEng;
+                    cGUIObjMessage* t2 = mpTitleJp;
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u);
+                    setWindowTitle(t1, t2, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 48u));
+                    play(0.0f);
+                    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShop::updateWait);
+                    startType();
+                    mReqBrowserType = 1;
+                    mHoldBrowserType = 0;
+                    mIsCAPChargeBrowserExec = false;
+                } else {
+                    mReqBrowserType = 1;
+                    mHoldBrowserType = 0;
+                    mIsCAPChargeBrowserExec = false;
+                }
+            }
+        } else {
+            mType = 4;
+            setPlayingFlow(getFlow(8u), true);
+            cGUIObjMessage* t1 = mpTitleEng;
+            cGUIObjMessage* t2 = mpTitleJp;
+            MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u);
+            setWindowTitle(t1, t2, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 48u));
+            play(0.0f);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShop::updateWait);
+            startType();
+            mReqBrowserType = 1;
+            mHoldBrowserType = 0;
+            mIsCAPChargeBrowserExec = false;
+        }
+    } else {
+        mReqBrowserType = 1;
+        mHoldBrowserType = 0;
+        mIsCAPChargeBrowserExec = false;
+    }
 }
 
 void uGUIGPShop::shiftShopList() {

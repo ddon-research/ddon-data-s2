@@ -206,3 +206,11 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUIQuestBoard::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIQuestBoard::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

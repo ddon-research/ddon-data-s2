@@ -8,17 +8,24 @@
 #include "../MT/MtMath.h"
 #include "nEffect.h"
 #include "nPrim.h"
+#include "rEffectList.h"
 
 // Forward declarations
 class MtColor;
 struct MtFloat3;
+class MtMatrix;
 class MtVector3;
+class cClothCurve;
+class cClothZigzag;
 class cParticleGenerator;
 class cUnit;
 namespace nEffect { class SimpleCurve; }
 namespace nPrim { struct Material; }
 
 // Declarations
+class cClothChain;
+class cClothStraight;
+class cClothVertex;
 class cEffectStrip;
 class cLineParticle;
 class cMatrixParticle;
@@ -38,6 +45,47 @@ class cParticleMoveSpin;
 using f32 = float;
 using s32 = int;
 using u32 = unsigned int;
+using u8 = unsigned char;
+
+class cClothStraight
+{
+public:
+    MtVector3 getSubPos(const MtMatrix& Wmat) const;
+public:
+    MtVector3 mSubOfs;  // offset: 0x0
+};
+
+class cClothVertex
+{
+    friend class cParticleGenerator;
+public:
+    enum CLOTH_STATUS
+    {
+        CLOTH_STATUS_UPDATE_VERTEX = 1,
+    };
+public:
+    static u32 getParamBuffSize(u32 ClothType, u32 VertexNum);
+    void init(u8* pParamBuff, u32 ClothType, u32 VertexNum);
+    void initClothChainVertex(cClothChain* pClothChain, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate);
+    void initClothChainVertexForce(cClothChain* pClothChain, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate, const MtVector3& ForceVec);
+    void updateClothStraightVertex(cClothStraight* pClothStraight, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate);
+    void updateClothChainVertex(cClothChain* pClothChain, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate, f32 Dt);
+    void updateClothChainVertexForce(cClothChain* pClothChain, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate, f32 Dt, const MtVector3& ForceVec);
+    void updateClothCurveVertex(rEffectList::EFL_PARAM_CLOTH_CURVE* pClothCurveParam, cClothCurve* pClothCurve, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate);
+    void updateClothZigzagVertex(rEffectList::EFL_PARAM_CLOTH_ZIGZAG* pClothZigzagParam, cClothZigzag* pClothZigzag, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate);
+    MtVector3* getPosArray();
+    void applyWorldOffset(const MtVector3& Offset);
+private:
+    void initClothChainVertexCommon(cClothChain* pClothChain, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate);
+private:
+    u32 mClothType : 8;  // offset: 0x0
+    u32 mVertexNum : 8;  // offset: 0x0
+    u32 mClothVertex0802 : 8;  // offset: 0x0
+    u32 mClothVertex0803 : 8;  // offset: 0x0
+    MtVector3* mPos;  // offset: 0x8
+    u32 mClothVertex3208;  // offset: 0x10
+    u32 mClothVertex320c;  // offset: 0x14
+};
 
 class cEffectStrip
 {
@@ -330,6 +378,32 @@ class cParticleMoveNone : public cParticleMoveCommon
 {
 public:
     cEffectStrip mStrip;  // offset: 0x20
+};
+
+class cClothChain : public cClothStraight
+{
+public:
+    MtVector3 interpolateDir(u32 No, u32 DataIndex, f32 InpRate) const;
+    f32 interpolateLength(u32 DataIndex, f32 InpRate) const;
+public:
+    MtVector3 mDir[2][2];  // offset: 0x10
+    f32 mLength[2];  // offset: 0x50
+    f32 mLengthAdd;  // offset: 0x58
+    u32 mConstOffTimer : 16;  // offset: 0x5c
+    u32 mClothChain165e : 16;  // offset: 0x5c
+    u32 mStatus : 16;  // offset: 0x60
+    u32 mPreUpdateLoopNum : 16;  // offset: 0x60
+    f32 mAcceleration;  // offset: 0x64
+    f32 mFrameInf;  // offset: 0x68
+    f32 mVertexInf;  // offset: 0x6c
+    MtVector3 mLocalDir[2];  // offset: 0x70
+    MtFloat3 mRotKeyframeRate[2];  // offset: 0x90
+    f32 mDistConvRate;  // offset: 0xa8
+    f32 mForceRate;  // offset: 0xac
+    f32 mForceVertexAttenuateCoef;  // offset: 0xb0
+    u32 mClothChain32b4;  // offset: 0xb4
+    u32 mClothChain32b8;  // offset: 0xb8
+    u32 mClothChain32bc;  // offset: 0xbc
 };
 
 class cLineParticle : public cParticle

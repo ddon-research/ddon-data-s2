@@ -137,6 +137,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cNetStorage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cNetStorage::endReqCommand() {
     this->mReqCommand[0] = this->mReqCommand[1];
     this->mReqCommandState[0] = this->mReqCommandState[1];

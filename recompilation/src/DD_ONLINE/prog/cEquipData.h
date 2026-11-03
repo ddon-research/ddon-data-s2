@@ -18,13 +18,13 @@ class MtPropertyList;
 class cContextPlayerInfo;
 class cItemParam;
 namespace nCharacterData { struct stEquipData; }
-namespace nEquipDataJewelry { class cJewelryData; }
 class uDDOModel;
 class uHuman;
 
 // Declarations
 class cEquipData;
 namespace nEquipAbilityInfo { class cEquipAbilityData; }
+namespace nEquipDataJewelry { class cJewelryData; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -78,6 +78,45 @@ namespace nEquipAbilityInfo {
         static MyDTI DTI;
     };
 }  // namespace nEquipAbilityInfo
+
+namespace nEquipDataJewelry {
+    class cJewelryData : public ::MtObject
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cJewelryData();
+        cJewelryData(u32 Num, rItemList::rItemParam::EQUIP_SUB_CATEGORY kind);
+        virtual ~cJewelryData() {}
+        u32 getNum() const;
+        rItemList::rItemParam::EQUIP_SUB_CATEGORY getKind() const;
+    private:
+        u32 mNum;  // offset: 0x8
+        rItemList::rItemParam::EQUIP_SUB_CATEGORY mKind;  // offset: 0xc
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nEquipDataJewelry
 
 class cEquipData : public MtObject
 {
@@ -396,12 +435,20 @@ private:
     static const nCharacterData::EQUIP_SLOT_TYPE mEquipArmorTbl[];
 };
 
+inline void* cEquipData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cEquipData::getShieldStagger() const {
     return this->mStShieldStagger;
 }
 
 inline u32 cEquipData::getTShieldStorage() const {
     return static_cast<u32>(this->mKindParamU8[2] * 1000);
+}
+
+inline void* nEquipAbilityInfo::cEquipAbilityData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nEquipAbilityInfo::cEquipAbilityData::cEquipAbilityData() {
@@ -411,4 +458,13 @@ inline nEquipAbilityInfo::cEquipAbilityData::cEquipAbilityData() {
 
 inline u32 nEquipAbilityInfo::cEquipAbilityData::getID() const {
     return this->mId;
+}
+
+inline void* nEquipDataJewelry::cJewelryData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nEquipDataJewelry::cJewelryData::cJewelryData() {
+    this->mNum = 0;
+    this->mKind = static_cast<rItemList::rItemParam::EQUIP_SUB_CATEGORY>(0);
 }

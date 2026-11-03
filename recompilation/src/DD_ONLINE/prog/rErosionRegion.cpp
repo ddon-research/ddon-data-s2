@@ -17,6 +17,10 @@ const MtDTI& cErosionInfoRes::getDTI() const {
     return cErosionInfoRes::DTI;
 }
 
+inline void* cErosionInfoRes::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cErosionInfoRes::DTI)->memAlloc(sz, align, cErosionInfoRes::DTI.getID());
+}
+
 inline void cErosionInfoRes::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cErosionInfoRes::DTI)->memFree(p_addr);
 }
@@ -25,9 +29,8 @@ cErosionInfoRes::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 cErosionInfoRes::MyDTI cErosionInfoRes::DTI("cErosionInfoRes", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cErosionInfoRes::MyDTI::newInstance() const {
-    DDON_STUB("cErosionInfoRes::MyDTI::newInstance")
-    return nullptr;
+MtObject* cErosionInfoRes::MyDTI::newInstance() const {
+    return new (16u) cErosionInfoRes;
 }
 
 const MtDTI& cErosionRegionRes::getDTI() const {

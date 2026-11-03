@@ -104,6 +104,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cSndPitchLimitData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSndPitchLimitData::cSndPitchLimitData() {
     this->mVoiceType = 1;
     this->mSex = 0;
@@ -117,4 +121,20 @@ inline s32 cSndPitchLimitData::getLimitUpper() {
 
 inline s32 cSndPitchLimitData::getLimitDowner() {
     return this->mLimitDowner;
+}
+
+inline void* rSndPitchLimit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cSndPitchLimitData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSndPitchLimitData::DTI)->memFree(p_addr);
+}
+
+inline void* cSndPitchLimitData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSndPitchLimitData::DTI)->memAlloc(sz, align, ::cSndPitchLimitData::DTI.::MtDTI::getID());
 }

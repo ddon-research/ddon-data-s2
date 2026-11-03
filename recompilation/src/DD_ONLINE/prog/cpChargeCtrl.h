@@ -131,6 +131,10 @@ public:
     static const s16 JUST_RELEASE_TIME = 7;
 };
 
+inline void* cpChargeCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpChargeCtrl::init() {
     this->mIsGoingNextLevel = false;
     this->mIsCharging = false;

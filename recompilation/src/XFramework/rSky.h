@@ -189,6 +189,14 @@ protected:
     static const u32 mVersion = 0;
 };
 
+inline void* rSky::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStarCatalog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rStarCatalog::rStarCatalog() {
     this->::cResource::mAttr = 16;
     this->mStarNum = 0;

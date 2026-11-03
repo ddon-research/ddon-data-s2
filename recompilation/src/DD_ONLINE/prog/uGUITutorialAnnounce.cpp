@@ -3,12 +3,23 @@
 #include "uGUITutorialAnnounce.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtString.h"
+#include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
+#include "cNetGameServer.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sTutorialGuide.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
@@ -85,8 +96,11 @@ __attribute__((weak)) void uGUITutorialAnnounce::setLineFrame(f32 frame) {
 }
 
 uGUITutorialAnnounce::~uGUITutorialAnnounce() {
-    DDON_STUB("uGUITutorialAnnounce::~uGUITutorialAnnounce")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 void uGUITutorialAnnounce::createProperty(MtPropertyList& s) {

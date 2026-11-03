@@ -101,9 +101,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCharacterEditPresetPalette::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCharacterEditPresetPalette::cCharacterEditPresetPalette() {
     this->mUID = 9999;
 }
 
+inline void* rCharacterEditPresetPalette::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rCharacterEditPresetPalette::rCharacterEditPresetPalette() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCharacterEditPresetPalette::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharacterEditPresetPalette::DTI)->memFree(p_addr);
+}
+
+inline void* cCharacterEditPresetPalette::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCharacterEditPresetPalette::DTI)->memAlloc(sz, align, ::cCharacterEditPresetPalette::DTI.::MtDTI::getID());
 }

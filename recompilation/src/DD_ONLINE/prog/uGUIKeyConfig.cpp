@@ -2,19 +2,29 @@
 #include <new>
 #include "uGUIKeyConfig.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive2D.h"
 #include "../../MT/MtString.h"
 #include "cControl.h"
 #include "cGUIControlMgr.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
 #include "nDDOUtility.h"
 #include "nGUIKeyConfig.h"
+#include "../../XFramework/rGUIMessage.h"
 #include "rKeyConfigTextTable.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "../../XFramework/sKeyboard.h"
+#include "../../XFramework/sMouse.h"
+#include "../../XFramework/sPad.h"
 #include "uGUIBase.h"
 #include "uGUIBaseExt.h"
 #ifndef DDON_STUB
@@ -30,8 +40,7 @@ inline void uGUIKeyConfig::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIKeyConfig::~uGUIKeyConfig() {
-    DDON_STUB("uGUIKeyConfig::~uGUIKeyConfig")
-    /* stub */
+    static_cast<sGUIExt*>(sGUI::getInstance())->mSpecialUIF = static_cast<sGUIExt*>(sGUI::getInstance())->mSpecialUIF & 0xFFFFFFF7u;
 }
 
 __attribute__((weak)) void uGUIKeyConfig::setCategoryListItems(const nGUIKeyConfig::cCategoryListItems& categoryListItems) {
@@ -364,7 +373,7 @@ void uGUIKeyConfig::cCategoryItem::setup(uGUIKeyConfig& owner, cGUIInstNull* ins
         return;
     }
     mpINST_Null_list = inst_copy;
-    cGUIInstAnimation* inst_msg_list = static_cast<cGUIInstAnimation*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(7u));
+    cGUIInstAnimation* inst_msg_list = static_cast<cGUIInstAnimation*>(inst_copy->getDuplicateInstanceFromId(7u));
     if (inst_msg_list != nullptr) {
         mpInstFocus = inst_msg_list;
         mpInstMouseCollision = static_cast<cGUIInstance*>(inst_msg_list);
@@ -374,12 +383,12 @@ void uGUIKeyConfig::cCategoryItem::setup(uGUIKeyConfig& owner, cGUIInstNull* ins
             cGUIObject* t1 = owner.getObjectFromId(static_cast<cGUIInstance*>(inst_msg_list), 3u);
             if (t1 != nullptr) {
                 mpObjMouseCollision = t1;
-                cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(148u);
+                cGUIInstance* t2 = inst_copy->getDuplicateInstanceFromId(148u);
                 if (t2 != nullptr) {
                     mpOBJ_fix_check_f_check = static_cast<cGUIObjTexture*>(owner.getObjectFromId(t2, 2u));
                 }
             } else {
-                cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(148u);
+                cGUIInstance* t2 = inst_copy->getDuplicateInstanceFromId(148u);
                 if (t2 != nullptr) {
                     mpOBJ_fix_check_f_check = static_cast<cGUIObjTexture*>(owner.getObjectFromId(t2, 2u));
                 }
@@ -388,19 +397,19 @@ void uGUIKeyConfig::cCategoryItem::setup(uGUIKeyConfig& owner, cGUIInstNull* ins
             cGUIObject* t1 = owner.getObjectFromId(static_cast<cGUIInstance*>(inst_msg_list), 3u);
             if (t1 != nullptr) {
                 mpObjMouseCollision = t1;
-                cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(148u);
+                cGUIInstance* t2 = inst_copy->getDuplicateInstanceFromId(148u);
                 if (t2 != nullptr) {
                     mpOBJ_fix_check_f_check = static_cast<cGUIObjTexture*>(owner.getObjectFromId(t2, 2u));
                 }
             } else {
-                cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(148u);
+                cGUIInstance* t2 = inst_copy->getDuplicateInstanceFromId(148u);
                 if (t2 != nullptr) {
                     mpOBJ_fix_check_f_check = static_cast<cGUIObjTexture*>(owner.getObjectFromId(t2, 2u));
                 }
             }
         }
     } else {
-        cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(148u);
+        cGUIInstance* t2 = inst_copy->getDuplicateInstanceFromId(148u);
         if (t2 != nullptr) {
             mpOBJ_fix_check_f_check = static_cast<cGUIObjTexture*>(owner.getObjectFromId(t2, 2u));
         }
@@ -439,8 +448,6 @@ __attribute__((weak)) MtObject* uGUIKeyConfig::cCategoryInfo::MyDTI::newInstance
 }
 
 uGUIKeyConfig::cCategoryList::~cCategoryList() {
-    DDON_STUB("uGUIKeyConfig::cCategoryList::~cCategoryList")
-    /* stub */
 }
 
 __attribute__((weak)) void uGUIKeyConfig::cCategoryList::setup(uGUIKeyConfig& owner, uGUIKeyConfig::CategoryItems& items) {
@@ -468,8 +475,6 @@ void uGUIKeyConfig::cCategoryList::applyFocusToScrollList(bool isFocus) {
 }
 
 uGUIKeyConfig::cList::~cList() {
-    DDON_STUB("uGUIKeyConfig::cList::~cList")
-    /* stub */
 }
 
 void uGUIKeyConfig::cList::reset(s32 currentPos) {
@@ -507,13 +512,13 @@ void uGUIKeyConfig::cKeySettingItem::setup(uGUIKeyConfig& owner, cGUIInstNull* i
         return;
     }
     mpINST_Null_keylist = inst_copy;
-    cGUIInstance* t0 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(154u);
+    cGUIInstance* t0 = inst_copy->getDuplicateInstanceFromId(154u);
     if (t0 != nullptr) {
         mpOBJ_msg_number_m_number = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t0, 3u));
-        cGUIInstance* t1 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(151u);
+        cGUIInstance* t1 = inst_copy->getDuplicateInstanceFromId(151u);
         if (t1 != nullptr) {
             mpOBJ_msg_key_detail_m_key_detail = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t1, 10u));
-            cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(152u);
+            cGUIInstance* t2 = inst_copy->getDuplicateInstanceFromId(152u);
             if (t2 != nullptr) {
                 mpInstFocus = static_cast<cGUIInstAnimation*>(t2);
                 mDefaultSeqID = 1;
@@ -527,36 +532,36 @@ void uGUIKeyConfig::cKeySettingItem::setup(uGUIKeyConfig& owner, cGUIInstNull* i
                 cGUIObject* t3 = owner.getObjectFromId(t2, 25u);
                 if (t3 != nullptr) {
                     mpObjMouseCollision = t3;
-                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                     if (t4 != nullptr) {
                         mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                         mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                         mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                     }
-                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
                 } else {
-                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                     if (t4 != nullptr) {
                         mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                         mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                         mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                     }
-                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
                 }
             } else {
-                cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                 if (t4 != nullptr) {
                     mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                     mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                     mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                 }
-                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
             }
         } else {
-            cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(152u);
+            cGUIInstance* t2 = inst_copy->getDuplicateInstanceFromId(152u);
             if (t2 != nullptr) {
                 mpInstFocus = static_cast<cGUIInstAnimation*>(t2);
                 mDefaultSeqID = 1;
@@ -570,40 +575,40 @@ void uGUIKeyConfig::cKeySettingItem::setup(uGUIKeyConfig& owner, cGUIInstNull* i
                 cGUIObject* t3 = owner.getObjectFromId(t2, 25u);
                 if (t3 != nullptr) {
                     mpObjMouseCollision = t3;
-                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                     if (t4 != nullptr) {
                         mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                         mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                         mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                     }
-                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
                 } else {
-                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                     if (t4 != nullptr) {
                         mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                         mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                         mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                     }
-                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
                 }
             } else {
-                cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                 if (t4 != nullptr) {
                     mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                     mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                     mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                 }
-                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
             }
         }
     } else {
-        cGUIInstance* t1 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(151u);
+        cGUIInstance* t1 = inst_copy->getDuplicateInstanceFromId(151u);
         if (t1 != nullptr) {
             mpOBJ_msg_key_detail_m_key_detail = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t1, 10u));
-            cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(152u);
+            cGUIInstance* t2 = inst_copy->getDuplicateInstanceFromId(152u);
             if (t2 != nullptr) {
                 mpInstFocus = static_cast<cGUIInstAnimation*>(t2);
                 mDefaultSeqID = 1;
@@ -617,36 +622,36 @@ void uGUIKeyConfig::cKeySettingItem::setup(uGUIKeyConfig& owner, cGUIInstNull* i
                 cGUIObject* t3 = owner.getObjectFromId(t2, 25u);
                 if (t3 != nullptr) {
                     mpObjMouseCollision = t3;
-                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                     if (t4 != nullptr) {
                         mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                         mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                         mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                     }
-                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
                 } else {
-                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                     if (t4 != nullptr) {
                         mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                         mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                         mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                     }
-                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
                 }
             } else {
-                cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                 if (t4 != nullptr) {
                     mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                     mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                     mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                 }
-                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
             }
         } else {
-            cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(152u);
+            cGUIInstance* t2 = inst_copy->getDuplicateInstanceFromId(152u);
             if (t2 != nullptr) {
                 mpInstFocus = static_cast<cGUIInstAnimation*>(t2);
                 mDefaultSeqID = 1;
@@ -660,33 +665,33 @@ void uGUIKeyConfig::cKeySettingItem::setup(uGUIKeyConfig& owner, cGUIInstNull* i
                 cGUIObject* t3 = owner.getObjectFromId(t2, 25u);
                 if (t3 != nullptr) {
                     mpObjMouseCollision = t3;
-                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                     if (t4 != nullptr) {
                         mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                         mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                         mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                     }
-                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
                 } else {
-                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                     if (t4 != nullptr) {
                         mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                         mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                         mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                     }
-                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
                 }
             } else {
-                cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                cGUIInstance* t4 = inst_copy->getDuplicateInstanceFromId(185u);
                 if (t4 != nullptr) {
                     mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
                     mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
                     mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
                 }
-                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
-                mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->getDuplicateInstanceFromId(196u));
+                mpInstPointerTarget = inst_copy->getDuplicateInstanceFromId(180u);
             }
         }
     }
@@ -756,8 +761,6 @@ __attribute__((weak)) MtObject* uGUIKeyConfig::cKeyInfo::MyDTI::newInstance() co
 }
 
 uGUIKeyConfig::cKeyList::~cKeyList() {
-    DDON_STUB("uGUIKeyConfig::cKeyList::~cKeyList")
-    /* stub */
 }
 
 __attribute__((weak)) void uGUIKeyConfig::cKeyList::reset(s32 currentPos) {

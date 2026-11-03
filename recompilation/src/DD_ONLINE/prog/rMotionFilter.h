@@ -97,8 +97,28 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cMotionFilter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMotionFilter::cMotionFilter() {
     this->mMin = -1.0f;
     this->mMiddle = 0.0f;
     this->mMax = 1.0f;
+}
+
+inline void* rMotionFilter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cMotionFilter::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMotionFilter::DTI)->memFree(p_addr);
+}
+
+inline void* cMotionFilter::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMotionFilter::DTI)->memAlloc(sz, align, ::cMotionFilter::DTI.::MtDTI::getID());
 }

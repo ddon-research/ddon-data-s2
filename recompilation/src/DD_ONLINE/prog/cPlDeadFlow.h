@@ -91,3 +91,7 @@ public:
 private:
     static const u32 DEF_REVIVE_WAIT_TIME = 3;
 };
+
+inline void* cPlDeadFlow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

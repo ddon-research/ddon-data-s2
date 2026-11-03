@@ -3,11 +3,12 @@
 #include "sUserManager.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtStlAllocator.h"
 #include "../MT/MtStlCustom.h"
 #include "cSystem.h"
-#include "../generated/rCharacterEditCameraParam/user_service_api.h"
+#include "../generated/shared/user_service_api.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

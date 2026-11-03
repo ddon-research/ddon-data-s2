@@ -120,6 +120,10 @@ private:
     static const s32 NativeFileVersion = 2;
 };
 
+inline void* rSoundCurveSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSoundCurveSet::rSoundCurveSet() {
     this->::cResource::mAttr = 18;
     this->mCurveDataSize = 0;

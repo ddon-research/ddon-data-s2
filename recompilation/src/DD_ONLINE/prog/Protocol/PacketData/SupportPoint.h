@@ -128,9 +128,17 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataSupportRate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataSupportRate::CDataSupportRate() {
     this->m_ucStatusType = 0;
     this->m_unRate = 0;
+}
+
+inline void* CDataUseSupportPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataUseSupportPoint::CDataUseSupportPoint() {
@@ -139,6 +147,10 @@ inline CDataUseSupportPoint::CDataUseSupportPoint() {
     this->m_ucJobType = 0;
     this->m_unUsePoint = 0;
     this->m_unCharID = 0;
+}
+
+inline void* CDataUseSupportPointRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataUseSupportPointRes::CDataUseSupportPointRes() {

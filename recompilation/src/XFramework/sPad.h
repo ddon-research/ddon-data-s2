@@ -463,10 +463,18 @@ protected:
     static sPad* mpInstance;
 };
 
+inline void* sPad::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sPad* sPad::getInstance() {
     return ::sPad::mpInstance;
 }
 
 inline bool sPad::isActive() const {
     return this->mActive;
+}
+
+inline void* sPad::Pad::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

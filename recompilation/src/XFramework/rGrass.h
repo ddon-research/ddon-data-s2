@@ -324,3 +324,49 @@ public:
 protected:
     static const u16 DATA_VERSION = 4048;
 };
+
+inline void* rGrass::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rGrass::cCluster::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rGrass::cSetting::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rTexture* rGrass::cSetting::getAlbedoTexture() const {
+    return this->mpAlbedoMap;
+}
+
+inline rTexture* rGrass::cSetting::getMaskTexture() const {
+    return this->mpMaskMap;
+}
+
+inline rTexture* rGrass::cSetting::getNormalTexture() const {
+    return this->mpNormalMap;
+}
+
+inline void rGrass::cSetting::setScale(f32 scale) {
+    this->mScale = scale;
+    this->::rGrass::cSetting::update();
+}
+
+inline f32 rGrass::cSetting::getScale() {
+    return this->mScale;
+}
+
+inline void rGrass::cSetting::setAspect(f32 aspect) {
+    this->mAspect = aspect;
+    this->::rGrass::cSetting::update();
+}
+
+inline f32 rGrass::cSetting::getAspect() {
+    return this->mAspect;
+}
+
+inline void* rGrass::cChainGrass::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

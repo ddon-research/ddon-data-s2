@@ -120,5 +120,25 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cJointEx2::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rJointEx2::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rJointEx2::rJointEx2() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cJointEx2::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cJointEx2::DTI)->memFree(p_addr);
+}
+
+inline void* cJointEx2::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cJointEx2::DTI)->memAlloc(sz, align, ::cJointEx2::DTI.::MtDTI::getID());
 }

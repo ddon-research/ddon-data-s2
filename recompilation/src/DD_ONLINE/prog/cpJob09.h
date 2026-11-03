@@ -438,6 +438,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpJob09::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpJob09::endSpAlchemy() {
     this->mIsSpAlchmy = false;
 }
@@ -454,6 +458,14 @@ inline void cpJob09::setSpAlchemyJustCount(const u32 lv) {
     this->mSpAlchemyJustCount = lv;
 }
 
+inline void cpJob09::setSpAlchemyCurrentLevel(const u32 lv) {
+    this->mSpAlchemyCurrentLevel = lv;
+}
+
+inline u32 cpJob09::getMedalIndex() const {
+    return this->mCurrentMedalIndex;
+}
+
 inline void cpJob09::setMedalItemId(const u32 item_id) {
     this->mAlchemyReleaseMedalId = item_id;
 }
@@ -464,6 +476,11 @@ inline void cpJob09::resetTmpElementType() {
 
 inline void cpJob09::setTmpElementType(nDDOGame::ELEMENT_TYPE type) {
     this->mTmpEnchantType = type;
+}
+
+inline void cpJob09::requestGUIMedalChange() {
+    this->mGUIDispState = static_cast<cpJob09::GUI_STATE>(1);
+    this->mFlgMedalSwitchAnime = true;
 }
 
 inline void cpJob09::requestGUIElementChange() {
@@ -480,6 +497,10 @@ inline void cpJob09::clearGUIElementChange() {
 
 inline void cpJob09::finishMedalChangeAnime() {
     this->mFlgMedalSwitchAnime = false;
+}
+
+inline cpJob09::GUI_STATE cpJob09::getGUIDispState() const {
+    return this->mGUIDispState;
 }
 
 inline void cpJob09::resetBurstInfo() {
@@ -514,6 +535,10 @@ inline void cpJob09::flgOnCurrentCreateCSShl() {
     this->mFlgCurrentCreateCSShl = true;
 }
 
+inline void* cpJob09::cAlchemyEvaluationData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cpJob09::cAlchemyEvaluationData::cAlchemyEvaluationData() {
     this->mpTarget = nullptr;
     this->mShlCount = 0.0f;
@@ -523,6 +548,10 @@ inline cpJob09::cAlchemyEvaluationData::cAlchemyEvaluationData() {
 inline void cpJob09::cAlchemyEvaluationData::resetEvaluationDate() {
     this->mShlCount = 0.0f;
     this->mEvaluation = 0.0f;
+}
+
+inline void* cpJob09::cJob09ShlInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cpJob09::cJob09ShlInfo::cJob09ShlInfo() {

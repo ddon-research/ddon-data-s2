@@ -62,6 +62,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpJointOrder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rJointOrder* cpJointOrder::getResource() {
     return this->mpResource;
 }

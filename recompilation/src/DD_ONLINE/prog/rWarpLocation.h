@@ -101,6 +101,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cWarpLocation::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cWarpLocation::cWarpLocation() {
     this->mIconType = 0;
     this->mMapPosX = 0;
@@ -111,4 +115,20 @@ inline cWarpLocation::cWarpLocation() {
     this->mSpotId = 0;
     this->mId = 0;
     this->mSortNo = 0;
+}
+
+inline void* rWarpLocation::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cWarpLocation::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWarpLocation::DTI)->memFree(p_addr);
+}
+
+inline void* cWarpLocation::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWarpLocation::DTI)->memAlloc(sz, align, ::cWarpLocation::DTI.::MtDTI::getID());
 }

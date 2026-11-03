@@ -4,13 +4,18 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "cAreaHit.h"
 #include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
+#include "../../XFramework/nZone.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -156,9 +161,7 @@ __attribute__((weak)) void rGUIMapSetting::cData::setShapeType(s32 n) {
     /* stub */
 }
 
-s32 rGUIMapSetting::cData::getShapeType() {
-    return mShapeType;
-}
+static auto ddon_emit_0x01a93250 __attribute__((used)) = &rGUIMapSetting::cData::getShapeType;
 
 __attribute__((weak)) bool rGUIMapSetting::cData::load(MtDataReader& r) {
     DDON_STUB("rGUIMapSetting::cData::load")

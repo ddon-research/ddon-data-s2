@@ -2,9 +2,13 @@
 #include <new>
 #include "cComponentManager.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPropertyList.h"
+#include "cDelegate.h"
+#include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
 #include "cpRootComponent.h"
 #ifndef DDON_STUB

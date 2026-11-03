@@ -196,5 +196,13 @@ private:
     static const MtNetTime::Total TIMEOUT_READ = 20000;
 };
 
+inline void* cHttpClient::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void cHttpClient::setUserAgent(MT_CTSTR pUserAgentString) {
+    this->mpUserAgentString = pUserAgentString;
+}
+
 inline cHttpClient::Listener::Listener() {
 }

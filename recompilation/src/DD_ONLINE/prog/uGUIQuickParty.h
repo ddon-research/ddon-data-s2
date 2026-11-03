@@ -62,3 +62,7 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUIQuickParty::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

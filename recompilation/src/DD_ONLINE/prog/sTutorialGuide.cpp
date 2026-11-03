@@ -7,12 +7,21 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
+#include "nQuest.h"
+#include "rArchiveListArray.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "rTutorialDialogMessage.h"
 #include "rTutorialList.h"
 #include "sArchiveManager.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "sQuestManagerExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -50,20 +59,20 @@ void sTutorialGuide::createResouce() {
     rTutorialList* pList = static_cast<rTutorialList*>(sArchiveManager::getInstance()->createRes("tutorial_guide", "RES_ID_TUTO_GUIDE_LIST", 1u, false));
     if (pList != nullptr) {
         mpTutorialList = pList;
-        pList->cResource::addRef();
-        pList->cResource::release();
+        pList->addRef();
+        pList->release();
         rGUIMessage* pName = static_cast<rGUIMessage*>(sArchiveManager::getInstance()->createRes("tutorial_guide", "RES_ID_TUTO_GUIDE_NAME", 1u, false));
         if (pName != nullptr) {
             mpTutorialName = pName;
-            pName->cResource::addRef();
-            pName->cResource::release();
+            pName->addRef();
+            pName->release();
         }
     } else {
         rGUIMessage* pName = static_cast<rGUIMessage*>(sArchiveManager::getInstance()->createRes("tutorial_guide", "RES_ID_TUTO_GUIDE_NAME", 1u, false));
         if (pName != nullptr) {
             mpTutorialName = pName;
-            pName->cResource::addRef();
-            pName->cResource::release();
+            pName->addRef();
+            pName->release();
         }
     }
 }
@@ -107,8 +116,8 @@ void sTutorialGuide::createGuideData(u32 GuideNo) {
         return;
     }
     mpTutorialDetail = pMsg;
-    pMsg->cResource::addRef();
-    pMsg->cResource::release();
+    pMsg->addRef();
+    pMsg->release();
 }
 
 void sTutorialGuide::releaseGuideData() {

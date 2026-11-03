@@ -105,6 +105,10 @@ private:
     f32 mSubEvaluation;  // offset: 0x68
 };
 
+inline void* cAITargetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAITargetInfo::cAITargetInfo() {
     this->mpTargetUnit = nullptr;
     this->mEnableFrame = 0.0f;

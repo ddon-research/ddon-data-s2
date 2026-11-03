@@ -280,3 +280,11 @@ namespace MtCollisionUtil {
         static const u32 DEFAULT_LEVEL;
     };
 }  // namespace MtCollisionUtil
+
+inline void* MtCollisionUtil::MtLinerTree::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtLinerTree::cRegistReserveInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

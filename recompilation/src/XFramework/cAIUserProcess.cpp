@@ -6,8 +6,11 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "cAIObject.h"
+#include "cAISvUserProcess.h"
+#include "sAI.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -331,5 +334,36 @@ cAIUserProcessContainer::MyDTI cAIUserProcessContainer::DTI("cAIUserProcessConta
 __attribute__((weak)) MtObject* cAIUserProcessContainer::MyDTI::newInstance() const {
     DDON_STUB("cAIUserProcessContainer::MyDTI::newInstance")
     return nullptr;
+}
+
+const MtDTI& cAIUserProcessReference::getDTI() const {
+    return cAIUserProcessReference::DTI;
+}
+
+inline void* cAIUserProcessReference::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIUserProcessReference::DTI)->memAlloc(sz, align, cAIUserProcessReference::DTI.mID);
+}
+
+cAIUserProcessReference::~cAIUserProcessReference() {
+    DDON_STUB("cAIUserProcessReference::~cAIUserProcessReference")
+    /* stub */
+}
+
+__attribute__((weak)) void cAIUserProcessReference::createProperty(MtPropertyList& s) {
+    DDON_STUB("cAIUserProcessReference::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) cAIUserProcessContainer* cAIUserProcessReference::getProcessContainer() {
+    DDON_STUB("cAIUserProcessReference::getProcessContainer")
+    return nullptr;
+}
+
+cAIUserProcessReference::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cAIUserProcessReference::MyDTI cAIUserProcessReference::DTI("cAIUserProcessReference", &::cAIResource::DTI, 24ul, 0u, 0u);
+
+MtObject* cAIUserProcessReference::MyDTI::newInstance() const {
+    return new (16u) cAIUserProcessReference;
 }
 

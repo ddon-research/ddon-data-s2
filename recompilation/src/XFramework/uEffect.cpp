@@ -6,13 +6,21 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "cParticleGenerator.h"
 #include "cParticleManager.h"
 #include "cUnit.h"
 #include "rEffectList.h"
+#include "sCamera.h"
 #include "sCollision.h"
 #include "sEffect.h"
+#include "sMain.h"
+#include "sSound.h"
+#include "sUnit.h"
 #include "uBaseEffect.h"
 #include "uCoord.h"
+#include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -21,7 +29,7 @@ const MtDTI& uEffect::getDTI() const {
     return uEffect::DTI;
 }
 
-void* uEffect::operator new(size_t sz, u32 align) {
+__attribute__((weak)) void* uEffect::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uEffect::DTI)->memAlloc(sz, align, uEffect::DTI.mID);
 }
 
@@ -147,9 +155,7 @@ bool uEffect::getUGInvalidMode() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 274)) & 2) >> 1);
 }
 
-void uEffect::setUGInvalidMode(bool Mode) {
-    mStatus = !Mode ? (mStatus & 0xFFFDFFFFu) : (mStatus | 0x20000u);
-}
+static auto ddon_emit_0x01b65a70 __attribute__((used)) = &uEffect::setUGInvalidMode;
 
 bool uEffect::getConstUpdateMode() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 274)) & 4) >> 2);
@@ -164,49 +170,35 @@ bool uEffect::getSeStopMode() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 274)) & 64) >> 6);
 }
 
-void uEffect::setSeStopMode(bool Mode) {
-    mStatus = !Mode ? (mStatus & 0xFFBFFFFFu) : (mStatus | 0x400000u);
-}
+static auto ddon_emit_0x01b65ab0 __attribute__((used)) = &uEffect::setSeStopMode;
 
 bool uEffect::getParentSymmetryMode() const {
     return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 274)) >> 7);
 }
 
-void uEffect::setParentSymmetryMode(bool Mode) {
-    mStatus = !Mode ? (mStatus & 0xFF7FFFFFu) : (mStatus | 0x800000u);
-}
+static auto ddon_emit_0x01b65b70 __attribute__((used)) = &uEffect::setParentSymmetryMode;
 
 bool uEffect::getJointFixMode() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 273)) & 64) >> 6);
 }
 
-void uEffect::setJointFixMode(bool Mode) {
-    mStatus = !Mode ? (mStatus & 0xFFFFBFFFu) : (mStatus | 16384u);
-}
+static auto ddon_emit_0x01b65ba0 __attribute__((used)) = &uEffect::setJointFixMode;
 
 bool uEffect::getChainResetFlag() const {
     return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 274)) & 1);
 }
 
-void uEffect::setChainResetFlag(bool Flag) {
-    mStatus = !Flag ? (mStatus & 0xFFFEFFFFu) : (mStatus | 0x10000u);
-}
+static auto ddon_emit_0x01b65bd0 __attribute__((used)) = &uEffect::setChainResetFlag;
 
 bool uEffect::getJointUpdateFlag() const {
     return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 273)) >> 7);
 }
 
-void uEffect::setJointUpdateFlag(bool Flag) {
-    mStatus = !Flag ? (mStatus & 0xFFFF7FFFu) : (mStatus | 32768u);
-}
+static auto ddon_emit_0x01b65c00 __attribute__((used)) = &uEffect::setJointUpdateFlag;
 
-f32 uEffect::getParticleScale() const {
-    return mParticleScale;
-}
+static auto ddon_emit_0x01b659b0 __attribute__((used)) = &uEffect::getParticleScale;
 
-void uEffect::setParticleScale(f32 ParticleScale) {
-    mParticleScale = ParticleScale;
-}
+static auto ddon_emit_0x01b659a0 __attribute__((used)) = &uEffect::setParticleScale;
 
 __attribute__((weak)) MtVector3 uEffect::getParticle3DScale() const {
     DDON_STUB("uEffect::getParticle3DScale")
@@ -220,9 +212,7 @@ void uEffect::setParticle3DScale(const MtVector3& Particle3DScale) {
     mParticle3DScale.pad_ = 0.0f;
 }
 
-u32 uEffect::getLifeFrame() const {
-    return mLifeFrame;
-}
+static auto ddon_emit_0x01b65d80 __attribute__((used)) = &uEffect::getLifeFrame;
 
 void uEffect::setLifeFrame(u32 LifeFrame) {
     if ((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 484)) >> 16) == LifeFrame) {
@@ -232,57 +222,31 @@ void uEffect::setLifeFrame(u32 LifeFrame) {
     mLifeFrame = LifeFrame;
 }
 
-u32 uEffect::getWaitFrame() const {
-    return mWaitFrame;
-}
+static auto ddon_emit_0x01b65dd0 __attribute__((used)) = &uEffect::getWaitFrame;
 
-void uEffect::setWaitFrame(u32 WaitFrame) {
-    mWaitFrame = WaitFrame;
-}
+static auto ddon_emit_0x01b65de0 __attribute__((used)) = &uEffect::setWaitFrame;
 
-u32 uEffect::getChildLoopFrame() const {
-    return mChildLoopFrame;
-}
+static auto ddon_emit_0x01b65df0 __attribute__((used)) = &uEffect::getChildLoopFrame;
 
-void uEffect::setChildLoopFrame(u32 ChildLoopFrame) {
-    mChildLoopFrame = ChildLoopFrame;
-}
+static auto ddon_emit_0x01b65e00 __attribute__((used)) = &uEffect::setChildLoopFrame;
 
-u32 uEffect::getChildLifeFrame() const {
-    return mChildLifeFrame;
-}
+static auto ddon_emit_0x01b65e10 __attribute__((used)) = &uEffect::getChildLifeFrame;
 
-void uEffect::setChildLifeFrame(u32 ChildLifeFrame) {
-    mChildLifeFrame = ChildLifeFrame;
-}
+static auto ddon_emit_0x01b65e20 __attribute__((used)) = &uEffect::setChildLifeFrame;
 
-u32 uEffect::getChildWaitFrame() const {
-    return mChildWaitFrame;
-}
+static auto ddon_emit_0x01b65e30 __attribute__((used)) = &uEffect::getChildWaitFrame;
 
-void uEffect::setChildWaitFrame(u32 ChildWaitFrame) {
-    mChildWaitFrame = ChildWaitFrame;
-}
+static auto ddon_emit_0x01b65e40 __attribute__((used)) = &uEffect::setChildWaitFrame;
 
-u32 uEffect::getLightPriority() const {
-    return mLightPriority;
-}
+static auto ddon_emit_0x01b66030 __attribute__((used)) = &uEffect::getLightPriority;
 
-void uEffect::setLightPriority(u32 LightPriority) {
-    mLightPriority = LightPriority;
-}
+static auto ddon_emit_0x01b66040 __attribute__((used)) = &uEffect::setLightPriority;
 
-f32 uEffect::getWaitFrameCoef() const {
-    return mWaitFrameCoef;
-}
+static auto ddon_emit_0x01b66050 __attribute__((used)) = &uEffect::getWaitFrameCoef;
 
-void uEffect::setWaitFrameCoef(f32 WaitFrameCoef) {
-    mWaitFrameCoef = WaitFrameCoef;
-}
+static auto ddon_emit_0x01b66060 __attribute__((used)) = &uEffect::setWaitFrameCoef;
 
-u32 uEffect::getFlagBitNum() const {
-    return 32;
-}
+static auto ddon_emit_0x01b66140 __attribute__((used)) = &uEffect::getFlagBitNum;
 
 bool uEffect::getGroupFlagBit(u32 No) const {
     return ((static_cast<unsigned long>(mGroupFlag) >> static_cast<unsigned long>(No & 31u)) & 1ul) != 0;
@@ -302,25 +266,15 @@ __attribute__((weak)) void uEffect::setMaterialFlagBit(bool Flag, u32 No) {
     /* stub */
 }
 
-u32 uEffect::getGeneratorBuffSize() const {
-    return mGeneratorBuffSize;
-}
+static auto ddon_emit_0x01b66200 __attribute__((used)) = &uEffect::getGeneratorBuffSize;
 
-u32 uEffect::getGeneratorNum() const {
-    return mGeneratorNum;
-}
+static auto ddon_emit_0x01b661c0 __attribute__((used)) = &uEffect::getGeneratorNum;
 
-u32 uEffect::getGeneratorMoveNum() const {
-    return mGeneratorMoveNum;
-}
+static auto ddon_emit_0x01b661d0 __attribute__((used)) = &uEffect::getGeneratorMoveNum;
 
-u32 uEffect::getJointNum() const {
-    return mJointNum;
-}
+static auto ddon_emit_0x01b661e0 __attribute__((used)) = &uEffect::getJointNum;
 
-u32 uEffect::getJointMoveNum() const {
-    return mJointMoveNum;
-}
+static auto ddon_emit_0x01b661f0 __attribute__((used)) = &uEffect::getJointMoveNum;
 
 void uEffect::setResourceParam(rEffectList* pEffectList, u32 GroupFlag, u32 MaterialFlag) {
     mGroupFlag = GroupFlag;

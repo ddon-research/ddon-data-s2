@@ -5,9 +5,12 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #ifndef DDON_STUB
@@ -57,7 +60,7 @@ inline rDungeonMarker::rDungeonMarker() {
     setAttribute(22u);
 }
 
-rDungeonMarker::~rDungeonMarker() {
+__attribute__((noinline)) rDungeonMarker::~rDungeonMarker() {
     if (mWarpInfoList.mLength != 0) {
         u32 v0_0 = mWarpInfoList.mLength;
         for (unsigned int i0_3 = 0;;) {
@@ -131,8 +134,24 @@ bool rDungeonMarker::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rDungeonMarker::save(MtStream& out) {
-    DDON_STUB("rDungeonMarker::save")
-    return {};
+        MtDataWriter w(out, 4096, 4096);
+        (&w)->writeU32(0x494D44);
+        (&w)->writeU32(1);
+        (&w)->writeU16(mWarpStageNo);
+        nDDOIO::writeMtArray(w, mWarpInfoList);
+        (&w)->writeU32(mPositionList.mLength);
+        if (mPositionList.mLength != 0) {
+            MtFloat3 t2;
+            u32 t1 = 0;
+            do {
+                t2.x = static_cast<cPosition*>(mPositionList.mpArray[(s32)t1])->mPos.x;
+                t2.y = static_cast<cPosition*>(mPositionList.mpArray[(s32)t1])->mPos.y;
+                t2.z = static_cast<cPosition*>(mPositionList.mpArray[(s32)t1])->mPos.z;
+                w.writeV3(t2);
+                ++t1;
+            } while (t1 < mPositionList.mLength);
+        }
+        return true;
 }
 
 rDungeonMarker::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -154,6 +154,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uNpc::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uNpc::setPartnerPawn() {
     this->mIsPartnerPawn = true;
 }

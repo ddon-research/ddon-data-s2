@@ -6,6 +6,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
@@ -30,8 +32,32 @@ inline rTexDetailEdit::rTexDetailEdit() {
 }
 
 rTexDetailEdit::~rTexDetailEdit() {
-    DDON_STUB("rTexDetailEdit::~rTexDetailEdit")
-    /* stub */
+    if (mEditList.mLength != 0) {
+        u32 v0_0 = mEditList.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mEditList.mpArray[i0_3] != nullptr) {
+                delete mEditList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mEditList.mLength) {
+                    v0_0 = mEditList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mEditList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mEditList.mpArray));
+    }
+    mEditList.mpArray = nullptr;
+    mEditList.mBufsiz = 0;
+    mEditList.mLength = 0;
 }
 
 __attribute__((weak)) void rTexDetailEdit::createProperty(MtPropertyList& s) {
@@ -79,12 +105,12 @@ void rTexDetailEdit::clear() {
 
 bool rTexDetailEdit::load(MtStream& in) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
+    return sz.deserializeBinary(in, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 bool rTexDetailEdit::save(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rTexDetailEdit::DTI));
+    return sz.serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rTexDetailEdit::DTI));
 }
 
 MT_CTSTR rTexDetailEdit::getExt() const {
@@ -133,21 +159,13 @@ __attribute__((weak)) void rTexDetailEdit::DetailParam::setPath(const MtString& 
     /* stub */
 }
 
-u32 rTexDetailEdit::DetailParam::getForm() {
-    return mForm;
-}
+static auto ddon_emit_0x01ab6120 __attribute__((used)) = &rTexDetailEdit::DetailParam::getForm;
 
-void rTexDetailEdit::DetailParam::setForm(const u32 n) {
-    mForm = n;
-}
+static auto ddon_emit_0x01ab6130 __attribute__((used)) = &rTexDetailEdit::DetailParam::setForm;
 
-u32 rTexDetailEdit::DetailParam::getType() {
-    return mType;
-}
+static auto ddon_emit_0x01ab6140 __attribute__((used)) = &rTexDetailEdit::DetailParam::getType;
 
-void rTexDetailEdit::DetailParam::setType(u32 n) {
-    mType = n;
-}
+static auto ddon_emit_0x01ab6150 __attribute__((used)) = &rTexDetailEdit::DetailParam::setType;
 
 rTexDetailEdit::DetailParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

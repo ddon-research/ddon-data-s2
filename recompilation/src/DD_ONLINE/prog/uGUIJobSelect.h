@@ -239,8 +239,20 @@ public:
     static const s32 JOB_ID_LIST[];
 };
 
+inline void* uGUIJobSelect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUIJobSelect::evInputDecideJob() {
     this->mEditDialogRno = static_cast<uGUIJobSelect::EDIT_DIALOG_ROUTINE>(0);
+}
+
+inline void* uGUIJobSelect::cItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIJobSelect::cJobInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIJobSelect::cJobInfo::cJobInfo() {

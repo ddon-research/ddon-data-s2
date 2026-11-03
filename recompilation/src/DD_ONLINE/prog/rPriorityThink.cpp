@@ -11,13 +11,31 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cAIObject.h"
+#include "cAITargetInfo.h"
+#include "cContextInterface.h"
 #include "cGeneralPoint.h"
+#include "../../XFramework/cResource.h"
+#include "cpAIPawnEmChecker.h"
+#include "cpComponent.h"
+#include "cpCorePointCtrl.h"
+#include "cpHugeble.h"
+#include "cpJob04.h"
+#include "cpJob05.h"
+#include "cpOcdCtrl.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "nPawn.h"
+#include "rAIPawnOrder.h"
 #include "rPawnAI.h"
 #include "rTbl2.h"
+#include "sAIPawnSys.h"
+#include "sPlayerManager.h"
+#include "sShlManager.h"
+#include "uCharacter.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -311,8 +329,8 @@ u32 rPriorityThink::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rPriorityThink::loadCore(MtDataReader& r) {
-    DDON_STUB("rPriorityThink::loadCore")
-    return {};
+    u32 magic_act = r.readU32();
+    return rTbl2<cPrioThkCode>::loadCore(r);
 }
 
 rPriorityThink::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

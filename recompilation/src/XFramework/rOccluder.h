@@ -131,8 +131,16 @@ protected:
     static const u32 HEADER_MAGIC = 4408143;
 };
 
+inline void* rOccluder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rOccluder::rOccluder() {
     this->::cResource::mAttr = 18;
     this->mOccluderCount = 0;
     this->mpOccluder = nullptr;
+}
+
+inline void* rOccluder::cQuad::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

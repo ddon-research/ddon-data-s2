@@ -2,11 +2,16 @@
 #include <new>
 #include "cArea.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtFile.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "../MT/MtSynchronize.h"
 #include "cResource.h"
 #include "rArchive.h"
+#include "sResource.h"
+#include "sShader2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

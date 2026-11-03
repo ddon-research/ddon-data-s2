@@ -145,6 +145,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpActionManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpActionManager::clearActPrio() {
     this->mPrio = static_cast<nAction::ACT_PRIO>(1);
 }

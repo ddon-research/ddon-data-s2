@@ -592,6 +592,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUICommunityList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUICommunityList::reqCloseUI() {
     this->mReqClose = true;
 }
@@ -600,16 +604,16 @@ inline rGUIMessage* uGUICommunityList::getMessageRes() {
     return this->mpGMDComList;
 }
 
-inline void uGUICommunityList::cTabData::setFlowId(u32 set) {
-    this->mFlowId = set;
-}
-
-inline void uGUICommunityList::cTabData::setOwner(uGUICommunityList* set) {
-    this->mpOwner = set;
+inline void* uGUICommunityList::cTabData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUICommunityList* uGUICommunityList::cTabData::getOwner() {
     return this->mpOwner;
+}
+
+inline void* uGUICommunityList::cTabDataInData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUICommunityList::cTabDataInData::cTabDataInData() {
@@ -630,4 +634,28 @@ inline uGUICommunityList::cTabDataInData::cTabDataInData() {
     this->mOnlineStatus = 0;
     this->mDispPattern = 0;
     this->mAddInfo = 0;
+}
+
+inline void* uGUICommunityList::cScrollDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICommunityList::cScrollItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICommunityList::cTabDataFriendList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICommunityList::cTabDataActiveList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICommunityList::cTabDataNearPlayerList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICommunityList::cTabDataBlackList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

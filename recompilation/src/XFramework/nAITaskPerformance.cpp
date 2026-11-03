@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -52,9 +53,7 @@ nAI::TaskPerformanceInfo::LOD* nAI::TaskPerformanceInfo::getLOD(u32 level) {
     return nullptr;
 }
 
-u32 nAI::TaskPerformanceInfo::getLODNum() {
-    return mLODNum;
-}
+static auto ddon_emit_0x01b829a0 __attribute__((used)) = &nAI::TaskPerformanceInfo::getLODNum;
 
 __attribute__((weak)) void nAI::TaskPerformanceInfo::setName(MtString& s) {
 }

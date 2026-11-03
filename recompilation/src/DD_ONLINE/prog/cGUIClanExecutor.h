@@ -91,3 +91,7 @@ public:
     static MyDTI DTI;
     static const u32 FLAG_GAME_MENU = 1;
 };
+
+inline void* cGUIClanExecutor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

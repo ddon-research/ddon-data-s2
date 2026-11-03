@@ -76,6 +76,10 @@ private:
     static sAIPawnNotice* mpInstance;
 };
 
+inline void* sAIPawnNotice::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sAIPawnNotice* sAIPawnNotice::getInstance() {
     return ::sAIPawnNotice::mpInstance;
 }

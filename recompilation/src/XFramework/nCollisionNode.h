@@ -637,6 +637,38 @@ namespace nCollision {
     };
 }  // namespace nCollision
 
+inline void* nCollision::cCollisionNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nCollision::cCollisionNodeObject::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline MtObject* nCollision::cCollisionNodeObject::getOwner() const {
     return this->mpOwner;
+}
+
+inline bool nCollision::cCollisionNodeObject::isRegistCallbackSetup() const {
+    return this->mpCallbackFuncSetup != static_cast<const MT_MFUNC>(0);
+}
+
+inline MtObject* nCollision::cCollisionNodeObject::getUserDataPtr() const {
+    return this->mpUserDataPtr;
+}
+
+inline void* nCollision::cGeometry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nCollision::cGeometryJointGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nCollision::cMotionSequenceSupport::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nCollision::cObjectBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

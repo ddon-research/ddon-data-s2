@@ -24,6 +24,7 @@ class rSoundStreamRequest;
 class uCharacter;
 class uControlNpc;
 class uDDOModel;
+class uHuman;
 
 // Declarations
 class sSoundManager;
@@ -49,6 +50,7 @@ using u32 = unsigned int;
 
 class sSoundManager : public cSystem
 {
+    friend class uHuman;
 public:
     enum
     {
@@ -518,8 +520,16 @@ inline void sSoundManager::requestRebirthToPlayer() {
     this->mbHelp = true;
 }
 
+inline void* sSoundManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sSoundManager* sSoundManager::getInstance() {
     return ::sSoundManager::mpInstance;
+}
+
+inline void* sSoundManager::cEmSetState::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sSoundManager::cEmSetState::cEmSetState() {

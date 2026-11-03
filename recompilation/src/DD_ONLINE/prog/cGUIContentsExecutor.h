@@ -165,6 +165,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cGUIContentsExecutor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cGUIContentsExecutor::setNpcId(u32 npc) {
     this->mNpcId = npc;
 }

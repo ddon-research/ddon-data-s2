@@ -111,3 +111,11 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* rJobTutorialQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rJobTutorialQuestList::cQuestId::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

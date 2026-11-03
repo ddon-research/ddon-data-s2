@@ -5,9 +5,12 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #ifndef DDON_STUB
@@ -86,8 +89,15 @@ bool rFieldAreaMarkerInfo::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rFieldAreaMarkerInfo::save(MtStream& out) {
-    DDON_STUB("rFieldAreaMarkerInfo::save")
-    return {};
+        MtDataWriter w(out, 4096, 4096);
+        nDDOIO::writeData(w, 0x494D46u);
+        nDDOIO::writeData(w, 1u);
+        nDDOIO::writeData(w, mFieldAreaId);
+        (&w)->writeU32(mMarkerInfoList.size());
+        for (u32 t1 = 0; t1 < mMarkerInfoList.size(); ++t1) {
+            static_cast<cMarkerInfo*>(mMarkerInfoList.mpArray[(s32)t1])->save(w);
+        }
+        return true;
 }
 
 rFieldAreaMarkerInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

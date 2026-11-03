@@ -7,7 +7,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtPrimitive2D.h"
 #include "cSystem.h"
-#include "../generated/rCharacterEditCameraParam/mouse.h"
+#include "../generated/shared/mouse.h"
 
 // Forward declarations
 class MtAllocator;
@@ -147,6 +147,18 @@ protected:
     static const s32 MOUSE_MAX_CACHE = 64;
     static sMouse* mpInstance;
 };
+
+inline void* sMouse::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline s32 sMouse::getAxisX(sMouse::TYPE type) const {
+    return this->mState[type].ax;
+}
+
+inline s32 sMouse::getAxisY(sMouse::TYPE type) const {
+    return this->mState[type].ay;
+}
 
 inline s32 sMouse::getAxisZ(sMouse::TYPE type) const {
     return this->mState[type].az;

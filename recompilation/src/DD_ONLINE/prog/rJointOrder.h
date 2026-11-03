@@ -99,10 +99,26 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cJointOrder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cJointOrder::cJointOrder() {
     this->mNum = 0;
     this->mpJointTable = nullptr;
 }
 
+inline void* rJointOrder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rJointOrder::rJointOrder() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cJointOrder::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cJointOrder::DTI)->memAlloc(sz, align, ::cJointOrder::DTI.::MtDTI::getID());
 }

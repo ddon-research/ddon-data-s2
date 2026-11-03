@@ -169,3 +169,11 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* cFurniture::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cFurniture::Info::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

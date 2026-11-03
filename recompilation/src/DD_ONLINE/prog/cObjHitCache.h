@@ -75,3 +75,7 @@ public:
     uDDOModel* mpDfdModel;  // offset: 0x50
     static MyDTI DTI;
 };
+
+inline void* cObjHitCache::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

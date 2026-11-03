@@ -130,8 +130,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cLegCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cLegCtrl::cLegCtrl() {
     this->mValue = 0;
+}
+
+inline void* rLegCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rLegCtrl::rLegCtrl() {
@@ -156,4 +164,16 @@ inline rLegCtrl::rLegCtrl() {
     this->mCheckHeightHand = 100.0f;
     this->mLegType = 0;
     this->mFlag = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cLegCtrl::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cLegCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cLegCtrl::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cLegCtrl::DTI)->memAlloc(sz, align, ::cLegCtrl::DTI.::MtDTI::getID());
 }

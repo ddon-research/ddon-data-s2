@@ -10,10 +10,22 @@
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
 #include "../../MT/MtString.h"
+#include "../../MT/MtTime.h"
 #include "cControl.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "cGUIObjTextureRef.h"
+#include "../../XFramework/cGUIObject.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "sGame.h"
+#include "sInputManager.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sMouse.h"
+#include "../../XFramework/sRender.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "uGUIBase.h"
@@ -129,8 +141,6 @@ const MtDTI& uGUICredit::cElement::getDTI() const {
 }
 
 uGUICredit::cElement::~cElement() {
-    DDON_STUB("uGUICredit::cElement::~cElement")
-    /* stub */
 }
 
 uGUICredit::cElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

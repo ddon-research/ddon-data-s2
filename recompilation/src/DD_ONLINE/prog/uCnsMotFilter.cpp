@@ -3,7 +3,13 @@
 #include "uCnsMotFilter.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../XFramework/cUnit.h"
+#include "cpComponent.h"
+#include "cpMotionFilter.h"
 #include "../../XFramework/uConstraint.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
@@ -32,8 +38,7 @@ uCnsMotFilter::uCnsMotFilter() {
 }
 
 uCnsMotFilter::~uCnsMotFilter() {
-    DDON_STUB("uCnsMotFilter::~uCnsMotFilter")
-    /* stub */
+    removeConstraint();
 }
 
 cResource* uCnsMotFilter::getResource() {
@@ -73,9 +78,7 @@ void uCnsMotFilter::setJoint(u32 JntNo) {
     setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
-u32 uCnsMotFilter::getJoint() const {
-    return mJoint;
-}
+static auto ddon_emit_0x01ad3ad0 __attribute__((used)) = &uCnsMotFilter::getJoint;
 
 void uCnsMotFilter::set(uModel* pModel, u32 JntNo, cpMotionFilter* pMotFilter, u32 Pri) {
     setModel(pModel);

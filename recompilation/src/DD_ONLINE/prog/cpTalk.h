@@ -164,6 +164,10 @@ public:
     static const f32 DISABLE_TALK_FRAME;
 };
 
+inline void* cpTalk::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 cpTalk::getNpcId() const {
     return this->mNpcId;
 }

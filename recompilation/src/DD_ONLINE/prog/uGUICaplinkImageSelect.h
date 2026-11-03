@@ -195,6 +195,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUICaplinkImageSelect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUICaplinkImageSelect::eventCancel() {
+    this->mSelectResult = 2;
+}
+
 inline void uGUICaplinkImageSelect::cancel() {
     this->mSelectResult = 2;
 }

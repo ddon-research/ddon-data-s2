@@ -102,3 +102,7 @@ public:
 private:
     static const u32 BaseObjIds[3][3];
 };
+
+inline void* uGUITextHud::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -4,13 +4,22 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive2D.h"
 #include "../../MT/MtString.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
+#include "cInputTextKeyboardHook.h"
+#include "../../XFramework/cUnit.h"
 #include "nGUIExt.h"
 #include "../../generated/shared/nKeyCustom.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sInputManager.h"
+#include "sKeyboardInterface.h"
+#include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -54,8 +63,33 @@ __attribute__((weak)) void cControl::updateButton(nGUIExt::MSG_REASON Reason, cC
 }
 
 __attribute__((weak)) void cControl::checkLoop(u32 uKeyOnF, s32 sMoveDir, nGUIExt::MSG_REASON Reason, s32& sAddPos) {
-    DDON_STUB("cControl::checkLoop")
-    /* stub */
+        if (mIsSetNoMoveEvent) {
+            if (!mEnableLoop && !mEnableTrgLoop) {
+                return;
+            }
+            if (getItemNum() < 2) {
+                return;
+            }
+        }
+        if (getItemNum() < 2 || sMoveDir == 0) {
+            sAddPos = 0;
+            return;
+        }
+        if (mEnableLoop && (uKeyOnF & (KONF_TRG | KONF_REP))) {
+            return;
+        }
+        if (mEnableTrgLoop && (uKeyOnF & KONF_TRG)) {
+            return;
+        }
+        if (sMoveDir < 0) {
+            if (getCurrentPos() <= 0) {
+                sAddPos = 0;
+            }
+        } else {
+            if (getCurrentPos() >= getItemNum() - 1) {
+                sAddPos = 0;
+            }
+        }
 }
 
 bool cControl::isTabType() const {
@@ -204,24 +238,21 @@ u32 cControl::getPresetSEId(nGUIExt::MSG_REASON reason) const {
 }
 
 void cControl::reqPresetSE(cControl::Message* pMsg) {
-    if (!mUsePresetSE) {
-        return;
-    }
-    if (pMsg == nullptr) {
-        return;
-    }
-    if (pMsg->reason <= 49) {
-        reqPresetSE(pMsg->reason);
+    if (mUsePresetSE) {
+        if (pMsg != nullptr) {
+            if (pMsg->reason <= 49) {
+                reqPresetSE(pMsg->reason);
+            }
+        }
     }
 }
 
 void cControl::reqPresetSE(nGUIExt::MSG_REASON reason) {
-    if (!mUsePresetSE) {
-        return;
-    }
-    if (reason <= 49) {
-        if (mTblPresetSE[reason] != 0) {
-            static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, mTblPresetSE[reason]);
+    if (mUsePresetSE) {
+        if (reason <= 49) {
+            if (mTblPresetSE[reason] != 0) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, mTblPresetSE[reason]);
+            }
         }
     }
 }
@@ -369,8 +400,10 @@ cControl::cControl(s32 num, const u32* tags, s32 visible) {
 }
 
 cControl::~cControl() {
-    DDON_STUB("cControl::~cControl")
-    /* stub */
+    if (mTags == nullptr) {
+        return;
+    }
+    MtMemoryAllocator::getAllocator(cUnit::DTI)->memFree(static_cast<void*>(mTags));
 }
 
 cControl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

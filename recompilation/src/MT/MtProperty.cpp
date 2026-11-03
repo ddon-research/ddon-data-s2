@@ -10,6 +10,8 @@
 #include "MtOscillator.h"
 #include "MtPrimitive2D.h"
 #include "MtPrimitive3D.h"
+#include "MtPropertyList.h"
+#include "MtString.h"
 #include "MtTime.h"
 #include "MtVariable.h"
 #ifndef DDON_STUB

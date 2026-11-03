@@ -6,6 +6,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../generated/shared/nDDOMath.h"
 #include "uSoundTrigger.h"
 #ifndef DDON_STUB

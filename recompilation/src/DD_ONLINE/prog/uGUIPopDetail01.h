@@ -722,3 +722,55 @@ public:
     static const u32 DEFAULT_PRIORITY = 11;
     static const SP_ITEM special_item_tbl[];
 };
+
+inline void* uGUIPopDetail01::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIPopDetail01::setOwner(uGUIBase* owner) {
+    this->mpOwner = owner;
+}
+
+inline void uGUIPopDetail01::setCraftDetail(uGUIPopCraftDetail* pCraftDetail) {
+    this->mpCraftDetail = pCraftDetail;
+}
+
+inline void* uGUIPopDetail01::cDupParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopDetail01::cDupCraftParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopDetail01::cPartsBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopDetail01::cPartsCraft::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopDetail01::cPartsParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopDetail01::cPartsItemRank::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopDetail01::cPartsStatus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopDetail01::cPartsCaption::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopDetail01::cPartsFooter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopDetail01::cPartsJob::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

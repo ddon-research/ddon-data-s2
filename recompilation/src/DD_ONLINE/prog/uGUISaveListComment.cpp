@@ -2,9 +2,13 @@
 #include <new>
 #include "uGUISaveListComment.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtString.h"
 #include "cControl.h"
+#include "../../XFramework/cGUIObject.h"
 #include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
@@ -140,7 +144,7 @@ void uGUISaveListComment::updateWait() {
         if (vPos == 0) {
             mRefTextBox.uGUIBase::cReferenceUITextBox::setFocus(true);
             unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2768);
-            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t2) + 120);
+            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2768)) + 120);
             (&mRefButton)->setFocus(false);
             mRefTextBox.uGUIBase::cReferenceUITextBox::update();
             UPDATE_FLOW t9 = mUpdateFlowNo;
@@ -178,7 +182,7 @@ void uGUISaveListComment::updateWait() {
     } else {
         mRefTextBox.uGUIBase::cReferenceUITextBox::setFocus(true);
         unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2768);
-        unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t2) + 120);
+        unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2768)) + 120);
         (&mRefButton)->setFocus(false);
         mRefTextBox.uGUIBase::cReferenceUITextBox::update();
         UPDATE_FLOW t9 = mUpdateFlowNo;

@@ -7,6 +7,8 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cAIObject.h"
+#include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "nDDOUtility.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -92,8 +94,8 @@ rAIPawnSkillParamTbl::~rAIPawnSkillParamTbl() {
 }
 
 __attribute__((weak)) bool rAIPawnSkillParamTbl::loadCore(MtDataReader& r) {
-    DDON_STUB("rAIPawnSkillParamTbl::loadCore")
-    return {};
+    u32 magic = r.readU32();
+    return this->rTbl2<cAIPawnSkillParamNode>::loadCore(r);
 }
 
 bool rAIPawnSkillParamTbl::loadData(MtDataReader& r, cAIPawnSkillParamNode* pData) {

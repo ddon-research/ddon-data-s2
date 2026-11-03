@@ -102,3 +102,11 @@ public:
     CCommunityCharacterBaseInfo m_CommunityCharacterBaseInfo;  // offset: 0x18
     static MyDTI DTI;
 };
+
+inline void* CDataRankingBoard::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataRankingData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

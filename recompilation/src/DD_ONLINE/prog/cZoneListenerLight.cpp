@@ -6,7 +6,10 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../XFramework/cZoneContents.h"
 #include "../../XFramework/cZoneListener.h"
+#include "../../XFramework/nZone.h"
+#include "sWeatherManager.h"
 #include "uSkyFog.h"
 #include "uSkyLight.h"
 #ifndef DDON_STUB

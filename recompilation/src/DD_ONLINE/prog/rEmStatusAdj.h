@@ -99,10 +99,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEmStatusAdj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEmStatusAdj::cEmStatusAdj() {
     this->mOcdAtkAdj = 0.0f;
     this->mBlowAtkAdj = 0.0f;
     this->mStaminaDamageAtkAdj = 0.0f;
     this->mDamageAtkAdj = 0.0f;
     this->mShrinkAtkAdj = 0.0f;
+}
+
+inline void* rEmStatusAdj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEmStatusAdj::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmStatusAdj::DTI)->memFree(p_addr);
+}
+
+inline void* cEmStatusAdj::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmStatusAdj::DTI)->memAlloc(sz, align, ::cEmStatusAdj::DTI.::MtDTI::getID());
 }

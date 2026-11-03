@@ -3,8 +3,12 @@
 #include <string.h>
 #include "uGUIMyRoom.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtStlAllocator.h"
 #include "../../MT/MtStlCustom.h"
 #include "../../MT/MtString.h"
@@ -12,8 +16,11 @@
 #include "cGUIControlMgr.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
+#include "../../XFramework/cUnit.h"
 #include "nDDOUtility.h"
 #include "nGUIMyRoom.h"
+#include "../../XFramework/rGUIMessage.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "uGUIBase.h"
@@ -198,8 +205,6 @@ const MtDTI& uGUIMyRoom::cList::cInfo::getDTI() const {
 }
 
 uGUIMyRoom::cList::cInfo::~cInfo() {
-    DDON_STUB("uGUIMyRoom::cList::cInfo::~cInfo")
-    /* stub */
 }
 
 uGUIMyRoom::cList::cInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

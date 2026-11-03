@@ -2,24 +2,50 @@
 #include <new>
 #include "cpEquip.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "cBakeModel.h"
+#include "cComponentManager.h"
+#include "cContextInstance.h"
+#include "cContextInterface.h"
+#include "cDDMaterialCtrl.h"
+#include "cDelegate.h"
+#include "cEquipData.h"
+#include "cPlayerLoadManager.h"
 #include "cResPath.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "cpCharacterEdit.h"
 #include "cpComponent.h"
+#include "cpDDMrlMgr.h"
+#include "cpSoftBody.h"
+#include "cpTinyChain.h"
 #include "nCharacterData.h"
 #include "../../generated/shared/nWeapon.h"
 #include "rArchiveListArray.h"
+#include "rCharacterEdit.h"
+#include "rEquipPartsInfo.h"
 #include "rEquipPreset.h"
+#include "rItemList.h"
 #include "../../XFramework/rModel.h"
+#include "rPlPartsInfo.h"
 #include "rWeaponResTable.h"
 #include "sArchiveManager.h"
 #include "sBakingJointOrder.h"
+#include "sGame.h"
+#include "sItemManager.h"
 #include "uArmor.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uControl.h"
 #include "uDDOModel.h"
+#include "uHuman.h"
 #include "../../XFramework/uModel.h"
+#include "../../XFramework/uSimSoftBody.h"
 #include "uWeapon.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -111,9 +137,140 @@ void cpEquip::kill() {
     killAllEquip();
 }
 
-__attribute__((weak)) void cpEquip::updatePtr() {
-    DDON_STUB("cpEquip::updatePtr")
-    /* stub */
+void cpEquip::updatePtr() {
+    this->cpComponent::updatePtr();
+    if (mpModel != nullptr) {
+        if (!mpModel->isEnable()) {
+            mpModel = nullptr;
+        }
+    }
+    if (mWeapon[0].mpModel != nullptr) {
+        if ((mWeapon[0].mpModel->mBeFlag - 1u) > 1u) {
+            mWeapon[0].mpModel = nullptr;
+        }
+    }
+    if (mWeapon[0].mpOwner != nullptr) {
+        if ((mWeapon[0].mpOwner->mBeFlag - 1u) > 1u) {
+            mWeapon[0].mpOwner = nullptr;
+        }
+    }
+    if (mWeapon[1].mpModel != nullptr) {
+        if ((mWeapon[1].mpModel->mBeFlag - 1u) > 1u) {
+            mWeapon[1].mpModel = nullptr;
+        }
+    }
+    if (mWeapon[1].mpOwner != nullptr) {
+        if ((mWeapon[1].mpOwner->mBeFlag - 1u) > 1u) {
+            mWeapon[1].mpOwner = nullptr;
+        }
+    }
+    if (mWeapon[2].mpModel != nullptr) {
+        if ((mWeapon[2].mpModel->mBeFlag - 1u) > 1u) {
+            mWeapon[2].mpModel = nullptr;
+        }
+    }
+    if (mWeapon[2].mpOwner != nullptr) {
+        if ((mWeapon[2].mpOwner->mBeFlag - 1u) > 1u) {
+            mWeapon[2].mpOwner = nullptr;
+        }
+    }
+    if (mWeapon[3].mpModel != nullptr) {
+        if ((mWeapon[3].mpModel->mBeFlag - 1u) > 1u) {
+            mWeapon[3].mpModel = nullptr;
+        }
+    }
+    if (mWeapon[3].mpOwner != nullptr) {
+        if ((mWeapon[3].mpOwner->mBeFlag - 1u) > 1u) {
+            mWeapon[3].mpOwner = nullptr;
+        }
+    }
+    for (unsigned int i9_0 = 0;;) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i9_0) + 1096)) != 0) {
+            if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i9_0) + 1096)) + 16)) & 7u) - 1u) > 1u) {
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i9_0) + 1096) = 0;
+            }
+        }
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i9_0) + 1112)) != 0) {
+            if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i9_0) + 1112)) + 16)) & 7u) - 1u) > 1u) {
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i9_0) + 1112) = 0;
+            }
+        }
+        if ((i9_0 + 96u) != 672) {
+            i9_0 = i9_0 + 96u;
+        } else {
+            break;
+        }
+    }
+    if (mHair.mpModel != nullptr) {
+        if (!mHair.mpModel->isEnable()) {
+            mHair.mpModel = nullptr;
+        }
+    }
+    if (mHair.mpOwner != nullptr) {
+        if (!mHair.mpOwner->isEnable()) {
+            mHair.mpOwner = nullptr;
+        }
+    }
+    if (mBeard.mpModel != nullptr) {
+        if (!mBeard.mpModel->isEnable()) {
+            mBeard.mpModel = nullptr;
+        }
+    }
+    if (mBeard.mpOwner != nullptr) {
+        if (!mBeard.mpOwner->isEnable()) {
+            mBeard.mpOwner = nullptr;
+        }
+    }
+    if (mMakeup.mpModel != nullptr) {
+        if (!mMakeup.mpModel->isEnable()) {
+            mMakeup.mpModel = nullptr;
+        }
+    }
+    if (mMakeup.mpOwner != nullptr) {
+        if (!mMakeup.mpOwner->isEnable()) {
+            mMakeup.mpOwner = nullptr;
+        }
+    }
+    if (mUnderwear.mpModel != nullptr) {
+        if (!mUnderwear.mpModel->isEnable()) {
+            mUnderwear.mpModel = nullptr;
+        }
+    }
+    if (mUnderwear.mpOwner != nullptr) {
+        if (!mUnderwear.mpOwner->isEnable()) {
+            mUnderwear.mpOwner = nullptr;
+        }
+    }
+    if (mUnderwear2.mpModel != nullptr) {
+        if (!mUnderwear2.mpModel->isEnable()) {
+            mUnderwear2.mpModel = nullptr;
+        }
+    }
+    if (mUnderwear2.mpOwner != nullptr) {
+        if (!mUnderwear2.mpOwner->isEnable()) {
+            mUnderwear2.mpOwner = nullptr;
+        }
+    }
+    if (mNpcItem.mpModel != nullptr) {
+        if (!mNpcItem.mpModel->isEnable()) {
+            mNpcItem.mpModel = nullptr;
+        }
+    }
+    if (mNpcItem.mpOwner != nullptr) {
+        if (!mNpcItem.mpOwner->isEnable()) {
+            mNpcItem.mpOwner = nullptr;
+        }
+    }
+    if (mLantern.mpModel != nullptr) {
+        if (!mLantern.mpModel->isEnable()) {
+            mLantern.mpModel = nullptr;
+        }
+    }
+    if (mLantern.mpOwner != nullptr) {
+        if (!mLantern.mpOwner->isEnable()) {
+            mLantern.mpOwner = nullptr;
+        }
+    }
 }
 
 __attribute__((weak)) void cpEquip::compMoveAfter() {
@@ -839,9 +996,7 @@ __attribute__((weak)) bool cpEquip::setEquip(u32 itemID, u32 colorNo, u32 sex, c
     return {};
 }
 
-rEquipPreset* cpEquip::getEquipPreset() {
-    return mpEquipPresetRes;
-}
+static auto ddon_emit_0x01a59a60 __attribute__((used)) = &cpEquip::getEquipPreset;
 
 __attribute__((weak)) void cpEquip::changeArmor(u64 ResId, u32 index, u8 partsPatern, s8 colorPatern) {
     DDON_STUB("cpEquip::changeArmor")
@@ -856,7 +1011,7 @@ void cpEquip::changeWeapon(nWeapon::WEAPON_CATEGORY wepCategory, u64 ResId, u32 
                 cWeaponResTable* pData;
                 for (;;) {
                     pData = mpWeaponResTable->getData(i0_9);
-                    if (ResId == pData->mpModelRes.::cResPathBase::mId) {
+                    if (ResId == pData->mpModelRes.mId) {
                         break;
                     } else {
                         if ((i0_9 + 1u) < mpWeaponResTable->getDataNum()) {
@@ -867,7 +1022,7 @@ void cpEquip::changeWeapon(nWeapon::WEAPON_CATEGORY wepCategory, u64 ResId, u32 
                     }
                 }
                 if (pData != nullptr) {
-                    ARC_TAGID t0 = rArchiveListArray::convTagId(pData->mArcTag.MtString::ptr());
+                    ARC_TAGID t0 = rArchiveListArray::convTagId(pData->mArcTag.ptr());
                     ARC_SEARCHID t1 = rArchiveListArray::convSearchId("RES_ID_MODEL");
                     if (sArchiveManager::getInstance()->isEnableArcRes(t0, t1)) {
                         uWeapon* t2 = uWeapon::createWeaponModel(wepCategory, pData, mpModel, nWeapon::MODEL_TYPE_PRIMARY, partsPatern, colorPatern);

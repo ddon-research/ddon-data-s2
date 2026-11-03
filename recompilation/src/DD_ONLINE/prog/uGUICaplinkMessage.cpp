@@ -2,13 +2,21 @@
 #include <new>
 #include "uGUICaplinkMessage.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtString.h"
 #include "cControl.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "sCaplinkManager.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
@@ -182,6 +190,23 @@ void uGUICaplinkMessage::eventDecide() {
         }
         mMain.mTextBox.wakeupKeyboard(2);
     }
+}
+
+inline void uGUICaplinkMessage::eventCancel() {
+    mFlowId = 3;
+    if (mpDecideCtrl != nullptr) {
+        mpDecideCtrl->mCtrlF = mpDecideCtrl->mCtrlF | 8u;
+    }
+    if (mpCancelCtrl != nullptr) {
+        mpCancelCtrl->mCtrlF = mpCancelCtrl->mCtrlF | 8u;
+    }
+    if (mpUDCtrl != nullptr) {
+        mpUDCtrl->mCtrlF = mpUDCtrl->mCtrlF | 8u;
+    }
+    if (mpButtonCtrl != nullptr) {
+        mpButtonCtrl->mCtrlF = mpButtonCtrl->mCtrlF | 8u;
+    }
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICaplinkMessage::updateExit);
 }
 
 __attribute__((weak)) u32 uGUICaplinkMessage::evCtrlDecide(cControl::Message* msg) {

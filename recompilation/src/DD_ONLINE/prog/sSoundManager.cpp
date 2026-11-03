@@ -9,16 +9,47 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtRandom.h"
 #include "../../MT/MtSynchronize.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cComponentManager.h"
+#include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
+#include "cpComponent.h"
+#include "cpNpc.h"
 #include "../../generated/shared/nAbility.h"
+#include "rArchiveListArray.h"
 #include "rSoundAreaInfo.h"
+#include "rSoundBossBgm.h"
 #include "../../XFramework/rSoundStreamRequest.h"
+#include "res_ptr.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sContextManager.h"
+#include "sEnemyManager.h"
+#include "sGame.h"
+#include "../../XFramework/sMain.h"
+#include "sNpcManager.h"
+#include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "sUnitManager.h"
 #include "sWeatherManager.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uCharacter.h"
+#include "uControl.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uEnemy.h"
+#include "uPlayer.h"
+#include "uSoundTrigger.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -77,6 +108,20 @@ __attribute__((weak)) void sSoundManager::updateBtlBGMTemp() {
     /* stub */
 }
 
+inline void sSoundManager::setBtlStqr(rSoundStreamRequest* pr) {
+    if (pr == mprBtl) {
+        return;
+    }
+    if (mprBtl != nullptr) {
+        mprBtl->release();
+        mprBtl = nullptr;
+    }
+    if (pr != nullptr) {
+        pr->addRef();
+    }
+    mprBtl = pr;
+}
+
 void sSoundManager::resumeBtl(rSoundStreamRequest* prBtl, u32 reqNo) {
     if (prBtl != nullptr) {
         if (reqNo != 0xFFFFFFFFu) {
@@ -95,7 +140,7 @@ void sSoundManager::resumeBtl(rSoundStreamRequest* prBtl, u32 reqNo) {
                                 if (pelem != nullptr) {
                                     const rSoundStreamRequest::SoundSource* psrc = pelem->mpSource;
                                     if (psrc != nullptr) {
-                                        s32 lend = psrc->rSoundStreamRequest::SoundSource::getLoopEnd();
+                                        s32 lend = psrc->getLoopEnd();
                                         if (lend > -1) {
                                             if (mBtlPausePos <= 0x36EE800u) {
                                                 if (static_cast<unsigned int>(lend) < (mBtlPausePos + 0x17700u)) {
@@ -234,9 +279,21 @@ __attribute__((weak)) bool sSoundManager::isExistBattleStateEnemyId(u32 emID) {
     return {};
 }
 
-__attribute__((weak)) u32 sSoundManager::getBattleStateAreaBossType() const {
-    DDON_STUB("sSoundManager::getBattleStateAreaBossType")
-    return {};
+u32 sSoundManager::getBattleStateAreaBossType() const {
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 256)) != 0) {
+        u32 cnt = 0;
+        do {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 272)) + static_cast<unsigned long>(cnt * 8u)) + 0)) != 0) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 272)) + static_cast<unsigned long>(cnt * 8u)) + 0)) + 40)) != 0) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 272)) + static_cast<unsigned long>(cnt * 8u)) + 0)) + 40)) + 9782)) != 0) {
+                        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 272)) + static_cast<unsigned long>(cnt * 8u)) + 0)) + 40)) + 9776);
+                    }
+                }
+            }
+            cnt += 1u;
+        } while (cnt < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 256)));
+    }
+    return 0;
 }
 
 sBattleState::SYS_BATTLE_STATE sSoundManager::getBattleState() const {
@@ -644,6 +701,20 @@ __attribute__((weak)) void sSoundManager::endQuestReq(bool isNotNormal) {
     /* stub */
 }
 
+inline void sSoundManager::setQuestStqr(rSoundStreamRequest* pr) {
+    if (pr == mprQuest) {
+        return;
+    }
+    if (mprQuest != nullptr) {
+        mprQuest->release();
+        mprQuest = nullptr;
+    }
+    if (pr != nullptr) {
+        pr->addRef();
+    }
+    mprQuest = pr;
+}
+
 void sSoundManager::startEventReq(bool on_stg, bool on_btl) {
     mIsEvent_222 = true;
     if (!on_stg) {
@@ -804,12 +875,12 @@ u32 sSoundManager::getStageBgmReqNo() {
             } else {
                 if (prsar->mIsAmb) {
                     if (sWeatherManager::getInstance()->getWeatherPhase() != sWeatherManager::WEATHER_PHASE_DAY) {
-                        return prsar->rSoundAreaInfo::getNightBgmNo();
+                        return prsar->getNightBgmNo();
                     } else {
-                        return prsar->rSoundAreaInfo::getDayBgmNo();
+                        return prsar->getDayBgmNo();
                     }
                 } else {
-                    return prsar->rSoundAreaInfo::getNormalBgmNo();
+                    return prsar->getNormalBgmNo();
                 }
             }
         } else {
@@ -827,23 +898,23 @@ u32 sSoundManager::getStageBgmReqNo() {
                 } else {
                     if (prsar->mIsAmb) {
                         if (sWeatherManager::getInstance()->getWeatherPhase() != sWeatherManager::WEATHER_PHASE_DAY) {
-                            return prsar->rSoundAreaInfo::getNightBgmNo();
+                            return prsar->getNightBgmNo();
                         } else {
-                            return prsar->rSoundAreaInfo::getDayBgmNo();
+                            return prsar->getDayBgmNo();
                         }
                     } else {
-                        return prsar->rSoundAreaInfo::getNormalBgmNo();
+                        return prsar->getNormalBgmNo();
                     }
                 }
             } else {
                 if (prsar->mIsAmb) {
                     if (sWeatherManager::getInstance()->getWeatherPhase() != sWeatherManager::WEATHER_PHASE_DAY) {
-                        return prsar->rSoundAreaInfo::getNightBgmNo();
+                        return prsar->getNightBgmNo();
                     } else {
-                        return prsar->rSoundAreaInfo::getDayBgmNo();
+                        return prsar->getDayBgmNo();
                     }
                 } else {
-                    return prsar->rSoundAreaInfo::getNormalBgmNo();
+                    return prsar->getNormalBgmNo();
                 }
             }
         }

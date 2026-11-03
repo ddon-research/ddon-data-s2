@@ -121,12 +121,24 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataCommonU32::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCommonU32::CDataCommonU32() {
     this->m_unvalue = 0;
 }
 
+inline void* CDataCommonU8::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCommonU8::CDataCommonU8() {
     this->m_ucvalue = 0;
+}
+
+inline void* CDataQuestId::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuestId::CDataQuestId() {

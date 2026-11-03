@@ -6,8 +6,18 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "Protocol/PacketData/Quest.h"
+#include "../../XFramework/cArea.h"
+#include "cNetGameServer.h"
 #include "cQuestManagerBase.h"
+#include "cQuestSvRequest.h"
+#include "cQuestSvRequestManager.h"
+#include "cQuestTask.h"
 #include "nQuest.h"
+#include "../../XFramework/sArea.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sQuestManagerExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

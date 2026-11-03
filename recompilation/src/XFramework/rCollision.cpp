@@ -10,6 +10,8 @@
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
 #include "../MT/MtStream.h"
+#include "cBVHCollision.h"
+#include "cGridCollision.h"
 #include "cResource.h"
 #include "nCollision.h"
 #include "sResource.h"

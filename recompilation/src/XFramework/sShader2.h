@@ -483,3 +483,11 @@ protected:
     static const u32 MAX_EXTEND_PACKAGE = 4;
     static const u32 MAX_CONFLICT_SID = 1024;
 };
+
+inline void* sShader2::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline bool sShader2::isDynamicShaderLoading() {
+    return this->mDynamicShaderLoading;
+}

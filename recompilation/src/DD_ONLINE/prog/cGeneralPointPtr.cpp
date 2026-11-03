@@ -3,6 +3,7 @@
 #include "cGeneralPointPtr.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemory.h"
+#include "cpLockOn.h"
 #include "sGeneralPoint.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

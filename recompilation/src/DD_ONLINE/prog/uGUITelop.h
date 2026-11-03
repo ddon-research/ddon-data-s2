@@ -121,6 +121,18 @@ public:
     static const u32 PAGE_MAX = 64;
 };
 
+inline void* uGUITelop::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rGUIMessage* uGUITelop::getMessageResource() {
+    return this->mpMessageResource;
+}
+
+inline u32 uGUITelop::getMessageIndex() {
+    return this->mMessageIndex;
+}
+
 inline u32 uGUITelop::getCurrentPage() {
     return this->mCurrentPage;
 }

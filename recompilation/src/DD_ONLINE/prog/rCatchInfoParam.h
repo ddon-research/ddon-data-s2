@@ -106,6 +106,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCatchInfoParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCatchInfoParam::cCatchInfoParam() {
     this->mCatchType = 0;
     this->mCatchActionTblNo = 0;
@@ -117,4 +121,20 @@ inline cCatchInfoParam::cCatchInfoParam() {
     this->mLeverGachaPoint = 50;
     this->mIsCheckSlaveDist = false;
     this->mCheckSlaveDist = 200.0f;
+}
+
+inline void* rCatchInfoParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCatchInfoParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCatchInfoParam::DTI)->memFree(p_addr);
+}
+
+inline void* cCatchInfoParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCatchInfoParam::DTI)->memAlloc(sz, align, ::cCatchInfoParam::DTI.::MtDTI::getID());
 }

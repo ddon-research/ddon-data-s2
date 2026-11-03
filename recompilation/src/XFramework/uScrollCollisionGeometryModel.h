@@ -105,6 +105,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uScrollCollisionGeometryModel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uScrollCollisionGeometryModel::uScrollCollisionGeometryModel() {
     this->::cUnit::mDrawMode = 1;
     this->mpOwnerModel = nullptr;

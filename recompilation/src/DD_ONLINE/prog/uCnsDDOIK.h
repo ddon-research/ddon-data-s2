@@ -475,6 +475,34 @@ public:
     static const s32 JOINT_MAX = 4;
 };
 
+inline void* uCnsDDOIK::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline uModel* uCnsDDOIK::getEffectorTargetModel() {
+    return this->mpEffectorTargetModel;
+}
+
+inline u32 uCnsDDOIK::getEffectorTargetJointNo() const {
+    return this->mEffectorTargetJointNo;
+}
+
+inline uModel* uCnsDDOIK::getUpVectorTargetModel() const {
+    return this->mpUpVectorTargetModel;
+}
+
+inline u32 uCnsDDOIK::getUpVectorTargetJointNo() const {
+    return this->mUpVectorTargetJointNo;
+}
+
+inline uCnsDDOIK::JointInfo* uCnsDDOIK::getJointInfo(s32 Idx) {
+    return &this->mJointInfo[Idx];
+}
+
+inline s32 uCnsDDOIK::getJointInfoNum() {
+    return 4;
+}
+
 inline void uCnsDDOIK::setFitDir(s32 dir) {
     this->mFitDir = dir;
 }
@@ -525,4 +553,20 @@ inline void uCnsDDOIK::setGroundLevel(f32 GroundLevel) {
 
 inline void uCnsDDOIK::setMotionFitDist(f32 dist) {
     this->mMotionFitDist = dist;
+}
+
+inline u32 uCnsDDOIK::getStatus() {
+    return this->mStatus;
+}
+
+inline void* uCnsDDOIK::JointInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline s32 uCnsDDOIK::JointInfo::getJntNo() const {
+    return this->mJntNo;
+}
+
+inline void* uCnsDDOIK::uCnsJoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

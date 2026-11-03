@@ -157,3 +157,7 @@ private:
     MtArray mStateTrash;  // offset: 0x4878
     bool mIsStateInterrupt;  // offset: 0x4898
 };
+
+inline void* cStateMachineBase::StateBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

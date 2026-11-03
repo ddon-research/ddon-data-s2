@@ -155,3 +155,7 @@ private:
 public:
     static sOccluder* mpInstance;
 };
+
+inline void* sOccluder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

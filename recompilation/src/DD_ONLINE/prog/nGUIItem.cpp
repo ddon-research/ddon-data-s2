@@ -11,14 +11,17 @@
 #include "cEquipData.h"
 #include "cGUIUtility.h"
 #include "cItemParam.h"
+#include "cOmControl.h"
 #include "cUIObject.h"
 #include "../../XFramework/cUnit.h"
+#include "cpOmGather.h"
 #include "nCharacterData.h"
 #include "nDDOUtility.h"
 #include "rItemList.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sItemManager.h"
+#include "sPlayerManager.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -33,8 +36,6 @@ inline void* nGUIItem::cItem::operator new(size_t sz, u32 align) {
 }
 
 nGUIItem::cItem::~cItem() {
-    DDON_STUB("nGUIItem::cItem::~cItem")
-    /* stub */
 }
 
 void nGUIItem::cItem::init() {
@@ -363,7 +364,7 @@ bool nGUIItem::cItemList::execSort(sItemManager::cItemBag::ITEM_CATEGORY cat, sI
             nCharacterData::ITEM_BAG_TYPE bagType = t0->getItemBagType(::sItemManager::getInstance()->getItemBagGroupeType(mChangeStorage));
             sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->setLinkItem(bagType);
             if (pItemBag != nullptr) {
-                pItemBag->::sItemManager::cItemBag::sortStrageItem(cat, sortType, sortDir);
+                pItemBag->sortStrageItem(cat, sortType, sortDir);
                 return true;
             } else {
                 return false;
@@ -372,7 +373,7 @@ bool nGUIItem::cItemList::execSort(sItemManager::cItemBag::ITEM_CATEGORY cat, sI
             nCharacterData::ITEM_BAG_TYPE bagType = t0->getItemBagType(mBagType);
             sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->setLinkItem(bagType);
             if (pItemBag != nullptr) {
-                pItemBag->::sItemManager::cItemBag::sortStrageItem(cat, sortType, sortDir);
+                pItemBag->sortStrageItem(cat, sortType, sortDir);
                 return true;
             } else {
                 return false;
@@ -382,7 +383,7 @@ bool nGUIItem::cItemList::execSort(sItemManager::cItemBag::ITEM_CATEGORY cat, sI
         nCharacterData::ITEM_BAG_TYPE bagType = t0->getItemBagType(mBagType);
         sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->setLinkItem(bagType);
         if (pItemBag != nullptr) {
-            pItemBag->::sItemManager::cItemBag::sortStrageItem(cat, sortType, sortDir);
+            pItemBag->sortStrageItem(cat, sortType, sortDir);
             return true;
         } else {
             return false;
@@ -521,7 +522,7 @@ nItem::E_STORAGE_TYPE nGUIItem::cItemList::getBagType(rItemList::ITEM_CATEGORY c
         nCharacterData::ITEM_BAG_TYPE Type = ::sItemManager::getInstance()->getItemBagType(mBagType);
         sItemManager::cItemBag* pBag = ::sItemManager::getInstance()->setLinkItem(Type);
         if (pBag != nullptr) {
-            sItemManager::cItemBag::ITEM_CATEGORY category = pBag->::sItemManager::cItemBag::getStorageCategotyToItemCategory(cat);
+            sItemManager::cItemBag::ITEM_CATEGORY category = pBag->getStorageCategotyToItemCategory(cat);
             if (mTargetStorage != mChangeStorage) {
                 nCharacterData::ITEM_BAG_TYPE t0 = ::sItemManager::getInstance()->getItemBagType(mBagType);
                 nItem::E_STORAGE_TYPE t1 = ::sItemManager::getInstance()->getItemNetStorageType(t0, category);

@@ -10,10 +10,21 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "cDraw.h"
+#include "cResource.h"
+#include "cUnit.h"
+#include "nDrawResource.h"
+#include "nDrawTexture.h"
 #include "nMotion.h"
 #include "rModel.h"
+#include "rMotionList.h"
+#include "sCollision.h"
+#include "sRender.h"
+#include "sScene.h"
 #include "uBaseModel.h"
+#include "uConstraint.h"
 #include "uCoord.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -132,9 +143,7 @@ __attribute__((weak)) void uModel::calcJointDependency() {
     /* stub */
 }
 
-u32 uModel::getJointNum() const {
-    return mJointNum;
-}
+static auto ddon_emit_0x01b63360 __attribute__((used)) = &uModel::getJointNum;
 
 __attribute__((weak)) void uModel::initJointLocalMatrix() {
     DDON_STUB("uModel::initJointLocalMatrix")
@@ -165,22 +174,16 @@ __attribute__((weak)) void uModel::setBlendNum(u32 n) {
     /* stub */
 }
 
-u32 uModel::getBlendNum() const {
-    return mBlendNum;
-}
+static auto ddon_emit_0x01b63320 __attribute__((used)) = &uModel::getBlendNum;
 
-void uModel::updateJointDependency() {
-    mUpdateJointDependencyReq = true;
-}
+static auto ddon_emit_0x01b63330 __attribute__((used)) = &uModel::updateJointDependency;
 
 __attribute__((weak)) void uModel::recomputeLocalMatrix() {
     DDON_STUB("uModel::recomputeLocalMatrix")
     /* stub */
 }
 
-u32 uModel::getKeyFrameNum() const {
-    return mKeyFrameNum;
-}
+static auto ddon_emit_0x01b63310 __attribute__((used)) = &uModel::getKeyFrameNum;
 
 bool uModel::isJointInitIdentity() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 4603)) & 16) >> 4);
@@ -439,13 +442,9 @@ __attribute__((weak)) void uModel::Joint::inverseCalcLMat(uModel* pModel, bool S
     /* stub */
 }
 
-u32 uModel::Joint::getAttr() const {
-    return mAttr;
-}
+static auto ddon_emit_0x01b635a0 __attribute__((used)) = &uModel::Joint::getAttr;
 
-void uModel::Joint::setAttr(u32 attr) {
-    mAttr = attr;
-}
+static auto ddon_emit_0x01b635b0 __attribute__((used)) = &uModel::Joint::setAttr;
 
 uModel::Joint* uModel::Joint::getParentJoint() {
     if (mParentIndex != 255) {
@@ -455,38 +454,24 @@ uModel::Joint* uModel::Joint::getParentJoint() {
     }
 }
 
-u32 uModel::Joint::getParentIndex() const {
-    return mParentIndex;
-}
+static auto ddon_emit_0x01b63590 __attribute__((used)) = &uModel::Joint::getParentIndex;
 
-void uModel::Joint::setParentIndex(u32 index) {
-    mParentIndex = index;
-}
+static auto ddon_emit_0x01b635c0 __attribute__((used)) = &uModel::Joint::setParentIndex;
 
-u32 uModel::Joint::getSymmetryIndex() const {
-    return mSymmetryIndex;
-}
+static auto ddon_emit_0x01b635d0 __attribute__((used)) = &uModel::Joint::getSymmetryIndex;
 
-void uModel::Joint::setSymmetryIndex(u32 index) {
-    mSymmetryIndex = index;
-}
+static auto ddon_emit_0x01b635e0 __attribute__((used)) = &uModel::Joint::setSymmetryIndex;
 
-u32 uModel::Joint::getNo() const {
-    return mNo;
-}
+static auto ddon_emit_0x01b63610 __attribute__((used)) = &uModel::Joint::getNo;
 
-void uModel::Joint::setNo(u32 no) {
-    mNo = no;
-}
+static auto ddon_emit_0x01b63620 __attribute__((used)) = &uModel::Joint::setNo;
 
 __attribute__((weak)) u32 uModel::Joint::getType() const {
     DDON_STUB("uModel::Joint::getType")
     return {};
 }
 
-void uModel::Joint::setType(u32 type) {
-    mType = type;
-}
+static auto ddon_emit_0x01b63600 __attribute__((used)) = &uModel::Joint::setType;
 
 void uModel::Joint::setConstraint(uModel::Constraint* pc) {
     mpConstraint = pc;
@@ -512,9 +497,7 @@ void uModel::Joint::setConstraint(uModel::Constraint* pc) {
     }
 }
 
-u32 uModel::Joint::getChildNum() const {
-    return mChildNum;
-}
+static auto ddon_emit_0x01b63630 __attribute__((used)) = &uModel::Joint::getChildNum;
 
 __attribute__((weak)) u8 uModel::Joint::getCalcNo() {
     DDON_STUB("uModel::Joint::getCalcNo")
@@ -585,18 +568,11 @@ __attribute__((weak)) void uModel::Motion::setMotionNo(u32 no) {
     /* stub */
 }
 
-u32 uModel::Motion::getMotionNo() const {
-    return mMotionNo;
-}
+static auto ddon_emit_0x01b63800 __attribute__((used)) = &uModel::Motion::getMotionNo;
 
-void uModel::Motion::setFrame(f32 frame) {
-    mFrame = frame;
-    mPrevFrame = frame;
-}
+static auto ddon_emit_0x01b63820 __attribute__((used)) = &uModel::Motion::setFrame;
 
-f32 uModel::Motion::getPrevFrame() const {
-    return mPrevFrame;
-}
+static auto ddon_emit_0x01b63810 __attribute__((used)) = &uModel::Motion::getPrevFrame;
 
 bool uModel::Motion::isMotionEnd() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 10)) & 4) >> 2);
@@ -606,22 +582,16 @@ bool uModel::Motion::isMotionNextEnd() const {
     return (mState & 5) != 0;
 }
 
-f32 uModel::Motion::getSpeed() const {
-    return mSpeed;
-}
+static auto ddon_emit_0x01b63830 __attribute__((used)) = &uModel::Motion::getSpeed;
 
-void uModel::Motion::setSpeed(f32 NewValue) {
-    mSpeed = NewValue;
-}
+static auto ddon_emit_0x01b637f0 __attribute__((used)) = &uModel::Motion::setSpeed;
 
 __attribute__((weak)) u32 uModel::Motion::calcSequence(u32 page, s32 minframe, s32 maxframe) {
     DDON_STUB("uModel::Motion::calcSequence")
     return {};
 }
 
-u32 uModel::Motion::getKeyFrameNum() const {
-    return mKeyFrameNum;
-}
+static auto ddon_emit_0x01b63840 __attribute__((used)) = &uModel::Motion::getKeyFrameNum;
 
 __attribute__((weak)) bool uModel::Motion::hasKeyFrame(u32 idx) const {
     DDON_STUB("uModel::Motion::hasKeyFrame")

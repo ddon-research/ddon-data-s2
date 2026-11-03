@@ -825,6 +825,16 @@ namespace Gnm {
 
 namespace sce {
 namespace Gnm {
+    enum StencilFormat
+    {
+        kStencilInvalid = 0,
+        kStencil8 = 1,
+    };
+}  // namespace Gnm
+}  // namespace sce
+
+namespace sce {
+namespace Gnm {
     enum StencilOp
     {
         kStencilOpKeep = 0,
@@ -1107,6 +1117,16 @@ namespace Gnm {
     {
         kWriteDataConfirmDisable = 0,
         kWriteDataConfirmEnable = 1,
+    };
+}  // namespace Gnm
+}  // namespace sce
+
+namespace sce {
+namespace Gnm {
+    enum ZCompareBase
+    {
+        kZCompareBaseZMin = 0,
+        kZCompareBaseZMax = 1,
     };
 }  // namespace Gnm
 }  // namespace sce

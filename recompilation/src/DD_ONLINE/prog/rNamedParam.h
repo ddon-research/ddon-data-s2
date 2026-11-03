@@ -177,3 +177,211 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cNamedParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cNamedParam::getID() const {
+    return this->mID;
+}
+
+inline void cNamedParam::setID(u32 NewValue) {
+    this->mID = NewValue;
+}
+
+inline u32 cNamedParam::getType() const {
+    return this->mType;
+}
+
+inline void cNamedParam::setType(u32 NewValue) {
+    this->mType = NewValue;
+}
+
+inline u32 cNamedParam::getHpRate() const {
+    return this->mHpRate;
+}
+
+inline void cNamedParam::setHpRate(u32 NewValue) {
+    this->mHpRate = NewValue;
+}
+
+inline u16 cNamedParam::getExperience() const {
+    return this->mExperience;
+}
+
+inline void cNamedParam::setExperience(u16 NewValue) {
+    this->mExperience = NewValue;
+}
+
+inline u16 cNamedParam::getAttackBasePhys() const {
+    return this->mAttackBasePhys;
+}
+
+inline void cNamedParam::setAttackBasePhys(u16 NewValue) {
+    this->mAttackBasePhys = NewValue;
+}
+
+inline u16 cNamedParam::getAttackWepPhys() const {
+    return this->mAttackWepPhys;
+}
+
+inline void cNamedParam::setAttackWepPhys(u16 NewValue) {
+    this->mAttackWepPhys = NewValue;
+}
+
+inline u16 cNamedParam::getDefenceBasePhys() const {
+    return this->mDefenceBasePhys;
+}
+
+inline void cNamedParam::setDefenceBasePhys(u16 NewValue) {
+    this->mDefenceBasePhys = NewValue;
+}
+
+inline u16 cNamedParam::getDefenceWepPhys() const {
+    return this->mDefenceWepPhys;
+}
+
+inline void cNamedParam::setDefenceWepPhys(u16 NewValue) {
+    this->mDefenceWepPhys = NewValue;
+}
+
+inline u16 cNamedParam::getAttackBaseMagic() const {
+    return this->mAttackBaseMagic;
+}
+
+inline void cNamedParam::setAttackBaseMagic(u16 NewValue) {
+    this->mAttackBaseMagic = NewValue;
+}
+
+inline u16 cNamedParam::getAttackWepMagic() const {
+    return this->mAttackWepMagic;
+}
+
+inline void cNamedParam::setAttackWepMagic(u16 NewValue) {
+    this->mAttackWepMagic = NewValue;
+}
+
+inline u16 cNamedParam::getDefenceBaseMagic() const {
+    return this->mDefenceBaseMagic;
+}
+
+inline void cNamedParam::setDefenceBaseMagic(u16 NewValue) {
+    this->mDefenceBaseMagic = NewValue;
+}
+
+inline u16 cNamedParam::getDefenceWepMagic() const {
+    return this->mDefenceWepMagic;
+}
+
+inline void cNamedParam::setDefenceWepMagic(u16 NewValue) {
+    this->mDefenceWepMagic = NewValue;
+}
+
+inline u16 cNamedParam::getPower() const {
+    return this->mPower;
+}
+
+inline void cNamedParam::setPower(u16 NewValue) {
+    this->mPower = NewValue;
+}
+
+inline u16 cNamedParam::getGuardDefenceBase() const {
+    return this->mGuardDefenceBase;
+}
+
+inline void cNamedParam::setGuardDefenceBase(u16 NewValue) {
+    this->mGuardDefenceBase = NewValue;
+}
+
+inline u16 cNamedParam::getGuardDefenceWep() const {
+    return this->mGuardDefenceWep;
+}
+
+inline void cNamedParam::setGuardDefenceWep(u16 NewValue) {
+    this->mGuardDefenceWep = NewValue;
+}
+
+inline u16 cNamedParam::getShrinkEnduranceMain() const {
+    return this->mShrinkEnduranceMain;
+}
+
+inline void cNamedParam::setShrinkEnduranceMain(u16 NewValue) {
+    this->mShrinkEnduranceMain = NewValue;
+}
+
+inline u16 cNamedParam::getBlowEnduranceMain() const {
+    return this->mBlowEnduranceMain;
+}
+
+inline void cNamedParam::setBlowEnduranceMain(u16 NewValue) {
+    this->mBlowEnduranceMain = NewValue;
+}
+
+inline u16 cNamedParam::getDownEnduranceMain() const {
+    return this->mDownEnduranceMain;
+}
+
+inline void cNamedParam::setDownEnduranceMain(u16 NewValue) {
+    this->mDownEnduranceMain = NewValue;
+}
+
+inline u16 cNamedParam::getShakeEnduranceMain() const {
+    return this->mShakeEnduranceMain;
+}
+
+inline void cNamedParam::setShakeEnduranceMain(u16 NewValue) {
+    this->mShakeEnduranceMain = NewValue;
+}
+
+inline u16 cNamedParam::getHpSub() const {
+    return this->mHpSub;
+}
+
+inline void cNamedParam::setHpSub(u16 NewValue) {
+    this->mHpSub = NewValue;
+}
+
+inline u16 cNamedParam::getShrinkEnduranceSub() const {
+    return this->mShrinkEnduranceSub;
+}
+
+inline void cNamedParam::setShrinkEnduranceSub(u16 NewValue) {
+    this->mShrinkEnduranceSub = NewValue;
+}
+
+inline u16 cNamedParam::getBlowEnduranceSub() const {
+    return this->mBlowEnduranceSub;
+}
+
+inline void cNamedParam::setBlowEnduranceSub(u16 NewValue) {
+    this->mBlowEnduranceSub = NewValue;
+}
+
+inline u16 cNamedParam::getOcdEndurance() const {
+    return this->mOcdEndurance;
+}
+
+inline void cNamedParam::setOcdEndurance(u16 NewValue) {
+    this->mOcdEndurance = NewValue;
+}
+
+inline u16 cNamedParam::getAilmentDamage() const {
+    return this->mAilmentDamage;
+}
+
+inline void cNamedParam::setAilmentDamage(u16 NewValue) {
+    this->mAilmentDamage = NewValue;
+}
+
+inline void* rNamedParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cNamedParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNamedParam::DTI)->memFree(p_addr);
+}

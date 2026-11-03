@@ -254,3 +254,7 @@ private:
     static const u32 ATTR_SPECIFIED_PAGE = 2;
     static const u32 ATTR_PAGE_LINEBREAK = 4;
 };
+
+inline void* cGUIMessageAnalyzer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

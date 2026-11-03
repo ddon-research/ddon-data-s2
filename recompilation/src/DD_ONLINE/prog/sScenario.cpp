@@ -4,15 +4,29 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "../../MT/MtSynchronize.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cAreaHit.h"
+#include "../../XFramework/cResource.h"
 #include "cScenario.h"
 #include "../../XFramework/cSystem.h"
 #include "cTalkMsgData.h"
+#include "../../XFramework/cUnit.h"
+#include "rScenario.h"
+#include "../../XFramework/sArea.h"
+#include "sFlag.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sGame.h"
+#include "sScreenShot.h"
+#include "sWorldOffset.h"
 #include "uGUIBase.h"
 #include "uGUISystemMsg.h"
 #ifndef DDON_STUB
@@ -24,8 +38,6 @@ const MtDTI& SCE_AH_LIST::getDTI() const {
 }
 
 SCE_AH_LIST::~SCE_AH_LIST() {
-    DDON_STUB("SCE_AH_LIST::~SCE_AH_LIST")
-    /* stub */
 }
 
 __attribute__((weak)) void SCE_AH_LIST::createProperty(MtPropertyList& s) {
@@ -261,23 +273,23 @@ void sScenario::createSystemMsg(u32 textNo) {
     }
     cTalkMsgData* pMsgData = sGame::getInstance()->getExmineMsgData();
     if (pMsgData != nullptr) {
-        pMsgData->cTalkMsgData::setDispGrpSerialNo(textNo);
+        pMsgData->setDispGrpSerialNo(textNo);
         if ((mpGUISystemMsg = static_cast<uGUISystemMsg*>(static_cast<sGUIExt*>(sGUI::getInstance())->newSingletonMenu(static_cast<const MtDTI*>(&uGUISystemMsg::DTI)))) == nullptr) {
             mpGUISystemMsg;
         } else {
-            if (pMsgData->cTalkMsgData::getDispPageNum() != 0) {
+            if (pMsgData->getDispPageNum() != 0) {
                 for (unsigned int i0_3 = 0;;) {
-                    if (pMsgData->cTalkMsgData::getMessage() != nullptr) {
+                    if (pMsgData->getMessage() != nullptr) {
                         uGUISystemMsg* t0 = mpGUISystemMsg;
-                        MT_CTSTR t1 = pMsgData->cTalkMsgData::getMessage();
+                        MT_CTSTR t1 = pMsgData->getMessage();
                         if (i0_3 != 0) {
                             t0->addPageInfo(t1);
                         } else {
                             t0->setText(t1, -1);
                         }
                     }
-                    pMsgData->cTalkMsgData::addDispPageNo();
-                    if ((i0_3 + 1u) < pMsgData->cTalkMsgData::getDispPageNum()) {
+                    pMsgData->addDispPageNo();
+                    if ((i0_3 + 1u) < pMsgData->getDispPageNum()) {
                         i0_3 += 1u;
                     } else {
                         break;

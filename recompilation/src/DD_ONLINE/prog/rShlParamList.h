@@ -148,3 +148,15 @@ public:
 protected:
     static const u8 DATA_VERSION = 31;
 };
+
+inline void* cShlGroupParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cShlGroupParam::getParamNum() const {
+    return this->mShlList.mLength;
+}
+
+inline void* rShlParamList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

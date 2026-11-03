@@ -3,17 +3,30 @@
 #include "nCollisionNode.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
+#include "../MT/MtCollisionDefine.h"
+#include "../MT/MtCollisionMath.h"
 #include "../MT/MtCollisionUtil.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
 #include "../MT/MtDataWriter.h"
+#include "../MT/MtGeomAABB.h"
+#include "../MT/MtGeomCapsule.h"
+#include "../MT/MtGeomCylinder.h"
+#include "../MT/MtGeomLineSegment.h"
+#include "../MT/MtGeomOBB.h"
+#include "../MT/MtGeomSphere.h"
+#include "../MT/MtGeomTriangle.h"
 #include "../MT/MtGeometry3D.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtPropertyList.h"
+#include "../MT/MtSerializer.h"
 #include "../generated/shared/nCollisionDefine.h"
+#include "rConvexHull.h"
+#include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -125,7 +138,7 @@ u32 nCollision::cCollisionNode::insertGeometry(MtGeomConvex* pGeomConvex, u32 Re
         if (RegistArrayIndex < mGeometryArray.mLength) {
             nCollision::cGeometry* pTargetIndexGeometry = static_cast<nCollision::cGeometry*>(mpEditDTI->newInstance());
             if (pTargetIndexGeometry != nullptr) {
-                pTargetIndexGeometry->::nCollision::cGeometry::registGeometry(pGeomConvex, FlgEnableDeepCopy);
+                pTargetIndexGeometry->registGeometry(pGeomConvex, FlgEnableDeepCopy);
                 mGeometryArray.insert(static_cast<MtObject*>(pTargetIndexGeometry), RegistArrayIndex);
                 return RegistArrayIndex;
             } else {
@@ -329,13 +342,9 @@ __attribute__((weak)) MtObject* nCollision::cCollisionNodeObject::getGeometryUse
     return nullptr;
 }
 
-bool nCollision::cCollisionNodeObject::isRegistCallbackSetup() const {
-    return mpCallbackFuncSetup != static_cast<const MT_MFUNC>(0);
-}
+static auto ddon_emit_0x01b85730 __attribute__((used)) = &nCollision::cCollisionNodeObject::isRegistCallbackSetup;
 
-MtObject* nCollision::cCollisionNodeObject::getUserDataPtr() const {
-    return mpUserDataPtr;
-}
+static auto ddon_emit_0x01b85750 __attribute__((used)) = &nCollision::cCollisionNodeObject::getUserDataPtr;
 
 __attribute__((weak)) void nCollision::cCollisionNodeObject::setUserDataPtr(MtObject* ptr) {
     DDON_STUB("nCollision::cCollisionNodeObject::setUserDataPtr")
@@ -450,14 +459,12 @@ MtGeomConvex* nCollision::cGeometry::getRegistGeometryConst() const {
 }
 
 void nCollision::cGeometry::registGeometryForUI(MtGeomConvex* pRegistGeomConvex) {
-    if (!mFlgAllocateGeometry) {
-        return;
+    if (mFlgAllocateGeometry) {
+        if (pRegistGeomConvex != nullptr) {
+            mpGeometry = pRegistGeomConvex;
+            mFlgAllocateGeometry = true;
+        }
     }
-    if (pRegistGeomConvex == nullptr) {
-        return;
-    }
-    mpGeometry = pRegistGeomConvex;
-    mFlgAllocateGeometry = true;
 }
 
 void nCollision::cGeometry::registGeometryByTypeInterface(u32 GeometryType) {
@@ -632,7 +639,7 @@ bool nCollision::cObjectBase::load(MtDataReader& r, MtStream& in) {
         if (r.refill()) {
             u32 t3 = r.mSeekPt;
             u8* t4 = r.mBuffer;
-            u8 t5 = t4[t0];
+            u8 t5 = t4[r.mSeekPt];
             r.mSeekPt = t3 + 1u;
             mFlgActive = t5 != 0;
             return true;
@@ -642,7 +649,7 @@ bool nCollision::cObjectBase::load(MtDataReader& r, MtStream& in) {
         }
     } else {
         u8* t4 = r.mBuffer;
-        u8 t5 = t4[t0];
+        u8 t5 = t4[r.mSeekPt];
         r.mSeekPt = t0 + 1u;
         mFlgActive = t5 != 0;
         return true;

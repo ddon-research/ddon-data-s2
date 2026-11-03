@@ -19,14 +19,16 @@ class MtUI;
 class MtVector3;
 class cSoundZoneListener;
 class cZoneLayout;
-namespace nSoundGenerator { class cSeqSeContents; }
 namespace nZone { class cLayoutElement; }
 class rSoundRequest;
+class rSoundSequenceSe;
 class rSoundStreamRequest;
 class uSoundSequenceSe;
 
 // Declarations
 class cSoundGeneratorListener;
+namespace nSoundGenerator { class cCategory; }
+namespace nSoundGenerator { class cSeqSeContents; }
 class uSoundGenerator;
 
 // Type aliases from DWARF
@@ -69,6 +71,81 @@ public:
 public:
     static MyDTI DTI;
 };
+
+namespace nSoundGenerator {
+    class cCategory : public nSoundZoneBase::cSoundZoneContents
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cCategory();
+        virtual ~cCategory();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundGenerator
+
+namespace nSoundGenerator {
+    class cSeqSeContents : public nSoundGenerator::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cSeqSeContents();
+        virtual ~cSeqSeContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        virtual void createPropertyForUI(MtPropertyList& s);  // vtable slot 6
+        rSoundSequenceSe* getSequenceSeResource() const;
+        void setSequenceSeResource(rSoundSequenceSe*);
+    private:
+        rSoundSequenceSe* mpSequenceSe;  // offset: 0x20
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundGenerator
 
 class uSoundGenerator : public uSoundZoneBase
 {
@@ -244,13 +321,33 @@ public:
     static const s32 OCC_MOVE_LINE_ALL = -1;
 };
 
+inline void* cSoundGeneratorListener::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSoundGeneratorListener::cSoundGeneratorListener() {
 }
 
-inline s32 uSoundGenerator::getOcclusionMoveLine() {
-    return this->mOcclusionMoveLine;
+inline void* nSoundGenerator::cCategory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSoundGenerator::cSeqSeContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uSoundGenerator::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uSoundGenerator::cGeneratorGroupManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uSoundGenerator::cGeneratorGroupManager::cGeneratorGroupManager() {
     this->mpPlayInfomation = nullptr;
+}
+
+inline void* uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

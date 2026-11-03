@@ -7,6 +7,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/rSoundRequest.h"
@@ -19,11 +21,24 @@ const MtDTI& rSoundSequenceSe::getDTI() const {
     return rSoundSequenceSe::DTI;
 }
 
+inline void* rSoundSequenceSe::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundSequenceSe::DTI)->memAlloc(sz, align, rSoundSequenceSe::DTI.getID());
+}
+
 inline void rSoundSequenceSe::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundSequenceSe::DTI)->memFree(p_addr);
 }
 
-rSoundSequenceSe::~rSoundSequenceSe() {
+inline rSoundSequenceSe::rSoundSequenceSe() {
+    setAttribute(22u);
+    mHeader.Magic = 0x52515353;
+    mHeader.Version = 1;
+    mpRequest = nullptr;
+    mPauseStatus = 0;
+    mSeqSe.mAutoDelete = true;
+}
+
+__attribute__((noinline)) rSoundSequenceSe::~rSoundSequenceSe() {
     if (mSeqSe.mLength != 0) {
         u32 v0_0 = mSeqSe.mLength;
         for (unsigned int i0_3 = 0;;) {
@@ -67,7 +82,7 @@ MtUI* rSoundSequenceSe::createUI(MtProperty& prop) {
 
 bool rSoundSequenceSe::load(MtStream& in) {
     MtSerializer sz(65536);
-    if (sz.MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
+    if (sz.deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
         rSoundRequest* t0 = mpRequest;
         if (t0 != nullptr) {
             if (t0->isIntermediate()) {
@@ -94,9 +109,7 @@ rSoundSequenceSe::SequenceSe* rSoundSequenceSe::getSequenceSe(u32 index) {
     return nullptr;
 }
 
-rSoundRequest* rSoundSequenceSe::getSoundRequest() {
-    return mpRequest;
-}
+static auto ddon_emit_0x01ab3660 __attribute__((used)) = &rSoundSequenceSe::getSoundRequest;
 
 void rSoundSequenceSe::setSoundRequest(rSoundRequest* pRes) {
     if (pRes == nullptr) {
@@ -114,9 +127,8 @@ rSoundSequenceSe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 rSoundSequenceSe::MyDTI rSoundSequenceSe::DTI("rSoundSequenceSe", &::cResource::DTI, 168ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rSoundSequenceSe::MyDTI::newInstance() const {
-    DDON_STUB("rSoundSequenceSe::MyDTI::newInstance")
-    return nullptr;
+MtObject* rSoundSequenceSe::MyDTI::newInstance() const {
+    return new (16u) rSoundSequenceSe;
 }
 
 const MtDTI& rSoundSequenceSe::SequenceSe::getDTI() const {

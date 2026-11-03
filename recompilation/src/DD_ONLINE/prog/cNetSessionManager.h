@@ -338,6 +338,10 @@ namespace nSessionManager {
     };
 }  // namespace nSessionManager
 
+inline void* nSessionManager::MyListener::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nSessionManager::MyListener::MyListener() {
     this->mSessionId = 0;
 }
@@ -348,6 +352,14 @@ inline s32 nSessionManager::MyListener::getSessionId() {
 
 inline nSessionManager::cLobbyDataMessage::cLobbyDataMessage() {
     this->mMsgType = static_cast<nSessionManager::cLobbyDataMessage::LOBBY_MSG_TYPE>(0);
+}
+
+inline void* nSessionManager::cLobbyDataMessage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSessionManager::cNetSessionManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline s32 nSessionManager::cNetSessionManager::getPartyMemberMaxNum() {

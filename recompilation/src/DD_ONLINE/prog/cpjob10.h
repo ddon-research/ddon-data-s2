@@ -443,12 +443,24 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpJob10::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpJob10::resetUseNumCs02Air() {
     this->mUseNumCustom02Air = 0;
 }
 
+inline void* cpJob10::cSpiritManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline f32 cpJob10::cSpiritManager::getSpirit() const {
     return this->mSpirit_Gi;
+}
+
+inline void cpJob10::cSpiritManager::setSpirit(f32 val) {
+    this->mSpirit_Gi = val;
 }
 
 inline uHuman* cpJob10::cSpiritManager::getHuman() const {
@@ -467,6 +479,18 @@ inline void cpJob10::cSpiritManager::setSpirit_Gi(f32 NewValue) {
     this->mSpirit_Gi = NewValue;
 }
 
+inline void* cpJob10::cSpiritManager::cSpiritStateNormal::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cpJob10::cSpiritManager::cSpiritState::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cpJob10::cSpiritManager::cSpiritState::cSpiritState() {
     this->mpParent = nullptr;
+}
+
+inline void* cpJob10::cSpiritManager::cSpiritStateBoost::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

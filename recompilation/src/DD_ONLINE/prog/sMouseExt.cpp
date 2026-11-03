@@ -4,6 +4,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../XFramework/sMouse.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -26,8 +27,13 @@ inline void sMouseExt::operator delete(void* p_addr) {
 }
 
 sMouseExt::sMouseExt() {
-    DDON_STUB("sMouseExt::sMouseExt")
-    /* stub */
+    mStateExt.rep_timer[1] = 0;
+    mStateExt.rep_timer[0] = 0;
+    mStateExt.rep = 0;
+    mStateExt.trg = 0;
+    mStateExt.release = 0;
+    mStateExt.on = 0;
+    mStateExt.old = 0;
 }
 
 sMouseExt::~sMouseExt() {
@@ -58,8 +64,7 @@ sMouseExt::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32
 
 sMouseExt::MyDTI sMouseExt::DTI("sMouseExt", &::sMouse::DTI, 2768ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sMouseExt::MyDTI::newInstance() const {
-    DDON_STUB("sMouseExt::MyDTI::newInstance")
-    return nullptr;
+MtObject* sMouseExt::MyDTI::newInstance() const {
+    return new (16u) sMouseExt;
 }
 

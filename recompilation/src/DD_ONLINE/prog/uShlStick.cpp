@@ -3,8 +3,16 @@
 #include "uShlStick.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cpObjCollision.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "nShlStick.h"
+#include "sSetManager.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "../../XFramework/uModel.h"
 #include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

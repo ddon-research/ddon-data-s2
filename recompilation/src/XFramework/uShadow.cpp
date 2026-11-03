@@ -2,17 +2,23 @@
 #include <new>
 #include "uShadow.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtPropertyList.h"
+#include "../MT/MtRandom.h"
 #include "cDraw.h"
 #include "cUnit.h"
 #include "nDrawRasterizerState.h"
+#include "nDrawResource.h"
 #include "nDrawTexture.h"
 #include "sScene.h"
 #include "sShadow.h"
+#include "sUnit.h"
+#include "uFilter.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -201,13 +207,9 @@ __attribute__((weak)) void uShadow::setMapSize(u32 size) {
     /* stub */
 }
 
-u32 uShadow::getMapSize() const {
-    return mMapSizeOriginal;
-}
+static auto ddon_emit_0x01b642d0 __attribute__((used)) = &uShadow::getMapSize;
 
-u32 uShadow::getMapSizeTrue() const {
-    return mMapSize;
-}
+static auto ddon_emit_0x01b642e0 __attribute__((used)) = &uShadow::getMapSizeTrue;
 
 void uShadow::setDispersion(f32 d) {
     if (mDispersion == d) {
@@ -271,13 +273,9 @@ bool uShadow::getStandBy() const {
     return mStandBy;
 }
 
-bool uShadow::isLimitRangeEnable() const {
-    return mLimitRangeEnable;
-}
+static auto ddon_emit_0x01b64350 __attribute__((used)) = &uShadow::isLimitRangeEnable;
 
-void uShadow::setLimitRangeEnable(bool enable) {
-    mLimitRangeEnable = enable;
-}
+static auto ddon_emit_0x01b64360 __attribute__((used)) = &uShadow::setLimitRangeEnable;
 
 bool uShadow::getLimitRangeOBB(MtOBB* obb) const {
     return false;
@@ -287,9 +285,7 @@ bool uShadow::isMappedTo(uLight* light) const {
     return mMappedToLight && ((light != nullptr) && ((mpTargetLight != nullptr) && (light == mpTargetLight)));
 }
 
-bool uShadow::isMappedToLight() const {
-    return mMappedToLight;
-}
+static auto ddon_emit_0x01b642f0 __attribute__((used)) = &uShadow::isMappedToLight;
 
 void uShadow::setMappedToLight(bool mappedToLight) {
     if (mMappedToLight == mappedToLight) {
@@ -348,9 +344,7 @@ void uShadow::setManagedType(u32 type) {
     }
 }
 
-u32 uShadow::getManagedType() const {
-    return mManagedType;
-}
+static auto ddon_emit_0x01b64310 __attribute__((used)) = &uShadow::getManagedType;
 
 __attribute__((weak)) MtSphere uShadow::getBoundingSphere() const {
     DDON_STUB("uShadow::getBoundingSphere")
@@ -389,22 +383,16 @@ void uShadow::setShadowMapCacheEnable(bool enable) {
     }
 }
 
-bool uShadow::getShadowMapCacheEnable() const {
-    return mShadowMapCacheEnable;
-}
+static auto ddon_emit_0x01b64300 __attribute__((used)) = &uShadow::getShadowMapCacheEnable;
 
 __attribute__((weak)) void uShadow::invalidateShadowMapCache(u32 delayFrame) {
     DDON_STUB("uShadow::invalidateShadowMapCache")
     /* stub */
 }
 
-void uShadow::setNearClipDistance(f32 distance) {
-    mNearClipDistance = distance;
-}
+static auto ddon_emit_0x01b643d0 __attribute__((used)) = &uShadow::setNearClipDistance;
 
-f32 uShadow::getNearClipDistance() const {
-    return mNearClipDistance;
-}
+static auto ddon_emit_0x01b643c0 __attribute__((used)) = &uShadow::getNearClipDistance;
 
 void uShadow::getDrawUnitState(u32& type, u32& priority) const {
     type = 4;
@@ -558,17 +546,11 @@ void uShadow::setPCDisableMode(bool set) {
     }
 }
 
-bool uShadow::getPS3DisableMode() {
-    return mIsPS3Disable;
-}
+static auto ddon_emit_0x01b64320 __attribute__((used)) = &uShadow::getPS3DisableMode;
 
-bool uShadow::getPS4DisableMode() {
-    return mIsPS4Disable;
-}
+static auto ddon_emit_0x01b64330 __attribute__((used)) = &uShadow::getPS4DisableMode;
 
-bool uShadow::getPCDisableMode() {
-    return mIsPCDisable;
-}
+static auto ddon_emit_0x01b64340 __attribute__((used)) = &uShadow::getPCDisableMode;
 
 uShadow::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

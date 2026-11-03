@@ -3,12 +3,18 @@
 #include "rSoundAreaInfo.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "../../XFramework/rSoundRequest.h"
 #include "../../XFramework/rSoundStreamRequest.h"
 #include "../../XFramework/rZone.h"
 #include "res_ptr.h"
+#include "../../XFramework/sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -56,6 +62,10 @@ rZone* rSoundAreaInfo::getSndZoneOcclusion() {
 
 rZone* rSoundAreaInfo::getSndZoneGenerator() {
     return mpSndZoneRes[1].mpPtr;
+}
+
+rZone* rSoundAreaInfo::getSndZoneTrigger() {
+    return mpSndZoneRes[2].mpPtr;
 }
 
 rSoundRequest* rSoundAreaInfo::getAttributeRes(u32 index) {

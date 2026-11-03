@@ -5,6 +5,8 @@
 #include <string.h>
 #include "sItemManager.h"
 #include "Protocol/PacketData/Character.h"
+#include "Protocol/PacketData/Common.h"
+#include "Protocol/PacketData/GP.h"
 #include "Protocol/PacketData/Item.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -12,24 +14,43 @@
 #include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "../../MT/MtTime.h"
+#include "Protocol/UserSession/S2C.h"
+#include "Protocol/PacketData/Shop.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cCharacterData.h"
+#include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cEquipData.h"
 #include "cItemParam.h"
 #include "cNetGameServer.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
 #include "nCharacterData.h"
 #include "nHumanMsg.h"
+#include "nLayout.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "rItemList.h"
 #include "rShopGoods.h"
 #include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sChat.h"
+#include "sContextManager.h"
+#include "sCraftManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sGame.h"
 #include "../../XFramework/sMain.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "sQuestManagerExt.h"
+#include "uHuman.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -257,9 +278,282 @@ __attribute__((weak)) void sItemManager::setItemBag(u32 TargetNo) {
     /* stub */
 }
 
-__attribute__((weak)) void sItemManager::createItemSlot(u32 TargetNo) {
-    DDON_STUB("sItemManager::createItemSlot")
-    /* stub */
+void sItemManager::createItemSlot(u32 TargetNo) {
+    unsigned int i0_0;
+    MtObject* v0_9;
+    if (TargetNo >= mBag.mLength) {
+        return;
+    } else {
+        v0_9 = mBag.mpArray[TargetNo];
+        if (v0_9 == nullptr) {
+            return;
+        } else {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_9) + 8) = 1;
+            switch (TargetNo) {
+                case 0:
+                {
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_USE_ITEM, sGame::getInstance()->getUseItemSlotLimitByStorage());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_ARMS_ITEM, sGame::getInstance()->getArmItemSlotLimitByStorage());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_MATERIAL_ITEM, sGame::getInstance()->getMaterialItemSlotLimitByStorage());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_JOB_ITEM, sGame::getInstance()->getJobItemSlotLimitByStorage());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_ALL_ITEM, sGame::getInstance()->getAllItemSlotLimitByStorage());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createList((((sGame::getInstance()->getArmItemSlotLimitByStorage() + sGame::getInstance()->mUseItemSlotLimitByStorage) + sGame::getInstance()->mMaterialItemSlotLimitByStorage) + sGame::getInstance()->mJobItemSlotLimitByStorage) + sGame::getInstance()->mAllItemSlotLimitByStorage);
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 600) = 257;
+                    for (unsigned int i39_3 = 2;;) {
+                        if ((i39_3 - 1u) != 0) {
+                            i39_3 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 616) = 257;
+                    for (unsigned int i41_0 = 3;;) {
+                        if ((i41_0 - 1u) != 0) {
+                            i41_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 632) = 257;
+                    for (unsigned int i43_0 = 4;;) {
+                        if ((i43_0 - 1u) != 0) {
+                            i43_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 648) = 257;
+                    for (unsigned int i45_0 = 5;;) {
+                        if ((i45_0 - 1u) != 0) {
+                            i45_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    goto region_7da5e4;
+                }
+                case 1:
+                {
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_USE_ITEM, sGame::getInstance()->getUseItemSlotLimitByMyBag());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_ARMS_ITEM, sGame::getInstance()->getArmItemSlotLimitByMyBag());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_MATERIAL_ITEM, sGame::getInstance()->getMaterialItemSlotLimitByMyBag());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_KEY_ITEM, sGame::getInstance()->getKeyItemSlotLimitByMyBag());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_JOB_ITEM, sGame::getInstance()->getJobItemSlotLimitByMyBag());
+                    u32 t0 = mEquipItemSlotNum;
+                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 812) = t0 * (static_cast<sNetworkExt*>(sNetwork::getInstance())->getMyPawnMaxNum() + 1u);
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_EQUIP_ITEM, t0 * (sItemManager::getInstance()->getMyPawnSlotNum() + 1u));
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createList(((((sGame::getInstance()->getArmItemSlotLimitByMyBag() + sGame::getInstance()->mUseItemSlotLimitByMyBag) + sGame::getInstance()->mMaterialItemSlotLimitByMyBag) + sGame::getInstance()->mKeyItemSlotLimitByMyBag) + sGame::getInstance()->mJobItemSlotLimitByMyBag) + (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 812)));
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 600) = 257;
+                    for (unsigned int i31_3 = 2;;) {
+                        if ((i31_3 - 1u) != 0) {
+                            i31_3 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 616) = 257;
+                    for (unsigned int i33_0 = 3;;) {
+                        if ((i33_0 - 1u) != 0) {
+                            i33_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 632) = 257;
+                    for (unsigned int i35_0 = 4;;) {
+                        if ((i35_0 - 1u) != 0) {
+                            i35_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 648) = 257;
+                    for (unsigned int i37_0 = 5;;) {
+                        if ((i37_0 - 1u) != 0) {
+                            i37_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    goto region_7da5e4;
+                }
+                case 2:
+                {
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_USE_ITEM, sGame::getInstance()->getUseItemSlotLimitByStorageEx());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_ARMS_ITEM, sGame::getInstance()->getArmItemSlotLimitByStorageEx());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_MATERIAL_ITEM, sGame::getInstance()->getMaterialItemSlotLimitByStorageEx());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_JOB_ITEM, sGame::getInstance()->getJobItemSlotLimitByStorageEx());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_ALL_ITEM, sGame::getInstance()->getAllItemSlotLimitByStorageEx());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createList((((sGame::getInstance()->getArmItemSlotLimitByStorageEx() + sGame::getInstance()->mUseItemSlotLimitByStorageEx) + sGame::getInstance()->mMaterialItemSlotLimitByStorageEx) + sGame::getInstance()->mJobItemSlotLimitByStorageEx) + sGame::getInstance()->mAllItemSlotLimitByStorageEx);
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 600) = 257;
+                    for (unsigned int i23_3 = 2;;) {
+                        if ((i23_3 - 1u) != 0) {
+                            i23_3 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 616) = 257;
+                    for (unsigned int i25_0 = 3;;) {
+                        if ((i25_0 - 1u) != 0) {
+                            i25_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 632) = 257;
+                    for (unsigned int i27_0 = 4;;) {
+                        if ((i27_0 - 1u) != 0) {
+                            i27_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 648) = 257;
+                    for (unsigned int i29_0 = 5;;) {
+                        if ((i29_0 - 1u) != 0) {
+                            i29_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    goto region_7da5e4;
+                }
+                case 3:
+                {
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_USE_ITEM, static_cast<sItemManager::cItemBag*>(v0_9)->getUseItemSlotNum());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createList(static_cast<sItemManager::cItemBag*>(v0_9)->getUseItemSlotNum());
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 600) = 257;
+                    for (unsigned int i15_0 = 2;;) {
+                        if ((i15_0 - 1u) != 0) {
+                            i15_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 616) = 257;
+                    for (unsigned int i17_0 = 3;;) {
+                        if ((i17_0 - 1u) != 0) {
+                            i17_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 632) = 257;
+                    for (unsigned int i19_0 = 4;;) {
+                        if ((i19_0 - 1u) != 0) {
+                            i19_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 648) = 257;
+                    for (unsigned int i21_0 = 5;;) {
+                        if ((i21_0 - 1u) != 0) {
+                            i21_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    goto region_7da5e4;
+                }
+                case 4:
+                {
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_ALL_ITEM, static_cast<sItemManager::cItemBag*>(v0_9)->getAllItemSlotNum());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createList(static_cast<sItemManager::cItemBag*>(v0_9)->getAllItemSlotNum());
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 600) = 257;
+                    for (unsigned int i8_0 = 2;;) {
+                        if ((i8_0 - 1u) != 0) {
+                            i8_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 616) = 257;
+                    for (unsigned int i10_0 = 3;;) {
+                        if ((i10_0 - 1u) != 0) {
+                            i10_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 632) = 257;
+                    for (unsigned int i12_0 = 4;;) {
+                        if ((i12_0 - 1u) != 0) {
+                            i12_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 648) = 257;
+                    for (unsigned int i14_0 = 5;;) {
+                        if ((i14_0 - 1u) != 0) {
+                            i14_0 += 0xFFFFFFFFu;
+                        } else {
+                            break;
+                        }
+                    }
+                    goto region_7da5e4;
+                }
+                case 5:
+                {
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_ALL_ITEM, static_cast<sItemManager::cItemBag*>(v0_9)->getAllItemSlotNum());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createList(static_cast<sItemManager::cItemBag*>(v0_9)->getAllItemSlotNum());
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 600) = 257;
+                    i0_0 = 2;
+                    break;
+                }
+                case 6:
+                {
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createSlot(sItemManager::cItemBag::ITEM_CATEGORY_ALL_ITEM, static_cast<sItemManager::cItemBag*>(v0_9)->getAllItemSlotNum());
+                    static_cast<sItemManager::cItemBag*>(v0_9)->createList(static_cast<sItemManager::cItemBag*>(v0_9)->getAllItemSlotNum());
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 600) = 257;
+                    i0_0 = 2;
+                    break;
+                }
+                default:
+                {
+                    return;
+                }
+            }
+        }
+    }
+    for (;;) {
+        if ((i0_0 - 1u) != 0) {
+            i0_0 += 0xFFFFFFFFu;
+        } else {
+            break;
+        }
+    }
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 616) = 257;
+    for (unsigned int i2_0 = 3;;) {
+        if ((i2_0 - 1u) != 0) {
+            i2_0 += 0xFFFFFFFFu;
+        } else {
+            break;
+        }
+    }
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 632) = 257;
+    for (unsigned int i4_0 = 4;;) {
+        if ((i4_0 - 1u) != 0) {
+            i4_0 += 0xFFFFFFFFu;
+        } else {
+            break;
+        }
+    }
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 648) = 257;
+    for (unsigned int i6_0 = 5;;) {
+        if ((i6_0 - 1u) != 0) {
+            i6_0 += 0xFFFFFFFFu;
+        } else {
+            break;
+        }
+    }
+    region_7da5e4:;
+    cItemBag* pBag = static_cast<cItemBag*>(v0_9);
+    pBag->mSortParam[4].mSortType = 1;
+    pBag->mSortParam[4].mSortDir = 1;
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_9) + 696) = 257;
 }
 
 sItemManager::cItemBag* sItemManager::setLinkItem(nCharacterData::ITEM_BAG_TYPE no) {
@@ -623,8 +917,8 @@ void sItemManager::loadItemNameGmd() {
     rGUIMessage* pReq = static_cast<rGUIMessage*>(t0->createRes(t1, rArchiveListArray::convSearchId("RES_ID_ITEM_NAME_GMD"), 1u, false));
     if (pReq != nullptr) {
         mprItemNameGmd = pReq;
-        pReq->cResource::addRef();
-        pReq->cResource::release();
+        pReq->addRef();
+        pReq->release();
     } else {
         mprItemNameGmd = nullptr;
     }
@@ -773,7 +1067,7 @@ u32 sItemManager::getWalletItemToPoint(u32 itemId, u32 num, nCharacter::E_WALLET
     if (mpItemParamList != nullptr) {
         rItemList::rItemParam* pItemParam = mpItemParamList->getItemList(itemId);
         if (pItemParam != nullptr) {
-            rItemList::rParam* pKindParam = pItemParam->rItemList::rItemParam::getItemParam(rItemList::rParam::CURRENCY);
+            rItemList::rParam* pKindParam = pItemParam->getItemParam(rItemList::rParam::CURRENCY);
             if (pKindParam != nullptr) {
                 if (pKindParam->mKindType == 124) {
                     if (static_cast<unsigned int>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pKindParam) + 10)) - 1) <= 4) {
@@ -1040,8 +1334,6 @@ sItemManager::stRequest::stRequest() {
 }
 
 sItemManager::stRequest::~stRequest() {
-    DDON_STUB("sItemManager::stRequest::~stRequest")
-    /* stub */
 }
 
 bool sItemManager::stRequest::isExit(void* ptr) {
@@ -1651,8 +1943,6 @@ __attribute__((weak)) void sItemManager::cItemBag::cCraftStartData::operator del
 }
 
 sItemManager::cItemBag::cCraftStartData::~cCraftStartData() {
-    DDON_STUB("sItemManager::cItemBag::cCraftStartData::~cCraftStartData")
-    /* stub */
 }
 
 sItemManager::cItemBag::cCraftStartData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1680,8 +1970,6 @@ __attribute__((weak)) void sItemManager::cItemBag::cCraftUpGradeData::operator d
 }
 
 sItemManager::cItemBag::cCraftUpGradeData::~cCraftUpGradeData() {
-    DDON_STUB("sItemManager::cItemBag::cCraftUpGradeData::~cCraftUpGradeData")
-    /* stub */
 }
 
 sItemManager::cItemBag::cCraftUpGradeData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1709,8 +1997,6 @@ __attribute__((weak)) void sItemManager::cItemBag::cCraftColorChange::operator d
 }
 
 sItemManager::cItemBag::cCraftColorChange::~cCraftColorChange() {
-    DDON_STUB("sItemManager::cItemBag::cCraftColorChange::~cCraftColorChange")
-    /* stub */
 }
 
 sItemManager::cItemBag::cCraftColorChange::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1857,7 +2143,7 @@ sItemManager::cEquipList::cEquipList() {
     /* stub */
 }
 
-sItemManager::cEquipList::~cEquipList() {
+__attribute__((noinline)) sItemManager::cEquipList::~cEquipList() {
     if (mEquipList.mLength != 0) {
         u32 v0_0 = mEquipList.mLength;
         for (unsigned int i0_3 = 0;;) {

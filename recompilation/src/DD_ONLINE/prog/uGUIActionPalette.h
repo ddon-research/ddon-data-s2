@@ -215,3 +215,7 @@ public:
     static const u32 FRM_GUIDETOSCM = 1;
     static const u32 FRM_EDITACTIVE = 2;
 };
+
+inline void* uGUIActionPalette::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

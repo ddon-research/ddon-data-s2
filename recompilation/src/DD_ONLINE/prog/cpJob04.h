@@ -291,6 +291,10 @@ public:
     static const s8 GUARD_BIT_MAX = 5;
 };
 
+inline void* cpJob04::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpJob04::setFeildBit(u32 bit) {
     this->mCircleFlgs = bit;
 }

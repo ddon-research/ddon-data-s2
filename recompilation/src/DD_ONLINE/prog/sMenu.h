@@ -637,6 +637,10 @@ private:
     static sMenu* mpInstance;
 };
 
+inline void* sMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sMenu* sMenu::getInstance() {
     return ::sMenu::mpInstance;
 }
@@ -659,6 +663,10 @@ inline cMenuPawnReqList* sMenu::getMenuPawnReqList() {
 
 inline cMenuPawnSearch* sMenu::getMenuPawnSearch() {
     return &this->mPawnSearch;
+}
+
+inline cMenuLostPawnList* sMenu::getMenuLostPawnList() {
+    return &this->mLostPawnList;
 }
 
 inline cMenuPawnManageMenu* sMenu::getMenuPawnManageMenu() {
@@ -753,8 +761,24 @@ inline cMenuEditClanEmblem* sMenu::getMenuEditClanEmblem() {
     return &this->mMenuEditClanEmblem;
 }
 
+inline cMenuEditClanComment* sMenu::getMenuEditClanComment() {
+    return &this->mMenuEditClanComment;
+}
+
+inline cMenuEditClanMessage* sMenu::getMenuEditClanMessage() {
+    return &this->mMenuEditClanMessage;
+}
+
+inline cMenuClanInfoDisp* sMenu::getMenuClanInfoDisp() {
+    return &this->mMenuClanInfoDisp;
+}
+
 inline cMenuClanList* sMenu::getMenuClanList() {
     return &this->mMenuClanList;
+}
+
+inline cMenuClanJoinReqList* sMenu::getMenuClanJoinReqList() {
+    return &this->mMenuClanJoinReqList;
 }
 
 inline cMenuGetMyClan* sMenu::getMenuGetMyClan() {
@@ -763,6 +787,10 @@ inline cMenuGetMyClan* sMenu::getMenuGetMyClan() {
 
 inline cMenuGetClanBaseInfo* sMenu::getMenuGetClanBaseInfo() {
     return &this->mMenuGetClanBaseInfo;
+}
+
+inline cMenuClanHistory* sMenu::getMenuClanHistory() {
+    return &this->mMenuClanHistory;
 }
 
 inline cMenuQuitClan* sMenu::getMenuQuitClan() {
@@ -777,12 +805,28 @@ inline cMenuCancelClanScoutEntry* sMenu::getMenuCancelClanScoutEntry() {
     return &this->mMenuCancelClanScoutEntry;
 }
 
+inline cMenuEditClanEntryComment* sMenu::getMenuEditClanEntryComment() {
+    return &this->mMenuEditClanEntryComment;
+}
+
 inline cMenuClanScoutEntryList* sMenu::getMenuClanScoutEntryList() {
     return &this->mMenuClanScoutEntryList;
 }
 
 inline cMenuGetMyScoutEntry* sMenu::getMenuGetMyScoutEntry() {
     return &this->mMenuGetMyScoutEntry;
+}
+
+inline cMenuClanInvitedList* sMenu::getMenuClanInvitedList() {
+    return &this->mMenuClanInvitedList;
+}
+
+inline cMenuClanInviteList* sMenu::getMenuClanInviteList() {
+    return &this->mMenuClanInviteList;
+}
+
+inline cMenuClanDirectInvitedList* sMenu::getMenuClanDirectInvitedList() {
+    return &this->mMenuClanDirectInvitedList;
 }
 
 inline cMenuCancelFriend* sMenu::getMenuCancelFriend() {
@@ -821,6 +865,10 @@ inline cMenuEditCommentEntryBoardItem* sMenu::getMenuEditCommentEntryBoardItem()
     return &this->mMenuEditCommentEntryBoardItem;
 }
 
+inline cMenuGetCharacterName* sMenu::getMenuGetCharacterName() {
+    return &this->mMenuGetCharacterName;
+}
+
 inline cMenuEntryBoardMember* sMenu::getMenuEntryBoardMember() {
     return &this->mMenuEntryBoardMember;
 }
@@ -831,6 +879,26 @@ inline cMenuInviteEntryBoardItem* sMenu::getMenuInviteEntryBoardItem() {
 
 inline cMenuAreaMaster* sMenu::getMenuAreaMaster() {
     return &this->mMenuAreaMaster;
+}
+
+inline cMenuAreaMasterRankUp* sMenu::getMenuAreaMasterRankUp() {
+    return &this->mMenuAreaMasterRankUp;
+}
+
+inline cMenuAreaMasterQuestInfo* sMenu::getMenuAreaMasterQuestInfo() {
+    return &this->mMenuAreaMasterQuestInfo;
+}
+
+inline cMenuAreaMasterSpotInfo* sMenu::getMenuAreaMasterSpotInfo() {
+    return &this->mMenuAreaMasterSpotInfo;
+}
+
+inline cMenuAreaMasterHistory* sMenu::getMenuAreaMasterHistory() {
+    return &this->mMenuAreaMasterHistory;
+}
+
+inline cMenuAreaMasterSupplies* sMenu::getMenuAreaMasterSupplies() {
+    return &this->mMenuAreaMasterSupplies;
 }
 
 inline cMenuServerList* sMenu::getMenuServerList() {
@@ -911,4 +979,12 @@ inline cMenuCraftGoldStoneDialog* sMenu::getMenuCraftGoldStoneDialog() {
 
 inline cMenuKeyConfig* sMenu::getMenuKeyConfig() {
     return &this->mMenuKeyConfig;
+}
+
+inline cMenuKeyConfigRenameCategory* sMenu::getMenuKeyConfigRenameCategory() {
+    return &this->mMenuKeyConfigRenameCategory;
+}
+
+inline cMenuKeyConfigCopyCategory* sMenu::getMenuKeyConfigCopyCategory() {
+    return &this->mMenuKeyConfigCopyCategory;
 }

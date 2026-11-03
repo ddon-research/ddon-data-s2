@@ -101,6 +101,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cSetInfoCoord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline s32 cSetInfoCoord::getUnitID() const {
+    return this->mUnitID;
+}
+
 inline s32 cSetInfoCoord::getAreaHitNo() const {
     return this->mAreaHitNo;
 }

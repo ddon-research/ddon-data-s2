@@ -2,6 +2,7 @@
 #include <new>
 #include "Character.h"
 #include "CharacterEdit.h"
+#include "Common.h"
 #include "Community.h"
 #include "GP.h"
 #include "Item.h"
@@ -231,6 +232,30 @@ CDataMatchingProfile::MyDTI CDataMatchingProfile::DTI("CDataMatchingProfile", &:
 
 MtObject* CDataMatchingProfile::MyDTI::newInstance() const {
     return new (16u) CDataMatchingProfile;
+}
+
+const MtDTI& CDataMyRoomOption::getDTI() const {
+    return CDataMyRoomOption::DTI;
+}
+
+inline MtAllocator* CDataMyRoomOption::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataMyRoomOption::DTI);
+}
+
+inline void* CDataMyRoomOption::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataMyRoomOption::DTI)->memAlloc(sz, align, CDataMyRoomOption::DTI.getID());
+}
+
+__attribute__((weak)) void CDataMyRoomOption::operator delete(void* p_addr) {
+    CDataMyRoomOption::getAllocator()->memFree(p_addr);
+}
+
+CDataMyRoomOption::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataMyRoomOption::MyDTI CDataMyRoomOption::DTI("CDataMyRoomOption", &::CPacketDataBase::DTI, 48ul, 0u, 0u);
+
+MtObject* CDataMyRoomOption::MyDTI::newInstance() const {
+    return new (16u) CDataMyRoomOption;
 }
 
 const MtDTI& CDataShortCut::getDTI() const {

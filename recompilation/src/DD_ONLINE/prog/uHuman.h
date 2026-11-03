@@ -145,6 +145,7 @@ class uHuman : public uCharacter
     friend class cpItemThrow;
     friend class cpJob02;
     friend class cpJob05;
+    friend class cpJob07;
     friend class cpJob09;
     friend class cpTransparencyCtrl;
     friend class sGame;
@@ -1509,16 +1510,28 @@ private:
     static const u16 MAX_EROSION_NUM = 8;
 };
 
-inline uDDOModel* uHuman::getLastTouchTarget() const {
-    return this->mpLastTouchTarget;
+inline void* uHuman::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline uDDOModel* uHuman::getTouchSelectTarget() const {
+    return this->mpTouchSelectTarget;
 }
 
 inline void uHuman::onFixSafePos() {
     this->mIsFixSafePos = true;
 }
 
+inline void uHuman::offFixSafePos() {
+    this->mIsFixSafePos = false;
+}
+
 inline void uHuman::onCanShlConst() {
     this->mIsCanShlConst = true;
+}
+
+inline f32 uHuman::getMoveRateInWater() {
+    return this->mMoveRateInWater;
 }
 
 inline void uHuman::setBowCustomId(u32 id) {
@@ -1531,6 +1544,10 @@ inline const uDDOModel* uHuman::getAutoRunTarget() const {
 
 inline bool uHuman::isCancellableAction() {
     return this->mIsCancellableAction;
+}
+
+inline bool uHuman::isBeforeGuarded() {
+    return this->mIsBeforeGuarded;
 }
 
 inline bool uHuman::isCanSetEmotion() {
@@ -1609,8 +1626,20 @@ inline void uHuman::requestUseStaminaItem() {
     this->mIsRequestUseStaminaItem = true;
 }
 
+inline f32 uHuman::getCheckCheatAddVelTime() const {
+    return this->mCheckCheatAddVelTime;
+}
+
 inline f32 uHuman::getCheckCheatChageNow_Gi() const {
     return this->mCheckCheatChageNow_Gi;
+}
+
+inline void* uHuman::cEnemyClimbInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uHuman::cHealSeCaller::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uHuman::cHealSeCaller::cHealSeCaller() {
@@ -1624,7 +1653,15 @@ inline bool uHuman::cHealSeCaller::isStamina() const {
     return this->mIsStamina;
 }
 
+inline void* uHuman::cLimitActCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uHuman::cLimitActCtrl::cLimitActCtrl() : mLimitActList() {
+}
+
+inline void* uHuman::cBlendMotionCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uHuman::cBlendMotionCtrl::cBlendMotionCtrl() {

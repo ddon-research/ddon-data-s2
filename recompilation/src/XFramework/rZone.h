@@ -346,6 +346,14 @@ public:
     static const s32 INVALID_GROUP_ID = -1;
 };
 
+inline void* rZone::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rZone::cGroupManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rZone::cMemoryHeader::cGridInfo::cGridInfo() {
 }
 

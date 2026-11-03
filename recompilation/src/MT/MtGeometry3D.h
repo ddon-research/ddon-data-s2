@@ -255,3 +255,11 @@ public:
     static MyDTI DTI;
     static f32 DISTANCE_DEFAULT_MARGIN;
 };
+
+inline void* MtGeomConvex::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtGeometry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

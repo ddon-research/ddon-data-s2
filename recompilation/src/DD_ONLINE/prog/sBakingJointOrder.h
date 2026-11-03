@@ -213,6 +213,10 @@ inline BakedQueue::BAKED_STATE::DECL BakedQueue::getState() {
     return this->mBakeState;
 }
 
+inline void* sBakingJointOrder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sBakingJointOrder* sBakingJointOrder::getInstance() {
     return ::sBakingJointOrder::mpInstance;
 }

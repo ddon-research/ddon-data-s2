@@ -381,6 +381,34 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAIConditionTree::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIConditionTree::TreeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIConditionTree::OperationWorkNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIConditionTree::ConstWorkNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIConditionTree::ConstEnumWorkNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIConditionTree::VariableWorkNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIConditionTreeNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAIConditionTreeNode::cAIConditionTreeNode() {
     this->mChildNum = 0;
     this->mpChildList = nullptr;

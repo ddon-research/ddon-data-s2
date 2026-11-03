@@ -9,6 +9,7 @@ class MtDataWriter;
 class cAISvUserProcess;
 class cAIUserProcessContainer;
 class cMenuLostPawnRevive;
+class cMenuSubMenu;
 namespace nCaplink { class ContextListener; }
 class sAI;
 class sBrowser;
@@ -36,6 +37,7 @@ class MtString
     friend class cAISvUserProcess;
     friend class cAIUserProcessContainer;
     friend class cMenuLostPawnRevive;
+    friend class cMenuSubMenu;
     friend class nCaplink::ContextListener;
     friend void nDDOIO::writeData(MtDataWriter& w, const MtString& data);
     friend class sAI;
@@ -144,4 +146,10 @@ inline MtString::MtString() {
 
 inline MT_CTSTR MtString::ptr() const {
     return (this->value == nullptr) ? "" : reinterpret_cast<MT_CTSTR>(this->value->str);
+}
+
+template <int _size>
+inline MtStringEx<_size>::MtStringEx() {
+    this->mStr[0] = 0;
+    this->mLength = 0;
 }

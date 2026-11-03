@@ -123,6 +123,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cQuestResourceLoadManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestResourceLoadManager::cLoadTask::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cQuestResourceLoadManager::cLoadTask::setClass(MtObject* pClass) {
     this->mpClass = pClass;
 }

@@ -516,6 +516,134 @@ private:
     static const f32 SUN_DISTANCE;
 };
 
+inline void* uEffectExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uEffectExt::setHitStopMode(bool Flg) {
+    this->mHitStopMode = Flg;
+}
+
+inline bool uEffectExt::getHitStopMode() const {
+    return this->mHitStopMode;
+}
+
+inline void uEffectExt::setWorkRateMode(bool Flg) {
+    this->mWorkRateMode = Flg;
+}
+
+inline bool uEffectExt::getWorkRateMode() const {
+    return this->mWorkRateMode;
+}
+
+inline void uEffectExt::setParentBaseModelFlag(bool Flg) {
+    this->mParentBaseModelFlag = Flg;
+}
+
+inline bool uEffectExt::getParentBaseModelFlag() const {
+    return this->mParentBaseModelFlag;
+}
+
+inline void uEffectExt::setParentTransparency(bool Flg) {
+    this->mParentTransparency = Flg;
+}
+
+inline bool uEffectExt::getParentTransparency() const {
+    return this->mParentTransparency;
+}
+
+inline void uEffectExt::setUnitEndType(u32 type) {
+    this->mUnitEndType = type;
+}
+
+inline f32 uEffectExt::getDeltaTimeCoefEx() const {
+    return this->mDeltaTimeCoefEx;
+}
+
+inline void uEffectExt::setDeltaTimeCoefEx(f32 DeltaTimeCoef) {
+    this->mDeltaTimeCoefEx = DeltaTimeCoef;
+}
+
+inline void uEffectExt::setCCTransparency(f32 val) {
+    this->mCorrectColorParam.mTransparency = static_cast<unsigned int>(static_cast<long>(256.0f * val));
+}
+
+inline f32 uEffectExt::getCCTransparency() const {
+    return 0.00390625f * static_cast<float>(this->mCorrectColorParam.mTransparency);
+}
+
+inline void uEffectExt::setFollowSunFlag(bool flag) {
+    this->mFollowSun = flag;
+}
+
+inline bool uEffectExt::getFollowSunFlag() const {
+    return this->mFollowSun;
+}
+
+inline void uEffectExt::setFollowMoon(bool flag) {
+    this->mFollowMoon = flag;
+}
+
+inline bool uEffectExt::getFollowMoon() const {
+    return this->mFollowMoon;
+}
+
+inline void uEffectExt::setZoneCheckGeneratorFlag(bool flag) {
+    this->mZoneCheckGenerator = flag;
+}
+
+inline bool uEffectExt::getZoneCheckGeneratorFlag() const {
+    return this->mZoneCheckGenerator;
+}
+
+inline void uEffectExt::setColorUpdateFlag(bool flag) {
+    this->mColorUpdate = flag;
+}
+
+inline bool uEffectExt::getColorUpdateFlag() const {
+    return this->mColorUpdate;
+}
+
+inline void uEffectExt::setColorUpdateDistCancelFlag(bool flag) {
+    this->mColorUpdateDistCancel = flag;
+}
+
+inline bool uEffectExt::getColorUpdateDistCancelFlag() const {
+    return this->mColorUpdateDistCancel;
+}
+
+inline void uEffectExt::setFineWeatherOffFlag(bool flag) {
+    this->mFineWeatherOff = flag;
+}
+
+inline bool uEffectExt::getFineWeatherOffFlag() const {
+    return this->mFineWeatherOff;
+}
+
+inline void uEffectExt::setCloudyWeatherOffFlag(bool flag) {
+    this->mCloudyWeatherOff = flag;
+}
+
+inline bool uEffectExt::getCloudyWeatherOffFlag() const {
+    return this->mCloudyWeatherOff;
+}
+
+inline void uEffectExt::setRainWeatherOffFlag(bool flag) {
+    this->mRainWeatherOff = flag;
+}
+
+inline bool uEffectExt::getRainWeatherOffFlag() const {
+    return this->mRainWeatherOff;
+}
+
+inline void uEffectExt::setInDoorScrlEfcOn(u32 bit) {
+    this->mInDoorScrlEfcOn = bit;
+}
+
+inline void uEffectExt::setQuakeType(u32 set) {
+    this->mQuakeType = set;
+}
+
 inline u32 uEffectExt::getCreateCost() {
     return this->mCreateCost;
 }

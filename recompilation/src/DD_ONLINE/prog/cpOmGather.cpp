@@ -4,13 +4,44 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "Protocol/UserSession/S2C.h"
+#include "Protocol/PacketData/Stage.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cComponentManager.h"
 #include "cNetGameServer.h"
+#include "cOmComponent.h"
+#include "cOmControl.h"
+#include "../../XFramework/cUnit.h"
+#include "cpActionRequest.h"
+#include "cpComponent.h"
+#include "cpOmComponent.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "../../generated/shared/nDDOModel.h"
+#include "nLayout.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "rLayoutGroupParam.h"
+#include "../../XFramework/sArea.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "sItemManager.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "sQuestManagerExt.h"
+#include "sSetManager.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
+#include "../../XFramework/uBaseModel.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uGUIPick01.h"
+#include "uHuman.h"
+#include "uOmModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -53,8 +84,6 @@ cGatherItemList::cGatherItemList() {
 }
 
 cGatherItemList::~cGatherItemList() {
-    DDON_STUB("cGatherItemList::~cGatherItemList")
-    /* stub */
 }
 
 __attribute__((weak)) bool cGatherItemList::move() {
@@ -239,6 +268,178 @@ cGatherItemList::MyDTI cGatherItemList::DTI("cGatherItemList", &::MtObject::DTI,
 
 __attribute__((weak)) MtObject* cGatherItemList::MyDTI::newInstance() const {
     DDON_STUB("cGatherItemList::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cpOmGather::getDTI() const {
+    return cpOmGather::DTI;
+}
+
+inline MtAllocator* cpOmGather::getAllocator() {
+    return MtMemoryAllocator::getAllocator(cpOmGather::DTI);
+}
+
+void* cpOmGather::operator new(size_t sz, u32 align) {
+    return cpOmGather::getAllocator()->memAlloc(sz, align, cpOmGather::DTI.getID());
+}
+
+cpOmGather::cpOmGather() {
+    DDON_STUB("cpOmGather::cpOmGather")
+    /* stub */
+}
+
+cpOmGather::~cpOmGather() {
+}
+
+void cpOmGather::kill() {
+    if (mbLoopAct) {
+        if (mpTouchUnit != nullptr) {
+            if (mDetailBehavior == 0) {
+                setPLAct(198u, false);
+            } else {
+                setPLAct(201u, false);
+            }
+        }
+    }
+    this->cpOmBase::kill();
+}
+
+void cpOmGather::setOwner(MtObject* pOwner) {
+    this->cpOmBase::setOwner(pOwner);
+    mpModel = static_cast<uOmModel*>(pOwner);
+}
+
+void cpOmGather::setup() {
+    if (mpModel == nullptr) {
+        return;
+    }
+    if (mpModel->mOmComp.mpOmControl == nullptr) {
+        return;
+    }
+    if (mpModel->mOmComp.mpOmControl->mLot.mListStat != 255) {
+        return;
+    }
+    setGatherEmpty();
+}
+
+__attribute__((weak)) void cpOmGather::move() {
+    DDON_STUB("cpOmGather::move")
+    /* stub */
+}
+
+void cpOmGather::updatePtr() {
+    this->cpOmBase::updatePtr();
+    if (mpModel != nullptr) {
+        if (!mpModel->isEnable()) {
+            mpModel = nullptr;
+        }
+    }
+    if (mpTouchUnit != nullptr) {
+        if (!mpTouchUnit->isEnable()) {
+            mpTouchUnit = nullptr;
+        }
+    }
+    if (mpGUIPick == nullptr) {
+        return;
+    }
+    if (mpGUIPick->isEnable()) {
+        return;
+    }
+    mpGUIPick = nullptr;
+}
+
+__attribute__((weak)) void cpOmGather::setTouch(uDDOModel* pUnit) {
+    DDON_STUB("cpOmGather::setTouch")
+    /* stub */
+}
+
+void cpOmGather::finishTouch(nDDOModel::TOUCH_RELEASE_TYPE type) {
+    if (mpTouchUnit != nullptr) {
+        if (mpModel != nullptr) {
+            if (mpModel->mOmComp.mpOmControl != nullptr) {
+                if (mpModel->mOmComp.mpOmControl->mLot.mListStat == 255) {
+                    static_cast<uHuman*>(mpTouchUnit)->callbackGatherEnd();
+                }
+            }
+        }
+    }
+    if (mpModel != nullptr) {
+        if (mpModel->mOmComp.mpOmControl != nullptr) {
+            if (mpModel->mOmComp.mpOmControl->mLot.mListStat == 255) {
+                setGatherEmpty();
+            }
+        }
+    }
+    if (mpTouchUnit != nullptr) {
+        if ((mRno - 1u) <= 2u) {
+            if (type == nDDOModel::TOUCH_RELEASE_NOT_FOUND) {
+                if (mDetailBehavior != 0) {
+                    setPLAct(201u, false);
+                } else {
+                    setPLAct(198u, false);
+                }
+            }
+            mRno = 0;
+        }
+    }
+    if (type == nDDOModel::TOUCH_RELEASE_DAMAGE) {
+        mRno = 7;
+        setPLAct(0u, false);
+    }
+    deleteGUISingleton();
+    mpTouchUnit = nullptr;
+}
+
+void cpOmGather::cancelTouch() {
+    deleteGUISingleton();
+    mpTouchUnit = nullptr;
+}
+
+u32 cpOmGather::getGatherStatus() {
+    if (mpModel != nullptr) {
+        if (mpModel->mOmComp.mpOmControl != nullptr) {
+            return mpModel->mOmComp.mpOmControl->mLot.mListStat;
+        }
+    }
+    return 0;
+}
+
+__attribute__((weak)) void cpOmGather::setGatherStatus(u32 status) {
+    DDON_STUB("cpOmGather::setGatherStatus")
+    /* stub */
+}
+
+__attribute__((weak)) void cpOmGather::setGatherEmpty() {
+    DDON_STUB("cpOmGather::setGatherEmpty")
+    /* stub */
+}
+
+void cpOmGather::requestGatherAgain() {
+    mIsRquestItemList = true;
+}
+
+void cpOmGather::reqGatherEnd() {
+    if (mpTouchUnit == nullptr) {
+        return;
+    }
+    if (mpModel == nullptr) {
+        return;
+    }
+    if (mpModel->mOmComp.mpOmControl == nullptr) {
+        return;
+    }
+    if (mpModel->mOmComp.mpOmControl->mLot.mListStat != 255) {
+        return;
+    }
+    static_cast<uHuman*>(mpTouchUnit)->callbackGatherEnd();
+}
+
+cpOmGather::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cpOmGather::MyDTI cpOmGather::DTI("cpOmGather", &::cpOmBase::DTI, 560ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cpOmGather::MyDTI::newInstance() const {
+    DDON_STUB("cpOmGather::MyDTI::newInstance")
     return nullptr;
 }
 

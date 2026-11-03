@@ -97,6 +97,10 @@ private:
     static const s32 disp_frame = 90;
 };
 
+inline void* uGUIRankUp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUIRankUp::setRank(u32 rank) {
     this->mRank = rank;
 }

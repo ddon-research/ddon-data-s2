@@ -129,6 +129,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEnemyStatusChange::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEnemyStatusChange::cEnemyStatusChange() {
     this->mGroupNo = 0;
     this->mGroupSubNo = 0;
@@ -146,4 +150,20 @@ inline cEnemyStatusChange::cEnemyStatusChange() {
     this->mSelectNo = 0;
     this->mParam[0] = 0.0f;
     this->mBitContrlCommand = 4;
+}
+
+inline void* rEnemyStatusChange::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEnemyStatusChange::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyStatusChange::DTI)->memFree(p_addr);
+}
+
+inline void* cEnemyStatusChange::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyStatusChange::DTI)->memAlloc(sz, align, ::cEnemyStatusChange::DTI.::MtDTI::getID());
 }

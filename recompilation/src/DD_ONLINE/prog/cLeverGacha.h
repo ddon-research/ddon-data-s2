@@ -73,6 +73,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cLeverGacha::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cLeverGacha::commandReset(s32 param) {
     this->mCntMax = param;
     this->mResult = false;

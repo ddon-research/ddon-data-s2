@@ -105,6 +105,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataJobOrbDevoteElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataJobOrbTreeStatus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataJobOrbTreeStatus::CDataJobOrbTreeStatus() {
     this->m_ucJobID = 0;
     this->m_bIsReleased = false;

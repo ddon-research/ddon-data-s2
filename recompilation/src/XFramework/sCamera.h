@@ -250,6 +250,14 @@ protected:
     static sCamera* mpInstance;
 };
 
+inline void* sCamera::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sCamera* sCamera::getInstance() {
     return ::sCamera::mpInstance;
+}
+
+inline void* sCamera::Viewport::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

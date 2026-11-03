@@ -108,6 +108,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEnemyMaterialTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEnemyMaterialTable::cEnemyMaterialTable() {
     this->mIdx = 1;
     this->mDieIsNoCall = false;
@@ -115,4 +119,20 @@ inline cEnemyMaterialTable::cEnemyMaterialTable() {
     this->mMaterialAnimationType = 0;
     this->mMaterialType = 0;
     this->mMaterialNo = 0;
+}
+
+inline void* rEnemyMaterialTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEnemyMaterialTable::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyMaterialTable::DTI)->memFree(p_addr);
+}
+
+inline void* cEnemyMaterialTable::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyMaterialTable::DTI)->memAlloc(sz, align, ::cEnemyMaterialTable::DTI.::MtDTI::getID());
 }

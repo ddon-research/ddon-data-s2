@@ -99,6 +99,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cNpcConstItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cNpcConstItem::cNpcConstItem() {
     this->mMTag = 0;
     this->mOffset = 0;
@@ -110,4 +114,20 @@ inline u32 cNpcConstItem::getMTag() {
 
 inline u32 cNpcConstItem::getOffset() {
     return this->mOffset;
+}
+
+inline void* rNpcConstItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cNpcConstItem::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNpcConstItem::DTI)->memFree(p_addr);
+}
+
+inline void* cNpcConstItem::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNpcConstItem::DTI)->memAlloc(sz, align, ::cNpcConstItem::DTI.::MtDTI::getID());
 }

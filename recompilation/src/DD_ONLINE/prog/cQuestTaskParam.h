@@ -257,6 +257,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cQuestTaskParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestTaskParam::cQuestPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestTaskParam::cQuestPoint::cQuestPoint() {
     this->mIdx = 0;
     this->mValue = 0;

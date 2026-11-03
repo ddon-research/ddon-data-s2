@@ -97,5 +97,25 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cReplaceWardGmdList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cReplaceWardGmdList::cReplaceWardGmdList() {
+}
+
+inline void* rReplaceWardGmdList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cReplaceWardGmdList::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cReplaceWardGmdList::DTI)->memFree(p_addr);
+}
+
+inline void* cReplaceWardGmdList::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cReplaceWardGmdList::DTI)->memAlloc(sz, align, ::cReplaceWardGmdList::DTI.::MtDTI::getID());
 }

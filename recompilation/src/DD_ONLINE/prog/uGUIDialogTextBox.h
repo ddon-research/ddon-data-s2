@@ -121,6 +121,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIDialogTextBox::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIDialogTextBox::setCheckNGWord() {
+    this->mCheckNGWord = true;
+}
+
 inline void uGUIDialogTextBox::evCancel() {
     this->mIsCancel = true;
     this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIDialogTextBox::updateExit);

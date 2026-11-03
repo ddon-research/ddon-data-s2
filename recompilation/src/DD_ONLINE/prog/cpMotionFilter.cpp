@@ -6,11 +6,15 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "rMotionFilter.h"
 #include "uCnsMotFilter.h"
+#include "../../XFramework/uConstraint.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
@@ -225,9 +229,7 @@ void cpMotionFilter::setResource(rMotionFilter* pRes) {
     pRes->addRef();
 }
 
-rMotionFilter* cpMotionFilter::getResource() {
-    return mpResource;
-}
+static auto ddon_emit_0x01a5c230 __attribute__((used)) = &cpMotionFilter::getResource;
 
 cpMotionFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

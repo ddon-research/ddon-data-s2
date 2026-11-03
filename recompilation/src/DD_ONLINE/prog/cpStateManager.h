@@ -71,3 +71,7 @@ public:
     static MyDTI DTI;
     static const s32 INVALID_STATE = -1;
 };
+
+inline void* cpStateManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

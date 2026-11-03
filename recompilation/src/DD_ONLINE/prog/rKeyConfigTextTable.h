@@ -113,6 +113,10 @@ public:
     static const u32 DATA_VERSION = 1;
 };
 
+inline void* nKeyConfigTextTable::cKeyText::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nKeyConfigTextTable::cKeyText::cKeyText() {
     this->mKeyCustom = 0;
     this->mDetailMsgId = 0xFFFFFFFF;
@@ -122,5 +126,21 @@ inline nKeyConfigTextTable::cKeyText::cKeyText() {
     this->mGroupMsgId = 0;
 }
 
+inline void* rKeyConfigTextTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rKeyConfigTextTable::rKeyConfigTextTable() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void nKeyConfigTextTable::cKeyText::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nKeyConfigTextTable::cKeyText::DTI)->memFree(p_addr);
+}
+
+inline void* nKeyConfigTextTable::cKeyText::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nKeyConfigTextTable::cKeyText::DTI)->memAlloc(sz, align, ::nKeyConfigTextTable::cKeyText::DTI.::MtDTI::getID());
 }

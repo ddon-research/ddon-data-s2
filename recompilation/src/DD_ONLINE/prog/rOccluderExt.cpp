@@ -6,6 +6,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "../../XFramework/cResource.h"
 #include "sOccluderExt.h"
@@ -30,8 +32,32 @@ inline rOccluderEx::rOccluderEx() {
 }
 
 rOccluderEx::~rOccluderEx() {
-    DDON_STUB("rOccluderEx::~rOccluderEx")
-    /* stub */
+    if (mAreaList.mLength != 0) {
+        u32 v0_0 = mAreaList.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mAreaList.mpArray[i0_3] != nullptr) {
+                delete mAreaList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAreaList.mLength) {
+                    v0_0 = mAreaList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mAreaList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAreaList.mpArray));
+    }
+    mAreaList.mpArray = nullptr;
+    mAreaList.mBufsiz = 0;
+    mAreaList.mLength = 0;
 }
 
 MT_CTSTR rOccluderEx::getExt() const {
@@ -49,12 +75,12 @@ MtUI* rOccluderEx::createUI(MtProperty& prop) {
 
 bool rOccluderEx::load(MtStream& in) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
+    return sz.deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 bool rOccluderEx::save(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+    return sz.serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
 }
 
 sOccluderEx::Area* rOccluderEx::getArea(u32 index) {

@@ -7,6 +7,8 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "../../XFramework/cResource.h"
 #ifndef DDON_STUB
@@ -40,8 +42,27 @@ inline rStartPos::rStartPos() {
 }
 
 rStartPos::~rStartPos() {
-    DDON_STUB("rStartPos::~rStartPos")
-    /* stub */
+    if (mInfoList.mLength != 0) {
+        u32 v0_0 = mInfoList.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mInfoList.mpArray[i0_3] != nullptr) {
+                delete mInfoList.mpArray[i0_3];
+                mInfoList.mpArray[i0_3] = nullptr;
+                if ((i0_3 + 1u) < mInfoList.mLength) {
+                    v0_0 = mInfoList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 MT_CTSTR rStartPos::getExt() const {
@@ -63,12 +84,12 @@ MtUI* rStartPos::createUI(MtProperty& prop) {
 
 bool rStartPos::load(MtStream& in) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(2), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
+    return sz.deserializeBinary(in, static_cast<u16>(2), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 bool rStartPos::save(MtStream& out) {
     MtSerializer sz(65536);
-    sz.MtSerializer::serializeBinary(out, static_cast<u16>(2), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+    sz.serializeBinary(out, static_cast<u16>(2), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
     return true;
 }
 
@@ -110,24 +131,16 @@ void rStartPos::Info::setOfsPos(MtVector3& ofs, u32 idx) {
     mOfsPos[idx] = ofs;
 }
 
-u32 rStartPos::Info::getOfsPosNum() {
-    return 7;
-}
+static auto ddon_emit_0x01ab3de0 __attribute__((used)) = &rStartPos::Info::getOfsPosNum;
 
 __attribute__((weak)) void rStartPos::Info::setOfsPosNum(u32 num) {
 }
 
-f32 rStartPos::Info::getOfsAng(u32 idx) const {
-    return mOfsAng[idx];
-}
+static auto ddon_emit_0x01ab3e00 __attribute__((used)) = &rStartPos::Info::getOfsAng;
 
-void rStartPos::Info::setOfsAng(f32 ang, u32 idx) {
-    mOfsAng[idx] = ang;
-}
+static auto ddon_emit_0x01ab3e10 __attribute__((used)) = &rStartPos::Info::setOfsAng;
 
-u32 rStartPos::Info::getOfsAngNum() {
-    return 7;
-}
+static auto ddon_emit_0x01ab3e20 __attribute__((used)) = &rStartPos::Info::getOfsAngNum;
 
 __attribute__((weak)) void rStartPos::Info::setOfsAngNum(u32 num) {
 }

@@ -114,3 +114,7 @@ private:
     static u32 mMaxUsed;
     static MtCriticalSection mCS;
 };
+
+inline void* MtPropertyList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

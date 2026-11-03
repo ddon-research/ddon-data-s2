@@ -139,15 +139,24 @@ public:
     static MyDTI DTI;
 };
 
-inline s32 cTexturePNG::getId() {
-    return this->mId;
+inline void* cTexturePNG::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
-inline rTexturePNG* cTexturePNG::getTexture() {
-    return this->mpTex;
+inline cTexturePNG::cTexturePNG() {
+    this->mpTex = nullptr;
+    this->mId = 0;
+}
+
+inline void* cUIObject::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cUIObject::cUIObject() {
+}
+
+inline void* cUIResource::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cUIResource::cUIResource() {

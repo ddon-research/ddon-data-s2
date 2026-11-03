@@ -586,3 +586,7 @@ public:
 private:
     static sGpuParticle* mpInstance;
 };
+
+inline void* sGpuParticle::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

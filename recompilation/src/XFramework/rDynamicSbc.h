@@ -185,3 +185,7 @@ public:
     static const u32 DATA_VERSION;
     static const u32 MAX_MODEL_PARTS_NUM = 256;
 };
+
+inline void* rDynamicSbc::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

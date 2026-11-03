@@ -334,6 +334,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIQuestDelivery::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUIQuestDelivery::setMode(u32 mode) {
     this->mMode = 2;
 }
@@ -341,6 +345,18 @@ inline void uGUIQuestDelivery::setMode(u32 mode) {
 inline uGUIQuestDelivery::stVar::stVar() {
 }
 
+inline void* uGUIQuestDelivery::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIQuestDelivery::cDeliveryItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIQuestDelivery::cDeliveryItem::cDeliveryItem() {
     this->mItemNum = 0;
+}
+
+inline void* uGUIQuestDelivery::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

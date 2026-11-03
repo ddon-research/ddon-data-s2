@@ -267,9 +267,49 @@ protected:
     static const u8 DATA_VERSION = 17;
 };
 
+inline void* rStageCustomParts::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageCustomParts::Param::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rStageCustomParts::Param::Param() {
     this->mDelta = -100.0f;
     this->mOffsetY = 0.0f;
+}
+
+inline void* rStageCustomParts::Info::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline MT_CTSTR rStageCustomParts::Info::getModelName() const {
+    return &this->mModel[0];
+}
+
+inline u32 rStageCustomParts::Info::getScrSbcNameNum() const {
+    return 3;
+}
+
+inline u32 rStageCustomParts::Info::getEffSbcNameNum() const {
+    return 3;
+}
+
+inline MT_CTSTR rStageCustomParts::Info::getLightName() const {
+    return &this->mLight[0];
+}
+
+inline MT_CTSTR rStageCustomParts::Info::getNaviMeshName() const {
+    return &this->mNaviMesh[0];
+}
+
+inline MT_CTSTR rStageCustomParts::Info::getEpvName() const {
+    return &this->mEpv[0];
+}
+
+inline MT_CTSTR rStageCustomParts::Info::getOccluderName() const {
+    return &this->mOccluder[0];
 }
 
 inline s32 rStageCustomParts::Info::getEpvIndexAlways() const {
@@ -284,6 +324,14 @@ inline s32 rStageCustomParts::Info::getEpvIndexNight() const {
     return this->mEpvIndexNight;
 }
 
+inline void* rStageCustomParts::Filter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void rStageCustomParts::Filter::clear() {
     this->mFilter[0] = 0;
+}
+
+inline MT_CTSTR rStageCustomParts::Filter::getFilterName() const {
+    return &this->mFilter[0];
 }

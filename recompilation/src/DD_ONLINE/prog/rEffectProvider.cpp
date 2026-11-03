@@ -4,11 +4,15 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "nDDOUtility.h"
+#include "../../XFramework/rEffect2D.h"
 #include "../../XFramework/rEffectList.h"
 #include "../../XFramework/sResource.h"
 #ifndef DDON_STUB
@@ -17,6 +21,10 @@
 
 const MtDTI& rEffectProvider::getDTI() const {
     return rEffectProvider::DTI;
+}
+
+inline void* rEffectProvider::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rEffectProvider::DTI)->memAlloc(sz, align, rEffectProvider::DTI.getID());
 }
 
 inline void rEffectProvider::operator delete(void* p_addr) {
@@ -50,13 +58,16 @@ rEffectProvider::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 rEffectProvider::MyDTI rEffectProvider::DTI("rEffectProvider", &::cResource::DTI, 176ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rEffectProvider::MyDTI::newInstance() const {
-    DDON_STUB("rEffectProvider::MyDTI::newInstance")
-    return nullptr;
+MtObject* rEffectProvider::MyDTI::newInstance() const {
+    return new (16u) rEffectProvider;
 }
 
 const MtDTI& rEffectProvider::INFO_PROV::getDTI() const {
     return rEffectProvider::INFO_PROV::DTI;
+}
+
+inline void* rEffectProvider::INFO_PROV::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rEffectProvider::INFO_PROV::DTI)->memAlloc(sz, align, rEffectProvider::INFO_PROV::DTI.getID());
 }
 
 inline void rEffectProvider::INFO_PROV::operator delete(void* p_addr) {
@@ -67,9 +78,8 @@ rEffectProvider::INFO_PROV::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t 
 
 rEffectProvider::INFO_PROV::MyDTI rEffectProvider::INFO_PROV::DTI("rEffectProvider::INFO_PROV", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rEffectProvider::INFO_PROV::MyDTI::newInstance() const {
-    DDON_STUB("rEffectProvider::INFO_PROV::MyDTI::newInstance")
-    return nullptr;
+MtObject* rEffectProvider::INFO_PROV::MyDTI::newInstance() const {
+    return new (16u) rEffectProvider::INFO_PROV;
 }
 
 const MtDTI& rEffectProvider::INFO_EFFECT::getDTI() const {

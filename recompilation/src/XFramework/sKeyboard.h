@@ -275,3 +275,7 @@ protected:
     static const s32 KB_KEY_NUM = 144;
     static sKeyboard* mpInstance;
 };
+
+inline void* sKeyboard::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

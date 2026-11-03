@@ -66,3 +66,7 @@ public:
     static const u32 DATA_VERSION = 110;
     static const u32 mMagic = 5001027;
 };
+
+inline void* rObjCollision::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

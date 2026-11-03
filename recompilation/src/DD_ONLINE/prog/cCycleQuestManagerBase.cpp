@@ -6,10 +6,34 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "Protocol/PacketData/Quest.h"
+#include "Protocol/UserSession/S2C.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
 #include "cCycleQuestSubCategoryManager.h"
+#include "cNetGameServer.h"
+#include "cNetSessionManager.h"
 #include "cQuestManagerBase.h"
+#include "cQuestSvRequest.h"
+#include "cQuestSvRequestManager.h"
+#include "cQuestTask.h"
+#include "../../XFramework/cUnit.h"
 #include "nQuest.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sChat.h"
+#include "sEventManager.h"
+#include "sFlag.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
 #include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sQuestManagerExt.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
 #include "uGUIMissionResult.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -155,14 +179,33 @@ __attribute__((weak)) void cCycleQuestManagerBase::routineResult() {
     /* stub */
 }
 
+inline void cCycleQuestManagerBase::routineFinalize() {
+    (sFlag::mpInstance)->sFlag::setFlag(4u, 2u, false, true, false);
+    (sQuestManagerExt::mpInstance)->sQuestManagerExt::finishCycleContentsTimer();
+    (sQuestManagerExt::mpInstance)->sQuestManagerExt::resetHasCycleContentsPlayEndNotice();
+    mR0 = 0;
+    mR1 = 0;
+}
+
 __attribute__((weak)) void cCycleQuestManagerBase::mainInit() {
     DDON_STUB("cCycleQuestManagerBase::mainInit")
     /* stub */
 }
 
 __attribute__((weak)) void cCycleQuestManagerBase::mainMove() {
-    DDON_STUB("cCycleQuestManagerBase::mainMove")
-    /* stub */
+        calcResultPoint();
+        if (mIsClear || mIsInterrupt || mIsFailed) {
+            if (mIsClear) {
+                mR0 = 5;
+                mR1 = 0;
+            } else if (mIsInterrupt) {
+                mR0 = 7;
+                mR1 = 0;
+            } else if (mIsFailed) {
+                mR0 = 6;
+                mR1 = 0;
+            }
+        }
 }
 
 void cCycleQuestManagerBase::initResult() {

@@ -10,6 +10,9 @@
 #include "nDDOUtility.h"
 #include "nWeather.h"
 #include "rWeatherScript.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "../../XFramework/sMain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

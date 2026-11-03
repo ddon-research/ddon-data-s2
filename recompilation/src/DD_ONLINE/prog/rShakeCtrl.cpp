@@ -44,8 +44,6 @@ inline void rShakeCtrl::operator delete(void* p_addr) {
 }
 
 rShakeCtrl::~rShakeCtrl() {
-    DDON_STUB("rShakeCtrl::~rShakeCtrl")
-    /* stub */
 }
 
 bool rShakeCtrl::loadData(MtDataReader& r, cShakeCtrl* pData) {
@@ -70,8 +68,42 @@ u32 rShakeCtrl::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rShakeCtrl::loadCore(MtDataReader& r) {
-    DDON_STUB("rShakeCtrl::loadCore")
-    return {};
+        nDDOIO::readData(r, this->mFrame);
+        nDDOIO::readData(r, this->mCycle);
+        nDDOIO::readData(r, this->mRate);
+        u32 dat_num;
+        this->::rTbl2Base::readDataValue(r, dat_num);
+        u32 t0 = dat_num;
+        if (this->mpData != nullptr) {
+            size_t* t1 = reinterpret_cast<size_t*>(this->mpData) - 1;
+            MtMemoryAllocator::getAllocator(cShakeCtrl::DTI)->memFree(t1);
+            this->mpData = nullptr;
+        }
+        this->mDataNum = 0;
+        if (t0 != 0) {
+            size_t t2 = t0;
+            size_t* t3 = static_cast<size_t*>(MtMemoryAllocator::getAllocator(cShakeCtrl::DTI)->memAlloc(t2 * sizeof(cShakeCtrl) + sizeof(size_t), 16u, cShakeCtrl::DTI.getID()));
+            *t3 = t2;
+            cShakeCtrl* t4 = reinterpret_cast<cShakeCtrl*>(t3 + 1);
+            cShakeCtrl* t5 = t4;
+            do {
+                new (t5) cShakeCtrl;
+                ++t5;
+            } while (t5 != t4 + t2);
+            this->mpData = t4;
+            this->mDataNum = t0;
+        }
+        if (dat_num != 0) {
+            u32 i = 0;
+            cShakeCtrl* p_dat = this->mpData;
+            do {
+                if (!this->loadData(r, &p_dat[i])) {
+                    return false;
+                }
+                i += 1u;
+            } while (i < dat_num);
+        }
+        return true;
 }
 
 rShakeCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

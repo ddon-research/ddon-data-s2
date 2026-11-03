@@ -4,9 +4,14 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -315,19 +320,21 @@ inline rFieldAreaList::rFieldAreaList() {
 }
 
 rFieldAreaList::~rFieldAreaList() {
-    if (mpArray != nullptr) {
-        if (mArrayNum != 0) {
-            mpArray->~cFieldAreaInfo();
-            if (mArrayNum <= 1u) {
-                MtMemoryAllocator::getAllocator(rFieldAreaList::DTI)->memFree(static_cast<void*>(mpArray));
-                mpArray = nullptr;
-                mArrayNum = 0;
-            }
-        } else {
-            MtMemoryAllocator::getAllocator(rFieldAreaList::DTI)->memFree(static_cast<void*>(mpArray));
-            mpArray = nullptr;
-            mArrayNum = 0;
-        }
+    if (mpArray == nullptr) {
+        return;
+    }
+    if (mArrayNum == 0) {
+        MtMemoryAllocator::getAllocator(rFieldAreaList::DTI)->memFree(static_cast<void*>(mpArray));
+        mpArray = nullptr;
+        mArrayNum = 0;
+        return;
+    }
+    mpArray->~cFieldAreaInfo();
+    if (mArrayNum <= 1u) {
+        MtMemoryAllocator::getAllocator(rFieldAreaList::DTI)->memFree(static_cast<void*>(mpArray));
+        mpArray = nullptr;
+        mArrayNum = 0;
+        return;
     }
     unsigned int i3 = 1;
     do {

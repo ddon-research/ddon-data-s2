@@ -158,6 +158,14 @@ public:
     static const u32 CPTNVISIBLE_NUM = 12;
 };
 
+inline void* uGUIMenuTutorial::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMenuTutorial::cCaption::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIMenuTutorial::cCaption::cCaption() {
     this->mGuideNo = 0;
 }

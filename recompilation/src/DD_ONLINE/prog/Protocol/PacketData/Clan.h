@@ -1046,14 +1046,26 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataBattleResultInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataBattleResultInfo::CDataBattleResultInfo() {
     this->m_unEnemyId = 0;
     this->m_unEnemyNum = 0;
     this->m_unEnemyLevel = 0;
 }
 
+inline void* CDataClanConciergeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataClanConciergeInfo::CDataClanConciergeInfo() {
     this->m_unNpcId = 0;
+}
+
+inline void* CDataClanConciergeNpc::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataClanConciergeNpc::CDataClanConciergeNpc() {
@@ -1063,10 +1075,46 @@ inline CDataClanConciergeNpc::CDataClanConciergeNpc() {
     this->m_unSortId = 0;
 }
 
+inline void* CDataClanDungeonInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataClanDungeonInfo::CDataClanDungeonInfo() {
 }
 
+inline void* CDataClanFunctionInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataClanFunctionInfo::CDataClanFunctionInfo() {
+}
+
+inline void* CDataClanHistoryElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataClanJoinRequest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataClanMemberInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataClanParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataClanPartnerPawnInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataClanScoutEntryInviteInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataClanScoutEntryParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataClanScoutEntryParam::CDataClanScoutEntryParam() {
@@ -1076,6 +1124,14 @@ inline CDataClanScoutEntryParam::CDataClanScoutEntryParam() {
     this->m_usLv = 0;
     this->m_usMemberNum = 0;
     this->m_unMotto = 0;
+}
+
+inline void* CDataClanScoutEntrySearchResult::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataClanSearchParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataClanSearchParam::CDataClanSearchParam() {
@@ -1088,9 +1144,25 @@ inline CDataClanSearchParam::CDataClanSearchParam() {
     this->m_unMotto = 0;
 }
 
+inline void* CDataClanSearchResult::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataClanServerParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataClanShopBuffInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataClanShopBuffInfo::CDataClanShopBuffInfo() {
     this->m_unBuffID = 0;
     this->m_ucBuffType = 0;
+}
+
+inline void* CDataClanShopBuffItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataClanShopBuffItem::CDataClanShopBuffItem() {
@@ -1100,14 +1172,26 @@ inline CDataClanShopBuffItem::CDataClanShopBuffItem() {
     this->m_unIconID = 0;
 }
 
+inline void* CDataClanShopConciergeItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataClanShopConciergeItem::CDataClanShopConciergeItem() {
     this->m_unNpcId = 0;
     this->m_unRequireClanPoint = 0;
 }
 
+inline void* CDataClanShopFunctionInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataClanShopFunctionInfo::CDataClanShopFunctionInfo() {
     this->m_unFunctionID = 0;
     this->m_ucFunctionType = 0;
+}
+
+inline void* CDataClanShopFunctionItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataClanShopFunctionItem::CDataClanShopFunctionItem() {
@@ -1117,8 +1201,20 @@ inline CDataClanShopFunctionItem::CDataClanShopFunctionItem() {
     this->m_unIconID = 0;
 }
 
+inline void* CDataClanShopInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataClanShopLineupName::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataClanShopLineupName::CDataClanShopLineupName() {
     this->m_unLineupID = 0;
+}
+
+inline void* CDataClanUserParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataClanUserParam::CDataClanUserParam() {
@@ -1134,15 +1230,27 @@ inline CDataClanUserParam::CDataClanUserParam() {
     this->m_llCreated = 0;
 }
 
+inline void* CDataClanValueInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataClanValueInfo::CDataClanValueInfo() {
     this->m_ucType = 0;
     this->m_unValue = 0;
+}
+
+inline void* CDataPawnExpeditionClanSallySpotInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataPawnExpeditionClanSallySpotInfo::CDataPawnExpeditionClanSallySpotInfo() {
     this->m_unAreaID = 0;
     this->m_unSpotID = 0;
     this->m_unSallyNum = 0;
+}
+
+inline void* CDataPawnExpeditionInformation::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataPawnExpeditionInformation::CDataPawnExpeditionInformation() {

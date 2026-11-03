@@ -212,6 +212,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cLayoutSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cGroupParam* cLayoutSet::getGroupParam() const {
     return this->mpGroupParam;
 }
@@ -224,12 +228,10 @@ inline u32 cLayoutSet::getAreaHitBit() const {
     return this->mAreaHitBit;
 }
 
-inline void cLayoutSet::cUnitData::update() {
-    if (this->mState == static_cast<cLayoutSet::STATE>(3)) {
-        this->mState = static_cast<cLayoutSet::STATE>(4);
-    } else {
-        if (this->mState == static_cast<cLayoutSet::STATE>(2)) {
-            this->mState = static_cast<cLayoutSet::STATE>(3);
-        }
-    }
+inline u32 cLayoutSet::getSubGroupBit() const {
+    return this->mSubGroupBit;
+}
+
+inline void* cLayoutSet::cUnitData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

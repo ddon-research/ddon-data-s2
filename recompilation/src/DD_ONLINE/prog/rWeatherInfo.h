@@ -522,3 +522,87 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cWeatherCloudModel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cWeatherFogInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cWeatherFogInfo::cWeatherFogInfo() {
+    this->mTime = 0;
+    this->mStart = 0.0f;
+    this->mEnd = 100000.0f;
+    this->mExponentDensity = 16.0f;
+    this->mChgMode = 0;
+    this->mColor.x = 0.266437f;
+    this->mColor.y = 0.499144f;
+    this->mColor.z = 0.783563f;
+    this->mColor.pad_ = 0.0f;
+}
+
+inline void* cWeatherInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cWeatherParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cWeatherParamEfcInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cWeatherParamInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rWeatherFogInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rWeatherInfoTbl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rWeatherParamEfcInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rWeatherParamInfoTbl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rWeatherStageInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cWeatherFogInfo::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherFogInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cWeatherFogInfo::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherFogInfo::DTI)->memAlloc(sz, align, ::cWeatherFogInfo::DTI.::MtDTI::getID());
+}
+
+inline void* cWeatherInfo::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherInfo::DTI)->memAlloc(sz, align, ::cWeatherInfo::DTI.::MtDTI::getID());
+}
+
+inline void* cWeatherParamEfcInfo::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherParamEfcInfo::DTI)->memAlloc(sz, align, ::cWeatherParamEfcInfo::DTI.::MtDTI::getID());
+}
+
+inline void cWeatherParamInfo::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherParamInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cWeatherParamInfo::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherParamInfo::DTI)->memAlloc(sz, align, ::cWeatherParamInfo::DTI.::MtDTI::getID());
+}

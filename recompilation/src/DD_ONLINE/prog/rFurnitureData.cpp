@@ -7,6 +7,8 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -81,8 +83,28 @@ u32 rFurnitureData::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rFurnitureData::load(MtStream& in) {
-    DDON_STUB("rFurnitureData::load")
-    return {};
+        MtDataReader r(in, 4096u);
+        u32 ver;
+        this->readDataValue(r, ver);
+        if (ver == this->getDataVersion()) {
+            u32 num;
+            this->readDataValue(r, num);
+            this->allocData(num);
+            u32 dat_num = this->mDataNum;
+            if (dat_num != 0) {
+                u32 i = 0;
+                cFurnitureData* p_dat = this->mpData;
+                do {
+                    if (!this->loadData(r, &p_dat[i])) {
+                        return false;
+                    }
+                    i += 1u;
+                } while (i < dat_num);
+            }
+            return true;
+        } else {
+            return false;
+        }
 }
 
 cFurnitureData* rFurnitureData::searchOmId(u32 omId) {

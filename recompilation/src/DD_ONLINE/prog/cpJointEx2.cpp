@@ -3,10 +3,12 @@
 #include "cpJointEx2.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "cpComponent.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "rJointEx2.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB

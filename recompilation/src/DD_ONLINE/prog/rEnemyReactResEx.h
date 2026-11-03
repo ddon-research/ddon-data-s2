@@ -142,10 +142,30 @@ public:
     static const u32 REACT_WHERE_NUM = 8;
 };
 
+inline void* cEnemyReactRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEnemyReactRes::cEnemyReactRes() {
     this->mParam1 = 0;
     this->mPercent = 0.0f;
     this->mParam0 = 0;
     this->mCountStart = 0;
     this->mCountEnd = 0;
+}
+
+inline void* rEnemyReactResEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEnemyReactRes::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyReactRes::DTI)->memFree(p_addr);
+}
+
+inline void* cEnemyReactRes::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyReactRes::DTI)->memAlloc(sz, align, ::cEnemyReactRes::DTI.::MtDTI::getID());
 }

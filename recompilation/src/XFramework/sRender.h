@@ -845,12 +845,81 @@ private:
     static s32 mSSTrigger;
 };
 
+inline void* sRender::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sRender* sRender::getInstance() {
     return ::sRender::mpInstance;
 }
 
 inline nDraw::HDeviceContext sRender::getDeviceContext() {
     return this->mpDeviceContext;
+}
+
+inline u32 sRender::getAspectType() {
+    return this->mAspectType;
+}
+
+inline u32 sRender::getScaleMode() {
+    return this->mScaleMode;
+}
+
+inline f32 sRender::getDACGamma() {
+    return this->mDACGamma;
+}
+
+inline void sRender::setDACGamma(f32 v) {
+    this->mDACGamma = v;
+    this->mUpdateGamma = true;
+}
+
+inline nDraw::HDR_TYPE sRender::getHDRType() {
+    return this->mHDRType;
+}
+
+inline nDraw::ANTIALIAS_ALT_TYPE sRender::getAntiAliasAltType() const {
+    return this->mAntiAliasAltType;
+}
+
+inline void sRender::setAntiAliasAltType(nDraw::ANTIALIAS_ALT_TYPE type) {
+    this->mAntiAliasAltType = type;
+}
+
+inline u32 sRender::getSceneAttribute() {
+    return this->mSceneAttribute;
+}
+
+inline nDraw::DEFERRED_LIGHTING_LIGHT_TYPE sRender::getDeferredLightingLightType() const {
+    return this->mDeferredLightingLightType;
+}
+
+inline nDraw::DEFERRED_LIGHTING_HDR_TYPE sRender::getDeferredLightingHDRType() const {
+    return this->mDeferredLightingHDRType;
+}
+
+inline nDraw::DEFERRED_LIGHTING_NORMAL_TYPE sRender::getDeferredLightingNormalEncodeType() const {
+    return this->mDeferredLightingNormalType;
+}
+
+inline void sRender::setDeferredLightingNormalEncodeType(nDraw::DEFERRED_LIGHTING_NORMAL_TYPE type) {
+    this->mDeferredLightingNormalType = type;
+}
+
+inline nDraw::DEFERRED_LIGHTING_TRANSPARENT_TYPE sRender::getDeferredLightingTransparentType() const {
+    return this->mDeferredLightingTransparentType;
+}
+
+inline f32 sRender::getDeferredLightingFadeOutLightingDistance() const {
+    return this->mDeferredLightingFadeOutLightingDistance;
+}
+
+inline f32 sRender::getHalfLambertBlendCoeff() const {
+    return this->mHalfLambertBlendCoeff;
+}
+
+inline void sRender::setHalfLambertBlendCoeff(f32 coeff) {
+    this->mHalfLambertBlendCoeff = coeff;
 }
 
 inline nDraw::FEATURE_LV sRender::getFeatureLevel() const {

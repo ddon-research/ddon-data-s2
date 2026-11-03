@@ -3,24 +3,56 @@
 #include "cpJob05.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cEquipData.h"
+#include "cEvaluation.h"
 #include "cGuardInfo.h"
 #include "cHitGeom.h"
 #include "cHumanActId.h"
 #include "cShlNotifyInfo.h"
 #include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
+#include "cpActionRequest.h"
+#include "cpComponent.h"
+#include "cpEffectProvider.h"
+#include "cpEffectStatusManager.h"
+#include "cpEquip.h"
+#include "cpInput.h"
 #include "cpJobBase.h"
+#include "cpKeyCommand.h"
+#include "cpMotionSe.h"
 #include "cpObjCollision.h"
+#include "cpOcdCtrl.h"
+#include "cpShakeCtrl.h"
+#include "cpShlShotCtrl.h"
+#include "cpStateManager.h"
 #include "nCharacterData.h"
 #include "../../generated/shared/nDDOGame.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "nDDOUtility.h"
 #include "../../generated/shared/nHuman.h"
 #include "nHumanMsg.h"
 #include "rCollGeom.h"
+#include "rHumanEnemyParam.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "sInputManager.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
+#include "uCharacter.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
 #include "uHuman.h"
+#include "uHumanEnemy.h"
+#include "../../XFramework/uModel.h"
+#include "uOmModel.h"
 #include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -43,8 +75,6 @@ inline void cpJob05::operator delete(void* p_addr) {
 }
 
 cpJob05::~cpJob05() {
-    DDON_STUB("cpJob05::~cpJob05")
-    /* stub */
 }
 
 void cpJob05::setup() {
@@ -342,6 +372,15 @@ bool cpJob05::checkSkillLevel(s32 ActNo, nHuman::HM_SKILL_LV skillLv) const {
 __attribute__((weak)) void cpJob05::setupSaintWall(nHuman::HM_SKILL_LV SkillLv, f32 Timer) {
     DDON_STUB("cpJob05::setupSaintWall")
     /* stub */
+}
+
+inline void cpJob05::setTransActTimer(f32 timer) {
+    mTransActTimer = timer;
+    if (timer > 0.0f) {
+        if (mpHuman->mGuardComponent.mpInput != nullptr) {
+            mpHuman->mGuardComponent.mpInput->startupCheckCommand();
+        }
+    }
 }
 
 void cpJob05::callbackReplaceHitInfo_Atk(cHitInfo* pHitInfo) {

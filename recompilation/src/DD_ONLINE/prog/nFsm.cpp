@@ -5,14 +5,18 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
 #include "cFSMOrderParam.h"
+#include "../../XFramework/cUnit.h"
 #include "../../XFramework/sArea.h"
 #include "../../XFramework/sCamera.h"
 #include "sCameraExt.h"
 #include "sEventManager.h"
 #include "../../XFramework/sMain.h"
+#include "../../XFramework/sUnit.h"
 #include "uCameraBase.h"
 #include "uCameraGame.h"
 #ifndef DDON_STUB
@@ -56,8 +60,8 @@ void nFsm::cCameraCtrl::start(const cFSMOrderParamCamera* const pParamCamera) {
         mStartPosNo = 0;
         uCameraGame* pCam = static_cast<sCameraExt*>(::sCamera::getInstance())->getGameCamera();
         if (pCam != nullptr) {
-            if (pCam->::uCameraBase::isInitial()) {
-                pCam->::uCameraBase::mbFinal = true;
+            if (pCam->isInitial()) {
+                pCam->mbFinal = true;
             }
         }
     } else {
@@ -66,8 +70,8 @@ void nFsm::cCameraCtrl::start(const cFSMOrderParamCamera* const pParamCamera) {
         mStartPosNo = pParamCamera->mStartPosNo;
         uCameraGame* pCam = static_cast<sCameraExt*>(::sCamera::getInstance())->getGameCamera();
         if (pCam != nullptr) {
-            if (pCam->::uCameraBase::isInitial()) {
-                pCam->::uCameraBase::mbFinal = true;
+            if (pCam->isInitial()) {
+                pCam->mbFinal = true;
             }
         }
     }

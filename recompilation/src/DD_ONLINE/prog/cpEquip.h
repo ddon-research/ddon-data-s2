@@ -313,10 +313,22 @@ public:
     static const u32 PARTS_ID_WL_WITHOUT_FOOT = 110;
 };
 
+inline void* cpEquip::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cpEquip::cEquipInfo* cpEquip::getBeardInfo() {
     return &this->mBeard;
 }
 
 inline cpEquip::cEquipInfo* cpEquip::getMakeupInfo() {
     return &this->mMakeup;
+}
+
+inline rEquipPreset* cpEquip::getEquipPreset() {
+    return this->mpEquipPresetRes;
+}
+
+inline void* cpEquip::cEquipInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

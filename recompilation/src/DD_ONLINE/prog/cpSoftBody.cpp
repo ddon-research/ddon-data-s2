@@ -5,9 +5,15 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
+#include "sBakingJointOrder.h"
+#include "../../XFramework/sUnit.h"
 #include "uDDOModel.h"
+#include "uHuman.h"
 #include "../../XFramework/uModel.h"
 #include "../../XFramework/uSimSoftBody.h"
 #ifndef DDON_STUB
@@ -104,8 +110,18 @@ __attribute__((weak)) void cpSoftBody::update() {
 }
 
 __attribute__((weak)) void cpSoftBody::release() {
-    DDON_STUB("cpSoftBody::release")
-    /* stub */
+        if (mpSimSoftBody) {
+            mpSimSoftBody->kill();
+            mpSimSoftBody = nullptr;
+        }
+        if (mprSoundPhysicsSoftBody) {
+            reinterpret_cast<cResource*>(mprSoundPhysicsSoftBody)->release();
+            mprSoundPhysicsSoftBody = nullptr;
+        }
+        if (mprDeformWeightMap) {
+            reinterpret_cast<cResource*>(mprDeformWeightMap)->release();
+            mprDeformWeightMap = nullptr;
+        }
 }
 
 __attribute__((weak)) bool cpSoftBody::setSoftBody(uModel* pOwner, rDeformWeightMap* pDWM, u32 Mode) {
@@ -211,9 +227,7 @@ void cpSoftBody::setOwner(MtObject* pOwner) {
     mpOwnerDDOModel = static_cast<uDDOModel*>(pOwner);
 }
 
-uSimSoftBody* cpSoftBody::getSimSoftBody() {
-    return mpSimSoftBody;
-}
+static auto ddon_emit_0x01a5fad0 __attribute__((used)) = &cpSoftBody::getSimSoftBody;
 
 void cpSoftBody::restartSimulation(u32 LoopNum) {
     if (mpSimSoftBody == nullptr) {

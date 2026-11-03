@@ -139,12 +139,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEffectStatus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEffectStatus::cEffectStatus() {
     this->mSyncFlag = 0;
     this->mIndexNo = -1;
     this->mElementNo = -1;
     this->mEndType = static_cast<sEffectExt::EFC_END_TYPE>(4);
     this->mpEfcHandle = nullptr;
+}
+
+inline void* cpEffectStatusManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cpEffectStatusManager::cpEffectStatusManager() {

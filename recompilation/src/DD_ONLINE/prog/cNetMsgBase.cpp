@@ -7,6 +7,7 @@
 #include "../../MT/MtObject.h"
 #include "cContextInstance.h"
 #include "cContextInterface.h"
+#include "cNetBase.h"
 #include "../../XFramework/cRemoteCall.h"
 #include "../../XFramework/nNetworkCoder.h"
 #include "sContextManager.h"

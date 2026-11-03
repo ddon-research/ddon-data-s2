@@ -3,11 +3,23 @@
 #include "uGUIEventSkip.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "nDDOUtility.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
 #include "../../XFramework/rGUIMessage.h"
+#include "sEventManager.h"
+#include "sFlag.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/sKeyboard.h"
+#include "sKeyboardExt.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sPad.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -30,8 +42,15 @@ inline void uGUIEventSkip::operator delete(void* p_addr) {
 }
 
 uGUIEventSkip::~uGUIEventSkip() {
-    DDON_STUB("uGUIEventSkip::~uGUIEventSkip")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpGUIMsgGuide == nullptr) {
+        return;
+    }
+    mpGUIMsgGuide->release();
+    mpGUIMsgGuide = nullptr;
 }
 
 bool uGUIEventSkip::loadResource() {

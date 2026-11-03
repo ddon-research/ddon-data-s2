@@ -5,6 +5,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -49,8 +51,6 @@ inline void rQuestSequenceList::operator delete(void* p_addr) {
 }
 
 rQuestSequenceList::~rQuestSequenceList() {
-    DDON_STUB("rQuestSequenceList::~rQuestSequenceList")
-    /* stub */
 }
 
 bool rQuestSequenceList::loadData(MtDataReader& r, cQuestSequence* pData) {

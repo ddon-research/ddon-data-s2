@@ -4,25 +4,45 @@
 #include "cpObjCollision.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
+#include "../../MT/MtCollision.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtGeomCapsule.h"
+#include "../../MT/MtGeomOBB.h"
+#include "../../MT/MtGeomSphere.h"
+#include "../../MT/MtGeometry3D.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtRandom.h"
 #include "cBitCtrl.h"
+#include "cDelegate.h"
 #include "cGuardInfo.h"
+#include "cHitGeom.h"
 #include "cHitInfoAfter.h"
 #include "cHitNode.h"
 #include "cObjHitCache.h"
 #include "cOcdDamageInfo.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
+#include "cpWorkRate.h"
+#include "../../XFramework/nCollisionNode.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nObjCollision.h"
 #include "rAttackParam.h"
+#include "rCollNode.h"
+#include "rPushRate.h"
 #include "sAIPawnNotice.h"
 #include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
+#include "../../XFramework/sMain.h"
 #include "sObjCollision.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
+#include "../../XFramework/uModel.h"
+#include "uOmModel.h"
 #include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -376,8 +396,14 @@ void cpObjCollisionBase::allHangedRemove() {
 }
 
 __attribute__((weak)) void cpObjCollisionBase::setLayerOn(u32 no, bool on) {
-    DDON_STUB("cpObjCollisionBase::setLayerOn")
-    /* stub */
+        u64 layer = mLayer;
+        u64 bit = 1ul << no;
+        if (on) {
+            layer |= bit;
+        } else {
+            layer &= ~bit;
+        }
+        mLayer = layer;
 }
 
 bool cpObjCollisionBase::isLayerOn(u32 no) {

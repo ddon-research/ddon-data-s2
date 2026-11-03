@@ -183,6 +183,18 @@ namespace nNetwork {
     };
 }  // namespace nNetwork
 
+inline void* nNetwork::TagChecker::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::TagChecker::RpcSyncReq::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nNetwork::TagChecker::RpcSyncReq::RpcSyncReq() {
     this->::cRemoteCall::mAttribute = 0;
+}
+
+inline void* nNetwork::TagChecker::RpcSyncAns::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

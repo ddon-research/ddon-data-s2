@@ -98,10 +98,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEvaluationTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEvaluationTable::cEvaluationTable() {
     this->mEvalutionCategory = 0;
     this->mEvalutionCategoryMax = 0;
     this->mEvalutionCategoryDecPer = 0.0f;
     this->mEvalutionCategoryHosei = 1.0f;
     this->mEvalutionCategoryEizokuHosei = 1.0f;
+}
+
+inline void* rEvaluationTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEvaluationTable::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEvaluationTable::DTI)->memFree(p_addr);
+}
+
+inline void* cEvaluationTable::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEvaluationTable::DTI)->memAlloc(sz, align, ::cEvaluationTable::DTI.::MtDTI::getID());
 }

@@ -102,6 +102,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cHumanEnemyCustomSkill::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cHumanEnemyCustomSkill::cHumanEnemyCustomSkill() {
     this->mCustomLevel3 = 0;
     this->mCustomLevel1 = 0;
@@ -112,4 +116,20 @@ inline cHumanEnemyCustomSkill::cHumanEnemyCustomSkill() {
     this->mCustomSkill2 = 0;
     this->mId = 0;
     this->mCustomSkill0 = 0;
+}
+
+inline void* rHumanEnemyCustomSkill::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cHumanEnemyCustomSkill::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanEnemyCustomSkill::DTI)->memFree(p_addr);
+}
+
+inline void* cHumanEnemyCustomSkill::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHumanEnemyCustomSkill::DTI)->memAlloc(sz, align, ::cHumanEnemyCustomSkill::DTI.::MtDTI::getID());
 }

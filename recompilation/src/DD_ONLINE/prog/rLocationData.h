@@ -129,3 +129,11 @@ public:
     static const u8 DATA_VERSION = 16;
     static MyDTI DTI;
 };
+
+inline void* rLocationData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rLocationData::Data::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

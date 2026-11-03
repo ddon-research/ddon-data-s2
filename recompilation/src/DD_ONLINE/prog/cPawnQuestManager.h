@@ -144,6 +144,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cPawnQuestManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cPawnQuestManager::cPawnQuestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cPawnQuestManager::cPawnQuestInfo::cPawnQuestInfo() {
     this->mParam01 = 0;
     this->mParam02 = 0;

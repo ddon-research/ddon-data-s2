@@ -2550,6 +2550,14 @@ namespace nQuest {
 
 }  // namespace nQuest
 
+inline void* nQuest::cQuestInfoBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cOrderCondition::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nQuest::cOrderCondition::cOrderCondition() {
     this->mConditionType = 0;
     this->mIsMsgCreated = false;
@@ -2557,9 +2565,49 @@ inline nQuest::cOrderCondition::cOrderCondition() {
     this->mConditionParam2 = 0;
 }
 
+inline void* nQuest::cRepeatBonus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cRewardData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cFixRewardData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cDeliverRequestItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cQuestDeliverRequestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cDeliveredItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::cDeliverCharacterInfo() {
     this->mCharacterId = 0;
     this->mItemNum = 0;
+}
+
+inline void* nQuest::cQuestDeliveredInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cQuestMarker::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cCycleContentsPersonalRankInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u32 nQuest::cCycleContentsPersonalRankInfo::getRanking() const {
@@ -2570,8 +2618,24 @@ inline u32 nQuest::cCycleContentsPersonalRankInfo::getScore() const {
     return this->mScore;
 }
 
+inline void* nQuest::cCycleContentsInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 nQuest::cCycleContentsInfo::getContentsCategory() const {
+    return this->mCycleContentsCategory;
+}
+
+inline u32 nQuest::cCycleContentsInfo::getContentsSubCategory() const {
+    return this->mCycleContentsSubCategory;
+}
+
 inline u32 nQuest::cCycleContentsInfo::getSituation() const {
     return this->mBaseSituation;
+}
+
+inline void* nQuest::cGUINewspaperSetQuestMonsterInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u32 nQuest::cGUINewspaperSetQuestMonsterInfo::getEnemyLv() const {
@@ -2588,6 +2652,10 @@ inline nQuest::cGUINewspaperSetQuestMonsterInfo::cGUINewspaperSetQuestMonsterInf
     this->mIsPartyRecommanded = false;
 }
 
+inline void* nQuest::cGUINewspaperSetQuestItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 nQuest::cGUINewspaperSetQuestItemInfo::getItemId() const {
     return this->mItemId;
 }
@@ -2601,11 +2669,31 @@ inline nQuest::cGUINewspaperSetQuestItemInfo::cGUINewspaperSetQuestItemInfo() {
     this->mItemNum = 0;
 }
 
+inline void* nQuest::cGUINewspaperSetQuestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cGUINewspaperRecommededQuestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cGUINewspaperSetQuestOpenDateInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cCycleContentsResultPointInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nQuest::cCycleContentsResultPointInfo::cCycleContentsResultPointInfo() {
     this->mType = 0;
     this->mParam01 = 0;
     this->mParam02 = 0;
     this->mPoint = 0;
+}
+
+inline void* nQuest::cCycleContentsResultRewardInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nQuest::cCycleContentsResultRewardInfo::cCycleContentsResultRewardInfo() {
@@ -2614,9 +2702,21 @@ inline nQuest::cCycleContentsResultRewardInfo::cCycleContentsResultRewardInfo() 
     this->mParam02 = 0;
 }
 
+inline void* nQuest::cCycleContentsResultInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cCycleContentsRankingInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nQuest::cCycleContentsRankingInfo::cCycleContentsRankingInfo() {
     this->mPoint = 0;
     this->mRank = 0;
+}
+
+inline void* nQuest::cCycleContentsRankingRewardInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nQuest::cCycleContentsRankingRewardInfo::cCycleContentsRankingRewardInfo() {
@@ -2624,9 +2724,25 @@ inline nQuest::cCycleContentsRankingRewardInfo::cCycleContentsRankingRewardInfo(
     this->mOverRank = 0;
 }
 
+inline void* nQuest::cCycleContentsBorderRewardInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nQuest::cCycleContentsBorderRewardInfo::cCycleContentsBorderRewardInfo() {
     this->mUnderPoint = 0;
     this->mOverPoint = 0;
+}
+
+inline void* nQuest::cQuestCommand::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cTalkData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cDeliverTargetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nQuest::cDeliverTargetInfo::cDeliverTargetInfo() {
@@ -2637,17 +2753,49 @@ inline nQuest::cDeliverTargetInfo::cDeliverTargetInfo() {
     this->mGroupNo = 0;
 }
 
+inline void* nQuest::cGUIListData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cGUIInfoData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cGUIBoardData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nQuest::cGUIBoardData::cGUIBoardData() {
+}
+
+inline void* nQuest::cGUIDeliveryData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nQuest::cGUIDeliveryData::cGUIDeliveryData() {
     this->mBlockNo = -1;
 }
 
+inline void* nQuest::cGUIEventBoardData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nQuest::cGUIEventBoardData::cGUIEventBoardData() {
 }
 
+inline void* nQuest::cGUIAreaMasterData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cGUIActiveData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nQuest::cGUIActiveData::cGUIActiveData() {
+}
+
+inline void* nQuest::cCycleContentsSituationInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nQuest::cCycleContentsSituationInfo::cCycleContentsSituationInfo() {
@@ -2666,12 +2814,28 @@ inline nQuest::cCycleContentsSituationInfo::cCycleContentsSituationInfo() {
     this->mRewardItem[1] = 0;
 }
 
+inline void* nQuest::cEndContentsGroupQuestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nQuest::cEndContentsGroupQuestInfo::cEndContentsGroupQuestInfo() {
+}
+
+inline void* nQuest::cTargetEnemyInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nQuest::cTargetEnemyInfo::cTargetEnemyInfo() {
     this->mStageNo = 0;
     this->mGroupNo = 0;
+}
+
+inline void* nQuest::cScheduleInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nQuest::cPartyBonusInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u32 nQuest::cPartyBonusInfo::getGoldRaito() const {

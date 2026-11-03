@@ -410,10 +410,18 @@ namespace rAcquirement {
 
 }  // namespace rAcquirement
 
+inline void* rAcquirement::cSkillLevelData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rAcquirement::cSkillLevelData::cSkillLevelData() {
     this->mMsgExpIndex = 0;
     this->mNeedLv = 0;
     this->mNeedJp = 0;
+}
+
+inline void* rAcquirement::cCustomSkillData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rAcquirement::cCustomSkillData::cCustomSkillData() {
@@ -421,6 +429,10 @@ inline rAcquirement::cCustomSkillData::cCustomSkillData() {
     this->mMsgNameIndex = 0;
     this->mIconId = 0;
     this->mLvArray.::MtArray::mAutoDelete = true;
+}
+
+inline void* rAcquirement::cNormalSkillData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rAcquirement::cNormalSkillData::cNormalSkillData() {
@@ -435,9 +447,17 @@ inline rAcquirement::cNormalSkillData::cNormalSkillData() {
     this->mSkillNo = 0;
 }
 
+inline void* rAcquirement::cAbilityLevelData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rAcquirement::cAbilityLevelData::cAbilityLevelData() {
     this->mNeedLv = 0;
     this->mNeedJp = 0;
+}
+
+inline void* rAcquirement::cAbilityData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rAcquirement::cAbilityData::cAbilityData() {
@@ -450,8 +470,56 @@ inline rAcquirement::cAbilityData::cAbilityData() {
     this->mIconId = 0;
 }
 
+inline void* rAcquirement::cAbilityAddData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rAcquirement::cAbilityAddData::cAbilityAddData() {
     this->mId = 0;
     this->mSortCategory = 0;
     this->mLvArray.::MtArray::mAutoDelete = true;
+}
+
+inline void* rAcquirement::rCustomSkillData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAcquirement::rNormalSkillData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAcquirement::rAbilityData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAcquirement::rAbilityAddData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rAcquirement::cAbilityAddData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityAddData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityAddData::DTI.::MtDTI::getID());
+}
+
+inline void rAcquirement::cAbilityData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityData::DTI)->memFree(p_addr);
+}
+
+inline void* rAcquirement::cAbilityData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityData::DTI.::MtDTI::getID());
+}
+
+inline void* rAcquirement::cCustomSkillData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cCustomSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::cCustomSkillData::DTI.::MtDTI::getID());
+}
+
+inline void rAcquirement::cNormalSkillData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAcquirement::cNormalSkillData::DTI)->memFree(p_addr);
+}
+
+inline void* rAcquirement::cNormalSkillData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cNormalSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::cNormalSkillData::DTI.::MtDTI::getID());
 }

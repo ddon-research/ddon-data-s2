@@ -151,3 +151,7 @@ public:
     static const u32 TEX_W = 32;
     static const s32 DATA_VERSION = 53;
 };
+
+inline void* rDeformWeightMap::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -6,16 +6,42 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
+#include "../../MT/MtSynchronize.h"
+#include "cCharacterData.h"
 #include "cContextInterface.h"
+#include "cEditParam.h"
 #include "cEquipData.h"
 #include "cItemParam.h"
+#include "cNetGameServer.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "cpCharacterEdit.h"
+#include "nCharacterData.h"
 #include "../../XFramework/nPrim.h"
+#include "rCharacterEdit.h"
 #include "rItemList.h"
+#include "../../XFramework/rMotionList.h"
 #include "../../XFramework/rRenderTargetTexture.h"
 #include "sContextManager.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sInputManager.h"
 #include "sItemManager.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sPlayerManager.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sUnitManager.h"
+#include "../../XFramework/uBaseModel.h"
+#include "../../XFramework/uCoord.h"
+#include "../../XFramework/uLight.h"
 #include "uMockUpModel.h"
+#include "../../XFramework/uModel.h"
+#include "uPlayer.h"
 #include "../../XFramework/uScreenSpace.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -38,8 +64,12 @@ inline void uUIMockUp::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uUIMockUp::~uUIMockUp() {
-    DDON_STUB("uUIMockUp::~uUIMockUp")
-    /* stub */
+    delList();
+    if (mpEdit == nullptr) {
+        return;
+    }
+    mpEdit->release();
+    mpEdit = nullptr;
 }
 
 __attribute__((weak)) void uUIMockUp::createProperty(MtPropertyList& s) {
@@ -176,8 +206,8 @@ void uUIMockUp::setMannequinEquip(const cContextInstHm* pContext, u32 itemId, s3
         u32 t0 = cContextInterface::getSex(sContextManager::getInstance()->getContextMyPlayer());
         const rItemList::rItemParam* pParamRes = sItemManager::getInstance()->getItemParam(itemId);
         if (pParamRes != nullptr) {
-            if (pParamRes->rItemList::rItemParam::getSex() != 1) {
-                setupMannequineModel(pParamRes->rItemList::rItemParam::getSex() == 2);
+            if (pParamRes->getSex() != 1) {
+                setupMannequineModel(pParamRes->getSex() == 2);
             } else {
                 setupMannequineModel(t0 == 0);
             }
@@ -189,8 +219,8 @@ void uUIMockUp::setMannequinEquip(const cContextInstHm* pContext, u32 itemId, s3
         u32 t0 = cContextInterface::getSex(pContext);
         const rItemList::rItemParam* pParamRes = sItemManager::getInstance()->getItemParam(itemId);
         if (pParamRes != nullptr) {
-            if (pParamRes->rItemList::rItemParam::getSex() != 1) {
-                setupMannequineModel(pParamRes->rItemList::rItemParam::getSex() == 2);
+            if (pParamRes->getSex() != 1) {
+                setupMannequineModel(pParamRes->getSex() == 2);
             } else {
                 setupMannequineModel(t0 == 0);
             }
@@ -216,9 +246,9 @@ bool uUIMockUp::isEquipEnable(const cContextInstHm* pContext, u32 itemId) {
         cContextInstHm* t0 = sContextManager::getInstance()->getContextMyPlayer();
         const rItemList::rItemParam* pParam = sItemManager::getInstance()->getItemParam(itemId);
         if (pParam != nullptr) {
-            if (pParam->rItemList::rItemParam::getUseJob(cContextInterface::getJob(t0))) {
-                if (pParam->rItemList::rItemParam::getSex() != 1) {
-                    u8 t1 = pParam->rItemList::rItemParam::getSex();
+            if (pParam->getUseJob(cContextInterface::getJob(t0))) {
+                if (pParam->getSex() != 1) {
+                    u8 t1 = pParam->getSex();
                     if ((static_cast<unsigned long>(t1 == 2) ^ static_cast<unsigned long>(cContextInterface::getSex(t0) == 0)) != 0) {
                         return false;
                     } else {
@@ -236,9 +266,9 @@ bool uUIMockUp::isEquipEnable(const cContextInstHm* pContext, u32 itemId) {
     } else {
         const rItemList::rItemParam* pParam = sItemManager::getInstance()->getItemParam(itemId);
         if (pParam != nullptr) {
-            if (pParam->rItemList::rItemParam::getUseJob(cContextInterface::getJob(pContext))) {
-                if (pParam->rItemList::rItemParam::getSex() != 1) {
-                    u8 t1 = pParam->rItemList::rItemParam::getSex();
+            if (pParam->getUseJob(cContextInterface::getJob(pContext))) {
+                if (pParam->getSex() != 1) {
+                    u8 t1 = pParam->getSex();
                     if ((static_cast<unsigned long>(t1 == 2) ^ static_cast<unsigned long>(cContextInterface::getSex(pContext) == 0)) != 0) {
                         return false;
                     } else {

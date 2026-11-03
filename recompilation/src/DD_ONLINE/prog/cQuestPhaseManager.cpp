@@ -6,9 +6,17 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "Protocol/PacketData/Quest.h"
+#include "Protocol/UserSession/S2C.h"
 #include "cQuestFunctionManagerBAse.h"
+#include "cQuestPhaseComponent.h"
 #include "cQuestPhaseEvent.h"
 #include "cQuestPhaseState.h"
+#include "cQuestPhaseState002.h"
+#include "cQuestSvNotice.h"
+#include "cQuestSvNoticeManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -82,7 +90,7 @@ cQuestPhaseManager::cQuestPhaseManager() {
     /* stub */
 }
 
-cQuestPhaseManager::~cQuestPhaseManager() {
+__attribute__((noinline)) cQuestPhaseManager::~cQuestPhaseManager() {
     if (mpState != nullptr) {
         delete mpState;
         mpState = nullptr;

@@ -6,17 +6,25 @@
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStlAllocator.h"
 #include "../MT/MtStlCustom.h"
+#include "cDraw.h"
 #include "cGUIInstance.h"
 #include "cGUIObject.h"
 #include "cGUIVariable.h"
+#include "cResource.h"
+#include "cUnit.h"
 #include "nGUI.h"
+#include "nGUIDraw.h"
 #include "rGUI.h"
 #include "sCamera.h"
+#include "sGUI.h"
 #include "sMain.h"
 #include "uCoord.h"
 #ifndef DDON_STUB
@@ -116,86 +124,81 @@ bool uGUI::errorResourceCheck(rGUI* pResource) {
     return false;
 }
 
-rGUI* uGUI::getResource() const {
-    return mpResource;
-}
+static auto ddon_emit_0x01b61a30 __attribute__((used)) = &uGUI::getResource;
 
 bool uGUI::isPlay() const {
     return static_cast<bool>(mAttr & 1u);
 }
 
-__attribute__((weak)) void uGUI::setPlay(bool v) {
-    DDON_STUB("uGUI::setPlay")
-    /* stub */
+void uGUI::setPlay(bool v) {
+    if (mpInstanceRoot != nullptr) {
+        if (v) {
+            if ((mAttr & 1u) == 0) {
+                mPlayTime = 0.0f;
+                mPlayTimeOld = 0.0f;
+                mFlowFrame = 0.0f;
+                mFlowFrameOld = -1.0f;
+                mStackCount = 0;
+                if (mpResource != nullptr) {
+                    mpPlayingFlow = mpResource->mpHeader->startFlowAdrs;
+                    if (((mAttr >> 8) & 16u) == 0) {
+                        initInstance(static_cast<cGUIInstance*>(mpInstanceRoot));
+                    }
+                }
+            }
+            mAttr = mAttr | 1u;
+        } else {
+            mpPlayingFlow = nullptr;
+            mAttr = mAttr & 0xFFFFEFFEu;
+        }
+    } else {
+        mAttr = mAttr & 0xFFFFFFFEu;
+    }
 }
 
 bool uGUI::isWait() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 832)) & 2) >> 1);
 }
 
-void uGUI::setWait(bool v) {
-    mAttr = !v ? (mAttr & 0xFFFFFFFDu) : (mAttr | 2u);
-}
+static auto ddon_emit_0x01b61ac0 __attribute__((used)) = &uGUI::setWait;
 
-void uGUI::setVirtualScreen(bool v) {
-    mAttr = !v ? (mAttr & 0xFFFFFFFBu) : (mAttr | 4u);
-}
+static auto ddon_emit_0x01b61a40 __attribute__((used)) = &uGUI::setVirtualScreen;
 
 bool uGUI::isVirtualScreen() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 832)) & 4) >> 2);
 }
 
-void uGUI::setUseViewInstance(bool v) {
-    mAttr = !v ? (mAttr & 0xFFFFFFF7u) : (mAttr | 8u);
-}
+static auto ddon_emit_0x01b61a70 __attribute__((used)) = &uGUI::setUseViewInstance;
 
 bool uGUI::isUseViewInstance() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 832)) & 8) >> 3);
 }
 
-void uGUI::setManual3DPriority(bool v) {
-    mAttr = !v ? (mAttr & 0xFFEFFFFFu) : (mAttr | 0x100000u);
-}
+static auto ddon_emit_0x01b61a90 __attribute__((used)) = &uGUI::setManual3DPriority;
 
 bool uGUI::isManual3DPriority() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 834)) & 16) >> 4);
 }
 
-void uGUI::setDrawStencil(bool v) {
-    mAttr = !v ? (mAttr & 0xFFFFFFEFu) : (mAttr | 16u);
-}
+static auto ddon_emit_0x01b61b40 __attribute__((used)) = &uGUI::setDrawStencil;
 
 bool uGUI::isDrawStencil() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 832)) & 16) >> 4);
 }
 
-void uGUI::setStencilRef(u8 v) {
-    mStencilRef = v;
-}
+static auto ddon_emit_0x01b61b60 __attribute__((used)) = &uGUI::setStencilRef;
 
 u8 uGUI::getStencilRef() const {
     return static_cast<u8>(mStencilRef);
 }
 
-void uGUI::setPriority(u32 prio) {
-    if ((mAttr & 0x100000u) == 0) {
-        mPriority = (prio <= 0xFFFFFu) ? prio : 0xFFFFFu;
-    } else {
-        mPriority = prio;
-    }
-}
+static auto ddon_emit_0x01b61af0 __attribute__((used)) = &uGUI::setPriority;
 
-u32 uGUI::getPriority() const {
-    return mPriority;
-}
+static auto ddon_emit_0x01b61ae0 __attribute__((used)) = &uGUI::getPriority;
 
-void uGUI::setScreenLayer(u32 layer) {
-    mScreenLayer = (layer <= 127u) ? layer : 127u;
-}
+static auto ddon_emit_0x01b61b20 __attribute__((used)) = &uGUI::setScreenLayer;
 
-u32 uGUI::getScreenLayer() const {
-    return mScreenLayer;
-}
+static auto ddon_emit_0x01b61b10 __attribute__((used)) = &uGUI::getScreenLayer;
 
 cGUIVariable* uGUI::getVariable(u32 id) const {
     if (mVariableArray.mLength != 0) {

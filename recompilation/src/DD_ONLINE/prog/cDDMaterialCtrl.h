@@ -2473,6 +2473,54 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cDDMaterialCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cDDMaterialCtrl::getBaseShaderMode() const {
+    return this->mBaseShaderMode;
+}
+
+inline u32 cDDMaterialCtrl::getShaderMode() const {
+    return this->mShaderMode;
+}
+
+inline u32 cDDMaterialCtrl::getEmissionMode() const {
+    return this->mEmissionMode;
+}
+
+inline u32 cDDMaterialCtrl::getOutlineMode() const {
+    return this->mOutlineMode;
+}
+
+inline u32 cDDMaterialCtrl::getMaterialMode() const {
+    return this->mMaterialMode;
+}
+
+inline u32 cDDMaterialCtrl::getBaseShaderDataNum() {
+    return this->mBaseShaderData.::MtArray::mLength;
+}
+
+inline u32 cDDMaterialCtrl::getShaderDataNum() {
+    return this->mShaderData.::MtArray::mLength;
+}
+
+inline u32 cDDMaterialCtrl::getEmissionDataNum() {
+    return this->mEmissionData.::MtArray::mLength;
+}
+
+inline u32 cDDMaterialCtrl::getOutlineDataNum() {
+    return this->mOutlineData.::MtArray::mLength;
+}
+
+inline u32 cDDMaterialCtrl::getMaterialDataNum() {
+    return this->mMaterialData.::MtArray::mLength;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataDamage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline f32 cDDMaterialCtrl::cShaderDataDamage::getAlphaClipThreshold() {
     return this->mAlphaClipThreshold;
 }
@@ -2485,8 +2533,24 @@ inline f32 cDDMaterialCtrl::cShaderDataDamage::getBlendAlphaBand() {
     return this->mBlendAlphaBand;
 }
 
+inline void cDDMaterialCtrl::cShaderDataDamage::setAlphaClipThreshold(f32 set) {
+    this->mAlphaClipThreshold = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataDamage::setBlendAlphaThreshold(f32 set) {
+    this->mBlendAlphaThreshold = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataDamage::setBlendAlphaBand(f32 set) {
+    this->mBlendAlphaBand = set;
+}
+
 inline void cDDMaterialCtrl::cShaderDataDamage::setAlbedoBlendRate(f32 set) {
     this->mAlbedoBlendRate = set;
+}
+
+inline void* cDDMaterialCtrl::cShaderData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cDDMaterialCtrl::cShaderData::cShaderData() {
@@ -2502,6 +2566,10 @@ inline uBaseModel* cDDMaterialCtrl::cShaderData::getOwner() {
 
 inline bool cDDMaterialCtrl::cShaderData::getCacheFlag() {
     return this->mIsCacheNone;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataStatusAilments::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline f32 cDDMaterialCtrl::cShaderDataStatusAilments::getApplicateA() {
@@ -2520,8 +2588,80 @@ inline f32 cDDMaterialCtrl::cShaderDataStatusAilments::getResetFactorS() {
     return this->mResetFactorS;
 }
 
+inline void cDDMaterialCtrl::cShaderDataStatusAilments::setFactorS(f32 set) {
+    this->mFactorS = set;
+}
+
 inline sEffectExt::cStatusAilmentsTexture* cDDMaterialCtrl::cShaderDataStatusAilments::getStatusAilmentsTexture() {
     return this->mpTexture;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataOutline::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cDDMaterialCtrl::cShaderDataOutline::getBlendType() {
+    return this->mBlendType;
+}
+
+inline u32 cDDMaterialCtrl::cShaderDataOutline::getColorType() {
+    return this->mColorType;
+}
+
+inline MtVector4 cDDMaterialCtrl::cShaderDataOutline::getOColor() {
+    return this->mOColor;
+}
+
+inline MtVector4 cDDMaterialCtrl::cShaderDataOutline::getIColor() {
+    return this->mIColor;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataOutline::getBalanceOffset() {
+    return this->mBalanceOffset;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataOutline::getBalanceScale() {
+    return this->mBalanceScale;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataOutline::getBalance() {
+    return this->mBalance;
+}
+
+inline void cDDMaterialCtrl::cShaderDataOutline::setBlendType(u32 set) {
+    this->mBlendType = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataOutline::setColorType(u32 set) {
+    this->mColorType = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataOutline::setBalanceOffset(f32 set) {
+    this->mBalanceOffset = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataOutline::setBalanceScale(f32 set) {
+    this->mBalanceScale = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataOutline::setBalance(f32 set) {
+    this->mBalance = set;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataEmission::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterial::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataAnimation::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataAnimation::cAnimData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cDDMaterialCtrl::cShaderDataAnimation::cAnimData::cAnimData() {
@@ -2529,4 +2669,370 @@ inline cDDMaterialCtrl::cShaderDataAnimation::cAnimData::cAnimData() {
     this->mCostFrame = 60.0f;
     this->mStartFrame = 0.0f;
     this->mMaterialId = 0;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataAnimationToDefault::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialOldData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataDamageDrawOn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataDead::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataBloodStain::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataHakuryuStone::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataFireDamage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataFire::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataFreeze::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataGeneral::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataWetOil::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataStone::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataGold::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataErosion::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataOutlineOn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataEmissionEye::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialColor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialDead::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantFire::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchant::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantIce::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantDark::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataWaterColor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataConstantMaterialColor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataSdl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline bool cDDMaterialCtrl::cShaderDataSdl::getTargetMaterialAll() {
+    return this->mTargetMaterialAll;
+}
+
+inline bool cDDMaterialCtrl::cShaderDataSdl::getTargetChildAll() {
+    return this->mTargetChildAll;
+}
+
+inline bool cDDMaterialCtrl::cShaderDataSdl::getUVTransformEnable() {
+    return this->mUVTransformEnable;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdl::setTargetMaterialAll(bool set) {
+    this->mTargetMaterialAll = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdl::setTargetChildAll(bool set) {
+    this->mTargetChildAll = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdl::setUVTransformEnable(bool set) {
+    this->mUVTransformEnable = set;
+}
+
+inline u32 cDDMaterialCtrl::cShaderDataSdl::getSdlDataNum() {
+    return this->mSdlData.::MtArray::mLength;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataSdlData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cDDMaterialCtrl::cShaderDataSdlData::getTargetMaterialId() {
+    return this->mTargetMaterialId;
+}
+
+inline MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm0Offset() {
+    return this->mUVTransForm0Offset;
+}
+
+inline MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm1Offset() {
+    return this->mUVTransForm1Offset;
+}
+
+inline MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm2Offset() {
+    return this->mUVTransForm2Offset;
+}
+
+inline MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm0Scale() {
+    return this->mUVTransForm0Scale;
+}
+
+inline MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm1Scale() {
+    return this->mUVTransForm1Scale;
+}
+
+inline MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm2Scale() {
+    return this->mUVTransForm2Scale;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getDetailNormalUVScale() {
+    return this->mDetailNormalUVScale;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getDetailNormalPower() {
+    return this->mDetailNormalPower;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getTransparency() {
+    return this->mTransparency;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getShininess() {
+    return this->mShininess;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getBAlphaClipThreshold() {
+    return this->mBAlphaClipThreshold;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getBBlendAlphaBand() {
+    return this->mBBlendAlphaBand;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getBBlendAlphaThreshold() {
+    return this->mBBlendAlphaThreshold;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getBAlbedoBlendRate() {
+    return this->mBAlbedoBlendRate;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getEmissionFactor() {
+    return this->mBEmissionFactor;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispStart() {
+    return this->mVtxDispStart;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispScale() {
+    return this->mVtxDispScale;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispStart2() {
+    return this->mVtxDispStart2;
+}
+
+inline f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispScale2() {
+    return this->mVtxDispScale2;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setTargetMaterialId(u32 set) {
+    this->mTargetMaterialId = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm0Offset(MtVector2& set) {
+    this->mUVTransForm0Offset.x = set.x;
+    this->mUVTransForm0Offset.y = set.y;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm1Offset(MtVector2& set) {
+    this->mUVTransForm1Offset.x = set.x;
+    this->mUVTransForm1Offset.y = set.y;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm2Offset(MtVector2& set) {
+    this->mUVTransForm2Offset.x = set.x;
+    this->mUVTransForm2Offset.y = set.y;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm0Scale(MtVector2& set) {
+    this->mUVTransForm0Scale.x = set.x;
+    this->mUVTransForm0Scale.y = set.y;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm1Scale(MtVector2& set) {
+    this->mUVTransForm1Scale.x = set.x;
+    this->mUVTransForm1Scale.y = set.y;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm2Scale(MtVector2& set) {
+    this->mUVTransForm2Scale.x = set.x;
+    this->mUVTransForm2Scale.y = set.y;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setDetailNormalUVScale(f32 set) {
+    this->mDetailNormalUVScale = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setDetailNormalPower(f32 set) {
+    this->mDetailNormalPower = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setTransparency(f32 set) {
+    this->mTransparency = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setShininess(f32 set) {
+    this->mShininess = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setBAlphaClipThreshold(f32 set) {
+    this->mBAlphaClipThreshold = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setBBlendAlphaBand(f32 set) {
+    this->mBBlendAlphaBand = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setBBlendAlphaThreshold(f32 set) {
+    this->mBBlendAlphaThreshold = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setBAlbedoBlendRate(f32 set) {
+    this->mBAlbedoBlendRate = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setEmissionFactor(f32 set) {
+    this->mBEmissionFactor = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispStart(f32 set) {
+    this->mVtxDispStart = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispScale(f32 set) {
+    this->mVtxDispScale = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispStart2(f32 set) {
+    this->mVtxDispStart2 = set;
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispScale2(f32 set) {
+    this->mVtxDispScale2 = set;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialElementEnemy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialOmBlink::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

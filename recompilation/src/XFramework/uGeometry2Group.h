@@ -104,3 +104,7 @@ public:
     static MyDTI DTI;
     static const u32 MULTI_THREAD_GROUP_NUM_MIN = 10;
 };
+
+inline void* uGeometry2Group::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -158,5 +158,9 @@ public:
     static const u32 ctgry_max = 10;
 };
 
+inline void* uGUIPopEventTop::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIPopEventTop::ctgryList::ctgryList() {
 }

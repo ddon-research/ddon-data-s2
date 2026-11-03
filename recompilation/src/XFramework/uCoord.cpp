@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtPropertyList.h"
 #include "cUnit.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -49,9 +50,7 @@ void uCoord::setParent(uCoord* pparent, s32 parent_no) {
     mParentNo = parent_no;
 }
 
-uCoord* uCoord::getParent() {
-    return mpParent;
-}
+static auto ddon_emit_0x01b659d0 __attribute__((used)) = &uCoord::getParent;
 
 __attribute__((weak)) void uCoord::setAngle(const MtVector3& agl) {
     DDON_STUB("uCoord::setAngle")
@@ -87,21 +86,13 @@ const MtMatrix& uCoord::getWorldMatrix(s32 parent_no) const {
     return mWmat;
 }
 
-void uCoord::setOrder(u32 order) {
-    mOrder = order;
-}
+static auto ddon_emit_0x01b5e630 __attribute__((used)) = &uCoord::setOrder;
 
-u32 uCoord::getOrder() {
-    return mOrder;
-}
+static auto ddon_emit_0x01b5e620 __attribute__((used)) = &uCoord::getOrder;
 
-void uCoord::setParentFlags(u32 flags) {
-    mParentFlags = flags;
-}
+static auto ddon_emit_0x01b5e610 __attribute__((used)) = &uCoord::setParentFlags;
 
-u32 uCoord::getParentFlags() {
-    return mParentFlags;
-}
+static auto ddon_emit_0x01b5e600 __attribute__((used)) = &uCoord::getParentFlags;
 
 uCoord::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

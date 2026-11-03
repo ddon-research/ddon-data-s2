@@ -119,10 +119,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cLargeCameraParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cLargeCameraParam::cLargeCameraParam() {
     this->mEmId = 0;
     this->mRange1 = 1000.0f;
     this->mRange2 = 1300.0f;
     this->mCamera = 0;
     this->mGroup = false;
+}
+
+inline void* rLargeCameraParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cLargeCameraParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cLargeCameraParam::DTI)->memFree(p_addr);
+}
+
+inline void* cLargeCameraParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cLargeCameraParam::DTI)->memAlloc(sz, align, ::cLargeCameraParam::DTI.::MtDTI::getID());
 }

@@ -108,3 +108,11 @@ public:
     static const u32 SEQ_CTRL_PAGE_NO = 2;
     static const u32 SEQ_CTRL_SEQ_NO_FLAG = 58720256;
 };
+
+inline void* cpVibration::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void cpVibration::setOwnerModel(uBaseModel* pModel) {
+    this->mpOwnerModel = pModel;
+}

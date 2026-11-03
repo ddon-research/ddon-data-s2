@@ -8942,22 +8942,66 @@ public:
     static const u32 DISP_LIST_MAX = 5;
 };
 
+inline void* cMenuActiveList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuActiveList::cMenuActiveList() {
+}
+
+inline void* cMenuApplyFriend::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuApproveFriend::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuAreaMaster::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuAreaMasterHistory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuAreaMasterHistory::cMenuAreaMasterHistory() {
 }
 
+inline void* cMenuAreaMasterQuestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuAreaMasterQuestInfo::cMenuAreaMasterQuestInfo() {
+}
+
+inline void* cMenuAreaMasterRankUp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuAreaMasterSpotInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuAreaMasterSpotInfo::cMenuAreaMasterSpotInfo() {
 }
 
+inline void* cMenuAreaMasterSupplies::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuAreaMasterSupplies::cMenuAreaMasterSupplies() {
 }
 
+inline void* cMenuBaggageMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuBaggageMenu::cMenuBaggageMenu() {
+}
+
+inline void* cMenuBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void cMenuBase::setMenuList(s32* pMenuList) {
@@ -8968,30 +9012,74 @@ inline bool cMenuBase::getNowMove() {
     return this->mNowMoveFlag;
 }
 
+inline void* cMenuBazaarBuy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuBazaarBuy::cMenuBazaarBuy() {
+}
+
+inline void* cMenuBazaarMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuBazaarMenu::cMenuBazaarMenu() {
 }
 
+inline void* cMenuBlackList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuBlackList::cMenuBlackList() {
+}
+
+inline void* cMenuBreakupParty::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuBreakupParty::cMenuBreakupParty() {
 }
 
+inline void* cMenuCancelFriend::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuCancelFriend::cMenuCancelFriend() {
+}
+
+inline void* cMenuChangeServer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuChangeServer::cMenuChangeServer() {
 }
 
+inline void* cMenuCharacterList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuCharacterList::cMenuCharacterList() {
+}
+
+inline void* cMenuCraftColorFrame::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuCraftColorFrame::cMenuCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuCraftColorItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuCraftColorItem::cMenuCraftColorItem() {
     this->mKickPartyCtr = 0;
     this->mIsEffect = false;
+}
+
+inline void* cMenuCraftCreateItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuCraftCreateItem::cMenuCraftCreateItem() {
@@ -9001,10 +9089,26 @@ inline cMenuCraftCreateItem::cMenuCraftCreateItem() {
     this->mErrorState = 0;
 }
 
+inline void* cMenuCraftElementFrame::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuCraftElementFrame::cMenuCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuCraftElementItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuCraftElementItem::cMenuCraftElementItem() {
     this->mType = 0;
     this->mSlotNo = 0;
     this->mKickPartyCtr = 0;
+}
+
+inline void* cMenuCraftGoldStoneDialog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuCraftGoldStoneDialog::cMenuCraftGoldStoneDialog() {
@@ -9012,11 +9116,19 @@ inline cMenuCraftGoldStoneDialog::cMenuCraftGoldStoneDialog() {
     this->mMoveLine = static_cast<MOVE_LINE>(64);
 }
 
+inline void* cMenuCraftItemSelect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuCraftItemSelect::cMenuCraftItemSelect() {
     this->mReqType = static_cast<rItemList::MATERIAL_CATEGORY>(0);
     this->mItemId = 0;
     this->mListType = 0;
     this->mSlotNo = 0;
+}
+
+inline void* cMenuCraftMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuCraftMenu::cMenuCraftMenu() {
@@ -9028,9 +9140,17 @@ inline cMenuCraftMenu::cMenuCraftMenu() {
     this->mNextMoveLine = static_cast<MOVE_LINE>(64);
 }
 
+inline void* cMenuCraftMyPawnList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuCraftMyPawnList::cMenuCraftMyPawnList() {
     this->mSaveSlot = 0;
     this->mListType = 0;
+}
+
+inline void* cMenuCraftPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuCraftPoint::cMenuCraftPoint() {
@@ -9038,17 +9158,41 @@ inline cMenuCraftPoint::cMenuCraftPoint() {
     this->mSkillReq = 0;
 }
 
+inline void* cMenuCraftProcessMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuCraftProcessMenu::cMenuCraftProcessMenu() {
     this->mPawnSlot = 0;
     this->mListType = 0;
+}
+
+inline void* cMenuCraftRecipeList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuCraftRecipeList::cMenuCraftRecipeList() {
     this->mCategory = static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(0);
 }
 
+inline void* cMenuCraftSupportFrame::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuCraftSupportFrame::cMenuCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuCraftSupportList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuCraftSupportList::cMenuCraftSupportList() {
     this->mSlotNo = 0;
+}
+
+inline void* cMenuCraftTask::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuCraftTask::cMenuCraftTask() {
@@ -9059,7 +9203,15 @@ inline cMenuCraftTask::cMenuCraftTask() {
     this->mMoveLine = static_cast<MOVE_LINE>(64);
 }
 
+inline void* cMenuCraftUpGradeItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuCraftUpGradeItem::cMenuCraftUpGradeItem() {
+}
+
+inline void* cMenuCraftUpGradeList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuCraftUpGradeList::cMenuCraftUpGradeList() {
@@ -9067,34 +9219,94 @@ inline cMenuCraftUpGradeList::cMenuCraftUpGradeList() {
     this->mIsEffect = false;
 }
 
+inline void* cMenuCreateGameSession::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuCreateGameSession::cMenuCreateGameSession() {
+}
+
+inline void* cMenuCustomize::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuDispStatus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuEditBlackList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuEditFavoritePawn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuEditFavoritePawn::cMenuEditFavoritePawn() {
 }
 
+inline void* cMenuEntryGameSession::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuEntryGameSession::cMenuEntryGameSession() {
+}
+
+inline void* cMenuFavoriteFriend::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuFirstOption::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuFirstOption::cMenuFirstOption() {
 }
 
+inline void* cMenuFriendList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuFriendList::cMenuFriendList() {
+}
+
+inline void* cMenuGetAreaMasterInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuGetAreaMasterInfo::cMenuGetAreaMasterInfo() {
 }
 
+inline void* cMenuGetBlackList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuGetBlackList::cMenuGetBlackList() {
+}
+
+inline void* cMenuGetCharacterName::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuGetCharacterName::cMenuGetCharacterName() {
 }
 
+inline void* cMenuGetCraftRecipeToServer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuGetCraftRecipeToServer::cMenuGetCraftRecipeToServer() {
 }
 
+inline void* cMenuGetFriendList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuGetFriendList::cMenuGetFriendList() {
+}
+
+inline void* cMenuGetItemBaggageListToServer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuGetItemBaggageListToServer::cMenuGetItemBaggageListToServer() {
@@ -9104,6 +9316,10 @@ inline cMenuGetItemBaggageListToServer::cMenuGetItemBaggageListToServer() {
     this->mServerResult = 0;
 }
 
+inline void* cMenuGetItemListToServer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuGetItemListToServer::cMenuGetItemListToServer() {
     this->mBagIdx = 0;
     this->mBagNum = 0;
@@ -9111,46 +9327,138 @@ inline cMenuGetItemListToServer::cMenuGetItemListToServer() {
     this->mStorageList.::MtArray::mAutoDelete = true;
 }
 
+inline void* cMenuGetMailList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuGetMailList::cMenuGetMailList() {
+}
+
+inline void* cMenuGetMatchingProfile::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuGetMatchingProfile::cMenuGetMatchingProfile() {
 }
 
+inline void* cMenuGetOrbGainExtendParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuGetOrbGainExtendParam::cMenuGetOrbGainExtendParam() {
+}
+
+inline void* cMenuGetPawnName::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuGetPawnName::cMenuGetPawnName() {
 }
 
+inline void* cMenuGetRecentList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuGetRecentList::cMenuGetRecentList() {
+}
+
+inline void* cMenuGroupChatMemberList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuGroupChatMemberList::cMenuGroupChatMemberList() {
 }
 
+inline void* cMenuInvite::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuInvite::cMenuInvite() {
+}
+
+inline void* cMenuInviteGroupChat::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuJoinGameSession::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuJoinGameSession::cMenuJoinGameSession() {
 }
 
+inline void* cMenuJoinPartyFlow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuJoinPartyFlow::cMenuJoinPartyFlow() {
+}
+
+inline void* cMenuKeyConfig::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuKeyConfigCopyCategory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuKeyConfigRenameCategory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuKeyConfigSubMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuKeyConfigSubMenu::cMenuKeyConfigSubMenu() {
 }
 
+inline void* cMenuKeyConfigSubMenuCategoryList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuKeyConfigSubMenuKeyList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuKeyJobLink::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuKickGroupChat::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuLeaveGroupChat::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuLeaveGroupChat::cMenuLeaveGroupChat() {
+}
+
+inline void* cMenuLeaveOnTheWay::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuLeaveOnTheWay::cMenuLeaveOnTheWay() {
 }
 
+inline void* cMenuLostPawnList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuLostPawnList::cMenuLostPawnList() {
 }
 
+inline void* cMenuLostPawnRevive::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuLostPawnRevive::cMenuLostPawnRevive() {
+}
+
+inline void* cMenuMail::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuMail::cMenuMail() {
@@ -9160,62 +9468,146 @@ inline u32 cMenuMail::getSortListCount() {
     return this->mSortListCount;
 }
 
+inline void* cMenuMailCreate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuMailDelete::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuMailDelete::cMenuMailDelete() {
+}
+
+inline void* cMenuMailDeleteMulti::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuMailDeleteMulti::cMenuMailDeleteMulti() {
 }
 
+inline void* cMenuMailDetail::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuMailDetail::cMenuMailDetail() {
+}
+
+inline void* cMenuMailGetItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuMailGetItem::cMenuMailGetItem() {
 }
 
+inline void* cMenuMailGetItemAll::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuMailGetItemAll::cMenuMailGetItemAll() {
+}
+
+inline void* cMenuMailToList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuMailToList::cMenuMailToList() {
 }
 
+inline void* cMenuMatchingProfile::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuMatchingProfile::cMenuMatchingProfile() {
 }
 
+inline void* cMenuMyPawnList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuMyPawnList::cMenuMyPawnList() {
+}
+
+inline void* cMenuOnlineShop::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuOnlineShop::cMenuOnlineShop() {
     this->mType = 0;
 }
 
+inline void* cMenuPartyList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuPartyList::cMenuPartyList() {
+}
+
+inline void* cMenuPartyListMemberInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuPartyListMemberInfo::cMenuPartyListMemberInfo() {
 }
 
+inline void* cMenuPartyManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuPartyManager::cMenuPartyManager() {
+}
+
+inline void* cMenuPartyMemberList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuPartyMemberList::cMenuPartyMemberList() {
 }
 
+inline void* cMenuPartyReq::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuPartyReq::cMenuPartyReq() {
+}
+
+inline void* cMenuPawnDelete::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuPawnDelete::cMenuPawnDelete() {
 }
 
+inline void* cMenuPawnFeedback::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuPawnFeedback::cMenuPawnFeedback() {
+}
+
+inline void* cMenuPawnHistory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuPawnHistory::cMenuPawnHistory() {
 }
 
+inline void* cMenuPawnManageMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuPawnManageMenu::cMenuPawnManageMenu() {
 }
 
+inline void* cMenuPawnManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuPawnManager::cMenuPawnManager() {
+}
+
+inline void* cMenuPawnPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuPawnPoint::cMenuPawnPoint() {
@@ -9223,86 +9615,210 @@ inline cMenuPawnPoint::cMenuPawnPoint() {
     this->mUseSupportPointVec.::MtArray::mAutoDelete = true;
 }
 
+inline void* cMenuPawnRental::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuPawnRental::cMenuPawnRental() {
+}
+
+inline void* cMenuPawnReqList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuPawnReqList::cMenuPawnReqList() {
 }
 
+inline void* cMenuPawnReqMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuPawnReqMenu::cMenuPawnReqMenu() {
+}
+
+inline void* cMenuPawnReturn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuPawnReturn::cMenuPawnReturn() {
 }
 
+inline void* cMenuPawnRevive::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuPawnRevive::cMenuPawnRevive() {
+}
+
+inline void* cMenuPawnSearch::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuPawnSetPartner::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuPawnSetPartner::cMenuPawnSetPartner() {
 }
 
+inline void* cMenuPawnShareRange::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuPawnShareRange::cMenuPawnShareRange() {
+}
+
+inline void* cMenuPlDeadMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuPlDeadMenu::cMenuPlDeadMenu() {
 }
 
+inline void* cMenuQuickMatch::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuQuickMatch::cMenuQuickMatch() {
+}
+
+inline void* cMenuQuickMatchCancel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuQuickMatchCancel::cMenuQuickMatchCancel() {
 }
 
+inline void* cMenuQuickMatchRetry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuQuickMatchRetry::cMenuQuickMatchRetry() {
+}
+
+inline void* cMenuQuickMatchSelect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuQuickMatchSelect::cMenuQuickMatchSelect() {
 }
 
+inline void* cMenuReadyCheck::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuReadyCheck::cMenuReadyCheck() {
+}
+
+inline void* cMenuRecentList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuRecentList::cMenuRecentList() {
 }
 
+inline void* cMenuRemoveFriend::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuRentalPawnList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuRentalPawnList::cMenuRentalPawnList() {
+}
+
+inline void* cMenuResetCraftPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuResetCraftPoint::cMenuResetCraftPoint() {
 }
 
+inline void* cMenuSearchFilter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuSearchFilter::cMenuSearchFilter() {
+}
+
+inline void* cMenuServerList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuServerList::cMenuServerList() {
 }
 
+inline void* cMenuSetJob::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuSetJob::cMenuSetJob() {
+}
+
+inline void* cMenuSetLevel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuSetLevel::cMenuSetLevel() {
 }
 
+inline void* cMenuSetLimitPreset::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuSetLimitPreset::cMenuSetLimitPreset() {
 }
 
+inline void* cMenuSimplePartyReq::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuSimplePartyReq::cMenuSimplePartyReq() {
+}
+
+inline void* cMenuStartGameSession::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuStartGameSession::cMenuStartGameSession() {
     this->mStartType = 0;
 }
 
+inline void* cMenuSubMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuTraining::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuTraining::cMenuTraining() {
+}
+
+inline void* cMenuTreasuresLot::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuTreasuresLot::cMenuTreasuresLot() {
 }
 
+inline void* cMenuTreasuresLotAnnounce::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuTreasuresLotAnnounce::cMenuTreasuresLotAnnounce() {
 }
 
+inline void* cMenuUILargeSetting::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuUILargeSetting::cMenuUILargeSetting() {
+}
+
+inline void* cMenuUpdateCommunityList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuUpdateCommunityList::cMenuUpdateCommunityList() {

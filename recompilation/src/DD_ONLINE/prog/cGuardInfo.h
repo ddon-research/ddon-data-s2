@@ -78,3 +78,7 @@ public:
     f32 mPawnAdjStaminaDamage;  // offset: 0x60
     static MyDTI DTI;
 };
+
+inline void* cGuardInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

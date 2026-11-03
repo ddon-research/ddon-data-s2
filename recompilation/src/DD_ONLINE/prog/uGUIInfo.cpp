@@ -2,18 +2,31 @@
 #include <new>
 #include "uGUIInfo.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "cControl.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
+#include "cNetGameServer.h"
+#include "cNetSessionManager.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "sCaplinkManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sGame.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #include "sQuestManagerExt.h"
+#include "sTutorialGuide.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
@@ -226,7 +239,7 @@ void uGUIInfo::setupListItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase:
     cListItem* pItem = static_cast<cListItem*>(pItemBase);
     setInstanceVisible(static_cast<cGUIInstance*>(pItem->mpInstNull), true);
     if (pItem->mpInstNull != nullptr) {
-        pItem->mpInstNull->cGUIInstNull::setPositionY(mList.mListBasePos + static_cast<float>(index * mList.mListDist));
+        pItem->mpInstNull->setPositionY(mList.mListBasePos + static_cast<float>(index * mList.mListDist));
         cListInfo* pInfo = static_cast<cListInfo*>(pInfoBase);
         setupListMessage(pItem->mpObjMsg, pInfo->mFlag, pInfo->mID);
     } else {

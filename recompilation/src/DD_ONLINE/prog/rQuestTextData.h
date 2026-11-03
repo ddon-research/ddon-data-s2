@@ -103,6 +103,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rQuestTextData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rQuestTextData::cTextData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rQuestTextData::cTextData::cTextData() {
     this->mType = 0;
     this->mMsgGmdIdx = 0;

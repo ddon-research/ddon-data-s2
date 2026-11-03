@@ -83,6 +83,10 @@ protected:
     static const u16 DATA_VERSION = 67;
 };
 
+inline void* rMotionList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rMotionList::rMotionList() {
     this->::cResource::mAttr = 16;
     this->mpHdr = nullptr;

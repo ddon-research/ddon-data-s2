@@ -103,3 +103,23 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cShotReqInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rShotReqInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cShotReqInfo::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShotReqInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cShotReqInfo::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShotReqInfo::DTI)->memAlloc(sz, align, ::cShotReqInfo::DTI.::MtDTI::getID());
+}

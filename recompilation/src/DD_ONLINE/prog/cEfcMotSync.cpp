@@ -3,8 +3,14 @@
 #include "cEfcMotSync.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cpMotionHistory.h"
+#include "rEffectProvider.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

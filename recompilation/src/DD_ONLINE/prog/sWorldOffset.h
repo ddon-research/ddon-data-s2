@@ -108,6 +108,10 @@ private:
     static sWorldOffset* mpInstance;
 };
 
+inline void* sWorldOffset::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 sWorldOffset::getX() {
     return this->mIdX;
 }

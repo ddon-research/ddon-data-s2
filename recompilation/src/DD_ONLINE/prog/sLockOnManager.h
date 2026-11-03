@@ -83,6 +83,10 @@ public:
     static sLockOnManager* mpInstance;
 };
 
+inline void* sLockOnManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sLockOnManager* sLockOnManager::getInstance() {
     return ::sLockOnManager::mpInstance;
 }

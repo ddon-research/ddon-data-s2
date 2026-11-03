@@ -921,6 +921,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cSetInfoOmBadStatus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cSetInfoOmCtrl::cLinkParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSetInfoOmCtrl::cLinkParam::cLinkParam() {
     this->mKind = 0;
     this->mGroup = 0;
@@ -928,4 +936,48 @@ inline cSetInfoOmCtrl::cLinkParam::cLinkParam() {
     this->mTransition = 0;
     this->mState = 0;
     this->mCamEvNo = -1;
+}
+
+inline u32 cSetInfoOmWarp::getStageNo(u32 idx) {
+    return this->mStageNo[idx];
+}
+
+inline void cSetInfoOmWarp::setStageNo(u32 val, u32 idx) {
+    this->mStageNo[idx] = val;
+}
+
+inline u32 cSetInfoOmWarp::getStartPosNo(u32 idx) {
+    return this->mStartPosNo[idx];
+}
+
+inline void cSetInfoOmWarp::setStartPosNo(u32 val, u32 idx) {
+    this->mStartPosNo[idx] = val;
+}
+
+inline u32 cSetInfoOmWarp::getQuestNo(u32 idx) {
+    return this->mQuestNo[idx];
+}
+
+inline void cSetInfoOmWarp::setQuestNo(u32 val, u32 idx) {
+    this->mQuestNo[idx] = val;
+}
+
+inline u32 cSetInfoOmWarp::getFlagNo(u32 idx) {
+    return this->mFlagNo[idx];
+}
+
+inline void cSetInfoOmWarp::setFlagNo(u32 val, u32 idx) {
+    this->mFlagNo[idx] = val;
+}
+
+inline u32 cSetInfoOmWarp::getSpotId(u32 idx) {
+    return this->mSpotId[idx];
+}
+
+inline void cSetInfoOmWarp::setSpotId(u32 val, u32 idx) {
+    this->mSpotId[idx] = val;
+}
+
+inline u32 cSetInfoOmWarp::getDataNum() {
+    return 3;
 }

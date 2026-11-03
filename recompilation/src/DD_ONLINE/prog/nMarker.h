@@ -282,9 +282,33 @@ namespace nMarker {
     };
 }  // namespace nMarker
 
+inline void* nMarker::cMarkerInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nMarker::cMarkerInfo::cVector3::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nMarker::cMarkerInfo::cCtrlFlag::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nMarker::cMarkerInfo::cCtrlFlag::cCtrlFlag() {
     this->mQuestId = 0;
     this->mFlagNo = 0;
+}
+
+inline void* nMarker::cWarpMarkerInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nMarker::cWarpMarkerInfoStage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nMarker::cWarpMarkerInfoStage::cTargetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nMarker::cWarpMarkerInfoStage::cTargetInfo::cTargetInfo() {

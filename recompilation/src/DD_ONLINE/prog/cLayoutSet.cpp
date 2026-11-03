@@ -12,9 +12,17 @@
 #include "../../XFramework/cResource.h"
 #include "cSetInfo.h"
 #include "cSetInfoCoord.h"
+#include "../../XFramework/cUnit.h"
+#include "nDDOUtility.h"
 #include "nLayout.h"
 #include "rLayout.h"
+#include "rLayoutGroupParam.h"
+#include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sFlag.h"
+#include "sGame.h"
+#include "sSetManager.h"
 #include "uDDOModel.h"
 #include "uStageField.h"
 #include "uStageJoint.h"
@@ -33,8 +41,7 @@ cLayoutSet::cLayoutSet() {
 }
 
 cLayoutSet::~cLayoutSet() {
-    DDON_STUB("cLayoutSet::~cLayoutSet")
-    /* stub */
+    kill();
 }
 
 __attribute__((weak)) void cLayoutSet::init(MT_CTSTR path, bool isBlocking) {
@@ -47,7 +54,7 @@ __attribute__((weak)) void cLayoutSet::update() {
     /* stub */
 }
 
-void cLayoutSet::kill() {
+__attribute__((weak)) void cLayoutSet::kill() {
     finish();
     if (isUseUnitData()) {
         if (mUnitDataArray.mLength != 0) {
@@ -110,7 +117,7 @@ MtObject* cLayoutSet::getUnit(u32 id) {
         do {
             uDDOModel* pCB = static_cast<uDDOModel*>(mUnitArray.mpArray[i]);
             if (pCB != nullptr) {
-                if (id == static_cast<unsigned int>(pCB->uDDOModel::getSetNo())) {
+                if (id == static_cast<unsigned int>(pCB->getSetNo())) {
                     return pCB;
                 }
             }
@@ -154,13 +161,13 @@ bool cLayoutSet::isUpdateArea() {
     s32 old_area = mAreaNo;
     uStageJointCtrl* pjnt = static_cast<aStage*>(sArea::getInstance()->mpArea[2])->getStageJointCtrl();
     if (pjnt != nullptr) {
-        s32 t0 = pjnt->uStageJointCtrl::getPlayerCurrentAreaNo();
+        s32 t0 = pjnt->getPlayerCurrentAreaNo();
         mAreaNo = t0;
         return old_area != t0;
     } else {
         uStagePartsCtrl* ppts = static_cast<aStage*>(sArea::getInstance()->mpArea[2])->getStagePartsCtrl();
         if (ppts != nullptr) {
-            s32 t1 = ppts->uStagePartsCtrl::getNowZ();
+            s32 t1 = ppts->getNowZ();
             mAreaNo = t1;
             return old_area != t1;
         } else {

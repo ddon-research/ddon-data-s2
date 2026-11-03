@@ -8,9 +8,9 @@
 #include "MtNetBuffer.h"
 #include "MtNetObject.h"
 #include "MtNetRequest.h"
-#include "../generated/rCharacterEditCameraParam/_rtc.h"
+#include "../generated/shared/_rtc.h"
 #include "../generated/shared/np_npid.h"
-#include "../generated/rCharacterEditCameraParam/np_ranking.h"
+#include "../generated/shared/np_ranking.h"
 
 // Forward declarations
 class MtAllocator;
@@ -322,5 +322,13 @@ private:
     static const s32 MAX_NUM_REGISTER_INFO = 6;
 };
 
+inline void* MtNetRanking::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline MtNetRanking::Listener::Listener() {
+}
+
+inline void* MtNetRanking::Score::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

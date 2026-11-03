@@ -87,6 +87,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rNpcEditData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rNpcEditData::rNpcEditData() : mEquip() {
     this->::cResource::mAttr = 18;
     this->mItem = 0;

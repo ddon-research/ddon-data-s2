@@ -4,12 +4,16 @@
 #include "rGUIFont.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDataReader.h"
 #include "../MT/MtDataWriter.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPropertyList.h"
+#include "../MT/MtString.h"
 #include "cResource.h"
 #include "nDrawTexture.h"
 #include "rTexture.h"
+#include "sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -46,11 +50,11 @@ bool rGUIFont::save(MtStream& out) {
     w.MtDataWriter::writeF32(mMaxDescent);
     w.MtDataWriter::write(static_cast<const void*>(mpDescent), mDescentNum * 4u);
     w.MtDataWriter::writeU32(static_cast<unsigned int>(strlen(mpTexturePath)));
-    w.MtDataWriter::writeString(mpTexturePath);
+    w.writeString(mpTexturePath);
     w.MtDataWriter::write(static_cast<const void*>(mpChar), mCharNum * 16u);
     if ((mAttr & 1u) != 0) {
         w.MtDataWriter::writeU32(mDynamicTextureNum);
-        w.MtDataWriter::writeU32((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 112)) >> 28);
+        w.MtDataWriter::writeU32(mDynamicTextureSize);
         w.MtDataWriter::writeU32(static_cast<u32>(mDynamicTextureFormat));
         w.MtDataWriter::writeU32(mDynamicTextureMisc);
         w.MtDataWriter::write(static_cast<const void*>(mpSourceChar), mCharNum * 12u);
@@ -76,9 +80,7 @@ MT_CTSTR rGUIFont::getExt() const {
     return "gfd";
 }
 
-u32 rGUIFont::getSuffix() const {
-    return mSuffix;
-}
+static auto ddon_emit_0x01b9e1f0 __attribute__((used)) = &rGUIFont::getSuffix;
 
 bool rGUIFont::isDynamic() const {
     return static_cast<bool>(mAttr & 1u);
@@ -88,17 +90,11 @@ bool rGUIFont::isLayoutEvenIntervals() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 244)) & 2) >> 1);
 }
 
-u32 rGUIFont::getFontType() const {
-    return mFontType;
-}
+static auto ddon_emit_0x01b9e260 __attribute__((used)) = &rGUIFont::getFontType;
 
-u32 rGUIFont::getFontSize() const {
-    return mFontSize;
-}
+static auto ddon_emit_0x01b9e280 __attribute__((used)) = &rGUIFont::getFontSize;
 
-u32 rGUIFont::getTextureNum() const {
-    return mTextureNum;
-}
+static auto ddon_emit_0x01b9e2b0 __attribute__((used)) = &rGUIFont::getTextureNum;
 
 nDraw::Texture* rGUIFont::getTexture(u32 index) const {
     if ((mAttr & 1u) != 0) {
@@ -113,13 +109,9 @@ nDraw::Texture* rGUIFont::getTexture(u32 index) const {
     return nullptr;
 }
 
-f32 rGUIFont::getMaxAscent() const {
-    return mMaxAscent;
-}
+static auto ddon_emit_0x01b9e1d0 __attribute__((used)) = &rGUIFont::getMaxAscent;
 
-f32 rGUIFont::getMaxDescent() const {
-    return mMaxDescent;
-}
+static auto ddon_emit_0x01b9e1e0 __attribute__((used)) = &rGUIFont::getMaxDescent;
 
 __attribute__((weak)) const rGUIFont::CHAR* rGUIFont::searchChar(u32 code) const {
     DDON_STUB("rGUIFont::searchChar")
@@ -166,13 +158,9 @@ void rGUIFont::setMaxDescent(f32 v) {
     mMaxDescent = v;
 }
 
-u32 rGUIFont::getDynamicTextureNum() const {
-    return mDynamicTextureNum;
-}
+static auto ddon_emit_0x01b9e2f0 __attribute__((used)) = &rGUIFont::getDynamicTextureNum;
 
-u32 rGUIFont::getDynamicTextureSize() const {
-    return mDynamicTextureSize;
-}
+static auto ddon_emit_0x01b9e320 __attribute__((used)) = &rGUIFont::getDynamicTextureSize;
 
 __attribute__((weak)) bool rGUIFont::executeLayoutChar() {
     DDON_STUB("rGUIFont::executeLayoutChar")

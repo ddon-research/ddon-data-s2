@@ -185,10 +185,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uEffect2DExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEfcHandle* uEffect2DExt::getEfcHandle() {
     return this->mpHandle;
 }
 
 inline bool uEffect2DExt::getWorkRateMode() {
     return this->mWorkRateMode;
+}
+
+inline f32 uEffect2DExt::getDeltaTimeCoefEx() {
+    return this->mDeltaTimeCoefEx;
+}
+
+inline void uEffect2DExt::setDeltaTimeCoefEx(f32 DeltaTimeCoef) {
+    this->mDeltaTimeCoefEx = DeltaTimeCoef;
+}
+
+inline void uEffect2DExt::setColorUpdateFlag(bool flag) {
+    this->mColorUpdate = flag;
+}
+
+inline bool uEffect2DExt::getColorUpdateFlag() {
+    return this->mColorUpdate;
 }

@@ -4,9 +4,12 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -24,7 +27,7 @@ inline void cAbilityData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAbilityData::DTI)->memFree(p_addr);
 }
 
-cAbilityData::~cAbilityData() {
+__attribute__((noinline)) cAbilityData::~cAbilityData() {
     if (mParamArray.mAutoDelete) {
         if (mParamArray.mLength != 0) {
             u32 v0_0 = mParamArray.mLength;
@@ -147,7 +150,7 @@ inline void cAbilityParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAbilityParam::DTI)->memFree(p_addr);
 }
 
-cAbilityParam::~cAbilityParam() {
+__attribute__((noinline)) cAbilityParam::~cAbilityParam() {
     if (mParamDataArray.mAutoDelete) {
         if (mParamDataArray.mLength != 0) {
             u32 v0_0 = mParamDataArray.mLength;
@@ -287,7 +290,7 @@ inline rAbilityList::rAbilityList() {
     mDataList.mAutoDelete = true;
 }
 
-rAbilityList::~rAbilityList() {
+__attribute__((noinline)) rAbilityList::~rAbilityList() {
     if (mDataList.mAutoDelete) {
         if (mDataList.mLength != 0) {
             u32 v0_0 = mDataList.mLength;

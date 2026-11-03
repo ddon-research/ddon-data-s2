@@ -4,6 +4,7 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtCollision.h"
+#include "../MT/MtCollisionGjk.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
 #include "../MT/MtDataWriter.h"
@@ -12,13 +13,715 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
 #include "cDynamicBVHCollision.h"
+#include "cZoneContents.h"
+#include "cZoneExtendObject.h"
 #include "cZoneLayout.h"
 #include "rZone.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+const MtDTI& nZone::ShapeInfoAABB::getDTI() const {
+    return nZone::ShapeInfoAABB::DTI;
+}
+
+void* nZone::ShapeInfoAABB::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoAABB::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoAABB::DTI.mID);
+}
+
+void* nZone::ShapeInfoAABB::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+nZone::ShapeInfoAABB::ShapeInfoAABB() {
+    DDON_STUB("nZone::ShapeInfoAABB::ShapeInfoAABB")
+    /* stub */
+}
+
+nZone::ShapeInfoAABB::~ShapeInfoAABB() {
+    DDON_STUB("nZone::ShapeInfoAABB::~ShapeInfoAABB")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoAABB::createProperty(MtPropertyList& s) {
+    DDON_STUB("nZone::ShapeInfoAABB::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoAABB::copy(const nZone::ShapeInfoBase& copyShape) {
+    DDON_STUB("nZone::ShapeInfoAABB::copy")
+    return {};
+}
+
+__attribute__((weak)) void nZone::ShapeInfoAABB::applyWorldOffset(const MtVector3& offset) {
+    DDON_STUB("nZone::ShapeInfoAABB::applyWorldOffset")
+    /* stub */
+}
+
+nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoAABB::getShapeType() const {
+    return SHAPE_TYPE_AABB;
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoAABB::isHit(const MtVector3& pos) const {
+    DDON_STUB("nZone::ShapeInfoAABB::isHit")
+    return {};
+}
+
+bool nZone::ShapeInfoAABB::isHitLineSegment(const MtLineSegment& ls) const {
+    return ::MtCollision::intersect(mAABB, ls);
+}
+
+bool nZone::ShapeInfoAABB::isHitConvex(const MtGeomConvex& convex) const {
+    return convex.isIntersect(mAABB);
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoAABB::isIntersectAABB(const MtAABB& aabb) const {
+    DDON_STUB("nZone::ShapeInfoAABB::isIntersectAABB")
+    return {};
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoAABB::getClosest(const MtVector3& pos, MtContact& contact) const {
+    DDON_STUB("nZone::ShapeInfoAABB::getClosest")
+    return {};
+}
+
+void nZone::ShapeInfoAABB::loadBinary(MtDataReader& r) {
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+    unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 80);
+    f32 t1 = r.readF32();
+    mDecay = t1;
+    u32 t3 = r.mSeekPt;
+    u32 t4 = r.mBufsiz;
+    if (t3 >= t4) {
+        if (r.refill()) {
+            u32 t6 = r.mSeekPt;
+            u8* t7 = r.mBuffer;
+            u8 t8 = t7[r.mSeekPt];
+            r.mSeekPt = t6 + 1u;
+            mIsNativeData = t8 == 1;
+            unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+            r.read(static_cast<void*>(&mAABB), 32u);
+            unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t12) + 80);
+            f32 t13 = r.readF32();
+            mDecayY = t13;
+            unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t15) + 80);
+            f32 t16 = r.readF32();
+            mDecayZ = t16;
+            u32 t18 = r.mSeekPt;
+            u32 t19 = r.mBufsiz;
+            if (t18 >= t19) {
+                if (r.refill()) {
+                    u32 t21 = r.mSeekPt;
+                    u8* t22 = r.mBuffer;
+                    u8 t23 = t22[r.mSeekPt];
+                    r.mSeekPt = t21 + 1u;
+                    mIsEnableExtendedDecay = t23 == 1;
+                } else {
+                    mIsEnableExtendedDecay = false;
+                }
+            } else {
+                u8* t22 = r.mBuffer;
+                u8 t23 = t22[r.mSeekPt];
+                r.mSeekPt = t18 + 1u;
+                mIsEnableExtendedDecay = t23 == 1;
+            }
+        } else {
+            mIsNativeData = false;
+            unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+            r.read(static_cast<void*>(&mAABB), 32u);
+            unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t12) + 80);
+            f32 t13 = r.readF32();
+            mDecayY = t13;
+            unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t15) + 80);
+            f32 t16 = r.readF32();
+            mDecayZ = t16;
+            u32 t18 = r.mSeekPt;
+            u32 t19 = r.mBufsiz;
+            if (t18 >= t19) {
+                if (r.refill()) {
+                    u32 t21 = r.mSeekPt;
+                    u8* t22 = r.mBuffer;
+                    u8 t23 = t22[r.mSeekPt];
+                    r.mSeekPt = t21 + 1u;
+                    mIsEnableExtendedDecay = t23 == 1;
+                } else {
+                    mIsEnableExtendedDecay = false;
+                }
+            } else {
+                u8* t22 = r.mBuffer;
+                u8 t23 = t22[r.mSeekPt];
+                r.mSeekPt = t18 + 1u;
+                mIsEnableExtendedDecay = t23 == 1;
+            }
+        }
+    } else {
+        u8* t7 = r.mBuffer;
+        u8 t8 = t7[r.mSeekPt];
+        r.mSeekPt = t3 + 1u;
+        mIsNativeData = t8 == 1;
+        unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+        unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+        r.read(static_cast<void*>(&mAABB), 32u);
+        unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+        unsigned long t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t12) + 80);
+        f32 t13 = r.readF32();
+        mDecayY = t13;
+        unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+        unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t15) + 80);
+        f32 t16 = r.readF32();
+        mDecayZ = t16;
+        u32 t18 = r.mSeekPt;
+        u32 t19 = r.mBufsiz;
+        if (t18 >= t19) {
+            if (r.refill()) {
+                u32 t21 = r.mSeekPt;
+                u8* t22 = r.mBuffer;
+                u8 t23 = t22[r.mSeekPt];
+                r.mSeekPt = t21 + 1u;
+                mIsEnableExtendedDecay = t23 == 1;
+            } else {
+                mIsEnableExtendedDecay = false;
+            }
+        } else {
+            u8* t22 = r.mBuffer;
+            u8 t23 = t22[r.mSeekPt];
+            r.mSeekPt = t18 + 1u;
+            mIsEnableExtendedDecay = t23 == 1;
+        }
+    }
+}
+
+void nZone::ShapeInfoAABB::saveBinary(MtDataWriter& w) {
+    w.writeF32(mDecay);
+    bool t0 = mIsNativeData;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+        w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
+        w.mSeekPt = w.mSeekPt + 1u;
+        w.write(static_cast<const void*>(&mAABB), 32u);
+        w.writeF32(mDecayY);
+        w.writeF32(mDecayZ);
+        bool t1 = mIsEnableExtendedDecay;
+        if (w.mSeekPt >= w.mBufsiz) {
+            w.flush();
+        }
+        w.mBuffer[w.mSeekPt] = static_cast<u8>(t1);
+        w.mSeekPt = w.mSeekPt + 1u;
+    } else {
+        w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
+        w.mSeekPt = w.mSeekPt + 1u;
+        w.write(static_cast<const void*>(&mAABB), 32u);
+        w.writeF32(mDecayY);
+        w.writeF32(mDecayZ);
+        bool t1 = mIsEnableExtendedDecay;
+        if (w.mSeekPt >= w.mBufsiz) {
+            w.flush();
+        }
+        w.mBuffer[w.mSeekPt] = static_cast<u8>(t1);
+        w.mSeekPt = w.mSeekPt + 1u;
+    }
+}
+
+bool nZone::ShapeInfoAABB::isGetAABB() const {
+    return true;
+}
+
+__attribute__((weak)) MtAABB nZone::ShapeInfoAABB::getAABB() const {
+    DDON_STUB("nZone::ShapeInfoAABB::getAABB")
+    __builtin_unreachable();
+}
+
+bool nZone::ShapeInfoAABB::isGetBoundingSphere() const {
+    return true;
+}
+
+__attribute__((weak)) MtSphere nZone::ShapeInfoAABB::getBoundingSphere() const {
+    DDON_STUB("nZone::ShapeInfoAABB::getBoundingSphere")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getCenterPos() const {
+    DDON_STUB("nZone::ShapeInfoAABB::getCenterPos")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) void nZone::ShapeInfoAABB::setCenterPos(const MtVector3& pos) {
+    DDON_STUB("nZone::ShapeInfoAABB::setCenterPos")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoAABB::movePosition(const MtVector3& AddPos) {
+    DDON_STUB("nZone::ShapeInfoAABB::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoAABB::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
+    DDON_STUB("nZone::ShapeInfoAABB::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoAABB::mulMatrix(const MtMatrix& MulMatrix) {
+    DDON_STUB("nZone::ShapeInfoAABB::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoAABB::mulMatrix(nZone::ShapeInfoBase& OutputShape, const MtMatrix& MulMatrix) const {
+    DDON_STUB("nZone::ShapeInfoAABB::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) f32 nZone::ShapeInfoAABB::calcWeight(const MtVector3& pos) const {
+    DDON_STUB("nZone::ShapeInfoAABB::calcWeight")
+    return {};
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex000() const {
+    DDON_STUB("nZone::ShapeInfoAABB::getVertex000")
+    __builtin_unreachable();
+}
+
+void nZone::ShapeInfoAABB::setVertex000(const MtVector3& v) {
+    if (v.x > mAABB.maxpos.x) {
+        mAABB.minpos.x = mAABB.maxpos.x + -0.001f;
+    } else {
+        mAABB.minpos.x = v.x;
+    }
+    if (v.y > mAABB.maxpos.y) {
+        mAABB.minpos.y = mAABB.maxpos.y + -0.001f;
+    } else {
+        mAABB.minpos.y = v.y;
+    }
+    if (v.z > mAABB.maxpos.z) {
+        mAABB.minpos.z = mAABB.maxpos.z + -0.001f;
+    } else {
+        mAABB.minpos.z = v.z;
+    }
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex001() const {
+    DDON_STUB("nZone::ShapeInfoAABB::getVertex001")
+    __builtin_unreachable();
+}
+
+void nZone::ShapeInfoAABB::setVertex001(const MtVector3& v) {
+    if (v.x > mAABB.maxpos.x) {
+        mAABB.minpos.x = mAABB.maxpos.x + -0.001f;
+    } else {
+        mAABB.minpos.x = v.x;
+    }
+    if (v.y > mAABB.maxpos.y) {
+        mAABB.minpos.y = mAABB.maxpos.y + -0.001f;
+    } else {
+        mAABB.minpos.y = v.y;
+    }
+    if (mAABB.minpos.z > v.z) {
+        mAABB.maxpos.z = mAABB.minpos.z + 0.001f;
+    } else {
+        mAABB.maxpos.z = v.z;
+    }
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex010() const {
+    DDON_STUB("nZone::ShapeInfoAABB::getVertex010")
+    __builtin_unreachable();
+}
+
+void nZone::ShapeInfoAABB::setVertex010(const MtVector3& v) {
+    if (v.x > mAABB.maxpos.x) {
+        mAABB.minpos.x = mAABB.maxpos.x + -0.001f;
+    } else {
+        mAABB.minpos.x = v.x;
+    }
+    if (mAABB.minpos.y > v.y) {
+        mAABB.maxpos.y = mAABB.minpos.y + 0.001f;
+    } else {
+        mAABB.maxpos.y = v.y;
+    }
+    if (v.z > mAABB.maxpos.z) {
+        mAABB.minpos.z = mAABB.maxpos.z + -0.001f;
+    } else {
+        mAABB.minpos.z = v.z;
+    }
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex011() const {
+    DDON_STUB("nZone::ShapeInfoAABB::getVertex011")
+    __builtin_unreachable();
+}
+
+void nZone::ShapeInfoAABB::setVertex011(const MtVector3& v) {
+    if (v.x > mAABB.maxpos.x) {
+        mAABB.minpos.x = mAABB.maxpos.x + -0.001f;
+    } else {
+        mAABB.minpos.x = v.x;
+    }
+    if (mAABB.minpos.y > v.y) {
+        mAABB.maxpos.y = mAABB.minpos.y + 0.001f;
+    } else {
+        mAABB.maxpos.y = v.y;
+    }
+    if (mAABB.minpos.z > v.z) {
+        mAABB.maxpos.z = mAABB.minpos.z + 0.001f;
+    } else {
+        mAABB.maxpos.z = v.z;
+    }
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex100() const {
+    DDON_STUB("nZone::ShapeInfoAABB::getVertex100")
+    __builtin_unreachable();
+}
+
+void nZone::ShapeInfoAABB::setVertex100(const MtVector3& v) {
+    if (mAABB.minpos.x > v.x) {
+        mAABB.maxpos.x = mAABB.minpos.x + 0.001f;
+    } else {
+        mAABB.maxpos.x = v.x;
+    }
+    if (v.y > mAABB.maxpos.y) {
+        mAABB.minpos.y = mAABB.maxpos.y + -0.001f;
+    } else {
+        mAABB.minpos.y = v.y;
+    }
+    if (v.z > mAABB.maxpos.z) {
+        mAABB.minpos.z = mAABB.maxpos.z + -0.001f;
+    } else {
+        mAABB.minpos.z = v.z;
+    }
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex101() const {
+    DDON_STUB("nZone::ShapeInfoAABB::getVertex101")
+    __builtin_unreachable();
+}
+
+void nZone::ShapeInfoAABB::setVertex101(const MtVector3& v) {
+    if (mAABB.minpos.x > v.x) {
+        mAABB.maxpos.x = mAABB.minpos.x + 0.001f;
+    } else {
+        mAABB.maxpos.x = v.x;
+    }
+    if (v.y > mAABB.maxpos.y) {
+        mAABB.minpos.y = mAABB.maxpos.y + -0.001f;
+    } else {
+        mAABB.minpos.y = v.y;
+    }
+    if (mAABB.minpos.z > v.z) {
+        mAABB.maxpos.z = mAABB.minpos.z + 0.001f;
+    } else {
+        mAABB.maxpos.z = v.z;
+    }
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex110() const {
+    DDON_STUB("nZone::ShapeInfoAABB::getVertex110")
+    __builtin_unreachable();
+}
+
+void nZone::ShapeInfoAABB::setVertex110(const MtVector3& v) {
+    if (mAABB.minpos.x > v.x) {
+        mAABB.maxpos.x = mAABB.minpos.x + 0.001f;
+    } else {
+        mAABB.maxpos.x = v.x;
+    }
+    if (mAABB.minpos.y > v.y) {
+        mAABB.maxpos.y = mAABB.minpos.y + 0.001f;
+    } else {
+        mAABB.maxpos.y = v.y;
+    }
+    if (v.z > mAABB.maxpos.z) {
+        mAABB.minpos.z = mAABB.maxpos.z + -0.001f;
+    } else {
+        mAABB.minpos.z = v.z;
+    }
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex111() const {
+    DDON_STUB("nZone::ShapeInfoAABB::getVertex111")
+    __builtin_unreachable();
+}
+
+void nZone::ShapeInfoAABB::setVertex111(const MtVector3& v) {
+    if (mAABB.minpos.x > v.x) {
+        mAABB.maxpos.x = mAABB.minpos.x + 0.001f;
+    } else {
+        mAABB.maxpos.x = v.x;
+    }
+    if (mAABB.minpos.y > v.y) {
+        mAABB.maxpos.y = mAABB.minpos.y + 0.001f;
+    } else {
+        mAABB.maxpos.y = v.y;
+    }
+    if (mAABB.minpos.z > v.z) {
+        mAABB.maxpos.z = mAABB.minpos.z + 0.001f;
+    } else {
+        mAABB.maxpos.z = v.z;
+    }
+}
+
+nZone::ShapeInfoAABB::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nZone::ShapeInfoAABB::MyDTI nZone::ShapeInfoAABB::DTI("nZone::ShapeInfoAABB", &::nZone::ShapeInfoBase::DTI, 64ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nZone::ShapeInfoAABB::MyDTI::newInstance() const {
+    DDON_STUB("nZone::ShapeInfoAABB::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nZone::ShapeInfoArea::getDTI() const {
+    return nZone::ShapeInfoArea::DTI;
+}
+
+void* nZone::ShapeInfoArea::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoArea::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoArea::DTI.mID);
+}
+
+void* nZone::ShapeInfoArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+nZone::ShapeInfoArea::ShapeInfoArea() {
+    DDON_STUB("nZone::ShapeInfoArea::ShapeInfoArea")
+    /* stub */
+}
+
+nZone::ShapeInfoArea::~ShapeInfoArea() {
+    DDON_STUB("nZone::ShapeInfoArea::~ShapeInfoArea")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::createProperty(MtPropertyList& s) {
+    DDON_STUB("nZone::ShapeInfoArea::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoArea::copy(const nZone::ShapeInfoBase& copyShape) {
+    DDON_STUB("nZone::ShapeInfoArea::copy")
+    return {};
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::applyWorldOffset(const MtVector3& offset) {
+    DDON_STUB("nZone::ShapeInfoArea::applyWorldOffset")
+    /* stub */
+}
+
+nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoArea::getShapeType() const {
+    return SHAPE_TYPE_AREA;
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoArea::isHit(const MtVector3& pos) const {
+    DDON_STUB("nZone::ShapeInfoArea::isHit")
+    return {};
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoArea::isHitLineSegment(const MtLineSegment& ls) const {
+    DDON_STUB("nZone::ShapeInfoArea::isHitLineSegment")
+    return {};
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoArea::isHitConvex(const MtGeomConvex& convex) const {
+    DDON_STUB("nZone::ShapeInfoArea::isHitConvex")
+    return {};
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoArea::isIntersectAABB(const MtAABB& aabb) const {
+    DDON_STUB("nZone::ShapeInfoArea::isIntersectAABB")
+    return {};
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoArea::getClosest(const MtVector3& pos, MtContact& contact) const {
+    DDON_STUB("nZone::ShapeInfoArea::getClosest")
+    return {};
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::loadBinary(MtDataReader& r) {
+    DDON_STUB("nZone::ShapeInfoArea::loadBinary")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::saveBinary(MtDataWriter& w) {
+    DDON_STUB("nZone::ShapeInfoArea::saveBinary")
+    /* stub */
+}
+
+bool nZone::ShapeInfoArea::isGetAABB() const {
+    return true;
+}
+
+__attribute__((weak)) MtAABB nZone::ShapeInfoArea::getAABB() const {
+    DDON_STUB("nZone::ShapeInfoArea::getAABB")
+    __builtin_unreachable();
+}
+
+bool nZone::ShapeInfoArea::isGetBoundingSphere() const {
+    return true;
+}
+
+__attribute__((weak)) MtSphere nZone::ShapeInfoArea::getBoundingSphere() const {
+    DDON_STUB("nZone::ShapeInfoArea::getBoundingSphere")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoArea::getCenterPos() const {
+    DDON_STUB("nZone::ShapeInfoArea::getCenterPos")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::setCenterPos(const MtVector3& pos) {
+    DDON_STUB("nZone::ShapeInfoArea::setCenterPos")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::movePosition(const MtVector3& AddPos) {
+    DDON_STUB("nZone::ShapeInfoArea::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
+    DDON_STUB("nZone::ShapeInfoArea::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::rotation(const MtMatrix& RotateMatrix) {
+    DDON_STUB("nZone::ShapeInfoArea::rotation")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::rotation(nZone::ShapeInfoBase& OutputShape, const MtMatrix& RotateMatrix) const {
+    DDON_STUB("nZone::ShapeInfoArea::rotation")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::rotationAngle(const MtVector3& RotateRadian) {
+    DDON_STUB("nZone::ShapeInfoArea::rotationAngle")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::rotationAngle(nZone::ShapeInfoBase& OutputShape, const MtVector3& RotateRadian) const {
+    DDON_STUB("nZone::ShapeInfoArea::rotationAngle")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::mulMatrix(const MtMatrix& MulMatrix) {
+    DDON_STUB("nZone::ShapeInfoArea::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::mulMatrix(nZone::ShapeInfoBase& OutputShape, const MtMatrix& MulMatrix) const {
+    DDON_STUB("nZone::ShapeInfoArea::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::mulMatrixByRotTransXYZ(const MtVector3& RotateRadianXYZ, const MtVector3& Translate) {
+    DDON_STUB("nZone::ShapeInfoArea::mulMatrixByRotTransXYZ")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::mulMatrixByRotTransXYZ(nZone::ShapeInfoBase& OutputShape, const MtVector3& RotateRadianXYZ, const MtVector3& Translate) const {
+    DDON_STUB("nZone::ShapeInfoArea::mulMatrixByRotTransXYZ")
+    /* stub */
+}
+
+__attribute__((weak)) f32 nZone::ShapeInfoArea::calcWeight(const MtVector3& pos) const {
+    DDON_STUB("nZone::ShapeInfoArea::calcWeight")
+    return {};
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoArea::getVertex(u32 index) const {
+    DDON_STUB("nZone::ShapeInfoArea::getVertex")
+    __builtin_unreachable();
+}
+
+void nZone::ShapeInfoArea::setVertex(const MtVector3& v, u32 index) {
+    mVertex[index].x = v.x;
+    mVertex[index].y = v.y;
+    mVertex[index].z = v.z;
+    mVertex[index].pad_ = 0.0f;
+    mVertex[index].y = mBottom;
+    updateConcaveParam();
+}
+
+static auto ddon_emit_0x01b87770 __attribute__((used)) = &nZone::ShapeInfoArea::getBottom;
+
+void nZone::ShapeInfoArea::setBottom(f32 bottom) {
+    mBottom = bottom;
+    mVertex[0].y = bottom;
+    mVertex[1].y = bottom;
+    mVertex[2].y = bottom;
+    mVertex[3].y = bottom;
+}
+
+static auto ddon_emit_0x01b87780 __attribute__((used)) = &nZone::ShapeInfoArea::getHeight;
+
+__attribute__((weak)) void nZone::ShapeInfoArea::setHeight(f32 height) {
+    DDON_STUB("nZone::ShapeInfoArea::setHeight")
+    /* stub */
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoArea::calcCenter() const {
+    DDON_STUB("nZone::ShapeInfoArea::calcCenter")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoArea::getSupport(const MtVector3& v) const {
+    DDON_STUB("nZone::ShapeInfoArea::getSupport")
+    __builtin_unreachable();
+}
+
+u32 nZone::ShapeInfoArea::getVertexNumForProperty() const {
+    return 4;
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::setDummyU32(u32) {
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoArea::closestSub(const MtVector3& pos, const MtVector3& p0, const MtVector3& p0_, const MtVector3& p1, const MtVector3& p1_, f32& len) const {
+    DDON_STUB("nZone::ShapeInfoArea::closestSub")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoArea::distanceSqSub(const MtRay& ray, const MtVector3& p0, const MtVector3& p0_, const MtVector3& p1, const MtVector3& p1_, MtVector3& pos) const {
+    DDON_STUB("nZone::ShapeInfoArea::distanceSqSub")
+    return {};
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoArea::isConvex_Private() const {
+    DDON_STUB("nZone::ShapeInfoArea::isConvex_Private")
+    return {};
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::updateConcaveParam() {
+    DDON_STUB("nZone::ShapeInfoArea::updateConcaveParam")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoArea::updateConcaveCrossPos() {
+    DDON_STUB("nZone::ShapeInfoArea::updateConcaveCrossPos")
+    /* stub */
+}
+
+__attribute__((weak)) MtTriangle nZone::ShapeInfoArea::getBottomTriangle_Private(u32 TriangleIndex) const {
+    DDON_STUB("nZone::ShapeInfoArea::getBottomTriangle_Private")
+    __builtin_unreachable();
+}
+
+nZone::ShapeInfoArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nZone::ShapeInfoArea::MyDTI nZone::ShapeInfoArea::DTI("nZone::ShapeInfoArea", &::nZone::ShapeInfoBase::DTI, 112ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nZone::ShapeInfoArea::MyDTI::newInstance() const {
+    DDON_STUB("nZone::ShapeInfoArea::MyDTI::newInstance")
+    return nullptr;
+}
 
 const MtDTI& nZone::ShapeInfoBase::getDTI() const {
     return nZone::ShapeInfoBase::DTI;
@@ -76,7 +779,7 @@ void nZone::ShapeInfoBase::loadBinary(MtDataReader& r) {
         if (r.refill()) {
             u32 t6 = r.mSeekPt;
             u8* t7 = r.mBuffer;
-            u8 t8 = t7[t3];
+            u8 t8 = t7[r.mSeekPt];
             r.mSeekPt = t6 + 1u;
             mIsNativeData = t8 == 1;
         } else {
@@ -84,7 +787,7 @@ void nZone::ShapeInfoBase::loadBinary(MtDataReader& r) {
         }
     } else {
         u8* t7 = r.mBuffer;
-        u8 t8 = t7[t3];
+        u8 t8 = t7[r.mSeekPt];
         r.mSeekPt = t3 + 1u;
         mIsNativeData = t8 == 1;
     }
@@ -163,6 +866,577 @@ nZone::ShapeInfoBase::MyDTI nZone::ShapeInfoBase::DTI("nZone::ShapeInfoBase", &:
 
 __attribute__((weak)) MtObject* nZone::ShapeInfoBase::MyDTI::newInstance() const {
     DDON_STUB("nZone::ShapeInfoBase::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nZone::ShapeInfoCapsule::getDTI() const {
+    return nZone::ShapeInfoCapsule::DTI;
+}
+
+void* nZone::ShapeInfoCapsule::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCapsule::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoCapsule::DTI.mID);
+}
+
+nZone::ShapeInfoCapsule::ShapeInfoCapsule() {
+    DDON_STUB("nZone::ShapeInfoCapsule::ShapeInfoCapsule")
+    /* stub */
+}
+
+nZone::ShapeInfoCapsule::~ShapeInfoCapsule() {
+    DDON_STUB("nZone::ShapeInfoCapsule::~ShapeInfoCapsule")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCapsule::createProperty(MtPropertyList& s) {
+    DDON_STUB("nZone::ShapeInfoCapsule::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoCapsule::copy(const nZone::ShapeInfoBase& copyShape) {
+    DDON_STUB("nZone::ShapeInfoCapsule::copy")
+    return {};
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCapsule::applyWorldOffset(const MtVector3& offset) {
+    DDON_STUB("nZone::ShapeInfoCapsule::applyWorldOffset")
+    /* stub */
+}
+
+nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoCapsule::getShapeType() const {
+    return SHAPE_TYPE_CAPSULE;
+}
+
+bool nZone::ShapeInfoCapsule::isHit(const MtVector3& pos) const {
+    return ::MtCollision::intersect(mCapsule, pos);
+}
+
+bool nZone::ShapeInfoCapsule::isHitLineSegment(const MtLineSegment& ls) const {
+    return ::MtCollision::intersect(mCapsule, ls);
+}
+
+bool nZone::ShapeInfoCapsule::isHitConvex(const MtGeomConvex& convex) const {
+    return convex.isIntersect(mCapsule);
+}
+
+bool nZone::ShapeInfoCapsule::isIntersectAABB(const MtAABB& aabb) const {
+    return ::MtCollision::intersect(mCapsule, aabb);
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoCapsule::getClosest(const MtVector3& pos, MtContact& contact) const {
+    DDON_STUB("nZone::ShapeInfoCapsule::getClosest")
+    return {};
+}
+
+void nZone::ShapeInfoCapsule::loadBinary(MtDataReader& r) {
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+    unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 80);
+    f32 t1 = r.readF32();
+    mDecay = t1;
+    u32 t3 = r.mSeekPt;
+    u32 t4 = r.mBufsiz;
+    if (t3 >= t4) {
+        if (r.refill()) {
+            u32 t6 = r.mSeekPt;
+            u8* t7 = r.mBuffer;
+            u8 t8 = t7[r.mSeekPt];
+            r.mSeekPt = t6 + 1u;
+            mIsNativeData = t8 == 1;
+            unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+            r.read(static_cast<void*>(&mCapsule), 48u);
+        } else {
+            mIsNativeData = false;
+            unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+            r.read(static_cast<void*>(&mCapsule), 48u);
+        }
+    } else {
+        u8* t7 = r.mBuffer;
+        u8 t8 = t7[r.mSeekPt];
+        r.mSeekPt = t3 + 1u;
+        mIsNativeData = t8 == 1;
+        unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+        unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+        r.read(static_cast<void*>(&mCapsule), 48u);
+    }
+}
+
+void nZone::ShapeInfoCapsule::saveBinary(MtDataWriter& w) {
+    w.writeF32(mDecay);
+    bool t0 = mIsNativeData;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
+    w.mSeekPt = w.mSeekPt + 1u;
+    w.write(static_cast<const void*>(&mCapsule), 48u);
+}
+
+bool nZone::ShapeInfoCapsule::isGetAABB() const {
+    return true;
+}
+
+__attribute__((weak)) MtAABB nZone::ShapeInfoCapsule::getAABB() const {
+    DDON_STUB("nZone::ShapeInfoCapsule::getAABB")
+    __builtin_unreachable();
+}
+
+bool nZone::ShapeInfoCapsule::isGetBoundingSphere() const {
+    return true;
+}
+
+__attribute__((weak)) MtSphere nZone::ShapeInfoCapsule::getBoundingSphere() const {
+    DDON_STUB("nZone::ShapeInfoCapsule::getBoundingSphere")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoCapsule::getCenterPos() const {
+    DDON_STUB("nZone::ShapeInfoCapsule::getCenterPos")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCapsule::setCenterPos(const MtVector3& pos) {
+    DDON_STUB("nZone::ShapeInfoCapsule::setCenterPos")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCapsule::movePosition(const MtVector3& AddPos) {
+    DDON_STUB("nZone::ShapeInfoCapsule::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCapsule::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
+    DDON_STUB("nZone::ShapeInfoCapsule::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCapsule::rotation(const MtMatrix& RotateMatrix) {
+    DDON_STUB("nZone::ShapeInfoCapsule::rotation")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCapsule::rotation(nZone::ShapeInfoBase& OutputShape, const MtMatrix& RotateMatrix) const {
+    DDON_STUB("nZone::ShapeInfoCapsule::rotation")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCapsule::mulMatrix(const MtMatrix& MulMatrix) {
+    DDON_STUB("nZone::ShapeInfoCapsule::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCapsule::mulMatrix(nZone::ShapeInfoBase& OutputShape, const MtMatrix& MulMatrix) const {
+    DDON_STUB("nZone::ShapeInfoCapsule::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) f32 nZone::ShapeInfoCapsule::calcWeight(const MtVector3& pos) const {
+    DDON_STUB("nZone::ShapeInfoCapsule::calcWeight")
+    return {};
+}
+
+nZone::ShapeInfoCapsule::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nZone::ShapeInfoCapsule::MyDTI nZone::ShapeInfoCapsule::DTI("nZone::ShapeInfoCapsule", &::nZone::ShapeInfoBase::DTI, 64ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nZone::ShapeInfoCapsule::MyDTI::newInstance() const {
+    DDON_STUB("nZone::ShapeInfoCapsule::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nZone::ShapeInfoCone::getDTI() const {
+    return nZone::ShapeInfoCone::DTI;
+}
+
+void* nZone::ShapeInfoCone::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCone::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoCone::DTI.mID);
+}
+
+void* nZone::ShapeInfoCone::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+nZone::ShapeInfoCone::ShapeInfoCone() {
+    DDON_STUB("nZone::ShapeInfoCone::ShapeInfoCone")
+    /* stub */
+}
+
+nZone::ShapeInfoCone::~ShapeInfoCone() {
+    DDON_STUB("nZone::ShapeInfoCone::~ShapeInfoCone")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCone::createProperty(MtPropertyList& s) {
+    DDON_STUB("nZone::ShapeInfoCone::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoCone::copy(const nZone::ShapeInfoBase& copyShape) {
+    DDON_STUB("nZone::ShapeInfoCone::copy")
+    return {};
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCone::applyWorldOffset(const MtVector3& offset) {
+    DDON_STUB("nZone::ShapeInfoCone::applyWorldOffset")
+    /* stub */
+}
+
+nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoCone::getShapeType() const {
+    return SHAPE_TYPE_CONE;
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoCone::isHit(const MtVector3& pos) const {
+    DDON_STUB("nZone::ShapeInfoCone::isHit")
+    return {};
+}
+
+bool nZone::ShapeInfoCone::isHitLineSegment(const MtLineSegment& ls) const {
+    return false;
+}
+
+bool nZone::ShapeInfoCone::isHitConvex(const MtGeomConvex& convex) const {
+    return false;
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoCone::isIntersectAABB(const MtAABB& aabb) const {
+    DDON_STUB("nZone::ShapeInfoCone::isIntersectAABB")
+    return {};
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoCone::getClosest(const MtVector3& pos, MtContact& contact) const {
+    DDON_STUB("nZone::ShapeInfoCone::getClosest")
+    return {};
+}
+
+void nZone::ShapeInfoCone::loadBinary(MtDataReader& r) {
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+    unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 80);
+    f32 t1 = r.readF32();
+    mDecay = t1;
+    u32 t3 = r.mSeekPt;
+    u32 t4 = r.mBufsiz;
+    if (t3 >= t4) {
+        if (r.refill()) {
+            u32 t6 = r.mSeekPt;
+            u8* t7 = r.mBuffer;
+            u8 t8 = t7[r.mSeekPt];
+            r.mSeekPt = t6 + 1u;
+            mIsNativeData = t8 == 1;
+            unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 80);
+            f32 t10 = r.readF32();
+            mHeight = t10;
+            unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t12) + 80);
+            f32 t13 = r.readF32();
+            mTopRadius = t13;
+            unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t15) + 120);
+            r.read(static_cast<void*>(&mPos), 16u);
+            unsigned long t18 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t21 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t18) + 80);
+            f32 t20 = r.readF32();
+            mBottomRadius = t20;
+        } else {
+            mIsNativeData = false;
+            unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 80);
+            f32 t10 = r.readF32();
+            mHeight = t10;
+            unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t12) + 80);
+            f32 t13 = r.readF32();
+            mTopRadius = t13;
+            unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t15) + 120);
+            r.read(static_cast<void*>(&mPos), 16u);
+            unsigned long t18 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t21 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t18) + 80);
+            f32 t20 = r.readF32();
+            mBottomRadius = t20;
+        }
+    } else {
+        u8* t7 = r.mBuffer;
+        u8 t8 = t7[r.mSeekPt];
+        r.mSeekPt = t3 + 1u;
+        mIsNativeData = t8 == 1;
+        unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+        unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 80);
+        f32 t10 = r.readF32();
+        mHeight = t10;
+        unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+        unsigned long t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t12) + 80);
+        f32 t13 = r.readF32();
+        mTopRadius = t13;
+        unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+        unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t15) + 120);
+        r.read(static_cast<void*>(&mPos), 16u);
+        unsigned long t18 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+        unsigned long t21 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t18) + 80);
+        f32 t20 = r.readF32();
+        mBottomRadius = t20;
+    }
+}
+
+void nZone::ShapeInfoCone::saveBinary(MtDataWriter& w) {
+    w.writeF32(mDecay);
+    bool t0 = mIsNativeData;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
+    w.mSeekPt = w.mSeekPt + 1u;
+    w.writeF32(mHeight);
+    w.writeF32(mTopRadius);
+    w.write(static_cast<const void*>(&mPos), 16u);
+    w.writeF32(mBottomRadius);
+}
+
+bool nZone::ShapeInfoCone::isGetAABB() const {
+    return true;
+}
+
+__attribute__((weak)) MtAABB nZone::ShapeInfoCone::getAABB() const {
+    DDON_STUB("nZone::ShapeInfoCone::getAABB")
+    __builtin_unreachable();
+}
+
+bool nZone::ShapeInfoCone::isGetBoundingSphere() const {
+    return true;
+}
+
+__attribute__((weak)) MtSphere nZone::ShapeInfoCone::getBoundingSphere() const {
+    DDON_STUB("nZone::ShapeInfoCone::getBoundingSphere")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoCone::getCenterPos() const {
+    DDON_STUB("nZone::ShapeInfoCone::getCenterPos")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCone::setCenterPos(const MtVector3& pos) {
+    DDON_STUB("nZone::ShapeInfoCone::setCenterPos")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCone::movePosition(const MtVector3& AddPos) {
+    DDON_STUB("nZone::ShapeInfoCone::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCone::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
+    DDON_STUB("nZone::ShapeInfoCone::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCone::mulMatrix(const MtMatrix& MulMatrix) {
+    DDON_STUB("nZone::ShapeInfoCone::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCone::mulMatrix(nZone::ShapeInfoBase& OutputShape, const MtMatrix& MulMatrix) const {
+    DDON_STUB("nZone::ShapeInfoCone::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) f32 nZone::ShapeInfoCone::calcWeight(const MtVector3& pos) const {
+    DDON_STUB("nZone::ShapeInfoCone::calcWeight")
+    return {};
+}
+
+static auto ddon_emit_0x01b88d70 __attribute__((used)) = &nZone::ShapeInfoCone::getHeight;
+
+__attribute__((weak)) void nZone::ShapeInfoCone::setHeight(f32 height) {
+    DDON_STUB("nZone::ShapeInfoCone::setHeight")
+    /* stub */
+}
+
+nZone::ShapeInfoCone::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nZone::ShapeInfoCone::MyDTI nZone::ShapeInfoCone::DTI("nZone::ShapeInfoCone", &::nZone::ShapeInfoBase::DTI, 64ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nZone::ShapeInfoCone::MyDTI::newInstance() const {
+    DDON_STUB("nZone::ShapeInfoCone::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nZone::ShapeInfoCylinder::getDTI() const {
+    return nZone::ShapeInfoCylinder::DTI;
+}
+
+void* nZone::ShapeInfoCylinder::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCylinder::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoCylinder::DTI.mID);
+}
+
+void* nZone::ShapeInfoCylinder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+nZone::ShapeInfoCylinder::ShapeInfoCylinder() {
+    DDON_STUB("nZone::ShapeInfoCylinder::ShapeInfoCylinder")
+    /* stub */
+}
+
+nZone::ShapeInfoCylinder::~ShapeInfoCylinder() {
+    DDON_STUB("nZone::ShapeInfoCylinder::~ShapeInfoCylinder")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCylinder::createProperty(MtPropertyList& s) {
+    DDON_STUB("nZone::ShapeInfoCylinder::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoCylinder::copy(const nZone::ShapeInfoBase& copyShape) {
+    DDON_STUB("nZone::ShapeInfoCylinder::copy")
+    return {};
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCylinder::applyWorldOffset(const MtVector3& offset) {
+    DDON_STUB("nZone::ShapeInfoCylinder::applyWorldOffset")
+    /* stub */
+}
+
+nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoCylinder::getShapeType() const {
+    return SHAPE_TYPE_CYLINDER;
+}
+
+bool nZone::ShapeInfoCylinder::isHit(const MtVector3& pos) const {
+    return ::MtCollision::intersect(mCylinder, pos);
+}
+
+bool nZone::ShapeInfoCylinder::isHitLineSegment(const MtLineSegment& ls) const {
+    return ::MtCollision::intersect(mCylinder, ls);
+}
+
+bool nZone::ShapeInfoCylinder::isHitConvex(const MtGeomConvex& convex) const {
+    return convex.isIntersect(mCylinder);
+}
+
+bool nZone::ShapeInfoCylinder::isIntersectAABB(const MtAABB& aabb) const {
+    return ::MtCollision::intersect(mCylinder, aabb);
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoCylinder::getClosest(const MtVector3& pos, MtContact& contact) const {
+    DDON_STUB("nZone::ShapeInfoCylinder::getClosest")
+    return {};
+}
+
+void nZone::ShapeInfoCylinder::loadBinary(MtDataReader& r) {
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+    unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 80);
+    f32 t1 = r.readF32();
+    mDecay = t1;
+    u32 t3 = r.mSeekPt;
+    u32 t4 = r.mBufsiz;
+    if (t3 >= t4) {
+        if (r.refill()) {
+            u32 t6 = r.mSeekPt;
+            u8* t7 = r.mBuffer;
+            u8 t8 = t7[r.mSeekPt];
+            r.mSeekPt = t6 + 1u;
+            mIsNativeData = t8 == 1;
+            unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+            r.read(static_cast<void*>(&mCylinder), 48u);
+        } else {
+            mIsNativeData = false;
+            unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+            r.read(static_cast<void*>(&mCylinder), 48u);
+        }
+    } else {
+        u8* t7 = r.mBuffer;
+        u8 t8 = t7[r.mSeekPt];
+        r.mSeekPt = t3 + 1u;
+        mIsNativeData = t8 == 1;
+        unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+        unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+        r.read(static_cast<void*>(&mCylinder), 48u);
+    }
+}
+
+void nZone::ShapeInfoCylinder::saveBinary(MtDataWriter& w) {
+    w.writeF32(mDecay);
+    bool t0 = mIsNativeData;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
+    w.mSeekPt = w.mSeekPt + 1u;
+    w.write(static_cast<const void*>(&mCylinder), 48u);
+}
+
+bool nZone::ShapeInfoCylinder::isGetAABB() const {
+    return true;
+}
+
+__attribute__((weak)) MtAABB nZone::ShapeInfoCylinder::getAABB() const {
+    DDON_STUB("nZone::ShapeInfoCylinder::getAABB")
+    __builtin_unreachable();
+}
+
+bool nZone::ShapeInfoCylinder::isGetBoundingSphere() const {
+    return true;
+}
+
+__attribute__((weak)) MtSphere nZone::ShapeInfoCylinder::getBoundingSphere() const {
+    DDON_STUB("nZone::ShapeInfoCylinder::getBoundingSphere")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoCylinder::getCenterPos() const {
+    DDON_STUB("nZone::ShapeInfoCylinder::getCenterPos")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCylinder::setCenterPos(const MtVector3& pos) {
+    DDON_STUB("nZone::ShapeInfoCylinder::setCenterPos")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCylinder::movePosition(const MtVector3& AddPos) {
+    DDON_STUB("nZone::ShapeInfoCylinder::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCylinder::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
+    DDON_STUB("nZone::ShapeInfoCylinder::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCylinder::rotation(const MtMatrix& RotateMatrix) {
+    DDON_STUB("nZone::ShapeInfoCylinder::rotation")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCylinder::rotation(nZone::ShapeInfoBase& OutputShape, const MtMatrix& RotateMatrix) const {
+    DDON_STUB("nZone::ShapeInfoCylinder::rotation")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCylinder::mulMatrix(const MtMatrix& MulMatrix) {
+    DDON_STUB("nZone::ShapeInfoCylinder::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoCylinder::mulMatrix(nZone::ShapeInfoBase& OutputShape, const MtMatrix& MulMatrix) const {
+    DDON_STUB("nZone::ShapeInfoCylinder::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) f32 nZone::ShapeInfoCylinder::calcWeight(const MtVector3& pos) const {
+    DDON_STUB("nZone::ShapeInfoCylinder::calcWeight")
+    return {};
+}
+
+nZone::ShapeInfoCylinder::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nZone::ShapeInfoCylinder::MyDTI nZone::ShapeInfoCylinder::DTI("nZone::ShapeInfoCylinder", &::nZone::ShapeInfoBase::DTI, 64ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nZone::ShapeInfoCylinder::MyDTI::newInstance() const {
+    DDON_STUB("nZone::ShapeInfoCylinder::MyDTI::newInstance")
     return nullptr;
 }
 
@@ -297,12 +1571,14 @@ void nZone::ShapeInfoOBB::loadBinary(MtDataReader& r) {
         if (r.refill()) {
             u32 t6 = r.mSeekPt;
             u8* t7 = r.mBuffer;
-            u8 t8 = t7[t3];
+            u8 t8 = t7[r.mSeekPt];
             r.mSeekPt = t6 + 1u;
             mIsNativeData = t8 == 1;
             unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
             unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
             r.read(static_cast<void*>(&mOBB), 80u);
+            unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t12) + 80);
             f32 t13 = r.readF32();
             mDecayY = t13;
             unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
@@ -315,7 +1591,7 @@ void nZone::ShapeInfoOBB::loadBinary(MtDataReader& r) {
                 if (r.refill()) {
                     u32 t21 = r.mSeekPt;
                     u8* t22 = r.mBuffer;
-                    u8 t23 = t22[t18];
+                    u8 t23 = t22[r.mSeekPt];
                     r.mSeekPt = t21 + 1u;
                     mIsEnableExtendedDecay = t23 == 1;
                 } else {
@@ -323,7 +1599,7 @@ void nZone::ShapeInfoOBB::loadBinary(MtDataReader& r) {
                 }
             } else {
                 u8* t22 = r.mBuffer;
-                u8 t23 = t22[t18];
+                u8 t23 = t22[r.mSeekPt];
                 r.mSeekPt = t18 + 1u;
                 mIsEnableExtendedDecay = t23 == 1;
             }
@@ -332,6 +1608,8 @@ void nZone::ShapeInfoOBB::loadBinary(MtDataReader& r) {
             unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
             unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
             r.read(static_cast<void*>(&mOBB), 80u);
+            unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t12) + 80);
             f32 t13 = r.readF32();
             mDecayY = t13;
             unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
@@ -344,7 +1622,7 @@ void nZone::ShapeInfoOBB::loadBinary(MtDataReader& r) {
                 if (r.refill()) {
                     u32 t21 = r.mSeekPt;
                     u8* t22 = r.mBuffer;
-                    u8 t23 = t22[t18];
+                    u8 t23 = t22[r.mSeekPt];
                     r.mSeekPt = t21 + 1u;
                     mIsEnableExtendedDecay = t23 == 1;
                 } else {
@@ -352,19 +1630,21 @@ void nZone::ShapeInfoOBB::loadBinary(MtDataReader& r) {
                 }
             } else {
                 u8* t22 = r.mBuffer;
-                u8 t23 = t22[t18];
+                u8 t23 = t22[r.mSeekPt];
                 r.mSeekPt = t18 + 1u;
                 mIsEnableExtendedDecay = t23 == 1;
             }
         }
     } else {
         u8* t7 = r.mBuffer;
-        u8 t8 = t7[t3];
+        u8 t8 = t7[r.mSeekPt];
         r.mSeekPt = t3 + 1u;
         mIsNativeData = t8 == 1;
         unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
         unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
         r.read(static_cast<void*>(&mOBB), 80u);
+        unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+        unsigned long t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t12) + 80);
         f32 t13 = r.readF32();
         mDecayY = t13;
         unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
@@ -377,7 +1657,7 @@ void nZone::ShapeInfoOBB::loadBinary(MtDataReader& r) {
             if (r.refill()) {
                 u32 t21 = r.mSeekPt;
                 u8* t22 = r.mBuffer;
-                u8 t23 = t22[t18];
+                u8 t23 = t22[r.mSeekPt];
                 r.mSeekPt = t21 + 1u;
                 mIsEnableExtendedDecay = t23 == 1;
             } else {
@@ -385,7 +1665,7 @@ void nZone::ShapeInfoOBB::loadBinary(MtDataReader& r) {
             }
         } else {
             u8* t22 = r.mBuffer;
-            u8 t23 = t22[t18];
+            u8 t23 = t22[r.mSeekPt];
             r.mSeekPt = t18 + 1u;
             mIsEnableExtendedDecay = t23 == 1;
         }
@@ -486,9 +1766,7 @@ __attribute__((weak)) f32 nZone::ShapeInfoOBB::calcWeight(const MtVector3& pos) 
     return {};
 }
 
-f32 nZone::ShapeInfoOBB::getHeight() const {
-    return mOBB.extent.y + mOBB.extent.y;
-}
+static auto ddon_emit_0x01b88d20 __attribute__((used)) = &nZone::ShapeInfoOBB::getHeight;
 
 __attribute__((weak)) void nZone::ShapeInfoOBB::setHeight(f32 height) {
     DDON_STUB("nZone::ShapeInfoOBB::setHeight")
@@ -577,7 +1855,7 @@ void nZone::ShapeInfoPanel::loadBinary(MtDataReader& r) {
         if (r.refill()) {
             u32 t6 = r.mSeekPt;
             u8* t7 = r.mBuffer;
-            u8 t8 = t7[t3];
+            u8 t8 = t7[r.mSeekPt];
             r.mSeekPt = t6 + 1u;
             mIsNativeData = t8 == 1;
             unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
@@ -591,7 +1869,7 @@ void nZone::ShapeInfoPanel::loadBinary(MtDataReader& r) {
         }
     } else {
         u8* t7 = r.mBuffer;
-        u8 t8 = t7[t3];
+        u8 t8 = t7[r.mSeekPt];
         r.mSeekPt = t3 + 1u;
         mIsNativeData = t8 == 1;
         unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
@@ -725,6 +2003,176 @@ __attribute__((weak)) MtObject* nZone::ShapeInfoPanel::MyDTI::newInstance() cons
     return nullptr;
 }
 
+const MtDTI& nZone::ShapeInfoSphere::getDTI() const {
+    return nZone::ShapeInfoSphere::DTI;
+}
+
+void* nZone::ShapeInfoSphere::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoSphere::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoSphere::DTI.mID);
+}
+
+void* nZone::ShapeInfoSphere::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+nZone::ShapeInfoSphere::ShapeInfoSphere() {
+    DDON_STUB("nZone::ShapeInfoSphere::ShapeInfoSphere")
+    /* stub */
+}
+
+nZone::ShapeInfoSphere::~ShapeInfoSphere() {
+    DDON_STUB("nZone::ShapeInfoSphere::~ShapeInfoSphere")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoSphere::createProperty(MtPropertyList& s) {
+    DDON_STUB("nZone::ShapeInfoSphere::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoSphere::copy(const nZone::ShapeInfoBase& copyShape) {
+    DDON_STUB("nZone::ShapeInfoSphere::copy")
+    return {};
+}
+
+__attribute__((weak)) void nZone::ShapeInfoSphere::applyWorldOffset(const MtVector3& offset) {
+    DDON_STUB("nZone::ShapeInfoSphere::applyWorldOffset")
+    /* stub */
+}
+
+nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoSphere::getShapeType() const {
+    return SHAPE_TYPE_SPHERE;
+}
+
+bool nZone::ShapeInfoSphere::isHit(const MtVector3& pos) const {
+    return ::MtCollision::intersect(mSphere, pos);
+}
+
+bool nZone::ShapeInfoSphere::isHitLineSegment(const MtLineSegment& ls) const {
+    return ::MtCollision::intersect(mSphere, ls);
+}
+
+bool nZone::ShapeInfoSphere::isHitConvex(const MtGeomConvex& convex) const {
+    return convex.isIntersect(mSphere);
+}
+
+bool nZone::ShapeInfoSphere::isIntersectAABB(const MtAABB& aabb) const {
+    return ::MtCollision::intersect(aabb, mSphere);
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoSphere::getClosest(const MtVector3& pos, MtContact& contact) const {
+    DDON_STUB("nZone::ShapeInfoSphere::getClosest")
+    return {};
+}
+
+void nZone::ShapeInfoSphere::loadBinary(MtDataReader& r) {
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+    unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 80);
+    f32 t1 = r.readF32();
+    mDecay = t1;
+    u32 t3 = r.mSeekPt;
+    u32 t4 = r.mBufsiz;
+    if (t3 >= t4) {
+        if (r.refill()) {
+            u32 t6 = r.mSeekPt;
+            u8* t7 = r.mBuffer;
+            u8 t8 = t7[r.mSeekPt];
+            r.mSeekPt = t6 + 1u;
+            mIsNativeData = t8 == 1;
+            unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+            r.read(static_cast<void*>(&mSphere), 16u);
+        } else {
+            mIsNativeData = false;
+            unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+            unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+            r.read(static_cast<void*>(&mSphere), 16u);
+        }
+    } else {
+        u8* t7 = r.mBuffer;
+        u8 t8 = t7[r.mSeekPt];
+        r.mSeekPt = t3 + 1u;
+        mIsNativeData = t8 == 1;
+        unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 0);
+        unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 120);
+        r.read(static_cast<void*>(&mSphere), 16u);
+    }
+}
+
+void nZone::ShapeInfoSphere::saveBinary(MtDataWriter& w) {
+    w.writeF32(mDecay);
+    bool t0 = mIsNativeData;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
+    w.mSeekPt = w.mSeekPt + 1u;
+    w.write(static_cast<const void*>(&mSphere), 16u);
+}
+
+bool nZone::ShapeInfoSphere::isGetAABB() const {
+    return true;
+}
+
+__attribute__((weak)) MtAABB nZone::ShapeInfoSphere::getAABB() const {
+    DDON_STUB("nZone::ShapeInfoSphere::getAABB")
+    __builtin_unreachable();
+}
+
+bool nZone::ShapeInfoSphere::isGetBoundingSphere() const {
+    return true;
+}
+
+__attribute__((weak)) MtSphere nZone::ShapeInfoSphere::getBoundingSphere() const {
+    DDON_STUB("nZone::ShapeInfoSphere::getBoundingSphere")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoSphere::getCenterPos() const {
+    DDON_STUB("nZone::ShapeInfoSphere::getCenterPos")
+    __builtin_unreachable();
+}
+
+void nZone::ShapeInfoSphere::setCenterPos(const MtVector3& pos) {
+    mSphere.pos.x = pos.x;
+    mSphere.pos.y = pos.y;
+    mSphere.pos.z = pos.z;
+}
+
+__attribute__((weak)) void nZone::ShapeInfoSphere::movePosition(const MtVector3& AddPos) {
+    DDON_STUB("nZone::ShapeInfoSphere::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoSphere::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
+    DDON_STUB("nZone::ShapeInfoSphere::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoSphere::mulMatrix(const MtMatrix& MulMatrix) {
+    DDON_STUB("nZone::ShapeInfoSphere::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoSphere::mulMatrix(nZone::ShapeInfoBase& OutputShape, const MtMatrix& MulMatrix) const {
+    DDON_STUB("nZone::ShapeInfoSphere::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) f32 nZone::ShapeInfoSphere::calcWeight(const MtVector3& pos) const {
+    DDON_STUB("nZone::ShapeInfoSphere::calcWeight")
+    return {};
+}
+
+nZone::ShapeInfoSphere::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nZone::ShapeInfoSphere::MyDTI nZone::ShapeInfoSphere::DTI("nZone::ShapeInfoSphere", &::nZone::ShapeInfoBase::DTI, 32ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nZone::ShapeInfoSphere::MyDTI::newInstance() const {
+    DDON_STUB("nZone::ShapeInfoSphere::MyDTI::newInstance")
+    return nullptr;
+}
+
 nZone::cAllocaterIntermediate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nZone::cAllocaterIntermediate::MyDTI nZone::cAllocaterIntermediate::DTI("nZone::cAllocaterIntermediate", &::MtObject::DTI, 8ul, 0u, 1u);
@@ -772,7 +2220,7 @@ __attribute__((weak)) bool nZone::cContentsPool::loadBeforeAllocateAlign4(nColli
 
 bool nZone::cContentsPool::load(MtDataReader& r) {
     MtSerializer sz(65536);
-    return sz.::MtSerializer::deserializeBinary(r, static_cast<u16>(0), static_cast<MtObject*>(&mContentsListArray), ::MtSerializer::MODE_STATE) != nullptr;
+    return sz.deserializeBinary(r, static_cast<u16>(0), static_cast<MtObject*>(&mContentsListArray), ::MtSerializer::MODE_STATE) != nullptr;
 }
 
 __attribute__((weak)) bool nZone::cContentsPool::save(MtDataWriter& w) {
@@ -853,9 +2301,7 @@ __attribute__((weak)) void nZone::cContentsPool::cContentsList::createProperty(M
     /* stub */
 }
 
-u32 nZone::cContentsPool::cContentsList::getZoneContentsNum() const {
-    return mZoneContentsArray.mLength;
-}
+static auto ddon_emit_0x01b88de0 __attribute__((used)) = &nZone::cContentsPool::cContentsList::getZoneContentsNum;
 
 nZone::cContentsPool::cContentsList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
@@ -978,7 +2424,7 @@ bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
                 w.mBuffer[w.mSeekPt] = 1;
                 w.mSeekPt = w.mSeekPt + 1u;
                 MtSerializer sz(65536);
-                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+                bool t1 = sz.serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
                 if (!t1) {
                     return false;
                 } else {
@@ -988,7 +2434,7 @@ bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
                 w.mBuffer[w.mSeekPt] = 1;
                 w.mSeekPt = w.mSeekPt + 1u;
                 MtSerializer sz(65536);
-                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+                bool t1 = sz.serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
                 if (!t1) {
                     return false;
                 } else {
@@ -1023,7 +2469,7 @@ bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
                 w.mBuffer[w.mSeekPt] = 1;
                 w.mSeekPt = w.mSeekPt + 1u;
                 MtSerializer sz(65536);
-                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+                bool t1 = sz.serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
                 if (!t1) {
                     return false;
                 } else {
@@ -1033,7 +2479,7 @@ bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
                 w.mBuffer[w.mSeekPt] = 1;
                 w.mSeekPt = w.mSeekPt + 1u;
                 MtSerializer sz(65536);
-                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+                bool t1 = sz.serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
                 if (!t1) {
                     return false;
                 } else {
@@ -1051,9 +2497,7 @@ bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
     }
 }
 
-nZone::ShapeInfoBase* nZone::cLayoutElement::getShapeInfo() const {
-    return mpShapeInfo;
-}
+static auto ddon_emit_0x01b88e60 __attribute__((used)) = &nZone::cLayoutElement::getShapeInfo;
 
 const nZone::ShapeInfoBase* nZone::cLayoutElement::getShapeInfoResource() const {
     if (mpOwner != nullptr) {
@@ -1068,9 +2512,7 @@ const nZone::ShapeInfoBase* nZone::cLayoutElement::getShapeInfoResource() const 
     return nullptr;
 }
 
-s32 nZone::cLayoutElement::getContentsPoolID() const {
-    return mContentsPoolID;
-}
+static auto ddon_emit_0x01b88e20 __attribute__((used)) = &nZone::cLayoutElement::getContentsPoolID;
 
 void nZone::cLayoutElement::setContentsPoolID(s32 id) {
     if (mpContentsPool != nullptr) {

@@ -102,6 +102,10 @@ private:
     static MtAllocator* mpAllocator;
 };
 
+inline void* cArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool cArea::isInit() {
     return this->mInit;
 }

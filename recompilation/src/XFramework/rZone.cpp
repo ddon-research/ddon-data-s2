@@ -3,9 +3,13 @@
 #include "rZone.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDataReader.h"
+#include "../MT/MtDataWriter.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtString.h"
+#include "cGridCollision.h"
 #include "cResource.h"
 #include "nZone.h"
 #ifndef DDON_STUB

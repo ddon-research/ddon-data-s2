@@ -5,6 +5,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #include "rBitTable.h"
 #ifndef DDON_STUB
@@ -61,9 +63,7 @@ __attribute__((weak)) void cBitCtrl::setResource(rBitTable* pRes) {
     /* stub */
 }
 
-rBitTable* cBitCtrl::getResource() const {
-    return mpBitTableRes;
-}
+static auto ddon_emit_0x01951250 __attribute__((used)) = &cBitCtrl::getResource;
 
 cBitCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

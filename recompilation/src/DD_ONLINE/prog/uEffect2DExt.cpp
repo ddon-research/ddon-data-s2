@@ -2,13 +2,28 @@
 #include <new>
 #include "uEffect2DExt.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../XFramework/cParticle2D.h"
 #include "../../XFramework/cUnit.h"
+#include "../../XFramework/cZoneListener.h"
+#include "cZoneListenerEffect.h"
+#include "cZoneListenerMulti.h"
 #include "cpWorkRate.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sWeatherManager.h"
 #include "sWorkRate.h"
+#include "../../XFramework/sZone.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uEffect2D.h"
@@ -120,21 +135,13 @@ void uEffect2DExt::updateParentPtr() {
     mpParentActor = nullptr;
 }
 
-f32 uEffect2DExt::getDeltaTimeCoefEx() {
-    return mDeltaTimeCoefEx;
-}
+static auto ddon_emit_0x01ad6030 __attribute__((used)) = &uEffect2DExt::getDeltaTimeCoefEx;
 
-void uEffect2DExt::setDeltaTimeCoefEx(f32 DeltaTimeCoef) {
-    mDeltaTimeCoefEx = DeltaTimeCoef;
-}
+static auto ddon_emit_0x01ad6040 __attribute__((used)) = &uEffect2DExt::setDeltaTimeCoefEx;
 
-void uEffect2DExt::setColorUpdateFlag(bool flag) {
-    mColorUpdate = flag;
-}
+static auto ddon_emit_0x01ad6060 __attribute__((used)) = &uEffect2DExt::setColorUpdateFlag;
 
-bool uEffect2DExt::getColorUpdateFlag() {
-    return mColorUpdate;
-}
+static auto ddon_emit_0x01ad6050 __attribute__((used)) = &uEffect2DExt::getColorUpdateFlag;
 
 __attribute__((weak)) void uEffect2DExt::buildCorrectColorFromZone() {
     DDON_STUB("uEffect2DExt::buildCorrectColorFromZone")

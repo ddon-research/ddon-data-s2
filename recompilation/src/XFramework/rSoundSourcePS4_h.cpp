@@ -5,7 +5,11 @@
 #include <string.h>
 #include "rSoundSourcePS4_h.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtFile.h"
+#include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtStream.h"
 #include "../MT/MtSynchronize.h"
+#include "cResource.h"
 #include "rSoundSource.h"
 #include "rSoundStreamSourcePackage.h"
 #ifndef DDON_STUB
@@ -150,7 +154,8 @@ u32 rSoundSourceStreamAT9::read(void* pdest, u32 size, u32* pid) {
                 u32 t0 = *((pid == nullptr) ? (&mGlobalID) : pid);
                 u32 t1 = mBufferLength;
                 memcpy(pdest, static_cast<char*>(mpBuffer) + t0, (t1 < (size + t0)) ? (t1 - t0) : size);
-                *((pid == nullptr) ? (&mGlobalID) : pid) = (*((pid == nullptr) ? (&mGlobalID) : pid)) + ((t1 < (size + t0)) ? (t1 - t0) : size);
+                u32 t2 = *((pid == nullptr) ? (&mGlobalID) : pid);
+                *((pid == nullptr) ? (&mGlobalID) : pid) = t2 + ((t1 < (size + t0)) ? (t1 - t0) : size);
                 mFilePosition = *((pid == nullptr) ? (&mGlobalID) : pid);
                 return (t1 < (size + t0)) ? (t1 - t0) : size;
             } else {
@@ -183,13 +188,9 @@ u32 rSoundSourceStreamAT9::read(void* pdest, u32 size, u32* pid) {
     }
 }
 
-rSoundStreamSourcePackage* rSoundSourceStreamAT9::getSourcePackage() const {
-    return mpStreamSourcePackage;
-}
+static auto ddon_emit_0x01375180 __attribute__((used)) = &rSoundSourceStreamAT9::getSourcePackage;
 
-u32 rSoundSourceStreamAT9::getPackageFileOffset() {
-    return mPackageFileOffset;
-}
+static auto ddon_emit_0x01375190 __attribute__((used)) = &rSoundSourceStreamAT9::getPackageFileOffset;
 
 rSoundSourceStreamAT9::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

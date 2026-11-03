@@ -375,3 +375,7 @@ public:
     static const u32 MATERIAL_USER_ATTRIBUTE_NUM = 4;
     static const u32 TRIANGLE_ATTRIBUTE_NUM = 1;
 };
+
+inline void* rCollision::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

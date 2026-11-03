@@ -75,3 +75,7 @@ public:
     uWeapon* mpWeapon;  // offset: 0x98
     static MyDTI DTI;
 };
+
+inline void* uCnsWeapon::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

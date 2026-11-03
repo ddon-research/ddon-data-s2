@@ -280,6 +280,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIUseItemBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool uGUIUseItemBase::isFocus() {
     return this->mFocus;
 }
@@ -296,10 +300,22 @@ inline uGUISystemMsg* uGUIUseItemBase::getPopSystemMsg() {
     return this->mpUnitSystemMsg;
 }
 
+inline sGUIExt::stGatheringData* uGUIUseItemBase::getGatheringData() {
+    return this->mpGatheringData;
+}
+
+inline void* uGUIUseItemBase::cEquipInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIUseItemBase::cEquipInfo::cEquipInfo() {
     this->mJobId = 0xFFFFFFFF;
     this->mLv = 0xFFFFFFFF;
     this->mpItem = nullptr;
+}
+
+inline void* uGUIUseItemBase::cGetItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIUseItemBase::cGetItemInfo::cGetItemInfo() {

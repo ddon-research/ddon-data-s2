@@ -105,9 +105,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCraftQualityData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCraftQualityData::cCraftQualityData() {
     this->mItemNo = 0;
     this->mBonus = 0;
     this->mRankLimit = 0;
     this->mLv = 1;
+}
+
+inline void* rCraftQuality::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCraftQualityData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftQualityData::DTI)->memFree(p_addr);
+}
+
+inline void* cCraftQualityData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftQualityData::DTI)->memAlloc(sz, align, ::cCraftQualityData::DTI.::MtDTI::getID());
 }

@@ -7,6 +7,7 @@
 #include "../../../../MT/MtDTI.h"
 #include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
+#include "../../../../MT/MtString.h"
 #include "Pawn.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB

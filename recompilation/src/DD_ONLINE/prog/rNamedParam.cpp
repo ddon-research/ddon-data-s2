@@ -6,6 +6,7 @@
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPropertyList.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -37,197 +38,101 @@ __attribute__((weak)) void cNamedParam::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-u32 cNamedParam::getID() const {
-    return mID;
-}
+static auto ddon_emit_0x01a9dca0 __attribute__((used)) = &cNamedParam::getID;
 
-void cNamedParam::setID(u32 NewValue) {
-    mID = NewValue;
-}
+static auto ddon_emit_0x01a9db20 __attribute__((used)) = &cNamedParam::setID;
 
-u32 cNamedParam::getType() const {
-    return mType;
-}
+static auto ddon_emit_0x01a9dcb0 __attribute__((used)) = &cNamedParam::getType;
 
-void cNamedParam::setType(u32 NewValue) {
-    mType = NewValue;
-}
+static auto ddon_emit_0x01a9db30 __attribute__((used)) = &cNamedParam::setType;
 
-u32 cNamedParam::getHpRate() const {
-    return mHpRate;
-}
+static auto ddon_emit_0x01a9dcc0 __attribute__((used)) = &cNamedParam::getHpRate;
 
-void cNamedParam::setHpRate(u32 NewValue) {
-    mHpRate = NewValue;
-}
+static auto ddon_emit_0x01a9db40 __attribute__((used)) = &cNamedParam::setHpRate;
 
-u16 cNamedParam::getExperience() const {
-    return mExperience;
-}
+static auto ddon_emit_0x01a9dcd0 __attribute__((used)) = &cNamedParam::getExperience;
 
-void cNamedParam::setExperience(u16 NewValue) {
-    mExperience = NewValue;
-}
+static auto ddon_emit_0x01a9db50 __attribute__((used)) = &cNamedParam::setExperience;
 
-u16 cNamedParam::getAttackBasePhys() const {
-    return mAttackBasePhys;
-}
+static auto ddon_emit_0x01a9dce0 __attribute__((used)) = &cNamedParam::getAttackBasePhys;
 
-void cNamedParam::setAttackBasePhys(u16 NewValue) {
-    mAttackBasePhys = NewValue;
-}
+static auto ddon_emit_0x01a9db60 __attribute__((used)) = &cNamedParam::setAttackBasePhys;
 
-u16 cNamedParam::getAttackWepPhys() const {
-    return mAttackWepPhys;
-}
+static auto ddon_emit_0x01a9dcf0 __attribute__((used)) = &cNamedParam::getAttackWepPhys;
 
-void cNamedParam::setAttackWepPhys(u16 NewValue) {
-    mAttackWepPhys = NewValue;
-}
+static auto ddon_emit_0x01a9db70 __attribute__((used)) = &cNamedParam::setAttackWepPhys;
 
-u16 cNamedParam::getDefenceBasePhys() const {
-    return mDefenceBasePhys;
-}
+static auto ddon_emit_0x01a9dd00 __attribute__((used)) = &cNamedParam::getDefenceBasePhys;
 
-void cNamedParam::setDefenceBasePhys(u16 NewValue) {
-    mDefenceBasePhys = NewValue;
-}
+static auto ddon_emit_0x01a9db80 __attribute__((used)) = &cNamedParam::setDefenceBasePhys;
 
-u16 cNamedParam::getDefenceWepPhys() const {
-    return mDefenceWepPhys;
-}
+static auto ddon_emit_0x01a9dd10 __attribute__((used)) = &cNamedParam::getDefenceWepPhys;
 
-void cNamedParam::setDefenceWepPhys(u16 NewValue) {
-    mDefenceWepPhys = NewValue;
-}
+static auto ddon_emit_0x01a9db90 __attribute__((used)) = &cNamedParam::setDefenceWepPhys;
 
-u16 cNamedParam::getAttackBaseMagic() const {
-    return mAttackBaseMagic;
-}
+static auto ddon_emit_0x01a9dd20 __attribute__((used)) = &cNamedParam::getAttackBaseMagic;
 
-void cNamedParam::setAttackBaseMagic(u16 NewValue) {
-    mAttackBaseMagic = NewValue;
-}
+static auto ddon_emit_0x01a9dba0 __attribute__((used)) = &cNamedParam::setAttackBaseMagic;
 
-u16 cNamedParam::getAttackWepMagic() const {
-    return mAttackWepMagic;
-}
+static auto ddon_emit_0x01a9dd30 __attribute__((used)) = &cNamedParam::getAttackWepMagic;
 
-void cNamedParam::setAttackWepMagic(u16 NewValue) {
-    mAttackWepMagic = NewValue;
-}
+static auto ddon_emit_0x01a9dbb0 __attribute__((used)) = &cNamedParam::setAttackWepMagic;
 
-u16 cNamedParam::getDefenceBaseMagic() const {
-    return mDefenceBaseMagic;
-}
+static auto ddon_emit_0x01a9dd40 __attribute__((used)) = &cNamedParam::getDefenceBaseMagic;
 
-void cNamedParam::setDefenceBaseMagic(u16 NewValue) {
-    mDefenceBaseMagic = NewValue;
-}
+static auto ddon_emit_0x01a9dbc0 __attribute__((used)) = &cNamedParam::setDefenceBaseMagic;
 
-u16 cNamedParam::getDefenceWepMagic() const {
-    return mDefenceWepMagic;
-}
+static auto ddon_emit_0x01a9dd50 __attribute__((used)) = &cNamedParam::getDefenceWepMagic;
 
-void cNamedParam::setDefenceWepMagic(u16 NewValue) {
-    mDefenceWepMagic = NewValue;
-}
+static auto ddon_emit_0x01a9dbd0 __attribute__((used)) = &cNamedParam::setDefenceWepMagic;
 
-u16 cNamedParam::getPower() const {
-    return mPower;
-}
+static auto ddon_emit_0x01a9dd60 __attribute__((used)) = &cNamedParam::getPower;
 
-void cNamedParam::setPower(u16 NewValue) {
-    mPower = NewValue;
-}
+static auto ddon_emit_0x01a9dbe0 __attribute__((used)) = &cNamedParam::setPower;
 
-u16 cNamedParam::getGuardDefenceBase() const {
-    return mGuardDefenceBase;
-}
+static auto ddon_emit_0x01a9dd70 __attribute__((used)) = &cNamedParam::getGuardDefenceBase;
 
-void cNamedParam::setGuardDefenceBase(u16 NewValue) {
-    mGuardDefenceBase = NewValue;
-}
+static auto ddon_emit_0x01a9dbf0 __attribute__((used)) = &cNamedParam::setGuardDefenceBase;
 
-u16 cNamedParam::getGuardDefenceWep() const {
-    return mGuardDefenceWep;
-}
+static auto ddon_emit_0x01a9dd80 __attribute__((used)) = &cNamedParam::getGuardDefenceWep;
 
-void cNamedParam::setGuardDefenceWep(u16 NewValue) {
-    mGuardDefenceWep = NewValue;
-}
+static auto ddon_emit_0x01a9dc00 __attribute__((used)) = &cNamedParam::setGuardDefenceWep;
 
-u16 cNamedParam::getShrinkEnduranceMain() const {
-    return mShrinkEnduranceMain;
-}
+static auto ddon_emit_0x01a9dd90 __attribute__((used)) = &cNamedParam::getShrinkEnduranceMain;
 
-void cNamedParam::setShrinkEnduranceMain(u16 NewValue) {
-    mShrinkEnduranceMain = NewValue;
-}
+static auto ddon_emit_0x01a9dc10 __attribute__((used)) = &cNamedParam::setShrinkEnduranceMain;
 
-u16 cNamedParam::getBlowEnduranceMain() const {
-    return mBlowEnduranceMain;
-}
+static auto ddon_emit_0x01a9dda0 __attribute__((used)) = &cNamedParam::getBlowEnduranceMain;
 
-void cNamedParam::setBlowEnduranceMain(u16 NewValue) {
-    mBlowEnduranceMain = NewValue;
-}
+static auto ddon_emit_0x01a9dc20 __attribute__((used)) = &cNamedParam::setBlowEnduranceMain;
 
-u16 cNamedParam::getDownEnduranceMain() const {
-    return mDownEnduranceMain;
-}
+static auto ddon_emit_0x01a9ddb0 __attribute__((used)) = &cNamedParam::getDownEnduranceMain;
 
-void cNamedParam::setDownEnduranceMain(u16 NewValue) {
-    mDownEnduranceMain = NewValue;
-}
+static auto ddon_emit_0x01a9dc30 __attribute__((used)) = &cNamedParam::setDownEnduranceMain;
 
-u16 cNamedParam::getShakeEnduranceMain() const {
-    return mShakeEnduranceMain;
-}
+static auto ddon_emit_0x01a9ddc0 __attribute__((used)) = &cNamedParam::getShakeEnduranceMain;
 
-void cNamedParam::setShakeEnduranceMain(u16 NewValue) {
-    mShakeEnduranceMain = NewValue;
-}
+static auto ddon_emit_0x01a9dc70 __attribute__((used)) = &cNamedParam::setShakeEnduranceMain;
 
-u16 cNamedParam::getHpSub() const {
-    return mHpSub;
-}
+static auto ddon_emit_0x01a9ddd0 __attribute__((used)) = &cNamedParam::getHpSub;
 
-void cNamedParam::setHpSub(u16 NewValue) {
-    mHpSub = NewValue;
-}
+static auto ddon_emit_0x01a9dc40 __attribute__((used)) = &cNamedParam::setHpSub;
 
-u16 cNamedParam::getShrinkEnduranceSub() const {
-    return mShrinkEnduranceSub;
-}
+static auto ddon_emit_0x01a9dde0 __attribute__((used)) = &cNamedParam::getShrinkEnduranceSub;
 
-void cNamedParam::setShrinkEnduranceSub(u16 NewValue) {
-    mShrinkEnduranceSub = NewValue;
-}
+static auto ddon_emit_0x01a9dc50 __attribute__((used)) = &cNamedParam::setShrinkEnduranceSub;
 
-u16 cNamedParam::getBlowEnduranceSub() const {
-    return mBlowEnduranceSub;
-}
+static auto ddon_emit_0x01a9ddf0 __attribute__((used)) = &cNamedParam::getBlowEnduranceSub;
 
-void cNamedParam::setBlowEnduranceSub(u16 NewValue) {
-    mBlowEnduranceSub = NewValue;
-}
+static auto ddon_emit_0x01a9dc60 __attribute__((used)) = &cNamedParam::setBlowEnduranceSub;
 
-u16 cNamedParam::getOcdEndurance() const {
-    return mOcdEndurance;
-}
+static auto ddon_emit_0x01a9de00 __attribute__((used)) = &cNamedParam::getOcdEndurance;
 
-void cNamedParam::setOcdEndurance(u16 NewValue) {
-    mOcdEndurance = NewValue;
-}
+static auto ddon_emit_0x01a9dc80 __attribute__((used)) = &cNamedParam::setOcdEndurance;
 
-u16 cNamedParam::getAilmentDamage() const {
-    return mAilmentDamage;
-}
+static auto ddon_emit_0x01a9de10 __attribute__((used)) = &cNamedParam::getAilmentDamage;
 
-void cNamedParam::setAilmentDamage(u16 NewValue) {
-    mAilmentDamage = NewValue;
-}
+static auto ddon_emit_0x01a9dc90 __attribute__((used)) = &cNamedParam::setAilmentDamage;
 
 cNamedParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

@@ -2,17 +2,25 @@
 #include <new>
 #include "uCnsTinyChain.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCollision.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtGeomCapsule.h"
 #include "../MT/MtGeomSphere.h"
+#include "../MT/MtGeometry3D.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "cResource.h"
+#include "nCollisionNode.h"
 #include "rCnsTinyChain.h"
 #include "sCollision.h"
+#include "sMain.h"
+#include "sScene.h"
 #include "uCnsGroup.h"
+#include "uConstraint.h"
 #include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -182,9 +190,7 @@ __attribute__((weak)) void uCnsTinyChain::setModelColRes(rChainCol* pres) {
     /* stub */
 }
 
-rChainCol* uCnsTinyChain::getModelColRes() {
-    return mpModelColRes;
-}
+static auto ddon_emit_0x01b681e0 __attribute__((used)) = &uCnsTinyChain::getModelColRes;
 
 void uCnsTinyChain::setModelCol(uModel* pModel) {
     mpModelCol = pModel;
@@ -195,18 +201,14 @@ void uCnsTinyChain::setModelCol(uModel* pModel) {
     }
 }
 
-uModel* uCnsTinyChain::getModelCol() {
-    return mpModelCol;
-}
+static auto ddon_emit_0x01b681d0 __attribute__((used)) = &uCnsTinyChain::getModelCol;
 
 __attribute__((weak)) void uCnsTinyChain::setTransParent(uModel* parent_model_ptr) {
     DDON_STUB("uCnsTinyChain::setTransParent")
     /* stub */
 }
 
-uModel* uCnsTinyChain::getTransParent() {
-    return mpTransParent;
-}
+static auto ddon_emit_0x01b681f0 __attribute__((used)) = &uCnsTinyChain::getTransParent;
 
 __attribute__((weak)) uCnsGroup::cGroup* uCnsTinyChain::createGroup(u32 idx) {
     DDON_STUB("uCnsTinyChain::createGroup")
@@ -389,13 +391,9 @@ __attribute__((weak)) void uCnsTinyChain::cChainGroup::updateColliderNode() {
     /* stub */
 }
 
-u32 uCnsTinyChain::cChainGroup::getAttrForce() {
-    return mAttr & 0xFFFF00u;
-}
+static auto ddon_emit_0x01b68190 __attribute__((used)) = &uCnsTinyChain::cChainGroup::getAttrForce;
 
-void uCnsTinyChain::cChainGroup::setAttrForce(u32 attr) {
-    mAttr = (attr & 0xFFFF00u) | (mAttr & 0xFF0000FFu);
-}
+static auto ddon_emit_0x01b681a0 __attribute__((used)) = &uCnsTinyChain::cChainGroup::setAttrForce;
 
 u32 uCnsTinyChain::cChainGroup::getAttrCollision() {
     return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 44);
@@ -440,46 +438,28 @@ MtUI* uCnsTinyChain::cChainNode::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-void uCnsTinyChain::cChainNode::setAttr(u32 attr) {
-    mAttr = attr;
-}
+static auto ddon_emit_0x01b680e0 __attribute__((used)) = &uCnsTinyChain::cChainNode::setAttr;
 
-u32 uCnsTinyChain::cChainNode::getAttr() const {
-    return mAttr;
-}
+static auto ddon_emit_0x01b680d0 __attribute__((used)) = &uCnsTinyChain::cChainNode::getAttr;
 
-void uCnsTinyChain::cChainNode::setAttach(u32 attach) {
-    mAttach = attach;
-}
+static auto ddon_emit_0x01b68080 __attribute__((used)) = &uCnsTinyChain::cChainNode::setAttach;
 
 __attribute__((weak)) u32 uCnsTinyChain::cChainNode::getAttach() const {
     DDON_STUB("uCnsTinyChain::cChainNode::getAttach")
     return {};
 }
 
-void uCnsTinyChain::cChainNode::setRotMode(u32 mode) {
-    mRotMode = mode;
-}
+static auto ddon_emit_0x01b680a0 __attribute__((used)) = &uCnsTinyChain::cChainNode::setRotMode;
 
-u32 uCnsTinyChain::cChainNode::getRotMode() const {
-    return mRotMode;
-}
+static auto ddon_emit_0x01b68090 __attribute__((used)) = &uCnsTinyChain::cChainNode::getRotMode;
 
-void uCnsTinyChain::cChainNode::setRefJointNo(u32 no) {
-    mRefJntNo = no;
-}
+static auto ddon_emit_0x01b680c0 __attribute__((used)) = &uCnsTinyChain::cChainNode::setRefJointNo;
 
-u32 uCnsTinyChain::cChainNode::getRefJointNo() const {
-    return mRefJntNo;
-}
+static auto ddon_emit_0x01b680b0 __attribute__((used)) = &uCnsTinyChain::cChainNode::getRefJointNo;
 
-void uCnsTinyChain::cChainNode::setAngleMode(u32 mode) {
-    mAngleMode = mode;
-}
+static auto ddon_emit_0x01b68140 __attribute__((used)) = &uCnsTinyChain::cChainNode::setAngleMode;
 
-u32 uCnsTinyChain::cChainNode::getAngleMode() const {
-    return mAngleMode;
-}
+static auto ddon_emit_0x01b68130 __attribute__((used)) = &uCnsTinyChain::cChainNode::getAngleMode;
 
 __attribute__((weak)) void uCnsTinyChain::cChainNode::setAngleLimit(f32 lim) {
     DDON_STUB("uCnsTinyChain::cChainNode::setAngleLimit")
@@ -496,17 +476,11 @@ void uCnsTinyChain::cChainNode::setShapeObject(u32 shape) {
     mpChainGroup->mResetColliderNode = true;
 }
 
-u32 uCnsTinyChain::cChainNode::getShapeObject() const {
-    return mShapeObject;
-}
+static auto ddon_emit_0x01b680f0 __attribute__((used)) = &uCnsTinyChain::cChainNode::getShapeObject;
 
-void uCnsTinyChain::cChainNode::setShapeScroll(u32 shape) {
-    mShapeScroll = shape;
-}
+static auto ddon_emit_0x01b68120 __attribute__((used)) = &uCnsTinyChain::cChainNode::setShapeScroll;
 
-u32 uCnsTinyChain::cChainNode::getShapeScroll() const {
-    return mShapeScroll;
-}
+static auto ddon_emit_0x01b68110 __attribute__((used)) = &uCnsTinyChain::cChainNode::getShapeScroll;
 
 uCnsTinyChain::cChainNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

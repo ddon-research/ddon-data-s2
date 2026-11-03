@@ -3,6 +3,7 @@
 #include <string.h>
 #include "rGUIMessage.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCRC.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
 #include "../MT/MtDataWriter.h"
@@ -89,9 +90,10 @@ bool rGUIMessage::load(MtStream& in) {
     mPackageName = reinterpret_cast<MT_CTSTR>(&pBuffer[(t22 * 32u) + (t23 * 8u)]);
     const u32 t30 = PackageNameSize;
     r.MtDataReader::read(static_cast<void*>(&pBuffer[(t22 * 32u) + (t23 * 8u)]), t30);
+    u32 t32 = mIndexNum;
     mpIndex = pIndexBuffer;
-    if (mIndexNum != 0) {
-        r.MtDataReader::read(static_cast<void*>(pIndexBuffer), mIndexNum * 32u);
+    if (t32 != 0) {
+        r.MtDataReader::read(static_cast<void*>(pIndexBuffer), t32 * 32u);
         r.MtDataReader::read(static_cast<void*>(&mpHashTable[0]), 2048u);
         if (mIndexNameBufferSize != 0) {
             mIndexNameBuffer = reinterpret_cast<MT_CTSTR>(&pBuffer[spill4208]);
@@ -197,7 +199,7 @@ bool rGUIMessage::save(MtStream& out) {
     w.MtDataWriter::writeU32(mIndexNameBufferSize);
     w.MtDataWriter::writeU32(mBufferSize);
     w.MtDataWriter::writeU32(static_cast<unsigned int>(strlen(mPackageName)));
-    w.MtDataWriter::writeString(mPackageName);
+    w.writeString(mPackageName);
     if (mIndexNum != 0) {
         INDEX* v0_9 = static_cast<INDEX*>(memAlloc(mIndexNum * 32u));
         u32 v2_2;

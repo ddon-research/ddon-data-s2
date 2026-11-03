@@ -9,12 +9,14 @@
 #include "../PacketData/EntryBoard.h"
 #include "../PacketData/Item.h"
 #include "../../../../MT/MtCollection.h"
+#include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../PacketData/Pawn.h"
 #include "../PacketData/Quest.h"
 #include "../PacketData/QuickParty.h"
 #include "../PacketData/Stage.h"
 #include "../PacketData/SupportPoint.h"
+#include "../../cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

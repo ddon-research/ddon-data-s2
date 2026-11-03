@@ -621,12 +621,20 @@ namespace cThinkMgrName {
     };
 }  // namespace cThinkMgrName
 
+inline void* cThinkMgrName::cTargetLink::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cThinkMgrName::cTargetLink::cTargetLink() {
     this->mIdx = 0;
     this->mLinkID = 0;
     this->mIdxMax = 0;
     this->mIsDown = true;
     this->mMoveMode = static_cast<cThinkMgrName::cTargetLink::TARGETLINK_MODE>(0);
+}
+
+inline void* cThinkMgrName::cThinkMgr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void cThinkMgrName::cThinkMgr::setResetThinkTbl(u8* thinktbl) {
@@ -724,12 +732,28 @@ inline void cThinkMgrName::cThinkMgr::InitRev() {
     this->mRevTblDat[0].uRetTbl.offset_address = 0;
 }
 
+inline void cThinkMgrName::cThinkMgr::setbackNextFlgTbl() {
+    this->mpTempOldSelectThinkTbl = this->mpOldTopSelectThinkTbl;
+    this->mpTempOldTopSelectThinkTbl = this->mpOldSelectThinkTbl;
+    this->mTempOldSelectIdxNo = this->mOldSelectIdxNo;
+    this->mTempOldSelectTraceIdxNo = this->mOldSelectTraceIdxNo;
+    this->mbTempNextFlg = this->mbNextFlg;
+}
+
 inline void cThinkMgrName::cThinkMgr::getbackNextFlgTbl() {
     this->mpOldTopSelectThinkTbl = this->mpTempOldSelectThinkTbl;
     this->mpOldSelectThinkTbl = this->mpTempOldTopSelectThinkTbl;
     this->mOldSelectIdxNo = this->mTempOldSelectIdxNo;
     this->mOldSelectTraceIdxNo = this->mTempOldSelectTraceIdxNo;
     this->mbNextFlg = this->mbTempNextFlg;
+}
+
+inline void* cThinkMgrName::cThinkMgrTargetData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cThinkMgrName::cThinkMgrTargetMgr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void cThinkMgrName::cThinkMgrTargetMgr::clrSelectNewTargetIdx() {
@@ -739,6 +763,10 @@ inline void cThinkMgrName::cThinkMgrTargetMgr::clrSelectNewTargetIdx() {
 inline void cThinkMgrName::cThinkMgrTargetMgr::clrLinkID() {
     this->mLinkID = 0;
     this->mLinkIDIdx = 0;
+}
+
+inline void* cThinkMgrName::cThinkTblList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cThinkMgrName::cThinkTblList::cThinkTblList() {

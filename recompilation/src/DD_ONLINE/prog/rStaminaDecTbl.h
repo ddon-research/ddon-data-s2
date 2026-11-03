@@ -164,6 +164,10 @@ public:
     static const u32 DATA_VERSION;
 };
 
+inline void* cStaminaDecList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cStaminaDecList::cStaminaDecList() {
     this->mCType = static_cast<nStamina::CONTINUATION_TYPE>(0);
     this->mExecuteType = static_cast<nStamina::UPDATE_TYPE>(0);
@@ -172,6 +176,14 @@ inline cStaminaDecList::cStaminaDecList() {
     this->mStaminaDecList.::MtArray::mAutoDelete = true;
 }
 
+inline void* cStaminaDecParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cStaminaDecParam::cStaminaDecParam() {
     this->mStamina = 0.0f;
+}
+
+inline void* rStaminaDecTbl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

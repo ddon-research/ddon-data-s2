@@ -9,6 +9,7 @@
 #include "../../MT/MtPrimitive3D.h"
 #include "cHitGeom.h"
 #include "../../XFramework/cUnit.h"
+#include "cpObjCollision.h"
 #include "rCollGeom.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB

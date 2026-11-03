@@ -21,17 +21,28 @@ class MtPropertyList;
 class MtUI;
 class MtVector3;
 class cDraw;
-class cSoundOcclusionLayoutInfo;
 class cSoundZoneListener;
 class cZoneLayout;
-namespace nSoundOcclusion { class cBaseContents; }
 namespace nZone { class ShapeInfoPanel; }
 namespace nZone { class cLayoutElement; }
 class rZone;
 
 // Declarations
+class cSoundOcclusionLayoutInfo;
 class cSoundOcclusionListener;
+namespace nSoundOcclusion { class cBaseContents; }
+namespace nSoundOcclusion { class cCategory; }
+namespace nSoundOcclusion { class cFreeWorkContents; }
 class uSoundOcclusion;
+
+namespace nSoundOcclusion {
+    enum OPTION
+    {
+        OPTION_NONE = 0,
+        OPTION_DYNAMIC_MOVE = 1,
+        OPTION_FLIP = 2,
+    };
+}  // namespace nSoundOcclusion
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -43,6 +54,59 @@ using s32 = int;
 using size_t = _Sizet;
 using u16 = unsigned short;
 using u32 = unsigned int;
+
+class cSoundOcclusionLayoutInfo : public cSoundLayoutInfo
+{
+public:
+    enum USE_TYPE
+    {
+        USE_TYPE_NONE = 0,
+        USE_TYPE_STATIC = 1,
+        USE_TYPE_DYNAMIC = 2,
+    };
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cSoundOcclusionLayoutInfo();
+    virtual ~cSoundOcclusionLayoutInfo();
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void setContentsIndex(nZone::cLayoutElement* pLayout);  // vtable slot 7
+    virtual s32 getContentsIndex(u32 index);  // vtable slot 8
+    USE_TYPE getUseType() const;
+    void setUseType(USE_TYPE type);
+    u16 getBoundingBoxIndex() const;
+    void setBoundingBoxIndex(u16 index);
+    u16 getHollowManagerIndex() const;
+    void setHollowManagerIndex(u16 index);
+protected:
+    u32 mUseType;  // offset: 0x14
+    u16 mBoundingBoxIndex;  // offset: 0x18
+    s16 mHollowManagerIndex;  // offset: 0x1a
+    s32 mContentsIndex[2];  // offset: 0x1c
+public:
+    static MyDTI DTI;
+};
 
 class cSoundOcclusionListener : public cSoundZoneListener
 {
@@ -75,6 +139,78 @@ public:
 public:
     static MyDTI DTI;
 };
+
+namespace nSoundOcclusion {
+    class cCategory : public nSoundZoneBase::cSoundZoneContents
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cCategory();
+        virtual ~cCategory();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundOcclusion
+
+namespace nSoundOcclusion {
+    class cFreeWorkContents : public nSoundOcclusion::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cFreeWorkContents();
+        virtual ~cFreeWorkContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    public:
+        s32 mFreeWork[4];  // offset: 0x1c
+        static MyDTI DTI;
+        static const u32 FREE_WORK_NUM = 4;
+    };
+}  // namespace nSoundOcclusion
 
 class uSoundOcclusion : public uSoundZoneBase
 {
@@ -323,7 +459,76 @@ public:
     static MyDTI DTI;
 };
 
+namespace nSoundOcclusion {
+    class cBaseContents : public nSoundOcclusion::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cBaseContents();
+        virtual ~cBaseContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    public:
+        nSoundOcclusion::OPTION mOption;  // offset: 0x1c
+        s16 mHollowId;  // offset: 0x20
+        s16 mHollowPriority;  // offset: 0x22
+        f32 mVolumeRate;  // offset: 0x24
+        f32 mSurroundDist[4];  // offset: 0x28
+        static MyDTI DTI;
+        static const s16 HOLLOW_ID_NONE = -1;
+    };
+}  // namespace nSoundOcclusion
+
+inline void* cSoundOcclusionLayoutInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cSoundOcclusionListener::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSoundOcclusionListener::cSoundOcclusionListener() {
+}
+
+inline void* nSoundOcclusion::cBaseContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSoundOcclusion::cCategory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSoundOcclusion::cFreeWorkContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uSoundOcclusion::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uSoundOcclusion::cBoundingBox::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uSoundOcclusion::cBoundingBox::cBoundingBox() {
@@ -333,11 +538,19 @@ inline uSoundOcclusion::cBoundingBox::cBoundingBox() {
     this->mpStaticBoundingArray = nullptr;
 }
 
+inline void* uSoundOcclusion::cHollowManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uSoundOcclusion::cHollowManager::cHollowManager() {
     this->mHollowId = 0;
     this->mIndexArrayNum = 0;
     this->mpIndexArray = nullptr;
     this->mMaxVolumeRate = 0;
+}
+
+inline void* uSoundOcclusion::cOcclusionGroupManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uSoundOcclusion::cOcclusionGroupManager::cOcclusionGroupManager() {

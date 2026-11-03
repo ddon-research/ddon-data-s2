@@ -182,8 +182,16 @@ private:
     static sContextManager* mpInstance;
 };
 
+inline void* sContextManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sContextManager* sContextManager::getInstance() {
     return ::sContextManager::mpInstance;
+}
+
+inline void* sContextManager::List::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sContextManager::List::List() {

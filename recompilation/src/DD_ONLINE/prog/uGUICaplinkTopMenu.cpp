@@ -3,22 +3,37 @@
 #include "uGUICaplinkTopMenu.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
+#include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive2D.h"
 #include "../../MT/MtString.h"
+#include "../../XFramework/cCaplinkContentAchievementGet.h"
+#include "../../XFramework/cCaplinkDataDef.h"
 #include "cControl.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
 #include "cUIObject.h"
 #include "../../XFramework/cUnit.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "sCaplinkManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "../../XFramework/sRender.h"
+#include "../../XFramework/sUnit.h"
+#include "../../XFramework/uCoord.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #include "uGUICaplinkChat.h"
 #include "uGUICaplinkFriendList.h"
+#include "uGUICaplinkMenuBase.h"
 #include "uGUICaplinkProfile.h"
 #include "uGUICaplinkProfileEdit.h"
 #include "uGUICaplinkTalk.h"
@@ -51,6 +66,10 @@ const MtDTI& cCaptrophyData::getDTI() const {
     return cCaptrophyData::DTI;
 }
 
+inline void* cCaptrophyData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCaptrophyData::DTI)->memAlloc(sz, align, cCaptrophyData::DTI.getID());
+}
+
 inline void cCaptrophyData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCaptrophyData::DTI)->memFree(p_addr);
 }
@@ -59,13 +78,16 @@ cCaptrophyData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 cCaptrophyData::MyDTI cCaptrophyData::DTI("cCaptrophyData", &::cUIObject::DTI, 800ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCaptrophyData::MyDTI::newInstance() const {
-    DDON_STUB("cCaptrophyData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCaptrophyData::MyDTI::newInstance() const {
+    return new (16u) cCaptrophyData;
 }
 
 const MtDTI& cCaptrophyRelationData::getDTI() const {
     return cCaptrophyRelationData::DTI;
+}
+
+inline void* cCaptrophyRelationData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCaptrophyRelationData::DTI)->memAlloc(sz, align, cCaptrophyRelationData::DTI.getID());
 }
 
 inline void cCaptrophyRelationData::operator delete(void* p_addr) {
@@ -76,9 +98,8 @@ cCaptrophyRelationData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 cCaptrophyRelationData::MyDTI cCaptrophyRelationData::DTI("cCaptrophyRelationData", &::cUIObject::DTI, 840ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCaptrophyRelationData::MyDTI::newInstance() const {
-    DDON_STUB("cCaptrophyRelationData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCaptrophyRelationData::MyDTI::newInstance() const {
+    return new (16u) cCaptrophyRelationData;
 }
 
 const MtDTI& cCaptrophyRewardData::getDTI() const {

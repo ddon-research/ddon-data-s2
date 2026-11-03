@@ -7,6 +7,7 @@
 #include "../../MT/MtString.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "rArchiveListArray.h"

@@ -114,3 +114,27 @@ public:
     MtMatrix mWmat;  // offset: 0xd0
     static MyDTI DTI;
 };
+
+inline void* uCoord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline uCoord* uCoord::getParent() {
+    return this->mpParent;
+}
+
+inline void uCoord::setOrder(u32 order) {
+    this->mOrder = order;
+}
+
+inline u32 uCoord::getOrder() {
+    return this->mOrder;
+}
+
+inline void uCoord::setParentFlags(u32 flags) {
+    this->mParentFlags = flags;
+}
+
+inline u32 uCoord::getParentFlags() {
+    return this->mParentFlags;
+}

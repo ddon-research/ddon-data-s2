@@ -278,3 +278,15 @@ private:
     static s32 mArgumentCount;
     static MT_CHAR* * mArgumentVector;
 };
+
+inline void* sApp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline sApp* sApp::getInstance() {
+    return ::sApp::mpInstance;
+}
+
+inline void* sApp::Item::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

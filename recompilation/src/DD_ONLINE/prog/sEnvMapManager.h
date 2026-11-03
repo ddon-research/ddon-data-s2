@@ -200,3 +200,15 @@ public:
     static MyDTI DTI;
     static sEnvMapManager* mpInstance;
 };
+
+inline void* sEnvMapManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sEnvMapManager::cManageEnvMapBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sEnvMapManager::cManageEnvMapField::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

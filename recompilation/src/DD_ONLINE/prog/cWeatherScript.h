@@ -130,3 +130,11 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* cWeatherScript::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cWeatherScriptCmdCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

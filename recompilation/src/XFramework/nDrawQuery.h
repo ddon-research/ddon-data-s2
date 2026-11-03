@@ -114,3 +114,11 @@ namespace nDraw {
         static MyDTI DTI;
     };
 }  // namespace nDraw
+
+inline void* nDraw::OcclusionQuery::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nDraw::Query::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

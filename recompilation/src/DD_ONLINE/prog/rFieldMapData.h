@@ -143,3 +143,11 @@ public:
     static const u8 DATA_VERSION = 18;
     static MyDTI DTI;
 };
+
+inline void* rFieldMapData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rFieldMapData::Data::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

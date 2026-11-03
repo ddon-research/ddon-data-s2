@@ -2,30 +2,49 @@
 #include <new>
 #include <string.h>
 #include "sNetworkExt.h"
+#include "Protocol/PacketData/Character.h"
 #include "Protocol/PacketData/Clan.h"
 #include "Protocol/PacketData/Community.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtNetBuffer.h"
 #include "../../MT/MtNetCore.h"
 #include "../../MT/MtNetDevice.h"
+#include "../../MT/MtNetMediator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
+#include "../../MT/MtSynchronize.h"
 #include "../../MT/MtTime.h"
+#include "Protocol/UserSession/S2C.h"
+#include "cGUIUtility.h"
 #include "cNetGameServer.h"
 #include "cNetLoginServer.h"
 #include "cNetSessionManager.h"
 #include "cNetStorage.h"
+#include "../../XFramework/cSystem.h"
+#include "nDialog.h"
 #include "nNet.h"
 #include "../../XFramework/nNetworkAchievement.h"
 #include "../../XFramework/nNetworkCallback.h"
+#include "../../XFramework/nNetworkSession.h"
 #include "../../generated/shared/np_npid.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sCaplinkManager.h"
+#include "sDialogBase.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sGame.h"
 #include "../../XFramework/sMain.h"
 #include "../../XFramework/sNetwork.h"
+#include "sQuestManagerExt.h"
+#include "../../XFramework/sUserManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -118,12 +137,15 @@ void sNetworkExt::final() {
     shutdownSession();
 }
 
+inline void sNetworkExt::shutdownCore() {
+    shutdownContext(static_cast<u32>(mUserIndex), 0);
+}
+
 void sNetworkExt::requestAward(s32 id) {
-    if (!mAchievementReady) {
-        return;
-    }
-    if (id <= 63) {
-        mAchievementFlag = static_cast<u64>(static_cast<unsigned long>(mAchievementFlag) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(id) & 63)));
+    if (mAchievementReady) {
+        if (id <= 63) {
+            mAchievementFlag = static_cast<u64>(static_cast<unsigned long>(mAchievementFlag) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(id) & 63)));
+        }
     }
 }
 

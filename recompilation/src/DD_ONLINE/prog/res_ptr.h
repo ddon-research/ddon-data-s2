@@ -34,11 +34,14 @@ class res_ptr : public cResPtrBase
 public:
     res_ptr();
     ~res_ptr();
+    void setPtr(res_ptr<T>& src);
     void setPtr(T* src);
     void releasePtr();
     T* getResPtr();
-    bool isResUsage() const;
+    res_ptr<T>& operator=(res_ptr<T>& src);
     res_ptr<T>& operator=(T* pRes);
+    bool operator!=(res_ptr<T>& src);
+    bool isResUsage() const;
     const T* getResPtr() const;
     bool isNull() const;
     res_ptr(T* src);

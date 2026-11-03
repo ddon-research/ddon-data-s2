@@ -62,3 +62,7 @@ public:
 protected:
     static const u8 DATA_VERSION = 48;
 };
+
+inline void* cCharParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

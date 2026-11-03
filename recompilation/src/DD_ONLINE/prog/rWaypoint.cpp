@@ -5,9 +5,12 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #ifndef DDON_STUB
@@ -31,7 +34,7 @@ rWaypoint::rWaypoint() {
     /* stub */
 }
 
-rWaypoint::~rWaypoint() {
+__attribute__((noinline)) rWaypoint::~rWaypoint() {
     if (mPointList.mLength != 0) {
         u32 v0_0 = mPointList.mLength;
         for (unsigned int i0_3 = 0;;) {
@@ -104,8 +107,31 @@ bool rWaypoint::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rWaypoint::save(MtStream& out) {
-    DDON_STUB("rWaypoint::save")
-    return {};
+        MtDataWriter w(out, 4096, 4096);
+        (&w)->writeU32(0x545057);
+        (&w)->writeU32(2);
+        (&w)->writeU32(mPointList.mLength);
+        MtFloat3 t4;
+        for (u32 t1 = 0; t1 < mPointList.mLength; ++t1) {
+            cPoint* t3 = static_cast<cPoint*>(mPointList.mpArray[(s32)t1]);
+            t4.x = t3->mPos.x;
+            t4.y = t3->mPos.y;
+            t4.z = t3->mPos.z;
+            (&w)->writeV3(t4);
+            f32 t7 = t3->mRadius;
+            (&w)->writeF32(t7);
+        }
+        (&w)->writeU32(mRouteList.mLength);
+        for (u32 t2 = 0; t2 < mRouteList.mLength; ++t2) {
+            cRoute* t5 = static_cast<cRoute*>(mRouteList.mpArray[(s32)t2]);
+            s32* t6 = t5->mPointIdx;
+            (&w)->writeU32(4);
+            (&w)->write(t6, 16);
+            f32* t8 = t5->mWeight;
+            (&w)->writeU32(4);
+            (&w)->write(t8, 16);
+        }
+        return true;
 }
 
 rWaypoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

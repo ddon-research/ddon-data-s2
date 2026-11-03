@@ -472,9 +472,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIRankingBoard::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool uGUIRankingBoard::isCompleteRequest() {
     return this->mIsCompleteRequest;
 }
 
+inline void* uGUIRankingBoard::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIRankingBoard::cRankingItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIRankingBoard::stMyRanking::stMyRanking() {
+}
+
+inline void* uGUIRankingBoard::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIRankingBoard::cRankingInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

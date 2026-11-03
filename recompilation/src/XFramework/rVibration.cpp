@@ -9,6 +9,7 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "cResource.h"
 #ifndef DDON_STUB
@@ -143,9 +144,7 @@ MtUI* rVibration::createUI(MtProperty& prop) {
     return this->cResource::createUI(prop);
 }
 
-u32 rVibration::getResourceSize() const {
-    return mParamBuffSize + 136u;
-}
+static auto ddon_emit_0x01b958a0 __attribute__((used)) = &rVibration::getResourceSize;
 
 __attribute__((weak)) void rVibration::setDummyU32(u32) {
 }

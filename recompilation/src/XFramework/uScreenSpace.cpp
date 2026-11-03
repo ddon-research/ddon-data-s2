@@ -8,11 +8,20 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "cDraw.h"
+#include "cPrim.h"
+#include "cPrimTexHandle.h"
 #include "cResource.h"
 #include "cUnit.h"
+#include "nDrawResource.h"
 #include "nDrawTexture.h"
 #include "nPrim.h"
 #include "rRenderTargetTexture.h"
+#include "sPrimitive.h"
+#include "sRender.h"
+#include "sUnit.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -60,22 +69,11 @@ __attribute__((weak)) void uScreenSpace::createProperty(MtPropertyList& prop_lis
     /* stub */
 }
 
-void uScreenSpace::setTextureSize(u32 sz) {
-    if (mTextureSize == sz) {
-        return;
-    }
-    if (mpRenderTarget == nullptr) {
-        createTexture(sz);
-    }
-}
+static auto ddon_emit_0x01b63d60 __attribute__((used)) = &uScreenSpace::setTextureSize;
 
-u32 uScreenSpace::getTextureSize() {
-    return mTextureSize;
-}
+static auto ddon_emit_0x01b63d50 __attribute__((used)) = &uScreenSpace::getTextureSize;
 
-rRenderTargetTexture* uScreenSpace::getRenderTarget() const {
-    return mpRenderTarget;
-}
+static auto ddon_emit_0x01b63d90 __attribute__((used)) = &uScreenSpace::getRenderTarget;
 
 void uScreenSpace::setRenderTarget(rRenderTargetTexture* p_rt) {
     if (mpRenderTarget != nullptr) {
@@ -102,9 +100,7 @@ void uScreenSpace::setRenderTarget(rRenderTargetTexture* p_rt) {
     }
 }
 
-bool uScreenSpace::isDistortionEnabled() const {
-    return mDistortionEnabled;
-}
+static auto ddon_emit_0x01b63d80 __attribute__((used)) = &uScreenSpace::isDistortionEnabled;
 
 __attribute__((weak)) void uScreenSpace::setDistortionEnable(bool enable) {
     DDON_STUB("uScreenSpace::setDistortionEnable")

@@ -73,7 +73,7 @@ nMarker::cMarkerInfo::cMarkerInfo() {
     /* stub */
 }
 
-nMarker::cMarkerInfo::~cMarkerInfo() {
+__attribute__((noinline)) nMarker::cMarkerInfo::~cMarkerInfo() {
     if (mPosList.mLength != 0) {
         u32 v0_0 = mPosList.mLength;
         for (unsigned int i0_3 = 0;;) {

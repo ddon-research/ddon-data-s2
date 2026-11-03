@@ -970,9 +970,21 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAdjLimitParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cBlowSaveEmLvParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cBlowSaveEmLvParam::cBlowSaveEmLvParam() {
     this->mKeyLv = 0;
     this->mSaveRate = 0.0f;
+}
+
+inline void* cCalcDamageAtdmAdj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cCalcDamageAtdmAdj::cCalcDamageAtdmAdj() {
@@ -980,9 +992,31 @@ inline cCalcDamageAtdmAdj::cCalcDamageAtdmAdj() {
     this->mDamageAdj = 1.0f;
 }
 
+inline void* cCalcDamageAtdmAdjRate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCalcDamageAtdmAdjRate::cCalcDamageAtdmAdjRate() {
     this->mKeyValue = 0.0f;
     this->mAtdmAdjRate = 1.0f;
+}
+
+inline void* cCalcDamageLvAdj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cCalcDamageLvAdj::cCalcDamageLvAdj() {
+    this->mLvDiff = 0;
+    this->mLvAdj[0] = 1.0f;
+    this->mLvAdj[1] = 1.0f;
+    this->mLvAdj[2] = 1.0f;
+    this->mLvAdj[3] = 1.0f;
+    this->mLvAdj[4] = 1.0f;
+    this->mLvAdj[5] = 1.0f;
+}
+
+inline void* cDamageSaveEmLvParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cDamageSaveEmLvParam::cDamageSaveEmLvParam() {
@@ -992,8 +1026,39 @@ inline cDamageSaveEmLvParam::cDamageSaveEmLvParam() {
     this->mSaveParamA = 0.0f;
 }
 
+inline void* cDamageSpecialAdj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cDamageSpecialAdj::cDamageSpecialAdj() {
     this->mDamageRate = 1.0f;
+}
+
+inline void* cDmJobAdjParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cDmJobAdjParam::cDmJobAdjParam() {
+    this->mJobType = 255;
+    this->mActionRateAdj = 1.0f;
+    this->mDamageAdj = 1.0f;
+    this->mStaminaDamageAdj = 1.0f;
+    this->mEnchantDamageAdj = 1.0f;
+    this->mAbilityBlowAdj = 1.0f;
+    this->mHumanEmOcdAdj = 0.5f;
+    this->mTiredDamageAdj = 1.0f;
+    this->mChanceDamageAdj = 1.0f;
+    this->mAtDmRateMaxPhys = 9.0f;
+    this->mAtDmRateMaxMagic = 9.0f;
+    this->mHealBaseMagicAdjAdd = 0.0f;
+    this->mHealBaseMagicAdjMulti = 1.0f;
+    this->mHealWepMagicAdjAdd = 0.0f;
+    this->mHealWepMagicAdjMulti = 1.0f;
+    this->mShrinkBlowSaveAdj = 0.0f;
+}
+
+inline void* cDmJobPawnAdjParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cDmJobPawnAdjParam::cDmJobPawnAdjParam() {
@@ -1003,10 +1068,18 @@ inline cDmJobPawnAdjParam::cDmJobPawnAdjParam() {
     this->mBaseBlowShrinkAdj = 0.0f;
 }
 
+inline void* cDmLvPawnAdjParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cDmLvPawnAdjParam::cDmLvPawnAdjParam() {
     this->mKeyLv = 0;
     this->mLvAdjRateBase = 0.0f;
     this->mLvAdjRateWep = 0.0f;
+}
+
+inline void* cErosionShakeConvert::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cErosionShakeConvert::cErosionShakeConvert() {
@@ -1018,6 +1091,10 @@ inline f32 cErosionShakeConvert::getAddCoreTime() const {
     return this->mAddCoreTime;
 }
 
+inline void* cShrinkBlowValue::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cShrinkBlowValue::cShrinkBlowValue() {
     this->mDamageType = 0;
     this->mLv = 1;
@@ -1025,4 +1102,152 @@ inline cShrinkBlowValue::cShrinkBlowValue() {
     this->mGravityY = 0.0f;
     this->mSpeedXZ = 0.0f;
     this->mAccelerateXZ = 0.0f;
+}
+
+inline void* rAdjLimitParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rBlowSaveEmLvParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rCalcDamageAtdmAdj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rCalcDamageAtdmAdjRate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rCalcDamageLvAdj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rDamageSaveEmLvParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rDamageSpecialAdj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rDmJobAdjParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rDmJobPawnAdjParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rDmLvPawnAdjParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rErosionShakeConvert::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rShrinkBlowValue::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cAdjLimitParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAdjLimitParam::DTI)->memFree(p_addr);
+}
+
+inline void* cAdjLimitParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAdjLimitParam::DTI)->memAlloc(sz, align, ::cAdjLimitParam::DTI.::MtDTI::getID());
+}
+
+inline void cBlowSaveEmLvParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBlowSaveEmLvParam::DTI)->memFree(p_addr);
+}
+
+inline void* cBlowSaveEmLvParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cBlowSaveEmLvParam::DTI)->memAlloc(sz, align, ::cBlowSaveEmLvParam::DTI.::MtDTI::getID());
+}
+
+inline void cCalcDamageAtdmAdj::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdj::DTI)->memFree(p_addr);
+}
+
+inline void* cCalcDamageAtdmAdj::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdj::DTI)->memAlloc(sz, align, ::cCalcDamageAtdmAdj::DTI.::MtDTI::getID());
+}
+
+inline void cCalcDamageAtdmAdjRate::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdjRate::DTI)->memFree(p_addr);
+}
+
+inline void* cCalcDamageAtdmAdjRate::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdjRate::DTI)->memAlloc(sz, align, ::cCalcDamageAtdmAdjRate::DTI.::MtDTI::getID());
+}
+
+inline void cCalcDamageLvAdj::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCalcDamageLvAdj::DTI)->memFree(p_addr);
+}
+
+inline void* cCalcDamageLvAdj::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCalcDamageLvAdj::DTI)->memAlloc(sz, align, ::cCalcDamageLvAdj::DTI.::MtDTI::getID());
+}
+
+inline void cDamageSaveEmLvParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDamageSaveEmLvParam::DTI)->memFree(p_addr);
+}
+
+inline void* cDamageSaveEmLvParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDamageSaveEmLvParam::DTI)->memAlloc(sz, align, ::cDamageSaveEmLvParam::DTI.::MtDTI::getID());
+}
+
+inline void cDamageSpecialAdj::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDamageSpecialAdj::DTI)->memFree(p_addr);
+}
+
+inline void* cDamageSpecialAdj::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDamageSpecialAdj::DTI)->memAlloc(sz, align, ::cDamageSpecialAdj::DTI.::MtDTI::getID());
+}
+
+inline void cDmJobAdjParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDmJobAdjParam::DTI)->memFree(p_addr);
+}
+
+inline void* cDmJobAdjParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDmJobAdjParam::DTI)->memAlloc(sz, align, ::cDmJobAdjParam::DTI.::MtDTI::getID());
+}
+
+inline void cDmJobPawnAdjParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDmJobPawnAdjParam::DTI)->memFree(p_addr);
+}
+
+inline void* cDmJobPawnAdjParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDmJobPawnAdjParam::DTI)->memAlloc(sz, align, ::cDmJobPawnAdjParam::DTI.::MtDTI::getID());
+}
+
+inline void cDmLvPawnAdjParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDmLvPawnAdjParam::DTI)->memFree(p_addr);
+}
+
+inline void* cDmLvPawnAdjParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDmLvPawnAdjParam::DTI)->memAlloc(sz, align, ::cDmLvPawnAdjParam::DTI.::MtDTI::getID());
+}
+
+inline void cErosionShakeConvert::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionShakeConvert::DTI)->memFree(p_addr);
+}
+
+inline void* cErosionShakeConvert::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionShakeConvert::DTI)->memAlloc(sz, align, ::cErosionShakeConvert::DTI.::MtDTI::getID());
+}
+
+inline void cShrinkBlowValue::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShrinkBlowValue::DTI)->memFree(p_addr);
+}
+
+inline void* cShrinkBlowValue::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShrinkBlowValue::DTI)->memAlloc(sz, align, ::cShrinkBlowValue::DTI.::MtDTI::getID());
 }

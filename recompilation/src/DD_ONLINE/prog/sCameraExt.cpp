@@ -6,21 +6,28 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtEaseCurve.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtSynchronize.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
 #include "nDDOUtility.h"
 #include "rCameraParamList.h"
 #include "rCameraQuakeList.h"
 #include "rLargeCameraParam.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sCamera.h"
+#include "../../XFramework/sCollision.h"
 #include "sGame.h"
 #include "sPlayerManager.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
 #include "../../XFramework/uCamera.h"
+#include "uCameraBase.h"
 #include "uCameraGame.h"
 #include "uDDOModel.h"
 #include "uPlayer.h"
@@ -170,9 +177,40 @@ uCamera* sCameraExt::getMainCamera() {
     return mViewport[0].mpCamera;
 }
 
-__attribute__((weak)) bool sCameraExt::isPlayerTargetCamera() {
-    DDON_STUB("sCameraExt::isPlayerTargetCamera")
-    return {};
+bool sCameraExt::isPlayerTargetCamera() {
+    if (mpGameCamera != nullptr) {
+        if (mpGameCamera != mViewport[0].mpCamera) {
+            return false;
+        } else {
+            if (mpGameCamera->getCamType() == nCameraGame::TYPE_SDR) {
+                if (mpGameCamera->getCamImp() != nullptr) {
+                    if (static_cast<const cCamImpSdr*>(mpGameCamera->getCamImp())->getCamImp() != nullptr) {
+                        if (static_cast<const cCamImpSdr*>(mpGameCamera->getCamImp())->getCamImp()->getParam() != nullptr) {
+                            if (static_cast<const cCamImpSdr*>(mpGameCamera->getCamImp())->getCamImp()->getParam()->mCameraTarget != nCameraGame::TARGET_TYPE_PLAYER) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                if (mpGameCamera->getCamType() == nCameraGame::TYPE_TEMPLATE) {
+                    return false;
+                } else {
+                    return mpGameCamera->getCameraTargetType() == nCameraGame::TARGET_TYPE_PLAYER;
+                }
+            }
+        }
+    } else {
+        return false;
+    }
 }
 
 void sCameraExt::createParamList() {

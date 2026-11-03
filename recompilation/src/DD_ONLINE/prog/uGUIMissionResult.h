@@ -437,6 +437,10 @@ private:
     static const nGpCourse::E_GP_COURSE_EFFECT mChargeEffectTable[];
 };
 
+inline void* uGUIMissionResult::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUIMissionResult::evFinishExit() {
     this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMissionResult::updateExit);
 }
@@ -445,15 +449,35 @@ inline bool uGUIMissionResult::isRanking() {
     return this->mResultData.mIsRanking;
 }
 
+inline void* uGUIMissionResult::cChargeEffectInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIMissionResult::cChargeEffectInfo::cChargeEffectInfo() {
     this->mCourseId = 0;
     this->mEffectId = 0;
 }
 
+inline void* uGUIMissionResult::cPointList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIMissionResult::cPointList::cPointList() {
+}
+
+inline void* uGUIMissionResult::cItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIMissionResult::cItemList::cItemList() {
     this->mItemNo = 0;
     this->mItemNum = 0;
+}
+
+inline void* uGUIMissionResult::cResultScrollItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMissionResult::cResultScrollInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

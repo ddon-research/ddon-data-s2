@@ -371,6 +371,14 @@ public:
     static const u32 MAX_TEXTURE_INFOS = 128;
 };
 
+inline void* sScene::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sScene* sScene::getInstance() {
     return ::sScene::mpInstance;
+}
+
+inline void* sScene::TextureInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -133,9 +133,17 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAISvUserProcess::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAISvUserProcess::cAISvUserProcess() {
     this->mpUserObjectInfoListBottom = nullptr;
     this->mpUserObjectInfoListTop = nullptr;
     this->mpContainerListBottom = nullptr;
     this->mpContainerListTop = nullptr;
+}
+
+inline void* cAISvUserProcess::UserObjectInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

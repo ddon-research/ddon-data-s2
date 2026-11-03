@@ -5,10 +5,13 @@
 #include "sApp.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDebug.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "../MT/MtString.h"
 #include "cSystem.h"
 #include "nAutomation.h"
 #include "sMain.h"
@@ -34,7 +37,7 @@ sApp::sApp(MT_CTSTR remote_config_name) {
     /* stub */
 }
 
-sApp::~sApp() {
+__attribute__((noinline)) sApp::~sApp() {
     this->sApp::saveItem();
     if (mItemNum != 0) {
         u32 v0_0 = mItemNum;

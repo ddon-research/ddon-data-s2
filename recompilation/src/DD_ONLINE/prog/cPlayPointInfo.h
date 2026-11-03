@@ -104,6 +104,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cPlayPointInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cPlayPointInfo::setPlayPointLimit(u32 limit) {
     this->mPlayPointLimit = limit;
 }
@@ -114,6 +118,10 @@ inline void cPlayPointInfo::setPlayPointJobLevel(u32 jobLevel) {
 
 inline u32 cPlayPointInfo::getPlayPointJobLevel() {
     return this->mPlayPointJobLevel;
+}
+
+inline void* cPlayPointInfo::cPlayPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cPlayPointInfo::cPlayPoint::cPlayPoint() {

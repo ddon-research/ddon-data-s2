@@ -243,7 +243,15 @@ namespace nFurnitureMenuFlow {
     };
 }  // namespace nFurnitureMenuFlow
 
+inline void* nFurnitureMenuFlow::cElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nFurnitureMenuFlow::cElement::cElement() {
+}
+
+inline void* nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::cItem() {
@@ -252,8 +260,16 @@ inline nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::cItem() {
     this->mIsDisable = false;
 }
 
+inline void* nFurnitureMenuFlow::cFurnitureListItems::cItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nFurnitureMenuFlow::cFurnitureListItems::cItem::cItem() {
     this->mLayoutId = 0xFFFFFFFF;
     this->mSortNo = 0;
     this->mInfos.::MtArray::mAutoDelete = true;
+}
+
+inline void* nFurnitureMenuFlow::cFurnitureListItems::cInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -466,8 +466,8 @@ public:
     static const u32 CHANCE_TIME_FRAME = 5;
 };
 
-inline void uEnemy::setEnemyEnumID(nEnemy::ENEMY_ID id) {
-    this->mEnemyResID = id;
+inline void* uEnemy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cpErosionEnemyBase* uEnemy::getErosionEnemyBase() const {
@@ -478,7 +478,18 @@ inline rCharParamEnemy* uEnemy::getCharaParamEnemy() const {
     return this->mpCharParamEnemy;
 }
 
+inline nEnemy::DOWN_DIR uEnemy::getDownDir() {
+    return this->mDownDir;
+}
+
 inline void uEnemy::addGuardCnt() {
     this->mContinuousGuardCnt = this->mContinuousGuardCnt + 1u;
     this->mContinuousGuardTimer = 90.0f;
+}
+
+inline void uEnemy::resetShakeChanceTime() {
+    this->mShakeChanceInfo[0].mIsActive = false;
+    this->mShakeChanceInfo[0].mTimer = 0.0f;
+    this->mShakeChanceInfo[1].mIsActive = false;
+    this->mShakeChanceInfo[1].mTimer = 0.0f;
 }

@@ -83,3 +83,11 @@ public:
     rConvexHull* mpCH;  // offset: 0xa0
     static MyDTI DTI;
 };
+
+inline void* cGeomConvexHull::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rConvexHull* cGeomConvexHull::getResource() {
+    return this->mpCH;
+}

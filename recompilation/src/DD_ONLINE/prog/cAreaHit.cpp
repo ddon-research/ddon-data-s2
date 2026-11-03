@@ -2,15 +2,26 @@
 #include <new>
 #include "cAreaHit.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollision.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "../../XFramework/cUnit.h"
+#include "../../generated/shared/nDDOIO.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "../../XFramework/nZone.h"
+#include "sAreaHit.h"
 #include "sPlayerManager.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "../../XFramework/uModel.h"
 #include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -38,8 +49,15 @@ AreaHitShape::AreaHitShape() {
 }
 
 AreaHitShape::~AreaHitShape() {
-    DDON_STUB("AreaHitShape::~AreaHitShape")
-    /* stub */
+    if (mIsDeleteZone) {
+        if (mpZone != nullptr) {
+            delete mpZone;
+            mpZone = nullptr;
+        }
+    } else {
+        mIsDeleteZone = false;
+        mpZone = nullptr;
+    }
 }
 
 __attribute__((weak)) void AreaHitShape::createProperty(MtPropertyList& s) {
@@ -126,7 +144,6 @@ inline void cAreaHit::operator delete(void* p_addr) {
 }
 
 inline cAreaHit::cAreaHit() {
-    mRotate.pad_ = 0.0f;
     mpOwner = nullptr;
     mOwnerId = 0;
     mbEnable = true;

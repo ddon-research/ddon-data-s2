@@ -85,6 +85,10 @@ protected:
     static const u32 EVENT_STABLIZE_NUM = 200;
 };
 
+inline void* cpTinyChain::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpTinyChain::setBlendSpeedCain(f32 blendSpeed) {
     this->mBlendSpeedChain = blendSpeed;
 }

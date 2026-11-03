@@ -267,9 +267,21 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIPopListDialog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUIPopListDialog::eventCancel() {
     this->mSelect = static_cast<uGUIPopListDialog::SELECT_ID>(2);
 }
 
 inline uGUIPopListDialog::stMain::stMain() {
+}
+
+inline void* uGUIPopListDialog::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopListDialog::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

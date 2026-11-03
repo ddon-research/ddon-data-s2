@@ -4,12 +4,18 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -31,7 +37,7 @@ inline void uGUIMouseOverCursor::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMouseOverCursor::DTI)->memFree(p_addr);
 }
 
-uGUIMouseOverCursor::~uGUIMouseOverCursor() {
+__attribute__((noinline)) uGUIMouseOverCursor::~uGUIMouseOverCursor() {
     if (mpGUIRes != nullptr) {
         mpGUIRes->release();
         mpGUIRes = nullptr;

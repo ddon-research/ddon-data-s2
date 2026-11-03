@@ -107,5 +107,9 @@ namespace nLayout {
     };
 }  // namespace nLayout
 
+inline void* nLayout::cGameDataCache::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nLayout::cGameDataCache::stFlagData::stFlagData() {
 }

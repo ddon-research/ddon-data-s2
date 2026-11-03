@@ -4,6 +4,7 @@
 #include <string.h>
 #include "cMenuBaseClan.h"
 #include "Protocol/PacketData/Clan.h"
+#include "Protocol/PacketData/Community.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
@@ -12,19 +13,27 @@
 #include "../../MT/MtString.h"
 #include "Protocol/UserSession/S2C.h"
 #include "cCharacterData.h"
+#include "cGUIUtility.h"
 #include "cMenuBase.h"
 #include "cMenuSupport.h"
 #include "cNetGameServer.h"
+#include "nCharacterData.h"
 #include "nMenu.h"
 #include "nNet.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/rSoundRequest.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sKeyboardInterface.h"
+#include "sMenu.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
 #include "uGUIBase.h"
 #include "uGUIClanScout.h"
 #include "uGUIClanSearch.h"
+#include "uGUIPopFilter.h"
 #include "uGUISystemMsg.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -39,8 +48,6 @@ inline void* cMenuApplyClan::operator new(size_t sz, u32 align) {
 }
 
 cMenuApplyClan::~cMenuApplyClan() {
-    DDON_STUB("cMenuApplyClan::~cMenuApplyClan")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuApplyClan::initApplyClan(u32 clanId, MtString& clanName) {
@@ -111,8 +118,6 @@ inline void* cMenuApproveInvitedClan::operator new(size_t sz, u32 align) {
 }
 
 cMenuApproveInvitedClan::~cMenuApproveInvitedClan() {
-    DDON_STUB("cMenuApproveInvitedClan::~cMenuApproveInvitedClan")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuApproveInvitedClan::initApproveInvitedClan(u32 type, u32 inviteId, MtString& clanName) {
@@ -147,8 +152,6 @@ inline void* cMenuCancelApplyClan::operator new(size_t sz, u32 align) {
 }
 
 cMenuCancelApplyClan::~cMenuCancelApplyClan() {
-    DDON_STUB("cMenuCancelApplyClan::~cMenuCancelApplyClan")
-    /* stub */
 }
 
 void cMenuCancelApplyClan::initCancelApplyClan(u32 reqId) {
@@ -410,8 +413,6 @@ inline void* cMenuClanApproveDirectInvite::operator new(size_t sz, u32 align) {
 }
 
 cMenuClanApproveDirectInvite::~cMenuClanApproveDirectInvite() {
-    DDON_STUB("cMenuClanApproveDirectInvite::~cMenuClanApproveDirectInvite")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuClanApproveDirectInvite::initClanApproveDirectInvite(u32 type, u32 clanId, MtString& clanName) {
@@ -818,7 +819,7 @@ void cMenuClanList::initClanList() {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanSearchListPacket();
     cMenuSupportList* pList = setupSupportList(256u, 4u, 5u);
     if (pList != nullptr) {
-        pList->cMenuSupportList::addBelowMenu(4);
+        pList->addBelowMenu(4);
         createList(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanSearchListPacket()->m_ClanList.mLength);
     }
     mIsSearchEnd = false;
@@ -1152,8 +1153,8 @@ void cMenuEditClanDay::initEditClanDay(u32* pDay, uGUIBase* pRefGUI) {
     mMenuRno[0] = 0;
     cMenuSupportList* pList = setupSupportList(5u, 4u, 6u);
     if (pList != nullptr) {
-        pList->cMenuSupportList::addBelowMenu(4);
-        pList->cMenuSupportList::addBelowMenu(5);
+        pList->addBelowMenu(4);
+        pList->addBelowMenu(5);
         createList(5u);
     }
     mDay = *pDay;
@@ -1257,8 +1258,8 @@ void cMenuEditClanFeature::initEditClanFeature(u32* pFeature, uGUIBase* pRefGUI)
     mMenuRno[0] = 0;
     cMenuSupportList* pList = setupSupportList(23u, 8u, 10u);
     if (pList != nullptr) {
-        pList->cMenuSupportList::addBelowMenu(8);
-        pList->cMenuSupportList::addBelowMenu(9);
+        pList->addBelowMenu(8);
+        pList->addBelowMenu(9);
         createList(23u);
     }
     mFeature = *pFeature;
@@ -1299,8 +1300,8 @@ void cMenuEditClanHour::initEditClanHour(u32* pHour, uGUIBase* pRefGUI) {
     mMenuRno[0] = 0;
     cMenuSupportList* pList = setupSupportList(5u, 4u, 6u);
     if (pList != nullptr) {
-        pList->cMenuSupportList::addBelowMenu(4);
-        pList->cMenuSupportList::addBelowMenu(5);
+        pList->addBelowMenu(4);
+        pList->addBelowMenu(5);
         createList(5u);
     }
     mHour = *pHour;
@@ -1438,8 +1439,8 @@ void cMenuEditClanMotto::initEditClanMotto(u32* pMotto, uGUIBase* pRefGUI) {
     mMenuRno[0] = 0;
     cMenuSupportList* pList = setupSupportList(7u, 8u, 10u);
     if (pList != nullptr) {
-        pList->cMenuSupportList::addBelowMenu(8);
-        pList->cMenuSupportList::addBelowMenu(9);
+        pList->addBelowMenu(8);
+        pList->addBelowMenu(9);
         createList(7u);
     }
     mMotto = *pMotto;

@@ -62,6 +62,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cShlConditionInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cShlConditionInfo::cShlConditionInfo() {
     this->mActiveTime = 10.0f;
     this->mAdjustParam0 = 1.0f;

@@ -26,23 +26,6 @@ __attribute__((weak)) void nShlBase::cShlStickContextInfo::operator delete(void*
     ::nShlBase::cShlStickContextInfo::getAllocator()->memFree(p_addr);
 }
 
-nShlBase::cShlStickContextInfo::cShlStickContextInfo() {
-    mIsStickCreateControl = false;
-    mStickShlIndex = 0;
-    mStickJointNo = 0;
-    mStickShlGroup = 0;
-    mStickShlUniqueId = 0;
-    mStickUniqueId = 0;
-    mStickJointOffset.x = ::MtVector3::Zero.x;
-    mStickJointOffset.y = ::MtVector3::Zero.y;
-    mStickJointOffset.z = ::MtVector3::Zero.z;
-    mStickDirection.pad_ = 0.0f;
-    mStickDirection.y = 0.0f;
-    mStickDirection.z = 0.0f;
-    mStickJointOffset.pad_ = 0.0f;
-    mStickDirection.x = 0.0f;
-}
-
 nShlBase::cShlStickContextInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nShlBase::cShlStickContextInfo::MyDTI nShlBase::cShlStickContextInfo::DTI("nShlBase::cShlStickContextInfo", &::MtObject::DTI, 64ul, 0u, 0u);

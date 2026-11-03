@@ -6,9 +6,12 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
+#include "cSetInfo.h"
 #include "nLayout.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -61,8 +64,11 @@ inline void* cQuestSet::operator new(size_t sz, u32 align) {
 }
 
 cQuestSet::~cQuestSet() {
-    DDON_STUB("cQuestSet::~cQuestSet")
-    /* stub */
+    if (mpSetInfo == nullptr) {
+        return;
+    }
+    delete mpSetInfo;
+    mpSetInfo = nullptr;
 }
 
 __attribute__((weak)) void cQuestSet::createProperty(MtPropertyList& s) {
@@ -195,12 +201,12 @@ MT_CTSTR rQuestList::getExt() const {
 
 bool rQuestList::load(MtStream& in) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::deserializeBinary(in, static_cast<unsigned short>(rQuestList::DATA_VERSION), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
+    return sz.deserializeBinary(in, static_cast<unsigned short>(rQuestList::DATA_VERSION), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 bool rQuestList::save(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeBinary(out, static_cast<unsigned short>(rQuestList::DATA_VERSION), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+    return sz.serializeBinary(out, static_cast<unsigned short>(rQuestList::DATA_VERSION), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
 }
 
 rQuestList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

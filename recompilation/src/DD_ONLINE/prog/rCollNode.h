@@ -116,6 +116,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCollNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCollNode::cCollNode() {
     this->mHitCollisionFlag = 0;
     this->mAttr = 0;
@@ -129,6 +133,10 @@ inline u32 cCollNode::getAttr() const {
     return this->mAttr;
 }
 
+inline void* rCollNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rCollNode::rCollNode() {
     this->mUParam32[2] = 0;
     this->mUParam32[3] = 0;
@@ -136,4 +144,12 @@ inline rCollNode::rCollNode() {
     this->mUParam32[1] = 0;
     this->mUParam64[1] = 0;
     this->mUParam64[0] = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cCollNode::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCollNode::DTI)->memAlloc(sz, align, ::cCollNode::DTI.::MtDTI::getID());
 }

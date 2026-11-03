@@ -7,9 +7,13 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "../MT/MtString.h"
 #include "cResource.h"
 #include "cUnit.h"
 #include "rScheduler.h"
+#include "sMain.h"
+#include "sUnit.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -81,9 +85,7 @@ __attribute__((weak)) void uScheduler::setData(rScheduler* pr) {
     /* stub */
 }
 
-rScheduler* uScheduler::getData() {
-    return mpScheduler;
-}
+static auto ddon_emit_0x01b63ba0 __attribute__((used)) = &uScheduler::getData;
 
 void uScheduler::setPause(bool pause) {
     if (mPause == pause) {
@@ -102,24 +104,13 @@ __attribute__((weak)) void uScheduler::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-void uScheduler::setFrame(u32 frame) {
-    if (mpScheduler == nullptr) {
-        return;
-    }
-    mFrame = static_cast<float>(frame);
-}
+static auto ddon_emit_0x01b63bc0 __attribute__((used)) = &uScheduler::setFrame;
 
-u32 uScheduler::getFrame() const {
-    return static_cast<unsigned int>(static_cast<long>(mFrame));
-}
+static auto ddon_emit_0x01b63bb0 __attribute__((used)) = &uScheduler::getFrame;
 
-f32 uScheduler::getFrameF() const {
-    return mFrame;
-}
+static auto ddon_emit_0x01b63be0 __attribute__((used)) = &uScheduler::getFrameF;
 
-void uScheduler::setFrameF(f32 v) {
-    mFrame = v;
-}
+static auto ddon_emit_0x01b63bf0 __attribute__((used)) = &uScheduler::setFrameF;
 
 __attribute__((weak)) f32 uScheduler::getMarkerFrame() const {
     DDON_STUB("uScheduler::getMarkerFrame")
@@ -202,7 +193,7 @@ s32 uScheduler::getUnitIndex(const MtDTI& dti, MT_CTSTR track_name) const {
                     break;
                 } else {
                     if (v0_10 == v1_1->mName) {
-                        if (strcmp(reinterpret_cast<const char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(ptrack) + 8)), track_name) != 0) {
+                        if (strcmp(ptrack->prop_name, track_name) != 0) {
                             break;
                         } else {
                             v4_0 = i0_3;
@@ -247,9 +238,7 @@ __attribute__((weak)) void uScheduler::updateTrack(bool apply) {
     /* stub */
 }
 
-bool uScheduler::isPauseToFullStop() const {
-    return mPauseToFullStop;
-}
+static auto ddon_emit_0x01b63b80 __attribute__((used)) = &uScheduler::isPauseToFullStop;
 
 void uScheduler::setPauseToFullStop(bool v) {
     if (mPauseToFullStop == v) {
@@ -259,9 +248,7 @@ void uScheduler::setPauseToFullStop(bool v) {
     mPauseToFullStopMoved = false;
 }
 
-bool uScheduler::isPauseToFullStopMoved() const {
-    return mPauseToFullStopMoved;
-}
+static auto ddon_emit_0x01b63b90 __attribute__((used)) = &uScheduler::isPauseToFullStopMoved;
 
 __attribute__((weak)) void uScheduler::applyTrack(uScheduler::TRACK_WORK* pwk, u32 iframe, f32 frame, f32 prev_frame) {
     DDON_STUB("uScheduler::applyTrack")

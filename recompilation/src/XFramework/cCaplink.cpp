@@ -3,13 +3,18 @@
 #include <string.h>
 #include "cCaplink.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtBigInt.h"
+#include "../MT/MtCipher.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtJsonReader.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtRandom.h"
+#include "../MT/MtStream.h"
 #include "../MT/MtString.h"
 #include "cWebsocketClient.h"
+#include "sMain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

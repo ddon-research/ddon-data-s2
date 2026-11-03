@@ -104,3 +104,7 @@ public:
 private:
     static const u32 ENEMY_RECT_RES_NUM = 8;
 };
+
+inline void* cpEnemyReact::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

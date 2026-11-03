@@ -436,13 +436,25 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataArisenProfile::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataArisenProfile::CDataArisenProfile() {
     this->m_ucBackgroundID = 0;
     this->m_usMotionID = 0;
     this->m_unMotionFrameNo = 0;
 }
 
+inline void* CDataCharacterEquipData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCharacterEquipData::CDataCharacterEquipData() {
+}
+
+inline void* CDataCharacterJobData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataCharacterJobData::CDataCharacterJobData() {
@@ -492,19 +504,35 @@ inline CDataCharacterJobData::CDataCharacterJobData() {
     this->m_unJobPoint = 0;
 }
 
+inline void* CDataContextAcquirementData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataContextAcquirementData::CDataContextAcquirementData() {
     this->m_ucSlotNo = 0;
     this->m_unAcquirementNo = 0;
     this->m_ucAcquirementLv = 0;
 }
 
+inline void* CDataContextNormalSkillData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataContextNormalSkillData::CDataContextNormalSkillData() {
     this->m_ucSkillNo = 0;
+}
+
+inline void* CDataOrbCategoryStatus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataOrbCategoryStatus::CDataOrbCategoryStatus() {
     this->m_ucCategoryID = 0;
     this->m_ucReleaseNum = 0;
+}
+
+inline void* CDataOrbGainExtendParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataOrbGainExtendParam::CDataOrbGainExtendParam() {
@@ -523,8 +551,16 @@ inline CDataOrbGainExtendParam::CDataOrbGainExtendParam() {
     this->m_usDefence = 0;
 }
 
+inline void* CDataOrbPageStatus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataOrbPageStatus::CDataOrbPageStatus() {
     this->m_ucPageNo = 0;
+}
+
+inline void* CDataReleaseOrbElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataReleaseOrbElement::CDataReleaseOrbElement() {
@@ -532,6 +568,10 @@ inline CDataReleaseOrbElement::CDataReleaseOrbElement() {
     this->m_ucPageNo = 0;
     this->m_ucGroupNo = 0;
     this->m_unElementID = 0;
+}
+
+inline void* CDataStatusInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataStatusInfo::CDataStatusInfo() {

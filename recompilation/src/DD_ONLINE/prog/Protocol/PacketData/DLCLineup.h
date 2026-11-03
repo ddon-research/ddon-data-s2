@@ -96,9 +96,17 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataDLCLineupBought::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataDLCLineupBought::CDataDLCLineupBought() {
     this->m_unDLCLineupId = 0;
     this->m_unNum = 0;
+}
+
+inline void* CDataDLCLineupHistory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataDLCLineupHistory::CDataDLCLineupHistory() {

@@ -22,6 +22,7 @@ class cAITask;
 namespace nAI { struct TASK_PERFORMANCE_INFO; }
 namespace nAI { class TaskPerformanceInfo; }
 class rAI;
+class uStagePartsMdl;
 
 // Declarations
 class sAI;
@@ -39,6 +40,7 @@ using u64 = __uint64_t;
 class sAI : public cSystem
 {
     friend class cAIService;
+    friend class uStagePartsMdl;
 public:
     class MyDTI;
 public:
@@ -129,3 +131,11 @@ public:
 protected:
     static sAI* mpInstance;
 };
+
+inline void* sAI::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline sAI* sAI::getInstance() {
+    return ::sAI::mpInstance;
+}

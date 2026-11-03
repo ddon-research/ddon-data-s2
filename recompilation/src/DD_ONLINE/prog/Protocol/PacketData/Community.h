@@ -20,6 +20,7 @@ class CDataCharacterName;
 class CDataCommunityCharacterBaseInfo;
 class CDataFriendInfo;
 class CDataJobBaseInfo;
+class CDataUpdateMatchingProfileInfo;
 
 // Type aliases from DWARF
 using CCharacterListElement = CDataCharacterListElement;
@@ -135,6 +136,39 @@ public:
     static MyDTI DTI;
 };
 
+class CDataUpdateMatchingProfileInfo : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataUpdateMatchingProfileInfo();
+    explicit CDataUpdateMatchingProfileInfo(u32, const char*);
+public:
+    u32 m_unCharacterID;  // offset: 0x8
+    MtString m_wstrComment;  // offset: 0x10
+    static MyDTI DTI;
+};
+
 class CDataCharacterListElement : public CPacketDataBase
 {
 public:
@@ -207,10 +241,38 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataCharacterListElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataCharacterName::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCharacterName::CDataCharacterName() {
+}
+
+inline void* CDataCommunityCharacterBaseInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataFriendInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataJobBaseInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataJobBaseInfo::CDataJobBaseInfo() {
     this->m_ucJob = 0;
     this->m_ucLv = 0;
+}
+
+inline void* CDataUpdateMatchingProfileInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataUpdateMatchingProfileInfo::CDataUpdateMatchingProfileInfo() {
+    this->m_unCharacterID = 0;
 }

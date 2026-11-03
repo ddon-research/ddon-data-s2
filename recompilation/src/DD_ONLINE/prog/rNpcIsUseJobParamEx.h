@@ -101,9 +101,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cNpcIsUseJobParamEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cNpcIsUseJobParamEx::cNpcIsUseJobParamEx() {
     this->mStageNo = 0;
     this->mGroupNo = 0;
     this->mUnitNo = 0;
     this->mQuestId = 0;
+}
+
+inline void* rNpcIsUseJobParamEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cNpcIsUseJobParamEx::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNpcIsUseJobParamEx::DTI)->memFree(p_addr);
+}
+
+inline void* cNpcIsUseJobParamEx::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNpcIsUseJobParamEx::DTI)->memAlloc(sz, align, ::cNpcIsUseJobParamEx::DTI.::MtDTI::getID());
 }

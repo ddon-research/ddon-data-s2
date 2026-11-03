@@ -34,6 +34,7 @@ class MtVector4;
 class cGUIFontFilter;
 class cGUIInstAnimation;
 class cGUIUtility;
+namespace nDraw { class VertexBuffer; }
 namespace nGUI { struct ANIMATION; }
 namespace nGUI { struct BufferObject; }
 namespace nGUI { struct DRAW_LIST; }
@@ -45,15 +46,18 @@ namespace nGUI { struct PARAM; }
 namespace nGUI { struct PARAM_WORK; }
 namespace nGUI { struct SEQUENCE; }
 namespace nGUI { struct TEXTURE; }
+namespace nGUI { struct TEXT_STATUS; }
 class rGUI;
 class rGUIFont;
 class rGUIMessage;
 class uGUI;
+class uGUIAnnounce;
 class uGUIBase;
 class uGUIInputText;
 class uGUIKeyConfig;
 class uGUIMyRoomPopup;
 class uGUIQuestActive;
+class uGUISkill;
 
 // Declarations
 class cGUIObj2D;
@@ -63,7 +67,10 @@ class cGUIObjMessage;
 class cGUIObjNull;
 class cGUIObjPolygon;
 class cGUIObjRoot;
+class cGUIObjScissorMask;
+class cGUIObjText;
 class cGUIObjTexture;
+class cGUIObjTextureSet;
 class cGUIObject;
 
 // Type aliases from DWARF
@@ -322,6 +329,7 @@ public:
 
 class cGUIObjColorAdjust : public cGUIObject
 {
+    friend class uGUIAnnounce;
 public:
     class MyDTI;
 public:
@@ -375,6 +383,7 @@ class cGUIObjMessage : public cGUIObj2D
     friend class uGUIKeyConfig;
     friend class uGUIMyRoomPopup;
     friend class uGUIQuestActive;
+    friend class uGUISkill;
 public:
     class MyDTI;
 public:
@@ -773,6 +782,151 @@ private:
     static const u32 ATTR_UPDATE_ROOT_MATRIX = 2;
 };
 
+class cGUIObjScissorMask : public cGUIObj2D
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cGUIObjScissorMask();
+    virtual ~cGUIObjScissorMask();
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual bool isDrawableStatic() const;  // vtable slot 6
+    void setEnableScissor(bool v);
+    bool isEnableScissor() const;
+    void setSize(const MtSize& size);
+    MtSize getSize() const;
+protected:
+    virtual void calcMatrix(const MtMatrix& wmat);  // vtable slot 15
+    virtual void beginDraw(nGUI::Draw& drawObj);  // vtable slot 12
+    virtual void endDraw(nGUI::Draw& drawObj);  // vtable slot 14
+    virtual bool checkHit(const MtVector3& pt, f32 ratio, const MtRay* const pRay) const;  // vtable slot 16
+private:
+    void setUpdateSize(bool v);
+    bool isUpdateSize() const;
+    void setEnabledScissor(bool v);
+    bool isEnabledScissor() const;
+    void calcScissorMask(MtRect& rect) const;
+private:
+    u32 mEnableScissor : 1;  // offset: 0xc4
+    u32 mUpdateSize : 1;  // offset: 0xc4
+    u32 mEnabledScissor : 1;  // offset: 0xc4
+    MtSize mSize;  // offset: 0xc8
+    MtRect mScissorRect;  // offset: 0xd0
+    MtRect mParentScissorRect;  // offset: 0xe0
+public:
+    static MyDTI DTI;
+};
+
+class cGUIObjText : public cGUIObjMessage
+{
+public:
+    enum CONDITION
+    {
+        CONDITION_STOP = 0,
+        CONDITION_NORMAL = 1,
+        CONDITION_TIME = 2,
+        CONDITION_STAY = 3,
+        CONDITION_PAGE = 4,
+        CONDITION_DISP = 5,
+        CONDITION_NUM = 6,
+    };
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cGUIObjText();
+    virtual ~cGUIObjText();
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void setTypingSpeed(f32 speed);  // vtable slot 32
+    f32 getTypingSpeed() const;
+    u32 getCondition() const;
+    void setTextStatus(const nGUI::TEXT_STATUS& status);
+    nGUI::TEXT_STATUS getTextStatus() const;
+    void requestStay();
+    void requestStayCancel();
+    void requestNextPage();
+    void requestPlaySkip(bool);
+    void setTypingEvent(bool v);
+    bool isTypingEvent() const;
+    void setTypingCodeEvent(bool);
+    bool isTypingCodeEvent() const;
+    void setPlayingPage(u32 pageIndex, bool play);
+    u32 getPlayingPageIndex() const;
+protected:
+    void setCondition(u32 v);
+    void skipPage();
+    virtual void play(f32 delta);  // vtable slot 11
+    virtual void analyzeMessage(MT_CTSTR msg, u32 length, s32 pageIndex);  // vtable slot 23
+    virtual void analyzeGenderMessage(MT_CTSTR msg, nGUI::GENDER speakerGender, nGUI::GENDER listenerGender, u32 length);  // vtable slot 24
+    virtual void clearMessage();  // vtable slot 25
+    void executeMTag();
+    virtual void executeMTagExtend(void* pData);  // vtable slot 33
+    virtual nGUI::MTAG* getDrawStartMTag() const;  // vtable slot 27
+    virtual nGUI::MTAG* getDrawEndMTag() const;  // vtable slot 28
+    virtual bool isPageEnd() const;  // vtable slot 29
+    void resetRequest();
+private:
+    u32 mTextAttr;  // offset: 0x1c4
+    f32 mTypingSpeed;  // offset: 0x1c8
+    u32 mCondition;  // offset: 0x1cc
+    f32 mTextCurrentFrame;  // offset: 0x1d0
+    f32 mNowTypingSpeed;  // offset: 0x1d4
+    u32 mDrawCharNum;  // offset: 0x1d8
+    nGUI::MTAG* mpStartMTag;  // offset: 0x1e0
+    nGUI::MTAG* mpNowMTag;  // offset: 0x1e8
+public:
+    static MyDTI DTI;
+private:
+    static const u32 ATTR_TYPING_EVENT = 1;
+    static const u32 ATTR_TYPING_CODE_EVENT = 2;
+    static const u32 ATTR_REQ_STAY_CANCEL = 256;
+    static const u32 ATTR_REQ_NEXT_PAGE = 512;
+    static const u32 ATTR_REQ_PLAY_SKIP = 1024;
+    static const u32 ATTR_REQ_PLAY_SKIP2 = 2048;
+    static const u32 ATTR_REQUEST_MASK = 3840;
+};
+
 class cGUIObjTexture : public cGUIObjPolygon
 {
 public:
@@ -837,6 +991,61 @@ private:
     u32 mOldSamplerState : 4;  // offset: 0x138
     u32 mSamplerChangeFlag : 1;  // offset: 0x138
     u32 mSamplerPadding : 27;  // offset: 0x138
+public:
+    static MyDTI DTI;
+};
+
+class cGUIObjTextureSet : public cGUIObjTexture
+{
+public:
+    class MyDTI;
+    struct DATA;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    struct DATA
+    {
+    public:
+        MtFloat4 rect;  // offset: 0x0
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cGUIObjTextureSet();
+    virtual ~cGUIObjTextureSet();
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void setVertexColor(const MtColor& color);  // vtable slot 23
+    u32 getDataNum() const;
+    const DATA* getData(u32 index) const;
+    virtual MtAABB calcBoundingBox() const;  // vtable slot 7
+protected:
+    virtual void draw(nGUI::Draw& drawObj);  // vtable slot 13
+    void calcBoundingPosition(MtVector3* pPosition, DATA* pData, f32 ratio) const;
+    virtual bool checkHit(const MtVector3& pt, f32 ratio, const MtRay* const pRay) const;  // vtable slot 16
+private:
+    virtual void setExtendData(void* pData);  // vtable slot 22
+private:
+    u32 mDataNum;  // offset: 0x13c
+    DATA* mpData;  // offset: 0x140
+    u32 mVertexBufferOffset;  // offset: 0x148
+    nDraw::VertexBuffer* mpVertexBuffer;  // offset: 0x150
 public:
     static MyDTI DTI;
 };
@@ -909,8 +1118,134 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cGUIObj2D::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline f32 cGUIObj2D::getPositionX() const {
+    return this->mPosition.x;
+}
+
+inline f32 cGUIObj2D::getPositionY() const {
+    return this->mPosition.y;
+}
+
+inline f32 cGUIObj2D::getPositionZ() const {
+    return this->mPosition.z;
+}
+
+inline u32 cGUIObj2D::getControlPoint() const {
+    return this->mControlPoint;
+}
+
+inline bool cGUIObj2D::isReferencePosition() const {
+    return this->mReferencePosition;
+}
+
+inline bool cGUIObj2D::isReferenceRotation() const {
+    return this->mReferenceRotation;
+}
+
+inline u32 cGUIObj2D::getReferenceScaleX() const {
+    return this->mReferenceScaleX;
+}
+
+inline u32 cGUIObj2D::getReferenceScaleY() const {
+    return this->mReferenceScaleY;
+}
+
+inline u32 cGUIObj2D::getReferenceScaleZ() const {
+    return this->mReferenceScaleZ;
+}
+
 inline f32 cGUIObjChildAnimationRoot::getChildAnimationCurrentFrame() const {
     return this->mChildAnimCurrentFrame;
+}
+
+inline void cGUIObjChildAnimationRoot::setChildAnimationPlay(bool v) {
+    this->mChildAnimPlay = v;
+}
+
+inline bool cGUIObjChildAnimationRoot::isChildAnimationPlay() const {
+    return this->mChildAnimPlay;
+}
+
+inline u32 cGUIObjColorAdjust::getColorControl() const {
+    return this->mColorControl;
+}
+
+inline MtVector4 cGUIObjColorAdjust::getColorScale() const {
+    return this->mColorScale;
+}
+
+inline void cGUIObjColorAdjust::setSaturation(f32 v) {
+    this->mColorScale.w = v;
+}
+
+inline f32 cGUIObjColorAdjust::getSaturation() const {
+    return this->mColorScale.w;
+}
+
+inline u32 cGUIObjMessage::getAutoWrap() const {
+    return this->mAutoWrap;
+}
+
+inline u32 cGUIObjMessage::getFontSlot() const {
+    return this->mFontSlot;
+}
+
+inline void cGUIObjMessage::setFontFilter0(u32 id) {
+    if (this->mFontFilterId[0] != id) {
+        this->mFontFilterId[0] = id;
+        this->::cGUIObjMessage::checkFontFilter();
+    }
+}
+
+inline u32 cGUIObjMessage::getFontFilter0() const {
+    return this->mFontFilterId[0];
+}
+
+inline void cGUIObjMessage::setFontFilter1(u32 id) {
+    if (this->mFontFilterId[1] != id) {
+        this->mFontFilterId[1] = id;
+        this->::cGUIObjMessage::checkFontFilter();
+    }
+}
+
+inline u32 cGUIObjMessage::getFontFilter1() const {
+    return this->mFontFilterId[1];
+}
+
+inline u32 cGUIObjMessage::getLayout() const {
+    return this->mLayout;
+}
+
+inline u32 cGUIObjMessage::getLetterHAlign() const {
+    return this->mLetterHAlign;
+}
+
+inline u32 cGUIObjMessage::getLetterVAlign() const {
+    return this->mLetterVAlign;
+}
+
+inline u32 cGUIObjMessage::getMessageId() const {
+    return this->mMessageId;
+}
+
+inline MT_CTSTR cGUIObjMessage::getMessageIndexName() const {
+    return this->mpMessageIndexName;
+}
+
+inline const MtFloat2 cGUIObjMessage::getSize() const {
+    return this->mSize;
+}
+
+inline u32 cGUIObjMessage::getSamplerState() const {
+    return this->mSamplerState;
+}
+
+inline u32 cGUIObjMessage::getResolutionAdjust() const {
+    return this->mResolutionAdjust;
 }
 
 inline f32 cGUIObjMessage::getMessageWidth() const {
@@ -919,6 +1254,86 @@ inline f32 cGUIObjMessage::getMessageWidth() const {
 
 inline f32 cGUIObjMessage::getMessageHeight() const {
     return this->mMsgHeight;
+}
+
+inline f32 cGUIObjNull::getScaleX() const {
+    return this->mScale.x;
+}
+
+inline f32 cGUIObjNull::getScaleY() const {
+    return this->mScale.y;
+}
+
+inline f32 cGUIObjNull::getScaleZ() const {
+    return this->mScale.z;
+}
+
+inline void cGUIObjPolygon::setMaskType(u32 v) {
+    this->mMaskType = v;
+}
+
+inline u32 cGUIObjPolygon::getMaskType() const {
+    return this->mMaskType;
+}
+
+inline void cGUIObjPolygon::setBlendState(u32 state) {
+    this->mBlendState = state;
+}
+
+inline u32 cGUIObjPolygon::getBlendState() const {
+    return this->mBlendState;
+}
+
+inline const MtFloat2 cGUIObjPolygon::getSize() const {
+    return this->mSize;
+}
+
+inline f32 cGUIObjText::getTypingSpeed() const {
+    return this->mTypingSpeed;
+}
+
+inline void cGUIObjText::setTypingEvent(bool v) {
+    this->mTextAttr = !v ? (this->mTextAttr & 0xFFFFFFFEu) : (this->mTextAttr | 1u);
+}
+
+inline u32 cGUIObjTexture::getSamplerState() const {
+    return this->mSamplerState;
+}
+
+inline u32 cGUIObjTexture::getTiling() const {
+    return this->mTiling;
+}
+
+inline u32 cGUIObjTexture::getTextureId() const {
+    return this->mTextureId;
+}
+
+inline MtFloat4 cGUIObjTexture::getTextureRect() const {
+    return this->mTextureRect;
+}
+
+inline void* cGUIObject::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cGUIObject::getPriority() const {
+    return this->mPriority;
+}
+
+inline void cGUIObject::setLoop(bool v) {
+    this->mAttr = !v ? (this->mAttr & 0xFFFFFFFBu) : (this->mAttr | 4u);
+}
+
+inline void cGUIObject::setFixFrame(bool v) {
+    this->mAttr = !v ? (this->mAttr & 0xFFFFFFF7u) : (this->mAttr | 8u);
+}
+
+inline void cGUIObject::setLoopStartFrame(u32 loopFrame) {
+    this->mLoopStartFrame = loopFrame;
+}
+
+inline u32 cGUIObject::getLoopStartFrame() const {
+    return this->mLoopStartFrame;
 }
 
 inline cGUIObject* cGUIObject::getNext() const {

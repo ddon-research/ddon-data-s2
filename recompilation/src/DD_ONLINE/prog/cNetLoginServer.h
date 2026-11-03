@@ -426,6 +426,22 @@ protected:
     static const u32 mL2C_OnPacketFuncNum;
 };
 
+inline void* cNetLoginServer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nError::ERROR_CODE cNetLoginServer::getErrorCode(u32 comId) {
+    return this->mErrorCode[4];
+}
+
+inline void cNetLoginServer::setSvPort(u32 port) {
+    this->mGuardData.mSvPort = port;
+}
+
+inline void cNetLoginServer::setSvPortPrivate(u32 NewValue) {
+    this->mGuardData.mSvPort = NewValue;
+}
+
 inline MtCipher* cNetLoginServer::getCipher() {
     return &this->mCipher;
 }
@@ -444,6 +460,25 @@ inline void cNetLoginServer::setNewCharacterId(u32 id) {
 
 inline u32 cNetLoginServer::getDecideCharacterId() {
     return this->mDecideCharacterId;
+}
+
+inline void* cNetLoginServer::cCtrlFlow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cNetLoginServer::cCtrlFlow::cCtrlFlow() {
+    this->mFTimer = 0.0f;
+    this->mError.mCause = 0;
+    this->mError.mNative = 0;
+    this->mCommand = 0;
+    this->mError.mNo = 0;
+    this->mRno0 = 0;
+    this->mRno1 = 0;
+    this->mIsCallback = true;
+}
+
+inline void* cSeedLoginSvConnection::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline bool cSeedLoginSvConnection::isLoginSuccess() const {

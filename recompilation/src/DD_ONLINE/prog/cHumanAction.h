@@ -226,8 +226,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cHumanActBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cHumanActSetNpcMotMyRoom::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 cHumanActSetNpcMotMyRoom::getMotIndex() const {
     return this->mNPCMotIndex;
+}
+
+inline void* cHumanActSetNpcMotion::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline s32 cHumanActSetNpcMotion::getMotIndex() const {

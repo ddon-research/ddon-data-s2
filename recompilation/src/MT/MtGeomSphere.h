@@ -148,3 +148,7 @@ public:
     MtSphere mSphere;  // offset: 0x10
     static MyDTI DTI;
 };
+
+inline void* MtGeomSphere::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

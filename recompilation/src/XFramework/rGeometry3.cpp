@@ -6,6 +6,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
 #include "../MT/MtStream.h"
 #include "cResource.h"
@@ -69,7 +70,7 @@ bool rGeometry3::load(MtStream& in) {
     if (FileMagic == 0x336F6567) {
         if (FileVersion == 0x77CFDF9C) {
             MtSerializer sz(65536);
-            return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
+            return sz.deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
         }
     }
     return false;

@@ -106,6 +106,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rSituationMsgCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rSituationMsgCtrl::cSituationData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSituationMsgCtrl::cSituationData::cSituationData(u32 GroupSerial, u32 StartQuestId, bool IsStartQuestIdStart, u32 EndQuestId, bool IsEndQuestIdStart) {
     this->mGroupSerial = 0;
     this->mStartQuestId = 0;

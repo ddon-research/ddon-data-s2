@@ -97,6 +97,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCharacterEditMuscle::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCharacterEditMuscle::cCharacterEditMuscle() {
     this->mMuscle.z = 0.0f;
     this->mMuscle.pad_ = 0.0f;
@@ -110,4 +114,20 @@ inline cCharacterEditMuscle::cCharacterEditMuscle() {
     this->mFatP.pad_ = 0.0f;
     this->mFatP.x = 0.0f;
     this->mFatP.y = 0.0f;
+}
+
+inline void* rCharacterEditMuscle::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCharacterEditMuscle::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharacterEditMuscle::DTI)->memFree(p_addr);
+}
+
+inline void* cCharacterEditMuscle::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCharacterEditMuscle::DTI)->memAlloc(sz, align, ::cCharacterEditMuscle::DTI.::MtDTI::getID());
 }

@@ -313,12 +313,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uStageJointCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 uStageJointCtrl::getPlayerCurrentAreaNo() const {
     return this->mPlayerCurrentAreaNo;
 }
 
 inline rStageJoint* uStageJointCtrl::getJointArea() const {
     return this->mpJointArea;
+}
+
+inline void* uStageJointMdl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline bool uStageJointMdl::isSetResource() {

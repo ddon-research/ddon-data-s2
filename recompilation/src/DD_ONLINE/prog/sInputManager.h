@@ -277,6 +277,10 @@ private:
     static sInputManager* mpInstance;
 };
 
+inline void* sInputManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sInputManager* sInputManager::getInstance() {
     return ::sInputManager::mpInstance;
 }

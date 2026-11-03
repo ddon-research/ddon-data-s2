@@ -207,3 +207,15 @@ namespace nNetwork {
         void* mBlockList[32];  // offset: 0x40
     };
 }  // namespace nNetwork
+
+inline void* nNetwork::BlockBuffer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::BlockPool::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::BlockQueue::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

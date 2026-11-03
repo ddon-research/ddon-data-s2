@@ -3,10 +3,14 @@
 #include "rCharacterEditCameraParam.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #include "uCharacterEdit.h"
 #ifndef DDON_STUB
@@ -18,8 +22,6 @@ const MtDTI& cCharacterEditCameraParam::getDTI() const {
 }
 
 cCharacterEditCameraParam::~cCharacterEditCameraParam() {
-    DDON_STUB("cCharacterEditCameraParam::~cCharacterEditCameraParam")
-    /* stub */
 }
 
 cCharacterEditCameraParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

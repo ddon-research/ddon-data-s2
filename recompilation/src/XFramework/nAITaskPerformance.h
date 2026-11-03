@@ -133,3 +133,15 @@ namespace nAI {
         static MyDTI DTI;
     };
 }  // namespace nAI
+
+inline void* nAI::TaskPerformanceInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 nAI::TaskPerformanceInfo::getLODNum() {
+    return this->mLODNum;
+}
+
+inline void* nAI::TaskPerformanceInfo::LOD::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

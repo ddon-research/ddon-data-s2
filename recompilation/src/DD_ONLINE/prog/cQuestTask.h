@@ -1268,6 +1268,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cQuestPersonalData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cQuestTask* cQuestPersonalData::getQuestTask() const {
+    return this->mpParent;
+}
+
 inline bool cQuestPersonalData::hasOrdered() const {
     return this->mIsOrder;
 }
@@ -1297,25 +1305,53 @@ inline s32 cQuestPersonalData::getCurrentDeliverBlockNo() const {
     return this->mCurrentDeliverBlockNo;
 }
 
+inline void* cQuestPersonalData::cQuestPurpose::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestPersonalData::cQuestPurpose::cQuestPurpose() {
     this->mPurposeNo = 0;
+}
+
+inline void* cQuestPersonalData::cQuestFlag::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cQuestPersonalData::cQuestFlag::cQuestFlag() {
     this->mFlagNo = 0;
 }
 
+inline void* cQuestTask::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cQuestTask::getWaitOrderProcessNo() const {
     return this->mWaitOrderProcessNo;
+}
+
+inline void* cQuestTask::cQuestOmTargetData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestTask::cLayoutFlagInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cQuestTask::cLayoutFlagInfo::cLayoutFlagInfo() {
     this->mFlagNo = 0;
 }
 
+inline void* cQuestTask::cLayoutFlagInfo::cSetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestTask::cLayoutFlagInfo::cSetInfo::cSetInfo() {
     this->mGroupId = 0;
     this->mStageNo = 0;
+}
+
+inline void* cQuestTask::cEnemyGroupInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u32 cQuestTask::cEnemyGroupInfo::getEnemyGroupId() const {
@@ -1332,6 +1368,10 @@ inline cQuestTask::cEnemyGroupInfo::cEnemyGroupInfo() {
     this->mIsPartyRecommanded = false;
 }
 
+inline void* cQuestTask::cLeaderQuestProgress::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cQuestTask::cLeaderQuestProgress::getProcessNo() const {
     return this->mProcessNo;
 }
@@ -1344,6 +1384,10 @@ inline cQuestTask::cLeaderQuestProgress::cLeaderQuestProgress() {
     this->mCharacterId = 0;
     this->mProcessNo = 0;
     this->mBlockNo = 0;
+}
+
+inline void* cQuestTask::cDeliveryItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u32 cQuestTask::cDeliveryItemInfo::getItemId() const {
@@ -1359,8 +1403,8 @@ inline cQuestTask::cDeliveryItemInfo::cDeliveryItemInfo() {
     this->mItemNum = 0;
 }
 
-inline void cQuestTask::cQuestProcess::setDieEmNum(u32 dieEmNum) {
-    this->mDieEmNum = dieEmNum;
+inline void* cQuestTask::cQuestProcess::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u32 cQuestTask::cQuestProcess::getDieEmNum() {

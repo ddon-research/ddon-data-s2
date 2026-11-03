@@ -3,13 +3,20 @@
 #include "uGUITelop.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cResource.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
 #include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "../../XFramework/sMain.h"
+#include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -73,9 +80,7 @@ void uGUITelop::move() {
     this->uGUIBase::move();
 }
 
-rGUIMessage* uGUITelop::getMessageResource() {
-    return mpMessageResource;
-}
+static auto ddon_emit_0x01b07ce0 __attribute__((used)) = &uGUITelop::getMessageResource;
 
 __attribute__((weak)) void uGUITelop::setMessageResource(rGUIMessage* pRes) {
     DDON_STUB("uGUITelop::setMessageResource")
@@ -99,9 +104,7 @@ void uGUITelop::setCntSkipChk(f32 fCnt, u32 uPage) {
     }
 }
 
-u32 uGUITelop::getMessageIndex() {
-    return mMessageIndex;
-}
+static auto ddon_emit_0x01b07cf0 __attribute__((used)) = &uGUITelop::getMessageIndex;
 
 void uGUITelop::setMessageIndex(u32 n) {
     mMessageIndex = n;

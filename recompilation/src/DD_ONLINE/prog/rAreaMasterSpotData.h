@@ -324,10 +324,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAreaMasterRankData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAreaMasterRankData::cAreaMasterRankData() {
     this->mMsgGroupSerial = 0;
     this->mPoint = 0;
     this->mBonusType = 0;
+}
+
+inline void* cAreaMasterSpotData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cAreaMasterSpotData::cAreaMasterSpotData() {
@@ -345,10 +353,18 @@ inline cAreaMasterSpotData::cAreaMasterSpotData() {
     this->mPosY = 0.0f;
 }
 
+inline void* cAreaMasterSpotDetailData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAreaMasterSpotDetailData::cAreaMasterSpotDetailData() {
     this->mSpotId = 0;
     this->mItemArray.::MtArray::mAutoDelete = true;
     this->mEnemyArray.::MtArray::mAutoDelete = true;
+}
+
+inline void* cSpotEnemyData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cSpotEnemyData::cSpotEnemyData() {
@@ -358,8 +374,48 @@ inline cSpotEnemyData::cSpotEnemyData() {
     this->mEnemyNamedId = 0;
 }
 
+inline void* cSpotItemData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSpotItemData::cSpotItemData() {
     this->mItemId = 0;
     this->mIsFeature = false;
     this->mIsCannotPawnTake = false;
+}
+
+inline void* rAreaMasterRankData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAreaMasterSpotData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAreaMasterSpotDetailData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cAreaMasterRankData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAreaMasterRankData::DTI)->memFree(p_addr);
+}
+
+inline void* cAreaMasterRankData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAreaMasterRankData::DTI)->memAlloc(sz, align, ::cAreaMasterRankData::DTI.::MtDTI::getID());
+}
+
+inline void cAreaMasterSpotData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotData::DTI)->memFree(p_addr);
+}
+
+inline void* cAreaMasterSpotData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotData::DTI)->memAlloc(sz, align, ::cAreaMasterSpotData::DTI.::MtDTI::getID());
+}
+
+inline void* cAreaMasterSpotDetailData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, ::cAreaMasterSpotDetailData::DTI.::MtDTI::getID());
 }

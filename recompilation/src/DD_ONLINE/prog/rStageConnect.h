@@ -161,6 +161,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rStageConnect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageConnect::Data::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageConnect::Connect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rStageConnect::Connect::Connect() {
     this->mStart = -1;
     this->mGoal = -1;

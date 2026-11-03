@@ -52,3 +52,7 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGeometry2Base::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

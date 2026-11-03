@@ -9,38 +9,68 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtString.h"
+#include "../../MT/MtSynchronize.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
+#include "cBlowShrinkDmInfo.h"
 #include "cComponentManager.h"
 #include "cContextInstance.h"
 #include "cContextInterface.h"
 #include "cContextPlayerInfo.h"
 #include "cDelegate.h"
+#include "cEditParam.h"
 #include "cEfcHandle.h"
 #include "cEquipData.h"
+#include "cEvaluation.h"
+#include "cGeneralPoint.h"
 #include "cGeneralPointPtr.h"
+#include "cGuardInfo.h"
 #include "cHitGeom.h"
 #include "cHitInfoAfter.h"
 #include "cHitNode.h"
+#include "cHumanActId.h"
 #include "cHumanAction.h"
+#include "cItemParam.h"
+#include "cNetGameServer.h"
+#include "cOcdBadStatus.h"
+#include "cOcdBase.h"
+#include "cOcdCustomReqInfo.h"
 #include "cOcdDamageInfo.h"
+#include "cOcdInfo.h"
 #include "cParentRegionStatus.h"
+#include "cPcTouchAction.h"
+#include "cPlDeadFlow.h"
+#include "cPlayerLoadManager.h"
 #include "../../XFramework/cResource.h"
 #include "cShlNotifyInfo.h"
 #include "cStaminaCtrl.h"
+#include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
+#include "cUnitDieInfo.h"
 #include "cpActionManager.h"
 #include "cpActionRequest.h"
+#include "cpActionSelect.h"
 #include "cpAltitudeFallCtrl.h"
 #include "cpBakeJoint.h"
 #include "cpBakeJointHuman.h"
+#include "cpCatchCtrl.h"
+#include "cpChantCommand.h"
 #include "cpCharacterEdit.h"
+#include "cpChargeCtrl.h"
+#include "cpCheckWallCliff.h"
 #include "cpComponent.h"
+#include "cpCorePointCtrl.h"
+#include "cpEffectProvider.h"
+#include "cpEquip.h"
 #include "cpHeadCtrl.h"
+#include "cpHmHeadCtrl.h"
 #include "cpHpDamageCtrl.h"
 #include "cpHugeble.h"
 #include "cpHumanWarpCtrl.h"
 #include "cpIKCtrl.h"
 #include "cpInput.h"
+#include "cpInvincibleCtrl.h"
 #include "cpItemThrow.h"
 #include "cpJob01.h"
 #include "cpJob02.h"
@@ -48,28 +78,41 @@
 #include "cpJob04.h"
 #include "cpJob05.h"
 #include "cpJob06.h"
+#include "cpJob07.h"
 #include "cpJob08.h"
 #include "cpJob09.h"
 #include "cpJobBase.h"
+#include "cpJointEx2.h"
+#include "cpJointOrder.h"
 #include "cpKeepAtkAdjust.h"
 #include "cpKeyCommand.h"
+#include "cpLayout.h"
 #include "cpLegCtrl.h"
+#include "cpLockOn.h"
 #include "cpMotionFilter.h"
 #include "cpMotionSe.h"
 #include "cpObjCollision.h"
 #include "cpOcdCtrl.h"
+#include "cpOmComponent.h"
+#include "cpPathFinding.h"
 #include "cpPawnThink.h"
+#include "cpRotateCtrl.h"
 #include "cpSafePos.h"
 #include "cpScrCollision.h"
 #include "cpSequenceCtrl.h"
 #include "cpShakeCtrl.h"
+#include "cpShlShotCtrl.h"
 #include "cpSlave.h"
 #include "cpStateManager.h"
 #include "cpTransparencyCtrl.h"
+#include "cpVibration.h"
+#include "cpWorkRate.h"
 #include "cpjob10.h"
+#include "ctl_storageArray.h"
 #include "../../generated/shared/nAbility.h"
 #include "../../generated/shared/nAction.h"
 #include "nCharacterData.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "../../generated/shared/nDDOModel.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nEnemy.h"
@@ -78,20 +121,33 @@
 #include "nHumanMsg.h"
 #include "nJobParam.h"
 #include "nObjCollision.h"
+#include "nOcdMsg.h"
 #include "nRegionStatus.h"
 #include "rAdjustParam.h"
 #include "rArchiveListArray.h"
 #include "rAttackParam.h"
+#include "rCharacterEdit.h"
+#include "rCollNode.h"
+#include "../../XFramework/rCollisionHeightField.h"
+#include "rEffectProvider.h"
 #include "rHeadCtrl.h"
 #include "rItemList.h"
+#include "rJointOrder.h"
 #include "rJumpParamTbl.h"
 #include "rLegCtrl.h"
+#include "rLocationData.h"
 #include "rMagicChantParam.h"
 #include "rMotionFilter.h"
+#include "../../XFramework/rMotionList.h"
 #include "rMotionParam.h"
+#include "rObjCollision.h"
 #include "rRegionStatusParam.h"
 #include "rShakeCtrl.h"
+#include "rSoundAttributeSe.h"
+#include "../../XFramework/rSoundRequest.h"
+#include "rStageInfo.h"
 #include "rStaminaDecTbl.h"
+#include "res_ptr.h"
 #include "sAIPawnSys.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
@@ -100,25 +156,57 @@
 #include "../../XFramework/sCamera.h"
 #include "sCameraExt.h"
 #include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
+#include "sContextManager.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sEnemyManager.h"
 #include "sFlag.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sGame.h"
+#include "sInputManager.h"
 #include "sItemManager.h"
 #include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sObjCollision.h"
+#include "sObjCondition.h"
+#include "sOmManager.h"
+#include "../../XFramework/sPad.h"
 #include "sPadExt.h"
+#include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
+#include "sSetManager.h"
 #include "sShlManager.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
+#include "sSoundManager.h"
+#include "sTalkManager.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sUnitManager.h"
+#include "sWorldOffset.h"
+#include "../../XFramework/uBaseModel.h"
 #include "../../XFramework/uCamera.h"
 #include "uCharacter.h"
 #include "uCnsBowUpper.h"
 #include "uCnsTurnUpper.h"
 #include "uControl.h"
+#include "uControlNpc.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uEffectExt.h"
+#include "uEnemy.h"
+#include "uGUIGaugeNpc.h"
 #include "uJobEquip.h"
 #include "../../XFramework/uModel.h"
+#include "uOmModel.h"
+#include "uPlayer.h"
+#include "uShlBase.h"
 #include "uShlCondition.h"
+#include "../../XFramework/uSimSoftBody.h"
+#include "uWeapon.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -992,7 +1080,7 @@ void uHuman::callbackAttackTest(cHitInfo* pHitInfo) {
     searchCorepoint(pHitInfo);
     cpPawnThink* p_pw_think = getPawnThinkPtr();
     if (p_pw_think != nullptr) {
-        p_pw_think->cpPawnThink::callbackAttackTestPawnThink(pHitInfo);
+        p_pw_think->callbackAttackTestPawnThink(pHitInfo);
     }
     if (mpContextPlayerInfo == nullptr) {
         return;
@@ -1474,7 +1562,7 @@ void uHuman::initHeadCtrl() {
         return;
     }
     mpHeadCtrl->setResource(static_cast<rHeadCtrl*>(pRes));
-    pRes->cResource::release();
+    pRes->release();
 }
 
 void uHuman::updateHeadCtrl() {
@@ -1495,7 +1583,7 @@ void uHuman::initLegCtrl() {
         return;
     }
     mpLegCtrl->setResource(static_cast<rLegCtrl*>(pRes));
-    pRes->cResource::release();
+    pRes->release();
 }
 
 void uHuman::updateLegCtrl() {
@@ -1818,12 +1906,12 @@ bool uHuman::isBringOM() {
 __attribute__((weak)) bool uHuman::isInvolveOCDAction() {
     cpOcdCtrl* pOcdCtrl = getOcdCtrlPtr();
     if (pOcdCtrl != nullptr) {
-        if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4109u)) {
-            if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4106u)) {
-                if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4107u)) {
-                    if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4108u)) {
-                        if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4099u)) {
-                            if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4100u)) {
+        if (!pOcdCtrl->isOcdActive(4109u)) {
+            if (!pOcdCtrl->isOcdActive(4106u)) {
+                if (!pOcdCtrl->isOcdActive(4107u)) {
+                    if (!pOcdCtrl->isOcdActive(4108u)) {
+                        if (!pOcdCtrl->isOcdActive(4099u)) {
+                            if (!pOcdCtrl->isOcdActive(4100u)) {
                                 return false;
                             }
                         }
@@ -1988,16 +2076,16 @@ void uHuman::checkOcdTouchTypeFromRecoverDC() {
     if (pOcdCtrl == nullptr) {
         return;
     }
-    if (pOcdCtrl->cpOcdCtrl::isOcdActive(4109u)) {
+    if (pOcdCtrl->isOcdActive(4109u)) {
         mTouchType = nDDOModel::TOUCH_OCD_RESCUE_FREEZE;
     } else {
-        if (pOcdCtrl->cpOcdCtrl::isOcdActive(4108u)) {
+        if (pOcdCtrl->isOcdActive(4108u)) {
             mTouchType = nDDOModel::TOUCH_OCD_RESCUE_SPREAD;
         } else {
-            if (pOcdCtrl->cpOcdCtrl::isOcdActive(4099u)) {
+            if (pOcdCtrl->isOcdActive(4099u)) {
                 mTouchType = nDDOModel::TOUCH_OCD_RESCUE_SLEEP;
             } else {
-                if (pOcdCtrl->cpOcdCtrl::isOcdActive(4100u)) {
+                if (pOcdCtrl->isOcdActive(4100u)) {
                     mTouchType = nDDOModel::TOUCH_OCD_RESCUE_STUN;
                 }
             }
@@ -2240,12 +2328,12 @@ void uHuman::checkTransEngetsuGiri() {
     }
     cpOcdCtrl* pOcdCtrl = getOcdCtrlPtr();
     if (pOcdCtrl != nullptr) {
-        if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4108u)) {
-            if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4100u)) {
-                if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4106u)) {
-                    if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4107u)) {
-                        if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4110u)) {
-                            if (!pOcdCtrl->cpOcdCtrl::isOcdActive(4111u)) {
+        if (!pOcdCtrl->isOcdActive(4108u)) {
+            if (!pOcdCtrl->isOcdActive(4100u)) {
+                if (!pOcdCtrl->isOcdActive(4106u)) {
+                    if (!pOcdCtrl->isOcdActive(4107u)) {
+                        if (!pOcdCtrl->isOcdActive(4110u)) {
+                            if (!pOcdCtrl->isOcdActive(4111u)) {
                                 getActionRequestPtr()->mRequestActionReq = 4111;
                             }
                         }
@@ -2256,6 +2344,31 @@ void uHuman::checkTransEngetsuGiri() {
     } else {
         getActionRequestPtr()->mRequestActionReq = 4111;
     }
+}
+
+inline void uHuman::checkOnDefaultTouchType() {
+    if ((this->uDDOModel::mUnitId & 72u) == 0) {
+        return;
+    }
+    if ((sSoundManager::mpInstance)->sSoundManager::getBattleState() != sBattleState::SYS_STATE_NORMAL) {
+        if (mTouchType == nDDOModel::TOUCH_PLAYER_DEFAULT) {
+            mTouchType = nDDOModel::TOUCH_NONE;
+        }
+    } else {
+        if (mTouchType == nDDOModel::TOUCH_NONE) {
+            mTouchType = nDDOModel::TOUCH_PLAYER_DEFAULT;
+        }
+    }
+    if (mIsTouchTypeNone) {
+        mTouchType = nDDOModel::TOUCH_NONE;
+    }
+    if (!(sQuestManagerExt::mpInstance)->sQuestManagerExt::isContentsPlayNowEndFlow()) {
+        return;
+    }
+    if (mTouchType != nDDOModel::TOUCH_PLAYER_DEFAULT) {
+        return;
+    }
+    mTouchType = nDDOModel::TOUCH_NONE;
 }
 
 void uHuman::setDrawingSword(bool flg) {
@@ -2426,7 +2539,7 @@ __attribute__((weak)) nHuman::HUMAN_JOB_ROLE uHuman::getJobRole() {
 void uHuman::createEquipUnit() {
     uControl* pCtrl = getCtrl();
     if (pCtrl != nullptr) {
-        cContextInstance* t0 = pCtrl->uControl::getContextInst();
+        cContextInstance* t0 = pCtrl->getContextInst();
         if (t0 != nullptr) {
             createWeaponUnit(static_cast<const cContextInstHm*>(t0));
             createArmorUnit(static_cast<const cContextInstHm*>(t0));
@@ -2653,9 +2766,62 @@ __attribute__((weak)) void uHuman::checkWaterResist() {
     /* stub */
 }
 
-__attribute__((weak)) bool uHuman::checkCndEnableDelayCombo() const {
-    DDON_STUB("uHuman::checkCndEnableDelayCombo")
-    return {};
+bool uHuman::checkCndEnableDelayCombo() const {
+    if (mpContextPlayerInfo != nullptr) {
+        switch (static_cast<unsigned int>(mpContextPlayerInfo->mCurrentJob_pri - 1)) {
+            case 0:
+            {
+                if (mpJob01 != nullptr) {
+                    return mpJob01->checkCndEnableDelayCombo();
+                } else {
+                    return false;
+                }
+                break;
+            }
+            case 1:
+            {
+                if (mpJob02 != nullptr) {
+                    return mpJob02->checkCndEnableDelayCombo();
+                } else {
+                    return false;
+                }
+                break;
+            }
+            case 6:
+            {
+                if (mpJob07 != nullptr) {
+                    return mpJob07->checkCndEnableDelayCombo();
+                } else {
+                    return false;
+                }
+                break;
+            }
+            case 8:
+            {
+                if (mpJob09 != nullptr) {
+                    return mpJob09->checkCndEnableDelayCombo();
+                } else {
+                    return false;
+                }
+                break;
+            }
+            case 9:
+            {
+                if (mpJob09 != nullptr) {
+                    return mpJob10->checkCndEnableDelayCombo();
+                } else {
+                    return false;
+                }
+                break;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    } else {
+        return false;
+    }
 }
 
 bool uHuman::checkCndButtonNagaoshi(u32 inputType) const {
@@ -3704,7 +3870,7 @@ void uHuman::makeHitSeInfo_Attack(cDamageSeInfo* pSeInfo) {
     if (pCtrl == nullptr) {
         return;
     }
-    const cContextInstHm* pContext = static_cast<const cContextInstHm*>(pCtrl->uControl::getContextInst());
+    const cContextInstHm* pContext = static_cast<const cContextInstHm*>(pCtrl->getContextInst());
     if (pContext == nullptr) {
         return;
     }
@@ -3713,7 +3879,7 @@ void uHuman::makeHitSeInfo_Attack(cDamageSeInfo* pSeInfo) {
     if (pItem == nullptr) {
         return;
     }
-    u32 wepType = pItem->rItemList::rItemParam::getWepCategory();
+    u32 wepType = pItem->getWepCategory();
     pSeInfo->mWeaponType = wepType;
 }
 
@@ -4049,6 +4215,32 @@ __attribute__((weak)) void uHuman::setSafePosDie() {
 __attribute__((weak)) void uHuman::setSafePosDown() {
     DDON_STUB("uHuman::setSafePosDown")
     /* stub */
+}
+
+inline void uHuman::setSafePosFootWork() {
+    resetPos(getSafePos());
+    if (mpTransparencyCtrl != nullptr) {
+        mpTransparencyCtrl->startChangeTrp(0.0f, 1.0f, 15.0f);
+    }
+    if (mGuardComponent.mpActionRequest != nullptr) {
+        mGuardComponent.mpActionRequest->mDamageAction = 1;
+        mGuardComponent.mpActionRequest->mDamageActionReq = 1;
+    }
+    mInsuranceTimer = 0.0f;
+    if (!isMaster()) {
+        return;
+    }
+    if ((this->uDDOModel::mUnitId & 1024u) != 0) {
+        return;
+    }
+    countUpSafePosWarpLoop();
+}
+
+inline void uHuman::checkItemMode() {
+    if (mpItemThrow == nullptr) {
+        return;
+    }
+    mpItemThrow->checkItemMode();
 }
 
 __attribute__((weak)) void uHuman::checkDeadConsistency() {
@@ -4618,7 +4810,7 @@ void uHuman::setPawnEscapeInvincible() {
     if (pPawnThink == nullptr) {
         return;
     }
-    if (!pPawnThink->cpPawnThink::isNowEscapeThink()) {
+    if (!pPawnThink->isNowEscapeThink()) {
         return;
     }
     f32 inv_time = sAIPawnSys::getInstance()->getPawnPrmF32("ESCAPE_JUMP_INV_TIME", 30.0f);

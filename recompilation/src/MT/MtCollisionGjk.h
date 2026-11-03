@@ -90,3 +90,7 @@ public:
     static MyDTI DTI;
     static const f32 DEFAULT_EPSILON;
 };
+
+inline void* MtCollisionGjk::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

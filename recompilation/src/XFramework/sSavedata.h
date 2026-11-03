@@ -364,10 +364,26 @@ protected:
     static sSavedata* mpInstance;
 };
 
+inline void* sSavedata::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sSavedata* sSavedata::getInstance() {
     return ::sSavedata::mpInstance;
 }
 
 inline sSavedata::RESULT sSavedata::getResult() const {
     return this->mResult;
+}
+
+inline SceUserServiceUserId sSavedata::getUserId() const {
+    return this->mUserId;
+}
+
+inline const SceSaveDataTitleId* sSavedata::getTitleId() const {
+    return this->mTitleId;
+}
+
+inline const SceSaveDataFingerprint* sSavedata::getFingerprint() const {
+    return this->mFingerprint;
 }

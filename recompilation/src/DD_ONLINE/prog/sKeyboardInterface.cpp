@@ -3,11 +3,19 @@
 #include "sKeyboardInterface.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "cInputTextKeyboardHook.h"
 #include "../../XFramework/cSystem.h"
 #include "../../generated/shared/ime_dialog.h"
 #include "../../generated/shared/ime_types.h"
+#include "nInputText.h"
 #include "../../generated/shared/nUnicode.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/sKeyboard.h"
+#include "sKeyboardExt.h"
+#include "../../XFramework/sUserManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

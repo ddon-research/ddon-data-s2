@@ -16,6 +16,7 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 class aStage;
+class cCycleQuestManagerBase;
 class cFSMBase;
 class cQuestTask;
 namespace nLayout { class cGameDataCache; }
@@ -39,6 +40,7 @@ namespace nDDOUtility { void requestOnTutorialFlg(s32 questTarget); }
 class sFlag : public cSystem
 {
     friend class aStage;
+    friend class cCycleQuestManagerBase;
     friend class cFSMBase;
     friend class cQuestTask;
     friend void nDDOUtility::requestOnTutorialFlg(s32 questTarget);
@@ -166,6 +168,10 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* sFlag::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline sFlag* sFlag::getInstance() {
     return ::sFlag::mpInstance;

@@ -5,6 +5,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #include "rCraftSkillCost.h"
 #include "rCraftSkillSpd.h"
@@ -103,7 +105,7 @@ u32 cCraftSkill::getSpdRate(u32 type, u32 Lv) {
         if (Lv < list) {
             cCraftSkillSpdData* pRes = mpSpdResource->getData(Lv);
             if (pRes != nullptr) {
-                return pRes->cCraftSkillSpdData::getRate(type);
+                return pRes->getRate(type);
             } else {
                 return 0;
             }

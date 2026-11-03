@@ -124,5 +124,21 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAIPawnSkillParamNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIPawnSkillParamTbl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rAIPawnSkillParamTbl::rAIPawnSkillParamTbl() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cAIPawnSkillParamNode::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIPawnSkillParamNode::DTI)->memAlloc(sz, align, ::cAIPawnSkillParamNode::DTI.::MtDTI::getID());
 }

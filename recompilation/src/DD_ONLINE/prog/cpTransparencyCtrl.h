@@ -107,6 +107,10 @@ public:
     static const u32 UNIT_APPEAR_FRAME = 30;
 };
 
+inline void* cpTransparencyCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool cpTransparencyCtrl::isActive() const {
     return this->mIsActive;
 }

@@ -197,6 +197,10 @@ private:
     static const u32 POSTPONE_FIRST_CHANCE = 4294967293;
 };
 
+inline void* sAreaExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rStageList* sAreaExt::getStageList() const {
     return this->mpStageList;
 }

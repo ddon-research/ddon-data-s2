@@ -4,8 +4,15 @@
 #include "rAIPathBase.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDataReader.h"
+#include "../MT/MtDataWriter.h"
+#include "../MT/MtGeomAABB.h"
+#include "../MT/MtGeomOBB.h"
+#include "../MT/MtGeomSphere.h"
+#include "../MT/MtGeometry3D.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "cResource.h"
 #ifndef DDON_STUB
@@ -89,9 +96,7 @@ __attribute__((weak)) void rAIPathBase::setNumberOfArea(u32 size) {
     /* stub */
 }
 
-u32 rAIPathBase::getNumberOfArea() {
-    return mNumberOfArea;
-}
+static auto ddon_emit_0x01b94260 __attribute__((used)) = &rAIPathBase::getNumberOfArea;
 
 void rAIPathBase::setArea(rAIPathBase::HierarchyArea* area, u32 index) {
     if (mpHierarchyArea == nullptr) {
@@ -145,23 +150,11 @@ __attribute__((weak)) void rAIPathBase::HierarchyArea::setNumberOfGeometry(u32 n
     /* stub */
 }
 
-u32 rAIPathBase::HierarchyArea::getNumberOfGeometry() {
-    return mNumberOfGeometry;
-}
+static auto ddon_emit_0x01b94140 __attribute__((used)) = &rAIPathBase::HierarchyArea::getNumberOfGeometry;
 
-void rAIPathBase::HierarchyArea::setGeometry(MtGeometry* geom, u32 index) {
-    if (index < mNumberOfGeometry) {
-        mpGeometryList[index] = geom;
-    }
-}
+static auto ddon_emit_0x01b94120 __attribute__((used)) = &rAIPathBase::HierarchyArea::setGeometry;
 
-MtGeometry* rAIPathBase::HierarchyArea::getGeometry(u32 index) {
-    if (index < mNumberOfGeometry) {
-        return mpGeometryList[index];
-    } else {
-        return nullptr;
-    }
-}
+static auto ddon_emit_0x01b94100 __attribute__((used)) = &rAIPathBase::HierarchyArea::getGeometry;
 
 void rAIPathBase::HierarchyArea::setChild(u32 id, u32 index) {
     if (index < mNumberOfChild) {
@@ -190,9 +183,7 @@ void rAIPathBase::HierarchyArea::setNumberOfChild(u32 size) {
     mNumberOfChild = static_cast<unsigned char>(size);
 }
 
-u32 rAIPathBase::HierarchyArea::getNumberOfChild() {
-    return mNumberOfChild;
-}
+static auto ddon_emit_0x01b94230 __attribute__((used)) = &rAIPathBase::HierarchyArea::getNumberOfChild;
 
 void rAIPathBase::HierarchyArea::setLink(u32 id, u32 index) {
     if (index < mNumberOfLink) {
@@ -221,9 +212,7 @@ void rAIPathBase::HierarchyArea::setNumberOfLink(u32 size) {
     mNumberOfLink = static_cast<unsigned char>(size);
 }
 
-u32 rAIPathBase::HierarchyArea::getNumberOfLink() {
-    return mNumberOfLink;
-}
+static auto ddon_emit_0x01b94240 __attribute__((used)) = &rAIPathBase::HierarchyArea::getNumberOfLink;
 
 rAIPathBase::HierarchyArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

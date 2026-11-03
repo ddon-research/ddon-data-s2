@@ -5,9 +5,13 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtPrimitive2D.h"
 #include "../../XFramework/cAIObject.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nPawn.h"
+#include "sWorldOffset.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

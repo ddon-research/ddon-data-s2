@@ -10,6 +10,8 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSynchronize.h"
 #include "../../XFramework/cSystem.h"
 #include "../../XFramework/cUnit.h"
@@ -17,6 +19,7 @@
 #include "nLayout.h"
 #include "../../XFramework/sUnit.h"
 #include "../../XFramework/uBaseModel.h"
+#include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -196,7 +199,7 @@ void sUnitManager::releaseUnit(u32 uniqId) {
                     if ((i0_1 + 1u) < v0_0) {
                         i0_1 = i0_1 + 1u;
                     } else {
-                        returnTicket(p->cUnit::getUnitParam());
+                        returnTicket(p->getUnitParam());
                         u32 t0 = mDelArray.mLength;
                         u32 t1 = mDelArray.mBufsiz;
                         if (t0 < t1) {
@@ -236,7 +239,7 @@ void sUnitManager::releaseUnit(u32 uniqId) {
     } else {
         return;
     }
-    returnTicket(p->cUnit::getUnitParam());
+    returnTicket(p->getUnitParam());
     u32 t0 = mDelArray.mLength;
     u32 t1 = mDelArray.mBufsiz;
     if (t0 < t1) {
@@ -352,6 +355,10 @@ __attribute__((weak)) MtVector2 sUnitManager::getLosDistDataParam(u32 num) {
     __builtin_unreachable();
 }
 
+sUnitManager::cLODDistData* sUnitManager::getLodDistData(u32 index) {
+    return static_cast<cLODDistData*>(mLODDistData.mpArray[index]);
+}
+
 sUnitManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sUnitManager::MyDTI sUnitManager::DTI("sUnitManager", &::cSystem::DTI, 160ul, 0u, 1u);
@@ -372,18 +379,14 @@ inline void sUnitManager::cLODDistData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sUnitManager::cLODDistData::DTI)->memFree(p_addr);
 }
 
-f32 sUnitManager::cLODDistData::getLow() {
-    return mLow;
-}
+static auto ddon_emit_0x01acfbe0 __attribute__((used)) = &sUnitManager::cLODDistData::getLow;
 
 __attribute__((weak)) void sUnitManager::cLODDistData::setLow(f32 set) {
     DDON_STUB("sUnitManager::cLODDistData::setLow")
     /* stub */
 }
 
-f32 sUnitManager::cLODDistData::getMed() {
-    return mMed;
-}
+static auto ddon_emit_0x01acfbf0 __attribute__((used)) = &sUnitManager::cLODDistData::getMed;
 
 __attribute__((weak)) void sUnitManager::cLODDistData::setMed(f32 set) {
     DDON_STUB("sUnitManager::cLODDistData::setMed")

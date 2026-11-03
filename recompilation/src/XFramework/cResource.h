@@ -28,6 +28,7 @@ class rDynamicSbc;
 class rEffect2D;
 class rEffectAnim;
 class rEffectList;
+class rEffectProvider;
 class rEffectStrip;
 class rGUI;
 class rGUIIconInfo;
@@ -51,10 +52,12 @@ class rSwingModel;
 class rTable;
 class rTexture;
 class rTextureJpeg;
+class rVertices;
 class rVibration;
 class sResource;
 class sSoundExt;
 class uCnsDDOIK;
+class uCnsIK;
 
 // Declarations
 class cResource;
@@ -84,6 +87,7 @@ class cResource : public MtObject
     friend class rEffect2D;
     friend class rEffectAnim;
     friend class rEffectList;
+    friend class rEffectProvider;
     friend class rEffectStrip;
     friend class rGUI;
     friend class rGUIIconInfo;
@@ -107,10 +111,12 @@ class cResource : public MtObject
     friend class rTable;
     friend class rTexture;
     friend class rTextureJpeg;
+    friend class rVertices;
     friend class rVibration;
     friend class sResource;
     friend class sSoundExt;
     friend class uCnsDDOIK;
+    friend class uCnsIK;
 public:
     enum CONVERT_TYPE
     {
@@ -272,8 +278,20 @@ private:
     static MtAllocator* mpAllocator;
 };
 
+inline void* cResource::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u64 cResource::getID() const {
     return this->mID;
+}
+
+inline u32 cResource::getQuality() const {
+    return this->mQuality;
+}
+
+inline u32 cResource::getTag() const {
+    return this->mTag;
 }
 
 inline bool cResource::isIntermediate() const {
@@ -282,6 +300,10 @@ inline bool cResource::isIntermediate() const {
 
 inline bool cResource::isUsage() const {
     return (this->mState & 1u) != 0;
+}
+
+inline MT_CTSTR cResource::getPath() const {
+    return &this->mPath[0];
 }
 
 inline void cResource::setAttribute(u32 attr) {

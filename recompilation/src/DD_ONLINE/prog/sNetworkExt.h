@@ -50,6 +50,7 @@ namespace nNet { class cProgress; }
 namespace nNet { struct stClanEmblem; }
 namespace nNet { struct stEntryBoardItemInfo; }
 namespace nSessionManager { class cNetSessionManager; }
+class sBazaarManager;
 class sGame;
 class sQuestManagerExt;
 class sSavedataExt;
@@ -91,6 +92,7 @@ class sNetworkExt : public sNetwork
     friend class cNetGameServer;
     friend class cQuestTaskParam;
     friend class nSessionManager::cNetSessionManager;
+    friend class sBazaarManager;
     friend class sGame;
     friend class sQuestManagerExt;
     friend class sSavedataExt;
@@ -587,6 +589,10 @@ public:
     static const u32 PAWN_PARTY_MAX = 3;
 };
 
+inline void* sNetworkExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void sNetworkExt::setTrophySize(u64 size) {
     this->mTrophySize = size;
 }
@@ -609,6 +615,10 @@ inline bool sNetworkExt::isToLauncher() {
 
 inline s32 sNetworkExt::getSlot() {
     return this->mSlotNo;
+}
+
+inline u32 sNetworkExt::getMyPawnMaxNum() {
+    return this->mMyPawnMaxNum;
 }
 
 inline u32 sNetworkExt::getClanMemberMax() {

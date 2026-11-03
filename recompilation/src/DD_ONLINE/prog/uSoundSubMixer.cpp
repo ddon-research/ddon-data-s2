@@ -9,12 +9,16 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSynchronize.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "rSoundSimpleCurve.h"
 #include "rSoundSubMixer.h"
+#include "../../XFramework/sMain.h"
 #include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

@@ -63,5 +63,9 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cSetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSetInfo::cSetInfo() {
 }

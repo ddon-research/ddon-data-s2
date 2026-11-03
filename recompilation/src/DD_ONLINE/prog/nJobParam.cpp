@@ -6,6 +6,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPropertyList.h"
 #include "cContextPlayerInfo.h"
 #include "../../generated/shared/nHuman.h"
 #include "nHumanMsg.h"
@@ -32,13 +33,9 @@ __attribute__((weak)) void nJobParam::cHumanBaseInfo::createProperty(MtPropertyL
     /* stub */
 }
 
-f32 nJobParam::cHumanBaseInfo::getHP() const {
-    return mHP_pri;
-}
+static auto ddon_emit_0x01962960 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getHP;
 
-void nJobParam::cHumanBaseInfo::setHP(f32 NewValue) {
-    mHP_pri = NewValue;
-}
+static auto ddon_emit_0x01962920 __attribute__((used)) = &nJobParam::cHumanBaseInfo::setHP;
 
 __attribute__((weak)) void nJobParam::cHumanBaseInfo::setFinalMaxHP(f32 hp) {
     DDON_STUB("nJobParam::cHumanBaseInfo::setFinalMaxHP")
@@ -54,89 +51,47 @@ __attribute__((weak)) f32 nJobParam::cHumanBaseInfo::getFinalMaxHPCheatCheck() c
     return {};
 }
 
-f32 nJobParam::cHumanBaseInfo::getStamina() const {
-    return mStamina_pri;
-}
+static auto ddon_emit_0x019629f0 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getStamina;
 
-void nJobParam::cHumanBaseInfo::setStamina(f32 NewValue) {
-    mStamina_pri = NewValue;
-}
+static auto ddon_emit_0x01962930 __attribute__((used)) = &nJobParam::cHumanBaseInfo::setStamina;
 
-f32 nJobParam::cHumanBaseInfo::getFinalMaxStamina() const {
-    return mFinalMaxStamina_pri;
-}
+static auto ddon_emit_0x019629e0 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getFinalMaxStamina;
 
-u32 nJobParam::cHumanBaseInfo::getLostPower() const {
-    return mLostPower_pri;
-}
+static auto ddon_emit_0x01962a00 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getLostPower;
 
-s32 nJobParam::cHumanBaseInfo::getAbilityCapacity() const {
-    return mAbilityCapacity_pri;
-}
+static auto ddon_emit_0x01962a10 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getAbilityCapacity;
 
-u32 nJobParam::cHumanBaseInfo::getLostNum() const {
-    return mLostNum_pri;
-}
+static auto ddon_emit_0x01962a20 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getLostNum;
 
-void nJobParam::cHumanBaseInfo::setLostNum(u32 NewValue) {
-    mLostNum_pri = NewValue;
-}
+static auto ddon_emit_0x01962940 __attribute__((used)) = &nJobParam::cHumanBaseInfo::setLostNum;
 
-u32 nJobParam::cHumanBaseInfo::getMaxLostNum() const {
-    return mMaxLostNum_pri;
-}
+static auto ddon_emit_0x01962a30 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getMaxLostNum;
 
-void nJobParam::cHumanBaseInfo::setMaxLostNum(u32 NewValue) {
-    mMaxLostNum_pri = NewValue;
-}
+static auto ddon_emit_0x01962950 __attribute__((used)) = &nJobParam::cHumanBaseInfo::setMaxLostNum;
 
-f32 nJobParam::cHumanBaseInfo::getGainHp() const {
-    return mGainHp_pri;
-}
+static auto ddon_emit_0x019629c0 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getGainHp;
 
-void nJobParam::cHumanBaseInfo::setGainHp(f32 NewValue) {
-    mGainHp_pri = NewValue;
-}
+static auto ddon_emit_0x01962a40 __attribute__((used)) = &nJobParam::cHumanBaseInfo::setGainHp;
 
-f32 nJobParam::cHumanBaseInfo::getGainStamina() const {
-    return mGainStamina_pri;
-}
+static auto ddon_emit_0x019629d0 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getGainStamina;
 
-void nJobParam::cHumanBaseInfo::setGainStamina(f32 NewValue) {
-    mGainStamina_pri = NewValue;
-}
+static auto ddon_emit_0x01962a50 __attribute__((used)) = &nJobParam::cHumanBaseInfo::setGainStamina;
 
-u32 nJobParam::cHumanBaseInfo::getGainAtk() const {
-    return mGainAtk_pri;
-}
+static auto ddon_emit_0x01962980 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getGainAtk;
 
-void nJobParam::cHumanBaseInfo::setGainAtk(u32 NewValue) {
-    mGainAtk_pri = NewValue;
-}
+static auto ddon_emit_0x01962a60 __attribute__((used)) = &nJobParam::cHumanBaseInfo::setGainAtk;
 
-u32 nJobParam::cHumanBaseInfo::getGainDef() const {
-    return mGainDef_pri;
-}
+static auto ddon_emit_0x01962990 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getGainDef;
 
-void nJobParam::cHumanBaseInfo::setGainDef(u32 NewValue) {
-    mGainDef_pri = NewValue;
-}
+static auto ddon_emit_0x01962a70 __attribute__((used)) = &nJobParam::cHumanBaseInfo::setGainDef;
 
-u32 nJobParam::cHumanBaseInfo::getGainMAtk() const {
-    return mGainMAtk_pri;
-}
+static auto ddon_emit_0x019629a0 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getGainMAtk;
 
-void nJobParam::cHumanBaseInfo::setGainMAtk(u32 NewValue) {
-    mGainMAtk_pri = NewValue;
-}
+static auto ddon_emit_0x01962a80 __attribute__((used)) = &nJobParam::cHumanBaseInfo::setGainMAtk;
 
-u32 nJobParam::cHumanBaseInfo::getGainMDef() const {
-    return mGainMDef_pri;
-}
+static auto ddon_emit_0x019629b0 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getGainMDef;
 
-void nJobParam::cHumanBaseInfo::setGainMDef(u32 NewValue) {
-    mGainMDef_pri = NewValue;
-}
+static auto ddon_emit_0x01962a90 __attribute__((used)) = &nJobParam::cHumanBaseInfo::setGainMDef;
 
 __attribute__((weak)) void nJobParam::cHumanBaseInfo::copyData(const nJobParam::cHumanBaseInfo& src) {
     DDON_STUB("nJobParam::cHumanBaseInfo::copyData")
@@ -209,8 +164,8 @@ void nJobParam::cJobInfo::initJobStatus(nHuman::JOB_ENUM job) {
     if (info == nullptr) {
         return;
     }
-    mLv_pri = info->::nJobParam::cJobInfo::getLv();
-    mExp_pri = info->::nJobParam::cJobInfo::getExp();
+    mLv_pri = info->getLv();
+    mExp_pri = info->getExp();
     mAtk_pri = info->mAtk_pri;
     mDef_pri = info->mDef_pri;
     mMAtk_pri = info->mMAtk_pri;
@@ -219,41 +174,41 @@ void nJobParam::cJobInfo::initJobStatus(nHuman::JOB_ENUM job) {
     mDownPower_pri = info->mDownPower_pri;
     mShakePower_pri = info->mShakePower_pri;
     mStanPower_pri = info->mStanPower_pri;
-    mConstitution_pri = info->::nJobParam::cJobInfo::getConstitution();
-    mGuts_pri = info->::nJobParam::cJobInfo::getGuts();
-    mJobPoint_pri = info->::nJobParam::cJobInfo::getJobPoint();
-    mFireResist_pri = info->::nJobParam::cJobInfo::getFireResist();
-    mIceResist_pri = info->::nJobParam::cJobInfo::getIceResist();
-    mThunderResist_pri = info->::nJobParam::cJobInfo::getThunderResist();
-    mHolyResist_pri = info->::nJobParam::cJobInfo::getHolyResist();
-    mDarkResist_pri = info->::nJobParam::cJobInfo::getDarkResist();
-    mSpreadResist_pri = info->::nJobParam::cJobInfo::getSpreadResist();
-    mFreezeResist_pri = info->::nJobParam::cJobInfo::getFreezeResist();
-    mShockResist_pri = info->::nJobParam::cJobInfo::getShockResist();
-    mAbsorbResist_pri = info->::nJobParam::cJobInfo::getAbsorbResist();
-    mDarkElmResist_pri = info->::nJobParam::cJobInfo::getDarkElmResist();
-    mPoisonResist_pri = info->::nJobParam::cJobInfo::getPoisonResist();
-    mSlowResist_pri = info->::nJobParam::cJobInfo::getSlowResist();
-    mSleepResist_pri = info->::nJobParam::cJobInfo::getSleepResist();
-    mStunResist_pri = info->::nJobParam::cJobInfo::getStunResist();
-    mWetResist_pri = info->::nJobParam::cJobInfo::getWetResist();
-    mOilResist_pri = info->::nJobParam::cJobInfo::getOilResist();
-    mSealResist_pri = info->::nJobParam::cJobInfo::getSealResist();
-    mCurseResist_pri = info->::nJobParam::cJobInfo::getCurseResist();
-    mSoftResist_pri = info->::nJobParam::cJobInfo::getSoftResist();
-    mStoneResist_pri = info->::nJobParam::cJobInfo::getStoneResist();
-    mGoldResist_pri = info->::nJobParam::cJobInfo::getGoldResist();
-    mFireReduceResist_pri = info->::nJobParam::cJobInfo::getFireReduceResist();
-    mIceReduceResist_pri = info->::nJobParam::cJobInfo::getIceReduceResist();
-    mThunderReduceResist_pri = info->::nJobParam::cJobInfo::getThunderReduceResist();
-    mHolyReduceResist_pri = info->::nJobParam::cJobInfo::getHolyReduceResist();
-    mDarkReduceResist_pri = info->::nJobParam::cJobInfo::getDarkReduceResist();
-    mAtkDownResist_pri = info->::nJobParam::cJobInfo::getAtkDownResist();
-    mDefDownResist_pri = info->::nJobParam::cJobInfo::getDefDownResist();
-    mMAtkDownResist_pri = info->::nJobParam::cJobInfo::getMAtkDownResist();
-    mMDefDownResist_pri = info->::nJobParam::cJobInfo::getMDefDownResist();
-    mErosionResist_pri = info->::nJobParam::cJobInfo::getErosionResist();
-    mItemSealResist_pri = info->::nJobParam::cJobInfo::getItemSealResist();
+    mConstitution_pri = info->getConstitution();
+    mGuts_pri = info->getGuts();
+    mJobPoint_pri = info->getJobPoint();
+    mFireResist_pri = info->getFireResist();
+    mIceResist_pri = info->getIceResist();
+    mThunderResist_pri = info->getThunderResist();
+    mHolyResist_pri = info->getHolyResist();
+    mDarkResist_pri = info->getDarkResist();
+    mSpreadResist_pri = info->getSpreadResist();
+    mFreezeResist_pri = info->getFreezeResist();
+    mShockResist_pri = info->getShockResist();
+    mAbsorbResist_pri = info->getAbsorbResist();
+    mDarkElmResist_pri = info->getDarkElmResist();
+    mPoisonResist_pri = info->getPoisonResist();
+    mSlowResist_pri = info->getSlowResist();
+    mSleepResist_pri = info->getSleepResist();
+    mStunResist_pri = info->getStunResist();
+    mWetResist_pri = info->getWetResist();
+    mOilResist_pri = info->getOilResist();
+    mSealResist_pri = info->getSealResist();
+    mCurseResist_pri = info->getCurseResist();
+    mSoftResist_pri = info->getSoftResist();
+    mStoneResist_pri = info->getStoneResist();
+    mGoldResist_pri = info->getGoldResist();
+    mFireReduceResist_pri = info->getFireReduceResist();
+    mIceReduceResist_pri = info->getIceReduceResist();
+    mThunderReduceResist_pri = info->getThunderReduceResist();
+    mHolyReduceResist_pri = info->getHolyReduceResist();
+    mDarkReduceResist_pri = info->getDarkReduceResist();
+    mAtkDownResist_pri = info->getAtkDownResist();
+    mDefDownResist_pri = info->getDefDownResist();
+    mMAtkDownResist_pri = info->getMAtkDownResist();
+    mMDefDownResist_pri = info->getMDefDownResist();
+    mErosionResist_pri = info->getErosionResist();
+    mItemSealResist_pri = info->getItemSealResist();
 }
 
 nJobParam::cJobInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

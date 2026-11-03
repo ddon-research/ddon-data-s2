@@ -28,8 +28,6 @@ cGUIKeepString::cGUIKeepString() {
 }
 
 cGUIKeepString::~cGUIKeepString() {
-    DDON_STUB("cGUIKeepString::~cGUIKeepString")
-    /* stub */
 }
 
 __attribute__((weak)) void cGUIKeepString::saveString(u32 Type, MT_CTSTR pString, u32 Arg) {

@@ -12,14 +12,38 @@
 #include "cAIGrid.h"
 #include "../../XFramework/cAIObject.h"
 #include "cAITargetInfo.h"
+#include "cComponentManager.h"
+#include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
 #include "cGeneralPoint.h"
 #include "cGeneralPointPtr.h"
+#include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpActionRequest.h"
+#include "cpComponent.h"
+#include "cpHugeble.h"
 #include "cpInput.h"
+#include "cpJob03.h"
+#include "cpKeyCommand.h"
+#include "cpPathFinding.h"
+#include "cpPawnThink.h"
+#include "cpSequenceCtrl.h"
+#include "cpShlShotCtrl.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "nPawn.h"
+#include "rAIPawnSkillParam.h"
+#include "sOmManager.h"
+#include "sPlayerManager.h"
+#include "sSetManager.h"
+#include "sWorldOffset.h"
 #include "uCharacter.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uEnemy.h"
 #include "uHuman.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -235,6 +259,56 @@ cPawnActInterCommon::MyDTI cPawnActInterCommon::DTI("cPawnActInterCommon", &::cP
 
 __attribute__((weak)) MtObject* cPawnActInterCommon::MyDTI::newInstance() const {
     DDON_STUB("cPawnActInterCommon::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cPawnActInterDisableMgr::getDTI() const {
+    return cPawnActInterDisableMgr::DTI;
+}
+
+inline MtAllocator* cPawnActInterDisableMgr::getAllocator() {
+    return MtMemoryAllocator::getAllocator(cPawnActInterDisableMgr::DTI);
+}
+
+void* cPawnActInterDisableMgr::operator new(size_t sz, u32 align) {
+    return cPawnActInterDisableMgr::getAllocator()->memAlloc(sz, align, cPawnActInterDisableMgr::DTI.getID());
+}
+
+inline void cPawnActInterDisableMgr::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cPawnActInterDisableMgr::DTI)->memFree(p_addr);
+}
+
+cPawnActInterDisableMgr::cPawnActInterDisableMgr() {
+    DDON_STUB("cPawnActInterDisableMgr::cPawnActInterDisableMgr")
+    /* stub */
+}
+
+__attribute__((weak)) void cPawnActInterDisableMgr::updatePawnActInterDisableMgr(f32 deltaTime) {
+    DDON_STUB("cPawnActInterDisableMgr::updatePawnActInterDisableMgr")
+    /* stub */
+}
+
+void cPawnActInterDisableMgr::updatePtr() {
+    for (u32 i = 0;;) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i) + 24)) != 0) {
+            if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i) + 24)) + 16)) & 7u) - 1u) > 1u) {
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(reinterpret_cast<char*>(this) + i) + 24) = 0;
+            }
+        }
+        if ((i + 32u) != 512) {
+            i = i + 32u;
+        } else {
+            break;
+        }
+    }
+}
+
+cPawnActInterDisableMgr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cPawnActInterDisableMgr::MyDTI cPawnActInterDisableMgr::DTI("cPawnActInterDisableMgr", &::cAIObject::DTI, 520ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cPawnActInterDisableMgr::MyDTI::newInstance() const {
+    DDON_STUB("cPawnActInterDisableMgr::MyDTI::newInstance")
     return nullptr;
 }
 

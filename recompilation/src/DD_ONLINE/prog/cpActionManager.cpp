@@ -9,9 +9,14 @@
 #include "cAction.h"
 #include "cDelegate.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionRequest.h"
+#include "cpCatchCtrl.h"
 #include "cpComponent.h"
+#include "cpHpDamageCtrl.h"
 #include "../../generated/shared/nAction.h"
 #include "nActionManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

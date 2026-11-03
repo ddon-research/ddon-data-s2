@@ -6,9 +6,18 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "Protocol/PacketData/Quest.h"
 #include "cCycleQuestManagerBase.h"
 #include "cQuestManagerBase.h"
+#include "cQuestTask.h"
 #include "nQuest.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "sChat.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sQuestManagerExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -133,7 +142,7 @@ __attribute__((weak)) void cCycleQuestSubCategoryManager::addTaskInfo(cQuestTask
     /* stub */
 }
 
-cCycleQuestSubCategoryManager::~cCycleQuestSubCategoryManager() {
+__attribute__((noinline)) cCycleQuestSubCategoryManager::~cCycleQuestSubCategoryManager() {
     if (mTaskInfo.mLength != 0) {
         u32 v0_0 = mTaskInfo.mLength;
         for (unsigned int i0_3 = 0;;) {

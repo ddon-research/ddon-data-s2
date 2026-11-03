@@ -231,6 +231,18 @@ namespace cEvaluationName {
     };
 }  // namespace cEvaluationName
 
+inline void* cEvaluationName::cEvaluation::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cEvaluationName::cEvaluationData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cEvaluationName::cEvaluationPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEvaluationName::cEvaluationPoint::cEvaluationPoint() {
     this->mCategory = 0;
     this->mAddValue = 0.0f;

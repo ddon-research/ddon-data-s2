@@ -184,11 +184,23 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCharParamEnemy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCharParamEnemy::cJumpAttackSpeed::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCharParamEnemy::cJumpAttackSpeed::cJumpAttackSpeed() {
     this->mIsValid = false;
     this->mSpeedZ = 10.0f;
     this->mSpeedY = 35.0f;
     this->mGravity = -3.0f;
+}
+
+inline void* cCharParamEnemy::cGuardCounter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cCharParamEnemy::cGuardCounter::cGuardCounter() {

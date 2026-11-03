@@ -153,6 +153,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rTutorialQuestGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rTutorialQuestGroup::cGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rTutorialQuestGroup::cGroup::cGroup() {
     this->mGroupId = 0;
+}
+
+inline void* rTutorialQuestGroup::cGroup::cQuestId::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

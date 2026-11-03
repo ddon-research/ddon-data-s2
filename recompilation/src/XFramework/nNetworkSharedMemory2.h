@@ -273,3 +273,15 @@ namespace nNetwork {
         };
     }  // namespace nSharedMemory2
 }  // namespace nNetwork
+
+inline void* nNetwork::nSharedMemory2::CConsistentHash::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::nSharedMemory2::CProtocol::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::nSharedMemory2::Object::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -116,6 +116,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cDamageMsg::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void cDamageMsg::setAttackParamUID(u64 uID) {
+    this->mData.mAttackParamUID = uID;
+}
+
+inline u64 cDamageMsg::getAttackParamUID() const {
+    return this->mData.mAttackParamUID;
+}
+
+inline void cDamageMsg::setDfdNodeUID(u64 uID) {
+    this->mData.mDfdNodeUID = uID;
+}
+
 inline bool cDamageMsg::isReceiveInfo() const {
     return this->mData.mIsReceiveInfo;
+}
+
+inline u64 cDamageMsg::getAttackParamUIDPrivate() const {
+    return this->mData.mAttackParamUID;
+}
+
+inline u32 cDamageMsg::getShlOwnerIDPrivate() const {
+    return this->mData.mShlOwnerID;
 }

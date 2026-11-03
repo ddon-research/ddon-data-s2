@@ -169,3 +169,7 @@ public:
     static const s32 move_frame_slow = 4;
     static const s32 hide_time = 1;
 };
+
+inline void* uGUIPointer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

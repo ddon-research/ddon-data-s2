@@ -164,12 +164,20 @@ private:
     static const u64 BIT_REACT_TRG_GUARD = 34359738368;
 };
 
+inline void* cpReaction::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpReaction::clearChoiceActNo() {
     this->mChoiceActNo = 0xFFFFFFFF;
 }
 
 inline void cpReaction::clearChoiceOptionFlg() {
     this->mChoiceOptionFlg = 0;
+}
+
+inline void* cpReaction::cTriggerFree::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cpReaction::cTriggerFree::cTriggerFree() {

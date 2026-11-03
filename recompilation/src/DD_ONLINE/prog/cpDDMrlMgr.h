@@ -255,3 +255,23 @@ public:
     static const MT_CTSTR ANIM_NAME_TBL[23];
     static const f32 ANIM_DEF_SUP_FRAME;
 };
+
+inline void* cpDDMrlMgr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cDDMaterialCtrl* cpDDMrlMgr::getDDMrlCtrl(u32 set) {
+    return &this->mpDDMrlCtrl;
+}
+
+inline u32 cpDDMrlMgr::getOutlineTypeSdl() {
+    return this->mSdlOutlineRequestNo;
+}
+
+inline u32 cpDDMrlMgr::getDDMrlCtrlNum() {
+    return 1;
+}
+
+inline void* cpDDMrlMgr::cMaterialAnimationRequestData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

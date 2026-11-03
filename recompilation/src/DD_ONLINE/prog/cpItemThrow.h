@@ -89,6 +89,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpItemThrow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool cpItemThrow::isItemMode() const {
     return this->mIsItemMode;
 }

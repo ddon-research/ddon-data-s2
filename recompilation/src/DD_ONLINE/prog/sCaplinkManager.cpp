@@ -5,14 +5,18 @@
 #include <string.h>
 #include "sCaplinkManager.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCharset.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtJsonReader.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtStream.h"
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
 #include "../../MT/MtTime.h"
+#include "Protocol/PacketData/Server.h"
 #include "../../XFramework/cCaplink.h"
 #include "../../XFramework/cCaplinkChatGroupCreate.h"
 #include "../../XFramework/cCaplinkChatGroupListGet.h"
@@ -81,9 +85,22 @@
 #include "../../XFramework/cCaplinkUserProfileModify.h"
 #include "../../XFramework/cCaplinkUserSearch.h"
 #include "../../XFramework/cCaplinkWebsocketServerListGet.h"
+#include "cCharacterData.h"
 #include "cNetGameServer.h"
+#include "cNetLoginServer.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/cWebsocketClient.h"
+#include "../../XFramework/nAutomation.h"
+#include "nCharacterData.h"
 #include "nDDOUtility.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "sDialogBase.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "sHttpClient.h"
+#include "../../XFramework/sMain.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #ifndef DDON_STUB
@@ -765,6 +782,22 @@ __attribute__((weak)) bool sCaplinkManager::setupWebsocket() {
     return {};
 }
 
+inline void sCaplinkManager::updateWebsocket() {
+    if (!mWebsocketListener.mIsRegistDevice) {
+        return;
+    }
+    if (mpCaplink->mpWsClient == nullptr) {
+        return;
+    }
+    if (mpCaplink->mpWsClient->mWsState != cWebsocketClient::WS_STATE_NORMAL) {
+        return;
+    }
+    if (!mpCaplink->wsRegistDevice()) {
+        return;
+    }
+    mWebsocketListener.mIsRegistDevice = false;
+}
+
 const sCaplinkManager::cIconUrl* sCaplinkManager::getIconUrlFromIndex(u32 index) {
     if (mThreadSafe || (cSystem::mJobSafe)) {
         if (scePthreadMutexLock(&mCS.mCSection) != 0) {
@@ -890,19 +923,19 @@ bool sCaplinkManager::setupProfIcon() {
                             MtObject* t0 = mResourcePresetListGetAns.mResourceInfoTbl.mpArray[i];
                             if (t0 != nullptr) {
                                 if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 355)) != 0) {
-                                    unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 8);
-                                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)) == 6) {
-                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 16)) == 11) {
+                                    s32 t1 = static_cast<nCaplink::cResourceInfo*>(t0)->getResourceId();
+                                    if (static_cast<nCaplink::cResourceInfo*>(t0)->getResourceCategoryId() == 6) {
+                                        if (static_cast<nCaplink::cResourceInfo*>(t0)->getResourceType() == 11) {
                                             mProfIconNum = mProfIconNum + 1u;
-                                            addIconUrl(static_cast<s32>(t1), static_cast<s16>(6), static_cast<s16>(11), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 98))));
+                                            addIconUrl(t1, static_cast<s16>(6), static_cast<s16>(11), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 98))));
                                         } else {
-                                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 16)) == 81) {
-                                                addIconUrl(static_cast<s32>(t1), static_cast<short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)), static_cast<s16>(81), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 98))));
+                                            if (static_cast<nCaplink::cResourceInfo*>(t0)->getResourceType() == 81) {
+                                                addIconUrl(t1, static_cast<short>(static_cast<nCaplink::cResourceInfo*>(t0)->getResourceCategoryId()), static_cast<s16>(81), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 98))));
                                             }
                                         }
                                     } else {
-                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 16)) == 81) {
-                                            addIconUrl(static_cast<s32>(t1), static_cast<short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)), static_cast<s16>(81), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 98))));
+                                        if (static_cast<nCaplink::cResourceInfo*>(t0)->getResourceType() == 81) {
+                                            addIconUrl(t1, static_cast<short>(static_cast<nCaplink::cResourceInfo*>(t0)->getResourceCategoryId()), static_cast<s16>(81), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 98))));
                                         }
                                     }
                                 }
@@ -1420,6 +1453,10 @@ const MtDTI& sCaplinkManager::cProfile::getDTI() const {
     return sCaplinkManager::cProfile::DTI;
 }
 
+inline void* sCaplinkManager::cProfile::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCaplinkManager::cProfile::DTI)->memAlloc(sz, align, sCaplinkManager::cProfile::DTI.getID());
+}
+
 inline void sCaplinkManager::cProfile::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sCaplinkManager::cProfile::DTI)->memFree(p_addr);
 }
@@ -1428,9 +1465,8 @@ sCaplinkManager::cProfile::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 sCaplinkManager::cProfile::MyDTI sCaplinkManager::cProfile::DTI("sCaplinkManager::cProfile", &::cCaplinkObject::DTI, 936ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sCaplinkManager::cProfile::MyDTI::newInstance() const {
-    DDON_STUB("sCaplinkManager::cProfile::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCaplinkManager::cProfile::MyDTI::newInstance() const {
+    return new (16u) sCaplinkManager::cProfile;
 }
 
 const MtDTI& sCaplinkManager::cIconUrl::getDTI() const {

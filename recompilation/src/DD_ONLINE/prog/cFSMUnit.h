@@ -1397,6 +1397,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cFSMUnit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline f32 cFSMUnit::getStopBorder() const {
     return this->mStopBorder;
 }
@@ -1409,6 +1413,10 @@ inline void cFSMUnit::setStopBorder(f32 stopBorder) {
     this->mStopBorder = stopBorder;
 }
 
+inline void* cFSMUnit::uEvHeadTarget::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline const MtVector3& cFSMUnit::uEvHeadTarget::getTargetPos() {
     if (this->mType != 0) {
         return this->mTargetPos;
@@ -1417,8 +1425,32 @@ inline const MtVector3& cFSMUnit::uEvHeadTarget::getTargetPos() {
     }
 }
 
+inline void* cFSMUnit::cParamSetMotion::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cFSMUnit::cParamSetAction::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetAction::cParamSetAction() {
     this->mActionType = 0;
+}
+
+inline void* cFSMUnit::cParamSetNeck::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cFSMUnit::cParamSetWait::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cFSMUnit::cParamSetGoto::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cFSMUnit::cParamSetGotoTarget::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cFSMUnit::cParamSetGotoTarget::cParamSetGotoTarget() {
@@ -1433,6 +1465,14 @@ inline cFSMUnit::cParamSetGotoTarget::cParamSetGotoTarget() {
     this->mEnableNoFall = false;
 }
 
+inline void* cFSMUnit::cParamSetMotionGoto::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cFSMUnit::cParamSetEffect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetEffect::cParamSetEffect() {
     this->mHaveItem = false;
     this->mIndex = 0;
@@ -1443,8 +1483,20 @@ inline cFSMUnit::cParamSetEffect::cParamSetEffect() {
     this->mType = 0;
 }
 
+inline void* cFSMUnit::cParamSetEyeBall::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cFSMUnit::cParamSetEmDie::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetEmDie::cParamSetEmDie() {
     this->mAct = 0;
+}
+
+inline void* cFSMUnit::cParamSetWaypoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cFSMUnit::cParamSetWaypoint::cParamSetWaypoint() {
@@ -1452,21 +1504,41 @@ inline cFSMUnit::cParamSetWaypoint::cParamSetWaypoint() {
     this->mGotoPointNo = -1;
 }
 
+inline void* cFSMUnit::cParamSetChangeThink::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetChangeThink::cParamSetChangeThink() {
     this->mThink = 0;
     this->mIsInvincible = true;
+}
+
+inline void* cFSMUnit::cParamSetAdjustScrHit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cFSMUnit::cParamSetAdjustScrHit::cParamSetAdjustScrHit() {
     this->mIsStop = false;
 }
 
+inline void* cFSMUnit::cParamSetAttendNpc::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetAttendNpc::cParamSetAttendNpc() {
     this->mIsAttend = false;
 }
 
+inline void* cFSMUnit::cParamSetDisableTouchAction::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetDisableTouchAction::cParamSetDisableTouchAction() {
     this->mIsDisableTouch = false;
+}
+
+inline void* cFSMUnit::cParamSetDispWeapon::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cFSMUnit::cParamSetDispWeapon::cParamSetDispWeapon() {
@@ -1474,12 +1546,24 @@ inline cFSMUnit::cParamSetDispWeapon::cParamSetDispWeapon() {
     this->mIsDispWepSub = true;
 }
 
+inline void* cFSMUnit::cParamSetShadowCast::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetShadowCast::cParamSetShadowCast() {
     this->mIsShadowCast = false;
 }
 
+inline void* cFSMUnit::cParamSetHaveThing::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetHaveThing::cParamSetHaveThing() {
     this->mHaveThing = 0;
+}
+
+inline void* cFSMUnit::cParamSetCallSe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cFSMUnit::cParamSetCallSe::cParamSetCallSe() {
@@ -1488,8 +1572,16 @@ inline cFSMUnit::cParamSetCallSe::cParamSetCallSe() {
     this->mDelayFrame = 0;
 }
 
+inline void* cFSMUnit::cParamSetHakuryuStoneLevel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetHakuryuStoneLevel::cParamSetHakuryuStoneLevel() {
     this->mStoneLevel = 0;
+}
+
+inline void* cFSMUnit::cParamSetParts::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cFSMUnit::cParamSetParts::cParamSetParts() {
@@ -1497,8 +1589,16 @@ inline cFSMUnit::cParamSetParts::cParamSetParts() {
     this->mParts = 0;
 }
 
+inline void* cFSMUnit::cParamSetVibUnit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetVibUnit::cParamSetVibUnit() {
     this->mVib = 0;
+}
+
+inline void* cFSMUnit::cParamSetEmMontage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cFSMUnit::cParamSetEmMontage::cParamSetEmMontage() {
@@ -1507,20 +1607,40 @@ inline cFSMUnit::cParamSetEmMontage::cParamSetEmMontage() {
     this->mDisableMotSeq = true;
 }
 
+inline void* cFSMUnit::cParamSetHeadCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetHeadCtrl::cParamSetHeadCtrl() {
     this->mHeadCtrl = 0;
+}
+
+inline void* cFSMUnit::cParamSetEyeClose::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cFSMUnit::cParamSetEyeClose::cParamSetEyeClose() {
     this->mEyeClose = true;
 }
 
+inline void* cFSMUnit::cParamSetDispMiniMap::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetDispMiniMap::cParamSetDispMiniMap() {
     this->mIsDispMiniMap = true;
 }
 
+inline void* cFSMUnit::cParamSetIK::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFSMUnit::cParamSetIK::cParamSetIK() {
     this->mActive = false;
+}
+
+inline void* cFSMUnit::cParamSetEnemyHP::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cFSMUnit::cParamSetEnemyHP::cParamSetEnemyHP() {

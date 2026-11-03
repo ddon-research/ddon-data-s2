@@ -205,6 +205,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cIndoorSkyFogParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline f32 cIndoorSkyFogParam::getIntensity() {
     return this->mIntensity;
 }
@@ -225,7 +229,15 @@ inline u32 cIndoorSkyFogParam::getId() {
     return this->mId;
 }
 
+inline void* cZoneIndoorGrassOff::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cZoneIndoorGrassOff::cZoneIndoorGrassOff() {
+}
+
+inline void* cZoneIndoorLight::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline f32 cZoneIndoorLight::getLightInfiniteRate() const {
@@ -262,6 +274,10 @@ inline bool cZoneIndoorLight::isUseSkyFogParam() {
 
 inline f32 cZoneIndoorLight::getSkyColorFogUseFrame() {
     return this->mSkyColorFogUseFrame;
+}
+
+inline void* cZoneIndoorWindCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cZoneIndoorWindCtrl::cZoneIndoorWindCtrl() {

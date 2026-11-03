@@ -4,6 +4,7 @@
 #include "nInputText.h"
 #include "../../MT/MtPrimitive2D.h"
 #include "../../generated/shared/nUnicode.h"
+#include "sIME.h"
 #include "sIMEPS4.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

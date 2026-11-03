@@ -31,7 +31,7 @@ inline void cQuestSvNoticeManager::operator delete(void* p_addr) {
 
 cQuestSvNoticeCallback* cQuestSvNoticeManager::addCallbackFunc(const MtDTI& callbackClassDti, const MtDTI& noticeClassDti) {
     cQuestSvNoticeCallback* pCallback = static_cast<cQuestSvNoticeCallback*>(callbackClassDti.newInstance());
-    pCallback->cQuestSvNoticeCallback::setNoticeDTI(noticeClassDti);
+    pCallback->setNoticeDTI(noticeClassDti);
     sQuestManagerExt::getInstance()->getQuestSvNoticeMgr()->addCallbackFunc(pCallback);
     return pCallback;
 }
@@ -94,7 +94,7 @@ cQuestSvNoticeManager::cQuestSvNoticeManager() {
     /* stub */
 }
 
-cQuestSvNoticeManager::~cQuestSvNoticeManager() {
+__attribute__((noinline)) cQuestSvNoticeManager::~cQuestSvNoticeManager() {
     if (mCallbackList.mLength != 0) {
         u32 v0_0 = mCallbackList.mLength;
         for (unsigned int i0_3 = 0;;) {

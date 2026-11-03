@@ -141,3 +141,11 @@ public:
 protected:
     static const u8 DATA_VERSION = 1;
 };
+
+inline void* cQuakeParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rCameraQuakeList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

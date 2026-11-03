@@ -9,11 +9,14 @@
 #include "../../MT/MtPrimitive3D.h"
 #include "cDelegate.h"
 #include "../../XFramework/cUnit.h"
+#include "cWallHitInfo.h"
 #include "cpComponent.h"
 #include "../../XFramework/nCollision.h"
 #include "../../XFramework/rCollision.h"
 #include "../../XFramework/rCollisionHeightField.h"
 #include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

@@ -90,3 +90,11 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* rOcdImmuneParamRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rOcdStatusParamRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

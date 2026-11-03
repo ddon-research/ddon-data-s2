@@ -64,6 +64,10 @@ public:
     static const u32 ITEM_RANK_NUM = 12;
 };
 
+inline void* cCraftPlusItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cCraftPlusItem::init() {
     this->mpQualityResource = nullptr;
 }

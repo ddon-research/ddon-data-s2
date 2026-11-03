@@ -244,6 +244,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uControlNpc::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 uControlNpc::getNpcItem() {
     return this->mNpcItem;
 }
@@ -256,6 +260,34 @@ inline s8 uControlNpc::getDefNPCMotCategory() const {
     return this->mDefNPCMotCategory;
 }
 
+inline void uControlNpc::setDefNPCMotCategory(s8 category) {
+    this->mDefNPCMotCategory = category;
+}
+
+inline void uControlNpc::setDefTurnType(s8 no) {
+    this->mDefTurnType = no;
+}
+
+inline void uControlNpc::setJobLv(u16 jobLv) {
+    this->mJobLv = jobLv;
+}
+
 inline bool uControlNpc::isAttend() {
     return this->mIsAttend;
+}
+
+inline void uControlNpc::setFinger(u8 finger) {
+    this->mFinger = finger;
+}
+
+inline void uControlNpc::setLantern(u8 lantern) {
+    this->mLantern = lantern;
+}
+
+inline void uControlNpc::setBaseRot(f32 Rot) {
+    this->mBaseRot = Rot;
+}
+
+inline void uControlNpc::resetRnoGetPawnData() {
+    this->mRnoGetPawnData = 0;
 }

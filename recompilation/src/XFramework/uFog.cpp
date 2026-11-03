@@ -2,10 +2,19 @@
 #include <new>
 #include "uFog.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "cDraw.h"
+#include "cResource.h"
 #include "cUnit.h"
+#include "nDrawResource.h"
+#include "nDrawTexture.h"
+#include "sRender.h"
+#include "sScene.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

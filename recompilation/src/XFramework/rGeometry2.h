@@ -266,8 +266,20 @@ public:
     static const u32 VERSION = 201032100;
 };
 
+inline void* rGeometry2::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rGeometry2::rGeometry2() {
     this->::cResource::mAttr = 22;
     this->mpParentResource = nullptr;
     this->mpGeometry = nullptr;
+}
+
+inline void* rGeometry2::cGeometryArray::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rGeometry2::cGeometry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -153,3 +153,11 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cEffectCorrectParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rWeatherEffectParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

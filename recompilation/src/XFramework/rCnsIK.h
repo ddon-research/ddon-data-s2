@@ -154,3 +154,11 @@ public:
     static const u32 DATA_VERSION = 4;
     static const s32 JOINT_MAX = 16;
 };
+
+inline void* rCnsIK::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rCnsIK::JointInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

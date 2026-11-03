@@ -9,6 +9,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCharset.h"
 #include "../../MT/MtCollection.h"
+#include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemory.h"
@@ -18,14 +19,25 @@
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
 #include "Browser/cBrowserPS4_h.h"
+#include "../../XFramework/cDraw.h"
+#include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/nDrawRasterizerState.h"
+#include "../../XFramework/nDrawResource.h"
+#include "../../XFramework/nDrawTexture.h"
+#include "../../XFramework/nDrawVertexBuffer.h"
 #include "../../XFramework/rGUIFont.h"
+#include "../../XFramework/rTexture.h"
+#include "sArchiveManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sKeyboardInterface.h"
+#include "../../XFramework/sRender.h"
+#include "../../XFramework/sUnit.h"
 #include "../middleware/snj_browser_ps3/sdk/wave/target/win32/snj_browser.h"
 #include "../middleware/snj_browser_ps3/sdk/wave/target/win32/snj_browser_common.h"
+#include "../../generated/shared/texture.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -33,8 +45,6 @@
 void elf_v_ZdlPv(void*) __asm__("_ZdlPv");
 
 cBrowserRequest::~cBrowserRequest() {
-    DDON_STUB("cBrowserRequest::~cBrowserRequest")
-    /* stub */
 }
 
 const MtDTI& sBrowser::getDTI() const {

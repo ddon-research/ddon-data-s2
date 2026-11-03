@@ -5,6 +5,8 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
+#include "cArea.h"
 #include "cSystem.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -54,17 +56,11 @@ __attribute__((weak)) sArea::AreaInfo* sArea::getAreaInfo(const MtDTI& dti) {
     return nullptr;
 }
 
-cArea* sArea::getArea(u32 pt) const {
-    return mpArea[pt];
-}
+static auto ddon_emit_0x01b9e7a0 __attribute__((used)) = &sArea::getArea;
 
-u32 sArea::getAreaNum() const {
-    return 8;
-}
+static auto ddon_emit_0x01b9e7c0 __attribute__((used)) = &sArea::getAreaNum;
 
-void sArea::setArea(cArea* p, u32 pt) {
-    mpArea[pt] = p;
-}
+static auto ddon_emit_0x01b9e7b0 __attribute__((used)) = &sArea::setArea;
 
 __attribute__((weak)) void sArea::setAreaNum(u32) {
 }

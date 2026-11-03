@@ -1020,9 +1020,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUICharaEditPartsWrap::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cDupliObjectBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUICharaEditPartsWrap::cDupliObjectBase::cDupliObjectBase() {
     this->mFocus = false;
     this->mUID = -1;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsSlider::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::cReferenceUIEditSliderExt() {
@@ -1040,4 +1060,60 @@ inline f32 uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::getValMin() const 
 
 inline f32 uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::getValMax() const {
     return this->mMaxVal;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsImage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsImage::cObject::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsDupliBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsColor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsColor::cObject::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsColorEye::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsColorHairAll::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsPulldown::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsMask::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsRadioButton::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsRadioSlider::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsMyName::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharaEditPartsWrap::cPartsHList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

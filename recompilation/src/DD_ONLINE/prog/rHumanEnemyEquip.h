@@ -104,6 +104,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cHumanEnemyEquip::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cHumanEnemyEquip::cHumanEnemyEquip() {
     this->mJewelry = 0;
     this->mLegId = 0;
@@ -116,4 +120,20 @@ inline cHumanEnemyEquip::cHumanEnemyEquip() {
     this->mWearTopId = 0;
     this->mId = 0;
     this->mMainWeaponId = 0;
+}
+
+inline void* rHumanEnemyEquip::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cHumanEnemyEquip::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanEnemyEquip::DTI)->memFree(p_addr);
+}
+
+inline void* cHumanEnemyEquip::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHumanEnemyEquip::DTI)->memAlloc(sz, align, ::cHumanEnemyEquip::DTI.::MtDTI::getID());
 }

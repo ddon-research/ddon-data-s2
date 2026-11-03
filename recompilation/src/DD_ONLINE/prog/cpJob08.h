@@ -108,6 +108,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpJob08::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSoundRequest* cpJob08::getShlCommonSe() {
     return this->mpShlCommonSe;
 }

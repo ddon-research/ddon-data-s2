@@ -130,6 +130,30 @@ MtObject* CDataOmData::MyDTI::newInstance() const {
     return new (16u) CDataOmData;
 }
 
+const MtDTI& CDataRandomStageInfo::getDTI() const {
+    return CDataRandomStageInfo::DTI;
+}
+
+inline MtAllocator* CDataRandomStageInfo::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataRandomStageInfo::DTI);
+}
+
+void* CDataRandomStageInfo::operator new(size_t sz, u32 align) {
+    return CDataRandomStageInfo::getAllocator()->memAlloc(sz, align, CDataRandomStageInfo::DTI.getID());
+}
+
+__attribute__((weak)) void CDataRandomStageInfo::operator delete(void* p_addr) {
+    CDataRandomStageInfo::getAllocator()->memFree(p_addr);
+}
+
+CDataRandomStageInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataRandomStageInfo::MyDTI CDataRandomStageInfo::DTI("CDataRandomStageInfo", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataRandomStageInfo::MyDTI::newInstance() const {
+    return new (16u) CDataRandomStageInfo;
+}
+
 const MtDTI& CDataStageAttribute::getDTI() const {
     return CDataStageAttribute::DTI;
 }

@@ -158,3 +158,7 @@ public:
     static MyDTI DTI;
     static s32 mEnableUnitTable[16];
 };
+
+inline void* cSoundMultiBandEQ::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

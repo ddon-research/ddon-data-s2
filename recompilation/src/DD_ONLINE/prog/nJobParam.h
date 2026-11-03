@@ -326,6 +326,18 @@ namespace nJobParam {
     };
 }  // namespace nJobParam
 
+inline void* nJobParam::cHumanBaseInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline f32 nJobParam::cHumanBaseInfo::getHP() const {
+    return this->mHP_pri;
+}
+
+inline void nJobParam::cHumanBaseInfo::setHP(f32 NewValue) {
+    this->mHP_pri = NewValue;
+}
+
 inline f32 nJobParam::cHumanBaseInfo::getMaxHP() const {
     return this->mMaxHP_pri;
 }
@@ -344,6 +356,94 @@ inline u32 nJobParam::cHumanBaseInfo::getFinalMaxHPCheatCheckPrivate() const {
 
 inline void nJobParam::cHumanBaseInfo::setFinalMaxHPCheatCheckPrivate(u32 NewValue) {
     this->mFinalMaxHPCheatCheck_pri = NewValue;
+}
+
+inline f32 nJobParam::cHumanBaseInfo::getStamina() const {
+    return this->mStamina_pri;
+}
+
+inline void nJobParam::cHumanBaseInfo::setStamina(f32 NewValue) {
+    this->mStamina_pri = NewValue;
+}
+
+inline f32 nJobParam::cHumanBaseInfo::getFinalMaxStamina() const {
+    return this->mFinalMaxStamina_pri;
+}
+
+inline u32 nJobParam::cHumanBaseInfo::getLostPower() const {
+    return this->mLostPower_pri;
+}
+
+inline s32 nJobParam::cHumanBaseInfo::getAbilityCapacity() const {
+    return this->mAbilityCapacity_pri;
+}
+
+inline u32 nJobParam::cHumanBaseInfo::getLostNum() const {
+    return this->mLostNum_pri;
+}
+
+inline void nJobParam::cHumanBaseInfo::setLostNum(u32 NewValue) {
+    this->mLostNum_pri = NewValue;
+}
+
+inline u32 nJobParam::cHumanBaseInfo::getMaxLostNum() const {
+    return this->mMaxLostNum_pri;
+}
+
+inline void nJobParam::cHumanBaseInfo::setMaxLostNum(u32 NewValue) {
+    this->mMaxLostNum_pri = NewValue;
+}
+
+inline f32 nJobParam::cHumanBaseInfo::getGainHp() const {
+    return this->mGainHp_pri;
+}
+
+inline void nJobParam::cHumanBaseInfo::setGainHp(f32 NewValue) {
+    this->mGainHp_pri = NewValue;
+}
+
+inline f32 nJobParam::cHumanBaseInfo::getGainStamina() const {
+    return this->mGainStamina_pri;
+}
+
+inline void nJobParam::cHumanBaseInfo::setGainStamina(f32 NewValue) {
+    this->mGainStamina_pri = NewValue;
+}
+
+inline u32 nJobParam::cHumanBaseInfo::getGainAtk() const {
+    return this->mGainAtk_pri;
+}
+
+inline void nJobParam::cHumanBaseInfo::setGainAtk(u32 NewValue) {
+    this->mGainAtk_pri = NewValue;
+}
+
+inline u32 nJobParam::cHumanBaseInfo::getGainDef() const {
+    return this->mGainDef_pri;
+}
+
+inline void nJobParam::cHumanBaseInfo::setGainDef(u32 NewValue) {
+    this->mGainDef_pri = NewValue;
+}
+
+inline u32 nJobParam::cHumanBaseInfo::getGainMAtk() const {
+    return this->mGainMAtk_pri;
+}
+
+inline void nJobParam::cHumanBaseInfo::setGainMAtk(u32 NewValue) {
+    this->mGainMAtk_pri = NewValue;
+}
+
+inline u32 nJobParam::cHumanBaseInfo::getGainMDef() const {
+    return this->mGainMDef_pri;
+}
+
+inline void nJobParam::cHumanBaseInfo::setGainMDef(u32 NewValue) {
+    this->mGainMDef_pri = NewValue;
+}
+
+inline void* nJobParam::cJobInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nJobParam::cJobInfo::cJobInfo() {
@@ -400,6 +500,14 @@ inline u16 nJobParam::cJobInfo::getLv() const {
 
 inline u64 nJobParam::cJobInfo::getExp() const {
     return this->mExp_pri;
+}
+
+inline void nJobParam::cJobInfo::setStrength(u32 NewValue) {
+    this->mStrength_pri = NewValue;
+}
+
+inline void nJobParam::cJobInfo::setShakePower(u32 NewValue) {
+    this->mShakePower_pri = NewValue;
 }
 
 inline u32 nJobParam::cJobInfo::getConstitution() const {
@@ -540,4 +648,16 @@ inline u8 nJobParam::cJobInfo::getErosionResist() const {
 
 inline u8 nJobParam::cJobInfo::getItemSealResist() const {
     return this->mItemSealResist_pri;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void nJobParam::cJobInfo::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nJobParam::cJobInfo::DTI)->memFree(p_addr);
+}
+
+inline void* nJobParam::cJobInfo::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nJobParam::cJobInfo::DTI)->memAlloc(sz, align, ::nJobParam::cJobInfo::DTI.::MtDTI::getID());
 }

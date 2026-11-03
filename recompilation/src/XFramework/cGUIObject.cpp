@@ -9,10 +9,16 @@
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "cDraw.h"
+#include "cGUIInstance.h"
 #include "cGUIMessageAnalyzer.h"
+#include "nDrawResource.h"
 #include "nGUI.h"
 #include "nGUIDraw.h"
 #include "rGUI.h"
+#include "rGUIMessage.h"
 #include "sGUI.h"
 #include "uGUI.h"
 #ifndef DDON_STUB
@@ -55,9 +61,7 @@ void cGUIObj2D::setPositionX(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86)) | 2;
 }
 
-f32 cGUIObj2D::getPositionX() const {
-    return mPosition.x;
-}
+static auto ddon_emit_0x01b72740 __attribute__((used)) = &cGUIObj2D::getPositionX;
 
 void cGUIObj2D::setPositionY(f32 v) {
     if (mPosition.y == v) {
@@ -67,9 +71,7 @@ void cGUIObj2D::setPositionY(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86)) | 2;
 }
 
-f32 cGUIObj2D::getPositionY() const {
-    return mPosition.y;
-}
+static auto ddon_emit_0x01b72750 __attribute__((used)) = &cGUIObj2D::getPositionY;
 
 void cGUIObj2D::setPositionZ(f32 v) {
     if (mPosition.z == v) {
@@ -79,9 +81,7 @@ void cGUIObj2D::setPositionZ(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86)) | 2;
 }
 
-f32 cGUIObj2D::getPositionZ() const {
-    return mPosition.z;
-}
+static auto ddon_emit_0x01b72760 __attribute__((used)) = &cGUIObj2D::getPositionZ;
 
 void cGUIObj2D::setRotationX(f32 v) {
     if (mRotation.x == (0.017453294f * v)) {
@@ -129,27 +129,21 @@ void cGUIObj2D::setControlPoint(u32 cp) {
     }
 }
 
-u32 cGUIObj2D::getControlPoint() const {
-    return mControlPoint;
-}
+static auto ddon_emit_0x01b726e0 __attribute__((used)) = &cGUIObj2D::getControlPoint;
 
 __attribute__((weak)) void cGUIObj2D::setReferencePosition(bool v) {
     DDON_STUB("cGUIObj2D::setReferencePosition")
     /* stub */
 }
 
-bool cGUIObj2D::isReferencePosition() const {
-    return mReferencePosition;
-}
+static auto ddon_emit_0x01b726f0 __attribute__((used)) = &cGUIObj2D::isReferencePosition;
 
 __attribute__((weak)) void cGUIObj2D::setReferenceRotation(bool v) {
     DDON_STUB("cGUIObj2D::setReferenceRotation")
     /* stub */
 }
 
-bool cGUIObj2D::isReferenceRotation() const {
-    return mReferenceRotation;
-}
+static auto ddon_emit_0x01b72700 __attribute__((used)) = &cGUIObj2D::isReferenceRotation;
 
 void cGUIObj2D::setReferenceScaleX(u32 type) {
     if (mReferenceScaleX == type) {
@@ -159,9 +153,7 @@ void cGUIObj2D::setReferenceScaleX(u32 type) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86)) | 2;
 }
 
-u32 cGUIObj2D::getReferenceScaleX() const {
-    return mReferenceScaleX;
-}
+static auto ddon_emit_0x01b72710 __attribute__((used)) = &cGUIObj2D::getReferenceScaleX;
 
 void cGUIObj2D::setReferenceScaleY(u32 type) {
     if (mReferenceScaleY == type) {
@@ -171,9 +163,7 @@ void cGUIObj2D::setReferenceScaleY(u32 type) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86)) | 2;
 }
 
-u32 cGUIObj2D::getReferenceScaleY() const {
-    return mReferenceScaleY;
-}
+static auto ddon_emit_0x01b72720 __attribute__((used)) = &cGUIObj2D::getReferenceScaleY;
 
 void cGUIObj2D::setReferenceScaleZ(u32 type) {
     if (mReferenceScaleZ == type) {
@@ -183,9 +173,7 @@ void cGUIObj2D::setReferenceScaleZ(u32 type) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86)) | 2;
 }
 
-u32 cGUIObj2D::getReferenceScaleZ() const {
-    return mReferenceScaleZ;
-}
+static auto ddon_emit_0x01b72730 __attribute__((used)) = &cGUIObj2D::getReferenceScaleZ;
 
 __attribute__((weak)) void cGUIObj2D::getRectFromSize(MtRectF& rect, const MtFloat2& size) const {
     DDON_STUB("cGUIObj2D::getRectFromSize")
@@ -287,13 +275,9 @@ void cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame(f32 frame) {
     setChildAnimationCurrentFrame2(static_cast<cGUIObject*>(mpChildRoot), frame);
 }
 
-void cGUIObjChildAnimationRoot::setChildAnimationPlay(bool v) {
-    mChildAnimPlay = v;
-}
+static auto ddon_emit_0x01b72880 __attribute__((used)) = &cGUIObjChildAnimationRoot::setChildAnimationPlay;
 
-bool cGUIObjChildAnimationRoot::isChildAnimationPlay() const {
-    return mChildAnimPlay;
-}
+static auto ddon_emit_0x01b72870 __attribute__((used)) = &cGUIObjChildAnimationRoot::isChildAnimationPlay;
 
 __attribute__((weak)) MtAABB cGUIObjChildAnimationRoot::calcBoundingBox() const {
     DDON_STUB("cGUIObjChildAnimationRoot::calcBoundingBox")
@@ -448,18 +432,14 @@ void cGUIObjColorAdjust::setColorControl(u32 type) {
     mColorControl = type;
 }
 
-u32 cGUIObjColorAdjust::getColorControl() const {
-    return mColorControl;
-}
+static auto ddon_emit_0x01b72670 __attribute__((used)) = &cGUIObjColorAdjust::getColorControl;
 
 __attribute__((weak)) void cGUIObjColorAdjust::setColorScale(const MtVector4& color) {
     DDON_STUB("cGUIObjColorAdjust::setColorScale")
     /* stub */
 }
 
-MtVector4 cGUIObjColorAdjust::getColorScale() const {
-    return mColorScale;
-}
+static auto ddon_emit_0x01b72680 __attribute__((used)) = &cGUIObjColorAdjust::getColorScale;
 
 void cGUIObjColorAdjust::setAmbientColor(const MtColor& color) {
     mAmbientColor.rgba = color.rgba;
@@ -470,13 +450,9 @@ __attribute__((weak)) MtColor cGUIObjColorAdjust::getAmbientColor() const {
     __builtin_unreachable();
 }
 
-void cGUIObjColorAdjust::setSaturation(f32 v) {
-    mColorScale.w = v;
-}
+static auto ddon_emit_0x01b726c0 __attribute__((used)) = &cGUIObjColorAdjust::setSaturation;
 
-f32 cGUIObjColorAdjust::getSaturation() const {
-    return mColorScale.w;
-}
+static auto ddon_emit_0x01b726b0 __attribute__((used)) = &cGUIObjColorAdjust::getSaturation;
 
 __attribute__((weak)) void cGUIObjColorAdjust::beginDraw(nGUI::Draw& drawObj) {
     DDON_STUB("cGUIObjColorAdjust::beginDraw")
@@ -542,9 +518,7 @@ __attribute__((weak)) void cGUIObjMessage::setAutoWrap(u32 wrapMode) {
     /* stub */
 }
 
-u32 cGUIObjMessage::getAutoWrap() const {
-    return mAutoWrap;
-}
+static auto ddon_emit_0x01b72f00 __attribute__((used)) = &cGUIObjMessage::getAutoWrap;
 
 void cGUIObjMessage::setAutoScale(bool e) {
     mMsgAttr = !e ? (mMsgAttr & 0xFFFFFFFEu) : (mMsgAttr | 1u);
@@ -574,57 +548,35 @@ void cGUIObjMessage::setFontSlot(u32 slot) {
     mFontSlot = slot;
 }
 
-u32 cGUIObjMessage::getFontSlot() const {
-    return mFontSlot;
-}
+static auto ddon_emit_0x01b72e80 __attribute__((used)) = &cGUIObjMessage::getFontSlot;
 
-void cGUIObjMessage::setFontFilter0(u32 id) {
-    if (mFontFilterId[0] != id) {
-        mFontFilterId[0] = id;
-        checkFontFilter();
-    }
-}
+static auto ddon_emit_0x01b72ea0 __attribute__((used)) = &cGUIObjMessage::setFontFilter0;
 
-u32 cGUIObjMessage::getFontFilter0() const {
-    return mFontFilterId[0];
-}
+static auto ddon_emit_0x01b72e90 __attribute__((used)) = &cGUIObjMessage::getFontFilter0;
 
-void cGUIObjMessage::setFontFilter1(u32 id) {
-    if (mFontFilterId[1] != id) {
-        mFontFilterId[1] = id;
-        checkFontFilter();
-    }
-}
+static auto ddon_emit_0x01b72ed0 __attribute__((used)) = &cGUIObjMessage::setFontFilter1;
 
-u32 cGUIObjMessage::getFontFilter1() const {
-    return mFontFilterId[1];
-}
+static auto ddon_emit_0x01b72ec0 __attribute__((used)) = &cGUIObjMessage::getFontFilter1;
 
 void cGUIObjMessage::setLayout(u32 layout) {
     mLayout = layout;
 }
 
-u32 cGUIObjMessage::getLayout() const {
-    return mLayout;
-}
+static auto ddon_emit_0x01b72f60 __attribute__((used)) = &cGUIObjMessage::getLayout;
 
 __attribute__((weak)) void cGUIObjMessage::setLetterHAlign(u32 letterHAlign) {
     DDON_STUB("cGUIObjMessage::setLetterHAlign")
     /* stub */
 }
 
-u32 cGUIObjMessage::getLetterHAlign() const {
-    return mLetterHAlign;
-}
+static auto ddon_emit_0x01b72f70 __attribute__((used)) = &cGUIObjMessage::getLetterHAlign;
 
 __attribute__((weak)) void cGUIObjMessage::setLetterVAlign(u32 letterVAlign) {
     DDON_STUB("cGUIObjMessage::setLetterVAlign")
     /* stub */
 }
 
-u32 cGUIObjMessage::getLetterVAlign() const {
-    return mLetterVAlign;
-}
+static auto ddon_emit_0x01b72f80 __attribute__((used)) = &cGUIObjMessage::getLetterVAlign;
 
 void cGUIObjMessage::setLineSpace(s32 space) {
     mLineSpace = space;
@@ -647,18 +599,14 @@ __attribute__((weak)) void cGUIObjMessage::setMessageId(u32 id) {
     /* stub */
 }
 
-u32 cGUIObjMessage::getMessageId() const {
-    return mMessageId;
-}
+static auto ddon_emit_0x01b72ff0 __attribute__((used)) = &cGUIObjMessage::getMessageId;
 
 __attribute__((weak)) void cGUIObjMessage::setMessageIndexName(const MtString& name) {
     DDON_STUB("cGUIObjMessage::setMessageIndexName")
     /* stub */
 }
 
-MT_CTSTR cGUIObjMessage::getMessageIndexName() const {
-    return mpMessageIndexName;
-}
+static auto ddon_emit_0x01b73000 __attribute__((used)) = &cGUIObjMessage::getMessageIndexName;
 
 void cGUIObjMessage::setFontSize(const MtSize& size) {
     if (size.wh == mFontSize.wh) {
@@ -679,9 +627,7 @@ __attribute__((weak)) void cGUIObjMessage::setSize(const MtFloat2& size) {
     /* stub */
 }
 
-const MtFloat2 cGUIObjMessage::getSize() const {
-    return mSize;
-}
+static auto ddon_emit_0x01b72fe0 __attribute__((used)) = &cGUIObjMessage::getSize;
 
 void cGUIObjMessage::setColor(const MtColor& color) {
     if (color.rgba != mColor.rgba) {
@@ -727,9 +673,7 @@ __attribute__((weak)) void cGUIObjMessage::setSamplerState(u32 state) {
     /* stub */
 }
 
-u32 cGUIObjMessage::getSamplerState() const {
-    return mSamplerState;
-}
+static auto ddon_emit_0x01b72ef0 __attribute__((used)) = &cGUIObjMessage::getSamplerState;
 
 __attribute__((weak)) void cGUIObjMessage::setIconColorType(u32 type) {
     DDON_STUB("cGUIObjMessage::setIconColorType")
@@ -746,9 +690,7 @@ __attribute__((weak)) void cGUIObjMessage::setResolutionAdjust(u32 type) {
     /* stub */
 }
 
-u32 cGUIObjMessage::getResolutionAdjust() const {
-    return mResolutionAdjust;
-}
+static auto ddon_emit_0x01b72e40 __attribute__((used)) = &cGUIObjMessage::getResolutionAdjust;
 
 u32 cGUIObjMessage::getValidResolutionAdjust() const {
     if (mResolutionAdjust == 0) {
@@ -939,7 +881,7 @@ void cGUIObjMessage::recalcFontSize() {
         return;
     }
     cGUIMessageAnalyzer analyzer(this, -1);
-    analyzer.cGUIMessageAnalyzer::recalcFontSize(mpMTag);
+    analyzer.recalcFontSize(mpMTag);
     setUpdateDraw();
 }
 
@@ -1040,9 +982,7 @@ void cGUIObjNull::setScaleX(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86)) | 2;
 }
 
-f32 cGUIObjNull::getScaleX() const {
-    return mScale.x;
-}
+static auto ddon_emit_0x01b72830 __attribute__((used)) = &cGUIObjNull::getScaleX;
 
 void cGUIObjNull::setScaleY(f32 v) {
     if (mScale.y == v) {
@@ -1052,9 +992,7 @@ void cGUIObjNull::setScaleY(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86)) | 2;
 }
 
-f32 cGUIObjNull::getScaleY() const {
-    return mScale.y;
-}
+static auto ddon_emit_0x01b72840 __attribute__((used)) = &cGUIObjNull::getScaleY;
 
 void cGUIObjNull::setScaleZ(f32 v) {
     if (mScale.z == v) {
@@ -1064,9 +1002,7 @@ void cGUIObjNull::setScaleZ(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 86)) | 2;
 }
 
-f32 cGUIObjNull::getScaleZ() const {
-    return mScale.z;
-}
+static auto ddon_emit_0x01b72850 __attribute__((used)) = &cGUIObjNull::getScaleZ;
 
 __attribute__((weak)) void cGUIObjNull::calcMatrix(const MtMatrix& wmat) {
     DDON_STUB("cGUIObjNull::calcMatrix")
@@ -1113,13 +1049,9 @@ bool cGUIObjPolygon::isDrawableStatic() const {
     return true;
 }
 
-void cGUIObjPolygon::setMaskType(u32 v) {
-    mMaskType = v;
-}
+static auto ddon_emit_0x01b72970 __attribute__((used)) = &cGUIObjPolygon::setMaskType;
 
-u32 cGUIObjPolygon::getMaskType() const {
-    return mMaskType;
-}
+static auto ddon_emit_0x01b72960 __attribute__((used)) = &cGUIObjPolygon::getMaskType;
 
 void cGUIObjPolygon::setVertexColorLT(const MtColor& color) {
     if (color.rgba != mColor[0].rgba) {
@@ -1287,13 +1219,9 @@ __attribute__((weak)) MtColor cGUIObjPolygon::getVertexRGB() const {
     __builtin_unreachable();
 }
 
-void cGUIObjPolygon::setBlendState(u32 state) {
-    mBlendState = state;
-}
+static auto ddon_emit_0x01b728e0 __attribute__((used)) = &cGUIObjPolygon::setBlendState;
 
-u32 cGUIObjPolygon::getBlendState() const {
-    return mBlendState;
-}
+static auto ddon_emit_0x01b728d0 __attribute__((used)) = &cGUIObjPolygon::getBlendState;
 
 __attribute__((weak)) void cGUIObjPolygon::setReverseClockwise(bool v) {
     DDON_STUB("cGUIObjPolygon::setReverseClockwise")
@@ -1309,9 +1237,7 @@ __attribute__((weak)) void cGUIObjPolygon::setSize(const MtFloat2& size) {
     /* stub */
 }
 
-const MtFloat2 cGUIObjPolygon::getSize() const {
-    return mSize;
-}
+static auto ddon_emit_0x01b72900 __attribute__((used)) = &cGUIObjPolygon::getSize;
 
 __attribute__((weak)) MtAABB cGUIObjPolygon::calcBoundingBox() const {
     DDON_STUB("cGUIObjPolygon::calcBoundingBox")
@@ -1464,6 +1390,177 @@ __attribute__((weak)) MtObject* cGUIObjRoot::MyDTI::newInstance() const {
     return nullptr;
 }
 
+const MtDTI& cGUIObjScissorMask::getDTI() const {
+    return cGUIObjScissorMask::DTI;
+}
+
+void* cGUIObjScissorMask::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+cGUIObjScissorMask::cGUIObjScissorMask() {
+    DDON_STUB("cGUIObjScissorMask::cGUIObjScissorMask")
+    /* stub */
+}
+
+cGUIObjScissorMask::~cGUIObjScissorMask() {
+    DDON_STUB("cGUIObjScissorMask::~cGUIObjScissorMask")
+    /* stub */
+}
+
+MtUI* cGUIObjScissorMask::createUI(MtProperty& prop) {
+    return this->MtObject::createUI(prop);
+}
+
+__attribute__((weak)) void cGUIObjScissorMask::createProperty(MtPropertyList& s) {
+    DDON_STUB("cGUIObjScissorMask::createProperty")
+    /* stub */
+}
+
+bool cGUIObjScissorMask::isDrawableStatic() const {
+    return true;
+}
+
+void cGUIObjScissorMask::setEnableScissor(bool v) {
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 196) = static_cast<unsigned int>(static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 196)) & 0xFFFFFFFEu) | static_cast<unsigned long>(v));
+}
+
+bool cGUIObjScissorMask::isEnableScissor() const {
+    return static_cast<bool>((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 196)) & 1u);
+}
+
+void cGUIObjScissorMask::setSize(const MtSize& size) {
+    if (size.wh == mSize.wh) {
+        return;
+    }
+    mSize.w = static_cast<s32>(static_cast<unsigned int>(size.wh));
+    mSize.h = size.h;
+    mUpdateSize = 1;
+}
+
+__attribute__((weak)) MtSize cGUIObjScissorMask::getSize() const {
+    DDON_STUB("cGUIObjScissorMask::getSize")
+    __builtin_unreachable();
+}
+
+void cGUIObjScissorMask::calcMatrix(const MtMatrix& wmat) {
+    this->cGUIObj2D::calcMatrix(wmat);
+    mUpdateSize = 1;
+}
+
+__attribute__((weak)) void cGUIObjScissorMask::beginDraw(nGUI::Draw& drawObj) {
+    DDON_STUB("cGUIObjScissorMask::beginDraw")
+    /* stub */
+}
+
+__attribute__((weak)) void cGUIObjScissorMask::endDraw(nGUI::Draw& drawObj) {
+    DDON_STUB("cGUIObjScissorMask::endDraw")
+    /* stub */
+}
+
+__attribute__((weak)) bool cGUIObjScissorMask::checkHit(const MtVector3& pt, f32 ratio, const MtRay* const pRay) const {
+    DDON_STUB("cGUIObjScissorMask::checkHit")
+    return {};
+}
+
+cGUIObjScissorMask::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cGUIObjScissorMask::MyDTI cGUIObjScissorMask::DTI("cGUIObjScissorMask", &::cGUIObj2D::DTI, 240ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cGUIObjScissorMask::MyDTI::newInstance() const {
+    DDON_STUB("cGUIObjScissorMask::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cGUIObjText::getDTI() const {
+    return cGUIObjText::DTI;
+}
+
+void* cGUIObjText::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+cGUIObjText::cGUIObjText() {
+    DDON_STUB("cGUIObjText::cGUIObjText")
+    /* stub */
+}
+
+cGUIObjText::~cGUIObjText() {
+    DDON_STUB("cGUIObjText::~cGUIObjText")
+    /* stub */
+}
+
+MtUI* cGUIObjText::createUI(MtProperty& prop) {
+    return this->MtObject::createUI(prop);
+}
+
+__attribute__((weak)) void cGUIObjText::createProperty(MtPropertyList& s) {
+    DDON_STUB("cGUIObjText::createProperty")
+    /* stub */
+}
+
+void cGUIObjText::setTypingSpeed(f32 speed) {
+    mTypingSpeed = speed;
+    mNowTypingSpeed = speed;
+}
+
+static auto ddon_emit_0x01b73020 __attribute__((used)) = &cGUIObjText::getTypingSpeed;
+
+static auto ddon_emit_0x01b73040 __attribute__((used)) = &cGUIObjText::setTypingEvent;
+
+bool cGUIObjText::isTypingEvent() const {
+    return static_cast<bool>(mTextAttr & 1u);
+}
+
+__attribute__((weak)) void cGUIObjText::play(f32 delta) {
+    DDON_STUB("cGUIObjText::play")
+    /* stub */
+}
+
+__attribute__((weak)) void cGUIObjText::analyzeMessage(MT_CTSTR msg, u32 length, s32 pageIndex) {
+    DDON_STUB("cGUIObjText::analyzeMessage")
+    /* stub */
+}
+
+__attribute__((weak)) void cGUIObjText::analyzeGenderMessage(MT_CTSTR msg, nGUI::GENDER speakerGender, nGUI::GENDER listenerGender, u32 length) {
+    DDON_STUB("cGUIObjText::analyzeGenderMessage")
+    /* stub */
+}
+
+__attribute__((weak)) void cGUIObjText::clearMessage() {
+    DDON_STUB("cGUIObjText::clearMessage")
+    /* stub */
+}
+
+__attribute__((weak)) void cGUIObjText::executeMTag() {
+    DDON_STUB("cGUIObjText::executeMTag")
+    /* stub */
+}
+
+__attribute__((weak)) void cGUIObjText::executeMTagExtend(void* pData) {
+}
+
+nGUI::MTAG* cGUIObjText::getDrawStartMTag() const {
+    return mpStartMTag;
+}
+
+nGUI::MTAG* cGUIObjText::getDrawEndMTag() const {
+    return mpNowMTag;
+}
+
+bool cGUIObjText::isPageEnd() const {
+    return true;
+}
+
+cGUIObjText::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cGUIObjText::MyDTI cGUIObjText::DTI("cGUIObjText", &::cGUIObjMessage::DTI, 496ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cGUIObjText::MyDTI::newInstance() const {
+    DDON_STUB("cGUIObjText::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& cGUIObjTexture::getDTI() const {
     return cGUIObjTexture::DTI;
 }
@@ -1498,9 +1595,7 @@ void cGUIObjTexture::setSamplerState(u32 state) {
     }
 }
 
-u32 cGUIObjTexture::getSamplerState() const {
-    return mSamplerState;
-}
+static auto ddon_emit_0x01b72a50 __attribute__((used)) = &cGUIObjTexture::getSamplerState;
 
 __attribute__((weak)) void cGUIObjTexture::setSize(const MtFloat2& size) {
     DDON_STUB("cGUIObjTexture::setSize")
@@ -1520,9 +1615,7 @@ void cGUIObjTexture::setTiling(u32 mode) {
     }
 }
 
-u32 cGUIObjTexture::getTiling() const {
-    return mTiling;
-}
+static auto ddon_emit_0x01b72a60 __attribute__((used)) = &cGUIObjTexture::getTiling;
 
 void cGUIObjTexture::setTextureId(u32 id) {
     if (mpResource != nullptr) {
@@ -1541,18 +1634,14 @@ void cGUIObjTexture::setTextureId(u32 id) {
     }
 }
 
-u32 cGUIObjTexture::getTextureId() const {
-    return mTextureId;
-}
+static auto ddon_emit_0x01b72a70 __attribute__((used)) = &cGUIObjTexture::getTextureId;
 
 __attribute__((weak)) void cGUIObjTexture::setTextureRect(const MtFloat4& rect) {
     DDON_STUB("cGUIObjTexture::setTextureRect")
     /* stub */
 }
 
-MtFloat4 cGUIObjTexture::getTextureRect() const {
-    return mTextureRect;
-}
+static auto ddon_emit_0x01b72a80 __attribute__((used)) = &cGUIObjTexture::getTextureRect;
 
 __attribute__((weak)) void cGUIObjTexture::setUpdateDraw() {
     DDON_STUB("cGUIObjTexture::setUpdateDraw")
@@ -1580,6 +1669,204 @@ cGUIObjTexture::MyDTI cGUIObjTexture::DTI("cGUIObjTexture", &::cGUIObjPolygon::D
 
 __attribute__((weak)) MtObject* cGUIObjTexture::MyDTI::newInstance() const {
     DDON_STUB("cGUIObjTexture::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cGUIObjTextureSet::getDTI() const {
+    return cGUIObjTextureSet::DTI;
+}
+
+void* cGUIObjTextureSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+cGUIObjTextureSet::cGUIObjTextureSet() {
+    DDON_STUB("cGUIObjTextureSet::cGUIObjTextureSet")
+    /* stub */
+}
+
+cGUIObjTextureSet::~cGUIObjTextureSet() {
+    DDON_STUB("cGUIObjTextureSet::~cGUIObjTextureSet")
+    /* stub */
+}
+
+MtUI* cGUIObjTextureSet::createUI(MtProperty& prop) {
+    return this->MtObject::createUI(prop);
+}
+
+void cGUIObjTextureSet::createProperty(MtPropertyList& s) {
+    this->cGUIObjTexture::createProperty(s);
+    MtProperty* t0 = s.find("ControlPoint");
+    if (t0 != nullptr) {
+        t0->mAttr = t0->mAttr | 1u;
+        MtProperty* t1 = s.find("Size");
+        if (t1 != nullptr) {
+            t1->mAttr = t1->mAttr | 1u;
+            MtProperty* t2 = s.find("Reverse");
+            if (t2 != nullptr) {
+                t2->mAttr = t2->mAttr | 1u;
+                MtProperty* t3 = s.find("mTextureRect");
+                if (t3 != nullptr) {
+                    t3->mAttr = t3->mAttr | 1u;
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                } else {
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                }
+            } else {
+                MtProperty* t3 = s.find("mTextureRect");
+                if (t3 != nullptr) {
+                    t3->mAttr = t3->mAttr | 1u;
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                } else {
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                }
+            }
+        } else {
+            MtProperty* t2 = s.find("Reverse");
+            if (t2 != nullptr) {
+                t2->mAttr = t2->mAttr | 1u;
+                MtProperty* t3 = s.find("mTextureRect");
+                if (t3 != nullptr) {
+                    t3->mAttr = t3->mAttr | 1u;
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                } else {
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                }
+            } else {
+                MtProperty* t3 = s.find("mTextureRect");
+                if (t3 != nullptr) {
+                    t3->mAttr = t3->mAttr | 1u;
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                } else {
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                }
+            }
+        }
+    } else {
+        MtProperty* t1 = s.find("Size");
+        if (t1 != nullptr) {
+            t1->mAttr = t1->mAttr | 1u;
+            MtProperty* t2 = s.find("Reverse");
+            if (t2 != nullptr) {
+                t2->mAttr = t2->mAttr | 1u;
+                MtProperty* t3 = s.find("mTextureRect");
+                if (t3 != nullptr) {
+                    t3->mAttr = t3->mAttr | 1u;
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                } else {
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                }
+            } else {
+                MtProperty* t3 = s.find("mTextureRect");
+                if (t3 != nullptr) {
+                    t3->mAttr = t3->mAttr | 1u;
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                } else {
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                }
+            }
+        } else {
+            MtProperty* t2 = s.find("Reverse");
+            if (t2 != nullptr) {
+                t2->mAttr = t2->mAttr | 1u;
+                MtProperty* t3 = s.find("mTextureRect");
+                if (t3 != nullptr) {
+                    t3->mAttr = t3->mAttr | 1u;
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                } else {
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                }
+            } else {
+                MtProperty* t3 = s.find("mTextureRect");
+                if (t3 != nullptr) {
+                    t3->mAttr = t3->mAttr | 1u;
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                } else {
+                    MtProperty* t4 = s.find("Tiling");
+                    if (t4 != nullptr) {
+                        t4->mAttr = t4->mAttr | 1u;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void cGUIObjTextureSet::setVertexColor(const MtColor& color) {
+    mColor[0].rgba = color.rgba;
+}
+
+__attribute__((weak)) MtAABB cGUIObjTextureSet::calcBoundingBox() const {
+    DDON_STUB("cGUIObjTextureSet::calcBoundingBox")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) void cGUIObjTextureSet::draw(nGUI::Draw& drawObj) {
+    DDON_STUB("cGUIObjTextureSet::draw")
+    /* stub */
+}
+
+__attribute__((weak)) bool cGUIObjTextureSet::checkHit(const MtVector3& pt, f32 ratio, const MtRay* const pRay) const {
+    DDON_STUB("cGUIObjTextureSet::checkHit")
+    return {};
+}
+
+__attribute__((weak)) void cGUIObjTextureSet::setExtendData(void* pData) {
+    DDON_STUB("cGUIObjTextureSet::setExtendData")
+    /* stub */
+}
+
+cGUIObjTextureSet::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cGUIObjTextureSet::MyDTI cGUIObjTextureSet::DTI("cGUIObjTextureSet", &::cGUIObjTexture::DTI, 352ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cGUIObjTextureSet::MyDTI::newInstance() const {
+    DDON_STUB("cGUIObjTextureSet::MyDTI::newInstance")
     return nullptr;
 }
 
@@ -1630,9 +1917,7 @@ __attribute__((weak)) void cGUIObject::setPriority(u32 prio) {
     /* stub */
 }
 
-u32 cGUIObject::getPriority() const {
-    return mPriority;
-}
+static auto ddon_emit_0x01b725c0 __attribute__((used)) = &cGUIObject::getPriority;
 
 __attribute__((weak)) void cGUIObject::setVisible(bool v) {
     DDON_STUB("cGUIObject::setVisible")
@@ -1643,29 +1928,21 @@ bool cGUIObject::isVisible() const {
     return static_cast<bool>(mAttr & 1u);
 }
 
-void cGUIObject::setLoop(bool v) {
-    mAttr = !v ? (mAttr & 0xFFFFFFFBu) : (mAttr | 4u);
-}
+static auto ddon_emit_0x01b725e0 __attribute__((used)) = &cGUIObject::setLoop;
 
 bool cGUIObject::isLoop() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 84)) & 4) >> 2);
 }
 
-void cGUIObject::setFixFrame(bool v) {
-    mAttr = !v ? (mAttr & 0xFFFFFFF7u) : (mAttr | 8u);
-}
+static auto ddon_emit_0x01b72630 __attribute__((used)) = &cGUIObject::setFixFrame;
 
 bool cGUIObject::isFixFrame() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 84)) & 8) >> 3);
 }
 
-void cGUIObject::setLoopStartFrame(u32 loopFrame) {
-    mLoopStartFrame = loopFrame;
-}
+static auto ddon_emit_0x01b72610 __attribute__((used)) = &cGUIObject::setLoopStartFrame;
 
-u32 cGUIObject::getLoopStartFrame() const {
-    return mLoopStartFrame;
-}
+static auto ddon_emit_0x01b72600 __attribute__((used)) = &cGUIObject::getLoopStartFrame;
 
 __attribute__((weak)) void cGUIObject::setCurrentFrame(f32 frame, bool changeFixFrame) {
     DDON_STUB("cGUIObject::setCurrentFrame")

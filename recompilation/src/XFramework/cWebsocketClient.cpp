@@ -6,10 +6,13 @@
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtNetCore.h"
 #include "../MT/MtNetDevice.h"
+#include "../MT/MtNetObject.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtStream.h"
 #include "../MT/MtString.h"
+#include "sMain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

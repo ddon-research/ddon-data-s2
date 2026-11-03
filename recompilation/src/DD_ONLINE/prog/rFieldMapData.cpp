@@ -7,8 +7,14 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -37,6 +43,7 @@ rFieldMapData::~rFieldMapData() {
         MtMemoryAllocator::getAllocator(rFieldMapData::DTI)->memFree(static_cast<void*>(mpArrayData));
         mpArrayData = nullptr;
         mArrayDataNum = 0;
+        return;
     }
     unsigned int i3 = 0;
     do {

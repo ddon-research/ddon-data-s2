@@ -638,8 +638,16 @@ public:
     static const u32 MAX_HIT_UNIT = 8;
 };
 
+inline void* cShlParamBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline const cShlGroupParam* cShlParamBase::getGroupParam() const {
     return this->pGroupParam;
+}
+
+inline void* uShlBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uDDOModel* uShlBase::getParent() {

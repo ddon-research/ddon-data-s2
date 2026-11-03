@@ -7,26 +7,32 @@
 #include "Protocol/PacketData/Clan.h"
 #include "../../generated/shared/Error.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCharset.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
 #include "cArcLoader.h"
+#include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
 #include "cControl.h"
 #include "../../XFramework/cDraw.h"
 #include "cGUIExtNetMgr.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "cGUIObjTextureRef.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIPageList.h"
 #include "cGUIUtility.h"
 #include "../../XFramework/cGUIVariable.h"
 #include "cInputTextKeyboardHook.h"
 #include "cItemParam.h"
+#include "cNetGameServer.h"
 #include "cQuestSvRequestManager.h"
 #include "../../XFramework/cResource.h"
 #include "cUIObject.h"
@@ -35,26 +41,49 @@
 #include "nGUIExt.h"
 #include "nGUIItem.h"
 #include "../../generated/shared/nHuman.h"
+#include "nHumanMsg.h"
+#include "nJobParam.h"
 #include "../../generated/shared/nKeyCustom.h"
 #include "nNet.h"
 #include "nQuest.h"
 #include "rArchiveListArray.h"
 #include "rEmblemColorTable.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIFont.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "rItemList.h"
 #include "../../XFramework/rTexture.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sCamera.h"
+#include "sContextManager.h"
+#include "sFlag.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sGame.h"
+#include "sHttpClient.h"
+#include "sInputManager.h"
 #include "sItemManager.h"
+#include "../../XFramework/sKeyboard.h"
 #include "sKeyboardInterface.h"
+#include "../../XFramework/sMain.h"
+#include "sMarker.h"
+#include "../../XFramework/sMouse.h"
+#include "sMouseExt.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "../../XFramework/sPad.h"
+#include "sPadExt.h"
+#include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
+#include "../../XFramework/sRender.h"
+#include "../../XFramework/sSavedata.h"
+#include "sSavedataExt.h"
 #include "../../XFramework/sUnit.h"
+#include "../../XFramework/uCoord.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIMap.h"
+#include "uHuman.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -83,10 +112,7 @@ bool uGUIBase::isSMENUtopbtn() {
     return mSMENUtopbtn;
 }
 
-u32 uGUIBase::evCtrlDummy(cControl::Message* msg) {
-    mInputEventId = 1;
-    return 0;
-}
+static auto ddon_emit_0x01adbcc0 __attribute__((used)) = &uGUIBase::evCtrlDummy;
 
 __attribute__((weak)) u32 uGUIBase::evCtrlControlMgrCancel(cControl::Message* pMsg) {
     DDON_STUB("uGUIBase::evCtrlControlMgrCancel")
@@ -825,9 +851,7 @@ bool uGUIBase::fixCameraRelatedScreenPos() {
     return true;
 }
 
-bool uGUIBase::forceExitFunc() {
-    return true;
-}
+static auto ddon_emit_0x01ae17f0 __attribute__((used)) = &uGUIBase::forceExitFunc;
 
 __attribute__((weak)) void uGUIBase::setWindowActive(bool IsActive) {
     DDON_STUB("uGUIBase::setWindowActive")
@@ -918,7 +942,7 @@ void uGUIBase::setInstanceVisible(u32 instId, bool bVisible) {
     if (pInst == nullptr) {
         return;
     }
-    pInst->cGUIInstance::setVisible(bVisible);
+    pInst->setVisible(bVisible);
 }
 
 __attribute__((weak)) void uGUIBase::setInstanceVisibleTree(cGUIInstance* pInst, bool bVisible) {
@@ -990,7 +1014,7 @@ cGUIObject* uGUIBase::getObjectFromId(u32 uInstId, u32 uId) {
     cGUIInstAnimation* pInst = static_cast<cGUIInstAnimation*>(getInstance(uInstId, false));
     if (pInst != nullptr) {
         if (pInst->mpObjRoot != nullptr) {
-            return pInst->mpObjRoot->cGUIObject::getObjectFromId(uId);
+            return pInst->mpObjRoot->getObjectFromId(uId);
         }
     }
     return nullptr;
@@ -1267,6 +1291,39 @@ bool uGUIBase::isNoRegistSystemCallBack() {
     }
 }
 
+inline void uGUIBase::releaseRegistSystemCallBack() {
+    if (mpItemMgrRequest != nullptr) {
+        if (!mpItemMgrRequest->isExit(static_cast<void*>(this))) {
+            mpItemMgrRequest->mIsResultCancel = true;
+        }
+        mpItemMgrRequest = nullptr;
+    }
+    if ((sQuestManagerExt::mpInstance) == nullptr) {
+        return;
+    }
+    cQuestSvRequestManager::popRequest(static_cast<const MtObject*>(this));
+}
+
+inline void uGUIBase::manageIItemManagerNetReq() {
+    if (mpItemMgrRequest == nullptr) {
+        return;
+    }
+    if (!mpItemMgrRequest->isExit(static_cast<void*>(this))) {
+        return;
+    }
+    mpItemMgrRequest = nullptr;
+}
+
+inline void uGUIBase::deleteItemManagerNetReq() {
+    if (mpItemMgrRequest == nullptr) {
+        return;
+    }
+    if (!mpItemMgrRequest->isExit(static_cast<void*>(this))) {
+        mpItemMgrRequest->mIsResultCancel = true;
+    }
+    mpItemMgrRequest = nullptr;
+}
+
 __attribute__((weak)) void uGUIBase::manageCommunicateServer() {
     DDON_STUB("uGUIBase::manageCommunicateServer")
     /* stub */
@@ -1351,10 +1408,10 @@ void uGUIBase::moveTextBox() {
     const u32 event_id = getInputEvent();
     if (event_id == 55) {
         if (text_box->mState != uGUIBase::cReferenceUITextBox::STATE_NONE) {
-            if (text_box->::uGUIBase::cSupportBase::mpUnit != nullptr) {
-                if (text_box == text_box->::uGUIBase::cSupportBase::mpUnit->mpActiveTextBox) {
+            if (text_box->mpUnit != nullptr) {
+                if (text_box == text_box->mpUnit->mpActiveTextBox) {
                     sKeyboardInterface::getInstance()->requestClose(true);
-                    text_box->::uGUIBase::cSupportBase::mpUnit->mpActiveTextBox = nullptr;
+                    text_box->mpUnit->mpActiveTextBox = nullptr;
                 }
             }
             text_box->mState = uGUIBase::cReferenceUITextBox::STATE_NONE;
@@ -1363,10 +1420,10 @@ void uGUIBase::moveTextBox() {
     } else {
         if (event_id == 54) {
             if (text_box->mState != uGUIBase::cReferenceUITextBox::STATE_NONE) {
-                if (text_box->::uGUIBase::cSupportBase::mpUnit != nullptr) {
-                    if (text_box == text_box->::uGUIBase::cSupportBase::mpUnit->mpActiveTextBox) {
+                if (text_box->mpUnit != nullptr) {
+                    if (text_box == text_box->mpUnit->mpActiveTextBox) {
                         sKeyboardInterface::getInstance()->requestClose(false);
-                        text_box->::uGUIBase::cSupportBase::mpUnit->mpActiveTextBox = nullptr;
+                        text_box->mpUnit->mpActiveTextBox = nullptr;
                     }
                 }
                 text_box->mState = uGUIBase::cReferenceUITextBox::STATE_NONE;
@@ -1374,6 +1431,12 @@ void uGUIBase::moveTextBox() {
             }
         }
     }
+}
+
+inline void uGUIBase::initInputTextKey() {
+    mInputTextKeyboardHook.mOwner = this;
+    mInputTextKey.init();
+    mInputTextKeyReq.init();
 }
 
 __attribute__((weak)) bool uGUIBase::onKeyEvent(const nInputTextKeyboardHook::Keycode& keycode) {
@@ -1556,8 +1619,13 @@ uGUIBase::cReferenceUITextBox::cReferenceUITextBox() {
 }
 
 uGUIBase::cReferenceUITextBox::~cReferenceUITextBox() {
-    DDON_STUB("uGUIBase::cReferenceUITextBox::~cReferenceUITextBox")
-    /* stub */
+    if (mpUnit == nullptr) {
+        return;
+    }
+    if (this != mpUnit->mpActiveTextBox) {
+        return;
+    }
+    sKeyboardInterface::getInstance()->requestClose(true);
 }
 
 __attribute__((weak)) void uGUIBase::cReferenceUITextBox::setup(uGUIBase* pParentGUI, cGUIInstance* pInst, const MtFloat2& size, MT_CTSTR pMsgInit, u32 uLenMaxText, bool bDispCharNum) {
@@ -2445,8 +2513,6 @@ const MtDTI& uGUIBase::cReferenceUIPullDown::cMsg::getDTI() const {
 }
 
 uGUIBase::cReferenceUIPullDown::cMsg::~cMsg() {
-    DDON_STUB("uGUIBase::cReferenceUIPullDown::cMsg::~cMsg")
-    /* stub */
 }
 
 uGUIBase::cReferenceUIPullDown::cMsg::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4451,8 +4517,12 @@ uGUIBase::cTexRefJpegDownloader::cTexRefJpegDownloader() {
 }
 
 __attribute__((noinline)) uGUIBase::cTexRefJpegDownloader::~cTexRefJpegDownloader() {
-    DDON_STUB("uGUIBase::cTexRefJpegDownloader::~cTexRefJpegDownloader")
-    /* stub */
+    static_cast<sGUIExt*>(sGUI::getInstance())->dlTicketReturn(mDlTicket);
+    if (mpTex == nullptr) {
+        return;
+    }
+    mpTex->release();
+    mpTex = nullptr;
 }
 
 void uGUIBase::cTexRefJpegDownloader::setup(cGUIObject* objTexRef) {
@@ -4787,8 +4857,6 @@ inline void* uGUIBase::cReferenceUIChargesInfo::cData::operator new(size_t sz, u
 }
 
 uGUIBase::cReferenceUIChargesInfo::cData::~cData() {
-    DDON_STUB("uGUIBase::cReferenceUIChargesInfo::cData::~cData")
-    /* stub */
 }
 
 uGUIBase::cReferenceUIChargesInfo::cData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4944,8 +5012,8 @@ __attribute__((weak)) void uGUIBase::cReferenceUIIconItem::setSize(uGUIBase::cRe
 void uGUIBase::cReferenceUIIconItem::setScale(f32 scale) {
     cGUIInstAnimation* pInst = mpInstances.elems[0];
     if (pInst != nullptr) {
-        pInst->cGUIInstNull::setScaleX(scale);
-        pInst->cGUIInstNull::setScaleY(scale);
+        pInst->setScaleX(scale);
+        pInst->setScaleY(scale);
         cGUIInstAnimation* t0 = mpInstances.elems[1];
         if (t0 != nullptr) {
             t0->setScaleX(scale);
@@ -5336,8 +5404,6 @@ uGUIBase::cReferenceUIIconItemCharges::cReferenceUIIconItemCharges() {
 }
 
 uGUIBase::cReferenceUIIconItemCharges::~cReferenceUIIconItemCharges() {
-    DDON_STUB("uGUIBase::cReferenceUIIconItemCharges::~cReferenceUIIconItemCharges")
-    /* stub */
 }
 
 void uGUIBase::cReferenceUIIconItemCharges::setup(uGUIBase* pParentGUI, cGUIInstance* pInstItemIcon, cGUIInstance* pInstFixIconBase, cGUIInstance* pInstFixIconInfo) {
@@ -6074,8 +6140,6 @@ const MtDTI& uGUIBase::cReferenceUIPullDownSkill::cMsgEx::getDTI() const {
 }
 
 uGUIBase::cReferenceUIPullDownSkill::cMsgEx::~cMsgEx() {
-    DDON_STUB("uGUIBase::cReferenceUIPullDownSkill::cMsgEx::~cMsgEx")
-    /* stub */
 }
 
 uGUIBase::cReferenceUIPullDownSkill::cMsgEx::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -6335,8 +6399,6 @@ uGUIBase::cReferenceUICheckListForClan::cReferenceUICheckListForClan() {
 }
 
 uGUIBase::cReferenceUICheckListForClan::~cReferenceUICheckListForClan() {
-    DDON_STUB("uGUIBase::cReferenceUICheckListForClan::~cReferenceUICheckListForClan")
-    /* stub */
 }
 
 __attribute__((weak)) void uGUIBase::cReferenceUICheckListForClan::init(s32 enableNum, s32 max) {
@@ -7609,13 +7671,13 @@ rTexture* uGUIBase::cTexArcLoader::replaceTex(rTexture* pTex, bool IsReleaseOldT
         if (mpParent != nullptr) {
             rGUI* pres = mpParent->mpResource;
             if (pres != nullptr) {
-                rTexture* pold = pres->rGUI::replaceTexture(mTexIndex, pTex);
+                rTexture* pold = pres->replaceTexture(mTexIndex, pTex);
                 if (mpObjTex != nullptr) {
                     mpObjTex->setVisible(true);
                 }
                 if (pold != nullptr) {
                     if (IsReleaseOldTex) {
-                        pold->cResource::release();
+                        pold->release();
                         return nullptr;
                     }
                 }

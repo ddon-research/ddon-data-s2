@@ -2,13 +2,18 @@
 #include <new>
 #include "nGUIDraw.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "cDraw.h"
 #include "nDraw.h"
+#include "nDrawConstantTable.h"
+#include "nDrawResource.h"
 #include "nGUI.h"
+#include "sGUI.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

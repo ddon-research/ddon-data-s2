@@ -122,3 +122,7 @@ public:
     };  // offset: 0x20
     static MyDTI DTI;
 };
+
+inline void* cAction::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

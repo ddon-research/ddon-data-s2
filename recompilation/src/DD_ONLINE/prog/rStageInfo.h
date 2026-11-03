@@ -239,6 +239,82 @@ private:
     static const u32 mAnotherMapNameMaxLength = 16;
 };
 
+inline void* rStageInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rScheduler* rStageInfo::getScrScheduler() const {
+    return this->mprModel;
+}
+
+inline rScheduler* rStageInfo::getFltScheduler() const {
+    return this->mprFilter;
+}
+
+inline rCollision* rStageInfo::getScrSbc(u32 idx) const {
+    return this->mprScrSbc[idx];
+}
+
+inline u32 rStageInfo::getScrSbcNum() const {
+    return 3;
+}
+
+inline rCollision* rStageInfo::getEffSbc(u32 idx) const {
+    return this->mprEffSbc[idx];
+}
+
+inline u32 rStageInfo::getEffSbcNum() const {
+    return 3;
+}
+
+inline rNavigationMesh* rStageInfo::getNaviMesh() const {
+    return this->mprNaviMesh;
+}
+
+inline rAIPathConsecutive* rStageInfo::getWayPoint() const {
+    return this->mprWayPoint;
+}
+
+inline rOccluderEx* rStageInfo::getOCC() const {
+    return this->mprOCC;
+}
+
+inline rStartPos* rStageInfo::getStartPos() const {
+    return this->mprStartPos;
+}
+
+inline rCameraParamList* rStageInfo::getCmrPrmLstFld() const {
+    return this->mprCmrPrmLstFld;
+}
+
+inline rCameraParamList* rStageInfo::getCmrPrmLstEvt() const {
+    return this->mprCmrPrmLstEvt;
+}
+
 inline f32 rStageInfo::getAng() const {
     return this->mAng;
+}
+
+inline rZone* rStageInfo::getSndZoneOcclusion() {
+    return this->mprSoundZone[0];
+}
+
+inline rZone* rStageInfo::getSndZoneGenerator() {
+    return this->mprSoundZone[1];
+}
+
+inline rZone* rStageInfo::getSndZoneTrigger() {
+    return this->mprSoundZone[2];
+}
+
+inline s32 rStageInfo::getEpvIndexAlways() const {
+    return this->mEpvIndexAlways;
+}
+
+inline s32 rStageInfo::getEpvIndexDay() const {
+    return this->mEpvIndexDay;
+}
+
+inline s32 rStageInfo::getEpvIndexNight() const {
+    return this->mEpvIndexNight;
 }

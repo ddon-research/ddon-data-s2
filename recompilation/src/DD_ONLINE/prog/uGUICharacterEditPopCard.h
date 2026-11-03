@@ -129,6 +129,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUICharacterEditPopCard::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUICharacterEditPopCard::setUnitType(uGUICharacterEditPopCard::UNIT_TYPE type) {
     this->mUnitType = static_cast<uGUICharacterEditPopCard::UNIT_TYPE>(1);
 }

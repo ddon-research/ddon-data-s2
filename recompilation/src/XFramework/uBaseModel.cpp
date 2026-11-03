@@ -2,12 +2,25 @@
 #include <new>
 #include "uBaseModel.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "cDraw.h"
+#include "cResource.h"
+#include "cUnit.h"
 #include "nDrawMaterial.h"
+#include "nDrawMaterialNull.h"
+#include "nDrawResource.h"
+#include "rMaterial.h"
 #include "rModel.h"
+#include "sCamera.h"
+#include "sMain.h"
+#include "sRender.h"
+#include "sScene.h"
 #include "uCoord.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -110,18 +123,14 @@ __attribute__((weak)) void uBaseModel::setModel(rModel* pmod) {
     /* stub */
 }
 
-rModel* uBaseModel::getModel() const {
-    return mpModel;
-}
+static auto ddon_emit_0x01b5d290 __attribute__((used)) = &uBaseModel::getModel;
 
 __attribute__((weak)) void uBaseModel::setMaterialData(rMaterial* pmat) {
     DDON_STUB("uBaseModel::setMaterialData")
     /* stub */
 }
 
-rMaterial* uBaseModel::getMaterialData() {
-    return mpMaterialData;
-}
+static auto ddon_emit_0x01b5d2a0 __attribute__((used)) = &uBaseModel::getMaterialData;
 
 __attribute__((weak)) void uBaseModel::updateWorldMatrix() {
     DDON_STUB("uBaseModel::updateWorldMatrix")
@@ -192,26 +201,18 @@ void uBaseModel::setPartsDispAll(bool disp) {
     }
 }
 
-void uBaseModel::setVFCullLevel(uBaseModel::VFCULL_LEVEL level) {
-    mVFCullLevel = level;
-}
+static auto ddon_emit_0x01b5d4e0 __attribute__((used)) = &uBaseModel::setVFCullLevel;
 
 __attribute__((weak)) uBaseModel::VFCULL_LEVEL uBaseModel::getVFCullLevel() const {
     DDON_STUB("uBaseModel::getVFCullLevel")
     return {};
 }
 
-s32 uBaseModel::getZPrepassDist() const {
-    return mZPrepassDist;
-}
+static auto ddon_emit_0x01b5d550 __attribute__((used)) = &uBaseModel::getZPrepassDist;
 
-void uBaseModel::setZPrepassDist(s32 dist) {
-    mZPrepassDist = dist;
-}
+static auto ddon_emit_0x01b5d560 __attribute__((used)) = &uBaseModel::setZPrepassDist;
 
-u32 uBaseModel::getDrawPriority() const {
-    return mDrawPriority;
-}
+static auto ddon_emit_0x01b5d570 __attribute__((used)) = &uBaseModel::getDrawPriority;
 
 __attribute__((weak)) bool uBaseModel::isPrioAttrTransparency(cDraw* pDraw) {
     DDON_STUB("uBaseModel::isPrioAttrTransparency")
@@ -222,44 +223,21 @@ u32 uBaseModel::getAddTransparentDrawPriority() {
     return 0;
 }
 
-void uBaseModel::setDrawPriority(u32 v) {
-    mDrawPriority = v;
-}
+static auto ddon_emit_0x01b5d580 __attribute__((used)) = &uBaseModel::setDrawPriority;
 
-s32 uBaseModel::getPriorityBias() const {
-    return mPriorityBias;
-}
+static auto ddon_emit_0x01b5d590 __attribute__((used)) = &uBaseModel::getPriorityBias;
 
-void uBaseModel::setPriorityBias(s32 b) {
-    mPriorityBias = b;
-    if (b > 0x7FFF0000) {
-        mPriorityBias = 0x7FFF0000;
-    } else {
-        if (b <= -2147418113) {
-            mPriorityBias = -2147418112;
-        }
-    }
-}
+static auto ddon_emit_0x01b5d5a0 __attribute__((used)) = &uBaseModel::setPriorityBias;
 
-uBaseModel::LOD_TYPE uBaseModel::getLODType() const {
-    return static_cast<LOD_TYPE>(mLODType);
-}
+static auto ddon_emit_0x01b5d510 __attribute__((used)) = &uBaseModel::getLODType;
 
-void uBaseModel::setLODType(uBaseModel::LOD_TYPE lod) {
-    mLODType = lod;
-}
+static auto ddon_emit_0x01b5d520 __attribute__((used)) = &uBaseModel::setLODType;
 
-uBaseModel::SHADER_QUALITY uBaseModel::getShaderQuality() const {
-    return static_cast<SHADER_QUALITY>(mShaderQuality);
-}
+static auto ddon_emit_0x01b5d5d0 __attribute__((used)) = &uBaseModel::getShaderQuality;
 
-void uBaseModel::setShaderQuality(uBaseModel::SHADER_QUALITY q) {
-    mShaderQuality = q;
-}
+static auto ddon_emit_0x01b5d5e0 __attribute__((used)) = &uBaseModel::setShaderQuality;
 
-u32 uBaseModel::getMaterialNum() const {
-    return mMaterialNum;
-}
+static auto ddon_emit_0x01b5d730 __attribute__((used)) = &uBaseModel::getMaterialNum;
 
 nDraw::Material* uBaseModel::getMaterial(u32 index) {
     return mpMaterials[index];
@@ -285,108 +263,68 @@ __attribute__((weak)) void uBaseModel::setMaterial(nDraw::Material* pmaterial, u
     /* stub */
 }
 
-void uBaseModel::setDissolveEnable(bool enable) {
-    mDissolveEnable = enable;
-}
+static auto ddon_emit_0x01b5d260 __attribute__((used)) = &uBaseModel::setDissolveEnable;
 
-bool uBaseModel::getDissolveEnable() {
-    return mDissolveEnable;
-}
+static auto ddon_emit_0x01b5d650 __attribute__((used)) = &uBaseModel::getDissolveEnable;
 
-void uBaseModel::setFixPosition(bool v) {
-    mFixPosition = v;
-}
+static auto ddon_emit_0x01b5d670 __attribute__((used)) = &uBaseModel::setFixPosition;
 
-bool uBaseModel::isFixPosition() {
-    return mFixPosition;
-}
+static auto ddon_emit_0x01b5d660 __attribute__((used)) = &uBaseModel::isFixPosition;
 
-void uBaseModel::setShaderAttributes(bool enable) {
-    mShaderAttributes = enable;
-}
+static auto ddon_emit_0x01b5d6b0 __attribute__((used)) = &uBaseModel::setShaderAttributes;
 
-bool uBaseModel::isShaderAttributes() {
-    return mShaderAttributes;
-}
+static auto ddon_emit_0x01b5d6a0 __attribute__((used)) = &uBaseModel::isShaderAttributes;
 
-void uBaseModel::setFlatTransparency(bool v) {
-    mFlatTransparency = v;
-}
+static auto ddon_emit_0x01b5d620 __attribute__((used)) = &uBaseModel::setFlatTransparency;
 
-bool uBaseModel::isFlatTransparency() const {
-    return mFlatTransparency;
-}
+static auto ddon_emit_0x01b5d610 __attribute__((used)) = &uBaseModel::isFlatTransparency;
 
 __attribute__((weak)) void uBaseModel::clearCommandCache() {
     DDON_STUB("uBaseModel::clearCommandCache")
     /* stub */
 }
 
-uBaseModel::CACHE_MODE uBaseModel::getCacheMode() {
-    return static_cast<CACHE_MODE>(mCacheMode);
-}
+static auto ddon_emit_0x01b5d6e0 __attribute__((used)) = &uBaseModel::getCacheMode;
 
 __attribute__((weak)) void uBaseModel::setCacheMode(uBaseModel::CACHE_MODE v) {
     DDON_STUB("uBaseModel::setCacheMode")
     /* stub */
 }
 
-void uBaseModel::setLightAttr(u32 attr) {
-    mLightAttr = attr;
-}
+static auto ddon_emit_0x01b5d3d0 __attribute__((used)) = &uBaseModel::setLightAttr;
 
-u32 uBaseModel::getLightAttr() const {
-    return mLightAttr;
-}
+static auto ddon_emit_0x01b5d3c0 __attribute__((used)) = &uBaseModel::getLightAttr;
 
 void uBaseModel::setMaxLightNum(u32 n) {
     mMaxLightNum = n;
 }
 
-u32 uBaseModel::getMaxLightNum() const {
-    return mMaxLightNum;
-}
+static auto ddon_emit_0x01b5d3f0 __attribute__((used)) = &uBaseModel::getMaxLightNum;
 
 __attribute__((weak)) s32 uBaseModel::setupShadow(cDraw* pdraw) {
     DDON_STUB("uBaseModel::setupShadow")
     return {};
 }
 
-void uBaseModel::setMultiShadowReceive(bool enable) {
-    mMultiShadowReceive = enable;
-}
+static auto ddon_emit_0x01b5d440 __attribute__((used)) = &uBaseModel::setMultiShadowReceive;
 
-bool uBaseModel::isMultiShadowReceive() const {
-    return mMultiShadowReceive;
-}
+static auto ddon_emit_0x01b5d430 __attribute__((used)) = &uBaseModel::isMultiShadowReceive;
 
-void uBaseModel::setMaxNumGroup0MultiShadowReceive(u32 n) {
-    mMaxNumGroup0MultiShadowReceive = n;
-}
+static auto ddon_emit_0x01b5d470 __attribute__((used)) = &uBaseModel::setMaxNumGroup0MultiShadowReceive;
 
-u32 uBaseModel::getMaxNumGroup0MultiShadowReceive() const {
-    return mMaxNumGroup0MultiShadowReceive;
-}
+static auto ddon_emit_0x01b5d460 __attribute__((used)) = &uBaseModel::getMaxNumGroup0MultiShadowReceive;
 
-void uBaseModel::setMaxNumGroup1MultiShadowReceive(u32 n) {
-    mMaxNumGroup1MultiShadowReceive = n;
-}
+static auto ddon_emit_0x01b5d4a0 __attribute__((used)) = &uBaseModel::setMaxNumGroup1MultiShadowReceive;
 
-u32 uBaseModel::getMaxNumGroup1MultiShadowReceive() const {
-    return mMaxNumGroup1MultiShadowReceive;
-}
+static auto ddon_emit_0x01b5d490 __attribute__((used)) = &uBaseModel::getMaxNumGroup1MultiShadowReceive;
 
 u32 uBaseModel::getDebugFlags() const {
     return static_cast<signed char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 312)) >> 45);
 }
 
-void uBaseModel::setDebugFlags(u32 f) {
-    mDebugFlags = f;
-}
+static auto ddon_emit_0x01b5d700 __attribute__((used)) = &uBaseModel::setDebugFlags;
 
-u32 uBaseModel::getViewDraw() const {
-    return mViewDraw;
-}
+static auto ddon_emit_0x01b5d2b0 __attribute__((used)) = &uBaseModel::getViewDraw;
 
 __attribute__((weak)) void uBaseModel::setCommonState(cDraw* pdraw) {
     DDON_STUB("uBaseModel::setCommonState")

@@ -159,6 +159,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* SCE_AH_LIST::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sScenario::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sScenario* sScenario::getInstance() {
     return ::sScenario::mpInstance;
 }

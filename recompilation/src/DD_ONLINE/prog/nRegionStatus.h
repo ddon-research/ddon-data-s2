@@ -84,6 +84,35 @@ namespace nRegionStatus {
 }  // namespace nRegionStatus
 
 namespace nRegionStatus {
+    enum REGION_C_CHANGE_TYPE
+    {
+        REGION_C_CHANGE_TYPE_SETUP = 0,
+        REGION_C_CHANGE_TYPE_SCRIPT = 1,
+        REGION_C_CHANGE_TYPE_PROG = 2,
+        REGION_C_CHANGE_TYPE_RECEIVE = 3,
+    };
+}  // namespace nRegionStatus
+
+namespace nRegionStatus {
+    enum REGION_C_STATUS_TYPE
+    {
+        REGION_C_STATUS_NONE = 0,
+        REGION_C_STATUS_SETUP = 1,
+        REGION_C_STATUS_SCRIPT = 2,
+        REGION_C_STATUS_PROG_INIT = 3,
+        REGION_C_STATUS_NORMAL = 3,
+        REGION_C_STATUS_RAGE = 4,
+        REGION_C_STATUS_SHAKED = 5,
+        REGION_C_STATUS_CHANCE_DOWN = 6,
+        REGION_C_STATUS_EM_ORIGINAL_01 = 7,
+        REGION_C_STATUS_EM_ORIGINAL_02 = 8,
+        REGION_C_STATUS_END = 9,
+        REGION_C_STATUS_TYPE_NUM = 9,
+        REGION_C_STATUS_INVALID = 10,
+    };
+}  // namespace nRegionStatus
+
+namespace nRegionStatus {
     enum REGION_REGENERATE_PRIORITY
     {
         REGION_REGENERATE_PRIORITY_HIGH_HIGH = 100,

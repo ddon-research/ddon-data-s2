@@ -139,3 +139,11 @@ public:
     static MyDTI DTI;
     static const u8 DATA_VERSION = 20;
 };
+
+inline void* kTHINKDATA::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rkThinkData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

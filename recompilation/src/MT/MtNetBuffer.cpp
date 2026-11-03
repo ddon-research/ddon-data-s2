@@ -2,10 +2,13 @@
 #include <new>
 #include <string.h>
 #include "MtNetBuffer.h"
+#include "MtCharset.h"
 #include "MtDTI.h"
+#include "MtMemoryAllocator.h"
 #include "MtNetDevice.h"
 #include "MtNetObject.h"
 #include "MtObject.h"
+#include "MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -87,9 +90,31 @@ s32 MtNetBuffer::deserialize(const u8* data_buf, u32 data_size) {
     }
 }
 
-__attribute__((weak)) s32 MtNetBuffer::duplicate(const MtNetBuffer* obj) {
-    DDON_STUB("MtNetBuffer::duplicate")
-    return {};
+s32 MtNetBuffer::duplicate(const MtNetBuffer* obj) {
+    if (mpBuffer != nullptr) {
+        if (obj != nullptr) {
+            if (obj->mpBuffer != nullptr) {
+                if (mBufferSize >= obj->mDataLength) {
+                    if (obj->mDataLength != 0) {
+                        memcpy(static_cast<void*>(mpBuffer), static_cast<const void*>(obj->mpBuffer), obj->mDataLength);
+                        const u32 t0 = obj->mDataLength;
+                        mDataLength = t0;
+                        return static_cast<s32>(t0);
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return -1;
+                }
+            } else {
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    } else {
+        return -1;
+    }
 }
 
 __attribute__((weak)) bool MtNetBuffer::equals(const MtNetBuffer* obj) const {

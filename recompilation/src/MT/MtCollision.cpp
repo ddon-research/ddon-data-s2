@@ -2,6 +2,7 @@
 #include <new>
 #include "MtCollision.h"
 #include "MtCollisionDefine.h"
+#include "MtCollisionGjk.h"
 #include "MtCollisionMath.h"
 #include "MtMath.h"
 #include "MtPrimitive3D.h"

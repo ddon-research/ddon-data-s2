@@ -108,6 +108,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpRotateCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpRotateCtrl::setDefaultInterFrame(f32 InterFrame) {
     this->mDefaultInterFrame = InterFrame;
 }

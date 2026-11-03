@@ -7,14 +7,32 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cContextInterface.h"
+#include "cDelegate.h"
+#include "cEvaluation.h"
+#include "cParentRegionStatus.h"
+#include "../../XFramework/cResource.h"
 #include "cThinkMgr.h"
 #include "../../XFramework/cUnit.h"
+#include "cpAISensor.h"
 #include "cpActionManager.h"
+#include "cpActionSelect.h"
 #include "cpComponent.h"
+#include "cpHpDamageCtrl.h"
+#include "cpOcdCtrl.h"
+#include "cpStateManager.h"
 #include "cpThinkBase.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "nDDOUtility.h"
 #include "rTbl2.h"
+#include "res_ptr.h"
+#include "sPlayerManager.h"
+#include "sUnitManager.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uCharacter.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -66,8 +84,11 @@ cpEnemyThink::cpEnemyThink() {
 }
 
 cpEnemyThink::~cpEnemyThink() {
-    DDON_STUB("cpEnemyThink::~cpEnemyThink")
-    /* stub */
+    if (mpRageTable == nullptr) {
+        return;
+    }
+    mpRageTable->release();
+    mpRageTable = nullptr;
 }
 
 __attribute__((weak)) void cpEnemyThink::setup() {

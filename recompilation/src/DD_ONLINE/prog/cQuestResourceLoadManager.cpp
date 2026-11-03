@@ -8,6 +8,7 @@
 #include "../../MT/MtObject.h"
 #include "cQuestFunctionManagerBAse.h"
 #include "nQuest.h"
+#include "sQuestManagerExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -29,8 +30,10 @@ inline void cQuestResourceLoadManager::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) void cQuestResourceLoadManager::addQuestId(cQuestResourceLoadManager::cLoadTask* pTask, nQuest::QUEST_ID questId) {
-    DDON_STUB("cQuestResourceLoadManager::addQuestId")
-    /* stub */
+        if (pTask == nullptr) {
+            return;
+        }
+        pTask->addQuestId(questId);
 }
 
 void cQuestResourceLoadManager::setClass(cQuestResourceLoadManager::cLoadTask* pTask, MtObject* pClass) {

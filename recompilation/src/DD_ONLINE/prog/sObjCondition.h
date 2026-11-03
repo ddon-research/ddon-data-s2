@@ -120,6 +120,10 @@ public:
     static sObjCondition* mpInstance;
 };
 
+inline void* sObjCondition::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sObjCondition* sObjCondition::getInstance() {
     return ::sObjCondition::mpInstance;
 }

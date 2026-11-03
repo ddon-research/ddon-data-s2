@@ -4,6 +4,7 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtPropertyList.h"
 #include "cResource.h"
 #include "uConstraint.h"
 #ifndef DDON_STUB

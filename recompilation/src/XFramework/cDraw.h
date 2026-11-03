@@ -49,8 +49,10 @@ namespace nDraw { struct TECHNIQUE; }
 namespace nDraw { class Texture; }
 namespace nDraw { class VertexBuffer; }
 class sGpuParticle;
+class uBloomFilter;
 class uColorCorrectFilter;
 class uEffect2D;
+class uRadialBlurFilter;
 
 // Declarations
 class cDraw;
@@ -74,8 +76,10 @@ class cDraw : public MtObject
 {
     friend class cInstancingCulling;
     friend class sGpuParticle;
+    friend class uBloomFilter;
     friend class uColorCorrectFilter;
     friend class uEffect2D;
+    friend class uRadialBlurFilter;
 public:
     enum ENTRY_STATE
     {
@@ -638,6 +642,10 @@ protected:
     static const u32 MIN_SORT_NUM = 1024;
     static const u32 MAX_STATE_CUE = 8192;
 };
+
+inline void* cDraw::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline nDraw::Scene* cDraw::getScene() const {
     return this->mContext.pscene;

@@ -108,3 +108,7 @@ private:
     static const u32 MAX_THREAD_NAME = 64;
     static const s32 DEFAULT_THREAD_PRIO = 700;
 };
+
+inline void* MtThread::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

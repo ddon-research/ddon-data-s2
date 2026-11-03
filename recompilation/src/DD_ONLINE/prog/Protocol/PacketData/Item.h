@@ -22,6 +22,8 @@ class CDataCharacterItemSlotInfo;
 class CDataEquipElementParam;
 class CDataEquipItemInfo;
 class CDataEquipJobItem;
+class CDataEquipPreset;
+class CDataFurnitureLayoutData;
 class CDataGameItemStorage;
 class CDataGameItemStorageInfo;
 class CDataItemEquipElement;
@@ -30,7 +32,9 @@ class CDataItemUIDList;
 class CDataItemUpdateResult;
 class CDataJewelryEquipLimit;
 class CDataMoveItemUIDFromTo;
+class CDataPresetEquipInfo;
 class CDataS2CCharacterEquipInfo;
+class CDataS2CPawnEquipInfo;
 class CDataStorageItemUIDList;
 
 namespace nItem {
@@ -294,6 +298,39 @@ public:
 public:
     u32 m_unJobItemID;  // offset: 0x8
     u8 m_ucEquipSlotNo;  // offset: 0xc
+    static MyDTI DTI;
+};
+
+class CDataFurnitureLayoutData : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataFurnitureLayoutData();
+    explicit CDataFurnitureLayoutData(u32, u8);
+public:
+    u32 m_unItemID;  // offset: 0x8
+    u8 m_ucLayoutID;  // offset: 0xc
     static MyDTI DTI;
 };
 
@@ -574,6 +611,43 @@ public:
     static MyDTI DTI;
 };
 
+class CDataPresetEquipInfo : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataPresetEquipInfo();
+    explicit CDataPresetEquipInfo(const char*, u32, u8, u8, const MtTypedArray<CDataEquipElementParam>&, u8);
+public:
+    MtString m_wstrItemUID;  // offset: 0x8
+    u32 m_unItemID;  // offset: 0x10
+    u8 m_ucEquipSlotNo;  // offset: 0x14
+    u8 m_ucColor;  // offset: 0x15
+    MtTypedArray<CDataEquipElementParam> m_EquipElementParamList;  // offset: 0x18
+    u8 m_ucPlusValue;  // offset: 0x38
+    static MyDTI DTI;
+};
+
 class CDataS2CCharacterEquipInfo : public CPacketDataBase
 {
 public:
@@ -605,6 +679,40 @@ public:
     MtString m_wstrEquipItemUID;  // offset: 0x8
     u8 m_ucEquipCategory;  // offset: 0x10
     u8 m_ucEquipType;  // offset: 0x11
+    static MyDTI DTI;
+};
+
+class CDataS2CPawnEquipInfo : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataS2CPawnEquipInfo();
+    explicit CDataS2CPawnEquipInfo(u32, const MtTypedArray<CDataS2CCharacterEquipInfo>&, const MtTypedArray<CDataEquipJobItem>&);
+public:
+    u32 m_unPawnID;  // offset: 0x8
+    MtTypedArray<CDataS2CCharacterEquipInfo> m_CharacterEquipList;  // offset: 0x10
+    MtTypedArray<CDataEquipJobItem> m_EquipJobItemList;  // offset: 0x30
     static MyDTI DTI;
 };
 
@@ -643,13 +751,61 @@ public:
     static MyDTI DTI;
 };
 
+class CDataEquipPreset : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataEquipPreset();
+    explicit CDataEquipPreset(u32, const char*, u8, const MtTypedArray<CDataPresetEquipInfo>&, const MtTypedArray<CDataEquipJobItem>&);
+public:
+    u32 m_unPresetNo;  // offset: 0x8
+    MtString m_wstrPresetName;  // offset: 0x10
+    u8 m_ucJob;  // offset: 0x18
+    MtTypedArray<CDataPresetEquipInfo> m_PresetEquipInfoList;  // offset: 0x20
+    MtTypedArray<CDataEquipJobItem> m_PresetJobItemList;  // offset: 0x40
+    static MyDTI DTI;
+};
+
+inline void* CDataC2SChangeCharacterEquipInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataC2SChangeCharacterEquipInfo::CDataC2SChangeCharacterEquipInfo() {
     this->m_ucEquipCategory = 0;
     this->m_ucEquipType = 0;
 }
 
+inline void* CDataChangeEquipJobItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataChangeEquipJobItem::CDataChangeEquipJobItem() {
     this->m_ucEquipSlotNo = 0;
+}
+
+inline void* CDataCharacterItemSlotInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataCharacterItemSlotInfo::CDataCharacterItemSlotInfo() {
@@ -657,9 +813,17 @@ inline CDataCharacterItemSlotInfo::CDataCharacterItemSlotInfo() {
     this->m_usSlotMax = 0;
 }
 
+inline void* CDataEquipElementParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataEquipElementParam::CDataEquipElementParam() {
     this->m_ucSlotNo = 0;
     this->m_unItemID = 0;
+}
+
+inline void* CDataEquipItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataEquipItemInfo::CDataEquipItemInfo() {
@@ -670,13 +834,43 @@ inline CDataEquipItemInfo::CDataEquipItemInfo() {
     this->m_ucPlusValue = 0;
 }
 
+inline void* CDataEquipJobItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataEquipJobItem::CDataEquipJobItem() {
     this->m_unJobItemID = 0;
     this->m_ucEquipSlotNo = 0;
 }
 
+inline void* CDataEquipPreset::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataEquipPreset::CDataEquipPreset() {
+    this->m_unPresetNo = 0;
+    this->m_ucJob = 0;
+}
+
+inline void* CDataFurnitureLayoutData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataFurnitureLayoutData::CDataFurnitureLayoutData() {
+    this->m_unItemID = 0;
+    this->m_ucLayoutID = 0;
+}
+
+inline void* CDataGameItemStorage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataGameItemStorage::CDataGameItemStorage() {
     this->m_ucStorageType = 0;
+}
+
+inline void* CDataGameItemStorageInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataGameItemStorageInfo::CDataGameItemStorageInfo() {
@@ -684,16 +878,40 @@ inline CDataGameItemStorageInfo::CDataGameItemStorageInfo() {
     this->m_usMaxSlotNum = 0;
 }
 
+inline void* CDataItemEquipElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataItemEquipElement::CDataItemEquipElement() {
+}
+
+inline void* CDataItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataItemUIDList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataItemUIDList::CDataItemUIDList() {
     this->m_unNum = 0;
 }
 
+inline void* CDataItemUpdateResult::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataJewelryEquipLimit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataJewelryEquipLimit::CDataJewelryEquipLimit() {
     this->m_ucJewelryType = 0;
     this->m_ucEquipNumMax = 0;
+}
+
+inline void* CDataMoveItemUIDFromTo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataMoveItemUIDFromTo::CDataMoveItemUIDFromTo() {
@@ -703,9 +921,29 @@ inline CDataMoveItemUIDFromTo::CDataMoveItemUIDFromTo() {
     this->m_usSlotNo = 0;
 }
 
+inline void* CDataPresetEquipInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataS2CCharacterEquipInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataS2CCharacterEquipInfo::CDataS2CCharacterEquipInfo() {
     this->m_ucEquipCategory = 0;
     this->m_ucEquipType = 0;
+}
+
+inline void* CDataS2CPawnEquipInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataS2CPawnEquipInfo::CDataS2CPawnEquipInfo() {
+    this->m_unPawnID = 0;
+}
+
+inline void* CDataStorageItemUIDList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataStorageItemUIDList::CDataStorageItemUIDList() {

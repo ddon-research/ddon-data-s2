@@ -7,6 +7,7 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB

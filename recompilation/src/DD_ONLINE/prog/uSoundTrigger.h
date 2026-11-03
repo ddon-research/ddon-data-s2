@@ -18,7 +18,6 @@ class MtPropertyList;
 class MtUI;
 class MtVector3;
 class cSoundZoneListener;
-namespace nSoundTrigger { class cStopSeqSeContents; }
 namespace nZone { class ShapeInfoPanel; }
 namespace nZone { class cLayoutElement; }
 class rSoundCurveSet;
@@ -41,6 +40,7 @@ namespace nSoundTrigger { class cBaseContents; }
 namespace nSoundTrigger { class cCategory; }
 namespace nSoundTrigger { class cPlaySeqSeContents; }
 namespace nSoundTrigger { class cSeContents; }
+namespace nSoundTrigger { class cStopSeqSeContents; }
 namespace nSoundTrigger { class cStreamContents; }
 class uSoundTrigger;
 
@@ -66,6 +66,7 @@ namespace nSoundTrigger {
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
+using s16 = short;
 using s32 = int;
 using size_t = _Sizet;
 using u16 = unsigned short;
@@ -289,6 +290,50 @@ namespace nSoundTrigger {
 }  // namespace nSoundTrigger
 
 namespace nSoundTrigger {
+    class cStopSeqSeContents : public nSoundTrigger::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cStopSeqSeContents();
+        virtual ~cStopSeqSeContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        void copyAToB();
+        void copyBToA();
+        s16 getStopGroupId(nSoundTrigger::ARRAY_TYPE type, u32 TargetIndex) const;
+        void setStopGroupId(nSoundTrigger::ARRAY_TYPE, s16, u32);
+    private:
+        s16 mStopGroupId[2][4];  // offset: 0x1a
+    public:
+        static MyDTI DTI;
+        static const u32 STOP_SEQUENCESE_NUM = 4;
+        static const s16 STOP_SEQUENCESE_ID_NONE = -1;
+        static const s16 STOP_SEQUENCESE_ID_ALL = -2;
+    };
+}  // namespace nSoundTrigger
+
+namespace nSoundTrigger {
     class cStreamContents : public nSoundTrigger::cCategory
     {
     public:
@@ -481,7 +526,47 @@ namespace nSoundTrigger {
     };
 }  // namespace nSoundTrigger
 
+inline void* cSoundTriggerLayoutInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cSoundTriggerListener::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSoundTriggerListener::cSoundTriggerListener() {
+}
+
+inline void* nSoundTrigger::cBaseContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSoundTrigger::cCategory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSoundTrigger::cPlaySeqSeContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSoundTrigger::cSeContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSoundTrigger::cStopSeqSeContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSoundTrigger::cStreamContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uSoundTrigger::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uSoundTrigger::cTriggerGroupManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uSoundTrigger::cTriggerGroupManager::cTriggerGroupManager() {

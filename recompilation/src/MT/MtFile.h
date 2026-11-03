@@ -343,3 +343,11 @@ public:
 private:
     static AsyncThreadPool mAsyncThreadPool;
 };
+
+inline void* MtFile::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtFile::FileInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

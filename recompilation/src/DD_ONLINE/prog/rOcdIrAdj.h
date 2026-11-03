@@ -179,12 +179,48 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cOcdIrAdj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cOcdIrAdj::cOcdIrAdj() {
     this->mLv = 1;
     this->mOcdRank = 1.0f;
 }
 
+inline void* cOcdIrAdjPL::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cOcdIrAdjPL::cOcdIrAdjPL() {
     this->mItemLank = 1;
     this->mOcdRank = 1.0f;
+}
+
+inline void* rOcdIrAdj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rOcdIrAdjPL::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cOcdIrAdj::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdIrAdj::DTI)->memFree(p_addr);
+}
+
+inline void* cOcdIrAdj::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdIrAdj::DTI)->memAlloc(sz, align, ::cOcdIrAdj::DTI.::MtDTI::getID());
+}
+
+inline void cOcdIrAdjPL::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdIrAdjPL::DTI)->memFree(p_addr);
+}
+
+inline void* cOcdIrAdjPL::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdIrAdjPL::DTI)->memAlloc(sz, align, ::cOcdIrAdjPL::DTI.::MtDTI::getID());
 }

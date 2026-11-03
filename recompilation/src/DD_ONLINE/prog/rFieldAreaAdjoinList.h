@@ -152,9 +152,21 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rFieldAreaAdjoinList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rFieldAreaAdjoinList::cAdjoinInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rFieldAreaAdjoinList::cAdjoinInfo::cAdjoinInfo() {
     this->mDestinationStageNo = -1;
     this->mNextStageNo = -1;
     this->mPriority = 0;
     this->mPositions.::MtArray::mAutoDelete = true;
+}
+
+inline void* rFieldAreaAdjoinList::cAdjoinInfo::cVector3::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

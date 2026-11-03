@@ -4,6 +4,8 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtPrimitive3D.h"
 #include "cUnit.h"
+#include "sCamera.h"
+#include "sUnit.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

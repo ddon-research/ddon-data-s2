@@ -120,3 +120,7 @@ public:
 private:
     static const s32 disp_frame = 90;
 };
+
+inline void* uGUIAnnounce::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

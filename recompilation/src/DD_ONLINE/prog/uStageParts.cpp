@@ -4,22 +4,57 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtFilePath.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "cContextInterface.h"
 #include "cPartsGroupList.h"
+#include "cResPath.h"
+#include "../../XFramework/cResource.h"
 #include "cSplitBase.h"
+#include "cStageCtrl.h"
 #include "cStageEpvCtrl.h"
 #include "../../XFramework/cUnit.h"
 #include "cZoneIndoorHandle.h"
+#include "../../XFramework/cZoneLayout.h"
 #include "../../generated/shared/nZoneUnitCtrl.h"
+#include "rArchiveListArray.h"
+#include "../../XFramework/rCollision.h"
+#include "rEffectProvider.h"
+#include "../../XFramework/rNavigationMesh.h"
+#include "rOccluderExt.h"
+#include "../../XFramework/rScheduler.h"
+#include "rSoundAreaInfo.h"
 #include "rStageCustom.h"
 #include "rStageCustomParts.h"
 #include "rStageCustomPartsEx.h"
+#include "../../XFramework/rZone.h"
+#include "res_ptr.h"
+#include "../../XFramework/sAI.h"
+#include "sAIExt.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
 #include "../../XFramework/sCollision.h"
+#include "sContextManager.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "sGame.h"
+#include "../../XFramework/sOccluder.h"
+#include "sOccluderExt.h"
+#include "sPlayerManager.h"
+#include "sSetManager.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
 #include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sWeatherManager.h"
+#include "sZoneUnitCtrl.h"
 #include "../../XFramework/uCoord.h"
+#include "uPlayer.h"
 #include "../../XFramework/uScheduler.h"
 #include "../../XFramework/uScrollCollisionGeometry.h"
 #include "uSoundGenerator.h"
@@ -295,9 +330,28 @@ uSoundOcclusion* uStagePartsCtrl::getSoundOcclusion() const {
     return nullptr;
 }
 
-__attribute__((weak)) s32 uStagePartsCtrl::getPartsIndexNo(cAISvNavPathFinding* pNavPath) {
-    DDON_STUB("uStagePartsCtrl::getPartsIndexNo")
-    return {};
+s32 uStagePartsCtrl::getPartsIndexNo(cAISvNavPathFinding* pNavPath) {
+    s32 num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 136);
+    s32 i = 0;
+    if (num > 0) {
+        do {
+            MtObject* * t0 = mPartsDataAry.getBuffer();
+            MtObject* t1 = t0[i];
+            if (t1 != nullptr) {
+                unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 544);
+                if (t2 != 0) {
+                    sAI* t3 = sAI::getInstance();
+                    s32 t4 = static_cast<uStagePartsMdl*>(t1)->getNaviMeshHandle();
+                    cAISvNavPathFinding* p_mdl_nav_path = static_cast<sAIExt*>(t3)->getNavigationMeshService(static_cast<void*>(t1), t4);
+                    if (pNavPath == p_mdl_nav_path) {
+                        return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t1) + 512));
+                    }
+                }
+            }
+            i += 1;
+        } while (i < num);
+    }
+    return -1;
 }
 
 void uStagePartsCtrl::stopMoveUnitLight(bool sleep) {
@@ -499,6 +553,16 @@ void uStagePartsMdl::setCollisionType() {
         mpSbcGeometry = nullptr;
     }
     mIsSetResource = true;
+}
+
+inline void uStagePartsMdl::releaseNavigationMesh() {
+    static_cast<sAIExt*>(sAI::mpInstance)->resetNavigationMesh(static_cast<void*>(this), mNavMeshSetHandle);
+    mNavMeshSetHandle = -1;
+    if (mpNaviMesh == nullptr) {
+        return;
+    }
+    mpNaviMesh->release();
+    mpNaviMesh = nullptr;
 }
 
 uStagePartsMdl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

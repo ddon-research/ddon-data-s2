@@ -108,5 +108,9 @@ public:
     RpcTypeSet(s32);
 };
 
+inline void* cRemoteCall::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cRemoteCall::MyType::MyType() {
 }

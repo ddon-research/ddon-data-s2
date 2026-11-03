@@ -2,13 +2,78 @@
 #include <new>
 #include "cParticle.h"
 #include "../MT/MtColor.h"
+#include "../MT/MtEaseCurve.h"
 #include "../MT/MtMath.h"
 #include "cUnit.h"
 #include "nEffect.h"
 #include "nPrim.h"
+#include "rEffectList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+u32 cClothVertex::getParamBuffSize(u32 ClothType, u32 VertexNum) {
+    if (ClothType != 2) {
+        if (ClothType != 1) {
+            if (ClothType == 0) {
+                return VertexNum * 32u;
+            }
+        }
+        return VertexNum * 16u;
+    } else {
+        return VertexNum * 32u;
+    }
+}
+
+__attribute__((weak)) void cClothVertex::init(u8* pParamBuff, u32 ClothType, u32 VertexNum) {
+    DDON_STUB("cClothVertex::init")
+    /* stub */
+}
+
+__attribute__((weak)) void cClothVertex::initClothChainVertex(cClothChain* pClothChain, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate) {
+    DDON_STUB("cClothVertex::initClothChainVertex")
+    /* stub */
+}
+
+__attribute__((weak)) void cClothVertex::initClothChainVertexForce(cClothChain* pClothChain, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate, const MtVector3& ForceVec) {
+    DDON_STUB("cClothVertex::initClothChainVertexForce")
+    /* stub */
+}
+
+__attribute__((weak)) void cClothVertex::updateClothStraightVertex(cClothStraight* pClothStraight, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate) {
+    DDON_STUB("cClothVertex::updateClothStraightVertex")
+    /* stub */
+}
+
+__attribute__((weak)) void cClothVertex::updateClothChainVertex(cClothChain* pClothChain, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate, f32 Dt) {
+    DDON_STUB("cClothVertex::updateClothChainVertex")
+    /* stub */
+}
+
+__attribute__((weak)) void cClothVertex::updateClothChainVertexForce(cClothChain* pClothChain, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate, f32 Dt, const MtVector3& ForceVec) {
+    DDON_STUB("cClothVertex::updateClothChainVertexForce")
+    /* stub */
+}
+
+__attribute__((weak)) void cClothVertex::updateClothCurveVertex(rEffectList::EFL_PARAM_CLOTH_CURVE* pClothCurveParam, cClothCurve* pClothCurve, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate) {
+    DDON_STUB("cClothVertex::updateClothCurveVertex")
+    /* stub */
+}
+
+__attribute__((weak)) void cClothVertex::updateClothZigzagVertex(rEffectList::EFL_PARAM_CLOTH_ZIGZAG* pClothZigzagParam, cClothZigzag* pClothZigzag, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate) {
+    DDON_STUB("cClothVertex::updateClothZigzagVertex")
+    /* stub */
+}
+
+__attribute__((weak)) void cClothVertex::applyWorldOffset(const MtVector3& Offset) {
+    DDON_STUB("cClothVertex::applyWorldOffset")
+    /* stub */
+}
+
+__attribute__((weak)) void cClothVertex::initClothChainVertexCommon(cClothChain* pClothChain, const MtVector3& Pos0, const MtVector3& Pos1, f32 Scale, u32 DataIndex, f32 InpRate) {
+    DDON_STUB("cClothVertex::initClothChainVertexCommon")
+    /* stub */
+}
 
 bool cParticle::updateSynchroEnable() {
     if (mpSynchroUnit != nullptr) {

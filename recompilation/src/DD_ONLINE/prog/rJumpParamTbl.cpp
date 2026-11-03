@@ -6,6 +6,8 @@
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -31,8 +33,6 @@ cJumpParam::cJumpParam() {
 }
 
 cJumpParam::~cJumpParam() {
-    DDON_STUB("cJumpParam::~cJumpParam")
-    /* stub */
 }
 
 __attribute__((weak)) void cJumpParam::createProperty(MtPropertyList& s) {
@@ -84,7 +84,7 @@ bool rJumpParamTbl::loadData(MtDataReader& in, cJumpParam* pData) {
             if (in.refill()) {
                 u32 t18 = in.mSeekPt;
                 u8* t19 = in.mBuffer;
-                u8 t20 = t19[t15];
+                u8 t20 = t19[in.mSeekPt];
                 in.mSeekPt = t18 + 1u;
                 pData->mIsAwakening = t20 != 0;
                 unsigned long t21 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 0);
@@ -102,7 +102,7 @@ bool rJumpParamTbl::loadData(MtDataReader& in, cJumpParam* pData) {
             }
         } else {
             u8* t19 = in.mBuffer;
-            u8 t20 = t19[t15];
+            u8 t20 = t19[in.mSeekPt];
             in.mSeekPt = t15 + 1u;
             pData->mIsAwakening = t20 != 0;
             unsigned long t21 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 0);

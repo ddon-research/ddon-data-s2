@@ -5,10 +5,16 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cAIFSM.h"
 #include "../../XFramework/cAIObject.h"
+#include "../../XFramework/cAISvUserProcess.h"
+#include "../../XFramework/cAIUserProcess.h"
 #include "../../XFramework/cResource.h"
+#include "nFsm.h"
 #include "../../XFramework/rAIFSM.h"
+#include "../../XFramework/sAI.h"
 #include "sArchiveManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -34,7 +40,7 @@ bool cFSMCore::setupFSM(MT_CTSTR resourcePath) {
         if (pFSMRes != nullptr) {
             mFSM.setResource(pFSMRes, 0u);
             mFSM.cAIFSM::reset();
-            pFSMRes->cResource::release();
+            pFSMRes->release();
             mIsEnable = true;
             mChangeCountState = -1.0f;
             return true;

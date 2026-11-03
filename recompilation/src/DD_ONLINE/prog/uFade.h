@@ -87,6 +87,10 @@ private:
     static const MT_CTSTR mFadeSchedulerTbl[4];
 };
 
+inline void* uFade::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool uFade::isEnd() {
     return this->mIsEnd;
 }

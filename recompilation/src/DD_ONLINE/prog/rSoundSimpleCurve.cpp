@@ -6,6 +6,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "../../XFramework/cResource.h"
 #ifndef DDON_STUB
@@ -20,7 +22,7 @@ inline void rSoundSimpleCurve::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundSimpleCurve::DTI)->memFree(p_addr);
 }
 
-rSoundSimpleCurve::~rSoundSimpleCurve() {
+__attribute__((noinline)) rSoundSimpleCurve::~rSoundSimpleCurve() {
     if (mElementArray.mLength != 0) {
         u32 v0_0 = mElementArray.mLength;
         for (unsigned int i0_3 = 0;;) {
@@ -72,7 +74,7 @@ MtUI* rSoundSimpleCurve::createUI(MtProperty& prop) {
 
 bool rSoundSimpleCurve::load(MtStream& in) {
     MtSerializer sz(65536);
-    if (sz.MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
+    if (sz.deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
         updateData();
         return true;
     } else {
@@ -82,7 +84,7 @@ bool rSoundSimpleCurve::load(MtStream& in) {
 
 bool rSoundSimpleCurve::save(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rSoundSimpleCurve::DTI));
+    return sz.serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rSoundSimpleCurve::DTI));
 }
 
 __attribute__((weak)) f32 rSoundSimpleCurve::getValue(f32 xPos, bool reverse, u32 curveStyle) {

@@ -1250,6 +1250,10 @@ public:
     static const u32 CREATE_PROCESS_ITEM_CATEGORY_NUM = 10;
 };
 
+inline void* sCraftManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sCraftManager* sCraftManager::getInstance() {
     return ::sCraftManager::mpInstance;
 }
@@ -1278,21 +1282,45 @@ inline u32 sCraftManager::getPlusItemListNum() {
     return this->mAddItemList.::MtArray::mLength;
 }
 
+inline void* sCraftManager::cCraftFinishNotice::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sCraftManager::cCraftFinishNotice::cCraftFinishNotice() {
     this->mPawnId = 0;
+}
+
+inline void* sCraftManager::cAddExp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sCraftManager::cAddExp::cAddExp() {
     this->mRno = 0;
 }
 
+inline void* sCraftManager::RecordRecipe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sCraftManager::RecordRecipe::RecordRecipe() {
     this->mRecipeNo = 0;
+}
+
+inline void* sCraftManager::CreateItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCraftManager::cCraftPawnCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void sCraftManager::cCraftPawnCtrl::initCraftProgressList() {
     this->mCraftTaskRno = 0;
     this->mIsCraftProgressComplete = false;
+}
+
+inline void* sCraftManager::cCraftRankUp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sCraftManager::cCraftRankUp::cCraftRankUp() {
@@ -1305,6 +1333,14 @@ inline sCraftManager::cCraftRankUp::cCraftRankUp() {
     this->mCraftReqResult = static_cast<sCraftManager::cCraftRankUp::RESULT>(0);
     this->mCraftRank = 0;
     this->mAddCraftPoint = 0;
+}
+
+inline void* sCraftManager::cCraftUpGrade::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCraftManager::cCraftUpGradeItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sCraftManager::cCraftUpGradeItemList::cCraftUpGradeItemList() {
@@ -1322,17 +1358,33 @@ inline u32 sCraftManager::cCraftUpGradeItemList::getItemNum() const {
     return this->mItemNum;
 }
 
+inline void* sCraftManager::cCraftIrReductionData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sCraftManager::cCraftIrReductionData::cCraftIrReductionData() {
     this->mRate = 100;
+}
+
+inline void* sCraftManager::cCraftRecipeControl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sCraftManager::cCraftRecipeControl::RECIPE_STATE sCraftManager::cCraftRecipeControl::getLoadStatus() {
     return this->mState;
 }
 
+inline void* sCraftManager::stRecipeRequest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sCraftManager::stRecipeRequest::stRecipeRequest() {
     this->mType = static_cast<sCraftManager::RECIPE_TYPE>(4);
     this->mCategory = static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(0);
+}
+
+inline void* sCraftManager::PawnCost::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sCraftManager::PawnCost::PawnCost() {

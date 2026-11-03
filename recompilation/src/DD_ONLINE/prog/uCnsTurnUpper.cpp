@@ -5,6 +5,10 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../XFramework/cUnit.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "../../XFramework/uConstraint.h"
 #include "../../XFramework/uCoord.h"
 #include "../../XFramework/uModel.h"
@@ -26,8 +30,7 @@ uCnsTurnUpper::uCnsTurnUpper() {
 }
 
 uCnsTurnUpper::~uCnsTurnUpper() {
-    DDON_STUB("uCnsTurnUpper::~uCnsTurnUpper")
-    /* stub */
+    removeConstraint();
 }
 
 cResource* uCnsTurnUpper::getResource() {

@@ -161,6 +161,14 @@ protected:
     static sTutorialGuide* mpInstance;
 };
 
+inline void* sTutorialGuide::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sTutorialGuide* sTutorialGuide::getInstance() {
     return ::sTutorialGuide::mpInstance;
+}
+
+inline void* sTutorialGuide::cOpenGuideNo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

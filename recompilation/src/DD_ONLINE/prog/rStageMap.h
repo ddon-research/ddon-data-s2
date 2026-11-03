@@ -156,3 +156,23 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cStageMap::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cStageMap::cParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageMap::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cStageMap::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStageMap::DTI)->memAlloc(sz, align, ::cStageMap::DTI.::MtDTI::getID());
+}

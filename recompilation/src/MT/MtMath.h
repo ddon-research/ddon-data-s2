@@ -25,6 +25,7 @@ class cAreaHit;
 class cBVHCollision;
 class cCharacterEditMuscle;
 class cChildRegionStatus;
+class cChildRegionStatusParam;
 class cContextInterface;
 class cDamageMsg;
 class cDamageSeInfo;
@@ -39,6 +40,7 @@ class cGroupParam;
 class cHitInfoAfter;
 class cJumpParamCtrl;
 class cMenuEntryBoardItemList;
+class cPRTManager;
 class cPlActWpnBow;
 class cQuakeParam;
 class cSetInfoOmBadStatus;
@@ -49,6 +51,7 @@ class cStageMap;
 class cStartPos;
 namespace cThinkMgrName { class cThinkMgrTargetData; }
 class cWeaponOffset;
+class cWeatherFogInfo;
 class cZoneListenerLight;
 class cpCatchCtrl;
 class cpCheckWallCliff;
@@ -58,9 +61,10 @@ class cpJob09;
 class cpObjCollisionBase;
 class cpShakeCtrl;
 class cpSlave;
+class cpWallMaria;
 namespace nMarker { class cMarkerInfo; }
-namespace nShlBase { class cShlStickContextInfo; }
 namespace nShlStick { class cStickObjectCtrl; }
+namespace nZone { class ShapeInfoArea; }
 namespace nZone { class ShapeInfoGlobal; }
 namespace nZone { class ShapeInfoPanel; }
 class rDungeonMarker;
@@ -80,15 +84,19 @@ class sGUIExt;
 class sGame;
 class sOmManager;
 class sSoundManager;
+class uAnimal;
 class uBaseEffect;
+class uBloomFilter;
 class uCharacter;
+class uCnsIK;
 class uCorePointSearch;
 class uCustomSimSoftBody;
-class uDDOModel;
+class uEfCam;
 class uEffect;
 class uGUIAim;
 class uHuman;
 class uLight;
+class uOmModel;
 class uShlBase;
 class uSimSoftBody;
 class uSky;
@@ -485,6 +493,7 @@ class alignas(16) MtVector3
     friend class cBVHCollision;
     friend class cCharacterEditMuscle;
     friend class cChildRegionStatus;
+    friend class cChildRegionStatusParam;
     friend class cContextInterface;
     friend class cDamageMsg;
     friend class cDamageSeInfo;
@@ -499,6 +508,7 @@ class alignas(16) MtVector3
     friend class cHitInfoAfter;
     friend class cJumpParamCtrl;
     friend class cMenuEntryBoardItemList;
+    friend class cPRTManager;
     friend class cPlActWpnBow;
     friend class cQuakeParam;
     friend class cSetInfoOmBadStatus;
@@ -509,6 +519,7 @@ class alignas(16) MtVector3
     friend class cStartPos;
     friend class cThinkMgrName::cThinkMgrTargetData;
     friend class cWeaponOffset;
+    friend class cWeatherFogInfo;
     friend class cZoneListenerLight;
     friend class cpCatchCtrl;
     friend class cpCheckWallCliff;
@@ -518,9 +529,10 @@ class alignas(16) MtVector3
     friend class cpObjCollisionBase;
     friend class cpShakeCtrl;
     friend class cpSlave;
+    friend class cpWallMaria;
     friend class nMarker::cMarkerInfo;
-    friend class nShlBase::cShlStickContextInfo;
     friend class nShlStick::cStickObjectCtrl;
+    friend class nZone::ShapeInfoArea;
     friend class nZone::ShapeInfoGlobal;
     friend class nZone::ShapeInfoPanel;
     friend class rDungeonMarker;
@@ -540,15 +552,19 @@ class alignas(16) MtVector3
     friend class sGame;
     friend class sOmManager;
     friend class sSoundManager;
+    friend class uAnimal;
     friend class uBaseEffect;
+    friend class uBloomFilter;
     friend class uCharacter;
+    friend class uCnsIK;
     friend class uCorePointSearch;
     friend class uCustomSimSoftBody;
-    friend class uDDOModel;
+    friend class uEfCam;
     friend class uEffect;
     friend class uGUIAim;
     friend class uHuman;
     friend class uLight;
+    friend class uOmModel;
     friend class uShlBase;
     friend class uSimSoftBody;
     friend class uSky;

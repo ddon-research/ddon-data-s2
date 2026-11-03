@@ -3,15 +3,19 @@
 #include "cpErosionEnemySmall.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextInterface.h"
+#include "cEmRandomCtrl.h"
 #include "cHitNode.h"
 #include "../../XFramework/cResource.h"
 #include "cpErosionEnemyBase.h"
 #include "cpObjCollision.h"
+#include "cpShakeCtrl.h"
 #include "../../generated/shared/nErosionEnemyBase.h"
-#include "../../generated/rCharacterEditCameraParam/nErosionEnemySmall.h"
+#include "../../generated/shared/nErosionEnemySmall.h"
+#include "rAttackParam.h"
 #include "rCollNode.h"
 #include "rErosionRegion.h"
 #include "sEnemyManager.h"
@@ -19,6 +23,8 @@
 #include "sSoundExt.h"
 #include "sWorkRate.h"
 #include "uCharacter.h"
+#include "uControl.h"
+#include "uControlEnemy.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
@@ -147,8 +153,20 @@ __attribute__((weak)) void cpErosionEnemySmall::setupBeforeContext(bool initSet)
 }
 
 __attribute__((weak)) void cpErosionEnemySmall::setupContextErosion(bool recvFlag, bool initSet) {
-    DDON_STUB("cpErosionEnemySmall::setupContextErosion")
-    /* stub */
+        if (recvFlag) {
+            return;
+        }
+        switch (getErosionSmallMode()) {
+        case nErosionEnemySmall::EROSION_SMALL_MODE_SOURCE:
+            reqChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL_1, nErosionEnemyBase::EROSION_LEVEL_NONE, true, false);
+            break;
+        case nErosionEnemySmall::EROSION_SMALL_MODE_NORMAL:
+            reqChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL_NONE, nErosionEnemyBase::EROSION_LEVEL_NONE, true, false);
+            break;
+        default:
+            return;
+        }
+        mpErosionCheckedNode = mpEnemy->getObjCollisionPtr()->createNodeFromIndex(nErosionEnemyBase::getErosionColBank(mpEnemy), 2, false, cHitNode::INVALID_OWNER_ID);
 }
 
 bool cpErosionEnemySmall::isErosionRegionActiveAll() const {

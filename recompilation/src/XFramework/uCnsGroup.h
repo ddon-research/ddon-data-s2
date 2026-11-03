@@ -240,3 +240,23 @@ public:
     static const u32 NODE_MAX = 255;
     static const u32 GROUP_MAX = 255;
 };
+
+inline void* uCnsGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uCnsGroup::cGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 uCnsGroup::cGroup::getNodeNum() {
+    return this->mNodeNum;
+}
+
+inline void* uCnsGroup::cNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uCnsGroup::cCnsChild::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

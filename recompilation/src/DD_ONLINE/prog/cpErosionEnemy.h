@@ -320,8 +320,39 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cTentacleInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cTentacleInfo::cTentacleInfo() {
+    this->mTentacleState = 0;
+    this->mTentacleStateOld = 0;
+    this->mSyncBit = 0x7FFFFFFFFFFFFFFF;
+    this->mSyncBitErosion = 0x7FFFFFFFFFFFFFFF;
+    this->mSetEffectErosion = false;
+    this->mRequestTentacle = false;
+    this->mRequestTentacleStop = false;
+    this->mRequestTentacleGetUp = false;
+    this->mSetEffect = false;
+    this->mTimeCountGetUp = 0.0f;
+    this->mTimeCountNoCheckCorePoint = 0.0f;
+    this->mpEnemy = nullptr;
+}
+
+inline s32 cTentacleInfo::getCorePointType() const {
+    return this->mErosionSuperInfo.mCorepointType;
+}
+
+inline void* cpErosionEnemy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rErosionRegionScaleChange* cpErosionEnemy::getErosionScaleChangeRes() const {
     return this->mpErosionScaleChangeRes;
+}
+
+inline void* cpErosionSuperEnemy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rSoundRequest* cpErosionSuperEnemy::getErosionSuperSoundRes() const {

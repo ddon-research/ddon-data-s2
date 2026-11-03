@@ -221,6 +221,10 @@ private:
     static uUIMockUp* mMockUpList[5];
 };
 
+inline void* uUIMockUp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uUIMockUp::useEmotion() {
     this->mIsUseEmotion = true;
 }

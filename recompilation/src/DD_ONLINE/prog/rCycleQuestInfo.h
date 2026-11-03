@@ -149,6 +149,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rCycleQuestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rCycleQuestInfo::cCycleQuestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rCycleQuestInfo::cCycleQuestSituationInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rCycleQuestInfo::cCycleQuestSituationInfo::cCycleQuestSituationInfo() {
     this->mSituationStateIdx = 0;
     this->mSituationDetailIdx = 0;

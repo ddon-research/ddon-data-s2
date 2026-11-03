@@ -6,9 +6,13 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtRandom.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "rkThinkData.h"
+#include "sWorldOffset.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -50,8 +54,6 @@ cThinkMgrName::cThinkMgr::cThinkMgr() {
 }
 
 cThinkMgrName::cThinkMgr::~cThinkMgr() {
-    DDON_STUB("cThinkMgrName::cThinkMgr::~cThinkMgr")
-    /* stub */
 }
 
 __attribute__((weak)) void cThinkMgrName::cThinkMgr::NextThinkTimer(f32 rate) {

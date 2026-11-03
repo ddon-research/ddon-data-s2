@@ -11,7 +11,7 @@
 #include "cEmWorkRateCtrl.h"
 #include "cMethodConstantManagerBase.h"
 #include "cpComponent.h"
-#include "../../generated/rCharacterEditCameraParam/nStatusEnemy.h"
+#include "../../generated/shared/nStatusEnemy.h"
 
 // Forward declarations
 class MtAllocator;
@@ -208,3 +208,7 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cpStatusChange::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

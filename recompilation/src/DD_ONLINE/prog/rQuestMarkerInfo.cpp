@@ -5,9 +5,12 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #ifndef DDON_STUB
@@ -83,8 +86,16 @@ bool rQuestMarkerInfo::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rQuestMarkerInfo::save(MtStream& out) {
-    DDON_STUB("rQuestMarkerInfo::save")
-    return {};
+        MtDataWriter w(out, 4096, 4096);
+        (&w)->writeU32(0x494D51);
+        (&w)->writeU32(1);
+        u32 t2 = mStageNo;
+        (&w)->writeU32(t2);
+        (&w)->writeU32(mInfoList.mLength);
+        for (u32 t1 = 0; t1 < mInfoList.mLength; ++t1) {
+            static_cast<cInfo*>(mInfoList.mpArray[(s32)t1])->save(w);
+        }
+        return true;
 }
 
 rQuestMarkerInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

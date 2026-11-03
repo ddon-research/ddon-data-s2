@@ -127,8 +127,58 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uControlEnemy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline uControlEnemy::uControlEnemy() {
+    this->mIsBigUI = false;
+    this->mIsWaitting = false;
+    this->mIsFsmEvent = false;
+    this->mIsAreaBoss = false;
+    this->mTargetType = 1;
+    this->mThinkTbl_Select = 0;
+    this->mLifeAreaGroup = -1;
+    this->mSetScale = 1.0f;
+    this->mLv = 1;
+    this->mEmReactNo = 2;
+    this->mIsDieStageBossDispOff = false;
+    this->mReturnPoint2nd = false;
+    this->mKillOneself = false;
+    this->mRaidBossID = 0;
+    this->mErosionMode = 0;
+}
+
+inline u32 uControlEnemy::getTargetType() {
+    return this->mTargetType;
+}
+
+inline s32 uControlEnemy::getLifeAreaGroup() const {
+    return this->mLifeAreaGroup;
+}
+
+inline f32 uControlEnemy::getSetScale() const {
+    return this->mSetScale;
+}
+
+inline void uControlEnemy::setSetScale(f32 scl) {
+    this->mSetScale = scl;
+}
+
+inline void uControlEnemy::setLv(u32 lv) {
+    this->mLv = lv;
+}
+
+inline u32 uControlEnemy::getEmReactNo() const {
+    return this->mEmReactNo;
+}
+
 inline u32 uControlEnemy::getRaidBossID() const {
     return this->mRaidBossID;
+}
+
+inline void uControlEnemy::setRaidBossID(u32 id) {
+    this->mRaidBossID = id;
 }
 
 inline u32 uControlEnemy::getErosionMode() const {

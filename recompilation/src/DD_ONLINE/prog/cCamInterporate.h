@@ -431,6 +431,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCamInterAll::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCamInterporateAng::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCamInterporateAng3Time::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCamInterporateRange::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCamInterporateRangeAng::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCamInterporateVec3::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 template <typename Type>
 const MtDTI& cCamInterporateTime<Type>::getDTI() const {
     return cCamInterporateTime<Type>::DTI;

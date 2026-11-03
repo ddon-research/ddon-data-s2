@@ -248,3 +248,7 @@ public:
     static const u32 TARGET_ICON_NUM = 2;
     static const f32 OCD_ICON_ACCUMULATING_ALPHA;
 };
+
+inline void* uGUIGaugeEnemy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

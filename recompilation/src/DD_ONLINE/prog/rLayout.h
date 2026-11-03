@@ -253,3 +253,11 @@ public:
     static const s32 DATA_VERSION;
     static MT_CTSTR typeKeyWord[5];
 };
+
+inline void* rLayout::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rLayout::SetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

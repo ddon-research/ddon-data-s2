@@ -137,8 +137,32 @@ public:
     static const s32 DATA_VERSION = 6;
 };
 
+inline void* rTexDetailEdit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rTexDetailEdit::DetailParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rTexDetailEdit::DetailParam::DetailParam() {
     this->mForm = 0xFFFFFFFF;
     this->mType = 0;
     this->mIgnoreLimit = 0;
+}
+
+inline u32 rTexDetailEdit::DetailParam::getForm() {
+    return this->mForm;
+}
+
+inline void rTexDetailEdit::DetailParam::setForm(const u32 n) {
+    this->mForm = n;
+}
+
+inline u32 rTexDetailEdit::DetailParam::getType() {
+    return this->mType;
+}
+
+inline void rTexDetailEdit::DetailParam::setType(u32 n) {
+    this->mType = n;
 }

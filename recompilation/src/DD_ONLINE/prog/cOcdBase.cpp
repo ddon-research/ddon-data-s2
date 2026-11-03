@@ -4,11 +4,17 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "cContextPlayerInfo.h"
 #include "cEfcHandle.h"
+#include "cHitInfoAfter.h"
 #include "cOcdCache.h"
 #include "cOcdCustomReqInfo.h"
+#include "cOcdDamageInfo.h"
 #include "cOcdInfo.h"
 #include "cOcdParamRes.h"
 #include "cOcdPriority.h"
@@ -19,11 +25,20 @@
 #include "nObjCollision.h"
 #include "nObjCondition.h"
 #include "nOcdMsg.h"
+#include "../../XFramework/rSoundRequest.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/sMain.h"
+#include "sObjCollision.h"
 #include "sObjCondition.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
 #include "sWorkRate.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
+#include "uHuman.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -52,9 +67,9 @@ __attribute__((weak)) void cOcdBase::createProperty(MtPropertyList& s) {
 void cOcdBase::setup() {
     const cOcdPriorityParam* pData = sObjCondition::getInstance()->getPriorityData(mOcdUID);
     if (pData != nullptr) {
-        mStatusParam.mIsMultiApply = pData->cOcdPriorityParam::isMultiApply();
-        mStatusParam.mIsMultiNumLimit = pData->cOcdPriorityParam::isMultiNumLimit();
-        u32 t0 = pData->cOcdPriorityParam::getMultiApplyNum();
+        mStatusParam.mIsMultiApply = pData->isMultiApply();
+        mStatusParam.mIsMultiNumLimit = pData->isMultiNumLimit();
+        u32 t0 = pData->getMultiApplyNum();
         mStatusParam.mMultiApplyNum = t0;
         mStatusParam.mMultiApplyNumMax = mStatusParam.mMultiApplyNum;
         mImmuneMode = nObjCondition::OCD_IMMUNE_MODE_NORMAL;

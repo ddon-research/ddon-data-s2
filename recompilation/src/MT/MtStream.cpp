@@ -5,6 +5,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtFile.h"
+#include "MtMemory.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #ifndef DDON_STUB

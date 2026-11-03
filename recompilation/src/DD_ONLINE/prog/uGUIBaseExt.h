@@ -220,3 +220,15 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUIBaseExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBaseExtHud::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBaseExtWindow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

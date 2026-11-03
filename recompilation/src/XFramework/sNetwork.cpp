@@ -10,6 +10,7 @@
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtNetObject.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "cSystem.h"
 #include "nNetworkAchievement.h"

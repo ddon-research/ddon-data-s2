@@ -22,6 +22,7 @@ namespace nNetwork { class VoiceChat; }
 struct pthread_mutex;
 class rSoundSourceStreamAT9;
 class sAI;
+class sAIExt;
 class sAIPawnSys;
 class sArchiveManager;
 class sAreaHit;
@@ -96,6 +97,7 @@ class MtCriticalSection
     friend class nNetwork::VoiceChat;
     friend class rSoundSourceStreamAT9;
     friend class sAI;
+    friend class sAIExt;
     friend class sAIPawnSys;
     friend class sArchiveManager;
     friend class sAreaHit;

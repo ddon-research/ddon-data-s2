@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtBigInt.h"
 #include "MtMemory.h"
+#include "MtRandom.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

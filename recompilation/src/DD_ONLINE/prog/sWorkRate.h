@@ -116,6 +116,10 @@ private:
     static sWorkRate* mpInstance;
 };
 
+inline void* sWorkRate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sWorkRate* sWorkRate::getInstance() {
     return ::sWorkRate::mpInstance;
 }

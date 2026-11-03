@@ -3,8 +3,11 @@
 #include "rPartnerPawnTalk.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtRandom.h"
 #include "../../XFramework/cResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -33,6 +36,7 @@ rPartnerPawnTalk::~rPartnerPawnTalk() {
         MtMemoryAllocator::getAllocator(rPartnerPawnTalk::DTI)->memFree(static_cast<void*>(mpArray));
         mpArray = nullptr;
         mArrayNum = 0;
+        return;
     }
     unsigned int i3 = 0;
     do {

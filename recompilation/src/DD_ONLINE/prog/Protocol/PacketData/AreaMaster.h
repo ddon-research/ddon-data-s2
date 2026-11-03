@@ -19,12 +19,16 @@ class MtObject;
 class CDataAreaBaseInfo;
 class CDataAreaQuestHint;
 class CDataAreaRank;
+class CDataAreaRankUpQuestInfo;
 class CDataAreaSpotSet;
+class CDataBorderSupplyItem;
 class CDataReleaseAreaInfoSet;
 class CDataRewardItemInfo;
+class CDataSelectItemInfo;
 class CDataSpotEnemyInfo;
 class CDataSpotInfo;
 class CDataSpotItemInfo;
+class CDataSupplyItem;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -34,6 +38,7 @@ using SpotItemInfoVec = MtTypedArray<CDataSpotItemInfo>;
 using _Sizet = long unsigned int;
 using b8 = bool;
 using size_t = _Sizet;
+using u16 = unsigned short;
 using u32 = unsigned int;
 using u8 = unsigned char;
 
@@ -144,6 +149,39 @@ public:
     static MyDTI DTI;
 };
 
+class CDataAreaRankUpQuestInfo : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataAreaRankUpQuestInfo();
+    explicit CDataAreaRankUpQuestInfo(u32, u32);
+public:
+    u32 m_unRank;  // offset: 0x8
+    u32 m_unQuestID;  // offset: 0xc
+    static MyDTI DTI;
+};
+
 class CDataAreaSpotSet : public CPacketDataBase
 {
 public:
@@ -244,6 +282,39 @@ public:
     static MyDTI DTI;
 };
 
+class CDataSelectItemInfo : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataSelectItemInfo();
+    explicit CDataSelectItemInfo(u32, u8);
+public:
+    u32 m_unIndex;  // offset: 0x8
+    u8 m_ucNum;  // offset: 0xc
+    static MyDTI DTI;
+};
+
 class CDataSpotEnemyInfo : public CPacketDataBase
 {
 public:
@@ -310,6 +381,72 @@ public:
     static MyDTI DTI;
 };
 
+class CDataSupplyItem : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataSupplyItem();
+    explicit CDataSupplyItem(u32, u16);
+public:
+    u32 m_unItemID;  // offset: 0x8
+    u16 m_usItemNum;  // offset: 0xc
+    static MyDTI DTI;
+};
+
+class CDataBorderSupplyItem : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataBorderSupplyItem();
+    explicit CDataBorderSupplyItem(u32, const MtTypedArray<CDataSupplyItem>&);
+public:
+    u32 m_unMinAreaPoint;  // offset: 0x8
+    MtTypedArray<CDataSupplyItem> m_SupplyItemList;  // offset: 0x10
+    static MyDTI DTI;
+};
+
 class CDataSpotInfo : public CPacketDataBase
 {
 public:
@@ -349,6 +486,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataAreaBaseInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataAreaBaseInfo::CDataAreaBaseInfo() {
     this->m_unClanAreaPoint = 0;
     this->m_unClanAreaPointBorder = 0;
@@ -361,10 +502,18 @@ inline CDataAreaBaseInfo::CDataAreaBaseInfo() {
     this->m_unRank = 0;
 }
 
+inline void* CDataAreaQuestHint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataAreaQuestHint::CDataAreaQuestHint() {
     this->m_unScheduleID = 0;
     this->m_unPrice = 0;
     this->m_bIsSold = false;
+}
+
+inline void* CDataAreaRank::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataAreaRank::CDataAreaRank() {
@@ -372,13 +521,42 @@ inline CDataAreaRank::CDataAreaRank() {
     this->m_unRank = 0;
 }
 
+inline void* CDataAreaRankUpQuestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataAreaRankUpQuestInfo::CDataAreaRankUpQuestInfo() {
+    this->m_unRank = 0;
+    this->m_unQuestID = 0;
+}
+
+inline void* CDataAreaSpotSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataAreaSpotSet::CDataAreaSpotSet() {
     this->m_unAreaId = 0;
     this->m_unSpotId = 0;
 }
 
+inline void* CDataBorderSupplyItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataBorderSupplyItem::CDataBorderSupplyItem() {
+    this->m_unMinAreaPoint = 0;
+}
+
+inline void* CDataReleaseAreaInfoSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataReleaseAreaInfoSet::CDataReleaseAreaInfoSet() {
     this->m_unAreaID = 0;
+}
+
+inline void* CDataRewardItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataRewardItemInfo::CDataRewardItemInfo() {
@@ -387,12 +565,42 @@ inline CDataRewardItemInfo::CDataRewardItemInfo() {
     this->m_ucNum = 0;
 }
 
+inline void* CDataSelectItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataSelectItemInfo::CDataSelectItemInfo() {
+    this->m_unIndex = 0;
+    this->m_ucNum = 0;
+}
+
+inline void* CDataSpotEnemyInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataSpotEnemyInfo::CDataSpotEnemyInfo() {
     this->m_unEnemyID = 0;
     this->m_ucEnemyLv = 0;
 }
 
+inline void* CDataSpotInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataSpotItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataSpotItemInfo::CDataSpotItemInfo() {
     this->m_unItemId = 0;
     this->m_ucPawnTakeRate = 0;
+}
+
+inline void* CDataSupplyItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataSupplyItem::CDataSupplyItem() {
+    this->m_unItemID = 0;
+    this->m_usItemNum = 0;
 }

@@ -2,10 +2,13 @@
 #include <new>
 #include "nDrawCommandCache.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCRC.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "cDraw.h"
 #include "nDrawResource.h"
+#include "sRender.h"
+#include "sShader2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

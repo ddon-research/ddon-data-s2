@@ -3,12 +3,14 @@
 #include "rSky.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDataReader.h"
 #include "../MT/MtDataWriter.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "cResource.h"
 #include "rTexture.h"
+#include "sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -90,8 +92,21 @@ MT_CTSTR rStarCatalog::getExt() const {
 }
 
 __attribute__((weak)) bool rStarCatalog::load(MtStream& in) {
-    DDON_STUB("rStarCatalog::load")
-    return {};
+        this->mStarNum = 0;
+        delete this->mpStarCatalog;
+        MtDataReader r(in, 4096u);
+        Header h;
+        r.read(&h, sizeof(Header));
+        if (h.mMagic != 0x52415453) {
+            return false;
+        }
+        if (h.mVersion != 0) {
+            return false;
+        }
+        this->mStarNum = h.mStarNum;
+        this->mpStarCatalog = static_cast<StarData*>(MtMemoryAllocator::getAllocator(rStarCatalog::DTI)->memAlloc(this->mStarNum * sizeof(StarData), 16));
+        r.read(this->mpStarCatalog, h.mStarNum * sizeof(StarData));
+        return true;
 }
 
 bool rStarCatalog::save(MtStream& in) {

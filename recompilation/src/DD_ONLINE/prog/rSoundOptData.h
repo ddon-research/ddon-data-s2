@@ -103,6 +103,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cSoundOptData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSoundOptData::cSoundOptData() {
     this->mCategory = 0;
     this->mItem = 0;
@@ -112,4 +116,20 @@ inline cSoundOptData::cSoundOptData() {
     this->mChannel[3] = -1;
     this->mChannel[0] = -1;
     this->mChannel[1] = -1;
+}
+
+inline void* rSoundOptData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cSoundOptData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundOptData::DTI)->memFree(p_addr);
+}
+
+inline void* cSoundOptData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundOptData::DTI)->memAlloc(sz, align, ::cSoundOptData::DTI.::MtDTI::getID());
 }

@@ -397,12 +397,32 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uCharacter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cpTinyChain* uCharacter::getCpTinyChain() const {
+    return this->mpTinyChain;
+}
+
 inline void uCharacter::setMoveVelAverage(f32 NewValue) {
     this->mMoveVelAverage = NewValue;
 }
 
 inline void uCharacter::setMoveVelAveInter(f32 NewValue) {
     this->mMoveVelAveInter = NewValue;
+}
+
+inline void uCharacter::setLifeAreaGroup(s32 val) {
+    this->mLifeAreaGroup = val;
+}
+
+inline void uCharacter::setTargetType(u32 type) {
+    this->mTargetType = type;
+}
+
+inline void uCharacter::setNamedScaleRate(f32 rate) {
+    this->mNamedScaleRate = rate;
 }
 
 inline u32 uCharacter::getNamedNo() {

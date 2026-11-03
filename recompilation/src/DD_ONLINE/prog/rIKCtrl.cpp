@@ -47,8 +47,6 @@ inline void rIKCtrl::operator delete(void* p_addr) {
 }
 
 rIKCtrl::~rIKCtrl() {
-    DDON_STUB("rIKCtrl::~rIKCtrl")
-    /* stub */
 }
 
 bool rIKCtrl::loadData(MtDataReader& r, cIKCtrl* pData) {
@@ -65,8 +63,49 @@ u32 rIKCtrl::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rIKCtrl::loadCore(MtDataReader& r) {
-    DDON_STUB("rIKCtrl::loadCore")
-    return {};
+        nDDOIO::readData(r, this->mCnsIKResPath_RArm);
+        nDDOIO::readData(r, this->mCnsIKResPath_LArm);
+        nDDOIO::readData(r, this->mCnsIKResPath_RLeg);
+        nDDOIO::readData(r, this->mCnsIKResPath_LLeg);
+        nDDOIO::readData(r, this->mFullbodyIKResPath);
+        nDDOIO::readData(r, this->mRArmType);
+        nDDOIO::readData(r, this->mLArmType);
+        nDDOIO::readData(r, this->mRLegType);
+        nDDOIO::readData(r, this->mLLegType);
+        u32 dat_num;
+        this->::rTbl2Base::readDataValue(r, dat_num);
+        u32 t0 = dat_num;
+        if (this->mpData != nullptr) {
+            size_t* t1 = reinterpret_cast<size_t*>(this->mpData) - 1;
+            MtMemoryAllocator::getAllocator(cIKCtrl::DTI)->memFree(t1);
+            this->mpData = nullptr;
+        }
+        this->mDataNum = 0;
+        if (t0 != 0) {
+            size_t t2 = t0;
+            size_t t6 = t2 * sizeof(cIKCtrl) + sizeof(size_t);
+            size_t* t3 = static_cast<size_t*>(MtMemoryAllocator::getAllocator(cIKCtrl::DTI)->memAlloc(t6, 16u, cIKCtrl::DTI.getID()));
+            *t3 = t2;
+            cIKCtrl* t4 = reinterpret_cast<cIKCtrl*>(t3 + 1);
+            cIKCtrl* t5 = t4;
+            do {
+                new (t5) cIKCtrl;
+                ++t5;
+            } while (t5 != t4 + t2);
+            this->mpData = t4;
+            this->mDataNum = t0;
+        }
+        if (dat_num != 0) {
+            u32 i = 0;
+            cIKCtrl* p_dat = this->mpData;
+            do {
+                if (!this->loadData(r, &p_dat[i])) {
+                    return false;
+                }
+                i += 1u;
+            } while (i < dat_num);
+        }
+        return true;
 }
 
 rIKCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

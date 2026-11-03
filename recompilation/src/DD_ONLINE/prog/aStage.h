@@ -54,6 +54,7 @@ class uDDOModel;
 class uGUIClock;
 class uGUICredit;
 class uGUIGaugeEnemy;
+class uGUIGaugeEnemyBoss;
 class uGUIGaugeNpc;
 class uGUIGaugeNpcBase;
 class uGUIMapMini;
@@ -90,6 +91,7 @@ class aStage : public cArea
 {
     friend class cFSMBase;
     friend class uGUIGaugeEnemy;
+    friend class uGUIGaugeEnemyBoss;
     friend class uGUIGaugeNpc;
     friend class uGUIGaugeNpcBase;
 public:
@@ -641,6 +643,10 @@ private:
     static const u32 LOCATION_NUM = 128;
 };
 
+inline void* aStage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool aStage::isExecuteMenuJump() {
     return this->mIsExecuteMenuJump;
 }
@@ -677,6 +683,10 @@ inline s32 aStage::getJmpStageNo() const {
     return this->mGuardData.mJmpStageNo;
 }
 
+inline u32 aStage::getJmpPosNo() const {
+    return this->mGuardData.mJmpPosNo;
+}
+
 inline void aStage::constructWeather() {
     this->mpLightSchdl = nullptr;
 }
@@ -687,6 +697,14 @@ inline void aStage::constructSound() {
 
 inline rSoundAttributeSe* aStage::getSoundAttributeSe() {
     return this->mprSoundAttribute;
+}
+
+inline s32 aStage::getReqEventId() const {
+    return this->mReqEventId;
+}
+
+inline void aStage::setExecEventId(s32 id) {
+    this->mExecEventId = id;
 }
 
 inline bool aStage::isFsmEvent() {
@@ -704,4 +722,8 @@ inline bool aStage::isFsmCancel() {
 inline void aStage::initGetAnnounce() {
     this->mRnoGetAnnounce = 0;
     this->mRnoGetGameTimeBaseInfo = 0;
+}
+
+inline void aStage::initEventLoading() {
+    this->mLoadingTimer = 0.0f;
 }

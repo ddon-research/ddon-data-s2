@@ -215,8 +215,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpShlShotCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cpShlShotCtrl::getTargetUId() {
     return this->mTargetUId;
+}
+
+inline void cpShlShotCtrl::setTargetUId(u32 id) {
+    this->mTargetUId = id;
 }
 
 inline s32 cpShlShotCtrl::getLockOnIndex() {
@@ -245,4 +253,8 @@ inline void cpShlShotCtrl::setPawnLockOnIndex(s32 index) {
 
 inline void cpShlShotCtrl::setShlOwner(uDDOModel* pOwner) {
     this->mpShlOwner = pOwner;
+}
+
+inline void* cpShlShotCtrl::cShlShotReqInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

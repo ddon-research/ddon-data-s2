@@ -4,24 +4,82 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sControlManager.h"
+#include "Protocol/PacketData/Clan.h"
+#include "Protocol/PacketData/Enemy.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "aStage.h"
+#include "cArcLoader.h"
+#include "../../XFramework/cArea.h"
+#include "cComponentManager.h"
 #include "cContextInstance.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cNetGameServer.h"
 #include "cPlayerLoadManager.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
 #include "../../XFramework/cUnit.h"
+#include "cZoneUnitCtrl.h"
+#include "cpComponent.h"
+#include "cpLayout.h"
+#include "cpNpc.h"
+#include "cpTalk.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "nDDOUtility.h"
+#include "nHumanMsg.h"
+#include "nJobParam.h"
 #include "nLayout.h"
+#include "nQuest.h"
+#include "../../XFramework/rArchive.h"
+#include "rArchiveListArray.h"
+#include "rCharacterEdit.h"
+#include "rLayoutGroupParam.h"
+#include "rLocationData.h"
+#include "rStageInfo.h"
+#include "res_ptr.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
 #include "sBakingJointOrder.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "sContextManager.h"
+#include "sEnemyManager.h"
+#include "sEventManager.h"
+#include "sFlag.h"
 #include "sGame.h"
+#include "sGeneralPoint.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sNpcManager.h"
 #include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
+#include "../../XFramework/sResource.h"
+#include "sSetManager.h"
+#include "sTalkManager.h"
 #include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "uCharacter.h"
 #include "uControl.h"
+#include "uControlEnemy.h"
+#include "uControlNpc.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
+#include "uHuman.h"
+#include "uHumanEnemy.h"
+#include "uNpc.h"
 #include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -316,7 +374,7 @@ uDDOModel* sControlManager::getUnitFSMDemo(u32 type, u32 group, u32 id) {
             if (pModel == nullptr) {
                 uControl* pCtrl = sControlManager::getInstance()->getUnitFromUniqueId(0u);
                 if (pCtrl != nullptr) {
-                    return pCtrl->uControl::getObjModel();
+                    return pCtrl->getObjModel();
                 } else {
                     return nullptr;
                 }
@@ -330,7 +388,7 @@ uDDOModel* sControlManager::getUnitFSMDemo(u32 type, u32 group, u32 id) {
             u32 t0 = nLayout::createUniqueID(nLayout::U_NPC, group, id, sGame::getInstance()->getStageNo());
             uControl* pCtrl = sControlManager::getInstance()->getUnitFromUniqueId(t0);
             if (pCtrl != nullptr) {
-                return pCtrl->uControl::getObjModel();
+                return pCtrl->getObjModel();
             } else {
                 return nullptr;
             }
@@ -341,7 +399,7 @@ uDDOModel* sControlManager::getUnitFSMDemo(u32 type, u32 group, u32 id) {
             u32 uniqueId = nLayout::createUniqueID(nLayout::U_ENEMY, group, id, 31u, sGame::getInstance()->getStageNo());
             uControl* pCtrl = sControlManager::getInstance()->getUnitFromUniqueId(uniqueId);
             if (pCtrl != nullptr) {
-                return pCtrl->uControl::getObjModel();
+                return pCtrl->getObjModel();
             } else {
                 return nullptr;
             }
@@ -352,7 +410,7 @@ uDDOModel* sControlManager::getUnitFSMDemo(u32 type, u32 group, u32 id) {
             u32 t0 = nLayout::createUniqueID(nLayout::U_OM, group, id, sGame::getInstance()->getStageNo());
             uControl* pCtrl = sControlManager::getInstance()->getUnitFromUniqueId(t0);
             if (pCtrl != nullptr) {
-                return pCtrl->uControl::getObjModel();
+                return pCtrl->getObjModel();
             } else {
                 return nullptr;
             }
@@ -362,7 +420,7 @@ uDDOModel* sControlManager::getUnitFSMDemo(u32 type, u32 group, u32 id) {
         {
             uControl* pCtrl = sControlManager::getInstance()->getUnitFromUniqueId(0u);
             if (pCtrl != nullptr) {
-                return pCtrl->uControl::getObjModel();
+                return pCtrl->getObjModel();
             } else {
                 return nullptr;
             }

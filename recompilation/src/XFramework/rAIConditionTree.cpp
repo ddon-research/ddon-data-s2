@@ -7,8 +7,10 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
 #include "../MT/MtString.h"
+#include "cAIConditionTree.h"
 #include "cAIObject.h"
 #include "cResource.h"
 #include "nAI.h"
@@ -95,7 +97,7 @@ MT_CTSTR rAIConditionTree::getExt() const {
 
 bool rAIConditionTree::load(MtStream& in) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(2), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
+    return sz.deserializeBinary(in, static_cast<u16>(2), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 void rAIConditionTree::clear() {
@@ -285,13 +287,9 @@ rAIConditionTree::TreeInfo* rAIConditionTree::getTree(u32 index) {
     }
 }
 
-u32 rAIConditionTree::getTreeNum() {
-    return mTreeNum;
-}
+static auto ddon_emit_0x01bd9300 __attribute__((used)) = &rAIConditionTree::getTreeNum;
 
-void rAIConditionTree::setTreeNum(u32 num) {
-    createTreeList(num);
-}
+static auto ddon_emit_0x01bd9310 __attribute__((used)) = &rAIConditionTree::setTreeNum;
 
 rAIConditionTree::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
@@ -936,13 +934,9 @@ __attribute__((weak)) bool rAIConditionTreeNode::createChildList(u32 num) {
     }
 }
 
-void rAIConditionTreeNode::setChildNum(u32 num) {
-    createChildList(num);
-}
+static auto ddon_emit_0x01bd92e0 __attribute__((used)) = &rAIConditionTreeNode::setChildNum;
 
-u32 rAIConditionTreeNode::getChildNum() {
-    return mChildNum;
-}
+static auto ddon_emit_0x01bd92d0 __attribute__((used)) = &rAIConditionTreeNode::getChildNum;
 
 void rAIConditionTreeNode::setChild(rAIConditionTreeNode* pNode, u32 index) {
     if (index < mChildNum) {

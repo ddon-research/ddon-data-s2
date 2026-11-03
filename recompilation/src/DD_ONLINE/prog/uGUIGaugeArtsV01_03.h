@@ -143,3 +143,7 @@ public:
     static const u32 BUTTON_GUIDE_BIT_ELEMENT1 = 2;
     static const u32 BUTTON_GUIDE_BIT_ELEMENT2 = 4;
 };
+
+inline void* uGUIGaugeArtsV01_03::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

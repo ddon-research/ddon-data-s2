@@ -2,17 +2,41 @@
 #include <new>
 #include "cpTalk.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtRandom.h"
 #include "../../MT/MtString.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cComponentManager.h"
+#include "cContextInterface.h"
+#include "cQuestTask.h"
+#include "../../XFramework/cResource.h"
 #include "cTalkMsgData.h"
+#include "../../XFramework/cUnit.h"
+#include "cpActionRequest.h"
 #include "cpComponent.h"
+#include "nQuest.h"
+#include "rSituationMsgCtrl.h"
+#include "../../XFramework/rSoundStreamRequest.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/sMain.h"
 #include "sNpcManager.h"
+#include "sQuestManagerExt.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "sTalkManager.h"
+#include "uControl.h"
 #include "uControlNpc.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
 #include "uNpc.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -104,9 +128,9 @@ void cpTalk::startFaceMot(u32 MotType, f32 SetFrame, u32 handle) {
 s16 cpTalk::getTalkMotNo() {
     uDDOModel* pModel = static_cast<uDDOModel*>(getOwner());
     if (pModel != nullptr) {
-        uControlNpc* pCtrlNpc = pModel->uDDOModel::getCtrlNpc();
+        uControlNpc* pCtrlNpc = pModel->getCtrlNpc();
         if (pCtrlNpc != nullptr) {
-            return sNpcManager::getInstance()->getTalkMot(static_cast<unsigned char>(static_cast<unsigned long>(pCtrlNpc->uControlNpc::getDefNPCMotCategory()) + 255), static_cast<u8>(pCtrlNpc->mDefNPCMotNo));
+            return sNpcManager::getInstance()->getTalkMot(static_cast<unsigned char>(static_cast<unsigned long>(pCtrlNpc->getDefNPCMotCategory()) + 255), static_cast<u8>(pCtrlNpc->mDefNPCMotNo));
         } else {
             return -1;
         }
@@ -141,8 +165,15 @@ cpTalk::cpTalk() {
 }
 
 cpTalk::~cpTalk() {
-    DDON_STUB("cpTalk::~cpTalk")
-    /* stub */
+    if (mpVoice != nullptr) {
+        mpVoice->release();
+        mpVoice = nullptr;
+    }
+    if (mpSituation == nullptr) {
+        return;
+    }
+    mpSituation->release();
+    mpSituation = nullptr;
 }
 
 __attribute__((weak)) void cpTalk::move() {

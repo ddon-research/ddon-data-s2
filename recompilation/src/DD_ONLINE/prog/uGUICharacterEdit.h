@@ -63,6 +63,7 @@ using u32 = unsigned int;
 
 class uGUICharacterEdit : public uGUIsMenuBase
 {
+    friend class uCharacterEdit;
     friend class uGUICharaEditPartsWrap;
 public:
     enum HELPER_UI_TYPE
@@ -831,6 +832,10 @@ private:
     static const u32 EQUIP_STAGE_ICON_INACTIVE_FRAME = 1;
 };
 
+inline void* uGUICharacterEdit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUICharacterEdit::PR uGUICharacterEdit::getProc() {
     return this->mProc;
 }
@@ -857,4 +862,33 @@ inline void uGUICharacterEdit::resetNameInput() {
 
 inline nCharacterEdit::EDIT_WARN_TYPE uGUICharacterEdit::getInitWarnTypeOld() const {
     return this->mInitWarnTypeOld;
+}
+
+inline void uGUICharacterEdit::clearInitWarnType() {
+    this->mInitWarnTypeOld = this->mInitWarnType;
+    this->mInitWarnType = static_cast<nCharacterEdit::EDIT_WARN_TYPE>(0);
+}
+
+inline void* uGUICharacterEdit::cListStage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharacterEdit::cListEquip::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharacterEdit::cIndex::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharacterEdit::cGUIUnderHelpMsg::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharacterEdit::cList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICharacterEdit::cVerticalListEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

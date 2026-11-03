@@ -61,5 +61,9 @@ private:
     static MtAllocator* mpAllocator;
 };
 
+inline void* cPrimObj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cPrimObj::cPrimObj() {
 }

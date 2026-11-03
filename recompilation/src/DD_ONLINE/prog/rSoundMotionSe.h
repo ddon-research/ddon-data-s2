@@ -182,6 +182,14 @@ protected:
     static const s32 NativeFileVersion = 9;
 };
 
+inline void* rSoundMotionSe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rSoundMotionSe::cSoundMotionSeData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSoundMotionSe::cSoundMotionSeData::MOTION_SE_DATA* rSoundMotionSe::cSoundMotionSeData::getData() {
     return &this->mData;
 }

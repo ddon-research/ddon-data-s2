@@ -8,6 +8,8 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "cResource.h"
 #include "cSystem.h"

@@ -5,17 +5,27 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtRandom.h"
 #include "aStage.h"
 #include "../../XFramework/cAIObject.h"
 #include "../../XFramework/cAIUserProcess.h"
 #include "../../XFramework/cArea.h"
 #include "cFSMCore.h"
+#include "cQuestTask.h"
+#include "cTalkMsgData.h"
+#include "nDDOUtility.h"
+#include "nQuest.h"
 #include "../../XFramework/sArea.h"
 #include "../../XFramework/sCamera.h"
 #include "sCameraExt.h"
+#include "sChat.h"
 #include "sFlag.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sGame.h"
+#include "sQuestManagerExt.h"
 #include "sTalkManager.h"
 #include "uCameraBase.h"
 #include "uCameraGame.h"
@@ -289,10 +299,10 @@ void cFSMBase::move() {
     if (pCam == nullptr) {
         return;
     }
-    if (!pCam->uCameraBase::isInitial()) {
+    if (!pCam->isInitial()) {
         return;
     }
-    const u32 cutNo = pCam->uCameraGame::getCut();
+    const u32 cutNo = pCam->getCut();
     if (cutNo == 0) {
         if (mOldCamCutNo != 0) {
             mNowCamSdrIdx = mNowCamSdrIdx + 1u;

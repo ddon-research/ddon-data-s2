@@ -14,6 +14,7 @@ class MtAllocator;
 class MtDTI;
 class MtDataReader;
 class MtObject;
+class cTentacleInfo;
 
 // Declarations
 class cErosionInfoRes;
@@ -193,6 +194,7 @@ public:
 
 class cErosionSuperInfoRes : public MtObject
 {
+    friend class cTentacleInfo;
     friend class rErosionSuperInfoRes;
 public:
     enum
@@ -366,8 +368,32 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cErosionInfoRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cErosionInfoRes::cErosionInfoRes() {
+    this->mRegenerateTimer[0] = 1000.0f;
+    this->mRegenerateTimer[1] = 1000.0f;
+    this->mRegenerateTimer[2] = 1000.0f;
+    this->mRegenerateTimer[3] = 1000.0f;
+    this->mCancelTimer[1] = 600.0f;
+    this->mCancelTimer[2] = 600.0f;
+    this->mCancelTimer[3] = 600.0f;
+    this->mCancelTimer[4] = 600.0f;
+    this->mCancelTimer[0] = 0.0f;
+}
+
+inline void* cErosionRegionRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 cErosionRegionRes::getRegionCategory() const {
     return this->mRegionCategory;
+}
+
+inline void* cErosionSmallInfoRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline f32 cErosionSmallInfoRes::getCancelTimer() const {
@@ -384,4 +410,60 @@ inline cErosionSmallInfoRes::cErosionSmallInfoRes() {
     this->mScaleActiveRate = 1.0f;
     this->mScaleInActiveMax = 1.0f;
     this->mScaleInActiveMin = 1.0f;
+}
+
+inline void* cErosionSuperInfoRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rErosionInfoRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rErosionRegion::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rErosionSmallInfoRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rErosionSuperInfoRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cErosionInfoRes::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionInfoRes::DTI)->memFree(p_addr);
+}
+
+inline void* cErosionInfoRes::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionInfoRes::DTI)->memAlloc(sz, align, ::cErosionInfoRes::DTI.::MtDTI::getID());
+}
+
+inline void cErosionRegionRes::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionRegionRes::DTI)->memFree(p_addr);
+}
+
+inline void* cErosionRegionRes::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionRegionRes::DTI)->memAlloc(sz, align, ::cErosionRegionRes::DTI.::MtDTI::getID());
+}
+
+inline void cErosionSmallInfoRes::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionSmallInfoRes::DTI)->memFree(p_addr);
+}
+
+inline void* cErosionSmallInfoRes::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionSmallInfoRes::DTI)->memAlloc(sz, align, ::cErosionSmallInfoRes::DTI.::MtDTI::getID());
+}
+
+inline void cErosionSuperInfoRes::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionSuperInfoRes::DTI)->memFree(p_addr);
+}
+
+inline void* cErosionSuperInfoRes::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionSuperInfoRes::DTI)->memAlloc(sz, align, ::cErosionSuperInfoRes::DTI.::MtDTI::getID());
 }

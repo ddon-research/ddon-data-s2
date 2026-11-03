@@ -212,3 +212,31 @@ public:
     static const MotSpdData mMotSpdTbl[];
     static MyDTI DTI;
 };
+
+inline void* uSoundMotionSe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rSoundMotionSe* uSoundMotionSe::getMotionSe() {
+    return this->mpMotionSe;
+}
+
+inline rSoundAttributeSe* uSoundMotionSe::getAttributeSe() {
+    return this->mpAttributeSe;
+}
+
+inline rSoundRequest* uSoundMotionSe::getAttributeRequest(u32 index) {
+    return this->mpAttributeRequest[index];
+}
+
+inline rSoundRequest* uSoundMotionSe::getBaseReq() {
+    return this->mpRequest[0];
+}
+
+inline u32 uSoundMotionSe::getRequestNum() {
+    return 16;
+}
+
+inline u32 uSoundMotionSe::getAttributeRequestNum() {
+    return 26;
+}

@@ -96,8 +96,28 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cQuestHistoryData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestHistoryData::cQuestHistoryData() {
     this->mQuestId = 0;
     this->mImageId = 0;
     this->mSortId = 0;
+}
+
+inline void* rQuestHistoryData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cQuestHistoryData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestHistoryData::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestHistoryData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestHistoryData::DTI)->memAlloc(sz, align, ::cQuestHistoryData::DTI.::MtDTI::getID());
 }

@@ -5,9 +5,14 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
-#include "../../generated/rCharacterEditCameraParam/nStatusEnemy.h"
+#include "cpWorkRate.h"
+#include "../../generated/shared/nStatusEnemy.h"
 #include "rEmWorkRateTable.h"
+#include "uDDOModel.h"
+#include "uEnemy.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

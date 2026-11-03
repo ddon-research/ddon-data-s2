@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "cNetGameServer.h"
+#include "Protocol/PacketData/Achievement.h"
+#include "Protocol/PacketData/AreaMaster.h"
+#include "Protocol/UserSession/C2S.h"
 #include "Protocol/PacketData/Character.h"
 #include "Protocol/PacketData/CharacterCommon.h"
 #include "Protocol/PacketData/CharacterEdit.h"
@@ -14,23 +17,36 @@
 #include "Protocol/PacketData/Clan.h"
 #include "Protocol/PacketData/Common.h"
 #include "Protocol/PacketData/Community.h"
+#include "Protocol/PacketData/Context.h"
 #include "Protocol/PacketData/Craft.h"
+#include "Protocol/PacketData/DLCLineup.h"
 #include "Protocol/PacketData/EntryBoard.h"
 #include "../../generated/shared/Error.h"
+#include "Protocol/PacketData/GP.h"
 #include "Protocol/PacketData/Item.h"
+#include "Protocol/PacketData/ItemSort.h"
 #include "Protocol/PacketData/JobMaster.h"
+#include "Protocol/PacketData/JobOrbTree.h"
+#include "Protocol/PacketData/Loading.h"
 #include "Protocol/PacketData/Lobby.h"
 #include "Protocol/PacketData/Mail.h"
+#include "Protocol/PacketData/Message.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtBigInt.h"
 #include "../../MT/MtCipher.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtNetDevice.h"
 #include "../../MT/MtNetObject.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtRandom.h"
+#include "../../MT/MtStream.h"
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "../../MT/MtTime.h"
 #include "../../MT/MtType.h"
 #include "Protocol/PacketData/Party.h"
 #include "Protocol/PacketData/Pawn.h"
@@ -39,31 +55,100 @@
 #include "Protocol/UserSession/S2C.h"
 #include "Protocol/PacketData/Search.h"
 #include "Protocol/PacketData/Server.h"
+#include "Protocol/PacketData/ServerSetting.h"
+#include "Protocol/PacketData/Skill.h"
 #include "Protocol/PacketData/Stage.h"
+#include "Protocol/PacketData/Weather.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
 #include "cCharacterData.h"
+#include "cContextInstance.h"
 #include "cContextInterface.h"
 #include "cContextPlayerInfo.h"
+#include "cCycleQuestManagerBase.h"
 #include "cEditParam.h"
+#include "cEndContentsManager.h"
+#include "cEquipData.h"
+#include "cFurniture.h"
+#include "cGUIExtNetMgr.h"
 #include "cGUIUtility.h"
+#include "cItemParam.h"
+#include "cMenuBase.h"
+#include "cMenuSupport.h"
 #include "cNetLoginServer.h"
+#include "cNetMsgBase.h"
+#include "cNetSerializer.h"
 #include "cNetSessionManager.h"
+#include "cPRTManager.h"
+#include "cPacket.h"
+#include "cPlDeadFlow.h"
+#include "cPlayPointInfo.h"
+#include "cPlayerLoadManager.h"
+#include "cQuestEventArg.h"
+#include "cQuestSvNotice.h"
+#include "cQuestSvNoticeManager.h"
+#include "cQuestTask.h"
+#include "../../XFramework/cResource.h"
 #include "cSeedServerConnection.h"
+#include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
+#include "cpActionRequest.h"
+#include "cpOcdCtrl.h"
+#include "cpPawnThink.h"
+#include "nCharacterData.h"
+#include "nDDOUtility.h"
 #include "nDialog.h"
+#include "nHumanMsg.h"
 #include "nJobParam.h"
+#include "nLayout.h"
 #include "nNet.h"
+#include "nNetMsgData.h"
+#include "nObjCondition.h"
+#include "nOcdMsg.h"
+#include "nQuest.h"
 #include "rCharacterEdit.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "rItemList.h"
+#include "sAIPawnTalkMgr.h"
+#include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sBazaarManager.h"
+#include "sBrowser.h"
+#include "sChat.h"
 #include "sContextManager.h"
+#include "sControlManager.h"
+#include "sCraftManager.h"
 #include "sDialogBase.h"
+#include "sFlag.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "sGame.h"
+#include "sHttpClient.h"
+#include "sItemManager.h"
 #include "../../XFramework/sMain.h"
+#include "sMenu.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "sNpcManager.h"
+#include "sObjCondition.h"
+#include "sOmManager.h"
+#include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
+#include "../../XFramework/sRemoteProcedure.h"
+#include "sRemoteProcedureExt.h"
 #include "sScreenShot.h"
 #include "sSetManager.h"
+#include "sWorldOffset.h"
+#include "uCharacter.h"
+#include "uControlEnemy.h"
+#include "uDDOModel.h"
+#include "uGUIBase.h"
+#include "uGUIGPShop.h"
+#include "uGUIOption.h"
+#include "uGUISystemMsg.h"
+#include "uHuman.h"
+#include "uPlayer.h"
 #include "uStageMyRoom.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -280,8 +365,20 @@ __attribute__((weak)) void cNetGameServer::dummyJoinPartyCallBack(void* param) {
 }
 
 __attribute__((weak)) bool cNetGameServer::reqQuickMatchParty(nNet::QUICK_MATCH_TYPE type, CQuickPartyMatching& matching) {
-    DDON_STUB("cNetGameServer::reqQuickMatchParty")
-    return {};
+        mFlow[4].mError.mCause = 0;
+        mFlow[4].mError.mNative = 0;
+        mFlow[4].mCommand = 0;
+        mFlow[4].mError.mNo = 0;
+        mFlow[4].mRno0 = 0;
+        mFlow[4].mRno1 = 0;
+        mFlow[4].mIsCallback = true;
+        mFlow[4].mRno0 = 1;
+        mQuickPartyType = type;
+        mQuickPartySetting = matching;
+        if (mLeaderCharacterId != mLobbyCharacterId) {
+            mFlow[4].mRno0 = 4;
+        }
+        return true;
 }
 
 __attribute__((weak)) bool cNetGameServer::quickMatchPartyFlow() {
@@ -8414,7 +8511,7 @@ bool cNetGameServer::sendCharacterDeadNotice() {
 bool cNetGameServer::reqCharacterPointRevive(u32 maxHp) {
     cContextPlayerInfo* pPlInfo = cContextInterface::getContextPlayerInfo(sContextManager::getInstance()->getContextMyPlayer());
     if (pPlInfo != nullptr) {
-        f32 t0 = pPlInfo->mBaseInfo.nJobParam::cHumanBaseInfo::getFinalMaxHP();
+        f32 t0 = pPlInfo->mBaseInfo.getFinalMaxHP();
         mStatus[452] = sNetworkExt::NET_STAT_ERROR;
         static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(452);
         mErrorCode[452] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
@@ -8573,7 +8670,7 @@ bool cNetGameServer::reqPawnPointRevive(unsigned int pawnId, u32 maxHp) {
             if (mpConnection->isLoginSuccess()) {
                 cContextPlayerInfo* pPlInfo = cContextInterface::getContextPlayerInfo(sContextManager::getInstance()->getMyPawnContext(pawnId, 0u));
                 if (pPlInfo != nullptr) {
-                    f32 t0 = pPlInfo->mBaseInfo.nJobParam::cHumanBaseInfo::getFinalMaxHP();
+                    f32 t0 = pPlInfo->mBaseInfo.getFinalMaxHP();
                     if (mpConnection->Send_C2S_PAWN_POINT_REVIVE_REQ(pawnId, static_cast<unsigned int>(static_cast<long>(t0))) != 0) {
                         mStatus[455] = sNetworkExt::NET_STAT_REQ;
                         static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(455);
@@ -8612,7 +8709,7 @@ bool cNetGameServer::reqPawnGoldenRevive(unsigned int pawnId, u32 maxHp) {
             if (mpConnection->isLoginSuccess()) {
                 cContextPlayerInfo* pPlInfo = cContextInterface::getContextPlayerInfo(sContextManager::getInstance()->getMyPawnContext(pawnId, 0u));
                 if (pPlInfo != nullptr) {
-                    f32 t0 = pPlInfo->mBaseInfo.nJobParam::cHumanBaseInfo::getFinalMaxHP();
+                    f32 t0 = pPlInfo->mBaseInfo.getFinalMaxHP();
                     if (mpConnection->Send_C2S_PAWN_GOLDEN_REVIVE_REQ(pawnId, static_cast<unsigned int>(static_cast<long>(t0))) != 0) {
                         mStatus[456] = sNetworkExt::NET_STAT_REQ;
                         static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(456);
@@ -9016,20 +9113,20 @@ void cNetGameServer::clearDLCLineupBoughts() {
     if (mpConnection != nullptr) {
         DLCLineupBoughtVec* p_boughts = mpConnection->mpDLCLineupBoughts;
         if (p_boughts != nullptr) {
-            if (p_boughts->::MtArray::mAutoDelete) {
+            if (p_boughts->mAutoDelete) {
                 u32 v2_0;
-                if (p_boughts->::MtArray::mLength != 0) {
-                    u32 v0_0 = p_boughts->::MtArray::mLength;
+                if (p_boughts->mLength != 0) {
+                    u32 v0_0 = p_boughts->mLength;
                     unsigned int i0_3 = 0;
                     u32 v1_0;
                     for (;;) {
-                        if (p_boughts->::MtArray::mpArray[i0_3] != nullptr) {
-                            delete p_boughts->::MtArray::mpArray[i0_3];
-                            if ((i0_3 + 1u) < p_boughts->::MtArray::mLength) {
-                                v0_0 = p_boughts->::MtArray::mLength;
+                        if (p_boughts->mpArray[i0_3] != nullptr) {
+                            delete p_boughts->mpArray[i0_3];
+                            if ((i0_3 + 1u) < p_boughts->mLength) {
+                                v0_0 = p_boughts->mLength;
                                 i0_3 += 1u;
                             } else {
-                                v1_0 = p_boughts->::MtArray::mLength;
+                                v1_0 = p_boughts->mLength;
                                 break;
                             }
                         } else {
@@ -9045,9 +9142,9 @@ void cNetGameServer::clearDLCLineupBoughts() {
                 } else {
                     v2_0 = 0;
                 }
-                memset(static_cast<void*>(p_boughts->::MtArray::mpArray), 0, static_cast<size_t>(v2_0) * 8);
+                memset(static_cast<void*>(p_boughts->mpArray), 0, static_cast<size_t>(v2_0) * 8);
             }
-            p_boughts->::MtArray::mLength = 0;
+            p_boughts->mLength = 0;
         }
     }
 }
@@ -9094,20 +9191,20 @@ void cNetGameServer::clearDLCLineupHistorys() {
     if (mpConnection != nullptr) {
         DLCLineupHistoryVec* p_history = mpConnection->mpDLCLineupHistorys;
         if (p_history != nullptr) {
-            if (p_history->::MtArray::mAutoDelete) {
+            if (p_history->mAutoDelete) {
                 u32 v2_0;
-                if (p_history->::MtArray::mLength != 0) {
-                    u32 v0_0 = p_history->::MtArray::mLength;
+                if (p_history->mLength != 0) {
+                    u32 v0_0 = p_history->mLength;
                     unsigned int i0_3 = 0;
                     u32 v1_0;
                     for (;;) {
-                        if (p_history->::MtArray::mpArray[i0_3] != nullptr) {
-                            delete p_history->::MtArray::mpArray[i0_3];
-                            if ((i0_3 + 1u) < p_history->::MtArray::mLength) {
-                                v0_0 = p_history->::MtArray::mLength;
+                        if (p_history->mpArray[i0_3] != nullptr) {
+                            delete p_history->mpArray[i0_3];
+                            if ((i0_3 + 1u) < p_history->mLength) {
+                                v0_0 = p_history->mLength;
                                 i0_3 += 1u;
                             } else {
-                                v1_0 = p_history->::MtArray::mLength;
+                                v1_0 = p_history->mLength;
                                 break;
                             }
                         } else {
@@ -9123,9 +9220,9 @@ void cNetGameServer::clearDLCLineupHistorys() {
                 } else {
                     v2_0 = 0;
                 }
-                memset(static_cast<void*>(p_history->::MtArray::mpArray), 0, static_cast<size_t>(v2_0) * 8);
+                memset(static_cast<void*>(p_history->mpArray), 0, static_cast<size_t>(v2_0) * 8);
             }
-            p_history->::MtArray::mLength = 0;
+            p_history->mLength = 0;
         }
     }
 }
@@ -9200,20 +9297,20 @@ void cNetGameServer::clearScreenShotCategory() {
     if (mpConnection != nullptr) {
         nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES* p_res = mpConnection->mpScreenShotCategory;
         if (p_res != nullptr) {
-            if (p_res->m_CategoryList.::MtArray::mAutoDelete) {
+            if (p_res->m_CategoryList.mAutoDelete) {
                 u32 v2_0;
-                if (p_res->m_CategoryList.::MtArray::mLength != 0) {
-                    u32 v0_0 = p_res->m_CategoryList.::MtArray::mLength;
+                if (p_res->m_CategoryList.mLength != 0) {
+                    u32 v0_0 = p_res->m_CategoryList.mLength;
                     unsigned int i0_3 = 0;
                     u32 v1_0;
                     for (;;) {
-                        if (p_res->m_CategoryList.::MtArray::mpArray[i0_3] != nullptr) {
-                            delete p_res->m_CategoryList.::MtArray::mpArray[i0_3];
-                            if ((i0_3 + 1u) < p_res->m_CategoryList.::MtArray::mLength) {
-                                v0_0 = p_res->m_CategoryList.::MtArray::mLength;
+                        if (p_res->m_CategoryList.mpArray[i0_3] != nullptr) {
+                            delete p_res->m_CategoryList.mpArray[i0_3];
+                            if ((i0_3 + 1u) < p_res->m_CategoryList.mLength) {
+                                v0_0 = p_res->m_CategoryList.mLength;
                                 i0_3 += 1u;
                             } else {
-                                v1_0 = p_res->m_CategoryList.::MtArray::mLength;
+                                v1_0 = p_res->m_CategoryList.mLength;
                                 break;
                             }
                         } else {
@@ -9229,9 +9326,9 @@ void cNetGameServer::clearScreenShotCategory() {
                 } else {
                     v2_0 = 0;
                 }
-                memset(static_cast<void*>(p_res->m_CategoryList.::MtArray::mpArray), 0, static_cast<size_t>(v2_0) * 8);
+                memset(static_cast<void*>(p_res->m_CategoryList.mpArray), 0, static_cast<size_t>(v2_0) * 8);
             }
-            p_res->m_CategoryList.::MtArray::mLength = 0;
+            p_res->m_CategoryList.mLength = 0;
         }
     }
 }
@@ -10099,14 +10196,78 @@ __attribute__((weak)) void cNetGameServer::OnPacket_S2C_PAWN_LOST_RES(nUserSessi
     /* stub */
 }
 
-__attribute__((weak)) void cNetGameServer::OnPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES(nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES& packet) {
-    DDON_STUB("cNetGameServer::OnPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES")
-    /* stub */
+void cNetGameServer::OnPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES(nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES& packet) {
+    if (packet.m_unResult == 0) {
+        if (static_cast<int>(packet.m_CharacterEquipList.mLength) > 0) {
+            setEquipList(packet.m_CharacterEquipList, mRecvEquipList);
+            setEquipJobItemList(packet.m_EquipJobItemList, mRecvEquipJobItemList);
+            return;
+        } else {
+            if (mRecvEquipList.mLength != 0) {
+                u32 v0_0 = mRecvEquipList.mLength;
+                for (unsigned int i0_3 = 0;;) {
+                    if (mRecvEquipList.mpArray[i0_3] != nullptr) {
+                        delete mRecvEquipList.mpArray[i0_3];
+                        if ((i0_3 + 1u) < mRecvEquipList.mLength) {
+                            v0_0 = mRecvEquipList.mLength;
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if ((i0_3 + 1u) < v0_0) {
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (mRecvEquipList.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRecvEquipList.mpArray));
+        }
+        mRecvEquipList.mpArray = nullptr;
+        mRecvEquipList.mBufsiz = 0;
+        mRecvEquipList.mLength = 0;
+    }
 }
 
-__attribute__((weak)) void cNetGameServer::OnPacket_S2C_GET_PAWN_EQUIP_LIST_RES(nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES& packet) {
-    DDON_STUB("cNetGameServer::OnPacket_S2C_GET_PAWN_EQUIP_LIST_RES")
-    /* stub */
+void cNetGameServer::OnPacket_S2C_GET_PAWN_EQUIP_LIST_RES(nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES& packet) {
+    if (packet.m_unResult == 0) {
+        if (static_cast<int>(packet.m_CharacterEquipList.mLength) > 0) {
+            setEquipList(packet.m_CharacterEquipList, mRecvEquipList);
+            setEquipJobItemList(packet.m_EquipJobItemList, mRecvEquipJobItemList);
+            return;
+        } else {
+            if (mRecvEquipList.mLength != 0) {
+                u32 v0_0 = mRecvEquipList.mLength;
+                for (unsigned int i0_3 = 0;;) {
+                    if (mRecvEquipList.mpArray[i0_3] != nullptr) {
+                        delete mRecvEquipList.mpArray[i0_3];
+                        if ((i0_3 + 1u) < mRecvEquipList.mLength) {
+                            v0_0 = mRecvEquipList.mLength;
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if ((i0_3 + 1u) < v0_0) {
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (mRecvEquipList.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRecvEquipList.mpArray));
+        }
+        mRecvEquipList.mpArray = nullptr;
+        mRecvEquipList.mBufsiz = 0;
+        mRecvEquipList.mLength = 0;
+    }
 }
 
 __attribute__((weak)) void cNetGameServer::OnPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES(nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES& packet) {
@@ -10129,9 +10290,101 @@ __attribute__((weak)) void cNetGameServer::OnPacket_S2C_CLAN_GET_INFO_RES(nUserS
     /* stub */
 }
 
-__attribute__((weak)) void cNetGameServer::OnPacket_S2C_GET_FRIEND_LIST_RES(nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES& packet) {
-    DDON_STUB("cNetGameServer::OnPacket_S2C_GET_FRIEND_LIST_RES")
-    /* stub */
+void cNetGameServer::OnPacket_S2C_GET_FRIEND_LIST_RES(nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES& packet) {
+    if (packet.m_nResult == 0) {
+        if (static_cast<int>(packet.m_FriendInfoList.mLength) > 0) {
+            setFriendList(packet.m_FriendInfoList);
+        } else {
+            if (mFriendList.mLength != 0) {
+                u32 v0_0 = mFriendList.mLength;
+                for (unsigned int i0_3 = 0;;) {
+                    if (mFriendList.mpArray[i0_3] != nullptr) {
+                        delete mFriendList.mpArray[i0_3];
+                        if ((i0_3 + 1u) < mFriendList.mLength) {
+                            v0_0 = mFriendList.mLength;
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if ((i0_3 + 1u) < v0_0) {
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (mFriendList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mFriendList.mpArray));
+            }
+            mFriendList.mpArray = nullptr;
+            mFriendList.mBufsiz = 0;
+            mFriendList.mLength = 0;
+        }
+        if (static_cast<int>(packet.m_ApplyingCharacterList.mLength) > 0) {
+            setApplyingFriendList(packet.m_ApplyingCharacterList);
+        } else {
+            if (mApplyingFriendList.mLength != 0) {
+                u32 v3_0 = mApplyingFriendList.mLength;
+                for (unsigned int i3_3 = 0;;) {
+                    if (mApplyingFriendList.mpArray[i3_3] != nullptr) {
+                        delete mApplyingFriendList.mpArray[i3_3];
+                        if ((i3_3 + 1u) < mApplyingFriendList.mLength) {
+                            v3_0 = mApplyingFriendList.mLength;
+                            i3_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if ((i3_3 + 1u) < v3_0) {
+                            i3_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (mApplyingFriendList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mApplyingFriendList.mpArray));
+            }
+            mApplyingFriendList.mpArray = nullptr;
+            mApplyingFriendList.mBufsiz = 0;
+            mApplyingFriendList.mLength = 0;
+        }
+        if (static_cast<int>(packet.m_ApprovingCharacterList.mLength) > 0) {
+            setApprovingFriendList(packet.m_ApprovingCharacterList);
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->mIsAppliedFriend = true;
+        } else {
+            if (mApprovingFriendList.mLength != 0) {
+                u32 v6_0 = mApprovingFriendList.mLength;
+                for (unsigned int i6_3 = 0;;) {
+                    if (mApprovingFriendList.mpArray[i6_3] != nullptr) {
+                        delete mApprovingFriendList.mpArray[i6_3];
+                        if ((i6_3 + 1u) < mApprovingFriendList.mLength) {
+                            v6_0 = mApprovingFriendList.mLength;
+                            i6_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if ((i6_3 + 1u) < v6_0) {
+                            i6_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (mApprovingFriendList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mApprovingFriendList.mpArray));
+            }
+            mApprovingFriendList.mpArray = nullptr;
+            mApprovingFriendList.mBufsiz = 0;
+            mApprovingFriendList.mLength = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->mIsAppliedFriend = false;
+        }
+    }
 }
 
 __attribute__((weak)) void cNetGameServer::OnPacket_S2C_STAY_INN_RES(nUserSession::CPacket_S2C_STAY_INN_RES& packet) {
@@ -10154,9 +10407,65 @@ __attribute__((weak)) void cNetGameServer::OnPacket_S2C_ENTRY_BOARD_ITEM_CHANGE_
     /* stub */
 }
 
-__attribute__((weak)) void cNetGameServer::OnPacket_S2C_MAIL_GET_LIST_DATA_RES(nUserSession::CPacket_S2C_MAIL_GET_LIST_DATA_RES& packet) {
-    DDON_STUB("cNetGameServer::OnPacket_S2C_MAIL_GET_LIST_DATA_RES")
-    /* stub */
+void cNetGameServer::OnPacket_S2C_MAIL_GET_LIST_DATA_RES(nUserSession::CPacket_S2C_MAIL_GET_LIST_DATA_RES& packet) {
+    if (packet.m_nResult == 0) {
+        if (static_cast<int>(packet.m_MailInfo.mLength) > 0) {
+            copyMailList(mMailList, packet.m_MailInfo);
+            if (mAddMailList.mLength != 0) {
+                u32 v0_0 = mAddMailList.mLength;
+                for (unsigned int i0_3 = 0;;) {
+                    if (mAddMailList.mpArray[i0_3] != nullptr) {
+                        delete mAddMailList.mpArray[i0_3];
+                        if ((i0_3 + 1u) < mAddMailList.mLength) {
+                            v0_0 = mAddMailList.mLength;
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if ((i0_3 + 1u) < v0_0) {
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (mAddMailList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAddMailList.mpArray));
+            }
+            mAddMailList.mpArray = nullptr;
+            mAddMailList.mBufsiz = 0;
+            mAddMailList.mLength = 0;
+        } else {
+            if (mMailList.mLength != 0) {
+                u32 v2_0 = mMailList.mLength;
+                for (unsigned int i2_3 = 0;;) {
+                    if (mMailList.mpArray[i2_3] != nullptr) {
+                        delete mMailList.mpArray[i2_3];
+                        if ((i2_3 + 1u) < mMailList.mLength) {
+                            v2_0 = mMailList.mLength;
+                            i2_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if ((i2_3 + 1u) < v2_0) {
+                            i2_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (mMailList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMailList.mpArray));
+            }
+            mMailList.mpArray = nullptr;
+            mMailList.mBufsiz = 0;
+            mMailList.mLength = 0;
+        }
+    }
 }
 
 __attribute__((weak)) void cNetGameServer::OnPacket_S2C_MAIL_GET_TEXT_RES(nUserSession::CPacket_S2C_MAIL_GET_TEXT_RES& packet) {
@@ -10164,9 +10473,67 @@ __attribute__((weak)) void cNetGameServer::OnPacket_S2C_MAIL_GET_TEXT_RES(nUserS
     /* stub */
 }
 
-__attribute__((weak)) void cNetGameServer::OnPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES(nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES& packet) {
-    DDON_STUB("cNetGameServer::OnPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES")
-    /* stub */
+void cNetGameServer::OnPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES(nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES& packet) {
+    if (packet.m_nResult == 0) {
+        if (static_cast<int>(packet.m_MailInfo.mLength) > 0) {
+            copyMailList(mSysMailList, packet.m_MailInfo);
+            if (mAddSysMailList.mLength != 0) {
+                u32 v0_0 = mAddSysMailList.mLength;
+                for (unsigned int i0_3 = 0;;) {
+                    if (mAddSysMailList.mpArray[i0_3] != nullptr) {
+                        delete mAddSysMailList.mpArray[i0_3];
+                        if ((i0_3 + 1u) < mAddSysMailList.mLength) {
+                            v0_0 = mAddSysMailList.mLength;
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if ((i0_3 + 1u) < v0_0) {
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (mAddSysMailList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAddSysMailList.mpArray));
+            }
+            mAddSysMailList.mpArray = nullptr;
+            mAddSysMailList.mBufsiz = 0;
+            mAddSysMailList.mLength = 0;
+        } else {
+            if (mSysMailList.mLength != 0) {
+                u32 v2_0 = mSysMailList.mLength;
+                for (unsigned int i2_3 = 0;;) {
+                    if (mSysMailList.mpArray[i2_3] != nullptr) {
+                        delete mSysMailList.mpArray[i2_3];
+                        if ((i2_3 + 1u) < mSysMailList.mLength) {
+                            v2_0 = mSysMailList.mLength;
+                            i2_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if ((i2_3 + 1u) < v2_0) {
+                            i2_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (mSysMailList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSysMailList.mpArray));
+            }
+            mSysMailList.mpArray = nullptr;
+            mSysMailList.mBufsiz = 0;
+            mSysMailList.mLength = 0;
+        }
+        mEnableUpdateSysMail = false;
+        mEnableUpdateSysMailTimer = sMain::getInstance()->mFps * static_cast<float>(static_cast<sNetworkExt*>(sNetwork::mpInstance)->getGameServer()->mpConnection->mpGetGameSettingPacket->m_GameSetting.m_unMailCacheExpireTime);
+    }
 }
 
 __attribute__((weak)) void cNetGameServer::OnPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES(nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES& packet) {
@@ -10242,6 +10609,10 @@ const MtDTI& cNetGameServer::cCtrlFlow::getDTI() const {
     return cNetGameServer::cCtrlFlow::DTI;
 }
 
+inline void* cNetGameServer::cCtrlFlow::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cNetGameServer::cCtrlFlow::DTI)->memAlloc(sz, align, cNetGameServer::cCtrlFlow::DTI.getID());
+}
+
 inline void cNetGameServer::cCtrlFlow::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cNetGameServer::cCtrlFlow::DTI)->memFree(p_addr);
 }
@@ -10250,9 +10621,8 @@ cNetGameServer::cCtrlFlow::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 cNetGameServer::cCtrlFlow::MyDTI cNetGameServer::cCtrlFlow::DTI("cNetGameServer::cCtrlFlow", &::MtObject::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cNetGameServer::cCtrlFlow::MyDTI::newInstance() const {
-    DDON_STUB("cNetGameServer::cCtrlFlow::MyDTI::newInstance")
-    return nullptr;
+MtObject* cNetGameServer::cCtrlFlow::MyDTI::newInstance() const {
+    return new (16u) cNetGameServer::cCtrlFlow;
 }
 
 const MtDTI& cNetGameServer::cChatLog::getDTI() const {

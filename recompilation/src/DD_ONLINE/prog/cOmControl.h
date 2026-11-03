@@ -462,8 +462,20 @@ public:
     static const u32 InvalidOmID = 0;
 };
 
+inline void* cOmControl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uBaseModel* cOmControl::getUnit() const {
     return this->mpuModel;
+}
+
+inline void* cOmControl::InputLot::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cOmTreeControl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline stInsValue::Data::Data() {

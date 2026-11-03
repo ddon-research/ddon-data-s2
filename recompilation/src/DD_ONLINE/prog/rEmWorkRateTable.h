@@ -99,7 +99,27 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEmWorkRateTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEmWorkRateTable::cEmWorkRateTable() {
     this->mWorkRate = 0.0f;
     this->mWorkRateStatus = 2;
+}
+
+inline void* rEmWorkRateTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEmWorkRateTable::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmWorkRateTable::DTI)->memFree(p_addr);
+}
+
+inline void* cEmWorkRateTable::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmWorkRateTable::DTI)->memAlloc(sz, align, ::cEmWorkRateTable::DTI.::MtDTI::getID());
 }

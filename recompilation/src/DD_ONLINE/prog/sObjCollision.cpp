@@ -8,6 +8,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSynchronize.h"
 #include "cNetGameServer.h"
 #include "cObjHitCache.h"
@@ -27,10 +29,14 @@
 #include "rCollNode.h"
 #include "rDmVecWeightParam.h"
 #include "rEmDamageDirInfo.h"
+#include "rObjCollision.h"
 #include "rPushRate.h"
+#include "sArchiveManager.h"
 #include "../../XFramework/sMain.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "../../XFramework/sResource.h"
+#include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -526,9 +532,269 @@ __attribute__((weak)) f32 sObjCollision::getCaughtDamageRate(nCatch::CATCH_TYPE 
     return {};
 }
 
-__attribute__((weak)) void sObjCollision::createResource() {
-    DDON_STUB("sObjCollision::createResource")
-    /* stub */
+void sObjCollision::createResource() {
+    rCalcDamageLvAdj* pLvRes = static_cast<rCalcDamageLvAdj*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_DM_LV_ADJ", 1u, false));
+    if (pLvRes != nullptr) {
+        if (mpDmLvAdjRes != pLvRes) {
+            if (mpDmLvAdjRes != nullptr) {
+                mpDmLvAdjRes->release();
+                mpDmLvAdjRes = nullptr;
+            }
+            mpDmLvAdjRes = pLvRes;
+            pLvRes->addRef();
+        }
+        pLvRes->release();
+    }
+    rCalcDamageAtdmAdj* pAtdmResHM = static_cast<rCalcDamageAtdmAdj*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_DM_ATDM_ADJ", 1u, false));
+    if (pAtdmResHM != nullptr) {
+        if (mpDmAtdmAdjResHM != pAtdmResHM) {
+            if (mpDmAtdmAdjResHM != nullptr) {
+                mpDmAtdmAdjResHM->release();
+                mpDmAtdmAdjResHM = nullptr;
+            }
+            mpDmAtdmAdjResHM = pAtdmResHM;
+            pAtdmResHM->addRef();
+        }
+        pAtdmResHM->release();
+    }
+    rCalcDamageAtdmAdj* pAtdmResEM = static_cast<rCalcDamageAtdmAdj*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_DM_ATDM_ADJ_EM", 1u, false));
+    if (pAtdmResEM != nullptr) {
+        if (mpDmAtdmAdjResEM != pAtdmResEM) {
+            if (mpDmAtdmAdjResEM != nullptr) {
+                mpDmAtdmAdjResEM->release();
+                mpDmAtdmAdjResEM = nullptr;
+            }
+            mpDmAtdmAdjResEM = pAtdmResEM;
+            pAtdmResEM->addRef();
+        }
+        pAtdmResEM->release();
+    }
+    rCalcDamageAtdmAdjRate* pAtdmRateRes = static_cast<rCalcDamageAtdmAdjRate*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_DM_ATDM_ADJ_RATE", 1u, false));
+    if (pAtdmRateRes != nullptr) {
+        if (mpDmAtdmAdjRateRes != pAtdmRateRes) {
+            if (mpDmAtdmAdjRateRes != nullptr) {
+                mpDmAtdmAdjRateRes->release();
+                mpDmAtdmAdjRateRes = nullptr;
+            }
+            mpDmAtdmAdjRateRes = pAtdmRateRes;
+            pAtdmRateRes->addRef();
+        }
+        pAtdmRateRes->release();
+    }
+    rShrinkBlowValue* pShBlRes = static_cast<rShrinkBlowValue*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_SHBL_VALUE", 1u, false));
+    if (pShBlRes != nullptr) {
+        if (mpShBlValue != pShBlRes) {
+            if (mpShBlValue != nullptr) {
+                mpShBlValue->release();
+                mpShBlValue = nullptr;
+            }
+            mpShBlValue = pShBlRes;
+            pShBlRes->addRef();
+        }
+        pShBlRes->release();
+    }
+    rDmJobAdjParam* pJobRes = static_cast<rDmJobAdjParam*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_DM_JOB_ADJ", 1u, false));
+    if (pJobRes != nullptr) {
+        if (mpJobAdjRes != pJobRes) {
+            if (mpJobAdjRes != nullptr) {
+                mpJobAdjRes->release();
+                mpJobAdjRes = nullptr;
+            }
+            mpJobAdjRes = pJobRes;
+            pJobRes->addRef();
+        }
+        pJobRes->release();
+    }
+    rEmDamageDirInfo* pEmDamageDirInfoRes = static_cast<rEmDamageDirInfo*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_EM_DA_DIR_INFO", 1u, false));
+    if (pEmDamageDirInfoRes != nullptr) {
+        if (mpEmDamageDirInfo != pEmDamageDirInfoRes) {
+            if (mpEmDamageDirInfo != nullptr) {
+                mpEmDamageDirInfo->release();
+                mpEmDamageDirInfo = nullptr;
+            }
+            mpEmDamageDirInfo = pEmDamageDirInfoRes;
+            pEmDamageDirInfoRes->addRef();
+        }
+        pEmDamageDirInfoRes->release();
+    }
+    rDmVecWeightParam* pDmVecWeightParamRes = static_cast<rDmVecWeightParam*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_DM_WEIGHT_PARAM", 1u, false));
+    if (pDmVecWeightParamRes != nullptr) {
+        if (mpDmVecWeightParam != pDmVecWeightParamRes) {
+            if (mpDmVecWeightParam != nullptr) {
+                mpDmVecWeightParam->release();
+                mpDmVecWeightParam = nullptr;
+            }
+            mpDmVecWeightParam = pDmVecWeightParamRes;
+            pDmVecWeightParamRes->addRef();
+        }
+        pDmVecWeightParamRes->release();
+    }
+    rAdjLimitParam* pAdjLimitParamRes = static_cast<rAdjLimitParam*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_DM_ADJ_LIMIT", 1u, false));
+    if (pAdjLimitParamRes != nullptr) {
+        if (mpAdjLimitParamRes != pAdjLimitParamRes) {
+            if (mpAdjLimitParamRes != nullptr) {
+                mpAdjLimitParamRes->release();
+                mpAdjLimitParamRes = nullptr;
+            }
+            mpAdjLimitParamRes = pAdjLimitParamRes;
+            pAdjLimitParamRes->addRef();
+            if (mpAdjLimitParamRes->getDataNum() != 0) {
+                mpAdjLimitParamData = mpAdjLimitParamRes->getData(0u);
+            }
+        }
+        pAdjLimitParamRes->release();
+    }
+    rDmJobPawnAdjParam* pDmJobPawnAdjParam = static_cast<rDmJobPawnAdjParam*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_DMJOBPAWNADJ_DJA_PAWN", 1u, false));
+    if (pDmJobPawnAdjParam != nullptr) {
+        if (mpJobPawnAdjParamRes != pDmJobPawnAdjParam) {
+            if (mpJobPawnAdjParamRes != nullptr) {
+                mpJobPawnAdjParamRes->release();
+                mpJobPawnAdjParamRes = nullptr;
+            }
+            mpJobPawnAdjParamRes = pDmJobPawnAdjParam;
+            pDmJobPawnAdjParam->addRef();
+        }
+        pDmJobPawnAdjParam->release();
+    }
+    rDmLvPawnAdjParam* pDmLvPawnAdjParam = static_cast<rDmLvPawnAdjParam*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_DMLVPAWNADJ_CDL_PAWN", 1u, false));
+    if (pDmLvPawnAdjParam != nullptr) {
+        if (mpLvPawnAdjParamRes != pDmLvPawnAdjParam) {
+            if (mpLvPawnAdjParamRes != nullptr) {
+                mpLvPawnAdjParamRes->release();
+                mpLvPawnAdjParamRes = nullptr;
+            }
+            mpLvPawnAdjParamRes = pDmLvPawnAdjParam;
+            pDmLvPawnAdjParam->addRef();
+        }
+        pDmLvPawnAdjParam->release();
+    }
+    rDamageSaveEmLvParam* pDamageSaveEmLvParam = static_cast<rDamageSaveEmLvParam*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_DAMAGESAVEEM_DAMAGE_SAVE", 1u, false));
+    if (pDamageSaveEmLvParam != nullptr) {
+        if (mpDamageSaveEmLvParam != pDamageSaveEmLvParam) {
+            if (mpDamageSaveEmLvParam != nullptr) {
+                mpDamageSaveEmLvParam->release();
+                mpDamageSaveEmLvParam = nullptr;
+            }
+            mpDamageSaveEmLvParam = pDamageSaveEmLvParam;
+            pDamageSaveEmLvParam->addRef();
+        }
+        pDamageSaveEmLvParam->release();
+    }
+    rBlowSaveEmLvParam* pBlowSaveEmLvParam = static_cast<rBlowSaveEmLvParam*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_BLOWDAMAGESAVE_BLOW_SAVE", 1u, false));
+    if (pBlowSaveEmLvParam != nullptr) {
+        if (mpBlowSaveEmLvParam != pBlowSaveEmLvParam) {
+            if (mpBlowSaveEmLvParam != nullptr) {
+                mpBlowSaveEmLvParam->release();
+                mpBlowSaveEmLvParam = nullptr;
+            }
+            mpBlowSaveEmLvParam = pBlowSaveEmLvParam;
+            pBlowSaveEmLvParam->addRef();
+        }
+        pBlowSaveEmLvParam->release();
+    }
+    rDamageSpecialAdj* pDamageSpecialAdj = static_cast<rDamageSpecialAdj*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_DAMAGESPADJ_DAMAGE_SPADJ", 1u, false));
+    if (pDamageSpecialAdj != nullptr) {
+        if (mpDamageSpecialAdj != pDamageSpecialAdj) {
+            if (mpDamageSpecialAdj != nullptr) {
+                mpDamageSpecialAdj->release();
+                mpDamageSpecialAdj = nullptr;
+            }
+            mpDamageSpecialAdj = pDamageSpecialAdj;
+            pDamageSpecialAdj->addRef();
+        }
+        pDamageSpecialAdj->release();
+    }
+    rAdjustParam* pSysRes = static_cast<rAdjustParam*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_CALC_DM_PARAM", 1u, false));
+    if (pSysRes != nullptr) {
+        if (mpSystemParamRes != pSysRes) {
+            if (mpSystemParamRes != nullptr) {
+                mpSystemParamRes->release();
+                mpSystemParamRes = nullptr;
+            }
+            mpSystemParamRes = pSysRes;
+            pSysRes->addRef();
+        }
+        pSysRes->release();
+    }
+    rAdjustParam* pPawnRes = static_cast<rAdjustParam*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_DMPAWNADJ_AJP", 1u, false));
+    if (pPawnRes != nullptr) {
+        if (mpPawnConstantParamRes != pPawnRes) {
+            if (mpPawnConstantParamRes != nullptr) {
+                mpPawnConstantParamRes->release();
+                mpPawnConstantParamRes = nullptr;
+            }
+            mpPawnConstantParamRes = pPawnRes;
+            pPawnRes->addRef();
+        }
+        pPawnRes->release();
+    }
+    rCaughtDamageRateRefTbl* pCDRRT = static_cast<rCaughtDamageRateRefTbl*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_CAUGHTDAMAGERATEREFTBL_CDRR", 1u, false));
+    if (pCDRRT != nullptr) {
+        if (mpCaughtDamageRateRefTbl != pCDRRT) {
+            if (mpCaughtDamageRateRefTbl != nullptr) {
+                mpCaughtDamageRateRefTbl->release();
+                mpCaughtDamageRateRefTbl = nullptr;
+            }
+            mpCaughtDamageRateRefTbl = pCDRRT;
+            pCDRRT->addRef();
+        }
+        pCDRRT->release();
+    }
+    rCaughtDamageRateTbl* pCDRT = static_cast<rCaughtDamageRateTbl*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_CAUGHTDAMAGERATETBL_CDRT", 1u, false));
+    if (pCDRT != nullptr) {
+        if (mpCaughtDamageRateTbl != pCDRT) {
+            if (mpCaughtDamageRateTbl != nullptr) {
+                mpCaughtDamageRateTbl->release();
+                mpCaughtDamageRateTbl = nullptr;
+            }
+            mpCaughtDamageRateTbl = pCDRT;
+            pCDRT->addRef();
+        }
+        pCDRT->release();
+    }
+    cResource* v54_3 = sArchiveManager::getInstance()->createRes("collision_common", "RES_ID_MOVE_MOVE_PUSH_RATE", 1u, false);
+    if (v54_3 != nullptr) {
+        if (mpPushRateMoveMove != nullptr) {
+            mpPushRateMoveMove->release();
+            mpPushRateMoveMove = nullptr;
+        }
+        mpPushRateMoveMove = static_cast<rPushRate*>(v54_3);
+        v54_3->addRef();
+        v54_3->release();
+    }
+    cResource* v56_3 = sArchiveManager::getInstance()->createRes("collision_common", "RES_ID_STOP_MOVE_PUSH_RATE", 1u, false);
+    if (v56_3 != nullptr) {
+        if (mpPushRateStopMove != nullptr) {
+            mpPushRateStopMove->release();
+            mpPushRateStopMove = nullptr;
+        }
+        mpPushRateStopMove = static_cast<rPushRate*>(v56_3);
+        v56_3->addRef();
+        v56_3->release();
+    }
+    cResource* v58_3 = sArchiveManager::getInstance()->createRes("collision_common", "RES_ID_FIX_PUSH_RATE", 1u, false);
+    if (v58_3 != nullptr) {
+        if (mpPushRateFix != nullptr) {
+            mpPushRateFix->release();
+            mpPushRateFix = nullptr;
+        }
+        mpPushRateFix = static_cast<rPushRate*>(v58_3);
+        v58_3->addRef();
+        v58_3->release();
+    }
+    rErosionShakeConvert* pErosoinShakeConvert = static_cast<rErosionShakeConvert*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_EROSION_SHAKE_CONVERT", 1u, false));
+    if (pErosoinShakeConvert == nullptr) {
+        return;
+    }
+    if (pErosoinShakeConvert != mpErosionShakeConvert) {
+        if (mpErosionShakeConvert != nullptr) {
+            mpErosionShakeConvert->release();
+            mpErosionShakeConvert = nullptr;
+        }
+        mpErosionShakeConvert = pErosoinShakeConvert;
+        pErosoinShakeConvert->addRef();
+    }
+    pErosoinShakeConvert->release();
 }
 
 __attribute__((weak)) void sObjCollision::releaseResource() {
@@ -992,7 +1258,7 @@ f32 sObjCollision::findErosionCoreAddTime(f32 shakesRate) const {
                     }
                 }
             }
-            v2_9 = pLastData->cErosionShakeConvert::getAddCoreTime();
+            v2_9 = pLastData->getAddCoreTime();
         } else {
             v2_9 = 0.0f;
         }

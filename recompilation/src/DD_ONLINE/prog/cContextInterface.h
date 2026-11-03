@@ -38,6 +38,7 @@ class cpItemThrow;
 class cpJob03;
 class cpJob04;
 class cpJob05;
+class cpJob07;
 class cpJob09;
 class cpJob10;
 class cpPawnThink;
@@ -64,6 +65,7 @@ class uControlNpc;
 class uDDOModel;
 class uEnemy;
 class uHuman;
+class uHumanEnemy;
 class uNpc;
 class uPlayer;
 
@@ -99,6 +101,7 @@ class cContextInterface : public MtObject
     friend class cpJob03;
     friend class cpJob04;
     friend class cpJob05;
+    friend class cpJob07;
     friend class cpJob09;
     friend class cpJob10;
     friend class cpPawnThink;
@@ -111,6 +114,7 @@ class cContextInterface : public MtObject
     friend class uDDOModel;
     friend class uEnemy;
     friend class uHuman;
+    friend class uHumanEnemy;
     friend class uNpc;
     friend class uPlayer;
 public:
@@ -1404,3 +1408,7 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* cContextInterface::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

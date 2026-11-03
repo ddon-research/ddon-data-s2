@@ -76,6 +76,7 @@ class rCollision;
 class rCollisionHeightField;
 class uDynamicSbc;
 class uScrollCollisionGeometry;
+class uScrollCollisionSbc;
 
 // Declarations
 class sCollision;
@@ -102,6 +103,7 @@ class sCollision : public cSystem
 {
     friend class cOmControl;
     friend class uScrollCollisionGeometry;
+    friend class uScrollCollisionSbc;
 public:
     enum CALLBACK_MODE
     {
@@ -3913,15 +3915,87 @@ protected:
     static sCollision* mpInstance;
 };
 
+inline void* sCollision::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sCollision* sCollision::getInstance() {
     return ::sCollision::mpInstance;
+}
+
+inline void* sCollision::cSbcArrayBP::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSbcArrayBP::cDBVTMaster::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sCollision::cSbcArrayBP::cDBVTMaster::cDBVTMaster() {
 }
 
+inline void* sCollision::cColArray::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSbcMoveReserveInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::Sbc::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 sCollision::Sbc::getPartsNum() const {
     return this->mPartsArrayNum;
+}
+
+inline void* sCollision::Sbc::Parts::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSbcMoveMatrix::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSbcMoveResetReserveInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSbcRegistReserveInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSbcMoveReserveInfoAll::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSbcMoveResetReserveInfoAll::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::SbcObject::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::SbcObject::cRegisterInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSbcSkinMesh::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSbcSkinMesh::cRegisterInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSbcHeightField::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSbcHeightField::cHeightField::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sCollision::cSbcHeightField::cHeightField::cHeightField() {
@@ -3929,8 +4003,96 @@ inline sCollision::cSbcHeightField::cHeightField::cHeightField() {
     this->mpHeightField = nullptr;
 }
 
+inline void* sCollision::Collider::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::Collider::cNodeListArray::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::Node::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::TriangleInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::SbcInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 sCollision::SbcInfo::getSbcAttribute() const {
     return this->pMaterialInfo->::nCollision::ScrMaterialInfo::attribute;
+}
+
+inline void* sCollision::SbcInfoBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ColliderPassiveNodeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ColliderActiveNodeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ActiveNodeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::NodeList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::Param::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ScrCollisionInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ScrCollisionInfoBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ScrCollisionInfoFind::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ScrCollisionInfoCastConvex::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ScrCollisionInfoAdjustPosition::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ScrCollisionInfoGetAreaPoly::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ScrCollisionInfoOriginal::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ScrCollisionInfoPreTraverse::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::ScrCollisionInfoFind4::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::cSystemInitializeParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sCollision::SbcLockInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sCollision::SbcLockInfoLight::SbcLockInfoLight() {

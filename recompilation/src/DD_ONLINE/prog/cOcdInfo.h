@@ -186,6 +186,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cOcdInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nObjCondition::OCD_MODE cOcdInfo::getOcdModePrivate() const {
     return this->mOcdMode;
 }
@@ -206,8 +210,20 @@ inline void cOcdInfo::setOcdReqResultPrivate(nObjCondition::OCD_MODE_REQ_RESULT 
     this->mOcdReqResult = NewValue;
 }
 
+inline u32 cOcdInfo::getOcdModeCheatCheckPrivate() const {
+    return this->mOcdModeCheatCheck;
+}
+
 inline void cOcdInfo::setOcdModeCheatCheckPrivate(u32 NewValue) {
     this->mOcdModeCheatCheck = NewValue;
+}
+
+inline u32 cOcdInfo::getOcdModeReqCheatCheckPrivate() const {
+    return this->mOcdModeReqCheatCheck;
+}
+
+inline u32 cOcdInfo::getOcdReqResultCheatCheckPrivate() const {
+    return this->mOcdReqResultCheatCheck;
 }
 
 inline void cOcdInfo::setOcdReqResultCheatCheckPrivate(u32 NewValue) {

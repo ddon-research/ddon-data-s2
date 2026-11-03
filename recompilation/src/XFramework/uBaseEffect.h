@@ -23,6 +23,7 @@ class MtQuaternion;
 class MtUI;
 class MtVector3;
 class cDraw;
+class cEffectJoint;
 class cEffectTransparency;
 class cParticleManager;
 class cUnit;
@@ -46,6 +47,7 @@ using u64 = __uint64_t;
 
 class uBaseEffect : public uCoord
 {
+    friend class cEffectJoint;
     friend class cParticleManager;
     friend class sEffectExt;
 public:
@@ -236,3 +238,130 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* uBaseEffect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uBaseEffect::setSchedulerMode(bool Mode) {
+    this->mStatus = !Mode ? (this->mStatus & 0xFFFFFFFBu) : (this->mStatus | 4u);
+}
+
+inline void uBaseEffect::setEventMode(bool Mode) {
+    this->mStatus = !Mode ? (this->mStatus & 0xFFFFFFF7u) : (this->mStatus | 8u);
+}
+
+inline void uBaseEffect::setTimerControlMode(bool Mode) {
+    this->mStatus = !Mode ? (this->mStatus & 0xFFFFFFBFu) : (this->mStatus | 64u);
+}
+
+inline void uBaseEffect::setTextureOmitMode(bool Mode) {
+    this->mStatus = !Mode ? (this->mStatus & 0xFFFFFF7Fu) : (this->mStatus | 128u);
+}
+
+inline void uBaseEffect::setVBInvalidMode(bool Mode) {
+    this->mStatus = !Mode ? (this->mStatus & 0xFFFFFEFFu) : (this->mStatus | 256u);
+}
+
+inline void uBaseEffect::setNoFogMode(bool Mode) {
+    this->mStatus = !Mode ? (this->mStatus & 0xFFFFFDFFu) : (this->mStatus | 512u);
+}
+
+inline f32 uBaseEffect::getDeltaTimeCoef() const {
+    return this->mDeltaTimeCoef;
+}
+
+inline void uBaseEffect::setDeltaTimeCoef(f32 DeltaTimeCoef) {
+    this->mDeltaTimeCoef = DeltaTimeCoef;
+}
+
+inline u32 uBaseEffect::getTimer() const {
+    return this->mTimer;
+}
+
+inline void uBaseEffect::setTimer(u32 Timer) {
+    if ((this->mStatus & 64u) == 0) {
+        return;
+    }
+    this->mTimer = Timer;
+}
+
+inline u32 uBaseEffect::getLoopFrame() const {
+    return this->mLoopFrame;
+}
+
+inline u32 uBaseEffect::getKillNo() const {
+    return this->mKillNo;
+}
+
+inline void uBaseEffect::setKillNo(u32 KillNo) {
+    this->mKillNo = KillNo;
+}
+
+inline u32 uBaseEffect::getExclusionTrait() const {
+    return this->mExclusionTrait;
+}
+
+inline void uBaseEffect::setExclusionTrait(u32 ExclusionTrait) {
+    this->mExclusionTrait = ExclusionTrait;
+}
+
+inline u32 uBaseEffect::getCullingGroup() const {
+    return this->mCullingGroup;
+}
+
+inline void uBaseEffect::setCullingGroup(u32 Group) {
+    this->mCullingGroup = Group;
+}
+
+inline u32 uBaseEffect::getAxisType() const {
+    return this->mAxisType;
+}
+
+inline u32 uBaseEffect::getRelationType() const {
+    return this->mRelationType;
+}
+
+inline void uBaseEffect::setRelationType(u32 RelationType) {
+    this->mRelationType = RelationType;
+}
+
+inline u32 uBaseEffect::getEndType() const {
+    return this->mEndType;
+}
+
+inline void uBaseEffect::setEndType(u32 EndType) {
+    this->mEndType = EndType;
+}
+
+inline rEffectList* uBaseEffect::getEffectList() {
+    return this->mpEffectList;
+}
+
+inline u32 uBaseEffect::getParticleVolume() const {
+    return this->mParticleVolume;
+}
+
+inline u32 uBaseEffect::getFilterVolume() const {
+    return this->mFilterVolume;
+}
+
+inline void uBaseEffect::setFilterVolume(u32 Volume) {
+    this->mFilterVolume = Volume;
+}
+
+inline void uBaseEffect::setLifeFrameVolume(u32 Volume) {
+    this->mLifeFrameVolume = Volume;
+}
+
+inline u32 uBaseEffect::getBoundaryType() const {
+    return this->mBoundaryType;
+}
+
+inline void uBaseEffect::setBoundaryType(u32 BoundaryType) {
+    this->mBoundaryType = BoundaryType;
+}
+
+inline f32 uBaseEffect::getTransparency() const {
+    return this->mTransparencyParam.mTransparency[0];
+}

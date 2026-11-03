@@ -534,6 +534,18 @@ protected:
     static const u32 COL_TEX_SIZE = 64;
 };
 
+inline void* uSimSoftBody::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rDeformWeightMap* uSimSoftBody::getDeformWeightMap() {
+    return this->mpResWeightMap;
+}
+
+inline rSoundPhysicsSoftBody* uSimSoftBody::getSPS() {
+    return this->mpResSPS;
+}
+
 inline void uSimSoftBody::enableResetRestart() {
     this->mResetRestart = true;
 }
@@ -562,4 +574,8 @@ inline void uSimSoftBody::disableApproxScrCollision() {
 
 inline void uSimSoftBody::setColliderType(u32 type) {
     this->mColliderType = type;
+}
+
+inline bool uSimSoftBody::getColliderCollision() {
+    return this->mColliderCollision;
 }

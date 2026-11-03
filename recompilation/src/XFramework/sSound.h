@@ -2759,8 +2759,118 @@ public:
     static const f32 EQ_DEFAULT_Q;
 };
 
+inline void* sSound::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sSound* sSound::getInstance() {
     return ::sSound::mpInstance;
+}
+
+inline void sSound::setSpeakerAngle51Default() {
+    this->mSpeakerAngle51.frontAngle = 45.0f;
+    this->::sSound::updateSpeakerAngle();
+    this->mSpeakerAngle51.surroundAngle = 135.0f;
+    this->::sSound::updateSpeakerAngle();
+}
+
+inline f32 sSound::getSpeakerAngle51Front() {
+    return this->mSpeakerAngle51.frontAngle;
+}
+
+inline f32 sSound::getSpeakerAngle51Surround() {
+    return this->mSpeakerAngle51.surroundAngle;
+}
+
+inline f32 sSound::getSpeakerAngle71Front() {
+    return this->mSpeakerAngle71.frontAngle;
+}
+
+inline f32 sSound::getSpeakerAngle71Surround() {
+    return this->mSpeakerAngle71.surroundAngle;
+}
+
+inline f32 sSound::getSpeakerAngle71Enhance() {
+    return this->mSpeakerAngle71.enhanceAngle;
+}
+
+inline rSoundEQ* sSound::getEQ() const {
+    return this->mEQResource.mpEQ;
+}
+
+inline rSoundCurveSet* sSound::getSoundCurveSet() const {
+    return this->mpCurveSet;
+}
+
+inline rSoundDirectionalSet* sSound::getSoundDirectionalSet() const {
+    return this->mpDirectionalSet;
+}
+
+inline f32 sSound::getDopplerMasterScaler() {
+    return this->mDopplerMasterScaler;
+}
+
+inline bool sSound::getIsStereoLFE() {
+    return this->mIsStereoLFE;
+}
+
+inline void sSound::setIsStereoLFE(bool b) {
+    this->mIsStereoLFE = b;
+}
+
+inline bool sSound::getIs51SourceDiffuse() {
+    return this->mIs51SourceDiffuse;
+}
+
+inline void sSound::setIs51SourceDiffuse(const bool b) {
+    this->mIs51SourceDiffuse = b;
+}
+
+inline f32 sSound::getStreamSilentDecectionThreshold() {
+    if (this->mpNativeSystem != nullptr) {
+        return this->mpNativeSystem->getStreamSilentDecectionThreshold();
+    } else {
+        return -96.0f;
+    }
+}
+
+inline void sSound::setStreamSilentDecectionThreshold(f32 dB) {
+    if (this->mpNativeSystem == nullptr) {
+        return;
+    }
+    this->mpNativeSystem->setStreamSilentDecectionThreshold(dB);
+}
+
+inline u32 sSound::getSeVoiceNum() const {
+    return this->mSeVoiceNum;
+}
+
+inline u32 sSound::getSeLinkMax() const {
+    return this->mSeLinkMax;
+}
+
+inline void sSound::setSeLinkMax(u32 max) {
+    this->mSeLinkMax = max;
+}
+
+inline u32 sSound::getSeEntryNum() const {
+    return this->mSeEntryNum;
+}
+
+inline u32 sSound::getStreamVoiceNum() const {
+    return this->mStreamVoiceNum;
+}
+
+inline u32 sSound::getStreamLinkMax() const {
+    return this->mStreamLinkMax;
+}
+
+inline void sSound::setStreamLinkMax(u32 max) {
+    this->mStreamLinkMax = max;
+}
+
+inline u32 sSound::getStreamEntryNum() const {
+    return this->mStreamEntryNum;
 }
 
 inline sSound::NativeVoice::NativeVoice() {
@@ -2776,6 +2886,10 @@ inline sSound::EffectResourceWork::EffectResourceWork() {
 }
 
 inline sSound::EntryControlParam::EntryControlParam() {
+}
+
+inline void* sSound::NativeSystemPS4::PS4Property::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sSound::NativeVoicePS4::NativeVoicePS4() {

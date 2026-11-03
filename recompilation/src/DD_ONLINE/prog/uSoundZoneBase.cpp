@@ -6,12 +6,14 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cUnit.h"
 #include "../../XFramework/cZoneContents.h"
 #include "../../XFramework/cZoneExtendObject.h"
 #include "../../XFramework/cZoneLayout.h"
 #include "../../XFramework/cZoneListener.h"
-#include "../../generated/shared/nSoundZone.h"
+#include "../../generated/rLayout/nSoundZone.h"
 #include "../../XFramework/nZone.h"
 #include "../../XFramework/sZone.h"
 #include "../../XFramework/uModel.h"
@@ -273,7 +275,7 @@ cSoundLayoutInfo* uSoundZoneBase::getLayoutInfo(u32 index) {
 cZoneLayout* uSoundZoneBase::getZoneLayout() {
     cZoneListener* pListener = getZoneListener();
     if (pListener != nullptr) {
-        return pListener->cZoneListener::getZoneLayout();
+        return pListener->getZoneLayout();
     } else {
         return nullptr;
     }
@@ -290,7 +292,7 @@ uSoundZoneBase::cGroupManager* uSoundZoneBase::getGroupManagerFromLayout(nZone::
         if (t0 != nullptr) {
             cZoneLayout* pMyZoneLayout = t0->getZoneLayout();
             if (pMyZoneLayout != nullptr) {
-                return static_cast<cGroupManager*>(pMyZoneLayout->cZoneLayout::getGroupManagerFromLayout(*pLayoutElement));
+                return static_cast<cGroupManager*>(pMyZoneLayout->getGroupManagerFromLayout(*pLayoutElement));
             } else {
                 return nullptr;
             }
@@ -307,7 +309,7 @@ uSoundZoneBase::cGroupManager* uSoundZoneBase::getGroupManagerFromGroupId(s32 gr
     if (t0 != nullptr) {
         cZoneLayout* pMyZoneLayout = t0->getZoneLayout();
         if (pMyZoneLayout != nullptr) {
-            return static_cast<cGroupManager*>(pMyZoneLayout->cZoneLayout::getGroupManagerFromGroupID(groupId));
+            return static_cast<cGroupManager*>(pMyZoneLayout->getGroupManagerFromGroupID(groupId));
         } else {
             return nullptr;
         }
@@ -326,7 +328,7 @@ void uSoundZoneBase::clearZoneHit() {
     if (t0 != nullptr) {
         cZoneLayout* pZone = t0->getZoneLayout();
         if (pZone != nullptr) {
-            const u32 layoutNum = pZone->cZoneLayout::getLayoutElementNum();
+            const u32 layoutNum = pZone->getLayoutElementNum();
             if (layoutNum != 0) {
                 for (unsigned int i0_3 = 0;;) {
                     cSoundLayoutInfo* t1 = nSoundZone::getLayoutInfoFromZoneLayout(pZone, i0_3);

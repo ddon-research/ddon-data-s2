@@ -263,8 +263,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* sControlManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sControlManager* sControlManager::getInstance() {
     return ::sControlManager::mpInstance;
+}
+
+inline void* sControlManager::cDispPriorityData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sControlManager::cDispPriorityData::cDispPriorityData() {

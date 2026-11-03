@@ -2,15 +2,36 @@
 #include <new>
 #include "uSoundTrigger.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollision.h"
+#include "../../MT/MtCollisionDefine.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtSynchronize.h"
+#include "../../XFramework/cResource.h"
+#include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
 #include "../../XFramework/cZoneContents.h"
 #include "../../XFramework/cZoneLayout.h"
+#include "../../XFramework/cZoneListener.h"
+#include "../../generated/rLayout/nSoundZone.h"
 #include "../../XFramework/nZone.h"
+#include "../../XFramework/rSoundRequest.h"
+#include "rSoundSequenceSe.h"
+#include "../../XFramework/rSoundStreamRequest.h"
+#include "../../XFramework/rZone.h"
+#include "sPlayerManager.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "sSoundManager.h"
+#include "../../XFramework/sUnit.h"
+#include "../../XFramework/sZone.h"
+#include "../../XFramework/uCoord.h"
+#include "uPlayer.h"
 #include "uSoundSequenceSe.h"
 #include "uSoundZoneBase.h"
 #ifndef DDON_STUB
@@ -173,6 +194,8 @@ nSoundTrigger::cCategory::cCategory() {
 }
 
 nSoundTrigger::cCategory::~cCategory() {
+    DDON_STUB("nSoundTrigger::cCategory::~cCategory")
+    /* stub */
 }
 
 MtUI* nSoundTrigger::cCategory::createUI(MtProperty& prop) {
@@ -200,8 +223,15 @@ inline void nSoundTrigger::cPlaySeqSeContents::operator delete(void* p_addr) {
 }
 
 nSoundTrigger::cPlaySeqSeContents::~cPlaySeqSeContents() {
-    DDON_STUB("nSoundTrigger::cPlaySeqSeContents::~cPlaySeqSeContents")
-    /* stub */
+    if (mpSequenceSeA != nullptr) {
+        mpSequenceSeA->release();
+        mpSequenceSeA = nullptr;
+    }
+    if (mpSequenceSeB == nullptr) {
+        return;
+    }
+    mpSequenceSeB->release();
+    mpSequenceSeB = nullptr;
 }
 
 MtUI* nSoundTrigger::cPlaySeqSeContents::createUI(MtProperty& prop) {
@@ -241,8 +271,15 @@ inline void nSoundTrigger::cSeContents::operator delete(void* p_addr) {
 }
 
 nSoundTrigger::cSeContents::~cSeContents() {
-    DDON_STUB("nSoundTrigger::cSeContents::~cSeContents")
-    /* stub */
+    if (mpRequestA != nullptr) {
+        mpRequestA->release();
+        mpRequestA = nullptr;
+    }
+    if (mpRequestB == nullptr) {
+        return;
+    }
+    mpRequestB->release();
+    mpRequestB = nullptr;
 }
 
 MtUI* nSoundTrigger::cSeContents::createUI(MtProperty& prop) {
@@ -273,6 +310,47 @@ __attribute__((weak)) MtObject* nSoundTrigger::cSeContents::MyDTI::newInstance()
     return nullptr;
 }
 
+const MtDTI& nSoundTrigger::cStopSeqSeContents::getDTI() const {
+    return nSoundTrigger::cStopSeqSeContents::DTI;
+}
+
+nSoundTrigger::cStopSeqSeContents::~cStopSeqSeContents() {
+    DDON_STUB("nSoundTrigger::cStopSeqSeContents::~cStopSeqSeContents")
+    /* stub */
+}
+
+MtUI* nSoundTrigger::cStopSeqSeContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+__attribute__((weak)) void nSoundTrigger::cStopSeqSeContents::createProperty(MtPropertyList& s) {
+    DDON_STUB("nSoundTrigger::cStopSeqSeContents::createProperty")
+    /* stub */
+}
+
+void nSoundTrigger::cStopSeqSeContents::copyAToB() {
+    mStopGroupId[1][0] = mStopGroupId[0][0];
+    mStopGroupId[1][1] = mStopGroupId[0][1];
+    mStopGroupId[1][2] = mStopGroupId[0][2];
+    mStopGroupId[1][3] = mStopGroupId[0][3];
+}
+
+void nSoundTrigger::cStopSeqSeContents::copyBToA() {
+    mStopGroupId[0][0] = mStopGroupId[1][0];
+    mStopGroupId[0][1] = mStopGroupId[1][1];
+    mStopGroupId[0][2] = mStopGroupId[1][2];
+    mStopGroupId[0][3] = mStopGroupId[1][3];
+}
+
+nSoundTrigger::cStopSeqSeContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cStopSeqSeContents::MyDTI nSoundTrigger::cStopSeqSeContents::DTI("nSoundTrigger::cStopSeqSeContents", &::nSoundTrigger::cCategory::DTI, 48ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundTrigger::cStopSeqSeContents::MyDTI::newInstance() const {
+    DDON_STUB("nSoundTrigger::cStopSeqSeContents::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& nSoundTrigger::cStreamContents::getDTI() const {
     return nSoundTrigger::cStreamContents::DTI;
 }
@@ -282,8 +360,15 @@ inline void nSoundTrigger::cStreamContents::operator delete(void* p_addr) {
 }
 
 nSoundTrigger::cStreamContents::~cStreamContents() {
-    DDON_STUB("nSoundTrigger::cStreamContents::~cStreamContents")
-    /* stub */
+    if (mpStreamRequestA != nullptr) {
+        mpStreamRequestA->release();
+        mpStreamRequestA = nullptr;
+    }
+    if (mpStreamRequestB == nullptr) {
+        return;
+    }
+    mpStreamRequestB->release();
+    mpStreamRequestB = nullptr;
 }
 
 MtUI* nSoundTrigger::cStreamContents::createUI(MtProperty& prop) {
@@ -435,10 +520,10 @@ __attribute__((weak)) void uSoundTrigger::checkHitPanel() {
 __attribute__((weak)) void uSoundTrigger::initPanel() {
     cZoneLayout* pZone = getZoneLayout();
     if (pZone != nullptr) {
-        const u32 layoutNum = pZone->cZoneLayout::getLayoutElementNum();
+        const u32 layoutNum = pZone->getLayoutElementNum();
         if (layoutNum != 0) {
             for (unsigned int i0_3 = 0;;) {
-                nZone::cLayoutElement* t0 = pZone->cZoneLayout::getLayoutElement(i0_3);
+                nZone::cLayoutElement* t0 = pZone->getLayoutElement(i0_3);
                 if (t0 != nullptr) {
                     nZone::ShapeInfoBase* t2 = t0->mpShapeInfo;
                     if (t2 != nullptr) {

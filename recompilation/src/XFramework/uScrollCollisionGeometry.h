@@ -242,3 +242,11 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* uScrollCollisionGeometry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uScrollCollisionGeometry::cGeometryInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -102,6 +102,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEnemyBloodStain::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEnemyBloodStain::cEnemyBloodStain() {
     this->mBloodStainType = 0;
     this->mHpRateLv1 = 0.7f;
@@ -110,4 +114,20 @@ inline cEnemyBloodStain::cEnemyBloodStain() {
     this->mRegionNoLv1 = 11;
     this->mRegionNoLv2 = 11;
     this->mRegionNoLv3 = 11;
+}
+
+inline void* rEnemyBloodStain::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEnemyBloodStain::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyBloodStain::DTI)->memFree(p_addr);
+}
+
+inline void* cEnemyBloodStain::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyBloodStain::DTI)->memAlloc(sz, align, ::cEnemyBloodStain::DTI.::MtDTI::getID());
 }

@@ -7,8 +7,12 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "cHitGeom.h"
+#include "../../XFramework/cResource.h"
 #include "cpObjCollision.h"
+#include "../../XFramework/nCollisionNode.h"
 #include "rAttackParam.h"
 #include "rCollNode.h"
 #include "../../XFramework/sCollision.h"
@@ -39,8 +43,48 @@ cHitNode::cHitNode() {
 }
 
 __attribute__((noinline)) cHitNode::~cHitNode() {
-    DDON_STUB("cHitNode::~cHitNode")
-    /* stub */
+    if (mpCollNodeRes != nullptr) {
+        mpCollNodeRes->release();
+        mpCollNodeRes = nullptr;
+    }
+    if (mpAttackParamRes != nullptr) {
+        mpAttackParamRes->release();
+        mpAttackParamRes = nullptr;
+    }
+    if (mpNode != nullptr) {
+        delete mpNode;
+        mpNode = nullptr;
+    }
+    if (mpAttackParam != nullptr) {
+        delete mpAttackParam;
+        mpAttackParam = nullptr;
+    }
+    if (mGeomArray.mLength != 0) {
+        u32 v0_0 = mGeomArray.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mGeomArray.mpArray[i0_3] != nullptr) {
+                delete mGeomArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mGeomArray.mLength) {
+                    v0_0 = mGeomArray.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mGeomArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGeomArray.mpArray));
+    }
+    mGeomArray.mpArray = nullptr;
+    mGeomArray.mBufsiz = 0;
+    mGeomArray.mLength = 0;
 }
 
 __attribute__((weak)) void cHitNode::createProperty(MtPropertyList& s) {

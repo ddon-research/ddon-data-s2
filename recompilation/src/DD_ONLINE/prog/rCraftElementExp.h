@@ -103,7 +103,27 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCraftElementExpData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCraftElementExpData::cCraftElementExpData() {
     this->mExp = 0;
     this->mPrice = 0;
+}
+
+inline void* rCraftElementExp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCraftElementExpData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftElementExpData::DTI)->memFree(p_addr);
+}
+
+inline void* cCraftElementExpData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftElementExpData::DTI)->memAlloc(sz, align, ::cCraftElementExpData::DTI.::MtDTI::getID());
 }

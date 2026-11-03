@@ -193,6 +193,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uConstraint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline f32 uConstraint::getBlendWeight() const {
     return this->mBlendWeight;
+}
+
+inline u32 uConstraint::getPri() const {
+    return this->mPri;
+}
+
+inline void* uConstraint::cConstraint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

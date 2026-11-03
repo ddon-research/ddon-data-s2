@@ -2,14 +2,31 @@
 #include <new>
 #include "uSoundGenerator.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollision.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "../../XFramework/cZoneContents.h"
+#include "../../XFramework/cZoneLayout.h"
+#include "../../XFramework/cZoneListener.h"
+#include "../../generated/rLayout/nSoundZone.h"
 #include "../../XFramework/nZone.h"
+#include "rSoundSequenceSe.h"
 #include "../../XFramework/rZone.h"
+#include "sGame.h"
+#include "sPlayerManager.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "sSoundManager.h"
+#include "../../XFramework/sUnit.h"
+#include "../../XFramework/sZone.h"
+#include "../../XFramework/uCoord.h"
+#include "uPlayer.h"
 #include "uSoundSequenceSe.h"
 #include "uSoundZoneBase.h"
 #ifndef DDON_STUB
@@ -63,6 +80,72 @@ MtObject* cSoundGeneratorListener::MyDTI::newInstance() const {
     return new (16u) cSoundGeneratorListener;
 }
 
+const MtDTI& nSoundGenerator::cCategory::getDTI() const {
+    return nSoundGenerator::cCategory::DTI;
+}
+
+inline void nSoundGenerator::cCategory::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cCategory::DTI)->memFree(p_addr);
+}
+
+nSoundGenerator::cCategory::~cCategory() {
+}
+
+MtUI* nSoundGenerator::cCategory::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+void nSoundGenerator::cCategory::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+}
+
+nSoundGenerator::cCategory::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundGenerator::cCategory::MyDTI nSoundGenerator::cCategory::DTI("nSoundGenerator::cCategory", &::nSoundZoneBase::cSoundZoneContents::DTI, 32ul, 0u, 1u);
+
+MtObject* nSoundGenerator::cCategory::MyDTI::newInstance() const {
+    return nullptr;
+}
+
+const MtDTI& nSoundGenerator::cSeqSeContents::getDTI() const {
+    return nSoundGenerator::cSeqSeContents::DTI;
+}
+
+inline void nSoundGenerator::cSeqSeContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cSeqSeContents::DTI)->memFree(p_addr);
+}
+
+nSoundGenerator::cSeqSeContents::~cSeqSeContents() {
+    if (mpSequenceSe == nullptr) {
+        return;
+    }
+    mpSequenceSe->release();
+    mpSequenceSe = nullptr;
+}
+
+MtUI* nSoundGenerator::cSeqSeContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+void nSoundGenerator::cSeqSeContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    createPropertyForUI(s);
+}
+
+__attribute__((weak)) void nSoundGenerator::cSeqSeContents::createPropertyForUI(MtPropertyList& s) {
+    DDON_STUB("nSoundGenerator::cSeqSeContents::createPropertyForUI")
+    /* stub */
+}
+
+nSoundGenerator::cSeqSeContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundGenerator::cSeqSeContents::MyDTI nSoundGenerator::cSeqSeContents::DTI("nSoundGenerator::cSeqSeContents", &::nSoundGenerator::cCategory::DTI, 40ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundGenerator::cSeqSeContents::MyDTI::newInstance() const {
+    DDON_STUB("nSoundGenerator::cSeqSeContents::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& uSoundGenerator::getDTI() const {
     return uSoundGenerator::DTI;
 }
@@ -85,8 +168,7 @@ uSoundGenerator::uSoundGenerator() {
 }
 
 uSoundGenerator::~uSoundGenerator() {
-    DDON_STUB("uSoundGenerator::~uSoundGenerator")
-    /* stub */
+    sZone::getInstance()->removeListener(static_cast<cZoneListener*>(&mZoneListener));
 }
 
 MtUI* uSoundGenerator::createUI(MtProperty& prop) {

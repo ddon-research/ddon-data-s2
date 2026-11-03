@@ -165,8 +165,24 @@ public:
     static MyDTI DTI;
 };
 
+inline void* sUnitManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sUnitManager::cLODDistData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sUnitManager::cLODDistData::cLODDistData() {
     this->mLow = 3000.0f;
     this->mMed = 1000.0f;
     this->mpOwner = nullptr;
+}
+
+inline f32 sUnitManager::cLODDistData::getLow() {
+    return this->mLow;
+}
+
+inline f32 sUnitManager::cLODDistData::getMed() {
+    return this->mMed;
 }

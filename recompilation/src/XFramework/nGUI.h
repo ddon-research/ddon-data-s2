@@ -47,6 +47,7 @@ namespace nGUI { struct INSTANCE; }
 namespace nGUI { struct KEY; }
 namespace nGUI { struct MESSAGE; }
 namespace nGUI { struct MTAG; }
+namespace nGUI { struct MessageDrawState; }
 namespace nGUI { struct OBJECT; }
 namespace nGUI { struct OBJ_SEQUENCE; }
 namespace nGUI { struct PARAM; }
@@ -57,15 +58,14 @@ namespace nGUI { struct SWITCH_CONDITION; }
 namespace nGUI { struct SWITCH_OPERATOR; }
 namespace nGUI { class SamplerState; }
 namespace nGUI { struct TEXTURE; }
+namespace nGUI { struct TEXT_STATUS; }
 namespace nGUI { struct VARIABLE; }
 namespace nGUI { struct VERTEX; }
 namespace nGUI { struct PROP_SETTER; }
-namespace nGUI { struct MessageDrawState; }
 namespace nGUI { struct DRAW_LIST; }
 namespace nGUI { struct ANIM_SECTION; }
 namespace nGUI { struct CLASS_INFO; }
 namespace nGUI { class WrapPoint; }
-namespace nGUI { struct TEXT_STATUS; }
 namespace nGUI { struct FreePolygonPoint; }
 namespace nGUI { class Language; }
 
@@ -381,12 +381,10 @@ namespace nGUI {
 
     // Forward declarations
     struct PROP_SETTER;
-    struct MessageDrawState;
     struct DRAW_LIST;
     struct ANIM_SECTION;
     struct CLASS_INFO;
     class WrapPoint;
-    struct TEXT_STATUS;
     struct FreePolygonPoint;
     class Language;
 
@@ -405,36 +403,6 @@ namespace nGUI {
         u32 callNo : 16;  // offset: 0x0
         MT_CTSTR name;  // offset: 0x8
         MT_MFUNC func;  // offset: 0x10
-    };
-
-    struct MessageDrawState
-    {
-    public:
-        MessageDrawState(nGUI::Draw* pDraw, nGUI::BufferObject* vo, nGUI::BufferObject* io, nGUI::MTAG* * pMTag, nGUI::MTAG* pDrawStart, nGUI::MTAG* pDrawEnd, bool pe, cGUIFontFilter* pFilter, u32 index);
-        void setColor(u32 col, u32 type);
-        nGUI::MTAG* searchDrawMTag(nGUI::MTAG* pMTag, nDraw::Texture* pTexture) const;
-        nGUI::MTAG* searchDrawExtendMTag(nGUI::MTAG* pMTag, nGUI::MTAG* pExtendMTag) const;
-        nGUI::MTAG* searchDrawLineMTag(nGUI::MTAG* pMTag, nGUI::MTAG* pLineMTag) const;
-    public:
-        rGUIFont* pFont;  // offset: 0x0
-        cGUIFontFilter* pFontFilter;  // offset: 0x8
-        u32 ffIndex;  // offset: 0x10
-        u32 zbiasOffset;  // offset: 0x14
-        u32 color;  // offset: 0x18
-        u32 iconColor;  // offset: 0x1c
-        f32 fontWidth;  // offset: 0x20
-        f32 fontHeight;  // offset: 0x24
-        bool pageEnd;  // offset: 0x28
-        bool is3D;  // offset: 0x29
-        nGUI::MTAG* pDrawStartMTag;  // offset: 0x30
-        nGUI::MTAG* pDrawEndMTag;  // offset: 0x38
-        nGUI::MTAG* * ppDrawMTagTop;  // offset: 0x40
-        nGUI::MTAG* pDrawSearchTopMTag;  // offset: 0x48
-        nGUI::Draw* pDrawObj;  // offset: 0x50
-        nGUI::VERTEX* pVertex;  // offset: 0x58
-        nGUI::BufferObject* pVertexObject;  // offset: 0x60
-        u16* pIndex;  // offset: 0x68
-        nGUI::BufferObject* pIndexObject;  // offset: 0x70
     };
 
     struct DRAW_LIST
@@ -519,15 +487,6 @@ namespace nGUI {
         bool mIsValid;  // offset: 0xd
     public:
         static MyDTI DTI;
-    };
-
-    struct TEXT_STATUS
-    {
-    public:
-        TEXT_STATUS();
-    private:
-        s32 position;  // offset: 0x0
-        nGUI::TEXT_CONDITION condition;  // offset: 0x4
     };
 
     struct FreePolygonPoint
@@ -1237,6 +1196,38 @@ namespace nGUI {
 }  // namespace nGUI
 
 namespace nGUI {
+    struct MessageDrawState
+    {
+    public:
+        MessageDrawState(nGUI::Draw* pDraw, nGUI::BufferObject* vo, nGUI::BufferObject* io, nGUI::MTAG* * pMTag, nGUI::MTAG* pDrawStart, nGUI::MTAG* pDrawEnd, bool pe, cGUIFontFilter* pFilter, u32 index);
+        void setColor(u32 col, u32 type);
+        nGUI::MTAG* searchDrawMTag(nGUI::MTAG* pMTag, nDraw::Texture* pTexture) const;
+        nGUI::MTAG* searchDrawExtendMTag(nGUI::MTAG* pMTag, nGUI::MTAG* pExtendMTag) const;
+        nGUI::MTAG* searchDrawLineMTag(nGUI::MTAG* pMTag, nGUI::MTAG* pLineMTag) const;
+    public:
+        rGUIFont* pFont;  // offset: 0x0
+        cGUIFontFilter* pFontFilter;  // offset: 0x8
+        u32 ffIndex;  // offset: 0x10
+        u32 zbiasOffset;  // offset: 0x14
+        u32 color;  // offset: 0x18
+        u32 iconColor;  // offset: 0x1c
+        f32 fontWidth;  // offset: 0x20
+        f32 fontHeight;  // offset: 0x24
+        bool pageEnd;  // offset: 0x28
+        bool is3D;  // offset: 0x29
+        nGUI::MTAG* pDrawStartMTag;  // offset: 0x30
+        nGUI::MTAG* pDrawEndMTag;  // offset: 0x38
+        nGUI::MTAG* * ppDrawMTagTop;  // offset: 0x40
+        nGUI::MTAG* pDrawSearchTopMTag;  // offset: 0x48
+        nGUI::Draw* pDrawObj;  // offset: 0x50
+        nGUI::VERTEX* pVertex;  // offset: 0x58
+        nGUI::BufferObject* pVertexObject;  // offset: 0x60
+        u16* pIndex;  // offset: 0x68
+        nGUI::BufferObject* pIndexObject;  // offset: 0x70
+    };
+}  // namespace nGUI
+
+namespace nGUI {
     struct OBJECT
     {
     public:
@@ -1484,6 +1475,17 @@ namespace nGUI {
 }  // namespace nGUI
 
 namespace nGUI {
+    struct TEXT_STATUS
+    {
+    public:
+        TEXT_STATUS();
+    private:
+        s32 position;  // offset: 0x0
+        nGUI::TEXT_CONDITION condition;  // offset: 0x4
+    };
+}  // namespace nGUI
+
+namespace nGUI {
     struct VARIABLE
     {
     public:
@@ -1534,6 +1536,22 @@ namespace nGUI {
         f32 v;  // offset: 0x14
     };
 }  // namespace nGUI
+
+inline void* nGUI::WrapPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nGUI::Language::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nGUI::BlendState::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nGUI::SamplerState::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline nGUI::TEXT_STATUS::TEXT_STATUS() {
 }

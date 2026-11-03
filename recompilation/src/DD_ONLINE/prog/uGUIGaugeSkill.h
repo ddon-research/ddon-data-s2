@@ -115,3 +115,7 @@ public:
     static MyDTI DTI;
     static const u32 LV_NUM = 5;
 };
+
+inline void* uGUIGaugeSkill::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

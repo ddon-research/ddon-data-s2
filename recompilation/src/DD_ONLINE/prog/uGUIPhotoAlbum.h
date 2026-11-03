@@ -265,3 +265,12 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUIPhotoAlbum::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIPhotoAlbum::changeCategoryEnable() {
+    this->mCateList.mEnable[0] = true;
+    this->mCateList.mEnable[1] = this->mbSetupPhoto;
+}

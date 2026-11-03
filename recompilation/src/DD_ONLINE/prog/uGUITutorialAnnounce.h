@@ -102,6 +102,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUITutorialAnnounce::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sGUIExt::ANNOUNCE_TYPE uGUITutorialAnnounce::getAnnounceType() const {
     return this->mAnnounceType;
 }

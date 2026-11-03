@@ -3,8 +3,10 @@
 #include "cResource.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtFile.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtTime.h"
 #include "../MT/MtXmlReader.h"
 #include "sResource.h"
@@ -20,17 +22,11 @@ inline void cResource::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cResource::DTI)->memFree(p_addr);
 }
 
-u32 cResource::getQuality() const {
-    return mQuality;
-}
+static auto ddon_emit_0x01b5bad0 __attribute__((used)) = &cResource::getQuality;
 
-u32 cResource::getTag() const {
-    return mTag;
-}
+static auto ddon_emit_0x01b5ba80 __attribute__((used)) = &cResource::getTag;
 
-MT_CTSTR cResource::getPath() const {
-    return &mPath[0];
-}
+static auto ddon_emit_0x01b5ba60 __attribute__((used)) = &cResource::getPath;
 
 void cResource::addRef() {
     (sResource::mpInstance)->addRef(this);

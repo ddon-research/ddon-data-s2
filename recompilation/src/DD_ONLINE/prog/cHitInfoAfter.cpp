@@ -11,9 +11,14 @@
 #include "cDamageMsg.h"
 #include "cHitInfoAfterLocal.h"
 #include "cOcdDamageInfo.h"
+#include "cpHpDamageCtrl.h"
+#include "nLayout.h"
 #include "nObjCollision.h"
 #include "rAttackParam.h"
 #include "rCalcDamage.h"
+#include "sObjCollision.h"
+#include "sSetManager.h"
+#include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -226,6 +231,10 @@ const MtDTI& cHpDamageInfo::getDTI() const {
     return cHpDamageInfo::DTI;
 }
 
+inline void* cHpDamageInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cHpDamageInfo::DTI)->memAlloc(sz, align, cHpDamageInfo::DTI.getID());
+}
+
 inline void cHpDamageInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cHpDamageInfo::DTI)->memFree(p_addr);
 }
@@ -252,8 +261,7 @@ cHpDamageInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 
 cHpDamageInfo::MyDTI cHpDamageInfo::DTI("cHpDamageInfo", &::MtObject::DTI, 152ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cHpDamageInfo::MyDTI::newInstance() const {
-    DDON_STUB("cHpDamageInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cHpDamageInfo::MyDTI::newInstance() const {
+    return new (16u) cHpDamageInfo;
 }
 

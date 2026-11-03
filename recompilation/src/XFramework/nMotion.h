@@ -13,6 +13,7 @@ class MtVector3;
 namespace nMotion { struct KEYFRAME_INFO; }
 
 // Declarations
+namespace nMotion { struct CPARAM_WORK; }
 namespace nMotion { struct CURVE_PARAM; }
 namespace nMotion { struct MOTION_INFO; }
 namespace nMotion { struct MOTION_PARAM; }
@@ -24,6 +25,17 @@ using f32 = float;
 using s32 = int;
 using u16 = unsigned short;
 using u32 = unsigned int;
+
+namespace nMotion {
+    struct CPARAM_WORK
+    {
+    public:
+        const nMotion::CURVE_PARAM* pparam;  // offset: 0x0
+        f32 cur_frame;  // offset: 0x8
+        void* pcur_param;  // offset: 0x10
+        f32 weight;  // offset: 0x18
+    };
+}  // namespace nMotion
 
 namespace nMotion {
     struct CURVE_PARAM

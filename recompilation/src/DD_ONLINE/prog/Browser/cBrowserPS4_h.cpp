@@ -5,10 +5,21 @@
 #include "../../../MT/MtDTI.h"
 #include "../../../MT/MtMemoryAllocator.h"
 #include "../../../MT/MtObject.h"
+#include "../../../MT/MtPrimitive2D.h"
 #include "../../../MT/MtSynchronize.h"
+#include "cBrowserApplicationTask.h"
+#include "../cGUIUtility.h"
+#include "../../../generated/shared/lwgfxcontext.h"
+#include "../../../XFramework/nDrawTexture.h"
+#include "../sBrowser.h"
+#include "../../../XFramework/sMain.h"
+#include "../../../XFramework/sMouse.h"
+#include "../sMouseExt.h"
 #include "../../../XFramework/sPad.h"
+#include "../../../XFramework/sRender.h"
 #include "../../middleware/snj_browser_ps3/sdk/wave/target/win32/snj_browser.h"
 #include "../../middleware/snj_browser_ps3/sdk/wave/target/win32/snj_browser_common.h"
+#include "../../../generated/shared/texture.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

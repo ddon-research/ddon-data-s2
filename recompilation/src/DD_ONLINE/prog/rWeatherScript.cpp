@@ -15,6 +15,7 @@
 #include "res_ptr.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sGame.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

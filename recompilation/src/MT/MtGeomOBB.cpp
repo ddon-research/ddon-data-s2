@@ -10,6 +10,7 @@
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtPrimitive3D.h"
+#include "MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

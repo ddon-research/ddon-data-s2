@@ -203,6 +203,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAttackParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAttackParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rAttackParam::rAttackParam() {
     this->mUParam32[2] = 0;
     this->mUParam32[3] = 0;
@@ -210,4 +218,16 @@ inline rAttackParam::rAttackParam() {
     this->mUParam32[1] = 0;
     this->mUParam64[1] = 0;
     this->mUParam64[0] = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cAttackParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAttackParam::DTI)->memFree(p_addr);
+}
+
+inline void* cAttackParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAttackParam::DTI)->memAlloc(sz, align, ::cAttackParam::DTI.::MtDTI::getID());
 }

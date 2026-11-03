@@ -114,9 +114,25 @@ public:
     static MT_CTSTR mSubExt[4];
 };
 
+inline void* cScenarioData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cScenarioData::cScenarioData() {
     this->mpArg = nullptr;
     this->mpShape = nullptr;
     this->mpParam = nullptr;
     this->mIndex = -1;
+}
+
+inline AreaHitShape* cScenarioData::getShape() {
+    return this->mpShape;
+}
+
+inline cScenarioArg* cScenarioData::getArg() {
+    return this->mpArg;
+}
+
+inline void* rScenario::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

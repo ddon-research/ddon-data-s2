@@ -354,8 +354,16 @@ private:
     static const AuraParam AuraParams[];
 };
 
+inline void* uGUIGauge::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool uGUIGauge::isVisibleState() {
     return this->mVisibleState;
+}
+
+inline void* uGUIGauge::cGaugeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIGauge::cGaugeInfo::StatusInfo::StatusInfo() {

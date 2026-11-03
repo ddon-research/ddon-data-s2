@@ -7,7 +7,9 @@
 #include "../../MT/MtObject.h"
 #include "cpComponent.h"
 #include "nDDOUtility.h"
+#include "../../XFramework/sMain.h"
 #include "uDDOModel.h"
+#include "uHuman.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

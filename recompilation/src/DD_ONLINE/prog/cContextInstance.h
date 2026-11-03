@@ -42,9 +42,11 @@ namespace nNetMsgData { struct stNetPos; }
 namespace nObjCondition { struct stOcdActiveData; }
 namespace nObjCondition { struct stOcdActiveMsg; }
 class rCharacterEdit;
+class uEnemy;
 
 // Declarations
 class cContextInstChar;
+class cContextInstEm;
 class cContextInstHm;
 class cContextInstNpc;
 class cContextInstance;
@@ -468,6 +470,60 @@ public:
     static MyDTI DTI;
 };
 
+class cContextInstEm : public cContextInstChar
+{
+    friend class uEnemy;
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cContextInstEm();
+    virtual ~cContextInstEm();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void reset();  // vtable slot 6
+    f32 getLifespan() const;
+    void setLifespan(const f32 time);
+    bool isAllreadyInitLifespan() const;
+    void setIsAllreadyInitLifespan(bool flg);
+    bool getFirstErosionAction() const;
+    void setFirstErosionAction(bool flg);
+    f32 getBellowTimer() const;
+    void setBellowTimer(f32 time);
+    bool getFirstBellow() const;
+    void setFirstBellow(bool flg);
+    nDDOGame::ELEMENT_TYPE getLastEnchantType() const;
+    void setLastEnchantType(const nDDOGame::ELEMENT_TYPE type);
+private:
+    f32 mLifespan;  // offset: 0xba0
+    bool mIsAllreadyInitLifespan;  // offset: 0xba4
+    bool mFirstErosionAction;  // offset: 0xba5
+    f32 mBellowTimer;  // offset: 0xba8
+    bool mFlgFirstBellow;  // offset: 0xbac
+    nDDOGame::ELEMENT_TYPE mLastEnchantElementType;  // offset: 0xbb0
+public:
+    static MyDTI DTI;
+};
+
 class cContextInstHm : public cContextInstChar
 {
     friend class cContextInterface;
@@ -732,6 +788,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cContextInstChar::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cContextInstChar::getActFreeWork() const {
     return this->mActFreeWork;
 }
@@ -802,6 +862,10 @@ inline HP_DATATYPE cContextInstChar::getHpMaxPrivateCheatCheck(u32 index) const 
 
 inline bool cContextInstChar::getIsDeadPrivateCheatCheck(u32 index) const {
     return this->mIsDeadCheatCheck_pri[index];
+}
+
+inline void* cContextInstEm::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void cContextInstHm::setIndex(u8 index) {
@@ -922,6 +986,33 @@ inline f32 cContextInstHm::getFJobWork1() const {
 
 inline s32 cContextInstHm::getSJobWork0() const {
     return this->mSJobWork0;
+}
+
+inline void* cContextInstNpc::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cContextInstance::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cContextInstance::cContextInstance() {
+    this->mIsValid = 0;
+    this->mNetPos.x = 0.0;
+    this->mNetPos.y = 0.0f;
+    this->mUniqueId = 0;
+    this->mNetDir = 0.0f;
+    this->mStageNo = 0;
+    this->mNetPos.z = 0.0;
+    this->mMasterIndex = -1;
+    this->mMainEncountArea = -1;
+    this->mMasterChangeFlag = false;
+    this->mSendChangeMaster = false;
+    this->mSetWaitFlag = false;
+    this->mCatchType = 0;
+    this->mCatchTargetUid = 0;
+    this->mCatchJointNo = 0xFF;
+    this->mQuestId = 0;
 }
 
 inline bool cContextInstance::isValid() const {

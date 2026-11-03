@@ -122,6 +122,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rStageList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageList::Info::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rStageList::Info::Info() {
     this->mStageNo = 0;
     this->mType = 0;

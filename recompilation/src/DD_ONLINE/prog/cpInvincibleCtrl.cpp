@@ -5,9 +5,13 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cDelegate.h"
+#include "cHitInfoAfter.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
+#include "cpObjCollision.h"
 #include "nObjCollision.h"
+#include "sObjCollision.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -104,8 +108,17 @@ __attribute__((weak)) bool cpInvincibleCtrl::isDamageAttrOldActive(u32 attr) con
 }
 
 __attribute__((weak)) bool cpInvincibleCtrl::isDamageAttrActive_Through(nObjCollision::DAMAGE_ATTR_ENUM attrEnum, nObjCollision::UNIT_INV_THROUGH_TYPE type) const {
-    DDON_STUB("cpInvincibleCtrl::isDamageAttrActive_Through")
-    return {};
+        u32 attr = 1 << attrEnum;
+        if (type) {
+            if (this->mDamageAttr & attr) {
+                if (!(this->mInvThroughInfo[type].mAttr & attr) ||
+                    this->mInvThroughInfo[type].mPriority < this->mDamageAttrPriority[attrEnum]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return (this->mDamageAttr & attr) != 0;
 }
 
 __attribute__((weak)) void cpInvincibleCtrl::callbackDamageAfter_calcEnd(cHitInfoAfter* pHitInfo) {

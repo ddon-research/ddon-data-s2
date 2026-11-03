@@ -5,6 +5,10 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "cResource.h"
+#include "cUnit.h"
 #include "uConstraint.h"
 #include "uCoord.h"
 #include "uModel.h"
@@ -71,9 +75,7 @@ void uCnsJointOffset::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
-u32 uCnsJointOffset::getJoint() {
-    return mJoint;
-}
+static auto ddon_emit_0x01b67450 __attribute__((used)) = &uCnsJointOffset::getJoint;
 
 __attribute__((weak)) void uCnsJointOffset::createProperty(MtPropertyList& s) {
     DDON_STUB("uCnsJointOffset::createProperty")

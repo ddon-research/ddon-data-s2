@@ -98,6 +98,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEmScaleTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEmScaleTable::cEmScaleTable() {
     this->mBoneNo = 0;
     this->mFrame = 0.0f;
@@ -105,4 +109,20 @@ inline cEmScaleTable::cEmScaleTable() {
     this->mScale.y = 1.0f;
     this->mScale.z = 1.0f;
     this->mScale.pad_ = 0.0f;
+}
+
+inline void* rEmScaleTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEmScaleTable::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmScaleTable::DTI)->memFree(p_addr);
+}
+
+inline void* cEmScaleTable::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmScaleTable::DTI)->memAlloc(sz, align, ::cEmScaleTable::DTI.::MtDTI::getID());
 }

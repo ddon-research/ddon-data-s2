@@ -10,29 +10,46 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "../../MT/MtTime.h"
 #include "Protocol/PacketData/Warp.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
+#include "cContextInterface.h"
 #include "cControl.h"
+#include "cCycleQuestManagerBase.h"
 #include "cGUIControlMgr.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
 #include "cGUIUtility.h"
+#include "cMenuBase.h"
+#include "cMenuEntryBoard.h"
 #include "cNetGameServer.h"
 #include "cNetSessionManager.h"
+#include "cQuestSvRequest.h"
+#include "cQuestSvRequestManager.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "nDDOUtility.h"
+#include "nGUIItem.h"
 #include "nQuest.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
 #include "../../XFramework/rGUIMessage.h"
+#include "rItemList.h"
 #include "rWarpLocation.h"
 #include "../../XFramework/sArea.h"
+#include "sContextManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sGame.h"
+#include "sItemManager.h"
+#include "sMenu.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #include "sQuestManagerExt.h"
+#include "../../XFramework/sUnit.h"
+#include "../../XFramework/uCoord.h"
+#include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #include "uGUIPopCmd01.h"
 #include "uGUIPopDetail01.h"
@@ -1044,9 +1061,103 @@ __attribute__((weak)) void uGUINewspaper::initEventRewardDetail() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUINewspaper::initQuestInfo() {
-    DDON_STUB("uGUINewspaper::initQuestInfo")
-    /* stub */
+void uGUINewspaper::initQuestInfo() {
+    cGUIObject* t0 = getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 2u);
+    mQuestList.mpQuestImage = static_cast<cGUIObjTexture*>(t0);
+    mQuestList.mQuestImage.setup(static_cast<uGUIBase*>(this), t0, 5u);
+    mQuestList.mpQuestNamePlate = static_cast<cGUIObjPolygon*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 3u));
+    mQuestList.mpQuestName = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 4u));
+    cGUIObject* t1 = getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 47u);
+    if (t1 != nullptr) {
+        setObjectMessage(t1, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 7u), 0u, false);
+        mQuestList.mpQuestLv = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 5u));
+        mQuestList.mpAreaName = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 40u));
+        mQuestList.mpQuestText = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 75u));
+        mQuestList.mpUnknown = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 66u));
+        cGUIObject* t2 = getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 64u);
+        if (t2 != nullptr) {
+            setObjectMessage(t2, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 11u), 0u, false);
+            mQuestList.mpUnknownReward = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 67u));
+            mQuestList.mpUnknownRewardName = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 227u));
+            mQuestList.mpUnknownUnit = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 74u));
+            cGUIObject* t3 = getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 69u);
+            if (t3 != nullptr) {
+                setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 9u), 0u, false);
+            }
+            mQuestList.mpLimitTime = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 77u));
+            mQuestList.mButtonJump.pBase0 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 214u));
+            mQuestList.mButtonJump.pBase1 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 222u));
+            mQuestList.mButtonJump.pLocal = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 216u));
+            mQuestList.mButtonJump.pPointer = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 11u));
+            mQuestList.mButtonQuickMatch.pBase0 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 225u));
+            mQuestList.mButtonQuickMatch.pBase1 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 224u));
+            mQuestList.mButtonQuickMatch.pLocal = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 218u));
+            mQuestList.mButtonQuickMatch.pPointer = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 249u));
+            setVisibleRewardIcons(mQuestList, false);
+        } else {
+            mQuestList.mpUnknownReward = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 67u));
+            mQuestList.mpUnknownRewardName = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 227u));
+            mQuestList.mpUnknownUnit = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 74u));
+            cGUIObject* t3 = getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 69u);
+            if (t3 != nullptr) {
+                setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 9u), 0u, false);
+            }
+            mQuestList.mpLimitTime = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 77u));
+            mQuestList.mButtonJump.pBase0 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 214u));
+            mQuestList.mButtonJump.pBase1 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 222u));
+            mQuestList.mButtonJump.pLocal = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 216u));
+            mQuestList.mButtonJump.pPointer = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 11u));
+            mQuestList.mButtonQuickMatch.pBase0 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 225u));
+            mQuestList.mButtonQuickMatch.pBase1 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 224u));
+            mQuestList.mButtonQuickMatch.pLocal = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 218u));
+            mQuestList.mButtonQuickMatch.pPointer = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 249u));
+            setVisibleRewardIcons(mQuestList, false);
+        }
+    } else {
+        mQuestList.mpQuestLv = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 5u));
+        mQuestList.mpAreaName = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 40u));
+        mQuestList.mpQuestText = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 75u));
+        mQuestList.mpUnknown = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 66u));
+        cGUIObject* t2 = getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 64u);
+        if (t2 != nullptr) {
+            setObjectMessage(t2, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 11u), 0u, false);
+            mQuestList.mpUnknownReward = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 67u));
+            mQuestList.mpUnknownRewardName = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 227u));
+            mQuestList.mpUnknownUnit = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 74u));
+            cGUIObject* t3 = getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 69u);
+            if (t3 != nullptr) {
+                setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 9u), 0u, false);
+            }
+            mQuestList.mpLimitTime = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 77u));
+            mQuestList.mButtonJump.pBase0 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 214u));
+            mQuestList.mButtonJump.pBase1 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 222u));
+            mQuestList.mButtonJump.pLocal = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 216u));
+            mQuestList.mButtonJump.pPointer = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 11u));
+            mQuestList.mButtonQuickMatch.pBase0 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 225u));
+            mQuestList.mButtonQuickMatch.pBase1 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 224u));
+            mQuestList.mButtonQuickMatch.pLocal = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 218u));
+            mQuestList.mButtonQuickMatch.pPointer = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 249u));
+            setVisibleRewardIcons(mQuestList, false);
+        } else {
+            mQuestList.mpUnknownReward = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 67u));
+            mQuestList.mpUnknownRewardName = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 227u));
+            mQuestList.mpUnknownUnit = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 74u));
+            cGUIObject* t3 = getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 69u);
+            if (t3 != nullptr) {
+                setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 9u), 0u, false);
+            }
+            mQuestList.mpLimitTime = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 77u));
+            mQuestList.mButtonJump.pBase0 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 214u));
+            mQuestList.mButtonJump.pBase1 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 222u));
+            mQuestList.mButtonJump.pLocal = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 216u));
+            mQuestList.mButtonJump.pPointer = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 11u));
+            mQuestList.mButtonQuickMatch.pBase0 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 225u));
+            mQuestList.mButtonQuickMatch.pBase1 = static_cast<cGUIObjTextureSet*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 224u));
+            mQuestList.mButtonQuickMatch.pLocal = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 218u));
+            mQuestList.mButtonQuickMatch.pPointer = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mQuestList.mpInst), 249u));
+            setVisibleRewardIcons(mQuestList, false);
+        }
+    }
 }
 
 __attribute__((weak)) void uGUINewspaper::setType(s32 Type) {
@@ -1099,8 +1210,8 @@ void uGUINewspaper::updateAreaListHide(uGUIBase::cScrollListItemBase* pDispItem)
     if (pdisp->mpInstAnimLand == nullptr) {
         return;
     }
-    pdisp->mpInstAnimArea->cGUIInstance::setVisible(false);
-    pdisp->mpInstAnimLand->cGUIInstance::setVisible(false);
+    pdisp->mpInstAnimArea->setVisible(false);
+    pdisp->mpInstAnimLand->setVisible(false);
     pdisp->mIndex = -1;
 }
 
@@ -1302,12 +1413,79 @@ __attribute__((weak)) void uGUINewspaper::showSubMenu() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUINewspaper::updateEventJoinButton() {
-    DDON_STUB("uGUINewspaper::updateEventJoinButton")
-    /* stub */
+void uGUINewspaper::updateEventJoinButton() {
+    if (mControls.getCurrentPos(4u) == 0) {
+        if (mMode == 4) {
+            if (isEnableJoinContents()) {
+                if (mButtonJoin.pBase0 != nullptr) {
+                    mButtonJoin.pBase0->setCurrentFrame(1.0f, true);
+                }
+                if (mButtonJoin.pBase1 != nullptr) {
+                    mButtonJoin.pBase1->setCurrentFrame(1.0f, true);
+                }
+                if (mButtonJoin.pLocal != nullptr) {
+                    mButtonJoin.pLocal->setCurrentFrame(1.0f, true);
+                }
+            } else {
+                if (mButtonJoin.pBase0 != nullptr) {
+                    mButtonJoin.pBase0->setCurrentFrame(3.0f, true);
+                }
+                if (mButtonJoin.pBase1 != nullptr) {
+                    mButtonJoin.pBase1->setCurrentFrame(3.0f, true);
+                }
+                if (mButtonJoin.pLocal != nullptr) {
+                    mButtonJoin.pLocal->setCurrentFrame(3.0f, true);
+                }
+            }
+        } else {
+            if (isEnableJoinContents()) {
+                if (mButtonJoin.pBase0 != nullptr) {
+                    mButtonJoin.pBase0->setCurrentFrame(0.0f, true);
+                }
+                if (mButtonJoin.pBase1 != nullptr) {
+                    mButtonJoin.pBase1->setCurrentFrame(0.0f, true);
+                }
+                if (mButtonJoin.pLocal != nullptr) {
+                    mButtonJoin.pLocal->setCurrentFrame(0.0f, true);
+                }
+            } else {
+                if (mButtonJoin.pBase0 != nullptr) {
+                    mButtonJoin.pBase0->setCurrentFrame(2.0f, true);
+                }
+                if (mButtonJoin.pBase1 != nullptr) {
+                    mButtonJoin.pBase1->setCurrentFrame(2.0f, true);
+                }
+                if (mButtonJoin.pLocal != nullptr) {
+                    mButtonJoin.pLocal->setCurrentFrame(2.0f, true);
+                }
+            }
+        }
+    } else {
+        if (isEnableJoinContents()) {
+            if (mButtonJoin.pBase0 != nullptr) {
+                mButtonJoin.pBase0->setCurrentFrame(0.0f, true);
+            }
+            if (mButtonJoin.pBase1 != nullptr) {
+                mButtonJoin.pBase1->setCurrentFrame(0.0f, true);
+            }
+            if (mButtonJoin.pLocal != nullptr) {
+                mButtonJoin.pLocal->setCurrentFrame(0.0f, true);
+            }
+        } else {
+            if (mButtonJoin.pBase0 != nullptr) {
+                mButtonJoin.pBase0->setCurrentFrame(2.0f, true);
+            }
+            if (mButtonJoin.pBase1 != nullptr) {
+                mButtonJoin.pBase1->setCurrentFrame(2.0f, true);
+            }
+            if (mButtonJoin.pLocal != nullptr) {
+                mButtonJoin.pLocal->setCurrentFrame(2.0f, true);
+            }
+        }
+    }
 }
 
-bool uGUINewspaper::isEnableJoinContents() {
+__attribute__((weak)) bool uGUINewspaper::isEnableJoinContents() {
     if (sQuestManagerExt::getInstance()->isEnableCycleQuest()) {
         if (mIsEnableJoinContentsButton) {
             if (sQuestManagerExt::getInstance()->isCycleContentsPlayNow()) {
@@ -1471,7 +1649,7 @@ void uGUINewspaper::updateRankingListHide(uGUIBase::cScrollListItemBase* pDispIt
     if (pdisp->mpInst == nullptr) {
         return;
     }
-    pdisp->mpInst->cGUIInstance::setVisible(false);
+    pdisp->mpInst->setVisible(false);
     pdisp->mIndex = -1;
 }
 
@@ -1528,7 +1706,7 @@ void uGUINewspaper::updateRewardListSummaryHide(uGUIBase::cScrollListItemBase* p
     if (pdisp->mpNull == nullptr) {
         return;
     }
-    pdisp->mpNull->cGUIInstance::setVisible(false);
+    pdisp->mpNull->setVisible(false);
     pdisp->mIndex = -1;
 }
 
@@ -1545,7 +1723,7 @@ void uGUINewspaper::updateRewardListDetailHide(uGUIBase::cScrollListItemBase* pD
     if (pdisp->mpNull == nullptr) {
         return;
     }
-    pdisp->mpNull->cGUIInstance::setVisible(false);
+    pdisp->mpNull->setVisible(false);
     pdisp->mIndex = -1;
 }
 
@@ -1656,14 +1834,283 @@ __attribute__((weak)) void uGUINewspaper::unFocusButton() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUINewspaper::updateJumpButton() {
-    DDON_STUB("uGUINewspaper::updateJumpButton")
-    /* stub */
+void uGUINewspaper::updateJumpButton() {
+    if (mQuestSelectButton == 0) {
+        if (mMode == 2) {
+            if (mIsEnableQuestWarp) {
+                if (sQuestManagerExt::getInstance()->isEnableMenu_RimWarp()) {
+                    if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarp(false)) {
+                        if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarpDecide(false)) {
+                            if (getWarpInfo() != nullptr) {
+                                if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                                    mQuestList.mButtonJump.pBase0->setCurrentFrame(1.0f, true);
+                                }
+                                if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                                    mQuestList.mButtonJump.pBase1->setCurrentFrame(1.0f, true);
+                                }
+                                if (mQuestList.mButtonJump.pLocal != nullptr) {
+                                    mQuestList.mButtonJump.pLocal->setCurrentFrame(1.0f, true);
+                                }
+                            } else {
+                                mNoWarpType = 2;
+                                if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                                    mQuestList.mButtonJump.pBase0->setCurrentFrame(3.0f, true);
+                                }
+                                if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                                    mQuestList.mButtonJump.pBase1->setCurrentFrame(3.0f, true);
+                                }
+                                if (mQuestList.mButtonJump.pLocal != nullptr) {
+                                    mQuestList.mButtonJump.pLocal->setCurrentFrame(3.0f, true);
+                                }
+                            }
+                        } else {
+                            mNoWarpType = 0;
+                            if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                                mQuestList.mButtonJump.pBase0->setCurrentFrame(3.0f, true);
+                            }
+                            if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                                mQuestList.mButtonJump.pBase1->setCurrentFrame(3.0f, true);
+                            }
+                            if (mQuestList.mButtonJump.pLocal != nullptr) {
+                                mQuestList.mButtonJump.pLocal->setCurrentFrame(3.0f, true);
+                            }
+                        }
+                    } else {
+                        mNoWarpType = static_cast<sGUIExt*>(sGUI::getInstance())->isBattle();
+                        if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                            mQuestList.mButtonJump.pBase0->setCurrentFrame(3.0f, true);
+                        }
+                        if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                            mQuestList.mButtonJump.pBase1->setCurrentFrame(3.0f, true);
+                        }
+                        if (mQuestList.mButtonJump.pLocal != nullptr) {
+                            mQuestList.mButtonJump.pLocal->setCurrentFrame(3.0f, true);
+                        }
+                    }
+                } else {
+                    mNoWarpType = 0;
+                    if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                        mQuestList.mButtonJump.pBase0->setCurrentFrame(3.0f, true);
+                    }
+                    if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                        mQuestList.mButtonJump.pBase1->setCurrentFrame(3.0f, true);
+                    }
+                    if (mQuestList.mButtonJump.pLocal != nullptr) {
+                        mQuestList.mButtonJump.pLocal->setCurrentFrame(3.0f, true);
+                    }
+                }
+            } else {
+                mNoWarpType = 0;
+                if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                    mQuestList.mButtonJump.pBase0->setCurrentFrame(3.0f, true);
+                }
+                if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                    mQuestList.mButtonJump.pBase1->setCurrentFrame(3.0f, true);
+                }
+                if (mQuestList.mButtonJump.pLocal != nullptr) {
+                    mQuestList.mButtonJump.pLocal->setCurrentFrame(3.0f, true);
+                }
+            }
+        } else {
+            if (mIsEnableQuestWarp) {
+                if (sQuestManagerExt::getInstance()->isEnableMenu_RimWarp()) {
+                    if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarp(false)) {
+                        if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarpDecide(false)) {
+                            if (getWarpInfo() != nullptr) {
+                                if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                                    mQuestList.mButtonJump.pBase0->setCurrentFrame(0.0f, true);
+                                }
+                                if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                                    mQuestList.mButtonJump.pBase1->setCurrentFrame(0.0f, true);
+                                }
+                                if (mQuestList.mButtonJump.pLocal != nullptr) {
+                                    mQuestList.mButtonJump.pLocal->setCurrentFrame(0.0f, true);
+                                }
+                            } else {
+                                mNoWarpType = 2;
+                                if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                                    mQuestList.mButtonJump.pBase0->setCurrentFrame(2.0f, true);
+                                }
+                                if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                                    mQuestList.mButtonJump.pBase1->setCurrentFrame(2.0f, true);
+                                }
+                                if (mQuestList.mButtonJump.pLocal != nullptr) {
+                                    mQuestList.mButtonJump.pLocal->setCurrentFrame(2.0f, true);
+                                }
+                            }
+                        } else {
+                            mNoWarpType = 0;
+                            if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                                mQuestList.mButtonJump.pBase0->setCurrentFrame(2.0f, true);
+                            }
+                            if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                                mQuestList.mButtonJump.pBase1->setCurrentFrame(2.0f, true);
+                            }
+                            if (mQuestList.mButtonJump.pLocal != nullptr) {
+                                mQuestList.mButtonJump.pLocal->setCurrentFrame(2.0f, true);
+                            }
+                        }
+                    } else {
+                        mNoWarpType = static_cast<sGUIExt*>(sGUI::getInstance())->isBattle();
+                        if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                            mQuestList.mButtonJump.pBase0->setCurrentFrame(2.0f, true);
+                        }
+                        if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                            mQuestList.mButtonJump.pBase1->setCurrentFrame(2.0f, true);
+                        }
+                        if (mQuestList.mButtonJump.pLocal != nullptr) {
+                            mQuestList.mButtonJump.pLocal->setCurrentFrame(2.0f, true);
+                        }
+                    }
+                } else {
+                    mNoWarpType = 0;
+                    if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                        mQuestList.mButtonJump.pBase0->setCurrentFrame(2.0f, true);
+                    }
+                    if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                        mQuestList.mButtonJump.pBase1->setCurrentFrame(2.0f, true);
+                    }
+                    if (mQuestList.mButtonJump.pLocal != nullptr) {
+                        mQuestList.mButtonJump.pLocal->setCurrentFrame(2.0f, true);
+                    }
+                }
+            } else {
+                mNoWarpType = 0;
+                if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                    mQuestList.mButtonJump.pBase0->setCurrentFrame(2.0f, true);
+                }
+                if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                    mQuestList.mButtonJump.pBase1->setCurrentFrame(2.0f, true);
+                }
+                if (mQuestList.mButtonJump.pLocal != nullptr) {
+                    mQuestList.mButtonJump.pLocal->setCurrentFrame(2.0f, true);
+                }
+            }
+        }
+    } else {
+        if (mIsEnableQuestWarp) {
+            if (sQuestManagerExt::getInstance()->isEnableMenu_RimWarp()) {
+                if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarp(false)) {
+                    if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarpDecide(false)) {
+                        if (getWarpInfo() != nullptr) {
+                            if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                                mQuestList.mButtonJump.pBase0->setCurrentFrame(0.0f, true);
+                            }
+                            if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                                mQuestList.mButtonJump.pBase1->setCurrentFrame(0.0f, true);
+                            }
+                            if (mQuestList.mButtonJump.pLocal != nullptr) {
+                                mQuestList.mButtonJump.pLocal->setCurrentFrame(0.0f, true);
+                            }
+                        } else {
+                            mNoWarpType = 2;
+                            if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                                mQuestList.mButtonJump.pBase0->setCurrentFrame(2.0f, true);
+                            }
+                            if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                                mQuestList.mButtonJump.pBase1->setCurrentFrame(2.0f, true);
+                            }
+                            if (mQuestList.mButtonJump.pLocal != nullptr) {
+                                mQuestList.mButtonJump.pLocal->setCurrentFrame(2.0f, true);
+                            }
+                        }
+                    } else {
+                        mNoWarpType = 0;
+                        if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                            mQuestList.mButtonJump.pBase0->setCurrentFrame(2.0f, true);
+                        }
+                        if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                            mQuestList.mButtonJump.pBase1->setCurrentFrame(2.0f, true);
+                        }
+                        if (mQuestList.mButtonJump.pLocal != nullptr) {
+                            mQuestList.mButtonJump.pLocal->setCurrentFrame(2.0f, true);
+                        }
+                    }
+                } else {
+                    mNoWarpType = static_cast<sGUIExt*>(sGUI::getInstance())->isBattle();
+                    if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                        mQuestList.mButtonJump.pBase0->setCurrentFrame(2.0f, true);
+                    }
+                    if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                        mQuestList.mButtonJump.pBase1->setCurrentFrame(2.0f, true);
+                    }
+                    if (mQuestList.mButtonJump.pLocal != nullptr) {
+                        mQuestList.mButtonJump.pLocal->setCurrentFrame(2.0f, true);
+                    }
+                }
+            } else {
+                mNoWarpType = 0;
+                if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                    mQuestList.mButtonJump.pBase0->setCurrentFrame(2.0f, true);
+                }
+                if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                    mQuestList.mButtonJump.pBase1->setCurrentFrame(2.0f, true);
+                }
+                if (mQuestList.mButtonJump.pLocal != nullptr) {
+                    mQuestList.mButtonJump.pLocal->setCurrentFrame(2.0f, true);
+                }
+            }
+        } else {
+            mNoWarpType = 0;
+            if (mQuestList.mButtonJump.pBase0 != nullptr) {
+                mQuestList.mButtonJump.pBase0->setCurrentFrame(2.0f, true);
+            }
+            if (mQuestList.mButtonJump.pBase1 != nullptr) {
+                mQuestList.mButtonJump.pBase1->setCurrentFrame(2.0f, true);
+            }
+            if (mQuestList.mButtonJump.pLocal != nullptr) {
+                mQuestList.mButtonJump.pLocal->setCurrentFrame(2.0f, true);
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void uGUINewspaper::updateQuickMatchButton() {
-    DDON_STUB("uGUINewspaper::updateQuickMatchButton")
-    /* stub */
+void uGUINewspaper::updateQuickMatchButton() {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isEnableQuickParty()) {
+        if (mQuestSelectButton == 1) {
+            if (mMode == 2) {
+                if (mQuestList.mButtonQuickMatch.pBase0 != nullptr) {
+                    mQuestList.mButtonQuickMatch.pBase0->setCurrentFrame(1.0f, true);
+                }
+                if (mQuestList.mButtonQuickMatch.pBase1 != nullptr) {
+                    mQuestList.mButtonQuickMatch.pBase1->setCurrentFrame(1.0f, true);
+                }
+                if (mQuestList.mButtonQuickMatch.pLocal != nullptr) {
+                    mQuestList.mButtonQuickMatch.pLocal->setCurrentFrame(1.0f, true);
+                }
+            } else {
+                if (mQuestList.mButtonQuickMatch.pBase0 != nullptr) {
+                    mQuestList.mButtonQuickMatch.pBase0->setCurrentFrame(0.0f, true);
+                }
+                if (mQuestList.mButtonQuickMatch.pBase1 != nullptr) {
+                    mQuestList.mButtonQuickMatch.pBase1->setCurrentFrame(0.0f, true);
+                }
+                if (mQuestList.mButtonQuickMatch.pLocal != nullptr) {
+                    mQuestList.mButtonQuickMatch.pLocal->setCurrentFrame(0.0f, true);
+                }
+            }
+        } else {
+            if (mQuestList.mButtonQuickMatch.pBase0 != nullptr) {
+                mQuestList.mButtonQuickMatch.pBase0->setCurrentFrame(0.0f, true);
+            }
+            if (mQuestList.mButtonQuickMatch.pBase1 != nullptr) {
+                mQuestList.mButtonQuickMatch.pBase1->setCurrentFrame(0.0f, true);
+            }
+            if (mQuestList.mButtonQuickMatch.pLocal != nullptr) {
+                mQuestList.mButtonQuickMatch.pLocal->setCurrentFrame(0.0f, true);
+            }
+        }
+    } else {
+        if (mQuestList.mButtonQuickMatch.pBase0 != nullptr) {
+            mQuestList.mButtonQuickMatch.pBase0->setCurrentFrame(3.0f, true);
+        }
+        if (mQuestList.mButtonQuickMatch.pBase1 != nullptr) {
+            mQuestList.mButtonQuickMatch.pBase1->setCurrentFrame(3.0f, true);
+        }
+        if (mQuestList.mButtonQuickMatch.pLocal != nullptr) {
+            mQuestList.mButtonQuickMatch.pLocal->setCurrentFrame(3.0f, true);
+        }
+    }
 }
 
 __attribute__((weak)) void uGUINewspaper::setWarpDialog() {
@@ -1857,8 +2304,6 @@ const MtDTI& uGUINewspaper::cScrollAreaItemList::getDTI() const {
 }
 
 uGUINewspaper::cScrollAreaItemList::~cScrollAreaItemList() {
-    DDON_STUB("uGUINewspaper::cScrollAreaItemList::~cScrollAreaItemList")
-    /* stub */
 }
 
 uGUINewspaper::cScrollAreaItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1875,8 +2320,6 @@ const MtDTI& uGUINewspaper::cScrollQuestItemList::getDTI() const {
 }
 
 uGUINewspaper::cScrollQuestItemList::~cScrollQuestItemList() {
-    DDON_STUB("uGUINewspaper::cScrollQuestItemList::~cScrollQuestItemList")
-    /* stub */
 }
 
 uGUINewspaper::cScrollQuestItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

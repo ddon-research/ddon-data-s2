@@ -14,6 +14,7 @@ class MtObject;
 class MtPropertyList;
 class MtStream;
 class cCharParamEnemy;
+class uEnemy;
 
 // Declarations
 class rCharParamEnemy;
@@ -28,6 +29,7 @@ using u8 = unsigned char;
 
 class rCharParamEnemy : public cResource
 {
+    friend class uEnemy;
 public:
     class MyDTI;
 public:
@@ -70,6 +72,10 @@ public:
 protected:
     static const u8 DATA_VERSION = 10;
 };
+
+inline void* rCharParamEnemy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline cCharParamEnemy* rCharParamEnemy::getCharParamEnemy() {
     return this->mpCharParamEnemy;

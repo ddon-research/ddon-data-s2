@@ -29,6 +29,9 @@ class sScene;
 class sUnitExt;
 class uCharacterEdit;
 class uCharacterEditBase;
+class uEffectEmitter;
+class uFullbodyIKHuman2;
+class uScrollCollisionGeometryGroupModel;
 class uScrollCollisionGeometryModel;
 
 // Declarations
@@ -126,6 +129,9 @@ class sUnit : public cSystem
     friend class sUnitExt;
     friend class uCharacterEdit;
     friend class uCharacterEditBase;
+    friend class uEffectEmitter;
+    friend class uFullbodyIKHuman2;
+    friend class uScrollCollisionGeometryGroupModel;
     friend class uScrollCollisionGeometryModel;
 public:
     class MyDTI;
@@ -379,6 +385,66 @@ protected:
     static sUnit* mpInstance;
 };
 
+inline void* sUnit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sUnit* sUnit::getInstance() {
     return ::sUnit::mpInstance;
+}
+
+inline void* sUnit::MoveLine::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline bool sUnit::MoveLine::isParallel() {
+    return this->mParallel;
+}
+
+inline void sUnit::MoveLine::setParallel(bool p) {
+    this->mParallel = p;
+}
+
+inline bool sUnit::MoveLine::isPause() {
+    return this->mPause;
+}
+
+inline void sUnit::MoveLine::setPause(bool pause) {
+    this->mPause = pause;
+}
+
+inline bool sUnit::MoveLine::isDraw() const {
+    return this->mDraw;
+}
+
+inline void sUnit::MoveLine::setDraw(bool t) {
+    this->mDraw = t;
+}
+
+inline f32 sUnit::MoveLine::getDeltaTime() const {
+    return this->mDeltaTime;
+}
+
+inline void sUnit::MoveLine::setDeltaTime(f32 NewValue) {
+    this->mDeltaTime = NewValue;
+}
+
+inline void sUnit::MoveLine::setCastDraw(bool b) {
+    this->mCastDraw = b;
+}
+
+inline bool sUnit::MoveLine::getCastDraw() const {
+    return this->mCastDraw;
+}
+
+inline void sUnit::MoveLine::setRecvDraw(bool b) {
+    this->mRecvDraw = b;
+}
+
+inline bool sUnit::MoveLine::getRecvDraw() const {
+    return this->mRecvDraw;
+}
+
+inline void* sUnit::UnitGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -509,6 +509,50 @@ public:
     static const MODEL_TBL mModelTbl[10];
 };
 
+inline void* uAnimal::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uAnimal::ActBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uAnimal::ActBase::ActBase() {
     this->mpAnimal = nullptr;
+}
+
+inline void* uAnimal::ActFootwork::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uAnimal::ActWalk::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uAnimal::ActRun::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uAnimal::ActTurn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uAnimal::ActCollapse::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uAnimal::ActEscape::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uAnimal::ActApproach::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uAnimal::ActFlap::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uAnimal::ActSleep::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

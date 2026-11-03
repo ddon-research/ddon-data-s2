@@ -149,3 +149,7 @@ public:
     static const u32 MSGLISTVISIBLE_NUM = 15;
     static const u32 BTNGUIDE_NUM = 4;
 };
+
+inline void* uGUIMenuCmdPawn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

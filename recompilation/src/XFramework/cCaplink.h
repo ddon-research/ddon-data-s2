@@ -19,6 +19,7 @@ class MtString;
 class cWebsocketClient;
 namespace nCaplink { class ContextListener; }
 namespace nCaplink { class HttpRequestContext; }
+class sCaplinkManager;
 
 // Declarations
 namespace nCaplink { class Object; }
@@ -83,6 +84,7 @@ namespace nCaplink {
 namespace nCaplink {
     class Object : public ::MtObject
     {
+        friend class ::sCaplinkManager;
     public:
         class MyDTI;
         class cWebsocketClientListener;
@@ -329,6 +331,10 @@ namespace nCaplink {
         static MtCriticalSection mCs;
     };
 }  // namespace nCaplink
+
+inline void* nCaplink::Object::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline bool nCaplink::Object::getRetry() {
     return this->mRetry;

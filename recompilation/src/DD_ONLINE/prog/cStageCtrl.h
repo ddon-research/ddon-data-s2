@@ -125,6 +125,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cStageCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cStageCtrl::Area::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cStageCtrl::Area::Area() {
     this->mAreaNo = -1;
     this->mDepth = -1;

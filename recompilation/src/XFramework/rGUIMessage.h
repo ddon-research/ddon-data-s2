@@ -154,6 +154,10 @@ protected:
     static const u32 MAX_HASH = 256;
 };
 
+inline void* rGUIMessage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 rGUIMessage::getIndexNum() const {
     return this->mIndexNum;
 }

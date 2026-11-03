@@ -3,10 +3,13 @@
 #include "cJumpParamCtrl.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionSelect.h"
 #include "cpInput.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
 #ifndef DDON_STUB

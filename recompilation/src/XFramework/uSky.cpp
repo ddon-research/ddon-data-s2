@@ -2,13 +2,25 @@
 #include <new>
 #include "uSky.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "../MT/MtRandom.h"
+#include "cDraw.h"
 #include "cResource.h"
 #include "cUnit.h"
+#include "nDrawIndexBuffer.h"
+#include "nDrawResource.h"
+#include "nDrawTexture.h"
+#include "nDrawVertexBuffer.h"
+#include "rSky.h"
 #include "rTexture.h"
+#include "sRender.h"
 #include "sResource.h"
+#include "sUnit.h"
 #include "uFilter.h"
 #include "uFog.h"
 #ifndef DDON_STUB
@@ -75,9 +87,7 @@ void uSky::draw(cDraw* pdraw) {
     drawMoon(pdraw);
 }
 
-rSky* uSky::getResource() const {
-    return mpResource;
-}
+static auto ddon_emit_0x01b64e10 __attribute__((used)) = &uSky::getResource;
 
 __attribute__((weak)) void uSky::setResource(rSky* pres) {
     DDON_STUB("uSky::setResource")

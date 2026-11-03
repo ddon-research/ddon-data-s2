@@ -185,6 +185,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataCharacterSearchParameter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCharacterSearchParameter::CDataCharacterSearchParameter() {
     this->m_usItemRankMax = 0;
     this->m_unExpMax = 0;
@@ -195,9 +199,21 @@ inline CDataCharacterSearchParameter::CDataCharacterSearchParameter() {
     this->m_unExpMin = 0;
 }
 
+inline void* CDataPartySearchParameter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataPartySearchParameter::CDataPartySearchParameter() {
     this->m_unObjectiveType1 = 0;
     this->m_unPlayStyle = 0;
+}
+
+inline void* CDataPawnSearchParameter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataQuickMatchSearchParameter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuickMatchSearchParameter::CDataQuickMatchSearchParameter() {

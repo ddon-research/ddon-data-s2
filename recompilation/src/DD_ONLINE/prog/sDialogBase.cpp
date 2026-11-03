@@ -4,8 +4,21 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtString.h"
+#include "../../MT/MtSynchronize.h"
+#include "cNetGameServer.h"
+#include "cNetLoginServer.h"
+#include "cNetSessionManager.h"
 #include "../../XFramework/cSystem.h"
 #include "nDialog.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/sArea.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

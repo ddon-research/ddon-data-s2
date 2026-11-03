@@ -24,7 +24,7 @@ cSoundLayoutInfo* nSoundZone::getLayoutInfoFromZoneLayout(cZoneLayout* pZone, u3
     if (pZone != nullptr) {
         nZone::cLayoutElement* pLayout = pZone->getLayoutElement(index);
         if (pLayout != nullptr) {
-            return static_cast<cSoundLayoutInfo*>(pLayout->nZone::cLayoutElement::getExtendObj());
+            return static_cast<cSoundLayoutInfo*>(pLayout->getExtendObj());
         } else {
             return nullptr;
         }

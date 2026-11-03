@@ -3,13 +3,22 @@
 #include "cpVibration.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
 #include "../../XFramework/rVibration.h"
+#include "sArchiveManager.h"
+#include "sInputManager.h"
+#include "../../XFramework/sSavedata.h"
+#include "sSavedataExt.h"
+#include "../../XFramework/sVibration.h"
+#include "sVibrationExt.h"
 #include "../../XFramework/uBaseModel.h"
+#include "../../XFramework/uCoord.h"
+#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

@@ -2467,124 +2467,296 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cMenuApplyClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuApplyClan::cMenuApplyClan() {
+}
+
+inline void* cMenuApproveClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuApproveClan::cMenuApproveClan() {
 }
 
+inline void* cMenuApproveInvitedClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuApproveInvitedClan::cMenuApproveInvitedClan() {
+}
+
+inline void* cMenuCancelApplyClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuCancelApplyClan::cMenuCancelApplyClan() {
 }
 
+inline void* cMenuCancelClanScoutEntry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuCancelClanScoutEntry::cMenuCancelClanScoutEntry() {
+}
+
+inline void* cMenuCancelInviteClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuCancelInviteClan::cMenuCancelInviteClan() {
 }
 
+inline void* cMenuClanApplyList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuClanApplyList::cMenuClanApplyList() {
+}
+
+inline void* cMenuClanApplyManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuClanApplyManager::cMenuClanApplyManager() {
 }
 
+inline void* cMenuClanApproveDirectInvite::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuClanApproveDirectInvite::cMenuClanApproveDirectInvite() {
+}
+
+inline void* cMenuClanAuthority::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuClanAuthority::cMenuClanAuthority() {
 }
 
+inline void* cMenuClanChangeMaster::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuClanChangeMaster::cMenuClanChangeMaster() {
+}
+
+inline void* cMenuClanDirectInvite::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuClanDirectInvite::cMenuClanDirectInvite() {
 }
 
+inline void* cMenuClanDirectInvitedList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuClanDirectInvitedList::cMenuClanDirectInvitedList() {
+}
+
+inline void* cMenuClanExpelMember::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuClanExpelMember::cMenuClanExpelMember() {
 }
 
+inline void* cMenuClanHistory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuClanHistory::cMenuClanHistory() {
+}
+
+inline void* cMenuClanInfoDisp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuClanInfoDisp::cMenuClanInfoDisp() {
 }
 
+inline void* cMenuClanInfoManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuClanInfoManager::cMenuClanInfoManager() {
+}
+
+inline void* cMenuClanInviteList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuClanInviteList::cMenuClanInviteList() {
 }
 
+inline void* cMenuClanInvitedList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuClanInvitedList::cMenuClanInvitedList() {
+}
+
+inline void* cMenuClanJoinReqList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuClanJoinReqList::cMenuClanJoinReqList() {
 }
 
+inline void* cMenuClanList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuClanList::cMenuClanList() {
+}
+
+inline void* cMenuClanMemberList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuClanMemberList::cMenuClanMemberList() {
 }
 
+inline void* cMenuClanScoutEntry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuClanScoutEntry::cMenuClanScoutEntry() {
+}
+
+inline void* cMenuClanScoutEntryList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuClanScoutEntryList::cMenuClanScoutEntryList() {
 }
 
+inline void* cMenuClanSetMemberRank::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuClanSetMemberRank::cMenuClanSetMemberRank() {
+}
+
+inline void* cMenuCreateClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuEditClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMenuEditClanComment::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuEditClanComment::cMenuEditClanComment() {
 }
 
+inline void* cMenuEditClanDay::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuEditClanDay::cMenuEditClanDay() {
+}
+
+inline void* cMenuEditClanEmblem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuEditClanEmblem::cMenuEditClanEmblem() {
 }
 
+inline void* cMenuEditClanEntryComment::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuEditClanEntryComment::cMenuEditClanEntryComment() {
+}
+
+inline void* cMenuEditClanFeature::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuEditClanFeature::cMenuEditClanFeature() {
 }
 
+inline void* cMenuEditClanHour::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuEditClanHour::cMenuEditClanHour() {
+}
+
+inline void* cMenuEditClanMessage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuEditClanMessage::cMenuEditClanMessage() {
 }
 
+inline void* cMenuEditClanMotto::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuEditClanMotto::cMenuEditClanMotto() {
+}
+
+inline void* cMenuGetClanBaseInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuGetClanBaseInfo::cMenuGetClanBaseInfo() {
 }
 
+inline void* cMenuGetClanDetail::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuGetClanDetail::cMenuGetClanDetail() {
+}
+
+inline void* cMenuGetMyClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuGetMyClan::cMenuGetMyClan() {
 }
 
+inline void* cMenuGetMyScoutEntry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuGetMyScoutEntry::cMenuGetMyScoutEntry() {
+}
+
+inline void* cMenuInviteClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuInviteClan::cMenuInviteClan() {
 }
 
+inline void* cMenuQuitClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuQuitClan::cMenuQuitClan() {
 }
 
+inline void* cMenuSetClanName::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMenuSetClanName::cMenuSetClanName() {
+}
+
+inline void* cMenuSetClanNickName::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cMenuSetClanNickName::cMenuSetClanNickName() {

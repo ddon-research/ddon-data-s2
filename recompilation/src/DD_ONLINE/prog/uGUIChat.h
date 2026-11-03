@@ -793,6 +793,10 @@ public:
     static const s32 SENDMSGRECORD_NUM = 9;
 };
 
+inline void* uGUIChat::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool uGUIChat::isMenuUISubMenu() {
     return this->mIsMenuUISubMenu;
 }
@@ -807,6 +811,10 @@ inline bool uGUIChat::isForbid() {
 
 inline void uGUIChat::setAlpha(f32 fAlpha) {
     this->mAlpha = fAlpha;
+}
+
+inline void* uGUIChat::cWindow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIChat::cWindow::cWindow() {
@@ -834,6 +842,10 @@ inline uGUIChat::cWindow::cWindow() {
     this->mIsLarge = false;
 }
 
+inline void* uGUIChat::cPopWndwChSubCmd::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIChat::cPopWndwChSubCmd::cPopWndwChSubCmd() {
     this->mListCount = 0;
     this->mCursorWidth = 0.0f;
@@ -853,9 +865,21 @@ inline uGUIChat::cPopWndwChSubCmd::cPopWndwChSubCmd() {
     this->mpParentGUI = nullptr;
 }
 
+inline void* uGUIChat::cPopWndwAddress::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIChat::cPopWndwYoN::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIChat::cPopWndwYoN::cPopWndwYoN() {
     this->mpObjMsg = nullptr;
     this->mpInstNull = nullptr;
+}
+
+inline void* uGUIChat::cPopWndwAddCh::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIChat::cPopWndwAddCh::cPopWndwAddCh() {
@@ -863,7 +887,23 @@ inline uGUIChat::cPopWndwAddCh::cPopWndwAddCh() {
     this->mpInstNull = nullptr;
 }
 
+inline void* uGUIChat::cCheckList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIChat::cCheckList::cCheckList() {
+}
+
+inline void* uGUIChat::cLogItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIChat::cLogInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline f32 uGUIChat::cLogInfo::getHeight() const {
+    return this->mMsgHeight;
 }
 
 inline s32 uGUIChat::cLogInfo::getLogId() const {

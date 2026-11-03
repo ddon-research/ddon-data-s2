@@ -7,11 +7,30 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
 #include "../../MT/MtTime.h"
 #include "Protocol/PacketData/Quest.h"
+#include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
 #include "cCycleQuestManagerBase.h"
+#include "cNetGameServer.h"
+#include "cNetSessionManager.h"
+#include "cQuestTask.h"
+#include "nDDOUtility.h"
+#include "nHumanMsg.h"
+#include "nJobParam.h"
 #include "nMarker.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "sContextManager.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "sItemManager.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sNpcManager.h"
 #include "sQuestManagerExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -844,7 +863,7 @@ nQuest::CYCLE_CONTENTS_PERIOD nQuest::cCycleContentsInfo::getCycleContentsPeriod
 nQuest::CYCLE_CONTENTS_PERIOD nQuest::cCycleContentsInfo::getCycleContentsPeriodRealTime() const {
     cCycleQuestManagerBase* pMgr = ::sQuestManagerExt::getInstance()->getCycleContentsMgr(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory));
     if (pMgr != nullptr) {
-        return pMgr->::cCycleQuestManagerBase::getCycleContentsPeriodFromSubCategory(static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory));
+        return pMgr->getCycleContentsPeriodFromSubCategory(static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory));
     } else {
         return ::nQuest::CYCLE_CONTENTS_PERIOD_NONE;
     }
@@ -1416,7 +1435,7 @@ nQuest::cCycleContentsResultInfo::cCycleContentsResultInfo() {
     /* stub */
 }
 
-nQuest::cCycleContentsResultInfo::~cCycleContentsResultInfo() {
+__attribute__((noinline)) nQuest::cCycleContentsResultInfo::~cCycleContentsResultInfo() {
     if (mPointList.mLength != 0) {
         u32 v0_0 = mPointList.mLength;
         for (unsigned int i0_3 = 0;;) {

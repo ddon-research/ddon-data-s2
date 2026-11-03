@@ -233,3 +233,39 @@ private:
     static const u32 ATTR_LAYOUTING = 2147483648;
     static const MtSize TEXTURE_SIZE[14];
 };
+
+inline void* rGUIFont::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 rGUIFont::getSuffix() const {
+    return this->mSuffix;
+}
+
+inline u32 rGUIFont::getFontType() const {
+    return this->mFontType;
+}
+
+inline u32 rGUIFont::getFontSize() const {
+    return this->mFontSize;
+}
+
+inline u32 rGUIFont::getTextureNum() const {
+    return this->mTextureNum;
+}
+
+inline f32 rGUIFont::getMaxAscent() const {
+    return this->mMaxAscent;
+}
+
+inline f32 rGUIFont::getMaxDescent() const {
+    return this->mMaxDescent;
+}
+
+inline u32 rGUIFont::getDynamicTextureNum() const {
+    return this->mDynamicTextureNum;
+}
+
+inline u32 rGUIFont::getDynamicTextureSize() const {
+    return this->mDynamicTextureSize;
+}

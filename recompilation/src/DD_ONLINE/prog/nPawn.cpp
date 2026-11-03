@@ -7,6 +7,8 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "../../XFramework/uCoord.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -62,8 +64,11 @@ void cPawnEnableArea::load(MtDataReader& r) {
 }
 
 __attribute__((weak)) void cPawnEnableArea::copy(const cPawnEnableArea& src) {
-    DDON_STUB("cPawnEnableArea::copy")
-    /* stub */
+    mMinXZ = src.mMinXZ;
+    mMaxXZ = src.mMaxXZ;
+    mMinY = src.mMinY;
+    mMaxY = src.mMaxY;
+    mRadius = src.mRadius;
 }
 
 cPawnEnableArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

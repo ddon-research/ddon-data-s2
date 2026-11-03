@@ -3,14 +3,27 @@
 #include "rGUI.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "../MT/MtString.h"
 #include "cGUIFontFilter.h"
+#include "cGUIInstance.h"
+#include "cGUIObject.h"
+#include "cGUIVariable.h"
 #include "cResource.h"
+#include "nDrawVertexBuffer.h"
 #include "nGUI.h"
+#include "rGUIFont.h"
+#include "rGUIMessage.h"
+#include "rRenderTargetTexture.h"
+#include "rTexture.h"
+#include "sGUI.h"
+#include "sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -77,13 +90,9 @@ __attribute__((weak)) bool rGUI::setData() {
     return {};
 }
 
-u32 rGUI::getBaseZ() const {
-    return mBaseZ;
-}
+static auto ddon_emit_0x01b9dd40 __attribute__((used)) = &rGUI::getBaseZ;
 
-nGUI::LANGUAGE_SETTING rGUI::getLanguageSettingNo() const {
-    return static_cast<nGUI::LANGUAGE_SETTING>(mLanguageSettingNo);
-}
+static auto ddon_emit_0x01b9dda0 __attribute__((used)) = &rGUI::getLanguageSettingNo;
 
 t64 rGUI::getUpdateTime2() const {
     return mpHeader->updateTime;
@@ -263,13 +272,9 @@ bool rGUI::is3D() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 120)) & 2) >> 1);
 }
 
-nGUI::FRAMERATE_MODE rGUI::getFramerateMode() const {
-    return static_cast<nGUI::FRAMERATE_MODE>(mFramerateMode);
-}
+static auto ddon_emit_0x01b9dd70 __attribute__((used)) = &rGUI::getFramerateMode;
 
-void rGUI::setFramerateMode(nGUI::FRAMERATE_MODE mode) {
-    mFramerateMode = mode;
-}
+static auto ddon_emit_0x01b9dd80 __attribute__((used)) = &rGUI::setFramerateMode;
 
 const rGUI::InstanceNeedObjectInfo* rGUI::getInstanceNeedObjectInfoPtr(u32 InstanceID) const {
     u32 v0_2 = mpHeader->instanceNum;

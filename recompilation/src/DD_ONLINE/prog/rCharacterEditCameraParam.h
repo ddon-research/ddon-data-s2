@@ -148,3 +148,15 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cCharacterEditCameraParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCharacterEditCameraParam::cCameraParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rCharacterEditCameraParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -211,6 +211,14 @@ private:
     static const nCharacterData::EQUIP_CATEGORY mEquipCategoryTbl[];
 };
 
+inline void* cCraftRecipe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCraftRecipe::cCraftRecipeList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cCraftRecipe::cCraftRecipeList::getRecipeId() const {
     return this->mRecipeId;
 }

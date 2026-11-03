@@ -4,9 +4,15 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cGeneralPoint.h"
 #include "cGeneralPointPtr.h"
+#include "../../XFramework/cUnit.h"
+#include "cpAIPawnEmChecker.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -65,8 +71,12 @@ __attribute__((weak)) void cAITargetInfoArray::addInfoPoint(cGeneralPoint* pGp, 
     /* stub */
 }
 
-__attribute__((weak)) cGeneralPoint* cAITargetInfoArray::getHitPoint(u32 idx) {
-    DDON_STUB("cAITargetInfoArray::getHitPoint")
+cGeneralPoint* cAITargetInfoArray::getHitPoint(u32 idx) {
+    if (idx < mLength) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 24)) + static_cast<unsigned long>(idx * 8u)) + 0)) != 0) {
+            return reinterpret_cast<cGeneralPoint*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 24)) + static_cast<unsigned long>(idx * 8u)) + 0)) + 16));
+        }
+    }
     return nullptr;
 }
 

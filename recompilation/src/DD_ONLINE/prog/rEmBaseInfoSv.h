@@ -95,7 +95,27 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEmBaseInfoSv::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEmBaseInfoSv::cEmBaseInfoSv() {
     this->mEnemyID = 0;
     this->mEmCategory = 0;
+}
+
+inline void* rEmBaseInfoSv::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEmBaseInfoSv::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmBaseInfoSv::DTI)->memFree(p_addr);
+}
+
+inline void* cEmBaseInfoSv::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmBaseInfoSv::DTI)->memAlloc(sz, align, ::cEmBaseInfoSv::DTI.::MtDTI::getID());
 }

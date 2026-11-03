@@ -59,6 +59,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataGoodsParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataGoodsParam::CDataGoodsParam() {
     this->m_unRequireFavorite = 0;
     this->m_unItemID = 0;

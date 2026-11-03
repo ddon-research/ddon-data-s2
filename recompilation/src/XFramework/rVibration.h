@@ -171,10 +171,18 @@ protected:
     static const u32 VIB_VERSION;
 };
 
+inline void* rVibration::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rVibration::rVibration() {
     this->mListNum = 0;
     this->mParamBuffSize = 0;
     this->mBaseFps = 0.0f;
     this->mpParamBuff = nullptr;
     this->::cResource::mAttr = 22;
+}
+
+inline u32 rVibration::getResourceSize() const {
+    return this->mParamBuffSize + 136u;
 }

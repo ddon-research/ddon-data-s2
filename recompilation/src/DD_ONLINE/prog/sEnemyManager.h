@@ -145,6 +145,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* sEnemyManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sEnemyManager* sEnemyManager::getInstance() {
     return ::sEnemyManager::mpInstance;
 }

@@ -47,8 +47,6 @@ inline void rCharacterEditModelPalette::operator delete(void* p_addr) {
 }
 
 rCharacterEditModelPalette::~rCharacterEditModelPalette() {
-    DDON_STUB("rCharacterEditModelPalette::~rCharacterEditModelPalette")
-    /* stub */
 }
 
 bool rCharacterEditModelPalette::loadData(MtDataReader& r, cCharacterEditModelPalette* pData) {

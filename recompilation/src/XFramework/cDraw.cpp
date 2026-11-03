@@ -9,9 +9,15 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPropertyList.h"
 #include "nDraw.h"
 #include "nDrawMaterial.h"
+#include "nDrawResource.h"
+#include "sMain.h"
+#include "sOccluder.h"
 #include "sRender.h"
+#include "sScene.h"
+#include "sShader2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

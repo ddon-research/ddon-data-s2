@@ -721,7 +721,35 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIBoxGachaInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBoxGachaInfo::cLotList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBoxGachaInfo::cSumList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBoxGachaInfo::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIBoxGachaInfo::stDetail::stDetail() {
+}
+
+inline void* uGUIBoxGachaInfo::cLotInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBoxGachaInfo::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBoxGachaInfo::cItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIBoxGachaInfo::cItemInfo::cItemInfo() {

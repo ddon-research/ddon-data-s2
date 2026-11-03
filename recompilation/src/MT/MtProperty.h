@@ -59,6 +59,7 @@ class MtVariable;
 class MtVector2;
 class MtVector3;
 class MtVector4;
+class cGUIObjTextureSet;
 
 // Declarations
 class MtProperty;
@@ -85,6 +86,7 @@ using u8 = unsigned char;
 class MtProperty
 {
     friend class MtPropertyList;
+    friend class cGUIObjTextureSet;
 public:
     enum TYPE
     {

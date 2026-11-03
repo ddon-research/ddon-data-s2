@@ -3,17 +3,50 @@
 #include "uGUIGauge.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
+#include "cContextInstance.h"
+#include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
+#include "../../XFramework/cGUIVariable.h"
+#include "cOcdParamRes.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "cpJob03.h"
+#include "cpJob05.h"
+#include "cpJob06.h"
+#include "cpJob07.h"
+#include "cpJob09.h"
+#include "cpStateManager.h"
 #include "nCharacterData.h"
 #include "nDDOUtility.h"
 #include "nGUIExt.h"
+#include "nJobParam.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "rItemList.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sContextManager.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "sPlayerManager.h"
+#include "sTalkManager.h"
+#include "uDDOModel.h"
+#include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
+#include "uHuman.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -115,17 +148,17 @@ void uGUIGauge::setupAura() {
         return;
     }
     mpINST_msg_job04 = inst_msg_job04;
-    mAuraBaseX = inst_msg_job04->::cGUIInstNull::mPosition.x;
+    mAuraBaseX = inst_msg_job04->mPosition.x;
     mAuraOffsetX = static_cast<float>(getVariableInitParamS32FromId(13u));
-    cGUIInstAnimation* inst_msg_job04_copy = static_cast<cGUIInstAnimation*>(ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->cGUIInstance::getParent()));
+    cGUIInstAnimation* inst_msg_job04_copy = static_cast<cGUIInstAnimation*>(ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->getParent()));
     if (inst_msg_job04_copy != nullptr) {
         mAuras.elems[0].mpINST_msg_job04 = inst_msg_job04_copy;
         mAuras.elems[0].mpOBJ_msg_job04_m_txt = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(inst_msg_job04_copy), 5u));
         mAuras.elems[0].mpOBJ_msg_job04_icon = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(inst_msg_job04_copy), 6u));
-        inst_msg_job04_copy->cGUIInstance::setVisible(false);
-        inst_msg_job04_copy->cGUIInstance::setExecute(false);
+        inst_msg_job04_copy->setVisible(false);
+        inst_msg_job04_copy->setExecute(false);
         mAuras.elems[0].mAuraType = AuraTypeInvalid;
-        cGUIInstance* t0 = ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->cGUIInstance::getParent());
+        cGUIInstance* t0 = ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->getParent());
         if (t0 != nullptr) {
             mAuras.elems[1].mpINST_msg_job04 = static_cast<cGUIInstAnimation*>(t0);
             mAuras.elems[1].mpOBJ_msg_job04_m_txt = static_cast<cGUIObjMessage*>(getObjectFromId(t0, 5u));
@@ -134,11 +167,11 @@ void uGUIGauge::setupAura() {
             t0->setExecute(false);
         }
         mAuras.elems[1].mAuraType = AuraTypeInvalid;
-        inst_msg_job04->cGUIInstance::setVisible(false);
-        inst_msg_job04->cGUIInstance::setExecute(false);
+        inst_msg_job04->setVisible(false);
+        inst_msg_job04->setExecute(false);
     } else {
         mAuras.elems[0].mAuraType = AuraTypeInvalid;
-        cGUIInstance* t0 = ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->cGUIInstance::getParent());
+        cGUIInstance* t0 = ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->getParent());
         if (t0 != nullptr) {
             mAuras.elems[1].mpINST_msg_job04 = static_cast<cGUIInstAnimation*>(t0);
             mAuras.elems[1].mpOBJ_msg_job04_m_txt = static_cast<cGUIObjMessage*>(getObjectFromId(t0, 5u));
@@ -147,8 +180,8 @@ void uGUIGauge::setupAura() {
             t0->setExecute(false);
         }
         mAuras.elems[1].mAuraType = AuraTypeInvalid;
-        inst_msg_job04->cGUIInstance::setVisible(false);
-        inst_msg_job04->cGUIInstance::setExecute(false);
+        inst_msg_job04->setVisible(false);
+        inst_msg_job04->setExecute(false);
     }
 }
 

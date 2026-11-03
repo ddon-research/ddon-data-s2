@@ -171,6 +171,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCustomShlLimit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCustomShlLimit::cCustomShlLimit() {
     this->mLimitId = -1;
     this->mShlMaxNum = 0;
@@ -178,8 +182,40 @@ inline cCustomShlLimit::cCustomShlLimit() {
     this->mKillType = 0;
 }
 
+inline void* cShlLimit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cShlLimit::cShlLimit() {
     this->mShlMaxNum = 0;
     this->mLimitType = 0;
     this->mCustomShlLimitId = -1;
+}
+
+inline void* rCustimShlLimit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rShlLimit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCustomShlLimit::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCustomShlLimit::DTI)->memFree(p_addr);
+}
+
+inline void* cCustomShlLimit::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCustomShlLimit::DTI)->memAlloc(sz, align, ::cCustomShlLimit::DTI.::MtDTI::getID());
+}
+
+inline void cShlLimit::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlLimit::DTI)->memFree(p_addr);
+}
+
+inline void* cShlLimit::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlLimit::DTI)->memAlloc(sz, align, ::cShlLimit::DTI.::MtDTI::getID());
 }

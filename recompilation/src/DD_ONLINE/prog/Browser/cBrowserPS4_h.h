@@ -182,6 +182,14 @@ public:
     static const u32 URL_STRING_KEEP_NUM = 10;
 };
 
+inline void* cBrowserKeepString::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cBrowserPS4::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cBrowserPS4::setPos(const int x, const int y) {
     this->m_dspx = x;
     this->m_dspy = y;

@@ -9,35 +9,60 @@
 #include "Protocol/PacketData/AreaMaster.h"
 #include "Protocol/PacketData/Character.h"
 #include "Protocol/PacketData/Item.h"
+#include "Protocol/PacketData/JobMaster.h"
 #include "Protocol/PacketData/JobOrbTree.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCharset.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
+#include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
 #include "Protocol/PacketData/Quest.h"
+#include "Protocol/UserSession/S2C.h"
 #include "Protocol/PacketData/Skill.h"
 #include "Protocol/PacketData/Stage.h"
+#include "aGame.h"
+#include "aStage.h"
+#include "cAcquirementData.h"
 #include "cArcLoader.h"
+#include "../../XFramework/cArea.h"
+#include "Browser/cBrowserPS4_h.h"
 #include "cCharacterData.h"
+#include "cContextInstance.h"
+#include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cEndContentsManager.h"
+#include "cEquipData.h"
 #include "cGUIExtNetMgr.h"
 #include "cGUIFloorManager.h"
 #include "cGUIKeepString.h"
+#include "../../XFramework/cGUIMessageAnalyzer.h"
 #include "cGUIUtility.h"
 #include "cItemParam.h"
+#include "cNetGameServer.h"
 #include "cNetSessionManager.h"
 #include "cPcTouchAction.h"
+#include "cPlDeadFlow.h"
+#include "cQuestTask.h"
 #include "cResPath.h"
 #include "../../XFramework/cResource.h"
 #include "cServerUIClientControl.h"
 #include "../../XFramework/cSystem.h"
 #include "cUIObject.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpActionRequest.h"
+#include "cpInput.h"
+#include "cpInputPad.h"
+#include "cpPawnThink.h"
 #include "nCharacterData.h"
 #include "nCharacterEdit.h"
 #include "../../generated/shared/nDDOModel.h"
@@ -50,20 +75,32 @@
 #include "../../generated/shared/nHuman.h"
 #include "nHumanMsg.h"
 #include "../../generated/shared/nKeyCustom.h"
+#include "nMarker.h"
 #include "nQuest.h"
 #include "rAchievement.h"
 #include "rArchiveListArray.h"
 #include "rEmblemColorTable.h"
+#include "rFieldAreaList.h"
+#include "rFieldMapData.h"
 #include "../../XFramework/rGUIFont.h"
 #include "../../XFramework/rGUIIconInfo.h"
+#include "rGUIMapSetting.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "rItemList.h"
 #include "rMapSpotData.h"
+#include "rMapSpotStageList.h"
 #include "rReplaceWardGmdList.h"
+#include "../../XFramework/rScheduler.h"
 #include "../../XFramework/rSoundRequest.h"
+#include "rStageInfo.h"
+#include "rStageMap.h"
 #include "rTbl2ChatMacro.h"
 #include "rTblMenuComm.h"
+#include "../../XFramework/rTextureJpeg.h"
 #include "rWarpLocation.h"
+#include "sAIPawnSys.h"
+#include "sAIPawnTalkMgr.h"
+#include "../../XFramework/sApp.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
@@ -73,28 +110,46 @@
 #include "sChat.h"
 #include "sContextManager.h"
 #include "sEnemyManager.h"
+#include "sFlag.h"
 #include "../../XFramework/sGUI.h"
 #include "sGame.h"
 #include "sInputManager.h"
 #include "sItemManager.h"
+#include "../../XFramework/sKeyboard.h"
+#include "sKeyboardExt.h"
 #include "../../XFramework/sMain.h"
 #include "sMarker.h"
+#include "../../XFramework/sMouse.h"
+#include "sMouseExt.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "sNpcManager.h"
 #include "../../XFramework/sPad.h"
 #include "sPadExt.h"
 #include "../../XFramework/sPlatformUtil.h"
 #include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
 #include "../../XFramework/sRender.h"
+#include "../../XFramework/sSavedata.h"
+#include "sSavedataExt.h"
+#include "sSetManager.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "sSoundManager.h"
+#include "sTalkManager.h"
 #include "../../XFramework/sUnit.h"
 #include "sUnitExt.h"
+#include "sWorldOffset.h"
+#include "uCharacter.h"
 #include "uCharacterEdit.h"
+#include "uControl.h"
+#include "uControlEnemy.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
 #include "uGUIActionPalette.h"
 #include "uGUIAim.h"
+#include "uGUIAnnounce.h"
 #include "uGUIBase.h"
 #include "uGUIBaseExt.h"
 #include "uGUIBrowserBG.h"
@@ -107,16 +162,25 @@
 #include "uGUIGainInfo.h"
 #include "uGUIGameMenu.h"
 #include "uGUIGauge.h"
+#include "uGUIGaugeArts.h"
+#include "uGUIGaugeArtsV01_03.h"
+#include "uGUIGaugeEnemyBoss.h"
 #include "uGUIGaugeExp.h"
 #include "uGUIGaugeNpc.h"
 #include "uGUIGaugeSkill.h"
+#include "uGUIGaugeSorcery.h"
 #include "uGUIHudCustomSkillPallet.h"
 #include "uGUIHudJob10Gauge.h"
+#include "uGUIIndicator.h"
 #include "uGUIInfo.h"
 #include "uGUIInputText.h"
+#include "uGUILoading.h"
 #include "uGUIMap.h"
+#include "uGUIMapMini.h"
 #include "uGUIMouseOverCursor.h"
+#include "uGUIMousePointer.h"
 #include "uGUINpcWindow.h"
+#include "uGUIOption.h"
 #include "uGUIPlace.h"
 #include "uGUIPointer.h"
 #include "uGUIPopCmd01.h"
@@ -125,16 +189,20 @@
 #include "uGUIQuestBoard.h"
 #include "uGUIQuestDelivery.h"
 #include "uGUIQuestInfo.h"
+#include "uGUIQueueAnnounce.h"
 #include "uGUIRankingBoard.h"
 #include "uGUIShakeEnemy.h"
 #include "uGUIShakeStick.h"
 #include "uGUIShopTitle.h"
+#include "uGUISkill.h"
 #include "uGUISystemMsg.h"
 #include "uGUITelop.h"
 #include "uGUITextHud.h"
 #include "uGUITutorialAnnounce.h"
+#include "uGUITutorialPop.h"
 #include "uHuman.h"
 #include "uPlayer.h"
+#include "uStageParts.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -374,9 +442,303 @@ void sGUIExt::reset() {
     this->sGUI::reset();
 }
 
-__attribute__((weak)) void sGUIExt::updatePtr() {
-    DDON_STUB("sGUIExt::updatePtr")
-    /* stub */
+void sGUIExt::updatePtr() {
+    if (mpSingletonMenu != nullptr) {
+        if (!mpSingletonMenu->isEnable()) {
+            mpSingletonMenu = nullptr;
+        }
+    }
+    if (mpGUIDamage != nullptr) {
+        if (!mpGUIDamage->isEnable()) {
+            mpGUIDamage = nullptr;
+        }
+    }
+    if (mpGUIActionPalette != nullptr) {
+        if (!mpGUIActionPalette->isEnable()) {
+            mpGUIActionPalette = nullptr;
+        }
+    }
+    if (mpGUIFKeyPalette != nullptr) {
+        if (!mpGUIFKeyPalette->isEnable()) {
+            mpGUIFKeyPalette = nullptr;
+        }
+    }
+    if (mpGUIIndicator != nullptr) {
+        if (!mpGUIIndicator->isEnable()) {
+            mpGUIIndicator = nullptr;
+        }
+    }
+    if (mpGUINetIndicator != nullptr) {
+        if (!mpGUINetIndicator->isEnable()) {
+            mpGUINetIndicator = nullptr;
+        }
+    }
+    if (mpGUIQuestBoard != nullptr) {
+        if (!mpGUIQuestBoard->isEnable()) {
+            mpGUIQuestBoard = nullptr;
+        }
+    }
+    if (mpGUIClanQuestBoard != nullptr) {
+        if (!mpGUIClanQuestBoard->isEnable()) {
+            mpGUIClanQuestBoard = nullptr;
+        }
+    }
+    if (mpGUIQuestInfo != nullptr) {
+        if (!mpGUIQuestInfo->isEnable()) {
+            mpGUIQuestInfo = nullptr;
+        }
+    }
+    if (mpGUIQuestActive != nullptr) {
+        if (!mpGUIQuestActive->isEnable()) {
+            mpGUIQuestActive = nullptr;
+        }
+    }
+    if (mpGUIQueueAnnounce != nullptr) {
+        if (!mpGUIQueueAnnounce->isEnable()) {
+            mpGUIQueueAnnounce = nullptr;
+        }
+    }
+    if (mpGUIQuestDelivery != nullptr) {
+        if (!mpGUIQuestDelivery->isEnable()) {
+            mpGUIQuestDelivery = nullptr;
+        }
+    }
+    if (mpGUISkill != nullptr) {
+        if (!mpGUISkill->isEnable()) {
+            mpGUISkill = nullptr;
+        }
+    }
+    if (mpGUIShopTitle != nullptr) {
+        if (!mpGUIShopTitle->isEnable()) {
+            mpGUIShopTitle = nullptr;
+        }
+    }
+    if (mpGUIGameMenu != nullptr) {
+        if (!mpGUIGameMenu->isEnable()) {
+            mpGUIGameMenu = nullptr;
+        }
+    }
+    if (mpGUIGauge != nullptr) {
+        if (!mpGUIGauge->isEnable()) {
+            mpGUIGauge = nullptr;
+        }
+    }
+    if (mpGUIGaugeExp != nullptr) {
+        if (!mpGUIGaugeExp->isEnable()) {
+            mpGUIGaugeExp = nullptr;
+        }
+    }
+    if (mpGUIGaugeEnemyBoss != nullptr) {
+        if (!mpGUIGaugeEnemyBoss->isEnable()) {
+            mpGUIGaugeEnemyBoss = nullptr;
+        }
+    }
+    if (mpGUIGaugeSkill != nullptr) {
+        if (!mpGUIGaugeSkill->isEnable()) {
+            mpGUIGaugeSkill = nullptr;
+        }
+    }
+    if (mpGUIGaugeSorcery != nullptr) {
+        if (!mpGUIGaugeSorcery->isEnable()) {
+            mpGUIGaugeSorcery = nullptr;
+        }
+    }
+    if (mpGUIGaugeArts != nullptr) {
+        if (!mpGUIGaugeArts->isEnable()) {
+            mpGUIGaugeArts = nullptr;
+        }
+    }
+    if (mpGUIGaugeArtsV01_03 != nullptr) {
+        if (!mpGUIGaugeArtsV01_03->isEnable()) {
+            mpGUIGaugeArtsV01_03 = nullptr;
+        }
+    }
+    if (mpGUIHudJob10Gauge != nullptr) {
+        if (!mpGUIHudJob10Gauge->isEnable()) {
+            mpGUIHudJob10Gauge = nullptr;
+        }
+    }
+    if (mpGUITouchTargetSelector != nullptr) {
+        if (!mpGUITouchTargetSelector->isEnable()) {
+            mpGUITouchTargetSelector = nullptr;
+        }
+    }
+    if (mpGUITextHud != nullptr) {
+        if (!mpGUITextHud->isEnable()) {
+            mpGUITextHud = nullptr;
+        }
+    }
+    if (mpGUIHudCustomSkillPallet != nullptr) {
+        if (!mpGUIHudCustomSkillPallet->isEnable()) {
+            mpGUIHudCustomSkillPallet = nullptr;
+        }
+    }
+    if (mpGUIEngageInfo != nullptr) {
+        if (!mpGUIEngageInfo->isEnable()) {
+            mpGUIEngageInfo = nullptr;
+        }
+    }
+    if (mpGUIShakeEnemy != nullptr) {
+        if (!mpGUIShakeEnemy->isEnable()) {
+            mpGUIShakeEnemy = nullptr;
+        }
+    }
+    if (mpGUIChargesHUD != nullptr) {
+        if (!mpGUIChargesHUD->isEnable()) {
+            mpGUIChargesHUD = nullptr;
+        }
+    }
+    if (mpGUIPointer != nullptr) {
+        if (!mpGUIPointer->isEnable()) {
+            mpGUIPointer = nullptr;
+        }
+    }
+    if (mpGUILoading != nullptr) {
+        if (!mpGUILoading->isEnable()) {
+            mpGUILoading = nullptr;
+        }
+    }
+    if (mpGUIPlace != nullptr) {
+        if (!mpGUIPlace->isEnable()) {
+            mpGUIPlace = nullptr;
+        }
+    }
+    if (mpGUIBrowserBG != nullptr) {
+        if (!mpGUIBrowserBG->isEnable()) {
+            mpGUIBrowserBG = nullptr;
+        }
+    }
+    if (mpGUIDownAnnounce != nullptr) {
+        if (!mpGUIDownAnnounce->isEnable()) {
+            mpGUIDownAnnounce = nullptr;
+        }
+    }
+    if (mpGUINoLeaderAnnounce != nullptr) {
+        if (!mpGUINoLeaderAnnounce->isEnable()) {
+            mpGUINoLeaderAnnounce = nullptr;
+        }
+    }
+    if (mpGUIEntryBoardReadyAnnounce != nullptr) {
+        if (!mpGUIEntryBoardReadyAnnounce->isEnable()) {
+            mpGUIEntryBoardReadyAnnounce = nullptr;
+        }
+    }
+    if (mpGUIEntryBoardDepartAnnounce != nullptr) {
+        if (!mpGUIEntryBoardDepartAnnounce->isEnable()) {
+            mpGUIEntryBoardDepartAnnounce = nullptr;
+        }
+    }
+    if (mpGUIEntryBoardReentryAnnounce != nullptr) {
+        if (!mpGUIEntryBoardReentryAnnounce->isEnable()) {
+            mpGUIEntryBoardReentryAnnounce = nullptr;
+        }
+    }
+    if (mpGUIDisableContentsAnnounce != nullptr) {
+        if (!mpGUIDisableContentsAnnounce->isEnable()) {
+            mpGUIDisableContentsAnnounce = nullptr;
+        }
+    }
+    if (mpGUINoSituationAnnounce != nullptr) {
+        if (!mpGUINoSituationAnnounce->isEnable()) {
+            mpGUINoSituationAnnounce = nullptr;
+        }
+    }
+    if (mpGUIAnnounce != nullptr) {
+        if (!mpGUIAnnounce->isEnable()) {
+            mpGUIAnnounce = nullptr;
+        }
+    }
+    if (mpGUIInfo != nullptr) {
+        if (!mpGUIInfo->isEnable()) {
+            mpGUIInfo = nullptr;
+        }
+    }
+    if (mpGUITutorialAnnounce != nullptr) {
+        if (!mpGUITutorialAnnounce->isEnable()) {
+            mpGUITutorialAnnounce = nullptr;
+        }
+    }
+    if (mpGUICommunityList != nullptr) {
+        if (!mpGUICommunityList->isEnable()) {
+            mpGUICommunityList = nullptr;
+        }
+    }
+    if (mpAimUnit != nullptr) {
+        if (!mpAimUnit->isEnable()) {
+            mpAimUnit = nullptr;
+        }
+    }
+    if (mpGUITelop != nullptr) {
+        if (!mpGUITelop->isEnable()) {
+            mpGUITelop = nullptr;
+        }
+    }
+    if (mpUnitCharacterEdit != nullptr) {
+        if (!mpUnitCharacterEdit->isEnable()) {
+            mpUnitCharacterEdit = nullptr;
+        }
+    }
+    if (mSendItemParam.mpUnit != nullptr) {
+        if (!mSendItemParam.mpUnit->isEnable()) {
+            mSendItemParam.mpUnit = nullptr;
+        }
+    }
+    mPcTouchAction.updatePtr();
+    if (mpGUIGainInfo[0] != nullptr) {
+        if ((mpGUIGainInfo[0]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpGUIGainInfo[0] = nullptr;
+        }
+    }
+    if (mpGUIGainInfo[1] != nullptr) {
+        if ((mpGUIGainInfo[1]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpGUIGainInfo[1] = nullptr;
+        }
+    }
+    if (mpGUIGainInfo[2] != nullptr) {
+        if ((mpGUIGainInfo[2]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpGUIGainInfo[2] = nullptr;
+        }
+    }
+    if (mpGUIGainInfo[3] != nullptr) {
+        if ((mpGUIGainInfo[3]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpGUIGainInfo[3] = nullptr;
+        }
+    }
+    if (mpGUIGainInfo[4] != nullptr) {
+        if ((mpGUIGainInfo[4]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpGUIGainInfo[4] = nullptr;
+        }
+    }
+    if (mpGUIGainInfo[5] != nullptr) {
+        if ((mpGUIGainInfo[5]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpGUIGainInfo[5] = nullptr;
+        }
+    }
+    if (mpGUIGainInfo[6] != nullptr) {
+        if ((mpGUIGainInfo[6]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpGUIGainInfo[6] = nullptr;
+        }
+    }
+    if (mpGUIGainInfo[7] != nullptr) {
+        if ((mpGUIGainInfo[7]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpGUIGainInfo[7] = nullptr;
+        }
+    }
+    if (mpGUISystemMsg != nullptr) {
+        if (!mpGUISystemMsg->isEnable()) {
+            mpGUISystemMsg = nullptr;
+        }
+    }
+    if (mpGUINpcWindow != nullptr) {
+        if (!mpGUINpcWindow->isEnable()) {
+            mpGUINpcWindow = nullptr;
+        }
+    }
+    if (mChat.mpGUIChat != nullptr) {
+        if (!mChat.mpGUIChat->isEnable()) {
+            mChat.mpGUIChat = nullptr;
+        }
+    }
 }
 
 void sGUIExt::createProperty(MtPropertyList& s) {
@@ -399,7 +761,7 @@ void sGUIExt::setupIconFont(u8 uType) {
         rGUIIconInfo* pIconRes = static_cast<rGUIIconInfo*>(t1->createRes(cmn_arc_tag, rArchiveListArray::convSearchId((uType == 0) ? "RES_ID_DDOBTN_GII" : "RES_ID_DDOBTN_PC_GII"), 1u, false));
         sGUI::getInstance()->setIconInfo(pIconRes);
         if (pIconRes != nullptr) {
-            pIconRes->cResource::release();
+            pIconRes->release();
             sArchiveManager* t2 = sArchiveManager::getInstance();
             if (uType != 0) {
                 cResource* t3 = t2->createRes(cmn_arc_tag, rArchiveListArray::convSearchId("RES_ID_BUTTON_PC_GFD"), 1u, false);
@@ -457,7 +819,7 @@ void sGUIExt::setupIconFont(u8 uType) {
         rGUIIconInfo* pIconRes = static_cast<rGUIIconInfo*>(t1->createRes(cmn_arc_tag, rArchiveListArray::convSearchId((uType == 0) ? "RES_ID_DDOBTN_GII" : "RES_ID_DDOBTN_PC_GII"), 1u, false));
         sGUI::getInstance()->setIconInfo(pIconRes);
         if (pIconRes != nullptr) {
-            pIconRes->cResource::release();
+            pIconRes->release();
             sArchiveManager* t2 = sArchiveManager::getInstance();
             if (uType != 0) {
                 cResource* t3 = t2->createRes(cmn_arc_tag, rArchiveListArray::convSearchId("RES_ID_BUTTON_PC_GFD"), 1u, false);
@@ -531,9 +893,51 @@ __attribute__((weak)) void sGUIExt::deleteResidentResource() {
     /* stub */
 }
 
-__attribute__((weak)) void sGUIExt::killResidentUnit() {
-    DDON_STUB("sGUIExt::killResidentUnit")
-    /* stub */
+void sGUIExt::killResidentUnit() {
+    if (mMouse.mpGUI != nullptr) {
+        mMouse.mpGUI->kill();
+        mMouse.mpGUI = nullptr;
+    }
+    if (mMouse.mpGUIMOC != nullptr) {
+        mMouse.mpGUIMOC->kill();
+        mMouse.mpGUIMOC = nullptr;
+    }
+    if (mpGUIIndicator != nullptr) {
+        mpGUIIndicator->kill();
+        mpGUIIndicator = nullptr;
+    }
+    if (mpGUINetIndicator != nullptr) {
+        mpGUINetIndicator->kill();
+        mpGUINetIndicator = nullptr;
+    }
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
+    }
+    if (mpGUIPointer != nullptr) {
+        mpGUIPointer->kill();
+        mpGUIPointer = nullptr;
+    }
+    if (mpGUILoading != nullptr) {
+        mpGUILoading->kill();
+        mpGUILoading = nullptr;
+    }
+    if (mpGUIInfo != nullptr) {
+        mpGUIInfo->kill();
+        mpGUIInfo = nullptr;
+    }
+    if (mpGUIInputText != nullptr) {
+        mpGUIInputText->kill();
+        mpGUIInputText = nullptr;
+    }
+    if (mpGUIPopCnvWnd != nullptr) {
+        mpGUIPopCnvWnd->kill();
+        mpGUIPopCnvWnd = nullptr;
+    }
+    if (mpGUIBrowserBG != nullptr) {
+        mpGUIBrowserBG->kill();
+        mpGUIBrowserBG = nullptr;
+    }
 }
 
 __attribute__((weak)) MT_CTSTR sGUIExt::getNormalSkillName(u32 job_id, u32 index) {
@@ -890,8 +1294,8 @@ void sGUIExt::killSingletonMenu() {
 bool sGUIExt::isExitSituationForSingletonMenu() {
     uPlayer* pPlayer = sPlayerManager::getInstance()->getMyPlayer();
     if (pPlayer != nullptr) {
-        if (!pPlayer->uDDOModel::isDead()) {
-            bool t0 = pPlayer->uHuman::isCanOpenGameMenu();
+        if (!pPlayer->isDead()) {
+            bool t0 = pPlayer->isCanOpenGameMenu();
             return !t0;
         }
     }
@@ -2376,7 +2780,7 @@ MT_CTSTR sGUIExt::getEnemyNameFromGroupId(u32 enemy_group_id) {
     const u32 msg_index = sEnemyManager::getInstance()->getMsgIndexFromEnemyGroup(enemy_group_id);
     if (pMsg != nullptr) {
         if (msg_index < pMsg->mMessageNum) {
-            return pMsg->rGUIMessage::getMessage(msg_index);
+            return pMsg->getMessage(msg_index);
         }
     }
     return "";
@@ -2385,9 +2789,9 @@ MT_CTSTR sGUIExt::getEnemyNameFromGroupId(u32 enemy_group_id) {
 MT_CTSTR sGUIExt::getMsgTmpMessageCtgrMessage(u32 uCtgr) {
     rGUIMessage* pMsg = getMsgTmpMsgCtgr();
     if (pMsg != nullptr) {
-        const rGUIMessage::INDEX* pIndex = pMsg->rGUIMessage::getIndex(uCtgr);
+        const rGUIMessage::INDEX* pIndex = pMsg->getIndex(uCtgr);
         if (pIndex != nullptr) {
-            return pMsg->rGUIMessage::getMessage(pIndex->index);
+            return pMsg->getMessage(pIndex->index);
         } else {
             return "";
         }
@@ -2402,9 +2806,9 @@ MT_CTSTR sGUIExt::getMsgTmpMessage(u32 uCtgr, u32 uId, bool bUseId2) {
         if (mpTblMenuCommTmpMessage != nullptr) {
             u32 uMsgId = mpTblMenuCommTmpMessage->getMsgId(uCtgr, uId, bUseId2);
             if (uMsgId != 0xFFFFFFFFu) {
-                const rGUIMessage::INDEX* pIndex = pMsg->rGUIMessage::getIndex(uMsgId);
+                const rGUIMessage::INDEX* pIndex = pMsg->getIndex(uMsgId);
                 if (pIndex != nullptr) {
-                    return pMsg->rGUIMessage::getMessage(pIndex->index);
+                    return pMsg->getMessage(pIndex->index);
                 } else {
                     return "";
                 }
@@ -2412,9 +2816,9 @@ MT_CTSTR sGUIExt::getMsgTmpMessage(u32 uCtgr, u32 uId, bool bUseId2) {
                 return "";
             }
         } else {
-            const rGUIMessage::INDEX* pIndex = pMsg->rGUIMessage::getIndex(uId);
+            const rGUIMessage::INDEX* pIndex = pMsg->getIndex(uId);
             if (pIndex != nullptr) {
-                return pMsg->rGUIMessage::getMessage(pIndex->index);
+                return pMsg->getMessage(pIndex->index);
             } else {
                 return "";
             }
@@ -2477,9 +2881,9 @@ __attribute__((weak)) bool sGUIExt::isEnableRimWarpDecide(bool isPermitLargePart
 MT_CTSTR sGUIExt::getMsgEmotionCtgrMessage(u32 uCtgr) {
     rGUIMessage* pMsg = getMsgEmotionCtgr();
     if (pMsg != nullptr) {
-        const rGUIMessage::INDEX* pIndex = pMsg->rGUIMessage::getIndex(uCtgr);
+        const rGUIMessage::INDEX* pIndex = pMsg->getIndex(uCtgr);
         if (pIndex != nullptr) {
-            return pMsg->rGUIMessage::getMessage(pIndex->index);
+            return pMsg->getMessage(pIndex->index);
         } else {
             return "";
         }
@@ -2503,9 +2907,9 @@ __attribute__((weak)) MT_CTSTR sGUIExt::getMsgEmotionMessage(u32 CategoryId, u32
         if (mpTblMenuCommEmotion != nullptr) {
             u32 msgid = mpTblMenuCommEmotion->getMsgId(CategoryId, ResourceIdx, false);
             if (msgid != 0xFFFFFFFFu) {
-                const rGUIMessage::INDEX* pguiindex = pmsg->rGUIMessage::getIndex(msgid);
+                const rGUIMessage::INDEX* pguiindex = pmsg->getIndex(msgid);
                 if (pguiindex != nullptr) {
-                    return pmsg->rGUIMessage::getMessage(pguiindex->index);
+                    return pmsg->getMessage(pguiindex->index);
                 } else {
                     return "";
                 }
@@ -2513,9 +2917,9 @@ __attribute__((weak)) MT_CTSTR sGUIExt::getMsgEmotionMessage(u32 CategoryId, u32
                 return "";
             }
         } else {
-            const rGUIMessage::INDEX* pguiindex = pmsg->rGUIMessage::getIndex(ResourceIdx);
+            const rGUIMessage::INDEX* pguiindex = pmsg->getIndex(ResourceIdx);
             if (pguiindex != nullptr) {
-                return pmsg->rGUIMessage::getMessage(pguiindex->index);
+                return pmsg->getMessage(pguiindex->index);
             } else {
                 return "";
             }
@@ -2642,9 +3046,9 @@ __attribute__((weak)) void sGUIExt::setupRatingInfo() {
 MT_CTSTR sGUIExt::getMsgPawnOrderCtgrMessage(u32 uCtgr) {
     rGUIMessage* pMsg = getMsgPawnOrderCtgr();
     if (pMsg != nullptr) {
-        const rGUIMessage::INDEX* pIndex = pMsg->rGUIMessage::getIndex(uCtgr);
+        const rGUIMessage::INDEX* pIndex = pMsg->getIndex(uCtgr);
         if (pIndex != nullptr) {
-            return pMsg->rGUIMessage::getMessage(pIndex->index);
+            return pMsg->getMessage(pIndex->index);
         } else {
             return "";
         }
@@ -2659,9 +3063,9 @@ MT_CTSTR sGUIExt::getMsgPawnOrderMessage(u32 uCtgr, u32 uId) {
         if (mpTblMenuCommPawnOrder != nullptr) {
             u32 uMsgId = mpTblMenuCommPawnOrder->getMsgId(uCtgr, uId, false);
             if (uMsgId != 0xFFFFFFFFu) {
-                const rGUIMessage::INDEX* pIndex = pMsg->rGUIMessage::getIndex(uMsgId);
+                const rGUIMessage::INDEX* pIndex = pMsg->getIndex(uMsgId);
                 if (pIndex != nullptr) {
-                    return pMsg->rGUIMessage::getMessage(pIndex->index);
+                    return pMsg->getMessage(pIndex->index);
                 } else {
                     return "";
                 }
@@ -2669,9 +3073,9 @@ MT_CTSTR sGUIExt::getMsgPawnOrderMessage(u32 uCtgr, u32 uId) {
                 return "";
             }
         } else {
-            const rGUIMessage::INDEX* pIndex = pMsg->rGUIMessage::getIndex(uId);
+            const rGUIMessage::INDEX* pIndex = pMsg->getIndex(uId);
             if (pIndex != nullptr) {
-                return pMsg->rGUIMessage::getMessage(pIndex->index);
+                return pMsg->getMessage(pIndex->index);
             } else {
                 return "";
             }
@@ -2854,7 +3258,7 @@ void sGUIExt::setupChatTell() {
             if (mChat.mpGUIChat != nullptr) {
                 if (mChat.mpGUIChat->isEnable()) {
                     if (mChat.mpGUIChat->isMenuUISubMenu()) {
-                        if (t0->isEnable()) {
+                        if (mChat.mpGUIChat->isEnable()) {
                             if (sChat::getInstance()->getTellCharacterId() != 0) {
                                 mChat.mpGUIChat->mIsReqTellState = true;
                                 mChat.mChatArea = 6;
@@ -2866,7 +3270,7 @@ void sGUIExt::setupChatTell() {
             }
         } else {
             if (mChat.mpGUIChat != nullptr) {
-                if (t0->isEnable()) {
+                if (mChat.mpGUIChat->isEnable()) {
                     if (sChat::getInstance()->getTellCharacterId() != 0) {
                         mChat.mpGUIChat->mIsReqTellState = true;
                         mChat.mChatArea = 6;
@@ -2876,7 +3280,7 @@ void sGUIExt::setupChatTell() {
             }
         }
     } else {
-        if (t0->isEnable()) {
+        if (mChat.mpGUIChat->isEnable()) {
             if (sChat::getInstance()->getTellCharacterId() != 0) {
                 mChat.mpGUIChat->mIsReqTellState = true;
                 mChat.mChatArea = 6;
@@ -5706,7 +6110,7 @@ bool sGUIExt::isPlActThrow(MT_CTSTR str) {
         if (pContext != nullptr) {
             uHuman* pPlayer = sPlayerManager::getInstance()->getPlayer(pContext);
             if (pPlayer != nullptr) {
-                if (strcmp(pPlayer->uHuman::getNowThrowItemUId(), str) != 0) {
+                if (strcmp(pPlayer->getNowThrowItemUId(), str) != 0) {
                     return false;
                 } else {
                     return true;
@@ -6447,8 +6851,6 @@ __attribute__((weak)) MtObject* sGUIExt::cMap::MyDTI::newInstance() const {
 }
 
 sGUIExt::cMap::cMapGrid::~cMapGrid() {
-    DDON_STUB("sGUIExt::cMap::cMapGrid::~cMapGrid")
-    /* stub */
 }
 
 const MtDTI& sGUIExt::cMap::cMarkerSave::getDTI() const {
@@ -6507,7 +6909,7 @@ sGUIExt::cSCM::cSCM() {
     /* stub */
 }
 
-sGUIExt::cSCM::~cSCM() {
+__attribute__((noinline)) sGUIExt::cSCM::~cSCM() {
     if (listSCMSaveToServer.mLength != 0) {
         u32 v0_0 = listSCMSaveToServer.mLength;
         for (unsigned int i0_3 = 0;;) {

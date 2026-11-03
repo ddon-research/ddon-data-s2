@@ -29,6 +29,7 @@ class MtString;
 class MtUI;
 class cMenuInviteEntryBoardItem;
 class cNetGameServer;
+class cPRTManager;
 class cQuestTask;
 namespace nNetwork { class BlockPool; }
 namespace nNetwork { class Context; }
@@ -64,6 +65,7 @@ class sNetwork : public cSystem
 {
     friend class cMenuInviteEntryBoardItem;
     friend class cNetGameServer;
+    friend class cPRTManager;
     friend class cQuestTask;
     friend class nNetwork::Context;
     friend class nNetwork::Session;
@@ -288,6 +290,10 @@ public:
 private:
     static sNetwork* mpInstance;
 };
+
+inline void* sNetwork::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline sNetwork* sNetwork::getInstance() {
     return ::sNetwork::mpInstance;

@@ -8,19 +8,31 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "cBakeModel.h"
+#include "cComponentManager.h"
 #include "../../XFramework/cUnit.h"
+#include "cpComponent.h"
 #include "cpDDMrlMgr.h"
 #include "../../generated/shared/nDDOMath.h"
+#include "../../XFramework/nDrawConstantTable.h"
 #include "nDrawDDMaterialStd.h"
 #include "../../XFramework/nDrawMaterial.h"
 #include "../../XFramework/nDrawMaterialStdEst.h"
+#include "../../XFramework/rModel.h"
 #include "../../XFramework/rTexture.h"
+#include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
 #include "../../XFramework/sMain.h"
 #include "sOmManager.h"
 #include "sWeatherManager.h"
 #include "../../XFramework/uBaseModel.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uEnemy.h"
+#include "uHuman.h"
+#include "uJobEquip.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -164,36 +176,32 @@ __attribute__((weak)) void cDDMaterialCtrl::setBaseShaderMode(u32 mode) {
     /* stub */
 }
 
-u32 cDDMaterialCtrl::getBaseShaderMode() const {
-    return mBaseShaderMode;
-}
+static auto ddon_emit_0x01964320 __attribute__((used)) = &cDDMaterialCtrl::getBaseShaderMode;
 
 __attribute__((weak)) void cDDMaterialCtrl::setShaderMode(u32 mode) {
-    DDON_STUB("cDDMaterialCtrl::setShaderMode")
-    /* stub */
+        if (mode <= 7 && mode != mShaderMode) {
+            static_cast<cShaderDataStatusAilments*>(mShaderData.mpArray[mShaderMode])->end(mpOwner, mode);
+            static_cast<cShaderDataStatusAilments*>(mShaderData.mpArray[mode])->init(mpOwner, mpBakeModel, this);
+            mShaderMode = mode;
+            copyModeToEquip(1);
+        }
 }
 
-u32 cDDMaterialCtrl::getShaderMode() const {
-    return mShaderMode;
-}
+static auto ddon_emit_0x01964330 __attribute__((used)) = &cDDMaterialCtrl::getShaderMode;
 
 __attribute__((weak)) void cDDMaterialCtrl::setEmissionMode(u32 mode) {
     DDON_STUB("cDDMaterialCtrl::setEmissionMode")
     /* stub */
 }
 
-u32 cDDMaterialCtrl::getEmissionMode() const {
-    return mEmissionMode;
-}
+static auto ddon_emit_0x01964340 __attribute__((used)) = &cDDMaterialCtrl::getEmissionMode;
 
 __attribute__((weak)) void cDDMaterialCtrl::setOutlineMode(u32 mode) {
     DDON_STUB("cDDMaterialCtrl::setOutlineMode")
     /* stub */
 }
 
-u32 cDDMaterialCtrl::getOutlineMode() const {
-    return mOutlineMode;
-}
+static auto ddon_emit_0x01964350 __attribute__((used)) = &cDDMaterialCtrl::getOutlineMode;
 
 __attribute__((weak)) void cDDMaterialCtrl::setOutlineModeFromSdl(u32 mode) {
     DDON_STUB("cDDMaterialCtrl::setOutlineModeFromSdl")
@@ -205,9 +213,7 @@ __attribute__((weak)) void cDDMaterialCtrl::setMaterialMode(u32 mode) {
     /* stub */
 }
 
-u32 cDDMaterialCtrl::getMaterialMode() const {
-    return mMaterialMode;
-}
+static auto ddon_emit_0x01964360 __attribute__((used)) = &cDDMaterialCtrl::getMaterialMode;
 
 __attribute__((weak)) void cDDMaterialCtrl::setDataMaterialDiffuseColor(const MtVector4& color) {
     DDON_STUB("cDDMaterialCtrl::setDataMaterialDiffuseColor")
@@ -281,25 +287,15 @@ __attribute__((weak)) void cDDMaterialCtrl::setOutlineData(cDDMaterialCtrl::cSha
 __attribute__((weak)) void cDDMaterialCtrl::setMaterialData(cDDMaterialCtrl::cShaderDataMaterial*, u32 index) {
 }
 
-u32 cDDMaterialCtrl::getBaseShaderDataNum() {
-    return mBaseShaderData.mLength;
-}
+static auto ddon_emit_0x01964390 __attribute__((used)) = &cDDMaterialCtrl::getBaseShaderDataNum;
 
-u32 cDDMaterialCtrl::getShaderDataNum() {
-    return mShaderData.mLength;
-}
+static auto ddon_emit_0x019643d0 __attribute__((used)) = &cDDMaterialCtrl::getShaderDataNum;
 
-u32 cDDMaterialCtrl::getEmissionDataNum() {
-    return mEmissionData.mLength;
-}
+static auto ddon_emit_0x01964410 __attribute__((used)) = &cDDMaterialCtrl::getEmissionDataNum;
 
-u32 cDDMaterialCtrl::getOutlineDataNum() {
-    return mOutlineData.mLength;
-}
+static auto ddon_emit_0x01964450 __attribute__((used)) = &cDDMaterialCtrl::getOutlineDataNum;
 
-u32 cDDMaterialCtrl::getMaterialDataNum() {
-    return mMaterialData.mLength;
-}
+static auto ddon_emit_0x01964490 __attribute__((used)) = &cDDMaterialCtrl::getMaterialDataNum;
 
 __attribute__((weak)) void cDDMaterialCtrl::setBaseShaderDataNum(u32 num) {
 }
@@ -437,6 +433,10 @@ bool cDDMaterialCtrl::cShaderData::isEnd() {
 
 bool cDDMaterialCtrl::cShaderData::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     return true;
+}
+
+inline uDDOModel* cDDMaterialCtrl::cShaderData::getOwnerDDO() {
+    return static_cast<uDDOModel*>(mpOwner);
 }
 
 __attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderData::getDefDiffuseColor(u32 index) {
@@ -656,41 +656,23 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutline::setCommonState(c
     /* stub */
 }
 
-u32 cDDMaterialCtrl::cShaderDataOutline::getBlendType() {
-    return mBlendType;
-}
+static auto ddon_emit_0x01964530 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::getBlendType;
 
-u32 cDDMaterialCtrl::cShaderDataOutline::getColorType() {
-    return mColorType;
-}
+static auto ddon_emit_0x019644d0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::getColorType;
 
-MtVector4 cDDMaterialCtrl::cShaderDataOutline::getOColor() {
-    return mOColor;
-}
+static auto ddon_emit_0x019644e0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::getOColor;
 
-MtVector4 cDDMaterialCtrl::cShaderDataOutline::getIColor() {
-    return mIColor;
-}
+static auto ddon_emit_0x019644f0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::getIColor;
 
-f32 cDDMaterialCtrl::cShaderDataOutline::getBalanceOffset() {
-    return mBalanceOffset;
-}
+static auto ddon_emit_0x01964500 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::getBalanceOffset;
 
-f32 cDDMaterialCtrl::cShaderDataOutline::getBalanceScale() {
-    return mBalanceScale;
-}
+static auto ddon_emit_0x01964510 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::getBalanceScale;
 
-f32 cDDMaterialCtrl::cShaderDataOutline::getBalance() {
-    return mBalance;
-}
+static auto ddon_emit_0x01964520 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::getBalance;
 
-void cDDMaterialCtrl::cShaderDataOutline::setBlendType(u32 set) {
-    mBlendType = set;
-}
+static auto ddon_emit_0x01964540 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::setBlendType;
 
-void cDDMaterialCtrl::cShaderDataOutline::setColorType(u32 set) {
-    mColorType = set;
-}
+static auto ddon_emit_0x01964550 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::setColorType;
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutline::setOColor(MtVector4& set) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataOutline::setOColor")
@@ -702,17 +684,11 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutline::setIColor(MtVect
     /* stub */
 }
 
-void cDDMaterialCtrl::cShaderDataOutline::setBalanceOffset(f32 set) {
-    mBalanceOffset = set;
-}
+static auto ddon_emit_0x01964580 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::setBalanceOffset;
 
-void cDDMaterialCtrl::cShaderDataOutline::setBalanceScale(f32 set) {
-    mBalanceScale = set;
-}
+static auto ddon_emit_0x01964590 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::setBalanceScale;
 
-void cDDMaterialCtrl::cShaderDataOutline::setBalance(f32 set) {
-    mBalance = set;
-}
+static auto ddon_emit_0x019645a0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::setBalance;
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutline::createProperty(MtPropertyList& s) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataOutline::createProperty")
@@ -963,7 +939,7 @@ __attribute__((weak)) MtFloat4 cDDMaterialCtrl::cShaderDataAnimationToDefault::g
 
 void cDDMaterialCtrl::cShaderDataAnimationToDefault::setAnimation(cDDMaterialCtrl::TitleMaterial* pm, s32 AnimIndex, MT_CTSTR AnimName, f32 StartFrame) {
     nDraw::Animation* pMateAnim = pm->getAnimationData();
-    s32 DefAnimIndex = pMateAnim->nDraw::Animation::getNo(*cpDDMrlMgr::ANIM_NAME_TBL);
+    s32 DefAnimIndex = pMateAnim->getNo(*cpDDMrlMgr::ANIM_NAME_TBL);
     if (AnimIndex == pm->getAnimation(nDraw::Material::SLOT_0)) {
         pm->setAnimation(nDraw::Material::SLOT_0, DefAnimIndex);
     }
@@ -2200,29 +2176,17 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdl::copy(cDDMaterialCtrl
     /* stub */
 }
 
-bool cDDMaterialCtrl::cShaderDataSdl::getTargetMaterialAll() {
-    return mTargetMaterialAll;
-}
+static auto ddon_emit_0x01964600 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdl::getTargetMaterialAll;
 
-bool cDDMaterialCtrl::cShaderDataSdl::getTargetChildAll() {
-    return mTargetChildAll;
-}
+static auto ddon_emit_0x01964610 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdl::getTargetChildAll;
 
-bool cDDMaterialCtrl::cShaderDataSdl::getUVTransformEnable() {
-    return mUVTransformEnable;
-}
+static auto ddon_emit_0x01964650 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdl::getUVTransformEnable;
 
-void cDDMaterialCtrl::cShaderDataSdl::setTargetMaterialAll(bool set) {
-    mTargetMaterialAll = set;
-}
+static auto ddon_emit_0x01964630 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdl::setTargetMaterialAll;
 
-void cDDMaterialCtrl::cShaderDataSdl::setTargetChildAll(bool set) {
-    mTargetChildAll = set;
-}
+static auto ddon_emit_0x01964640 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdl::setTargetChildAll;
 
-void cDDMaterialCtrl::cShaderDataSdl::setUVTransformEnable(bool set) {
-    mUVTransformEnable = set;
-}
+static auto ddon_emit_0x01964660 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdl::setUVTransformEnable;
 
 cDDMaterialCtrl::cShaderDataSdlData* cDDMaterialCtrl::cShaderDataSdl::getSdlData(u32 index) {
     return static_cast<cShaderDataSdlData*>(mSdlData.getBuffer()[static_cast<int>(index)]);
@@ -2231,9 +2195,7 @@ cDDMaterialCtrl::cShaderDataSdlData* cDDMaterialCtrl::cShaderDataSdl::getSdlData
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdl::setSdlData(cDDMaterialCtrl::cShaderDataSdlData* set, u32 index) {
 }
 
-u32 cDDMaterialCtrl::cShaderDataSdl::getSdlDataNum() {
-    return mSdlData.mLength;
-}
+static auto ddon_emit_0x01964680 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdl::getSdlDataNum;
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdl::setSdlDataNum(u32 set) {
 }
@@ -2260,49 +2222,27 @@ inline void cDDMaterialCtrl::cShaderDataSdlData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataSdlData::DTI)->memFree(p_addr);
 }
 
-u32 cDDMaterialCtrl::cShaderDataSdlData::getTargetMaterialId() {
-    return mTargetMaterialId;
-}
+static auto ddon_emit_0x019646a0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getTargetMaterialId;
 
-MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm0Offset() {
-    return mUVTransForm0Offset;
-}
+static auto ddon_emit_0x019646b0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm0Offset;
 
-MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm1Offset() {
-    return mUVTransForm1Offset;
-}
+static auto ddon_emit_0x019646d0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm1Offset;
 
-MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm2Offset() {
-    return mUVTransForm2Offset;
-}
+static auto ddon_emit_0x019646f0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm2Offset;
 
-MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm0Scale() {
-    return mUVTransForm0Scale;
-}
+static auto ddon_emit_0x01964710 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm0Scale;
 
-MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm1Scale() {
-    return mUVTransForm1Scale;
-}
+static auto ddon_emit_0x01964730 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm1Scale;
 
-MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm2Scale() {
-    return mUVTransForm2Scale;
-}
+static auto ddon_emit_0x01964750 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm2Scale;
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getDetailNormalUVScale() {
-    return mDetailNormalUVScale;
-}
+static auto ddon_emit_0x01964770 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getDetailNormalUVScale;
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getDetailNormalPower() {
-    return mDetailNormalPower;
-}
+static auto ddon_emit_0x01964780 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getDetailNormalPower;
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getTransparency() {
-    return mTransparency;
-}
+static auto ddon_emit_0x01964790 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getTransparency;
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getShininess() {
-    return mShininess;
-}
+static auto ddon_emit_0x019647a0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getShininess;
 
 __attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getAlbedoColor() {
     DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::getAlbedoColor")
@@ -2329,96 +2269,50 @@ __attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getReflecti
     __builtin_unreachable();
 }
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getBAlphaClipThreshold() {
-    return mBAlphaClipThreshold;
-}
+static auto ddon_emit_0x019648d0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getBAlphaClipThreshold;
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getBBlendAlphaBand() {
-    return mBBlendAlphaBand;
-}
+static auto ddon_emit_0x019648e0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getBBlendAlphaBand;
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getBBlendAlphaThreshold() {
-    return mBBlendAlphaThreshold;
-}
+static auto ddon_emit_0x019648f0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getBBlendAlphaThreshold;
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getBAlbedoBlendRate() {
-    return mBAlbedoBlendRate;
-}
+static auto ddon_emit_0x01964900 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getBAlbedoBlendRate;
 
 __attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getBBlendMapColor() {
     DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::getBBlendMapColor")
     __builtin_unreachable();
 }
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getEmissionFactor() {
-    return mBEmissionFactor;
-}
+static auto ddon_emit_0x01964950 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getEmissionFactor;
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispStart() {
-    return mVtxDispStart;
-}
+static auto ddon_emit_0x01964960 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getVtxDispStart;
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispScale() {
-    return mVtxDispScale;
-}
+static auto ddon_emit_0x01964970 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getVtxDispScale;
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispStart2() {
-    return mVtxDispStart2;
-}
+static auto ddon_emit_0x01964980 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getVtxDispStart2;
 
-f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispScale2() {
-    return mVtxDispScale2;
-}
+static auto ddon_emit_0x01964990 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getVtxDispScale2;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setTargetMaterialId(u32 set) {
-    mTargetMaterialId = set;
-}
+static auto ddon_emit_0x019649a0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setTargetMaterialId;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm0Offset(MtVector2& set) {
-    mUVTransForm0Offset.x = set.x;
-    mUVTransForm0Offset.y = set.y;
-}
+static auto ddon_emit_0x019649b0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm0Offset;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm1Offset(MtVector2& set) {
-    mUVTransForm1Offset.x = set.x;
-    mUVTransForm1Offset.y = set.y;
-}
+static auto ddon_emit_0x019649d0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm1Offset;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm2Offset(MtVector2& set) {
-    mUVTransForm2Offset.x = set.x;
-    mUVTransForm2Offset.y = set.y;
-}
+static auto ddon_emit_0x019649f0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm2Offset;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm0Scale(MtVector2& set) {
-    mUVTransForm0Scale.x = set.x;
-    mUVTransForm0Scale.y = set.y;
-}
+static auto ddon_emit_0x01964a10 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm0Scale;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm1Scale(MtVector2& set) {
-    mUVTransForm1Scale.x = set.x;
-    mUVTransForm1Scale.y = set.y;
-}
+static auto ddon_emit_0x01964a30 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm1Scale;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm2Scale(MtVector2& set) {
-    mUVTransForm2Scale.x = set.x;
-    mUVTransForm2Scale.y = set.y;
-}
+static auto ddon_emit_0x01964a50 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm2Scale;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setDetailNormalUVScale(f32 set) {
-    mDetailNormalUVScale = set;
-}
+static auto ddon_emit_0x01964a70 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setDetailNormalUVScale;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setDetailNormalPower(f32 set) {
-    mDetailNormalPower = set;
-}
+static auto ddon_emit_0x01964a80 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setDetailNormalPower;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setTransparency(f32 set) {
-    mTransparency = set;
-}
+static auto ddon_emit_0x01964a90 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setTransparency;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setShininess(f32 set) {
-    mShininess = set;
-}
+static auto ddon_emit_0x01964aa0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setShininess;
 
 void cDDMaterialCtrl::cShaderDataSdlData::setAlbedoColor(MtVector3& set) {
     mAlbedoColor = set;
@@ -2440,45 +2334,27 @@ void cDDMaterialCtrl::cShaderDataSdlData::setReflectiveColor(MtVector3& set) {
     mReflectiveColor = set;
 }
 
-void cDDMaterialCtrl::cShaderDataSdlData::setBAlphaClipThreshold(f32 set) {
-    mBAlphaClipThreshold = set;
-}
+static auto ddon_emit_0x01964bd0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setBAlphaClipThreshold;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setBBlendAlphaBand(f32 set) {
-    mBBlendAlphaBand = set;
-}
+static auto ddon_emit_0x01964be0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setBBlendAlphaBand;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setBBlendAlphaThreshold(f32 set) {
-    mBBlendAlphaThreshold = set;
-}
+static auto ddon_emit_0x01964bf0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setBBlendAlphaThreshold;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setBAlbedoBlendRate(f32 set) {
-    mBAlbedoBlendRate = set;
-}
+static auto ddon_emit_0x01964c00 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setBAlbedoBlendRate;
 
 void cDDMaterialCtrl::cShaderDataSdlData::setBBlendMapColor(MtVector3& set) {
     mBBlendMapColor = set;
 }
 
-void cDDMaterialCtrl::cShaderDataSdlData::setEmissionFactor(f32 set) {
-    mBEmissionFactor = set;
-}
+static auto ddon_emit_0x01964c50 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setEmissionFactor;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispStart(f32 set) {
-    mVtxDispStart = set;
-}
+static auto ddon_emit_0x01964c60 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setVtxDispStart;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispScale(f32 set) {
-    mVtxDispScale = set;
-}
+static auto ddon_emit_0x01964c70 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setVtxDispScale;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispStart2(f32 set) {
-    mVtxDispStart2 = set;
-}
+static auto ddon_emit_0x01964c80 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setVtxDispStart2;
 
-void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispScale2(f32 set) {
-    mVtxDispScale2 = set;
-}
+static auto ddon_emit_0x01964c90 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setVtxDispScale2;
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdlData::createProperty(MtPropertyList& s) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::createProperty")

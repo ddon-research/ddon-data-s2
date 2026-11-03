@@ -7,7 +7,7 @@
 #include "../../MT/MtDTI.h"
 #include "cpErosionEnemyBase.h"
 #include "../../generated/shared/nErosionEnemyBase.h"
-#include "../../generated/rCharacterEditCameraParam/nErosionEnemySmall.h"
+#include "../../generated/shared/nErosionEnemySmall.h"
 
 // Forward declarations
 class MtAllocator;
@@ -106,6 +106,10 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cpErosionEnemySmall::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline void cpErosionEnemySmall::setErosionSmallMode(nErosionEnemySmall::EROSION_SMALL_MODE mode) {
     this->mErosionSmallMode = mode;

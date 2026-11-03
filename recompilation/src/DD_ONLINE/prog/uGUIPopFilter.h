@@ -379,3 +379,19 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUIPopFilter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIPopFilter::evCancel() {
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopFilter::updateExit);
+}
+
+inline void* uGUIPopFilter::cData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopFilter::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

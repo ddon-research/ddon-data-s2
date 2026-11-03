@@ -80,6 +80,10 @@ protected:
     static const u8 DATA_VERSION = 6;
 };
 
+inline void* rCameraParamList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rCameraList* rCameraParamList::getCameraListResource() {
     return this->mprCameraList;
 }

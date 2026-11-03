@@ -69,6 +69,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uPlayer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uPlayer::uPlayer() {
     this->::uHuman::mpKeyCommand = nullptr;
     this->::uDDOModel::mUnitId = this->::uDDOModel::mUnitId | 8u;

@@ -4,16 +4,23 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
 #include "cCharacterData.h"
 #include "cComponentManager.h"
 #include "cContextInterface.h"
+#include "cDelegate.h"
 #include "cEditParam.h"
 #include "cEquipData.h"
+#include "cGUIUtility.h"
+#include "cItemParam.h"
+#include "cPlayerLoadManager.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
 #include "cpCharacterEdit.h"
 #include "cpComponent.h"
+#include "cpDDMrlMgr.h"
 #include "cpEquip.h"
 #include "cpIKCtrl.h"
 #include "cpJointEx2.h"
@@ -21,12 +28,18 @@
 #include "cpPivotCtrl.h"
 #include "cpTinyChain.h"
 #include "../../XFramework/nMotion.h"
+#include "rArchiveListArray.h"
 #include "rCharacterEdit.h"
+#include "rItemList.h"
 #include "rMotionFilter.h"
 #include "../../XFramework/rMotionList.h"
 #include "rMotionParam.h"
+#include "rWeaponResTable.h"
 #include "sArchiveManager.h"
+#include "sContextManager.h"
+#include "sItemManager.h"
 #include "uArmor.h"
+#include "../../XFramework/uBaseModel.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uModel.h"
 #include "uWeapon.h"
@@ -669,7 +682,7 @@ bool uMockUpModel::setEmotionList() {
     cResource* pRes = sArchiveManager::getInstance()->createRes("Human", "RES_ID_M0000_EMO_LMT", 1u, false);
     if (pRes != nullptr) {
         setMotionList(static_cast<rMotionList*>(pRes), 6u);
-        pRes->cResource::release();
+        pRes->release();
         return true;
     } else {
         return false;
@@ -712,7 +725,7 @@ void uMockUpModel::changeEquipFromContext(const cContextInstHm* pContext, u32 op
 
 void uMockUpModel::changeEquipFromCharaData(const nCharacterData::stEquipData& charaData, u32 option) {
     cEquipData equipData;
-    equipData.cEquipData::setEquipFromCharacterData(charaData);
+    equipData.setEquipFromCharacterData(charaData);
     changeEquipFromEquipData(equipData, option);
 }
 

@@ -257,6 +257,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpOcdCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpOcdCtrl::setWarpReactionStartTiming() {
     this->mReactionStartTiming = 3;
     this->mTimerStartTiming = 3;

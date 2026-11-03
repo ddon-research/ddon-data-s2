@@ -374,6 +374,10 @@ public:
     static sHttpClient* mpInstance;
 };
 
+inline void* cGameHttpClient::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cGameHttpClient::setStatusCode(u32 value) {
     this->mStatusCode = value;
 }
@@ -382,9 +386,21 @@ inline void cGameHttpClient::setContentLength(s32 value) {
     this->mContentLength = value;
 }
 
+inline void* cGameHttpClient::cLoginBackDoorInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cGameHttpClient::cServerEnvironmentInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cGameHttpClient::cServerEnvironmentInfo::cServerEnvironmentInfo() {
     this->mRomVersion = 0;
 }
 
 inline cGameHttpClient::hLoginBackDoor::hLoginBackDoor() {
+}
+
+inline void* sHttpClient::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

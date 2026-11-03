@@ -962,6 +962,10 @@ private:
     static const u32 GROUND_HIT_TILT_LIMIT = 45;
 };
 
+inline void* cVfxLightInfluence::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cVfxLightInfluence::cVfxLightInfluence() {
     this->mCustom4 = 0.0f;
     this->mCustom6 = 0.0f;
@@ -971,6 +975,14 @@ inline cVfxLightInfluence::cVfxLightInfluence() {
     this->mCustom1 = 0.0f;
     this->mEnv1 = 1.0f;
     this->mEnv2 = 1.0f;
+}
+
+inline void* rVfxLightInfluence::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sEffectExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rEffectProvider* sEffectExt::getCommonEPV(u32 Type) const {
@@ -991,4 +1003,44 @@ inline const rTexture* sEffectExt::cStatusAilmentsTexture::getNormalMap() {
 
 inline const rTexture* sEffectExt::cStatusAilmentsTexture::getSpecularMap() {
     return this->mpSpecularMap;
+}
+
+inline void* sEffectExt::cZoneEpvStack::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sEffectExt::cZoneEffectUnitLayout::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sEffectExt::cZoneEffectUnit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sEffectExt::cEfcCameraQuakeData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sEffectExt::cEfcCameraQuakeDataLarge::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sEffectExt::cEfcCameraQuakeDataMiddle::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sEffectExt::cEfcCameraQuakeDataSmall::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cVfxLightInfluence::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cVfxLightInfluence::DTI)->memFree(p_addr);
+}
+
+inline void* cVfxLightInfluence::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cVfxLightInfluence::DTI)->memAlloc(sz, align, ::cVfxLightInfluence::DTI.::MtDTI::getID());
 }

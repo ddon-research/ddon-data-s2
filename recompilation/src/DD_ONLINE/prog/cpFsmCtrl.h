@@ -130,6 +130,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpFsmCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpFsmCtrl::notifySetEyeBall() {
     this->mIsEndEyeBallMove = false;
 }

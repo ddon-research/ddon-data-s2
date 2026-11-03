@@ -104,6 +104,19 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpAltitudeFallCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void cpAltitudeFallCtrl::init() {
+    this->mLastFallDistance = this->mFallDistance;
+    this->mFallDistance = 0.0f;
+    this->mIsAir = false;
+    this->mIsAltitudeFall = false;
+    this->mHighestPointY = 0.0f;
+    this->mRequestInitFlg = false;
+}
+
 inline f32 cpAltitudeFallCtrl::getFallDistance() {
     return this->mFallDistance;
 }

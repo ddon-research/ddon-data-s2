@@ -156,5 +156,17 @@ protected:
     static const u32 DATA_VERSION = 2;
 };
 
+inline void* rWaypoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rWaypoint::cPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rWaypoint::cRoute::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rWaypoint::cRoute::cRoute() {
 }

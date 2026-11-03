@@ -4,14 +4,32 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
+#include "Protocol/PacketData/Quest.h"
 #include "cControl.h"
 #include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
+#include "cMenuBase.h"
+#include "cNetGameServer.h"
 #include "../../XFramework/cUnit.h"
 #include "nGUIExt.h"
 #include "nQuest.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "sChat.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sItemManager.h"
+#include "sMenu.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sQuestManagerExt.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #include "uGUIQuestBoardBase.h"
 #include "uGUIQuestInfo.h"
@@ -29,8 +47,11 @@ inline void uGUIQuestBoard::operator delete(void* p_addr) {
 }
 
 uGUIQuestBoard::~uGUIQuestBoard() {
-    DDON_STUB("uGUIQuestBoard::~uGUIQuestBoard")
-    /* stub */
+    if (mpGUIQuestInfo == nullptr) {
+        return;
+    }
+    mpGUIQuestInfo->kill();
+    mpGUIQuestInfo = nullptr;
 }
 
 void uGUIQuestBoard::createProperty(MtPropertyList& s) {
@@ -178,6 +199,14 @@ __attribute__((weak)) void uGUIQuestBoard::setupDetail() {
 __attribute__((weak)) void uGUIQuestBoard::adjustListCursor() {
     DDON_STUB("uGUIQuestBoard::adjustListCursor")
     /* stub */
+}
+
+inline void uGUIQuestBoard::adjustTab() {
+    if (mpTabCtrl != nullptr) {
+        mMain.mTab.uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(mpTabCtrl->mCurrentPos), true, true);
+    } else {
+        mMain.mTab.uGUIBase::cReferenceUITab::setFocus(0u, true, true);
+    }
 }
 
 __attribute__((weak)) void uGUIQuestBoard::setupInfo() {

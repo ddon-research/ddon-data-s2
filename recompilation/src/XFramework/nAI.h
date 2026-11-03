@@ -96,3 +96,7 @@ namespace nAI {
         static MyDTI DTI;
     };
 }  // namespace nAI
+
+inline void* nAI::EnumProp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

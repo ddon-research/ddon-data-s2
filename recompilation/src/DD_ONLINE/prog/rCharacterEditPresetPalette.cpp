@@ -47,8 +47,6 @@ inline void rCharacterEditPresetPalette::operator delete(void* p_addr) {
 }
 
 rCharacterEditPresetPalette::~rCharacterEditPresetPalette() {
-    DDON_STUB("rCharacterEditPresetPalette::~rCharacterEditPresetPalette")
-    /* stub */
 }
 
 bool rCharacterEditPresetPalette::loadData(MtDataReader& r, cCharacterEditPresetPalette* pData) {

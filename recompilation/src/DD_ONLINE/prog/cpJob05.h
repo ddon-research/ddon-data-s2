@@ -287,6 +287,10 @@ private:
     static const u32 INVALID_TARGET_ID_CS08 = 4294967295;
 };
 
+inline void* cpJob05::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpJob05::setTmpElementType(nDDOGame::ELEMENT_TYPE type) {
     this->mTmpEnchantType = type;
 }
@@ -299,6 +303,14 @@ inline void cpJob05::resetTmpElementType() {
     this->mTmpEnchantType = static_cast<nDDOGame::ELEMENT_TYPE>(1);
 }
 
+inline void cpJob05::resetGuardCharge() {
+    this->mForceGauge.mNowGauge_Gi = 0.0f;
+}
+
+inline f32 cpJob05::getGuardCharge() const {
+    return this->mForceGauge.mNowGauge_Gi;
+}
+
 inline void cpJob05::setGuardChargeMax(f32 max) {
     this->mForceGauge.mGaugeMax_Gi = max;
     this->mForceGauge.mStockMax_Gi = static_cast<int>(max / 1000.0f);
@@ -306,6 +318,10 @@ inline void cpJob05::setGuardChargeMax(f32 max) {
 
 inline void cpJob05::setHateAttackMinimumMoveTime(f32 time) {
     this->mHateAttackMinimumMoveTimer = time;
+}
+
+inline void cpJob05::setGuardModeNoCancelTimer(f32 time) {
+    this->mGuardModeNoCancelTimer = time;
 }
 
 inline void cpJob05::clearCanStunShieldCounter() {
@@ -322,6 +338,10 @@ inline uShlBase* cpJob05::getLightShl() const {
 
 inline void cpJob05::clearLightShl() {
     this->mpShlLight = nullptr;
+}
+
+inline void* cpJob05::ForceGaugeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cpJob05::ForceGaugeInfo::ForceGaugeInfo() {

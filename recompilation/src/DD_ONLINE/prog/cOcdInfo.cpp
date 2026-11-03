@@ -51,8 +51,18 @@ bool cOcdInfo::isActive() const {
 }
 
 __attribute__((weak)) void cOcdInfo::reqChangeOcdMode(nObjCondition::OCD_REQ_MODE mode, nObjCollision::UNIT_INV_THROUGH_TYPE invThroughType) {
-    DDON_STUB("cOcdInfo::reqChangeOcdMode")
-    /* stub */
+        if (mode == nObjCondition::OCD_REQ_INIT) {
+            if (mpModel && mpModel->isDamageAttrActive_Through(nObjCollision::DAMAGE_NO_OCD_INIT, invThroughType)) {
+                return;
+            }
+            if ((mOcdUID & 0xf000) == 0x1000) {
+                if (mpModel && mpModel->isDamageAttrActive_Through(nObjCollision::DAMAGE_NO_OCD_INIT_BAD, invThroughType)) {
+                    return;
+                }
+            }
+        }
+        mOcdModeReq = mode;
+        mOcdModeReqCheatCheck = ~mode;
 }
 
 bool cOcdInfo::isReqestAbleCustom(s32 priority) const {

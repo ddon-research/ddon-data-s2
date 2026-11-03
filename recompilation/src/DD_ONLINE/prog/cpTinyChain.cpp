@@ -10,6 +10,8 @@
 #include "cpComponent.h"
 #include "cpSequenceCtrl.h"
 #include "../../XFramework/rCnsTinyChain.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
 #include "../../XFramework/uCnsTinyChain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

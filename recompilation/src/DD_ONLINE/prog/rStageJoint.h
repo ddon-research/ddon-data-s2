@@ -247,10 +247,66 @@ protected:
     static const u8 DATA_VERSION = 19;
 };
 
+inline void* rStageJoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rStageJoint::Param* rStageJoint::getParam() {
     return &this->mParam;
 }
 
 inline rStageJoint::Info* rStageJoint::getPersistentInfo() {
     return &this->mPersistentInfo;
+}
+
+inline void* rStageJoint::Param::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 rStageJoint::Param::getAreaNumX() const {
+    return this->mAreaNumX;
+}
+
+inline u32 rStageJoint::Param::getAreaNumZ() const {
+    return this->mAreaNumZ;
+}
+
+inline u32 rStageJoint::Param::getAreaNum() const {
+    return this->mAreaNumZ * this->mAreaNumX;
+}
+
+inline void* rStageJoint::Info::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline MT_CTSTR rStageJoint::Info::getModelName() const {
+    return &this->mModel[0];
+}
+
+inline u32 rStageJoint::Info::getScrSbcNameNum() const {
+    return 3;
+}
+
+inline u32 rStageJoint::Info::getEffSbcNameNum() const {
+    return 3;
+}
+
+inline MT_CTSTR rStageJoint::Info::getLightName() const {
+    return &this->mLight[0];
+}
+
+inline MT_CTSTR rStageJoint::Info::getNaviMeshName() const {
+    return &this->mNaviMesh[0];
+}
+
+inline MT_CTSTR rStageJoint::Info::getPlantTreeName() const {
+    return &this->mPlantTree[0];
+}
+
+inline MT_CTSTR rStageJoint::Info::getEpvName() const {
+    return &this->mEpv[0];
+}
+
+inline MT_CTSTR rStageJoint::Info::getSndInfoName() const {
+    return &this->mSndInfo[0];
 }

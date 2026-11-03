@@ -18,6 +18,7 @@ class CDataGatheringItemElement;
 class CDataGatheringItemGetRequest;
 class CDataLayoutEnemyData;
 class CDataOmData;
+class CDataRandomStageInfo;
 class CDataStageAttribute;
 class CDataStageInfo;
 class CDataStageLayoutEnemyPresetEnemyInfoClient;
@@ -166,6 +167,39 @@ public:
 public:
     u32 m_ulKey;  // offset: 0x8
     u32 m_ulValue;  // offset: 0xc
+    static MyDTI DTI;
+};
+
+class CDataRandomStageInfo : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataRandomStageInfo();
+    explicit CDataRandomStageInfo(u32, u32);
+public:
+    u32 m_unLayerNo;  // offset: 0x8
+    u32 m_unPartNo;  // offset: 0xc
     static MyDTI DTI;
 };
 
@@ -362,10 +396,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataEncounterPawnInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataEncounterPawnInfo::CDataEncounterPawnInfo() {
     this->m_ulLv = 0;
     this->m_ulLvBand = 0;
     this->m_ulThinkID = 0;
+}
+
+inline void* CDataGatheringItemElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataGatheringItemElement::CDataGatheringItemElement() {
@@ -374,18 +416,43 @@ inline CDataGatheringItemElement::CDataGatheringItemElement() {
     this->m_ulNum = 0;
 }
 
+inline void* CDataGatheringItemGetRequest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataGatheringItemGetRequest::CDataGatheringItemGetRequest() {
     this->m_ulID = 0;
     this->m_ulNum = 0;
+}
+
+inline void* CDataLayoutEnemyData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataLayoutEnemyData::CDataLayoutEnemyData() {
     this->m_ucPositionIndex = 0;
 }
 
+inline void* CDataOmData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataOmData::CDataOmData() {
     this->m_ulKey = 0;
     this->m_ulValue = 0;
+}
+
+inline void* CDataRandomStageInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataRandomStageInfo::CDataRandomStageInfo() {
+    this->m_unLayerNo = 0;
+    this->m_unPartNo = 0;
+}
+
+inline void* CDataStageAttribute::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataStageAttribute::CDataStageAttribute() {
@@ -400,12 +467,20 @@ inline CDataStageAttribute::CDataStageAttribute() {
     this->m_bIsEnableBaggage = false;
 }
 
+inline void* CDataStageInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataStageInfo::CDataStageInfo() {
     this->m_ulRandomStageGroupID = 0;
     this->m_unType = 0;
     this->m_ulID = 0;
     this->m_ulStageNo = 0;
     this->m_bIsAutoSetBloodEnemy = false;
+}
+
+inline void* CDataStageLayoutEnemyPresetEnemyInfoClient::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataStageLayoutEnemyPresetEnemyInfoClient::CDataStageLayoutEnemyPresetEnemyInfoClient() {
@@ -427,6 +502,10 @@ inline CDataStageLayoutEnemyPresetEnemyInfoClient::CDataStageLayoutEnemyPresetEn
     this->m_usLv = 0;
     this->m_unEnemyID = 0;
     this->m_unNamedEnemyParamsId = 0;
+}
+
+inline void* CDataStageLayoutID::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataStageLayoutID::CDataStageLayoutID() {

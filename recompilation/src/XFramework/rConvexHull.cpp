@@ -8,6 +8,9 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "cResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -74,9 +77,7 @@ __attribute__((weak)) void cGeomConvexHull::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-rConvexHull* cGeomConvexHull::getResource() {
-    return mpCH;
-}
+static auto ddon_emit_0x01b91790 __attribute__((used)) = &cGeomConvexHull::getResource;
 
 __attribute__((weak)) void cGeomConvexHull::setResource(rConvexHull* resource) {
     DDON_STUB("cGeomConvexHull::setResource")

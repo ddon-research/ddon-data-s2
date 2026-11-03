@@ -9,9 +9,11 @@
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "cpComponent.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "rHeadCtrl.h"
 #include "uCnsHeadCtrl.h"
 #include "uDDOModel.h"
+#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

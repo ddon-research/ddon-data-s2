@@ -445,3 +445,31 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUICaplinkChat::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkChat::cDateItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkChat::cSystemItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkChat::cMessageItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkChat::cDateInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkChat::cSystemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkChat::cMessageInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

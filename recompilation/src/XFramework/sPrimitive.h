@@ -300,3 +300,7 @@ public:
 protected:
     static sPrimitive* mpInstance;
 };
+
+inline void* sPrimitive::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

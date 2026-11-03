@@ -6,9 +6,13 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "cDelegate.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "cpIKCtrl.h"
 #include "../../XFramework/rCnsIK.h"
 #include "../../XFramework/sCollision.h"
 #include "../../XFramework/uConstraint.h"
@@ -163,38 +167,28 @@ void uCnsDDOIK::setEffectorTargetModel(uModel* pModel) {
     mEffectorPosEnable = false;
 }
 
-uModel* uCnsDDOIK::getEffectorTargetModel() {
-    return mpEffectorTargetModel;
-}
+static auto ddon_emit_0x01ad3720 __attribute__((used)) = &uCnsDDOIK::getEffectorTargetModel;
 
 void uCnsDDOIK::setEffectorTargetJointNo(u32 JntNo) {
     mEffectorTargetJointNo = JntNo;
 }
 
-u32 uCnsDDOIK::getEffectorTargetJointNo() const {
-    return mEffectorTargetJointNo;
-}
+static auto ddon_emit_0x01ad3740 __attribute__((used)) = &uCnsDDOIK::getEffectorTargetJointNo;
 
 void uCnsDDOIK::setUpVectorTargetModel(uModel* pModel) {
     mpUpVectorTargetModel = pModel;
     mUpVectorPosEnable = false;
 }
 
-uModel* uCnsDDOIK::getUpVectorTargetModel() const {
-    return mpUpVectorTargetModel;
-}
+static auto ddon_emit_0x01ad3730 __attribute__((used)) = &uCnsDDOIK::getUpVectorTargetModel;
 
 void uCnsDDOIK::setUpVectorTargetJointNo(u32 JntNo) {
     mUpVectorTargetJointNo = JntNo;
 }
 
-u32 uCnsDDOIK::getUpVectorTargetJointNo() const {
-    return mUpVectorTargetJointNo;
-}
+static auto ddon_emit_0x01ad3750 __attribute__((used)) = &uCnsDDOIK::getUpVectorTargetJointNo;
 
-uCnsDDOIK::JointInfo* uCnsDDOIK::getJointInfo(s32 Idx) {
-    return &mJointInfo[Idx];
-}
+static auto ddon_emit_0x01ad3620 __attribute__((used)) = &uCnsDDOIK::getJointInfo;
 
 __attribute__((weak)) void uCnsDDOIK::setJointInfo(uCnsDDOIK::JointInfo* pJointInfo, s32 Idx) {
     DDON_STUB("uCnsDDOIK::setJointInfo")
@@ -204,9 +198,7 @@ __attribute__((weak)) void uCnsDDOIK::setJointInfo(uCnsDDOIK::JointInfo* pJointI
 __attribute__((weak)) void uCnsDDOIK::setJointInfoNum(s32 Num) {
 }
 
-s32 uCnsDDOIK::getJointInfoNum() {
-    return 4;
-}
+static auto ddon_emit_0x01ad36f0 __attribute__((used)) = &uCnsDDOIK::getJointInfoNum;
 
 u32 uCnsDDOIK::getDependentJointNum() {
     if (mEffectorTargetModelEnable) {
@@ -355,9 +347,7 @@ void uCnsDDOIK::set(uModel* pModel, rCnsIK* pCnsIKRes) {
     mGroundLevel = -100000000.0f;
 }
 
-u32 uCnsDDOIK::getStatus() {
-    return mStatus;
-}
+static auto ddon_emit_0x01ad3710 __attribute__((used)) = &uCnsDDOIK::getStatus;
 
 void uCnsDDOIK::setEffectorPos(const MtVector3& Pos) {
     mEffectorPos = Pos;
@@ -400,9 +390,7 @@ uCnsDDOIK::JointInfo::~JointInfo() {
     /* stub */
 }
 
-s32 uCnsDDOIK::JointInfo::getJntNo() const {
-    return mJntNo;
-}
+static auto ddon_emit_0x01ad3530 __attribute__((used)) = &uCnsDDOIK::JointInfo::getJntNo;
 
 __attribute__((weak)) void uCnsDDOIK::JointInfo::createProperty(MtPropertyList& s) {
     DDON_STUB("uCnsDDOIK::JointInfo::createProperty")

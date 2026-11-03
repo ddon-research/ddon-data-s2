@@ -167,6 +167,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpLockOn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rJointInfo* cpLockOn::getResource() {
+    return this->mpResource;
+}
+
+inline void* cpLockOn::cLockOnTarget::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpLockOn::cLockOnTarget::setLockOnTargetState(nLockOnTarget::LOCKON_TARGET_STATE state) {
     this->mLockOnState = state;
 }

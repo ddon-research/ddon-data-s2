@@ -5,6 +5,7 @@
 
 // Dependencies
 #include "CharacterEdit.h"
+#include "Common.h"
 #include "Community.h"
 #include "GP.h"
 #include "Item.h"
@@ -15,6 +16,7 @@
 
 // Forward declarations
 class CDataCharacterListElement;
+class CDataCommonU32;
 class CDataEditInfo;
 class CDataEquipItemInfo;
 class CDataGPCourseValid;
@@ -33,6 +35,7 @@ class CDataCommunicationShortCut;
 class CDataItemStorageIndicateNum;
 class CDataMasterInfo;
 class CDataMatchingProfile;
+class CDataMyRoomOption;
 class CDataShortCut;
 class CDataUpdateWalletPoint;
 class CDataWalletPoint;
@@ -421,6 +424,39 @@ public:
     static MyDTI DTI;
 };
 
+class CDataMyRoomOption : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataMyRoomOption();
+    explicit CDataMyRoomOption(const MtTypedArray<CDataCommonU32>&, u32);
+public:
+    MtTypedArray<CDataCommonU32> m_BgmAcquirementNoList;  // offset: 0x8
+    u32 m_unBgmAcquirementNo;  // offset: 0x28
+    static MyDTI DTI;
+};
+
 class CDataShortCut : public CPacketDataBase
 {
 public:
@@ -565,6 +601,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataCharacterLevelParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCharacterLevelParam::CDataCharacterLevelParam() {
     this->m_usConstitution = 0;
     this->m_usGuts = 0;
@@ -578,17 +618,37 @@ inline CDataCharacterLevelParam::CDataCharacterLevelParam() {
     this->m_usMagDefence = 0;
 }
 
+inline void* CDataCharacterListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataCharacterMessage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCharacterMessage::CDataCharacterMessage() {
     this->m_unMessageNo = 0;
     this->m_unEmotion = 0;
     this->m_bEmotoChat = false;
 }
 
+inline void* CDataCharacterMsgSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCharacterMsgSet::CDataCharacterMsgSet() {
     this->m_unSetNo = 0;
 }
 
+inline void* CDataCharacterSearchParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCharacterSearchParam::CDataCharacterSearchParam() {
+}
+
+inline void* CDataCommunicationShortCut::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataCommunicationShortCut::CDataCommunicationShortCut() {
@@ -599,14 +659,26 @@ inline CDataCommunicationShortCut::CDataCommunicationShortCut() {
     this->m_unButtonNo = 0;
 }
 
+inline void* CDataItemStorageIndicateNum::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataItemStorageIndicateNum::CDataItemStorageIndicateNum() {
     this->m_unItemNum = 0;
     this->m_ucStorageType = 0;
 }
 
+inline void* CDataMasterInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataMasterInfo::CDataMasterInfo() {
     this->m_unUniqueID = 0;
     this->m_cMasterIndex = 0;
+}
+
+inline void* CDataMatchingProfile::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataMatchingProfile::CDataMatchingProfile() {
@@ -620,6 +692,18 @@ inline CDataMatchingProfile::CDataMatchingProfile() {
     this->m_bIsJoinParty = true;
 }
 
+inline void* CDataMyRoomOption::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataMyRoomOption::CDataMyRoomOption() {
+    this->m_unBgmAcquirementNo = 0;
+}
+
+inline void* CDataShortCut::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataShortCut::CDataShortCut() {
     this->m_ucExexType = 0;
     this->m_unF32Data = 0;
@@ -627,6 +711,14 @@ inline CDataShortCut::CDataShortCut() {
     this->m_unU32Data = 0;
     this->m_unPageNo = 0;
     this->m_unButtonNo = 0;
+}
+
+inline void* CDataUpdateWalletPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataWalletPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataWalletPoint::CDataWalletPoint() {

@@ -2,14 +2,26 @@
 #include <new>
 #include "sEnvMapManager.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../XFramework/cDraw.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
+#include "../../XFramework/nDrawConstantTable.h"
+#include "../../XFramework/nDrawResource.h"
+#include "../../XFramework/nDrawTexture.h"
 #include "../../XFramework/rRenderTargetTexture.h"
 #include "../../XFramework/rTexture.h"
+#include "../../XFramework/sScene.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -131,8 +143,6 @@ inline void sEnvMapManager::cManageEnvMapField::operator delete(void* p_addr) {
 }
 
 sEnvMapManager::cManageEnvMapField::~cManageEnvMapField() {
-    DDON_STUB("sEnvMapManager::cManageEnvMapField::~cManageEnvMapField")
-    /* stub */
 }
 
 __attribute__((weak)) void sEnvMapManager::cManageEnvMapField::draw(cDraw* pdraw) {

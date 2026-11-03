@@ -11,6 +11,7 @@ class sGeneralPoint;
 
 // Declarations
 class cGeneralPointPtr;
+template <typename T> class cGpPtr;
 
 // Type aliases from DWARF
 using _Sizet = long unsigned int;
@@ -44,4 +45,17 @@ public:
 protected:
     cGeneralPoint* mpPtr;  // offset: 0x0
     s32 mRefIdx;  // offset: 0x8
+};
+
+template <typename T>
+class cGpPtr : protected cGeneralPointPtr
+{
+public:
+    T* operator=(T* p);
+    T* get();
+    T* get() const;
+    bool operator==(T* p) const;
+private:
+    T* getPtr() const;
+    void setPtr(T* ptr);
 };

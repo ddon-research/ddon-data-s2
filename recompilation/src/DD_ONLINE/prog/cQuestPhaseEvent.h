@@ -119,12 +119,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cQuestPhaseEvent::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 cQuestPhaseEvent::getEventId() const {
     return this->mEventId;
 }
 
 inline cQuestPhaseEvent::cQuestPhaseEvent() {
     this->mEventId = 0;
+}
+
+inline void* cQuestPhaseEvent::cParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u32 cQuestPhaseEvent::cParam::getValue() const {

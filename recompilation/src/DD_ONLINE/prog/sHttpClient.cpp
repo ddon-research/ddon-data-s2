@@ -8,10 +8,15 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtNetDevice.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtStream.h"
 #include "../../MT/MtString.h"
+#include "../../MT/MtSynchronize.h"
 #include "../../XFramework/cHttpClient.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/sMain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

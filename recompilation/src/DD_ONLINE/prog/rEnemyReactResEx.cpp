@@ -3,8 +3,10 @@
 #include "rEnemyReactResEx.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -40,8 +42,6 @@ inline void rEnemyReactResEx::operator delete(void* p_addr) {
 }
 
 rEnemyReactResEx::~rEnemyReactResEx() {
-    DDON_STUB("rEnemyReactResEx::~rEnemyReactResEx")
-    /* stub */
 }
 
 bool rEnemyReactResEx::loadData(MtDataReader& r, cEnemyReactRes* pData) {

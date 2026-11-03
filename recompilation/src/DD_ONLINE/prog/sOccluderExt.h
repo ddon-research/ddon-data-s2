@@ -170,8 +170,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* sOccluderEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sOccluderEx::Area::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sOccluderEx::Area::Area() {
     this->mPrio = 512;
     this->mprOCC = nullptr;
     this->mbOCC = true;
+}
+
+inline void* sOccluderEx::Shape::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

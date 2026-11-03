@@ -195,3 +195,7 @@ public:
 private:
     static const CONTROL_TYPE mCTKindTable[4];
 };
+
+inline void* cGUIControlMgr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

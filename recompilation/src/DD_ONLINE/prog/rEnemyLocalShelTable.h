@@ -96,9 +96,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEnemyLocalShelTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEnemyLocalShelTable::cEnemyLocalShelTable() {
     this->mIdx = 1;
     this->mShellNo = 0;
     this->mDieIsNoCall = true;
     this->mSyncFlagMax32 = 0;
+}
+
+inline void* rEnemyLocalShelTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEnemyLocalShelTable::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyLocalShelTable::DTI)->memFree(p_addr);
+}
+
+inline void* cEnemyLocalShelTable::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyLocalShelTable::DTI)->memAlloc(sz, align, ::cEnemyLocalShelTable::DTI.::MtDTI::getID());
 }

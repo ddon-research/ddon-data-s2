@@ -80,6 +80,7 @@ using u8 = unsigned char;
 class uGUI : public uCoord
 {
     friend class cGUIInstAnimation;
+    friend class cGUIInstRoot;
     friend class uGUIBase;
 public:
     class MyDTI;
@@ -366,3 +367,55 @@ private:
     static const u32 ATTR_PROCESS_FIRSTFRAME = 8192;
     static const u32 ATTR_MANUAL_3D_PRIORITY = 1048576;
 };
+
+inline void* uGUI::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rGUI* uGUI::getResource() const {
+    return this->mpResource;
+}
+
+inline void uGUI::setWait(bool v) {
+    this->mAttr = !v ? (this->mAttr & 0xFFFFFFFDu) : (this->mAttr | 2u);
+}
+
+inline void uGUI::setVirtualScreen(bool v) {
+    this->mAttr = !v ? (this->mAttr & 0xFFFFFFFBu) : (this->mAttr | 4u);
+}
+
+inline void uGUI::setUseViewInstance(bool v) {
+    this->mAttr = !v ? (this->mAttr & 0xFFFFFFF7u) : (this->mAttr | 8u);
+}
+
+inline void uGUI::setManual3DPriority(bool v) {
+    this->mAttr = !v ? (this->mAttr & 0xFFEFFFFFu) : (this->mAttr | 0x100000u);
+}
+
+inline void uGUI::setDrawStencil(bool v) {
+    this->mAttr = !v ? (this->mAttr & 0xFFFFFFEFu) : (this->mAttr | 16u);
+}
+
+inline void uGUI::setStencilRef(u8 v) {
+    this->mStencilRef = v;
+}
+
+inline void uGUI::setPriority(u32 prio) {
+    if ((this->mAttr & 0x100000u) == 0) {
+        this->mPriority = (prio <= 0xFFFFFu) ? prio : 0xFFFFFu;
+    } else {
+        this->mPriority = prio;
+    }
+}
+
+inline u32 uGUI::getPriority() const {
+    return this->mPriority;
+}
+
+inline void uGUI::setScreenLayer(u32 layer) {
+    this->mScreenLayer = (layer <= 127u) ? layer : 127u;
+}
+
+inline u32 uGUI::getScreenLayer() const {
+    return this->mScreenLayer;
+}

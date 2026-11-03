@@ -5,11 +5,14 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "cDelegate.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
-#include "../../generated/shared/nSequence.h"
+#include "../../generated/rPawnAIAction/nSequence.h"
 #include "uDDOModel.h"
+#include "uHuman.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -97,8 +100,10 @@ __attribute__((weak)) u32 cpSequenceCtrl::getSequenceRel(u32 page, MOT_TYPE s) {
 }
 
 __attribute__((weak)) bool cpSequenceCtrl::checkSequence(u32 bit, u32 page, MOT_TYPE s) {
-    DDON_STUB("cpSequenceCtrl::checkSequence")
-    return {};
+        if (page <= 3 && static_cast<u32>(s) <= 7) {
+            return (mMotSeqNew[static_cast<u32>(s)][page] & (1 << bit)) != 0;
+        }
+        return false;
 }
 
 void cpSequenceCtrl::setupSequenceCallback(nSequence::SEQ_CALLBACK_NO no, cpSequenceCtrl::CHECK_TYPE check_type, MOT_TYPE blend, u32 page, u32 top, u32 bottom) {

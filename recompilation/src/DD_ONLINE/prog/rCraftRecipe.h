@@ -163,6 +163,22 @@ public:
     static const s32 NativeVersion = 6;
 };
 
+inline void* rCraftRecipe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rCraftRecipe::cCraftRecipe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 rCraftRecipe::cCraftRecipe::getCreateTime() const {
     return this->mCreateTime;
+}
+
+inline void* rCraftRecipe::cMaterialData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 rCraftRecipe::cMaterialData::getItemId() const {
+    return this->mItemId;
 }

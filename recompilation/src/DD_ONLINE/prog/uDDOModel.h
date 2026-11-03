@@ -80,6 +80,7 @@ class cpJob03;
 class cpJob04;
 class cpJob05;
 class cpJob06;
+class cpJob07;
 class cpJob09;
 class cpJob10;
 class cpKeepAtkAdjust;
@@ -92,6 +93,7 @@ class cpMotionSe;
 class cpNpc;
 class cpObjCollisionBase;
 class cpOcdCtrl;
+class cpOmBase;
 class cpPartsCtrl;
 class cpPathFinding;
 class cpPawnThink;
@@ -166,10 +168,12 @@ class uDDOModel : public uModel
     friend class cpJob04;
     friend class cpJob05;
     friend class cpJob06;
+    friend class cpJob07;
     friend class cpJob09;
     friend class cpJob10;
     friend class cpLayout;
     friend class cpObjCollisionBase;
+    friend class cpOmBase;
     friend class cpPawnThink;
     friend class cpSlave;
     friend class sAIPawnSys;
@@ -177,6 +181,7 @@ class uDDOModel : public uModel
     friend class uControl;
     friend class uEnemy;
     friend class uHuman;
+    friend class uHumanEnemy;
     friend class uNpc;
 public:
     enum PROFILE_TYPE
@@ -881,6 +886,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uDDOModel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool uDDOModel::isEnemy() const {
     return (this->mUnitId & 2u) != 0;
 }
@@ -911,6 +920,10 @@ inline void uDDOModel::setWorkRatePtr(cpWorkRate* NewValue) {
 
 inline cpObjCollisionBase* uDDOModel::getObjCollisionPtr() const {
     return this->mGuardComponent.mpObjCollision;
+}
+
+inline void uDDOModel::setObjCollisionPtr(cpObjCollisionBase* NewValue) {
+    this->mGuardComponent.mpObjCollision = NewValue;
 }
 
 inline cpScrCollision* uDDOModel::getScrCollisionPtr() const {

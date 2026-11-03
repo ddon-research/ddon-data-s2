@@ -417,3 +417,11 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUICaplinkFriendList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkFriendList::cIndex::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

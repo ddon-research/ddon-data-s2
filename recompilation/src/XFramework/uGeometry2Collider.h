@@ -204,6 +204,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGeometry2Collider::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGeometry2Collider::cContactInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGeometry2Collider::cNodeGeometryInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGeometry2Collider::cNodeGeometryInfo::cNodeGeometryInfo() {
     this->mpRegistGeometryParam = nullptr;
     this->mpRegistGeometry = nullptr;

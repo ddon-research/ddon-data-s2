@@ -194,9 +194,25 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cWSCParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cWeatherScriptCmd::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cWeatherScriptCmd::cWeatherScriptCmd() : mEnableStageNo(), mDisableStageNo() {
     this->mBeginFrame = 0.0f;
     this->mEndFrame = 0.0f;
+}
+
+inline void* cWeatherScriptCmds::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cWeatherScriptIO::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cWeatherScriptIO::cWeatherScriptIO() {

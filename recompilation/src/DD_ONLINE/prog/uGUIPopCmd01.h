@@ -214,3 +214,11 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUIPopCmd01::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIPopCmd01::cItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

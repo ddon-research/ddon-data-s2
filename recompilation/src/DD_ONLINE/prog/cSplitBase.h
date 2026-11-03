@@ -165,6 +165,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cSplitArc::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cSplitBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSplitBase::cSplitBase() {
     this->mStatus = 0;
     this->mIdX = -1;
@@ -177,6 +185,10 @@ inline s32 cSplitBase::getX() const {
 
 inline s32 cSplitBase::getZ() const {
     return this->mIdZ;
+}
+
+inline void* cSplitLot::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cLayoutSet* cSplitLot::getLotSet() {

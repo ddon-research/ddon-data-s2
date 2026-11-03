@@ -63,6 +63,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rRenderTargetTexture::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rRenderTargetTexture::rRenderTargetTexture() {
     this->::cResource::mAttr = 16;
 }

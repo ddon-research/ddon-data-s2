@@ -115,6 +115,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEmEffectTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEmEffectTable::cEmEffectTable() {
     this->mIdx = 1;
     this->mDieNoCall = false;
@@ -128,4 +132,8 @@ inline cEmEffectTable::cEmEffectTable() {
     this->mOffsetPos.pad_ = 0.0f;
     this->mOffsetPos.x = 0.0f;
     this->mOffsetPos.y = 0.0f;
+}
+
+inline void* rEmEffectTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

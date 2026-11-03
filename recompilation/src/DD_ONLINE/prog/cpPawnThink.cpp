@@ -8,21 +8,46 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtRandom.h"
+#include "aStage.h"
+#include "cAIGrid.h"
+#include "../../XFramework/cAIObject.h"
 #include "cAITargetInfo.h"
+#include "../../XFramework/cArea.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cDelegate.h"
 #include "cEvaluation.h"
+#include "cGeneralPoint.h"
+#include "cGeneralPointPtr.h"
 #include "cGuardInfo.h"
+#include "cHitGeom.h"
 #include "cHitNode.h"
 #include "cPawnActInterface.h"
 #include "../../XFramework/cResource.h"
 #include "cThinkMgr.h"
 #include "../../XFramework/cUnit.h"
+#include "cpAIPawnEmChecker.h"
+#include "cpAISensor.h"
 #include "cpActionManager.h"
 #include "cpComponent.h"
+#include "cpHugeble.h"
+#include "cpInput.h"
+#include "cpJob05.h"
+#include "cpMotionSe.h"
 #include "cpObjCollision.h"
+#include "cpOcdCtrl.h"
+#include "cpPathFinding.h"
+#include "cpScrCollision.h"
+#include "cpStateManager.h"
+#include "cpjob10.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
+#include "nHumanMsg.h"
 #include "nPawn.h"
 #include "rAIPawnActNoSwitch.h"
+#include "rAIPawnOrder.h"
 #include "rCollNode.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "rMsgSet.h"
@@ -30,9 +55,38 @@
 #include "rPriorityThink.h"
 #include "../../XFramework/rSoundStreamRequest.h"
 #include "res_ptr.h"
+#include "sAIPawnNotice.h"
 #include "sAIPawnSys.h"
+#include "sAIPawnTalkMgr.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
+#include "sContextManager.h"
+#include "sEnemyManager.h"
+#include "sGame.h"
+#include "sGeneralPoint.h"
+#include "../../XFramework/sMain.h"
+#include "sNpcManager.h"
+#include "sOmManager.h"
+#include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
+#include "sShlManager.h"
+#include "sSoundManager.h"
+#include "sUnitManager.h"
+#include "sWorldOffset.h"
+#include "../../XFramework/uBaseModel.h"
 #include "uCharacter.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
+#include "uHuman.h"
+#include "uNpc.h"
+#include "uPlayer.h"
+#include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -78,9 +132,48 @@ __attribute__((weak)) void cpPawnThink::compMoveAfter() {
     /* stub */
 }
 
-__attribute__((weak)) void cpPawnThink::updatePtr() {
-    DDON_STUB("cpPawnThink::updatePtr")
-    /* stub */
+void cpPawnThink::updatePtr() {
+    this->cpComponent::updatePtr();
+    mPartyList.updatePtr();
+    mEnemyList.updatePtr();
+    mAnimalList.updatePtr();
+    mOmList.updatePtr();
+    mcThink.mTargetMgr.updatePtr();
+    mcEvaluation.updatePtr();
+    if (mpAIPawnOrderTarget != nullptr) {
+        if (!mpAIPawnOrderTarget->isEnable()) {
+            mpAIPawnOrderTarget = nullptr;
+        }
+    }
+    if (mpAIPawnOrderTargetReq != nullptr) {
+        if (!mpAIPawnOrderTargetReq->isEnable()) {
+            mpAIPawnOrderTargetReq = nullptr;
+        }
+    }
+    if (mpThinkMgrTarget != nullptr) {
+        if (!mpThinkMgrTarget->isEnable()) {
+            mpThinkMgrTarget = nullptr;
+        }
+    }
+    if (mpAttackTestHitUnit != nullptr) {
+        if (!mpAttackTestHitUnit->isEnable()) {
+            mpAttackTestHitUnit = nullptr;
+        }
+    }
+    if (mpAttackTestHitUnitReq != nullptr) {
+        if (!mpAttackTestHitUnitReq->isEnable()) {
+            mpAttackTestHitUnitReq = nullptr;
+        }
+    }
+    if (mpNpc != nullptr) {
+        if (!mpNpc->isEnable()) {
+            mpNpc = nullptr;
+        }
+    }
+    if (mpActInterDisableMgr != nullptr) {
+        mpActInterDisableMgr->updatePtr();
+        return;
+    }
 }
 
 void cpPawnThink::kill() {
@@ -375,8 +468,7 @@ __attribute__((weak)) void cpPawnThink::movePawnOrder() {
 }
 
 __attribute__((weak)) void cpPawnThink::reqPawnOrder(const cAIPawnOrderGroupArray& src) {
-    DDON_STUB("cpPawnThink::reqPawnOrder")
-    /* stub */
+    mAIPawnOrderArrayReq = src;
 }
 
 void cpPawnThink::reqPawnOrderTarget(uDDOModel* pTarget) {
@@ -523,7 +615,7 @@ void cpPawnThink::callbackGuardPawnThink_calc(cHitInfo* pHitInfo) {
                 if (cContextInterface::getJob(reinterpret_cast<const cContextInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8104))) == 1) {
                     cpActionManager* p_act_mgr = static_cast<uDDOModel*>(t0)->getActMgrPtr();
                     if (p_act_mgr != nullptr) {
-                        u32 old_act_no = p_act_mgr->cpActionManager::getActionNoOld();
+                        u32 old_act_no = p_act_mgr->getActionNoOld();
                         if (old_act_no == 4108) {
                             p_guard_info->mIsJustGuardSuccess = false;
                         }
@@ -545,7 +637,7 @@ void cpPawnThink::callbackGuardPawnThink_calc(cHitInfo* pHitInfo) {
                     if (cContextInterface::getJob(reinterpret_cast<const cContextInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8104))) == 1) {
                         cpActionManager* p_act_mgr = static_cast<uDDOModel*>(t0)->getActMgrPtr();
                         if (p_act_mgr != nullptr) {
-                            u32 old_act_no = p_act_mgr->cpActionManager::getActionNoOld();
+                            u32 old_act_no = p_act_mgr->getActionNoOld();
                             if (old_act_no == 4108) {
                                 p_guard_info->mIsJustGuardSuccess = false;
                             }

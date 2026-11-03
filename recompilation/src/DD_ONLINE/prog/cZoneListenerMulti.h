@@ -382,3 +382,31 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* cZoneContactInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cZoneContactInfoList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cZoneContactPairInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cZoneListenerMulti::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cZoneMultiListener::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cZoneMultiStack::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cZoneMultiStackNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

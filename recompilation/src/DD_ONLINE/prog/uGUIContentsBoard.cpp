@@ -2,19 +2,32 @@
 #include <new>
 #include "uGUIContentsBoard.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "Protocol/PacketData/Quest.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
 #include "cControl.h"
+#include "cEndContentsManager.h"
 #include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
+#include "cNetGameServer.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "nQuest.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "../../XFramework/sArea.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #include "sQuestManagerExt.h"
+#include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #include "uGUIQuestBoardBase.h"
 #ifndef DDON_STUB
@@ -38,8 +51,11 @@ inline void uGUIContentsBoard::operator delete(void* p_addr) {
 }
 
 uGUIContentsBoard::~uGUIContentsBoard() {
-    DDON_STUB("uGUIContentsBoard::~uGUIContentsBoard")
-    /* stub */
+    if (mpGMDRes == nullptr) {
+        return;
+    }
+    mpGMDRes->release();
+    mpGMDRes = nullptr;
 }
 
 void uGUIContentsBoard::createProperty(MtPropertyList& s) {
@@ -251,8 +267,8 @@ void uGUIContentsBoard::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
         return;
     }
     cListItem* pItem = static_cast<cListItem*>(pItemBase);
-    pItem->mpInstNull->cGUIInstance::setVisible(false);
-    pItem->mpInstNull->cGUIInstance::setExecute(false);
+    pItem->mpInstNull->setVisible(false);
+    pItem->mpInstNull->setExecute(false);
 }
 
 __attribute__((weak)) void uGUIContentsBoard::createList() {
@@ -263,6 +279,34 @@ __attribute__((weak)) void uGUIContentsBoard::createList() {
 __attribute__((weak)) void uGUIContentsBoard::adjustListCursor() {
     DDON_STUB("uGUIContentsBoard::adjustListCursor")
     /* stub */
+}
+
+inline void uGUIContentsBoard::enableChangeBtn() {
+    if (mIsWindowActive) {
+        if (mpDecideCtrl != nullptr) {
+            mpDecideCtrl->mCtrlF = mpDecideCtrl->mCtrlF & 0xFFFFFFF7u;
+        }
+        if (mpCancelCtrl != nullptr) {
+            mpCancelCtrl->mCtrlF = mpCancelCtrl->mCtrlF & 0xFFFFFFF7u;
+        }
+        if (mpChkoutCtrl != nullptr) {
+            mpChkoutCtrl->mCtrlF = mpChkoutCtrl->mCtrlF & 0xFFFFFFF7u;
+        }
+        mMain.mClose.mEnable = true;
+        mList.mListCtrl.setEnableKey(true);
+    } else {
+        if (mpDecideCtrl != nullptr) {
+            mpDecideCtrl->mCtrlF = mpDecideCtrl->mCtrlF | 8u;
+        }
+        if (mpCancelCtrl != nullptr) {
+            mpCancelCtrl->mCtrlF = mpCancelCtrl->mCtrlF | 8u;
+        }
+        if (mpChkoutCtrl != nullptr) {
+            mpChkoutCtrl->mCtrlF = mpChkoutCtrl->mCtrlF | 8u;
+        }
+        mMain.mClose.mEnable = false;
+        mList.mListCtrl.setEnableKey(false);
+    }
 }
 
 bool uGUIContentsBoard::isExitContentBoard() {

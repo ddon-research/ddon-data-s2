@@ -2,33 +2,80 @@
 #include <new>
 #include "uOmModel.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtEaseCurve.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtRandom.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cComponentManager.h"
 #include "cDDMaterialCtrl.h"
 #include "cHitInfoAfter.h"
 #include "cOmComponent.h"
 #include "cOmControl.h"
+#include "cResPath.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionRequest.h"
+#include "cpCatchCtrl.h"
+#include "cpComponent.h"
+#include "cpDDMrlMgr.h"
+#include "cpHeadCtrl.h"
 #include "cpHpDamageCtrl.h"
+#include "cpLayout.h"
+#include "cpObjCollision.h"
+#include "cpOcdCtrl.h"
 #include "cpOmComponent.h"
 #include "cpOmGather.h"
+#include "cpShlShotCtrl.h"
+#include "cpTalk.h"
+#include "cpTransparencyCtrl.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "../../generated/shared/nDDOModel.h"
+#include "nLayout.h"
 #include "rAttackParam.h"
+#include "../../XFramework/rEffectList.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "rHeadCtrl.h"
 #include "rOmParam.h"
 #include "../../XFramework/rSoundRequest.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sChat.h"
 #include "../../XFramework/sCollision.h"
+#include "sControlManager.h"
+#include "../../XFramework/sEffect.h"
+#include "sEnemyManager.h"
+#include "sEventManager.h"
+#include "sFlag.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/sMain.h"
 #include "sOmManager.h"
+#include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
 #include "../../XFramework/sResource.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "../../XFramework/sUnit.h"
+#include "sWeatherManager.h"
+#include "sWorldOffset.h"
+#include "../../XFramework/uBaseEffect.h"
 #include "../../XFramework/uBaseModel.h"
+#include "uControl.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uEffect.h"
+#include "uHuman.h"
 #include "../../XFramework/uModel.h"
 #include "uPlayer.h"
+#include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -37,8 +84,25 @@ const MtDTI& uOmModel::getDTI() const {
     return uOmModel::DTI;
 }
 
+inline void* uOmModel::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uOmModel::DTI)->memAlloc(sz, align, uOmModel::DTI.getID());
+}
+
 inline void uOmModel::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uOmModel::DTI)->memFree(p_addr);
+}
+
+inline uOmModel::uOmModel() {
+    this->uDDOModel::mUnitId = this->uDDOModel::mUnitId | 256u;
+    mOmComp.mOmType = 1;
+    mHitPos.x = MtVector3::Zero.x;
+    mHitPos.y = MtVector3::Zero.y;
+    mHitPos.z = MtVector3::Zero.z;
+    mpCpOmLadder = nullptr;
+    mRnoHead = 0;
+    mHitPos.pad_ = 0.0f;
+    mpuAtkPL = nullptr;
+    mShlTimer = 0.0f;
 }
 
 uOmModel::~uOmModel() {
@@ -270,7 +334,7 @@ __attribute__((weak)) cGatherItemList* uOmModel::getGatherItemList() {
 u32 uOmModel::getItemGetInfoNum() {
     cGatherItemList* pil = getGatherItemList();
     if (pil != nullptr) {
-        return pil->cGatherItemList::getItemGetInfoNum();
+        return pil->getItemGetInfoNum();
     } else {
         return 0;
     }
@@ -312,9 +376,8 @@ uOmModel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 
 
 uOmModel::MyDTI uOmModel::DTI("uOmModel", &::uDDOModel::DTI, 14384ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uOmModel::MyDTI::newInstance() const {
-    DDON_STUB("uOmModel::MyDTI::newInstance")
-    return nullptr;
+MtObject* uOmModel::MyDTI::newInstance() const {
+    return new (16u) uOmModel;
 }
 
 const MtDTI& uOmShell::getDTI() const {
@@ -342,7 +405,7 @@ void uOmShell::kill() {
     rSoundRequest* prsrq = static_cast<rSoundRequest*>(sResource::getInstance()->create(rSoundRequest::DTI, "sound\\se\\om\\om603000\\om603000", 1u));
     static_cast<sSoundExt*>(sSound::getInstance())->keyOffSe(prsrq, 65u, reinterpret_cast<const uintptr>(this), sSoundExt::SE_SEARCH_KEY_ALL);
     if (prsrq != nullptr) {
-        prsrq->cResource::release();
+        prsrq->release();
     }
     if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) != 0) {
         return;

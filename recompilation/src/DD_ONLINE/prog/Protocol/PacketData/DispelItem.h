@@ -354,13 +354,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataDispelBaseItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataDispelBaseItemData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataDispelBaseItemData::CDataDispelBaseItemData() {
     this->m_unItemID = 0;
     this->m_ucNum = 0;
 }
 
+inline void* CDataDispelCategoryInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataDispelCategoryInfo::CDataDispelCategoryInfo() {
     this->m_ucCategory = 0;
+}
+
+inline void* CDataDispelLotColor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataDispelLotColor::CDataDispelLotColor() {
@@ -368,13 +384,25 @@ inline CDataDispelLotColor::CDataDispelLotColor() {
     this->m_ucColorRate = 0;
 }
 
+inline void* CDataDispelLotCrest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataDispelLotCrest::CDataDispelLotCrest() {
     this->m_unCrestItemId = 0;
     this->m_ucCrestItemRate = 0;
 }
 
+inline void* CDataDispelLotData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataDispelLotData::CDataDispelLotData() {
     this->m_unId = 0;
+}
+
+inline void* CDataDispelLotItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataDispelLotItem::CDataDispelLotItem() {
@@ -384,7 +412,15 @@ inline CDataDispelLotItem::CDataDispelLotItem() {
     this->m_unItemNum = 0;
 }
 
+inline void* CDataDispelLotPlus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataDispelLotPlus::CDataDispelLotPlus() {
     this->m_ucPlus = 0;
     this->m_ucPlusRate = 0;
+}
+
+inline void* CDataDispelResultInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -70,3 +70,7 @@ public:
 protected:
     static const u8 DATA_VERSION = 20;
 };
+
+inline void* rBowActParamList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

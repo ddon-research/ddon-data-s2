@@ -7,17 +7,37 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtRandom.h"
+#include "cContextPlayerInfo.h"
 #include "cEfcHandle.h"
+#include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpChargeCtrl.h"
 #include "cpComponent.h"
+#include "cpEffectProvider.h"
+#include "cpInput.h"
+#include "cpMotionSe.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "nDDOUtility.h"
 #include "rMagicCommand.h"
 #include "rMagicCommandWord.h"
+#include "sAIPawnSys.h"
 #include "sArchiveManager.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sInputManager.h"
 #include "../../XFramework/sMain.h"
+#include "../../XFramework/sRender.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
+#include "uCameraGame.h"
 #include "uDDOModel.h"
+#include "../../XFramework/uEffect2D.h"
 #include "uEffect2DExt.h"
 #include "uHuman.h"
 #ifndef DDON_STUB
@@ -244,8 +264,35 @@ s32 cpChantCommand::getNowWord() {
 }
 
 __attribute__((weak)) f32 cpChantCommand::getBounusAtkRateForGui() {
-    DDON_STUB("cpChantCommand::getBounusAtkRateForGui")
-    return {};
+        u32 successCnt = this->mChantSuccessCnt_Gi;
+        f32 rate = 0.0f;
+        if (successCnt == 0) {
+            return rate;
+        }
+        uHuman* pHu = static_cast<uHuman*>(this->mpModel);
+        f32 lv5 = 0.0f;
+        f32 lv10 = 0.0f;
+        f32 lv20 = 0.0f;
+        f32 afterUp = 0.0f;
+        if (this->mpModel->isHuman()) {
+            lv5 = pHu->getJobAdjustParam(13);
+            lv10 = pHu->getJobAdjustParam(14);
+            lv20 = pHu->getJobAdjustParam(15);
+            afterUp = pHu->getJobAdjustParam(16);
+            lv20 -= lv10;
+            lv10 -= lv5;
+            lv5 -= 1;
+        }
+        if (successCnt <= 5) {
+            rate = (lv5 / 5.0f) * successCnt;
+        } else if (successCnt <= 10) {
+            rate = (lv10 / 5.0f) * (successCnt - 5) + lv5;
+        } else if (successCnt <= 15) {
+            rate = (lv20 / 5.0f) * (successCnt - 10) + lv10 + lv5;
+        } else {
+            rate = afterUp * (successCnt - 15) + lv20 + lv10 + lv5;
+        }
+        return rate;
 }
 
 cpChantCommand::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

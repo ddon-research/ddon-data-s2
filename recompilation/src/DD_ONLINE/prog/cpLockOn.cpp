@@ -8,6 +8,9 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "cDelegate.h"
 #include "cGeneralPoint.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
@@ -16,6 +19,7 @@
 #include "sGeneralPoint.h"
 #include "sLockOnManager.h"
 #include "uDDOModel.h"
+#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -197,9 +201,7 @@ void cpLockOn::setResource(rJointInfo* pRes) {
     loadLockOnTarget();
 }
 
-rJointInfo* cpLockOn::getResource() {
-    return mpResource;
-}
+static auto ddon_emit_0x01a5c100 __attribute__((used)) = &cpLockOn::getResource;
 
 __attribute__((weak)) void cpLockOn::loadLockOnTarget() {
     DDON_STUB("cpLockOn::loadLockOnTarget")

@@ -130,3 +130,11 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cCnsBoneScaleCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uCnsBoneScale::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -307,6 +307,10 @@ namespace nCharacterEdit {
     };
 }  // namespace nCharacterEdit
 
+inline void* nCharacterEdit::cPaletteParams::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nCharacterEdit::cPaletteParams::cPaletteParams() {
     this->mUID = 0;
     this->mRandom = 0;

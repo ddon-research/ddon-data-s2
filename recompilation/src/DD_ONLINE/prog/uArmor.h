@@ -122,6 +122,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uArmor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cWeaponResTable* uArmor::getArchiveInfo() {
     return this->mpWepResData;
 }

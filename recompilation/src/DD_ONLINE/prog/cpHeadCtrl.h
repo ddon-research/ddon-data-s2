@@ -15,6 +15,7 @@ class MtAllocator;
 class MtDTI;
 class MtObject;
 class MtVector3;
+class cpHmHeadCtrl;
 class rHeadCtrl;
 class uCnsHeadCtrl;
 class uDDOModel;
@@ -33,6 +34,7 @@ using u32 = unsigned int;
 
 class cpHeadCtrl : public cpComponent
 {
+    friend class cpHmHeadCtrl;
     friend class uNpc;
 public:
     enum
@@ -115,3 +117,15 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cpHeadCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void cpHeadCtrl::setAngleSpeedRate(f32 rate) {
+    this->mAngleSpeedRate = rate;
+}
+
+inline void cpHeadCtrl::setPitchSpeedRate(f32 rate) {
+    this->mPitchSpeedRate = rate;
+}

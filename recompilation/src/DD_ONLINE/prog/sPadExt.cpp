@@ -6,6 +6,8 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "sInputManager.h"
 #include "../../XFramework/sMain.h"
 #include "../../XFramework/sPad.h"
@@ -83,9 +85,7 @@ u32 sPadExt::getCancelButton() const {
     }
 }
 
-s32 sPadExt::getGamePadId() {
-    return mGamePadId;
-}
+static auto ddon_emit_0x01ac8a20 __attribute__((used)) = &sPadExt::getGamePadId;
 
 __attribute__((weak)) bool sPadExt::isTrgCheck(sPadExt::PAD_BTN_TYPE button, u32 pad_id) {
     DDON_STUB("sPadExt::isTrgCheck")

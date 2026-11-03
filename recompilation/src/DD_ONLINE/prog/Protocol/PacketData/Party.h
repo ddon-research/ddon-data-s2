@@ -192,6 +192,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataPartyListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataPartyListInfo::CDataPartyListInfo() {
     this->m_unServerId = 0;
     this->m_unPartyId = 0;
@@ -199,7 +203,19 @@ inline CDataPartyListInfo::CDataPartyListInfo() {
     this->m_ullContentNumber = 0;
 }
 
+inline void* CDataPartyMember::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataPartyMemberMaxNum::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataPartyMemberMaxNum::CDataPartyMemberMaxNum() {
     this->m_unContentType = 0;
     this->m_unNum = 0;
+}
+
+inline void* CDataPartyMemberMinimum::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

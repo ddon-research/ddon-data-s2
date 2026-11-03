@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "cPrimObj.h"
+#include "sPrimitive.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

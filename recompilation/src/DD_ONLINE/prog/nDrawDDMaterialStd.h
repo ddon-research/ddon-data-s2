@@ -97,3 +97,23 @@ namespace nDraw {
         static MyDTI DTI;
     };
 }  // namespace nDraw
+
+inline void* nDraw::DDMrlStdEstObj::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void nDraw::DDMrlStdEstObj::setBaseShaderMode(u32 mode) {
+    this->mBaseShaderMode = mode;
+}
+
+inline void nDraw::DDMrlStdEstObj::setAlphaClipThreshold(f32 val) {
+    this->mAlphaClipThreshold = val;
+}
+
+inline void nDraw::DDMrlStdEstObj::setBlendAlphaThreshold(f32 val) {
+    this->mBlendAlphaThreshold = val;
+}
+
+inline void nDraw::DDMrlStdEstObj::setBlendAlphaBand(f32 val) {
+    this->mBlendAlphaBand = val;
+}

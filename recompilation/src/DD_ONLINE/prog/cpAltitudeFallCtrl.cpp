@@ -5,8 +5,18 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "cContextPlayerInfo.h"
 #include "cDelegate.h"
+#include "cpActionRequest.h"
 #include "cpComponent.h"
+#include "cpScrCollision.h"
+#include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uHuman.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

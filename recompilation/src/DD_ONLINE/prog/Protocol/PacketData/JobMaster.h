@@ -130,8 +130,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataJobChangeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataJobChangeInfo::CDataJobChangeInfo() {
     this->m_ucJobID = 0;
+}
+
+inline void* CDataPawnJobChangeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataReleaseElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataReleaseElement::CDataReleaseElement() {

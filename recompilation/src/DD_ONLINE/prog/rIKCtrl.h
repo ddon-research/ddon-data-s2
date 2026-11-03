@@ -116,8 +116,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cIKCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cIKCtrl::cIKCtrl() {
     this->mDummy = 0;
+}
+
+inline void* rIKCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rIKCtrl::rIKCtrl() {
@@ -125,4 +133,16 @@ inline rIKCtrl::rIKCtrl() {
     this->mLArmType = 0;
     this->mRLegType = 1;
     this->mLLegType = 1;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cIKCtrl::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cIKCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cIKCtrl::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cIKCtrl::DTI)->memAlloc(sz, align, ::cIKCtrl::DTI.::MtDTI::getID());
 }

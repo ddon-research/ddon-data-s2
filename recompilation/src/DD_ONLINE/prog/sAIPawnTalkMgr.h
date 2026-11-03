@@ -284,6 +284,18 @@ private:
     static sAIPawnTalkMgr* mpInstance;
 };
 
+inline void* sAIPawnTalkMgr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sAIPawnTalkMgr* sAIPawnTalkMgr::getInstance() {
     return ::sAIPawnTalkMgr::mpInstance;
+}
+
+inline void* sAIPawnTalkMgr::cAIPawnTalkInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sAIPawnTalkMgr::cAIPawnTalkWaitNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

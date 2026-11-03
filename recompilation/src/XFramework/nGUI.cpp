@@ -3,9 +3,12 @@
 #include "nGUI.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtEaseCurve.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
+#include "../MT/MtString.h"
 #include "sCamera.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -39,47 +42,6 @@ __attribute__((weak)) MtVector4 nGUI::getScreenPos(const MtVector3& pos, const s
 __attribute__((weak)) void nGUI::PROP_SETTER::setVector4(MtObject* pOwner, const MtVector4& v) const {
     DDON_STUB("nGUI::PROP_SETTER::setVector4")
     /* stub */
-}
-
-__attribute__((weak)) nGUI::MTAG* nGUI::MessageDrawState::searchDrawMTag(nGUI::MTAG* pMTag, nDraw::Texture* pTexture) const {
-    DDON_STUB("nGUI::MessageDrawState::searchDrawMTag")
-    return nullptr;
-}
-
-nGUI::MTAG* nGUI::MessageDrawState::searchDrawExtendMTag(nGUI::MTAG* pMTag, nGUI::MTAG* pExtendMTag) const {
-    if (pMTag != nullptr) {
-        for (nGUI::MTAG* pTempMTag = pMTag;;) {
-            if (pTempMTag->type == 22) {
-                if (pExtendMTag == pTempMTag->draw.pExtend) {
-                    return pTempMTag;
-                }
-            }
-            if (pTempMTag->pNext != nullptr) {
-                pTempMTag = pTempMTag->pNext;
-            } else {
-                break;
-            }
-        }
-    }
-    return nullptr;
-}
-
-nGUI::MTAG* nGUI::MessageDrawState::searchDrawLineMTag(nGUI::MTAG* pMTag, nGUI::MTAG* pLineMTag) const {
-    if (pMTag != nullptr) {
-        for (nGUI::MTAG* pTempMTag = pMTag;;) {
-            if (pTempMTag->type == 24) {
-                if (pLineMTag == pTempMTag->ffLine.pLine) {
-                    return pTempMTag;
-                }
-            }
-            if (pTempMTag->pNext != nullptr) {
-                pTempMTag = pTempMTag->pNext;
-            } else {
-                break;
-            }
-        }
-    }
-    return nullptr;
 }
 
 const MtDTI& nGUI::WrapPoint::getDTI() const {
@@ -143,6 +105,47 @@ nGUI::BlendState::MyDTI nGUI::BlendState::DTI("nGUI::BlendState", &::MtObject::D
 
 __attribute__((weak)) MtObject* nGUI::BlendState::MyDTI::newInstance() const {
     DDON_STUB("nGUI::BlendState::MyDTI::newInstance")
+    return nullptr;
+}
+
+__attribute__((weak)) nGUI::MTAG* nGUI::MessageDrawState::searchDrawMTag(nGUI::MTAG* pMTag, nDraw::Texture* pTexture) const {
+    DDON_STUB("nGUI::MessageDrawState::searchDrawMTag")
+    return nullptr;
+}
+
+nGUI::MTAG* nGUI::MessageDrawState::searchDrawExtendMTag(nGUI::MTAG* pMTag, nGUI::MTAG* pExtendMTag) const {
+    if (pMTag != nullptr) {
+        for (nGUI::MTAG* pTempMTag = pMTag;;) {
+            if (pTempMTag->type == 22) {
+                if (pExtendMTag == pTempMTag->draw.pExtend) {
+                    return pTempMTag;
+                }
+            }
+            if (pTempMTag->pNext != nullptr) {
+                pTempMTag = pTempMTag->pNext;
+            } else {
+                break;
+            }
+        }
+    }
+    return nullptr;
+}
+
+nGUI::MTAG* nGUI::MessageDrawState::searchDrawLineMTag(nGUI::MTAG* pMTag, nGUI::MTAG* pLineMTag) const {
+    if (pMTag != nullptr) {
+        for (nGUI::MTAG* pTempMTag = pMTag;;) {
+            if (pTempMTag->type == 24) {
+                if (pLineMTag == pTempMTag->ffLine.pLine) {
+                    return pTempMTag;
+                }
+            }
+            if (pTempMTag->pNext != nullptr) {
+                pTempMTag = pTempMTag->pNext;
+            } else {
+                break;
+            }
+        }
+    }
     return nullptr;
 }
 

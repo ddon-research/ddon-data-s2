@@ -5,17 +5,25 @@
 #include <string.h>
 #include "sShadow.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCRC.h"
 #include "../MT/MtCollection.h"
+#include "../MT/MtCollision.h"
+#include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
+#include "cDraw.h"
 #include "cSystem.h"
 #include "nDrawQuery.h"
 #include "sCamera.h"
+#include "sRender.h"
+#include "sUnit.h"
+#include "uShadow.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -311,9 +319,7 @@ void sShadow::setFadeDistance(f32 distance) {
     }
 }
 
-f32 sShadow::getFadeDistance() const {
-    return mFadeDistance;
-}
+static auto ddon_emit_0x01ba7400 __attribute__((used)) = &sShadow::getFadeDistance;
 
 void sShadow::setVisibleDistance(f32 distance) {
     if (mFadeDistance >= distance) {
@@ -323,9 +329,7 @@ void sShadow::setVisibleDistance(f32 distance) {
     }
 }
 
-f32 sShadow::getVisibleDistance() const {
-    return mVisibleDistance;
-}
+static auto ddon_emit_0x01ba7410 __attribute__((used)) = &sShadow::getVisibleDistance;
 
 __attribute__((weak)) void sShadow::invalidateAllShadowMapCache() {
     DDON_STUB("sShadow::invalidateAllShadowMapCache")
@@ -390,9 +394,7 @@ void sShadow::setShadowMapCacheEnable(bool enable) {
     abort();
 }
 
-bool sShadow::isShadowMapCacheEnable() const {
-    return mShadowMapCacheEnable;
-}
+static auto ddon_emit_0x01ba7480 __attribute__((used)) = &sShadow::isShadowMapCacheEnable;
 
 __attribute__((weak)) u32 sShadow::getShadowMapCacheSceneHash(u32 viewNum, u32 shadowGroup) {
     DDON_STUB("sShadow::getShadowMapCacheSceneHash")

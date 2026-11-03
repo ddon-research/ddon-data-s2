@@ -272,6 +272,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpJob02::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline const MtVector3& cpJob02::getWireHitPos() const {
     return this->mWireHitPos;
 }
@@ -305,6 +309,14 @@ inline void cpJob02::countupAirCS13() {
 
 inline void cpJob02::countupAirCS14() {
     this->mAirCountCS14 = this->mAirCountCS14 + 1u;
+}
+
+inline void* cpJob02::cPullUpInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cpJob02::cKaenKoromoInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cpJob02::cKaenKoromoInfo::cKaenKoromoInfo() {

@@ -96,6 +96,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uCustomSimSoftBody::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uCustomSimSoftBody::setBakeModel(cBakeModelEx* target) {
     this->mpBakeModel = target;
 }

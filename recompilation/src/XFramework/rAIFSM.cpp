@@ -3,13 +3,18 @@
 #include <string.h>
 #include "rAIFSM.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
 #include "../MT/MtString.h"
 #include "cAIObject.h"
+#include "cAIUserProcess.h"
 #include "cResource.h"
+#include "nAI.h"
 #include "rAIConditionTree.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -119,13 +124,9 @@ __attribute__((weak)) bool cAIFSMCluster::createNodeList(u32 num) {
     }
 }
 
-void cAIFSMCluster::setNodeNum(u32 num) {
-    createNodeList(num);
-}
+static auto ddon_emit_0x01b93740 __attribute__((used)) = &cAIFSMCluster::setNodeNum;
 
-u32 cAIFSMCluster::getNodeNum() {
-    return mNodeNum;
-}
+static auto ddon_emit_0x01b93730 __attribute__((used)) = &cAIFSMCluster::getNodeNum;
 
 __attribute__((weak)) u32 cAIFSMCluster::getNodeNumWithSetting(u32 setting) {
     DDON_STUB("cAIFSMCluster::getNodeNumWithSetting")
@@ -193,9 +194,21 @@ __attribute__((weak)) void cAIFSMNode::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-__attribute__((weak)) void cAIFSMNode::setup() {
-    DDON_STUB("cAIFSMNode::setup")
-    /* stub */
+void cAIFSMNode::setup() {
+    if (mProcessNum == 0) {
+        if (mpSubCluster != nullptr) {
+            mpSubCluster->setup();
+        }
+        return;
+    }
+    u32 i = 0;
+    do {
+        mpProcessList[i]->cAIFSMNodeProcess::setup();
+        i += 1u;
+    } while (i < mProcessNum);
+    if (mpSubCluster != nullptr) {
+        mpSubCluster->setup();
+    }
 }
 
 __attribute__((weak)) void cAIFSMNode::copy(cAIFSMNode* pSource) {
@@ -208,13 +221,9 @@ __attribute__((weak)) bool cAIFSMNode::createLinkList(u32 num) {
     return {};
 }
 
-void cAIFSMNode::setLinkNum(u32 num) {
-    createLinkList(num);
-}
+static auto ddon_emit_0x01b936f0 __attribute__((used)) = &cAIFSMNode::setLinkNum;
 
-u32 cAIFSMNode::getLinkNum() {
-    return mLinkNum;
-}
+static auto ddon_emit_0x01b936e0 __attribute__((used)) = &cAIFSMNode::getLinkNum;
 
 void cAIFSMNode::setLink(cAIFSMLink* pLink, u32 index) {
     if (mpLinkList == nullptr) {
@@ -235,17 +244,54 @@ cAIFSMLink* cAIFSMNode::getLink(u32 index) {
 }
 
 __attribute__((weak)) bool cAIFSMNode::createProcessList(u32 num) {
-    DDON_STUB("cAIFSMNode::createProcessList")
-    return {};
+    if (mpProcessList != nullptr) {
+        if (mProcessNum != 0) {
+            u32 v0_0 = mProcessNum;
+            cAIFSMNodeProcess* * v0_1 = mpProcessList;
+            for (unsigned int i0_3 = 1;;) {
+                if (v0_1 != nullptr) {
+                    if (v0_1[i0_3 - 1u] != nullptr) {
+                        delete v0_1[i0_3 - 1u];
+                        mpProcessList[i0_3 - 1u] = nullptr;
+                        if (i0_3 >= mProcessNum) {
+                            break;
+                        }
+                        v0_0 = mProcessNum;
+                    } else {
+                        if (i0_3 >= v0_0) {
+                            break;
+                        }
+                    }
+                } else {
+                    if (i0_3 >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = mpProcessList;
+                i0_3 += 1u;
+            }
+        }
+        MtMemoryAllocator::getAllocator(cAIFSMNode::DTI)->memFree(static_cast<void*>(mpProcessList));
+    }
+    mProcessNum = 0;
+    mpProcessList = nullptr;
+    if (num != 0) {
+        void* t0 = MtMemoryAllocator::getAllocator(cAIFSMNode::DTI)->memAlloc(static_cast<size_t>(num) * 8, 16u);
+        if ((mpProcessList = static_cast<cAIFSMNodeProcess* *>(t0)) != nullptr) {
+            mProcessNum = num;
+            memset(t0, 0, static_cast<size_t>(num) * 8);
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
 }
 
-void cAIFSMNode::setProcessNum(u32 num) {
-    createProcessList(num);
-}
+static auto ddon_emit_0x01b93710 __attribute__((used)) = &cAIFSMNode::setProcessNum;
 
-u32 cAIFSMNode::getProcessNum() {
-    return mProcessNum;
-}
+static auto ddon_emit_0x01b93700 __attribute__((used)) = &cAIFSMNode::getProcessNum;
 
 void cAIFSMNode::setProcess(cAIFSMNodeProcess* pProcess, u32 index) {
     if (mpProcessList == nullptr) {
@@ -273,6 +319,39 @@ MtObject* cAIFSMNode::MyDTI::newInstance() const {
     return new (16u) cAIFSMNode;
 }
 
+const MtDTI& cAIFSMNodeProcess::getDTI() const {
+    return cAIFSMNodeProcess::DTI;
+}
+
+cAIFSMNodeProcess::~cAIFSMNodeProcess() {
+    DDON_STUB("cAIFSMNodeProcess::~cAIFSMNodeProcess")
+    /* stub */
+}
+
+__attribute__((weak)) void cAIFSMNodeProcess::createProperty(MtPropertyList& s) {
+    DDON_STUB("cAIFSMNodeProcess::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void cAIFSMNodeProcess::setup() {
+    DDON_STUB("cAIFSMNodeProcess::setup")
+    /* stub */
+}
+
+__attribute__((weak)) void cAIFSMNodeProcess::copy(cAIFSMNodeProcess* pProcess) {
+    DDON_STUB("cAIFSMNodeProcess::copy")
+    /* stub */
+}
+
+cAIFSMNodeProcess::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cAIFSMNodeProcess::MyDTI cAIFSMNodeProcess::DTI("cAIFSMNodeProcess", &::cAIUserProcessReference::DTI, 80ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cAIFSMNodeProcess::MyDTI::newInstance() const {
+    DDON_STUB("cAIFSMNodeProcess::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& rAIFSM::getDTI() const {
     return rAIFSM::DTI;
 }
@@ -292,7 +371,7 @@ MT_CTSTR rAIFSM::getExt() const {
 
 bool rAIFSM::load(MtStream& in) {
     MtSerializer sz(65536);
-    if (sz.MtSerializer::deserializeBinary(in, static_cast<u16>(2), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
+    if (sz.deserializeBinary(in, static_cast<u16>(2), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
         setup();
         return true;
     } else {

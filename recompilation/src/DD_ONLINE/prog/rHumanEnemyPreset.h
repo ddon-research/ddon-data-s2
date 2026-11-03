@@ -100,6 +100,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cHumanEnemyPreset::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cHumanEnemyPreset::cHumanEnemyPreset() {
     this->mIsOriginalCustomSkillArc = false;
     this->mIsDisableMontageRandam = false;
@@ -108,4 +112,20 @@ inline cHumanEnemyPreset::cHumanEnemyPreset() {
     this->mEditType = 0;
     this->mId = 0;
     this->mCustomSkillListId = 0;
+}
+
+inline void* rHumanEnemyPreset::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cHumanEnemyPreset::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanEnemyPreset::DTI)->memFree(p_addr);
+}
+
+inline void* cHumanEnemyPreset::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHumanEnemyPreset::DTI)->memAlloc(sz, align, ::cHumanEnemyPreset::DTI.::MtDTI::getID());
 }

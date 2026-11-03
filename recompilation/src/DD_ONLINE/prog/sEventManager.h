@@ -339,6 +339,10 @@ public:
     static const u32 CastMax = 16;
 };
 
+inline void* sEventManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sEventManager* sEventManager::getInstance() {
     return ::sEventManager::mpInstance;
 }
@@ -361,6 +365,10 @@ inline void sEventManager::onContentInterrupt() {
 
 inline void sEventManager::clearContentInterrupt() {
     this->mIsContentsInterrupt = false;
+}
+
+inline void* sEventManager::cNpcId::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sEventManager::cNpcId::cNpcId() {

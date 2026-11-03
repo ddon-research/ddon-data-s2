@@ -4,16 +4,26 @@
 #include "uSoundMotionSe.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "../../XFramework/rCollisionHeightField.h"
 #include "rSoundAttributeSe.h"
 #include "rSoundMotionSe.h"
 #include "../../XFramework/rSoundRequest.h"
 #include "../../XFramework/rSoundStreamRequest.h"
 #include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "uDDOModel.h"
+#include "uHuman.h"
+#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -102,7 +112,7 @@ uSoundMotionSe::uSoundMotionSe() {
     mFilterSeq = 0;
 }
 
-uSoundMotionSe::~uSoundMotionSe() {
+__attribute__((noinline)) uSoundMotionSe::~uSoundMotionSe() {
     for (unsigned int i0_3 = 0;;) {
         if (mpRequest[i0_3] != nullptr) {
             mpRequest[i0_3]->cResource::release();
@@ -156,9 +166,7 @@ void uSoundMotionSe::move() {
     moveMotionSe();
 }
 
-rSoundMotionSe* uSoundMotionSe::getMotionSe() {
-    return mpMotionSe;
-}
+static auto ddon_emit_0x01b23370 __attribute__((used)) = &uSoundMotionSe::getMotionSe;
 
 void uSoundMotionSe::setMotionSe(rSoundMotionSe* pMotionSe) {
     if (mpMotionSe != nullptr) {
@@ -172,9 +180,7 @@ void uSoundMotionSe::setMotionSe(rSoundMotionSe* pMotionSe) {
     pMotionSe->addRef();
 }
 
-rSoundAttributeSe* uSoundMotionSe::getAttributeSe() {
-    return mpAttributeSe;
-}
+static auto ddon_emit_0x01b233a0 __attribute__((used)) = &uSoundMotionSe::getAttributeSe;
 
 void uSoundMotionSe::setAttributeSe(rSoundAttributeSe* pAttributeSe) {
     if (pAttributeSe == mpAttributeSe) {
@@ -191,9 +197,7 @@ void uSoundMotionSe::setAttributeSe(rSoundAttributeSe* pAttributeSe) {
     pAttributeSe->addRef();
 }
 
-rSoundRequest* uSoundMotionSe::getAttributeRequest(u32 index) {
-    return mpAttributeRequest[index];
-}
+static auto ddon_emit_0x01b233b0 __attribute__((used)) = &uSoundMotionSe::getAttributeRequest;
 
 void uSoundMotionSe::setAttributeRequest(rSoundRequest* pReq, u32 index, bool isClear) {
     if (index <= 25u) {
@@ -234,9 +238,7 @@ rSoundRequest* uSoundMotionSe::getRequest(u32 type) {
     }
 }
 
-u32 uSoundMotionSe::getRequestNum() {
-    return 16;
-}
+static auto ddon_emit_0x01b23380 __attribute__((used)) = &uSoundMotionSe::getRequestNum;
 
 void uSoundMotionSe::setStreamRequest(rSoundStreamRequest* pReq) {
     if (pReq == mpStreamRequest) {
@@ -268,9 +270,7 @@ __attribute__((weak)) void uSoundMotionSe::requestMotionSebyWork(u16 work, u8 mo
     /* stub */
 }
 
-u32 uSoundMotionSe::getAttributeRequestNum() {
-    return 26;
-}
+static auto ddon_emit_0x01b23360 __attribute__((used)) = &uSoundMotionSe::getAttributeRequestNum;
 
 __attribute__((weak)) u32 uSoundMotionSe::checkDeepWater(sCollision::TriangleInfo& info) {
     DDON_STUB("uSoundMotionSe::checkDeepWater")

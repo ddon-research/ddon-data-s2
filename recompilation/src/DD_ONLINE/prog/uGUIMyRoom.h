@@ -563,5 +563,33 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIMyRoom::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIMyRoom::cTitle::cTitle() {
+}
+
+inline void* uGUIMyRoom::cList::cItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMyRoom::cList::cInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMyRoomBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMyRoomPopup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMyRoomPopup::cList::cInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMyRoomPopup::cList::cItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

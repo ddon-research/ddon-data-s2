@@ -3,11 +3,17 @@
 #include "cLayoutSetGeneralPoint.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtSynchronize.h"
+#include "cGeneralPoint.h"
 #include "cGeneralPointPtr.h"
 #include "cLayoutSet.h"
+#include "cSetInfoGeneralPoint.h"
 #include "nDDOUtility.h"
+#include "sGeneralPoint.h"
+#include "sWorldOffset.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

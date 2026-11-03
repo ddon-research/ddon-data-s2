@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include "cAIService.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "../MT/MtSynchronize.h"
 #include "cAIObject.h"

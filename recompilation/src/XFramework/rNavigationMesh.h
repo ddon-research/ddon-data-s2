@@ -265,6 +265,10 @@ public:
     static const u32 MAX_NEST = 6;
 };
 
+inline void* rNavigationMesh::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rNavigationMesh::rNavigationMesh() {
     this->mpNode = nullptr;
     this->mNumberOfNode = 0;
@@ -280,4 +284,36 @@ inline rNavigationMesh::rNavigationMesh() {
     this->mNumberOfTotalAttribute = 0;
     this->mpNodeInfo = nullptr;
     this->::cResource::mAttr = 22;
+}
+
+inline rNavigationMesh::nodeData* rNavigationMesh::getNode(u32 i) {
+    return &this->mpNode[i];
+}
+
+inline u32 rNavigationMesh::getNumberOfNode() {
+    return this->mNumberOfNode;
+}
+
+inline rNavigationMesh::nodeInfo* rNavigationMesh::getNodeInfo(u32 i) {
+    return &this->mpNodeInfo[i];
+}
+
+inline u32 rNavigationMesh::getNumberOfNodeInfo() {
+    return this->mNumberOfNodeInfo;
+}
+
+inline void* rNavigationMesh::nodeData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 rNavigationMesh::nodeData::getNodeAttribute(u32 index) {
+    return this->mpAttribute[index];
+}
+
+inline u32 rNavigationMesh::nodeData::getNumberOfAttribute() {
+    return this->mNumberOfAttribute;
+}
+
+inline void* rNavigationMesh::nodeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

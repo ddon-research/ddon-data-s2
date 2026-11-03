@@ -3,6 +3,7 @@
 #include "sCollisionExt.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "../../XFramework/cSystem.h"

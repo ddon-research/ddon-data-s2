@@ -7,8 +7,11 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "sWorldOffset.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -36,6 +39,7 @@ rLocationData::~rLocationData() {
         MtMemoryAllocator::getAllocator(rLocationData::DTI)->memFree(static_cast<void*>(mpArray));
         mpArray = nullptr;
         mArrayNum = 0;
+        return;
     }
     unsigned int i3 = 0;
     do {
@@ -56,8 +60,23 @@ MT_CTSTR rLocationData::getName() const {
 }
 
 __attribute__((weak)) bool rLocationData::load(MtStream& in) {
-    DDON_STUB("rLocationData::load")
-    return {};
+        MtDataReader r(in, 4096u);
+        if (r.readU32() != 0x64636c) {
+            return false;
+        }
+        u32 ver = r.readU32();
+        if (ver != 16) {
+            return false;
+        }
+        const u32 nArray = r.readU32();
+        void* pArray = MtMemoryAllocator::getAllocator(rLocationData::DTI)->memAlloc(nArray * sizeof(Data), 16);
+        for (u32 i = 0; i < nArray; i++) {
+            Data* pData = new (&static_cast<Data*>(pArray)[i]) Data;
+            pData->load(r);
+        }
+        this->mpArray = static_cast<Data*>(pArray);
+        this->mArrayNum = nArray;
+        return true;
 }
 
 rLocationData::Data* rLocationData::getData(u32 index) const {

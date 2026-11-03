@@ -152,10 +152,22 @@ public:
     static const u32 DISABLE_INDEX = 4294967295;
 };
 
+inline void* cGUIFloorManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cGUIFloorManager::cParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cGUIFloorManager::cParam::cParam() {
     this->mpRes = nullptr;
     this->mFloorBaseIdOfs = 0;
     this->mFloorGroupNo = -1;
+}
+
+inline rGUIMapSetting* cGUIFloorManager::cParam::getResource() {
+    return this->mpRes;
 }
 
 inline s32 cGUIFloorManager::cParam::getFloorGroupNo() {

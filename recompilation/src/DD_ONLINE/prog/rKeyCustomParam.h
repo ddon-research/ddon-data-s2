@@ -179,6 +179,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cKeyCustomParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cKeyCustomParam::cKeyCustomParam() {
     this->mPad = 0;
     this->mPad2 = 0;
@@ -190,4 +194,20 @@ inline cKeyCustomParam::cKeyCustomParam() {
     this->mKbc = 0;
     this->mOverlapGroup = 0;
     this->mGmdId = 0;
+}
+
+inline void* rKeyCustomParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cKeyCustomParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cKeyCustomParam::DTI)->memFree(p_addr);
+}
+
+inline void* cKeyCustomParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cKeyCustomParam::DTI)->memAlloc(sz, align, ::cKeyCustomParam::DTI.::MtDTI::getID());
 }

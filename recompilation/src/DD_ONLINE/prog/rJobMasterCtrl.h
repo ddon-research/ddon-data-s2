@@ -105,6 +105,10 @@ private:
     static const u32 DATA_VERSION;
 };
 
+inline void* cJobMasterCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cJobMasterCtrl::cJobMasterCtrl() {
     this->mAreaRank = 0;
     this->mJobMasterTutorialQuestId = 0;
@@ -117,5 +121,21 @@ inline cJobMasterCtrl::cJobMasterCtrl() {
     this->mStartJobLevel = 0;
 }
 
+inline void* rJobMasterCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rJobMasterCtrl::rJobMasterCtrl() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cJobMasterCtrl::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cJobMasterCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cJobMasterCtrl::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cJobMasterCtrl::DTI)->memAlloc(sz, align, ::cJobMasterCtrl::DTI.::MtDTI::getID());
 }

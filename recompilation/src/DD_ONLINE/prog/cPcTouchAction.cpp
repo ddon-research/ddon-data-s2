@@ -5,8 +5,11 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cContextInterface.h"
+#include "cMenuBase.h"
 #include "cUIObject.h"
 #include "../../XFramework/cUnit.h"
+#include "sMenu.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

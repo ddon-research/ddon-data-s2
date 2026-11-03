@@ -279,6 +279,14 @@ public:
     static const u32 mKbXButton2Bit = 6;
 };
 
+inline void* sKeyboardExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sKeyboardExt::cKeyArray::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sKeyboardExt::cKeyArray::cKeyArray() {
     this->mKey6 = 0;
     this->mKey7 = 0;

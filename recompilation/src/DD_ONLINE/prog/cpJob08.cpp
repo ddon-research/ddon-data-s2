@@ -4,21 +4,33 @@
 #include "cpJob08.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "cBlowShrinkDmInfo.h"
+#include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
 #include "cEfcHandle.h"
 #include "cHitInfoAfter.h"
+#include "cOcdDamageInfo.h"
 #include "../../XFramework/cResource.h"
+#include "cpActionManager.h"
+#include "cpComponent.h"
+#include "cpEffectProvider.h"
 #include "cpJobBase.h"
 #include "cpKeepAtkAdjust.h"
+#include "cpKeyCommand.h"
 #include "cpObjCollision.h"
 #include "nDDOUtility.h"
 #include "nHumanBow.h"
+#include "nHumanMsg.h"
 #include "rAttackParam.h"
 #include "../../XFramework/rSoundRequest.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sPlayerManager.h"
 #include "uDDOModel.h"
+#include "uHuman.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -45,8 +57,27 @@ cpJob08::cpJob08() {
 }
 
 __attribute__((noinline)) cpJob08::~cpJob08() {
-    DDON_STUB("cpJob08::~cpJob08")
-    /* stub */
+    if (mpCstmSkillShlSeList.elems[0] != nullptr) {
+        mpCstmSkillShlSeList.elems[0]->cResource::release();
+        mpCstmSkillShlSeList.elems[0] = nullptr;
+    }
+    if (mpCstmSkillShlSeList.elems[1] != nullptr) {
+        mpCstmSkillShlSeList.elems[1]->cResource::release();
+        mpCstmSkillShlSeList.elems[1] = nullptr;
+    }
+    if (mpCstmSkillShlSeList.elems[2] != nullptr) {
+        mpCstmSkillShlSeList.elems[2]->cResource::release();
+        mpCstmSkillShlSeList.elems[2] = nullptr;
+    }
+    if (mpCstmSkillShlSeList.elems[3] != nullptr) {
+        mpCstmSkillShlSeList.elems[3]->cResource::release();
+        mpCstmSkillShlSeList.elems[3] = nullptr;
+    }
+    if (mpShlCommonSe == nullptr) {
+        return;
+    }
+    mpShlCommonSe->release();
+    mpShlCommonSe = nullptr;
 }
 
 void cpJob08::setup() {
@@ -114,15 +145,15 @@ void cpJob08::setupCustomData(u32 csId, u32 index) {
         cResource* pRes = sArchiveManager::getInstance()->createRes(tagId, shlId, 1u, false);
         if (pRes != nullptr) {
             mpCstmSkillShlSeList.elems[(index <= 3u) ? index : 0u] = static_cast<rSoundRequest*>(pRes);
-            pRes->cResource::addRef();
-            pRes->cResource::release();
+            pRes->addRef();
+            pRes->release();
         }
     } else {
         cResource* pRes = sArchiveManager::getInstance()->createRes(tagId, shlId, 1u, false);
         if (pRes != nullptr) {
             mpCstmSkillShlSeList.elems[(index <= 3u) ? index : 0u] = static_cast<rSoundRequest*>(pRes);
-            pRes->cResource::addRef();
-            pRes->cResource::release();
+            pRes->addRef();
+            pRes->release();
         }
     }
 }

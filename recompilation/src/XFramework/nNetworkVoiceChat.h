@@ -189,3 +189,41 @@ namespace nNetwork {
         static const u32 UPDATE_INTERVAL = 100;
     };
 }  // namespace nNetwork
+
+inline void* nNetwork::VoiceChat::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 nNetwork::VoiceChat::getSessionIndex() const {
+    return this->mSessionIndex;
+}
+
+inline bool nNetwork::VoiceChat::isMicMute() {
+    return this->mMicMute;
+}
+
+inline f32 nNetwork::VoiceChat::getSpeakerVolume() {
+    return this->mSpeakerVolume;
+}
+
+inline void* nNetwork::VoiceChat::Talker::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void nNetwork::VoiceChat::Talker::init() {
+    this->mInit = true;
+    this->mLoopback = false;
+    this->mTask = this->mTask | 2u;
+}
+
+inline void nNetwork::VoiceChat::Talker::final() {
+    this->mInit = false;
+    this->mLoopback = false;
+    this->mTask = this->mTask | 2u;
+}
+
+inline void nNetwork::VoiceChat::Talker::loopback() {
+    this->mInit = false;
+    this->mLoopback = true;
+    this->mTask = this->mTask | 2u;
+}

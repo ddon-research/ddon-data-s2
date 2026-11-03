@@ -101,6 +101,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cQuestPhaseState001::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestPhaseState001::cQuestPhaseState001() {
     this->mHasRequestedWarpPlayer = false;
     this->mIsDispAnnounce = false;

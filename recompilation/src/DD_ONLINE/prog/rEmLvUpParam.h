@@ -113,3 +113,23 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cEmLvUpParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rEmLvUpParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEmLvUpParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmLvUpParam::DTI)->memFree(p_addr);
+}
+
+inline void* cEmLvUpParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmLvUpParam::DTI)->memAlloc(sz, align, ::cEmLvUpParam::DTI.::MtDTI::getID());
+}

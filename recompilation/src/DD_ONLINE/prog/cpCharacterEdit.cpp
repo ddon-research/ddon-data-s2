@@ -6,18 +6,40 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtRandom.h"
 #include "../../MT/MtString.h"
+#include "cBakeModel.h"
 #include "cDelegate.h"
 #include "cEditParam.h"
 #include "cResPath.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "cpBakeJoint.h"
 #include "cpComponent.h"
+#include "cpEquip.h"
+#include "cpTinyChain.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "../../XFramework/nDrawConstantTable.h"
+#include "../../XFramework/nDrawMaterial.h"
+#include "../../XFramework/nDrawTexture.h"
 #include "rArchiveListArray.h"
 #include "rCharacterEdit.h"
 #include "rFatAdjust.h"
+#include "../../XFramework/rTexture.h"
 #include "sArchiveManager.h"
+#include "sBakingJointOrder.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
+#include "uArmor.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uCharacter.h"
 #include "uCnsEdit.h"
+#include "uCnsScaleFix.h"
 #include "uDDOModel.h"
+#include "uHuman.h"
+#include "uMockUpModel.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -102,36 +124,28 @@ __attribute__((weak)) void cpCharacterEdit::setResource(rCharacterEdit* pRes) {
     /* stub */
 }
 
-rCharacterEdit* cpCharacterEdit::getResource() {
-    return mpResource;
-}
+static auto ddon_emit_0x01a58380 __attribute__((used)) = &cpCharacterEdit::getResource;
 
 __attribute__((weak)) void cpCharacterEdit::setJobFatAdjust(rFatAdjust* pRes) {
     DDON_STUB("cpCharacterEdit::setJobFatAdjust")
     /* stub */
 }
 
-rFatAdjust* cpCharacterEdit::getJobFatAdjust() {
-    return mpJobFatAdjust;
-}
+static auto ddon_emit_0x01a58410 __attribute__((used)) = &cpCharacterEdit::getJobFatAdjust;
 
 __attribute__((weak)) void cpCharacterEdit::setCustomFatAdjust(rFatAdjust* pRes) {
     DDON_STUB("cpCharacterEdit::setCustomFatAdjust")
     /* stub */
 }
 
-rFatAdjust* cpCharacterEdit::getCustomFatAdjust() {
-    return mpCustomFatAdjust;
-}
+static auto ddon_emit_0x01a58420 __attribute__((used)) = &cpCharacterEdit::getCustomFatAdjust;
 
 __attribute__((weak)) void cpCharacterEdit::setEventFatAdjust(rFatAdjust* pRes) {
     DDON_STUB("cpCharacterEdit::setEventFatAdjust")
     /* stub */
 }
 
-rFatAdjust* cpCharacterEdit::getEventFatAdjust() {
-    return mpEventFatAdjust;
-}
+static auto ddon_emit_0x01a58430 __attribute__((used)) = &cpCharacterEdit::getEventFatAdjust;
 
 __attribute__((weak)) void cpCharacterEdit::updateBody(bool generate_body) {
     DDON_STUB("cpCharacterEdit::updateBody")
@@ -249,9 +263,7 @@ bool cpCharacterEdit::isLoading() {
     return false;
 }
 
-rCharacterEditColorDef* cpCharacterEdit::getColorDef(u32 type) {
-    return mpColorDef[type];
-}
+static auto ddon_emit_0x01a583e0 __attribute__((used)) = &cpCharacterEdit::getColorDef;
 
 __attribute__((weak)) void cpCharacterEdit::setMuscleConstRes(rCharacterEditMuscle* pRes) {
     DDON_STUB("cpCharacterEdit::setMuscleConstRes")

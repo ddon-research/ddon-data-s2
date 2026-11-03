@@ -538,6 +538,10 @@ private:
     static sOmManager* mpInstance;
 };
 
+inline void* sOmManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 sOmManager::getInsSyncNum() const {
     return this->mInstanceAreaData.mInsSyncNum;
 }
@@ -565,11 +569,23 @@ inline sOmManager* sOmManager::getInstance() {
     return ::sOmManager::mpInstance;
 }
 
+inline void* sOmManager::cOmArcLoader::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sOmManager::cWarpData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sOmManager::cWarpData::cWarpData() {
     this->mType = 0;
     this->mNextStageNo = -1;
     this->mNextStartPos = 0;
     this->mpOwner = nullptr;
+}
+
+inline void* sOmManager::cClanEmblemTextureCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sOmManager::cClanEmblemTextureCtrl::cClanEmblemTextureCtrl() {

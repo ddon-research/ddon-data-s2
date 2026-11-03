@@ -98,10 +98,30 @@ private:
     static const u32 DATA_VERSION;
 };
 
+inline void* cQuestSequence::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestSequence::cQuestSequence() {
     this->mSeqNo = 0;
     this->mQstId = 0;
 }
 
+inline void* rQuestSequenceList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rQuestSequenceList::rQuestSequenceList() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cQuestSequence::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestSequence::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestSequence::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestSequence::DTI)->memAlloc(sz, align, ::cQuestSequence::DTI.::MtDTI::getID());
 }

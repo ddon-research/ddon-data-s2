@@ -7,11 +7,14 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "cContext.h"
 #include "cContextPlayerInfo.h"
 #include "cCorePointMsg.h"
 #include "cEquipData.h"
 #include "cPlayerLoadManager.h"
+#include "../../XFramework/cResource.h"
 #include "nActionManager.h"
 #include "nCharacterData.h"
 #include "../../generated/shared/nDDOGame.h"
@@ -19,6 +22,11 @@
 #include "nNetMsgData.h"
 #include "nObjCondition.h"
 #include "nOcdMsg.h"
+#include "rCharacterEdit.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sMain.h"
+#include "sObjCondition.h"
+#include "sWorldOffset.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -32,8 +40,6 @@ inline void cContextInstChar::operator delete(void* p_addr) {
 }
 
 cContextInstChar::~cContextInstChar() {
-    DDON_STUB("cContextInstChar::~cContextInstChar")
-    /* stub */
 }
 
 __attribute__((weak)) void cContextInstChar::createProperty(MtPropertyList& s) {
@@ -130,8 +136,15 @@ __attribute__((weak)) const nObjCondition::stOcdActiveData& cContextInstChar::ge
 }
 
 __attribute__((weak)) void cContextInstChar::setOcdActiveData(u32 OcdUID, const nObjCondition::stOcdActiveData& data, bool isTimerReset) {
-    DDON_STUB("cContextInstChar::setOcdActiveData")
-    /* stub */
+        u32 bank = (OcdUID >> 12) & 0xF;
+        u32 index = (OcdUID & 0xffff0fff) - 1;
+        mOcdActiveData[bank][index].mActiveLv = data.mActiveLv;
+        mOcdActiveData[bank][index].mImmuneLv = data.mImmuneLv;
+        if (isTimerReset) {
+            mOcdTimerResetBit[bank] |= 1 << index;
+        } else {
+            mOcdTimerResetBit[bank] &= ~(1 << index);
+        }
 }
 
 __attribute__((weak)) void cContextInstChar::setOcdActiveData(u32 bank, u32 index, const nObjCondition::stOcdActiveData& data, bool isTimerReset) {
@@ -290,6 +303,36 @@ __attribute__((weak)) MtObject* cContextInstChar::MyDTI::newInstance() const {
     return nullptr;
 }
 
+const MtDTI& cContextInstEm::getDTI() const {
+    return cContextInstEm::DTI;
+}
+
+cContextInstEm::~cContextInstEm() {
+    DDON_STUB("cContextInstEm::~cContextInstEm")
+    /* stub */
+}
+
+void cContextInstEm::createProperty(MtPropertyList& s) {
+    this->cContextInstChar::createProperty(s);
+}
+
+MtUI* cContextInstEm::createUI(MtProperty& prop) {
+    return this->cContext::createUI(prop);
+}
+
+void cContextInstEm::reset() {
+    this->cContextInstChar::reset();
+}
+
+cContextInstEm::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cContextInstEm::MyDTI cContextInstEm::DTI("cContextInstEm", &::cContextInstChar::DTI, 3008ul, 0x50090000u, 0u);
+
+__attribute__((weak)) MtObject* cContextInstEm::MyDTI::newInstance() const {
+    DDON_STUB("cContextInstEm::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& cContextInstHm::getDTI() const {
     return cContextInstHm::DTI;
 }
@@ -308,8 +351,11 @@ cContextInstHm::cContextInstHm() {
 }
 
 cContextInstHm::~cContextInstHm() {
-    DDON_STUB("cContextInstHm::~cContextInstHm")
-    /* stub */
+    if (mpCharacterEdit == nullptr) {
+        return;
+    }
+    mpCharacterEdit->release();
+    mpCharacterEdit = nullptr;
 }
 
 __attribute__((weak)) void cContextInstHm::createProperty(MtPropertyList& s) {
@@ -393,6 +439,10 @@ const MtDTI& cContextInstance::getDTI() const {
     return cContextInstance::DTI;
 }
 
+inline void* cContextInstance::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cContextInstance::DTI)->memAlloc(sz, align, cContextInstance::DTI.getID());
+}
+
 inline void cContextInstance::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cContextInstance::DTI)->memFree(p_addr);
 }
@@ -441,9 +491,8 @@ cContextInstance::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 cContextInstance::MyDTI cContextInstance::DTI("cContextInstance", &::cContext::DTI, 104ul, 0x50050000u, 0u);
 
-__attribute__((weak)) MtObject* cContextInstance::MyDTI::newInstance() const {
-    DDON_STUB("cContextInstance::MyDTI::newInstance")
-    return nullptr;
+MtObject* cContextInstance::MyDTI::newInstance() const {
+    return new (16u) cContextInstance;
 }
 
 template MtTypedArray<cCorePointMsg>::~MtTypedArray();

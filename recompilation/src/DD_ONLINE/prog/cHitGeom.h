@@ -137,6 +137,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cGeomIterator::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cGeomIterator::cGeomIterator() {
     this->mIsEnd = false;
     this->mNodeIndex = 0;
@@ -144,4 +148,8 @@ inline cGeomIterator::cGeomIterator() {
     this->mpObjCollision = nullptr;
     this->mpGeom = nullptr;
     this->mpNode = nullptr;
+}
+
+inline void* cHitGeom::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

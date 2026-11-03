@@ -5,8 +5,13 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "sWorkRate.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

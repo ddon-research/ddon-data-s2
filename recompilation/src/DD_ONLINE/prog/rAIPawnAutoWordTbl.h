@@ -187,3 +187,42 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cAIPawnAutoMotionNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAIPawnAutoWordNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cAIPawnAutoWordNode::cAIPawnAutoWordNode() : mPersonalitySndNos() {
+    this->mPersonalityMsgNos.elems[7] = 0;
+    this->mPersonalityMsgNos.elems[8] = 0;
+    this->mPersonalityMsgNos.elems[5] = 0;
+    this->mPersonalityMsgNos.elems[6] = 0;
+    this->mPersonalityMsgNos.elems[3] = 0;
+    this->mPersonalityMsgNos.elems[4] = 0;
+    this->mPersonalityMsgNos.elems[1] = 0;
+    this->mPersonalityMsgNos.elems[2] = 0;
+    this->mLinkAutoMotionType = 0;
+    this->mPersonalityMsgNos.elems[0] = 0;
+    this->mAutoWordSituationID = 0;
+    this->mAutoCommonSituationID = 0;
+}
+
+inline void* rAIPawnAutoMotionTbl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIPawnAutoWordTbl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cAIPawnAutoWordNode::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIPawnAutoWordNode::DTI)->memAlloc(sz, align, ::cAIPawnAutoWordNode::DTI.::MtDTI::getID());
+}

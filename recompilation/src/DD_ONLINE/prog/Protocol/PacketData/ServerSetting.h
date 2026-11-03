@@ -145,3 +145,11 @@ public:
     u32 m_unNoOperationTimeOutTime;  // offset: 0x38
     static MyDTI DTI;
 };
+
+inline void* CDataGameSetting::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataLoginSetting::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

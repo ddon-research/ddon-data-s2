@@ -101,9 +101,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cNpcIsNoSetPS3::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cNpcIsNoSetPS3::cNpcIsNoSetPS3() {
     this->mStageNo = 0;
     this->mGroupNo = 0;
     this->mUnitNo = 0;
     this->mQuestId = 0;
+}
+
+inline void* rNpcIsNoSetPS3::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cNpcIsNoSetPS3::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNpcIsNoSetPS3::DTI)->memFree(p_addr);
+}
+
+inline void* cNpcIsNoSetPS3::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNpcIsNoSetPS3::DTI)->memAlloc(sz, align, ::cNpcIsNoSetPS3::DTI.::MtDTI::getID());
 }

@@ -8,17 +8,23 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "cpOmComponent.h"
+#include "../../generated/shared/nDDOModel.h"
 #include "sNetworkExt.h"
 
 // Forward declarations
 class CDataGatheringItemElement;
 class MtAllocator;
 class MtDTI;
+class MtObject;
 class MtString;
+class uDDOModel;
+class uGUIPick01;
 
 // Declarations
 class ItemGetInfo;
 class cGatherItemList;
+class cpOmGather;
 
 // Type aliases from DWARF
 using GatheringItemElementVec = MtTypedArray<CDataGatheringItemElement>;
@@ -149,8 +155,90 @@ public:
     static const u32 ITEM_GET_INFO_NUM = 10;
 };
 
+class cpOmGather : public cpOmBase
+{
+public:
+    enum
+    {
+        OM_GATHER_WAIT = 0,
+        OM_GATHER_LIST_WAIT = 1,
+        OM_GATHER_GUI_SETUP = 2,
+        OM_GATHER_GUI_WAIT = 3,
+        OM_GATHER_END = 4,
+        OM_GATHER_SUCCESS = 5,
+        OM_GATHER_FAIL = 6,
+        OM_GATHER_LEAVE = 7,
+        OM_GATHER_LEAVE_WAIT = 8,
+    };
+    enum
+    {
+        OFF_PARTS_NO = 11,
+    };
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cpOmGather();
+    virtual ~cpOmGather();
+    virtual void kill();  // vtable slot 8
+    virtual void setOwner(MtObject* pOwner);  // vtable slot 14
+    virtual void setup();  // vtable slot 6
+    virtual void move();  // vtable slot 7
+    virtual void updatePtr();  // vtable slot 9
+    virtual void setTouch(uDDOModel* pUnit);  // vtable slot 15
+    virtual void finishTouch(nDDOModel::TOUCH_RELEASE_TYPE type);  // vtable slot 16
+    virtual void cancelTouch();  // vtable slot 17
+    uDDOModel* getTouchUnit() const;
+    void setItemGetList(const GatheringItemElementVec& list);
+    cGatherItemList* getGatherItemList();
+    u32 getGatherStatus();
+    void setGatherStatus(u32 status);
+    void setGatherEmpty();
+    void requestGatherAgain();
+    void reqGatherEnd();
+protected:
+    u32 mRno;  // offset: 0xf0
+    cGatherItemList mGatherItem;  // offset: 0xf8
+    u32 mDetailBehavior;  // offset: 0x210
+    uGUIPick01* mpGUIPick;  // offset: 0x218
+    bool mIsRquestItemList;  // offset: 0x220
+public:
+    static MyDTI DTI;
+};
+
+inline void* ItemGetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline ItemGetInfo::ItemGetInfo() {
     this->mID = 0;
     this->mItemID = 0;
     this->mNum = 0;
+}
+
+inline void* cGatherItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cpOmGather::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

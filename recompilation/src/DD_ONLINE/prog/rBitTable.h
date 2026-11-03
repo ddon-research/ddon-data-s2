@@ -104,6 +104,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cBitTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cBitTable::cBitTable() {
     this->mBitData = 0;
     this->mCommandType = 0;
@@ -115,4 +119,20 @@ inline BitData cBitTable::getBitData() const {
 
 inline u32 cBitTable::getBitCommand() const {
     return this->mCommandType;
+}
+
+inline void* rBitTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cBitTable::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBitTable::DTI)->memFree(p_addr);
+}
+
+inline void* cBitTable::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cBitTable::DTI)->memAlloc(sz, align, ::cBitTable::DTI.::MtDTI::getID());
 }

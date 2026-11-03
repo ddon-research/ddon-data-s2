@@ -34,6 +34,7 @@
 #include "Protocol/PacketData/Search.h"
 #include "Protocol/PacketData/Server.h"
 #include "Protocol/PacketData/Stage.h"
+#include "Protocol/PacketData/Weather.h"
 #include "cCharacterData.h"
 #include "cEditParam.h"
 #include "cSeedServerConnection.h"
@@ -100,6 +101,7 @@ class CDataFriendInfo;
 class CDataFurnitureLayoutData;
 class CDataGameItemStorage;
 class CDataGameServerListInfo;
+class CDataGameTimeBaseInfo;
 class CDataGatheringItemElement;
 class CDataGatheringItemGetRequest;
 class CDataGetDispelItem;
@@ -123,6 +125,7 @@ class CDataMailInfo;
 class CDataMainQuestList;
 class CDataMasterInfo;
 class CDataMatchingProfile;
+class CDataMoonSchedule;
 class CDataMoveItemUIDFromTo;
 class CDataOmData;
 class CDataOrbGainExtendParam;
@@ -164,6 +167,8 @@ class CDataStorageItemUIDList;
 class CDataTimeLimitedQuestList;
 class CDataTutorialQuestList;
 class CDataUseSupportPoint;
+class CDataWeatherLoop;
+class CDataWeatherSchedule;
 class CDataWorldInfo;
 class CDataWorldManageQuestList;
 class CPacket;
@@ -181,7 +186,6 @@ class cContextInstHm;
 class cContextInstance;
 class cContextInterface;
 class cEditParam;
-class cGameTimeWeatherMoonInfo;
 class cItemParam;
 class cMenuBlackList;
 class cMenuCancelClanScoutEntry;
@@ -481,6 +485,7 @@ namespace nUserSession { class CPacket_S2C_UPDATE_RENTAL_PAWN_ADVENTURE_COUNT_NO
 namespace nUserSession { class CPacket_S2C_USER_LIST_LEAVE_NTC; }
 namespace nUserSession { class CPacket_S2C_USE_BAG_ITEM_NOTICE; }
 namespace nUserSession { class CPacket_S2C_WEATHER_FORECAST_GET_RES; }
+class sBazaarManager;
 class sContextManager;
 class sCraftManager;
 class sGame;
@@ -496,6 +501,7 @@ class uStageRevivalPawn;
 // Declarations
 class cCompleteQuest;
 class cEditSalonInfo;
+class cGameTimeWeatherMoonInfo;
 class cNetGameServer;
 class cPartyMemberInfo;
 class cPawnListParam;
@@ -536,6 +542,7 @@ using CEntryItem = CDataEntryItem;
 using CEntryItemParam = CDataEntryItemParam;
 using CFriendInfo = CDataFriendInfo;
 using CGameServerListInfo = CDataGameServerListInfo;
+using CGameTimeBaseInfo = CDataGameTimeBaseInfo;
 using CLoadingInfoSchedule = CDataLoadingInfoSchedule;
 using CLobbyInfo = CDataLobbyInfo;
 using CLobbyMemberInfo = CDataLobbyMemberInfo;
@@ -608,6 +615,7 @@ using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using MailInfoVec = MtTypedArray<CDataMailInfo>;
 using MainQuestListVec = MtTypedArray<CDataMainQuestList>;
+using MoonScheduleVec = MtTypedArray<CDataMoonSchedule>;
 using MoveItemUIDFromToVec = MtTypedArray<CDataMoveItemUIDFromTo>;
 using OrbPageStatusVec = MtTypedArray<CDataOrbPageStatus>;
 using OrderConditionInfoVec = MtTypedArray<CDataOrderConditionInfo>;
@@ -632,6 +640,8 @@ using StorageItemUIDListVec = MtTypedArray<CDataStorageItemUIDList>;
 using TimeLimitedQuestListVec = MtTypedArray<CDataTimeLimitedQuestList>;
 using TutorialQuestListVec = MtTypedArray<CDataTutorialQuestList>;
 using UseSupportPointVec = MtTypedArray<CDataUseSupportPoint>;
+using WeatherLoopVec = MtTypedArray<CDataWeatherLoop>;
+using WeatherScheduleVec = MtTypedArray<CDataWeatherSchedule>;
 using WorldManageQuestListVec = MtTypedArray<CDataWorldManageQuestList>;
 using _Sizet = long unsigned int;
 using __int64_t = long int;
@@ -715,6 +725,18 @@ private:
     s32 mEditPrice;  // offset: 0x8
 public:
     static MyDTI DTI;
+};
+
+class cGameTimeWeatherMoonInfo
+{
+public:
+    cGameTimeWeatherMoonInfo();
+public:
+    CGameTimeBaseInfo mBaseInfo;  // offset: 0x0
+    WeatherLoopVec mWeatherLoops;  // offset: 0x38
+    WeatherScheduleVec mWeatherSchedules;  // offset: 0x58
+    u32 mMoonAgeLoopSec;  // offset: 0x78
+    MoonScheduleVec mMoonSchedules;  // offset: 0x80
 };
 
 class cPartyMemberInfo : public MtObject
@@ -2481,6 +2503,7 @@ class cNetGameServer : public MtObject
     friend class cQuestSvRequestManager;
     friend class cQuestTask;
     friend class nSessionManager::cNetSessionManager;
+    friend class sBazaarManager;
     friend class sContextManager;
     friend class sCraftManager;
     friend class sGame;
@@ -5095,12 +5118,24 @@ public:
     static const u32 MAX_REPORT_CHEAT_QUEUE_NUM = 10;
 };
 
+inline void* cCompleteQuest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCompleteQuest::cCompleteQuest() {
     this->m_unScheduleId = 0;
 }
 
+inline void* cEditSalonInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEditSalonInfo::cEditSalonInfo() {
     this->mEditPrice = 5;
+}
+
+inline void* cNetGameServer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void cNetGameServer::setSelectServerNo(u32 serverNo) {
@@ -5113,6 +5148,10 @@ inline void cNetGameServer::setSelectServerNoPrivate(u32 NewValue) {
 
 inline MtCipher* cNetGameServer::getCipher() {
     return &this->mCipher;
+}
+
+inline void cNetGameServer::setCustomCharacterDataPtr(cCharacterData* pCharData) {
+    this->mpCustomCharacterData = pCharData;
 }
 
 inline u32 cNetGameServer::getCharacterId() {
@@ -5129,6 +5168,10 @@ inline u32 cNetGameServer::getInviteLeaderCharacterId() {
 
 inline s32 cNetGameServer::getSelfIndex() {
     return this->mSelfMemberIndex;
+}
+
+inline void cNetGameServer::setSelfIndex(s32 memberIndex) {
+    this->mSelfMemberIndex = memberIndex;
 }
 
 inline bool cNetGameServer::isMySelf(s32 memberIndex) {
@@ -5157,6 +5200,13 @@ inline u32 cNetGameServer::getInvitedPosOffset() {
 
 inline void cNetGameServer::setMyPartyContentNumber(u64 number) {
     this->mPartyContentNumber = number;
+}
+
+inline void cNetGameServer::clearQuickSearchFilter() {
+    this->mQuickFilterParam.m_bIsPawnJoin = false;
+    this->mQuickFilterParam.m_bIsPartyBalance = false;
+    this->mQuickFilterParam.m_unObjectiveType1 = 0;
+    this->mQuickFilterParam.m_unObjectiveType2 = 0;
 }
 
 inline nNet::QUICK_MATCH_TYPE cNetGameServer::getLastQuickType() {
@@ -5288,8 +5338,34 @@ inline bool cNetGameServer::isResetInstanceArea() {
     return this->mIsResetInstanceArea;
 }
 
+inline void* cNetGameServer::cCtrlFlow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cNetGameServer::cCtrlFlow::cCtrlFlow() {
+    this->mError.mCause = 0;
+    this->mError.mNative = 0;
+    this->mCommand = 0;
+    this->mError.mNo = 0;
+    this->mRno0 = 0;
+    this->mRno1 = 0;
+    this->mIsCallback = true;
+}
+
+inline void* cNetGameServer::cChatLog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cNetGameServer::cChatLog::cChatLog() {
     this->mType = static_cast<nChatMsgType::E_CHAT_MSG_TYPE>(0);
+}
+
+inline void* cPartyMemberInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cPawnListParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cPawnListParam::cPawnListParam() {
@@ -5304,12 +5380,20 @@ inline cPawnListParam::cPawnListParam() {
     this->m_unSlotNo = 0;
 }
 
+inline void* cPawnVoiceData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cPawnVoiceData::cPawnVoiceData() {
     this->mIsPitchChange = false;
     this->mIsValid = false;
     this->mIsGp = false;
     this->mVoiceType = 0;
     this->mVoiceID = 0;
+}
+
+inline void* cSeedGameSvConnection::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline bool cSeedGameSvConnection::isLoginSuccess() const {

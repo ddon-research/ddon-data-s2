@@ -5,8 +5,15 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sUnit.h"
+#include "sWorkRate.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

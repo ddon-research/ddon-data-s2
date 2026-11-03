@@ -69,6 +69,10 @@ public:
     static const u32 VERSION = 65536;
 };
 
+inline void* rGUIIconInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rGUIIconInfo::rGUIIconInfo() {
     this->::cResource::mAttr = 16;
     this->mVersion = 0x10000;

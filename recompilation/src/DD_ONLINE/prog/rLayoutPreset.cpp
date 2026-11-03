@@ -3,9 +3,13 @@
 #include "rLayoutPreset.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -20,8 +24,6 @@ inline void* cLayoutPreset::operator new(size_t sz, u32 align) {
 }
 
 cLayoutPreset::~cLayoutPreset() {
-    DDON_STUB("cLayoutPreset::~cLayoutPreset")
-    /* stub */
 }
 
 __attribute__((weak)) void cLayoutPreset::createProperty(MtPropertyList& s) {

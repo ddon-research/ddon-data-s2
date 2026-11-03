@@ -197,6 +197,18 @@ protected:
     static const s32 NativeFileVersion = 1;
 };
 
+inline void* rSoundSequenceSe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rSoundRequest* rSoundSequenceSe::getSoundRequest() {
+    return this->mpRequest;
+}
+
+inline void* rSoundSequenceSe::SequenceSe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSoundSequenceSe::SequenceSe::SequenceSe() {
     this->mIndex = 0;
     this->mpToolAdrs = nullptr;
@@ -206,4 +218,8 @@ inline rSoundSequenceSe::SequenceSe::SequenceSe() {
 
 inline u32 rSoundSequenceSe::SequenceSe::getDataNum() {
     return this->mCommand.::MtArray::mLength;
+}
+
+inline void* rSoundSequenceSe::SequenceSe::Command::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

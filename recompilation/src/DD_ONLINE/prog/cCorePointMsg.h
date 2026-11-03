@@ -74,6 +74,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCorePointMsg::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCorePointMsg::cCorePointMsg() {
     this->mRegionCorePointID = -1;
     this->mActiveTimer = -1;
@@ -88,4 +92,8 @@ inline t64 cCorePointMsg::getCreatedTime() const {
 
 inline bool cCorePointMsg::isSended() const {
     return this->mNetFlag;
+}
+
+inline void cCorePointMsg::notifySended() {
+    this->mNetFlag = true;
 }

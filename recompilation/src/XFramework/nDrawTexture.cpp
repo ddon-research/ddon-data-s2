@@ -3,16 +3,56 @@
 #include "nDrawTexture.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPropertyList.h"
+#include "cSystem.h"
 #include "../generated/shared/dataformats.h"
+#include "../generated/shared/depthrendertarget.h"
 #include "nDrawBuffer.h"
 #include "nDrawResource.h"
 #include "../generated/shared/rendertarget.h"
+#include "sRender.h"
 #include "../generated/shared/texture.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+const MtDTI& nDraw::DepthStencilView::getDTI() const {
+    return nDraw::DepthStencilView::DTI;
+}
+
+nDraw::DepthStencilView::DepthStencilView(nDraw::Texture* ptex, u32 subresource) {
+    DDON_STUB("nDraw::DepthStencilView::DepthStencilView")
+    /* stub */
+}
+
+nDraw::DepthStencilView::~DepthStencilView() {
+    if (mpHandle == nullptr) {
+        return;
+    }
+    mpDepthAddress = nullptr;
+    ::MtMemory::mpAllocatorType[6]->memFree(mpStencilAddress);
+    mpStencilAddress = nullptr;
+    ::MtMemory::mpAllocatorType[6]->memFree(mpHtileAddress);
+    mpHtileAddress = nullptr;
+    mpHandle = nullptr;
+}
+
+__attribute__((weak)) nDraw::HDepthStencil nDraw::DepthStencilView::getHandle() const {
+    DDON_STUB("nDraw::DepthStencilView::getHandle")
+    return {};
+}
+
+nDraw::DepthStencilView::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nDraw::DepthStencilView::MyDTI nDraw::DepthStencilView::DTI("nDraw::DepthStencilView", &::nDraw::Resource::DTI, 136ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nDraw::DepthStencilView::MyDTI::newInstance() const {
+    DDON_STUB("nDraw::DepthStencilView::MyDTI::newInstance")
+    return nullptr;
+}
 
 const MtDTI& nDraw::RenderTargetView::getDTI() const {
     return nDraw::RenderTargetView::DTI;
@@ -74,30 +114,20 @@ __attribute__((weak)) void nDraw::Texture::unmap(u32 subresource) {
     /* stub */
 }
 
-u32 nDraw::Texture::getWidth() const {
-    return mWidth;
-}
+static auto ddon_emit_0x01b82e90 __attribute__((used)) = &nDraw::Texture::getWidth;
 
 __attribute__((weak)) u32 nDraw::Texture::getHeight() const {
     DDON_STUB("nDraw::Texture::getHeight")
     return {};
 }
 
-u32 nDraw::Texture::getDepth() const {
-    return mDepth;
-}
+static auto ddon_emit_0x01b82f00 __attribute__((used)) = &nDraw::Texture::getDepth;
 
-u32 nDraw::Texture::getArrayCount() const {
-    return mArrayCount;
-}
+static auto ddon_emit_0x01b82f10 __attribute__((used)) = &nDraw::Texture::getArrayCount;
 
-u32 nDraw::Texture::getLevelCount() const {
-    return mLevelCount;
-}
+static auto ddon_emit_0x01b82e80 __attribute__((used)) = &nDraw::Texture::getLevelCount;
 
-nDraw::FORMAT_TYPE nDraw::Texture::getFormat() const {
-    return static_cast<nDraw::FORMAT_TYPE>(mFormatType);
-}
+static auto ddon_emit_0x01b82f20 __attribute__((used)) = &nDraw::Texture::getFormat;
 
 __attribute__((weak)) nDraw::GPUFORMAT_TYPE nDraw::Texture::getGPUFormat() const {
     DDON_STUB("nDraw::Texture::getGPUFormat")
@@ -109,13 +139,9 @@ __attribute__((weak)) void nDraw::Texture::setTextureData(const u32& w, const u3
     /* stub */
 }
 
-bool nDraw::Texture::isSRGB() const {
-    return mSRGB;
-}
+static auto ddon_emit_0x01b82ec0 __attribute__((used)) = &nDraw::Texture::isSRGB;
 
-u32 nDraw::Texture::getMiscFlags() const {
-    return mMiscFlags;
-}
+static auto ddon_emit_0x01b82eb0 __attribute__((used)) = &nDraw::Texture::getMiscFlags;
 
 __attribute__((weak)) nDraw::HTexture nDraw::Texture::getHandle() const {
     DDON_STUB("nDraw::Texture::getHandle")

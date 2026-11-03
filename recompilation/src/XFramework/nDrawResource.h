@@ -85,3 +85,7 @@ namespace nDraw {
         static s32 mProtectFrame;
     };
 }  // namespace nDraw
+
+inline void* nDraw::Resource::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

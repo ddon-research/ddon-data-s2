@@ -453,3 +453,23 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUICaplinkProfileEdit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkProfileEdit::cContentItemBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkProfileEdit::cPulldownContent::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkProfileEdit::cBtnContent::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkProfileEdit::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

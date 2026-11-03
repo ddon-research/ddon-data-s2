@@ -2,10 +2,27 @@
 #include <new>
 #include "uLargeEnemyCamera.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cUnit.h"
+#include "cpLayout.h"
+#include "nCastUtility.h"
+#include "rLayoutGroupParam.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "sEnemyManager.h"
+#include "sFlag.h"
+#include "sPlayerManager.h"
+#include "sUnitManager.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uControl.h"
+#include "uDDOModel.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

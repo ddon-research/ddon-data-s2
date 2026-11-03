@@ -133,3 +133,11 @@ namespace cAcquirement {
         static MyDTI DTI;
     };
 }  // namespace cAcquirement
+
+inline void* cAcquirement::cNormalSkillData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAcquirement::cSkillDataBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

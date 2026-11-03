@@ -268,10 +268,30 @@ public:
     static const u32 INVALID_ID = 4294967295;
 };
 
+inline void* rTblMenuOption::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rTblMenuOption::cCtgr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rTblMenuOption::cTab::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rTblMenuOption::cTab::cTab() {
     this->mSortId = 0;
     this->mTabId = 0;
     this->mCaption.::MtArray::mAutoDelete = true;
+}
+
+inline void* rTblMenuOption::cCaption::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rTblMenuOption::cData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rTblMenuOption::cData::cData() {
@@ -279,6 +299,10 @@ inline rTblMenuOption::cData::cData() {
     this->mDataId = 0;
     this->mCtrlType = 0;
     this->mPulldown.::MtArray::mAutoDelete = true;
+}
+
+inline void* rTblMenuOption::cPulldown::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rTblMenuOption::cPulldown::cPulldown() {

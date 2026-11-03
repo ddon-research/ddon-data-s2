@@ -5,9 +5,12 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #ifndef DDON_STUB
@@ -58,7 +61,7 @@ inline rStageAdjoinList::rStageAdjoinList() {
     mStageNo = 0;
 }
 
-rStageAdjoinList::~rStageAdjoinList() {
+__attribute__((noinline)) rStageAdjoinList::~rStageAdjoinList() {
     if (mAdjoinInfo.mLength != 0) {
         u32 v0_0 = mAdjoinInfo.mLength;
         for (unsigned int i0_3 = 0;;) {
@@ -127,8 +130,29 @@ bool rStageAdjoinList::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rStageAdjoinList::save(MtStream& out) {
-    DDON_STUB("rStageAdjoinList::save")
-    return {};
+        MtDataWriter w(out, 4096u, 4096u);
+        (&w)->writeU32(0x4C4153);
+        (&w)->writeU32(4);
+        (&w)->writeU16(mStageNo);
+        nDDOIO::writeMtArray(w, mAdjoinInfo);
+        (&w)->writeU32(mJumpPosition.mLength);
+        MtFloat3 t3;
+        if (mJumpPosition.mLength != 0) {
+            u32 t1 = 0;
+            do {
+                cJumpPosition* t2 = static_cast<cJumpPosition*>(mJumpPosition.mpArray[(int)t1]);
+                t3.x = t2->mPos.x;
+                t3.y = t2->mPos.y;
+                t3.z = t2->mPos.z;
+                (&w)->writeV3(t3);
+                u32 t4 = t2->mQuestId;
+                (&w)->writeU32(t4);
+                u32 t5 = t2->mFlagId;
+                (&w)->writeU32(t5);
+                ++t1;
+            } while (t1 < mJumpPosition.mLength);
+        }
+        return true;
 }
 
 rStageAdjoinList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -4,9 +4,13 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -95,8 +99,27 @@ u32 rEventParam::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rEventParam::load(MtStream& in) {
-    DDON_STUB("rEventParam::load")
-    return {};
+        MtDataReader r(in, 4096);
+        u32 ver;
+        this->readDataValue(r, ver);
+        if (ver != this->getDataVersion()) {
+            return false;
+        }
+        u32 dat_num;
+        this->readDataValue(r, dat_num);
+        this->allocData(dat_num);
+        u32 num = this->mDataNum;
+        if (num != 0) {
+            u32 i = 0;
+            cEventParam* p_dat = this->mpData;
+            do {
+                if (!this->loadData(r, &p_dat[i])) {
+                    return false;
+                }
+                i += 1u;
+            } while (i < num);
+        }
+        return true;
 }
 
 rEventParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

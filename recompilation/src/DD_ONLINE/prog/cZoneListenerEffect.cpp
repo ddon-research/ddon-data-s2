@@ -2,11 +2,14 @@
 #include <new>
 #include "cZoneListenerEffect.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "cZoneCategoryEffectExt.h"
+#include "../../XFramework/cZoneContents.h"
 #include "../../XFramework/cZoneListener.h"
 #include "../../XFramework/nZone.h"
 #ifndef DDON_STUB

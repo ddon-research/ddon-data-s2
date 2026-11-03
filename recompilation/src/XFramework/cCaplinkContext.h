@@ -12,6 +12,7 @@
 class MtAllocator;
 class MtDTI;
 class MtString;
+class sCaplinkManager;
 
 // Declarations
 namespace nCaplink { class ContextListener; }
@@ -27,6 +28,7 @@ using u32 = unsigned int;
 namespace nCaplink {
     class ContextListener : public ::MtObject
     {
+        friend class ::sCaplinkManager;
     public:
         enum
         {
@@ -76,6 +78,10 @@ namespace nCaplink {
         static MyDTI DTI;
     };
 }  // namespace nCaplink
+
+inline void* nCaplink::ContextListener::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline s32 nCaplink::ContextListener::getStatus() const {
     return this->mStatus;

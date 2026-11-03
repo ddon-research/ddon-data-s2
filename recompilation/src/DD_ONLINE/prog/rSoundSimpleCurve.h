@@ -132,6 +132,14 @@ public:
     static const u32 DATA_VERSION = 1;
 };
 
+inline void* rSoundSimpleCurve::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rSoundSimpleCurve::Element::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSoundSimpleCurve::Element::Element() {
     this->mX = 0.0f;
     this->mY = 0.0f;

@@ -8,14 +8,37 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "Protocol/PacketData/Quest.h"
+#include "cContextInterface.h"
 #include "cControl.h"
+#include "cEndContentsManager.h"
+#include "cEquipData.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
+#include "cMenuBase.h"
+#include "cNetGameServer.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "nDDOUtility.h"
 #include "nGUIItem.h"
+#include "nQuest.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "sContextManager.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sItemManager.h"
+#include "sMenu.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #include "sQuestManagerExt.h"
+#include "../../XFramework/sUnit.h"
+#include "../../XFramework/uCoord.h"
+#include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
+#include "uGUIEntryBoardInfo.h"
 #include "uGUIPopDetail01.h"
 #include "uGUIPopRmcQuestInfo.h"
 #include "uGUIsMenuBase.h"
@@ -40,8 +63,19 @@ inline void uGUIMissionInfo::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIMissionInfo::~uGUIMissionInfo() {
-    DDON_STUB("uGUIMissionInfo::~uGUIMissionInfo")
-    /* stub */
+    if (mpDetail != nullptr) {
+        mpDetail->kill();
+        mpDetail = nullptr;
+    }
+    if (mpPopBonus != nullptr) {
+        mpPopBonus->kill();
+        mpPopBonus = nullptr;
+    }
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 bool uGUIMissionInfo::loadResource() {

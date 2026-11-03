@@ -146,8 +146,20 @@ public:
     static const u8 DATA_VERSION = 2;
 };
 
+inline void* rPlantTree::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rPlantTree::Tree::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rPlantTree::Tree::Tree() {
     this->mOmId = 0;
     this->mpPointList = nullptr;
     this->mPointListNum = 0;
+}
+
+inline void* rPlantTree::Tree::Point::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

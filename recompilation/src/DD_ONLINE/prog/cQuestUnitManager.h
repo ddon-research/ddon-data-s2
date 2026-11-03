@@ -120,9 +120,17 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cQuestUnitGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestUnitGroup::cQuestUnitGroup() {
     this->mpGroup = nullptr;
     this->mQuestId = 0;
     this->mCtrlListOm.::MtArray::mAutoDelete = false;
     this->mCtrlListNpc.::MtArray::mAutoDelete = false;
+}
+
+inline void* cQuestUnitManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

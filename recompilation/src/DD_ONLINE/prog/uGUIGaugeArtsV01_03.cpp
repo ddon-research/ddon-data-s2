@@ -5,11 +5,29 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtString.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
+#include "cpInput.h"
+#include "cpJob09.h"
+#include "cpMotionSe.h"
 #include "nDDOUtility.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "rItemList.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sInputManager.h"
+#include "sPlayerManager.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
+#include "uDDOModel.h"
 #include "uGUIBase.h"
+#include "uHuman.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -36,8 +54,11 @@ __attribute__((weak)) const MtVector2 uGUIGaugeArtsV01_03::getGaugeMouseChantInf
 }
 
 uGUIGaugeArtsV01_03::~uGUIGaugeArtsV01_03() {
-    DDON_STUB("uGUIGaugeArtsV01_03::~uGUIGaugeArtsV01_03")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 __attribute__((weak)) void uGUIGaugeArtsV01_03::setup() {

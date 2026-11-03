@@ -2,13 +2,22 @@
 #include <new>
 #include "uGUIDialogTextBox.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "cControl.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "../../XFramework/cResource.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -27,8 +36,11 @@ void* uGUIDialogTextBox::operator new(size_t sz, u32 align) {
 }
 
 uGUIDialogTextBox::~uGUIDialogTextBox() {
-    DDON_STUB("uGUIDialogTextBox::~uGUIDialogTextBox")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 bool uGUIDialogTextBox::loadResource() {

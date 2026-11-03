@@ -113,6 +113,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uCorePointSearch::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uCorePointSearch::uCorePointSearch() {
     this->mpOwnerHm = nullptr;
     this->mpNode = nullptr;
@@ -121,4 +125,8 @@ inline uCorePointSearch::uCorePointSearch() {
 
 inline void uCorePointSearch::setOwner(uHuman* pHm) {
     this->mpOwnerHm = pHm;
+}
+
+inline void* uCorePointSearch::cCoreSearchInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

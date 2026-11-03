@@ -7,18 +7,37 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "../../MT/MtTime.h"
+#include "cContextInterface.h"
 #include "cControl.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
+#include "cNetGameServer.h"
+#include "cQuestSvRequest.h"
+#include "cQuestSvRequestManager.h"
+#include "cQuestTask.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "nQuest.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
 #include "../../XFramework/rGUIMessage.h"
+#include "sContextManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sGame.h"
+#include "sItemManager.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sQuestManagerExt.h"
+#include "../../XFramework/sUnit.h"
+#include "../../XFramework/uCoord.h"
+#include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #include "uGUIMap.h"
 #include "uGUIPopDetail01.h"
@@ -389,6 +408,14 @@ void uGUIQuestList::setupBonusPos(uGUIQuestList::stBonusItem& bonus, s32& bonus_
     list_pos = mVar.param_bonus_margin + (list_pos);
 }
 
+inline void uGUIQuestList::setupDetail() {
+    mList.mToggle.uGUIBase::cReferenceUIToggleBtn::setFocus(false);
+}
+
+inline void uGUIQuestList::setupReward() {
+    mList.mToggle.uGUIBase::cReferenceUIToggleBtn::setFocus(false);
+}
+
 __attribute__((weak)) void uGUIQuestList::adjustInfoCursor() {
     DDON_STUB("uGUIQuestList::adjustInfoCursor")
     /* stub */
@@ -442,6 +469,14 @@ __attribute__((weak)) void uGUIQuestList::updateOrder() {
 __attribute__((weak)) void uGUIQuestList::setupMap() {
     DDON_STUB("uGUIQuestList::setupMap")
     /* stub */
+}
+
+inline void uGUIQuestList::hideDetail() {
+    if (mpPopDetail != nullptr) {
+        mpPopDetail->setItemParam(static_cast<cItemParam*>(nullptr), static_cast<rItemList::rItemParam*>(nullptr), nCharacterData::EQUIP_SLOT_TYPE_START);
+    }
+    mDrawItemId = 0;
+    mSelectItemId = 0;
 }
 
 __attribute__((weak)) void uGUIQuestList::updateDetail() {

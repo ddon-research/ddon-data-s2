@@ -149,3 +149,7 @@ public:
     s16 mGridNum;  // offset: 0x8
     s16 mGridMax;  // offset: 0xa
 };
+
+inline void* cAIGrid::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

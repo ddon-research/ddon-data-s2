@@ -20,6 +20,7 @@ struct MtNetAddress;
 class MtNetResolver;
 class MtNetSocket;
 class MtString;
+class sCaplinkManager;
 
 // Declarations
 class cWebsocketClient;
@@ -35,6 +36,7 @@ using u32 = unsigned int;
 
 class cWebsocketClient : public MtObject
 {
+    friend class sCaplinkManager;
 public:
     enum wsState
     {
@@ -143,6 +145,10 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* cWebsocketClient::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline cWebsocketClient::wsState cWebsocketClient::getState() {
     return this->mWsState;

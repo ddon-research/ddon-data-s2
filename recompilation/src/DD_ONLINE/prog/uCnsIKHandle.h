@@ -77,3 +77,7 @@ public:
     cpIKCtrl* mpIKCtrl;  // offset: 0xa0
     static MyDTI DTI;
 };
+
+inline void* uCnsIKHandle::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

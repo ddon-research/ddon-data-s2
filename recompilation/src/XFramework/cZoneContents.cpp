@@ -2,7 +2,9 @@
 #include <new>
 #include "cZoneContents.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "nZone.h"
 #ifndef DDON_STUB

@@ -218,6 +218,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAITask::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAITaskJobPrim::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cAITaskJobPrimList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAITaskJobPrimList::cAITaskJobPrimList() {
     this->mpListBottom = nullptr;
     this->mpList = nullptr;

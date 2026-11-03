@@ -157,3 +157,7 @@ private:
 public:
     static const s32 MAX_NUM_FRIEND = 2000;
 };
+
+inline void* MtNetUniqueId::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

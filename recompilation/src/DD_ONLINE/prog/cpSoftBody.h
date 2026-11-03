@@ -141,3 +141,11 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cpSoftBody::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline uSimSoftBody* cpSoftBody::getSimSoftBody() {
+    return this->mpSimSoftBody;
+}

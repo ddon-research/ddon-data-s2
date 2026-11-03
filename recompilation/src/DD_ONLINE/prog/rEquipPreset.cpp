@@ -44,8 +44,6 @@ inline void rEquipPreset::operator delete(void* p_addr) {
 }
 
 rEquipPreset::~rEquipPreset() {
-    DDON_STUB("rEquipPreset::~rEquipPreset")
-    /* stub */
 }
 
 bool rEquipPreset::loadData(MtDataReader& r, cEquipPreset* pData) {

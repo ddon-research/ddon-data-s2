@@ -6,9 +6,16 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cCursor.h"
+#include "cGUIUtility.h"
 #include "cMenuBase.h"
+#include "cNetGameServer.h"
 #include "../../XFramework/cUnit.h"
 #include "nGUIExt.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sMenu.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #include "uGUIBase.h"
 #include "uGUISystemMsg.h"
 #ifndef DDON_STUB
@@ -123,8 +130,23 @@ __attribute__((weak)) cMenuDialogFlow::RET cMenuDialogFlow::moveFlow() {
 }
 
 __attribute__((weak)) void cMenuDialogFlow::pushFlow() {
-    DDON_STUB("cMenuDialogFlow::pushFlow")
-    /* stub */
+        switch (mRno) {
+        case RNO_SELECT:
+            if (mAttr & ATTR_COM_WAIT) {
+                if (mComId == -1) {
+                    mRno = RNO_ERROR;
+                } else {
+                    mRno = RNO_WAIT;
+                }
+                break;
+            }
+        case RNO_WAIT:
+            mRno = (mAttr & ATTR_RESULT) ? RNO_RESULT : RNO_END;
+            break;
+        case RNO_INIT:
+            mRno = RNO_SELECT;
+            break;
+        }
 }
 
 void cMenuDialogFlow::retryFlow(s32 dialogId) {
@@ -192,8 +214,7 @@ cMenuSupportList::cMenuSupportList() {
 }
 
 cMenuSupportList::~cMenuSupportList() {
-    DDON_STUB("cMenuSupportList::~cMenuSupportList")
-    /* stub */
+    releaseList();
 }
 
 __attribute__((weak)) void cMenuSupportList::initialize(u32 listMax, u32 pageElemMax, u32 pageMenuMax) {
@@ -459,7 +480,7 @@ void cMenuSupportList::addBelowMenu(s32 menuId) {
     }
 }
 
-void cMenuSupportList::releaseList() {
+__attribute__((weak)) void cMenuSupportList::releaseList() {
     MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI)->memFree(static_cast<void*>(mpMenuList));
     MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI)->memFree(static_cast<void*>(mpMenuParts));
     mpMenuList = nullptr;
@@ -537,7 +558,7 @@ __attribute__((weak)) void cMenuSupportMenu::updateMenu() {
 
 void cMenuSupportMenu::moveMenu(s32 cursorOrderId) {
     cCursor cursor;
-    cursor.cCursor::setupY(0, static_cast<s32>(mMenuNum - 1u), true, false, true, true);
+    cursor.setupY(0, static_cast<s32>(mMenuNum - 1u), true, false, true, true);
     mpParentMenu->updateCursorY(cursor, mListCursor, cursorOrderId);
 }
 

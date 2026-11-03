@@ -73,6 +73,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCraftSkill::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cCraftSkill::init() {
     this->mpCostResource = nullptr;
     this->mpSpdResource = nullptr;

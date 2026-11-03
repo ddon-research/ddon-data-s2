@@ -4,13 +4,21 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cEfcHandle.h"
 #include "cEmRandomCtrl.h"
 #include "cErosionRegion.h"
+#include "cHitInfoAfter.h"
+#include "cParentRegionStatus.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "cpCorePointCtrl.h"
+#include "cpEffectProvider.h"
+#include "cpEffectStatusManager.h"
 #include "cpErosionEnemyBase.h"
+#include "cpHpDamageCtrl.h"
 #include "cpObjCollision.h"
 #include "cpOcdCtrl.h"
 #include "cpStatusChange.h"
@@ -18,15 +26,22 @@
 #include "../../generated/shared/nErosionEnemy.h"
 #include "../../generated/shared/nErosionEnemyBase.h"
 #include "nRegionStatus.h"
+#include "rAttackParam.h"
+#include "rEffectProvider.h"
 #include "rErosionRegion.h"
 #include "rErosionRegionScaleChange.h"
 #include "../../XFramework/rSoundRequest.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sEnemyManager.h"
+#include "../../XFramework/sMain.h"
+#include "sObjCollision.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "sWorkRate.h"
 #include "uCharacter.h"
+#include "uControl.h"
+#include "uControlEnemy.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uEnemy.h"
@@ -36,6 +51,10 @@
 
 const MtDTI& cTentacleInfo::getDTI() const {
     return cTentacleInfo::DTI;
+}
+
+inline void* cTentacleInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cTentacleInfo::DTI)->memAlloc(sz, align, cTentacleInfo::DTI.getID());
 }
 
 inline void cTentacleInfo::operator delete(void* p_addr) {
@@ -71,9 +90,8 @@ cTentacleInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 
 cTentacleInfo::MyDTI cTentacleInfo::DTI("cTentacleInfo", &::MtObject::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cTentacleInfo::MyDTI::newInstance() const {
-    DDON_STUB("cTentacleInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cTentacleInfo::MyDTI::newInstance() const {
+    return new (16u) cTentacleInfo;
 }
 
 const MtDTI& cpErosionEnemy::getDTI() const {
@@ -113,8 +131,8 @@ void cpErosionEnemy::setup() {
     if (pStatusChange == nullptr) {
         return;
     }
-    pStatusChange->cpStatusChange::setCollisionBitProgMask(0xFFFFFFFF00000000ul);
-    pStatusChange->cpStatusChange::setMontageBitProgMask(0xF0000000000ul);
+    pStatusChange->setCollisionBitProgMask(0xFFFFFFFF00000000ul);
+    pStatusChange->setMontageBitProgMask(0xF0000000000ul);
 }
 
 __attribute__((weak)) void cpErosionEnemy::kill() {
@@ -309,6 +327,13 @@ inline void cpErosionEnemy::killErosionCheckNode() {
     mpErosionCheckNode = nullptr;
 }
 
+inline void cpErosionEnemy::setupRandomErosionTimer() {
+    if (mErosionTimerState == nErosionEnemy::EROSION_TIMER_STATE_MAX) {
+        return;
+    }
+    mErosionRegenerateTimer = mErosionRandomCtrl.makeRandomErosionTime(mErosionRegenerateTimer, mpEnemy);
+}
+
 __attribute__((weak)) f32 cpErosionEnemy::calcErosionTimerRate() const {
     DDON_STUB("cpErosionEnemy::calcErosionTimerRate")
     return {};
@@ -355,8 +380,14 @@ __attribute__((weak)) void cpErosionSuperEnemy::setup() {
 }
 
 __attribute__((weak)) void cpErosionSuperEnemy::updatePtr() {
-    DDON_STUB("cpErosionSuperEnemy::updatePtr")
-    /* stub */
+        this->cpErosionEnemy::updatePtr();
+        for (u32 i = 0; i < 4; ++i) {
+            if (mTentacleInfoArray.elems[i].mpEnemy != nullptr) {
+                if (!mTentacleInfoArray.elems[i].mpEnemy->isEnable()) {
+                    mTentacleInfoArray.elems[i].mpEnemy = nullptr;
+                }
+            }
+        }
 }
 
 __attribute__((weak)) void cpErosionSuperEnemy::updateEfcHandle() {

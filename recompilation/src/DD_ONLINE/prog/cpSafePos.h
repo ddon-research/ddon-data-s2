@@ -82,6 +82,10 @@ private:
     static const u32 POS_HISTORY_MAX = 60;
 };
 
+inline void* cpSafePos::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline const MtVector3& cpSafePos::getSafePos() {
     return this->mPosHistory[0];
 }

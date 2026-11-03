@@ -2,6 +2,7 @@
 #include <new>
 #include "cGridCollision.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCollision.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"

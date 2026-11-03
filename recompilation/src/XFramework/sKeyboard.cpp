@@ -5,9 +5,14 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "cSystem.h"
 #include "../generated/shared/ime_types.h"
+#include "sApp.h"
+#include "sMain.h"
+#include "sMouse.h"
+#include "sUserManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

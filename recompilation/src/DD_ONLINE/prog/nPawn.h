@@ -71,6 +71,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cPawnEnableArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cPawnEnableArea::cPawnEnableArea() {
     this->mMinXZ = 0.0f;
     this->mMaxXZ = 300.0f;

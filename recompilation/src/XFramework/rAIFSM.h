@@ -7,6 +7,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtString.h"
 #include "cAIObject.h"
+#include "cAIUserProcess.h"
 #include "cResource.h"
 
 // Forward declarations
@@ -18,14 +19,16 @@ class MtPoint;
 class MtPropertyList;
 class MtStream;
 class MtString;
+class cAICopiableParameter;
 class cAIFSM;
 class cAIFSMLink;
-class cAIFSMNodeProcess;
+class cAIUserProcess;
 class rAIConditionTree;
 
 // Declarations
 class cAIFSMCluster;
 class cAIFSMNode;
+class cAIFSMNodeProcess;
 class rAIFSM;
 
 // Type aliases from DWARF
@@ -97,6 +100,7 @@ public:
 
 class cAIFSMNode : public cAIResource
 {
+    friend class cAIFSM;
     friend class cAIFSMCluster;
 public:
     enum SETTING
@@ -212,6 +216,66 @@ public:
     static MyDTI DTI;
 };
 
+class cAIFSMNodeProcess : public cAIUserProcessReference
+{
+    friend class cAIFSM;
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cAIFSMNodeProcess(MT_CTSTR pname);
+    virtual ~cAIFSMNodeProcess();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    void setup();
+    void setParameter(cAICopiableParameter*);
+    cAICopiableParameter* getParameter();
+    virtual void copy(cAIFSMNodeProcess* pProcess);  // vtable slot 6
+    cAIUserProcess* getUpdateProcess();
+    cAIUserProcess* getStateProcess();
+    cAIUserProcess* getExitProcess();
+    cAIUserProcess* getStatusChangeProcess();
+    cAIUserProcess* getExportProcess();
+    cAIUserProcess* getImportProcess();
+    cAICopiableParameter* createParameter();
+    void convertResourceParameter();
+    bool openEdit();
+    bool closeEdit(bool useVirtual);
+    cAIFSMNodeProcess* createClone();
+protected:
+    void destroyParameter();
+    void convertResourceParameter(MtObject* pObject);
+protected:
+    cAICopiableParameter* mpParameter;  // offset: 0x18
+    cAIUserProcess* mpUpdateProcess;  // offset: 0x20
+    cAIUserProcess* mpStateProcess;  // offset: 0x28
+    cAIUserProcess* mpExitProcess;  // offset: 0x30
+    cAIUserProcess* mpStatusChangeProcess;  // offset: 0x38
+    cAIUserProcess* mpExportProcess;  // offset: 0x40
+    cAIUserProcess* mpImportProcess;  // offset: 0x48
+public:
+    static MyDTI DTI;
+    static const u32 PROCESS_TYPE_NUM = 6;
+};
+
 class rAIFSM : public cResource
 {
     friend class cAIFSM;
@@ -271,12 +335,28 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAIFSMCluster::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAIFSMCluster::cAIFSMCluster() {
     this->mId = 0;
     this->mOwnerNodeUniqueId = 0;
     this->mInitialStateId = 0xFFFFFFFF;
     this->mNodeNum = 0;
     this->mpNodeList = nullptr;
+}
+
+inline void cAIFSMCluster::setNodeNum(u32 num) {
+    this->::cAIFSMCluster::createNodeList(num);
+}
+
+inline u32 cAIFSMCluster::getNodeNum() {
+    return this->mNodeNum;
+}
+
+inline void* cAIFSMNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cAIFSMNode::cAIFSMNode() {
@@ -293,6 +373,34 @@ inline cAIFSMNode::cAIFSMNode() {
     this->mConditionTrainsitionFromAllId = 0;
     this->mUIPos = 0;
     this->mColorType = 0;
+}
+
+inline void cAIFSMNode::setLinkNum(u32 num) {
+    this->::cAIFSMNode::createLinkList(num);
+}
+
+inline u32 cAIFSMNode::getLinkNum() {
+    return this->mLinkNum;
+}
+
+inline void cAIFSMNode::setProcessNum(u32 num) {
+    this->::cAIFSMNode::createProcessList(num);
+}
+
+inline u32 cAIFSMNode::getProcessNum() {
+    return this->mProcessNum;
+}
+
+inline void* cAIFSMNodeProcess::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cAICopiableParameter* cAIFSMNodeProcess::getParameter() {
+    return this->mpParameter;
+}
+
+inline void* rAIFSM::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rAIFSM::rAIFSM() {

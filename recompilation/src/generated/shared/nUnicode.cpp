@@ -2,6 +2,7 @@
 #include <new>
 #include <wchar.h>
 #include "nUnicode.h"
+#include "../../XFramework/nGUI.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

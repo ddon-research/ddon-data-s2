@@ -100,7 +100,15 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cLayoutPreset::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cLayoutPreset::cLayoutPreset() {
     this->mCtrlType = 255;
     this->mID = 0;
+}
+
+inline void* rLayoutPreset::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

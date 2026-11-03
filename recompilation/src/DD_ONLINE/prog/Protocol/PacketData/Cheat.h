@@ -59,6 +59,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataCheatInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCheatInfo::CDataCheatInfo() {
     this->m_ucId = 0;
     this->m_ucCount = 0;

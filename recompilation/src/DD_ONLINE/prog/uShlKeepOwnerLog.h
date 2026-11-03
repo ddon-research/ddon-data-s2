@@ -159,3 +159,19 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* cShlLogNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uShlKeepOwnerLog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uShlKeepOwnerLog::requestTrace() {
+    this->mIsKeepLogReqest = true;
+}
+
+inline void uShlKeepOwnerLog::clearRequestTrace() {
+    this->mIsKeepLogReqest = false;
+}

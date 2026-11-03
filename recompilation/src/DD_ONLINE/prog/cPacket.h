@@ -143,5 +143,9 @@ inline size_t CPacketBase::Capacity() const {
     return this->m_pEnd - this->m_pWriter;
 }
 
+inline void* CPacketDataBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CPacketDataBase::CPacketDataBase() {
 }

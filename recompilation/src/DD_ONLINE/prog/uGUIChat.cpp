@@ -3,7 +3,9 @@
 #include <string.h>
 #include "uGUIChat.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
@@ -11,15 +13,30 @@
 #include "cControl.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
+#include "cInputTextKeyboardHook.h"
+#include "cMenuBase.h"
+#include "cNetGameServer.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
 #include "nDDOUtility.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIMessage.h"
 #include "sChat.h"
+#include "sFlag.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sGame.h"
+#include "sInputManager.h"
+#include "../../XFramework/sKeyboard.h"
 #include "sKeyboardInterface.h"
 #include "../../XFramework/sMain.h"
+#include "sMenu.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "../../XFramework/sUnit.h"
+#include "../../XFramework/uCoord.h"
 #include "uGUIBase.h"
 #include "uGUICommunityList.h"
 #ifndef DDON_STUB
@@ -879,8 +896,6 @@ inline void uGUIChat::cCheckList::operator delete(void* p_addr) {
 }
 
 uGUIChat::cCheckList::~cCheckList() {
-    DDON_STUB("uGUIChat::cCheckList::~cCheckList")
-    /* stub */
 }
 
 __attribute__((weak)) MtSizeF uGUIChat::cCheckList::calcWindowSize(f32 totalWidth, f32 rowHeight, s32 rowNum, MtFloat2& outWindowFrameOffset, MtFloat2& outTitleOffset, MtFloat2& outCheckboxOffset, MtFloat2& outButtonOffset) {
@@ -918,7 +933,7 @@ void uGUIChat::cLogItem::setup(uGUIChat& owner, cGUIInstNull* inst_null_log_item
         return;
     }
     mpINST_Null_log_item = inst_copy;
-    cGUIInstAnimation* inst_msg_log_item = static_cast<cGUIInstAnimation*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(429u));
+    cGUIInstAnimation* inst_msg_log_item = static_cast<cGUIInstAnimation*>(inst_copy->getDuplicateInstanceFromId(429u));
     if (inst_msg_log_item != nullptr) {
         mpINST_msg_log_item = inst_msg_log_item;
         mpOBJ_msg_id_m_id = static_cast<cGUIObjMessage*>(owner.getObjectFromId(static_cast<cGUIInstance*>(inst_msg_log_item), 94u));
@@ -926,13 +941,13 @@ void uGUIChat::cLogItem::setup(uGUIChat& owner, cGUIInstNull* inst_null_log_item
         mpOBJ_msg_id_mouseover = static_cast<cGUIObjPolygon*>(t0);
         mpInstMouseCollision = static_cast<cGUIInstance*>(inst_msg_log_item);
         mpObjMouseCollision = t0;
-        inst_msg_log_item->cGUIInstance::setVisible(true);
-        inst_msg_log_item->cGUIInstance::setExecute(true);
-        inst_copy->cGUIInstance::setVisible(false);
-        inst_copy->cGUIInstance::setExecute(false);
+        inst_msg_log_item->setVisible(true);
+        inst_msg_log_item->setExecute(true);
+        inst_copy->setVisible(false);
+        inst_copy->setExecute(false);
     } else {
-        inst_copy->cGUIInstance::setVisible(false);
-        inst_copy->cGUIInstance::setExecute(false);
+        inst_copy->setVisible(false);
+        inst_copy->setExecute(false);
     }
 }
 
@@ -968,8 +983,6 @@ __attribute__((weak)) MtObject* uGUIChat::cLogInfo::MyDTI::newInstance() const {
 }
 
 uGUIChat::cLogList::~cLogList() {
-    DDON_STUB("uGUIChat::cLogList::~cLogList")
-    /* stub */
 }
 
 __attribute__((weak)) void uGUIChat::cLogList::setup(uGUIChat& owner) {

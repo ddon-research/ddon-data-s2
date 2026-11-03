@@ -434,6 +434,10 @@ public:
     static const u64 INVALID_ID = 4294967295;
 };
 
+inline void* sObjCollision::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sObjCollision* sObjCollision::getInstance() {
     return ::sObjCollision::mpInstance;
 }

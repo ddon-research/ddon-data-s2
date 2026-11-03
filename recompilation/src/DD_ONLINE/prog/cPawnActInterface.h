@@ -28,17 +28,18 @@ class cAITargetInfo;
 class cAITargetInfoArray;
 class cGeneralPoint;
 class cGeneralPointPtr;
-class cPawnActInterDisableMgr;
 class cPawnEnableArea;
 struct stMoveAngleRet;
 class uBaseModel;
 class uCharacter;
+class uCoord;
 class uDDOModel;
 
 // Declarations
 class cPawnActInterBase;
 class cPawnActInterBreak;
 class cPawnActInterCommon;
+class cPawnActInterDisableMgr;
 class cPawnActInterIO;
 class cPawnActInterIn;
 class cPawnActInterWaitFootwork;
@@ -232,6 +233,63 @@ public:
     virtual void load(MtDataReader& r);  // vtable slot 9
 public:
     cPawnAIActCancelFlag mCancelFlag;  // offset: 0x10
+    static MyDTI DTI;
+};
+
+class cPawnActInterDisableMgr : public cAIObject
+{
+public:
+    class MyDTI;
+    class cNode;
+public:
+    using cNodes = nDDOUtility::cArray<cPawnActInterDisableMgr::cNode, 16>;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    class cNode
+    {
+    public:
+        cNode();
+    public:
+        cGeneralPointPtr mpTargetGP;  // offset: 0x0
+        uCoord* mpTargetUnit;  // offset: 0x10
+        u32 mPwActId;  // offset: 0x18
+        f32 mDisableTimer;  // offset: 0x1c
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cPawnActInterDisableMgr();
+    void updatePawnActInterDisableMgr(f32 deltaTime);
+    void updatePtr();
+    bool isDisableActInter(u32 pwActId, cGeneralPoint* pTarget);
+    bool isDisableActInter(u32 pwActId, uCoord* pTarget);
+    bool isDisableActInter(u32 pwActId);
+    void addDisableActInter(u32 pwActId, cGeneralPoint* pTarget, f32 timer);
+    void addDisableActInter(u32 pwActId, uCoord* pTarget, f32 timer);
+    void addDisableActInter(u32 pwActId, f32 timer);
+private:
+    cNode* getNewNode();
+    void clearNode(cNode& node);
+    void updateNode(cNode& node, f32 deltaTime);
+public:
+    cNodes mNodes;  // offset: 0x8
     static MyDTI DTI;
 };
 
@@ -500,7 +558,31 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cPawnActInterBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cPawnActInterBase::cPawnActInterBase() {
     this->mLifeFrame = 150.0f;
     this->mDisableNotice = 0;
+}
+
+inline void* cPawnActInterBreak::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cPawnActInterCommon::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cPawnActInterDisableMgr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cPawnActInterWaitFootwork::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cPawnActInterface::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -126,3 +126,11 @@ public:
 private:
     static MtVector3 mRotData[5];
 };
+
+inline void* cpMotionFilter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rMotionFilter* cpMotionFilter::getResource() {
+    return this->mpResource;
+}

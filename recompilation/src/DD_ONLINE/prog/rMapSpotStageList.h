@@ -109,6 +109,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rMapSpotStageList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rMapSpotStageList::Data::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rMapSpotStageList::Data::Data() {
     this->mStageNo = 0;
 }

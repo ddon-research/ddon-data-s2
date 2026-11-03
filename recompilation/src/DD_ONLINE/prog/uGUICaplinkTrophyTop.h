@@ -225,5 +225,21 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUICaplinkTrophyTop::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUICaplinkTrophyTop::setOwner(uGUICaplinkTopMenu* pOwner) {
+    this->mpOwner = pOwner;
+}
+
 inline uGUICaplinkTrophyTop::stVariable::stVariable() {
+}
+
+inline void* uGUICaplinkTrophyTop::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkTrophyTop::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

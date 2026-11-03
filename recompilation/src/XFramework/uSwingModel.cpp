@@ -3,8 +3,12 @@
 #include "uSwingModel.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "cDraw.h"
 #include "cSwing.h"
+#include "nDrawResource.h"
+#include "sScene.h"
 #include "uBaseModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -33,6 +37,10 @@ MtUI* uSwingModel::createUI(MtProperty& prop) {
 __attribute__((weak)) void uSwingModel::draw(cDraw* pdraw) {
     DDON_STUB("uSwingModel::draw")
     /* stub */
+}
+
+void uSwingModel::setSwing(rSwingModel* p_resource) {
+    mSwing.setSwing(p_resource);
 }
 
 void uSwingModel::setDepthBiasTexture(rTexture* p_texture) {

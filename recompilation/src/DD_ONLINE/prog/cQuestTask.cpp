@@ -4,42 +4,90 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtRandom.h"
+#include "../../MT/MtString.h"
+#include "../../MT/MtTime.h"
+#include "Protocol/PacketData/Quest.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
+#include "cAreaHit.h"
+#include "cComponentManager.h"
+#include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
 #include "cCycleQuestManagerBase.h"
+#include "cCycleQuestSubCategoryManager.h"
 #include "cEndContentsManager.h"
+#include "cEquipData.h"
+#include "cGUIExtNetMgr.h"
+#include "cGUIUtility.h"
+#include "cHumanAction.h"
 #include "cNetGameServer.h"
 #include "cNetSessionManager.h"
+#include "cPRTManager.h"
 #include "cPawnQuestManager.h"
 #include "cPlayPointInfo.h"
+#include "cQuestEventArg.h"
 #include "cQuestManagerBase.h"
 #include "cQuestPhaseManager.h"
 #include "cQuestPhaseState.h"
 #include "cQuestSvRequest.h"
 #include "cQuestSvRequestManager.h"
 #include "cQuestTaskParam.h"
+#include "cScenario.h"
+#include "cTalkMsgData.h"
+#include "../../XFramework/cUnit.h"
+#include "cpComponent.h"
+#include "cpKeyCommand.h"
+#include "cpLayout.h"
 #include "cpOcdCtrl.h"
+#include "nCastUtility.h"
 #include "nDDOUtility.h"
 #include "nLayout.h"
 #include "nQuest.h"
 #include "rEventParam.h"
+#include "../../XFramework/rGUIMessage.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "sChat.h"
+#include "sContextManager.h"
+#include "sControlManager.h"
+#include "sEnemyManager.h"
 #include "sEventManager.h"
 #include "sFlag.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "sGame.h"
+#include "sInputManager.h"
 #include "sItemManager.h"
+#include "../../XFramework/sMain.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "sNpcManager.h"
 #include "sOmManager.h"
 #include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
+#include "sScenario.h"
+#include "sScreenShot.h"
 #include "sSetManager.h"
 #include "sTalkManager.h"
 #include "sTutorialGuide.h"
+#include "sUnitManager.h"
+#include "sWeatherManager.h"
+#include "sWorldOffset.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uCharacter.h"
+#include "uControl.h"
 #include "uDDOModel.h"
+#include "uHuman.h"
+#include "../../XFramework/uModel.h"
+#include "uNpc.h"
 #include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -574,7 +622,7 @@ void cQuestTask::updateOrderConditionMsg() {
 __attribute__((weak)) bool cQuestTask::isOrder() const {
     cQuestPersonalData* pData = *(!mTaskParam.checkTaskState(0u) ? (&mpMyData) : (&mpLeaderData));
     if (pData != nullptr) {
-        return pData->cQuestPersonalData::hasOrdered();
+        return pData->hasOrdered();
     } else {
         return false;
     }
@@ -1940,14 +1988,14 @@ bool cQuestTask::cQuestProcess::checkMyQstFlagOn(s32 flagNo, s32 param02, s32 pa
     if (getQuestTask()->isSoloQuest()) {
         cQuestPersonalData* pData = getQuestTask()->getPersonalData(cQuestTask::PERSONAL_DATA_TYPE_MYSELF);
         if (pData != nullptr) {
-            return pData->cQuestPersonalData::isFlag(static_cast<u32>(flagNo));
+            return pData->isFlag(static_cast<u32>(flagNo));
         } else {
             return false;
         }
     } else {
         cQuestPersonalData* pData = getQuestTask()->getPersonalData(cQuestTask::PERSONAL_DATA_TYPE_PARTY);
         if (pData != nullptr) {
-            return pData->cQuestPersonalData::isFlag(static_cast<u32>(flagNo));
+            return pData->isFlag(static_cast<u32>(flagNo));
         } else {
             return false;
         }
@@ -1965,7 +2013,7 @@ bool cQuestTask::cQuestProcess::checkMyQstFlagOff(s32 flagNo, s32 param02, s32 p
     if (getQuestTask()->isSoloQuest()) {
         cQuestPersonalData* pData = getQuestTask()->getPersonalData(cQuestTask::PERSONAL_DATA_TYPE_MYSELF);
         if (pData != nullptr) {
-            bool t0 = pData->cQuestPersonalData::isFlag(static_cast<u32>(flagNo));
+            bool t0 = pData->isFlag(static_cast<u32>(flagNo));
             return !t0;
         } else {
             return false;
@@ -1973,7 +2021,7 @@ bool cQuestTask::cQuestProcess::checkMyQstFlagOff(s32 flagNo, s32 param02, s32 p
     } else {
         cQuestPersonalData* pData = getQuestTask()->getPersonalData(cQuestTask::PERSONAL_DATA_TYPE_PARTY);
         if (pData != nullptr) {
-            bool t0 = pData->cQuestPersonalData::isFlag(static_cast<u32>(flagNo));
+            bool t0 = pData->isFlag(static_cast<u32>(flagNo));
             return !t0;
         } else {
             return false;
@@ -2014,9 +2062,25 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkEventEnd(s32 stageNo,
     return {};
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkPrt(s32 stageNo, s32 x, s32 y, s32 z) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkPrt")
-    return {};
+bool cQuestTask::cQuestProcess::checkPrt(s32 stageNo, s32 x, s32 y, s32 z) {
+    if (mPrtUniqueId == 0) {
+        mPrtUniqueId = nLayout::createUniqueIDQuestProcess(getQuestTask()->getQuestIdU32(), mCurrentBlockNo, stageNo, *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 182));
+    }
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 21740)) == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+        if (sQuestManagerExt::getInstance()->getPRTMgr()->getAdvanceFlag()) {
+            if (sQuestManagerExt::getInstance()->getPRTMgr()->mAdvancePRTOMType == 1) {
+                return false;
+            } else {
+                cPRTManager* t0 = sQuestManagerExt::getInstance()->getPRTMgr();
+                const u32 advancePrtUniqueId = nLayout::createUniqueIDQuestProcess(t0->mAdvancePRT.questNo, t0->mAdvancePRT.blockNo, t0->mAdvancePRT.stageNo, t0->mAdvancePRT.processNo);
+                return mPrtUniqueId == advancePrtUniqueId;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 bool cQuestTask::cQuestProcess::checkClearcount(s32 minCount, s32 maxCount, s32 param03, s32 param04) {
@@ -2379,14 +2443,14 @@ bool cQuestTask::cQuestProcess::checkMyQstFlagOnFromFsm(s32 flagNo, s32 param02,
     if (getQuestTask()->isSoloQuest()) {
         cQuestPersonalData* pData = getQuestTask()->getPersonalData(cQuestTask::PERSONAL_DATA_TYPE_MYSELF);
         if (pData != nullptr) {
-            return pData->cQuestPersonalData::isFlagFsm(static_cast<u32>(flagNo));
+            return pData->isFlagFsm(static_cast<u32>(flagNo));
         } else {
             return false;
         }
     } else {
         cQuestPersonalData* pData = getQuestTask()->getPersonalData(cQuestTask::PERSONAL_DATA_TYPE_PARTY);
         if (pData != nullptr) {
-            return pData->cQuestPersonalData::isFlagFsm(static_cast<u32>(flagNo));
+            return pData->isFlagFsm(static_cast<u32>(flagNo));
         } else {
             return false;
         }
@@ -2758,14 +2822,14 @@ bool cQuestTask::cQuestProcess::checkIsMyquestLayoutFlagOn(s32 FlagNo, s32 param
     if (getQuestTask()->isSoloQuest()) {
         cQuestPersonalData* pData = getQuestTask()->getPersonalData(cQuestTask::PERSONAL_DATA_TYPE_MYSELF);
         if (pData != nullptr) {
-            return pData->cQuestPersonalData::isLayoutFlag(static_cast<u32>(FlagNo));
+            return pData->isLayoutFlag(static_cast<u32>(FlagNo));
         } else {
             return false;
         }
     } else {
         cQuestPersonalData* pData = getQuestTask()->getPersonalData(cQuestTask::PERSONAL_DATA_TYPE_PARTY);
         if (pData != nullptr) {
-            return pData->cQuestPersonalData::isLayoutFlag(static_cast<u32>(FlagNo));
+            return pData->isLayoutFlag(static_cast<u32>(FlagNo));
         } else {
             return false;
         }
@@ -2783,7 +2847,7 @@ bool cQuestTask::cQuestProcess::checkIsMyquestLayoutFlagOff(s32 FlagNo, s32 para
     if (getQuestTask()->isSoloQuest()) {
         cQuestPersonalData* pData = getQuestTask()->getPersonalData(cQuestTask::PERSONAL_DATA_TYPE_MYSELF);
         if (pData != nullptr) {
-            bool t0 = pData->cQuestPersonalData::isLayoutFlag(static_cast<u32>(FlagNo));
+            bool t0 = pData->isLayoutFlag(static_cast<u32>(FlagNo));
             return !t0;
         } else {
             return false;
@@ -2791,7 +2855,7 @@ bool cQuestTask::cQuestProcess::checkIsMyquestLayoutFlagOff(s32 FlagNo, s32 para
     } else {
         cQuestPersonalData* pData = getQuestTask()->getPersonalData(cQuestTask::PERSONAL_DATA_TYPE_PARTY);
         if (pData != nullptr) {
-            bool t0 = pData->cQuestPersonalData::isLayoutFlag(static_cast<u32>(FlagNo));
+            bool t0 = pData->isLayoutFlag(static_cast<u32>(FlagNo));
             return !t0;
         } else {
             return false;
@@ -2886,8 +2950,8 @@ bool cQuestTask::cQuestProcess::checkIsFullBag(s32 param01, s32 param02, s32 par
     u32 i = 1;
     if (pItemBag != nullptr) {
         do {
-            u32 max = pItemBag->sItemManager::cItemBag::getSlotMaxNum(static_cast<sItemManager::cItemBag::ITEM_CATEGORY>(i));
-            u32 use = pItemBag->sItemManager::cItemBag::getItemBagNum(static_cast<sItemManager::cItemBag::ITEM_CATEGORY>(i));
+            u32 max = pItemBag->getSlotMaxNum(static_cast<sItemManager::cItemBag::ITEM_CATEGORY>(i));
+            u32 use = pItemBag->getItemBagNum(static_cast<sItemManager::cItemBag::ITEM_CATEGORY>(i));
             if (use >= max) {
                 return true;
             }
@@ -3251,7 +3315,7 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsReleasePawnExpediti
 bool cQuestTask::cQuestProcess::checkOpenPpMode(s32 param01, s32 param02, s32 param03, s32 param04) {
     cPlayPointInfo* playPointInfo = sGame::getInstance()->getPlayPointInfo();
     if (playPointInfo != nullptr) {
-        cPlayPointInfo::cPlayPoint* playPoint = playPointInfo->cPlayPointInfo::getMyPlayPoint();
+        cPlayPointInfo::cPlayPoint* playPoint = playPointInfo->getMyPlayPoint();
         if (playPoint != nullptr) {
             return playPoint->mExpMode == 2;
         } else {
@@ -3265,7 +3329,7 @@ bool cQuestTask::cQuestProcess::checkOpenPpMode(s32 param01, s32 param02, s32 pa
 bool cQuestTask::cQuestProcess::checkPpNotLess(s32 point, s32 param02, s32 param03, s32 param04) {
     cPlayPointInfo* playPointInfo = sGame::getInstance()->getPlayPointInfo();
     if (playPointInfo != nullptr) {
-        cPlayPointInfo::cPlayPoint* playPoint = playPointInfo->cPlayPointInfo::getMyPlayPoint();
+        cPlayPointInfo::cPlayPoint* playPoint = playPointInfo->getMyPlayPoint();
         if (playPoint != nullptr) {
             return playPoint->mPlayPoint >= static_cast<unsigned int>(point);
         } else {
@@ -3510,7 +3574,7 @@ bool cQuestTask::cQuestProcess::resultAddResultPoint(s32 tableIndex, s32 param02
     sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
     cCycleQuestManagerBase* pCycleMgr = static_cast<cCycleQuestManagerBase*>(t0->getQuestManager(getQuestTask()->getQuestType()));
     if (pCycleMgr != nullptr) {
-        pCycleMgr->cCycleQuestManagerBase::addExtraPoint(static_cast<u32>(tableIndex));
+        pCycleMgr->addExtraPoint(static_cast<u32>(tableIndex));
     }
     return true;
 }
@@ -3613,7 +3677,7 @@ bool cQuestTask::cQuestProcess::resultRemoveCyclePurpose(s32 announceNo, s32 par
     sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
     cCycleQuestManagerBase* pMgr = static_cast<cCycleQuestManagerBase*>(t0->getQuestManager(getQuestTask()->getQuestType()));
     if (pMgr != nullptr) {
-        pMgr->cCycleQuestManagerBase::removeCyclePurposeNo(static_cast<u32>(announceNo));
+        pMgr->removeCyclePurposeNo(static_cast<u32>(announceNo));
         return true;
     } else {
         return false;
@@ -3701,7 +3765,7 @@ bool cQuestTask::cQuestProcess::resultStartContentsTimer(s32 param01, s32 param0
     if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
         cQuestSvRequest* pReq = cQuestSvRequestManager::pushRequest(cQuestSvReqStartQuestTime::DTI);
         if (pReq != nullptr) {
-            pReq->cQuestSvRequest::setFromClass(static_cast<MtObject*>(this));
+            pReq->setFromClass(static_cast<MtObject*>(this));
         }
         return true;
     } else {

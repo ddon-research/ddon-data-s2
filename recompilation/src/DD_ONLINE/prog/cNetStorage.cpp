@@ -6,6 +6,10 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtNetObject.h"
 #include "../../MT/MtObject.h"
+#include "cNetGameServer.h"
+#include "cNetLoginServer.h"
+#include "sItemManager.h"
+#include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

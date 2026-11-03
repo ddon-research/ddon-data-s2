@@ -24,6 +24,7 @@ namespace nDDOUtility { template <typename T, unsigned int N> class cArray; }
 namespace nDDOUtility { template <unsigned int BIT_NUM> class cBitSet; }
 namespace nDDOUtility { template <typename T, typename UI> class cKeyFrameValue; }
 namespace nDDOUtility { template <typename T> class cNoObjectArray; }
+namespace nDDOUtility { template <typename T> class cObjectFunc; }
 namespace nDDOUtility { template <unsigned int NODE> class cRNSpline; }
 namespace nDDOUtility { template <typename T> class cScopedPtr; }
 namespace nDDOUtility { class cRNSplineBase; }
@@ -794,6 +795,19 @@ namespace nDDOUtility {
 }  // namespace nDDOUtility
 
 namespace nDDOUtility {
+    template <typename T>
+    class cObjectFunc
+    {
+    public:
+        cObjectFunc();
+        void setFunc(MtObject*, T);
+    private:
+        MtObject* mpThis;  // offset: 0x0
+        T mFunc;  // offset: 0x8
+    };
+}  // namespace nDDOUtility
+
+namespace nDDOUtility {
     template <unsigned int NODE>
     class cRNSpline : public nDDOUtility::cRNSplineBase
     {
@@ -851,6 +865,9 @@ inline nDDOUtility::cBitSet<4>::~cBitSet() {
 }
 
 inline nDDOUtility::cBitSet<5>::~cBitSet() {
+}
+
+inline nDDOUtility::cBitSet<7>::~cBitSet() {
 }
 
 // Included after the classes: the generic bodies below need these complete.

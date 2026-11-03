@@ -73,3 +73,7 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cLayoutSetNpc::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

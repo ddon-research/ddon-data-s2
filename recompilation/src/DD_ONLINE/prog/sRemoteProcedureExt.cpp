@@ -4,6 +4,15 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtStream.h"
+#include "cContextInterface.h"
+#include "cNetMsgBase.h"
+#include "cNetSessionManager.h"
+#include "nNetMsgData.h"
+#include "../../XFramework/nNetworkCoder.h"
+#include "sContextManager.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #include "../../XFramework/sRemoteProcedure.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

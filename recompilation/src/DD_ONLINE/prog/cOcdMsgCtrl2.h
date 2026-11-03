@@ -83,6 +83,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cOcdMsgCtrl2::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool cOcdMsgCtrl2::isReceiveMsg() const {
     return this->mIsReceiveMsg;
 }

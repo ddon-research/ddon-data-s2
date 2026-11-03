@@ -203,6 +203,10 @@ protected:
     static const u32 EFS_VERSION;
 };
 
+inline void* rEffectStrip::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rEffectStrip::rEffectStrip() {
     this->mTotalIndexNum = 0;
     this->mJointNum = 0;

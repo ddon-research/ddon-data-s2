@@ -214,6 +214,10 @@ private:
     static const f32 DEF_GAME_SCREEN_RECT_V_RATIO;
 };
 
+inline void* sCameraExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void sCameraExt::resetBehindPlayer() {
     this->mSetBehindPlayer = false;
 }

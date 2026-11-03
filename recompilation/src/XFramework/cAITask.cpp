@@ -5,7 +5,12 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPerformance.h"
+#include "../MT/MtPropertyList.h"
 #include "cAIObject.h"
+#include "nAITaskPerformance.h"
+#include "sAI.h"
+#include "sMain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

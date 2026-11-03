@@ -5,14 +5,17 @@
 #include <string.h>
 #include "sAI.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCRC.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "../MT/MtSynchronize.h"
 #include "cAIService.h"
 #include "cAITask.h"
 #include "cSystem.h"
 #include "nAITaskPerformance.h"
+#include "sMain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

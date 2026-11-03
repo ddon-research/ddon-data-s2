@@ -158,6 +158,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cQuestPhaseComponent::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestPhaseCpDivide::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestPhaseCpDivide::cPlayerState::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestPhaseCpDivide::cPlayerState::cPlayerState() {
     this->mCharacterId = 0;
     this->mHasChanged = false;

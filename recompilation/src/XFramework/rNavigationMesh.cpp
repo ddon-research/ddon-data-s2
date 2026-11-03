@@ -4,12 +4,15 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
+#include "../MT/MtDataWriter.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "../MT/MtString.h"
+#include "cAI.h"
 #include "rAIPathBase.h"
 #include "sResource.h"
 #ifndef DDON_STUB
@@ -74,26 +77,18 @@ __attribute__((weak)) void rNavigationMesh::loadNavigation(MtDataReader& r) {
     /* stub */
 }
 
-rNavigationMesh::nodeData* rNavigationMesh::getNode(u32 i) {
-    return &mpNode[i];
-}
+static auto ddon_emit_0x01b92f70 __attribute__((used)) = &rNavigationMesh::getNode;
 
-u32 rNavigationMesh::getNumberOfNode() {
-    return mNumberOfNode;
-}
+static auto ddon_emit_0x01b92f80 __attribute__((used)) = &rNavigationMesh::getNumberOfNode;
 
 __attribute__((weak)) MtVector3 rNavigationMesh::getNodePos(u32 index) {
     DDON_STUB("rNavigationMesh::getNodePos")
     __builtin_unreachable();
 }
 
-rNavigationMesh::nodeInfo* rNavigationMesh::getNodeInfo(u32 i) {
-    return &mpNodeInfo[i];
-}
+static auto ddon_emit_0x01b92f90 __attribute__((used)) = &rNavigationMesh::getNodeInfo;
 
-u32 rNavigationMesh::getNumberOfNodeInfo() {
-    return mNumberOfNodeInfo;
-}
+static auto ddon_emit_0x01b92fb0 __attribute__((used)) = &rNavigationMesh::getNumberOfNodeInfo;
 
 __attribute__((weak)) void rNavigationMesh::setNode(rNavigationMesh::nodeData& node, u32 i) {
     DDON_STUB("rNavigationMesh::setNode")
@@ -176,13 +171,9 @@ s32 rNavigationMesh::nodeData::getNodeArea(u32 index) {
     }
 }
 
-u32 rNavigationMesh::nodeData::getNodeAttribute(u32 index) {
-    return mpAttribute[index];
-}
+static auto ddon_emit_0x01b92f20 __attribute__((used)) = &rNavigationMesh::nodeData::getNodeAttribute;
 
-u32 rNavigationMesh::nodeData::getNumberOfAttribute() {
-    return mNumberOfAttribute;
-}
+static auto ddon_emit_0x01b92f30 __attribute__((used)) = &rNavigationMesh::nodeData::getNumberOfAttribute;
 
 void rNavigationMesh::nodeData::setNodeAttribute(u32 attr, u32 index) {
     if (index < mNumberOfAttribute) {

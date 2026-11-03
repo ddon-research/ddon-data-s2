@@ -122,6 +122,10 @@ public:
     static const u32 ATTR_INVALID = 2147483648;
 };
 
+inline void* cZoneContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool cZoneContents::isUse() const {
     return this->mFlgUse;
 }

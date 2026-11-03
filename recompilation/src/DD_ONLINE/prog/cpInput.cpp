@@ -2,17 +2,34 @@
 #include <new>
 #include "cpInput.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cContextPlayerInfo.h"
 #include "cDelegate.h"
+#include "cKeyCustom.h"
 #include "cLeverGacha.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
+#include "cpInputKeyboard.h"
+#include "cpInputPad.h"
+#include "cpSequenceCtrl.h"
+#include "cpStateManager.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nKeyCustom.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "../../XFramework/sGUI.h"
+#include "sGame.h"
+#include "sInputManager.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #include "uDDOModel.h"
+#include "uHuman.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -100,8 +117,8 @@ __attribute__((weak)) void cpInput::endRendaCheck() {
 }
 
 __attribute__((weak)) void cpInput::resetPadOnTrg() {
-    DDON_STUB("cpInput::resetPadOnTrg")
-    /* stub */
+    mBtnInfo.on.raw = 0;
+    mBtnInfo.trg.raw = 0;
 }
 
 __attribute__((weak)) void cpInput::initLeverGacha(s32 count) {

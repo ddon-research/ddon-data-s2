@@ -421,5 +421,9 @@ namespace nPrim {
     };
 }  // namespace nPrim
 
+inline void* nPrim::PrimVertex::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nPrim::TexCoord::TexCoord() {
 }

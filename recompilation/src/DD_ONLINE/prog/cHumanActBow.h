@@ -541,6 +541,22 @@ private:
     static const f32 NET_PERIOD_INTERVAL;
 };
 
+inline void* cPlActWpnBow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void cPlActWpnBow::setLowActEnd() {
+    this->mIsLowActEnd = true;
+}
+
+inline void cPlActWpnBow::setUpActEnd() {
+    this->mIsUpActEnd = true;
+}
+
 inline const nHumanBow::cBowActParam* cPlActWpnBow::getActParam() const {
     return this->mpActParam;
+}
+
+inline void* cPlActWpnBowBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -153,6 +153,14 @@ public:
     static const u8 DATA_VERSION = 2;
 };
 
+inline void* rNPCEmoMyRoom::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rNPCEmoMyRoom::InfoBinary::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rNPCEmoMyRoom::InfoBinary::InfoBinary() {
     this->mTransOff = false;
     this->mUID = 0;
@@ -162,6 +170,10 @@ inline rNPCEmoMyRoom::InfoBinary::InfoBinary() {
 
 inline bool rNPCEmoMyRoom::InfoBinary::isTransOff() {
     return this->mTransOff;
+}
+
+inline void* rNPCEmoMyRoom::InfoBinary::MotDataBinary::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rNPCEmoMyRoom::InfoBinary::MotDataBinary::MotDataBinary() {

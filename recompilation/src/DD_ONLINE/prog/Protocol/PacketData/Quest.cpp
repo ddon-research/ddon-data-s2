@@ -86,6 +86,30 @@ __attribute__((weak)) MtObject* CDataBorderRewardRecord::MyDTI::newInstance() co
     return nullptr;
 }
 
+const MtDTI& CDataClearTimePointBonus::getDTI() const {
+    return CDataClearTimePointBonus::DTI;
+}
+
+inline MtAllocator* CDataClearTimePointBonus::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataClearTimePointBonus::DTI);
+}
+
+void* CDataClearTimePointBonus::operator new(size_t sz, u32 align) {
+    return CDataClearTimePointBonus::getAllocator()->memAlloc(sz, align, CDataClearTimePointBonus::DTI.getID());
+}
+
+__attribute__((weak)) void CDataClearTimePointBonus::operator delete(void* p_addr) {
+    CDataClearTimePointBonus::getAllocator()->memFree(p_addr);
+}
+
+CDataClearTimePointBonus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataClearTimePointBonus::MyDTI CDataClearTimePointBonus::DTI("CDataClearTimePointBonus", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataClearTimePointBonus::MyDTI::newInstance() const {
+    return new (16u) CDataClearTimePointBonus;
+}
+
 const MtDTI& CDataContentsPlayEnd::getDTI() const {
     return CDataContentsPlayEnd::DTI;
 }
@@ -240,6 +264,27 @@ CDataCycleContentsPlayEnd::MyDTI CDataCycleContentsPlayEnd::DTI("CDataCycleConte
 
 __attribute__((weak)) MtObject* CDataCycleContentsPlayEnd::MyDTI::newInstance() const {
     DDON_STUB("CDataCycleContentsPlayEnd::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& CDataCycleContentsPlayStartData::getDTI() const {
+    return CDataCycleContentsPlayStartData::DTI;
+}
+
+inline MtAllocator* CDataCycleContentsPlayStartData::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataCycleContentsPlayStartData::DTI);
+}
+
+__attribute__((weak)) void CDataCycleContentsPlayStartData::operator delete(void* p_addr) {
+    CDataCycleContentsPlayStartData::getAllocator()->memFree(p_addr);
+}
+
+CDataCycleContentsPlayStartData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataCycleContentsPlayStartData::MyDTI CDataCycleContentsPlayStartData::DTI("CDataCycleContentsPlayStartData", &::CPacketDataBase::DTI, 128ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* CDataCycleContentsPlayStartData::MyDTI::newInstance() const {
+    DDON_STUB("CDataCycleContentsPlayStartData::MyDTI::newInstance")
     return nullptr;
 }
 
@@ -484,6 +529,27 @@ __attribute__((weak)) MtObject* CDataFortDefenseNoticeData::MyDTI::newInstance()
     return nullptr;
 }
 
+const MtDTI& CDataFortDefensePlayStartData::getDTI() const {
+    return CDataFortDefensePlayStartData::DTI;
+}
+
+inline MtAllocator* CDataFortDefensePlayStartData::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataFortDefensePlayStartData::DTI);
+}
+
+__attribute__((weak)) void CDataFortDefensePlayStartData::operator delete(void* p_addr) {
+    CDataFortDefensePlayStartData::getAllocator()->memFree(p_addr);
+}
+
+CDataFortDefensePlayStartData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataFortDefensePlayStartData::MyDTI CDataFortDefensePlayStartData::DTI("CDataFortDefensePlayStartData", &::CPacketDataBase::DTI, 144ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* CDataFortDefensePlayStartData::MyDTI::newInstance() const {
+    DDON_STUB("CDataFortDefensePlayStartData::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& CDataGetRewardBoxItem::getDTI() const {
     return CDataGetRewardBoxItem::DTI;
 }
@@ -502,6 +568,30 @@ CDataGetRewardBoxItem::MyDTI CDataGetRewardBoxItem::DTI("CDataGetRewardBoxItem",
 
 MtObject* CDataGetRewardBoxItem::MyDTI::newInstance() const {
     return new (16u) CDataGetRewardBoxItem;
+}
+
+const MtDTI& CDataHasRegionBreakReward::getDTI() const {
+    return CDataHasRegionBreakReward::DTI;
+}
+
+inline MtAllocator* CDataHasRegionBreakReward::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataHasRegionBreakReward::DTI);
+}
+
+void* CDataHasRegionBreakReward::operator new(size_t sz, u32 align) {
+    return CDataHasRegionBreakReward::getAllocator()->memAlloc(sz, align, CDataHasRegionBreakReward::DTI.getID());
+}
+
+__attribute__((weak)) void CDataHasRegionBreakReward::operator delete(void* p_addr) {
+    CDataHasRegionBreakReward::getAllocator()->memFree(p_addr);
+}
+
+CDataHasRegionBreakReward::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataHasRegionBreakReward::MyDTI CDataHasRegionBreakReward::DTI("CDataHasRegionBreakReward", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataHasRegionBreakReward::MyDTI::newInstance() const {
+    return new (16u) CDataHasRegionBreakReward;
 }
 
 const MtDTI& CDataLightQuestDetail::getDTI() const {
@@ -724,6 +814,27 @@ CDataPartyQuestProgressInfo::MyDTI CDataPartyQuestProgressInfo::DTI("CDataPartyQ
 
 MtObject* CDataPartyQuestProgressInfo::MyDTI::newInstance() const {
     return new (16u) CDataPartyQuestProgressInfo;
+}
+
+const MtDTI& CDataPawnDungeonReward::getDTI() const {
+    return CDataPawnDungeonReward::DTI;
+}
+
+inline MtAllocator* CDataPawnDungeonReward::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataPawnDungeonReward::DTI);
+}
+
+__attribute__((weak)) void CDataPawnDungeonReward::operator delete(void* p_addr) {
+    CDataPawnDungeonReward::getAllocator()->memFree(p_addr);
+}
+
+CDataPawnDungeonReward::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataPawnDungeonReward::MyDTI CDataPawnDungeonReward::DTI("CDataPawnDungeonReward", &::CPacketDataBase::DTI, 56ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* CDataPawnDungeonReward::MyDTI::newInstance() const {
+    DDON_STUB("CDataPawnDungeonReward::MyDTI::newInstance")
+    return nullptr;
 }
 
 const MtDTI& CDataPriorityQuest::getDTI() const {
@@ -1395,6 +1506,30 @@ MtObject* CDataQuestTalkInfo::MyDTI::newInstance() const {
     return new (16u) CDataQuestTalkInfo;
 }
 
+const MtDTI& CDataRaidBossEnemyParam::getDTI() const {
+    return CDataRaidBossEnemyParam::DTI;
+}
+
+inline MtAllocator* CDataRaidBossEnemyParam::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataRaidBossEnemyParam::DTI);
+}
+
+inline void* CDataRaidBossEnemyParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataRaidBossEnemyParam::DTI)->memAlloc(sz, align, CDataRaidBossEnemyParam::DTI.getID());
+}
+
+__attribute__((weak)) void CDataRaidBossEnemyParam::operator delete(void* p_addr) {
+    CDataRaidBossEnemyParam::getAllocator()->memFree(p_addr);
+}
+
+CDataRaidBossEnemyParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataRaidBossEnemyParam::MyDTI CDataRaidBossEnemyParam::DTI("CDataRaidBossEnemyParam", &::CPacketDataBase::DTI, 48ul, 0u, 0u);
+
+MtObject* CDataRaidBossEnemyParam::MyDTI::newInstance() const {
+    return new (16u) CDataRaidBossEnemyParam;
+}
+
 const MtDTI& CDataRaidBossNoticeData::getDTI() const {
     return CDataRaidBossNoticeData::DTI;
 }
@@ -1417,6 +1552,27 @@ CDataRaidBossNoticeData::MyDTI CDataRaidBossNoticeData::DTI("CDataRaidBossNotice
 
 __attribute__((weak)) MtObject* CDataRaidBossNoticeData::MyDTI::newInstance() const {
     DDON_STUB("CDataRaidBossNoticeData::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& CDataRaidBossPlayStartData::getDTI() const {
+    return CDataRaidBossPlayStartData::DTI;
+}
+
+inline MtAllocator* CDataRaidBossPlayStartData::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataRaidBossPlayStartData::DTI);
+}
+
+__attribute__((weak)) void CDataRaidBossPlayStartData::operator delete(void* p_addr) {
+    CDataRaidBossPlayStartData::getAllocator()->memFree(p_addr);
+}
+
+CDataRaidBossPlayStartData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataRaidBossPlayStartData::MyDTI CDataRaidBossPlayStartData::DTI("CDataRaidBossPlayStartData", &::CPacketDataBase::DTI, 248ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* CDataRaidBossPlayStartData::MyDTI::newInstance() const {
+    DDON_STUB("CDataRaidBossPlayStartData::MyDTI::newInstance")
     return nullptr;
 }
 

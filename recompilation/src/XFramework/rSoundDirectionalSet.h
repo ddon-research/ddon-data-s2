@@ -117,6 +117,10 @@ private:
     static const s32 NativeFileVersion = 2;
 };
 
+inline void* rSoundDirectionalSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSoundDirectionalSet::rSoundDirectionalSet() {
     this->mIdToIndexTblNum = 0;
     this->mpIdToIndexTbl = nullptr;

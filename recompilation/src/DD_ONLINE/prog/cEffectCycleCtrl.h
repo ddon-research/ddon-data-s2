@@ -220,6 +220,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCyclePartInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCyclePartInfo::cCyclePartInfo() {
     this->mEffLoopTimer = 0.0f;
     this->mEffLoopTimerMax = 30.0f;
@@ -241,6 +245,10 @@ inline cCyclePartInfo::cCyclePartInfo() {
     this->mPartKillPhase = static_cast<nEffectCycle::CYCLE_PART_KILL_PAHSE>(1);
 }
 
+inline void* cCyclePartReqInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCyclePartReqInfo::cCyclePartReqInfo() {
     this->mEffLoopTime = 30.0f;
     this->mEpvIndex = -1;
@@ -252,4 +260,8 @@ inline cCyclePartReqInfo::cCyclePartReqInfo() {
     this->mOutLineIndex = -1;
     this->mIsOutLine = false;
     this->mPartType = static_cast<nEffectCycle::CYCLE_PART_TYPE>(0);
+}
+
+inline void* cEffectCycleCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

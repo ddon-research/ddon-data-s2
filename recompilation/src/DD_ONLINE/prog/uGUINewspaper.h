@@ -1180,10 +1180,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUINewspaper::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUINewspaper::_infoMonsterList::_infoMonsterList() {
 }
 
 inline uGUINewspaper::_infoItemList::_infoItemList() {
+}
+
+inline void* uGUINewspaper::cCycleContentsNewsInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUINewspaper::cCycleContentsNewsInfo::cCycleContentsNewsInfo() {
@@ -1193,5 +1201,45 @@ inline uGUINewspaper::cCycleContentsNewsInfo::cCycleContentsNewsInfo() {
 inline uGUINewspaper::_AreaInfo::_AreaInfo() {
 }
 
+inline void* uGUINewspaper::cScrollAreaDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUINewspaper::cScrollQuestDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUINewspaper::_QuestInfoButton::_QuestInfoButton() {
+}
+
+inline void* uGUINewspaper::cScrollRankingDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUINewspaper::cScrollRewardSummaryItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUINewspaper::cScrollRewardDetailItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUINewspaper::cScrollAreaItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUINewspaper::cScrollQuestItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUINewspaper::cScrollRankingItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUINewspaper::cScrollRewardDetailInfoList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUINewspaper::cScrollRewardSummaryInfoList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

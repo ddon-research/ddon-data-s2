@@ -217,6 +217,14 @@ private:
     static const ANIMAL_PATTERN mAnimalPatternTbl[6];
 };
 
+inline void* uStageMyRoom::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 uStageMyRoom::getPartnerPawnId() {
     return this->mPartnerPawnId;
+}
+
+inline cFurniture* uStageMyRoom::getFurniture() {
+    return this->mpFurniture;
 }

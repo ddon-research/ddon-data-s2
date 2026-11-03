@@ -96,6 +96,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIGainInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUIGainInfo::setType(u32 uType) {
     if (uType <= 7u) {
         this->mType = uType;

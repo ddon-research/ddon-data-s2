@@ -96,6 +96,7 @@ class cTbl2ChatMacro;
 class cTexturePNG;
 class cUnit;
 class cWarpLocation;
+class cpOmBase;
 namespace nGUI { struct ICON_INFO; }
 namespace nGUIExt { struct stMsgAnalyzerWork; }
 namespace nGUIExt { struct stWindowActive; }
@@ -153,6 +154,7 @@ class uGUIInfo;
 class uGUIInputText;
 class uGUIItemBase01;
 class uGUIJobMaster;
+class uGUIKeyConfig;
 class uGUILoading;
 class uGUIMap;
 class uGUIMenuComm;
@@ -162,6 +164,7 @@ class uGUINewspaper;
 class uGUINpcWindow;
 class uGUIPSStore;
 class uGUIPhoto;
+class uGUIPick01;
 class uGUIPlace;
 class uGUIPointer;
 class uGUIPopCmd01;
@@ -227,6 +230,7 @@ using u8 = unsigned char;
 class sGUIExt : public sGUI
 {
     friend class cMenuMatchingProfile;
+    friend class cpOmBase;
     friend class nGUIItem::cItem;
     friend class sGame;
     friend class sScenario;
@@ -237,8 +241,10 @@ class sGUIExt : public sGUI
     friend class uGUIChat;
     friend class uGUICommunityList;
     friend class uGUIItemBase01;
+    friend class uGUIKeyConfig;
     friend class uGUINewspaper;
     friend class uGUIPhoto;
+    friend class uGUIPick01;
     friend class uGUIShopBuy;
     friend class uHuman;
 public:
@@ -3282,6 +3288,10 @@ public:
     static const MT_CTSTR CLANEMBLEMMARK_RESID;
 };
 
+inline void* sGUIExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void sGUIExt::onTouchActEnableMenu() {
     this->mIsTouchActEnableMenu = true;
 }
@@ -3326,20 +3336,16 @@ inline rGUIMessage* sGUIExt::getMsgCommonMessage() const {
     return this->mpMsgCommonMessage;
 }
 
+inline rGUIMessage* sGUIExt::getMsgSystemNetwork() const {
+    return this->mpMsgSystemNetwork;
+}
+
 inline rGUIMessage* sGUIExt::getMsgSystemLog() const {
     return this->mpMsgSystemLog;
 }
 
 inline rGUIMessage* sGUIExt::getMsgHud() const {
     return this->mpMsgHud;
-}
-
-inline rGUIMessage* sGUIExt::getMsgConditionName() const {
-    return this->mpMsgConditionName;
-}
-
-inline rGUIMessage* sGUIExt::getMsgChatMacroHelp() const {
-    return this->mpMsgChatMacroHelp;
 }
 
 inline rSoundRequest* sGUIExt::getSndReqCmn() const {
@@ -3362,8 +3368,8 @@ inline const cGUIExtNetMgr::DogmaOrbInfo* sGUIExt::getDogmaOrbInfo() {
     return &this->mNetMgr.mData.DogmaOrb[0];
 }
 
-inline u32 sGUIExt::getRequestPawnContextId() {
-    return this->mPawnContextId;
+inline const cGUIExtNetMgr::DogmaOrbInfo* sGUIExt::getPawnDogmaOrbInfo() {
+    return &this->mNetMgr.mData.PawnDogmaOrb[0];
 }
 
 inline bool sGUIExt::isReqTutorialAnnouce() const {
@@ -3378,8 +3384,18 @@ inline uGUICommunityList* sGUIExt::getOpenCommunityList() {
     return this->mpGUICommunityList;
 }
 
-inline void sGUIExt::setDispGuideNo(u32 No) {
-    this->mDispGuideNo = No;
+inline void sGUIExt::clearOnlineStatusAFK() {
+    this->mOnlineStatusAFK.mTimerToAutoAFK = 0.0f;
+    this->mOnlineStatusAFK.mIsAutoAFK = false;
+    this->mOnlineStatusAFK.mOldRemainTime = 0.0f;
+}
+
+inline void* sGUIExt::cMousePointer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sGUIExt::cPrioHandle::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sGUIExt::cPrioHandle::cPrioHandle() {
@@ -3387,27 +3403,59 @@ inline sGUIExt::cPrioHandle::cPrioHandle() {
     this->mDistCam = 0.0f;
 }
 
+inline void* sGUIExt::cRatingEmoteInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sGUIExt::cRatingEmoteInfo::cRatingEmoteInfo() {
     this->mEmoteNum = 0;
 }
 
-inline u32 sGUIExt::cRatingEmoteInfo::getEmoteNum() {
-    return this->mEmoteNum;
+inline void* sGUIExt::cChat::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIChat* sGUIExt::cChat::getGUIChat() {
     return this->mpGUIChat;
 }
 
+inline void* sGUIExt::cSEPlayer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sGUIExt::cSEPlayer::cSEPlayer() {
     this->mpRes = nullptr;
+}
+
+inline void* sGUIExt::cDivItemIcon::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sGUIExt::stRewardItem::stRewardItem() {
 }
 
+inline void* sGUIExt::cMap::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIMap* sGUIExt::cMap::getGUIMap() {
     return this->mpGUIMap;
+}
+
+inline void* sGUIExt::cMap::cMarkerSave::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sGUIExt::cSCM::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sGUIExt::cChatMacro::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sGUIExt::cJpegDecode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline f32 sGUIExt::cLifeGaugeWork::getLostTimerRate() const {
@@ -3418,9 +3466,29 @@ inline sGUIExt::cWardInfo::cWardInfo() {
     this->mCharLen = 0;
 }
 
+inline void* sGUIExt::cWardInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sGUIExt::cSameWardInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sGUIExt::cReplaceWardMap::cReplaceWardMap() {
     this->mSrcCharLen = 0;
     this->mDstCharLen = 0;
+}
+
+inline void* sGUIExt::cReplaceWardMap::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sGUIExt::cDlTicket::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sGUIExt::cItemTmp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sGUIExt::cItemTmp::cItemTmp() {

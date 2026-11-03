@@ -209,10 +209,18 @@ namespace nTalk {
 
 }  // namespace nTalk
 
+inline void* nTalk::cSelectData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nTalk::cSelectData::cSelectData() {
     this->mType = 0;
     this->mParam0 = 0;
     this->mParam1 = 0;
+}
+
+inline void* nTalk::cSelectMember::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nTalk::cSelectMember::cSelectMember() : mName() {

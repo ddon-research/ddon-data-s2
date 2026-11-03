@@ -2,16 +2,24 @@
 #include <new>
 #include "uGUIPopNumber01.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "cControl.h"
+#include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "nDDOUtility.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "uGUIBase.h"
 #include "uGUIPopBase.h"
+#include "uGUIPopListDialog.h"
+#include "uGUIUseItemBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -33,8 +41,15 @@ inline void uGUIPopNumber01::operator delete(void* p_addr) {
 }
 
 uGUIPopNumber01::~uGUIPopNumber01() {
-    DDON_STUB("uGUIPopNumber01::~uGUIPopNumber01")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpDialog == nullptr) {
+        return;
+    }
+    mpDialog->kill();
+    mpDialog = nullptr;
 }
 
 bool uGUIPopNumber01::loadResource() {

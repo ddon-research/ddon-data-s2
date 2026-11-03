@@ -127,6 +127,10 @@ protected:
     static const u16 DATA_VERSION = 3805;
 };
 
+inline void* rSwingModel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSwingModel::rSwingModel() {
     this->::cResource::mAttr = 16;
     this->mSwingMode = 0;

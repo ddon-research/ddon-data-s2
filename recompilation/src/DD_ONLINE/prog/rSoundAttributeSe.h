@@ -210,10 +210,18 @@ public:
     static const s32 NativeFileVersion = 3;
 };
 
+inline void* rSoundAttributeSe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSoundAttributeSe::rSoundAttributeSe() {
     this->mAttributeSeDataNum = 0;
     this->mpAttributeSeData = nullptr;
     this->::cResource::mAttr = 16;
+}
+
+inline void* rSoundAttributeSe::cSoundAttributeSeData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline bool rSoundAttributeSe::cSoundAttributeSeData::getUseFindIntersect() {

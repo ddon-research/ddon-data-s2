@@ -253,3 +253,11 @@ namespace nNetwork {
         static MyDTI DTI;
     };
 }  // namespace nNetwork
+
+inline void* nNetwork::Transport::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::Transport::ForwardQueue::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

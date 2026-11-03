@@ -5,7 +5,9 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
+#include "nNetworkCoder.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -38,12 +40,12 @@ MtUI* cRemoteCall::createUI(MtProperty& prop) {
 
 void cRemoteCall::serialize(MtStream& queue) {
     MtSerializer sr(65536);
-    sr.MtSerializer::serializeBinary(queue, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+    sr.serializeBinary(queue, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
 }
 
 void cRemoteCall::deserialize(MtStream& queue) {
     MtSerializer sr(65536);
-    sr.MtSerializer::deserializeBinary(queue, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE);
+    sr.deserializeBinary(queue, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE);
 }
 
 __attribute__((weak)) void cRemoteCall::writeOut(MtStream& out, cRemoteCall& call) {

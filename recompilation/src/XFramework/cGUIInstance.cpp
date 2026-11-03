@@ -9,7 +9,10 @@
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtPropertyList.h"
+#include "cDraw.h"
 #include "cGUIObject.h"
+#include "cGUIVariable.h"
 #include "nGUI.h"
 #include "nGUIDraw.h"
 #include "rGUI.h"
@@ -154,9 +157,7 @@ void cGUIInstAnimVariable::setVariableId(u32 id) {
     mpVariable = mpUnit->getVariable(id);
 }
 
-u32 cGUIInstAnimVariable::getVariableId() const {
-    return mVariableId;
-}
+static auto ddon_emit_0x01b71ad0 __attribute__((used)) = &cGUIInstAnimVariable::getVariableId;
 
 bool cGUIInstAnimVariable::isAnimationEnd() const {
     return true;
@@ -213,7 +214,7 @@ void cGUIInstAnimation::init() {
     if (mpParent != nullptr) {
         mpParent->mAttr = mpParent->mAttr | 0x40000u;
     }
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 92)) <= 0xFFFFu) {
+    if (mInitParamNum <= 0u) {
         mCurrentFrame = -1.0f;
         mStopFrame = -1.0f;
         if (mpObjRoot != nullptr) {
@@ -254,29 +255,17 @@ void cGUIInstAnimation::clear() {
     }
 }
 
-void cGUIInstAnimation::setMaskType(u32 v) {
-    mMaskType = v;
-}
+static auto ddon_emit_0x01b718d0 __attribute__((used)) = &cGUIInstAnimation::setMaskType;
 
-u32 cGUIInstAnimation::getMaskType() const {
-    return mMaskType;
-}
+static auto ddon_emit_0x01b718c0 __attribute__((used)) = &cGUIInstAnimation::getMaskType;
 
-void cGUIInstAnimation::setSpeed(f32 speed) {
-    mSpeed = speed;
-}
+static auto ddon_emit_0x01b718b0 __attribute__((used)) = &cGUIInstAnimation::setSpeed;
 
-f32 cGUIInstAnimation::getSpeed() const {
-    return mSpeed;
-}
+static auto ddon_emit_0x01b718a0 __attribute__((used)) = &cGUIInstAnimation::getSpeed;
 
-void cGUIInstAnimation::setFoundation(bool v) {
-    mFoundation = v;
-}
+static auto ddon_emit_0x01b71900 __attribute__((used)) = &cGUIInstAnimation::setFoundation;
 
-bool cGUIInstAnimation::isFoundation() const {
-    return mFoundation;
-}
+static auto ddon_emit_0x01b718f0 __attribute__((used)) = &cGUIInstAnimation::isFoundation;
 
 void cGUIInstAnimation::setResourceId(u32 id) {
     if (mResourceId == id) {
@@ -309,9 +298,7 @@ void cGUIInstAnimation::setResourceId(u32 id) {
     }
 }
 
-u32 cGUIInstAnimation::getResourceId() const {
-    return mResourceId;
-}
+static auto ddon_emit_0x01b71880 __attribute__((used)) = &cGUIInstAnimation::getResourceId;
 
 __attribute__((weak)) void cGUIInstAnimation::setAnimationId(u32 id) {
     if (mAnimationId == id) {
@@ -378,9 +365,7 @@ __attribute__((weak)) void cGUIInstAnimation::setAnimationId(u32 id) {
     return;
 }
 
-u32 cGUIInstAnimation::getAnimationId() const {
-    return mAnimationId;
-}
+static auto ddon_emit_0x01b71890 __attribute__((used)) = &cGUIInstAnimation::getAnimationId;
 
 __attribute__((weak)) cGUIObjRoot* cGUIInstAnimation::createAnimation(uGUI* pUnit, rGUI* pResource, u32 animationId, cGUIObject* * & pObjectTable, bool& IsAllocByPlacementNew) {
     DDON_STUB("cGUIInstAnimation::createAnimation")
@@ -424,9 +409,7 @@ void cGUIInstAnimation::setBillboard(u32 type) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-u32 cGUIInstAnimation::getBillboard() const {
-    return mBillboard;
-}
+static auto ddon_emit_0x01b71920 __attribute__((used)) = &cGUIInstAnimation::getBillboard;
 
 void cGUIInstAnimation::resetCurrentFrame() {
     if (mpObjRoot == nullptr) {
@@ -661,21 +644,13 @@ __attribute__((weak)) void cGUIInstNull::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-void cGUIInstNull::setDrawPass(u32 pass) {
-    mDrawPass = pass;
-}
+static auto ddon_emit_0x01b71640 __attribute__((used)) = &cGUIInstNull::setDrawPass;
 
-u32 cGUIInstNull::getDrawPass() const {
-    return mDrawPass;
-}
+static auto ddon_emit_0x01b71630 __attribute__((used)) = &cGUIInstNull::getDrawPass;
 
-void cGUIInstNull::setDepthState(u32 state) {
-    mDepthState = state;
-}
+static auto ddon_emit_0x01b71670 __attribute__((used)) = &cGUIInstNull::setDepthState;
 
-u32 cGUIInstNull::getDepthState() const {
-    return mDepthState;
-}
+static auto ddon_emit_0x01b71660 __attribute__((used)) = &cGUIInstNull::getDepthState;
 
 void cGUIInstNull::setAlignment(u32 align) {
     if (mAlignment == align) {
@@ -685,9 +660,7 @@ void cGUIInstNull::setAlignment(u32 align) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-u32 cGUIInstNull::getAlignment() const {
-    return mAlignment;
-}
+static auto ddon_emit_0x01b71690 __attribute__((used)) = &cGUIInstNull::getAlignment;
 
 void cGUIInstNull::setColorControl(u32 type) {
     if (mColorControl == type) {
@@ -696,9 +669,7 @@ void cGUIInstNull::setColorControl(u32 type) {
     mColorControl = type;
 }
 
-u32 cGUIInstNull::getColorControl() const {
-    return mColorControl;
-}
+static auto ddon_emit_0x01b717c0 __attribute__((used)) = &cGUIInstNull::getColorControl;
 
 void cGUIInstNull::setResolutionAdjust(u32 type) {
     unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144);
@@ -709,27 +680,21 @@ void cGUIInstNull::setResolutionAdjust(u32 type) {
     }
 }
 
-u32 cGUIInstNull::getResolutionAdjust() const {
-    return mResolutionAdjust;
-}
+static auto ddon_emit_0x01b716a0 __attribute__((used)) = &cGUIInstNull::getResolutionAdjust;
 
 __attribute__((weak)) void cGUIInstNull::setReferencePosition(bool v) {
     DDON_STUB("cGUIInstNull::setReferencePosition")
     /* stub */
 }
 
-bool cGUIInstNull::isReferencePosition() const {
-    return mReferencePosition;
-}
+static auto ddon_emit_0x01b716b0 __attribute__((used)) = &cGUIInstNull::isReferencePosition;
 
 __attribute__((weak)) void cGUIInstNull::setReferenceRotation(bool v) {
     DDON_STUB("cGUIInstNull::setReferenceRotation")
     /* stub */
 }
 
-bool cGUIInstNull::isReferenceRotation() const {
-    return mReferenceRotation;
-}
+static auto ddon_emit_0x01b716c0 __attribute__((used)) = &cGUIInstNull::isReferenceRotation;
 
 void cGUIInstNull::setReferenceScaleX(u32 type) {
     if (mReferenceScaleX == type) {
@@ -739,9 +704,7 @@ void cGUIInstNull::setReferenceScaleX(u32 type) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-u32 cGUIInstNull::getReferenceScaleX() const {
-    return mReferenceScaleX;
-}
+static auto ddon_emit_0x01b716d0 __attribute__((used)) = &cGUIInstNull::getReferenceScaleX;
 
 void cGUIInstNull::setReferenceScaleY(u32 type) {
     if (mReferenceScaleY == type) {
@@ -751,21 +714,17 @@ void cGUIInstNull::setReferenceScaleY(u32 type) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-u32 cGUIInstNull::getReferenceScaleY() const {
-    return mReferenceScaleY;
-}
+static auto ddon_emit_0x01b716e0 __attribute__((used)) = &cGUIInstNull::getReferenceScaleY;
 
 void cGUIInstNull::setReferenceScaleZ(u32 type) {
-    if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) >> 30) == type) {
+    if (mReferenceScaleZ == type) {
         return;
     }
     mReferenceScaleZ = type;
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-u32 cGUIInstNull::getReferenceScaleZ() const {
-    return mReferenceScaleZ;
-}
+static auto ddon_emit_0x01b716f0 __attribute__((used)) = &cGUIInstNull::getReferenceScaleZ;
 
 __attribute__((weak)) void cGUIInstNull::setPosition(const MtVector4& pos) {
     DDON_STUB("cGUIInstNull::setPosition")
@@ -780,9 +739,7 @@ void cGUIInstNull::setPositionX(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-f32 cGUIInstNull::getPositionX() const {
-    return mPosition.x;
-}
+static auto ddon_emit_0x01b71700 __attribute__((used)) = &cGUIInstNull::getPositionX;
 
 void cGUIInstNull::setPositionY(f32 v) {
     if (mPosition.y == v) {
@@ -792,9 +749,7 @@ void cGUIInstNull::setPositionY(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-f32 cGUIInstNull::getPositionY() const {
-    return mPosition.y;
-}
+static auto ddon_emit_0x01b71710 __attribute__((used)) = &cGUIInstNull::getPositionY;
 
 void cGUIInstNull::setPositionZ(f32 v) {
     if (mPosition.z == v) {
@@ -804,9 +759,7 @@ void cGUIInstNull::setPositionZ(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-f32 cGUIInstNull::getPositionZ() const {
-    return mPosition.z;
-}
+static auto ddon_emit_0x01b71720 __attribute__((used)) = &cGUIInstNull::getPositionZ;
 
 void cGUIInstNull::setScaleX(f32 v) {
     if (mScale.x == v) {
@@ -816,9 +769,7 @@ void cGUIInstNull::setScaleX(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-f32 cGUIInstNull::getScaleX() const {
-    return mScale.x;
-}
+static auto ddon_emit_0x01b71730 __attribute__((used)) = &cGUIInstNull::getScaleX;
 
 void cGUIInstNull::setScaleY(f32 v) {
     if (mScale.y == v) {
@@ -828,9 +779,7 @@ void cGUIInstNull::setScaleY(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-f32 cGUIInstNull::getScaleY() const {
-    return mScale.y;
-}
+static auto ddon_emit_0x01b71740 __attribute__((used)) = &cGUIInstNull::getScaleY;
 
 void cGUIInstNull::setScaleZ(f32 v) {
     if (mScale.z == v) {
@@ -840,9 +789,7 @@ void cGUIInstNull::setScaleZ(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-f32 cGUIInstNull::getScaleZ() const {
-    return mScale.z;
-}
+static auto ddon_emit_0x01b71750 __attribute__((used)) = &cGUIInstNull::getScaleZ;
 
 void cGUIInstNull::setRotationX(f32 v) {
     if (mRotation.x == (0.017453294f * v)) {
@@ -888,9 +835,7 @@ __attribute__((weak)) void cGUIInstNull::setColorScale(const MtVector4& color) {
     /* stub */
 }
 
-MtVector4 cGUIInstNull::getColorScale() const {
-    return mColorScale;
-}
+static auto ddon_emit_0x01b717d0 __attribute__((used)) = &cGUIInstNull::getColorScale;
 
 void cGUIInstNull::setAmbientColor(const MtColor& color) {
     mAmbientColor.rgba = color.rgba;
@@ -901,13 +846,9 @@ __attribute__((weak)) MtColor cGUIInstNull::getAmbientColor() const {
     __builtin_unreachable();
 }
 
-void cGUIInstNull::setSaturation(f32 v) {
-    mColorScale.w = v;
-}
+static auto ddon_emit_0x01b71810 __attribute__((used)) = &cGUIInstNull::setSaturation;
 
-f32 cGUIInstNull::getSaturation() const {
-    return mColorScale.w;
-}
+static auto ddon_emit_0x01b71800 __attribute__((used)) = &cGUIInstNull::getSaturation;
 
 __attribute__((weak)) void cGUIInstNull::beginDraw(nGUI::Draw& drawObj) {
     DDON_STUB("cGUIInstNull::beginDraw")
@@ -971,6 +912,59 @@ cGUIInstNull::MyDTI cGUIInstNull::DTI("cGUIInstNull", &::cGUIInstance::DTI, 224u
 
 __attribute__((weak)) MtObject* cGUIInstNull::MyDTI::newInstance() const {
     DDON_STUB("cGUIInstNull::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cGUIInstRoot::getDTI() const {
+    return cGUIInstRoot::DTI;
+}
+
+void* cGUIInstRoot::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cGUIInstRoot::DTI)->memAlloc(sz, align, cGUIInstRoot::DTI.mID);
+}
+
+cGUIInstRoot::cGUIInstRoot() {
+    DDON_STUB("cGUIInstRoot::cGUIInstRoot")
+    /* stub */
+}
+
+cGUIInstRoot::~cGUIInstRoot() {
+    DDON_STUB("cGUIInstRoot::~cGUIInstRoot")
+    /* stub */
+}
+
+MtUI* cGUIInstRoot::createUI(MtProperty& prop) {
+    return this->MtObject::createUI(prop);
+}
+
+__attribute__((weak)) void cGUIInstRoot::createProperty(MtPropertyList& s) {
+    DDON_STUB("cGUIInstRoot::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void cGUIInstRoot::calcMatrix(const MtMatrix& wmat) {
+    DDON_STUB("cGUIInstRoot::calcMatrix")
+    /* stub */
+}
+
+void cGUIInstRoot::triggerEvent(u32 eventNo) {
+    uGUI* t0 = mpUnit;
+    if (t0 == nullptr) {
+        return;
+    }
+    nGUI::FLOW* t1 = t0->getPlayingFlow();
+    if (t1 == nullptr) {
+        return;
+    }
+    t0->callbackFlowEvent(t1->id, eventNo);
+}
+
+cGUIInstRoot::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cGUIInstRoot::MyDTI cGUIInstRoot::DTI("cGUIInstRoot", &::cGUIInstance::DTI, 144ul, 0u, 2u);
+
+__attribute__((weak)) MtObject* cGUIInstRoot::MyDTI::newInstance() const {
+    DDON_STUB("cGUIInstRoot::MyDTI::newInstance")
     return nullptr;
 }
 
@@ -1092,7 +1086,7 @@ void cGUIInstance::init() {
     if (mpParent != nullptr) {
         mpParent->mAttr = mpParent->mAttr | 0x40000u;
     }
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 92)) <= 0xFFFFu) {
+    if (mInitParamNum <= 0u) {
         return;
     }
     u32 i = 0;
@@ -1138,9 +1132,7 @@ void cGUIInstance::setPriority(u32 prio) {
     mpParent->mAttr = mpParent->mAttr | 0x40000u;
 }
 
-u32 cGUIInstance::getPriority() const {
-    return mPriority;
-}
+static auto ddon_emit_0x01b71600 __attribute__((used)) = &cGUIInstance::getPriority;
 
 bool cGUIInstance::isVisible() const {
     return static_cast<bool>(mAttr & 1u);
@@ -1155,17 +1147,13 @@ bool cGUIInstance::isPlay() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 88)) & 2) >> 1);
 }
 
-void cGUIInstance::setPlay(bool e) {
-    mAttr = !e ? (mAttr & 0xFFFFFFFDu) : (mAttr | 2u);
-}
+static auto ddon_emit_0x01b715b0 __attribute__((used)) = &cGUIInstance::setPlay;
 
 bool cGUIInstance::isMouseReaction() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 88)) & 4) >> 2);
 }
 
-void cGUIInstance::setMouseReaction(bool e) {
-    mAttr = !e ? (mAttr & 0xFFFFFFFBu) : (mAttr | 4u);
-}
+static auto ddon_emit_0x01b715e0 __attribute__((used)) = &cGUIInstance::setMouseReaction;
 
 __attribute__((weak)) void cGUIInstance::setExecute(bool v) {
     DDON_STUB("cGUIInstance::setExecute")
@@ -1214,7 +1202,7 @@ cGUIInstance* cGUIInstance::getInstanceFromId(u32 id) {
                 v1_0 = nullptr;
                 break;
             } else {
-                cGUIInstance* pInstance = pChild->cGUIInstance::getInstanceFromId(id);
+                cGUIInstance* pInstance = pChild->getInstanceFromId(id);
                 if (pInstance != nullptr) {
                     v1_0 = pInstance;
                     break;
@@ -1266,7 +1254,7 @@ void cGUIInstance::setupParent() {
             break;
         } else {
             pChild->mpParent = this;
-            pChild->cGUIInstance::setupParent();
+            pChild->setupParent();
             pChild = pChild->mpNext;
         }
     }

@@ -5,14 +5,22 @@
 #include "../MT/MtCollection.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDataReader.h"
 #include "../MT/MtEaseCurve.h"
 #include "../MT/MtMath.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
+#include "../MT/MtString.h"
 #include "cBVHGrass.h"
+#include "cDraw.h"
 #include "cResource.h"
+#include "nDrawVertexBuffer.h"
 #include "rTexture.h"
+#include "sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -174,50 +182,34 @@ __attribute__((weak)) void rGrass::cSetting::update() {
     /* stub */
 }
 
-rTexture* rGrass::cSetting::getAlbedoTexture() const {
-    return mpAlbedoMap;
-}
+static auto ddon_emit_0x01b91a90 __attribute__((used)) = &rGrass::cSetting::getAlbedoTexture;
 
 __attribute__((weak)) void rGrass::cSetting::setAlbedoTexture(rTexture* ptex) {
     DDON_STUB("rGrass::cSetting::setAlbedoTexture")
     /* stub */
 }
 
-rTexture* rGrass::cSetting::getMaskTexture() const {
-    return mpMaskMap;
-}
+static auto ddon_emit_0x01b91aa0 __attribute__((used)) = &rGrass::cSetting::getMaskTexture;
 
 __attribute__((weak)) void rGrass::cSetting::setMaskTexture(rTexture* ptex) {
     DDON_STUB("rGrass::cSetting::setMaskTexture")
     /* stub */
 }
 
-rTexture* rGrass::cSetting::getNormalTexture() const {
-    return mpNormalMap;
-}
+static auto ddon_emit_0x01b91ab0 __attribute__((used)) = &rGrass::cSetting::getNormalTexture;
 
 __attribute__((weak)) void rGrass::cSetting::setNormalTexture(rTexture* ptex) {
     DDON_STUB("rGrass::cSetting::setNormalTexture")
     /* stub */
 }
 
-void rGrass::cSetting::setScale(f32 scale) {
-    mScale = scale;
-    update();
-}
+static auto ddon_emit_0x01b91ad0 __attribute__((used)) = &rGrass::cSetting::setScale;
 
-f32 rGrass::cSetting::getScale() {
-    return mScale;
-}
+static auto ddon_emit_0x01b91ac0 __attribute__((used)) = &rGrass::cSetting::getScale;
 
-void rGrass::cSetting::setAspect(f32 aspect) {
-    mAspect = aspect;
-    update();
-}
+static auto ddon_emit_0x01b91af0 __attribute__((used)) = &rGrass::cSetting::setAspect;
 
-f32 rGrass::cSetting::getAspect() {
-    return mAspect;
-}
+static auto ddon_emit_0x01b91ae0 __attribute__((used)) = &rGrass::cSetting::getAspect;
 
 rGrass::cSetting::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

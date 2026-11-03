@@ -7,14 +7,19 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "cDraw.h"
 #include "cParticle2D.h"
 #include "cResource.h"
 #include "cUnit.h"
+#include "nDrawResource.h"
 #include "nDrawTexture.h"
 #include "rEffect2D.h"
 #include "sEffect.h"
+#include "sMain.h"
 #include "sPrimitive.h"
+#include "sRender.h"
 #include "uCoord.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -132,49 +137,25 @@ bool uEffect2D::getSchedulerMode() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 4) >> 2);
 }
 
-void uEffect2D::setSchedulerMode(bool Mode) {
-    if (Mode) {
-        mStatus = mStatus | 4u;
-    } else {
-        mStatus = mStatus & 65531u;
-    }
-}
+static auto ddon_emit_0x01b66260 __attribute__((used)) = &uEffect2D::setSchedulerMode;
 
 bool uEffect2D::getEventMode() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 8) >> 3);
 }
 
-void uEffect2D::setEventMode(bool Mode) {
-    if (Mode) {
-        mStatus = mStatus | 8u;
-    } else {
-        mStatus = mStatus & 65527u;
-    }
-}
+static auto ddon_emit_0x01b66290 __attribute__((used)) = &uEffect2D::setEventMode;
 
 bool uEffect2D::getTimerControlMode() const {
     return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 273)) & 1);
 }
 
-void uEffect2D::setTimerControlMode(bool Mode) {
-    if (Mode) {
-        mStatus = mStatus | 256u;
-    } else {
-        mStatus = mStatus & 65279u;
-    }
-}
+static auto ddon_emit_0x01b662b0 __attribute__((used)) = &uEffect2D::setTimerControlMode;
 
 bool uEffect2D::getWorldPosMode() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 273)) & 2) >> 1);
 }
 
-void uEffect2D::setWorldPosMode(bool Mode) {
-    if (Mode) {
-        mStatus = mStatus | 512u;
-    } else {
-        mStatus = mStatus & 65023u;
-    }
-}
+static auto ddon_emit_0x01b662e0 __attribute__((used)) = &uEffect2D::setWorldPosMode;
 
 bool uEffect2D::getRestartFlag() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 16) >> 4);
@@ -188,58 +169,35 @@ void uEffect2D::setRestartFlag(bool Flag) {
     }
 }
 
-u32 uEffect2D::getLoopFrame() const {
-    return mLoopFrame;
-}
+static auto ddon_emit_0x01b66370 __attribute__((used)) = &uEffect2D::getLoopFrame;
 
 __attribute__((weak)) void uEffect2D::setLoopFrame(u32 LoopFrame) {
     DDON_STUB("uEffect2D::setLoopFrame")
     /* stub */
 }
 
-u32 uEffect2D::getLifeFrame() const {
-    return mLifeFrame;
-}
+static auto ddon_emit_0x01b663c0 __attribute__((used)) = &uEffect2D::getLifeFrame;
 
 __attribute__((weak)) void uEffect2D::setLifeFrame(u32 LifeFrame) {
     DDON_STUB("uEffect2D::setLifeFrame")
     /* stub */
 }
 
-u32 uEffect2D::getWaitFrame() const {
-    return mWaitFrame;
-}
+static auto ddon_emit_0x01b66430 __attribute__((used)) = &uEffect2D::getWaitFrame;
 
-void uEffect2D::setWaitFrame(u32 WaitFrame) {
-    mWaitFrame = WaitFrame;
-}
+static auto ddon_emit_0x01b66440 __attribute__((used)) = &uEffect2D::setWaitFrame;
 
-u32 uEffect2D::getTimer() const {
-    return mTimer;
-}
+static auto ddon_emit_0x01b66350 __attribute__((used)) = &uEffect2D::getTimer;
 
-void uEffect2D::setTimer(u32 Timer) {
-    if ((mStatus & 256u) == 0) {
-        return;
-    }
-    mTimer = Timer;
-}
+static auto ddon_emit_0x01b66360 __attribute__((used)) = &uEffect2D::setTimer;
 
-f32 uEffect2D::getDeltaTimeCoef() const {
-    return mDeltaTimeCoef;
-}
+static auto ddon_emit_0x01b66300 __attribute__((used)) = &uEffect2D::getDeltaTimeCoef;
 
-void uEffect2D::setDeltaTimeCoef(f32 DeltaTimeCoef) {
-    mDeltaTimeCoef = DeltaTimeCoef;
-}
+static auto ddon_emit_0x01b66310 __attribute__((used)) = &uEffect2D::setDeltaTimeCoef;
 
-u32 uEffect2D::getKillNo() const {
-    return mKillNo;
-}
+static auto ddon_emit_0x01b66450 __attribute__((used)) = &uEffect2D::getKillNo;
 
-void uEffect2D::setKillNo(u32 KillNo) {
-    mKillNo = KillNo;
-}
+static auto ddon_emit_0x01b66460 __attribute__((used)) = &uEffect2D::setKillNo;
 
 void uEffect2D::setAlphaRate(f32 AlphaRate) {
     mAlphaRate = AlphaRate;
@@ -252,34 +210,22 @@ void uEffect2D::setAlphaRate(f32 AlphaRate) {
     }
 }
 
-u32 uEffect2D::getEndType() const {
-    return mEndType;
-}
+static auto ddon_emit_0x01b66320 __attribute__((used)) = &uEffect2D::getEndType;
 
-void uEffect2D::setEndType(u32 EndType) {
-    mEndType = EndType;
-}
+static auto ddon_emit_0x01b66330 __attribute__((used)) = &uEffect2D::setEndType;
 
-u32 uEffect2D::getSizeAdjustType() const {
-    return mSizeAdjustType;
-}
+static auto ddon_emit_0x01b66470 __attribute__((used)) = &uEffect2D::getSizeAdjustType;
 
-void uEffect2D::setSizeAdjustType(u32 SizeAdjustType) {
-    mSizeAdjustType = SizeAdjustType;
-}
+static auto ddon_emit_0x01b66480 __attribute__((used)) = &uEffect2D::setSizeAdjustType;
 
-rEffect2D* uEffect2D::getEffect2D() {
-    return mpEffect2D;
-}
+static auto ddon_emit_0x01b66560 __attribute__((used)) = &uEffect2D::getEffect2D;
 
 __attribute__((weak)) void uEffect2D::setEffect2D(rEffect2D* pEffect2D) {
     DDON_STUB("uEffect2D::setEffect2D")
     /* stub */
 }
 
-u32 uEffect2D::getFlagBitNum() const {
-    return 32;
-}
+static auto ddon_emit_0x01b664f0 __attribute__((used)) = &uEffect2D::getFlagBitNum;
 
 bool uEffect2D::getGroupFlagBit(u32 No) const {
     return ((static_cast<unsigned long>(mGroupFlag) >> static_cast<unsigned long>(No & 31u)) & 1ul) != 0;
@@ -299,25 +245,15 @@ __attribute__((weak)) void uEffect2D::setMaterialFlagBit(bool Flag, u32 No) {
     /* stub */
 }
 
-u32 uEffect2D::getRTMaskMapAlpha() const {
-    return mRTMaskMapAlpha;
-}
+static auto ddon_emit_0x01b665a0 __attribute__((used)) = &uEffect2D::getRTMaskMapAlpha;
 
-void uEffect2D::setRTMaskMapAlpha(u32 RTMaskMapAlpha) {
-    mRTMaskMapAlpha = RTMaskMapAlpha;
-}
+static auto ddon_emit_0x01b665b0 __attribute__((used)) = &uEffect2D::setRTMaskMapAlpha;
 
-u32 uEffect2D::getGeneratorBuffSize() const {
-    return mGeneratorBuffSize;
-}
+static auto ddon_emit_0x01b66590 __attribute__((used)) = &uEffect2D::getGeneratorBuffSize;
 
-u32 uEffect2D::getGeneratorNum() const {
-    return mGeneratorNum;
-}
+static auto ddon_emit_0x01b66570 __attribute__((used)) = &uEffect2D::getGeneratorNum;
 
-u32 uEffect2D::getGeneratorMoveNum() const {
-    return mGeneratorMoveNum;
-}
+static auto ddon_emit_0x01b66580 __attribute__((used)) = &uEffect2D::getGeneratorMoveNum;
 
 __attribute__((weak)) void uEffect2D::setDummyU32(u32) {
 }

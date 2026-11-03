@@ -72,6 +72,7 @@ class cMenuCancelClanScoutEntry;
 class cMenuLeaveGroupChat;
 class cMenuOnlineShop;
 class cResource;
+class cpOmBase;
 namespace nGUI { struct FLOW; }
 namespace nGUIExt { struct stMsgAnalyzerWork; }
 namespace nGUIExt { struct stWindowActive; }
@@ -128,6 +129,7 @@ class uGUINpcWindow;
 class uGUIOption;
 class uGUIPhoto;
 class uGUIPhotoAlbum;
+class uGUIPhotoUpload;
 class uGUIPopCmd01;
 class uGUIPopNumber01;
 class uGUIQuestBoard;
@@ -139,6 +141,7 @@ class uGUIRetry;
 class uGUISaveListComment;
 class uGUIShopBuy;
 class uGUIShopTitle;
+class uGUISkill;
 class uGUISystemMsg;
 class uGUIUseItemBase;
 class uUIMockUp;
@@ -175,6 +178,7 @@ class uGUIBase : public uGUI
     friend class cMenuCancelClanScoutEntry;
     friend class cMenuLeaveGroupChat;
     friend class cMenuOnlineShop;
+    friend class cpOmBase;
     friend class sGUIExt;
     friend class sTalkManager;
     friend class uCharacterEdit;
@@ -195,6 +199,7 @@ class uGUIBase : public uGUI
     friend class uGUIClanScout;
     friend class uGUIClanSearch;
     friend class uGUICommunityList;
+    friend class uGUIContentsBoard;
     friend class uGUIGPShop;
     friend class uGUIGaugeEnemy;
     friend class uGUIItem01;
@@ -212,6 +217,7 @@ class uGUIBase : public uGUI
     friend class uGUIRetry;
     friend class uGUISaveListComment;
     friend class uGUIShopBuy;
+    friend class uGUISkill;
     friend class uGUISystemMsg;
     friend class uGUIUseItemBase;
 public:
@@ -696,6 +702,7 @@ public:
 public:
     class InputTextKeyboardHook : public cInputTextKeyboardHook
     {
+        friend class uGUIBase;
     public:
         InputTextKeyboardHook();
         virtual ~InputTextKeyboardHook();
@@ -5169,6 +5176,8 @@ public:
         friend class uGUICharacterEditPopCard;
         friend class uGUIKeyConfig;
         friend class uGUIMenuComm;
+        friend class uGUIPhotoUpload;
+        friend class uGUISkill;
     public:
         enum STATE
         {
@@ -6047,8 +6056,21 @@ public:
     static const s32 DISABLE_IDX;
 };
 
+inline void* uGUIBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 uGUIBase::evCtrlDummy(cControl::Message* msg) {
+    this->mInputEventId = 1;
+    return 0;
+}
+
 inline bool uGUIBase::isAttachedResource() const {
     return this->mIsAttachedResource;
+}
+
+inline void uGUIBase::setStartButtonEnd() {
+    this->mBaseF = this->mBaseF | 8u;
 }
 
 inline rEmblemColorTable* uGUIBase::getEmblemColorTableRes() const {
@@ -6057,6 +6079,10 @@ inline rEmblemColorTable* uGUIBase::getEmblemColorTableRes() const {
 
 inline rGUIMessage* uGUIBase::getMsgPawnPersonality() const {
     return this->mpMsgPawnPersonality;
+}
+
+inline rGUIMessage* uGUIBase::getMsgPawnFeedbackComment() const {
+    return this->mpMsgPawnFeedbackComment;
 }
 
 inline rGUIMessage* uGUIBase::getMsgPawnShareRange() const {
@@ -6075,6 +6101,10 @@ inline rGUIMessage* uGUIBase::getMsgClanProfileItem() const {
     return this->mpMsgClanProfileItem;
 }
 
+inline bool uGUIBase::forceExitFunc() {
+    return true;
+}
+
 inline bool uGUIBase::isWindowActive() const {
     return this->mIsWindowActive;
 }
@@ -6083,8 +6113,20 @@ inline nGUIExt::stWindowActive& uGUIBase::getWindowActive() {
     return this->mWindowActive;
 }
 
+inline void uGUIBase::setActiveBar(cGUIInstAnimation* pInst) {
+    this->mpActiveBar = pInst;
+}
+
+inline cGUIInstAnimation* uGUIBase::getActiveBar() {
+    return this->mpActiveBar;
+}
+
 inline void uGUIBase::setInputActiveReq() {
     this->mIsReqInputActive = true;
+}
+
+inline void uGUIBase::resetInputActiveReq() {
+    this->mIsReqInputActive = false;
 }
 
 inline u32 uGUIBase::getBasePointerPriority() {
@@ -6103,17 +6145,61 @@ inline f32 uGUIBase::getTabWidth(f32 ObjectWidth) {
     return -4.0f + ObjectWidth;
 }
 
+inline void uGUIBase::clearMsgAnalyzerCount() {
+    this->mMsgAnalyzeCnt = 0;
+}
+
+inline void uGUIBase::resetInputEvent() {
+    this->mInputEventId = 0;
+}
+
 inline u32 uGUIBase::getInputEvent() {
     return this->mInputEventId;
+}
+
+inline void* uGUIBase::cReferenceUIBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cSupportInstAnim::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cGUIInstAnimation* uGUIBase::cSupportInstAnim::getInstance() {
     return this->mpInstance;
 }
 
+inline void* uGUIBase::cSupportBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIBase::cSupportBase::cSupportBase() {
     this->mpUnit = nullptr;
     this->mAutoClear = false;
+}
+
+inline void* uGUIBase::cReferenceUITextBox::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cAdjustableWindow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIWndwDrag::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cKeepInScreen::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconJob::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cScrollListItemBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIBase::cScrollListItemBase::cScrollListItemBase() {
@@ -6133,9 +6219,33 @@ inline uGUIBase::cScrollListItemBase::cScrollListItemBase() {
     this->mDisableSeqID = 7;
 }
 
+inline void* uGUIBase::cScrollListInfoBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIPullDown::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUIBase::cReferenceUIPullDown::evCancel() {
     this->mCancel = true;
     this->mState = static_cast<uGUIBase::cReferenceUIPullDown::STATE>(4);
+}
+
+inline void* uGUIBase::cReferenceUIPullDown::cData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIPullDown::cMsg::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIVlCursor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIBase::cVerticalList* uGUIBase::cScrollList::getCtrl() {
@@ -6150,6 +6260,10 @@ inline cGUIInstNull* uGUIBase::cScrollCtrl::getInstNullScroll() {
     return this->mpInstNullScroll;
 }
 
+inline void* uGUIBase::cReferenceUIScrollBar::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool uGUIBase::cReferenceUIScrollBar::isDrag() {
     return this->mDragEnable;
 }
@@ -6157,15 +6271,56 @@ inline bool uGUIBase::cReferenceUIScrollBar::isDrag() {
 inline uGUIBase::cCalcMovePos::~cCalcMovePos() {
 }
 
+inline void* uGUIBase::cVerticalList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 uGUIBase::cVerticalList::getVisibleSize() const {
     return this->mVisibleSize;
 }
 
-inline void uGUIBase::cReferenceUIBtnGuide::cWork::addKeyCustom(nKeyCustom::KB_CUSTOM kbCustom) {
-    if (this->mAddKeyCustomNum <= 3u) {
-        this->mAddKeyCustoms.elems[this->mAddKeyCustomNum] = kbCustom;
-        this->mAddKeyCustomNum = this->mAddKeyCustomNum + 1u;
-    }
+inline void* uGUIBase::cReferenceUICloseBtn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconQuest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIButton::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cMsgAnalyzer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cHorizontalList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUITab::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUITab::cTabWork::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIBtnGuide::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIBtnGuide::cWork::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUITooltip::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cMatrix::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline s32 uGUIBase::cMatrix::getCurrentRow() const {
@@ -6174,6 +6329,22 @@ inline s32 uGUIBase::cMatrix::getCurrentRow() const {
 
 inline s32 uGUIBase::cMatrix::getRow() const {
     return this->mRow;
+}
+
+inline void* uGUIBase::cMaskScroll::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cValueList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cInterpolationValue::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cUnitWatcher::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIBase* uGUIBase::cUnitWatcher::getUnit() {
@@ -6188,6 +6359,34 @@ inline bool uGUIBase::cImageDownloader::isFail() {
     return this->mIsFail;
 }
 
+inline void* uGUIBase::cReferenceUISlider::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIDropIcon::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUICursor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUISelector::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIGoldRim::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIChargesInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIChargesInfo::cData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIBase::cReferenceUIChargesInfo::cData::cData() {
     this->mIsScroll = false;
     this->mDispF = 0;
@@ -6195,15 +6394,139 @@ inline uGUIBase::cReferenceUIChargesInfo::cData::cData() {
     this->mEndTime = 0;
 }
 
+inline void* uGUIBase::cReferenceUIIconItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconEquip::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconItemCharges::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconSkill::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconStatus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconCraftLv::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconStorage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconShake::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconSCM::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconGameMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconComm::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconOnlineStatus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconClanTitle::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIGammaBoard::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUICheckbox::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIButton2::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIToggleBtn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIPullDownSkill::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIPullDownSkill::cMsgEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIPullDownSkill::cDataEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUISimpleBtn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIEditBtn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUICheckList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUICheckListForClan::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIClanEmblem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIBase::cReferenceUIClanEmblem::guiDataObj::guiDataObj() {
+}
+
+inline void* uGUIBase::cReferenceUINumBox::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIBase::cReferenceUINumBox::MODE uGUIBase::cReferenceUINumBox::getMode() const {
     return this->mMode;
 }
 
+inline void uGUIBase::cReferenceUINumBox::setMaxNum(s32 Num) {
+    this->mMaxNum = Num;
+}
+
+inline void uGUIBase::cReferenceUINumBox::setMinNum(s32 Num) {
+    this->mMinNum = Num;
+}
+
+inline void uGUIBase::cReferenceUINumBox::setOldNum(s32 Num) {
+    this->mOldNum = Num;
+}
+
 inline s32 uGUIBase::cReferenceUINumBox::getCurrentNum() const {
     return this->mCurrentNum;
+}
+
+inline void* uGUIBase::cReferenceUIPageDot::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIPageDot::cPageDotWork::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIBase::cReferenceUIPageDot::cPageDotWork::cPageDotWork() {
@@ -6211,14 +6534,42 @@ inline uGUIBase::cReferenceUIPageDot::cPageDotWork::cPageDotWork() {
     this->mpInst = nullptr;
 }
 
+inline void* uGUIBase::cReferenceUIRadioButton::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIBase::cVerticalList* uGUIBase::cReferenceUIRadioButton::getCtrl() {
     return this->mpCtrl;
+}
+
+inline void* uGUIBase::cReferenceUIRadioButton::cObject::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline bool uGUIBase::cReferenceUIRadioButton::cObject::isSelect() {
     return this->mIsSelect;
 }
 
+inline void* uGUIBase::cReferenceUINumPager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIIconButton::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cReferenceUIEditSlider::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 uGUIBase::cReferenceUIEditSlider::getSliderPos() {
     return this->mPos;
+}
+
+inline void* uGUIBase::cReferenceUIIconFriend::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIBase::cScreenAdjustPos::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

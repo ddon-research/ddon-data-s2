@@ -273,3 +273,19 @@ namespace nNetwork {
         nNetwork::SearchResultPtr mResult[32];  // offset: 0x10
     };
 }  // namespace nNetwork
+
+inline void* nNetwork::SearchFilterListPtr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::SearchFilterPtr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::SearchKeyListPtr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::SearchKeyPtr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -7,6 +7,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtSynchronize.h"
+#include "../../MT/MtThread.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
 #include "../../XFramework/sResource.h"

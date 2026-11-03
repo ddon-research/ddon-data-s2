@@ -358,3 +358,7 @@ namespace nHumanBow {
         bool mIsFirstFrame;  // offset: 0x2b
     };
 }  // namespace nHumanBow
+
+inline void* nHumanBow::cBowActParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -11,11 +11,18 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "../../MT/MtSynchronize.h"
 #include "../../MT/MtTime.h"
+#include "Protocol/PacketData/Pawn.h"
 #include "Protocol/UserSession/S2C.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cContextInterface.h"
 #include "cCraftPlusItem.h"
 #include "cCraftRecipe.h"
 #include "cCraftSkill.h"
+#include "cItemParam.h"
+#include "cMenuBase.h"
 #include "cNetGameServer.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
@@ -26,10 +33,19 @@
 #include "rCraftQuality.h"
 #include "rCraftRecipe.h"
 #include "rCraftUpGradeExp.h"
+#include "../../XFramework/rGUIMessage.h"
 #include "rItemList.h"
 #include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sChat.h"
+#include "sContextManager.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "sGame.h"
 #include "sItemManager.h"
+#include "../../XFramework/sMain.h"
+#include "sMenu.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #ifndef DDON_STUB
@@ -157,7 +173,7 @@ cCraftRecipe* sCraftManager::getCraftRecipe(u32 type) {
 u32 sCraftManager::getItemNum(u32 target, u32 itemNo) {
     sItemManager::cItemBag* pBag = sItemManager::getInstance()->setLinkItem(static_cast<nCharacterData::ITEM_BAG_TYPE>(target));
     if (pBag != nullptr) {
-        return pBag->sItemManager::cItemBag::getItemTotalNum(itemNo);
+        return pBag->getItemTotalNum(itemNo);
     } else {
         return 0;
     }
@@ -934,7 +950,7 @@ u64 sCraftManager::getCraftUpGradeExpMax(u32 rank) {
         if (rank < mpCraftupGradeExp->getDataNum()) {
             cCraftUpGradeExpData* pExp = mpCraftupGradeExp->getData(rank);
             if (pExp != nullptr) {
-                return pExp->cCraftUpGradeExpData::getExpMax();
+                return pExp->getExpMax();
             } else {
                 return 0;
             }
@@ -1605,7 +1621,7 @@ MT_CTSTR sCraftManager::cCraftPawnCtrl::getCraftProgressListItemName(u32 index) 
         u32 itemId = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetCraftProductPacket()->m_CraftProduct.m_unItemID;
         rItemList::rItemParam* pItemParam = sItemManager::getInstance()->getItemParam(itemId);
         if (pItemParam != nullptr) {
-            return pItemParam->rItemList::rItemParam::getItemName();
+            return pItemParam->getItemName();
         } else {
             return nullptr;
         }
@@ -1837,8 +1853,6 @@ const MtDTI& sCraftManager::cCraftUpGrade::getDTI() const {
 }
 
 sCraftManager::cCraftUpGrade::~cCraftUpGrade() {
-    DDON_STUB("sCraftManager::cCraftUpGrade::~cCraftUpGrade")
-    /* stub */
 }
 
 __attribute__((weak)) void sCraftManager::cCraftUpGrade::init() {
@@ -1864,8 +1878,6 @@ inline void* sCraftManager::cCraftUpGradeItemList::operator new(size_t sz, u32 a
 }
 
 sCraftManager::cCraftUpGradeItemList::~cCraftUpGradeItemList() {
-    DDON_STUB("sCraftManager::cCraftUpGradeItemList::~cCraftUpGradeItemList")
-    /* stub */
 }
 
 sCraftManager::cCraftUpGradeItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1904,7 +1916,7 @@ inline void sCraftManager::cCraftRecipeControl::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sCraftManager::cCraftRecipeControl::DTI)->memFree(p_addr);
 }
 
-sCraftManager::cCraftRecipeControl::~cCraftRecipeControl() {
+__attribute__((noinline)) sCraftManager::cCraftRecipeControl::~cCraftRecipeControl() {
     if (mMasterRecipeList.mLength != 0) {
         u32 v0_0 = mMasterRecipeList.mLength;
         for (unsigned int i0_3 = 0;;) {

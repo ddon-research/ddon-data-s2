@@ -216,12 +216,24 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cReaction::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cReaction::cCondition::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cReaction::cCondition::cCondition() {
     this->mCondition = 0;
     this->mReverse = false;
     this->mCkAndOR = 0;
     this->mParam1 = 0;
     this->mParam0 = 0;
+}
+
+inline void* cReaction::cTrigger::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cReaction::cTrigger::cTrigger() {
@@ -231,9 +243,29 @@ inline cReaction::cTrigger::cTrigger() {
     this->mParam = 0;
 }
 
+inline void* cReaction::cAction::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cReaction::cAction::cAction() {
     this->mPercent = 0;
     this->mActNoLand = 0xFFFFFFFF;
     this->mActNoAir = 0xFFFFFFFF;
     this->mActNoDown = 0xFFFFFFFF;
+}
+
+inline void* rReaction::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cReaction::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cReaction::DTI)->memFree(p_addr);
+}
+
+inline void* cReaction::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cReaction::DTI)->memAlloc(sz, align, ::cReaction::DTI.::MtDTI::getID());
 }

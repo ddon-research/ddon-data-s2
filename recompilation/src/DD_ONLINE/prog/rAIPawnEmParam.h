@@ -125,8 +125,24 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAIPawnEmNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIPawnEmParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rAIPawnEmParam::rAIPawnEmParam() {
     this->mDistance = 300.0f;
     this->mRangeSize = 50.0f;
     this->mRootPoint = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cAIPawnEmNode::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIPawnEmNode::DTI)->memAlloc(sz, align, ::cAIPawnEmNode::DTI.::MtDTI::getID());
 }

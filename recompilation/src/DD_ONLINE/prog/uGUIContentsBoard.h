@@ -183,3 +183,11 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUIContentsBoard::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIContentsBoard::cListItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

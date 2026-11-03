@@ -229,3 +229,21 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUIPhotoUpload::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIPhotoUpload::setupPulldown() {
+    if (this->mReference.mPulldown.mIsForbid) {
+        return;
+    }
+    if (this->mReference.mPulldown.mState != static_cast<uGUIBase::cReferenceUIPullDown::STATE>(0)) {
+        return;
+    }
+    this->mReference.mPulldown.mState = static_cast<uGUIBase::cReferenceUIPullDown::STATE>(1);
+}
+
+inline void* uGUIPhotoUpload::cCate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

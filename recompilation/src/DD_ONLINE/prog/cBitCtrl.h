@@ -85,6 +85,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cBitCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline BitData cBitCtrl::getBitData() const {
     return this->mCurrentBitData;
+}
+
+inline rBitTable* cBitCtrl::getResource() const {
+    return this->mpBitTableRes;
 }

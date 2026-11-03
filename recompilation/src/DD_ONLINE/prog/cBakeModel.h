@@ -194,6 +194,10 @@ public:
     rDeformWeightMap* mpDeformWeightMap;  // offset: 0xbc8
 };
 
+inline void* cBakeModel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rModel* cBakeModel::getModel() const {
     return this->mpModel;
 }

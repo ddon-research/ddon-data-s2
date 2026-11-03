@@ -8,10 +8,116 @@
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
 #include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "cAIObject.h"
 #include "cAITask.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+const MtDTI& cAIAStar::getDTI() const {
+    return cAIAStar::DTI;
+}
+
+inline void cAIAStar::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIAStar::DTI)->memFree(p_addr);
+}
+
+cAIAStar::cAIAStar() {
+    DDON_STUB("cAIAStar::cAIAStar")
+    /* stub */
+}
+
+__attribute__((noinline)) cAIAStar::~cAIAStar() {
+    DDON_STUB("cAIAStar::~cAIAStar")
+    /* stub */
+}
+
+__attribute__((weak)) void cAIAStar::createProperty(MtPropertyList& s) {
+    DDON_STUB("cAIAStar::createProperty")
+    /* stub */
+}
+
+MtUI* cAIAStar::createUI(MtProperty& prop) {
+    return this->cAITask::createUI(prop);
+}
+
+__attribute__((weak)) void cAIAStar::createJobList(cAITaskJobPrimList& list) {
+    DDON_STUB("cAIAStar::createJobList")
+    /* stub */
+}
+
+MtObject* cAIAStar::getResult(u32 index, bool f) {
+    if (index < mNumberOfAStar) {
+        if (mpResult[index].mpNode != nullptr) {
+            if (f) {
+                return mpResult[index].mpNode->mpCurrent;
+            } else {
+                return mpResult[index].mpNode;
+            }
+        } else {
+            return nullptr;
+        }
+    } else {
+        return nullptr;
+    }
+}
+
+cAIAStar::AStarResult* cAIAStar::getResult_Address() {
+    return mpResult;
+}
+
+__attribute__((weak)) bool cAIAStar::areaInitialize(cAIGraph::Node* startNode, cAIGraph::Node* endNode, cAIGraph::Area* root) {
+    DDON_STUB("cAIAStar::areaInitialize")
+    return {};
+}
+
+__attribute__((weak)) bool cAIAStar::nodeInitialize(cAIGraph::Node* startNode, cAIGraph::Node* endNode, u32 state, bool callback) {
+    DDON_STUB("cAIAStar::nodeInitialize")
+    return {};
+}
+
+__attribute__((weak)) u32 cAIAStar::search() {
+    DDON_STUB("cAIAStar::search")
+    return {};
+}
+
+void cAIAStar::searchJob() {
+    u32 state = search();
+    if (state != 16) {
+        if (state == 2) {
+            doneTask();
+        }
+    } else {
+        doneTask();
+    }
+}
+
+__attribute__((weak)) bool cAIAStar::AreaDecision(cAIGraph::Node* startNode, cAIGraph::Node* endNode) {
+    DDON_STUB("cAIAStar::AreaDecision")
+    return {};
+}
+
+cAIAStar::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cAIAStar::MyDTI cAIAStar::DTI("cAIAStar", &::cAIGraph::DTI, 464ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cAIAStar::MyDTI::newInstance() const {
+    DDON_STUB("cAIAStar::MyDTI::newInstance")
+    return nullptr;
+}
+
+cAIAStar::AStarResult::~AStarResult() {
+}
+
+cAIAStar::OpenList::~OpenList() {
+    if (mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(cAIGraph::DTI)->memFree(static_cast<void*>(mpArray));
+    }
+    mBufsiz = 0;
+    mLength = 0;
+    mpArray = nullptr;
+}
 
 const MtDTI& cAIGraph::getDTI() const {
     return cAIGraph::DTI;

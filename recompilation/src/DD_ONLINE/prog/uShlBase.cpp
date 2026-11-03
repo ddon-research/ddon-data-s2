@@ -7,20 +7,68 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "cComponentManager.h"
+#include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cDelegate.h"
 #include "cEfcHandle.h"
+#include "cGeneralPoint.h"
 #include "cGeneralPointPtr.h"
 #include "cHitNode.h"
+#include "cObjHitCache.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpComponent.h"
+#include "cpJob04.h"
+#include "cpJob06.h"
 #include "cpLockOn.h"
 #include "cpObjCollision.h"
 #include "cpShlShotCtrl.h"
+#include "cpSlave.h"
+#include "cpVibration.h"
+#include "cpWorkRate.h"
+#include "cpjob10.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "nDDOUtility.h"
 #include "nShlBase.h"
 #include "nShlStick.h"
+#include "rAttackParam.h"
+#include "rCollNode.h"
+#include "../../XFramework/rCollisionHeightField.h"
+#include "rEffectProvider.h"
+#include "../../XFramework/rModel.h"
 #include "rObjCollision.h"
+#include "rShlParamList.h"
+#include "../../XFramework/rSoundRequest.h"
+#include "sAIPawnSys.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
 #include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
+#include "sControlManager.h"
+#include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sGeneralPoint.h"
+#include "sPlayerManager.h"
+#include "../../XFramework/sResource.h"
+#include "sSetManager.h"
+#include "sShlManager.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
+#include "sWorkRate.h"
+#include "uControl.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
+#include "uHuman.h"
+#include "../../XFramework/uModel.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -40,8 +88,6 @@ cShlParamBase::cShlParamBase() {
 }
 
 cShlParamBase::~cShlParamBase() {
-    DDON_STUB("cShlParamBase::~cShlParamBase")
-    /* stub */
 }
 
 __attribute__((weak)) void cShlParamBase::createProperty(MtPropertyList& s) {
@@ -101,8 +147,6 @@ uShlBase::uShlBase() {
 }
 
 uShlBase::~uShlBase() {
-    DDON_STUB("uShlBase::~uShlBase")
-    /* stub */
 }
 
 __attribute__((weak)) void uShlBase::setup() {

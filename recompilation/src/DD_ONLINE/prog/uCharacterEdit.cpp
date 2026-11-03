@@ -11,55 +11,98 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "../../MT/MtSynchronize.h"
 #include "cCharacterData.h"
+#include "cComponentManager.h"
+#include "cDelegate.h"
 #include "cEditChargeInfoUpdator.h"
 #include "cEditParam.h"
 #include "cEfcHandle.h"
 #include "cGUIUtility.h"
 #include "cNetGameServer.h"
+#include "cNetLoginServer.h"
 #include "../../XFramework/cResource.h"
 #include "cStageEpvCtrl.h"
+#include "../../XFramework/cSystem.h"
 #include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
 #include "cpCharacterEdit.h"
+#include "cpComponent.h"
+#include "cpEquip.h"
 #include "nCharacterData.h"
 #include "nCharacterEdit.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "nGUIExt.h"
 #include "../../generated/shared/nHuman.h"
+#include "nHumanMsg.h"
 #include "nNet.h"
 #include "rArchiveListArray.h"
 #include "rCharacterEdit.h"
 #include "rCharacterEditCameraParam.h"
 #include "rEditStageParam.h"
+#include "rEquipPreset.h"
 #include "rEquipPresetPalette.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/rScheduler.h"
+#include "../../XFramework/rSoundRequest.h"
+#include "../../XFramework/rSoundReverb.h"
+#include "../../XFramework/rSoundStreamRequest.h"
+#include "rWeatherInfo.h"
 #include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
 #include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
 #include "sChat.h"
+#include "sContextManager.h"
+#include "sDialogBase.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
 #include "sFlag.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sGame.h"
+#include "sInputManager.h"
+#include "sItemManager.h"
+#include "../../XFramework/sKeyboard.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sMouse.h"
+#include "sMouseExt.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "../../XFramework/sPad.h"
+#include "sPadExt.h"
 #include "../../XFramework/sRender.h"
 #include "../../XFramework/sResource.h"
+#include "../../XFramework/sSavedata.h"
+#include "sSavedataExt.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
 #include "../../XFramework/sUnit.h"
 #include "sUnitExt.h"
+#include "sUnitManager.h"
+#include "sWeatherManager.h"
+#include "sWorldOffset.h"
+#include "../../XFramework/uBaseModel.h"
+#include "../../XFramework/uCamera.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uEditSaveLoadFlow.h"
 #include "../../XFramework/uFreeCamera.h"
 #include "uGUIBase.h"
+#include "uGUICharaEditPartsWrap.h"
 #include "uGUICharacterEdit.h"
 #include "uGUICharacterEditPopCard.h"
 #include "uGUIGPShop.h"
 #include "uGUIJobSelect.h"
 #include "uGUISystemMsg.h"
+#include "uGUIsMenuBase.h"
 #include "uMockUpModel.h"
+#include "../../XFramework/uModel.h"
 #include "../../XFramework/uScheduler.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -357,6 +400,18 @@ __attribute__((weak)) bool uCharacterEdit::checkGoldStoneSaveMove() {
     return {};
 }
 
+inline void uCharacterEdit::loadTemp() {
+    if (mpEditRes == nullptr) {
+        return;
+    }
+    if (mpEditRes->mpEditParam == nullptr) {
+        return;
+    }
+    mpEditRes->mpEditParam->mVoice = mTemp.mVoice;
+    mpEditRes->mpEditParam->mPersonality = mTemp.mPersonal;
+    mpEditRes->mpEditParam->mSpeechFreq = mTemp.mSpeechFreq;
+}
+
 __attribute__((weak)) void uCharacterEdit::setModel(bool isAction) {
     DDON_STUB("uCharacterEdit::setModel")
     /* stub */
@@ -627,6 +682,24 @@ bool uCharacterEdit::isChargedVoiceData(u32 voiceType, u32 voiceUID) const {
     return false;
 }
 
+inline void uCharacterEdit::notifyChangeScr_On() {
+    if (mpGUIEdit == nullptr) {
+        return;
+    }
+    mpGUIEdit->mIsChangeScr = true;
+}
+
+inline void uCharacterEdit::notifyChangeScr_Off() {
+    if (mpGUIEdit == nullptr) {
+        return;
+    }
+    mpGUIEdit->mIsChangeScr = false;
+}
+
+void uCharacterEdit::setParlorEquipData(nCharacterData::stEquipData& data) {
+    mPalorParam.mEquipData.copyData(data);
+}
+
 void uCharacterEdit::setParlorEditParam(cEditParam* p) {
     if (p == nullptr) {
         return;
@@ -732,8 +805,7 @@ uCharacterEditBase::uCharacterEditBase() {
 }
 
 uCharacterEditBase::~uCharacterEditBase() {
-    DDON_STUB("uCharacterEditBase::~uCharacterEditBase")
-    /* stub */
+    this->uCharacterEditBase::release();
 }
 
 void uCharacterEditBase::setup() {

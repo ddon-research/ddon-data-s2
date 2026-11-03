@@ -139,8 +139,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rLandInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rLandInfo::cLandInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rLandInfo::cLandInfo::cLandInfo() {
     this->mLandId = 0;
+}
+
+inline void* rLandInfo::cLandInfo::cLandAreaInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rLandInfo::cLandInfo::cLandAreaInfo::cLandAreaInfo() {

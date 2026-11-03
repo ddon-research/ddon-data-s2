@@ -7,6 +7,8 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
@@ -18,11 +20,24 @@ const MtDTI& rSoundMotionSe::getDTI() const {
     return rSoundMotionSe::DTI;
 }
 
+inline void* rSoundMotionSe::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundMotionSe::DTI)->memAlloc(sz, align, rSoundMotionSe::DTI.getID());
+}
+
 inline void rSoundMotionSe::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundMotionSe::DTI)->memFree(p_addr);
 }
 
-rSoundMotionSe::~rSoundMotionSe() {
+inline rSoundMotionSe::rSoundMotionSe() {
+    setAttribute(18u);
+    mHeader.Magic = 0x45534D;
+    mHeader.Version = 9;
+    mpIDToIndexTbl = nullptr;
+    mIDToIndexTblNum = 0;
+    mMotionSe.mAutoDelete = true;
+}
+
+__attribute__((noinline)) rSoundMotionSe::~rSoundMotionSe() {
     if (mpIDToIndexTbl != nullptr) {
         MtMemoryAllocator::getAllocator(rSoundMotionSe::DTI)->memFree(static_cast<void*>(mpIDToIndexTbl));
         mpIDToIndexTbl = nullptr;
@@ -70,7 +85,7 @@ MtUI* rSoundMotionSe::createUI(MtProperty& prop) {
 
 bool rSoundMotionSe::load(MtStream& in) {
     MtSerializer sz(65536);
-    if (sz.MtSerializer::deserializeBinary(in, static_cast<u16>(9), static_cast<MtObject*>(&mMotionSe), MtSerializer::MODE_STATE) != nullptr) {
+    if (sz.deserializeBinary(in, static_cast<u16>(9), static_cast<MtObject*>(&mMotionSe), MtSerializer::MODE_STATE) != nullptr) {
         createIDToIndexTbl();
         return true;
     } else {
@@ -80,7 +95,7 @@ bool rSoundMotionSe::load(MtStream& in) {
 
 bool rSoundMotionSe::save(MtStream& in) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeBinary(in, static_cast<u16>(9), static_cast<MtObject*>(&mMotionSe), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+    return sz.serializeBinary(in, static_cast<u16>(9), static_cast<MtObject*>(&mMotionSe), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
 }
 
 rSoundMotionSe::cSoundMotionSeData* rSoundMotionSe::getMotionSeDataFromUniqueID(u16 uniqueID) {
@@ -107,9 +122,8 @@ rSoundMotionSe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 rSoundMotionSe::MyDTI rSoundMotionSe::DTI("rSoundMotionSe", &::cResource::DTI, 168ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rSoundMotionSe::MyDTI::newInstance() const {
-    DDON_STUB("rSoundMotionSe::MyDTI::newInstance")
-    return nullptr;
+MtObject* rSoundMotionSe::MyDTI::newInstance() const {
+    return new (16u) rSoundMotionSe;
 }
 
 const MtDTI& rSoundMotionSe::cSoundMotionSeData::getDTI() const {

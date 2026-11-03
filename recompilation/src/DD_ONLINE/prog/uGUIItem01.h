@@ -435,6 +435,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIItem01::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIItemBase01::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool uGUIItemBase01::isCheckMode() {
     return this->mCheckMode;
+}
+
+inline void* uGUIItemBase01::cGUIItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

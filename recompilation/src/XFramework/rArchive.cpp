@@ -7,8 +7,10 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "cResource.h"
+#include "sResource.h"
 #include "../ZLIB/1.2.8/zlib.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -69,13 +71,9 @@ MtUI* rArchive::createUI(MtProperty& prop) {
     return this->cResource::createUI(prop);
 }
 
-u32 rArchive::getResourceNum() {
-    return mResourceNum;
-}
+static auto ddon_emit_0x01b91630 __attribute__((used)) = &rArchive::getResourceNum;
 
-cResource* rArchive::getResource(u32 index) {
-    return mpResource[index];
-}
+static auto ddon_emit_0x01b91660 __attribute__((used)) = &rArchive::getResource;
 
 rArchive::~rArchive() {
     if (mResourceNum == 0) {
@@ -85,6 +83,7 @@ rArchive::~rArchive() {
         mTotalSize = 0;
         mCurrentSize = 0;
         mbCrypted = 0;
+        return;
     }
     unsigned int i3 = 0;
     do {

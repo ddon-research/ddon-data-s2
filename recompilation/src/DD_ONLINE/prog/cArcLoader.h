@@ -187,3 +187,7 @@ public:
     void startArcLoad();
     bool moveArcTag();
 };
+
+inline void* cArcLoaderBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

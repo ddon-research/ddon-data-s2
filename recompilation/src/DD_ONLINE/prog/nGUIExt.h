@@ -17,6 +17,7 @@ namespace nGUIExt { struct HeadUiInfo; }
 namespace nGUIExt { struct JobParam; }
 namespace nGUIExt { class OcdIconInterface; }
 namespace nGUIExt { struct OcdIconParam; }
+namespace nGUIExt { struct stLearnNormalSkill; }
 namespace nGUIExt { struct stMsgAnalyzerWork; }
 namespace nGUIExt { struct stNormalSkill; }
 namespace nGUIExt { struct stWindowActive; }
@@ -93,6 +94,16 @@ namespace nGUIExt {
         ICONTAGKB_2WAY = 1,
         ICONTAGKB_4WAY = 2,
         ICONTAGKB_MAX = 3,
+    };
+}  // namespace nGUIExt
+
+namespace nGUIExt {
+    enum LEARN_NORMALSKILL_TYPE
+    {
+        LNSKILL_TYPE_DEFAULT = 0,
+        LNSKILL_TYPE_LVUP = 1,
+        LNSKILL_TYPE_LVMAX = 2,
+        LNSKILL_TYPE_GET = 3,
     };
 }  // namespace nGUIExt
 
@@ -314,6 +325,19 @@ namespace nGUIExt {
         u64 mOcdBitmap;  // offset: 0x8
         u64 mAccumulatingOcdBitmap;  // offset: 0x10
         nGUIExt::OCD_ICON_ANIM mIconAnim;  // offset: 0x18
+    };
+}  // namespace nGUIExt
+
+namespace nGUIExt {
+    struct stLearnNormalSkill
+    {
+    public:
+        void clear();
+    public:
+        u32 mSkillNo;  // offset: 0x0
+        u32 mNextSkillNo;  // offset: 0x4
+        nHuman::HM_SKILL_LV mSkillLv;  // offset: 0x8
+        nGUIExt::LEARN_NORMALSKILL_TYPE mType;  // offset: 0xc
     };
 }  // namespace nGUIExt
 

@@ -116,3 +116,7 @@ public:
     MtLine mLine;  // offset: 0x10
     static MyDTI DTI;
 };
+
+inline void* MtGeomLine::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

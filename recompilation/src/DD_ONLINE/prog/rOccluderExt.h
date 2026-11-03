@@ -72,3 +72,7 @@ public:
     static MyDTI DTI;
     static const u32 DATA_VERSION = 1;
 };
+
+inline void* rOccluderEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

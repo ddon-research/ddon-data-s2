@@ -99,6 +99,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cPartsCtrlTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cPartsCtrlTable::cPartsCtrlTable() {
     this->mPartsDisp[14] = 0;
     this->mPartsDisp[15] = 0;
@@ -117,4 +121,24 @@ inline cPartsCtrlTable::cPartsCtrlTable() {
     this->mPartsDisp[0] = 0;
     this->mPartsDisp[1] = 0;
     this->mPartsKeyNo = -1;
+}
+
+inline u32 cPartsCtrlTable::getPartsNum() {
+    return 128;
+}
+
+inline void* rPartsCtrlTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cPartsCtrlTable::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPartsCtrlTable::DTI)->memFree(p_addr);
+}
+
+inline void* cPartsCtrlTable::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPartsCtrlTable::DTI)->memAlloc(sz, align, ::cPartsCtrlTable::DTI.::MtDTI::getID());
 }

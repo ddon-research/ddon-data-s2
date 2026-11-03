@@ -194,3 +194,11 @@ protected:
     static cNodeStackArray* mpTraverseStackArrayRoot;
     static cNodeStackArray* mpTraverseStackArray[3][19];
 };
+
+inline void* cDynamicBVHCollision::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cDynamicBVHCollision::Node::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

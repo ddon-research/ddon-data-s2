@@ -155,3 +155,7 @@ public:
     static MyDTI DTI;
     static const u32 FONT_TEX_OBJ_NUM = 3;
 };
+
+inline void* uGUIGaugeSorcery::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

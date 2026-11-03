@@ -2,7 +2,10 @@
 #include <new>
 #include "MtAllocator.h"
 #include "MtDTI.h"
+#include "MtMemory.h"
+#include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "MtPropertyList.h"
 #include "MtSynchronize.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -31,17 +34,11 @@ MtUI* MtAllocator::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-size_t MtAllocator::getTotalSize() const {
-    return mTotalSize;
-}
+static auto ddon_emit_0x01b26a60 __attribute__((used)) = &MtAllocator::getTotalSize;
 
-size_t MtAllocator::getUsedSize() const {
-    return mUsedSize;
-}
+static auto ddon_emit_0x01b26a80 __attribute__((used)) = &MtAllocator::getUsedSize;
 
-size_t MtAllocator::getAvailSize() const {
-    return mTotalSize - mUsedSize;
-}
+static auto ddon_emit_0x01b26a90 __attribute__((used)) = &MtAllocator::getAvailSize;
 
 size_t MtAllocator::getMaxAvailSize() {
     return 0;

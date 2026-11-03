@@ -3,9 +3,14 @@
 #include "rCollGeom.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../generated/shared/nDDOIO.h"
+#include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -31,4 +36,53 @@ __attribute__((weak)) MtObject* cCollGeom::MyDTI::newInstance() const {
     DDON_STUB("cCollGeom::MyDTI::newInstance")
     return nullptr;
 }
+
+const MtDTI& rCollGeom::getDTI() const {
+    return rCollGeom::DTI;
+}
+
+inline MtAllocator* rCollGeom::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rCollGeom::DTI);
+}
+
+void* rCollGeom::operator new(size_t sz, u32 align) {
+    return rCollGeom::getAllocator()->memAlloc(sz, align, rCollGeom::DTI.getID());
+}
+
+inline void rCollGeom::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rCollGeom::DTI)->memFree(p_addr);
+}
+
+__attribute__((weak)) bool rCollGeom::loadData(MtDataReader& in, cCollGeom* pData) {
+    DDON_STUB("rCollGeom::loadData")
+    return {};
+}
+
+MT_CTSTR rCollGeom::getExt() const {
+    return "coll_geom";
+}
+
+u32 rCollGeom::getDataVersion() const {
+    return 110;
+}
+
+rCollGeom::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+rCollGeom::MyDTI rCollGeom::DTI("rCollGeom", &::rTbl2Base::DTI, 128ul, 0u, 0u);
+
+MtObject* rCollGeom::MyDTI::newInstance() const {
+    return new (16u) rCollGeom;
+}
+
+template cCollGeom* rTbl2<cCollGeom>::getData(unsigned int);
+
+template bool rTbl2<cCollGeom>::load(MtStream&);
+
+template bool rTbl2<cCollGeom>::loadCore(MtDataReader&);
+
+template const cCollGeom* rTbl2<cCollGeom>::getData(unsigned int) const;
+
+template unsigned int rTbl2<cCollGeom>::getDataNum() const;
+
+template rTbl2<cCollGeom>::~rTbl2();
 

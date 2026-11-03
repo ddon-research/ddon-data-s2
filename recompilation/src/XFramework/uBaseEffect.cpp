@@ -6,12 +6,16 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "cDraw.h"
 #include "cEffect.h"
 #include "cResource.h"
+#include "cUnit.h"
 #include "nPrim.h"
 #include "rEffectAnim.h"
 #include "rEffectList.h"
+#include "sCamera.h"
 #include "sEffect.h"
+#include "sMain.h"
 #include "uCoord.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -83,49 +87,37 @@ bool uBaseEffect::getSchedulerMode() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 4) >> 2);
 }
 
-void uBaseEffect::setSchedulerMode(bool Mode) {
-    mStatus = !Mode ? (mStatus & 0xFFFFFFFBu) : (mStatus | 4u);
-}
+static auto ddon_emit_0x01b659f0 __attribute__((used)) = &uBaseEffect::setSchedulerMode;
 
 bool uBaseEffect::getEventMode() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 8) >> 3);
 }
 
-void uBaseEffect::setEventMode(bool Mode) {
-    mStatus = !Mode ? (mStatus & 0xFFFFFFF7u) : (mStatus | 8u);
-}
+static auto ddon_emit_0x01b65a20 __attribute__((used)) = &uBaseEffect::setEventMode;
 
 bool uBaseEffect::getTimerControlMode() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 64) >> 6);
 }
 
-void uBaseEffect::setTimerControlMode(bool Mode) {
-    mStatus = !Mode ? (mStatus & 0xFFFFFFBFu) : (mStatus | 64u);
-}
+static auto ddon_emit_0x01b65a40 __attribute__((used)) = &uBaseEffect::setTimerControlMode;
 
 bool uBaseEffect::getTextureOmitMode() const {
     return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) >> 7);
 }
 
-void uBaseEffect::setTextureOmitMode(bool Mode) {
-    mStatus = !Mode ? (mStatus & 0xFFFFFF7Fu) : (mStatus | 128u);
-}
+static auto ddon_emit_0x01b65ae0 __attribute__((used)) = &uBaseEffect::setTextureOmitMode;
 
 bool uBaseEffect::getVBInvalidMode() const {
     return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 273)) & 1);
 }
 
-void uBaseEffect::setVBInvalidMode(bool Mode) {
-    mStatus = !Mode ? (mStatus & 0xFFFFFEFFu) : (mStatus | 256u);
-}
+static auto ddon_emit_0x01b65b10 __attribute__((used)) = &uBaseEffect::setVBInvalidMode;
 
 bool uBaseEffect::getNoFogMode() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 273)) & 2) >> 1);
 }
 
-void uBaseEffect::setNoFogMode(bool Mode) {
-    mStatus = !Mode ? (mStatus & 0xFFFFFDFFu) : (mStatus | 512u);
-}
+static auto ddon_emit_0x01b65b40 __attribute__((used)) = &uBaseEffect::setNoFogMode;
 
 bool uBaseEffect::getRestartFlag() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 16) >> 4);
@@ -135,28 +127,15 @@ void uBaseEffect::setRestartFlag(bool Flag) {
     mStatus = !Flag ? (mStatus & 0xFFFFFFEFu) : (mStatus | 16u);
 }
 
-f32 uBaseEffect::getDeltaTimeCoef() const {
-    return mDeltaTimeCoef;
-}
+static auto ddon_emit_0x01b65990 __attribute__((used)) = &uBaseEffect::getDeltaTimeCoef;
 
-void uBaseEffect::setDeltaTimeCoef(f32 DeltaTimeCoef) {
-    mDeltaTimeCoef = DeltaTimeCoef;
-}
+static auto ddon_emit_0x01b65980 __attribute__((used)) = &uBaseEffect::setDeltaTimeCoef;
 
-u32 uBaseEffect::getTimer() const {
-    return mTimer;
-}
+static auto ddon_emit_0x01b65cb0 __attribute__((used)) = &uBaseEffect::getTimer;
 
-void uBaseEffect::setTimer(u32 Timer) {
-    if ((mStatus & 64u) == 0) {
-        return;
-    }
-    mTimer = Timer;
-}
+static auto ddon_emit_0x01b65cc0 __attribute__((used)) = &uBaseEffect::setTimer;
 
-u32 uBaseEffect::getLoopFrame() const {
-    return mLoopFrame;
-}
+static auto ddon_emit_0x01b65d50 __attribute__((used)) = &uBaseEffect::getLoopFrame;
 
 void uBaseEffect::setLoopFrame(u32 LoopFrame) {
     if (LoopFrame == 0) {
@@ -167,33 +146,19 @@ void uBaseEffect::setLoopFrame(u32 LoopFrame) {
     }
 }
 
-u32 uBaseEffect::getKillNo() const {
-    return mKillNo;
-}
+static auto ddon_emit_0x01b65f10 __attribute__((used)) = &uBaseEffect::getKillNo;
 
-void uBaseEffect::setKillNo(u32 KillNo) {
-    mKillNo = KillNo;
-}
+static auto ddon_emit_0x01b65f20 __attribute__((used)) = &uBaseEffect::setKillNo;
 
-u32 uBaseEffect::getExclusionTrait() const {
-    return mExclusionTrait;
-}
+static auto ddon_emit_0x01b65f30 __attribute__((used)) = &uBaseEffect::getExclusionTrait;
 
-void uBaseEffect::setExclusionTrait(u32 ExclusionTrait) {
-    mExclusionTrait = ExclusionTrait;
-}
+static auto ddon_emit_0x01b65f40 __attribute__((used)) = &uBaseEffect::setExclusionTrait;
 
-u32 uBaseEffect::getCullingGroup() const {
-    return mCullingGroup;
-}
+static auto ddon_emit_0x01b65ff0 __attribute__((used)) = &uBaseEffect::getCullingGroup;
 
-void uBaseEffect::setCullingGroup(u32 Group) {
-    mCullingGroup = Group;
-}
+static auto ddon_emit_0x01b66000 __attribute__((used)) = &uBaseEffect::setCullingGroup;
 
-u32 uBaseEffect::getAxisType() const {
-    return mAxisType;
-}
+static auto ddon_emit_0x01b65c20 __attribute__((used)) = &uBaseEffect::getAxisType;
 
 void uBaseEffect::setAxisType(u32 AxisType) {
     mAxisType = AxisType;
@@ -202,25 +167,15 @@ void uBaseEffect::setAxisType(u32 AxisType) {
     }
 }
 
-u32 uBaseEffect::getRelationType() const {
-    return mRelationType;
-}
+static auto ddon_emit_0x01b65c30 __attribute__((used)) = &uBaseEffect::getRelationType;
 
-void uBaseEffect::setRelationType(u32 RelationType) {
-    mRelationType = RelationType;
-}
+static auto ddon_emit_0x01b65c40 __attribute__((used)) = &uBaseEffect::setRelationType;
 
-u32 uBaseEffect::getEndType() const {
-    return mEndType;
-}
+static auto ddon_emit_0x01b65c70 __attribute__((used)) = &uBaseEffect::getEndType;
 
-void uBaseEffect::setEndType(u32 EndType) {
-    mEndType = EndType;
-}
+static auto ddon_emit_0x01b65c80 __attribute__((used)) = &uBaseEffect::setEndType;
 
-rEffectList* uBaseEffect::getEffectList() {
-    return mpEffectList;
-}
+static auto ddon_emit_0x01b661b0 __attribute__((used)) = &uBaseEffect::getEffectList;
 
 __attribute__((weak)) void uBaseEffect::setEffectList(rEffectList* pEffectList) {
     DDON_STUB("uBaseEffect::setEffectList")
@@ -274,9 +229,7 @@ __attribute__((weak)) void uBaseEffect::setDirPos(const MtVector3& Dir, const Mt
     /* stub */
 }
 
-u32 uBaseEffect::getParticleVolume() const {
-    return mParticleVolume;
-}
+static auto ddon_emit_0x01b65f50 __attribute__((used)) = &uBaseEffect::getParticleVolume;
 
 void uBaseEffect::setParticleVolume(u32 Volume) {
     if (Volume == 3) {
@@ -286,30 +239,20 @@ void uBaseEffect::setParticleVolume(u32 Volume) {
     }
 }
 
-u32 uBaseEffect::getFilterVolume() const {
-    return mFilterVolume;
-}
+static auto ddon_emit_0x01b65f60 __attribute__((used)) = &uBaseEffect::getFilterVolume;
 
-void uBaseEffect::setFilterVolume(u32 Volume) {
-    mFilterVolume = Volume;
-}
+static auto ddon_emit_0x01b65f70 __attribute__((used)) = &uBaseEffect::setFilterVolume;
 
 __attribute__((weak)) u32 uBaseEffect::getLifeFrameVolume() const {
     DDON_STUB("uBaseEffect::getLifeFrameVolume")
     return {};
 }
 
-void uBaseEffect::setLifeFrameVolume(u32 Volume) {
-    mLifeFrameVolume = Volume;
-}
+static auto ddon_emit_0x01b65fb0 __attribute__((used)) = &uBaseEffect::setLifeFrameVolume;
 
-u32 uBaseEffect::getBoundaryType() const {
-    return mBoundaryType;
-}
+static auto ddon_emit_0x01b66070 __attribute__((used)) = &uBaseEffect::getBoundaryType;
 
-void uBaseEffect::setBoundaryType(u32 BoundaryType) {
-    mBoundaryType = BoundaryType;
-}
+static auto ddon_emit_0x01b66080 __attribute__((used)) = &uBaseEffect::setBoundaryType;
 
 __attribute__((weak)) void uBaseEffect::setDummyU32(u32) {
 }
@@ -335,9 +278,7 @@ void uBaseEffect::doClear() {
 __attribute__((weak)) void uBaseEffect::doKeepHoldOff() {
 }
 
-f32 uBaseEffect::getTransparency() const {
-    return mTransparencyParam.mTransparency[0];
-}
+static auto ddon_emit_0x01b660c0 __attribute__((used)) = &uBaseEffect::getTransparency;
 
 __attribute__((weak)) void uBaseEffect::setTransparency(f32 Rate) {
     DDON_STUB("uBaseEffect::setTransparency")

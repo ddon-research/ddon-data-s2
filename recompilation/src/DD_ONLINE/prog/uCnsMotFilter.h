@@ -88,6 +88,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uCnsMotFilter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 uCnsMotFilter::getJoint() const {
+    return this->mJoint;
+}
+
 inline void uCnsMotFilter::setMotFilter(cpMotionFilter* pMotFlt) {
     this->mpMotFlt = pMotFlt;
 }

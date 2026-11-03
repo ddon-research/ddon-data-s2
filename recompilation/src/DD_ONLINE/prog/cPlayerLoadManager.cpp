@@ -5,22 +5,47 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
+#include "aStage.h"
 #include "cArcLoader.h"
+#include "../../XFramework/cArea.h"
+#include "cComponentManager.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
 #include "cEquipData.h"
+#include "cItemParam.h"
 #include "../../XFramework/cResource.h"
+#include "cpCharacterEdit.h"
+#include "cpComponent.h"
+#include "cpEffectProvider.h"
 #include "cpEquip.h"
+#include "nHumanMsg.h"
+#include "nLayout.h"
 #include "../../generated/shared/nWeapon.h"
+#include "rArchiveListArray.h"
+#include "rDDOModelMontage.h"
 #include "rItemList.h"
 #include "../../XFramework/rSoundRequest.h"
+#include "rWeaponResTable.h"
+#include "rWepCateResTbl.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sControlManager.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "sEnemyManager.h"
 #include "sGame.h"
 #include "sItemManager.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "sTalkManager.h"
+#include "uArmor.h"
 #include "uControl.h"
 #include "uControlNpc.h"
+#include "uDDOModel.h"
 #include "uHuman.h"
+#include "uHumanEnemy.h"
 #include "../../XFramework/uModel.h"
 #include "uWeapon.h"
 #ifndef DDON_STUB
@@ -100,7 +125,7 @@ void cPlayerLoadManager::setWeaponMotSe(uHuman* pHuman, u32 index, u32 itemId, u
     if (pParam == nullptr) {
         return;
     }
-    u32 wepCategory = pParam->rItemList::rItemParam::getWepCategory();
+    u32 wepCategory = pParam->getWepCategory();
     rSoundRequest* t0 = static_cast<sSoundExt*>(sSound::getInstance())->getSndWepResource(itemId, sex);
     if (t0 == nullptr) {
         rSoundRequest* t1 = static_cast<sSoundExt*>(sSound::getInstance())->getSndWepCategoryResource(wepCategory);
@@ -347,7 +372,7 @@ cWeaponResTable* cPlayerLoadManager::getWeaponArcTagEx(u16 wepId, u32 sex) {
     if (wepId != 0) {
         rItemList::rItemParam* pParam = sItemManager::getInstance()->getItemParam(wepId);
         if (pParam != nullptr) {
-            u32 modelId = pParam->rItemList::rItemParam::getModelTagId();
+            u32 modelId = pParam->getModelTagId();
             return sGame::getInstance()->getWepResData(modelId, sex);
         } else {
             return nullptr;

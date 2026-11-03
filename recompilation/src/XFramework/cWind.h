@@ -116,3 +116,151 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* cWind::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline f32 cWind::getDirPitchCycle() const {
+    return this->mDirPitch.mCycle;
+}
+
+inline f32 cWind::getDirPitchCycleAdd() const {
+    return this->mDirPitch.mCycleAdd;
+}
+
+inline f32 cWind::getDirPitchAmpValue() const {
+    return this->mDirPitch.::MtLogisticMap::mAmpValue;
+}
+
+inline f32 cWind::getDirPitchAmpRate() const {
+    return this->mDirPitch.::MtLogisticMap::mAmpRate;
+}
+
+inline void cWind::setDirPitchCycle(f32 Cycle) {
+    this->mDirPitch.mCycle = Cycle;
+}
+
+inline void cWind::setDirPitchCycleAdd(f32 CycleAdd) {
+    this->mDirPitch.mCycleAdd = CycleAdd;
+}
+
+inline void cWind::setDirPitchAmpValue(f32 AmpValue) {
+    if (0.01f > AmpValue) {
+        this->mDirPitch.::MtLogisticMap::mAmpValue = 0.01f;
+    } else {
+        if (AmpValue > 0.99f) {
+            this->mDirPitch.::MtLogisticMap::mAmpValue = 0.99f;
+        } else {
+            this->mDirPitch.::MtLogisticMap::mAmpValue = AmpValue;
+        }
+    }
+}
+
+inline void cWind::setDirPitchAmpRate(f32 AmpRate) {
+    if (3.57f > AmpRate) {
+        this->mDirPitch.::MtLogisticMap::mAmpRate = 3.57f;
+    } else {
+        if (AmpRate > 4.0f) {
+            this->mDirPitch.::MtLogisticMap::mAmpRate = 4.0f;
+        } else {
+            this->mDirPitch.::MtLogisticMap::mAmpRate = AmpRate;
+        }
+    }
+}
+
+inline f32 cWind::getDirYawCycle() const {
+    return this->mDirYaw.mCycle;
+}
+
+inline f32 cWind::getDirYawCycleAdd() const {
+    return this->mDirYaw.mCycleAdd;
+}
+
+inline f32 cWind::getDirYawAmpValue() const {
+    return this->mDirYaw.::MtLogisticMap::mAmpValue;
+}
+
+inline f32 cWind::getDirYawAmpRate() const {
+    return this->mDirYaw.::MtLogisticMap::mAmpRate;
+}
+
+inline void cWind::setDirYawCycle(f32 Cycle) {
+    this->mDirYaw.mCycle = Cycle;
+}
+
+inline void cWind::setDirYawCycleAdd(f32 CycleAdd) {
+    this->mDirYaw.mCycleAdd = CycleAdd;
+}
+
+inline void cWind::setDirYawAmpValue(f32 AmpValue) {
+    if (0.01f > AmpValue) {
+        this->mDirYaw.::MtLogisticMap::mAmpValue = 0.01f;
+    } else {
+        if (AmpValue > 0.99f) {
+            this->mDirYaw.::MtLogisticMap::mAmpValue = 0.99f;
+        } else {
+            this->mDirYaw.::MtLogisticMap::mAmpValue = AmpValue;
+        }
+    }
+}
+
+inline void cWind::setDirYawAmpRate(f32 AmpRate) {
+    if (3.57f > AmpRate) {
+        this->mDirYaw.::MtLogisticMap::mAmpRate = 3.57f;
+    } else {
+        if (AmpRate > 4.0f) {
+            this->mDirYaw.::MtLogisticMap::mAmpRate = 4.0f;
+        } else {
+            this->mDirYaw.::MtLogisticMap::mAmpRate = AmpRate;
+        }
+    }
+}
+
+inline f32 cWind::getSpeedCycle() const {
+    return this->mSpeed.mCycle;
+}
+
+inline f32 cWind::getSpeedCycleAdd() const {
+    return this->mSpeed.mCycleAdd;
+}
+
+inline f32 cWind::getSpeedAmpValue() const {
+    return this->mSpeed.::MtLogisticMap::mAmpValue;
+}
+
+inline f32 cWind::getSpeedAmpRate() const {
+    return this->mSpeed.::MtLogisticMap::mAmpRate;
+}
+
+inline void cWind::setSpeedCycle(f32 Cycle) {
+    this->mSpeed.mCycle = Cycle;
+}
+
+inline void cWind::setSpeedCycleAdd(f32 CycleAdd) {
+    this->mSpeed.mCycleAdd = CycleAdd;
+}
+
+inline void cWind::setSpeedAmpValue(f32 AmpValue) {
+    if (0.01f > AmpValue) {
+        this->mSpeed.::MtLogisticMap::mAmpValue = 0.01f;
+    } else {
+        if (AmpValue > 0.99f) {
+            this->mSpeed.::MtLogisticMap::mAmpValue = 0.99f;
+        } else {
+            this->mSpeed.::MtLogisticMap::mAmpValue = AmpValue;
+        }
+    }
+}
+
+inline void cWind::setSpeedAmpRate(f32 AmpRate) {
+    if (3.57f > AmpRate) {
+        this->mSpeed.::MtLogisticMap::mAmpRate = 3.57f;
+    } else {
+        if (AmpRate > 4.0f) {
+            this->mSpeed.::MtLogisticMap::mAmpRate = 4.0f;
+        } else {
+            this->mSpeed.::MtLogisticMap::mAmpRate = AmpRate;
+        }
+    }
+}

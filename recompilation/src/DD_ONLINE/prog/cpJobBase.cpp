@@ -2,12 +2,19 @@
 #include <new>
 #include "cpJobBase.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cComponentManager.h"
+#include "cDelegate.h"
 #include "../../XFramework/cResource.h"
+#include "cpActionManager.h"
 #include "cpComponent.h"
 #include "cpEffectProvider.h"
+#include "cpKeyCommand.h"
+#include "cpMotionSe.h"
 #include "cpObjCollision.h"
 #include "cpShlShotCtrl.h"
 #include "nCharacterData.h"
@@ -22,8 +29,13 @@
 #include "sArchiveManager.h"
 #include "../../XFramework/sCamera.h"
 #include "sCameraExt.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "uCharacter.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
+#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -118,7 +130,7 @@ void cpJobBase::setJobParam(MT_CTSTR tag, MT_CTSTR id) {
         return;
     }
     mpHuman->setJobParam(static_cast<rAdjustParam*>(pRes));
-    pRes->cResource::release();
+    pRes->release();
 }
 
 void cpJobBase::setJumpParam(MT_CTSTR tag, MT_CTSTR id) {
@@ -127,7 +139,7 @@ void cpJobBase::setJumpParam(MT_CTSTR tag, MT_CTSTR id) {
         return;
     }
     mpHuman->setJumpParamTbl(1u, static_cast<rJumpParamTbl*>(pRes));
-    pRes->cResource::release();
+    pRes->release();
 }
 
 void cpJobBase::setCollision(MT_CTSTR tag, MT_CTSTR id, u32 bank) {
@@ -136,7 +148,7 @@ void cpJobBase::setCollision(MT_CTSTR tag, MT_CTSTR id, u32 bank) {
         return;
     }
     mpHuman->getObjCollisionPtr()->setResource(static_cast<rObjCollision*>(pRes), bank);
-    pRes->cResource::release();
+    pRes->release();
 }
 
 void cpJobBase::setShlParam(MT_CTSTR tag, MT_CTSTR id) {
@@ -148,7 +160,7 @@ void cpJobBase::setShlParam(MT_CTSTR tag, MT_CTSTR id) {
     if (mpHuman->getShlShotCtrlPtr() != nullptr) {
         mpHuman->getShlShotCtrlPtr()->setShlParamList(static_cast<rShlParamList*>(pRes));
     }
-    pRes->cResource::release();
+    pRes->release();
 }
 
 void cpJobBase::setEpvData(MT_CTSTR tag, MT_CTSTR id) {
@@ -157,7 +169,7 @@ void cpJobBase::setEpvData(MT_CTSTR tag, MT_CTSTR id) {
         return;
     }
     mpHuman->mpEffectProvider->setResource(static_cast<rEffectProvider*>(pRes), cpEffectProvider::EPV_TYPE_CATEGORY_COMMON);
-    pRes->cResource::release();
+    pRes->release();
 }
 
 __attribute__((weak)) void cpJobBase::setJobSe(MT_CTSTR tag, MT_CTSTR id) {
@@ -171,7 +183,7 @@ void cpJobBase::setStaminaParam(MT_CTSTR tag, MT_CTSTR id) {
         return;
     }
     mpHuman->setStaminaDecTbl(1u, static_cast<rStaminaDecTbl*>(pRes));
-    pRes->cResource::release();
+    pRes->release();
 }
 
 void cpJobBase::setCameraParam(MT_CTSTR tag, MT_CTSTR id) {
@@ -187,7 +199,7 @@ void cpJobBase::setCameraParam(MT_CTSTR tag, MT_CTSTR id) {
         return;
     }
     static_cast<sCameraExt*>(sCamera::getInstance())->setParamListJob(static_cast<rCameraParamList*>(pRes));
-    pRes->cResource::release();
+    pRes->release();
 }
 
 void cpJobBase::setMagicChantParam(MT_CTSTR tag, MT_CTSTR id) {
@@ -199,7 +211,7 @@ void cpJobBase::setMagicChantParam(MT_CTSTR tag, MT_CTSTR id) {
         return;
     }
     mpHuman->setMagicChantParam(static_cast<rMagicChantParam*>(pRes));
-    pRes->cResource::release();
+    pRes->release();
 }
 
 cpJobBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

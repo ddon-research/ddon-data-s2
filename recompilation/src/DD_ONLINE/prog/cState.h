@@ -250,6 +250,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cState::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 cState::getStateNo() {
     return this->mStateNo;
+}
+
+inline void* cStateInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

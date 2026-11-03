@@ -130,6 +130,10 @@ protected:
     static const u32 DATA_VERSION = 157;
 };
 
+inline void* rTexture::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline f32 rTexture::getInvWidth() const {
     return this->mOrgInvWidth;
 }

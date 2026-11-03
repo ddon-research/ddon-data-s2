@@ -251,6 +251,14 @@ public:
     static const u32 RELEASE_VERSION = 0;
 };
 
+inline void* cEditParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cEditValue::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEditValue::cEditValue() {
     this->mDefault = 0.0f;
     this->mValue = 0.0f;

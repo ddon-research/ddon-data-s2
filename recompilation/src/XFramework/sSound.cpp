@@ -8,11 +8,15 @@
 #include "sSound.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtEaseCurve.h"
+#include "../MT/MtFile.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPerformance.h"
 #include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "../MT/MtRandom.h"
 #include "../MT/MtSynchronize.h"
 #include "../MT/MtThread.h"
 #include "../generated/shared/audioout.h"
@@ -27,10 +31,17 @@
 #include "../generated/shared/ngs2_sce_reverb.h"
 #include "../generated/shared/ngs2_system.h"
 #include "rSoundBank.h"
+#include "rSoundCurveSet.h"
+#include "rSoundDirectionalSet.h"
+#include "rSoundEQ.h"
 #include "rSoundRequest.h"
+#include "rSoundReverb.h"
 #include "rSoundSource.h"
 #include "rSoundSourcePS4_h.h"
+#include "rSoundSpeakerSet.h"
 #include "rSoundStreamRequest.h"
+#include "sMain.h"
+#include "sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -144,25 +155,16 @@ void sSound::setSpeakerAngle51(const f32 front_degree, const f32 surround_degree
     }
 }
 
-void sSound::setSpeakerAngle51Default() {
-    mSpeakerAngle51.frontAngle = 45.0f;
-    updateSpeakerAngle();
-    mSpeakerAngle51.surroundAngle = 135.0f;
-    updateSpeakerAngle();
-}
+static auto ddon_emit_0x01ba84f0 __attribute__((used)) = &sSound::setSpeakerAngle51Default;
 
 __attribute__((weak)) void sSound::setSpeakerAngle51ItuR() {
     DDON_STUB("sSound::setSpeakerAngle51ItuR")
     /* stub */
 }
 
-f32 sSound::getSpeakerAngle51Front() {
-    return mSpeakerAngle51.frontAngle;
-}
+static auto ddon_emit_0x01ba84d0 __attribute__((used)) = &sSound::getSpeakerAngle51Front;
 
-f32 sSound::getSpeakerAngle51Surround() {
-    return mSpeakerAngle51.surroundAngle;
-}
+static auto ddon_emit_0x01ba84e0 __attribute__((used)) = &sSound::getSpeakerAngle51Surround;
 
 void sSound::setSpeakerAngle71Front(const f32 degree) {
     if (degree >= 0.0f) {
@@ -193,26 +195,18 @@ __attribute__((weak)) void sSound::setSpeakerAngle71ItuR() {
     /* stub */
 }
 
-f32 sSound::getSpeakerAngle71Front() {
-    return mSpeakerAngle71.frontAngle;
-}
+static auto ddon_emit_0x01ba85b0 __attribute__((used)) = &sSound::getSpeakerAngle71Front;
 
-f32 sSound::getSpeakerAngle71Surround() {
-    return mSpeakerAngle71.surroundAngle;
-}
+static auto ddon_emit_0x01ba85c0 __attribute__((used)) = &sSound::getSpeakerAngle71Surround;
 
-f32 sSound::getSpeakerAngle71Enhance() {
-    return mSpeakerAngle71.enhanceAngle;
-}
+static auto ddon_emit_0x01ba85d0 __attribute__((used)) = &sSound::getSpeakerAngle71Enhance;
 
 __attribute__((weak)) void sSound::setEQ(rSoundEQ* pEQ) {
     DDON_STUB("sSound::setEQ")
     /* stub */
 }
 
-rSoundEQ* sSound::getEQ() const {
-    return mEQResource.mpEQ;
-}
+static auto ddon_emit_0x01ba84c0 __attribute__((used)) = &sSound::getEQ;
 
 __attribute__((weak)) void sSound::setEQId(u32 id, u32 fadeTimeMsec) {
     DDON_STUB("sSound::setEQId")
@@ -319,18 +313,14 @@ __attribute__((weak)) void sSound::setSoundCurveSet(rSoundCurveSet* pSoundCurve)
     /* stub */
 }
 
-rSoundCurveSet* sSound::getSoundCurveSet() const {
-    return mpCurveSet;
-}
+static auto ddon_emit_0x01ba8440 __attribute__((used)) = &sSound::getSoundCurveSet;
 
 __attribute__((weak)) void sSound::setSoundDirectionalSet(rSoundDirectionalSet* pSoundDirectionalSet) {
     DDON_STUB("sSound::setSoundDirectionalSet")
     /* stub */
 }
 
-rSoundDirectionalSet* sSound::getSoundDirectionalSet() const {
-    return mpDirectionalSet;
-}
+static auto ddon_emit_0x01ba8450 __attribute__((used)) = &sSound::getSoundDirectionalSet;
 
 __attribute__((weak)) f32 sSound::getDistanceCurveVolume(sSound::DISTANCE_CURVE_TYPE curveType, u32 curveId, MtVector3& soundPosition, s32 listeningIndex, u32 volMode) {
     DDON_STUB("sSound::getDistanceCurveVolume")
@@ -349,40 +339,19 @@ void sSound::setDopplerMasterScaler(f32 scale) {
     }
 }
 
-f32 sSound::getDopplerMasterScaler() {
-    return mDopplerMasterScaler;
-}
+static auto ddon_emit_0x01ba7840 __attribute__((used)) = &sSound::getDopplerMasterScaler;
 
-bool sSound::getIsStereoLFE() {
-    return mIsStereoLFE;
-}
+static auto ddon_emit_0x01ba7850 __attribute__((used)) = &sSound::getIsStereoLFE;
 
-void sSound::setIsStereoLFE(bool b) {
-    mIsStereoLFE = b;
-}
+static auto ddon_emit_0x01ba8800 __attribute__((used)) = &sSound::setIsStereoLFE;
 
-bool sSound::getIs51SourceDiffuse() {
-    return mIs51SourceDiffuse;
-}
+static auto ddon_emit_0x01ba7860 __attribute__((used)) = &sSound::getIs51SourceDiffuse;
 
-void sSound::setIs51SourceDiffuse(const bool b) {
-    mIs51SourceDiffuse = b;
-}
+static auto ddon_emit_0x01ba8810 __attribute__((used)) = &sSound::setIs51SourceDiffuse;
 
-f32 sSound::getStreamSilentDecectionThreshold() {
-    if (mpNativeSystem != nullptr) {
-        return mpNativeSystem->getStreamSilentDecectionThreshold();
-    } else {
-        return -96.0f;
-    }
-}
+static auto ddon_emit_0x01ba8820 __attribute__((used)) = &sSound::getStreamSilentDecectionThreshold;
 
-void sSound::setStreamSilentDecectionThreshold(f32 dB) {
-    if (mpNativeSystem == nullptr) {
-        return;
-    }
-    mpNativeSystem->setStreamSilentDecectionThreshold(dB);
-}
+static auto ddon_emit_0x01ba8840 __attribute__((used)) = &sSound::setStreamSilentDecectionThreshold;
 
 __attribute__((weak)) void sSound::setEncPath(MT_CHAR* pchar, sSound::ENC_SOUND_KIND encKind) {
 }
@@ -541,9 +510,7 @@ __attribute__((weak)) bool sSound::getSeIsLoop(rSoundRequest* pRequest, const u3
     return {};
 }
 
-u32 sSound::getSeVoiceNum() const {
-    return mSeVoiceNum;
-}
+static auto ddon_emit_0x01ba87c0 __attribute__((used)) = &sSound::getSeVoiceNum;
 
 void sSound::setSeVoiceNum(const u32 seVoiceNum) {
     if (mSeVoiceNum == seVoiceNum) {
@@ -605,17 +572,11 @@ void sSound::setSeVoiceNum(const u32 seVoiceNum) {
     }
 }
 
-u32 sSound::getSeLinkMax() const {
-    return mSeLinkMax;
-}
+static auto ddon_emit_0x01ba8780 __attribute__((used)) = &sSound::getSeLinkMax;
 
-void sSound::setSeLinkMax(u32 max) {
-    mSeLinkMax = max;
-}
+static auto ddon_emit_0x01ba8790 __attribute__((used)) = &sSound::setSeLinkMax;
 
-u32 sSound::getSeEntryNum() const {
-    return mSeEntryNum;
-}
+static auto ddon_emit_0x01ba87e0 __attribute__((used)) = &sSound::getSeEntryNum;
 
 __attribute__((weak)) void sSound::setSeEntryNum(const u32 seEntryNum) {
     DDON_STUB("sSound::setSeEntryNum")
@@ -722,26 +683,18 @@ __attribute__((weak)) u32 sSound::getStreamStatus(rSoundStreamRequest* pRequest,
     return {};
 }
 
-u32 sSound::getStreamVoiceNum() const {
-    return mStreamVoiceNum;
-}
+static auto ddon_emit_0x01ba87d0 __attribute__((used)) = &sSound::getStreamVoiceNum;
 
 __attribute__((weak)) void sSound::setStreamVoiceNum(const u32 streamVoiceNum) {
     DDON_STUB("sSound::setStreamVoiceNum")
     /* stub */
 }
 
-u32 sSound::getStreamLinkMax() const {
-    return mStreamLinkMax;
-}
+static auto ddon_emit_0x01ba87a0 __attribute__((used)) = &sSound::getStreamLinkMax;
 
-void sSound::setStreamLinkMax(u32 max) {
-    mStreamLinkMax = max;
-}
+static auto ddon_emit_0x01ba87b0 __attribute__((used)) = &sSound::setStreamLinkMax;
 
-u32 sSound::getStreamEntryNum() const {
-    return mStreamEntryNum;
-}
+static auto ddon_emit_0x01ba87f0 __attribute__((used)) = &sSound::getStreamEntryNum;
 
 __attribute__((weak)) void sSound::setStreamEntryNum(const u32 streamEntryNum) {
     DDON_STUB("sSound::setStreamEntryNum")
@@ -1750,7 +1703,7 @@ void sSound::Voice::updateVolume() {
         f32 t13 = mLFEVolume;
         f32 t14 = mRatioLFEVolume;
         f32 t15 = mExtraVolume;
-        f32 t16 = t1->mLFEMasterVolume;
+        f32 t16 = (sSound::mpInstance)->mLFEMasterVolume;
         mEffectSendLevel[6] = 0.0f;
         mEffectSendLevel[7] = 0.0f;
         mEffectSendLevel[4] = 0.0f;
@@ -1760,7 +1713,8 @@ void sSound::Voice::updateVolume() {
         mEffectSendLevel[0] = 0.0f;
         mEffectSendLevel[1] = 0.0f;
         memset(static_cast<void*>(&mSurroundVolume[0][0]), 0, 256ul);
-        if (mpSpeakerSet != nullptr) {
+        void* t17 = mpSpeakerSet;
+        if (t17 != nullptr) {
             updateVolumeSpeakerSet((t9 * t11) * (t15 * t5), (t10 * t12) * (t15 * t5), t16 * ((t13 * t14) * (t15 * t5)));
             bool t27 = mIsUpdateVolume;
             if (!t27) {
@@ -1806,7 +1760,7 @@ void sSound::Voice::updateVolume() {
         f32 t13 = mLFEVolume;
         f32 t14 = mRatioLFEVolume;
         f32 t15 = mExtraVolume;
-        f32 t16 = t1->mLFEMasterVolume;
+        f32 t16 = (sSound::mpInstance)->mLFEMasterVolume;
         mEffectSendLevel[6] = 0.0f;
         mEffectSendLevel[7] = 0.0f;
         mEffectSendLevel[4] = 0.0f;
@@ -1816,7 +1770,8 @@ void sSound::Voice::updateVolume() {
         mEffectSendLevel[0] = 0.0f;
         mEffectSendLevel[1] = 0.0f;
         memset(static_cast<void*>(&mSurroundVolume[0][0]), 0, 256ul);
-        if (mpSpeakerSet != nullptr) {
+        void* t17 = mpSpeakerSet;
+        if (t17 != nullptr) {
             updateVolumeSpeakerSet((t8 * t15) * (t9 * t11), (t8 * t15) * (t10 * t12), t16 * ((t8 * t15) * (t13 * t14)));
             bool t27 = mIsUpdateVolume;
             if (!t27) {
@@ -3600,23 +3555,31 @@ void sSound::NativeVoiceExternalPS4::write(void* pbuf, u32 size) {
     u32 t1 = mWritePosition;
     if ((size + t1) < t0) {
         memcpy(static_cast<char*>(mpBuffer) + t1, pbuf, size);
-        mWritePosition = size + mWritePosition;
+        u32 t2 = mWritePosition;
+        mWritePosition = size + t2;
         if (EXTERNAL_BUFFER_SIZE != mWritePosition) {
             mWritePosition = mWritePosition;
         } else {
             mWritePosition = 0;
         }
+        if (scePthreadMutexLock(&mRemainSection.mCSection) != 0) {
+            abort();
+        }
+        mRemainSize = size + mRemainSize;
+        if (scePthreadMutexUnlock(&mRemainSection.mCSection) != 0) {
+            abort();
+        }
     } else {
         memcpy(static_cast<char*>(mpBuffer) + t1, pbuf, t0 - t1);
         memcpy(mpBuffer, static_cast<char*>(pbuf) + (t0 - t1), (size - t0) + (t1 * 1u));
         mWritePosition = (size - t0) + t1;
-    }
-    if (scePthreadMutexLock(&mRemainSection.mCSection) != 0) {
-        abort();
-    }
-    mRemainSize = size + mRemainSize;
-    if (scePthreadMutexUnlock(&mRemainSection.mCSection) != 0) {
-        abort();
+        if (scePthreadMutexLock(&mRemainSection.mCSection) != 0) {
+            abort();
+        }
+        mRemainSize = size + mRemainSize;
+        if (scePthreadMutexUnlock(&mRemainSection.mCSection) != 0) {
+            abort();
+        }
     }
 }
 

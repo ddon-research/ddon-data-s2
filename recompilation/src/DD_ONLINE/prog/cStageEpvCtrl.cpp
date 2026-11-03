@@ -10,6 +10,9 @@
 #include "cEfcHandle.h"
 #include "rEffectProvider.h"
 #include "res_ptr.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "sWeatherManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

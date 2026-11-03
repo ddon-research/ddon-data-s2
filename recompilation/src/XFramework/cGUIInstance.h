@@ -53,6 +53,7 @@ class cGUIInstAnimControl;
 class cGUIInstAnimVariable;
 class cGUIInstAnimation;
 class cGUIInstNull;
+class cGUIInstRoot;
 class cGUIInstScissorMask;
 class cGUIInstance;
 
@@ -69,6 +70,7 @@ class cGUIInstance : public MtObject
 {
     friend class cGUIInstAnimVariable;
     friend class cGUIInstAnimation;
+    friend class cGUIInstRoot;
     friend class cGUIUtility;
     friend class uGUI;
     friend class uGUICommunityList;
@@ -344,6 +346,44 @@ public:
     static MyDTI DTI;
 };
 
+class cGUIInstRoot : public cGUIInstance
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cGUIInstRoot();
+    virtual ~cGUIInstRoot();
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+protected:
+    virtual void play(f32 delta) {}  // vtable slot 11
+    virtual void draw(nGUI::Draw& drawObj) {}  // vtable slot 13
+    virtual void calcMatrix(const MtMatrix& wmat);  // vtable slot 15
+    void triggerEvent(u32 eventNo);
+public:
+    static MyDTI DTI;
+};
+
 class cGUIInstScissorMask : public cGUIInstNull
 {
     friend class uGUIMapMini;
@@ -613,6 +653,46 @@ public:
     static MyDTI DTI;
 };
 
+inline u32 cGUIInstAnimVariable::getVariableId() const {
+    return this->mVariableId;
+}
+
+inline void cGUIInstAnimation::setMaskType(u32 v) {
+    this->mMaskType = v;
+}
+
+inline u32 cGUIInstAnimation::getMaskType() const {
+    return this->mMaskType;
+}
+
+inline void cGUIInstAnimation::setSpeed(f32 speed) {
+    this->mSpeed = speed;
+}
+
+inline f32 cGUIInstAnimation::getSpeed() const {
+    return this->mSpeed;
+}
+
+inline void cGUIInstAnimation::setFoundation(bool v) {
+    this->mFoundation = v;
+}
+
+inline bool cGUIInstAnimation::isFoundation() const {
+    return this->mFoundation;
+}
+
+inline u32 cGUIInstAnimation::getResourceId() const {
+    return this->mResourceId;
+}
+
+inline u32 cGUIInstAnimation::getAnimationId() const {
+    return this->mAnimationId;
+}
+
+inline u32 cGUIInstAnimation::getBillboard() const {
+    return this->mBillboard;
+}
+
 inline f32 cGUIInstAnimation::getCurrentFrame() const {
     return this->mCurrentFrame;
 }
@@ -621,8 +701,112 @@ inline cGUIObjRoot* cGUIInstAnimation::getRootObject() const {
     return this->mpObjRoot;
 }
 
+inline void cGUIInstNull::setDrawPass(u32 pass) {
+    this->mDrawPass = pass;
+}
+
+inline u32 cGUIInstNull::getDrawPass() const {
+    return this->mDrawPass;
+}
+
+inline void cGUIInstNull::setDepthState(u32 state) {
+    this->mDepthState = state;
+}
+
+inline u32 cGUIInstNull::getDepthState() const {
+    return this->mDepthState;
+}
+
+inline u32 cGUIInstNull::getAlignment() const {
+    return this->mAlignment;
+}
+
+inline u32 cGUIInstNull::getColorControl() const {
+    return this->mColorControl;
+}
+
+inline u32 cGUIInstNull::getResolutionAdjust() const {
+    return this->mResolutionAdjust;
+}
+
+inline bool cGUIInstNull::isReferencePosition() const {
+    return this->mReferencePosition;
+}
+
+inline bool cGUIInstNull::isReferenceRotation() const {
+    return this->mReferenceRotation;
+}
+
+inline u32 cGUIInstNull::getReferenceScaleX() const {
+    return this->mReferenceScaleX;
+}
+
+inline u32 cGUIInstNull::getReferenceScaleY() const {
+    return this->mReferenceScaleY;
+}
+
+inline u32 cGUIInstNull::getReferenceScaleZ() const {
+    return this->mReferenceScaleZ;
+}
+
+inline f32 cGUIInstNull::getPositionX() const {
+    return this->mPosition.x;
+}
+
+inline f32 cGUIInstNull::getPositionY() const {
+    return this->mPosition.y;
+}
+
+inline f32 cGUIInstNull::getPositionZ() const {
+    return this->mPosition.z;
+}
+
+inline f32 cGUIInstNull::getScaleX() const {
+    return this->mScale.x;
+}
+
+inline f32 cGUIInstNull::getScaleY() const {
+    return this->mScale.y;
+}
+
+inline f32 cGUIInstNull::getScaleZ() const {
+    return this->mScale.z;
+}
+
+inline MtVector4 cGUIInstNull::getColorScale() const {
+    return this->mColorScale;
+}
+
+inline void cGUIInstNull::setSaturation(f32 v) {
+    this->mColorScale.w = v;
+}
+
+inline f32 cGUIInstNull::getSaturation() const {
+    return this->mColorScale.w;
+}
+
+inline void* cGUIInstRoot::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cGUIInstance::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cGUIInstance::getPriority() const {
+    return this->mPriority;
+}
+
 inline u32 cGUIInstance::getDuplicateId() const {
     return this->mDuplicateId;
+}
+
+inline void cGUIInstance::setPlay(bool e) {
+    this->mAttr = !e ? (this->mAttr & 0xFFFFFFFDu) : (this->mAttr | 2u);
+}
+
+inline void cGUIInstance::setMouseReaction(bool e) {
+    this->mAttr = !e ? (this->mAttr & 0xFFFFFFFBu) : (this->mAttr | 4u);
 }
 
 inline cGUIInstance* cGUIInstance::getChild() const {

@@ -100,3 +100,23 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cErosionRegionScaleChange::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rErosionRegionScaleChange::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cErosionRegionScaleChange::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionRegionScaleChange::DTI)->memFree(p_addr);
+}
+
+inline void* cErosionRegionScaleChange::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionRegionScaleChange::DTI)->memAlloc(sz, align, ::cErosionRegionScaleChange::DTI.::MtDTI::getID());
+}

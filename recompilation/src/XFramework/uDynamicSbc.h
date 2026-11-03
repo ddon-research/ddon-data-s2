@@ -199,3 +199,23 @@ public:
     static const u32 CPU_SKINNING_DIVIDE_NUM = 2;
     static const u32 MIN_BVH_TRIANGLE_NUM = 1000;
 };
+
+inline void* uDynamicSbc::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 uDynamicSbc::getSbcType() const {
+    return this->mScrFilter.mScrType;
+}
+
+inline void uDynamicSbc::setSbcType(u32 set) {
+    this->mScrFilter.mScrType = set;
+}
+
+inline u32 uDynamicSbc::getSbcGroup() const {
+    return this->mScrFilter.mScrGroup;
+}
+
+inline void uDynamicSbc::setSbcGroup(u8 GroupIndex) {
+    this->mScrFilter.::nCollision::cScrCommonFilter::setScrGroup(GroupIndex);
+}

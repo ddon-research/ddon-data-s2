@@ -3,10 +3,13 @@
 #include "rSoundStreamSourcePackage.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtFile.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtStream.h"
 #include "rSoundSource.h"
+#include "rSoundSourcePS4_h.h"
+#include "sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

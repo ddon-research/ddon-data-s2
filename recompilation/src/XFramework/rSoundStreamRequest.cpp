@@ -4,11 +4,15 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDataReader.h"
+#include "../MT/MtDataWriter.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "cResource.h"
 #include "rSoundSource.h"
+#include "rSoundSourcePS4_h.h"
 #include "rSoundStreamSourcePackage.h"
 #include "sResource.h"
+#include "sSound.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

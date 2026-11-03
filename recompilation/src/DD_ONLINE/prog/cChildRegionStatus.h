@@ -91,3 +91,7 @@ public:
     bool mIsElementWeakRegion[7];  // offset: 0x158
     static MyDTI DTI;
 };
+
+inline void* cChildRegionStatus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

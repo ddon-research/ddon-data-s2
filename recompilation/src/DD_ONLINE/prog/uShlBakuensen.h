@@ -179,12 +179,24 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cShlBakuensenLogNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cShlBakuensenLogNode::cShlBakuensenLogNode() {
+}
+
+inline void* uBakuenseSpark::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uBakuenseSpark::uBakuenseSpark() {
     this->mpOwner = nullptr;
     this->mRequestSetCollision = false;
+}
+
+inline void* uShlBakuensen::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void uShlBakuensen::waitShot() {

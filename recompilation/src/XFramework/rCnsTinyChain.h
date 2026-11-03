@@ -181,3 +181,7 @@ public:
     static MyDTI DTI;
     static const u32 DATA_VERSION = 22;
 };
+
+inline void* rCnsTinyChain::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

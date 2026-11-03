@@ -207,10 +207,18 @@ public:
     static const u32 DATA_VERSION;
 };
 
+inline void* cQuestGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestGroup::cQuestGroup() {
     this->mGroupNo = 16;
     this->mCondition = 0;
     this->mEraseCondition = 0;
+}
+
+inline void* cQuestSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cQuestSet::cQuestSet() {
@@ -224,6 +232,14 @@ inline cQuestSet::cQuestSet() {
     this->mQuestId = 0;
 }
 
+inline void* cQuestStage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestStage::cQuestStage() {
     this->mStageNo = 0;
+}
+
+inline void* rQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

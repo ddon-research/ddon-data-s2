@@ -216,6 +216,30 @@ MtObject* CDataCraftSkillAnalyzeResult::MyDTI::newInstance() const {
     return new (16u) CDataCraftSkillAnalyzeResult;
 }
 
+const MtDTI& CDataCraftSkillRate::getDTI() const {
+    return CDataCraftSkillRate::DTI;
+}
+
+inline MtAllocator* CDataCraftSkillRate::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataCraftSkillRate::DTI);
+}
+
+void* CDataCraftSkillRate::operator new(size_t sz, u32 align) {
+    return CDataCraftSkillRate::getAllocator()->memAlloc(sz, align, CDataCraftSkillRate::DTI.getID());
+}
+
+__attribute__((weak)) void CDataCraftSkillRate::operator delete(void* p_addr) {
+    CDataCraftSkillRate::getAllocator()->memFree(p_addr);
+}
+
+CDataCraftSkillRate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataCraftSkillRate::MyDTI CDataCraftSkillRate::DTI("CDataCraftSkillRate", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataCraftSkillRate::MyDTI::newInstance() const {
+    return new (16u) CDataCraftSkillRate;
+}
+
 const MtDTI& CDataCraftSupportPawnID::getDTI() const {
     return CDataCraftSupportPawnID::DTI;
 }
@@ -262,5 +286,53 @@ CDataCraftTimeSaveCost::MyDTI CDataCraftTimeSaveCost::DTI("CDataCraftTimeSaveCos
 
 MtObject* CDataCraftTimeSaveCost::MyDTI::newInstance() const {
     return new (16u) CDataCraftTimeSaveCost;
+}
+
+const MtDTI& CDataCurrentEquipInfo::getDTI() const {
+    return CDataCurrentEquipInfo::DTI;
+}
+
+inline MtAllocator* CDataCurrentEquipInfo::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataCurrentEquipInfo::DTI);
+}
+
+inline void* CDataCurrentEquipInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataCurrentEquipInfo::DTI)->memAlloc(sz, align, CDataCurrentEquipInfo::DTI.getID());
+}
+
+__attribute__((weak)) void CDataCurrentEquipInfo::operator delete(void* p_addr) {
+    CDataCurrentEquipInfo::getAllocator()->memFree(p_addr);
+}
+
+CDataCurrentEquipInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataCurrentEquipInfo::MyDTI CDataCurrentEquipInfo::DTI("CDataCurrentEquipInfo", &::CPacketDataBase::DTI, 40ul, 0u, 0u);
+
+MtObject* CDataCurrentEquipInfo::MyDTI::newInstance() const {
+    return new (16u) CDataCurrentEquipInfo;
+}
+
+const MtDTI& CDataEquipSlot::getDTI() const {
+    return CDataEquipSlot::DTI;
+}
+
+inline MtAllocator* CDataEquipSlot::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataEquipSlot::DTI);
+}
+
+inline void* CDataEquipSlot::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataEquipSlot::DTI)->memAlloc(sz, align, CDataEquipSlot::DTI.getID());
+}
+
+__attribute__((weak)) void CDataEquipSlot::operator delete(void* p_addr) {
+    CDataEquipSlot::getAllocator()->memFree(p_addr);
+}
+
+CDataEquipSlot::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataEquipSlot::MyDTI CDataEquipSlot::DTI("CDataEquipSlot", &::CPacketDataBase::DTI, 24ul, 0u, 0u);
+
+MtObject* CDataEquipSlot::MyDTI::newInstance() const {
+    return new (16u) CDataEquipSlot;
 }
 

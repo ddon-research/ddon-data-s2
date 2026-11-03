@@ -390,8 +390,36 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cPrioThkCmd::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cPrioThkCmd::cPrioThkCmd() {
 }
 
+inline void* cPrioThkCmd::cTmpResult::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cPrioThkCode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cPrioThkIO::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rPriorityThink::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rPriorityThink::rPriorityThink() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cPrioThkCode::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCode::DTI)->memAlloc(sz, align, ::cPrioThkCode::DTI.::MtDTI::getID());
 }

@@ -8,35 +8,77 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtLogisticMap.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtRandom.h"
 #include "../../MT/MtSynchronize.h"
+#include "aStage.h"
+#include "../../XFramework/cAIObject.h"
+#include "../../XFramework/cArea.h"
+#include "cComponentManager.h"
 #include "cEfcHandle.h"
 #include "cEffectOnce.h"
+#include "../../XFramework/cParticleManager.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
+#include "../../XFramework/cWind.h"
+#include "cZoneCategoryEffectExt.h"
 #include "../../XFramework/cZoneLayout.h"
+#include "../../XFramework/cZoneListener.h"
 #include "cZoneListenerEffect.h"
 #include "cZoneListenerMulti.h"
+#include "cpCharacterEdit.h"
+#include "cpComponent.h"
+#include "cpEffectProvider.h"
+#include "cpEquip.h"
+#include "cpOcdCtrl.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
+#include "../../XFramework/nZone.h"
+#include "../../XFramework/rCollisionHeightField.h"
+#include "../../XFramework/rEffect2D.h"
+#include "../../XFramework/rEffectList.h"
 #include "rEffectProvider.h"
 #include "rOutlineParamList.h"
 #include "rTbl2.h"
+#include "../../XFramework/rTexture.h"
 #include "rWepCateResTbl.h"
 #include "res_ptr.h"
 #include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
 #include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
 #include "../../XFramework/sEffect.h"
 #include "sGame.h"
+#include "../../XFramework/sMain.h"
 #include "sPlayerManager.h"
+#include "../../XFramework/sRender.h"
 #include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "../../XFramework/sZone.h"
+#include "../../XFramework/uBaseEffect.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uEfCam.h"
 #include "../../XFramework/uEffect.h"
 #include "../../XFramework/uEffect2D.h"
 #include "uEffect2DExt.h"
 #include "uEffectExt.h"
+#include "uHuman.h"
+#include "../../XFramework/uModel.h"
 #include "uPlayer.h"
+#include "uShlBase.h"
+#include "uWeapon.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -863,7 +905,7 @@ __attribute__((weak)) void sEffectExt::epvSetTransparencyAll(cEfcHandle* pHandle
 rEffectProvider* sEffectExt::getEpvResourceFromWeaponCategory(u32 wepCategory) {
     cWepCateResTbl* pRes = sGame::getInstance()->getWepCateResData(wepCategory);
     if (pRes != nullptr) {
-        u64 resId = pRes->cWepCateResTbl::getEffcResId();
+        u64 resId = pRes->getEffcResId();
         if (resId != 0) {
             return static_cast<rEffectProvider*>(sArchiveManager::getInstance()->createRes(resId, 1u, false));
         } else {
@@ -1322,6 +1364,8 @@ __attribute__((weak)) void sEffectExt::EfcParam::setLocalPos(uDDOModel* pParent,
 template MtTypedArray<sEffectExt::cZoneEffectUnitLayout>::~MtTypedArray();
 
 template MtTypedArray<sEffectExt::cZoneEpvStack>::~MtTypedArray();
+
+template MtTypedArray<uEfCam>::~MtTypedArray();
 
 template cVfxLightInfluence* rTbl2<cVfxLightInfluence>::getData(unsigned int);
 

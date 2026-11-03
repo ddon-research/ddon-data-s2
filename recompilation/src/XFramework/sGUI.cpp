@@ -8,15 +8,24 @@
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
+#include "cGUIFontFilter.h"
+#include "cGUIInstance.h"
+#include "cGUIObject.h"
+#include "cResource.h"
 #include "cSystem.h"
 #include "nDrawIndexBuffer.h"
+#include "nDrawResource.h"
 #include "nDrawTexture.h"
 #include "nDrawVertexBuffer.h"
 #include "nGUI.h"
+#include "nGUIDraw.h"
 #include "rGUI.h"
 #include "rGUIFont.h"
 #include "rGUIIconInfo.h"
+#include "sRender.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -154,19 +163,11 @@ void sGUI::releaseAlphaMap() {
 __attribute__((weak)) void sGUI::setLanguageSettingNum(u32 v) {
 }
 
-u32 sGUI::getLanguageSettingNum() const {
-    return 3;
-}
+static auto ddon_emit_0x01b9fc60 __attribute__((used)) = &sGUI::getLanguageSettingNum;
 
-nGUI::LANGUAGE sGUI::getLanguageId(nGUI::LANGUAGE_SETTING setting) const {
-    return mLanguageId[setting];
-}
+static auto ddon_emit_0x01b9fc40 __attribute__((used)) = &sGUI::getLanguageId;
 
-void sGUI::setLanguageIdForProperty(u32 value, u32 setting) {
-    if (static_cast<int>(value) <= 21) {
-        mLanguageId[setting] = static_cast<nGUI::LANGUAGE>(value);
-    }
-}
+static auto ddon_emit_0x01b9fc50 __attribute__((used)) = &sGUI::setLanguageIdForProperty;
 
 __attribute__((weak)) void sGUI::getLanguageFilePath(MT_STR outPath, MT_CTSTR inPath, nGUI::LANGUAGE_SETTING setting) {
     DDON_STUB("sGUI::getLanguageFilePath")
@@ -176,9 +177,7 @@ __attribute__((weak)) void sGUI::getLanguageFilePath(MT_STR outPath, MT_CTSTR in
 __attribute__((weak)) void sGUI::setFontCount(s32 slot) {
 }
 
-s32 sGUI::getFontCount() const {
-    return 8;
-}
+static auto ddon_emit_0x01b9fc80 __attribute__((used)) = &sGUI::getFontCount;
 
 __attribute__((weak)) void sGUI::setFont(rGUIFont* pFont, u32 slot) {
     DDON_STUB("sGUI::setFont")
@@ -193,30 +192,20 @@ rGUIFont* sGUI::getFont(u32 slot) {
     }
 }
 
-void sGUI::setRubyLineSpace(s32 space) {
-    mRubyLineSpace = space;
-}
+static auto ddon_emit_0x01b9fce0 __attribute__((used)) = &sGUI::setRubyLineSpace;
 
-s32 sGUI::getRubyLineSpace() const {
-    return mRubyLineSpace;
-}
+static auto ddon_emit_0x01b9fcd0 __attribute__((used)) = &sGUI::getRubyLineSpace;
 
-void sGUI::setRubyRatio(f32 ratio) {
-    mRubyRatio = ratio;
-}
+static auto ddon_emit_0x01b9fd00 __attribute__((used)) = &sGUI::setRubyRatio;
 
-f32 sGUI::getRubyRatio() const {
-    return mRubyRatio;
-}
+static auto ddon_emit_0x01b9fcf0 __attribute__((used)) = &sGUI::getRubyRatio;
 
 __attribute__((weak)) void sGUI::setRubyFont(rGUIFont* pResource) {
     DDON_STUB("sGUI::setRubyFont")
     /* stub */
 }
 
-rGUIFont* sGUI::getRubyFont() const {
-    return mpRubyFont;
-}
+static auto ddon_emit_0x01b9fcc0 __attribute__((used)) = &sGUI::getRubyFont;
 
 void sGUI::updateDynamicFont() {
     if (mpLayoutingFont == nullptr) {
@@ -303,16 +292,12 @@ void sGUI::freeMTAGList(nGUI::MTAG* & pMTag) {
 __attribute__((weak)) void sGUI::setTempMTagOffset(u32 v) {
 }
 
-u32 sGUI::getTempMTagOffset() const {
-    return mTempMTagOffset;
-}
+static auto ddon_emit_0x01b9fd40 __attribute__((used)) = &sGUI::getTempMTagOffset;
 
 __attribute__((weak)) void sGUI::setTempMTagBufferCount(u32 count) {
 }
 
-u32 sGUI::getTempMTagBufferCount() const {
-    return mTempMTagBufferCount;
-}
+static auto ddon_emit_0x01b9fd60 __attribute__((used)) = &sGUI::getTempMTagBufferCount;
 
 __attribute__((weak)) void sGUI::setUseTempMTagCount(u32 count) {
 }
@@ -352,9 +337,7 @@ u32 sGUI::analyzeTagIcon(MT_CTSTR pParam, nGUI::ICON_INFO* pIconInfo) {
     return v1_8;
 }
 
-void sGUI::setUseIconFontFilter(bool v) {
-    mAttr = !v ? (mAttr & 0xFFFFFFFEu) : (mAttr | 1u);
-}
+static auto ddon_emit_0x01b9fd20 __attribute__((used)) = &sGUI::setUseIconFontFilter;
 
 bool sGUI::isUseIconFontFilter() const {
     return static_cast<bool>(mAttr & 1u);
@@ -380,13 +363,9 @@ __attribute__((weak)) void sGUI::setIconFont(rGUIFont* pResource) {
     /* stub */
 }
 
-rGUIFont* sGUI::getIconFont() const {
-    return mpIconFont;
-}
+static auto ddon_emit_0x01b9fca0 __attribute__((used)) = &sGUI::getIconFont;
 
-void sGUI::requestBufferCompaction() {
-    mAttr = mAttr | 4u;
-}
+static auto ddon_emit_0x01b9fd90 __attribute__((used)) = &sGUI::requestBufferCompaction;
 
 __attribute__((weak)) bool sGUI::allocVertexBuffer(nGUI::BufferObject& bufferObject, u32 size) {
     DDON_STUB("sGUI::allocVertexBuffer")

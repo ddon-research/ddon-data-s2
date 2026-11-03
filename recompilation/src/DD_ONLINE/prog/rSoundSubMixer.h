@@ -290,8 +290,16 @@ private:
     static const u32 NativeFileVersion = 1;
 };
 
+inline void* rSoundSubMixer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool rSoundSubMixer::getActive() {
     return this->mActive;
+}
+
+inline void* rSoundSubMixer::Fader::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u8 rSoundSubMixer::Fader::getFaderID() {

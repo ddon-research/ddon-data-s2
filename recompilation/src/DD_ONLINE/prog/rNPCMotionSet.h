@@ -180,6 +180,14 @@ public:
     static const u8 DATA_VERSION = 14;
 };
 
+inline void* rNPCMotionSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rNPCMotionSet::InfoBinary::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rNPCMotionSet::InfoBinary::InfoBinary() {
     this->mTransOff = false;
     this->mRandomOn = false;
@@ -208,6 +216,10 @@ inline s16 rNPCMotionSet::InfoBinary::getHeadCtrl() {
 
 inline u8 rNPCMotionSet::InfoBinary::getTurnType() {
     return this->mTurnType;
+}
+
+inline void* rNPCMotionSet::InfoBinary::MotDataBinary::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rNPCMotionSet::InfoBinary::MotDataBinary::MotDataBinary() {

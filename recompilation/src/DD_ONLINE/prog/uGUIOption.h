@@ -9,7 +9,7 @@
 #include "../../MT/MtMath.h"
 #include "cCharacterData.h"
 #include "cControl.h"
-#include "../../generated/rCharacterEditCameraParam/cPCGraphicOption.h"
+#include "../../generated/shared/cPCGraphicOption.h"
 #include "nMenuKeyConfig.h"
 #include "nNet.h"
 #include "sEffectExt.h"
@@ -350,3 +350,7 @@ private:
     static const nPCGraphicOption::LIGHT_HARDWARE_MODE lightHardwareModeTbl[];
     static const sEffectExt::OPTION_OTHERS_EFC_TYPE othersEfcTypeTbl[];
 };
+
+inline void* uGUIOption::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

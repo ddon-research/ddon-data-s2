@@ -192,8 +192,24 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rDungeonMarker::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rDungeonMarker::cWarpInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rDungeonMarker::cWarpInfo::cWarpInfo() {
     this->mGroupNo = -1;
     this->mTargetStageNo = 0;
     this->mTargetGroupNo = -1;
+}
+
+inline void* rDungeonMarker::cWarpInfo::cIndex::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rDungeonMarker::cPosition::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

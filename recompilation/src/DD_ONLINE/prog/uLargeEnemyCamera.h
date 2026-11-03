@@ -76,6 +76,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uLargeEnemyCamera::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool uLargeEnemyCamera::isLargeCamera() {
     return this->mIsLargeCamera;
 }

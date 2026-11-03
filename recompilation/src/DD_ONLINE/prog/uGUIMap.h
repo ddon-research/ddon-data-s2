@@ -946,15 +946,43 @@ protected:
     static const u32 ZOOMRATE_DIST = 3;
 };
 
+inline void* uGUIMap::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 uGUIMap::getLandType() {
     return this->mLandType;
+}
+
+inline void* uGUIMap::cLandId::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIMap::cLandId::cLandId() {
     this->mLandId = 0;
 }
 
+inline void* uGUIMap::cMarker::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMap::cMarkerUpdInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMap::cMarkerLandInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMap::cPointerCursor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIMap::stChkWork::stChkWork() {
     this->mIdx = -1;
     this->mDist = 0.0f;
+}
+
+inline void* uGUIMap::cQuestMarkerData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

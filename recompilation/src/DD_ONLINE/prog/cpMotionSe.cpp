@@ -3,16 +3,31 @@
 #include "cpMotionSe.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cDelegate.h"
 #include "../../XFramework/cResource.h"
 #include "cpComponent.h"
+#include "rSoundAreaInfo.h"
 #include "../../XFramework/rSoundRequest.h"
 #include "../../XFramework/rSoundStreamRequest.h"
+#include "rStageInfo.h"
+#include "rStageJoint.h"
+#include "res_ptr.h"
+#include "../../XFramework/sArea.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "sWorldOffset.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
+#include "uHuman.h"
 #include "uSoundMotionSe.h"
+#include "uStageJoint.h"
+#include "uStageParts.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -103,7 +118,7 @@ void cpMotionSe::setMotionSeVoice(u32 sex, u32 voiceType) {
         return;
     }
     mMotionSe.setRequest(static_cast<rSoundRequest*>(pRes), 1u);
-    pRes->cResource::release();
+    pRes->release();
 }
 
 void cpMotionSe::setMotionSeVoicePawn(u32 sex, u32 voiceType, u32 personality) {
@@ -112,7 +127,7 @@ void cpMotionSe::setMotionSeVoicePawn(u32 sex, u32 voiceType, u32 personality) {
         return;
     }
     mMotionSe.setRequest(static_cast<rSoundRequest*>(pRes), 1u);
-    pRes->cResource::release();
+    pRes->release();
 }
 
 void cpMotionSe::setChatVoice(u32 sex, u32 voiceType) {
@@ -121,16 +136,16 @@ void cpMotionSe::setChatVoice(u32 sex, u32 voiceType) {
         mpChatVoice = nullptr;
         rSoundStreamRequest* pRes = static_cast<sSoundExt*>(sSound::getInstance())->loadChatVoiceStreamResource(sex, voiceType);
         if (pRes != nullptr) {
-            pRes->cResource::addRef();
+            pRes->addRef();
             mpChatVoice = pRes;
-            pRes->cResource::release();
+            pRes->release();
         }
     } else {
         rSoundStreamRequest* pRes = static_cast<sSoundExt*>(sSound::getInstance())->loadChatVoiceStreamResource(sex, voiceType);
         if (pRes != nullptr) {
-            pRes->cResource::addRef();
+            pRes->addRef();
             mpChatVoice = pRes;
-            pRes->cResource::release();
+            pRes->release();
         }
     }
 }

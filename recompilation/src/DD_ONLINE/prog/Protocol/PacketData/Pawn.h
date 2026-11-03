@@ -14,6 +14,7 @@
 #include "../../cPacket.h"
 
 // Forward declarations
+class CDataArisenProfile;
 class CDataCharacterEquipData;
 class CDataCharacterJobData;
 class CDataCommunityCharacterBaseInfo;
@@ -29,29 +30,40 @@ class MtString;
 
 // Declarations
 class CDataFreeRentalPawnList;
+class CDataLostPawnList;
 class CDataPartnerPawnData;
+class CDataPartnerPawnReward;
+class CDataPartnerPawnRewardParam;
 class CDataPawnCraftData;
 class CDataPawnCraftSkill;
 class CDataPawnFeedback;
 class CDataPawnHistory;
 class CDataPawnHp;
 class CDataPawnInfo;
+class CDataPawnList;
 class CDataPawnListData;
 class CDataPawnName;
+class CDataPawnProfile;
 class CDataPawnReaction;
 class CDataPawnTotalScore;
+class CDataRegisterdPawnList;
+class CDataRentedPawnList;
 
 // Type aliases from DWARF
+using CArisenProfile = CDataArisenProfile;
 using CCommunityCharacterBaseInfo = CDataCommunityCharacterBaseInfo;
 using CEditInfo = CDataEditInfo;
 using COrbGainExtendParam = CDataOrbGainExtendParam;
+using CPartnerPawnRewardParam = CDataPartnerPawnRewardParam;
 using CPawnCraftData = CDataPawnCraftData;
 using CPawnFeedback = CDataPawnFeedback;
+using CPawnListData = CDataPawnListData;
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
 using __uint64_t = long unsigned int;
 using b8 = bool;
+using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
 using u64 = __uint64_t;
@@ -125,6 +137,39 @@ public:
     u32 m_unPawnId;  // offset: 0x8
     u32 m_unLikability;  // offset: 0xc
     u8 m_ucPersonality;  // offset: 0x10
+    static MyDTI DTI;
+};
+
+class CDataPartnerPawnRewardParam : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataPartnerPawnRewardParam();
+    explicit CDataPartnerPawnRewardParam(u32, u32);
+public:
+    u32 m_unParamTypeId;  // offset: 0x8
+    u32 m_unUID;  // offset: 0xc
     static MyDTI DTI;
 };
 
@@ -336,6 +381,41 @@ public:
     static MyDTI DTI;
 };
 
+class CDataPawnProfile : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataPawnProfile();
+    explicit CDataPawnProfile(const CCommunityCharacterBaseInfo&, const CArisenProfile&, const char*, u32);
+public:
+    CCommunityCharacterBaseInfo m_OwnerBaseInfo;  // offset: 0x8
+    CArisenProfile m_ProfileInfo;  // offset: 0x38
+    MtString m_wstrComment;  // offset: 0x60
+    u32 m_unRentalCost;  // offset: 0x68
+    static MyDTI DTI;
+};
+
 class CDataPawnReaction : public CPacketDataBase
 {
 public:
@@ -401,6 +481,155 @@ public:
     u32 m_unBattleCount;  // offset: 0xc
     u32 m_unCraftCount;  // offset: 0x10
     MtTypedArray<CDataPawnFeedback> m_AveragePawnFeedbackList;  // offset: 0x18
+    static MyDTI DTI;
+};
+
+class CDataRegisterdPawnList : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataRegisterdPawnList();
+    explicit CDataRegisterdPawnList(s32, const char*, u8, u32, u64, const CPawnListData&);
+public:
+    s32 m_nPawnId;  // offset: 0x8
+    MtString m_wstrName;  // offset: 0x10
+    u8 m_ucSex;  // offset: 0x18
+    u32 m_unRentalCost;  // offset: 0x1c
+    u64 m_ullUpdated;  // offset: 0x20
+    CPawnListData m_PawnListData;  // offset: 0x28
+    static MyDTI DTI;
+};
+
+class CDataRentedPawnList : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataRentedPawnList();
+    explicit CDataRentedPawnList(s32, u32, const char*, u8, u8, u8, u8, const CPawnListData&, u8);
+public:
+    s32 m_nPawnId;  // offset: 0x8
+    u32 m_unSlotNo;  // offset: 0xc
+    MtString m_wstrName;  // offset: 0x10
+    u8 m_ucSex;  // offset: 0x18
+    u8 m_ucPawnState;  // offset: 0x19
+    u8 m_ucCraftCount;  // offset: 0x1a
+    u8 m_ucAdventureCount;  // offset: 0x1b
+    CPawnListData m_PawnListData;  // offset: 0x20
+    u8 m_ucPawnType;  // offset: 0x68
+    static MyDTI DTI;
+};
+
+class CDataLostPawnList : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataLostPawnList();
+    explicit CDataLostPawnList(s32, u32, const char*, u8, u8, u8, u32, const CPawnListData&);
+public:
+    s32 m_nPawnId;  // offset: 0x8
+    u32 m_unSlotNo;  // offset: 0xc
+    MtString m_wstrName;  // offset: 0x10
+    u8 m_ucSex;  // offset: 0x18
+    u8 m_ucPawnState;  // offset: 0x19
+    u8 m_ucShareRange;  // offset: 0x1a
+    u32 m_unReviveCost;  // offset: 0x1c
+    CPawnListData m_PawnListData;  // offset: 0x20
+    static MyDTI DTI;
+};
+
+class CDataPartnerPawnReward : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataPartnerPawnReward();
+    explicit CDataPartnerPawnReward(u8, const CPartnerPawnRewardParam&);
+public:
+    u8 m_ucType;  // offset: 0x8
+    CPartnerPawnRewardParam m_Value;  // offset: 0x10
     static MyDTI DTI;
 };
 
@@ -499,6 +728,48 @@ public:
     static MyDTI DTI;
 };
 
+class CDataPawnList : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataPawnList();
+    explicit CDataPawnList(s32, u32, const char*, u8, u8, u8, const CPawnListData&);
+public:
+    s32 m_nPawnId;  // offset: 0x8
+    u32 m_unSlotNo;  // offset: 0xc
+    MtString m_wstrName;  // offset: 0x10
+    u8 m_ucSex;  // offset: 0x18
+    u8 m_ucPawnState;  // offset: 0x19
+    u8 m_ucShareRange;  // offset: 0x1a
+    CPawnListData m_PawnListData;  // offset: 0x20
+    static MyDTI DTI;
+};
+
+inline void* CDataFreeRentalPawnList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataFreeRentalPawnList::CDataFreeRentalPawnList() {
     this->m_unPawnId = 0;
     this->m_ullExpireDateTime = 0;
@@ -507,15 +778,61 @@ inline CDataFreeRentalPawnList::CDataFreeRentalPawnList() {
     this->m_unBackIconId = 0;
 }
 
+inline void* CDataLostPawnList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataLostPawnList::CDataLostPawnList() {
+    this->m_unReviveCost = 0;
+    this->m_ucShareRange = 0;
+    this->m_ucSex = 0;
+    this->m_ucPawnState = 0;
+    this->m_nPawnId = 0;
+    this->m_unSlotNo = 0;
+}
+
+inline void* CDataPartnerPawnData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataPartnerPawnData::CDataPartnerPawnData() {
     this->m_unPawnId = 0;
     this->m_unLikability = 0;
     this->m_ucPersonality = 0;
 }
 
+inline void* CDataPartnerPawnReward::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataPartnerPawnReward::CDataPartnerPawnReward() {
+    this->m_ucType = 0;
+}
+
+inline void* CDataPartnerPawnRewardParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataPartnerPawnRewardParam::CDataPartnerPawnRewardParam() {
+    this->m_unParamTypeId = 0;
+    this->m_unUID = 0;
+}
+
+inline void* CDataPawnCraftData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataPawnCraftSkill::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataPawnCraftSkill::CDataPawnCraftSkill() {
     this->m_ucType = 0;
     this->m_unLevel = 0;
+}
+
+inline void* CDataPawnFeedback::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataPawnFeedback::CDataPawnFeedback() {
@@ -524,9 +841,37 @@ inline CDataPawnFeedback::CDataPawnFeedback() {
     this->m_ucCommentNo = 0;
 }
 
+inline void* CDataPawnHistory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataPawnHp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataPawnHp::CDataPawnHp() {
     this->m_unPawnId = 0;
     this->m_unHp = 0;
+}
+
+inline void* CDataPawnInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataPawnList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataPawnList::CDataPawnList() {
+    this->m_ucShareRange = 0;
+    this->m_ucSex = 0;
+    this->m_ucPawnState = 0;
+    this->m_nPawnId = 0;
+    this->m_unSlotNo = 0;
+}
+
+inline void* CDataPawnListData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataPawnListData::CDataPawnListData() {
@@ -537,7 +882,19 @@ inline CDataPawnListData::CDataPawnListData() {
     this->m_ullLatestReturnDate = 0;
 }
 
+inline void* CDataPawnName::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataPawnName::CDataPawnName() {
+}
+
+inline void* CDataPawnProfile::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataPawnReaction::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataPawnReaction::CDataPawnReaction() {
@@ -545,8 +902,37 @@ inline CDataPawnReaction::CDataPawnReaction() {
     this->m_unMotionNo = 0;
 }
 
+inline void* CDataPawnTotalScore::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataPawnTotalScore::CDataPawnTotalScore() {
     this->m_unRentalCount = 0;
     this->m_unBattleCount = 0;
     this->m_unCraftCount = 0;
+}
+
+inline void* CDataRegisterdPawnList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataRegisterdPawnList::CDataRegisterdPawnList() {
+    this->m_nPawnId = 0;
+    this->m_ucSex = 0;
+    this->m_unRentalCost = 0;
+    this->m_ullUpdated = 0;
+}
+
+inline void* CDataRentedPawnList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataRentedPawnList::CDataRentedPawnList() {
+    this->m_ucSex = 0;
+    this->m_ucPawnState = 0;
+    this->m_ucCraftCount = 0;
+    this->m_ucAdventureCount = 0;
+    this->m_nPawnId = 0;
+    this->m_unSlotNo = 0;
+    this->m_ucPawnType = 0;
 }

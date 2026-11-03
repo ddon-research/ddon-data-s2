@@ -6,9 +6,13 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/rCameraList.h"
+#include "sArchiveManager.h"
 #include "uCameraGame.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -42,7 +46,7 @@ __attribute__((weak)) bool rCameraParamList::load(MtStream& in) {
 
 bool rCameraParamList::save(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rCameraParamList::DTI));
+    return sz.serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rCameraParamList::DTI));
 }
 
 MT_CTSTR rCameraParamList::getExt() const {

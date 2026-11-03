@@ -96,6 +96,26 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCaughtDamageRateReference::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCaughtDamageRateReference::cCaughtDamageRateReference() {
     this->mReferenceIndex = 1;
+}
+
+inline void* rCaughtDamageRateRefTbl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCaughtDamageRateReference::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCaughtDamageRateReference::DTI)->memFree(p_addr);
+}
+
+inline void* cCaughtDamageRateReference::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCaughtDamageRateReference::DTI)->memAlloc(sz, align, ::cCaughtDamageRateReference::DTI.::MtDTI::getID());
 }

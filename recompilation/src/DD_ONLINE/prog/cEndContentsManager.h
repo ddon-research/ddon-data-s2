@@ -216,6 +216,37 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEndContentsManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void cEndContentsManager::moveEndContentsStart() {
+    this->mRno0 = 4;
+    this->mRno1 = 0;
+}
+
+inline void cEndContentsManager::moveEndContentsMain() {
+    if (this->mIsClear) {
+        this->mRno0 = 5;
+        this->mRno1 = 0;
+    } else {
+        if (this->mIsInterrupt) {
+            this->mRno0 = 6;
+            this->mRno1 = 0;
+        } else {
+            if (this->mIsFailed) {
+                this->mRno0 = 7;
+                this->mRno1 = 0;
+            } else {
+                if (this->mIsExit) {
+                    this->mRno0 = 9;
+                    this->mRno1 = 0;
+                }
+            }
+        }
+    }
+}
+
 inline u32 cEndContentsManager::getScheduleId() const {
     return this->mScheduleId;
 }

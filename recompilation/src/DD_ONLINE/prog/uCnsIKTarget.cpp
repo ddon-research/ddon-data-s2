@@ -3,7 +3,11 @@
 #include "uCnsIKTarget.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cUnit.h"
+#include "cpIKCtrl.h"
+#include "uCnsDDOIK.h"
 #include "../../XFramework/uConstraint.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB

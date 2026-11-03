@@ -124,6 +124,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpErosionEnemyBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSoundRequest* cpErosionEnemyBase::getErosionSoundRes() const {
     return this->mpErosionSoundRes;
 }
@@ -142,6 +146,10 @@ inline bool cpErosionEnemyBase::isErosionEnemySuper() const {
 
 inline nErosionEnemyBase::EROSION_STATUS cpErosionEnemyBase::getErosionStatus() const {
     return this->mErosionStatus;
+}
+
+inline s32 cpErosionEnemyBase::getLinpunEvpIndex() const {
+    return this->mLinpunEpvIndexNo;
 }
 
 inline void cpErosionEnemyBase::setErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL level) {

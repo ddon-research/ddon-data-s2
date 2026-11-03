@@ -84,6 +84,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIIndicator::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUIIndicator::setType(u32 uType) {
     this->mType = uType;
 }

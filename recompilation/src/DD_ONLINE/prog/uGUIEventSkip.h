@@ -85,3 +85,7 @@ public:
 private:
     static const u32 SEC_FADE = 5;
 };
+
+inline void* uGUIEventSkip::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

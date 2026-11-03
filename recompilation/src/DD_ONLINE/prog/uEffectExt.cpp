@@ -2,19 +2,57 @@
 #include <new>
 #include "uEffectExt.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollision.h"
+#include "../../MT/MtCollisionDefine.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtSynchronize.h"
+#include "../../XFramework/cEffect.h"
 #include "../../XFramework/cParticleGenerator.h"
+#include "../../XFramework/cParticleManager.h"
+#include "../../XFramework/cSystem.h"
 #include "../../XFramework/cUnit.h"
+#include "../../XFramework/cZoneListener.h"
+#include "cZoneListenerEffect.h"
+#include "cZoneListenerMulti.h"
+#include "cpOcdCtrl.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "../../XFramework/rEffectList.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
 #include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "sEnemyManager.h"
 #include "../../XFramework/sMain.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sWeatherManager.h"
+#include "sWorldOffset.h"
+#include "../../XFramework/sZone.h"
+#include "../../XFramework/uBaseEffect.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uCameraBase.h"
+#include "uCameraGame.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uEffect.h"
+#include "../../XFramework/uLight.h"
+#include "../../XFramework/uModel.h"
+#include "../../XFramework/uSky.h"
+#include "uSkyExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -107,136 +145,80 @@ void uEffectExt::updateParentPtr() {
     mpParentActor = nullptr;
 }
 
-void uEffectExt::setHitStopMode(bool Flg) {
-    mHitStopMode = Flg;
-}
+static auto ddon_emit_0x01ad6170 __attribute__((used)) = &uEffectExt::setHitStopMode;
 
-bool uEffectExt::getHitStopMode() const {
-    return mHitStopMode;
-}
+static auto ddon_emit_0x01ad6160 __attribute__((used)) = &uEffectExt::getHitStopMode;
 
-void uEffectExt::setWorkRateMode(bool Flg) {
-    mWorkRateMode = Flg;
-}
+static auto ddon_emit_0x01ad6190 __attribute__((used)) = &uEffectExt::setWorkRateMode;
 
-bool uEffectExt::getWorkRateMode() const {
-    return mWorkRateMode;
-}
+static auto ddon_emit_0x01ad6130 __attribute__((used)) = &uEffectExt::getWorkRateMode;
 
 void uEffectExt::setParentActor(uDDOModel* pParent, bool Flg0, bool Flg1) {
     mpParentActor = pParent;
     *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 652) = static_cast<unsigned int>((static_cast<unsigned long>(Flg1 * 2) | static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 652)) & 0xFFFFFFFCu)) | static_cast<unsigned long>(Flg0));
 }
 
-void uEffectExt::setParentBaseModelFlag(bool Flg) {
-    mParentBaseModelFlag = Flg;
-}
+static auto ddon_emit_0x01ad6610 __attribute__((used)) = &uEffectExt::setParentBaseModelFlag;
 
-bool uEffectExt::getParentBaseModelFlag() const {
-    return mParentBaseModelFlag;
-}
+static auto ddon_emit_0x01ad6600 __attribute__((used)) = &uEffectExt::getParentBaseModelFlag;
 
-void uEffectExt::setParentTransparency(bool Flg) {
-    mParentTransparency = Flg;
-}
+static auto ddon_emit_0x01ad6640 __attribute__((used)) = &uEffectExt::setParentTransparency;
 
-bool uEffectExt::getParentTransparency() const {
-    return mParentTransparency;
-}
+static auto ddon_emit_0x01ad6630 __attribute__((used)) = &uEffectExt::getParentTransparency;
 
 __attribute__((weak)) void uEffectExt::setGeneralCorrectColor(const MtColor& color, f32 rate, f32 alpha_rate, u32 mode) {
     DDON_STUB("uEffectExt::setGeneralCorrectColor")
     /* stub */
 }
 
-f32 uEffectExt::getDeltaTimeCoefEx() const {
-    return mDeltaTimeCoefEx;
-}
+static auto ddon_emit_0x01ad61b0 __attribute__((used)) = &uEffectExt::getDeltaTimeCoefEx;
 
-void uEffectExt::setDeltaTimeCoefEx(f32 DeltaTimeCoef) {
-    mDeltaTimeCoefEx = DeltaTimeCoef;
-}
+static auto ddon_emit_0x01ad61c0 __attribute__((used)) = &uEffectExt::setDeltaTimeCoefEx;
 
-void uEffectExt::setCCTransparency(f32 val) {
-    mCorrectColorParam.mTransparency = static_cast<unsigned int>(static_cast<long>(256.0f * val));
-}
+static auto ddon_emit_0x01ad61f0 __attribute__((used)) = &uEffectExt::setCCTransparency;
 
-f32 uEffectExt::getCCTransparency() const {
-    return 0.00390625f * static_cast<float>(mCorrectColorParam.mTransparency);
-}
+static auto ddon_emit_0x01ad61d0 __attribute__((used)) = &uEffectExt::getCCTransparency;
 
 void uEffectExt::setLanternCancel() {
     mLanternCancel = false;
 }
 
-void uEffectExt::setFollowSunFlag(bool flag) {
-    mFollowSun = flag;
-}
+static auto ddon_emit_0x01ad64a0 __attribute__((used)) = &uEffectExt::setFollowSunFlag;
 
-bool uEffectExt::getFollowSunFlag() const {
-    return mFollowSun;
-}
+static auto ddon_emit_0x01ad6140 __attribute__((used)) = &uEffectExt::getFollowSunFlag;
 
-void uEffectExt::setFollowMoon(bool flag) {
-    mFollowMoon = flag;
-}
+static auto ddon_emit_0x01ad64c0 __attribute__((used)) = &uEffectExt::setFollowMoon;
 
-bool uEffectExt::getFollowMoon() const {
-    return mFollowMoon;
-}
+static auto ddon_emit_0x01ad6150 __attribute__((used)) = &uEffectExt::getFollowMoon;
 
-void uEffectExt::setZoneCheckGeneratorFlag(bool flag) {
-    mZoneCheckGenerator = flag;
-}
+static auto ddon_emit_0x01ad6580 __attribute__((used)) = &uEffectExt::setZoneCheckGeneratorFlag;
 
-bool uEffectExt::getZoneCheckGeneratorFlag() const {
-    return mZoneCheckGenerator;
-}
+static auto ddon_emit_0x01ad6570 __attribute__((used)) = &uEffectExt::getZoneCheckGeneratorFlag;
 
 __attribute__((weak)) void uEffectExt::setZoneUnitColorFlag() {
     DDON_STUB("uEffectExt::setZoneUnitColorFlag")
     /* stub */
 }
 
-void uEffectExt::setColorUpdateFlag(bool flag) {
-    mColorUpdate = flag;
-}
+static auto ddon_emit_0x01ad65b0 __attribute__((used)) = &uEffectExt::setColorUpdateFlag;
 
-bool uEffectExt::getColorUpdateFlag() const {
-    return mColorUpdate;
-}
+static auto ddon_emit_0x01ad65a0 __attribute__((used)) = &uEffectExt::getColorUpdateFlag;
 
-void uEffectExt::setColorUpdateDistCancelFlag(bool flag) {
-    mColorUpdateDistCancel = flag;
-}
+static auto ddon_emit_0x01ad65e0 __attribute__((used)) = &uEffectExt::setColorUpdateDistCancelFlag;
 
-bool uEffectExt::getColorUpdateDistCancelFlag() const {
-    return mColorUpdateDistCancel;
-}
+static auto ddon_emit_0x01ad65d0 __attribute__((used)) = &uEffectExt::getColorUpdateDistCancelFlag;
 
-void uEffectExt::setFineWeatherOffFlag(bool flag) {
-    mFineWeatherOff = flag;
-}
+static auto ddon_emit_0x01ad64f0 __attribute__((used)) = &uEffectExt::setFineWeatherOffFlag;
 
-bool uEffectExt::getFineWeatherOffFlag() const {
-    return mFineWeatherOff;
-}
+static auto ddon_emit_0x01ad64e0 __attribute__((used)) = &uEffectExt::getFineWeatherOffFlag;
 
-void uEffectExt::setCloudyWeatherOffFlag(bool flag) {
-    mCloudyWeatherOff = flag;
-}
+static auto ddon_emit_0x01ad6520 __attribute__((used)) = &uEffectExt::setCloudyWeatherOffFlag;
 
-bool uEffectExt::getCloudyWeatherOffFlag() const {
-    return mCloudyWeatherOff;
-}
+static auto ddon_emit_0x01ad6510 __attribute__((used)) = &uEffectExt::getCloudyWeatherOffFlag;
 
-void uEffectExt::setRainWeatherOffFlag(bool flag) {
-    mRainWeatherOff = flag;
-}
+static auto ddon_emit_0x01ad6550 __attribute__((used)) = &uEffectExt::setRainWeatherOffFlag;
 
-bool uEffectExt::getRainWeatherOffFlag() const {
-    return mRainWeatherOff;
-}
+static auto ddon_emit_0x01ad6540 __attribute__((used)) = &uEffectExt::getRainWeatherOffFlag;
 
 __attribute__((weak)) void uEffectExt::setWeatherOnFlag(const cWeatherFlag& flag) {
     DDON_STUB("uEffectExt::setWeatherOnFlag")

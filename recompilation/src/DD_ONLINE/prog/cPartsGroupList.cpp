@@ -11,6 +11,10 @@
 #include "../../XFramework/cResource.h"
 #include "rLayout.h"
 #include "rLayoutGroupParam.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sSetManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

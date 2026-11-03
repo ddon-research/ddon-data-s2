@@ -6,6 +6,14 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cNetGameServer.h"
+#include "../../XFramework/cUnit.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
 #include "uGUIServerUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

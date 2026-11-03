@@ -231,3 +231,126 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* uEffect2D::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uEffect2D::setSchedulerMode(bool Mode) {
+    if (Mode) {
+        this->mStatus = this->mStatus | 4u;
+    } else {
+        this->mStatus = this->mStatus & 65531u;
+    }
+}
+
+inline void uEffect2D::setEventMode(bool Mode) {
+    if (Mode) {
+        this->mStatus = this->mStatus | 8u;
+    } else {
+        this->mStatus = this->mStatus & 65527u;
+    }
+}
+
+inline void uEffect2D::setTimerControlMode(bool Mode) {
+    if (Mode) {
+        this->mStatus = this->mStatus | 256u;
+    } else {
+        this->mStatus = this->mStatus & 65279u;
+    }
+}
+
+inline void uEffect2D::setWorldPosMode(bool Mode) {
+    if (Mode) {
+        this->mStatus = this->mStatus | 512u;
+    } else {
+        this->mStatus = this->mStatus & 65023u;
+    }
+}
+
+inline u32 uEffect2D::getLoopFrame() const {
+    return this->mLoopFrame;
+}
+
+inline u32 uEffect2D::getLifeFrame() const {
+    return this->mLifeFrame;
+}
+
+inline u32 uEffect2D::getWaitFrame() const {
+    return this->mWaitFrame;
+}
+
+inline void uEffect2D::setWaitFrame(u32 WaitFrame) {
+    this->mWaitFrame = WaitFrame;
+}
+
+inline u32 uEffect2D::getTimer() const {
+    return this->mTimer;
+}
+
+inline void uEffect2D::setTimer(u32 Timer) {
+    if ((this->mStatus & 256u) == 0) {
+        return;
+    }
+    this->mTimer = Timer;
+}
+
+inline f32 uEffect2D::getDeltaTimeCoef() const {
+    return this->mDeltaTimeCoef;
+}
+
+inline void uEffect2D::setDeltaTimeCoef(f32 DeltaTimeCoef) {
+    this->mDeltaTimeCoef = DeltaTimeCoef;
+}
+
+inline u32 uEffect2D::getKillNo() const {
+    return this->mKillNo;
+}
+
+inline void uEffect2D::setKillNo(u32 KillNo) {
+    this->mKillNo = KillNo;
+}
+
+inline u32 uEffect2D::getEndType() const {
+    return this->mEndType;
+}
+
+inline void uEffect2D::setEndType(u32 EndType) {
+    this->mEndType = EndType;
+}
+
+inline u32 uEffect2D::getSizeAdjustType() const {
+    return this->mSizeAdjustType;
+}
+
+inline void uEffect2D::setSizeAdjustType(u32 SizeAdjustType) {
+    this->mSizeAdjustType = SizeAdjustType;
+}
+
+inline rEffect2D* uEffect2D::getEffect2D() {
+    return this->mpEffect2D;
+}
+
+inline u32 uEffect2D::getFlagBitNum() const {
+    return 32;
+}
+
+inline u32 uEffect2D::getRTMaskMapAlpha() const {
+    return this->mRTMaskMapAlpha;
+}
+
+inline void uEffect2D::setRTMaskMapAlpha(u32 RTMaskMapAlpha) {
+    this->mRTMaskMapAlpha = RTMaskMapAlpha;
+}
+
+inline u32 uEffect2D::getGeneratorBuffSize() const {
+    return this->mGeneratorBuffSize;
+}
+
+inline u32 uEffect2D::getGeneratorNum() const {
+    return this->mGeneratorNum;
+}
+
+inline u32 uEffect2D::getGeneratorMoveNum() const {
+    return this->mGeneratorMoveNum;
+}

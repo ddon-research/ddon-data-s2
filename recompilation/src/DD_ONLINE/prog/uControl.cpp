@@ -5,19 +5,40 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
 #include "aStage.h"
+#include "cActList.h"
 #include "cArcLoader.h"
 #include "../../XFramework/cArea.h"
+#include "cComponentManager.h"
 #include "cContextInterface.h"
 #include "cNetBase.h"
+#include "cPlayerLoadManager.h"
+#include "../../XFramework/cRemoteProcedure.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpComponent.h"
 #include "cpLayout.h"
+#include "cpTransparencyCtrl.h"
 #include "nLayout.h"
 #include "nNetMsgData.h"
 #include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sContextManager.h"
 #include "sGame.h"
 #include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "../../XFramework/sRemoteProcedure.h"
+#include "sWorldOffset.h"
+#include "uControlEnemy.h"
+#include "uControlNpc.h"
 #include "uDDOModel.h"
+#include "uHuman.h"
+#include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -258,6 +279,12 @@ void uControl::releaseContextInst() {
 
 void uControl::updateBossCondSendInterval() {
     mBossCondSendInterval = 90.0f;
+}
+
+inline void uControl::sendSaveNetMessage() {
+    mpNetRpc->sendNetAction(nNetMsgData::nCtrl::NET_MSG_ID_ACT_NORMAL, nNetMsg::MSG_PRIO_LOW, nNetMsg::MSG_ADR_OTHER, 0u);
+    mSendActIntervalTimer = 30.0f;
+    mIsSaveSendAct = false;
 }
 
 __attribute__((weak)) void uControl::sendNetMessage() {

@@ -12,17 +12,29 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPerformance.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "../MT/MtThread.h"
 #include "../MT/MtType.h"
+#include "../generated/shared/basegfxcontext.h"
 #include "cDraw.h"
 #include "cSystem.h"
+#include "../generated/shared/depthrendertarget.h"
 #include "../generated/shared/lwgfxcontext.h"
 #include "nDraw.h"
+#include "nDrawBuffer.h"
+#include "nDrawIndexBuffer.h"
 #include "nDrawResource.h"
 #include "nDrawScene.h"
 #include "nDrawTexture.h"
+#include "nDrawVertexBuffer.h"
 #include "../generated/shared/regs.h"
+#include "../generated/shared/rendertarget.h"
+#include "sApp.h"
+#include "sCamera.h"
+#include "sMain.h"
+#include "sScene.h"
+#include "sShader2.h"
 #include "sUnit.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -103,26 +115,17 @@ void sRender::setAspectType(u32 v) {
     mAspectType = v;
 }
 
-u32 sRender::getAspectType() {
-    return mAspectType;
-}
+static auto ddon_emit_0x01ba6a80 __attribute__((used)) = &sRender::getAspectType;
 
 void sRender::setScaleMode(u32 scaleMode) {
     mScaleMode = scaleMode;
 }
 
-u32 sRender::getScaleMode() {
-    return mScaleMode;
-}
+static auto ddon_emit_0x01ba6ac0 __attribute__((used)) = &sRender::getScaleMode;
 
-f32 sRender::getDACGamma() {
-    return mDACGamma;
-}
+static auto ddon_emit_0x01ac9230 __attribute__((used)) = &sRender::getDACGamma;
 
-void sRender::setDACGamma(f32 v) {
-    mDACGamma = v;
-    mUpdateGamma = true;
-}
+static auto ddon_emit_0x01ac9240 __attribute__((used)) = &sRender::setDACGamma;
 
 __attribute__((weak)) void sRender::setPresentInterval(u32 interval) {
 }
@@ -141,9 +144,7 @@ u32 sRender::getPresentThreshold() {
 __attribute__((weak)) void sRender::setFullScreenMode(bool fullscreen, const MtSize& base_sz, bool force) {
 }
 
-nDraw::HDR_TYPE sRender::getHDRType() {
-    return mHDRType;
-}
+static auto ddon_emit_0x01ba6a50 __attribute__((used)) = &sRender::getHDRType;
 
 void sRender::setHDRType(nDraw::HDR_TYPE type) {
     if (mHDRType == type) {
@@ -165,17 +166,11 @@ void sRender::setAntiAliasType(nDraw::ANTIALIAS_TYPE type) {
     mDeviceReset = mDeviceReset | 128u;
 }
 
-nDraw::ANTIALIAS_ALT_TYPE sRender::getAntiAliasAltType() const {
-    return mAntiAliasAltType;
-}
+static auto ddon_emit_0x01ba6a60 __attribute__((used)) = &sRender::getAntiAliasAltType;
 
-void sRender::setAntiAliasAltType(nDraw::ANTIALIAS_ALT_TYPE type) {
-    mAntiAliasAltType = type;
-}
+static auto ddon_emit_0x01ba6a70 __attribute__((used)) = &sRender::setAntiAliasAltType;
 
-u32 sRender::getSceneAttribute() {
-    return mSceneAttribute;
-}
+static auto ddon_emit_0x01ba6b10 __attribute__((used)) = &sRender::getSceneAttribute;
 
 void sRender::setSceneAttribute(u32 v) {
     if (mSceneAttribute == v) {
@@ -197,9 +192,7 @@ f32 sRender::getAdjustAspectRate() {
     return 1.0f;
 }
 
-nDraw::DEFERRED_LIGHTING_LIGHT_TYPE sRender::getDeferredLightingLightType() const {
-    return mDeferredLightingLightType;
-}
+static auto ddon_emit_0x01ba6a90 __attribute__((used)) = &sRender::getDeferredLightingLightType;
 
 void sRender::setDeferredLightingLightType(nDraw::DEFERRED_LIGHTING_LIGHT_TYPE type) {
     if (mDeferredLightingLightType == type) {
@@ -209,9 +202,7 @@ void sRender::setDeferredLightingLightType(nDraw::DEFERRED_LIGHTING_LIGHT_TYPE t
     mDeviceReset = mDeviceReset | 64u;
 }
 
-nDraw::DEFERRED_LIGHTING_HDR_TYPE sRender::getDeferredLightingHDRType() const {
-    return mDeferredLightingHDRType;
-}
+static auto ddon_emit_0x01ba6aa0 __attribute__((used)) = &sRender::getDeferredLightingHDRType;
 
 void sRender::setDeferredLightingHDRType(nDraw::DEFERRED_LIGHTING_HDR_TYPE type) {
     if (mDeferredLightingHDRType == type) {
@@ -221,17 +212,11 @@ void sRender::setDeferredLightingHDRType(nDraw::DEFERRED_LIGHTING_HDR_TYPE type)
     mDeviceReset = mDeviceReset | 64u;
 }
 
-nDraw::DEFERRED_LIGHTING_NORMAL_TYPE sRender::getDeferredLightingNormalEncodeType() const {
-    return mDeferredLightingNormalType;
-}
+static auto ddon_emit_0x01ba6b20 __attribute__((used)) = &sRender::getDeferredLightingNormalEncodeType;
 
-void sRender::setDeferredLightingNormalEncodeType(nDraw::DEFERRED_LIGHTING_NORMAL_TYPE type) {
-    mDeferredLightingNormalType = type;
-}
+static auto ddon_emit_0x01ba6b30 __attribute__((used)) = &sRender::setDeferredLightingNormalEncodeType;
 
-nDraw::DEFERRED_LIGHTING_TRANSPARENT_TYPE sRender::getDeferredLightingTransparentType() const {
-    return mDeferredLightingTransparentType;
-}
+static auto ddon_emit_0x01ba6b40 __attribute__((used)) = &sRender::getDeferredLightingTransparentType;
 
 void sRender::setDeferredLightingTransparentType(nDraw::DEFERRED_LIGHTING_TRANSPARENT_TYPE type) {
     if (mDeferredLightingTransparentType == type) {
@@ -241,22 +226,16 @@ void sRender::setDeferredLightingTransparentType(nDraw::DEFERRED_LIGHTING_TRANSP
     mDeviceReset = mDeviceReset | 64u;
 }
 
-f32 sRender::getDeferredLightingFadeOutLightingDistance() const {
-    return mDeferredLightingFadeOutLightingDistance;
-}
+static auto ddon_emit_0x01ba6b50 __attribute__((used)) = &sRender::getDeferredLightingFadeOutLightingDistance;
 
 __attribute__((weak)) void sRender::setDeferredLightingFadeOutLightingDistance(f32 distance) {
     DDON_STUB("sRender::setDeferredLightingFadeOutLightingDistance")
     /* stub */
 }
 
-f32 sRender::getHalfLambertBlendCoeff() const {
-    return mHalfLambertBlendCoeff;
-}
+static auto ddon_emit_0x01ba6af0 __attribute__((used)) = &sRender::getHalfLambertBlendCoeff;
 
-void sRender::setHalfLambertBlendCoeff(f32 coeff) {
-    mHalfLambertBlendCoeff = coeff;
-}
+static auto ddon_emit_0x01ba6b00 __attribute__((used)) = &sRender::setHalfLambertBlendCoeff;
 
 f32 sRender::getRenderFps() {
     if (mRenderTime != 0) {

@@ -195,3 +195,7 @@ private:
     static const s32 NativeFileMagic = 1381061203;
     static const s32 NativeFileVersion = 3;
 };
+
+inline void* rSoundRequest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

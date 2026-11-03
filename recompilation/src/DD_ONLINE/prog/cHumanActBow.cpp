@@ -2,30 +2,70 @@
 #include <new>
 #include "cHumanActBow.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "cActList.h"
+#include "cAction.h"
 #include "cCamInterporate.h"
+#include "cContextInterface.h"
 #include "cContextPlayerInfo.h"
 #include "cEfcHandle.h"
+#include "cHitNode.h"
 #include "cHumanAction.h"
 #include "cJumpParamCtrl.h"
+#include "cStaminaCtrl.h"
+#include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpActionRequest.h"
+#include "cpChargeCtrl.h"
+#include "cpEffectProvider.h"
+#include "cpEffectStatusManager.h"
 #include "cpEquip.h"
 #include "cpInput.h"
+#include "cpJob03.h"
+#include "cpKeepAtkAdjust.h"
+#include "cpKeyCommand.h"
+#include "cpLockOnTargetManager.h"
+#include "cpMotionSe.h"
 #include "cpObjCollision.h"
+#include "cpOcdCtrl.h"
+#include "cpRotateCtrl.h"
 #include "cpScrCollision.h"
 #include "cpSequenceCtrl.h"
 #include "cpShlShotCtrl.h"
 #include "cpSlave.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nHuman.h"
 #include "nHumanBow.h"
 #include "nHumanMsg.h"
+#include "rObjCollision.h"
+#include "rShlParamList.h"
+#include "../../XFramework/rSoundRequest.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "../../XFramework/sGUI.h"
+#include "sGame.h"
+#include "sInputManager.h"
+#include "sPlayerManager.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sUnitManager.h"
+#include "uAimCheck.h"
+#include "uCameraBase.h"
+#include "uCameraGame.h"
 #include "../../XFramework/uCoord.h"
 #include "uCorePointSearch.h"
 #include "uDDOModel.h"
@@ -166,8 +206,16 @@ void cPlActWpnBow::initLow_Wait() {
 }
 
 __attribute__((weak)) void cPlActWpnBow::moveLow_Wait() {
-    DDON_STUB("cPlActWpnBow::moveLow_Wait")
-    /* stub */
+        mIdealAccurate = getActParam()->accurateWait;
+        setLowerWaitMotion();
+        explosionReload(MOT_BASE);
+        if (!getActParam()->isVJump) {
+            if (getActParam()->isMovingJump) {
+                mpHuman->mIsBowJumpEnable = true;
+            }
+        } else {
+            mpHuman->mIsBowJumpEnable = true;
+        }
 }
 
 __attribute__((weak)) void cPlActWpnBow::initLow_Turn() {
@@ -583,7 +631,7 @@ void cPlActWpnBow::setChargeCompEfct() {
     uDDOModel* pParent = mpHuman;
     if ((getActParam()->efOption & 2u) != 0) {
         if (pParent->mpEquip != nullptr) {
-            uWeapon* t0 = pParent->mpEquip->cpEquip::getWeapon(0u);
+            uWeapon* t0 = pParent->mpEquip->getWeapon(0u);
             if (mChargeLv == 1) {
                 setEffect(mprEpvCmn, getActParam()->epvIndex, getActParam()->epvNoChargeComp, static_cast<uDDOModel*>(t0));
             }

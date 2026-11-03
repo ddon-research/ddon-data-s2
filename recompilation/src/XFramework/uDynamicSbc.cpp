@@ -6,10 +6,16 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "cBVHCollision.h"
+#include "cResource.h"
 #include "cUnit.h"
 #include "nCollision.h"
 #include "rDynamicSbc.h"
 #include "sCollision.h"
+#include "sMain.h"
+#include "sResource.h"
 #include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -124,21 +130,13 @@ __attribute__((weak)) void uDynamicSbc::setStaticData(rDynamicSbc* pRDSbc) {
     /* stub */
 }
 
-u32 uDynamicSbc::getSbcType() const {
-    return mScrFilter.mScrType;
-}
+static auto ddon_emit_0x01bbd3d0 __attribute__((used)) = &uDynamicSbc::getSbcType;
 
-void uDynamicSbc::setSbcType(u32 set) {
-    mScrFilter.mScrType = set;
-}
+static auto ddon_emit_0x01bbd3e0 __attribute__((used)) = &uDynamicSbc::setSbcType;
 
-u32 uDynamicSbc::getSbcGroup() const {
-    return mScrFilter.mScrGroup;
-}
+static auto ddon_emit_0x01bbd3f0 __attribute__((used)) = &uDynamicSbc::getSbcGroup;
 
-void uDynamicSbc::setSbcGroup(u8 GroupIndex) {
-    mScrFilter.setScrGroup(GroupIndex);
-}
+static auto ddon_emit_0x01bbd400 __attribute__((used)) = &uDynamicSbc::setSbcGroup;
 
 void uDynamicSbc::setOwnerUI(uModel* pmod) {
     setOwner(pmod, static_cast<rDynamicSbc*>(nullptr));

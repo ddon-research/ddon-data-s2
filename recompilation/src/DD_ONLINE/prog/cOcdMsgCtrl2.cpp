@@ -2,9 +2,13 @@
 #include <new>
 #include "cOcdMsgCtrl2.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cContextInterface.h"
+#include "cOcdBase.h"
+#include "cOcdInfo.h"
 #include "../../XFramework/cUnit.h"
 #include "cpOcdCtrl.h"
 #include "nDDOUtility.h"

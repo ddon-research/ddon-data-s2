@@ -128,3 +128,11 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cAISensorNodeRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAISensor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

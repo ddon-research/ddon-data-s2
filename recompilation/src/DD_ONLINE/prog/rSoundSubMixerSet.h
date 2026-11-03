@@ -143,6 +143,14 @@ private:
     static const u8 DATA_VERSION = 1;
 };
 
+inline void* rSoundSubMixerSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rSoundSubMixerSet::BasicSubMixers::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSoundSubMixerSet::BasicSubMixers::BasicSubMixers() {
     this->mID = 0;
     this->mpResource7 = nullptr;

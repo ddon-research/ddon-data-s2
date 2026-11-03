@@ -185,6 +185,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpJob06::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 cpJob06::getAirChantCount() {
     return this->mAirChantCount;
 }

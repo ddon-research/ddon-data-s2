@@ -195,6 +195,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* sPlayerManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sPlayerManager* sPlayerManager::getInstance() {
     return ::sPlayerManager::mpInstance;
 }

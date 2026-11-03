@@ -163,6 +163,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uShlAlchemy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uShlAlchemy::uShlAlchemy() {
     this->mAlchemyValue = 0.0f;
     this->mOldColorLv = -1;
@@ -179,4 +183,12 @@ inline uShlAlchemy::uShlAlchemy() {
 
 inline f32 uShlAlchemy::getAlchemyValue() const {
     return this->mAlchemyValue;
+}
+
+inline void* uShlAlchemyCS03::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uShlAlchemyCS03::requestDeleteDamageAlchemy() {
+    this->mRequestDeleteDamageAlchemy = true;
 }

@@ -349,6 +349,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cKeyCustom::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cKeyCustom::clrSoloExcludeModifierKey() {
     this->mSoloExcludeModifierKey = 0;
 }
@@ -364,4 +368,8 @@ inline void cKeyCustom::clearKey() {
 
 inline u32 cKeyCustom::getPad() const {
     return this->mSt.mPad;
+}
+
+inline void* cKeyCustomManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

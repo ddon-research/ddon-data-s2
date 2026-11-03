@@ -3,34 +3,67 @@
 #include <stdio.h>
 #include "cpJob03.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "cBlowShrinkDmInfo.h"
+#include "cCameraGameTps.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cEfcHandle.h"
+#include "cEquipData.h"
+#include "cHitInfoAfter.h"
 #include "cHumanActBow.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpComponent.h"
+#include "cpEffectProvider.h"
+#include "cpEquip.h"
+#include "cpInput.h"
 #include "cpJobBase.h"
+#include "cpKeepAtkAdjust.h"
+#include "cpKeyCommand.h"
 #include "cpMotionSe.h"
 #include "cpObjCollision.h"
 #include "cpOcdCtrl.h"
+#include "cpSequenceCtrl.h"
+#include "cpVibration.h"
 #include "nCharacterData.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
+#include "nHumanMsg.h"
 #include "rAttackParam.h"
+#include "../../XFramework/rModel.h"
 #include "../../XFramework/rSoundRequest.h"
 #include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sInputManager.h"
+#include "sItemManager.h"
 #include "sPlayerManager.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sUnitManager.h"
 #include "uAimCheck.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uCameraGame.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
 #include "uJobEquip.h"
+#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -214,15 +247,15 @@ void cpJob03::setupCustomData(u32 csId, u32 index) {
         cResource* pRes = sArchiveManager::getInstance()->createRes(tagId, shlId, 1u, false);
         if (pRes != nullptr) {
             mpCstmSkillShlSeList.elems[(index <= 3u) ? index : 0u] = static_cast<rSoundRequest*>(pRes);
-            pRes->cResource::addRef();
-            pRes->cResource::release();
+            pRes->addRef();
+            pRes->release();
         }
     } else {
         cResource* pRes = sArchiveManager::getInstance()->createRes(tagId, shlId, 1u, false);
         if (pRes != nullptr) {
             mpCstmSkillShlSeList.elems[(index <= 3u) ? index : 0u] = static_cast<rSoundRequest*>(pRes);
-            pRes->cResource::addRef();
-            pRes->cResource::release();
+            pRes->addRef();
+            pRes->release();
         }
     }
 }

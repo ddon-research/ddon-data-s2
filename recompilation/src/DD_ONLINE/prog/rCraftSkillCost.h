@@ -103,10 +103,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCraftSkillCostData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCraftSkillCostData::cCraftSkillCostData() {
     this->mCostRate4 = 0.0f;
     this->mCostRate2 = 0.0f;
     this->mCostRate3 = 0.0f;
     this->mTotal = 0;
     this->mCostRate1 = 0.0f;
+}
+
+inline void* rCraftSkillCost::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCraftSkillCostData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftSkillCostData::DTI)->memFree(p_addr);
+}
+
+inline void* cCraftSkillCostData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftSkillCostData::DTI)->memAlloc(sz, align, ::cCraftSkillCostData::DTI.::MtDTI::getID());
 }

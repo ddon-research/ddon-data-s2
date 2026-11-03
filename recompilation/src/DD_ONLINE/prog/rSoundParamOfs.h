@@ -129,6 +129,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cSoundParamOfs::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSoundParamOfs::cSoundParamOfs() {
     this->mVolume = 0.0f;
     this->mPitchShift = 0;
@@ -149,4 +153,20 @@ inline cSoundParamOfs::cSoundParamOfs() {
 
 inline f32 cSoundParamOfs::getVolume() {
     return this->mVolume;
+}
+
+inline void* rSoundParamOfs::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cSoundParamOfs::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundParamOfs::DTI)->memFree(p_addr);
+}
+
+inline void* cSoundParamOfs::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundParamOfs::DTI)->memAlloc(sz, align, ::cSoundParamOfs::DTI.::MtDTI::getID());
 }

@@ -2,6 +2,7 @@
 #include <new>
 #include "sEnemyManager.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
@@ -16,9 +17,16 @@
 #include "rHumanEnemyCustomSkill.h"
 #include "rHumanEnemyEquip.h"
 #include "rHumanEnemyPreset.h"
+#include "sArchiveManager.h"
+#include "sPlayerManager.h"
+#include "sUnitExt.h"
 #include "sUnitManager.h"
 #include "../../XFramework/uBaseModel.h"
+#include "uCharacter.h"
+#include "uDDOModel.h"
 #include "uEnemy.h"
+#include "uHumanEnemy.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

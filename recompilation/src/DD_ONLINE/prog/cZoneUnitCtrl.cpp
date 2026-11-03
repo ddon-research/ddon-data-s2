@@ -2,14 +2,86 @@
 #include <new>
 #include "cZoneUnitCtrl.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../XFramework/cZoneContents.h"
+#include "../../XFramework/cZoneLayout.h"
+#include "../../XFramework/cZoneListener.h"
+#include "cZoneListenerMulti.h"
 #include "nDDOUtility.h"
+#include "../../XFramework/nZone.h"
 #include "../../generated/shared/nZoneUnitCtrl.h"
+#include "rStageList.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sGame.h"
+#include "sZoneUnitCtrl.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+const MtDTI& cZoneCategoryUnitCtrl::getDTI() const {
+    return cZoneCategoryUnitCtrl::DTI;
+}
+
+inline void* cZoneCategoryUnitCtrl::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cZoneCategoryUnitCtrl::DTI)->memAlloc(sz, align, cZoneCategoryUnitCtrl::DTI.getID());
+}
+
+inline void cZoneCategoryUnitCtrl::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cZoneCategoryUnitCtrl::DTI)->memFree(p_addr);
+}
+
+cZoneCategoryUnitCtrl::~cZoneCategoryUnitCtrl() {
+    DDON_STUB("cZoneCategoryUnitCtrl::~cZoneCategoryUnitCtrl")
+    /* stub */
+}
+
+__attribute__((weak)) void cZoneCategoryUnitCtrl::createProperty(MtPropertyList& s) {
+    DDON_STUB("cZoneCategoryUnitCtrl::createProperty")
+    /* stub */
+}
+
+cZoneCategoryUnitCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cZoneCategoryUnitCtrl::MyDTI cZoneCategoryUnitCtrl::DTI("cZoneCategoryUnitCtrl", &::cZoneCategoryUnitCtrlBase::DTI, 40ul, 0u, 0u);
+
+MtObject* cZoneCategoryUnitCtrl::MyDTI::newInstance() const {
+    return new (16u) cZoneCategoryUnitCtrl;
+}
+
+const MtDTI& cZoneCategoryUnitCtrlBase::getDTI() const {
+    return cZoneCategoryUnitCtrlBase::DTI;
+}
+
+inline void* cZoneCategoryUnitCtrlBase::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cZoneCategoryUnitCtrlBase::DTI)->memAlloc(sz, align, cZoneCategoryUnitCtrlBase::DTI.getID());
+}
+
+inline void cZoneCategoryUnitCtrlBase::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cZoneCategoryUnitCtrlBase::DTI)->memFree(p_addr);
+}
+
+inline cZoneCategoryUnitCtrlBase::cZoneCategoryUnitCtrlBase() {
+    setAttribute(32768u, true);
+    setAttribute(0x10000u, true);
+}
+
+cZoneCategoryUnitCtrlBase::~cZoneCategoryUnitCtrlBase() {
+}
+
+cZoneCategoryUnitCtrlBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cZoneCategoryUnitCtrlBase::MyDTI cZoneCategoryUnitCtrlBase::DTI("cZoneCategoryUnitCtrlBase", &::cZoneContents::DTI, 32ul, 0u, 0u);
+
+MtObject* cZoneCategoryUnitCtrlBase::MyDTI::newInstance() const {
+    return new (16u) cZoneCategoryUnitCtrlBase;
+}
 
 const MtDTI& cZoneUnitCtrl::getDTI() const {
     return cZoneUnitCtrl::DTI;

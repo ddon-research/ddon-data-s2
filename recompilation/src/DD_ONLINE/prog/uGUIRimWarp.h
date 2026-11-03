@@ -506,8 +506,28 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIRimWarp::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIRimWarp::stTop::stTop() {
 }
 
+inline void* uGUIRimWarp::cHeaderItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIRimWarp::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIRimWarp::stDialogItem::stDialogItem() {
+}
+
+inline void* uGUIRimWarp::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIRimWarp::cHeaderInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

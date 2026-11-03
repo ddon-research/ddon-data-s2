@@ -142,6 +142,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEnemyLocalEstTable::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEnemyLocalEstTable::cEnemyLocalEstTable() {
     this->mSetUpOff = false;
     this->mStatus = 1;
@@ -152,4 +156,20 @@ inline cEnemyLocalEstTable::cEnemyLocalEstTable() {
     this->mControlType = 1;
     this->mControlIndex = 1;
     this->mBitContrlCommand = 4;
+}
+
+inline void* rEnemyLocalEst::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEnemyLocalEstTable::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyLocalEstTable::DTI)->memFree(p_addr);
+}
+
+inline void* cEnemyLocalEstTable::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyLocalEstTable::DTI)->memAlloc(sz, align, ::cEnemyLocalEstTable::DTI.::MtDTI::getID());
 }

@@ -472,6 +472,10 @@ public:
     static const PARAM param_shop[];
 };
 
+inline void* uGUIGameMenu::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIGameMenu::SELECT uGUIGameMenu::getEndSelect() {
     return this->mEndSelect;
 }
@@ -485,6 +489,10 @@ inline bool uGUIGameMenu::isGachaActive() {
 }
 
 inline uGUIGameMenu::PARAM::PARAM() {
+}
+
+inline void* uGUIGameMenu::cGameMenuUnitWatcher::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIGameMenu::cGameMenuUnitWatcher::cGameMenuUnitWatcher() {

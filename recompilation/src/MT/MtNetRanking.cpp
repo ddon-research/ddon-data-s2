@@ -5,12 +5,17 @@
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtNetBuffer.h"
+#include "MtNetContext.h"
+#include "MtNetCore.h"
+#include "MtNetDevice.h"
+#include "MtNetMediator.h"
 #include "MtNetObject.h"
 #include "MtNetRequest.h"
 #include "MtObject.h"
-#include "../generated/rCharacterEditCameraParam/_rtc.h"
+#include "MtPropertyList.h"
+#include "../generated/shared/_rtc.h"
 #include "../generated/shared/np_npid.h"
-#include "../generated/rCharacterEditCameraParam/np_ranking.h"
+#include "../generated/shared/np_ranking.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

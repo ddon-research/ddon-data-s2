@@ -96,11 +96,19 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataLoadingInfoSchedule::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataLoadingInfoSchedule::CDataLoadingInfoSchedule() {
     this->m_llEndDateTime = 0;
     this->m_llBeginDateTime = 0;
     this->m_unImageId = 0;
     this->m_unPriority = 0;
+}
+
+inline void* CDataLoadingInfoSchedules::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataLoadingInfoSchedules::CDataLoadingInfoSchedules() {

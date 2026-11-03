@@ -410,6 +410,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIQuestInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUIQuestInfo::setOwner(uGUIQuestBoardBase* pOwner) {
     this->mpOwner = pOwner;
 }
@@ -425,4 +429,12 @@ inline uGUIQuestInfo::stPoint::stPoint() {
 }
 
 inline uGUIQuestInfo::stRewardBase::stRewardBase() {
+}
+
+inline void* uGUIQuestInfo::cRewardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIQuestInfo::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

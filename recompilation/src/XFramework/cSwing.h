@@ -161,3 +161,11 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cSwing::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cSwingModel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -322,6 +322,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIMissionInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIMissionInfo::clearDecideCancel() {
+    this->mIsDecide = false;
+    this->mIsCancel = false;
+    this->mIsMemberInfo = false;
+}
+
 inline uGUIPopRmcQuestInfo* uGUIMissionInfo::getGUIPopRmcQuestInfoPtr() {
     return this->mpPopBonus;
 }
@@ -336,6 +346,10 @@ inline void uGUIMissionInfo::eventDecide() {
 
 inline void uGUIMissionInfo::eventCancel() {
     this->mIsCancel = true;
+}
+
+inline void* uGUIMissionInfo::cItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIMissionInfo::missionInfo::missionInfo() {

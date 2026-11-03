@@ -21,6 +21,7 @@ class MtString;
 class CDataAreaBonus;
 class CDataAreaInfoList;
 class CDataBorderRewardRecord;
+class CDataClearTimePointBonus;
 class CDataContentsPlayEnd;
 class CDataContentsPlayStartData;
 class CDataCycleContentsExtraReward;
@@ -28,6 +29,7 @@ class CDataCycleContentsNews;
 class CDataCycleContentsNewsDetail;
 class CDataCycleContentsNoticeData;
 class CDataCycleContentsPlayEnd;
+class CDataCycleContentsPlayStartData;
 class CDataCycleContentsRank;
 class CDataCycleContentsReward;
 class CDataCycleContentsRewardRecord;
@@ -38,7 +40,9 @@ class CDataDeliveryItem;
 class CDataEndContentsGroup;
 class CDataExpiredQuestList;
 class CDataFortDefenseNoticeData;
+class CDataFortDefensePlayStartData;
 class CDataGetRewardBoxItem;
+class CDataHasRegionBreakReward;
 class CDataLightQuestDetail;
 class CDataLightQuestList;
 class CDataLightQuestOrderList;
@@ -48,6 +52,7 @@ class CDataMainQuestList;
 class CDataMainQuestOrderList;
 class CDataOrderConditionInfo;
 class CDataPartyQuestProgressInfo;
+class CDataPawnDungeonReward;
 class CDataPriorityQuest;
 class CDataPriorityQuestSetting;
 class CDataQuestAnnounce;
@@ -76,7 +81,9 @@ class CDataQuestProcessState;
 class CDataQuestProgressWork;
 class CDataQuestSetInfo;
 class CDataQuestTalkInfo;
+class CDataRaidBossEnemyParam;
 class CDataRaidBossNoticeData;
+class CDataRaidBossPlayStartData;
 class CDataRankingRewardRecord;
 class CDataRecommendedQuestInfoList;
 class CDataRewardAbility;
@@ -103,12 +110,14 @@ class CDataWorldManageQuestOrderList;
 // Type aliases from DWARF
 using CContentsPlayStartData = CDataContentsPlayStartData;
 using CCycleContentsNoticeData = CDataCycleContentsNoticeData;
+using CCycleContentsPlayStartData = CDataCycleContentsPlayStartData;
 using CLightQuestDetail = CDataLightQuestDetail;
 using CQuestContents = CDataQuestContents;
 using CQuestList = CDataQuestList;
 using CQuestLog = CDataQuestLog;
 using CQuestOrderList = CDataQuestOrderList;
 using CQuestPointDetail = CDataQuestPointDetail;
+using CRaidBossEnemyParam = CDataRaidBossEnemyParam;
 using CSetQuestDetail = CDataSetQuestDetail;
 using CSetQuestInfoList = CDataSetQuestInfoList;
 using MT_CHAR = char;
@@ -192,6 +201,39 @@ public:
     u8 m_ucUndiscoveredQuestNum;  // offset: 0xd
     u8 m_ucHighDiffcultyQuestNum;  // offset: 0xe
     b8 m_bIsBonus;  // offset: 0xf
+    static MyDTI DTI;
+};
+
+class CDataClearTimePointBonus : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataClearTimePointBonus();
+    explicit CDataClearTimePointBonus(u32, u32);
+public:
+    u32 m_unSeconds;  // offset: 0x8
+    u32 m_unRatio;  // offset: 0xc
     static MyDTI DTI;
 };
 
@@ -497,6 +539,38 @@ public:
     explicit CDataGetRewardBoxItem(const char* in_strUID);
 public:
     MtString m_wstrUID;  // offset: 0x8
+    static MyDTI DTI;
+};
+
+class CDataHasRegionBreakReward : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataHasRegionBreakReward();
+    explicit CDataHasRegionBreakReward(u8);
+public:
+    u8 m_ucRegionNo;  // offset: 0x8
     static MyDTI DTI;
 };
 
@@ -1183,6 +1257,53 @@ public:
     static MyDTI DTI;
 };
 
+class CDataRaidBossEnemyParam : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataRaidBossEnemyParam();
+    explicit CDataRaidBossEnemyParam(u32, u32, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16);
+public:
+    u32 m_unRaidBossId;  // offset: 0x8
+    u32 m_unRateHp;  // offset: 0xc
+    u16 m_usRateHpPart;  // offset: 0x10
+    u16 m_usRateShrinkDef;  // offset: 0x12
+    u16 m_usRateShrinkDefPart;  // offset: 0x14
+    u16 m_usRateBlowDef;  // offset: 0x16
+    u16 m_usRateBlowDefPart;  // offset: 0x18
+    u16 m_usRateOcdDef;  // offset: 0x1a
+    u16 m_usRateOcdAtk;  // offset: 0x1c
+    u16 m_usRateShakeDef;  // offset: 0x1e
+    u16 m_usRateDownDef;  // offset: 0x20
+    u16 m_usRateStr;  // offset: 0x22
+    u16 m_usRatePhyAtkBase;  // offset: 0x24
+    u16 m_usRateMagAtkBase;  // offset: 0x26
+    u16 m_usRatePhyDefBase;  // offset: 0x28
+    u16 m_usRateMagDefBase;  // offset: 0x2a
+    static MyDTI DTI;
+};
+
 class CDataRewardAbility : public CPacketDataBase
 {
 public:
@@ -1648,6 +1769,42 @@ public:
     MtTypedArray<CDataRewardWalletPoint> m_RewardWalletPointList;  // offset: 0x10
     MtTypedArray<CDataRewardJobValue> m_RewardJobValueList;  // offset: 0x30
     MtTypedArray<CDataRewardAbility> m_RewardAbilityList;  // offset: 0x50
+    static MyDTI DTI;
+};
+
+class CDataPawnDungeonReward : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataPawnDungeonReward();
+    explicit CDataPawnDungeonReward(u32, u32, u32, u32, const MtTypedArray<CDataRewardItem>&);
+public:
+    u32 m_unGold;  // offset: 0x8
+    u32 m_unExp;  // offset: 0xc
+    u32 m_unRim;  // offset: 0x10
+    u32 m_unDorb;  // offset: 0x14
+    MtTypedArray<CDataRewardItem> m_RewardItemList;  // offset: 0x18
     static MyDTI DTI;
 };
 
@@ -2188,6 +2345,46 @@ public:
     static MyDTI DTI;
 };
 
+class CDataCycleContentsPlayStartData : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataCycleContentsPlayStartData();
+    explicit CDataCycleContentsPlayStartData(u32, u32, u32, u32, u32, u8, const MtTypedArray<CDataQuestProcessState>&, const MtTypedArray<CDataQuestEnemyInfo>&, const MtTypedArray<CDataQuestLayoutFlagSetInfo>&);
+public:
+    u32 m_unCycleContentsScheduleId;  // offset: 0x8
+    u32 m_unKeyId;  // offset: 0xc
+    u32 m_unQuestScheduleId;  // offset: 0x10
+    u32 m_unQuestId;  // offset: 0x14
+    u32 m_unBaseLevel;  // offset: 0x18
+    u8 m_ucStartPos;  // offset: 0x1c
+    MtTypedArray<CDataQuestProcessState> m_QuestProcessStateList;  // offset: 0x20
+    MtTypedArray<CDataQuestEnemyInfo> m_QuestEnemyInfoList;  // offset: 0x40
+    MtTypedArray<CDataQuestLayoutFlagSetInfo> m_QuestLayoutFlagSetInfoList;  // offset: 0x60
+    static MyDTI DTI;
+};
+
 class CDataFortDefenseNoticeData : public CPacketDataBase
 {
 public:
@@ -2217,6 +2414,39 @@ public:
     explicit CDataFortDefenseNoticeData(const CCycleContentsNoticeData&);
 public:
     CCycleContentsNoticeData m_Common;  // offset: 0x8
+    static MyDTI DTI;
+};
+
+class CDataFortDefensePlayStartData : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataFortDefensePlayStartData();
+    explicit CDataFortDefensePlayStartData(const CCycleContentsPlayStartData&, u32);
+public:
+    CCycleContentsPlayStartData m_Common;  // offset: 0x8
+    u32 m_unWarSituationLevel;  // offset: 0x88
     static MyDTI DTI;
 };
 
@@ -2362,6 +2592,41 @@ public:
     CCycleContentsNoticeData m_Common;  // offset: 0x8
     u32 m_unRaidBossType;  // offset: 0x50
     u32 m_unPlayTimeSec;  // offset: 0x54
+    static MyDTI DTI;
+};
+
+class CDataRaidBossPlayStartData : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataRaidBossPlayStartData();
+    explicit CDataRaidBossPlayStartData(const CCycleContentsPlayStartData&, const MtTypedArray<CDataClearTimePointBonus>&, const CRaidBossEnemyParam&, const MtTypedArray<CDataHasRegionBreakReward>&);
+public:
+    CCycleContentsPlayStartData m_Common;  // offset: 0x8
+    MtTypedArray<CDataClearTimePointBonus> m_ClearTimePointBonusList;  // offset: 0x88
+    CRaidBossEnemyParam m_RaidBossEnemyParam;  // offset: 0xa8
+    MtTypedArray<CDataHasRegionBreakReward> m_HasRegionBreakRewardList;  // offset: 0xd8
     static MyDTI DTI;
 };
 
@@ -2998,12 +3263,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataAreaBonus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataAreaBonus::CDataAreaBonus() {
     this->m_usRimRatio = 0;
     this->m_usAreaPointRatio = 0;
     this->m_unAreaId = 0;
     this->m_usGoldRatio = 0;
     this->m_usExpRatio = 0;
+}
+
+inline void* CDataAreaInfoList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataAreaInfoList::CDataAreaInfoList() {
@@ -3014,8 +3287,41 @@ inline CDataAreaInfoList::CDataAreaInfoList() {
     this->m_bIsBonus = false;
 }
 
+inline void* CDataBorderRewardRecord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataClearTimePointBonus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataClearTimePointBonus::CDataClearTimePointBonus() {
+    this->m_unSeconds = 0;
+    this->m_unRatio = 0;
+}
+
+inline void* CDataContentsPlayEnd::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataContentsPlayStartData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataCycleContentsExtraReward::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCycleContentsExtraReward::CDataCycleContentsExtraReward() {
     this->m_ucType = 0;
+}
+
+inline void* CDataCycleContentsNews::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataCycleContentsNewsDetail::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataCycleContentsNewsDetail::CDataCycleContentsNewsDetail() {
@@ -3025,6 +3331,22 @@ inline CDataCycleContentsNewsDetail::CDataCycleContentsNewsDetail() {
     this->m_unBaseLevel = 0;
 }
 
+inline void* CDataCycleContentsNoticeData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataCycleContentsPlayEnd::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataCycleContentsPlayStartData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataCycleContentsRank::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCycleContentsRank::CDataCycleContentsRank() {
     this->m_ucType = 0;
     this->m_unRank = 0;
@@ -3032,13 +3354,25 @@ inline CDataCycleContentsRank::CDataCycleContentsRank() {
     this->m_ullUpdateDate = 0;
 }
 
+inline void* CDataCycleContentsReward::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataCycleContentsReward::CDataCycleContentsReward() {
     this->m_ucType = 0;
+}
+
+inline void* CDataCycleContentsRewardRecord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataCycleContentsRewardRecord::CDataCycleContentsRewardRecord() {
     this->m_ullRecvMaxDate = 0;
     this->m_bIsExistExtraReward = false;
+}
+
+inline void* CDataCycleContentsStateList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataCycleContentsStateList::CDataCycleContentsStateList() {
@@ -3048,10 +3382,18 @@ inline CDataCycleContentsStateList::CDataCycleContentsStateList() {
     this->m_ucState = 0;
 }
 
+inline void* CDataDeliveredItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataDeliveredItem::CDataDeliveredItem() {
     this->m_unItemId = 0;
     this->m_usItemNum = 0;
     this->m_usNeedNum = 0;
+}
+
+inline void* CDataDeliveredItemRecord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataDeliveredItemRecord::CDataDeliveredItemRecord() {
@@ -3060,12 +3402,24 @@ inline CDataDeliveredItemRecord::CDataDeliveredItemRecord() {
     this->m_usProcessNo = 0;
 }
 
+inline void* CDataDeliveryItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataDeliveryItem::CDataDeliveryItem() {
     this->m_unItemId = 0;
     this->m_usNum = 0;
 }
 
+inline void* CDataEndContentsGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataEndContentsGroup::CDataEndContentsGroup() {
+}
+
+inline void* CDataExpiredQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataExpiredQuestList::CDataExpiredQuestList() {
@@ -3073,7 +3427,31 @@ inline CDataExpiredQuestList::CDataExpiredQuestList() {
     this->m_unQuestId = 0;
 }
 
+inline void* CDataFortDefenseNoticeData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataFortDefensePlayStartData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataGetRewardBoxItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataGetRewardBoxItem::CDataGetRewardBoxItem() {
+}
+
+inline void* CDataHasRegionBreakReward::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataHasRegionBreakReward::CDataHasRegionBreakReward() {
+    this->m_ucRegionNo = 0;
+}
+
+inline void* CDataLightQuestDetail::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataLightQuestDetail::CDataLightQuestDetail() {
@@ -3085,12 +3463,52 @@ inline CDataLightQuestDetail::CDataLightQuestDetail() {
     this->m_unBoardType = 1;
 }
 
+inline void* CDataLightQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataLightQuestOrderList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataLotQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataLotQuestOrderList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataMainQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataMainQuestOrderList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataOrderConditionInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataOrderConditionInfo::CDataOrderConditionInfo() {
     this->m_unQuestScheduleId = 0;
     this->m_bCanProgress = false;
 }
 
+inline void* CDataPartyQuestProgressInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataPartyQuestProgressInfo::CDataPartyQuestProgressInfo() {
+}
+
+inline void* CDataPawnDungeonReward::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataPriorityQuest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataPriorityQuest::CDataPriorityQuest() {
@@ -3098,12 +3516,24 @@ inline CDataPriorityQuest::CDataPriorityQuest() {
     this->m_unQuestId = 0;
 }
 
+inline void* CDataPriorityQuestSetting::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataPriorityQuestSetting::CDataPriorityQuestSetting() {
     this->m_unCharacterId = 0;
 }
 
+inline void* CDataQuestAnnounce::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataQuestAnnounce::CDataQuestAnnounce() {
     this->m_unAnnounceNo = 0;
+}
+
+inline void* CDataQuestCommand::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuestCommand::CDataQuestCommand() {
@@ -3114,6 +3544,10 @@ inline CDataQuestCommand::CDataQuestCommand() {
     this->m_nParam02 = 0;
 }
 
+inline void* CDataQuestContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataQuestContents::CDataQuestContents() {
     this->m_ucType = 0;
     this->m_nParam03 = 0;
@@ -3122,9 +3556,21 @@ inline CDataQuestContents::CDataQuestContents() {
     this->m_nParam02 = 0;
 }
 
+inline void* CDataQuestContentsSituationInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataQuestContentsSituationInfo::CDataQuestContentsSituationInfo() {
     this->m_unQuestScheduleId = 0;
     this->m_unQuestId = 0;
+}
+
+inline void* CDataQuestContentsSituationInfoDetail::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataQuestDefine::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuestDefine::CDataQuestDefine() {
@@ -3134,14 +3580,26 @@ inline CDataQuestDefine::CDataQuestDefine() {
     this->m_usCycleContentsPlaydataRemainDay = 30;
 }
 
+inline void* CDataQuestEnemyInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataQuestEnemyInfo::CDataQuestEnemyInfo() {
     this->m_unGroupId = 0;
     this->m_usLv = 0;
     this->m_bIsPartyRecommend = false;
 }
 
+inline void* CDataQuestFlag::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataQuestFlag::CDataQuestFlag() {
     this->m_unFlagId = 0;
+}
+
+inline void* CDataQuestIdScheduleId::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuestIdScheduleId::CDataQuestIdScheduleId() {
@@ -3149,9 +3607,17 @@ inline CDataQuestIdScheduleId::CDataQuestIdScheduleId() {
     this->m_unQuestScheduleId = 0;
 }
 
+inline void* CDataQuestKeyItemPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataQuestKeyItemPoint::CDataQuestKeyItemPoint() {
     this->m_ucPointID = 0;
     this->m_usPoint = 0;
+}
+
+inline void* CDataQuestKeyItemPointRecord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuestKeyItemPointRecord::CDataQuestKeyItemPointRecord() {
@@ -3159,21 +3625,49 @@ inline CDataQuestKeyItemPointRecord::CDataQuestKeyItemPointRecord() {
     this->m_usProcessNo = 0;
 }
 
+inline void* CDataQuestLayoutFlag::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataQuestLayoutFlag::CDataQuestLayoutFlag() {
     this->m_unFlagId = 0;
+}
+
+inline void* CDataQuestLayoutFlagSetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuestLayoutFlagSetInfo::CDataQuestLayoutFlagSetInfo() {
     this->m_unLayoutFlagNo = 0;
 }
 
+inline void* CDataQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataQuestLog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataQuestLog::CDataQuestLog() {
+}
+
+inline void* CDataQuestOrderConditionParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuestOrderConditionParam::CDataQuestOrderConditionParam() {
     this->m_unType = 0;
     this->m_nParam01 = 0;
     this->m_nParam02 = 0;
+}
+
+inline void* CDataQuestOrderList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataQuestPartyBonusInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuestPartyBonusInfo::CDataQuestPartyBonusInfo() {
@@ -3187,8 +3681,16 @@ inline CDataQuestPartyBonusInfo::CDataQuestPartyBonusInfo() {
     this->m_bIsReceived = false;
 }
 
+inline void* CDataQuestPhaseEvent::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataQuestPhaseEvent::CDataQuestPhaseEvent() {
     this->m_unEventId = 0;
+}
+
+inline void* CDataQuestPhaseEventParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuestPhaseEventParam::CDataQuestPhaseEventParam() {
@@ -3197,9 +3699,25 @@ inline CDataQuestPhaseEventParam::CDataQuestPhaseEventParam() {
     this->m_unValue = 0;
 }
 
+inline void* CDataQuestPointDetail::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataQuestPointDetailRecord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataQuestPointDetailRecord::CDataQuestPointDetailRecord() {
     this->m_unQuestPointRecordId = 0;
     this->m_unPoint = 0;
+}
+
+inline void* CDataQuestProcessState::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataQuestProgressWork::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuestProgressWork::CDataQuestProgressWork() {
@@ -3210,9 +3728,17 @@ inline CDataQuestProgressWork::CDataQuestProgressWork() {
     this->m_nWork01 = 0;
 }
 
+inline void* CDataQuestSetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataQuestSetInfo::CDataQuestSetInfo() {
     this->m_unStageNo = 0;
     this->m_unGroupId = 0;
+}
+
+inline void* CDataQuestTalkInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataQuestTalkInfo::CDataQuestTalkInfo() {
@@ -3221,8 +3747,55 @@ inline CDataQuestTalkInfo::CDataQuestTalkInfo() {
     this->m_bIsOneOnly = false;
 }
 
+inline void* CDataRaidBossEnemyParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataRaidBossEnemyParam::CDataRaidBossEnemyParam() {
+    this->m_unRaidBossId = 0;
+    this->m_unRateHp = 100;
+    this->m_usRateHpPart = 100;
+    this->m_usRateShrinkDef = 100;
+    this->m_usRateShrinkDefPart = 100;
+    this->m_usRateBlowDef = 100;
+    this->m_usRateBlowDefPart = 100;
+    this->m_usRateOcdDef = 100;
+    this->m_usRateOcdAtk = 100;
+    this->m_usRateShakeDef = 100;
+    this->m_usRateDownDef = 100;
+    this->m_usRateStr = 100;
+    this->m_usRatePhyAtkBase = 100;
+    this->m_usRateMagAtkBase = 100;
+    this->m_usRatePhyDefBase = 100;
+    this->m_usRateMagDefBase = 100;
+}
+
+inline void* CDataRaidBossNoticeData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataRaidBossPlayStartData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataRankingRewardRecord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataRecommendedQuestInfoList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataRewardAbility::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataRewardAbility::CDataRewardAbility() {
     this->m_unAbilityNo = 0;
+}
+
+inline void* CDataRewardBoxItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataRewardBoxItem::CDataRewardBoxItem() {
@@ -3233,14 +3806,26 @@ inline CDataRewardBoxItem::CDataRewardBoxItem() {
     this->m_bIsCharge = false;
 }
 
+inline void* CDataRewardBoxRecord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataRewardBoxRecord::CDataRewardBoxRecord() {
     this->m_unListNo = 0;
     this->m_unQuestId = 0;
 }
 
+inline void* CDataRewardItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataRewardItem::CDataRewardItem() {
     this->m_unItemId = 0;
     this->m_usNum = 0;
+}
+
+inline void* CDataRewardItemDetail::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataRewardItemDetail::CDataRewardItemDetail() {
@@ -3249,16 +3834,28 @@ inline CDataRewardItemDetail::CDataRewardItemDetail() {
     this->m_ucType = 0;
 }
 
+inline void* CDataRewardJobValue::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataRewardJobValue::CDataRewardJobValue() {
     this->m_ucType = 0;
     this->m_unAddPoint = 0;
     this->m_unExtraBonusPoint = 0;
 }
 
+inline void* CDataRewardWalletPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataRewardWalletPoint::CDataRewardWalletPoint() {
     this->m_ucType = 0;
     this->m_unAddPoint = 0;
     this->m_unExtraBonusPoint = 0;
+}
+
+inline void* CDataSetQuestDetail::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataSetQuestDetail::CDataSetQuestDetail() {
@@ -3277,4 +3874,52 @@ inline CDataSetQuestDetail::CDataSetQuestDetail() {
     this->m_ucRepeatRewardCompleteNum = 0;
     this->m_ucRandomRewardNum = 0;
     this->m_ucChargeRewardNum = 0;
+}
+
+inline void* CDataSetQuestInfoList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataSetQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataSetQuestOpenDate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataSetQuestOrderList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataTimeGainQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataTimeGainQuestPlayStartData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataTimeLimitedQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataTimeLimitedQuestOrderList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataTutorialQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataTutorialQuestOrderList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataWorldManageQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataWorldManageQuestOrderList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -96,8 +96,28 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cStageToSpot::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cStageToSpot::cStageToSpot() {
     this->mStageNo = 0;
     this->mSpotId = 0;
     this->mRecommendLevel = 0;
+}
+
+inline void* rStageToSpot::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cStageToSpot::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStageToSpot::DTI)->memFree(p_addr);
+}
+
+inline void* cStageToSpot::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStageToSpot::DTI)->memAlloc(sz, align, ::cStageToSpot::DTI.::MtDTI::getID());
 }

@@ -155,3 +155,7 @@ namespace nNetwork {
         static const u32 FINAL_FRAME = 10;
     };
 }  // namespace nNetwork
+
+inline void* nNetwork::SessionDriver::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

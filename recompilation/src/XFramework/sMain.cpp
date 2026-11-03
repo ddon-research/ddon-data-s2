@@ -99,17 +99,11 @@ void sMain::setFrameWait(bool f) {
     mDelayFrame = 0.0f;
 }
 
-bool sMain::isFrameWait() const {
-    return mFrameWait;
-}
+static auto ddon_emit_0x01b9fe60 __attribute__((used)) = &sMain::isFrameWait;
 
-f32 sMain::getDeltaTime() const {
-    return mDeltaTime;
-}
+static auto ddon_emit_0x01b9fe70 __attribute__((used)) = &sMain::getDeltaTime;
 
-void sMain::setDeltaTime(f32 NewValue) {
-    mDeltaTime = NewValue;
-}
+static auto ddon_emit_0x01b9fe40 __attribute__((used)) = &sMain::setDeltaTime;
 
 void sMain::resetFrame() {
     mIdealCounter = mRealCounter;
@@ -133,13 +127,13 @@ void sMain::setPausePrivate(bool NewValue) {
 
 bool sMain::save(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeXML(out, "XFramework Scene 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_STATE, MtSerializer::ENCODING_AUTO);
+    return sz.serializeXML(out, "XFramework Scene 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_STATE, MtSerializer::ENCODING_AUTO);
 }
 
 bool sMain::load(MtStream& in) {
     if (in.isReadable()) {
         MtSerializer sz(65536);
-        return sz.MtSerializer::deserializeXML(in, "XFramework Scene 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_STATE, MtSerializer::ENCODING_AUTO) != nullptr;
+        return sz.deserializeXML(in, "XFramework Scene 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_STATE, MtSerializer::ENCODING_AUTO) != nullptr;
     } else {
         return false;
     }
@@ -147,13 +141,13 @@ bool sMain::load(MtStream& in) {
 
 bool sMain::saveConfig(MtStream& out) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::serializeXML(out, "XFramework Config 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_CONFIG, MtSerializer::ENCODING_AUTO);
+    return sz.serializeXML(out, "XFramework Config 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_CONFIG, MtSerializer::ENCODING_AUTO);
 }
 
 bool sMain::loadConfig(MtStream& in) {
     if (in.isReadable()) {
         MtSerializer sz(65536);
-        return sz.MtSerializer::deserializeXML(in, "XFramework Config 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_CONFIG, MtSerializer::ENCODING_AUTO) != nullptr;
+        return sz.deserializeXML(in, "XFramework Config 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_CONFIG, MtSerializer::ENCODING_AUTO) != nullptr;
     } else {
         return false;
     }

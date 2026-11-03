@@ -7,26 +7,62 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../XFramework/cArea.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cDelegate.h"
 #include "cEfcHandle.h"
+#include "cHitNode.h"
 #include "cHumanAction.h"
+#include "cNetGameServer.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
 #include "cpChargeCtrl.h"
+#include "cpComponent.h"
+#include "cpCorePointCtrl.h"
+#include "cpEffectProvider.h"
+#include "cpEquip.h"
+#include "cpInput.h"
 #include "cpJobBase.h"
 #include "cpKeyCommand.h"
 #include "cpMotionSe.h"
 #include "cpObjCollision.h"
 #include "cpOcdCtrl.h"
+#include "cpShlShotCtrl.h"
+#include "cpStateManager.h"
+#include "cpVibration.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "nHumanMsg.h"
+#include "rAttackParam.h"
+#include "rCollNode.h"
+#include "rEffectProvider.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "sContextManager.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sEnemyManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sInputManager.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sSetManager.h"
+#include "sShlManager.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "sSoundManager.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sUnitManager.h"
+#include "uCharacter.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
 #include "uHuman.h"
 #include "uShlBase.h"
 #ifndef DDON_STUB
@@ -490,29 +526,29 @@ bool cpJob10::canUseCs02Shrink() const {
     if ((t0->mObjStatus & 0x1000001ul) == 0x1000001) {
         cpOcdCtrl* pOcdCtrl = t0->getOcdCtrlPtr();
         if (pOcdCtrl != nullptr) {
-            if (pOcdCtrl->cpOcdCtrl::isOcdActive(4103u)) {
+            if (pOcdCtrl->isOcdActive(4103u)) {
                 return false;
             } else {
-                if (pOcdCtrl->cpOcdCtrl::isOcdActive(4108u)) {
+                if (pOcdCtrl->isOcdActive(4108u)) {
                     return false;
                 } else {
-                    if (pOcdCtrl->cpOcdCtrl::isOcdActive(4100u)) {
+                    if (pOcdCtrl->isOcdActive(4100u)) {
                         return false;
                     } else {
-                        if (pOcdCtrl->cpOcdCtrl::isOcdActive(4106u)) {
+                        if (pOcdCtrl->isOcdActive(4106u)) {
                             return false;
                         } else {
-                            if (pOcdCtrl->cpOcdCtrl::isOcdActive(4107u)) {
+                            if (pOcdCtrl->isOcdActive(4107u)) {
                                 return false;
                             } else {
-                                if (pOcdCtrl->cpOcdCtrl::isOcdActive(4110u)) {
+                                if (pOcdCtrl->isOcdActive(4110u)) {
                                     return false;
                                 } else {
-                                    if (pOcdCtrl->cpOcdCtrl::isOcdActive(4111u)) {
+                                    if (pOcdCtrl->isOcdActive(4111u)) {
                                         return false;
                                     } else {
                                         uHuman* t9 = mpHuman;
-                                        unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 13376);
+                                        unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
                                         if (t10 != 0) {
                                             unsigned char t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10) + 40);
                                             if (static_cast<unsigned char>(t11 + 255) > 9) {
@@ -533,7 +569,7 @@ bool cpJob10::canUseCs02Shrink() const {
                 }
             }
         } else {
-            unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 13376);
+            unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
             if (t10 != 0) {
                 unsigned char t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10) + 40);
                 if (static_cast<unsigned char>(t11 + 255) > 9) {
@@ -562,29 +598,29 @@ bool cpJob10::canUseCs02AirBlow() const {
         if ((t3->mObjStatus & 10ul) == 10) {
             cpOcdCtrl* pOcdCtrl = t3->getOcdCtrlPtr();
             if (pOcdCtrl != nullptr) {
-                if (pOcdCtrl->cpOcdCtrl::isOcdActive(4103u)) {
+                if (pOcdCtrl->isOcdActive(4103u)) {
                     return false;
                 } else {
-                    if (pOcdCtrl->cpOcdCtrl::isOcdActive(4108u)) {
+                    if (pOcdCtrl->isOcdActive(4108u)) {
                         return false;
                     } else {
-                        if (pOcdCtrl->cpOcdCtrl::isOcdActive(4100u)) {
+                        if (pOcdCtrl->isOcdActive(4100u)) {
                             return false;
                         } else {
-                            if (pOcdCtrl->cpOcdCtrl::isOcdActive(4106u)) {
+                            if (pOcdCtrl->isOcdActive(4106u)) {
                                 return false;
                             } else {
-                                if (pOcdCtrl->cpOcdCtrl::isOcdActive(4107u)) {
+                                if (pOcdCtrl->isOcdActive(4107u)) {
                                     return false;
                                 } else {
-                                    if (pOcdCtrl->cpOcdCtrl::isOcdActive(4110u)) {
+                                    if (pOcdCtrl->isOcdActive(4110u)) {
                                         return false;
                                     } else {
-                                        if (pOcdCtrl->cpOcdCtrl::isOcdActive(4111u)) {
+                                        if (pOcdCtrl->isOcdActive(4111u)) {
                                             return false;
                                         } else {
                                             uHuman* t12 = mpHuman;
-                                            unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t3) + 13376);
+                                            unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
                                             if (t13 != 0) {
                                                 unsigned char t14 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t13) + 40);
                                                 if (static_cast<unsigned char>(t14 + 255) > 9) {
@@ -605,7 +641,7 @@ bool cpJob10::canUseCs02AirBlow() const {
                     }
                 }
             } else {
-                unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t3) + 13376);
+                unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
                 if (t13 != 0) {
                     unsigned char t14 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t13) + 40);
                     if (static_cast<unsigned char>(t14 + 255) > 9) {

@@ -6,15 +6,20 @@
 #include <string.h>
 #include "sResource.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCRC.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtFile.h"
+#include "../MT/MtFilePath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "../MT/MtString.h"
 #include "../MT/MtSynchronize.h"
 #include "cResource.h"
 #include "cSystem.h"
+#include "rArchive.h"
 #include "../ZLIB/1.2.8/zlib.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -367,9 +372,7 @@ __attribute__((weak)) void sResource::RemoteInfo::createProperty(MtPropertyList&
     /* stub */
 }
 
-MT_CTSTR sResource::RemoteInfo::getPCName() const {
-    return &mPCName[0];
-}
+static auto ddon_emit_0x01ba6c20 __attribute__((used)) = &sResource::RemoteInfo::getPCName;
 
 void sResource::RemoteInfo::setPCName(MT_CTSTR pc_name) {
     snprintf(&mPCName[0], 64ul, "%s", pc_name);
@@ -377,9 +380,7 @@ void sResource::RemoteInfo::setPCName(MT_CTSTR pc_name) {
     mPCNameLen = static_cast<unsigned int>(strlen(&mPCName[0]));
 }
 
-MT_CTSTR sResource::RemoteInfo::getFolderName() const {
-    return &mFolderName[0];
-}
+static auto ddon_emit_0x01ba6c80 __attribute__((used)) = &sResource::RemoteInfo::getFolderName;
 
 void sResource::RemoteInfo::setFolderName(MT_CTSTR folder_name) {
     snprintf(&mFolderName[0], 64ul, "%s", folder_name);

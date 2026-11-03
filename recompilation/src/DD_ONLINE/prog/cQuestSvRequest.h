@@ -354,6 +354,38 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cQuestSvReqCycleContentsPlayEnd::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestSvReqGetPartyQuestProgressInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestSvReqQuestCancel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestSvReqQuestCompleteFlagClear::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestSvReqQuestOrder::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestSvReqQuestProgress::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestSvReqStartQuestTime::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cQuestSvRequest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cQuestSvRequest::cQuestSvRequest() {
     this->mRno0 = 0;
     this->mpCallbackFunc = static_cast<cQuestSvRequest::PCallbackFunc>(0);

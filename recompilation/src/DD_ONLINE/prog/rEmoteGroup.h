@@ -139,9 +139,21 @@ public:
     static const u8 DATA_VERSION = 1;
 };
 
+inline void* rEmoteGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rEmoteGroup::InfoBinary::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rEmoteGroup::InfoBinary::InfoBinary() {
     this->mpMotList = nullptr;
     this->mMotListNum = 0;
+}
+
+inline void* rEmoteGroup::InfoBinary::MotDataBinary::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rEmoteGroup::InfoBinary::MotDataBinary::MotDataBinary() {

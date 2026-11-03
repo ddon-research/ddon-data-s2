@@ -10,8 +10,8 @@
 #include "MtNetSession.h"
 #include "MtNetUtilityPS4.h"
 #include "MtString.h"
-#include "../generated/rCharacterEditCameraParam/_rtc.h"
-#include "../generated/rCharacterEditCameraParam/np_auth.h"
+#include "../generated/shared/_rtc.h"
+#include "../generated/shared/np_auth.h"
 #include "../generated/shared/np_common.h"
 #include "../generated/shared/np_npid.h"
 
@@ -271,3 +271,7 @@ private:
     static const s32 MAX_NUM_PSN_USER_INFO = 5;
     static const s32 MAX_NUM_PLAYER_HISTORY = 16;
 };
+
+inline s32 MtNetMediator::getNpScoreGameDataRankThreashold(s32 board_id) {
+    return 100;
+}

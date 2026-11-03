@@ -158,6 +158,18 @@ protected:
     static const u8 DATA_VERSION = 1;
 };
 
+inline void* cMagicCommand::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMagicCommand::cMagicCommand() {
     this->mDegree = 0.0f;
+}
+
+inline void* cMagicCommandList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rMagicCommandList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

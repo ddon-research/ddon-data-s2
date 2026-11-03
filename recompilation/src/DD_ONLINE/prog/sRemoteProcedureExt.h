@@ -72,3 +72,7 @@ public:
     static const RPC_ID USER_RPC_ID_CONTEXT = 2000;
     static const RPC_ID USER_RPC_ID_CTRL = 3000;
 };
+
+inline void* sRemoteProcedureExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -161,6 +161,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIPopNumber01::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void uGUIPopNumber01::setMaxNum(s32 n) {
     this->mMaxNum = n;
 }
@@ -171,4 +175,8 @@ inline void uGUIPopNumber01::setNum(s32 n) {
 
 inline s32 uGUIPopNumber01::getNum() {
     return this->mRefNumBox.mCurrentNum;
+}
+
+inline void uGUIPopNumber01::setUnit(uGUIBase* pUnit) {
+    this->mpDialog = pUnit;
 }

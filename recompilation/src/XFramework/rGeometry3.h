@@ -81,3 +81,7 @@ public:
     static const u32 MAGIC = 862938471;
     static const u32 VERSION = 2010111900;
 };
+
+inline void* rGeometry3::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

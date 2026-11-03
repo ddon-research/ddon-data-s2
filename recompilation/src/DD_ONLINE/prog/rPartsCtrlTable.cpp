@@ -6,6 +6,8 @@
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -37,9 +39,7 @@ __attribute__((weak)) void cPartsCtrlTable::setPartsDisp(bool disp, u32 no) {
     /* stub */
 }
 
-u32 cPartsCtrlTable::getPartsNum() {
-    return 128;
-}
+static auto ddon_emit_0x01aaaeb0 __attribute__((used)) = &cPartsCtrlTable::getPartsNum;
 
 __attribute__((weak)) void cPartsCtrlTable::setPartsNum(u32) {
 }

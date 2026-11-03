@@ -200,6 +200,26 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cPawnAIActInter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cPawnAIActInter::cPawnAIActInter() {
     this->mNameID = 0;
+}
+
+inline void* cPawnAIAction::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rPawnAIAction::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cPawnAIAction::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnAIAction::DTI)->memAlloc(sz, align, ::cPawnAIAction::DTI.::MtDTI::getID());
 }

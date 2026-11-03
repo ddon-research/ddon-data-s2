@@ -203,9 +203,17 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataAchieveRewardCommon::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataAchieveRewardCommon::CDataAchieveRewardCommon() {
     this->m_ucType = 0;
     this->m_unRewardId = 0;
+}
+
+inline void* CDataAchievementFurnitureReward::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataAchievementFurnitureReward::CDataAchievementFurnitureReward() {
@@ -213,12 +221,24 @@ inline CDataAchievementFurnitureReward::CDataAchievementFurnitureReward() {
     this->m_unSortId = 0;
 }
 
+inline void* CDataAchievementIdentifier::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataAchievementIdentifier::CDataAchievementIdentifier() {
     this->m_unUid = 0;
     this->m_unIndex = 0;
 }
 
+inline void* CDataAchievementProgress::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataAchievementProgress::CDataAchievementProgress() {
+}
+
+inline void* CDataAchievementRewardProgress::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataAchievementRewardProgress::CDataAchievementRewardProgress() {

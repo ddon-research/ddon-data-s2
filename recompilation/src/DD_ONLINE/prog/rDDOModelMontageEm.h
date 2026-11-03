@@ -128,3 +128,7 @@ public:
 protected:
     static const u32 DATA_VERSION = 2;
 };
+
+inline void* rDDOModelMontageEm::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

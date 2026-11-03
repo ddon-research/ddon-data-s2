@@ -751,12 +751,84 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAIDEnum::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAIDEnum::cAIDEnum() {
     this->mId = 0;
+}
+
+inline void* rAIConditionTree::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rAIConditionTree::rAIConditionTree() {
     this->::cResource::mAttr = 18;
     this->mTreeNum = 0;
     this->mpTreeList = nullptr;
+}
+
+inline u32 rAIConditionTree::getTreeNum() {
+    return this->mTreeNum;
+}
+
+inline void rAIConditionTree::setTreeNum(u32 num) {
+    this->::rAIConditionTree::createTreeList(num);
+}
+
+inline void* rAIConditionTree::TreeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIConditionTree::OperationNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIConditionTree::StateNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIConditionTree::VariableNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIConditionTree::VariableNode::VariableInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIConditionTree::ConstS32Node::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIConditionTree::ConstS64Node::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIConditionTree::ConstF32Node::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIConditionTree::ConstF64Node::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIConditionTree::ConstStringNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIConditionTree::ConstEnumNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAIConditionTreeNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void rAIConditionTreeNode::setChildNum(u32 num) {
+    this->::rAIConditionTreeNode::createChildList(num);
+}
+
+inline u32 rAIConditionTreeNode::getChildNum() {
+    return this->mChildNum;
 }

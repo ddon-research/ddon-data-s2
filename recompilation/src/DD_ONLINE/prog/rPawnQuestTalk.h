@@ -145,8 +145,12 @@ public:
     static MyDTI DTI;
 };
 
-inline u32 rPawnQuestTalk::cTalkData::getGroupSerial() const {
-    return this->mGroupSerial;
+inline void* rPawnQuestTalk::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rPawnQuestTalk::cTalkData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rPawnQuestTalk::cTalkData::cTalkData() {

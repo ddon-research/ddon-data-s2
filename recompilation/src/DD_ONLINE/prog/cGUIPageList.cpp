@@ -3,8 +3,11 @@
 #include "cGUIPageList.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "cControl.h"
+#include "cGUIControlMgr.h"
+#include "../../XFramework/cGUIInstance.h"
 #include "cUIObject.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB

@@ -196,8 +196,16 @@ protected:
     static sMarker* mpInstance;
 };
 
+inline void* sMarker::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sMarker* sMarker::getInstance() {
     return ::sMarker::mpInstance;
+}
+
+inline void* sMarker::cLoadResource::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sMarker::cLoadResource::cLoadResource() {

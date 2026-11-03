@@ -534,3 +534,83 @@ public:
     static const f32 DeltaTimeMax;
     static const u32 MaxWindNum = 5;
 };
+
+inline void* uCnsTinyChain::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rChainCol* uCnsTinyChain::getModelColRes() {
+    return this->mpModelColRes;
+}
+
+inline uModel* uCnsTinyChain::getModelCol() {
+    return this->mpModelCol;
+}
+
+inline uModel* uCnsTinyChain::getTransParent() {
+    return this->mpTransParent;
+}
+
+inline void* uCnsTinyChain::cChainGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 uCnsTinyChain::cChainGroup::getAttrForce() {
+    return this->mAttr & 0xFFFF00u;
+}
+
+inline void uCnsTinyChain::cChainGroup::setAttrForce(u32 attr) {
+    this->mAttr = (attr & 0xFFFF00u) | (this->mAttr & 0xFF0000FFu);
+}
+
+inline void* uCnsTinyChain::cChainNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uCnsTinyChain::cChainNode::setAttr(u32 attr) {
+    this->mAttr = attr;
+}
+
+inline u32 uCnsTinyChain::cChainNode::getAttr() const {
+    return this->mAttr;
+}
+
+inline void uCnsTinyChain::cChainNode::setAttach(u32 attach) {
+    this->mAttach = attach;
+}
+
+inline void uCnsTinyChain::cChainNode::setRotMode(u32 mode) {
+    this->mRotMode = mode;
+}
+
+inline u32 uCnsTinyChain::cChainNode::getRotMode() const {
+    return this->mRotMode;
+}
+
+inline void uCnsTinyChain::cChainNode::setRefJointNo(u32 no) {
+    this->mRefJntNo = no;
+}
+
+inline u32 uCnsTinyChain::cChainNode::getRefJointNo() const {
+    return this->mRefJntNo;
+}
+
+inline void uCnsTinyChain::cChainNode::setAngleMode(u32 mode) {
+    this->mAngleMode = mode;
+}
+
+inline u32 uCnsTinyChain::cChainNode::getAngleMode() const {
+    return this->mAngleMode;
+}
+
+inline u32 uCnsTinyChain::cChainNode::getShapeObject() const {
+    return this->mShapeObject;
+}
+
+inline void uCnsTinyChain::cChainNode::setShapeScroll(u32 shape) {
+    this->mShapeScroll = shape;
+}
+
+inline u32 uCnsTinyChain::cChainNode::getShapeScroll() const {
+    return this->mShapeScroll;
+}

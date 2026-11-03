@@ -1148,6 +1148,14 @@ private:
     static const _COGInfo mCTCOGInfoTable[4];
 };
 
+inline void* uGUIGPShop::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIGPShop::setNGCAPCharge() {
+    this->mIsNGCAPCharge = true;
+}
+
 inline void uGUIGPShop::setGPDialogOpen() {
     this->mIsGPDialogOpen = true;
 }
@@ -1156,4 +1164,56 @@ inline void uGUIGPShop::endBrowser() {
     this->mReqBrowserType = 1;
     this->mHoldBrowserType = 0;
     this->mIsCAPChargeBrowserExec = false;
+}
+
+inline void* uGUIGPShop::cScrollShopDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollChargeDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollTicketDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollStatusDispBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollStatusDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollHistoryDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollCOGDispList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollShopItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollChargeItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollTicketItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollStatusItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollHistoryItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIGPShop::cScrollCOGItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

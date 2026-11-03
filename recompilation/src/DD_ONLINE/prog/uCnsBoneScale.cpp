@@ -6,6 +6,8 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cUnit.h"
 #include "../../XFramework/uConstraint.h"
 #include "../../XFramework/uModel.h"

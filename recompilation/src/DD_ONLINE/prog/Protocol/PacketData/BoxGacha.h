@@ -154,6 +154,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataBoxGachaInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataBoxGachaItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataBoxGachaItemInfo::CDataBoxGachaItemInfo() {
     this->m_dProbability = 0.0;
     this->m_usDrawNum = 0;
@@ -162,6 +170,10 @@ inline CDataBoxGachaItemInfo::CDataBoxGachaItemInfo() {
     this->m_unRank = 0;
     this->m_unItemId = 0;
     this->m_unItemNum = 0;
+}
+
+inline void* CDataBoxGachaSettlementInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataBoxGachaSettlementInfo::CDataBoxGachaSettlementInfo() {

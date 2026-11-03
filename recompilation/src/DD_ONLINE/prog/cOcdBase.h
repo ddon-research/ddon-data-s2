@@ -370,6 +370,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cOcdBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cOcdStatusParam* cOcdBase::getOcdStatusParam() {
+    return &this->mStatusParam;
+}
+
 inline const cOcdStatusParamRes* cOcdBase::getOcdStatusParamRes() {
     return &this->mStatusParamRes;
 }
@@ -378,14 +386,37 @@ inline cOcdImmuneParam* cOcdBase::getOcdImmuneParam() {
     return &this->mImmuneParam;
 }
 
+inline void cOcdBase::setupImmune() {
+    if (this->mImmuneMode != static_cast<nObjCondition::OCD_IMMUNE_MODE>(1)) {
+        return;
+    }
+    this->mImmuneParam.mImmuneLv = 0;
+}
+
 inline void cOcdBase::setActiveTimerRate(f32 rate) {
     this->mActiveTimerRate = rate;
+}
+
+inline void cOcdBase::clearActiveTimerRate() {
+    this->mActiveTimerRate = 1.0f;
+}
+
+inline const cOcdCache& cOcdBase::getOcdReqParam() const {
+    return this->mOcdReqParam;
+}
+
+inline void* cOcdImmuneParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cOcdImmuneParam::cOcdImmuneParam() {
     this->mImmuneRate = 1.0f;
     this->mImmuneLv = 0;
     this->mImmuneLvMax = 0;
+}
+
+inline void* cOcdStatusParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cOcdStatusParam::cOcdStatusParam() {

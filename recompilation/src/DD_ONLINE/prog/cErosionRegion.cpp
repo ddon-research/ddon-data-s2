@@ -3,14 +3,23 @@
 #include "cErosionRegion.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cUnit.h"
 #include "cpErosionEnemy.h"
+#include "cpErosionEnemyBase.h"
+#include "cpShlShotCtrl.h"
 #include "cpStatusChange.h"
 #include "../../generated/shared/nErosionEnemy.h"
 #include "nRegionStatus.h"
 #include "rErosionRegion.h"
+#include "rErosionRegionScaleChange.h"
+#include "../../XFramework/rSoundRequest.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
 #include "uCharacter.h"
 #include "uDDOModel.h"
 #include "uEnemy.h"
@@ -145,30 +154,30 @@ __attribute__((weak)) void cErosionRegion::changeStateGenerate(bool isSetup) {
     switch (static_cast<unsigned int>(mErosionRegionRes.getRegionCategory() - 1)) {
         case 0:
         {
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(33u, true, !isSetup);
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(32u, false, !isSetup);
-            pCpStatusChange->cpStatusChange::changeMontageBitProg(40u, true, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(33u, true, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(32u, false, !isSetup);
+            pCpStatusChange->changeMontageBitProg(40u, true, !isSetup);
             break;
         }
         case 1:
         {
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(35u, true, !isSetup);
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(34u, false, !isSetup);
-            pCpStatusChange->cpStatusChange::changeMontageBitProg(41u, true, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(35u, true, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(34u, false, !isSetup);
+            pCpStatusChange->changeMontageBitProg(41u, true, !isSetup);
             break;
         }
         case 2:
         {
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(37u, true, !isSetup);
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(36u, false, !isSetup);
-            pCpStatusChange->cpStatusChange::changeMontageBitProg(42u, true, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(37u, true, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(36u, false, !isSetup);
+            pCpStatusChange->changeMontageBitProg(42u, true, !isSetup);
             break;
         }
         case 3:
         {
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(39u, true, !isSetup);
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(38u, false, !isSetup);
-            pCpStatusChange->cpStatusChange::changeMontageBitProg(43u, true, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(39u, true, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(38u, false, !isSetup);
+            pCpStatusChange->changeMontageBitProg(43u, true, !isSetup);
             break;
         }
         default:
@@ -190,30 +199,30 @@ __attribute__((weak)) void cErosionRegion::changeStateBreak(bool isSetup) {
     switch (static_cast<unsigned int>(mErosionRegionRes.getRegionCategory() - 1)) {
         case 0:
         {
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(33u, false, !isSetup);
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(32u, true, !isSetup);
-            pCpStatusChange->cpStatusChange::changeMontageBitProg(40u, false, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(33u, false, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(32u, true, !isSetup);
+            pCpStatusChange->changeMontageBitProg(40u, false, !isSetup);
             break;
         }
         case 1:
         {
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(35u, false, !isSetup);
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(34u, true, !isSetup);
-            pCpStatusChange->cpStatusChange::changeMontageBitProg(41u, false, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(35u, false, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(34u, true, !isSetup);
+            pCpStatusChange->changeMontageBitProg(41u, false, !isSetup);
             break;
         }
         case 2:
         {
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(37u, false, !isSetup);
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(36u, true, !isSetup);
-            pCpStatusChange->cpStatusChange::changeMontageBitProg(42u, false, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(37u, false, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(36u, true, !isSetup);
+            pCpStatusChange->changeMontageBitProg(42u, false, !isSetup);
             break;
         }
         case 3:
         {
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(39u, false, !isSetup);
-            pCpStatusChange->cpStatusChange::changeCollisionBitProg(38u, true, !isSetup);
-            pCpStatusChange->cpStatusChange::changeMontageBitProg(43u, false, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(39u, false, !isSetup);
+            pCpStatusChange->changeCollisionBitProg(38u, true, !isSetup);
+            pCpStatusChange->changeMontageBitProg(43u, false, !isSetup);
             break;
         }
         default:

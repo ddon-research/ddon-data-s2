@@ -6,17 +6,21 @@
 // Dependencies
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtObject.h"
+#include "../../XFramework/cZoneContents.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nZoneUnitCtrl.h"
 
 // Forward declarations
 class MtAllocator;
 class MtDTI;
+class MtObject;
 class MtPropertyList;
 class MtVector3;
 namespace nZone { class cLayoutElement; }
 
 // Declarations
+class cZoneCategoryUnitCtrl;
+class cZoneCategoryUnitCtrlBase;
 class cZoneUnitCtrl;
 
 // Type aliases from DWARF
@@ -29,6 +33,37 @@ using s8 = signed char;
 using size_t = _Sizet;
 using u32 = unsigned int;
 using u8 = unsigned char;
+
+class cZoneCategoryUnitCtrlBase : public cZoneContents
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cZoneCategoryUnitCtrlBase();
+    virtual ~cZoneCategoryUnitCtrlBase();
+public:
+    static MyDTI DTI;
+};
 
 class cZoneUnitCtrl : public MtObject
 {
@@ -116,3 +151,66 @@ private:
 public:
     static MyDTI DTI;
 };
+
+class cZoneCategoryUnitCtrl : public cZoneCategoryUnitCtrlBase
+{
+public:
+    enum
+    {
+        ZONE_TYPE_LOCAL = 0,
+        ZONE_TYPE_NUM = 1,
+    };
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cZoneCategoryUnitCtrl();
+    virtual ~cZoneCategoryUnitCtrl();
+    s32 getZoneType() const;
+    s32 getZoneLinkType() const;
+    bool getInDoors() const;
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+private:
+    s32 mZoneType;  // offset: 0x1c
+    u32 mZoneLinkType;  // offset: 0x20
+    bool mInDoors;  // offset: 0x24
+public:
+    static MyDTI DTI;
+};
+
+inline void* cZoneCategoryUnitCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cZoneCategoryUnitCtrl::cZoneCategoryUnitCtrl() {
+    this->mZoneType = 0;
+    this->mZoneLinkType = 0;
+    this->mInDoors = false;
+}
+
+inline void* cZoneCategoryUnitCtrlBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cZoneUnitCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

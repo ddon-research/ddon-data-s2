@@ -301,3 +301,43 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uLight::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline bool uLight::getApproximateDisable() {
+    return this->mApproximateDisable;
+}
+
+inline void uLight::setApproximateDisable(bool diable) {
+    this->mApproximateDisable = diable;
+}
+
+inline u32 uLight::getAttr() const {
+    return this->mAttr;
+}
+
+inline u32 uLight::getPriority() const {
+    return this->mPriority;
+}
+
+inline void uLight::setPriority(u32 v) {
+    this->mPriority = v;
+}
+
+inline bool uLight::getPS3DisableMode() {
+    return this->mIsPS3Disable;
+}
+
+inline bool uLight::getPS4DisableMode() {
+    return this->mIsPS4Disable;
+}
+
+inline bool uLight::getPCDisableMode() {
+    return this->mIsPCDisable;
+}
+
+inline void* uLight::cHardwareDispCtrlLight::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

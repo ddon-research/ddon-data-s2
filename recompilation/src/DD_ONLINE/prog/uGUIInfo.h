@@ -264,8 +264,8 @@ public:
     static MyDTI DTI;
 };
 
-inline u32 uGUIInfo::getInfoResult() {
-    return this->mInfoResult;
+inline void* uGUIInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void uGUIInfo::eventDecide() {
@@ -273,4 +273,12 @@ inline void uGUIInfo::eventDecide() {
         return;
     }
     this->mInfoResult = 1;
+}
+
+inline void* uGUIInfo::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIInfo::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

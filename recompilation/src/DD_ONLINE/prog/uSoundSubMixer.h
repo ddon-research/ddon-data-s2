@@ -358,13 +358,29 @@ private:
     static const u32 MAX_EFFECT_PRESET = 4;
 };
 
+inline void* uSoundSubMixer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uSoundSubMixer::CurrentSubMixer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uSoundSubMixer::CurrentSubMixer::CurrentSubMixer() {
+}
+
+inline void* uSoundSubMixer::CurrentSubMixer::CurrentFader::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uSoundSubMixer::CurrentSubMixer::CurrentFader::CurrentFader() {
     this->mpSoundSubMixer = nullptr;
     this->mSubMixerIndex = 0;
     this->mFaderIndex = 0;
+}
+
+inline void* uSoundSubMixer::FaderParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uSoundSubMixer::FaderParam::FaderParam() {

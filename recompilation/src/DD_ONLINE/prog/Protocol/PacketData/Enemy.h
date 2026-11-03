@@ -157,6 +157,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataNamedEnemyParamClient::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataNamedEnemyParamClient::CDataNamedEnemyParamClient() {
     this->m_ucNameTypeId = 0;
     this->m_usRateShrinkDefPart = 0;
@@ -182,6 +186,10 @@ inline CDataNamedEnemyParamClient::CDataNamedEnemyParamClient() {
     this->m_unId = 0;
     this->m_usRateHp = 0;
     this->m_usRateHpPart = 0;
+}
+
+inline void* CDataTraningRoomEnemyHeader::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataTraningRoomEnemyHeader::CDataTraningRoomEnemyHeader() {

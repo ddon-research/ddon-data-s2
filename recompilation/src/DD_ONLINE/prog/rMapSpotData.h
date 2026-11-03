@@ -116,3 +116,11 @@ public:
     static const s32 DISABLE_NO = -9999;
     static MyDTI DTI;
 };
+
+inline void* rMapSpotData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rMapSpotData::Data::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

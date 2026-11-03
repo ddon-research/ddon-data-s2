@@ -60,5 +60,9 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uShlStick::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uShlStick::uShlStick() {
 }

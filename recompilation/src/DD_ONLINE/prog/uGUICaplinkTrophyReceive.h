@@ -300,3 +300,19 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uGUICaplinkTrophyReceive::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUICaplinkTrophyReceive::setOwner(uGUICaplinkTopMenu* pOwner) {
+    this->mpOwner = pOwner;
+}
+
+inline void* uGUICaplinkTrophyReceive::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUICaplinkTrophyReceive::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

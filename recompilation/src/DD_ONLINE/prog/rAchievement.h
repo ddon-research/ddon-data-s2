@@ -163,6 +163,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cAchievementData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAchievementData::cAchievementData() {
     this->mCategory = 0;
     this->mTrophy = 0;
@@ -171,6 +175,38 @@ inline cAchievementData::cAchievementData() {
     this->mTargetNum = 0;
 }
 
+inline void* cAchievementHeaderData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAchievementHeaderData::cAchievementHeaderData() {
     this->mNum = 0;
+}
+
+inline void* rAchievement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rAchievementHeader::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cAchievementData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAchievementData::DTI)->memFree(p_addr);
+}
+
+inline void* cAchievementData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAchievementData::DTI)->memAlloc(sz, align, ::cAchievementData::DTI.::MtDTI::getID());
+}
+
+inline void cAchievementHeaderData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAchievementHeaderData::DTI)->memFree(p_addr);
+}
+
+inline void* cAchievementHeaderData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAchievementHeaderData::DTI)->memAlloc(sz, align, ::cAchievementHeaderData::DTI.::MtDTI::getID());
 }

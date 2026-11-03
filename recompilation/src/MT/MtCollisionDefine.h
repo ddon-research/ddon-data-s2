@@ -760,10 +760,50 @@ namespace MtCollisionUtil {
 
 }  // namespace MtCollisionUtil
 
+inline void* MtCollisionUtil::MtArrayElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline MtCollisionUtil::MtArrayElement::MtArrayElement() {
 }
 
+inline void* MtCollisionUtil::MtDataBuffer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline MtCollisionUtil::MtStack::MtStack() {
+}
+
+inline void* MtCollisionUtil::MtFunc::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtFunc32::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtFunc32X2::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtFuncPtr::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtFuncPtr32::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtListElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtTreeDTI::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline MtCollisionUtil::MtTreeDTI::MtTreeDTI() {

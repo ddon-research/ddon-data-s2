@@ -6,13 +6,12 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
 
 CPacket::~CPacket() {
-    DDON_STUB("CPacket::~CPacket")
-    /* stub */
 }
 
 CPacketBase::~CPacketBase() {
@@ -116,8 +115,14 @@ __attribute__((weak)) int nPacket::Read(CPacket& packet, bool& v) {
 }
 
 __attribute__((weak)) int nPacket::Read(CPacket& packet, f32& v) {
-    DDON_STUB("nPacket::Read")
-    return {};
+        if (&packet.m_pReader[4] <= packet.m_pWriter) {
+            s32 t = *(s32*)packet.m_pReader;
+            *(s32*)&v = __builtin_bswap32(t);
+            packet.m_pReader = &packet.m_pReader[4];
+            return 4;
+        } else {
+            return 0;
+        }
 }
 
 __attribute__((weak)) int nPacket::Read(CPacket& packet, f64& v) {

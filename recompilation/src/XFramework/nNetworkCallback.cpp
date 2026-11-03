@@ -3,9 +3,11 @@
 #include "nNetworkCallback.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "nNetworkQueue.h"
 #ifndef DDON_STUB

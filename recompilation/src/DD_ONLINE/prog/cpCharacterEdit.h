@@ -596,8 +596,28 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpCharacterEdit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline f32 cpCharacterEdit::getHeightScale() {
     return this->mHeightScale;
+}
+
+inline rCharacterEdit* cpCharacterEdit::getResource() {
+    return this->mpResource;
+}
+
+inline rFatAdjust* cpCharacterEdit::getJobFatAdjust() {
+    return this->mpJobFatAdjust;
+}
+
+inline rFatAdjust* cpCharacterEdit::getCustomFatAdjust() {
+    return this->mpCustomFatAdjust;
+}
+
+inline rFatAdjust* cpCharacterEdit::getEventFatAdjust() {
+    return this->mpEventFatAdjust;
 }
 
 inline void cpCharacterEdit::updateHairReq() {
@@ -646,6 +666,10 @@ inline rSoundStreamRequest* cpCharacterEdit::getVoiceStreamRes() const {
 
 inline void cpCharacterEdit::setBaking() {
     this->mIsBaking = true;
+}
+
+inline rCharacterEditColorDef* cpCharacterEdit::getColorDef(u32 type) {
+    return this->mpColorDef[type];
 }
 
 inline bool cpCharacterEdit::isNeedUpdateMatrixRetry() const {

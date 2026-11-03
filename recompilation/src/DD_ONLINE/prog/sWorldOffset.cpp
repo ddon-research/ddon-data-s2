@@ -5,8 +5,21 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
 #include "../../XFramework/cSystem.h"
 #include "nNetMsgData.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/sMain.h"
+#include "sPlayerManager.h"
+#include "sSoundManager.h"
+#include "../../XFramework/uCoord.h"
+#include "uPlayer.h"
+#include "uStageField.h"
+#include "uStageJoint.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

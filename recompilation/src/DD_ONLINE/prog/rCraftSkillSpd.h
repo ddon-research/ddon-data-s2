@@ -104,7 +104,27 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCraftSkillSpdData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCraftSkillSpdData::cCraftSkillSpdData() {
     this->mSpdRate1 = 0;
     this->mSpdRate2 = 0;
+}
+
+inline void* rCraftSkillSpd::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCraftSkillSpdData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftSkillSpdData::DTI)->memFree(p_addr);
+}
+
+inline void* cCraftSkillSpdData::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftSkillSpdData::DTI)->memAlloc(sz, align, ::cCraftSkillSpdData::DTI.::MtDTI::getID());
 }

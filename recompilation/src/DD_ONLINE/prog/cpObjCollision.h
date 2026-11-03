@@ -418,8 +418,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cHitInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAttackParam* cHitInfo::getAttackParam() {
     return this->mpAttackParam;
+}
+
+inline void* cModelList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cpObjCollisionBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u32 cpObjCollisionBase::getPushGroup() {
@@ -436,6 +448,10 @@ inline void cpObjCollisionBase::clearColNodeProgFlag() {
 
 inline uDDOModel* cpObjCollisionBase::getModel() const {
     return this->mpModel;
+}
+
+inline void* cpObjCollisionBase::cHitFlag::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cpObjCollisionBase::cHitFlag::cHitFlag() {

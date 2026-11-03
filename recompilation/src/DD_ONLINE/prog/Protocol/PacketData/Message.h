@@ -59,6 +59,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataErrorMessage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataErrorMessage::CDataErrorMessage() {
     this->m_unMessageID = 0;
     this->m_unErrorID = 0;

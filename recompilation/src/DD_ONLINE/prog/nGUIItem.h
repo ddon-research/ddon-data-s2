@@ -23,15 +23,16 @@ class MtObject;
 class MtString;
 class cItemParam;
 class cOmControl;
-namespace nGUIItem { struct cLoadOption; }
-namespace nGUIItem { struct cSwitchStorage; }
 class uGUIBase;
 class uGUIItemBase01;
+class uGUIPick01;
 
 // Declarations
 namespace nGUIItem { class cItem; }
 namespace nGUIItem { class cItemList; }
 namespace nGUIItem { struct cLoadCategory; }
+namespace nGUIItem { struct cLoadOption; }
+namespace nGUIItem { struct cSwitchStorage; }
 
 namespace nGUIItem {
     enum EQUIP_INFO
@@ -202,6 +203,7 @@ namespace nGUIItem {
     class cItemList : public ::cUIObject
     {
         friend class ::uGUIItemBase01;
+        friend class ::uGUIPick01;
     public:
         class MyDTI;
     public:
@@ -287,6 +289,34 @@ namespace nGUIItem {
     };
 }  // namespace nGUIItem
 
+namespace nGUIItem {
+    struct cLoadOption
+    {
+    public:
+        cLoadOption(bool _removeEquip, bool _enableFreeSlot, bool _materialOnly, bool _extreamMission);
+    public:
+        bool removeEquip;  // offset: 0x0
+        bool enableFreeSlot;  // offset: 0x1
+        bool materialOnliy;  // offset: 0x2
+        bool extreamMission;  // offset: 0x3
+    };
+}  // namespace nGUIItem
+
+namespace nGUIItem {
+    struct cSwitchStorage
+    {
+    public:
+        cSwitchStorage(nItem::E_STORAGE_TYPE targetStorage, nItem::E_STORAGE_TYPE changeStorage);
+    public:
+        nItem::E_STORAGE_TYPE mTargetStorage;  // offset: 0x0
+        nItem::E_STORAGE_TYPE mChangeStorage;  // offset: 0x4
+    };
+}  // namespace nGUIItem
+
+inline void* nGUIItem::cItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nGUIItem::cItem::cItem() {
     this->mSelect = false;
     this->mpParent = nullptr;
@@ -323,6 +353,10 @@ inline rItemList::rItemParam* nGUIItem::cItem::getResourceParam() {
 
 inline void nGUIItem::cItem::setLimitNumToBag(u32 num) {
     this->mLimitNum3 = num;
+}
+
+inline void* nGUIItem::cItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline MoveItemUIDFromToVec& nGUIItem::cItemList::getItemList() {

@@ -15,10 +15,12 @@ class MtPropertyList;
 class MtSphere;
 class MtUI;
 class MtVector3;
+class aStage;
 class cDraw;
 class cParticle;
 class cSynchronization;
 class cpCatchCtrl;
+class cpEquip;
 class cpIKCtrl;
 class cpJob02;
 class cpJob06;
@@ -26,6 +28,7 @@ class sCamera;
 class sCollision;
 class sControlManager;
 class sEffect;
+class sGUIExt;
 class sSoundExt;
 class sUnit;
 class sUnitManager;
@@ -34,27 +37,34 @@ class uBaseEffect;
 class uBaseModel;
 class uCharacterEdit;
 class uCharacterEditBase;
+class uCnsLookAt;
 class uCnsTinyChain;
 class uConstraint;
 class uDDOModel;
 class uDynamicSbc;
 class uEditSaveLoadFlow;
 class uEffect;
+class uEffectEmitter;
 class uEffectExt;
 class uEnemy;
 class uFade;
 class uFilter;
+class uFullbodyIKHuman2;
 class uGUI;
 class uGUIBase;
 class uGUICharacterEdit;
 class uGUIRankUp;
+class uGUISkill;
+class uGUISkillLvUp;
 class uHuman;
+class uHumanEnemy;
 class uLight;
 class uModel;
 class uOmShell;
 class uOmSwingModel;
 class uScheduler;
 class uScrollCollisionGeometry;
+class uScrollCollisionGeometryGroupModel;
 class uScrollCollisionGeometryModel;
 class uShadow;
 class uShlBakuensen;
@@ -82,9 +92,11 @@ using u64 = __uint64_t;
 
 class cUnit : public MtObject
 {
+    friend class aStage;
     friend class cParticle;
     friend class cSynchronization;
     friend class cpCatchCtrl;
+    friend class cpEquip;
     friend class cpIKCtrl;
     friend class cpJob02;
     friend class cpJob06;
@@ -92,6 +104,7 @@ class cUnit : public MtObject
     friend class sCollision;
     friend class sControlManager;
     friend class sEffect;
+    friend class sGUIExt;
     friend class sSoundExt;
     friend class sUnit;
     friend class sUnitManager;
@@ -100,27 +113,34 @@ class cUnit : public MtObject
     friend class uBaseModel;
     friend class uCharacterEdit;
     friend class uCharacterEditBase;
+    friend class uCnsLookAt;
     friend class uCnsTinyChain;
     friend class uConstraint;
     friend class uDDOModel;
     friend class uDynamicSbc;
     friend class uEditSaveLoadFlow;
     friend class uEffect;
+    friend class uEffectEmitter;
     friend class uEffectExt;
     friend class uEnemy;
     friend class uFade;
     friend class uFilter;
+    friend class uFullbodyIKHuman2;
     friend class uGUI;
     friend class uGUIBase;
     friend class uGUICharacterEdit;
     friend class uGUIRankUp;
+    friend class uGUISkill;
+    friend class uGUISkillLvUp;
     friend class uHuman;
+    friend class uHumanEnemy;
     friend class uLight;
     friend class uModel;
     friend class uOmShell;
     friend class uOmSwingModel;
     friend class uScheduler;
     friend class uScrollCollisionGeometry;
+    friend class uScrollCollisionGeometryGroupModel;
     friend class uScrollCollisionGeometryModel;
     friend class uShadow;
     friend class uShlBakuensen;
@@ -342,6 +362,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cUnit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline s32 cUnit::getMoveLine() const {
+    return static_cast<s32>(this->mMoveLine);
+}
+
 inline u64 cUnit::getUnitGroup() const {
     return this->mUnitGroup;
 }
@@ -350,8 +378,44 @@ inline bool cUnit::isEnable() const {
     return (this->mBeFlag - 1u) <= 1u;
 }
 
+inline void cUnit::setFix(bool fix) {
+    if (fix) {
+        this->mUnitAttr = this->mUnitAttr | 8u;
+    } else {
+        this->mUnitAttr = this->mUnitAttr & 55u;
+    }
+}
+
+inline void cUnit::setMove(bool move) {
+    if (move) {
+        this->mUnitAttr = this->mUnitAttr | 1u;
+    } else {
+        this->mUnitAttr = this->mUnitAttr & 62u;
+    }
+}
+
+inline void cUnit::setDrawMode(u32 draw_mode) {
+    this->mDrawMode = draw_mode;
+}
+
+inline u32 cUnit::getDrawMode() const {
+    return this->mDrawMode;
+}
+
+inline void cUnit::setDrawView(u32 draw_scene) {
+    this->mDrawView = draw_scene;
+}
+
+inline u32 cUnit::getDrawView() const {
+    return this->mDrawView;
+}
+
 inline f32 cUnit::getDeltaTime() const {
     return this->mDeltaTime;
+}
+
+inline u32 cUnit::getBeFlag() const {
+    return this->mBeFlag;
 }
 
 inline bool cUnit::isVisible() const {
@@ -360,4 +424,12 @@ inline bool cUnit::isVisible() const {
 
 inline u32 cUnit::getUnitParam() const {
     return this->mUnitParam;
+}
+
+inline cUnit::cHardwareDispCtrl* cUnit::getHardwareDispCtrl() {
+    return this->mpHardwareDispCtrl;
+}
+
+inline void* cUnit::cHardwareDispCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

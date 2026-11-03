@@ -751,6 +751,10 @@ protected:
     static const u32 E2D_VERSION;
 };
 
+inline void* rEffect2D::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rEffect2D::rEffect2D() {
     this->mBaseFps = 0.0f;
     this->mResourceInfoNum = 0;
@@ -766,4 +770,12 @@ inline rEffect2D::rEffect2D() {
     this->mpBackTexture[1] = nullptr;
     this->mpBackTexture[0] = nullptr;
     this->::cResource::mAttr = 22;
+}
+
+inline u32 rEffect2D::getListNum() const {
+    return this->mListNum;
+}
+
+inline u32 rEffect2D::getResourceSize() const {
+    return (this->mParamBuffSize + (this->mResourceInfoNum * 48u)) + 208u;
 }

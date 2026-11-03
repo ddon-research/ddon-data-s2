@@ -4,19 +4,26 @@
 #include <stdlib.h>
 #include "sPrimitive.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "cBlendState.h"
+#include "cDraw.h"
 #include "cPrim.h"
 #include "cPrimBufferManager.h"
 #include "cPrimTagList.h"
 #include "cPrimTexHandleManager.h"
 #include "cSystem.h"
 #include "nDraw.h"
+#include "nDrawResource.h"
 #include "nPrim.h"
+#include "sMain.h"
+#include "sScene.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

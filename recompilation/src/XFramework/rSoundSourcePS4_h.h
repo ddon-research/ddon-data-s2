@@ -119,3 +119,19 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* rSoundSourceAT9::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rSoundSourceStreamAT9::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rSoundStreamSourcePackage* rSoundSourceStreamAT9::getSourcePackage() const {
+    return this->mpStreamSourcePackage;
+}
+
+inline u32 rSoundSourceStreamAT9::getPackageFileOffset() {
+    return this->mPackageFileOffset;
+}

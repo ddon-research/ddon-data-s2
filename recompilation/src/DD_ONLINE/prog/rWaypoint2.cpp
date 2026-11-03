@@ -5,8 +5,11 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rWaypoint.h"
 #ifndef DDON_STUB
@@ -76,8 +79,25 @@ bool rWaypoint2::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rWaypoint2::save(MtStream& out) {
-    DDON_STUB("rWaypoint2::save")
-    return {};
+        MtDataWriter w(out, 0x1000, 0x1000);
+        MtDataWriter& t1 = w;
+        t1.writeU32(0x325057);
+        t1.writeU32(1);
+        t1.writeU32(mPointList.mLength);
+        for (u32 t2 = 0; t2 < mPointList.mLength; ++t2) {
+            static_cast<rWaypoint::cPoint*>(mPointList.mpArray[(s32)t2])->save(w);
+        }
+        t1.writeU32(mRouteList2.mLength);
+        for (u32 t3 = 0; t3 < mRouteList2.mLength; ++t3) {
+            cRoute2* t4 = static_cast<cRoute2*>(mRouteList2.mpArray[(s32)t3]);
+            const s32* t5 = t4->mPointIdx;
+            t1.writeU32(8);
+            t1.write(t5, sizeof(t4->mPointIdx));
+            const f32* t6 = t4->mWeight;
+            t1.writeU32(8);
+            t1.write(t6, sizeof(t4->mWeight));
+        }
+        return true;
 }
 
 rWaypoint2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

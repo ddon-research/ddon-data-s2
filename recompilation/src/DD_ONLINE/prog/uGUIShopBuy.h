@@ -214,3 +214,11 @@ public:
 private:
     static const s32 mCTButtonIdTable[3];
 };
+
+inline void* uGUIShopBuy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIShopBuy::setCallUnit(cUnit* pUnit) {
+    this->mpCallUnit = pUnit;
+}

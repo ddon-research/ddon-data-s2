@@ -232,6 +232,10 @@ public:
     MtNetPort mPort;  // offset: 0x4
 };
 
+inline void* MtNetServiceError::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline MtNetServiceError* MtNetServiceError::getInstance() {
     return ::MtNetServiceError::mpInstance;
 }

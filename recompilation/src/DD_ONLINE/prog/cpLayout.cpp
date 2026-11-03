@@ -3,15 +3,21 @@
 #include "cpLayout.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
 #include "nLayout.h"
 #include "rLayoutGroupParam.h"
+#include "sSetManager.h"
 #include "sTalkManager.h"
+#include "sWorldOffset.h"
 #include "uControl.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
+#include "uHumanEnemy.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

@@ -144,6 +144,18 @@ public:
     static const u32 DATA_MAGIC = 5260364;
 };
 
+inline void* rLoadingParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rLoadingParam::cDataList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rLoadingParam::cData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rLoadingParam::cData::cData() {
     this->mMsgIdx = 0;
     this->mImgId = 0;

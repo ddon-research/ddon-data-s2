@@ -234,3 +234,7 @@ namespace nShlBase {
         static MyDTI DTI;
     };
 }  // namespace nShlBase
+
+inline void* nShlBase::cShlStickContextInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

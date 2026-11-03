@@ -6,6 +6,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "../../XFramework/cResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -40,9 +41,8 @@ cTexturePNG::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 
 cTexturePNG::MyDTI cTexturePNG::DTI("cTexturePNG", &::cUIObject::DTI, 288ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cTexturePNG::MyDTI::newInstance() const {
-    DDON_STUB("cTexturePNG::MyDTI::newInstance")
-    return nullptr;
+MtObject* cTexturePNG::MyDTI::newInstance() const {
+    return new (16u) cTexturePNG;
 }
 
 const MtDTI& cUIObject::getDTI() const {

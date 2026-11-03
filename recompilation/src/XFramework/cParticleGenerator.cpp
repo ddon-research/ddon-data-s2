@@ -2,17 +2,29 @@
 #include <new>
 #include "cParticleGenerator.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCollision.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtEaseCurve.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtSpline.h"
+#include "cDraw.h"
 #include "cEffect.h"
 #include "cParticle.h"
 #include "cParticleManager.h"
+#include "cPrimTexHandle.h"
 #include "nPrim.h"
 #include "rEffectList.h"
+#include "rEffectStrip.h"
+#include "sCollision.h"
+#include "sEffect.h"
 #include "sGpuParticle.h"
+#include "sMain.h"
+#include "sUnit.h"
+#include "uBaseEffect.h"
+#include "uEffect.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -660,9 +672,8 @@ __attribute__((weak)) void cParticleGenerator::setVertexClothPos(cParticle* pPar
     /* stub */
 }
 
-__attribute__((weak)) u32 cParticleGenerator::setVertexClothPosDiv(cParticle* pParticle, nPrim::Vertex* pVertex, u32 OfsNum, u32 DivNum) {
-    DDON_STUB("cParticleGenerator::setVertexClothPosDiv")
-    return {};
+u32 cParticleGenerator::setVertexClothPosDiv(cParticle* pParticle, nPrim::Vertex* pVertex, u32 OfsNum, u32 DivNum) {
+    return calcVertexPosDiv(pVertex, mpClothVertex[pParticle->mParticleNo].mPos, OfsNum, DivNum);
 }
 
 __attribute__((weak)) void cParticleGenerator::setVertexPos(cParticle* pParticle, sGpuParticle::Particle* pVertex, u32 OfsNum) {
@@ -826,7 +837,7 @@ __attribute__((weak)) bool cParticleGenerator::setIntervalFrame() {
 }
 
 u32 cParticleGenerator::correctSetNum(u32 SetNum) {
-    if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) >> 28) == 1) {
+    if (mParticleVolume == 1) {
         unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 480);
         if (mDecreaseWaitTimer == 0) {
             if (SetNum <= 1u) {
@@ -850,7 +861,7 @@ u32 cParticleGenerator::correctSetNum(u32 SetNum) {
             return 0;
         }
     } else {
-        if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) >> 28) == 0) {
+        if (mParticleVolume == 0) {
             unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 480);
             if (mDecreaseWaitTimer != 0) {
                 *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 480) = static_cast<unsigned int>(static_cast<unsigned long>(t1 & 0xFFFF00FFu) | static_cast<unsigned long>(static_cast<unsigned short>(((t1 >> 8) * 256u) + 0xFF00u)));

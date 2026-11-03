@@ -34,6 +34,7 @@ class MtString;
 
 // Declarations
 class CDataCharacterInfo;
+class CDataJobExpMode;
 class CDataJobPlayPoint;
 class CDataJobValueShopItem;
 class CDataPlayPointData;
@@ -51,6 +52,39 @@ using b8 = bool;
 using size_t = _Sizet;
 using u32 = unsigned int;
 using u8 = unsigned char;
+
+class CDataJobExpMode : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataJobExpMode();
+    explicit CDataJobExpMode(u8 in_Job, u8 in_ExpMode);
+public:
+    u8 m_ucJob;  // offset: 0x8
+    u8 m_ucExpMode;  // offset: 0x9
+    static MyDTI DTI;
+};
 
 class CDataJobValueShopItem : public CPacketDataBase
 {
@@ -216,8 +250,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataCharacterInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataJobExpMode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataJobExpMode::CDataJobExpMode() {
+    this->m_ucJob = 0;
+    this->m_ucExpMode = 0;
+}
+
+inline void* CDataJobPlayPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataJobPlayPoint::CDataJobPlayPoint() {
     this->m_ucJob = 0;
+}
+
+inline void* CDataJobValueShopItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataJobValueShopItem::CDataJobValueShopItem() {
@@ -227,6 +282,10 @@ inline CDataJobValueShopItem::CDataJobValueShopItem() {
     this->m_unPrice = 0;
     this->m_unLineupId = 0;
     this->m_unItemId = 0;
+}
+
+inline void* CDataPlayPointData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataPlayPointData::CDataPlayPointData() {

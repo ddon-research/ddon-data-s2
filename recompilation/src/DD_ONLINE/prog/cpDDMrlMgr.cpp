@@ -7,13 +7,23 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "cComponentManager.h"
 #include "cDDMaterialCtrl.h"
 #include "cpComponent.h"
+#include "cpEquip.h"
 #include "../../XFramework/nDrawMaterial.h"
 #include "rOutlineParamList.h"
 #include "sEffectExt.h"
 #include "../../XFramework/uBaseModel.h"
+#include "uDDOModel.h"
+#include "uEnemy.h"
+#include "uHuman.h"
+#include "uHumanEnemy.h"
+#include "uPlayer.h"
+#include "uWeapon.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -62,9 +72,7 @@ __attribute__((weak)) void cpDDMrlMgr::setOwner(MtObject* pOwner) {
     /* stub */
 }
 
-cDDMaterialCtrl* cpDDMrlMgr::getDDMrlCtrl(u32 set) {
-    return &mpDDMrlCtrl;
-}
+static auto ddon_emit_0x01a58930 __attribute__((used)) = &cpDDMrlMgr::getDDMrlCtrl;
 
 void cpDDMrlMgr::setDDMrlCtrlEquip(cDDMaterialCtrl* set) {
     u32 i = 0;
@@ -156,9 +164,7 @@ void cpDDMrlMgr::setOutlineTypeSdl(u32 type) {
     }
 }
 
-u32 cpDDMrlMgr::getOutlineTypeSdl() {
-    return mSdlOutlineRequestNo;
-}
+static auto ddon_emit_0x01a58970 __attribute__((used)) = &cpDDMrlMgr::getOutlineTypeSdl;
 
 void cpDDMrlMgr::requestDeadShader() {
     mbDirtyMrlMode = true;
@@ -209,8 +215,15 @@ void cpDDMrlMgr::requestDeadShader() {
 }
 
 __attribute__((weak)) bool cpDDMrlMgr::isEndDeadShader() {
-    DDON_STUB("cpDDMrlMgr::isEndDeadShader")
-    return {};
+        mbDirty = true;
+        bool ret = false;
+        if ((mOwnerModelKind & 4) != 0) {
+            ret = static_cast<cDDMaterialCtrl::cShaderDataDamage*>(mpDDMrlCtrl.mBaseShaderData.getBuffer()[2])->isEnd();
+        }
+        if ((mOwnerModelKind & 0x20) != 0) {
+            ret = static_cast<cDDMaterialCtrl::cShaderDataMaterial*>(mpDDMrlCtrl.mMaterialData.getBuffer()[2])->isEnd();
+        }
+        return ret;
 }
 
 __attribute__((weak)) void cpDDMrlMgr::requestAilmentShader(u32 type, u32 prio) {
@@ -444,9 +457,7 @@ __attribute__((weak)) void cpDDMrlMgr::createProperty(MtPropertyList& s) {
 __attribute__((weak)) void cpDDMrlMgr::setDDMrlCtrl(cDDMaterialCtrl* ptr, u32 set) {
 }
 
-u32 cpDDMrlMgr::getDDMrlCtrlNum() {
-    return 1;
-}
+static auto ddon_emit_0x01a58950 __attribute__((used)) = &cpDDMrlMgr::getDDMrlCtrlNum;
 
 __attribute__((weak)) void cpDDMrlMgr::setDDMrlCtrlNum(u32 set) {
 }
@@ -465,8 +476,6 @@ const MtDTI& cpDDMrlMgr::cMaterialAnimationRequestData::getDTI() const {
 }
 
 cpDDMrlMgr::cMaterialAnimationRequestData::~cMaterialAnimationRequestData() {
-    DDON_STUB("cpDDMrlMgr::cMaterialAnimationRequestData::~cMaterialAnimationRequestData")
-    /* stub */
 }
 
 cpDDMrlMgr::cMaterialAnimationRequestData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

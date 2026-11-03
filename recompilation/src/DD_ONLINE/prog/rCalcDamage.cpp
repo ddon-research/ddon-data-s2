@@ -7,6 +7,8 @@
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -120,6 +122,10 @@ const MtDTI& cCalcDamageLvAdj::getDTI() const {
     return cCalcDamageLvAdj::DTI;
 }
 
+inline void* cCalcDamageLvAdj::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCalcDamageLvAdj::DTI)->memAlloc(sz, align, cCalcDamageLvAdj::DTI.getID());
+}
+
 inline void cCalcDamageLvAdj::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCalcDamageLvAdj::DTI)->memFree(p_addr);
 }
@@ -133,9 +139,8 @@ cCalcDamageLvAdj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 cCalcDamageLvAdj::MyDTI cCalcDamageLvAdj::DTI("cCalcDamageLvAdj", &::MtObject::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCalcDamageLvAdj::MyDTI::newInstance() const {
-    DDON_STUB("cCalcDamageLvAdj::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCalcDamageLvAdj::MyDTI::newInstance() const {
+    return new (16u) cCalcDamageLvAdj;
 }
 
 const MtDTI& cDamageSaveEmLvParam::getDTI() const {
@@ -192,6 +197,10 @@ const MtDTI& cDmJobAdjParam::getDTI() const {
     return cDmJobAdjParam::DTI;
 }
 
+inline void* cDmJobAdjParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDmJobAdjParam::DTI)->memAlloc(sz, align, cDmJobAdjParam::DTI.getID());
+}
+
 inline void cDmJobAdjParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDmJobAdjParam::DTI)->memFree(p_addr);
 }
@@ -205,9 +214,8 @@ cDmJobAdjParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 cDmJobAdjParam::MyDTI cDmJobAdjParam::DTI("cDmJobAdjParam", &::MtObject::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDmJobAdjParam::MyDTI::newInstance() const {
-    DDON_STUB("cDmJobAdjParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDmJobAdjParam::MyDTI::newInstance() const {
+    return new (16u) cDmJobAdjParam;
 }
 
 const MtDTI& cDmJobPawnAdjParam::getDTI() const {

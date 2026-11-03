@@ -16,6 +16,7 @@ class MtAllocator;
 class MtDTI;
 class MtObject;
 class MtVector3;
+class aStage;
 class cZoneMultiListener;
 class cZoneMultiStack;
 class cZoneUnitCtrl;
@@ -33,6 +34,7 @@ using u32 = unsigned int;
 
 class sZoneUnitCtrl : public cSystem
 {
+    friend class aStage;
 public:
     class MyDTI;
 public:
@@ -84,3 +86,11 @@ public:
 private:
     static sZoneUnitCtrl* mpInstance;
 };
+
+inline void* sZoneUnitCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline sZoneUnitCtrl* sZoneUnitCtrl::getInstance() {
+    return ::sZoneUnitCtrl::mpInstance;
+}

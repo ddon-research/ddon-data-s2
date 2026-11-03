@@ -8,6 +8,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -50,174 +51,78 @@ __attribute__((weak)) MtVector3 cWind::getWindDir() const {
 __attribute__((weak)) void cWind::setDummyVec(const MtVector3&) {
 }
 
-f32 cWind::getDirPitchCycle() const {
-    return mDirPitch.mCycle;
-}
+static auto ddon_emit_0x01bc6bf0 __attribute__((used)) = &cWind::getDirPitchCycle;
 
-f32 cWind::getDirPitchCycleAdd() const {
-    return mDirPitch.mCycleAdd;
-}
+static auto ddon_emit_0x01bc6c10 __attribute__((used)) = &cWind::getDirPitchCycleAdd;
 
-f32 cWind::getDirPitchAmpValue() const {
-    return mDirPitch.mAmpValue;
-}
+static auto ddon_emit_0x01bc6c30 __attribute__((used)) = &cWind::getDirPitchAmpValue;
 
-f32 cWind::getDirPitchAmpRate() const {
-    return mDirPitch.mAmpRate;
-}
+static auto ddon_emit_0x01bc6c70 __attribute__((used)) = &cWind::getDirPitchAmpRate;
 
 __attribute__((weak)) MtRangeF cWind::getDirPitchParam() const {
     DDON_STUB("cWind::getDirPitchParam")
     __builtin_unreachable();
 }
 
-void cWind::setDirPitchCycle(f32 Cycle) {
-    mDirPitch.mCycle = Cycle;
-}
+static auto ddon_emit_0x01bc6c00 __attribute__((used)) = &cWind::setDirPitchCycle;
 
-void cWind::setDirPitchCycleAdd(f32 CycleAdd) {
-    mDirPitch.mCycleAdd = CycleAdd;
-}
+static auto ddon_emit_0x01bc6c20 __attribute__((used)) = &cWind::setDirPitchCycleAdd;
 
-void cWind::setDirPitchAmpValue(f32 AmpValue) {
-    if (0.01f > AmpValue) {
-        mDirPitch.mAmpValue = 0.01f;
-    } else {
-        if (AmpValue > 0.99f) {
-            mDirPitch.mAmpValue = 0.99f;
-        } else {
-            mDirPitch.mAmpValue = AmpValue;
-        }
-    }
-}
+static auto ddon_emit_0x01bc6c40 __attribute__((used)) = &cWind::setDirPitchAmpValue;
 
-void cWind::setDirPitchAmpRate(f32 AmpRate) {
-    if (3.57f > AmpRate) {
-        mDirPitch.mAmpRate = 3.57f;
-    } else {
-        if (AmpRate > 4.0f) {
-            mDirPitch.mAmpRate = 4.0f;
-        } else {
-            mDirPitch.mAmpRate = AmpRate;
-        }
-    }
-}
+static auto ddon_emit_0x01bc6c80 __attribute__((used)) = &cWind::setDirPitchAmpRate;
 
 __attribute__((weak)) void cWind::setDirPitchParam(const MtRangeF& Param) {
     DDON_STUB("cWind::setDirPitchParam")
     /* stub */
 }
 
-f32 cWind::getDirYawCycle() const {
-    return mDirYaw.mCycle;
-}
+static auto ddon_emit_0x01bc6d10 __attribute__((used)) = &cWind::getDirYawCycle;
 
-f32 cWind::getDirYawCycleAdd() const {
-    return mDirYaw.mCycleAdd;
-}
+static auto ddon_emit_0x01bc6d30 __attribute__((used)) = &cWind::getDirYawCycleAdd;
 
-f32 cWind::getDirYawAmpValue() const {
-    return mDirYaw.mAmpValue;
-}
+static auto ddon_emit_0x01bc6d50 __attribute__((used)) = &cWind::getDirYawAmpValue;
 
-f32 cWind::getDirYawAmpRate() const {
-    return mDirYaw.mAmpRate;
-}
+static auto ddon_emit_0x01bc6d90 __attribute__((used)) = &cWind::getDirYawAmpRate;
 
 __attribute__((weak)) MtRangeF cWind::getDirYawParam() const {
     DDON_STUB("cWind::getDirYawParam")
     __builtin_unreachable();
 }
 
-void cWind::setDirYawCycle(f32 Cycle) {
-    mDirYaw.mCycle = Cycle;
-}
+static auto ddon_emit_0x01bc6d20 __attribute__((used)) = &cWind::setDirYawCycle;
 
-void cWind::setDirYawCycleAdd(f32 CycleAdd) {
-    mDirYaw.mCycleAdd = CycleAdd;
-}
+static auto ddon_emit_0x01bc6d40 __attribute__((used)) = &cWind::setDirYawCycleAdd;
 
-void cWind::setDirYawAmpValue(f32 AmpValue) {
-    if (0.01f > AmpValue) {
-        mDirYaw.mAmpValue = 0.01f;
-    } else {
-        if (AmpValue > 0.99f) {
-            mDirYaw.mAmpValue = 0.99f;
-        } else {
-            mDirYaw.mAmpValue = AmpValue;
-        }
-    }
-}
+static auto ddon_emit_0x01bc6d60 __attribute__((used)) = &cWind::setDirYawAmpValue;
 
-void cWind::setDirYawAmpRate(f32 AmpRate) {
-    if (3.57f > AmpRate) {
-        mDirYaw.mAmpRate = 3.57f;
-    } else {
-        if (AmpRate > 4.0f) {
-            mDirYaw.mAmpRate = 4.0f;
-        } else {
-            mDirYaw.mAmpRate = AmpRate;
-        }
-    }
-}
+static auto ddon_emit_0x01bc6da0 __attribute__((used)) = &cWind::setDirYawAmpRate;
 
 __attribute__((weak)) void cWind::setDirYawParam(const MtRangeF& Param) {
     DDON_STUB("cWind::setDirYawParam")
     /* stub */
 }
 
-f32 cWind::getSpeedCycle() const {
-    return mSpeed.mCycle;
-}
+static auto ddon_emit_0x01bc6e30 __attribute__((used)) = &cWind::getSpeedCycle;
 
-f32 cWind::getSpeedCycleAdd() const {
-    return mSpeed.mCycleAdd;
-}
+static auto ddon_emit_0x01bc6e50 __attribute__((used)) = &cWind::getSpeedCycleAdd;
 
-f32 cWind::getSpeedAmpValue() const {
-    return mSpeed.mAmpValue;
-}
+static auto ddon_emit_0x01bc6e70 __attribute__((used)) = &cWind::getSpeedAmpValue;
 
-f32 cWind::getSpeedAmpRate() const {
-    return mSpeed.mAmpRate;
-}
+static auto ddon_emit_0x01bc6eb0 __attribute__((used)) = &cWind::getSpeedAmpRate;
 
 __attribute__((weak)) MtRangeF cWind::getSpeedParam() const {
     DDON_STUB("cWind::getSpeedParam")
     __builtin_unreachable();
 }
 
-void cWind::setSpeedCycle(f32 Cycle) {
-    mSpeed.mCycle = Cycle;
-}
+static auto ddon_emit_0x01bc6e40 __attribute__((used)) = &cWind::setSpeedCycle;
 
-void cWind::setSpeedCycleAdd(f32 CycleAdd) {
-    mSpeed.mCycleAdd = CycleAdd;
-}
+static auto ddon_emit_0x01bc6e60 __attribute__((used)) = &cWind::setSpeedCycleAdd;
 
-void cWind::setSpeedAmpValue(f32 AmpValue) {
-    if (0.01f > AmpValue) {
-        mSpeed.mAmpValue = 0.01f;
-    } else {
-        if (AmpValue > 0.99f) {
-            mSpeed.mAmpValue = 0.99f;
-        } else {
-            mSpeed.mAmpValue = AmpValue;
-        }
-    }
-}
+static auto ddon_emit_0x01bc6e80 __attribute__((used)) = &cWind::setSpeedAmpValue;
 
-void cWind::setSpeedAmpRate(f32 AmpRate) {
-    if (3.57f > AmpRate) {
-        mSpeed.mAmpRate = 3.57f;
-    } else {
-        if (AmpRate > 4.0f) {
-            mSpeed.mAmpRate = 4.0f;
-        } else {
-            mSpeed.mAmpRate = AmpRate;
-        }
-    }
-}
+static auto ddon_emit_0x01bc6ec0 __attribute__((used)) = &cWind::setSpeedAmpRate;
 
 __attribute__((weak)) void cWind::setSpeedParam(const MtRangeF& Param) {
     DDON_STUB("cWind::setSpeedParam")

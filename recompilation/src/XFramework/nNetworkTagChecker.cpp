@@ -8,6 +8,7 @@
 #include "../MT/MtObject.h"
 #include "cRemoteCall.h"
 #include "nNetworkCoder.h"
+#include "nNetworkDatabase.h"
 #include "nNetworkQueue.h"
 #include "nNetworkSession.h"
 #ifndef DDON_STUB
@@ -88,16 +89,16 @@ inline void nNetwork::TagChecker::RpcSyncReq::operator delete(void* p_addr) {
 
 void nNetwork::TagChecker::RpcSyncReq::serialize(MtStream& stream) {
     nNetwork::Coder cod(stream);
-    cod.::nNetwork::Coder::writeU32(static_cast<u32>(mMemberIndex));
-    cod.::nNetwork::Coder::writeU32(mMemberId);
-    cod.::nNetwork::Coder::writeU32(mTag);
+    cod.writeU32(static_cast<u32>(mMemberIndex));
+    cod.writeU32(mMemberId);
+    cod.writeU32(mTag);
 }
 
 void nNetwork::TagChecker::RpcSyncReq::deserialize(MtStream& stream) {
     nNetwork::Decoder dec(stream);
-    mMemberIndex = static_cast<s32>(dec.::nNetwork::Decoder::readU32());
-    mMemberId = dec.::nNetwork::Decoder::readU32();
-    mTag = dec.::nNetwork::Decoder::readU32();
+    mMemberIndex = static_cast<s32>(dec.readU32());
+    mMemberId = dec.readU32();
+    mTag = dec.readU32();
 }
 
 nNetwork::TagChecker::RpcSyncReq::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

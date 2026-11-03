@@ -184,3 +184,7 @@ public:
     bool mLegacyMode;  // offset: 0x1b9
     static MyDTI DTI;
 };
+
+inline void* uFog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

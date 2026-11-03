@@ -287,6 +287,10 @@ private:
     static sTalkManager* mpInstance;
 };
 
+inline void* sTalkManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void sTalkManager::setTalkTarget(uDDOModel* pUnit) {
     this->mpTalkTarget = pUnit;
 }
@@ -310,6 +314,10 @@ inline void sTalkManager::moveFSMEventMsg_DispEnd() {
 
 inline sTalkManager* sTalkManager::getInstance() {
     return ::sTalkManager::mpInstance;
+}
+
+inline void* sTalkManager::cTellQueueNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sTalkManager::cTellQueueNode::cTellQueueNode() {

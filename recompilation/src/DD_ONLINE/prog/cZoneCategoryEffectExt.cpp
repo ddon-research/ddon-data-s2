@@ -6,6 +6,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cZoneContents.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -77,9 +79,7 @@ void cZCEFLControl::setResourceSet(cZCEFLControl::cResourceSet* pResourceSet, u3
     }
 }
 
-u32 cZCEFLControl::getResourceSetNum() {
-    return mSetList.mLength;
-}
+static auto ddon_emit_0x01a65ca0 __attribute__((used)) = &cZCEFLControl::getResourceSetNum;
 
 __attribute__((weak)) void cZCEFLControl::setResourceSetNum(u32 Num) {
     DDON_STUB("cZCEFLControl::setResourceSetNum")

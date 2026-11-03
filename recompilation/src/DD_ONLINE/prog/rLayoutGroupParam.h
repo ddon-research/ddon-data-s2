@@ -43,11 +43,11 @@ class cLayoutSetOm;
 class cOmControl;
 namespace nLayout { struct stLayoutID; }
 namespace nLayout { struct stSplitID; }
-namespace nLayoutGroupParam { struct NeedAllocCountInfo; }
 
 // Declarations
 class cGroupParam;
 namespace nLayoutGroupParam { struct NativeAllocInfo; }
+namespace nLayoutGroupParam { struct NeedAllocCountInfo; }
 class rLayoutGroupParamList;
 
 // Type aliases from DWARF
@@ -700,6 +700,22 @@ namespace nLayoutGroupParam {
     };
 }  // namespace nLayoutGroupParam
 
+namespace nLayoutGroupParam {
+    struct NeedAllocCountInfo
+    {
+    public:
+        u32 IdTotalNum;  // offset: 0x0
+        u32 LifeAreaTotalNum;  // offset: 0x4
+        u32 AreaHitShapeTotalNum;  // offset: 0x8
+        u32 ShapeInfoAreaTotalNum;  // offset: 0xc
+        u32 ShapeInfoSphereTotalNum;  // offset: 0x10
+        u32 ShapeInfoCylinderTotalNum;  // offset: 0x14
+        u32 ShapeInfoConeTotalNum;  // offset: 0x18
+        u32 ShapeInfoAABBTotalNum;  // offset: 0x1c
+        u32 ShapeInfoOBBTotalNum;  // offset: 0x20
+    };
+}  // namespace nLayoutGroupParam
+
 class rLayoutGroupParamList : public cResource
 {
 public:
@@ -752,6 +768,10 @@ protected:
     static const u8 DATA_VERSION;
 };
 
+inline void* cGroupParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cGroupParam::setDataCommon(u32 data) {
     this->mDataCommon = data;
 }
@@ -760,12 +780,52 @@ inline void cGroupParam::setDataLotFlag(u32 data) {
     this->mDataLotFlag = data;
 }
 
+inline u32 cGroupParam::getQuestNoPrivate() const {
+    return this->mGuardData.mQuestNo;
+}
+
 inline void cGroupParam::setQuestNoPrivate(u32 NewValue) {
     this->mGuardData.mQuestNo = NewValue;
 }
 
 inline void cGroupParam::setLayoutFlagNoPrivate(u32 NewValue) {
     this->mGuardData.mLayoutFlagNo = NewValue;
+}
+
+inline u32 cGroupParam::getGroup() const {
+    return this->mDataCommon & 511u;
+}
+
+inline u32 cGroupParam::getPriority() const {
+    return (this->mDataCommon >> 9) & 0x3FFFFu;
+}
+
+inline u32 cGroupParam::getQuestNo() const {
+    return this->mGuardData.mQuestNo;
+}
+
+inline u32 cGroupParam::getLayoutFlagNo() const {
+    return this->mGuardData.mLayoutFlagNo;
+}
+
+inline u32 cGroupParam::getLoadStageNo() const {
+    return this->mLoadStageNo;
+}
+
+inline u32 cGroupParam::getLoadVersionNo() const {
+    return this->mLoadVersionNo;
+}
+
+inline s32 cGroupParam::getSetMax() const {
+    return static_cast<s32>((this->mSetCondition.mSetCondition >> 2) & 255u);
+}
+
+inline u32 cGroupParam::getDataNum() const {
+    return this->mLayoutDataList.mLength;
+}
+
+inline void cGroupParam::setGroup(u32 group) {
+    this->mDataCommon = (group & 511u) | (this->mDataCommon & 0xFFFFFE00u);
 }
 
 inline bool cGroupParam::getIsLoadLotRes() const {
@@ -780,16 +840,28 @@ inline bool cGroupParam::isDieStageBoss() const {
     return this->mIsDieStageBoss;
 }
 
-inline void cGroupParam::setIsDieStageBossFlag() {
-    this->mIsDieStageBoss = true;
-}
-
 inline bool cGroupParam::isResetList() const {
     return this->mIsResetList;
 }
 
+inline MtArray& cGroupParam::getResetContextList() {
+    return this->mResetContextList;
+}
+
+inline void* cGroupParam::cLifeArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cGroupParam::cLifeArea::cLifeArea() {
     this->mShapeList.::MtArray::mAutoDelete = true;
+}
+
+inline void* cGroupParam::cID::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cGroupParam::EmSetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cGroupParam::EmSetInfo::EmSetInfo() {
@@ -804,7 +876,23 @@ inline cGroupParam::EmSetInfo::EmSetInfo() {
     this->mOmUID = 0;
 }
 
+inline void* cGroupParam::OmSetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cGroupParam::OmSetInfo::OmSetInfo() {
     this->mID = 0;
     this->mStatus = 0;
+}
+
+inline void* cGroupParam::DropItemInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cGroupParam::cUnitData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rLayoutGroupParamList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

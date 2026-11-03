@@ -7,10 +7,14 @@
 #include "../../MT/MtObject.h"
 #include "cBlowShrinkInfo.h"
 #include "cContextInterface.h"
+#include "cHitInfoAfter.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "cpHpDamageCtrl.h"
+#include "cpLockOn.h"
 #include "nObjCollision.h"
 #include "nRegionStatus.h"
+#include "rRegionBreakInfo.h"
 #include "uDDOModel.h"
 #include "uEnemy.h"
 #ifndef DDON_STUB
@@ -46,8 +50,11 @@ cParentRegionStatus::cParentRegionStatus() {
 }
 
 cParentRegionStatus::~cParentRegionStatus() {
-    DDON_STUB("cParentRegionStatus::~cParentRegionStatus")
-    /* stub */
+    if (mpRegionBreakInfo == nullptr) {
+        return;
+    }
+    mpRegionBreakInfo->release();
+    mpRegionBreakInfo = nullptr;
 }
 
 void cParentRegionStatus::update(f32 deltaTime) {
@@ -270,9 +277,50 @@ void cParentRegionStatus::updatePtr() {
     mpOwnerModel = nullptr;
 }
 
-__attribute__((weak)) void cParentRegionStatus::applyRegionBreakInfo() {
-    DDON_STUB("cParentRegionStatus::applyRegionBreakInfo")
-    /* stub */
+void cParentRegionStatus::applyRegionBreakInfo() {
+    if (mpRegionBreakInfo != nullptr) {
+        cpLockOn* pOcLockOn = mpOwnerModel->getLockOnPtr();
+        u32 dataNum = mpRegionBreakInfo->getDataNum();
+        if (dataNum != 0) {
+            if (pOcLockOn == nullptr) {
+                for (unsigned int i2_3 = 0;;) {
+                    if (mpRegionBreakInfo->getData(i2_3) != nullptr) {
+                        if (mpOwnerModel != nullptr) {
+                            cContextInterface::isDead(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
+                        }
+                    }
+                    if (dataNum != (i2_3 + 1u)) {
+                        i2_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                for (unsigned int i0_3 = 0;;) {
+                    cRegionBreakInfo* t0 = mpRegionBreakInfo->getData(i0_3);
+                    if (t0 != nullptr) {
+                        if (mpOwnerModel != nullptr) {
+                            if (cContextInterface::isDead(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo)) {
+                                pOcLockOn->setLockOnTargetState(static_cast<u32>(t0->mLockOffJointID), nLockOnTarget::STATE_BREAK);
+                                pOcLockOn->setLockOnTargetState(static_cast<u32>(t0->mLockOnJointID), nLockOnTarget::STATE_NORMAL);
+                            } else {
+                                pOcLockOn->setLockOnTargetState(static_cast<u32>(t0->mLockOffJointID), nLockOnTarget::STATE_NORMAL);
+                                pOcLockOn->setLockOnTargetState(static_cast<u32>(t0->mLockOnJointID), nLockOnTarget::STATE_BREAK);
+                            }
+                        } else {
+                            pOcLockOn->setLockOnTargetState(static_cast<u32>(t0->mLockOffJointID), nLockOnTarget::STATE_BREAK);
+                            pOcLockOn->setLockOnTargetState(static_cast<u32>(t0->mLockOnJointID), nLockOnTarget::STATE_NORMAL);
+                        }
+                    }
+                    if (dataNum != (i0_3 + 1u)) {
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 cParentRegionStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -112,6 +112,10 @@ public:
     static const u16 DATA_VERSION = 5;
 };
 
+inline void* rCameraList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rCameraList::rCameraList() {
     this->::cResource::mAttr = 18;
     this->mpHdr = nullptr;

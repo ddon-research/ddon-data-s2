@@ -5,17 +5,24 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "cComponentManager.h"
 #include "cControl.h"
 #include "cEditChargeInfoUpdator.h"
 #include "cEditParam.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
 #include "cGUIUtility.h"
 #include "cNetGameServer.h"
 #include "cNetLoginServer.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "cpCharacterEdit.h"
+#include "cpComponent.h"
+#include "nCharacterData.h"
 #include "nCharacterEdit.h"
 #include "nDDOUtility.h"
 #include "../../XFramework/nGUI.h"
@@ -23,9 +30,19 @@
 #include "../../generated/shared/nKeyCustom.h"
 #include "rArchiveListArray.h"
 #include "rCharacterEdit.h"
+#include "rCharacterEditColorDef.h"
+#include "rCharacterEditVoicePalette.h"
+#include "rEquipPresetPalette.h"
 #include "../../XFramework/rGUI.h"
+#include "rSndPitchLimit.h"
+#include "../../XFramework/rSoundRequest.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sInputManager.h"
+#include "sItemManager.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #include "sPadExt.h"
@@ -33,6 +50,8 @@
 #include "sSoundExt.h"
 #include "../../XFramework/sUnit.h"
 #include "uCharacterEdit.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
 #include "uEditSaveLoadFlow.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
@@ -40,6 +59,7 @@
 #include "uGUIGPShop.h"
 #include "uGUISystemMsg.h"
 #include "uGUIsMenuBase.h"
+#include "uMockUpModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -491,7 +511,7 @@ s32 uGUICharacterEdit::getSliderPosFromVal(nCharacterEdit::EDIT_TYPE type, u32 d
         if (div != 0) {
             cEditValue* pValue = t0->getEditValueParameter(type, t0->getEditParam());
             if (pValue != nullptr) {
-                return static_cast<s32>(rCharacterEdit::toSlider(pValue->cEditValue::getValue(), pValue->mMin, pValue->mMax, div));
+                return static_cast<s32>(rCharacterEdit::toSlider(pValue->getValue(), pValue->mMin, pValue->mMax, div));
             } else {
                 return 0;
             }
@@ -601,7 +621,7 @@ __attribute__((weak)) MT_CTSTR uGUICharacterEdit::getDialogExitMsg() {
     nGUIExt::CHARA_EDIT t3 = mEdit;
     if (cGUIUtility::isSalon(t3)) {
         sNetwork* t5 = sNetwork::getInstance();
-        cNetGameServer* t8 = static_cast<sNetworkExt*>(t5)->getGameServer();
+        cNetGameServer* t8 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
         if (t8->isLogin()) {
             nGUIExt::CHARA_EDIT t12 = mEdit;
             if (cGUIUtility::isSalon(t12)) {
@@ -1186,9 +1206,41 @@ __attribute__((weak)) u32 uGUICharacterEdit::evParts(uGUICharaEditPartsWrap::cPa
     return {};
 }
 
-__attribute__((weak)) void uGUICharacterEdit::changePersonal(uGUICharaEditPartsWrap::cPartsBase* pBase, nCharacterEdit::PARTS_EVENT ev) {
-    DDON_STUB("uGUICharacterEdit::changePersonal")
-    /* stub */
+void uGUICharacterEdit::changePersonal(uGUICharaEditPartsWrap::cPartsBase* pBase, nCharacterEdit::PARTS_EVENT ev) {
+    if (ev != nCharacterEdit::PARTS_EVENT_DECIDE) {
+        if (ev == nCharacterEdit::PARTS_EVENT_CANCEL) {
+            s32 t0 = mPersonalitySaveIdx;
+            mpCharacterEdit->getEditParam()->mPersonality = t0;
+        } else {
+            if (ev == nCharacterEdit::PARTS_EVENT_TOP) {
+                if (pBase != nullptr) {
+                    const MtDTI& t1 = pBase->getDTI();
+                    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uGUICharaEditPartsWrap::cPartsRadioButton::DTI) + 8);
+                    for (const MtDTI* v0_0 = &t1;;) {
+                        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pBase) + 440)) != 0) {
+                                unsigned int t2 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pBase) + 440)) + 3096);
+                                mpCharacterEdit->getEditParam()->mPersonality = static_cast<s32>(t2 + 1u);
+                            } else {
+                                mpCharacterEdit->getEditParam()->mPersonality = 1;
+                            }
+                            mpCharacterEdit->requestVoice();
+                            return;
+                        } else {
+                            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        mpCharacterEdit->requestVoice();
+        mPersonalitySaveIdx = mpCharacterEdit->getEditParam()->mPersonality;
+    }
 }
 
 __attribute__((weak)) void uGUICharacterEdit::evInputTopSubChild() {
@@ -1310,9 +1362,9 @@ void uGUICharacterEdit::evInputCloseEquipList(bool isCancel) {
                         uCharacterEdit* t26 = mpCharacterEdit;
                     }
                 }
-                u32 t27 = t7->mCoordinateTagID;
+                u32 t27 = mpCharacterEdit->mCoordinateTagID;
                 sGUI* t28 = sGUI::getInstance();
-                u32 t29 = t7->mNeedCoordinateTagID;
+                u32 t29 = mpCharacterEdit->mNeedCoordinateTagID;
                 if (t27 == t29) {
                     static_cast<sGUIExt*>(t28)->requestSE(0u, 11u);
                 } else {
@@ -1347,7 +1399,7 @@ bool uGUICharacterEdit::isOffline() {
     nGUIExt::CHARA_EDIT t0 = mEdit;
     if (cGUIUtility::isSalon(t0)) {
         sNetwork* t2 = sNetwork::getInstance();
-        cNetGameServer* t5 = static_cast<sNetworkExt*>(t2)->getGameServer();
+        cNetGameServer* t5 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
         bool t6 = t5->isLogin();
         return !t6;
     } else {

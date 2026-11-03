@@ -5,8 +5,17 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cDraw.h"
 #include "../../XFramework/nDraw.h"
+#include "../../XFramework/nDrawConstantTable.h"
+#include "../../XFramework/nDrawMaterial.h"
+#include "../../XFramework/nDrawMaterialStd.h"
 #include "../../XFramework/nDrawMaterialStdEst.h"
+#include "../../XFramework/nDrawResource.h"
+#include "../../XFramework/nDrawTexture.h"
+#include "../../XFramework/rTexture.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

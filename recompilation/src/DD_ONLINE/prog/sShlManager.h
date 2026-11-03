@@ -179,13 +179,58 @@ public:
     static MyDTI DTI;
 };
 
+inline void* sShlManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sShlManager* sShlManager::getInstance() {
     return ::sShlManager::mpInstance;
+}
+
+inline void sShlManager::clearLimitCount() {
+    this->mShlLimitCount[0].mShlCnt = 0;
+    this->mShlLimitCount[0].mpOwner = nullptr;
+    this->mShlLimitCount[1].mShlCnt = 0;
+    this->mShlLimitCount[1].mpOwner = nullptr;
+    this->mShlLimitCount[2].mShlCnt = 0;
+    this->mShlLimitCount[2].mpOwner = nullptr;
+    this->mShlLimitCount[3].mShlCnt = 0;
+    this->mShlLimitCount[3].mpOwner = nullptr;
+    this->mShlLimitCount[4].mShlCnt = 0;
+    this->mShlLimitCount[4].mpOwner = nullptr;
+    this->mShlLimitCount[5].mShlCnt = 0;
+    this->mShlLimitCount[5].mpOwner = nullptr;
+    this->mShlLimitCount[6].mShlCnt = 0;
+    this->mShlLimitCount[6].mpOwner = nullptr;
+    this->mShlLimitCount[7].mShlCnt = 0;
+    this->mShlLimitCount[7].mpOwner = nullptr;
+    this->mShlLimitCount[8].mShlCnt = 0;
+    this->mShlLimitCount[8].mpOwner = nullptr;
+    this->mShlLimitCount[9].mShlCnt = 0;
+    this->mShlLimitCount[9].mpOwner = nullptr;
+    this->mShlLimitCount[10].mShlCnt = 0;
+    this->mShlLimitCount[10].mpOwner = nullptr;
+    this->mShlLimitCount[11].mShlCnt = 0;
+    this->mShlLimitCount[11].mpOwner = nullptr;
+    this->mShlLimitCount[12].mShlCnt = 0;
+    this->mShlLimitCount[12].mpOwner = nullptr;
+    this->mShlLimitCount[13].mShlCnt = 0;
+    this->mShlLimitCount[13].mpOwner = nullptr;
+    this->mShlLimitCount[14].mShlCnt = 0;
+    this->mShlLimitCount[14].mpOwner = nullptr;
+}
+
+inline void* sShlManager::cShlLimitCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sShlManager::cShlLimitCtrl::cShlLimitCtrl() {
     this->mpShl = nullptr;
     this->mLimitId = static_cast<nShlBase::LIMIT_ID>(-1);
+}
+
+inline void* sShlManager::cShlLimitCnt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sShlManager::cShlLimitCnt::cShlLimitCnt() {

@@ -113,6 +113,10 @@ public:
     static const u32 FILTERING_DISABLE_SHAPE = 4294967295;
 };
 
+inline void* cZoneListener::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cZoneLayout* cZoneListener::getZoneLayout() const {
     return this->mpZoneLayout;
 }

@@ -6,21 +6,52 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtRandom.h"
 #include "../../MT/MtString.h"
 #include "Protocol/PacketData/Stage.h"
 #include "cAreaHit.h"
+#include "cComponentManager.h"
+#include "cLayoutSetEnemy.h"
+#include "cNetGameServer.h"
+#include "cOmComponent.h"
+#include "cOmControl.h"
 #include "../../XFramework/cResource.h"
+#include "cpComponent.h"
+#include "cpOmGather.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "nDDOUtility.h"
 #include "nLayout.h"
+#include "nQuest.h"
+#include "../../XFramework/nZone.h"
 #include "rLayout.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sAreaHit.h"
 #include "sContextManager.h"
+#include "sControlManager.h"
+#include "sFlag.h"
 #include "sGame.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #include "sOmManager.h"
+#include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
+#include "sSetManager.h"
+#include "sWorldOffset.h"
+#include "../../XFramework/uBaseModel.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uOmModel.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -103,13 +134,9 @@ __attribute__((weak)) void cGroupParam::copy(const cGroupParam& r) {
     /* stub */
 }
 
-u32 cGroupParam::getGroup() const {
-    return this->mDataCommon & 511u;
-}
+static auto ddon_emit_0x01a99b20 __attribute__((used)) = &cGroupParam::getGroup;
 
-u32 cGroupParam::getPriority() const {
-    return (this->mDataCommon >> 9) & 0x3FFFFu;
-}
+static auto ddon_emit_0x01a99b50 __attribute__((used)) = &cGroupParam::getPriority;
 
 bool cGroupParam::isDisableSplit() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 47)) & 8) >> 3);
@@ -135,29 +162,21 @@ u32 cGroupParam::getLotFlagNo() const {
     return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 52);
 }
 
-u32 cGroupParam::getQuestNo() const {
-    return mGuardData.mQuestNo;
-}
+static auto ddon_emit_0x01a99cd0 __attribute__((used)) = &cGroupParam::getQuestNo;
 
-u32 cGroupParam::getLayoutFlagNo() const {
-    return mGuardData.mLayoutFlagNo;
-}
+static auto ddon_emit_0x01a99cf0 __attribute__((used)) = &cGroupParam::getLayoutFlagNo;
 
 bool cGroupParam::isLoadStage() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 48)) & 8) >> 3);
 }
 
-u32 cGroupParam::getLoadStageNo() const {
-    return mLoadStageNo;
-}
+static auto ddon_emit_0x01a99d40 __attribute__((used)) = &cGroupParam::getLoadStageNo;
 
 bool cGroupParam::isLoadVersion() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 48)) & 16) >> 4);
 }
 
-u32 cGroupParam::getLoadVersionNo() const {
-    return mLoadVersionNo;
-}
+static auto ddon_emit_0x01a99d90 __attribute__((used)) = &cGroupParam::getLoadVersionNo;
 
 bool cGroupParam::isLoadOmit() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 48)) & 32) >> 5);
@@ -171,9 +190,7 @@ bool cGroupParam::isSetSimpleEv() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 72)) & 2) >> 1);
 }
 
-s32 cGroupParam::getSetMax() const {
-    return static_cast<s32>((mSetCondition.mSetCondition >> 2) & 255u);
-}
+static auto ddon_emit_0x01a99e40 __attribute__((used)) = &cGroupParam::getSetMax;
 
 bool cGroupParam::isDeleteLotFlag() const {
     return static_cast<bool>(mDeleteCondition.mDeleteCondition & 1u);
@@ -183,13 +200,9 @@ bool cGroupParam::isDeleteLayoutFlag() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 180)) & 2) >> 1);
 }
 
-u32 cGroupParam::getDataNum() const {
-    return mLayoutDataList.mLength;
-}
+static auto ddon_emit_0x01a99bb0 __attribute__((used)) = &cGroupParam::getDataNum;
 
-void cGroupParam::setGroup(u32 group) {
-    this->mDataCommon = (group & 511u) | (this->mDataCommon & 0xFFFFFE00u);
-}
+static auto ddon_emit_0x01a99b30 __attribute__((used)) = &cGroupParam::setGroup;
 
 __attribute__((weak)) void cGroupParam::setDummy(u32 d) {
 }
@@ -874,8 +887,6 @@ const MtDTI& cGroupParam::cUnitData::getDTI() const {
 }
 
 cGroupParam::cUnitData::~cUnitData() {
-    DDON_STUB("cGroupParam::cUnitData::~cUnitData")
-    /* stub */
 }
 
 __attribute__((weak)) void cGroupParam::cUnitData::createProperty(MtPropertyList& s) {
@@ -936,8 +947,121 @@ __attribute__((weak)) void rLayoutGroupParamList::createProperty(MtPropertyList&
 }
 
 __attribute__((weak)) void rLayoutGroupParamList::destruct() {
-    DDON_STUB("rLayoutGroupParamList::destruct")
-    /* stub */
+    if (mGroupNum != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            mpGroupParamBuff[i0_3].~cGroupParam();
+            if ((i0_3 + 1u) < mGroupNum) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mAllocInfo.IdMaxNum != 0) {
+        for (unsigned int i2_3 = 0;;) {
+            mAllocInfo.pIdArray[i2_3].~cID();
+            if ((i2_3 + 1u) < mAllocInfo.IdMaxNum) {
+                i2_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mAllocInfo.LifeAreaMaxNum != 0) {
+        for (unsigned int i4_3 = 0;;) {
+            mAllocInfo.pLifeAreaArray[i4_3].~cLifeArea();
+            if ((i4_3 + 1u) < mAllocInfo.LifeAreaMaxNum) {
+                i4_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mAllocInfo.AreaHitShapeMaxNum != 0) {
+        for (unsigned int i6_3 = 0;;) {
+            mAllocInfo.pAreaHitShapeArray[i6_3].~AreaHitShape();
+            if ((i6_3 + 1u) < mAllocInfo.AreaHitShapeMaxNum) {
+                i6_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mAllocInfo.ShapeAllocInfo.ShapeBoxMaxNum != 0) {
+        for (unsigned int i8_3 = 0;;) {
+            mAllocInfo.ShapeAllocInfo.pShapeBoxArray[i8_3].~ShapeInfoArea();
+            if ((i8_3 + 1u) < mAllocInfo.ShapeAllocInfo.ShapeBoxMaxNum) {
+                i8_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mAllocInfo.ShapeAllocInfo.ShapeSphereMaxNum != 0) {
+        for (unsigned int i10_3 = 0;;) {
+            mAllocInfo.ShapeAllocInfo.pShapeSphereArray[i10_3].~ShapeInfoSphere();
+            if ((i10_3 + 1u) < mAllocInfo.ShapeAllocInfo.ShapeSphereMaxNum) {
+                i10_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mAllocInfo.ShapeAllocInfo.ShapeCylinderMaxNum != 0) {
+        unsigned int i12_3 = 0;
+        u32 v13_0;
+        for (;;) {
+            mAllocInfo.ShapeAllocInfo.pShapeCylinderArray[i12_3].~ShapeInfoCylinder();
+            v13_0 = mAllocInfo.ShapeAllocInfo.ShapeCylinderMaxNum;
+            if ((i12_3 + 1u) < v13_0) {
+                i12_3 += 1u;
+            } else {
+                break;
+            }
+        }
+        if (v13_0 != 0) {
+            for (unsigned int i14_3 = 0;;) {
+                mAllocInfo.ShapeAllocInfo.pShapeCylinderArray[i14_3].~ShapeInfoCylinder();
+                if ((i14_3 + 1u) < mAllocInfo.ShapeAllocInfo.ShapeCylinderMaxNum) {
+                    i14_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mAllocInfo.ShapeAllocInfo.ShapeConeMaxNum != 0) {
+        for (unsigned int i16_3 = 0;;) {
+            mAllocInfo.ShapeAllocInfo.pShapeConeArray[i16_3].~ShapeInfoCone();
+            if ((i16_3 + 1u) < mAllocInfo.ShapeAllocInfo.ShapeConeMaxNum) {
+                i16_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mAllocInfo.ShapeAllocInfo.ShapeAABBMaxNum != 0) {
+        for (unsigned int i18_3 = 0;;) {
+            mAllocInfo.ShapeAllocInfo.pShapeAABBArray[i18_3].~ShapeInfoAABB();
+            if ((i18_3 + 1u) < mAllocInfo.ShapeAllocInfo.ShapeAABBMaxNum) {
+                i18_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mAllocInfo.ShapeAllocInfo.ShapeOBBMaxNum != 0) {
+        for (unsigned int i20_3 = 0;;) {
+            mAllocInfo.ShapeAllocInfo.pShapeOBBArray[i20_3].~ShapeInfoOBB();
+            if ((i20_3 + 1u) < mAllocInfo.ShapeAllocInfo.ShapeOBBMaxNum) {
+                i20_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    MtMemoryAllocator::getAllocator(rLayoutGroupParamList::DTI)->memFree(static_cast<void*>(mpGroupParamBuff));
+    clear();
 }
 
 void rLayoutGroupParamList::clear() {

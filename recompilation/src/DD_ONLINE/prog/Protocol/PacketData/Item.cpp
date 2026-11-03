@@ -148,6 +148,54 @@ MtObject* CDataEquipJobItem::MyDTI::newInstance() const {
     return new (16u) CDataEquipJobItem;
 }
 
+const MtDTI& CDataEquipPreset::getDTI() const {
+    return CDataEquipPreset::DTI;
+}
+
+inline MtAllocator* CDataEquipPreset::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataEquipPreset::DTI);
+}
+
+void* CDataEquipPreset::operator new(size_t sz, u32 align) {
+    return CDataEquipPreset::getAllocator()->memAlloc(sz, align, CDataEquipPreset::DTI.getID());
+}
+
+__attribute__((weak)) void CDataEquipPreset::operator delete(void* p_addr) {
+    CDataEquipPreset::getAllocator()->memFree(p_addr);
+}
+
+CDataEquipPreset::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataEquipPreset::MyDTI CDataEquipPreset::DTI("CDataEquipPreset", &::CPacketDataBase::DTI, 96ul, 0u, 0u);
+
+MtObject* CDataEquipPreset::MyDTI::newInstance() const {
+    return new (16u) CDataEquipPreset;
+}
+
+const MtDTI& CDataFurnitureLayoutData::getDTI() const {
+    return CDataFurnitureLayoutData::DTI;
+}
+
+inline MtAllocator* CDataFurnitureLayoutData::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataFurnitureLayoutData::DTI);
+}
+
+void* CDataFurnitureLayoutData::operator new(size_t sz, u32 align) {
+    return CDataFurnitureLayoutData::getAllocator()->memAlloc(sz, align, CDataFurnitureLayoutData::DTI.getID());
+}
+
+__attribute__((weak)) void CDataFurnitureLayoutData::operator delete(void* p_addr) {
+    CDataFurnitureLayoutData::getAllocator()->memFree(p_addr);
+}
+
+CDataFurnitureLayoutData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataFurnitureLayoutData::MyDTI CDataFurnitureLayoutData::DTI("CDataFurnitureLayoutData", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataFurnitureLayoutData::MyDTI::newInstance() const {
+    return new (16u) CDataFurnitureLayoutData;
+}
+
 const MtDTI& CDataGameItemStorage::getDTI() const {
     return CDataGameItemStorage::DTI;
 }
@@ -342,6 +390,31 @@ MtObject* CDataMoveItemUIDFromTo::MyDTI::newInstance() const {
     return new (16u) CDataMoveItemUIDFromTo;
 }
 
+const MtDTI& CDataPresetEquipInfo::getDTI() const {
+    return CDataPresetEquipInfo::DTI;
+}
+
+inline MtAllocator* CDataPresetEquipInfo::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataPresetEquipInfo::DTI);
+}
+
+void* CDataPresetEquipInfo::operator new(size_t sz, u32 align) {
+    return CDataPresetEquipInfo::getAllocator()->memAlloc(sz, align, CDataPresetEquipInfo::DTI.getID());
+}
+
+__attribute__((weak)) void CDataPresetEquipInfo::operator delete(void* p_addr) {
+    CDataPresetEquipInfo::getAllocator()->memFree(p_addr);
+}
+
+CDataPresetEquipInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataPresetEquipInfo::MyDTI CDataPresetEquipInfo::DTI("CDataPresetEquipInfo", &::CPacketDataBase::DTI, 64ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* CDataPresetEquipInfo::MyDTI::newInstance() const {
+    DDON_STUB("CDataPresetEquipInfo::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& CDataS2CCharacterEquipInfo::getDTI() const {
     return CDataS2CCharacterEquipInfo::DTI;
 }
@@ -364,6 +437,30 @@ CDataS2CCharacterEquipInfo::MyDTI CDataS2CCharacterEquipInfo::DTI("CDataS2CChara
 
 MtObject* CDataS2CCharacterEquipInfo::MyDTI::newInstance() const {
     return new (16u) CDataS2CCharacterEquipInfo;
+}
+
+const MtDTI& CDataS2CPawnEquipInfo::getDTI() const {
+    return CDataS2CPawnEquipInfo::DTI;
+}
+
+inline MtAllocator* CDataS2CPawnEquipInfo::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataS2CPawnEquipInfo::DTI);
+}
+
+void* CDataS2CPawnEquipInfo::operator new(size_t sz, u32 align) {
+    return CDataS2CPawnEquipInfo::getAllocator()->memAlloc(sz, align, CDataS2CPawnEquipInfo::DTI.getID());
+}
+
+__attribute__((weak)) void CDataS2CPawnEquipInfo::operator delete(void* p_addr) {
+    CDataS2CPawnEquipInfo::getAllocator()->memFree(p_addr);
+}
+
+CDataS2CPawnEquipInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataS2CPawnEquipInfo::MyDTI CDataS2CPawnEquipInfo::DTI("CDataS2CPawnEquipInfo", &::CPacketDataBase::DTI, 80ul, 0u, 0u);
+
+MtObject* CDataS2CPawnEquipInfo::MyDTI::newInstance() const {
+    return new (16u) CDataS2CPawnEquipInfo;
 }
 
 const MtDTI& CDataStorageItemUIDList::getDTI() const {

@@ -273,8 +273,66 @@ private:
     static sGUI* mpInstance;
 };
 
+inline void* sGUI::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sGUI* sGUI::getInstance() {
     return ::sGUI::mpInstance;
+}
+
+inline u32 sGUI::getLanguageSettingNum() const {
+    return 3;
+}
+
+inline nGUI::LANGUAGE sGUI::getLanguageId(nGUI::LANGUAGE_SETTING setting) const {
+    return this->mLanguageId[setting];
+}
+
+inline void sGUI::setLanguageIdForProperty(u32 value, u32 setting) {
+    if (static_cast<int>(value) <= 21) {
+        this->mLanguageId[setting] = static_cast<nGUI::LANGUAGE>(value);
+    }
+}
+
+inline s32 sGUI::getFontCount() const {
+    return 8;
+}
+
+inline void sGUI::setRubyLineSpace(s32 space) {
+    this->mRubyLineSpace = space;
+}
+
+inline s32 sGUI::getRubyLineSpace() const {
+    return this->mRubyLineSpace;
+}
+
+inline void sGUI::setRubyRatio(f32 ratio) {
+    this->mRubyRatio = ratio;
+}
+
+inline f32 sGUI::getRubyRatio() const {
+    return this->mRubyRatio;
+}
+
+inline rGUIFont* sGUI::getRubyFont() const {
+    return this->mpRubyFont;
+}
+
+inline u32 sGUI::getTempMTagOffset() const {
+    return this->mTempMTagOffset;
+}
+
+inline u32 sGUI::getTempMTagBufferCount() const {
+    return this->mTempMTagBufferCount;
+}
+
+inline void sGUI::setUseIconFontFilter(bool v) {
+    this->mAttr = !v ? (this->mAttr & 0xFFFFFFFEu) : (this->mAttr | 1u);
+}
+
+inline rGUIFont* sGUI::getIconFont() const {
+    return this->mpIconFont;
 }
 
 inline u32 sGUI::getBufferIndexBit() const {
@@ -283,6 +341,10 @@ inline u32 sGUI::getBufferIndexBit() const {
 
 inline u32 sGUI::getBufferUpdateFlag() const {
     return this->mBufferBit;
+}
+
+inline void sGUI::requestBufferCompaction() {
+    this->mAttr = this->mAttr | 4u;
 }
 
 inline nDraw::VertexBuffer* sGUI::getVertexBuffer() const {

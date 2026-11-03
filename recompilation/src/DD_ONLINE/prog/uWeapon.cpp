@@ -7,20 +7,30 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "cDelegate.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "cpCharacterEdit.h"
+#include "cpOcdCtrl.h"
 #include "../../generated/shared/nWeapon.h"
 #include "rArchiveListArray.h"
 #include "rDDOModelMontage.h"
 #include "../../XFramework/rModel.h"
 #include "rNpcConstItem.h"
 #include "rWeaponResTable.h"
+#include "sArchiveManager.h"
 #include "sGame.h"
 #include "sNpcManager.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sUnitManager.h"
 #include "../../XFramework/uBaseModel.h"
 #include "uCnsWeapon.h"
 #include "uDDOModel.h"
+#include "uHuman.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -34,7 +44,7 @@ inline void uWeapon::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uWeapon::DTI)->memFree(p_addr);
 }
 
-uWeapon::~uWeapon() {
+__attribute__((noinline)) uWeapon::~uWeapon() {
     if (mCnsWeapon.mLength != 0) {
         u32 v0_0 = mCnsWeapon.mLength;
         for (unsigned int i0_3 = 0;;) {
@@ -85,8 +95,8 @@ uWeapon* uWeapon::createWeaponModel(nWeapon::OTHER_MODEL_INDEX index, cWeaponRes
 
 uWeapon* uWeapon::createWeaponModel(nWeapon::NPC_ITEM_INDEX index, uModel* pParent) {
     cNpcConstItem* pConstItem = sNpcManager::getInstance()->getNpcConstItem(static_cast<u32>(index));
-    u32 mtag = pConstItem->cNpcConstItem::getMTag();
-    u32 offset = pConstItem->cNpcConstItem::getOffset();
+    u32 mtag = pConstItem->getMTag();
+    u32 offset = pConstItem->getOffset();
     uWeapon* pWpn = uWeapon::createWeaponModelCore(offset, sGame::getInstance()->getWepResData(mtag, 0u), pParent, nWeapon::MODEL_TYPE_OTHER, static_cast<u8>(0), static_cast<s8>(-1));
     return pWpn;
 }
@@ -149,10 +159,10 @@ __attribute__((weak)) void uWeapon::callbackSetMotion(u32 src, u32 mot_no, f32 h
 
 u32 uWeapon::getNpcItemArcTag(u32 index) {
     cNpcConstItem* pConstItem = sNpcManager::getInstance()->getNpcConstItem(index);
-    u32 mtag = pConstItem->cNpcConstItem::getMTag();
+    u32 mtag = pConstItem->getMTag();
     cWeaponResTable* pWepResData = sGame::getInstance()->getWepResData(mtag, 0u);
     if (pWepResData != nullptr) {
-        return rArchiveListArray::convTagId(pWepResData->mArcTag.MtString::ptr());
+        return rArchiveListArray::convTagId(pWepResData->mArcTag.ptr());
     } else {
         return 0;
     }

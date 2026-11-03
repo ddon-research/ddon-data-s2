@@ -156,3 +156,7 @@ public:
     MtTriangle mTriangle;  // offset: 0x10
     static MyDTI DTI;
 };
+
+inline void* MtGeomTriangle::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

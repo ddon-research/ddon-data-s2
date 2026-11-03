@@ -63,3 +63,7 @@ public:
     MtFloat2 mLightShadowAtten;  // offset: 0x40
     static MyDTI DTI;
 };
+
+inline void* cDayNightLightParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

@@ -607,6 +607,34 @@ protected:
     static const u32 KEY_HISTORY_NUM_MAX = 1;
 };
 
+inline void* uGUIKeyConfig::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nGUIKeyConfig::SORT_TYPE uGUIKeyConfig::getSortType() const {
     return static_cast<nGUIKeyConfig::SORT_TYPE>(this->mPulldown.mCursorIdx);
+}
+
+inline void* uGUIKeyConfig::cCategoryItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIKeyConfig::cCategoryInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIKeyConfig::cKeySettingItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIKeyConfig::cKeyItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIKeyConfig::cKeyInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIKeyConfig::cKeySettingInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

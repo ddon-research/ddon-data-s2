@@ -376,3 +376,27 @@ namespace nCollisionUtil {
         static MyDTI DTI;
     };
 }  // namespace nCollisionUtil
+
+inline void* nCollision::cAllocaterIntermediate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nCollision::cScrCollisionMoveMatrix::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nCollision::cScrCommonFilter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 nCollision::cScrCommonFilter::getScrGroup() const {
+    return this->mScrGroup;
+}
+
+inline u8 nCollision::cScrCommonFilter::getScrGroupIndex() const {
+    return this->mScrGroupIndex;
+}
+
+inline void* nCollisionUtil::cOwnerSystem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

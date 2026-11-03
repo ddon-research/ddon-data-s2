@@ -183,3 +183,23 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* MtAllocator::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline size_t MtAllocator::getTotalSize() const {
+    return this->mTotalSize;
+}
+
+inline size_t MtAllocator::getUsedSize() const {
+    return this->mUsedSize;
+}
+
+inline size_t MtAllocator::getAvailSize() const {
+    return this->mTotalSize - this->mUsedSize;
+}
+
+inline void* MtDefaultAllocator::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

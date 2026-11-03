@@ -2,15 +2,30 @@
 #include <new>
 #include "sShader2.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCRC.h"
+#include "../MT/MtCipher.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDebug.h"
+#include "../MT/MtFile.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
+#include "cResource.h"
 #include "cSystem.h"
 #include "nDraw.h"
 #include "nDrawInputLayout.h"
+#include "nDrawMaterialNull.h"
+#include "nDrawRasterizerState.h"
 #include "nDrawShader.h"
+#include "rArchive.h"
+#include "rShaderPackage.h"
+#include "sArea.h"
 #include "sRender.h"
+#include "sResource.h"
+#include "sUnit.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -37,9 +52,7 @@ __attribute__((noinline)) sShader2::~sShader2() {
     /* stub */
 }
 
-bool sShader2::isDynamicShaderLoading() {
-    return mDynamicShaderLoading;
-}
+static auto ddon_emit_0x01ba73c0 __attribute__((used)) = &sShader2::isDynamicShaderLoading;
 
 void sShader2::setDynamicShaderLoading(bool v) {
     if (mDynamicShaderLoading == v) {

@@ -2,18 +2,30 @@
 #include <new>
 #include "cpItemThrow.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextInterface.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpActionRequest.h"
 #include "cpComponent.h"
 #include "cpKeyCommand.h"
 #include "nDDOUtility.h"
+#include "nKeyCommand.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sMain.h"
 #include "sPlayerManager.h"
 #include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "sUnitManager.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
+#include "uJobEquip.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -132,10 +144,10 @@ void cpItemThrow::offItemMode() {
     if (pCpKeyCommand == nullptr) {
         return;
     }
-    pCpKeyCommand->cpKeyCommand::setCommandTbl(0, mBackUpItemTblList.elems[0]);
-    pCpKeyCommand->cpKeyCommand::setCommandTbl(1, mBackUpItemTblList.elems[1]);
-    pCpKeyCommand->cpKeyCommand::setCommandTbl(2, mBackUpItemTblList.elems[2]);
-    pCpKeyCommand->cpKeyCommand::setCommandTbl(3, mBackUpItemTblList.elems[3]);
+    pCpKeyCommand->setCommandTbl(0, mBackUpItemTblList.elems[0]);
+    pCpKeyCommand->setCommandTbl(1, mBackUpItemTblList.elems[1]);
+    pCpKeyCommand->setCommandTbl(2, mBackUpItemTblList.elems[2]);
+    pCpKeyCommand->setCommandTbl(3, mBackUpItemTblList.elems[3]);
 }
 
 __attribute__((weak)) void cpItemThrow::createItemOmModel() {

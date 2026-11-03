@@ -72,3 +72,7 @@ public:
     static MyDTI DTI;
     static const u32 mMagic = 5522501;
 };
+
+inline void* rCharacterEdit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

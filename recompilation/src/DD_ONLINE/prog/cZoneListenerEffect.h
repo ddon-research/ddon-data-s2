@@ -174,3 +174,15 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* cZoneListenerEffect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cZoneListenerEffectColor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cZoneListenerEffectEFL::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

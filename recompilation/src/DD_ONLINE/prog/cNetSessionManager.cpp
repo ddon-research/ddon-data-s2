@@ -2,16 +2,23 @@
 #include <new>
 #include "cNetSessionManager.h"
 #include "../../generated/shared/ChatMsgType.h"
+#include "Protocol/PacketData/Community.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtNetSession.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
+#include "../../MT/MtTime.h"
+#include "Protocol/PacketData/Party.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
+#include "cContextInstance.h"
 #include "cContextInterface.h"
+#include "cGUIUtility.h"
 #include "cHumanAction.h"
+#include "cMenuBase.h"
 #include "cNetGameServer.h"
 #include "cNetSerializer.h"
 #include "../../XFramework/cUnit.h"
@@ -19,14 +26,24 @@
 #include "cpActionRequest.h"
 #include "nNet.h"
 #include "../../XFramework/nNetworkSession.h"
+#include "../../XFramework/nNetworkSessionDriver.h"
 #include "../../XFramework/nNetworkSessionListener.h"
+#include "../../XFramework/rGUIMessage.h"
 #include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sChat.h"
 #include "sContextManager.h"
 #include "sFlag.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "sGame.h"
+#include "../../XFramework/sMain.h"
+#include "sMenu.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
+#include "sSoundManager.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
 #include "uPlayer.h"
@@ -823,6 +840,10 @@ void nSessionManager::cNetSessionManager::clearPartyReqInfo(s32 index) {
 __attribute__((weak)) bool nSessionManager::cNetSessionManager::setPartyReqInfo(const CDataPartyListInfo& info) {
     DDON_STUB("nSessionManager::cNetSessionManager::setPartyReqInfo")
     return {};
+}
+
+CDataClientPartyListInfo& nSessionManager::cNetSessionManager::getPartyReqInfo(s32 index) {
+    return mPartyReqInfo[index];
 }
 
 __attribute__((weak)) s32 nSessionManager::cNetSessionManager::getPartySpaceNum() {

@@ -68,6 +68,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCharacterEditPaletteBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cCharacterEditPaletteBase::cCharacterEditPaletteBase() {
     this->mIconNo = 0;
     this->mReleaseVersion = 0;

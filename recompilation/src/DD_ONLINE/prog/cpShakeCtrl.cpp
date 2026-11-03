@@ -15,6 +15,8 @@
 #include "cpOcdCtrl.h"
 #include "rShakeCtrl.h"
 #include "uCnsShakeCtrl.h"
+#include "../../XFramework/uConstraint.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
@@ -107,7 +109,7 @@ void cpShakeCtrl::shake(u32 JntNo, const MtVector3& shakeDir, s32 ResourceNo) {
                         mDir.pad_ = 0.0f;
                         uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
                         if (pShakeCtrl != nullptr) {
-                            pShakeCtrl->uCnsShakeCtrl::shake(mDir);
+                            pShakeCtrl->shake(mDir);
                         }
                     } else {
                         initShakeCtrl();
@@ -118,7 +120,7 @@ void cpShakeCtrl::shake(u32 JntNo, const MtVector3& shakeDir, s32 ResourceNo) {
                         mDir.pad_ = 0.0f;
                         uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
                         if (pShakeCtrl != nullptr) {
-                            pShakeCtrl->uCnsShakeCtrl::shake(mDir);
+                            pShakeCtrl->shake(mDir);
                         }
                     }
                 } else {
@@ -128,7 +130,7 @@ void cpShakeCtrl::shake(u32 JntNo, const MtVector3& shakeDir, s32 ResourceNo) {
                     mDir.pad_ = 0.0f;
                     uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
                     if (pShakeCtrl != nullptr) {
-                        pShakeCtrl->uCnsShakeCtrl::shake(mDir);
+                        pShakeCtrl->shake(mDir);
                     }
                 }
             }
@@ -152,7 +154,7 @@ void cpShakeCtrl::shake(u32 JntNo, const MtVector3& shakeDir, s32 ResourceNo) {
                     mDir.pad_ = 0.0f;
                     uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
                     if (pShakeCtrl != nullptr) {
-                        pShakeCtrl->uCnsShakeCtrl::shake(mDir);
+                        pShakeCtrl->shake(mDir);
                     }
                 } else {
                     initShakeCtrl();
@@ -163,7 +165,7 @@ void cpShakeCtrl::shake(u32 JntNo, const MtVector3& shakeDir, s32 ResourceNo) {
                     mDir.pad_ = 0.0f;
                     uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
                     if (pShakeCtrl != nullptr) {
-                        pShakeCtrl->uCnsShakeCtrl::shake(mDir);
+                        pShakeCtrl->shake(mDir);
                     }
                 }
             } else {
@@ -173,7 +175,7 @@ void cpShakeCtrl::shake(u32 JntNo, const MtVector3& shakeDir, s32 ResourceNo) {
                 mDir.pad_ = 0.0f;
                 uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
                 if (pShakeCtrl != nullptr) {
-                    pShakeCtrl->uCnsShakeCtrl::shake(mDir);
+                    pShakeCtrl->shake(mDir);
                 }
             }
         }

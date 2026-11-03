@@ -126,3 +126,7 @@ namespace nNetwork {
         static const u32 BAD_THRESHOLD_NORECV = 4000;
     };
 }  // namespace nNetwork
+
+inline void* nNetwork::Connect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

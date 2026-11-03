@@ -10,7 +10,10 @@
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "cAIObject.h"
+#include "cAISvUserProcess.h"
+#include "nAI.h"
 #include "rAIConditionTree.h"
+#include "sAI.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

@@ -703,6 +703,10 @@ private:
     static const u32 CLAN_KYOTEN_UNLOCK_AKAZUNOMA_GROUP = 53;
 };
 
+inline void* sSetManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sSetManager* sSetManager::getInstance() {
     return ::sSetManager::mpInstance;
 }
@@ -723,12 +727,32 @@ inline rLayoutPreset* sSetManager::getLotPreset() const {
     return this->mpLotPreset;
 }
 
+inline void* sSetManager::cUnitData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void sSetManager::cUnitData::setPrio(u32 prio) {
+    this->mPrio = prio;
+}
+
+inline void* sSetManager::cOmGroupData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sSetManager::cOmGroupData::cOmGroupData() {
     this->mGroupData = 511;
 }
 
+inline void* sSetManager::cEnemyDie::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void sSetManager::cEnemyDie::setEnemyId(u32 NewValue) {
     this->mEnemyId = NewValue;
+}
+
+inline void* sSetManager::CreateContextParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline sSetManager::CreateContextParam::CreateContextParam() {

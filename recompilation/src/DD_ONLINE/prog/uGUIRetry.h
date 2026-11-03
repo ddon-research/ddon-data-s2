@@ -182,3 +182,7 @@ private:
     static const u32 SELECT_MAX = 5;
     static const u32 COUNT_NUM = 2;
 };
+
+inline void* uGUIRetry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

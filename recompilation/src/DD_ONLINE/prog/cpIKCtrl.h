@@ -221,10 +221,26 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cIKHandle::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nIKCtrl::IK_TYPE cIKHandle::getType() {
     return this->mType;
 }
 
+inline u32 cIKHandle::getTargetJoint() {
+    return this->mTargetJntNo;
+}
+
+inline void* cpIKCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool cpIKCtrl::isIKCtrlActive() {
     return this->::cpComponent::mActive;
+}
+
+inline rIKCtrl* cpIKCtrl::getResource() {
+    return this->mpResource;
 }

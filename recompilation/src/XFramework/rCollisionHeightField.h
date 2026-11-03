@@ -178,6 +178,10 @@ public:
     static const u32 VERSION;
 };
 
+inline void* rCollisionHeightField::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rCollisionHeightField::rCollisionHeightField() {
     this->::cResource::mAttr = 18;
     this->mpMaterialArray = nullptr;

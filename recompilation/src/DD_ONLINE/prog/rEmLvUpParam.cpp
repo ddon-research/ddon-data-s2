@@ -5,6 +5,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -26,9 +27,27 @@ inline void cEmLvUpParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEmLvUpParam::DTI)->memFree(p_addr);
 }
 
-cEmLvUpParam::cEmLvUpParam() {
-    DDON_STUB("cEmLvUpParam::cEmLvUpParam")
-    /* stub */
+__attribute__((noinline)) cEmLvUpParam::cEmLvUpParam() {
+        this->mLv = 1;
+        for (u32 i = 0; i < 10; i++) {
+            this->mHp_Cor[i] = 1.0f;
+            this->mShP_Cor[i] = 1.0f;
+            this->mBlP_Cor[i] = 1.0f;
+        }
+        this->mOcd_Cor = 1.0f;
+        this->mAttackWepPhys_Cor = 1.0f;
+        this->mAttackWepMagic_Cor = 1.0f;
+        this->mDefenceWepPhys_Cor = 1.0f;
+        this->mDefenceWepMagic_Cor = 1.0f;
+        this->mAttackBasePhys_Cor = 1.0f;
+        this->mAttackBaseMagic_Cor = 1.0f;
+        this->mDefenceBasePhys_Cor = 1.0f;
+        this->mDefenceBaseMagic_Cor = 1.0f;
+        this->mPower_Cor = 1.0f;
+        this->mGuardDefBase_Cor = 1.0f;
+        this->mDownP_Cor = 1.0f;
+        this->mShakeP_Cor = 1.0f;
+        this->mGuardDefWep_Cor = 1.0f;
 }
 
 __attribute__((weak)) void cEmLvUpParam::copy(const cEmLvUpParam* pParam) {

@@ -175,3 +175,28 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* uScreenSpace::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uScreenSpace::setTextureSize(u32 sz) {
+    if (this->mTextureSize == sz) {
+        return;
+    }
+    if (this->mpRenderTarget == nullptr) {
+        this->createTexture(sz);
+    }
+}
+
+inline u32 uScreenSpace::getTextureSize() {
+    return this->mTextureSize;
+}
+
+inline rRenderTargetTexture* uScreenSpace::getRenderTarget() const {
+    return this->mpRenderTarget;
+}
+
+inline bool uScreenSpace::isDistortionEnabled() const {
+    return this->mDistortionEnabled;
+}

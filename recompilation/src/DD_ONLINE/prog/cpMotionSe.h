@@ -104,6 +104,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cpMotionSe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void cpMotionSe::clearSeqFilter() {
     this->mMotionSe.mFilterSeq = 0;
 }

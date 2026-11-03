@@ -145,6 +145,10 @@ private:
     static sKeyboardInterface* mpInstance;
 };
 
+inline void* sKeyboardInterface::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sKeyboardInterface* sKeyboardInterface::getInstance() {
     return ::sKeyboardInterface::mpInstance;
 }

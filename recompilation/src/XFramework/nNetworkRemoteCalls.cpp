@@ -7,6 +7,7 @@
 #include "../MT/MtObject.h"
 #include "cRemoteCall.h"
 #include "nNetworkCoder.h"
+#include "nNetworkTransport.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -21,12 +22,12 @@ inline void nNetwork::RpcNetSystem_Entry::operator delete(void* p_addr) {
 
 void nNetwork::RpcNetSystem_Entry::serialize(MtStream& stream) {
     nNetwork::Coder cod(stream);
-    cod.::nNetwork::Coder::writeBit32(mEntry, 1u);
+    cod.writeBit32(mEntry, 1u);
 }
 
 void nNetwork::RpcNetSystem_Entry::deserialize(MtStream& stream) {
     nNetwork::Decoder dec(stream);
-    mEntry = dec.::nNetwork::Decoder::readBit32(1u) == 1;
+    mEntry = dec.readBit32(1u) == 1;
 }
 
 nNetwork::RpcNetSystem_Entry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -98,14 +99,14 @@ nNetwork::RpcNetSystem_Match::RpcNetSystem_Match() {
 
 void nNetwork::RpcNetSystem_Match::serialize(MtStream& stream) {
     nNetwork::Coder cod(stream);
-    cod.::nNetwork::Coder::writeBit32(mMatch, 1u);
-    cod.::nNetwork::Coder::writeBit64(mList, 16u);
+    cod.writeBit32(mMatch, 1u);
+    cod.writeBit64(mList, 16u);
 }
 
 void nNetwork::RpcNetSystem_Match::deserialize(MtStream& stream) {
     nNetwork::Decoder dec(stream);
-    mMatch = dec.::nNetwork::Decoder::readBit32(1u) == 1;
-    mList = dec.::nNetwork::Decoder::readBit64(16u);
+    mMatch = dec.readBit32(1u) == 1;
+    mList = dec.readBit64(16u);
 }
 
 __attribute__((weak)) void nNetwork::RpcNetSystem_Match::init(const nNetwork::SessionDatabase* pdb) {

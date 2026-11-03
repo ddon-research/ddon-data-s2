@@ -180,3 +180,12 @@ public:
     static const u32 NORMAL_NUM = 6;
     static const u32 CUSTOM_NUM = 4;
 };
+
+inline void* uGUIFKeyPalette::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIFKeyPalette::setUpdateKeyGuide() {
+    this->mIsUpdateKeyGuideSCM = true;
+    this->mIsUpdateKeyGuideSCC = true;
+}

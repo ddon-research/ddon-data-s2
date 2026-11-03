@@ -57,6 +57,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataScreenShotCategory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataScreenShotCategory::CDataScreenShotCategory() {
     this->m_unId = 0;
 }

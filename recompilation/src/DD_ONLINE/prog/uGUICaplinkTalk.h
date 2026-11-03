@@ -282,5 +282,25 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUICaplinkTalk::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUICaplinkTalk::initNew() {
+    this->mSubFlowId = 0;
+}
+
+inline void uGUICaplinkTalk::initMemberListReq() {
+    this->mSubFlowId = 0;
+}
+
+inline void uGUICaplinkTalk::initKick() {
+    this->::uGUICaplinkMenuBase::mRnoSubMenu = 0;
+}
+
+inline void uGUICaplinkTalk::initAdd() {
+    this->mSubFlowId = 0;
+}
+
 inline uGUICaplinkTalk::stVariable::stVariable() {
 }

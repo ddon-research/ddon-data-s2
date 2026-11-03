@@ -84,7 +84,15 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cWeatherObjectRes::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cWeatherObjectRes::cWeatherObjectRes() {
+}
+
+inline void* cWeatherObjectSys::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cWeatherObjectSys::cWeatherObjectSys() {

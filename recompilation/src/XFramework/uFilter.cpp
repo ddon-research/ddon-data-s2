@@ -8,17 +8,162 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
 #include "cDraw.h"
 #include "cResource.h"
 #include "cUnit.h"
+#include "nDrawResource.h"
 #include "nDrawTexture.h"
 #include "rTexture.h"
 #include "sCamera.h"
 #include "sRender.h"
+#include "sResource.h"
+#include "sScene.h"
+#include "sUnit.h"
 #include "uCamera.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+const MtDTI& uBloomFilter::getDTI() const {
+    return uBloomFilter::DTI;
+}
+
+inline void uBloomFilter::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uBloomFilter::DTI)->memFree(p_addr);
+}
+
+uBloomFilter::~uBloomFilter() {
+    DDON_STUB("uBloomFilter::~uBloomFilter")
+    /* stub */
+}
+
+void uBloomFilter::draw(cDraw* pdraw) {
+    if (pdraw->mContext.pscene == nullptr) {
+        return;
+    }
+    uBloomFilter::drawBloom(pdraw, static_cast<uFilter*>(this), mParam, 1.0f);
+}
+
+__attribute__((weak)) void uBloomFilter::createProperty(MtPropertyList& s) {
+    DDON_STUB("uBloomFilter::createProperty")
+    /* stub */
+}
+
+MtUI* uBloomFilter::createUI(MtProperty& prop) {
+    return this->cUnit::createUI(prop);
+}
+
+__attribute__((weak)) void uBloomFilter::move() {
+    DDON_STUB("uBloomFilter::move")
+    /* stub */
+}
+
+__attribute__((weak)) void uBloomFilter::drawBloom(cDraw* pdraw, uFilter* pOwner, const uBloomFilter::BloomParam& Param, f32 Transparency) {
+    DDON_STUB("uBloomFilter::drawBloom")
+    /* stub */
+}
+
+__attribute__((weak)) void uBloomFilter::drawBloomPass(cDraw* pdraw, uFilter* pOwner, const uBloomFilter::BloomParam& Param) {
+    DDON_STUB("uBloomFilter::drawBloomPass")
+    /* stub */
+}
+
+uBloomFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+uBloomFilter::MyDTI uBloomFilter::DTI("uBloomFilter", &::uFilter::DTI, 256ul, 0u, 0u);
+
+bool uBloomFilter::mCTREmulation;
+
+__attribute__((weak)) MtObject* uBloomFilter::MyDTI::newInstance() const {
+    DDON_STUB("uBloomFilter::MyDTI::newInstance")
+    return nullptr;
+}
+
+void uBloomFilter::BloomParam::init() {
+    mBloomColor.x = MtVector3::One.x;
+    mBloomColor.y = MtVector3::One.y;
+    mBloomColor.z = MtVector3::One.z;
+    mBloomColor.pad_ = 0.0f;
+    mBloomDispersion = 8.0f;
+    mBloomThreshold = 1.0f;
+    mAttenuationEnable = false;
+    mCullingEnable = false;
+    mScreenAttenuateFlag = false;
+    mConeFilter = true;
+    mLegacy = false;
+    mStencilID = -1;
+}
+
+__attribute__((weak)) void uBloomFilter::BloomParam::update(const uBloomFilter::BloomParam& Param) {
+    DDON_STUB("uBloomFilter::BloomParam::update")
+    /* stub */
+}
+
+__attribute__((weak)) void uBloomFilter::BloomParam::createTextures(uFilter* pOwner) {
+    DDON_STUB("uBloomFilter::BloomParam::createTextures")
+    /* stub */
+}
+
+void uBloomFilter::BloomParam::releaseTextures() {
+    if (mpRTGlareTemp[0] != nullptr) {
+        mpRTGlareTemp[0]->release();
+        mpRTGlareTemp[0] = nullptr;
+    }
+    if (mpRTBloom[0] != nullptr) {
+        mpRTBloom[0]->release();
+        mpRTBloom[0] = nullptr;
+    }
+    if (mpRTGlareTemp[1] != nullptr) {
+        mpRTGlareTemp[1]->release();
+        mpRTGlareTemp[1] = nullptr;
+    }
+    if (mpRTBloom[1] != nullptr) {
+        mpRTBloom[1]->release();
+        mpRTBloom[1] = nullptr;
+    }
+    if (mpRTGlareTemp[2] != nullptr) {
+        mpRTGlareTemp[2]->release();
+        mpRTGlareTemp[2] = nullptr;
+    }
+    if (mpRTBloom[2] != nullptr) {
+        mpRTBloom[2]->release();
+        mpRTBloom[2] = nullptr;
+    }
+    if (mpRTGlareTemp[3] != nullptr) {
+        mpRTGlareTemp[3]->release();
+        mpRTGlareTemp[3] = nullptr;
+    }
+    if (mpRTBloom[3] != nullptr) {
+        mpRTBloom[3]->release();
+        mpRTBloom[3] = nullptr;
+    }
+}
+
+bool uBloomFilter::BloomParam::isTexturesCreated() const {
+    if (mpRTGlareTemp[0] != nullptr) {
+        if (mpRTBloom[0] != nullptr) {
+            if (mpRTGlareTemp[1] != nullptr) {
+                if (mpRTBloom[1] != nullptr) {
+                    if (mpRTGlareTemp[2] != nullptr) {
+                        if (mpRTBloom[2] != nullptr) {
+                            if (mpRTGlareTemp[3] != nullptr) {
+                                return mpRTBloom[3] != nullptr;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
+__attribute__((weak)) void uBloomFilter::BloomParam::setAttenuation(f32 StartZ, f32 EndZ) {
+    DDON_STUB("uBloomFilter::BloomParam::setAttenuation")
+    /* stub */
+}
 
 const MtDTI& uColorCorrectFilter::getDTI() const {
     return uColorCorrectFilter::DTI;
@@ -59,18 +204,14 @@ __attribute__((weak)) void uColorCorrectFilter::createProperty(MtPropertyList& s
     /* stub */
 }
 
-f32 uColorCorrectFilter::getAttenuationStartZ() const {
-    return mParam.mStartZ;
-}
+static auto ddon_emit_0x01b5eb70 __attribute__((used)) = &uColorCorrectFilter::getAttenuationStartZ;
 
 __attribute__((weak)) void uColorCorrectFilter::setAttenuationStartZ(f32 StartZ) {
     DDON_STUB("uColorCorrectFilter::setAttenuationStartZ")
     /* stub */
 }
 
-f32 uColorCorrectFilter::getAttenuationEndZ() const {
-    return mParam.mEndZ;
-}
+static auto ddon_emit_0x01b5ebb0 __attribute__((used)) = &uColorCorrectFilter::getAttenuationEndZ;
 
 __attribute__((weak)) void uColorCorrectFilter::setAttenuationEndZ(f32 EndZ) {
     DDON_STUB("uColorCorrectFilter::setAttenuationEndZ")
@@ -219,13 +360,9 @@ void uDOFFilter::setGSDOF(bool enable) {
     mbGSDOF = enable;
 }
 
-bool uDOFFilter::isGSDOF() const {
-    return mbGSDOF;
-}
+static auto ddon_emit_0x01b5e920 __attribute__((used)) = &uDOFFilter::isGSDOF;
 
-u32 uDOFFilter::getBlurCount() {
-    return mBlurCount;
-}
+static auto ddon_emit_0x01b5e910 __attribute__((used)) = &uDOFFilter::getBlurCount;
 
 void uDOFFilter::setBlurCount(u32 n) {
     if (mBlurCount == n) {
@@ -393,6 +530,240 @@ MtObject* uFilter::MyDTI::newInstance() const {
     return nullptr;
 }
 
+const MtDTI& uGodRaysFilter::getDTI() const {
+    return uGodRaysFilter::DTI;
+}
+
+inline void uGodRaysFilter::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uGodRaysFilter::DTI)->memFree(p_addr);
+}
+
+uGodRaysFilter::uGodRaysFilter() {
+    DDON_STUB("uGodRaysFilter::uGodRaysFilter")
+    /* stub */
+}
+
+uGodRaysFilter::~uGodRaysFilter() {
+    DDON_STUB("uGodRaysFilter::~uGodRaysFilter")
+    /* stub */
+}
+
+__attribute__((weak)) void uGodRaysFilter::createProperty(MtPropertyList& s) {
+    DDON_STUB("uGodRaysFilter::createProperty")
+    /* stub */
+}
+
+MtUI* uGodRaysFilter::createUI(MtProperty& prop) {
+    return this->cUnit::createUI(prop);
+}
+
+void uGodRaysFilter::moveAfter() {
+    if (!mUpdate) {
+        return;
+    }
+    mParam.releaseTextures();
+    mParam.createTextures(static_cast<uFilter*>(this));
+    mUpdate = false;
+}
+
+void uGodRaysFilter::draw(cDraw* pdraw) {
+    if (!mUpdate) {
+        uGodRaysFilter::drawGodRays(pdraw, static_cast<uFilter*>(this), mParam, 1.0f);
+    }
+}
+
+__attribute__((weak)) void uGodRaysFilter::drawGodRays(cDraw* pdraw, uFilter* pOwner, const uGodRaysFilter::GodRaysParam& Param, f32 Transparency) {
+    DDON_STUB("uGodRaysFilter::drawGodRays")
+    /* stub */
+}
+
+__attribute__((weak)) void uGodRaysFilter::drawGodRaysPolarCoordinate(cDraw* pdraw, const uGodRaysFilter::GodRaysParam& Param) {
+    DDON_STUB("uGodRaysFilter::drawGodRaysPolarCoordinate")
+    /* stub */
+}
+
+__attribute__((weak)) void uGodRaysFilter::drawGodRaysOrthonormalCoordinate(cDraw* pdraw, const uGodRaysFilter::GodRaysParam& Param) {
+    DDON_STUB("uGodRaysFilter::drawGodRaysOrthonormalCoordinate")
+    /* stub */
+}
+
+__attribute__((weak)) void uGodRaysFilter::drawGodRaysOrthonormalCoordinateFast(cDraw* pdraw, const uGodRaysFilter::GodRaysParam& Param) {
+    DDON_STUB("uGodRaysFilter::drawGodRaysOrthonormalCoordinateFast")
+    /* stub */
+}
+
+void uGodRaysFilter::setMode(u32 mode) {
+    if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) & 15u) != mode) {
+        mUpdate = true;
+    }
+    mParam.mMode = mode;
+}
+
+u32 uGodRaysFilter::getMode() {
+    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) & 15u;
+}
+
+void uGodRaysFilter::setLevel(u32 quality) {
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) >> 4) & 15u) != quality) {
+        mUpdate = true;
+    }
+    mParam.mQuality = quality;
+}
+
+u32 uGodRaysFilter::getLevel() {
+    return ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) >> 4) & 15u;
+}
+
+bool uGodRaysFilter::isShadow() {
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 146)) & 8) >> 3);
+}
+
+__attribute__((weak)) void uGodRaysFilter::setShadow(bool b) {
+    DDON_STUB("uGodRaysFilter::setShadow")
+    /* stub */
+}
+
+bool uGodRaysFilter::isUsePoint() {
+    return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 146)) & 1);
+}
+
+__attribute__((weak)) void uGodRaysFilter::setUsePoint(bool b) {
+    DDON_STUB("uGodRaysFilter::setUsePoint")
+    /* stub */
+}
+
+bool uGodRaysFilter::isUseLDR() {
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 146)) & 2) >> 1);
+}
+
+__attribute__((weak)) void uGodRaysFilter::setUseLDR(bool b) {
+    DDON_STUB("uGodRaysFilter::setUseLDR")
+    /* stub */
+}
+
+bool uGodRaysFilter::isCutoff() {
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 146)) & 4) >> 2);
+}
+
+__attribute__((weak)) void uGodRaysFilter::setCutoff(bool b) {
+    DDON_STUB("uGodRaysFilter::setCutoff")
+    /* stub */
+}
+
+u32 uGodRaysFilter::getIterativeNum() {
+    return ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) >> 8) & 255u;
+}
+
+__attribute__((weak)) void uGodRaysFilter::setIterativeNum(u32 IterativeNum) {
+    DDON_STUB("uGodRaysFilter::setIterativeNum")
+    /* stub */
+}
+
+bool uGodRaysFilter::isGray() {
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 146)) & 16) >> 4);
+}
+
+__attribute__((weak)) void uGodRaysFilter::setGray(bool b) {
+    DDON_STUB("uGodRaysFilter::setGray")
+    /* stub */
+}
+
+bool uGodRaysFilter::isOcclusionAlphaEnable() {
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 147)) & 16) >> 4);
+}
+
+__attribute__((weak)) void uGodRaysFilter::setOcclusionAlphaEnable(bool b) {
+    DDON_STUB("uGodRaysFilter::setOcclusionAlphaEnable")
+    /* stub */
+}
+
+bool uGodRaysFilter::isOcclusionBlurWidthEnable() {
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 147)) & 32) >> 5);
+}
+
+__attribute__((weak)) void uGodRaysFilter::setOcclusionBlurWidthEnable(bool b) {
+    DDON_STUB("uGodRaysFilter::setOcclusionBlurWidthEnable")
+    /* stub */
+}
+
+uGodRaysFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+uGodRaysFilter::MyDTI uGodRaysFilter::DTI("uGodRaysFilter", &::uFilter::DTI, 336ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* uGodRaysFilter::MyDTI::newInstance() const {
+    DDON_STUB("uGodRaysFilter::MyDTI::newInstance")
+    return nullptr;
+}
+
+__attribute__((weak)) void uGodRaysFilter::GodRaysParam::init() {
+    DDON_STUB("uGodRaysFilter::GodRaysParam::init")
+    /* stub */
+}
+
+__attribute__((weak)) void uGodRaysFilter::GodRaysParam::update(const uGodRaysFilter::GodRaysParam& Param) {
+    DDON_STUB("uGodRaysFilter::GodRaysParam::update")
+    /* stub */
+}
+
+__attribute__((weak)) void uGodRaysFilter::GodRaysParam::createTextures(uFilter* pOwner) {
+    DDON_STUB("uGodRaysFilter::GodRaysParam::createTextures")
+    /* stub */
+}
+
+__attribute__((weak)) void uGodRaysFilter::GodRaysParam::releaseTextures() {
+    if (mpBlur[0] != nullptr) {
+        mpBlur[0]->release();
+        mpBlur[0] = nullptr;
+    }
+    if (mpBlur[1] != nullptr) {
+        mpBlur[1]->release();
+        mpBlur[1] = nullptr;
+    }
+    if (mpBlur[2] != nullptr) {
+        mpBlur[2]->release();
+        mpBlur[2] = nullptr;
+    }
+    if (mpBlur[3] != nullptr) {
+        mpBlur[3]->release();
+        mpBlur[3] = nullptr;
+    }
+    if (mpBlur[4] != nullptr) {
+        mpBlur[4]->release();
+        mpBlur[4] = nullptr;
+    }
+    if (mpFinal != nullptr) {
+        mpFinal->release();
+        mpFinal = nullptr;
+    }
+    if (mpTempTexture != nullptr) {
+        mpTempTexture->release();
+        mpTempTexture = nullptr;
+    }
+    if (mpOcclusionFactor != nullptr) {
+        mpOcclusionFactor->release();
+        mpOcclusionFactor = nullptr;
+    }
+}
+
+bool uGodRaysFilter::GodRaysParam::isTexturesCreated() const {
+    if (mpFinal != nullptr) {
+        if (mpTempTexture != nullptr) {
+            if (mpOcclusionFactor != nullptr) {
+                if (mpBlur[0] != nullptr) {
+                    if (mpBlur[1] != nullptr) {
+                        if (mpBlur[2] != nullptr) {
+                            if (mpBlur[3] != nullptr) {
+                                return mpBlur[4] != nullptr;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
 const MtDTI& uMotionBlurFilter::getDTI() const {
     return uMotionBlurFilter::DTI;
 }
@@ -445,9 +816,7 @@ void uMotionBlurFilter::setReconstructBlur(bool enable) {
     mPrevFrameVelocityResolution = __VRESOLUTION__U32;
 }
 
-bool uMotionBlurFilter::isReconstructBlur() const {
-    return mReconstructBlur;
-}
+static auto ddon_emit_0x01b5eaf0 __attribute__((used)) = &uMotionBlurFilter::isReconstructBlur;
 
 __attribute__((weak)) void uMotionBlurFilter::drawStretchBlur(cDraw* pdraw) {
     DDON_STUB("uMotionBlurFilter::drawStretchBlur")
@@ -466,5 +835,149 @@ uMotionBlurFilter::MyDTI uMotionBlurFilter::DTI("uMotionBlurFilter", &::uFilter:
 __attribute__((weak)) MtObject* uMotionBlurFilter::MyDTI::newInstance() const {
     DDON_STUB("uMotionBlurFilter::MyDTI::newInstance")
     return nullptr;
+}
+
+const MtDTI& uRadialBlurFilter::getDTI() const {
+    return uRadialBlurFilter::DTI;
+}
+
+inline void uRadialBlurFilter::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uRadialBlurFilter::DTI)->memFree(p_addr);
+}
+
+uRadialBlurFilter::~uRadialBlurFilter() {
+    DDON_STUB("uRadialBlurFilter::~uRadialBlurFilter")
+    /* stub */
+}
+
+void uRadialBlurFilter::draw(cDraw* pdraw) {
+    if (pdraw->mContext.pscene == nullptr) {
+        return;
+    }
+    uRadialBlurFilter::drawRadialBlur(pdraw, static_cast<uFilter*>(this), mParam, 1.0f);
+}
+
+MtUI* uRadialBlurFilter::createUI(MtProperty& prop) {
+    return this->cUnit::createUI(prop);
+}
+
+__attribute__((weak)) void uRadialBlurFilter::createProperty(MtPropertyList& s) {
+    DDON_STUB("uRadialBlurFilter::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void uRadialBlurFilter::setMode(u32 m) {
+    DDON_STUB("uRadialBlurFilter::setMode")
+    /* stub */
+}
+
+u32 uRadialBlurFilter::getMode() {
+    return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 160);
+}
+
+u32 uRadialBlurFilter::getSamples() {
+    return ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 160)) >> 8) & 255u;
+}
+
+__attribute__((weak)) void uRadialBlurFilter::setSamples(u32 n) {
+    DDON_STUB("uRadialBlurFilter::setSamples")
+    /* stub */
+}
+
+__attribute__((weak)) void uRadialBlurFilter::setBlendStateType(u32 t) {
+    DDON_STUB("uRadialBlurFilter::setBlendStateType")
+    /* stub */
+}
+
+u32 uRadialBlurFilter::getBlendStateType() {
+    return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 162);
+}
+
+static auto ddon_emit_0x01b5e9f0 __attribute__((used)) = &uRadialBlurFilter::getMaskTexture;
+
+__attribute__((weak)) void uRadialBlurFilter::setMaskTexture(rTexture* ptex) {
+    DDON_STUB("uRadialBlurFilter::setMaskTexture")
+    /* stub */
+}
+
+__attribute__((weak)) const MtFloat2 uRadialBlurFilter::getMaskLT() {
+    DDON_STUB("uRadialBlurFilter::getMaskLT")
+    __builtin_unreachable();
+}
+
+static auto ddon_emit_0x01b5ea20 __attribute__((used)) = &uRadialBlurFilter::setMaskLT;
+
+__attribute__((weak)) const MtFloat2 uRadialBlurFilter::getMaskRB() {
+    DDON_STUB("uRadialBlurFilter::getMaskRB")
+    __builtin_unreachable();
+}
+
+static auto ddon_emit_0x01b5ea60 __attribute__((used)) = &uRadialBlurFilter::setMaskRB;
+
+bool uRadialBlurFilter::isOcclusionBlurWidthEnable() {
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 255)) & 2) >> 1);
+}
+
+__attribute__((weak)) void uRadialBlurFilter::setOcclusionBlurWidthEnable(bool b) {
+    DDON_STUB("uRadialBlurFilter::setOcclusionBlurWidthEnable")
+    /* stub */
+}
+
+bool uRadialBlurFilter::isOcclusionAlphaEnable() {
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 255)) & 4) >> 2);
+}
+
+__attribute__((weak)) void uRadialBlurFilter::setOcclusionAlphaEnable(bool b) {
+    DDON_STUB("uRadialBlurFilter::setOcclusionAlphaEnable")
+    /* stub */
+}
+
+__attribute__((weak)) void uRadialBlurFilter::drawRadialBlur(cDraw* pdraw, uFilter* pOwner, const uRadialBlurFilter::RadialBlurParam& Param, f32 Transparency) {
+    DDON_STUB("uRadialBlurFilter::drawRadialBlur")
+    /* stub */
+}
+
+uRadialBlurFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+uRadialBlurFilter::MyDTI uRadialBlurFilter::DTI("uRadialBlurFilter", &::uFilter::DTI, 304ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* uRadialBlurFilter::MyDTI::newInstance() const {
+    DDON_STUB("uRadialBlurFilter::MyDTI::newInstance")
+    return nullptr;
+}
+
+__attribute__((weak)) void uRadialBlurFilter::RadialBlurParam::init() {
+    DDON_STUB("uRadialBlurFilter::RadialBlurParam::init")
+    /* stub */
+}
+
+__attribute__((weak)) void uRadialBlurFilter::RadialBlurParam::update(const uRadialBlurFilter::RadialBlurParam& Param) {
+    DDON_STUB("uRadialBlurFilter::RadialBlurParam::update")
+    /* stub */
+}
+
+__attribute__((weak)) void uRadialBlurFilter::RadialBlurParam::createTextures(uFilter* pOwner) {
+    DDON_STUB("uRadialBlurFilter::RadialBlurParam::createTextures")
+    /* stub */
+}
+
+void uRadialBlurFilter::RadialBlurParam::releaseTextures() {
+    if (mpOcclusionFactor != nullptr) {
+        mpOcclusionFactor->release();
+        mpOcclusionFactor = nullptr;
+    }
+    if (mpLinearRTexture == nullptr) {
+        return;
+    }
+    mpLinearRTexture->release();
+    mpLinearRTexture = nullptr;
+}
+
+bool uRadialBlurFilter::RadialBlurParam::isTexturesCreated() const {
+    if (mpOcclusionFactor != nullptr) {
+        return mpLinearRTexture != nullptr;
+    } else {
+        return false;
+    }
 }
 

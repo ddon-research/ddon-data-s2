@@ -168,3 +168,41 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* rAIPathBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 rAIPathBase::getNumberOfArea() {
+    return this->mNumberOfArea;
+}
+
+inline void* rAIPathBase::HierarchyArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 rAIPathBase::HierarchyArea::getNumberOfGeometry() {
+    return this->mNumberOfGeometry;
+}
+
+inline void rAIPathBase::HierarchyArea::setGeometry(MtGeometry* geom, u32 index) {
+    if (index < this->mNumberOfGeometry) {
+        this->mpGeometryList[index] = geom;
+    }
+}
+
+inline MtGeometry* rAIPathBase::HierarchyArea::getGeometry(u32 index) {
+    if (index < this->mNumberOfGeometry) {
+        return this->mpGeometryList[index];
+    } else {
+        return nullptr;
+    }
+}
+
+inline u32 rAIPathBase::HierarchyArea::getNumberOfChild() {
+    return this->mNumberOfChild;
+}
+
+inline u32 rAIPathBase::HierarchyArea::getNumberOfLink() {
+    return this->mNumberOfLink;
+}

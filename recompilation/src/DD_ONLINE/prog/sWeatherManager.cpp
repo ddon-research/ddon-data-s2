@@ -2,30 +2,58 @@
 #include <new>
 #include "sWeatherManager.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCRC.h"
 #include "../../MT/MtCollection.h"
+#include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtSynchronize.h"
+#include "../../XFramework/cAIObject.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
 #include "cWeatherScript.h"
 #include "../../XFramework/cZoneContents.h"
 #include "cZoneIndoor.h"
 #include "cZoneIndoorHandle.h"
+#include "../../XFramework/cZoneListener.h"
 #include "cZoneListenerLight.h"
 #include "cZoneListenerMulti.h"
 #include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "../../XFramework/nZone.h"
+#include "rArchiveListArray.h"
 #include "rFreeF32Tbl.h"
+#include "../../XFramework/rModel.h"
+#include "../../XFramework/rScheduler.h"
+#include "../../XFramework/rSky.h"
 #include "../../XFramework/rSoundRequest.h"
 #include "rWeatherEffectParam.h"
 #include "rWeatherInfo.h"
+#include "rWeatherScript.h"
 #include "../../XFramework/rZone.h"
 #include "res_ptr.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
 #include "sEnvMapManager.h"
+#include "sGame.h"
+#include "../../XFramework/sMain.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "../../XFramework/sZone.h"
+#include "sZoneUnitCtrl.h"
+#include "../../XFramework/uBaseModel.h"
+#include "../../XFramework/uCamera.h"
+#include "../../XFramework/uScheduler.h"
 #include "../../XFramework/uSky.h"
 #include "uSkyCloud.h"
 #include "uSkyExt.h"
@@ -128,13 +156,9 @@ void cCustomWeatherParam::setCustomGrassFadeEndDistance(f32 val) {
     mCustomGrassFadeEndDistance = val;
 }
 
-u32 cCustomWeatherParam::getCustomWeatherID() const {
-    return mCustomWeatherID;
-}
+static auto ddon_emit_0x01acff60 __attribute__((used)) = &cCustomWeatherParam::getCustomWeatherID;
 
-u32 cCustomWeatherParam::getCustomTime() const {
-    return mCustomWeatherTime;
-}
+static auto ddon_emit_0x01acff70 __attribute__((used)) = &cCustomWeatherParam::getCustomTime;
 
 __attribute__((weak)) u32 cCustomWeatherParam::getCustomTimeHour() const {
     DDON_STUB("cCustomWeatherParam::getCustomTimeHour")
@@ -146,29 +170,17 @@ __attribute__((weak)) u32 cCustomWeatherParam::getCustomTimeMinite() const {
     return {};
 }
 
-f32 cCustomWeatherParam::getCustomShadowViewDistance() const {
-    return mCustomShadowViewDistance;
-}
+static auto ddon_emit_0x01acff80 __attribute__((used)) = &cCustomWeatherParam::getCustomShadowViewDistance;
 
-f32 cCustomWeatherParam::getCustomShadowDepthBias() const {
-    return mCustomShadowDepthBias;
-}
+static auto ddon_emit_0x01acff90 __attribute__((used)) = &cCustomWeatherParam::getCustomShadowDepthBias;
 
-f32 cCustomWeatherParam::getCustomShadowSlopeScaledDepthBias() const {
-    return mCustomShadowSlopeScaledDepthBias;
-}
+static auto ddon_emit_0x01acffa0 __attribute__((used)) = &cCustomWeatherParam::getCustomShadowSlopeScaledDepthBias;
 
-f32 cCustomWeatherParam::getCustomShadowDistanceScaledDepthBias() const {
-    return mCustomShadowDistanceScaledDepthBias;
-}
+static auto ddon_emit_0x01acffb0 __attribute__((used)) = &cCustomWeatherParam::getCustomShadowDistanceScaledDepthBias;
 
-f32 cCustomWeatherParam::getCustomShadowGroup0() const {
-    return mCustomShadowAtten.x;
-}
+static auto ddon_emit_0x01acffc0 __attribute__((used)) = &cCustomWeatherParam::getCustomShadowGroup0;
 
-f32 cCustomWeatherParam::getCustomShadowGroup1() const {
-    return mCustomShadowAtten.y;
-}
+static auto ddon_emit_0x01acffd0 __attribute__((used)) = &cCustomWeatherParam::getCustomShadowGroup1;
 
 __attribute__((weak)) MtVector3 cCustomWeatherParam::getCustomShadowDir() const {
     DDON_STUB("cCustomWeatherParam::getCustomShadowDir")
@@ -195,25 +207,15 @@ __attribute__((weak)) MtVector3 cCustomWeatherParam::getCustomGrassWindDir() con
     __builtin_unreachable();
 }
 
-f32 cCustomWeatherParam::getCustomGrassFadeBeginDistance() const {
-    return mCustomGrassFadeBeginDistance;
-}
+static auto ddon_emit_0x01ad00e0 __attribute__((used)) = &cCustomWeatherParam::getCustomGrassFadeBeginDistance;
 
-f32 cCustomWeatherParam::getCustomGrassFadeEndDistance() const {
-    return mCustomGrassFadeEndDistance;
-}
+static auto ddon_emit_0x01ad00f0 __attribute__((used)) = &cCustomWeatherParam::getCustomGrassFadeEndDistance;
 
-f32 cCustomWeatherParam::getCustomFogStart() const {
-    return mCustomFogStart;
-}
+static auto ddon_emit_0x01ad0100 __attribute__((used)) = &cCustomWeatherParam::getCustomFogStart;
 
-f32 cCustomWeatherParam::getCustomFogEnd() const {
-    return mCustomFogEnd;
-}
+static auto ddon_emit_0x01ad0110 __attribute__((used)) = &cCustomWeatherParam::getCustomFogEnd;
 
-f32 cCustomWeatherParam::getCustomFogExponentDensity() const {
-    return mCustomFogExponentDensity;
-}
+static auto ddon_emit_0x01ad0120 __attribute__((used)) = &cCustomWeatherParam::getCustomFogExponentDensity;
 
 __attribute__((weak)) MtVector3 cCustomWeatherParam::getCustomFogColor() const {
     DDON_STUB("cCustomWeatherParam::getCustomFogColor")
@@ -303,21 +305,21 @@ void sWeatherManager::releaseEnvMapTexture() {
     if (t1 != nullptr) {
         t1->setTexture(static_cast<rTexture*>(nullptr));
         sEnvMapManager* t3 = sEnvMapManager::mpInstance;
-        sEnvMapManager::cManageEnvMapBase* t4 = t0->mapManagedEnvMap[1];
+        sEnvMapManager::cManageEnvMapBase* t4 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[1];
         if (t4 != nullptr) {
             t4->setTexture(static_cast<rTexture*>(nullptr));
             sEnvMapManager* t6 = sEnvMapManager::mpInstance;
             if (t6 != nullptr) {
-                sEnvMapManager::cManageEnvMapBase* t7 = t0->mapManagedEnvMap[0];
+                sEnvMapManager::cManageEnvMapBase* t7 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[0];
                 if (t7 != nullptr) {
                     t7->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                     sEnvMapManager* t9 = sEnvMapManager::mpInstance;
-                    sEnvMapManager::cManageEnvMapBase* t10 = t0->mapManagedEnvMap[1];
+                    sEnvMapManager::cManageEnvMapBase* t10 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[1];
                     if (t10 != nullptr) {
                         t10->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                     }
                 } else {
-                    sEnvMapManager::cManageEnvMapBase* t10 = t0->mapManagedEnvMap[1];
+                    sEnvMapManager::cManageEnvMapBase* t10 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[1];
                     if (t10 != nullptr) {
                         t10->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                     }
@@ -325,16 +327,16 @@ void sWeatherManager::releaseEnvMapTexture() {
             }
         } else {
             if (t3 != nullptr) {
-                sEnvMapManager::cManageEnvMapBase* t7 = t0->mapManagedEnvMap[0];
+                sEnvMapManager::cManageEnvMapBase* t7 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[0];
                 if (t7 != nullptr) {
                     t7->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                     sEnvMapManager* t9 = sEnvMapManager::mpInstance;
-                    sEnvMapManager::cManageEnvMapBase* t10 = t0->mapManagedEnvMap[1];
+                    sEnvMapManager::cManageEnvMapBase* t10 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[1];
                     if (t10 != nullptr) {
                         t10->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                     }
                 } else {
-                    sEnvMapManager::cManageEnvMapBase* t10 = t0->mapManagedEnvMap[1];
+                    sEnvMapManager::cManageEnvMapBase* t10 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[1];
                     if (t10 != nullptr) {
                         t10->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                     }
@@ -342,37 +344,37 @@ void sWeatherManager::releaseEnvMapTexture() {
             }
         }
     } else {
-        sEnvMapManager::cManageEnvMapBase* t4 = t0->mapManagedEnvMap[1];
+        sEnvMapManager::cManageEnvMapBase* t4 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[1];
         if (t4 != nullptr) {
             t4->setTexture(static_cast<rTexture*>(nullptr));
             sEnvMapManager* t6 = sEnvMapManager::mpInstance;
             if (t6 != nullptr) {
-                sEnvMapManager::cManageEnvMapBase* t7 = t0->mapManagedEnvMap[0];
+                sEnvMapManager::cManageEnvMapBase* t7 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[0];
                 if (t7 != nullptr) {
                     t7->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                     sEnvMapManager* t9 = sEnvMapManager::mpInstance;
-                    sEnvMapManager::cManageEnvMapBase* t10 = t0->mapManagedEnvMap[1];
+                    sEnvMapManager::cManageEnvMapBase* t10 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[1];
                     if (t10 != nullptr) {
                         t10->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                     }
                 } else {
-                    sEnvMapManager::cManageEnvMapBase* t10 = t0->mapManagedEnvMap[1];
+                    sEnvMapManager::cManageEnvMapBase* t10 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[1];
                     if (t10 != nullptr) {
                         t10->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                     }
                 }
             }
         } else {
-            sEnvMapManager::cManageEnvMapBase* t7 = t0->mapManagedEnvMap[0];
+            sEnvMapManager::cManageEnvMapBase* t7 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[0];
             if (t7 != nullptr) {
                 t7->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                 sEnvMapManager* t9 = sEnvMapManager::mpInstance;
-                sEnvMapManager::cManageEnvMapBase* t10 = t0->mapManagedEnvMap[1];
+                sEnvMapManager::cManageEnvMapBase* t10 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[1];
                 if (t10 != nullptr) {
                     t10->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                 }
             } else {
-                sEnvMapManager::cManageEnvMapBase* t10 = t0->mapManagedEnvMap[1];
+                sEnvMapManager::cManageEnvMapBase* t10 = (sEnvMapManager::mpInstance)->mapManagedEnvMap[1];
                 if (t10 != nullptr) {
                     t10->setRenderTargetTexture(static_cast<rRenderTargetTexture*>(nullptr));
                 }
@@ -402,6 +404,10 @@ void sWeatherManager::setWeatherTimefromHMS(u32 hour, u32 min, u32 sec) {
 __attribute__((weak)) void sWeatherManager::updateWeatherTime() {
     DDON_STUB("sWeatherManager::updateWeatherTime")
     /* stub */
+}
+
+inline void sWeatherManager::updateWeatherTimeSync() {
+    mWeatherTime = (sGame::mpInstance)->sGame::getGameTime();
 }
 
 __attribute__((weak)) void sWeatherManager::updateSkyParam() {
@@ -665,20 +671,20 @@ __attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
                     mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
                     mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
                     mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
-                    p_snd_now->cWeatherScript::releaseScript();
-                    p_snd_now->cWeatherScript::initScript();
-                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
-                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
-                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
-                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+                    p_snd_now->releaseScript();
+                    p_snd_now->initScript();
+                    p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+                    p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+                    p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+                    p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
                     if (flash) {
                         mWeatherScript[1].endScript();
                         mWeatherScript[0].reqStepScript(2u);
                         mpWeatherScriptEfcNow = &mWeatherScript[0];
                         mpWeatherScriptEfcOld = &mWeatherScript[1];
                         if (mZoneIndoorSoundReqNo == 0) {
-                            p_snd_old->cWeatherScript::endScript();
-                            p_snd_now->cWeatherScript::reqStepScript(2u);
+                            p_snd_old->endScript();
+                            p_snd_now->reqStepScript(2u);
                         }
                     } else {
                         mWeatherScript[1].reqStepScript(3u);
@@ -686,8 +692,8 @@ __attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
                         mpWeatherScriptEfcNow = &mWeatherScript[0];
                         mpWeatherScriptEfcOld = &mWeatherScript[1];
                         if (mZoneIndoorSoundReqNo == 0) {
-                            p_snd_old->cWeatherScript::reqStepScript(3u);
-                            p_snd_now->cWeatherScript::reqStepScript(1u);
+                            p_snd_old->reqStepScript(3u);
+                            p_snd_now->reqStepScript(1u);
                         }
                     }
                     mpWeatherScriptSndNow = p_snd_now;
@@ -733,12 +739,12 @@ __attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
             if (p_snd_now != nullptr) {
                 cWeatherScript* p_snd_old = mpWeatherScriptSndNow;
                 if (p_snd_old == nullptr) {
-                    p_efc_now->cWeatherScript::releaseScript();
-                    p_efc_now->cWeatherScript::initScript();
-                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
-                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
-                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
-                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+                    p_efc_now->releaseScript();
+                    p_efc_now->initScript();
+                    p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+                    p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+                    p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+                    p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
                     mWeatherScript[2].releaseScript();
                     mWeatherScript[2].initScript();
                     mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
@@ -746,8 +752,8 @@ __attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
                     mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
                     mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
                     if (flash) {
-                        p_efc_old->cWeatherScript::endScript();
-                        p_efc_now->cWeatherScript::reqStepScript(2u);
+                        p_efc_old->endScript();
+                        p_efc_now->reqStepScript(2u);
                         mpWeatherScriptEfcNow = p_efc_now;
                         mpWeatherScriptEfcOld = p_efc_old;
                         if (mZoneIndoorSoundReqNo == 0) {
@@ -755,8 +761,8 @@ __attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
                             mWeatherScript[2].reqStepScript(2u);
                         }
                     } else {
-                        p_efc_old->cWeatherScript::reqStepScript(3u);
-                        p_efc_now->cWeatherScript::reqStepScript(1u);
+                        p_efc_old->reqStepScript(3u);
+                        p_efc_now->reqStepScript(1u);
                         mpWeatherScriptEfcNow = p_efc_now;
                         mpWeatherScriptEfcOld = p_efc_old;
                         if (mZoneIndoorSoundReqNo == 0) {
@@ -767,47 +773,47 @@ __attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
                     mpWeatherScriptSndNow = &mWeatherScript[2];
                     mpWeatherScriptSndOld = &mWeatherScript[3];
                 } else {
-                    p_efc_now->cWeatherScript::releaseScript();
-                    p_efc_now->cWeatherScript::initScript();
-                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
-                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
-                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
-                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
-                    p_snd_now->cWeatherScript::releaseScript();
-                    p_snd_now->cWeatherScript::initScript();
-                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
-                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
-                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
-                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+                    p_efc_now->releaseScript();
+                    p_efc_now->initScript();
+                    p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+                    p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+                    p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+                    p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+                    p_snd_now->releaseScript();
+                    p_snd_now->initScript();
+                    p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+                    p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+                    p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+                    p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
                     if (flash) {
-                        p_efc_old->cWeatherScript::endScript();
-                        p_efc_now->cWeatherScript::reqStepScript(2u);
+                        p_efc_old->endScript();
+                        p_efc_now->reqStepScript(2u);
                         mpWeatherScriptEfcNow = p_efc_now;
                         mpWeatherScriptEfcOld = p_efc_old;
                         if (mZoneIndoorSoundReqNo == 0) {
-                            p_snd_old->cWeatherScript::endScript();
-                            p_snd_now->cWeatherScript::reqStepScript(2u);
+                            p_snd_old->endScript();
+                            p_snd_now->reqStepScript(2u);
                         }
                     } else {
-                        p_efc_old->cWeatherScript::reqStepScript(3u);
-                        p_efc_now->cWeatherScript::reqStepScript(1u);
+                        p_efc_old->reqStepScript(3u);
+                        p_efc_now->reqStepScript(1u);
                         mpWeatherScriptEfcNow = p_efc_now;
                         mpWeatherScriptEfcOld = p_efc_old;
                         if (mZoneIndoorSoundReqNo == 0) {
-                            p_snd_old->cWeatherScript::reqStepScript(3u);
-                            p_snd_now->cWeatherScript::reqStepScript(1u);
+                            p_snd_old->reqStepScript(3u);
+                            p_snd_now->reqStepScript(1u);
                         }
                     }
                     mpWeatherScriptSndNow = p_snd_now;
                     mpWeatherScriptSndOld = p_snd_old;
                 }
             } else {
-                p_efc_now->cWeatherScript::releaseScript();
-                p_efc_now->cWeatherScript::initScript();
-                p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
-                p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
-                p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
-                p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+                p_efc_now->releaseScript();
+                p_efc_now->initScript();
+                p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+                p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+                p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+                p_efc_now->setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
                 mWeatherScript[2].releaseScript();
                 mWeatherScript[2].initScript();
                 mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
@@ -815,8 +821,8 @@ __attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
                 mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
                 mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
                 if (flash) {
-                    p_efc_old->cWeatherScript::endScript();
-                    p_efc_now->cWeatherScript::reqStepScript(2u);
+                    p_efc_old->endScript();
+                    p_efc_now->reqStepScript(2u);
                     mpWeatherScriptEfcNow = p_efc_now;
                     mpWeatherScriptEfcOld = p_efc_old;
                     if (mZoneIndoorSoundReqNo == 0) {
@@ -824,8 +830,8 @@ __attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
                         mWeatherScript[2].reqStepScript(2u);
                     }
                 } else {
-                    p_efc_old->cWeatherScript::reqStepScript(3u);
-                    p_efc_now->cWeatherScript::reqStepScript(1u);
+                    p_efc_old->reqStepScript(3u);
+                    p_efc_now->reqStepScript(1u);
                     mpWeatherScriptEfcNow = p_efc_now;
                     mpWeatherScriptEfcOld = p_efc_old;
                     if (mZoneIndoorSoundReqNo == 0) {
@@ -882,20 +888,20 @@ __attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
                 mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
                 mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
                 mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
-                p_snd_now->cWeatherScript::releaseScript();
-                p_snd_now->cWeatherScript::initScript();
-                p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
-                p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
-                p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
-                p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+                p_snd_now->releaseScript();
+                p_snd_now->initScript();
+                p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+                p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+                p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+                p_snd_now->setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
                 if (flash) {
                     mWeatherScript[1].endScript();
                     mWeatherScript[0].reqStepScript(2u);
                     mpWeatherScriptEfcNow = &mWeatherScript[0];
                     mpWeatherScriptEfcOld = &mWeatherScript[1];
                     if (mZoneIndoorSoundReqNo == 0) {
-                        p_snd_old->cWeatherScript::endScript();
-                        p_snd_now->cWeatherScript::reqStepScript(2u);
+                        p_snd_old->endScript();
+                        p_snd_now->reqStepScript(2u);
                     }
                 } else {
                     mWeatherScript[1].reqStepScript(3u);
@@ -903,8 +909,8 @@ __attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
                     mpWeatherScriptEfcNow = &mWeatherScript[0];
                     mpWeatherScriptEfcOld = &mWeatherScript[1];
                     if (mZoneIndoorSoundReqNo == 0) {
-                        p_snd_old->cWeatherScript::reqStepScript(3u);
-                        p_snd_now->cWeatherScript::reqStepScript(1u);
+                        p_snd_old->reqStepScript(3u);
+                        p_snd_now->reqStepScript(1u);
                     }
                 }
                 mpWeatherScriptSndNow = p_snd_now;
@@ -1235,6 +1241,10 @@ __attribute__((weak)) cCommonSkyFogData sWeatherManager::getIndoorSkyColorFogDat
 __attribute__((weak)) MtVector3 sWeatherManager::getSkyAmbientColor(f32 height, f32 scale) {
     DDON_STUB("sWeatherManager::getSkyAmbientColor")
     __builtin_unreachable();
+}
+
+inline void sWeatherManager::updateWaterLRate() {
+    mWaterLRate = nDDOMath::lerp(((mpWeatherInfomOld == nullptr) ? (&WeatherInfoNone) : mpWeatherInfomOld)->mWaterLRate, ((mpWeatherInfoNow == nullptr) ? (&WeatherInfoNone) : mpWeatherInfoNow)->mWaterLRate, mWeatherBlend);
 }
 
 __attribute__((weak)) void sWeatherManager::updateWaterReflectionRate() {

@@ -71,3 +71,7 @@ public:
     static const u32 DEFAULT_SEQ_NO = 22;
     static const u32 DEFAULT_MKF_NO = 2;
 };
+
+inline void* cpMotionRate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

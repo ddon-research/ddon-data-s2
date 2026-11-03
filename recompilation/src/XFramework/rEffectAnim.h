@@ -197,6 +197,10 @@ private:
     f32 mPatSpeed;  // offset: 0xc
 };
 
+inline void* rEffectAnim::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rEffectAnim::rEffectAnim() {
     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 120) = 0;
     this->mParamBuffSize = 0;

@@ -1101,7 +1101,37 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIAreaMaster::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIAreaMaster::setupPawnExpedition() {
+    this->mSubFlowId = 0;
+    this->mIsPawnExpeditionSally = false;
+    this->mIsPawnExpeditionReqSuccess = true;
+}
+
 inline uGUIAreaMaster::stListHeader::stListHeader() {
+}
+
+inline void* uGUIAreaMaster::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIAreaMaster::cPawnListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIAreaMaster::cPointItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIAreaMaster::cSuppliesHeaderItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIAreaMaster::cSuppliesItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uGUIAreaMaster::stMonsterItem::stMonsterItem() {
@@ -1114,4 +1144,24 @@ inline uGUIAreaMaster::stMoneyItem::stMoneyItem() {
 }
 
 inline uGUIAreaMaster::stVariable::stVariable() {
+}
+
+inline void* uGUIAreaMaster::cDetailInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIAreaMaster::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIAreaMaster::cPointInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIAreaMaster::cSuppliesHeaderInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIAreaMaster::cSuppliesInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -182,12 +182,24 @@ protected:
     static const u16 DATA_VERSION = 3;
 };
 
+inline void* rMsgSet::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rMsgSet::cMsgGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 rMsgSet::cMsgGroup::getNpcId() {
     return this->mNpcId;
 }
 
 inline u32 rMsgSet::cMsgGroup::getGroupType() {
     return this->mGroupType;
+}
+
+inline void* rMsgSet::cMsgData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u32 rMsgSet::cMsgData::getGmdIndex() {

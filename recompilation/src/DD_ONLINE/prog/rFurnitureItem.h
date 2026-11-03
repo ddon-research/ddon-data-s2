@@ -255,11 +255,19 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cFurnitureGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFurnitureGroup::cFurnitureGroup() {
     this->mSortNo = 0;
     this->mGmdIdx = 0;
     this->mID = 0;
     this->mCameraNo = 0;
+}
+
+inline void* cFurnitureItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cFurnitureItem::cFurnitureItem() {
@@ -268,10 +276,54 @@ inline cFurnitureItem::cFurnitureItem() {
     this->mOmId = 0;
 }
 
+inline void* cFurnitureLayout::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cFurnitureLayout::cFurnitureLayout() {
     this->mGmdIdx = 0;
     this->mIsRemovable = false;
     this->mSortNo = 0;
     this->mID = 0;
     this->mGroupId = 0;
+}
+
+inline void* rFurnitureGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rFurnitureItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rFurnitureLayout::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cFurnitureGroup::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFurnitureGroup::DTI)->memFree(p_addr);
+}
+
+inline void* cFurnitureGroup::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFurnitureGroup::DTI)->memAlloc(sz, align, ::cFurnitureGroup::DTI.::MtDTI::getID());
+}
+
+inline void cFurnitureItem::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFurnitureItem::DTI)->memFree(p_addr);
+}
+
+inline void* cFurnitureItem::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFurnitureItem::DTI)->memAlloc(sz, align, ::cFurnitureItem::DTI.::MtDTI::getID());
+}
+
+inline void cFurnitureLayout::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFurnitureLayout::DTI)->memFree(p_addr);
+}
+
+inline void* cFurnitureLayout::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFurnitureLayout::DTI)->memAlloc(sz, align, ::cFurnitureLayout::DTI.::MtDTI::getID());
 }

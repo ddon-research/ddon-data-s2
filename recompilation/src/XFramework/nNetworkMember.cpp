@@ -4,9 +4,11 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtNetBuffer.h"
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -110,49 +112,37 @@ void nNetwork::Member::clear() {
     mConfig[7] = 0;
 }
 
-MT_CTSTR nNetwork::Member::getName() const {
-    return &mInfo.mName[0];
-}
+static auto ddon_emit_0x01b864f0 __attribute__((used)) = &nNetwork::Member::getName;
 
 bool nNetwork::Member::isSelf() const {
     return static_cast<bool>(this->mConfiguration & 1u);
 }
 
-void nNetwork::Member::setSelf(bool f) {
-    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFFEu) : (this->mConfiguration | 1u);
-}
+static auto ddon_emit_0x01b86520 __attribute__((used)) = &nNetwork::Member::setSelf;
 
 bool nNetwork::Member::isEntry() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 20)) & 2) >> 1);
 }
 
-void nNetwork::Member::setEntry(bool f) {
-    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFFDu) : (this->mConfiguration | 2u);
-}
+static auto ddon_emit_0x01b86550 __attribute__((used)) = &nNetwork::Member::setEntry;
 
 bool nNetwork::Member::isMatch() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 20)) & 4) >> 2);
 }
 
-void nNetwork::Member::setMatch(bool f) {
-    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFFBu) : (this->mConfiguration | 4u);
-}
+static auto ddon_emit_0x01b86580 __attribute__((used)) = &nNetwork::Member::setMatch;
 
 bool nNetwork::Member::isTerminate() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 20)) & 8) >> 3);
 }
 
-void nNetwork::Member::setTerminate(bool f) {
-    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFF7u) : (this->mConfiguration | 8u);
-}
+static auto ddon_emit_0x01b865b0 __attribute__((used)) = &nNetwork::Member::setTerminate;
 
 bool nNetwork::Member::isMute() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 20)) & 16) >> 4);
 }
 
-void nNetwork::Member::setMute(bool f) {
-    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFEFu) : (this->mConfiguration | 16u);
-}
+static auto ddon_emit_0x01b865e0 __attribute__((used)) = &nNetwork::Member::setMute;
 
 bool nNetwork::Member::isTalking() const {
     if ((this->mConfiguration & 32u) != 0) {
@@ -176,9 +166,7 @@ bool nNetwork::Member::isRestrict() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 20)) & 64) >> 6);
 }
 
-void nNetwork::Member::setRestrict(bool f) {
-    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFBFu) : (this->mConfiguration | 64u);
-}
+static auto ddon_emit_0x01b86680 __attribute__((used)) = &nNetwork::Member::setRestrict;
 
 bool nNetwork::Member::isNewbie() const {
     if (mInfo.mIsValid) {

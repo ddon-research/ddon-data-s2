@@ -125,16 +125,28 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataAreaWarpPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataAreaWarpPoint::CDataAreaWarpPoint() {
     this->m_unAreaID = 0;
     this->m_unWarpPointID = 0;
     this->m_unPrice = 0;
 }
 
+inline void* CDataFavoriteWarpPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataFavoriteWarpPoint::CDataFavoriteWarpPoint() {
     this->m_ulSlotNo = 0;
     this->m_ulWarpPointID = 0;
     this->m_unPrice = 0;
+}
+
+inline void* CDataWarpPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline CDataWarpPoint::CDataWarpPoint() {

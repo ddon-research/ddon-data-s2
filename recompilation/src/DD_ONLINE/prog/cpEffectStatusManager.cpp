@@ -6,8 +6,12 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cDelegate.h"
+#include "cEfcHandle.h"
 #include "cpComponent.h"
+#include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -49,8 +53,7 @@ inline void cpEffectStatusManager::operator delete(void* p_addr) {
 }
 
 cpEffectStatusManager::~cpEffectStatusManager() {
-    DDON_STUB("cpEffectStatusManager::~cpEffectStatusManager")
-    /* stub */
+    allKill(sEffectExt::EFC_END_TYPE_KILL);
 }
 
 __attribute__((weak)) void cpEffectStatusManager::setup() {

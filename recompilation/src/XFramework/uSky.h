@@ -340,3 +340,19 @@ private:
 public:
     static MyDTI DTI;
 };
+
+inline void* uSky::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rSky* uSky::getResource() const {
+    return this->mpResource;
+}
+
+inline f32 uSky::getHeightOffset() const {
+    return this->mHeightOffset;
+}
+
+inline void* uSkyFog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

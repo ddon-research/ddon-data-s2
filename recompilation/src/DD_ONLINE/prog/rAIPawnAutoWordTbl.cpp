@@ -46,6 +46,10 @@ const MtDTI& cAIPawnAutoWordNode::getDTI() const {
     return cAIPawnAutoWordNode::DTI;
 }
 
+inline void* cAIPawnAutoWordNode::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIPawnAutoWordNode::DTI)->memAlloc(sz, align, cAIPawnAutoWordNode::DTI.getID());
+}
+
 inline void cAIPawnAutoWordNode::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAIPawnAutoWordNode::DTI)->memFree(p_addr);
 }
@@ -57,9 +61,8 @@ cAIPawnAutoWordNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 cAIPawnAutoWordNode::MyDTI cAIPawnAutoWordNode::DTI("cAIPawnAutoWordNode", &::cAIResource::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIPawnAutoWordNode::MyDTI::newInstance() const {
-    DDON_STUB("cAIPawnAutoWordNode::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIPawnAutoWordNode::MyDTI::newInstance() const {
+    return new (16u) cAIPawnAutoWordNode;
 }
 
 const MtDTI& rAIPawnAutoMotionTbl::getDTI() const {

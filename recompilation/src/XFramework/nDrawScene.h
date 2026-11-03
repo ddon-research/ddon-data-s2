@@ -240,3 +240,7 @@ namespace nDraw {
         static MyDTI DTI;
     };
 }  // namespace nDraw
+
+inline void* nDraw::Scene::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

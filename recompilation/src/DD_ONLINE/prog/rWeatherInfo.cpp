@@ -5,10 +5,15 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "nWeather.h"
 #include "../../XFramework/rModel.h"
@@ -20,6 +25,7 @@
 #include "rWeatherEffectParam.h"
 #include "rWeatherScript.h"
 #include "res_ptr.h"
+#include "../../XFramework/sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

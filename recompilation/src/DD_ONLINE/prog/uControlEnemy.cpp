@@ -2,15 +2,29 @@
 #include <new>
 #include "uControlEnemy.h"
 #include "Protocol/PacketData/Enemy.h"
+#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "cContextInstance.h"
+#include "cContextInterface.h"
+#include "cpLayout.h"
+#include "rLayoutGroupParam.h"
+#include "sContextManager.h"
+#include "sControlManager.h"
 #include "uControl.h"
+#include "uEnemy.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
 
 const MtDTI& uControlEnemy::getDTI() const {
     return uControlEnemy::DTI;
+}
+
+inline void* uControlEnemy::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uControlEnemy::DTI)->memAlloc(sz, align, uControlEnemy::DTI.getID());
 }
 
 uControlEnemy::~uControlEnemy() {
@@ -52,8 +66,7 @@ uControlEnemy::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 
 uControlEnemy::MyDTI uControlEnemy::DTI("uControlEnemy", &::uControl::DTI, 776ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uControlEnemy::MyDTI::newInstance() const {
-    DDON_STUB("uControlEnemy::MyDTI::newInstance")
-    return nullptr;
+MtObject* uControlEnemy::MyDTI::newInstance() const {
+    return new (16u) uControlEnemy;
 }
 

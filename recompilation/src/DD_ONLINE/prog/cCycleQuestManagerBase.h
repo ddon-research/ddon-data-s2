@@ -308,6 +308,25 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCycleQuestManagerBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void cCycleQuestManagerBase::setRoutineStart() {
+    this->mR0 = 3;
+    this->mR1 = 0;
+}
+
+inline void cCycleQuestManagerBase::routineStart() {
+    this->mR0 = 4;
+    this->mR1 = 0;
+}
+
+inline void cCycleQuestManagerBase::routineClear() {
+    this->mR0 = 8;
+    this->mR1 = 0;
+}
+
 inline u32 cCycleQuestManagerBase::getJumpStartPos() {
     return this->mStartPos;
 }
@@ -321,4 +340,8 @@ inline void cCycleQuestManagerBase::resetFlag() {
 
 inline u32 cCycleQuestManagerBase::getExtraPointListNum() const {
     return this->mExtraPointList.::MtArray::mLength;
+}
+
+inline void* cCycleQuestManagerBase::cDieEmInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

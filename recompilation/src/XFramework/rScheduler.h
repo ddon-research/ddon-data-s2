@@ -159,6 +159,10 @@ protected:
     static const u16 DATA_VERSION = 22;
 };
 
+inline void* rScheduler::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rScheduler::rScheduler() {
     this->::cResource::mAttr = 16;
     this->mpHeader = nullptr;

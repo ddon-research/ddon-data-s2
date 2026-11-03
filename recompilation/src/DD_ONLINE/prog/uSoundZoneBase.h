@@ -279,3 +279,23 @@ public:
     static const u32 CATEGORY_NAME_LEN_MAX = 32;
     static const u16 ID_TO_INDEX_TABLE_NONE = 65535;
 };
+
+inline void* cSoundLayoutInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cSoundZoneListener::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSoundZoneBase::cSoundZoneContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uSoundZoneBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uSoundZoneBase::cGroupManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

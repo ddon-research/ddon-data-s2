@@ -1227,6 +1227,14 @@ protected:
     static const u8 DATA_VERSION = 58;
 };
 
+inline void* rItemList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rItemList::rItemParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 rItemList::rItemParam::getAttackStatus() const {
     return this->mAttackStatus;
 }
@@ -1235,9 +1243,21 @@ inline u32 rItemList::rItemParam::getItemParamNum() {
     return this->mParamNum;
 }
 
+inline void* rItemList::rParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rItemList::rVsEnemyParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rItemList::rVsEnemyParam::rVsEnemyParam(rItemList::rVsEnemyParam::EM_PHYLOGENY_KIND kind, u16 num) {
     this->mKindType = 0;
     this->mParam = 0;
+}
+
+inline void* rItemList::rWeaponParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rItemList::rWeaponParam::rWeaponParam() {
@@ -1262,6 +1282,14 @@ inline rItemList::rWeaponParam::rWeaponParam() {
     this->mEleSlot = 0;
     this->mPhysicalType = 0;
     this->mElementType = 0;
+}
+
+inline void* rItemList::rEquipParamS8::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rItemList::rItemParamXml::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rItemList::rItemParamXml::rItemParamXml() {
@@ -1399,6 +1427,10 @@ inline rItemList::rItemParamXml::rItemParamXml() {
     this->mDefense = 0;
 }
 
+inline void* rItemList::rProtectorParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rItemList::rProtectorParam::rProtectorParam() {
     this->mAttack = 0;
     this->mMagicAttack = 0;
@@ -1417,4 +1449,8 @@ inline rItemList::rProtectorParam::rProtectorParam() {
     this->mEleSlot = 0;
     this->mpEquipParamS8List = nullptr;
     this->mEquipParamS8Num = 0;
+}
+
+inline void* rItemList::rEquipParamS32::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

@@ -31,6 +31,7 @@ class cpHpDamageCtrl;
 class cpJob08;
 class rAttackParam;
 class uDDOModel;
+class uHumanEnemy;
 
 // Declarations
 class cHealedInfo;
@@ -52,6 +53,7 @@ using u64 = __uint64_t;
 class cHealedInfo : public MtObject
 {
     friend class cpJob08;
+    friend class uHumanEnemy;
 public:
     class MyDTI;
 public:
@@ -296,6 +298,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cHealedInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cHealedInfo::cHealedInfo() {
     this->mPawnAdjMagicBase = 0.0f;
     this->mPawnAdjMagicWep = 0.0f;
@@ -321,6 +327,10 @@ inline cHealedInfo::cHealedInfo() {
     this->mMagicWep = 0.0f;
 }
 
+inline void* cHitInfoAfter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nObjCollision::HIT_INFO_TYPE cHitInfoAfter::getHitInfoType() {
     return this->mHitInfoType;
 }
@@ -339,4 +349,52 @@ inline bool cHitInfoAfter::isCalcShake() const {
 
 inline bool cHitInfoAfter::isCalcOcd() const {
     return this->mIsOcd;
+}
+
+inline void* cHitInfoAfterCommon::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cHpDamageInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cHpDamageInfo::cHpDamageInfo() {
+    this->mEnchantRate = 0.0f;
+    this->mDefenceBaseMagic = 0.0f;
+    this->mDefenceWeaponMagic = 0.0f;
+    this->mDefenceBasePhys = 0.0f;
+    this->mDefenceWeaponPhys = 0.0f;
+    this->mAttackBaseMagic = 0.0f;
+    this->mAttackWeaponMagic = 0.0f;
+    this->mAttackBasePhys = 0.0f;
+    this->mAttackWeaponPhys = 0.0f;
+    this->mAttackReactionType = 1;
+    this->mAtDmAdjRatePhys = 1.0f;
+    this->mAtDmAdjRateMagic = 1.0f;
+    this->mLvAdj = 1.0f;
+    this->mJobAdjEnchantDamage = 1.0f;
+    this->mJobActionRateAdj = 1.0f;
+    this->mPawnAdjAttackBasePhys = 0.0f;
+    this->mPawnAdjAttackBaseMagic = 0.0f;
+    this->mPawnAdjAtDfRate = 0.0f;
+    this->mIsRelustNoDamage = false;
+    this->mIsPhysDamage = false;
+    this->mDamage = 0.0f;
+    this->mDamageGui = 0.0f;
+    this->mNormalDamage = 0.0f;
+    this->mEnchantDamage = 0.0f;
+    this->mDamageDefenceAdj[4] = 0.0f;
+    this->mDamageDefenceAdj[5] = 0.0f;
+    this->mDamageDefenceAdj[2] = 0.0f;
+    this->mDamageDefenceAdj[3] = 0.0f;
+    this->mDamageDefenceAdj[0] = 0.0f;
+    this->mDamageDefenceAdj[1] = 0.0f;
+    this->mDamageAttackAdj[4] = 0.0f;
+    this->mDamageAttackAdj[5] = 0.0f;
+    this->mDamageAttackAdj[2] = 0.0f;
+    this->mDamageAttackAdj[3] = 0.0f;
+    this->mDamageAttackAdj[0] = 0.0f;
+    this->mDamageAttackAdj[1] = 0.0f;
+    this->mPawnAdjFinalDamage = 1.0f;
 }

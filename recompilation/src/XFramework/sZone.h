@@ -240,6 +240,10 @@ protected:
     static sZone* mpInstance;
 };
 
+inline void* sZone::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sZone* sZone::getInstance() {
     return ::sZone::mpInstance;
 }

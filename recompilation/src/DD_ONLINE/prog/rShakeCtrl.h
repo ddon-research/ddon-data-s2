@@ -121,6 +121,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cShakeCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cShakeCtrl::cShakeCtrl() {
     this->mJntNo = -1;
     this->mShakeRot = 20.0f;
@@ -133,8 +137,24 @@ inline cShakeCtrl::cShakeCtrl() {
     this->mIK = 0;
 }
 
+inline void* rShakeCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rShakeCtrl::rShakeCtrl() {
     this->mFrame = 10.0f;
     this->mCycle = 10.0f;
     this->mRate = 1.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cShakeCtrl::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShakeCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cShakeCtrl::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShakeCtrl::DTI)->memAlloc(sz, align, ::cShakeCtrl::DTI.::MtDTI::getID());
 }

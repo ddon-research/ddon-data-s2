@@ -144,8 +144,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uWeapon::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cWeaponResTable* uWeapon::getArchiveInfo() {
     return this->mpWepResData;
+}
+
+inline rModel* uWeapon::getModelRes() {
+    return this->mpModelRes;
 }
 
 inline uModel* uWeapon::getOwner() {

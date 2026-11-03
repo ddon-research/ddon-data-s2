@@ -101,8 +101,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataLobbyInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline CDataLobbyInfo::CDataLobbyInfo() {
     this->m_unVersion = 0;
     this->m_unMaxJoinNum = 0;
     this->m_unJoinNum = 0;
+}
+
+inline void* CDataLobbyMemberInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

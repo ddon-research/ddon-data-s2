@@ -4,13 +4,19 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStlAllocator.h"
 #include "../MT/MtStlCustom.h"
+#include "../MT/MtStream.h"
 #include "../MT/MtString.h"
+#include "nNetworkCoder.h"
+#include "nNetworkSession.h"
 #include "nNetworkSessionListener.h"
+#include "sNetwork.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

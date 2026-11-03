@@ -70,6 +70,7 @@ public:
 public:
     class rDate : public MtObject
     {
+        friend class rShopGoods;
     public:
         class MyDTI;
     public:
@@ -189,8 +190,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cShopGoods::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cShopGoods::rDate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cShopGoods::rDate::rDate() {
     this->mYear = 2000;
     this->mMonth = 1;
     this->mDay = 1;
+}
+
+inline void* rShopGoods::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

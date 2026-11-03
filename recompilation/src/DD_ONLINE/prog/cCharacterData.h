@@ -46,6 +46,7 @@ class sGUIExt;
 class sGame;
 class sNetworkExt;
 class uGUIEngageInfo;
+class uGUIOption;
 
 // Declarations
 class cCharacterData;
@@ -78,6 +79,7 @@ class cCharacterData : public MtObject
     friend class sGame;
     friend class sNetworkExt;
     friend class uGUIEngageInfo;
+    friend class uGUIOption;
 public:
     enum
     {
@@ -1030,6 +1032,14 @@ public:
     static const u32 CHARACTER_DATA_VERSION = 19;
 };
 
+inline void* cCharacterData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 cCharacterData::getVersion() const {
+    return this->mCharData.mVersion;
+}
+
 inline void cCharacterData::setVersion(u32 version) {
     this->mCharData.mVersion = version;
 }
@@ -1054,10 +1064,22 @@ inline const nJobParam::cHumanBaseInfo& cCharacterData::getBaseInfo() const {
     return this->mCharData.mBaseInfo;
 }
 
+inline u32 cCharacterData::getEntryJob() const {
+    return this->mCharData.mMatchProfile.mEntryJob;
+}
+
+inline const cCharacterData::stCardArisenInfo& cCharacterData::getCardArisenInfoConst() const {
+    return this->mCharData.mCardInfo;
+}
+
 inline u32 cCharacterData::getMaxAbilityCost() const {
     return this->mCharData.mMaxAbilityCost;
 }
 
 inline void cCharacterData::setMaxAbilityCost(u32 cost) {
     this->mCharData.mMaxAbilityCost = cost;
+}
+
+inline u32 cCharacterData::getValidInfo() const {
+    return this->mCharData.mValidInfoBit;
 }

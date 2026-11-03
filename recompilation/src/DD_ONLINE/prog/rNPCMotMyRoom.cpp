@@ -3,6 +3,8 @@
 #include "rNPCMotMyRoom.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
@@ -33,6 +35,7 @@ rNPCMotMyRoom::~rNPCMotMyRoom() {
         MtMemoryAllocator::getAllocator(rNPCMotMyRoom::DTI)->memFree(static_cast<void*>(mpArray));
         mpArray = nullptr;
         mArrayNum = 0;
+        return;
     }
     unsigned int i3 = 0;
     do {

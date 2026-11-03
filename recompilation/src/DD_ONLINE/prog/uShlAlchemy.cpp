@@ -2,12 +2,33 @@
 #include <new>
 #include "uShlAlchemy.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtPrimitive3D.h"
+#include "cContextPlayerInfo.h"
 #include "cEfcHandle.h"
+#include "cHitNode.h"
+#include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
+#include "cpDDMrlMgr.h"
+#include "cpEffectProvider.h"
+#include "cpJob09.h"
+#include "cpObjCollision.h"
+#include "nShlStick.h"
+#include "rAttackParam.h"
+#include "rCollNode.h"
+#include "rObjCollision.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "../../XFramework/uBaseModel.h"
+#include "../../XFramework/uCoord.h"
+#include "uDDOModel.h"
+#include "uEnemy.h"
+#include "uHuman.h"
+#include "../../XFramework/uModel.h"
 #include "uShlBase.h"
 #include "uShlStick.h"
 #ifndef DDON_STUB
@@ -32,8 +53,6 @@ __attribute__((weak)) const cShlParamAlchemy* uShlAlchemy::getShlParam() const {
 }
 
 uShlAlchemy::~uShlAlchemy() {
-    DDON_STUB("uShlAlchemy::~uShlAlchemy")
-    /* stub */
 }
 
 __attribute__((weak)) void uShlAlchemy::setup() {

@@ -6,13 +6,18 @@
 #include "sUnit.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
+#include "../MT/MtCollision.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "cDraw.h"
 #include "cSystem.h"
 #include "cUnit.h"
+#include "sMain.h"
+#include "sRender.h"
+#include "uBaseModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -611,53 +616,29 @@ u32 sUnit::MoveLine::getCount() {
 __attribute__((weak)) void sUnit::MoveLine::setCount(u32) {
 }
 
-bool sUnit::MoveLine::isParallel() {
-    return mParallel;
-}
+static auto ddon_emit_0x01ba9270 __attribute__((used)) = &sUnit::MoveLine::isParallel;
 
-void sUnit::MoveLine::setParallel(bool p) {
-    mParallel = p;
-}
+static auto ddon_emit_0x01ba9280 __attribute__((used)) = &sUnit::MoveLine::setParallel;
 
-bool sUnit::MoveLine::isPause() {
-    return mPause;
-}
+static auto ddon_emit_0x01ba9290 __attribute__((used)) = &sUnit::MoveLine::isPause;
 
-void sUnit::MoveLine::setPause(bool pause) {
-    mPause = pause;
-}
+static auto ddon_emit_0x01ba92a0 __attribute__((used)) = &sUnit::MoveLine::setPause;
 
-bool sUnit::MoveLine::isDraw() const {
-    return mDraw;
-}
+static auto ddon_emit_0x01ba92c0 __attribute__((used)) = &sUnit::MoveLine::isDraw;
 
-void sUnit::MoveLine::setDraw(bool t) {
-    mDraw = t;
-}
+static auto ddon_emit_0x01ba92d0 __attribute__((used)) = &sUnit::MoveLine::setDraw;
 
-f32 sUnit::MoveLine::getDeltaTime() const {
-    return mDeltaTime;
-}
+static auto ddon_emit_0x01ba92f0 __attribute__((used)) = &sUnit::MoveLine::getDeltaTime;
 
-void sUnit::MoveLine::setDeltaTime(f32 NewValue) {
-    mDeltaTime = NewValue;
-}
+static auto ddon_emit_0x01ba9260 __attribute__((used)) = &sUnit::MoveLine::setDeltaTime;
 
-void sUnit::MoveLine::setCastDraw(bool b) {
-    mCastDraw = b;
-}
+static auto ddon_emit_0x01ba9320 __attribute__((used)) = &sUnit::MoveLine::setCastDraw;
 
-bool sUnit::MoveLine::getCastDraw() const {
-    return mCastDraw;
-}
+static auto ddon_emit_0x01ba9310 __attribute__((used)) = &sUnit::MoveLine::getCastDraw;
 
-void sUnit::MoveLine::setRecvDraw(bool b) {
-    mRecvDraw = b;
-}
+static auto ddon_emit_0x01ba9350 __attribute__((used)) = &sUnit::MoveLine::setRecvDraw;
 
-bool sUnit::MoveLine::getRecvDraw() const {
-    return mRecvDraw;
-}
+static auto ddon_emit_0x01ba9340 __attribute__((used)) = &sUnit::MoveLine::getRecvDraw;
 
 sUnit::MoveLine::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

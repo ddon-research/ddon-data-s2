@@ -100,3 +100,23 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cEmWeakSafe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rEmWeakSafe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEmWeakSafe::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmWeakSafe::DTI)->memFree(p_addr);
+}
+
+inline void* cEmWeakSafe::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmWeakSafe::DTI)->memAlloc(sz, align, ::cEmWeakSafe::DTI.::MtDTI::getID());
+}

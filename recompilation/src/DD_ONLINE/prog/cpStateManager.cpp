@@ -6,6 +6,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cDelegate.h"
 #include "cState.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
@@ -35,7 +36,7 @@ cpStateManager::cpStateManager() {
     /* stub */
 }
 
-cpStateManager::~cpStateManager() {
+__attribute__((noinline)) cpStateManager::~cpStateManager() {
     if (mArray.mLength != 0) {
         u32 v0_0 = mArray.mLength;
         for (unsigned int i0_3 = 0;;) {

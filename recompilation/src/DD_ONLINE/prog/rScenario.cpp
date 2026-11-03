@@ -6,6 +6,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSerializer.h"
 #include "cAreaHit.h"
 #include "../../XFramework/cResource.h"
@@ -72,8 +74,32 @@ inline rScenario::rScenario() {
 }
 
 rScenario::~rScenario() {
-    DDON_STUB("rScenario::~rScenario")
-    /* stub */
+    if (mArray.mLength != 0) {
+        u32 v0_0 = mArray.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
+    }
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
 }
 
 MT_CTSTR rScenario::getExt() const {
@@ -95,12 +121,12 @@ MtUI* rScenario::createUI(MtProperty& prop) {
 
 bool rScenario::load(MtStream& in) {
     MtSerializer sz(65536);
-    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
+    return sz.deserializeBinary(in, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 bool rScenario::save(MtStream& out) {
     MtSerializer sz(65536);
-    sz.MtSerializer::serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+    sz.serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
     return true;
 }
 

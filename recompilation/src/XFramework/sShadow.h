@@ -620,3 +620,39 @@ private:
     static const s32 OCCLUSION_LATENCY_FRAME_MAX = 8;
     static const f32 ATTENUATION_THRESHOLD_TAKE_BACK;
 };
+
+inline void* cShadowPriorityState::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sShadow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline f32 sShadow::getFadeDistance() const {
+    return this->mFadeDistance;
+}
+
+inline f32 sShadow::getVisibleDistance() const {
+    return this->mVisibleDistance;
+}
+
+inline bool sShadow::isShadowMapCacheEnable() const {
+    return this->mShadowMapCacheEnable;
+}
+
+inline void* sShadow::ResourceGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sShadow::Resource::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sShadow::ViewConsistentResource::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sShadow::Node::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

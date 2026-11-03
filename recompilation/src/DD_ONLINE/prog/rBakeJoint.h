@@ -99,10 +99,30 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cBakeJoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cBakeJoint::cBakeJoint() {
     this->mBake = false;
     this->mRefJnt = 0xFF;
 }
 
+inline void* rBakeJoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rBakeJoint::rBakeJoint() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cBakeJoint::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBakeJoint::DTI)->memFree(p_addr);
+}
+
+inline void* cBakeJoint::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cBakeJoint::DTI)->memAlloc(sz, align, ::cBakeJoint::DTI.::MtDTI::getID());
 }

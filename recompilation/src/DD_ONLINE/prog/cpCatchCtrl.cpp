@@ -8,18 +8,38 @@
 #include "../../MT/MtObject.h"
 #include "cCharParamEnemy.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
 #include "cDelegate.h"
+#include "cHitNode.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "cpActionManager.h"
+#include "cpActionSelect.h"
 #include "cpComponent.h"
+#include "cpHpDamageCtrl.h"
+#include "cpInput.h"
+#include "cpInvincibleCtrl.h"
+#include "cpObjCollision.h"
+#include "cpScrCollision.h"
 #include "cpStateManager.h"
 #include "../../generated/shared/nCatch.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "rAttackParam.h"
+#include "rCatchInfoParam.h"
+#include "rCaughtInfoParam.h"
 #include "rCharParamEnemy.h"
+#include "rHumanEnemyParam.h"
 #include "sContextManager.h"
 #include "../../XFramework/sMain.h"
 #include "sSetManager.h"
 #include "../../XFramework/uBaseModel.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uEnemy.h"
+#include "uHuman.h"
+#include "uHumanEnemy.h"
+#include "../../XFramework/uModel.h"
+#include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -263,18 +283,18 @@ __attribute__((weak)) void cpCatchCtrl::setClutched(u8 catchType, u32 uniqId, u8
 bool cpCatchCtrl::checkCaught() {
     uDDOModel* pCatch = static_cast<uDDOModel*>(sSetManager::getInstance()->getLayoutUnit(mCaughtInfo.getCatchUid()));
     if (pCatch != nullptr) {
-        if (pCatch->cUnit::isEnable()) {
-            if (pCatch->uDDOModel::getStateActionPtr() != nullptr) {
-                s32 state = pCatch->uDDOModel::getStateActionPtr()->getStateNo();
+        if (pCatch->isEnable()) {
+            if (pCatch->getStateActionPtr() != nullptr) {
+                s32 state = pCatch->getStateActionPtr()->getStateNo();
                 if (state != 262) {
                     if (state == 264) {
-                        if (pCatch->uDDOModel::getCatchCtrlPtr() != nullptr) {
-                            return pCatch->uDDOModel::getCatchCtrlPtr()->mCatchInfo.getCatchUid() == mpModel->mUnitParam;
+                        if (pCatch->getCatchCtrlPtr() != nullptr) {
+                            return pCatch->getCatchCtrlPtr()->mCatchInfo.getCatchUid() == mpModel->mUnitParam;
                         }
                     }
                 } else {
-                    if (pCatch->uDDOModel::getCatchCtrlPtr() != nullptr) {
-                        return pCatch->uDDOModel::getCatchCtrlPtr()->mCatchInfo.getCatchUid() == mpModel->mUnitParam;
+                    if (pCatch->getCatchCtrlPtr() != nullptr) {
+                        return pCatch->getCatchCtrlPtr()->mCatchInfo.getCatchUid() == mpModel->mUnitParam;
                     }
                 }
                 return false;

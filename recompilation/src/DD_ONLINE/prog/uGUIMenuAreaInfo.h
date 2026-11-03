@@ -342,3 +342,23 @@ private:
     static const u32 LISTINST_NUM = 18;
     static const u32 HEADER_NUM = 3;
 };
+
+inline void* uGUIMenuAreaInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMenuAreaInfo::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMenuAreaInfo::cHeaderItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMenuAreaInfo::cListInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIMenuAreaInfo::cHeaderInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

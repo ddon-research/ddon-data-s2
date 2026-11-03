@@ -218,6 +218,10 @@ protected:
     static const u32 mVersion = 4;
 };
 
+inline void* rSoundBank::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSoundBank::rSoundBank() {
     this->::cResource::mAttr = 16;
     this->mProgramNum = 0;

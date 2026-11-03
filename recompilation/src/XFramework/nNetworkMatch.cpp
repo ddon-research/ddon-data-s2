@@ -6,6 +6,11 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "cRemoteCall.h"
+#include "nNetworkDatabase.h"
+#include "nNetworkRemoteCalls.h"
+#include "nNetworkRoute.h"
+#include "nNetworkSession.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

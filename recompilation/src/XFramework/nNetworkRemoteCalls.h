@@ -183,8 +183,24 @@ namespace nNetwork {
     };
 }  // namespace nNetwork
 
+inline void* nNetwork::RpcNetSystem_Entry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::RpcNetSystem_LinkState::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline nNetwork::RpcNetSystem_LinkState::RpcNetSystem_LinkState() {
     this->::cRemoteCall::mAttribute = 0;
+}
+
+inline void* nNetwork::RpcNetSystem_Match::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::RpcNetSystem_RouteKey::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline nNetwork::RpcNetSystem_RouteKey::RpcNetSystem_RouteKey() {

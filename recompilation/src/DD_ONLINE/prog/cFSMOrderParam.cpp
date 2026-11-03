@@ -5,6 +5,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cAIObject.h"
 #include "../../XFramework/cAIUserProcess.h"
 #ifndef DDON_STUB

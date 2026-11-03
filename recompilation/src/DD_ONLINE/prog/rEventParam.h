@@ -203,8 +203,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEventParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline MtTypedArray<cEventParam::cOmList>* cEventParam::getOmArray() {
+    return &this->mOmList;
+}
+
 inline u32 cEventParam::getLightCtrl() const {
     return this->mLightCtrl;
+}
+
+inline void* cEventParam::cOmList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cEventParam::cOmList::cOmList() {
@@ -213,4 +225,16 @@ inline cEventParam::cOmList::cOmList() {
     this->mLotType = 0;
     this->mGroupNo = -1;
     this->mSetId = -1;
+}
+
+inline void* rEventParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cEventParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEventParam::DTI)->memAlloc(sz, align, ::cEventParam::DTI.::MtDTI::getID());
 }

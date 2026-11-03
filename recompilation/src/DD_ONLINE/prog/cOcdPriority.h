@@ -74,6 +74,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cOcdPriorityParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline bool cOcdPriorityParam::isMultiApply() const {
     return this->mIsMultiApply;
 }

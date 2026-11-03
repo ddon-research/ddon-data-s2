@@ -131,8 +131,24 @@ protected:
     static const u32 DATA_VERSION = 36;
 };
 
-inline rShaderPackage::rShaderPackage() : mHeader() {
+inline void* rShaderPackage::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rShaderPackage::rShaderPackage() {
     this->::cResource::mAttr = 16;
     this->mpBody = nullptr;
     this->mpCore = nullptr;
+    this->mHeader.body_offset = 0;
+    this->mHeader.resource_num = 0;
+    this->mHeader.body_size = 0;
+    this->mHeader.gs_num = 0;
+    this->mHeader.ia_num = 0;
+    this->mHeader.table_num = 0;
+    this->mHeader.version = 0;
+    this->mHeader.shader_num = 0;
+    this->mHeader.vs_num = 0;
+    this->mHeader.ps_num = 0;
+    this->mHeader.magic = 0;
+    this->mHeader.shader_version = 0;
 }

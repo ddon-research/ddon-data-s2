@@ -238,5 +238,17 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIQuestBoardBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline uGUIQuestBoardBase::stVar::stVar() {
+}
+
+inline void* uGUIQuestBoardBase::cListHeader::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUIQuestBoardBase::cListItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

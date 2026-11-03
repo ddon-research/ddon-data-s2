@@ -4,7 +4,12 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
+#include "../../XFramework/rScheduler.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sUnit.h"
+#include "sWorkRate.h"
 #include "../../XFramework/uScheduler.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

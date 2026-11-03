@@ -4,13 +4,22 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cUnit.h"
 #include "../../XFramework/nZone.h"
 #include "rOccluderExt.h"
+#include "../../XFramework/sArea.h"
+#include "../../XFramework/sCamera.h"
 #include "../../XFramework/sOccluder.h"
+#include "../../XFramework/uCamera.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

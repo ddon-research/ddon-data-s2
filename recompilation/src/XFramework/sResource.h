@@ -517,9 +517,33 @@ protected:
     static RemoteInfo* mpRemoteInfo;
 };
 
+inline void* sResource::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sResource* sResource::getInstance() {
     return ::sResource::mpInstance;
 }
 
+inline void* sResource::TypeInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* sResource::RemoteInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline MT_CTSTR sResource::RemoteInfo::getPCName() const {
+    return &this->mPCName[0];
+}
+
+inline MT_CTSTR sResource::RemoteInfo::getFolderName() const {
+    return &this->mFolderName[0];
+}
+
 inline sResource::Iterator::Iterator() {
+}
+
+inline void* sResource::DecompressStream::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

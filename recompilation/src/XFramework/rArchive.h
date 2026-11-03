@@ -223,6 +223,10 @@ protected:
     static cipher_cb mpGetCipherKey;
 };
 
+inline void* rArchive::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rArchive::rArchive() {
     this->::cResource::mAttr = 16;
     this->mbCrypted = 0;
@@ -231,4 +235,16 @@ inline rArchive::rArchive() {
     this->mResourceNum = 0;
     this->mTotalSize = 0;
     this->mpResource = nullptr;
+}
+
+inline u32 rArchive::getResourceNum() {
+    return this->mResourceNum;
+}
+
+inline cResource* rArchive::getResource(u32 index) {
+    return this->mpResource[index];
+}
+
+inline void* rArchive::DecompressStream::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

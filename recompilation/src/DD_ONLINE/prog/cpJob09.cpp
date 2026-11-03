@@ -7,29 +7,62 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cBlowShrinkDmInfo.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cDelegate.h"
 #include "cEfcHandle.h"
 #include "cEquipData.h"
+#include "cEvaluation.h"
+#include "cGUIUtility.h"
+#include "cGeneralPoint.h"
+#include "cHitGeom.h"
 #include "cHitInfoAfter.h"
+#include "cHitInfoAfterLocal.h"
+#include "cHitNode.h"
 #include "cHumanActId.h"
+#include "cKeyCustom.h"
+#include "cOcdDamageInfo.h"
+#include "cStaminaCtrl.h"
+#include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
+#include "cpComponent.h"
 #include "cpDDMrlMgr.h"
+#include "cpEffectProvider.h"
+#include "cpInput.h"
 #include "cpJobBase.h"
+#include "cpKeyCommand.h"
 #include "cpMotionSe.h"
+#include "cpObjCollision.h"
+#include "cpSequenceCtrl.h"
+#include "cpShlShotCtrl.h"
 #include "../../generated/shared/nDDOGame.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nHuman.h"
 #include "nHumanMsg.h"
+#include "nShlBase.h"
+#include "nShlStick.h"
+#include "rAttackParam.h"
+#include "rEffectProvider.h"
+#include "rEvaluationTable.h"
 #include "rItemList.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sInputManager.h"
+#include "sItemManager.h"
+#include "../../XFramework/sMain.h"
 #include "sPlayerManager.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uEffectExt.h"
+#include "uEnemy.h"
 #include "uHuman.h"
+#include "../../XFramework/uModel.h"
 #include "uShlAlchemy.h"
 #include "uShlBase.h"
 #ifndef DDON_STUB
@@ -58,8 +91,6 @@ cpJob09::cpJob09() {
 }
 
 cpJob09::~cpJob09() {
-    DDON_STUB("cpJob09::~cpJob09")
-    /* stub */
 }
 
 __attribute__((weak)) void cpJob09::setup() {
@@ -308,8 +339,10 @@ void cpJob09::requestChangeMedal(s32 index) {
 }
 
 __attribute__((weak)) bool cpJob09::canEndureInClimb() {
-    DDON_STUB("cpJob09::canEndureInClimb")
-    return {};
+        if (mpHuman->getInputPtr()->mBtnInfo.on.subWeapon) {
+            return false;
+        }
+        return !mpHuman->getInputPtr()->mBtnInfo.trg.subWeapon;
 }
 
 __attribute__((weak)) bool cpJob09::canMedalChange(bool check_anime_end) const {

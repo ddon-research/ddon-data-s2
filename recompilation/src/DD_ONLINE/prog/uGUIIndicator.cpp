@@ -3,11 +3,16 @@
 #include "uGUIIndicator.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtString.h"
+#include "../../XFramework/cGUIObject.h"
 #include "../../XFramework/cResource.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
@@ -27,8 +32,11 @@ void* uGUIIndicator::operator new(size_t sz, u32 align) {
 }
 
 uGUIIndicator::~uGUIIndicator() {
-    DDON_STUB("uGUIIndicator::~uGUIIndicator")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 void uGUIIndicator::createProperty(MtPropertyList& s) {

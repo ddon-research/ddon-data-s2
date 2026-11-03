@@ -3,8 +3,14 @@
 #include "rTextureJpeg.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
+#include "../MT/MtDataReader.h"
+#include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtStream.h"
+#include "nDrawTexture.h"
 #include "rTexture.h"
+#include "sMain.h"
+#include "sRender.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

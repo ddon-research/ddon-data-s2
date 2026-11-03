@@ -239,3 +239,15 @@ namespace nNetwork {
         RECEIVE_CALLBACK mpCallback;  // offset: 0x18
     };
 }  // namespace nNetwork
+
+inline void* nNetwork::Callback::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::Callback::Entry::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nNetwork::Callback::Queue::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

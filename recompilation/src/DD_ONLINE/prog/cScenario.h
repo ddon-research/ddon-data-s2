@@ -286,8 +286,20 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cScenario::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cAreaHit* cScenario::getArea() {
     return this->mpArea;
+}
+
+inline void* cScenarioArg::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cScenarioParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cScenarioParam::cScenarioParam() {

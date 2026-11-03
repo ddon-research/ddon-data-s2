@@ -126,3 +126,11 @@ public:
     f32 mPlStopTime;  // offset: 0x1c
     static MyDTI DTI;
 };
+
+inline void* cFSMOrderParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cFSMOrderParamCamera::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

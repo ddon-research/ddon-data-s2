@@ -112,3 +112,11 @@ namespace nDraw {
         u32 depth;  // offset: 0xc
     };
 }  // namespace nDraw
+
+inline void* nDraw::Buffer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nDraw::USAGE_TYPE nDraw::Buffer::getUsageType() const {
+    return this->mUsageType;
+}

@@ -289,3 +289,23 @@ namespace MtCollisionUtil {
         static MyDTI DTI;
     };
 }  // namespace MtCollisionUtil
+
+inline void* MtCollisionUtil::MtArrayEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtDtiObject::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtDtiSelecter::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtDtiSelecterIntermediate::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtCollisionUtil::MtFuncBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

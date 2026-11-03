@@ -4,11 +4,14 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../generated/shared/nHuman.h"
 #include "../../generated/shared/nKeyCustom.h"
+#include "rKeyCustomParam.h"
 #include "../../XFramework/sKeyboard.h"
 #include "sKeyboardExt.h"
 #include "../../XFramework/sMouse.h"
@@ -36,8 +39,16 @@ __attribute__((weak)) void cKeyCustom::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) void cKeyCustom::setKbmBlank() {
-    DDON_STUB("cKeyCustom::setKbmBlank")
-    /* stub */
+        if (this->mStR.mKbmNoChange || this->mStR.mKbmNoBlank) {
+            return;
+        }
+        this->clearKey();
+        this->mSt.mValidKey = 0;
+        this->mSt.mValidBtn = 0;
+        this->mSt.mCtrl = 0;
+        this->mSt.mShift = 0;
+        this->mSt.mAlt = 0;
+        this->mSt.mTab = 0;
 }
 
 cKeyCustom::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -67,8 +78,6 @@ cKeyCustomManager::cKeyCustomManager() {
 }
 
 cKeyCustomManager::~cKeyCustomManager() {
-    DDON_STUB("cKeyCustomManager::~cKeyCustomManager")
-    /* stub */
 }
 
 __attribute__((weak)) void cKeyCustomManager::createProperty(MtPropertyList& s) {

@@ -134,9 +134,21 @@ public:
     static const u32 DATA_MAGIC = 5262663;
 };
 
+inline void* rGUIMapSetting::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rGUIMapSetting::cData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rGUIMapSetting::cData::cData() {
     this->mpShape = nullptr;
     this->mFloorId = 0;
     this->mShapeType = 9;
     this->mVisible = true;
+}
+
+inline s32 rGUIMapSetting::cData::getShapeType() {
+    return this->mShapeType;
 }

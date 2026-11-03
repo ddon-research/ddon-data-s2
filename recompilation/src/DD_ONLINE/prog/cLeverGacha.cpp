@@ -5,6 +5,22 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "cContextPlayerInfo.h"
+#include "cpInput.h"
+#include "cpPawnThink.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sInputManager.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sMouse.h"
+#include "sMouseExt.h"
+#include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
+#include "uDDOModel.h"
+#include "uHuman.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

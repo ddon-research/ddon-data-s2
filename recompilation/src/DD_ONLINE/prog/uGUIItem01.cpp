@@ -9,25 +9,50 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtString.h"
+#include "../../MT/MtSynchronize.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "cContextInterface.h"
 #include "cControl.h"
+#include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "cItemParam.h"
 #include "../../XFramework/cResource.h"
+#include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
 #include "nCharacterData.h"
+#include "nDDOUtility.h"
 #include "nGUIItem.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
+#include "../../XFramework/rGUIMessage.h"
 #include "rItemList.h"
+#include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
+#include "sContextManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sGame.h"
+#include "sInputManager.h"
 #include "sItemManager.h"
+#include "sPlayerManager.h"
+#include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
+#include "../../XFramework/uCoord.h"
 #include "uGUIBase.h"
+#include "uGUIGPShop.h"
+#include "uGUIPointer.h"
+#include "uGUIPopCmd01.h"
 #include "uGUIPopDetail01.h"
 #include "uGUIPopListDialog.h"
+#include "uGUIPopNumber01.h"
+#include "uGUIShopBuy.h"
 #include "uGUISystemMsg.h"
 #include "uGUIUseItemBase.h"
+#include "uGUIsMenuBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -255,11 +280,11 @@ void uGUIItemBase01::checkAddStackNum(nCharacterData::ITEM_BAG_TYPE type, nGUIIt
     if (pItem == nullptr) {
         return;
     }
-    *pAddNum = pBag->sItemManager::cItemBag::getItemMaxStackSlotNo(pItem->getItemParam()->getItemNo(), pSlotNo);
+    *pAddNum = pBag->getItemMaxStackSlotNo(pItem->getItemParam()->getItemNo(), pSlotNo);
     if ((*pAddNum) != 0) {
         return;
     }
-    if (pBag->sItemManager::cItemBag::getEmptySlotNum(pBag->sItemManager::cItemBag::getStorageCategotyToItemCategory(pItem->getItemParam()->getItemCategory())) != 0) {
+    if (pBag->getEmptySlotNum(pBag->getStorageCategotyToItemCategory(pItem->getItemParam()->getItemCategory())) != 0) {
         *pAddNum = pItem->getResourceParam()->getStackMax(type);
         *pSlotNo = 0;
     } else {
@@ -280,11 +305,11 @@ void uGUIItemBase01::checkAddStackNum(nItem::E_STORAGE_TYPE serverStorage, nGUII
     if (pItem == nullptr) {
         return;
     }
-    *pAddNum = pBag->sItemManager::cItemBag::getItemMaxStackSlotNo(pItem->getItemParam()->getItemNo(), pSlotNo);
+    *pAddNum = pBag->getItemMaxStackSlotNo(pItem->getItemParam()->getItemNo(), pSlotNo);
     if ((*pAddNum) != 0) {
         return;
     }
-    if (pBag->sItemManager::cItemBag::getEmptySlotNum(pBag->sItemManager::cItemBag::getStorageCategotyToItemCategory(pItem->getItemParam()->getItemCategory())) != 0) {
+    if (pBag->getEmptySlotNum(pBag->getStorageCategotyToItemCategory(pItem->getItemParam()->getItemCategory())) != 0) {
         *pAddNum = pItem->getResourceParam()->getStackMax(type);
         *pSlotNo = 0;
     } else {
@@ -304,7 +329,7 @@ void uGUIItemBase01::checkAddMaxNum(nCharacterData::ITEM_BAG_TYPE type, nGUIItem
     }
     cItemParam* t2 = pItem->getItemParam();
     u32 t3 = t2->getItemNo();
-    u32 t4 = pBag->sItemManager::cItemBag::getItemAddMaxNum(t3);
+    u32 t4 = pBag->getItemAddMaxNum(t3);
     *pAddNum = t4;
     cItemParam* t6 = pItem->getItemParam();
     unsigned short t7 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t6) + 12);
@@ -329,7 +354,7 @@ void uGUIItemBase01::checkAddMaxNum(nItem::E_STORAGE_TYPE type, nGUIItem::cItem*
     }
     cItemParam* t2 = pItem->getItemParam();
     u32 t3 = t2->getItemNo();
-    u32 t4 = pBag->sItemManager::cItemBag::getItemAddMaxNum(t3);
+    u32 t4 = pBag->getItemAddMaxNum(t3);
     *pAddNum = t4;
     cItemParam* t6 = pItem->getItemParam();
     unsigned short t7 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t6) + 12);
@@ -710,12 +735,12 @@ u32 uGUIItemBase01::evOnlineShop(MtObject* pCaller, MtObject* pData) {
     if (retType != 1) {
         uGUISystemMsg* pUnit = getPopSystemMsg();
         if (pUnit != nullptr) {
-            pUnit->uGUISystemMsg::setText(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 49u), -1);
+            pUnit->setText(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 49u), -1);
             pUnit->mMode = 2;
-            pUnit->uGUISystemMsg::addChoiceInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u), 0u, nHuman::JOB_ID_NONE, -1, true);
-            pUnit->uGUISystemMsg::addChoiceInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), 0u, nHuman::JOB_ID_NONE, -1, true);
-            pUnit->uGUISystemMsg::setDefaultChoicePos(1, -1);
-            pUnit->uGUISystemMsg::setCancelChoicePos(1, -1);
+            pUnit->addChoiceInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u), 0u, nHuman::JOB_ID_NONE, -1, true);
+            pUnit->addChoiceInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), 0u, nHuman::JOB_ID_NONE, -1, true);
+            pUnit->setDefaultChoicePos(1, -1);
+            pUnit->setCancelChoicePos(1, -1);
         }
         if (mpShareUnit != nullptr) {
             setExchangeCtrl(false);

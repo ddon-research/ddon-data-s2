@@ -368,6 +368,10 @@ protected:
     static MT_CTSTR mBuildVersion;
 };
 
+inline void* sMain::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline MT_CTSTR sMain::getBuildVersion() {
     return ::sMain::mBuildVersion;
 }
@@ -380,10 +384,22 @@ inline u32 sMain::getJobThreadNum() {
     return this->mJobThreadNum;
 }
 
+inline bool sMain::isFrameWait() const {
+    return this->mFrameWait;
+}
+
 inline f32 sMain::getFps() const {
     return this->mFps;
 }
 
 inline u32 sMain::getFrameTimer() const {
     return this->mFrameTimer;
+}
+
+inline f32 sMain::getDeltaTime() const {
+    return this->mDeltaTime;
+}
+
+inline void sMain::setDeltaTime(f32 NewValue) {
+    this->mDeltaTime = NewValue;
 }

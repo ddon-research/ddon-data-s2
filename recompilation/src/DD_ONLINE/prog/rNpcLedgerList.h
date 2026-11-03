@@ -200,3 +200,19 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* rNpcLedgerList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rNpcLedgerList::cItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rNpcLedgerList::cItem::cInstitution::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rNpcLedgerList::cItem::cInstitutionOpenData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

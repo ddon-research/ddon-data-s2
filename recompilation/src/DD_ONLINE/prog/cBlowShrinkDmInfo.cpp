@@ -6,6 +6,8 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "nObjCollision.h"
+#include "sObjCollision.h"
+#include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -42,8 +44,74 @@ __attribute__((weak)) f32 cBlowShrinkDmInfo::calcSaveShrinkBlowAttack(const cDmJ
 }
 
 __attribute__((weak)) void cBlowShrinkDmInfo::clear() {
-    DDON_STUB("cBlowShrinkDmInfo::clear")
-    /* stub */
+        this->mPower = 10.0f;
+        this->mBlowWep = 1.0f;
+        this->mShrinkWep = 1.0f;
+        this->mDownBase = 0.0f;
+        this->mDownWep = 0.0f;
+        this->mShakeBase = 0.0f;
+        this->mWeight = 0.0f;
+        this->mBlowCutRate = 1.0f;
+        this->mShrinkCutRate = 1.0f;
+        this->mDownCutRate = 1.0f;
+        this->mShakeCutRate = 1.0f;
+        this->mRageShrinkRate = 0.0f;
+        this->mBlowValue = 0.0f;
+        this->mShrinkValue = 0.0f;
+        this->mDownValue = 0.0f;
+        this->mShakeValue = 0.0f;
+        this->mRageShrinkValue = 0.0f;
+        this->mIsRageShrink_Shrink = true;
+        this->mPawnAdjShrinkBlowAt = 0.0f;
+        this->mPawnAdjFinalDamageShrink = 1.0f;
+        this->mPawnAdjFinalDamageBlow = 1.0f;
+        this->mpJobPawnAdjParam_AT = nullptr;
+        this->mpDmLvPawnAdjParam_AT = nullptr;
+        this->mpJobPawnAdjParam_DF = nullptr;
+        this->mpDmLvPawnAdjParam_DF = nullptr;
+        this->mBlowReason[0] = nObjCollision::BLOW_REASON_NONE;
+        this->mBlowReason[1] = nObjCollision::BLOW_REASON_NONE;
+        this->mBlowReason[2] = nObjCollision::BLOW_REASON_NONE;
+        this->mBlowReason[3] = nObjCollision::BLOW_REASON_NONE;
+        this->mBlowReason[4] = nObjCollision::BLOW_REASON_NONE;
+        this->mBlowReason[5] = nObjCollision::BLOW_REASON_NONE;
+        this->mBlowReason[6] = nObjCollision::BLOW_REASON_NONE;
+        this->mForceShrinkType = nObjCollision::FORCE_REACTION_NONE;
+        this->mForceBlowType = nObjCollision::FORCE_REACTION_NONE;
+        this->mForceShakeType = nObjCollision::FORCE_REACTION_NONE;
+        this->mForceDownType = nObjCollision::FORCE_REACTION_NONE;
+        this->mShrinkAttackAdj[0] = 0.0f;
+        this->mShrinkAttackAdj[1] = 0.0f;
+        this->mShrinkAttackAdj[2] = 0.0f;
+        this->mShrinkAttackAdj[3] = 0.0f;
+        this->mShrinkDefenceAdj[0] = 0.0f;
+        this->mShrinkDefenceAdj[1] = 0.0f;
+        this->mShrinkDefenceAdj[2] = 0.0f;
+        this->mShrinkDefenceAdj[3] = 0.0f;
+        this->mBlowAttackAdj[0] = 0.0f;
+        this->mBlowAttackAdj[1] = 0.0f;
+        this->mBlowAttackAdj[2] = 0.0f;
+        this->mBlowAttackAdj[3] = 0.0f;
+        this->mBlowDefenceAdj[0] = 0.0f;
+        this->mBlowDefenceAdj[1] = 0.0f;
+        this->mBlowDefenceAdj[2] = 0.0f;
+        this->mBlowDefenceAdj[3] = 0.0f;
+        this->mDownAttackAdj[0] = 0.0f;
+        this->mDownAttackAdj[1] = 0.0f;
+        this->mDownAttackAdj[2] = 0.0f;
+        this->mDownAttackAdj[3] = 0.0f;
+        this->mDownDefenceAdj[0] = 0.0f;
+        this->mDownDefenceAdj[1] = 0.0f;
+        this->mDownDefenceAdj[2] = 0.0f;
+        this->mDownDefenceAdj[3] = 0.0f;
+        this->mShakeAttackAdj[0] = 0.0f;
+        this->mShakeAttackAdj[1] = 0.0f;
+        this->mShakeAttackAdj[2] = 0.0f;
+        this->mShakeAttackAdj[3] = 0.0f;
+        this->mShakeDefenceAdj[0] = 0.0f;
+        this->mShakeDefenceAdj[1] = 0.0f;
+        this->mShakeDefenceAdj[2] = 0.0f;
+        this->mShakeDefenceAdj[3] = 0.0f;
 }
 
 cBlowShrinkDmInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

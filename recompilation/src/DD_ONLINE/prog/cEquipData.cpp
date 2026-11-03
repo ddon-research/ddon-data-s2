@@ -6,7 +6,11 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "../../MT/MtString.h"
 #include "cItemParam.h"
+#include "cpDDMrlMgr.h"
 #include "nCharacterData.h"
 #include "rHumanEnemyEquip.h"
 #include "rItemList.h"
@@ -782,6 +786,26 @@ nEquipAbilityInfo::cEquipAbilityData::MyDTI nEquipAbilityInfo::cEquipAbilityData
 
 MtObject* nEquipAbilityInfo::cEquipAbilityData::MyDTI::newInstance() const {
     return new (16u) ::nEquipAbilityInfo::cEquipAbilityData;
+}
+
+const MtDTI& nEquipDataJewelry::cJewelryData::getDTI() const {
+    return nEquipDataJewelry::cJewelryData::DTI;
+}
+
+inline void* nEquipDataJewelry::cJewelryData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nEquipDataJewelry::cJewelryData::DTI)->memAlloc(sz, align, ::nEquipDataJewelry::cJewelryData::DTI.getID());
+}
+
+inline void nEquipDataJewelry::cJewelryData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nEquipDataJewelry::cJewelryData::DTI)->memFree(p_addr);
+}
+
+nEquipDataJewelry::cJewelryData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nEquipDataJewelry::cJewelryData::MyDTI nEquipDataJewelry::cJewelryData::DTI("nEquipDataJewelry::cJewelryData", &::MtObject::DTI, 16ul, 0u, 0u);
+
+MtObject* nEquipDataJewelry::cJewelryData::MyDTI::newInstance() const {
+    return new (16u) ::nEquipDataJewelry::cJewelryData;
 }
 
 template MtTypedArray<rItemList::rEquipParamS8>::~MtTypedArray();

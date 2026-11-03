@@ -30,6 +30,7 @@ class uControl;
 class uControlNpc;
 class uGUIContentsBoard;
 class uGUIGaugeEnemy;
+class uGUIGaugeEnemyBoss;
 class uGUIGaugeNpc;
 class uGUIGaugeNpcBase;
 class uGUINewspaper;
@@ -66,6 +67,7 @@ class sArea : public cSystem
     friend class uControlNpc;
     friend class uGUIContentsBoard;
     friend class uGUIGaugeEnemy;
+    friend class uGUIGaugeEnemyBoss;
     friend class uGUIGaugeNpc;
     friend class uGUIGaugeNpcBase;
     friend class uGUINewspaper;
@@ -173,6 +175,26 @@ protected:
     static const s32 MAX_STACK = 8;
 };
 
+inline void* sArea::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sArea* sArea::getInstance() {
     return ::sArea::mpInstance;
+}
+
+inline cArea* sArea::getArea(u32 pt) const {
+    return this->mpArea[pt];
+}
+
+inline u32 sArea::getAreaNum() const {
+    return 8;
+}
+
+inline void sArea::setArea(cArea* p, u32 pt) {
+    this->mpArea[pt] = p;
+}
+
+inline void* sArea::AreaInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

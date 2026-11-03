@@ -677,10 +677,18 @@ public:
     static const u32 NO_STOP_STREAM_ENTRY_MAX = 8;
 };
 
+inline void* cSplitBgm::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSplitBgm::cSplitBgm() {
     this->mThisId = 0;
     this->mpAreaInfo = nullptr;
     this->mAreaNo = -1;
+}
+
+inline void* sSoundExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rSoundRequest* sSoundExt::getHitEnchantResource() {
@@ -723,6 +731,18 @@ inline rSoundSubMixerSet* sSoundExt::getSoundSubMixerSetResource() {
     return this->mprSoundSubMixerSet;
 }
 
+inline void sSoundExt::moveSoundZoneCtrl() {
+    this->mIsGlobalTriggerZoneOut = this->mIsOtherTriggerZoneIn;
+    this->mIsGlobalOcclusionZoneOut = false;
+    this->mIsGlobalGeneratorZoneOut = this->mIsOtherGeneratorZoneIn;
+    this->mIsOtherTriggerZoneIn = false;
+    this->mIsOtherGeneratorZoneIn = false;
+}
+
+inline void* sSoundExt::cVoiceRequest::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline sSoundExt::cVoiceRequest::cVoiceRequest() {
     this->mpResource = nullptr;
     this->mReqNo = 0xFFFFFFFF;
@@ -744,6 +764,10 @@ inline u32 sSoundExt::cVoiceRequest::getReqNo() {
 
 inline u32 sSoundExt::cVoiceRequest::getStatus() {
     return this->mStatus;
+}
+
+inline void* sSoundExt::cNonStopStream::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rSoundStreamRequest* sSoundExt::cNonStopStream::getStreamRequest() {

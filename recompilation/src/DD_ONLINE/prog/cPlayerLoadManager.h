@@ -157,6 +157,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cPlayerLoadManager::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline s32 cPlayerLoadManager::getLoadStatus() const {
     return this->mPlayerLoadStatus;
 }

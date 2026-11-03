@@ -149,3 +149,31 @@ public:
 public:
     static MyDTI DTI;
 };
+
+inline void* cMagicChantParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void cMagicChantParam::setChantTime(f32 NewValue) {
+    this->mChantTime_Gi = NewValue;
+}
+
+inline void cMagicChantParam::setChant2Time(f32 NewValue) {
+    this->mChant2Time_Gi = NewValue;
+}
+
+inline void* rMagicChantParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cMagicChantParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMagicChantParam::DTI)->memFree(p_addr);
+}
+
+inline void* cMagicChantParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMagicChantParam::DTI)->memAlloc(sz, align, ::cMagicChantParam::DTI.::MtDTI::getID());
+}

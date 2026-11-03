@@ -84,6 +84,30 @@ MtObject* CDataAreaRank::MyDTI::newInstance() const {
     return new (16u) CDataAreaRank;
 }
 
+const MtDTI& CDataAreaRankUpQuestInfo::getDTI() const {
+    return CDataAreaRankUpQuestInfo::DTI;
+}
+
+inline MtAllocator* CDataAreaRankUpQuestInfo::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataAreaRankUpQuestInfo::DTI);
+}
+
+void* CDataAreaRankUpQuestInfo::operator new(size_t sz, u32 align) {
+    return CDataAreaRankUpQuestInfo::getAllocator()->memAlloc(sz, align, CDataAreaRankUpQuestInfo::DTI.getID());
+}
+
+__attribute__((weak)) void CDataAreaRankUpQuestInfo::operator delete(void* p_addr) {
+    CDataAreaRankUpQuestInfo::getAllocator()->memFree(p_addr);
+}
+
+CDataAreaRankUpQuestInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataAreaRankUpQuestInfo::MyDTI CDataAreaRankUpQuestInfo::DTI("CDataAreaRankUpQuestInfo", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataAreaRankUpQuestInfo::MyDTI::newInstance() const {
+    return new (16u) CDataAreaRankUpQuestInfo;
+}
+
 const MtDTI& CDataAreaSpotSet::getDTI() const {
     return CDataAreaSpotSet::DTI;
 }
@@ -106,6 +130,30 @@ CDataAreaSpotSet::MyDTI CDataAreaSpotSet::DTI("CDataAreaSpotSet", &::CPacketData
 
 MtObject* CDataAreaSpotSet::MyDTI::newInstance() const {
     return new (16u) CDataAreaSpotSet;
+}
+
+const MtDTI& CDataBorderSupplyItem::getDTI() const {
+    return CDataBorderSupplyItem::DTI;
+}
+
+inline MtAllocator* CDataBorderSupplyItem::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataBorderSupplyItem::DTI);
+}
+
+void* CDataBorderSupplyItem::operator new(size_t sz, u32 align) {
+    return CDataBorderSupplyItem::getAllocator()->memAlloc(sz, align, CDataBorderSupplyItem::DTI.getID());
+}
+
+__attribute__((weak)) void CDataBorderSupplyItem::operator delete(void* p_addr) {
+    CDataBorderSupplyItem::getAllocator()->memFree(p_addr);
+}
+
+CDataBorderSupplyItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataBorderSupplyItem::MyDTI CDataBorderSupplyItem::DTI("CDataBorderSupplyItem", &::CPacketDataBase::DTI, 48ul, 0u, 0u);
+
+MtObject* CDataBorderSupplyItem::MyDTI::newInstance() const {
+    return new (16u) CDataBorderSupplyItem;
 }
 
 const MtDTI& CDataReleaseAreaInfoSet::getDTI() const {
@@ -154,6 +202,30 @@ CDataRewardItemInfo::MyDTI CDataRewardItemInfo::DTI("CDataRewardItemInfo", &::CP
 
 MtObject* CDataRewardItemInfo::MyDTI::newInstance() const {
     return new (16u) CDataRewardItemInfo;
+}
+
+const MtDTI& CDataSelectItemInfo::getDTI() const {
+    return CDataSelectItemInfo::DTI;
+}
+
+inline MtAllocator* CDataSelectItemInfo::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataSelectItemInfo::DTI);
+}
+
+void* CDataSelectItemInfo::operator new(size_t sz, u32 align) {
+    return CDataSelectItemInfo::getAllocator()->memAlloc(sz, align, CDataSelectItemInfo::DTI.getID());
+}
+
+__attribute__((weak)) void CDataSelectItemInfo::operator delete(void* p_addr) {
+    CDataSelectItemInfo::getAllocator()->memFree(p_addr);
+}
+
+CDataSelectItemInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataSelectItemInfo::MyDTI CDataSelectItemInfo::DTI("CDataSelectItemInfo", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataSelectItemInfo::MyDTI::newInstance() const {
+    return new (16u) CDataSelectItemInfo;
 }
 
 const MtDTI& CDataSpotEnemyInfo::getDTI() const {
@@ -227,5 +299,29 @@ CDataSpotItemInfo::MyDTI CDataSpotItemInfo::DTI("CDataSpotItemInfo", &::CPacketD
 
 MtObject* CDataSpotItemInfo::MyDTI::newInstance() const {
     return new (16u) CDataSpotItemInfo;
+}
+
+const MtDTI& CDataSupplyItem::getDTI() const {
+    return CDataSupplyItem::DTI;
+}
+
+inline MtAllocator* CDataSupplyItem::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataSupplyItem::DTI);
+}
+
+void* CDataSupplyItem::operator new(size_t sz, u32 align) {
+    return CDataSupplyItem::getAllocator()->memAlloc(sz, align, CDataSupplyItem::DTI.getID());
+}
+
+__attribute__((weak)) void CDataSupplyItem::operator delete(void* p_addr) {
+    CDataSupplyItem::getAllocator()->memFree(p_addr);
+}
+
+CDataSupplyItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataSupplyItem::MyDTI CDataSupplyItem::DTI("CDataSupplyItem", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataSupplyItem::MyDTI::newInstance() const {
+    return new (16u) CDataSupplyItem;
 }
 

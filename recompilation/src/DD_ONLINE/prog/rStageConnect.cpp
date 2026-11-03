@@ -3,10 +3,21 @@
 #include "rStageConnect.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
 #include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
+#include "nMarker.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "sGame.h"
+#include "uStageParts.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -73,8 +84,38 @@ __attribute__((weak)) void rStageConnect::destruct() {
 }
 
 __attribute__((weak)) bool rStageConnect::load(MtStream& in) {
-    DDON_STUB("rStageConnect::load")
-    return {};
+        MtDataReader r(in, 4096u);
+        if (r.readU32() != 0x636373) {
+            return false;
+        }
+        u32 ver = r.readU32();
+        if (ver != 1) {
+            return false;
+        }
+        const u32 nArray = r.readU32();
+        void* pArray = MtMemoryAllocator::getAllocator(rStageConnect::DTI)->memAlloc(nArray * sizeof(Data), 16);
+        for (u32 i = 0; i < nArray; i++) {
+            Data* pData = new (&static_cast<Data*>(pArray)[i]) Data;
+            nDDOIO::readData(r, pData->mType);
+            MtDataReader& t0 = r;
+            pData->mPos = t0.readV3();
+            nDDOIO::readData(r, pData->mPartsNo);
+            nDDOIO::readData(r, pData->mMapGroup);
+        }
+        this->mpConnectorArray = static_cast<Data*>(pArray);
+        this->mConnectorNum = nArray;
+        const u32 nConnect = r.readU32();
+        void* pConnect = MtMemoryAllocator::getAllocator(rStageConnect::DTI)->memAlloc(nConnect * sizeof(Connect), 16);
+        for (u32 i = 0; i < nConnect; i++) {
+            Connect* pData = new (&static_cast<Connect*>(pConnect)[i]) Connect;
+            nDDOIO::readData(r, pData->mIndexNum);
+            MtDataReader& t1 = r;
+            u32 t2 = t1.readU32();
+            t1.read(pData->mIndex, t2 * sizeof(s16));
+        }
+        this->mpConnectionArray = static_cast<Connect*>(pConnect);
+        this->mConnectionNum = nConnect;
+        return true;
 }
 
 rStageConnect::Data* rStageConnect::getConnector(u32 index) {

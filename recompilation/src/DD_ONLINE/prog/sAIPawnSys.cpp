@@ -5,18 +5,49 @@
 #include "sAIPawnSys.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCRC.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "cContextInterface.h"
+#include "cGUIUtility.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/cUnit.h"
+#include "cpCharacterEdit.h"
+#include "cpPawnThink.h"
+#include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "rAIPawnOrder.h"
 #include "rAIPawnSkillParam.h"
 #include "rEffectProvider.h"
 #include "rFreeF32Tbl.h"
+#include "../../XFramework/rGUIMessage.h"
 #include "res_ptr.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sCamera.h"
+#include "sCameraExt.h"
+#include "sChat.h"
+#include "../../XFramework/sCollision.h"
+#include "sCollisionExt.h"
+#include "sContextManager.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "sEnemyManager.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "sGame.h"
+#include "../../XFramework/sMain.h"
+#include "sPlayerManager.h"
+#include "sUnitManager.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uCharacter.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -280,7 +311,7 @@ void sAIPawnSys::resetPartyInDeploy() {
 f32 sAIPawnSys::getPawnPrmF32(MT_CTSTR tag, f32 def) {
     rFreeF32Tbl* p_pw_info = mpAIPawnParam.mpPtr;
     if (p_pw_info != nullptr) {
-        return p_pw_info->rFreeF32Tbl::getTagF32(MtCRC::getCRC(tag, 0xFFFFFFFFu), def);
+        return p_pw_info->getTagF32(MtCRC::getCRC(tag, 0xFFFFFFFFu), def);
     } else {
         return def;
     }

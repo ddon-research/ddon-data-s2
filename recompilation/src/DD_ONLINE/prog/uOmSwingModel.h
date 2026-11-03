@@ -76,3 +76,7 @@ public:
     cpEffectProvider* mpcPrv;  // offset: 0x12d8
     static MyDTI DTI;
 };
+
+inline void* uOmSwingModel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

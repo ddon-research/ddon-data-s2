@@ -6,6 +6,7 @@
 #include "../../MT/MtPrimitive2D.h"
 #include "cControl.h"
 #include "../../XFramework/cUnit.h"
+#include "../../XFramework/uCoord.h"
 #include "uGUIBase.h"
 #include "uGUIsMenuBase.h"
 #ifndef DDON_STUB

@@ -105,9 +105,29 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cMotionParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cMotionParam::cMotionParam() {
     this->mInterFrame = -1.0f;
     this->mIsContinue = false;
     this->mIKFlag = 4;
     this->mIKFlagFSM = 4;
+}
+
+inline void* rMotionParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cMotionParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMotionParam::DTI)->memFree(p_addr);
+}
+
+inline void* cMotionParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMotionParam::DTI)->memAlloc(sz, align, ::cMotionParam::DTI.::MtDTI::getID());
 }

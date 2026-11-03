@@ -2,8 +2,13 @@
 #include <new>
 #include "nLayout.h"
 #include "Protocol/PacketData/Stage.h"
+#include "cNetGameServer.h"
+#include "nQuest.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+#include "sQuestManagerExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

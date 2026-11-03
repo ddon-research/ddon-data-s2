@@ -46,6 +46,8 @@ namespace nMotion { struct SEQUENCE_INFO; }
 class rModel;
 class rMotionList;
 class uCnsDDOIK;
+class uCnsIK;
+class uCnsLookAt;
 class uCnsTinyChain;
 class uConstraint;
 class uDDOModel;
@@ -89,6 +91,8 @@ class uModel : public uBaseModel
     friend class cpMotionRate;
     friend class cpShakeCtrl;
     friend class uCnsDDOIK;
+    friend class uCnsIK;
+    friend class uCnsLookAt;
     friend class uCnsTinyChain;
     friend class uConstraint;
     friend class uHuman;
@@ -795,10 +799,111 @@ protected:
     static const u32 MAX_RECALCVBUF = 2;
 };
 
+inline void* uModel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 uModel::getJointNum() const {
+    return this->mJointNum;
+}
+
 inline u32 uModel::getEnvelopeHandle() const {
     return this->mEnvelopeHandle;
 }
 
 inline void uModel::setEnvelopeHandle(u32 env_handle) {
     this->mEnvelopeHandle = env_handle;
+}
+
+inline u32 uModel::getBlendNum() const {
+    return this->mBlendNum;
+}
+
+inline void uModel::updateJointDependency() {
+    this->mUpdateJointDependencyReq = true;
+}
+
+inline u32 uModel::getKeyFrameNum() const {
+    return this->mKeyFrameNum;
+}
+
+inline void* uModel::Joint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 uModel::Joint::getAttr() const {
+    return this->mAttr;
+}
+
+inline void uModel::Joint::setAttr(u32 attr) {
+    this->mAttr = attr;
+}
+
+inline u32 uModel::Joint::getParentIndex() const {
+    return this->mParentIndex;
+}
+
+inline void uModel::Joint::setParentIndex(u32 index) {
+    this->mParentIndex = index;
+}
+
+inline u32 uModel::Joint::getSymmetryIndex() const {
+    return this->mSymmetryIndex;
+}
+
+inline void uModel::Joint::setSymmetryIndex(u32 index) {
+    this->mSymmetryIndex = index;
+}
+
+inline u32 uModel::Joint::getNo() const {
+    return this->mNo;
+}
+
+inline void uModel::Joint::setNo(u32 no) {
+    this->mNo = no;
+}
+
+inline void uModel::Joint::setType(u32 type) {
+    this->mType = type;
+}
+
+inline u32 uModel::Joint::getChildNum() const {
+    return this->mChildNum;
+}
+
+inline void* uModel::Constraint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uModel::Motion::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline u32 uModel::Motion::getMotionNo() const {
+    return this->mMotionNo;
+}
+
+inline void uModel::Motion::setFrame(f32 frame) {
+    this->mFrame = frame;
+    this->mPrevFrame = frame;
+}
+
+inline f32 uModel::Motion::getPrevFrame() const {
+    return this->mPrevFrame;
+}
+
+inline f32 uModel::Motion::getSpeed() const {
+    return this->mSpeed;
+}
+
+inline void uModel::Motion::setSpeed(f32 NewValue) {
+    this->mSpeed = NewValue;
+}
+
+inline u32 uModel::Motion::getKeyFrameNum() const {
+    return this->mKeyFrameNum;
+}
+
+inline void* uModel::JointDAGNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

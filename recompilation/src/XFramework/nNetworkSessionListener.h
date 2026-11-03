@@ -75,3 +75,7 @@ namespace nNetwork {
 
 inline nNetwork::SessionListener::SessionListener() {
 }
+
+inline void* nNetwork::SessionListener::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

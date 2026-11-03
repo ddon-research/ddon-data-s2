@@ -4,14 +4,21 @@
 #include <stdlib.h>
 #include "sZoneUnitCtrl.h"
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtSynchronize.h"
+#include "aStage.h"
+#include "../../XFramework/cAIObject.h"
 #include "../../XFramework/cSystem.h"
+#include "../../XFramework/cZoneLayout.h"
 #include "cZoneListenerMulti.h"
 #include "cZoneUnitCtrl.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nZoneUnitCtrl.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

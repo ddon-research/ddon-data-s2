@@ -107,8 +107,8 @@ public:
     static MyDTI DTI;
 };
 
-inline void uGUITutorialPop::setGuideNo(u32 uNo) {
-    this->mGuideNo = uNo;
+inline void* uGUITutorialPop::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void uGUITutorialPop::evPageExit() {

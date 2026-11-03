@@ -9,13 +9,18 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "cOmControl.h"
 #include "cResPath.h"
 #include "cSetInfo.h"
 #include "cSetInfoCoord.h"
 #include "../../XFramework/cUnit.h"
 #include "../../generated/shared/nDDOIO.h"
+#include "nLayout.h"
 #include "../../XFramework/rAIFSM.h"
+#include "rLayoutGroupParam.h"
+#include "sGame.h"
 #include "uOmModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -1208,28 +1213,28 @@ void cSetInfoOmCtrl::copy(cSetInfo* p) {
             mLinkParam[0].mTransition = pSic->mLinkParam[0].mTransition;
             mLinkParam[0].mState = pSic->mLinkParam[0].mState;
             mLinkParam[0].mCamEvNo = pSic->mLinkParam[0].mCamEvNo;
-            mLinkParam[0].mrFSMCam.mId = pSic->mLinkParam[0].mrFSMCam.::cResPathBase::mId;
+            mLinkParam[0].mrFSMCam.mId = pSic->mLinkParam[0].mrFSMCam.mId;
             mLinkParam[1].mKind = pSic->mLinkParam[1].mKind;
             mLinkParam[1].mGroup = pSic->mLinkParam[1].mGroup;
             mLinkParam[1].mID = pSic->mLinkParam[1].mID;
             mLinkParam[1].mTransition = pSic->mLinkParam[1].mTransition;
             mLinkParam[1].mState = pSic->mLinkParam[1].mState;
             mLinkParam[1].mCamEvNo = pSic->mLinkParam[1].mCamEvNo;
-            mLinkParam[1].mrFSMCam.mId = pSic->mLinkParam[1].mrFSMCam.::cResPathBase::mId;
+            mLinkParam[1].mrFSMCam.mId = pSic->mLinkParam[1].mrFSMCam.mId;
             mLinkParam[2].mKind = pSic->mLinkParam[2].mKind;
             mLinkParam[2].mGroup = pSic->mLinkParam[2].mGroup;
             mLinkParam[2].mID = pSic->mLinkParam[2].mID;
             mLinkParam[2].mTransition = pSic->mLinkParam[2].mTransition;
             mLinkParam[2].mState = pSic->mLinkParam[2].mState;
             mLinkParam[2].mCamEvNo = pSic->mLinkParam[2].mCamEvNo;
-            mLinkParam[2].mrFSMCam.mId = pSic->mLinkParam[2].mrFSMCam.::cResPathBase::mId;
+            mLinkParam[2].mrFSMCam.mId = pSic->mLinkParam[2].mrFSMCam.mId;
             mLinkParam[3].mKind = pSic->mLinkParam[3].mKind;
             mLinkParam[3].mGroup = pSic->mLinkParam[3].mGroup;
             mLinkParam[3].mID = pSic->mLinkParam[3].mID;
             mLinkParam[3].mTransition = pSic->mLinkParam[3].mTransition;
             mLinkParam[3].mState = pSic->mLinkParam[3].mState;
             mLinkParam[3].mCamEvNo = pSic->mLinkParam[3].mCamEvNo;
-            mLinkParam[3].mrFSMCam.mId = pSic->mLinkParam[3].mrFSMCam.::cResPathBase::mId;
+            mLinkParam[3].mrFSMCam.mId = pSic->mLinkParam[3].mrFSMCam.mId;
             mAddGroupNo = pSic->mAddGroupNo;
             mAddSubGroupNo = pSic->mAddSubGroupNo;
             return;
@@ -1392,7 +1397,7 @@ void cSetInfoOmDoor::copy(cSetInfo* p) {
             mTextQuestNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 136);
             mTextNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 140);
             mQuestID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 144);
-            mQuestFlag = pSic->::cSetInfoOm::mQuestFlag;
+            mQuestFlag = pSic->mQuestFlag;
             return;
         } else {
             if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
@@ -1674,7 +1679,7 @@ bool cSetInfoOmGather::load(MtDataReader& r) {
         if (r.refill()) {
             u32 t11 = r.mSeekPt;
             u8* t12 = r.mBuffer;
-            u8 t13 = t12[t8];
+            u8 t13 = t12[r.mSeekPt];
             r.mSeekPt = t11 + 1u;
             mIsGatherEnemy = t13 != 0;
             return this->cSetInfoOm::load(r);
@@ -1684,7 +1689,7 @@ bool cSetInfoOmGather::load(MtDataReader& r) {
         }
     } else {
         u8* t12 = r.mBuffer;
-        u8 t13 = t12[t8];
+        u8 t13 = t12[r.mSeekPt];
         r.mSeekPt = t8 + 1u;
         mIsGatherEnemy = t13 != 0;
         return this->cSetInfoOm::load(r);
@@ -2211,7 +2216,7 @@ void cSetInfoOmLever::copy(cSetInfo* p) {
             cSetInfoOmLever* pSic = static_cast<cSetInfoOmLever*>(p);
             mbReqLever = pSic->mbReqLever;
             mCamEvNo = pSic->mCamEvNo;
-            mFSMCamEv.mId = pSic->mFSMCamEv.::cResPathBase::mId;
+            mFSMCamEv.mId = pSic->mFSMCamEv.mId;
             return;
         } else {
             if (v0_0->mpParent != nullptr) {
@@ -2650,7 +2655,7 @@ bool cSetInfoOmTreasureBox::load(MtDataReader& r) {
         if (r.refill()) {
             u32 t11 = r.mSeekPt;
             u8* t12 = r.mBuffer;
-            u8 t13 = t12[t8];
+            u8 t13 = t12[r.mSeekPt];
             r.mSeekPt = t11 + 1u;
             mIsGatherEnemy = t13 != 0;
             return this->cSetInfoOm::load(r);
@@ -2660,7 +2665,7 @@ bool cSetInfoOmTreasureBox::load(MtDataReader& r) {
         }
     } else {
         u8* t12 = r.mBuffer;
-        u8 t13 = t12[t8];
+        u8 t13 = t12[r.mSeekPt];
         r.mSeekPt = t8 + 1u;
         mIsGatherEnemy = t13 != 0;
         return this->cSetInfoOm::load(r);
@@ -3024,49 +3029,27 @@ void cSetInfoOmWarp::copy(cSetInfo* p) {
     }
 }
 
-u32 cSetInfoOmWarp::getStageNo(u32 idx) {
-    return mStageNo[idx];
-}
+static auto ddon_emit_0x01a60e30 __attribute__((used)) = &cSetInfoOmWarp::getStageNo;
 
-void cSetInfoOmWarp::setStageNo(u32 val, u32 idx) {
-    mStageNo[idx] = val;
-}
+static auto ddon_emit_0x01a60e40 __attribute__((used)) = &cSetInfoOmWarp::setStageNo;
 
-u32 cSetInfoOmWarp::getStartPosNo(u32 idx) {
-    return mStartPosNo[idx];
-}
+static auto ddon_emit_0x01a60e70 __attribute__((used)) = &cSetInfoOmWarp::getStartPosNo;
 
-void cSetInfoOmWarp::setStartPosNo(u32 val, u32 idx) {
-    mStartPosNo[idx] = val;
-}
+static auto ddon_emit_0x01a60e80 __attribute__((used)) = &cSetInfoOmWarp::setStartPosNo;
 
-u32 cSetInfoOmWarp::getQuestNo(u32 idx) {
-    return mQuestNo[idx];
-}
+static auto ddon_emit_0x01a60e90 __attribute__((used)) = &cSetInfoOmWarp::getQuestNo;
 
-void cSetInfoOmWarp::setQuestNo(u32 val, u32 idx) {
-    mQuestNo[idx] = val;
-}
+static auto ddon_emit_0x01a60ea0 __attribute__((used)) = &cSetInfoOmWarp::setQuestNo;
 
-u32 cSetInfoOmWarp::getFlagNo(u32 idx) {
-    return mFlagNo[idx];
-}
+static auto ddon_emit_0x01a60eb0 __attribute__((used)) = &cSetInfoOmWarp::getFlagNo;
 
-void cSetInfoOmWarp::setFlagNo(u32 val, u32 idx) {
-    mFlagNo[idx] = val;
-}
+static auto ddon_emit_0x01a60ec0 __attribute__((used)) = &cSetInfoOmWarp::setFlagNo;
 
-u32 cSetInfoOmWarp::getSpotId(u32 idx) {
-    return mSpotId[idx];
-}
+static auto ddon_emit_0x01a60ed0 __attribute__((used)) = &cSetInfoOmWarp::getSpotId;
 
-void cSetInfoOmWarp::setSpotId(u32 val, u32 idx) {
-    mSpotId[idx] = val;
-}
+static auto ddon_emit_0x01a60ee0 __attribute__((used)) = &cSetInfoOmWarp::setSpotId;
 
-u32 cSetInfoOmWarp::getDataNum() {
-    return 3;
-}
+static auto ddon_emit_0x01a60e50 __attribute__((used)) = &cSetInfoOmWarp::getDataNum;
 
 __attribute__((weak)) void cSetInfoOmWarp::setDataNum(u32) {
 }

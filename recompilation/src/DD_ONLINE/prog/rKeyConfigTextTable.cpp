@@ -46,8 +46,6 @@ inline void rKeyConfigTextTable::operator delete(void* p_addr) {
 }
 
 rKeyConfigTextTable::~rKeyConfigTextTable() {
-    DDON_STUB("rKeyConfigTextTable::~rKeyConfigTextTable")
-    /* stub */
 }
 
 MT_CTSTR rKeyConfigTextTable::getExt() const {

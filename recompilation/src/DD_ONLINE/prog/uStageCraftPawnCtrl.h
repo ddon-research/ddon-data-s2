@@ -102,3 +102,7 @@ public:
     static const u32 WORK_TASK_NUM = 10;
     static MyDTI DTI;
 };
+
+inline void* uStageCraftPawnCtrl::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

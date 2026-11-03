@@ -3,62 +3,155 @@
 #include <_pthread.h>
 #include <stdlib.h>
 #include "aStage.h"
+#include "Protocol/PacketData/Common.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
+#include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "aGame.h"
+#include "cArcLoader.h"
 #include "../../XFramework/cArea.h"
+#include "../../XFramework/cCaplinkContext.h"
+#include "cCharacterData.h"
+#include "cContextInstance.h"
 #include "cContextInterface.h"
 #include "cContextPlayerInfo.h"
+#include "cCycleQuestManagerBase.h"
+#include "cEndContentsManager.h"
 #include "cEquipData.h"
+#include "cItemParam.h"
+#include "cMenuBase.h"
+#include "cMenuBaseClan.h"
+#include "cMenuEntryBoard.h"
+#include "cNetBase.h"
+#include "cNetGameServer.h"
+#include "cNetSessionManager.h"
+#include "cNetStorage.h"
 #include "cOmControl.h"
+#include "cPRTManager.h"
 #include "cPlDeadFlow.h"
+#include "cPlayerLoadManager.h"
 #include "../../XFramework/cResource.h"
+#include "cStageCtrl.h"
 #include "cStageEpvCtrl.h"
+#include "../../XFramework/cSystem.h"
 #include "cTalkMsgData.h"
 #include "../../XFramework/cUnit.h"
 #include "../../XFramework/cZoneLayout.h"
 #include "cpActionManager.h"
+#include "cpActionRequest.h"
+#include "nCharacterData.h"
 #include "nDDOUtility.h"
+#include "nHumanMsg.h"
+#include "nJobParam.h"
+#include "nLayout.h"
 #include "nStage.h"
+#include "rArchiveListArray.h"
 #include "rCameraParamList.h"
+#include "../../XFramework/rCollision.h"
+#include "rEffectProvider.h"
 #include "rEventParam.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "rItemList.h"
+#include "rLocationData.h"
+#include "rMsgSet.h"
+#include "../../XFramework/rNavigationMesh.h"
 #include "rOccluderExt.h"
+#include "rPlantTree.h"
+#include "rScenario.h"
+#include "../../XFramework/rScheduler.h"
+#include "rSoundAreaInfo.h"
 #include "rSoundAttributeSe.h"
+#include "../../XFramework/rSoundRequest.h"
+#include "../../XFramework/rSoundStreamRequest.h"
 #include "rStageConnect.h"
 #include "rStageCustomPartsEx.h"
 #include "rStageInfo.h"
+#include "rStageList.h"
 #include "rStartPos.h"
+#include "rWaypoint.h"
+#include "rWaypoint2.h"
+#include "rWeatherEffectParam.h"
+#include "rWeatherInfo.h"
+#include "../../XFramework/rZone.h"
+#include "res_ptr.h"
+#include "../../XFramework/sAI.h"
+#include "sAIExt.h"
+#include "sAIPawnNotice.h"
+#include "sAIPawnSys.h"
+#include "sAIPawnTalkMgr.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
 #include "../../XFramework/sCamera.h"
 #include "sCameraExt.h"
+#include "sCaplinkManager.h"
+#include "sChat.h"
 #include "../../XFramework/sCollision.h"
 #include "sContextManager.h"
+#include "sControlManager.h"
+#include "sCraftManager.h"
+#include "sDialogBase.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
+#include "sEnemyManager.h"
 #include "sEventManager.h"
 #include "sFlag.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sGame.h"
+#include "sInputManager.h"
 #include "sItemManager.h"
+#include "../../XFramework/sMain.h"
+#include "sMarker.h"
+#include "sMenu.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #include "sNpcManager.h"
+#include "../../XFramework/sOccluder.h"
+#include "sOccluderExt.h"
+#include "sOmManager.h"
+#include "../../XFramework/sPad.h"
+#include "sPadExt.h"
 #include "sPlayerManager.h"
+#include "sQuestManagerExt.h"
+#include "../../XFramework/sRender.h"
+#include "../../XFramework/sResource.h"
 #include "sScenario.h"
+#include "sScreenShot.h"
+#include "sSetManager.h"
+#include "sShlManager.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "sSoundManager.h"
+#include "sTalkManager.h"
+#include "sTutorialGuide.h"
 #include "../../XFramework/sUnit.h"
+#include "sUnitExt.h"
 #include "sWeatherManager.h"
+#include "sWorldOffset.h"
+#include "sZoneUnitCtrl.h"
+#include "../../XFramework/uCamera.h"
+#include "uControl.h"
+#include "uControlEnemy.h"
+#include "uControlNpc.h"
+#include "../../XFramework/uCoord.h"
+#include "uCustomSimSoftBody.h"
 #include "uDDOModel.h"
 #include "uFSMTask.h"
 #include "../../XFramework/uFilter.h"
+#include "uGUIBase.h"
 #include "uGUICredit.h"
+#include "uGUIMapMini.h"
 #include "uGUIQuickParty.h"
+#include "uGUISystemMsg.h"
+#include "uGUITutorialPop.h"
+#include "uHuman.h"
 #include "uLargeEnemyCamera.h"
 #include "uPlayer.h"
 #include "../../XFramework/uScheduler.h"
@@ -668,7 +761,7 @@ void aStage::requestCameraEvt(u32 no, const uDDOModel* pObj) {
         return;
     }
     sCamera* t0 = sCamera::getInstance();
-    const cCamExParam* t1 = pCpl->rCameraParamList::getParam(no);
+    const cCamExParam* t1 = pCpl->getParam(no);
     static_cast<sCameraExt*>(t0)->requestExGameCamera(t1, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pObj, false);
 }
 
@@ -736,6 +829,15 @@ __attribute__((weak)) void aStage::dummyCallBack(void* param) {
 __attribute__((weak)) void aStage::loadResStageEffect() {
     DDON_STUB("aStage::loadResStageEffect")
     /* stub */
+}
+
+inline void aStage::updatePtrWeather() {
+    if (mpLightSchdl == nullptr) {
+        return;
+    }
+    if ((mpLightSchdl->mBeFlag - 1u) > 1u) {
+        mpLightSchdl = nullptr;
+    }
 }
 
 __attribute__((weak)) void aStage::loadResStageWeather() {
@@ -846,7 +948,7 @@ u32 aStage::getSoundAttributeRequestSeNo(u32 reqNo, u32 attrId) {
     rSoundAttributeSe* pAttrSe = getSoundAttributeSe();
     if (pAttrSe != nullptr) {
         u32 aserNo = static_cast<sSoundExt*>(sSound::getInstance())->getScrAttributeSeIdfromBase(attrId);
-        return pAttrSe->rSoundAttributeSe::getAttributeSeData_reqID(static_cast<s32>(reqNo), aserNo);
+        return pAttrSe->getAttributeSeData_reqID(static_cast<s32>(reqNo), aserNo);
     } else {
         return 0xFFFFFFFF;
     }
@@ -1059,9 +1161,9 @@ void aStage::stopMoveUnitLight(bool sleep, s32 event_no) {
             }
             uScheduler* pSchdl = mpLightSchdl;
             if (pSchdl != nullptr) {
-                if (pSchdl->uScheduler::getUnitNum() != 0) {
+                if (pSchdl->getUnitNum() != 0) {
                     for (unsigned int i0_3 = 0;;) {
-                        cUnit* t2 = pSchdl->uScheduler::getUnit(i0_3);
+                        cUnit* t2 = pSchdl->getUnit(i0_3);
                         if (t2 != nullptr) {
                             if (t2->isEnable()) {
                                 if (sleep) {
@@ -1071,7 +1173,7 @@ void aStage::stopMoveUnitLight(bool sleep, s32 event_no) {
                                 }
                             }
                         }
-                        if ((i0_3 + 1u) < pSchdl->uScheduler::getUnitNum()) {
+                        if ((i0_3 + 1u) < pSchdl->getUnitNum()) {
                             i0_3 += 1u;
                         } else {
                             break;
@@ -1181,9 +1283,24 @@ __attribute__((weak)) void aStage::warpPlPos(u32 startPosNo) {
     /* stub */
 }
 
-__attribute__((weak)) void aStage::loadResUnitCtrl() {
-    DDON_STUB("aStage::loadResUnitCtrl")
-    /* stub */
+void aStage::loadResUnitCtrl() {
+    if ((sZoneUnitCtrl::mpInstance) == nullptr) {
+        return;
+    }
+    (sZoneUnitCtrl::mpInstance)->sZoneUnitCtrl::releaseZoneUnitCtrlAll();
+    rStageInfo* p_st_info = mpStageInfo;
+    if (p_st_info == nullptr) {
+        return;
+    }
+    sZoneUnitCtrl* t0 = sZoneUnitCtrl::mpInstance;
+    if (t0 == nullptr) {
+        return;
+    }
+    t0->addZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_OM, p_st_info->getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_OM), MtVector3::Zero);
+    sZoneUnitCtrl* t1 = sZoneUnitCtrl::getInstance();
+    t1->addZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_LIGHT, p_st_info->getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_LIGHT), MtVector3::Zero);
+    sZoneUnitCtrl* t2 = sZoneUnitCtrl::getInstance();
+    t2->addZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_SCRL, p_st_info->getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_SCRL), MtVector3::Zero);
 }
 
 __attribute__((weak)) void aStage::moveLocation() {

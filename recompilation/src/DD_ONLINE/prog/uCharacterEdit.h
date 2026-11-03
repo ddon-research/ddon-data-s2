@@ -871,17 +871,50 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cEditParamList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cEditParamList::cEditParamList() {
     this->mIsChange = false;
     this->mEditType = 0;
+}
+
+inline void* cUndoData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uCharacterEdit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uCharacterEdit::setUpCharaRegist() {
+    this->mCharaRegistRno = static_cast<uCharacterEdit::CHARA_REGIST_ROUTINE>(0);
+}
+
+inline void uCharacterEdit::setUpGoldStone() {
+    this->mGoldStoneRno = static_cast<uCharacterEdit::GOLD_STONE_ROUTINE>(0);
+    this->mSalonChargeFlag = 0;
 }
 
 inline void uCharacterEdit::checkGoldStoneSaveSetup() {
     this->mSaveLoadRno = static_cast<uCharacterEdit::EDIT_SAVE_LOAD_ROUTINE>(0);
 }
 
+inline void uCharacterEdit::setEdit(nGUIExt::CHARA_EDIT edit) {
+    this->mEdit = edit;
+}
+
 inline nGUIExt::CHARA_EDIT uCharacterEdit::getEdit() {
     return this->mEdit;
+}
+
+inline nCharacterEdit::BODY_TYPE uCharacterEdit::getBodyType() const {
+    return this->mBodyType;
+}
+
+inline s32 uCharacterEdit::getSlotNo() const {
+    return this->mSlotNo;
 }
 
 inline u32 uCharacterEdit::getSalonChargeFlag() {
@@ -894,6 +927,18 @@ inline const rEquipPresetPalette* uCharacterEdit::getEquipPresetPalette() const 
 
 inline void uCharacterEdit::completeRegistParamList() {
     this->mIsRegistedParamList = true;
+}
+
+inline void* uCharacterEditBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uCharacterEditCamera::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uCharacterEditCameraBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void uCharacterEditCameraBase::lockCameraMove() {
@@ -918,6 +963,10 @@ inline void uCharacterEditCameraBase::addRotateRSY(f32 add_y) {
             this->mRotateRS.y = this->mRotateRS.y + add_y;
         }
     }
+}
+
+inline void* uCharacterEditCameraBase::cLimit::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline uCharacterEditCameraBase::cLimit::cLimit() {

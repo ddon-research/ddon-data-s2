@@ -179,6 +179,14 @@ private:
     static const s32 NativeVersion = 5;
 };
 
+inline void* rSoundHitInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rSoundHitInfo::cSoundHitInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rSoundHitInfo::cSoundHitInfo::cSoundHitInfo() {
     this->mEtc05 = -1;
     this->mEtc06 = -1;

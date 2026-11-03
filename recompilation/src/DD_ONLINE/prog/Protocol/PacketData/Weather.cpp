@@ -34,3 +34,75 @@ MtObject* CDataGameTimeBaseInfo::MyDTI::newInstance() const {
     return new (16u) CDataGameTimeBaseInfo;
 }
 
+const MtDTI& CDataMoonSchedule::getDTI() const {
+    return CDataMoonSchedule::DTI;
+}
+
+inline MtAllocator* CDataMoonSchedule::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataMoonSchedule::DTI);
+}
+
+void* CDataMoonSchedule::operator new(size_t sz, u32 align) {
+    return CDataMoonSchedule::getAllocator()->memAlloc(sz, align, CDataMoonSchedule::DTI.getID());
+}
+
+__attribute__((weak)) void CDataMoonSchedule::operator delete(void* p_addr) {
+    CDataMoonSchedule::getAllocator()->memFree(p_addr);
+}
+
+CDataMoonSchedule::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataMoonSchedule::MyDTI CDataMoonSchedule::DTI("CDataMoonSchedule", &::CPacketDataBase::DTI, 32ul, 0u, 0u);
+
+MtObject* CDataMoonSchedule::MyDTI::newInstance() const {
+    return new (16u) CDataMoonSchedule;
+}
+
+const MtDTI& CDataWeatherLoop::getDTI() const {
+    return CDataWeatherLoop::DTI;
+}
+
+inline MtAllocator* CDataWeatherLoop::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataWeatherLoop::DTI);
+}
+
+void* CDataWeatherLoop::operator new(size_t sz, u32 align) {
+    return CDataWeatherLoop::getAllocator()->memAlloc(sz, align, CDataWeatherLoop::DTI.getID());
+}
+
+__attribute__((weak)) void CDataWeatherLoop::operator delete(void* p_addr) {
+    CDataWeatherLoop::getAllocator()->memFree(p_addr);
+}
+
+CDataWeatherLoop::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataWeatherLoop::MyDTI CDataWeatherLoop::DTI("CDataWeatherLoop", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataWeatherLoop::MyDTI::newInstance() const {
+    return new (16u) CDataWeatherLoop;
+}
+
+const MtDTI& CDataWeatherSchedule::getDTI() const {
+    return CDataWeatherSchedule::DTI;
+}
+
+inline MtAllocator* CDataWeatherSchedule::getAllocator() {
+    return MtMemoryAllocator::getAllocator(CDataWeatherSchedule::DTI);
+}
+
+void* CDataWeatherSchedule::operator new(size_t sz, u32 align) {
+    return CDataWeatherSchedule::getAllocator()->memAlloc(sz, align, CDataWeatherSchedule::DTI.getID());
+}
+
+__attribute__((weak)) void CDataWeatherSchedule::operator delete(void* p_addr) {
+    CDataWeatherSchedule::getAllocator()->memFree(p_addr);
+}
+
+CDataWeatherSchedule::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataWeatherSchedule::MyDTI CDataWeatherSchedule::DTI("CDataWeatherSchedule", &::CPacketDataBase::DTI, 32ul, 0u, 0u);
+
+MtObject* CDataWeatherSchedule::MyDTI::newInstance() const {
+    return new (16u) CDataWeatherSchedule;
+}
+

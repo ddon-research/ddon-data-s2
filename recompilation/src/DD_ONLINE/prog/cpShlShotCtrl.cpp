@@ -8,13 +8,30 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtSynchronize.h"
+#include "../../XFramework/cArea.h"
+#include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
+#include "cDelegate.h"
+#include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
+#include "cpErosionEnemyBase.h"
 #include "cpObjCollision.h"
 #include "nDDOUtility.h"
 #include "nHumanMsg.h"
 #include "rShotReqInfo2.h"
+#include "../../XFramework/sArea.h"
+#include "sLockOnManager.h"
+#include "../../XFramework/sMain.h"
+#include "sObjCondition.h"
+#include "sSetManager.h"
+#include "sShlManager.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
+#include "uEnemy.h"
+#include "uHuman.h"
+#include "../../XFramework/uModel.h"
+#include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -189,6 +206,17 @@ void cpShlShotCtrl::cShlShotReqInfo::copySharedUID(cpObjCollisionBase* pSrc) {
     mSharedUID[5] = pSrc->mSharedUID[5];
     mSharedUID[6] = pSrc->mSharedUID[6];
     mSharedUID[7] = pSrc->mSharedUID[7];
+}
+
+inline void cpShlShotCtrl::cShlShotReqInfo::copySharedUIDToObjCollision(cpObjCollisionBase* pDst) {
+    pDst->mSharedUID[0] = mSharedUID[0];
+    pDst->mSharedUID[1] = mSharedUID[1];
+    pDst->mSharedUID[2] = mSharedUID[2];
+    pDst->mSharedUID[3] = mSharedUID[3];
+    pDst->mSharedUID[4] = mSharedUID[4];
+    pDst->mSharedUID[5] = mSharedUID[5];
+    pDst->mSharedUID[6] = mSharedUID[6];
+    pDst->mSharedUID[7] = mSharedUID[7];
 }
 
 cpShlShotCtrl::cShlShotReqInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -5,6 +5,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
 #include "cNetGameServer.h"
 #include "nCharacterData.h"
@@ -154,13 +156,9 @@ __attribute__((weak)) void cItemParam::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-u32 cItemParam::getItemNum() const {
-    return mItemParam.mItemNum_Guard;
-}
+static auto ddon_emit_0x0196fd50 __attribute__((used)) = &cItemParam::getItemNum;
 
-void cItemParam::setItemNum(u32 ItemNum) {
-    mItemParam.mItemNum_Guard = static_cast<unsigned short>(ItemNum);
-}
+static auto ddon_emit_0x0196fd60 __attribute__((used)) = &cItemParam::setItemNum;
 
 __attribute__((weak)) u8 cItemParam::getColorSortNo() const {
     DDON_STUB("cItemParam::getColorSortNo")

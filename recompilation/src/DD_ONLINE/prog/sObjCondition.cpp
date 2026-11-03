@@ -138,9 +138,9 @@ void sObjCondition::createResource() {
                 mpPriOrityTable = nullptr;
             }
             mpPriOrityTable = pRes;
-            pRes->cResource::addRef();
+            pRes->addRef();
         }
-        pRes->cResource::release();
+        pRes->release();
     }
     rOcdStatusParamRes* pOcdResEm = static_cast<rOcdStatusParamRes*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_OCDCOMMONPARAM_OSP", 1u, false));
     if (pOcdResEm != nullptr) {
@@ -150,9 +150,9 @@ void sObjCondition::createResource() {
                 mpOcdStatusCommonRes.elems[0] = nullptr;
             }
             mpOcdStatusCommonRes.elems[0] = pOcdResEm;
-            pOcdResEm->cResource::addRef();
+            pOcdResEm->addRef();
         }
-        pOcdResEm->cResource::release();
+        pOcdResEm->release();
     }
     rOcdStatusParamRes* pOcdResBigEm = static_cast<rOcdStatusParamRes*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_OCDCOMMONPARAM_BIG_OSP", 1u, false));
     if (pOcdResBigEm != nullptr) {
@@ -162,9 +162,9 @@ void sObjCondition::createResource() {
                 mpOcdStatusCommonRes.elems[1] = nullptr;
             }
             mpOcdStatusCommonRes.elems[1] = pOcdResBigEm;
-            pOcdResBigEm->cResource::addRef();
+            pOcdResBigEm->addRef();
         }
-        pOcdResBigEm->cResource::release();
+        pOcdResBigEm->release();
     }
     rOcdStatusParamRes* pOcdResHmEm = static_cast<rOcdStatusParamRes*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_STATUS_COMMON_OSP", 1u, false));
     if (pOcdResHmEm != nullptr) {
@@ -174,9 +174,9 @@ void sObjCondition::createResource() {
                 mpOcdStatusCommonRes.elems[2] = nullptr;
             }
             mpOcdStatusCommonRes.elems[2] = pOcdResHmEm;
-            pOcdResHmEm->cResource::addRef();
+            pOcdResHmEm->addRef();
         }
-        pOcdResHmEm->cResource::release();
+        pOcdResHmEm->release();
     }
     rOcdStatusParamRes* pOcdResPL = static_cast<rOcdStatusParamRes*>(sArchiveManager::getInstance()->createRes("Human", "RES_ID_STATUS_COMMON_OSP", 1u, false));
     if (pOcdResPL != nullptr) {
@@ -186,9 +186,9 @@ void sObjCondition::createResource() {
                 mpOcdStatusCommonRes.elems[3] = nullptr;
             }
             mpOcdStatusCommonRes.elems[3] = pOcdResPL;
-            pOcdResPL->cResource::addRef();
+            pOcdResPL->addRef();
         }
-        pOcdResPL->cResource::release();
+        pOcdResPL->release();
     }
     rOcdIrAdj* pOcdIrRes = static_cast<rOcdIrAdj*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_OCDIRADJ_IR_ADJ", 1u, false));
     if (pOcdIrRes != nullptr) {
@@ -198,9 +198,9 @@ void sObjCondition::createResource() {
                 mpOcdIrAdjRes = nullptr;
             }
             mpOcdIrAdjRes = pOcdIrRes;
-            pOcdIrRes->cResource::addRef();
+            pOcdIrRes->addRef();
         }
-        pOcdIrRes->cResource::release();
+        pOcdIrRes->release();
     }
     rOcdIrAdjPL* pOcdIrPLRes = static_cast<rOcdIrAdjPL*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_OCDIRADJ_IR_ADJ_PL", 1u, false));
     if (pOcdIrPLRes == nullptr) {
@@ -212,9 +212,9 @@ void sObjCondition::createResource() {
             mpOcdIrAdjPLRes = nullptr;
         }
         mpOcdIrAdjPLRes = pOcdIrPLRes;
-        pOcdIrPLRes->cResource::addRef();
+        pOcdIrPLRes->addRef();
     }
-    pOcdIrPLRes->cResource::release();
+    pOcdIrPLRes->release();
 }
 
 void sObjCondition::releaseResource() {

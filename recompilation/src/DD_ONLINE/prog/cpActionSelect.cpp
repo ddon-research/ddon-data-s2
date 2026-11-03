@@ -12,6 +12,7 @@
 #include "cpEnemyThink.h"
 #include "cpKeyCommand.h"
 #include "cpSlave.h"
+#include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

@@ -4,14 +4,21 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtNetBuffer.h"
+#include "../MT/MtNetDevice.h"
 #include "../MT/MtNetP2p.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "cRemoteCall.h"
 #include "nNetworkCallback.h"
+#include "nNetworkDatabase.h"
+#include "nNetworkRemoteCalls.h"
+#include "nNetworkRoute.h"
 #include "nNetworkSession.h"
 #include "nNetworkTransport.h"
+#include "sNetwork.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

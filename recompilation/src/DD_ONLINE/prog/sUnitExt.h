@@ -329,5 +329,18 @@ private:
     static const u32 mMoveLineOrderTbl[];
 };
 
+inline void* sUnitExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline bool sUnitExt::getCommandCacheFlag() {
+    return this->mIsUseCommandCache;
+}
+
+inline void sUnitExt::setCommandCacheFlag(bool set) {
+    this->mIsUseCommandCache = set;
+    this->::sUnit::mbDrawCommandCacheEnableUpdate = set;
+}
+
 inline sUnitExt::cCommandCacheResetFromUsageDifference::~cCommandCacheResetFromUsageDifference() {
 }

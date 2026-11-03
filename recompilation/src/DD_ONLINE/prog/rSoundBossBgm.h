@@ -113,8 +113,16 @@ private:
     static const s32 NativeVersion = 1;
 };
 
+inline void* rSoundBossBgm::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 rSoundBossBgm::getListNum() const {
     return this->mArrayDataNum;
+}
+
+inline void* rSoundBossBgm::cSoundBossBgm::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline rSoundBossBgm::cSoundBossBgm::cSoundBossBgm() {

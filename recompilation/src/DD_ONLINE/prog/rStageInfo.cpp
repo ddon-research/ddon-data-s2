@@ -4,10 +4,15 @@
 #include "rStageInfo.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
+#include "../../generated/shared/nDDOIO.h"
 #include "nStage.h"
 #include "../../generated/shared/nZoneUnitCtrl.h"
 #include "../../XFramework/rAIPathConsecutive.h"
@@ -70,9 +75,7 @@ __attribute__((weak)) void rStageInfo::clear() {
     /* stub */
 }
 
-rScheduler* rStageInfo::getScrScheduler() const {
-    return mprModel;
-}
+static auto ddon_emit_0x01ab38c0 __attribute__((used)) = &rStageInfo::getScrScheduler;
 
 void rStageInfo::setScrScheduler(rScheduler* pRes) {
     if (mprModel != nullptr) {
@@ -90,9 +93,7 @@ void rStageInfo::setScrScheduler(rScheduler* pRes) {
     }
 }
 
-rScheduler* rStageInfo::getFltScheduler() const {
-    return mprFilter;
-}
+static auto ddon_emit_0x01ab38d0 __attribute__((used)) = &rStageInfo::getFltScheduler;
 
 void rStageInfo::setFltScheduler(rScheduler* pRes) {
     if (mprFilter != nullptr) {
@@ -110,9 +111,7 @@ void rStageInfo::setFltScheduler(rScheduler* pRes) {
     }
 }
 
-rCollision* rStageInfo::getScrSbc(u32 idx) const {
-    return mprScrSbc[idx];
-}
+static auto ddon_emit_0x01ab38e0 __attribute__((used)) = &rStageInfo::getScrSbc;
 
 void rStageInfo::setScrSbc(rCollision* pRes, u32 idx) {
     if (mprScrSbc[idx] != nullptr) {
@@ -133,13 +132,9 @@ void rStageInfo::setScrSbc(rCollision* pRes, u32 idx) {
 __attribute__((weak)) void rStageInfo::setScrSbcNum(u32) {
 }
 
-u32 rStageInfo::getScrSbcNum() const {
-    return 3;
-}
+static auto ddon_emit_0x01ab38f0 __attribute__((used)) = &rStageInfo::getScrSbcNum;
 
-rCollision* rStageInfo::getEffSbc(u32 idx) const {
-    return mprEffSbc[idx];
-}
+static auto ddon_emit_0x01ab3910 __attribute__((used)) = &rStageInfo::getEffSbc;
 
 void rStageInfo::setEffSbc(rCollision* pRes, u32 idx) {
     if (mprEffSbc[idx] != nullptr) {
@@ -160,13 +155,9 @@ void rStageInfo::setEffSbc(rCollision* pRes, u32 idx) {
 __attribute__((weak)) void rStageInfo::setEffSbcNum(u32) {
 }
 
-u32 rStageInfo::getEffSbcNum() const {
-    return 3;
-}
+static auto ddon_emit_0x01ab3920 __attribute__((used)) = &rStageInfo::getEffSbcNum;
 
-rNavigationMesh* rStageInfo::getNaviMesh() const {
-    return mprNaviMesh;
-}
+static auto ddon_emit_0x01ab3940 __attribute__((used)) = &rStageInfo::getNaviMesh;
 
 void rStageInfo::setNaviMesh(rNavigationMesh* pRes) {
     if (mprNaviMesh != nullptr) {
@@ -184,9 +175,7 @@ void rStageInfo::setNaviMesh(rNavigationMesh* pRes) {
     }
 }
 
-rAIPathConsecutive* rStageInfo::getWayPoint() const {
-    return mprWayPoint;
-}
+static auto ddon_emit_0x01ab3950 __attribute__((used)) = &rStageInfo::getWayPoint;
 
 void rStageInfo::setWayPoint(rAIPathConsecutive* pRes) {
     if (mprWayPoint != nullptr) {
@@ -204,9 +193,7 @@ void rStageInfo::setWayPoint(rAIPathConsecutive* pRes) {
     }
 }
 
-rOccluderEx* rStageInfo::getOCC() const {
-    return mprOCC;
-}
+static auto ddon_emit_0x01ab3960 __attribute__((used)) = &rStageInfo::getOCC;
 
 void rStageInfo::setOCC(rOccluderEx* pRes) {
     if (mprOCC != nullptr) {
@@ -224,9 +211,7 @@ void rStageInfo::setOCC(rOccluderEx* pRes) {
     }
 }
 
-rStartPos* rStageInfo::getStartPos() const {
-    return mprStartPos;
-}
+static auto ddon_emit_0x01ab3970 __attribute__((used)) = &rStageInfo::getStartPos;
 
 void rStageInfo::setStartPos(rStartPos* pRes) {
     if (mprStartPos != nullptr) {
@@ -244,9 +229,7 @@ void rStageInfo::setStartPos(rStartPos* pRes) {
     }
 }
 
-rCameraParamList* rStageInfo::getCmrPrmLstFld() const {
-    return mprCmrPrmLstFld;
-}
+static auto ddon_emit_0x01ab3980 __attribute__((used)) = &rStageInfo::getCmrPrmLstFld;
 
 void rStageInfo::setCmrPrmLstFld(rCameraParamList* pRes) {
     if (mprCmrPrmLstFld != nullptr) {
@@ -269,9 +252,7 @@ void rStageInfo::setCmrPrmLstFld(rCameraParamList* pRes) {
     }
 }
 
-rCameraParamList* rStageInfo::getCmrPrmLstEvt() const {
-    return mprCmrPrmLstEvt;
-}
+static auto ddon_emit_0x01ab3990 __attribute__((used)) = &rStageInfo::getCmrPrmLstEvt;
 
 void rStageInfo::setCmrPrmLstEvt(rCameraParamList* pRes) {
     if (mprCmrPrmLstEvt != nullptr) {
@@ -342,17 +323,11 @@ void rStageInfo::setSndZoneTrigger(rZone* p) {
     }
 }
 
-rZone* rStageInfo::getSndZoneOcclusion() {
-    return mprSoundZone[0];
-}
+static auto ddon_emit_0x01ab39d0 __attribute__((used)) = &rStageInfo::getSndZoneOcclusion;
 
-rZone* rStageInfo::getSndZoneGenerator() {
-    return mprSoundZone[1];
-}
+static auto ddon_emit_0x01ab3a50 __attribute__((used)) = &rStageInfo::getSndZoneGenerator;
 
-rZone* rStageInfo::getSndZoneTrigger() {
-    return mprSoundZone[2];
-}
+static auto ddon_emit_0x01ab3ad0 __attribute__((used)) = &rStageInfo::getSndZoneTrigger;
 
 rScheduler* rStageInfo::getEffectSchdl() {
     return mprEffectSchdl.mpPtr;

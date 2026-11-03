@@ -106,6 +106,14 @@ public:
     static MyDTI DTI;
 };
 
+inline void* rTutorialList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rTutorialList::cTutorialNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rTutorialList::cTutorialNode::cTutorialNode() {
     this->mOpenQuestId = 0;
     this->mTitleGmdIdx = 0;

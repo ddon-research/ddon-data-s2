@@ -142,3 +142,11 @@ namespace cMethodConstantTimeName {
         static const u32 METHODREPEAT_MAX = 32;
     };
 }  // namespace cMethodConstantTimeName
+
+inline void* cMethodConstantTimeName::cMethodConstantBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cMethodConstantTimeName::cMethodConstantManagerBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

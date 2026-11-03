@@ -417,7 +417,15 @@ public:
     void operator()(unsigned int p0, unsigned int p1, float p2, float p3, float p4, unsigned int p5);
 };
 
+inline void* cDelegateBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cDelegateBase::cDelegateBase() {
+}
+
+inline void* cDelegateBase::cNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline cDelegateBase::cNode::cNode() {

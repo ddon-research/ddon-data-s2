@@ -67,3 +67,7 @@ public:
     };  // offset: 0x70
     static MyDTI DTI;
 };
+
+inline void* rConstraint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

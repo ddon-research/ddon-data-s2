@@ -35,6 +35,7 @@ class MtString;
 class MtUI;
 class MtVector3;
 class MtVector4;
+class cEffectJoint;
 class cParticleManager;
 namespace nEffect { struct KEYFRAME_INDEX; }
 namespace nEffect { class SimpleCurve; }
@@ -60,6 +61,7 @@ using u8 = unsigned char;
 
 class rEffectList : public cResource
 {
+    friend class cEffectJoint;
 public:
     enum CULLING_OPTION_FLAG
     {
@@ -2313,6 +2315,10 @@ protected:
     static const u32 EFL_VERSION;
 };
 
+inline void* rEffectList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline rEffectList::rEffectList() {
     this->mBaseFps = 0.0f;
     this->mpParamBuff = nullptr;
@@ -2331,4 +2337,32 @@ inline rEffectList::rEffectList() {
     this->mUnitMoveParamOffset = 0;
     this->mpSerialEffect = nullptr;
     this->::cResource::mAttr = 22;
+}
+
+inline f32 rEffectList::getBaseFps() const {
+    return this->mBaseFps;
+}
+
+inline u32 rEffectList::getListNum() const {
+    return this->mListNum;
+}
+
+inline u32 rEffectList::getJointNum() const {
+    return this->mJointNum;
+}
+
+inline u32 rEffectList::getUnitGeneratorType() const {
+    return this->mUnitGeneratorType;
+}
+
+inline u32 rEffectList::getUnitMoveType() const {
+    return this->mUnitMoveType;
+}
+
+inline bool rEffectList::isJointShare() const {
+    return (this->mJointShare & 15u) != 0;
+}
+
+inline u32 rEffectList::getResourceSize() const {
+    return (this->mParamBuffSize + (this->mResourceInfoNum * 120u)) + 184u;
 }

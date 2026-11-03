@@ -101,6 +101,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cStatusCheck::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cStatusCheck::cStatusCheck() {
     this->mGroup = -1;
     this->mResultOver = false;
@@ -111,4 +115,20 @@ inline cStatusCheck::cStatusCheck() {
     this->mSystemParam[1] = 0.0f;
     this->mSystemParam[2] = 0.0f;
     this->mTypeReverse = false;
+}
+
+inline void* rStatusCheck::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cStatusCheck::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStatusCheck::DTI)->memFree(p_addr);
+}
+
+inline void* cStatusCheck::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStatusCheck::DTI)->memAlloc(sz, align, ::cStatusCheck::DTI.::MtDTI::getID());
 }

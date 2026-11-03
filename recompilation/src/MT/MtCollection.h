@@ -17,9 +17,15 @@ class MtPropertyList;
 class MtString;
 class MtUI;
 class SCE_AH_LIST;
+class cAINavPathTrace;
+class cAIPathTrace;
+class cAIRouteInfo;
+class cAITargetInfoArray;
 class cAbilityData;
 class cAbilityParam;
 class cAreaMasterSpotDetailData;
+class cAreaReleaseManager;
+class cCaptrophyRelationData;
 class cContextCharacter;
 class cContextInstChar;
 class cControl;
@@ -94,6 +100,7 @@ class cZCEFLControl;
 class cZoneContactInfoList;
 class cZoneLayout;
 class cZoneMultiStack;
+class cpAIPawnEmChecker;
 class cpCorePointCtrl;
 class cpEffectStatusManager;
 class cpHpDamageCtrl;
@@ -102,6 +109,7 @@ class cpJob09;
 class cpLockOn;
 class cpObjCollisionBase;
 class cpOcdCtrl;
+class cpPathFinding;
 class cpPawnThink;
 class cpShakeCtrl;
 class cpStateManager;
@@ -190,11 +198,13 @@ class rSoundMotionSe;
 class rSoundReverb;
 class rSoundSequenceSe;
 class rSoundSimpleCurve;
+class rSoundSpeakerSetXml;
 class rSoundSubMixer;
 class rSoundSubMixerSet;
 class rStageAdjoinList;
 class rStageCustomPartsEx;
 class rStaminaDecTbl;
+class rStartPos;
 class rTable;
 class rTblMenuComm;
 class rTblMenuOption;
@@ -220,6 +230,7 @@ class sGame;
 class sInputManager;
 class sItemManager;
 class sLockOnManager;
+class sMarker;
 class sMenu;
 class sNetworkExt;
 class sNpcManager;
@@ -301,9 +312,15 @@ class MtArray : public MtObject
 {
     friend class MtCollisionUtil::MtArrayEx;
     friend class SCE_AH_LIST;
+    friend class cAINavPathTrace;
+    friend class cAIPathTrace;
+    friend class cAIRouteInfo;
+    friend class cAITargetInfoArray;
     friend class cAbilityData;
     friend class cAbilityParam;
     friend class cAreaMasterSpotDetailData;
+    friend class cAreaReleaseManager;
+    friend class cCaptrophyRelationData;
     friend class cContextCharacter;
     friend class cContextInstChar;
     friend class cControl;
@@ -378,6 +395,7 @@ class MtArray : public MtObject
     friend class cZoneContactInfoList;
     friend class cZoneLayout;
     friend class cZoneMultiStack;
+    friend class cpAIPawnEmChecker;
     friend class cpCorePointCtrl;
     friend class cpEffectStatusManager;
     friend class cpHpDamageCtrl;
@@ -386,6 +404,7 @@ class MtArray : public MtObject
     friend class cpLockOn;
     friend class cpObjCollisionBase;
     friend class cpOcdCtrl;
+    friend class cpPathFinding;
     friend class cpPawnThink;
     friend class cpShakeCtrl;
     friend class cpStateManager;
@@ -478,6 +497,7 @@ class MtArray : public MtObject
     friend class rStageAdjoinList;
     friend class rStageCustomPartsEx;
     friend class rStaminaDecTbl;
+    friend class rStartPos;
     friend class rTable;
     friend class rTblMenuComm;
     friend class rTblMenuOption;
@@ -503,6 +523,7 @@ class MtArray : public MtObject
     friend class sInputManager;
     friend class sItemManager;
     friend class sLockOnManager;
+    friend class sMarker;
     friend class sMenu;
     friend class sNetworkExt;
     friend class sNpcManager;
@@ -875,13 +896,17 @@ public:
     s32 find(bool(*pFunc)(const T*, u32), u32 param);
     void erase();
     void sort(bool(*pFunc)(const T*, const T*, u32), const u32 param);
+    MtTypedArray(s32 size);
     MtTypedArray<T>& operator=(const MtTypedArray<T>& that);
     void sort(MtObject* pFuncOwner, bool(MtObject::*pFunc)(const T*, const T*, const u32), u32 param);
     void insert(T* obj, u32 index);
     s32 find(T* obj) const;
     void operator+=(const MtTypedArray<T>& that);
-    MtTypedArray(s32 size);
 };
+
+inline void* MtArray::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
 
 inline MtArray::MtArray() {
     this->mLength = 0;
@@ -890,12 +915,36 @@ inline MtArray::MtArray() {
     this->mpArray = nullptr;
 }
 
+inline void MtArray::setAutoDelete(bool f) {
+    this->mAutoDelete = f;
+}
+
+inline bool MtArray::isAutoDelete() const {
+    return this->mAutoDelete;
+}
+
+inline u32 MtArray::length() const {
+    return this->mLength;
+}
+
 inline u32 MtArray::size() const {
     return this->mLength;
 }
 
 inline MtObject* * MtArray::getBuffer() {
     return this->mpArray;
+}
+
+inline void* MtMap::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtTree::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* MtTree::Node::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 template <typename T>

@@ -2,6 +2,7 @@
 #include <new>
 #include <stdio.h>
 #include "cContextInterface.h"
+#include "Protocol/PacketData/Lobby.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
@@ -10,7 +11,20 @@
 #include "../../MT/MtObject.h"
 #include "cContext.h"
 #include "cContextInstance.h"
+#include "cContextPlayerInfo.h"
+#include "cEquipData.h"
+#include "cNetGameServer.h"
+#include "cPlayerLoadManager.h"
+#include "nCharacterData.h"
 #include "../../generated/shared/nDDOGame.h"
+#include "nDDOUtility.h"
+#include "nJobParam.h"
+#include "nNetMsgData.h"
+#include "rCharacterEdit.h"
+#include "sContextManager.h"
+#include "sGame.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

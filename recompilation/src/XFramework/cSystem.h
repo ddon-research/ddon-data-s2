@@ -18,6 +18,7 @@ class MtUI;
 class MtVector3;
 class cAIService;
 class sAI;
+class sAIExt;
 class sAIPawnSys;
 class sArchiveManager;
 class sAreaHit;
@@ -72,6 +73,7 @@ class cSystem : public MtObject
 {
     friend class cAIService;
     friend class sAI;
+    friend class sAIExt;
     friend class sAIPawnSys;
     friend class sArchiveManager;
     friend class sAreaHit;
@@ -172,3 +174,7 @@ private:
     static MtAllocator* mpAllocator;
     static bool mJobSafe;
 };
+
+inline void* cSystem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

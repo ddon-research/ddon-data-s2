@@ -100,7 +100,27 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cGatheringItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cGatheringItem::cGatheringItem() {
     this->mItemNo = 0;
     this->mType = 0;
+}
+
+inline void* rGatheringItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cGatheringItem::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGatheringItem::DTI)->memFree(p_addr);
+}
+
+inline void* cGatheringItem::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGatheringItem::DTI)->memAlloc(sz, align, ::cGatheringItem::DTI.::MtDTI::getID());
 }

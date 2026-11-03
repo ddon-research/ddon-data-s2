@@ -7,6 +7,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "Protocol/UserSession/S2C.h"
 #include "Protocol/PacketData/ServerUI.h"
 #include "cNetGameServer.h"
 #include "cServerUIClientControl.h"

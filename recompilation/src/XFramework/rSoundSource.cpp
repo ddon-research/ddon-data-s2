@@ -6,9 +6,11 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtFile.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "../MT/MtSynchronize.h"
 #include "cResource.h"
+#include "sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -70,7 +72,8 @@ u32 rSoundSource::read(void* pdest, u32 size, u32* pid) {
             u32 t0 = *((pid == nullptr) ? (&mGlobalID) : pid);
             u32 t1 = mBufferLength;
             memcpy(pdest, static_cast<char*>(mpBuffer) + t0, (t1 < (size + t0)) ? (t1 - t0) : size);
-            *((pid == nullptr) ? (&mGlobalID) : pid) = (*((pid == nullptr) ? (&mGlobalID) : pid)) + ((t1 < (size + t0)) ? (t1 - t0) : size);
+            u32 t2 = *((pid == nullptr) ? (&mGlobalID) : pid);
+            *((pid == nullptr) ? (&mGlobalID) : pid) = t2 + ((t1 < (size + t0)) ? (t1 - t0) : size);
             mFilePosition = *((pid == nullptr) ? (&mGlobalID) : pid);
             return (t1 < (size + t0)) ? (t1 - t0) : size;
         } else {

@@ -115,6 +115,10 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cNpcCustomSkill::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cNpcCustomSkill::cNpcCustomSkill() {
     this->mThinkId = 0;
     this->mCustomSkill1 = 255;
@@ -126,4 +130,20 @@ inline cNpcCustomSkill::cNpcCustomSkill() {
     this->mCustomSkillLv2 = 0;
     this->mCustomSkillLv3 = 0;
     this->mCustomSkillLv4 = 0;
+}
+
+inline void* rNpcCustomSkill::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cNpcCustomSkill::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNpcCustomSkill::DTI)->memFree(p_addr);
+}
+
+inline void* cNpcCustomSkill::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNpcCustomSkill::DTI)->memAlloc(sz, align, ::cNpcCustomSkill::DTI.::MtDTI::getID());
 }

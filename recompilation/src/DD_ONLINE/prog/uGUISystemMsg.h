@@ -350,6 +350,10 @@ protected:
     static const s32 DIST_LIST = 20;
 };
 
+inline void* uGUISystemMsg::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline u32 uGUISystemMsg::getSerialNo() {
     return this->mSerialNo;
 }
@@ -367,4 +371,12 @@ inline void uGUISystemMsg::exit() {
         return;
     }
     this->::uGUIBase::mpCurrentFunc = this->mpExitFunc;
+}
+
+inline void* uGUISystemMsg::cPageInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* uGUISystemMsg::cChoiceInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

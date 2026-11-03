@@ -7,12 +7,17 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../XFramework/cArea.h"
 #include "cNetGameServer.h"
 #include "../../XFramework/cUnit.h"
+#include "../../XFramework/sArea.h"
+#include "sControlManager.h"
 #include "sCraftManager.h"
 #include "../../XFramework/sMain.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
+#include "uControl.h"
+#include "uControlNpc.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

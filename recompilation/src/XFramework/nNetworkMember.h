@@ -139,3 +139,35 @@ namespace nNetwork {
         static MyDTI DTI;
     };
 }  // namespace nNetwork
+
+inline void* nNetwork::Member::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline MT_CTSTR nNetwork::Member::getName() const {
+    return &this->mInfo.mName[0];
+}
+
+inline void nNetwork::Member::setSelf(bool f) {
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFFEu) : (this->mConfiguration | 1u);
+}
+
+inline void nNetwork::Member::setEntry(bool f) {
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFFDu) : (this->mConfiguration | 2u);
+}
+
+inline void nNetwork::Member::setMatch(bool f) {
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFFBu) : (this->mConfiguration | 4u);
+}
+
+inline void nNetwork::Member::setTerminate(bool f) {
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFF7u) : (this->mConfiguration | 8u);
+}
+
+inline void nNetwork::Member::setMute(bool f) {
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFEFu) : (this->mConfiguration | 16u);
+}
+
+inline void nNetwork::Member::setRestrict(bool f) {
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFBFu) : (this->mConfiguration | 64u);
+}

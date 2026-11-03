@@ -242,9 +242,17 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cSeedServerConnection::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline cSeedServerStream& cSeedServerConnection::pendingStream() {
     return this->mPendingStream;
 }
 
 inline cSeedServerConnection::stPacketHeader::stPacketHeader() {
+}
+
+inline void* cSeedServerStream::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

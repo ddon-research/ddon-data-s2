@@ -21,4 +21,4 @@ A collection of JSON exports of the client resource files.
 
 === research
 
-A collection of thoughts, scripts etc.
+ImHex patterns for the resource classes of client 02030004 (`research/02030004/r<Type>-pattern.cpp`) and related notes, moved from ddon-data. Season 3 patterns stay in ddon-data.

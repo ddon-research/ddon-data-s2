@@ -28,6 +28,7 @@
 #include "cSoundPicolaPitchShift.h"
 #include "cSoundSilentDetectFilter.h"
 #include "cSystem.h"
+#include "../generated/shared/nSound.h"
 #include "../generated/shared/ngs2_sce_reverb.h"
 #include "../generated/shared/ngs2_system.h"
 #include "rSoundBank.h"
@@ -45,6 +46,37 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+namespace nSound {
+static const f32 AmplitudeInteriorPanning71ch[8] = {
+    0x1.c71c72p-4f,
+    0x1.c71c72p-4f,
+    0x1.c71c72p-4f,
+    0x0p+0f,
+    0x1.555556p-3f,
+    0x1.555556p-3f,
+    0x1.555556p-3f,
+    0x1.555556p-3f,
+};
+}
+
+namespace nSound {
+static const f32 AmplitudeInteriorPanning51ch[6] = {
+    0x1.555556p-3f,
+    0x1.555556p-3f,
+    0x1.555556p-3f,
+    0x0p+0f,
+    0x1p-2f,
+    0x1p-2f,
+};
+}
+
+namespace nSound {
+static const f32 AmplitudeInteriorPanning2ch[2] = {
+    0x1p-1f,
+    0x1p-1f,
+};
+}
 
 const MtDTI& sSound::getDTI() const {
     return sSound::DTI;

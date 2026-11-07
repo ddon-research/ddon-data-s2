@@ -58,8 +58,18 @@ inline void rCraftRecipe::cCraftRecipe::operator delete(void* p_addr) {
 }
 
 rCraftRecipe::cCraftRecipe::cCraftRecipe() {
-    DDON_STUB("rCraftRecipe::cCraftRecipe::cCraftRecipe")
-    /* stub */
+    mRecipeId = 0;
+    mItemId = 0;
+    mCreateTime = 0;
+    mCreateNum = 1;
+    mpArrayData = nullptr;
+    mIsBaggage = false;
+    mRank = 0;
+    mNpcAction = rCraftRecipe::NPC_ACTION_NONE;
+    mGold = 0;
+    mExp = 0;
+    mMaterialDataList.mAutoDelete = true;
+    mMaterialDataListNum = 0;
 }
 
 rCraftRecipe::cCraftRecipe::~cCraftRecipe() {
@@ -124,9 +134,8 @@ rCraftRecipe::cCraftRecipe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t 
 
 rCraftRecipe::cCraftRecipe::MyDTI rCraftRecipe::cCraftRecipe::DTI("rCraftRecipe::cCraftRecipe", &::MtObject::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rCraftRecipe::cCraftRecipe::MyDTI::newInstance() const {
-    DDON_STUB("rCraftRecipe::cCraftRecipe::MyDTI::newInstance")
-    return nullptr;
+MtObject* rCraftRecipe::cCraftRecipe::MyDTI::newInstance() const {
+    return new (16u) rCraftRecipe::cCraftRecipe;
 }
 
 const MtDTI& rCraftRecipe::cMaterialData::getDTI() const {

@@ -123,6 +123,26 @@ inline void* rAIPawnOrder::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline cAIPawnOrderParam::cAIPawnOrderParam() {
+    mID = 0u;
+    mOrderType = 0u;
+    mOrderGroup = 1u;
+    mOrderCategory = 1u;
+    mEnableFrame = 600.0f;
+    mOrderSpID = 0u;
+    mOrderAttrFlag = 0u;
+    mOrderAttrActID = 0u;
+    mActionCancelFlag = 2u;
+}
+
+inline void cAIPawnOrderParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIPawnOrderParam::DTI)->memFree(p_addr);
+}
+
+inline void* cAIPawnOrderParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIPawnOrderParam::DTI)->memAlloc(sz, align, cAIPawnOrderParam::DTI.getID());
+}
+
 inline void* cAIPawnOrderParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAIPawnOrderParam::DTI)->memAlloc(sz, align, ::cAIPawnOrderParam::DTI.::MtDTI::getID());
 }

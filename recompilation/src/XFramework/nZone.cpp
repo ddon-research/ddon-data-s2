@@ -1373,8 +1373,9 @@ bool nZone::ShapeInfoCylinder::isGetAABB() const {
 }
 
 __attribute__((weak)) MtAABB nZone::ShapeInfoCylinder::getAABB() const {
-    DDON_STUB("nZone::ShapeInfoCylinder::getAABB")
-    __builtin_unreachable();
+    MtAABB aabb;
+    mCylinder.getBoundingAABB(aabb);
+    return aabb;
 }
 
 bool nZone::ShapeInfoCylinder::isGetBoundingSphere() const {
@@ -2682,6 +2683,12 @@ s32 nZone::cLayoutElement::getContentsPoolGroupIDForUI() const {
 nZone::cLayoutElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nZone::cLayoutElement::MyDTI nZone::cLayoutElement::DTI("nZone::cLayoutElement", &::MtObject::DTI, 88ul, 0u, 0u);
+
+MT_CTSTR nZone::cLayoutElement::PROP_TITLE_CONTENTS_GROUP_ID = "GNo";
+
+MT_CTSTR nZone::cLayoutElement::PROP_TITLE_CONTENTS_GROUP_ID_DIRECT = "GNo(Direct)";
+
+MT_CTSTR nZone::cLayoutElement::PROP_TITLE_SHAPE_TYPE = "mShapeType";
 
 __attribute__((weak)) MtObject* nZone::cLayoutElement::MyDTI::newInstance() const {
     DDON_STUB("nZone::cLayoutElement::MyDTI::newInstance")

@@ -131,8 +131,6 @@ inline void nSoundOcclusion::cCategory::operator delete(void* p_addr) {
 }
 
 nSoundOcclusion::cCategory::~cCategory() {
-    DDON_STUB("nSoundOcclusion::cCategory::~cCategory")
-    /* stub */
 }
 
 MtUI* nSoundOcclusion::cCategory::createUI(MtProperty& prop) {

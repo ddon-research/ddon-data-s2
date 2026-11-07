@@ -242,6 +242,10 @@ const MtDTI& rDungeonMarker::cPosition::getDTI() const {
     return rDungeonMarker::cPosition::DTI;
 }
 
+void* rDungeonMarker::cPosition::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rDungeonMarker::cPosition::DTI)->memAlloc(sz, align, rDungeonMarker::cPosition::DTI.getID());
+}
+
 inline void rDungeonMarker::cPosition::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rDungeonMarker::cPosition::DTI)->memFree(p_addr);
 }
@@ -265,9 +269,8 @@ rDungeonMarker::cPosition::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 rDungeonMarker::cPosition::MyDTI rDungeonMarker::cPosition::DTI("rDungeonMarker::cPosition", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rDungeonMarker::cPosition::MyDTI::newInstance() const {
-    DDON_STUB("rDungeonMarker::cPosition::MyDTI::newInstance")
-    return nullptr;
+MtObject* rDungeonMarker::cPosition::MyDTI::newInstance() const {
+    return new (16u) rDungeonMarker::cPosition;
 }
 
 template MtTypedArray<rDungeonMarker::cPosition>::~MtTypedArray();

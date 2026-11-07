@@ -128,7 +128,7 @@ private:
     void moveMain();
 public:
     bool isRewardEditOK();
-    void setRewardEditOK(bool flag);
+    void setRewardEditOK(bool flag = false);
     bool isLikabilityMax();
     void setLikabilityMax(bool isLikabilityMax);
     bool isAlreadyPass();
@@ -223,6 +223,10 @@ inline void* uStageMyRoom::operator new(size_t sz, void* p_addr) {
 
 inline u32 uStageMyRoom::getPartnerPawnId() {
     return this->mPartnerPawnId;
+}
+
+inline void uStageMyRoom::setRewardEditOK(bool flag) {
+    this->mIsRewardEditOK = false;
 }
 
 inline cFurniture* uStageMyRoom::getFurniture() {

@@ -49,6 +49,44 @@
 #define DDON_STUB(name)
 #endif
 
+static const u32 flow_id_table[20] = {
+    3,
+    19,
+    5,
+    6,
+    12,
+    12,
+    7,
+    13,
+    13,
+    10,
+    16,
+    17,
+    5,
+    11,
+    11,
+    25,
+    15,
+    18,
+    23,
+    21,
+};
+
+static const u32 clan_button_msg_id_table[12] = {
+    60,
+    53,
+    59,
+    58,
+    64,
+    65,
+    57,
+    56,
+    82,
+    29,
+    28,
+    52,
+};
+
 const MtDTI& uGUIPopTopSel::getDTI() const {
     return uGUIPopTopSel::DTI;
 }

@@ -163,7 +163,7 @@ public:
     MtSize getDefaultScreenSize() const;
     void setDefaultScreenSize(const MtSize& DefaultScreenSize);
     u32 getDefaultSizeAdjustType() const;
-    void setDefaultSizeAdjustType(u32 DefaultSizeAdjustType);
+    void setDefaultSizeAdjustType(u32 DefaultSizeAdjustType = 2);
     u32 getTimer() const;
     bool isOcclusionParticleDraw() const;
     void setOcclusionParticleDraw(bool Mode);
@@ -265,8 +265,8 @@ public:
 protected:
     void initRandom();
     void allocTempBuff(u32 TempBuffSize);
-    void setCollisionParamType(u32 Type);
-    void setCollisionParamFilter(u32 Filter);
+    void setCollisionParamType(u32 Type = 2);
+    void setCollisionParamFilter(u32 Filter = 536872972);
     void setCollisionParamCallback(MtObject*, const sCollision::CONTACT_CALLBACK, const u32);
 private:
     void freeTempBuff();
@@ -331,6 +331,10 @@ inline f32 sEffect::getForcePower() const {
     return this->mForcePower;
 }
 
+inline void sEffect::setDefaultSizeAdjustType(u32 DefaultSizeAdjustType) {
+    this->mDefaultSizeAdjustType = 2;
+}
+
 inline bool sEffect::isOcclusionParticleDraw() const {
     return this->mOcclusionParticleDraw;
 }
@@ -393,4 +397,12 @@ inline void sEffect::setMultiBloomFilterDrawPriority(u32 DrawPriority) {
 
 inline u32 sEffect::getAdhesionDivideMax() const {
     return this->mAdhesionDivideMax;
+}
+
+inline void sEffect::setCollisionParamType(u32 Type) {
+    this->mCollisionParam.type = 2;
+}
+
+inline void sEffect::setCollisionParamFilter(u32 Filter) {
+    this->mCollisionParam.filter = 0x2000080C;
 }

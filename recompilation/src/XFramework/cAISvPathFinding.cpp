@@ -303,8 +303,24 @@ const MtDTI& cAISvPathFinding::Node::getDTI() const {
 }
 
 cAISvPathFinding::Node::Node() {
-    DDON_STUB("cAISvPathFinding::Node::Node")
-    /* stub */
+    mNodeIndex = 0;
+    mNumberOfAttr = 0;
+    mNumberOfLink = 0;
+    mpLink = nullptr;
+    mpNodeAttr = nullptr;
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+    mpGeometry = nullptr;
+    mConnect = false;
+    mDir.x = MtVector3::Zero.x;
+    mDir.y = MtVector3::Zero.y;
+    mDir.z = MtVector3::Zero.z;
+    mDir.pad_ = 0.0f;
+    mLength = 0.0f;
+    mNumberOfExpData = 0;
+    mpExpData = nullptr;
 }
 
 cAISvPathFinding::Node::~Node() {

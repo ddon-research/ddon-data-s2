@@ -10,6 +10,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtScalableAllocator.h"
 #include "../../XFramework/cDraw.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
@@ -35,6 +36,10 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+static MtScalableAllocator* gCELAllocator;
+
+static MtScalableAllocator* gCESAllocator;
 
 const MtDTI& cBakeModel::getDTI() const {
     return cBakeModel::DTI;
@@ -325,6 +330,16 @@ bool cBakeModelEx::convertSoftBody() {
 
 __attribute__((weak)) void cBakeModelEx::issueBakedSoftModel(cDraw* pdraw, uModel* pCallerUnit, const MtVector3& cpos, u32 lod, s32 basecullmask, s32 shadow_cullmask, f32 vdist, u32 vpri, u32 spri) {
     DDON_STUB("cBakeModelEx::issueBakedSoftModel")
+    /* stub */
+}
+
+__attribute__((weak)) void nCEnvelope::setConvertEnvelopeLargeAllocator(void* padr, u32 size) {
+    DDON_STUB("nCEnvelope::setConvertEnvelopeLargeAllocator")
+    /* stub */
+}
+
+__attribute__((weak)) void nCEnvelope::setConvertEnvelopeSmallAllocator(void* padr, u32 size) {
+    DDON_STUB("nCEnvelope::setConvertEnvelopeSmallAllocator")
     /* stub */
 }
 

@@ -21,6 +21,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cWeaponResTable>::deleteData();
+#endif
+
 const MtDTI& cWeaponResTable::getDTI() const {
     return cWeaponResTable::DTI;
 }

@@ -46,6 +46,14 @@ using size_t = _Sizet;
 using u32 = unsigned int;
 using u8 = unsigned char;
 
+namespace nCEnvelope {
+
+    void setConvertEnvelopeLargeAllocator(void* padr, u32 size);
+    void setConvertEnvelopeSmallAllocator(void* padr, u32 size);
+    void checkAllocatorLeak();
+
+}  // namespace nCEnvelope
+
 class cBakeModel : public MtObject
 {
     friend class cDDMaterialCtrl;

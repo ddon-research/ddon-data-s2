@@ -30,6 +30,16 @@
 #define DDON_STUB(name)
 #endif
 
+static const f32 SlipValueOffsetYs[2] = {
+    -0x1.ep+3f,
+    0x1.68p+5f,
+};
+
+static const f32 NormalValueOffsetYs[2] = {
+    -0x1.68p+5f,
+    0x1.ep+3f,
+};
+
 const MtDTI& uGUIDamage::getDTI() const {
     return uGUIDamage::DTI;
 }

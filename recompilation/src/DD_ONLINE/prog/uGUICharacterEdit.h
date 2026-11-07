@@ -659,7 +659,7 @@ private:
     void initSub();
     void moveSub();
     void moveSaveLoad();
-    void setSubProc(u32 proc);
+    void setSubProc(u32 proc = 0);
     u32 evCtrlDecide(cControl::Message* msg);
     u32 evCtrlCancel(cControl::Message* msg);
     u32 evCtrlMoveV(cControl::Message* msg);
@@ -858,6 +858,11 @@ inline void uGUICharacterEdit::changeScrFlag_Off() {
 
 inline void uGUICharacterEdit::resetNameInput() {
     this->mIsNameInput_move = false;
+}
+
+inline void uGUICharacterEdit::setSubProc(u32 proc) {
+    this->mSubProc = 0;
+    this->mSubInit = false;
 }
 
 inline nCharacterEdit::EDIT_WARN_TYPE uGUICharacterEdit::getInitWarnTypeOld() const {

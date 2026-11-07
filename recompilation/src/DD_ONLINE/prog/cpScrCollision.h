@@ -194,6 +194,23 @@ inline void* cGroundAttrInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cGroundAttrInfo::cGroundAttrInfo() {
+    this->mEnable = true;
+    this->mTop.x = 0.0f;
+    this->mTop.y = 200.0f;
+    this->mTop.z = 0.0f;
+    this->mTop.pad_ = 0.0f;
+    this->mBottom.x = 0.0f;
+    this->mBottom.y = -100.0f;
+    this->mBottom.z = 0.0f;
+    this->mBottom.pad_ = 0.0f;
+    this->mType = 2;
+    this->mFilter = 0x20000002;
+    this->mTopFilter = 0;
+    this->mHitFlag = 0;
+    this->mIsUpCheck = false;
+}
+
 inline void* cpScrCollision::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

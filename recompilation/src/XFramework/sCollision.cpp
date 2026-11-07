@@ -2084,8 +2084,80 @@ void sCollision::cSbcSkinMesh::removeBroadPhaseDBVTNoUseBuffer() {
 }
 
 __attribute__((weak)) void sCollision::cSbcSkinMesh::runUnregisterUnitReserveAll() {
-    DDON_STUB("sCollision::cSbcSkinMesh::runUnregisterUnitReserveAll")
-    /* stub */
+    if (mReserveUnregisterNum > 0) {
+        mReserveUnregisterNum = 0;
+        u32 i = 0;
+        u32 j;
+        unsigned int i3_8;
+        u32 v6_0;
+        unsigned int v7_1;
+        u32 v7_2;
+        unsigned int v7_8;
+        for (;;) {
+            const u32 NowThreadUnreserveNum = mReserveUnregisterArray[i].mLength;
+            if (NowThreadUnreserveNum != 0) {
+                j = 0;
+                for (;;) {
+                    MtObject* v2_3 = mReserveUnregisterArray[i].mpArray[j];
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v2_3) + 24)) != 0) {
+                        mDBVTDynamicSbc.removeLeaf(reinterpret_cast<cDynamicBVHCollision::Node*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v2_3) + 24)));
+                    }
+                    u32 v3_0 = mDynamicSbcArray.mLength;
+                    if (v3_0 != 0) {
+                        MtObject* * v3_1 = mDynamicSbcArray.mpArray;
+                        i3_8 = 0;
+                        for (;;) {
+                            if (v2_3 == v3_1[i3_8]) {
+                                if (!mDynamicSbcArray.mAutoDelete) {
+                                    v6_0 = v3_0;
+                                } else {
+                                    if (v2_3 == nullptr) {
+                                        v6_0 = v3_0;
+                                    } else {
+                                        delete v2_3;
+                                        v6_0 = mDynamicSbcArray.mLength;
+                                    }
+                                }
+                                if ((i3_8 + 1u) < v6_0) {
+                                    v7_1 = i3_8 + 1u;
+                                    v7_2 = v6_0;
+                                    v7_8 = i3_8;
+                                    for (;;) {
+                                        mDynamicSbcArray.mpArray[v7_8] = mDynamicSbcArray.mpArray[v7_1];
+                                        if (v7_2 != (v7_1 + 1u)) {
+                                            v7_8 = v7_1;
+                                            v7_1 = v7_1 + 1u;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                }
+                                mDynamicSbcArray.mLength = v6_0 - 1u;
+                                break;
+                            } else {
+                                if ((i3_8 + 1u) < v3_0) {
+                                    i3_8 = i3_8 + 1u;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (NowThreadUnreserveNum != (j + 1u)) {
+                        j = j + 1u;
+                    } else {
+                        break;
+                    }
+                }
+                mReserveUnregisterArray[i].mLength = 0;
+            }
+            if ((i + 1u) != 19) {
+                i = i + 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 sCollision::cSbcSkinMesh::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -250,7 +250,7 @@ private:
     bool loginCore();
 public:
     LOGIN_RET_STAT moveLogin();
-    void setReqShutdownContext(bool b);
+    void setReqShutdownContext(bool b = false);
     bool isShutdownContextEnable();
     void shutdown();
 private:
@@ -591,6 +591,13 @@ public:
 
 inline void* sNetworkExt::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void sNetworkExt::setReqShutdownContext(bool b) {
+    if (!this->mReqShutdownContext) {
+        return;
+    }
+    this->mReqShutdownContext = false;
 }
 
 inline void sNetworkExt::setTrophySize(u64 size) {

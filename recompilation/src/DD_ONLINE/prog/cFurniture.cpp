@@ -218,6 +218,10 @@ const MtDTI& cFurniture::Info::getDTI() const {
     return cFurniture::Info::DTI;
 }
 
+inline void* cFurniture::Info::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cFurniture::Info::DTI)->memAlloc(sz, align, cFurniture::Info::DTI.getID());
+}
+
 inline void cFurniture::Info::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFurniture::Info::DTI)->memFree(p_addr);
 }
@@ -255,9 +259,8 @@ cFurniture::Info::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 cFurniture::Info::MyDTI cFurniture::Info::DTI("cFurniture::Info", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFurniture::Info::MyDTI::newInstance() const {
-    DDON_STUB("cFurniture::Info::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFurniture::Info::MyDTI::newInstance() const {
+    return new (16u) cFurniture::Info;
 }
 
 template MtTypedArray<CDataFurnitureLayoutData>::~MtTypedArray();

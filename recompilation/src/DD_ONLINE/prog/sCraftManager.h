@@ -1157,7 +1157,7 @@ public:
     void addCraftNotice(u32 pawnId);
     void eraceCraftNotice();
     u32 getCraftNoticeListNum();
-    void setItemGradeMax(u32 max);
+    void setItemGradeMax(u32 max = 4);
     u32 getItemGradeMax() const;
 private:
     void createRecipeItemCallBack(void* param);
@@ -1280,6 +1280,10 @@ inline sCraftManager::IR_REDUCTION_DATA_STATE sCraftManager::getCraftIrReduction
 
 inline u32 sCraftManager::getPlusItemListNum() {
     return this->mAddItemList.::MtArray::mLength;
+}
+
+inline void sCraftManager::setItemGradeMax(u32 max) {
+    this->mGradeMax = 4;
 }
 
 inline void* sCraftManager::cCraftFinishNotice::operator new(size_t sz, void* p_addr) {

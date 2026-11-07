@@ -34,6 +34,7 @@
 #include "nDDOUtility.h"
 #include "../../generated/shared/nHuman.h"
 #include "nHumanMsg.h"
+#include "nKeyCommand.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
 #include "sFlag.h"
@@ -52,6 +53,11 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+nKeyCommand::stKeyCommand NoActiveCommand[2] = {
+    {0, 4294967295, 0, 0, 0, 1, 8192, 0, 65535, 1, 150, 0, 255, true},
+    {4294967295, 4294967295, 0, 0, 0, 0, 0, 65535, 65535, 0, 0, 0, 255, false},
+};
 
 const MtDTI& cpKeyCommand::getDTI() const {
     return cpKeyCommand::DTI;

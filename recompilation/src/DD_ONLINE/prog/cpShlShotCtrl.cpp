@@ -177,8 +177,51 @@ const MtDTI& cpShlShotCtrl::cShlShotReqInfo::getDTI() const {
     return cpShlShotCtrl::cShlShotReqInfo::DTI;
 }
 
+inline void* cpShlShotCtrl::cShlShotReqInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cpShlShotCtrl::cShlShotReqInfo::DTI)->memAlloc(sz, align, cpShlShotCtrl::cShlShotReqInfo::DTI.getID());
+}
+
 inline void cpShlShotCtrl::cShlShotReqInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cpShlShotCtrl::cShlShotReqInfo::DTI)->memFree(p_addr);
+}
+
+cpShlShotCtrl::cShlShotReqInfo::cShlShotReqInfo() {
+    mpTarget = nullptr;
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+    mDirection.x = MtVector3::AxisZ.x;
+    mDirection.y = MtVector3::AxisZ.y;
+    mDirection.z = MtVector3::AxisZ.z;
+    mDirection.pad_ = 0.0f;
+    mTargetPos.x = MtVector3::Zero.x;
+    mTargetPos.y = MtVector3::Zero.y;
+    mTargetPos.z = MtVector3::Zero.z;
+    mTargetPos.pad_ = 0.0f;
+    mShlUId = 0;
+    mTargetUId = 0;
+    mLockOnIndex = -1;
+    mShotGroup = -1;
+    mShotIndex = -1;
+    mShotTimer = 0.0f;
+    mIsCalcDirTargetPos = false;
+    mIsInherit = false;
+    mShotSts_Guard = 0;
+    mIsNotifyDelete = false;
+    mWork = -1;
+    mIsUseShotCoordMatrix = false;
+    mIsConst = false;
+    mConstUId = 0;
+    mConstJoint = 255;
+    mSharedUID[6] = 0;
+    mSharedUID[7] = 0;
+    mSharedUID[4] = 0;
+    mSharedUID[5] = 0;
+    mSharedUID[2] = 0;
+    mSharedUID[3] = 0;
+    mSharedUID[0] = 0;
+    mSharedUID[1] = 0;
 }
 
 cpShlShotCtrl::cShlShotReqInfo::~cShlShotReqInfo() {
@@ -223,9 +266,8 @@ cpShlShotCtrl::cShlShotReqInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cpShlShotCtrl::cShlShotReqInfo::MyDTI cpShlShotCtrl::cShlShotReqInfo::DTI("cpShlShotCtrl::cShlShotReqInfo", &::MtObject::DTI, 208ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpShlShotCtrl::cShlShotReqInfo::MyDTI::newInstance() const {
-    DDON_STUB("cpShlShotCtrl::cShlShotReqInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpShlShotCtrl::cShlShotReqInfo::MyDTI::newInstance() const {
+    return new (16u) cpShlShotCtrl::cShlShotReqInfo;
 }
 
 template MtTypedArray<cpShlShotCtrl::cShlShotReqInfo>::~MtTypedArray();

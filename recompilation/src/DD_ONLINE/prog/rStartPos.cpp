@@ -110,8 +110,55 @@ const MtDTI& rStartPos::Info::getDTI() const {
     return rStartPos::Info::DTI;
 }
 
+inline void* rStartPos::Info::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rStartPos::Info::DTI)->memAlloc(sz, align, rStartPos::Info::DTI.getID());
+}
+
 inline void rStartPos::Info::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rStartPos::Info::DTI)->memFree(p_addr);
+}
+
+inline rStartPos::Info::Info() {
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+    mAng = 0.0f;
+    mOfsPos[0].x = MtVector3::Zero.x;
+    mOfsPos[0].y = MtVector3::Zero.y;
+    mOfsPos[0].z = MtVector3::Zero.z;
+    mOfsPos[0].pad_ = 0.0f;
+    mOfsAng[0] = 0.0f;
+    mOfsPos[1].x = MtVector3::Zero.x;
+    mOfsPos[1].y = MtVector3::Zero.y;
+    mOfsPos[1].z = MtVector3::Zero.z;
+    mOfsPos[1].pad_ = 0.0f;
+    mOfsAng[1] = 0.0f;
+    mOfsPos[2].x = MtVector3::Zero.x;
+    mOfsPos[2].y = MtVector3::Zero.y;
+    mOfsPos[2].z = MtVector3::Zero.z;
+    mOfsPos[2].pad_ = 0.0f;
+    mOfsAng[2] = 0.0f;
+    mOfsPos[3].x = MtVector3::Zero.x;
+    mOfsPos[3].y = MtVector3::Zero.y;
+    mOfsPos[3].z = MtVector3::Zero.z;
+    mOfsPos[3].pad_ = 0.0f;
+    mOfsAng[3] = 0.0f;
+    mOfsPos[4].x = MtVector3::Zero.x;
+    mOfsPos[4].y = MtVector3::Zero.y;
+    mOfsPos[4].z = MtVector3::Zero.z;
+    mOfsPos[4].pad_ = 0.0f;
+    mOfsAng[4] = 0.0f;
+    mOfsPos[5].x = MtVector3::Zero.x;
+    mOfsPos[5].y = MtVector3::Zero.y;
+    mOfsPos[5].z = MtVector3::Zero.z;
+    mOfsPos[5].pad_ = 0.0f;
+    mOfsAng[5] = 0.0f;
+    mOfsPos[6].x = MtVector3::Zero.x;
+    mOfsPos[6].y = MtVector3::Zero.y;
+    mOfsPos[6].z = MtVector3::Zero.z;
+    mOfsPos[6].pad_ = 0.0f;
+    mOfsAng[6] = 0.0f;
 }
 
 rStartPos::Info::~Info() {
@@ -149,8 +196,7 @@ rStartPos::Info::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 rStartPos::Info::MyDTI rStartPos::Info::DTI("rStartPos::Info", &::MtObject::DTI, 192ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rStartPos::Info::MyDTI::newInstance() const {
-    DDON_STUB("rStartPos::Info::MyDTI::newInstance")
-    return nullptr;
+MtObject* rStartPos::Info::MyDTI::newInstance() const {
+    return new (16u) rStartPos::Info;
 }
 

@@ -11,6 +11,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cEmLvUpParam>::allocData(unsigned int);
+#endif
+
 const MtDTI& cEmLvUpParam::getDTI() const {
     return cEmLvUpParam::DTI;
 }
@@ -77,8 +81,28 @@ inline void rEmLvUpParam::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rEmLvUpParam::loadData(MtDataReader& in, cEmLvUpParam* pData) {
-    DDON_STUB("rEmLvUpParam::loadData")
-    return {};
+        pData->mLv = in.readU32();
+        u32 i = 0;
+        do {
+            pData->mHp_Cor[i] = in.readF32();
+            pData->mShP_Cor[i] = in.readF32();
+            pData->mBlP_Cor[i] = in.readF32();
+        } while (++i < 10);
+        pData->mOcd_Cor = in.readF32();
+        pData->mAttackWepPhys_Cor = in.readF32();
+        pData->mAttackWepMagic_Cor = in.readF32();
+        pData->mDefenceWepPhys_Cor = in.readF32();
+        pData->mDefenceWepMagic_Cor = in.readF32();
+        pData->mAttackBasePhys_Cor = in.readF32();
+        pData->mAttackBaseMagic_Cor = in.readF32();
+        pData->mDefenceBasePhys_Cor = in.readF32();
+        pData->mDefenceBaseMagic_Cor = in.readF32();
+        pData->mPower_Cor = in.readF32();
+        pData->mGuardDefBase_Cor = in.readF32();
+        pData->mGuardDefWep_Cor = in.readF32();
+        pData->mDownP_Cor = in.readF32();
+        pData->mShakeP_Cor = in.readF32();
+        return true;
 }
 
 MT_CTSTR rEmLvUpParam::getExt() const {

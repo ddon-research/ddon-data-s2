@@ -113,7 +113,7 @@ public:
     void addMenuList(s32 menuId);
     void convertMenuId(s32 from, s32 to);
     bool isAutoUpdate();
-    void setAutoUpdate(bool isUpdate);
+    void setAutoUpdate(bool isUpdate = false);
     s32 getIndexFromMenuId(s32 menuId);
     const nMenu::MENU_PARTS& getMenuParts(s32 index);
     s32 getMenuId(s32 index);
@@ -287,7 +287,7 @@ public:
     bool getRemakeListFlag();
     void resetRemakeListFlag();
     void reqRemake();
-    void setMenuTopId(s32 menuId);
+    void setMenuTopId(s32 menuId = 0);
     void addAboveMenu(s32 menuId);
     void addBelowMenu(s32 menuId);
     void clearAddMenu();
@@ -356,6 +356,10 @@ inline void cMenuSupportList::reqRemake() {
     this->mReqRemake = true;
 }
 
+inline void cMenuSupportList::setMenuTopId(s32 menuId) {
+    this->mMenuTopId = 0;
+}
+
 inline cMenuSupportList::stAddMenu* cMenuSupportList::getEmptyAddMenu() {
     return this->mpAddMenu;
 }
@@ -370,4 +374,8 @@ inline s32 cMenuSupportMenu::getCursor() {
 
 inline void cMenuSupportMenu::clearMenuList() {
     this->mMenuNum = 0;
+}
+
+inline void cMenuSupportMenu::setAutoUpdate(bool isUpdate) {
+    this->mAutoUpdateMenu = false;
 }

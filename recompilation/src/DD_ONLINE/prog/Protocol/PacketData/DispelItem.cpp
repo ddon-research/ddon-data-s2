@@ -227,8 +227,7 @@ CDataDispelResultInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 CDataDispelResultInfo::MyDTI CDataDispelResultInfo::DTI("CDataDispelResultInfo", &::CPacketDataBase::DTI, 56ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataDispelResultInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataDispelResultInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataDispelResultInfo::MyDTI::newInstance() const {
+    return new (16u) CDataDispelResultInfo;
 }
 

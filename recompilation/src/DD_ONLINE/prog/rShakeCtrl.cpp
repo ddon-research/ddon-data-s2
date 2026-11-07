@@ -11,6 +11,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cShakeCtrl>::allocData(unsigned int);
+#endif
+
 const MtDTI& cShakeCtrl::getDTI() const {
     return cShakeCtrl::DTI;
 }

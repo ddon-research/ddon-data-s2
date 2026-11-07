@@ -225,8 +225,13 @@ __attribute__((weak)) void sTutorialGuide::finalGame() {
 }
 
 sTutorialGuide::sTutorialGuide() {
-    DDON_STUB("sTutorialGuide::sTutorialGuide")
-    /* stub */
+    sTutorialGuide::mpInstance = this;
+    mDispGuideNo = 0;
+    mpTutorialDetail = nullptr;
+    mpTutorialName = nullptr;
+    mpTutorialList = nullptr;
+    mpGUISystemMsg = nullptr;
+    mArcTicketTGuide = sArchiveManager::INVALID_TICKET;
 }
 
 sTutorialGuide::~sTutorialGuide() {

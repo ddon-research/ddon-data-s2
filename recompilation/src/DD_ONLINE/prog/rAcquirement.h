@@ -500,6 +500,10 @@ inline void* rAcquirement::rAbilityAddData::operator new(size_t sz, void* p_addr
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void rAcquirement::cAbilityAddData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityAddData::DTI)->memFree(p_addr);
+}
+
 inline void* rAcquirement::cAbilityAddData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityAddData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityAddData::DTI.::MtDTI::getID());
 }
@@ -510,6 +514,10 @@ inline void rAcquirement::cAbilityData::operator delete[](void* p_addr) {
 
 inline void* rAcquirement::cAbilityData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityData::DTI.::MtDTI::getID());
+}
+
+inline void rAcquirement::cCustomSkillData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAcquirement::cCustomSkillData::DTI)->memFree(p_addr);
 }
 
 inline void* rAcquirement::cCustomSkillData::operator new[](size_t sz, u32 align) {

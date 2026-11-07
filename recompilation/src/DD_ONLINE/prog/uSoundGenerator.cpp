@@ -327,8 +327,21 @@ const MtDTI& uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::getD
     return uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI;
 }
 
+inline void* uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI)->memAlloc(sz, align, uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI.getID());
+}
+
 inline void uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI)->memFree(p_addr);
+}
+
+inline uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::cSoundPlayInfomation() {
+    mRequestPos.x = MtVector3::Zero.x;
+    mRequestPos.y = MtVector3::Zero.y;
+    mRequestPos.z = MtVector3::Zero.z;
+    mRequestPos.pad_ = 0.0f;
+    mLayoutUniqueId = -1;
+    mpUSequenceSe = nullptr;
 }
 
 uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::~cSoundPlayInfomation() {
@@ -353,8 +366,7 @@ uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::MyDTI::MyDTI(MT_C
 
 uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::MyDTI uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI("uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::MyDTI::newInstance() const {
-    DDON_STUB("uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::MyDTI::newInstance")
-    return nullptr;
+MtObject* uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::MyDTI::newInstance() const {
+    return new (16u) uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation;
 }
 

@@ -72,14 +72,30 @@ inline void cGroupParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cGroupParam::DTI)->memFree(p_addr);
 }
 
-cGroupParam::cGroupParam() {
-    DDON_STUB("cGroupParam::cGroupParam")
-    /* stub */
+__attribute__((noinline)) cGroupParam::cGroupParam() : mGroup(0), mPriority(0), mIsDisableSplit(0), mIsParts(0), mHasMarkerPos(0), mDataLotFlag(mDataLotFlag & 0xffff0000u), mLoadStageNo(0), mLoadVersionNo(0), mMarkerPos(MtVector3::Zero), mPartsOffset(MtVector3::Zero), mLayer(0), mIsKillAreaInside(false), mKillAreaType(KILL_AREA_ALL), mInvalidFlag(INVALID_KILL_AREA), mAlivePriority(0), mAlivePriorityCnt(0), mAreaHitUseCount(0), mIsDieStageBoss(false), mRandomSeed(0), mIsRequestList(false), mIsSetupList(false), mIsResetList(false), mDriftType(0), mSubGroupRequestBit(0), mSubGroupSetupBit(0), mIsRequestDrop(false), mIsSetupDrop(false) {
+    mResetTimer = 0.0f;
+    mIsDestroy = false;
+    mGuardData.mQuestNo = 0;
+    mGuardData.mLayoutFlagNo = 0;
+    mLotType = rLayout::TYPE_PLAN;
+    mDataCommon = 0;
+    mIsLoadLotRes = false;
+    mLoadArea.r = 0.0f;
+    mLoadArea.pos.x = MtVector3::Zero.x;
+    mLoadArea.pos.y = MtVector3::Zero.y;
+    mLoadArea.pos.z = MtVector3::Zero.z;
+    mLayoutIDArray.setAutoDelete(true);
+    mAreaHitShapeList.setAutoDelete(true);
+    mSetInfoList.setAutoDelete(true);
+    mDropItemList.setAutoDelete(true);
+    mLifeAreaArray.setAutoDelete(true);
+    mKillAreaList.setAutoDelete(true);
+    mResetContextList.setAutoDelete(false);
+    mGroupQuestId = nQuest::INVALID_QUEST_ID.toU32();
 }
 
-cGroupParam::~cGroupParam() {
-    DDON_STUB("cGroupParam::~cGroupParam")
-    /* stub */
+__attribute__((noinline)) cGroupParam::~cGroupParam() {
+    final();
 }
 
 void cGroupParam::createProperty(MtPropertyList& s) {
@@ -110,13 +126,103 @@ __attribute__((weak)) void cGroupParam::createPropertyKill(MtPropertyList& s) {
 }
 
 __attribute__((weak)) void cGroupParam::final() {
-    DDON_STUB("cGroupParam::final")
-    /* stub */
+    mLayoutDataList.MtArray::erase();
+    mAreaHitShapeList.MtArray::erase();
+    for (u32 i = 0; i < mAreaHitList.mLength; i++) {
+        cAreaHit* pAreaHit = static_cast<cAreaHit*>(mAreaHitList.mpArray[static_cast<s32>(i)]);
+        pAreaHit->final();
+    }
+    mAreaHitList.clear(true);
+    mLifeAreaArray.MtArray::erase();
+    mKillAreaList.MtArray::erase();
+    for (u32 t1 = 0; t1 < mSetInfoList.mLength; t1++) {
+        if (mSetInfoList.mpArray[t1] != nullptr) {
+            delete mSetInfoList.mpArray[t1];
+        }
+    }
+    mSetInfoList.clear(true);
+    clearDropItem();
+    mResetContextList.clear(true);
 }
 
 __attribute__((weak)) bool cGroupParam::load(MtDataReader& r, nLayoutGroupParam::NativeAllocInfo& buffer) {
-    DDON_STUB("cGroupParam::load")
-    return {};
+    mDataCommon = r.readU32();
+    mLayoutIDArray.MtArray::erase();
+    u32 IdNum = r.readU32();
+    if (IdNum != 0) {
+        if (buffer.IdUseNum + IdNum > buffer.IdMaxNum) {
+            return false;
+        }
+        mLayoutIDArray.reserve(IdNum);
+        cID* pIdTable = &buffer.pIdArray[buffer.IdUseNum];
+        for (u32 i = 0; i < IdNum; i++) {
+            pIdTable[i].load(r);
+            mLayoutIDArray.MtArray::add(&pIdTable[i]);
+        }
+        buffer.IdUseNum += IdNum;
+        mLayoutIDArray.setAutoDelete(false);
+    }
+    mLoadCondition.mLoadCondition = static_cast<u32>(r.readU32() != 0) | (mLoadCondition.mLoadCondition & 0xfffffffeu);
+    mDataLotFlag = r.readU32();
+    mLoadCondition.mLoadCondition = (static_cast<u32>(r.readU32() != 0) << 1) | (mLoadCondition.mLoadCondition & 0xfffffffdu);
+    mGuardData.mQuestNo = r.readU32();
+    mGuardData.mLayoutFlagNo = r.readU32();
+    mLoadCondition.mLoadCondition = (static_cast<u32>(r.readU32() != 0) << 2) | (mLoadCondition.mLoadCondition & 0xfffffffbu);
+    mLoadCondition.mLoadCondition = (static_cast<u32>(r.readU32() != 0) << 3) | (mLoadCondition.mLoadCondition & 0xfffffff7u);
+    mLoadStageNo = r.readU32();
+    mSetCondition.mSetCondition = static_cast<u32>(r.readU32() != 0) | (mSetCondition.mSetCondition & 0xfffffffeu);
+    mAreaHitShapeList.MtArray::erase();
+    u32 AreaHitShapeNum = r.readU32();
+    if (AreaHitShapeNum != 0) {
+        if (buffer.AreaHitShapeUseNum + AreaHitShapeNum > buffer.AreaHitShapeMaxNum) {
+            return false;
+        }
+        mAreaHitShapeList.reserve(AreaHitShapeNum);
+        AreaHitShape* pAreaHitTable = &buffer.pAreaHitShapeArray[buffer.AreaHitShapeUseNum];
+        for (u32 i = 0; i < AreaHitShapeNum; i++) {
+            pAreaHitTable[i].load(r, &buffer.ShapeAllocInfo);
+            mAreaHitShapeList.MtArray::add(&pAreaHitTable[i]);
+        }
+        buffer.AreaHitShapeUseNum += AreaHitShapeNum;
+        mAreaHitShapeList.setAutoDelete(false);
+    }
+    mSetCondition.mSetCondition = (static_cast<u32>(r.readU32() != 0) << 1) | (mSetCondition.mSetCondition & 0xfffffffdu);
+    mSetCondition.mSetCondition = ((static_cast<u32>(r.readS32()) << 2) & 0x3fcu) | (mSetCondition.mSetCondition & 0xfffffc03u);
+    mDeleteCondition.mDeleteCondition = static_cast<u32>(r.readU32() != 0) | (mDeleteCondition.mDeleteCondition & 0xfffffffeu);
+    mDeleteCondition.mDeleteCondition = (static_cast<u32>(r.readU32() != 0) << 1) | (mDeleteCondition.mDeleteCondition & 0xfffffffdu);
+    mLifeAreaArray.MtArray::erase();
+    u32 LifeAreaNum = r.readU32();
+    if (LifeAreaNum != 0) {
+        mLifeAreaArray.reserve(LifeAreaNum);
+        if (buffer.LifeAreaUseNum + LifeAreaNum > buffer.LifeAreaMaxNum) {
+            return false;
+        }
+        mLifeAreaArray.reserve(LifeAreaNum);
+        cLifeArea* pLifeTable = &buffer.pLifeAreaArray[buffer.LifeAreaUseNum];
+        for (u32 i = 0; i < LifeAreaNum; i++) {
+            pLifeTable[i].load(r, buffer);
+            mLifeAreaArray.MtArray::add(&pLifeTable[i]);
+        }
+        buffer.LifeAreaUseNum += LifeAreaNum;
+        mLifeAreaArray.setAutoDelete(false);
+    }
+    mKillAreaType = static_cast<KILL_AREA_TYPE>(r.readS32());
+    u32 KillAreaNum = r.readU32();
+    if (KillAreaNum == 0) {
+        return true;
+    }
+    if (buffer.AreaHitShapeUseNum + KillAreaNum > buffer.AreaHitShapeMaxNum) {
+        return false;
+    }
+    mKillAreaList.reserve(KillAreaNum);
+    AreaHitShape* pKillTable = &buffer.pAreaHitShapeArray[buffer.AreaHitShapeUseNum];
+    for (u32 i = 0; i < KillAreaNum; i++) {
+        pKillTable[i].load(r, &buffer.ShapeAllocInfo);
+        mKillAreaList.MtArray::add(&pKillTable[i]);
+    }
+    buffer.AreaHitShapeUseNum += KillAreaNum;
+    mKillAreaList.setAutoDelete(false);
+    return true;
 }
 
 __attribute__((weak)) void cGroupParam::clearWork() {
@@ -714,8 +820,23 @@ __attribute__((weak)) void cGroupParam::cLifeArea::createProperty(MtPropertyList
 }
 
 __attribute__((weak)) bool cGroupParam::cLifeArea::load(MtDataReader& r, nLayoutGroupParam::NativeAllocInfo& buffer) {
-    DDON_STUB("cGroupParam::cLifeArea::load")
-    return {};
+    mShapeList.MtArray::erase();
+    u32 ShapeNum = r.readU32();
+    if (ShapeNum == 0) {
+        return true;
+    }
+    if (buffer.AreaHitShapeUseNum + ShapeNum > buffer.AreaHitShapeMaxNum) {
+        return false;
+    }
+    mShapeList.reserve(ShapeNum);
+    AreaHitShape* pShapeTable = &buffer.pAreaHitShapeArray[buffer.AreaHitShapeUseNum];
+    for (u32 i = 0; i < ShapeNum; i++) {
+        pShapeTable[i].load(r, &buffer.ShapeAllocInfo);
+        mShapeList.MtArray::add(&pShapeTable[i]);
+    }
+    buffer.AreaHitShapeUseNum += ShapeNum;
+    mShapeList.setAutoDelete(false);
+    return true;
 }
 
 __attribute__((weak)) bool cGroupParam::cLifeArea::save(MtDataWriter& w) {
@@ -753,8 +874,11 @@ __attribute__((weak)) void cGroupParam::cID::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) bool cGroupParam::cID::load(MtDataReader& r) {
-    DDON_STUB("cGroupParam::cID::load")
-    return {};
+    mLayoutID.mArea = r.readU32();
+    mLayoutID.mGroup = r.readU32();
+    mSplitID.mSplitX = r.readU32();
+    mSplitID.mSplitZ = r.readU32();
+    return true;
 }
 
 bool cGroupParam::cID::save(MtDataWriter& w) {
@@ -852,6 +976,10 @@ const MtDTI& cGroupParam::DropItemInfo::getDTI() const {
     return cGroupParam::DropItemInfo::DTI;
 }
 
+inline void* cGroupParam::DropItemInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cGroupParam::DropItemInfo::DTI)->memAlloc(sz, align, cGroupParam::DropItemInfo::DTI.getID());
+}
+
 inline void cGroupParam::DropItemInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cGroupParam::DropItemInfo::DTI)->memFree(p_addr);
 }
@@ -877,9 +1005,8 @@ cGroupParam::DropItemInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 cGroupParam::DropItemInfo::MyDTI cGroupParam::DropItemInfo::DTI("cGroupParam::DropItemInfo", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cGroupParam::DropItemInfo::MyDTI::newInstance() const {
-    DDON_STUB("cGroupParam::DropItemInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cGroupParam::DropItemInfo::MyDTI::newInstance() const {
+    return new (16u) cGroupParam::DropItemInfo;
 }
 
 const MtDTI& cGroupParam::cUnitData::getDTI() const {

@@ -108,6 +108,22 @@
 #define DDON_STUB(name)
 #endif
 
+static const u32 reqPLTbl[7] = {
+    3,
+    13,
+    23,
+    33,
+    53,
+    63,
+    73,
+};
+
+static const u32 reqPawnTbl[3] = {
+    1,
+    15,
+    30,
+};
+
 const MtDTI& cEditParamList::getDTI() const {
     return cEditParamList::DTI;
 }

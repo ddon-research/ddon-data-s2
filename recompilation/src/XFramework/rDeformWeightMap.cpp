@@ -8,6 +8,7 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "cResource.h"
 #include "nDrawTexture.h"
 #include "nDrawVertexBuffer.h"
@@ -20,6 +21,10 @@ __attribute__((weak)) void rDeformWeightMap::usage() {
 
 const MtDTI& rDeformWeightMap::getDTI() const {
     return rDeformWeightMap::DTI;
+}
+
+inline void* rDeformWeightMap::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rDeformWeightMap::DTI)->memAlloc(sz, align, rDeformWeightMap::DTI.mID);
 }
 
 inline void rDeformWeightMap::operator delete(void* p_addr) {
@@ -57,9 +62,8 @@ rDeformWeightMap::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 rDeformWeightMap::MyDTI rDeformWeightMap::DTI("rDeformWeightMap", &::cResource::DTI, 304ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rDeformWeightMap::MyDTI::newInstance() const {
-    DDON_STUB("rDeformWeightMap::MyDTI::newInstance")
-    return nullptr;
+MtObject* rDeformWeightMap::MyDTI::newInstance() const {
+    return new (16u) rDeformWeightMap;
 }
 
 rDeformWeightMap::LOD::~LOD() {

@@ -110,3 +110,9 @@ inline void* CDataRankingBoard::operator new(size_t sz, void* p_addr) {
 inline void* CDataRankingData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline CDataRankingData::CDataRankingData() {
+    this->m_llScore = 0;
+    this->m_unRank = 0;
+    this->m_unSerial = 0;
+}

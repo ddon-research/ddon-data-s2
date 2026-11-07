@@ -12,7 +12,10 @@ struct MtFloat3;
 struct MtFloat4;
 class MtStream;
 class cSetInfoEnemy;
+class cSetInfoNpc;
 class cSetInfoOm;
+class cSetInfoOmBowlOfLife;
+class cSetInfoOmCtrl;
 class cSetInfoOmGather;
 class cSetInfoOmTreasureBox;
 namespace nCollision { class cObjectBase; }
@@ -30,6 +33,7 @@ class rJobBaseParam;
 class rJointOrder;
 class rJumpParamTbl;
 class rPrologueHmStatus;
+class rReaction;
 class rShopGoods;
 class rSoundParamOfs;
 
@@ -57,7 +61,10 @@ using u8 = unsigned char;
 class MtDataReader
 {
     friend class cSetInfoEnemy;
+    friend class cSetInfoNpc;
     friend class cSetInfoOm;
+    friend class cSetInfoOmBowlOfLife;
+    friend class cSetInfoOmCtrl;
     friend class cSetInfoOmGather;
     friend class cSetInfoOmTreasureBox;
     friend class nCollision::cObjectBase;
@@ -75,6 +82,7 @@ class MtDataReader
     friend class rJointOrder;
     friend class rJumpParamTbl;
     friend class rPrologueHmStatus;
+    friend class rReaction;
     friend class rShopGoods;
     friend class rSoundParamOfs;
 public:
@@ -132,4 +140,8 @@ inline u8 MtDataReader::readU8() {
         this->mSeekPt = this->mSeekPt + 1u;
         return n;
     }
+}
+
+inline bool MtDataReader::isReadable() const {
+    return mStream.isReadable();
 }

@@ -111,9 +111,9 @@ private:
     void setStorageType(u32 type);
     s32 getCharId();
     void setCharId(s32 charId);
-    void setBuffer(void* pbuf, u32 size);
+    void setBuffer(void* pbuf, u32 size = 0);
     u32 getComId();
-    void setComId(u32 comId);
+    void setComId(u32 comId = 16);
     void setErrorDialogFlag(bool flag);
     bool checkReqError();
 private:
@@ -168,6 +168,15 @@ inline void cNetStorage::setCharId(s32 charId) {
     this->mCharId = charId;
 }
 
+inline void cNetStorage::setBuffer(void* pbuf, u32 size) {
+    this->mpBuf = pbuf;
+    this->mSize = 0;
+}
+
 inline u32 cNetStorage::getComId() {
     return this->mComId;
+}
+
+inline void cNetStorage::setComId(u32 comId) {
+    this->mComId = 16;
 }

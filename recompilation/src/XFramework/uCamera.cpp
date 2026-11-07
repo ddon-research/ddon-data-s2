@@ -21,8 +21,30 @@ inline void uCamera::operator delete(void* p_addr) {
 }
 
 uCamera::uCamera() {
-    DDON_STUB("uCamera::uCamera")
-    /* stub */
+    mCameraPos.x = 0.0f;
+    mCameraPos.y = 200.0f;
+    mCameraPos.z = -700.0f;
+    mCameraPos.pad_ = 0.0f;
+    mTargetPos.x = 0.0f;
+    mTargetPos.y = 200.0f;
+    mTargetPos.z = 0.0f;
+    mTargetPos.pad_ = 0.0f;
+    mCameraUp.x = 0.0f;
+    mCameraUp.y = 1.0f;
+    mCameraUp.z = 0.0f;
+    mCameraUp.pad_ = 0.0f;
+    mFarPlane = 4000000.0f;
+    mNearPlane = 16.0f;
+    mAspect = 1.0f;
+    mFov = 40.0f;
+    mWorldCameraPos.x = 0.0f;
+    mWorldCameraPos.y = 200.0f;
+    mWorldCameraPos.z = -700.0f;
+    mWorldCameraPos.pad_ = 0.0f;
+    mWorldTargetPos.x = 0.0f;
+    mWorldTargetPos.y = 200.0f;
+    mWorldTargetPos.z = 0.0f;
+    mWorldTargetPos.pad_ = 0.0f;
 }
 
 uCamera::~uCamera() {

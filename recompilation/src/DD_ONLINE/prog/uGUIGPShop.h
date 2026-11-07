@@ -1190,6 +1190,10 @@ inline void* uGUIGPShop::cScrollHistoryDispList::operator new(size_t sz, void* p
     return p_addr;
 }
 
+inline uGUIGPShop::cScrollHistoryDispList::cScrollHistoryDispList() : mInst() {
+    this->mIndex = -1;
+}
+
 inline void* uGUIGPShop::cScrollCOGDispList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

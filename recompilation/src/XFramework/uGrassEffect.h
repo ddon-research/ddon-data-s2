@@ -1,0 +1,80 @@
+#pragma once
+
+#include <cstdint>
+#include <cstddef>
+
+// Dependencies
+#include "../MT/MtDTI.h"
+#include "cUnit.h"
+#include "rGrassWind.h"
+
+// Forward declarations
+class MtAllocator;
+class MtDTI;
+class MtObject;
+class MtProperty;
+class MtPropertyList;
+class MtUI;
+class rGrassWind;
+
+// Declarations
+class uGrassEffect;
+
+// Type aliases from DWARF
+using MT_CHAR = char;
+using MT_CTSTR = const MT_CHAR*;
+using _Sizet = long unsigned int;
+using f32 = float;
+using size_t = _Sizet;
+using u32 = unsigned int;
+
+class uGrassEffect : public cUnit
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    uGrassEffect(u32 Priority);
+    virtual ~uGrassEffect();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void setup();  // vtable slot 6
+    u32 getPriority() const;
+    void setPriority(u32 priority);
+    void setResource(rGrassWind* p_resource);
+    rGrassWind* getResource();
+    void play();
+    void synchronization();
+    void setCurrentFrame(f32 frame_no);
+    void setPlaySpeed(f32);
+protected:
+    u32 mPriority;  // offset: 0x48
+    rGrassWind::cParamSetSync mSync;  // offset: 0x50
+    rGrassWind* mpResource;  // offset: 0xf70
+    f32 mSpeed;  // offset: 0xf78
+public:
+    static MyDTI DTI;
+};
+
+inline void* uGrassEffect::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}

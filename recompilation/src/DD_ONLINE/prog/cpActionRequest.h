@@ -114,8 +114,8 @@ public:
     void requestArgAction(u32 ActNo, u32 uparam0, u32 uparam1, u32 uparam2, u32 uparam3, f32 fparam0, f32 fparam1, f32 fparam2, f32 fparam3);
     void setRequestActionNoSend(bool isSend);
     void reqEndActionNoSend(bool isSend);
-    void reqLandActionNoSend(bool isSend);
-    void reqFallActionNoSend(bool isSend);
+    void reqLandActionNoSend(bool isSend = false);
+    void reqFallActionNoSend(bool isSend = false);
     void reqDamageActionNoSend(bool);
     void reqTouchActionNoSend(bool);
     void reqShrinkActionNoSend(bool);
@@ -202,4 +202,12 @@ inline void cpActionRequest::reqShrinkAction() {
 
 inline void cpActionRequest::reqBlowAction() {
     this->mBlowActionReq = this->mBlowAction;
+}
+
+inline void cpActionRequest::reqLandActionNoSend(bool isSend) {
+    this->mLandActionNoSend = false;
+}
+
+inline void cpActionRequest::reqFallActionNoSend(bool isSend) {
+    this->mFallActionNoSend = false;
 }

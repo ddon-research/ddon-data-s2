@@ -32,13 +32,16 @@ const MtDTI& CDataClientPartyListInfo::getDTI() const {
     return CDataClientPartyListInfo::DTI;
 }
 
+void* CDataClientPartyListInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataClientPartyListInfo::DTI)->memAlloc(sz, align, CDataClientPartyListInfo::DTI.getID());
+}
+
 CDataClientPartyListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 CDataClientPartyListInfo::MyDTI CDataClientPartyListInfo::DTI("CDataClientPartyListInfo", &::CDataPartyListInfo::DTI, 112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataClientPartyListInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataClientPartyListInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataClientPartyListInfo::MyDTI::newInstance() const {
+    return new (16u) CDataClientPartyListInfo;
 }
 
 __attribute__((weak)) void nNet::clearBaseInfo(CCommunityCharacterBaseInfo& info) {
@@ -201,7 +204,6 @@ void nNet::cResult::abort() {
 }
 
 nNet::stEntryBoardItemInfo::stEntryBoardItemInfo() {
-    DDON_STUB("nNet::stEntryBoardItemInfo::stEntryBoardItemInfo")
-    /* stub */
+    ::nNet::resetEntryBoardInfo(*this);
 }
 

@@ -478,6 +478,11 @@ inline void* uGUIMissionResult::cResultScrollItem::operator new(size_t sz, void*
     return p_addr;
 }
 
+inline uGUIMissionResult::cResultScrollItem::cResultScrollItem() {
+    this->mpInstNoReward = nullptr;
+    this->mpInstHeader = nullptr;
+}
+
 inline void* uGUIMissionResult::cResultScrollInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

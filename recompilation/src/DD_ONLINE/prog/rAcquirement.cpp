@@ -14,6 +14,11 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<rAcquirement::cAbilityAddData>::allocData(unsigned int);
+extern template __attribute__((noinline)) void rTbl2<rAcquirement::cCustomSkillData>::allocData(unsigned int);
+#endif
+
 const MtDTI& rAcquirement::cSkillLevelData::getDTI() const {
     return rAcquirement::cSkillLevelData::DTI;
 }
@@ -24,6 +29,12 @@ void* rAcquirement::cSkillLevelData::operator new(size_t sz, u32 align) {
 
 inline void rAcquirement::cSkillLevelData::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::rAcquirement::cSkillLevelData::DTI)->memFree(p_addr);
+}
+
+void rAcquirement::cSkillLevelData::load(MtDataReader& r) {
+    mMsgExpIndex = r.readU16();
+    mNeedLv = r.readU16();
+    mNeedJp = r.readU32();
 }
 
 rAcquirement::cSkillLevelData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -84,6 +95,11 @@ void* rAcquirement::cAbilityLevelData::operator new(size_t sz, u32 align) {
 
 inline void rAcquirement::cAbilityLevelData::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityLevelData::DTI)->memFree(p_addr);
+}
+
+void rAcquirement::cAbilityLevelData::load(MtDataReader& r) {
+    mNeedLv = r.readU16();
+    mNeedJp = r.readU32();
 }
 
 rAcquirement::cAbilityLevelData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

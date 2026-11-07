@@ -410,9 +410,8 @@ CDataPresetEquipInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 CDataPresetEquipInfo::MyDTI CDataPresetEquipInfo::DTI("CDataPresetEquipInfo", &::CPacketDataBase::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataPresetEquipInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataPresetEquipInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPresetEquipInfo::MyDTI::newInstance() const {
+    return new (16u) CDataPresetEquipInfo;
 }
 
 const MtDTI& CDataS2CCharacterEquipInfo::getDTI() const {

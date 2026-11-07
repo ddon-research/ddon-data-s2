@@ -16,8 +16,16 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cShotReqInfo>::allocData(unsigned int);
+#endif
+
 const MtDTI& cShotReqInfo::getDTI() const {
     return cShotReqInfo::DTI;
+}
+
+inline void* cShotReqInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cShotReqInfo::DTI)->memAlloc(sz, align, cShotReqInfo::DTI.getID());
 }
 
 inline void cShotReqInfo::operator delete(void* p_addr) {
@@ -30,8 +38,14 @@ cShotReqInfo::cShotReqInfo() {
     mSetTarget = 0;
     mJointNo = 255;
     mIsConst = false;
-    mOffsetPos = MtVector3::Zero;
-    mOffsetDir = MtVector3::Zero;
+    mOffsetPos.x = MtVector3::Zero.x;
+    mOffsetPos.y = MtVector3::Zero.y;
+    mOffsetPos.z = MtVector3::Zero.z;
+    mOffsetPos.pad_ = 0.0f;
+    mOffsetDir.x = MtVector3::Zero.x;
+    mOffsetDir.y = MtVector3::Zero.y;
+    mOffsetDir.z = MtVector3::Zero.z;
+    mOffsetDir.pad_ = 0.0f;
     mIsLockOnTarget = false;
 }
 
@@ -44,9 +58,8 @@ cShotReqInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, 
 
 cShotReqInfo::MyDTI cShotReqInfo::DTI("cShotReqInfo", &::MtObject::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cShotReqInfo::MyDTI::newInstance() const {
-    DDON_STUB("cShotReqInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cShotReqInfo::MyDTI::newInstance() const {
+    return new (16u) cShotReqInfo;
 }
 
 const MtDTI& rShotReqInfo::getDTI() const {

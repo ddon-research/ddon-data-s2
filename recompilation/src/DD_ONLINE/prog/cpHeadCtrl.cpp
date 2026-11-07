@@ -35,8 +35,29 @@ inline void cpHeadCtrl::operator delete(void* p_addr) {
 }
 
 cpHeadCtrl::cpHeadCtrl() {
-    DDON_STUB("cpHeadCtrl::cpHeadCtrl")
-    /* stub */
+    mTargetPos.pad_ = 0.0f;
+    mTargetPos.x = MtVector3::Zero.x;
+    mTargetPos.y = MtVector3::Zero.y;
+    mTargetPos.z = MtVector3::Zero.z;
+    mpResource = nullptr;
+    mAngleYOld = 0.0f;
+    mPitch = 0.0f;
+    mPitchOld = 0.0f;
+    mTgtPitch = 0.0f;
+    mAngleY = 0.0f;
+    mTgtAngleY = 0.0f;
+    mTargetPos.pad_ = 0.0f;
+    mFlag = 0;
+    mIsSleep = true;
+    mAngleSpeedRate = 1.0f;
+    mPitchSpeedRate = 1.0f;
+    mpModel = nullptr;
+    mAngleYMin = 0.0f;
+    mAngleYMax = 0.0f;
+    mAngleYDiff = 0.0f;
+    mPitchMin = 0.0f;
+    mPitchMax = 0.0f;
+    mEnable = false;
 }
 
 __attribute__((noinline)) cpHeadCtrl::~cpHeadCtrl() {
@@ -101,9 +122,8 @@ cpHeadCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u3
 
 cpHeadCtrl::MyDTI cpHeadCtrl::DTI("cpHeadCtrl", &::cpComponent::DTI, 208ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpHeadCtrl::MyDTI::newInstance() const {
-    DDON_STUB("cpHeadCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpHeadCtrl::MyDTI::newInstance() const {
+    return new (16u) cpHeadCtrl;
 }
 
 template MtTypedArray<uCnsHeadCtrl>::~MtTypedArray();

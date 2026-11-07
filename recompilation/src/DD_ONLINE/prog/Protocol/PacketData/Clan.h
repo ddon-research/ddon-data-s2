@@ -1109,6 +1109,9 @@ inline void* CDataClanPartnerPawnInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline CDataClanPartnerPawnInfo::CDataClanPartnerPawnInfo() {
+}
+
 inline void* CDataClanScoutEntryInviteInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -1128,6 +1131,9 @@ inline CDataClanScoutEntryParam::CDataClanScoutEntryParam() {
 
 inline void* CDataClanScoutEntrySearchResult::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline CDataClanScoutEntrySearchResult::CDataClanScoutEntrySearchResult() {
 }
 
 inline void* CDataClanSearchParam::operator new(size_t sz, void* p_addr) {
@@ -1203,6 +1209,10 @@ inline CDataClanShopFunctionItem::CDataClanShopFunctionItem() {
 
 inline void* CDataClanShopInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline CDataClanShopInfo::CDataClanShopInfo() {
+    this->m_unClanPoint = 0;
 }
 
 inline void* CDataClanShopLineupName::operator new(size_t sz, void* p_addr) {

@@ -4,6 +4,14 @@
 #include <cstddef>
 
 // Forward declarations
+class CDataCharacterListElement;
+class CDataClanHistoryElement;
+class CDataClanJoinRequest;
+class CDataClanScoutEntryInviteInfo;
+class CDataClanSearchResult;
+class CDataLobbyMemberInfo;
+class CDataPartyMemberMinimum;
+class CDataPawnHistory;
 class MtAllocator;
 class MtDataWriter;
 class cAISvUserProcess;
@@ -11,6 +19,8 @@ class cAIUserProcessContainer;
 class cMenuLostPawnRevive;
 class cMenuSubMenu;
 namespace nCaplink { class ContextListener; }
+namespace nUserSession { class CPacket_S2C_ADD_BLACK_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_SEND_TELL_MSG_RES; }
 class sAI;
 class sBrowser;
 class sMain;
@@ -34,12 +44,22 @@ namespace nDDOIO { void writeData(MtDataWriter& w, const MtString& data); }
 
 class MtString
 {
+    friend class CDataCharacterListElement;
+    friend class CDataClanHistoryElement;
+    friend class CDataClanJoinRequest;
+    friend class CDataClanScoutEntryInviteInfo;
+    friend class CDataClanSearchResult;
+    friend class CDataLobbyMemberInfo;
+    friend class CDataPartyMemberMinimum;
+    friend class CDataPawnHistory;
     friend class cAISvUserProcess;
     friend class cAIUserProcessContainer;
     friend class cMenuLostPawnRevive;
     friend class cMenuSubMenu;
     friend class nCaplink::ContextListener;
     friend void nDDOIO::writeData(MtDataWriter& w, const MtString& data);
+    friend class nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES;
+    friend class nUserSession::CPacket_S2C_SEND_TELL_MSG_RES;
     friend class sAI;
     friend class sBrowser;
     friend class sMain;
@@ -148,8 +168,65 @@ inline MT_CTSTR MtString::ptr() const {
     return (this->value == nullptr) ? "" : reinterpret_cast<MT_CTSTR>(this->value->str);
 }
 
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+
 template <int _size>
 inline MtStringEx<_size>::MtStringEx() {
     this->mStr[0] = 0;
     this->mLength = 0;
+}
+
+#include <sce_atomic.h>
+#include <string.h>
+inline MtString::MtString(MT_CTSTR str) {
+    create(str);
+}
+
+inline MtString::MtString(const MtString& str) {
+    value = str.value;
+    if (value != nullptr) {
+        sceAtomicIncrement32(&value->ref);
+    }
+}
+
+inline void MtString::create(MT_CTSTR str) {
+    if (str != nullptr) {
+        u32 length = static_cast<u32>(strlen(str));
+        if (length != 0u) {
+            value = static_cast<STRING*>(mpAllocator->memAlloc(sizeof(STRING) + length, 16u));
+            value->ref = 1;
+            value->length = length;
+            strcpy(reinterpret_cast<char*>(value->str), str);
+        } else {
+            value = nullptr;
+        }
+    } else {
+        value = nullptr;
+    }
+}
+
+inline u32 MtString::length() const {
+    return (value == nullptr) ? 0u : value->length;
+}
+
+inline const MtString& MtString::operator=(MT_CTSTR str) {
+    if (ptr() != str) {
+        release();
+        create(str);
+    }
+    return *this;
+}
+
+inline void MtString::release() {
+    if (value != nullptr) {
+        if (sceAtomicDecrement32(&value->ref) == 1) {
+            mpAllocator->memFree(value);
+        }
+        value = nullptr;
+    }
+}
+
+__attribute__((used)) inline MtString::~MtString() {
+    release();
 }

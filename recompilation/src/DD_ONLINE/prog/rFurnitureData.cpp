@@ -14,8 +14,16 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cFurnitureData>::allocData(unsigned int);
+#endif
+
 const MtDTI& cFurnitureData::getDTI() const {
     return cFurnitureData::DTI;
+}
+
+inline void* cFurnitureData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cFurnitureData::DTI)->memAlloc(sz, align, cFurnitureData::DTI.getID());
 }
 
 inline void cFurnitureData::operator delete(void* p_addr) {
@@ -46,9 +54,8 @@ cFurnitureData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 cFurnitureData::MyDTI cFurnitureData::DTI("cFurnitureData", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFurnitureData::MyDTI::newInstance() const {
-    DDON_STUB("cFurnitureData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFurnitureData::MyDTI::newInstance() const {
+    return new (16u) cFurnitureData;
 }
 
 const MtDTI& rFurnitureData::getDTI() const {

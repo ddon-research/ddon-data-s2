@@ -96,7 +96,7 @@ namespace nJobParam {
         u32 getLostPower() const;
         void setLostPower(u32 NewValue);
         u16 getLostLv() const;
-        void setLostLv(u16 NewValue);
+        void setLostLv(u16 NewValue = 1);
         s32 getAbilityCapacity() const;
         void setAbilityCapacity(s32 NewValue);
         u16 getAbilityCapaLv() const;
@@ -372,6 +372,10 @@ inline f32 nJobParam::cHumanBaseInfo::getFinalMaxStamina() const {
 
 inline u32 nJobParam::cHumanBaseInfo::getLostPower() const {
     return this->mLostPower_pri;
+}
+
+inline void nJobParam::cHumanBaseInfo::setLostLv(u16 NewValue) {
+    this->mLostLv_pri = 1;
 }
 
 inline s32 nJobParam::cHumanBaseInfo::getAbilityCapacity() const {

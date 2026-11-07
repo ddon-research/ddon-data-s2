@@ -32,6 +32,21 @@
 #define DDON_STUB(name)
 #endif
 
+static const MT_CTSTR mLoadArcListEx[12] = {
+    "sound_common",
+    "sound_playpoint",
+    "base",
+    "gui_cmn",
+    "se_id_com_22",
+    "Human",
+    "weather",
+    "effect_common",
+    "wep_res_table",
+    "character_edit_common",
+    "key_custom",
+    "browser_font_ps4",
+};
+
 const MtDTI& aBase::getDTI() const {
     return aBase::DTI;
 }

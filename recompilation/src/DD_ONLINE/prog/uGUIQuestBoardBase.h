@@ -249,6 +249,25 @@ inline void* uGUIQuestBoardBase::cListHeader::operator new(size_t sz, void* p_ad
     return p_addr;
 }
 
+inline uGUIQuestBoardBase::cListHeader::cListHeader() {
+    this->mpObjTexQuestIcon = nullptr;
+    this->mpObjMsgTitle = nullptr;
+    this->mpInstAnim = nullptr;
+    this->mpInstNullCursorPos = nullptr;
+    this->mpInstNullBase = nullptr;
+    this->mpInstNull = nullptr;
+}
+
 inline void* uGUIQuestBoardBase::cListItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIQuestBoardBase::cListItem::cListItem() {
+    this->mpObjMsgLvVal = nullptr;
+    this->mpObjMsgLv = nullptr;
+    this->mpObjMsgTitle = nullptr;
+    this->mpInstAnimIconClear = nullptr;
+    this->mpInstAnimLv = nullptr;
+    this->mpInstAnimTitle = nullptr;
+    this->mpInstNull = nullptr;
 }

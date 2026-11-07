@@ -237,7 +237,7 @@ public:
     virtual cResource* getResource();  // vtable slot 33
     void setEnableScale(bool flg);
     bool isEnableScale();
-    void setEffectorPosEnable(bool Enable);
+    void setEffectorPosEnable(bool Enable = false);
     bool getEffectorPosEnable() const;
     void setEffectorRotEnable(bool);
     bool getEffectorRotEnable() const;
@@ -477,6 +477,10 @@ public:
 
 inline void* uCnsDDOIK::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void uCnsDDOIK::setEffectorPosEnable(bool Enable) {
+    this->mEffectorPosEnable = false;
 }
 
 inline uModel* uCnsDDOIK::getEffectorTargetModel() {

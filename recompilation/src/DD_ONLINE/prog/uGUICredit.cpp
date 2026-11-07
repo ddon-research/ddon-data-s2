@@ -33,6 +33,19 @@
 #define DDON_STUB(name)
 #endif
 
+static const s32 x_pos_tbl[10] = {
+    0,
+    -270,
+    330,
+    -10,
+    10,
+    0,
+    -250,
+    390,
+    -90,
+    230,
+};
+
 const MtDTI& uGUICredit::getDTI() const {
     return uGUICredit::DTI;
 }

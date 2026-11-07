@@ -23,6 +23,7 @@
 #include "nDDOUtility.h"
 #include "nHumanBow.h"
 #include "nHumanMsg.h"
+#include "nKeyCommand.h"
 #include "rAttackParam.h"
 #include "../../XFramework/rSoundRequest.h"
 #include "sArchiveManager.h"
@@ -34,6 +35,27 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+nKeyCommand::stKeyCommand Job08BaseActCommand[10] = {
+    {8192, 4294967295, 4, 2, 0, 1, 0, 1, 2, 2, 0, 0, 255, false},
+    {8193, 4294967295, 5, 2, 0, 1, 0, 1, 2, 2, 0, 0, 255, false},
+    {8192, 4294967295, 4, 2, 0, 2, 0, 1, 2, 2, 0, 0, 255, false},
+    {8193, 4294967295, 5, 2, 0, 2, 0, 1, 2, 2, 0, 0, 255, false},
+    {8194, 4294967295, 2, 1, 0, 1, 0, 1, 2, 0, 0, 0, 255, false},
+    {8195, 4294967295, 2, 1, 0, 2, 0, 1, 2, 0, 0, 0, 255, false},
+    {8197, 4294967295, 1, 1, 0, 1, 0, 1, 2, 0, 0, 0, 255, false},
+    {8199, 4294967295, 1, 1, 0, 2, 0, 1, 2, 0, 0, 0, 255, false},
+    {8196, 4294967295, 1, 1, 0, 32, 0, 1, 2, 1, 0, 0, 255, false},
+    {4294967295, 4294967295, 0, 0, 0, 0, 0, 65535, 65535, 0, 0, 0, 255, false},
+};
+
+nKeyCommand::stKeyCommand Job08CustomSkillCommand[1] = {
+    {4294967295, 4294967295, 0, 0, 0, 0, 0, 65535, 65535, 0, 0, 0, 255, false},
+};
+
+nKeyCommand::stKeyCommandForFunction Job08FuncCommandTbl[1] = {
+    {-1, 0, 0, static_cast<nKeyCommand::KEY_CMD_FUNC_SP>(4294967295), 255},
+};
 
 const MtDTI& cpJob08::getDTI() const {
     return cpJob08::DTI;

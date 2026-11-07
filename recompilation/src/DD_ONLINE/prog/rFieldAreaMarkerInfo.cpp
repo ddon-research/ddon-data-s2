@@ -112,6 +112,10 @@ const MtDTI& rFieldAreaMarkerInfo::cMarkerInfo::getDTI() const {
     return rFieldAreaMarkerInfo::cMarkerInfo::DTI;
 }
 
+void* rFieldAreaMarkerInfo::cMarkerInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rFieldAreaMarkerInfo::cMarkerInfo::DTI)->memAlloc(sz, align, rFieldAreaMarkerInfo::cMarkerInfo::DTI.getID());
+}
+
 inline void rFieldAreaMarkerInfo::cMarkerInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rFieldAreaMarkerInfo::cMarkerInfo::DTI)->memFree(p_addr);
 }
@@ -140,9 +144,8 @@ rFieldAreaMarkerInfo::cMarkerInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 
 rFieldAreaMarkerInfo::cMarkerInfo::MyDTI rFieldAreaMarkerInfo::cMarkerInfo::DTI("rFieldAreaMarkerInfo::cMarkerInfo", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rFieldAreaMarkerInfo::cMarkerInfo::MyDTI::newInstance() const {
-    DDON_STUB("rFieldAreaMarkerInfo::cMarkerInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* rFieldAreaMarkerInfo::cMarkerInfo::MyDTI::newInstance() const {
+    return new (16u) rFieldAreaMarkerInfo::cMarkerInfo;
 }
 
 template MtTypedArray<rFieldAreaMarkerInfo::cMarkerInfo>::~MtTypedArray();

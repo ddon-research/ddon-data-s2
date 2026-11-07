@@ -925,6 +925,13 @@ inline void* CDataPresetEquipInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline CDataPresetEquipInfo::CDataPresetEquipInfo() {
+    this->m_ucEquipSlotNo = 0;
+    this->m_ucColor = 0;
+    this->m_unItemID = 0;
+    this->m_ucPlusValue = 0;
+}
+
 inline void* CDataS2CCharacterEquipInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

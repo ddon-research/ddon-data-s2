@@ -15,8 +15,16 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cMyRoomActParam>::allocData(unsigned int);
+#endif
+
 const MtDTI& cMyRoomActParam::getDTI() const {
     return cMyRoomActParam::DTI;
+}
+
+inline void* cMyRoomActParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMyRoomActParam::DTI)->memAlloc(sz, align, cMyRoomActParam::DTI.getID());
 }
 
 inline void cMyRoomActParam::operator delete(void* p_addr) {
@@ -25,7 +33,10 @@ inline void cMyRoomActParam::operator delete(void* p_addr) {
 
 cMyRoomActParam::cMyRoomActParam() {
     mWaypoint = 0;
-    mPos = MtVector3::Zero;
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
     mAngleY = 0.0f;
     mNpcMotNo = 0;
     mStartIdx = 0;
@@ -53,9 +64,8 @@ cMyRoomActParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 cMyRoomActParam::MyDTI cMyRoomActParam::DTI("cMyRoomActParam", &::MtObject::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMyRoomActParam::MyDTI::newInstance() const {
-    DDON_STUB("cMyRoomActParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMyRoomActParam::MyDTI::newInstance() const {
+    return new (16u) cMyRoomActParam;
 }
 
 const MtDTI& rMyRoomActParam::getDTI() const {

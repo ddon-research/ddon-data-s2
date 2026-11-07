@@ -131,6 +131,10 @@ __attribute__((weak)) void rJobTutorialQuestList::cQuestId::createProperty(MtPro
     /* stub */
 }
 
+void rJobTutorialQuestList::cQuestId::load(MtDataReader& r) {
+    mQuestId = r.readU32();
+}
+
 rJobTutorialQuestList::cQuestId::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rJobTutorialQuestList::cQuestId::MyDTI rJobTutorialQuestList::cQuestId::DTI("rJobTutorialQuestList::cQuestId", &::MtObject::DTI, 16ul, 0u, 0u);

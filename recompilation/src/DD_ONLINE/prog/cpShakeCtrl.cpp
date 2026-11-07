@@ -40,8 +40,20 @@ inline void cpShakeCtrl::operator delete(void* p_addr) {
 }
 
 cpShakeCtrl::cpShakeCtrl() {
-    DDON_STUB("cpShakeCtrl::cpShakeCtrl")
-    /* stub */
+    mpIKCtrl = nullptr;
+    mpBank[3] = nullptr;
+    mpBank[2] = nullptr;
+    mpBank[1] = nullptr;
+    mpBank[0] = nullptr;
+    mpResource = nullptr;
+    mCurrentResNo = -1;
+    mpModel = nullptr;
+    mIgnorOST = 0x780000;
+    mIgnorBadOCD = 4;
+    mDir.pad_ = 0.0f;
+    mDir.x = 0.57735026f;
+    mDir.y = 0.57735026f;
+    mDir.z = 0.57735026f;
 }
 
 __attribute__((noinline)) cpShakeCtrl::~cpShakeCtrl() {
@@ -286,9 +298,8 @@ cpShakeCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 
 cpShakeCtrl::MyDTI cpShakeCtrl::DTI("cpShakeCtrl", &::cpComponent::DTI, 208ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpShakeCtrl::MyDTI::newInstance() const {
-    DDON_STUB("cpShakeCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpShakeCtrl::MyDTI::newInstance() const {
+    return new (16u) cpShakeCtrl;
 }
 
 template MtTypedArray<uCnsShakeCtrl>::~MtTypedArray();

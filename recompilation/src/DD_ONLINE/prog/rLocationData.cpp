@@ -99,6 +99,10 @@ const MtDTI& rLocationData::Data::getDTI() const {
     return rLocationData::Data::DTI;
 }
 
+inline void* rLocationData::Data::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rLocationData::Data::DTI)->memAlloc(sz, align, rLocationData::Data::DTI.getID());
+}
+
 inline void rLocationData::Data::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rLocationData::Data::DTI)->memFree(p_addr);
 }
@@ -153,8 +157,7 @@ rLocationData::Data::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 rLocationData::Data::MyDTI rLocationData::Data::DTI("rLocationData::Data", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rLocationData::Data::MyDTI::newInstance() const {
-    DDON_STUB("rLocationData::Data::MyDTI::newInstance")
-    return nullptr;
+MtObject* rLocationData::Data::MyDTI::newInstance() const {
+    return new (16u) rLocationData::Data;
 }
 

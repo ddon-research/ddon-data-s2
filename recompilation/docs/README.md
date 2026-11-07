@@ -2,10 +2,10 @@
 
 ## What it is
 
-1306 headers and 1243 units reconstructed from DWARF and the ELF: every class's declaration, layout and virtual table as DWARF records them, and each method's body where the generator could render it.
+1314 headers and 1252 units reconstructed from DWARF and the ELF: every class's declaration, layout and virtual table as DWARF records them, and each method's body where the generator could render it.
 
-- **Reconstructed:** 20502 bodies rendered from the ELF and proven equal to it by recompiling with the game's own compiler release (SDK 2.500), and 4088 rendered bodies the generator marks approximate.
-- **Stubs:** 19723 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
+- **Reconstructed:** 20837 bodies rendered from the ELF and proven equal to it by recompiling with the game's own compiler release (SDK 2.500), and 4020 rendered bodies the generator marks approximate.
+- **Stubs:** 19521 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
 
 The generator's notes (its inferences, rulings, addresses, refusals and oracle verdicts) are stripped; only comments a reader of the source needs stay (file sections, member offsets, vtable slots, namespace ends, stub markers).
 
@@ -23,6 +23,8 @@ The generator's notes (its inferences, rulings, addresses, refusals and oracle v
 - `src/generated/shared/GpCourse.h`: no class with a decl_file
 - `src/generated/shared/GpCourseEffect.h`: no class with a decl_file
 - `src/generated/shared/Job.h`: no class with a decl_file
+- `src/generated/shared/MtMathUtil.cpp`: no class with a decl_file
+- `src/generated/shared/MtMathUtil.h`: no class with a decl_file
 - `src/generated/shared/_rtc.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/_rtc.h
 - `src/generated/shared/audioout.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/audioout.h
 - `src/generated/shared/basegfxcontext.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnmx/basegfxcontext.h
@@ -85,6 +87,8 @@ The generator's notes (its inferences, rulings, addresses, refusals and oracle v
 - `src/generated/shared/nGroup.h`: no class with a decl_file
 - `src/generated/shared/nHuman.h`: no class with a decl_file
 - `src/generated/shared/nKeyCustom.h`: no class with a decl_file
+- `src/generated/shared/nSound.cpp`: no class with a decl_file
+- `src/generated/shared/nSound.h`: no class with a decl_file
 - `src/generated/shared/nStamina.h`: no class with a decl_file
 - `src/generated/shared/nStatusEnemy.h`: no class with a decl_file
 - `src/generated/shared/nUnicode.cpp`: no class with a decl_file
@@ -104,6 +108,8 @@ The generator's notes (its inferences, rulings, addresses, refusals and oracle v
 - `src/generated/shared/regs.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/regs.h
 - `src/generated/shared/rendertarget.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/rendertarget.h
 - `src/generated/shared/rendertarget.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/rendertarget.h
+- `src/generated/shared/sampler.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/sampler.h
+- `src/generated/shared/sampler.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/sampler.h
 - `src/generated/shared/save_data.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/save_data.h
 - `src/generated/shared/texture.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/texture.h
 - `src/generated/shared/texture.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/texture.h

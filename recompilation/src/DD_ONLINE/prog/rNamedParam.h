@@ -385,3 +385,7 @@ inline void* rNamedParam::operator new(size_t sz, void* p_addr) {
 inline void cNamedParam::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cNamedParam::DTI)->memFree(p_addr);
 }
+
+inline void* cNamedParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNamedParam::DTI)->memAlloc(sz, align, ::cNamedParam::DTI.::MtDTI::getID());
+}

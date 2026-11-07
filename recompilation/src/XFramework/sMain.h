@@ -51,6 +51,8 @@ class uEffectExt;
 class uGUI;
 class uGUIChat;
 class uGUITelop;
+class uGrassEffect;
+class uGrassWindDirection;
 class uHuman;
 
 // Declarations
@@ -116,6 +118,8 @@ class sMain : public cSystem
     friend class uGUI;
     friend class uGUIChat;
     friend class uGUITelop;
+    friend class uGrassEffect;
+    friend class uGrassWindDirection;
     friend class uHuman;
 public:
     enum JOB_MODE

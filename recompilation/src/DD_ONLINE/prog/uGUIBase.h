@@ -1043,7 +1043,7 @@ public:
         virtual void setUsePresetSE(bool bUse);  // vtable slot 10
         virtual void checkLoop(u32 uKeyOnF, s32 sMoveDir, nGUIExt::MSG_REASON Reason, s32& sAddPos);  // vtable slot 7
         virtual void setLoop(bool flag);  // vtable slot 16
-        void setLoopX(bool flag);
+        void setLoopX(bool flag = false);
         void setLoopY(bool);
         bool isLoopX();
         bool isLoopY();
@@ -6240,6 +6240,10 @@ inline void* uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::operator new
     return p_addr;
 }
 
+inline uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::cScrollListItemBasePD() {
+    this->mpOwner = nullptr;
+}
+
 inline void* uGUIBase::cReferenceUIPullDown::cMsg::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -6329,6 +6333,10 @@ inline s32 uGUIBase::cMatrix::getCurrentRow() const {
 
 inline s32 uGUIBase::cMatrix::getRow() const {
     return this->mRow;
+}
+
+inline void uGUIBase::cMatrix::setLoopX(bool flag) {
+    this->mEnableLoopX = false;
 }
 
 inline void* uGUIBase::cMaskScroll::operator new(size_t sz, void* p_addr) {

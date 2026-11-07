@@ -118,7 +118,7 @@ public:
     bool checkCndIsSuccessEndure() const;
     bool checkCndCheckAttackS() const;
     bool checkCndCustom14Plus() const;
-    void setIsAttackHitDownEnemy(bool flg);
+    void setIsAttackHitDownEnemy(bool flg = false);
     bool isAttackHitDownEnemy();
     void resetFuryGaugerTime();
 private:
@@ -175,4 +175,8 @@ inline void cpJob07::initCanDivineCounter() {
 
 inline void cpJob07::resetIsEndureSuccess() {
     this->mIsEndureSuccess = false;
+}
+
+inline void cpJob07::setIsAttackHitDownEnemy(bool flg) {
+    this->mIsAttackHitDownEnemy = false;
 }

@@ -288,6 +288,10 @@ const MtDTI& rStageCustomPartsEx::HemiSphLight::getDTI() const {
     return rStageCustomPartsEx::HemiSphLight::DTI;
 }
 
+inline void* rStageCustomPartsEx::HemiSphLight::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::HemiSphLight::DTI)->memAlloc(sz, align, rStageCustomPartsEx::HemiSphLight::DTI.getID());
+}
+
 inline rStageCustomPartsEx::HemiSphLight::HemiSphLight() {
     mLightColor.x = MtVector3::One.x;
     mLightColor.y = MtVector3::One.y;
@@ -319,13 +323,16 @@ rStageCustomPartsEx::HemiSphLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 
 rStageCustomPartsEx::HemiSphLight::MyDTI rStageCustomPartsEx::HemiSphLight::DTI("rStageCustomPartsEx::HemiSphLight", &::MtObject::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rStageCustomPartsEx::HemiSphLight::MyDTI::newInstance() const {
-    DDON_STUB("rStageCustomPartsEx::HemiSphLight::MyDTI::newInstance")
-    return nullptr;
+MtObject* rStageCustomPartsEx::HemiSphLight::MyDTI::newInstance() const {
+    return new (16u) rStageCustomPartsEx::HemiSphLight;
 }
 
 const MtDTI& rStageCustomPartsEx::InfiLight::getDTI() const {
     return rStageCustomPartsEx::InfiLight::DTI;
+}
+
+inline void* rStageCustomPartsEx::InfiLight::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::InfiLight::DTI)->memAlloc(sz, align, rStageCustomPartsEx::InfiLight::DTI.getID());
 }
 
 inline rStageCustomPartsEx::InfiLight::InfiLight() {
@@ -351,9 +358,8 @@ rStageCustomPartsEx::InfiLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 rStageCustomPartsEx::InfiLight::MyDTI rStageCustomPartsEx::InfiLight::DTI("rStageCustomPartsEx::InfiLight", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rStageCustomPartsEx::InfiLight::MyDTI::newInstance() const {
-    DDON_STUB("rStageCustomPartsEx::InfiLight::MyDTI::newInstance")
-    return nullptr;
+MtObject* rStageCustomPartsEx::InfiLight::MyDTI::newInstance() const {
+    return new (16u) rStageCustomPartsEx::InfiLight;
 }
 
 const MtDTI& rStageCustomPartsEx::AreaParam::getDTI() const {

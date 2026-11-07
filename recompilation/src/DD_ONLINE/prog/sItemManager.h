@@ -1119,7 +1119,7 @@ public:
         bool changeJob(sItemManager::stRequest* pReq);
         bool addItemNotice(CItemList* pUpdateItem);
         void sortStrageItem(ITEM_CATEGORY category, sItemManager::cSortParam::SORT_TYPE sortType, sItemManager::cSortParam::SORT_DIR sortDir);
-        void setServerSort(bool flag);
+        void setServerSort(bool flag = false);
         static u32 getStorageCategoryIndex(ITEM_CATEGORY category);
         static u32 getCategoryIndex(rItemList::ITEM_CATEGORY category);
         static u32 getCategoryIndex(ITEM_CATEGORY category);
@@ -1314,7 +1314,7 @@ public:
     void releaseSortBinary(u32 index, bool isUpdate);
     u32 getItemNumAllBag(STORAGE_FILLTER_TYPE type, u32 ItemId);
     cItemParam* getItemParamToEquipCharacter(u32 charID, u32 type, u32 itemID, u8 equipSlot);
-    void setShopBuyLimit(u32 limit);
+    void setShopBuyLimit(u32 limit = 999);
     u32 getShopBuyLimit();
     bool isUseBaggageStorage();
     void getFillterStorageList(STORAGE_FILLTER_TYPE type, CommonU32Vec& list);
@@ -1446,6 +1446,10 @@ inline rGUIMessage* sItemManager::getItemNameGmd() const {
     return this->mprItemNameGmd;
 }
 
+inline void sItemManager::setShopBuyLimit(u32 limit) {
+    this->mShopBuyLimit = 999;
+}
+
 inline u32 sItemManager::getShopBuyLimit() {
     return this->mShopBuyLimit;
 }
@@ -1478,6 +1482,10 @@ inline u32 sItemManager::cItemBag::getUseItemSlotNum() {
 
 inline u32 sItemManager::cItemBag::getAllItemSlotNum() {
     return this->mAllItemSlotNum;
+}
+
+inline void sItemManager::cItemBag::setServerSort(bool flag) {
+    this->mIsServerSort = false;
 }
 
 inline void* sItemManager::cItemBag::cGetItemListData::operator new(size_t sz, void* p_addr) {

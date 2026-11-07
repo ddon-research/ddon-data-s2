@@ -13,6 +13,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cErosionRegionRes>::allocData(unsigned int);
+#endif
+
 const MtDTI& cErosionInfoRes::getDTI() const {
     return cErosionInfoRes::DTI;
 }

@@ -271,6 +271,18 @@ inline void* CDataEntryItemParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline CDataEntryItemParam::CDataEntryItemParam() {
+    this->m_bPasswordOn = false;
+    this->m_bPawnOn = false;
+    this->m_ucItemRankType = 0;
+    this->m_usRequiredItemRank = 0;
+    this->m_nBottomEntryJobLevel = 0;
+    this->m_nTopEntryJobLevel = 0;
+    this->m_unItemRankCheckRoleType = 0;
+    this->m_usMinEntryNum = 0;
+    this->m_usMaxEntryNum = 0;
+}
+
 inline void* CDataEntryMemberData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

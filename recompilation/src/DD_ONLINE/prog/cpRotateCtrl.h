@@ -88,7 +88,7 @@ public:
     void setInterSpeed(f32 InterSpeed);
     f32 getInterSpeed() const;
     bool isBusy();
-    void setBusy(bool enable);
+    void setBusy(bool enable = false);
 protected:
     f32 convertFrameToSpeed(const MtQuaternion& FinalQuat, f32 frame);
     f32 calcDiffAngle(const MtQuaternion& quat, const MtQuaternion& quat2) const;
@@ -122,4 +122,8 @@ inline void cpRotateCtrl::setDefaultInterSpeed(f32 InterSpeed) {
 
 inline f32 cpRotateCtrl::getInterSpeed() const {
     return this->mInterSpeed;
+}
+
+inline void cpRotateCtrl::setBusy(bool enable) {
+    this->mIsBusy = false;
 }

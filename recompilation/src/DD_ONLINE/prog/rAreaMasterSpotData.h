@@ -416,6 +416,10 @@ inline void* cAreaMasterSpotData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotData::DTI)->memAlloc(sz, align, ::cAreaMasterSpotData::DTI.::MtDTI::getID());
 }
 
+inline void cAreaMasterSpotDetailData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotDetailData::DTI)->memFree(p_addr);
+}
+
 inline void* cAreaMasterSpotDetailData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, ::cAreaMasterSpotDetailData::DTI.::MtDTI::getID());
 }

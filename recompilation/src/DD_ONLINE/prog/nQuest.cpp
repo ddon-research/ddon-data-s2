@@ -36,6 +36,14 @@
 #define DDON_STUB(name)
 #endif
 
+namespace nQuest {
+const nQuest::SCHEDULE_ID INVALID_SCHEDULE_ID;
+}
+
+namespace nQuest {
+const nQuest::QUEST_ID INVALID_QUEST_ID;
+}
+
 __attribute__((weak)) bool nQuest::isDisableOrderCondition(u32 result, nQuest::ORDER_CONDITION_TYPE checkType) {
     DDON_STUB("nQuest::isDisableOrderCondition")
     return {};
@@ -484,8 +492,10 @@ inline void nQuest::cDeliveredItemInfo::operator delete(void* p_addr) {
 }
 
 nQuest::cDeliveredItemInfo::cDeliveredItemInfo() {
-    DDON_STUB("nQuest::cDeliveredItemInfo::cDeliveredItemInfo")
-    /* stub */
+    mItemId = 0;
+    mNeedItemNum = 0;
+    mType = 1;
+    mCharacterDeliverInfo.mAutoDelete = true;
 }
 
 nQuest::cDeliveredItemInfo::~cDeliveredItemInfo() {
@@ -524,9 +534,8 @@ nQuest::cDeliveredItemInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t 
 
 nQuest::cDeliveredItemInfo::MyDTI nQuest::cDeliveredItemInfo::DTI("nQuest::cDeliveredItemInfo", &::nQuest::cQuestInfoBase::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nQuest::cDeliveredItemInfo::MyDTI::newInstance() const {
-    DDON_STUB("nQuest::cDeliveredItemInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nQuest::cDeliveredItemInfo::MyDTI::newInstance() const {
+    return new (16u) ::nQuest::cDeliveredItemInfo;
 }
 
 const MtDTI& nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::getDTI() const {
@@ -3147,8 +3156,9 @@ __attribute__((weak)) bool nQuest::cGUINewspaperSetQuestInfoList::isPartyRecomma
 }
 
 nQuest::cGUINewspaperSetQuestInfoList::cGUINewspaperSetQuestInfoList() {
-    DDON_STUB("nQuest::cGUINewspaperSetQuestInfoList::cGUINewspaperSetQuestInfoList")
-    /* stub */
+    mAreaId = 0;
+    mUnderBaseLevel = 0;
+    mOverBaseLevel = 0;
 }
 
 u32 nQuest::TargetEnemyInfoArray::getFlagNo() const {
@@ -3168,8 +3178,8 @@ void nQuest::TargetEnemyInfoArray::setIsValid(bool isValid) {
 }
 
 nQuest::TargetEnemyInfoArray::TargetEnemyInfoArray() {
-    DDON_STUB("nQuest::TargetEnemyInfoArray::TargetEnemyInfoArray")
-    /* stub */
+    mFlagNo = 0;
+    mIsValid = false;
 }
 
 nQuest::TargetEnemyInfoArray::TargetEnemyInfoArray(const nQuest::TargetEnemyInfoArray& obj) {
@@ -3178,8 +3188,7 @@ nQuest::TargetEnemyInfoArray::TargetEnemyInfoArray(const nQuest::TargetEnemyInfo
 }
 
 nQuest::QuestCommandList::QuestCommandList() {
-    DDON_STUB("nQuest::QuestCommandList::QuestCommandList")
-    /* stub */
+    mIsNotLeaderOnly = true;
 }
 
 nQuest::QuestCommandList::QuestCommandList(cQuestTask* pTask, const nQuest::QuestCommandList& obj) {

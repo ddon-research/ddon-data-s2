@@ -237,7 +237,7 @@ public:
     uGUIPopRmcQuestInfo* getGUIPopRmcQuestInfoPtr();
     void setExecuteCtrl(bool flag);
     void setStandAlone(bool flag);
-    void setInitWindowActive(bool flag);
+    void setInitWindowActive(bool flag = false);
     bool isSolo();
     void setInvitation(bool flag);
     u32 getMemberNum();
@@ -334,6 +334,10 @@ inline void uGUIMissionInfo::clearDecideCancel() {
 
 inline uGUIPopRmcQuestInfo* uGUIMissionInfo::getGUIPopRmcQuestInfoPtr() {
     return this->mpPopBonus;
+}
+
+inline void uGUIMissionInfo::setInitWindowActive(bool flag) {
+    this->mIsInitWindowActive = false;
 }
 
 inline u32 uGUIMissionInfo::getMemberNum() {

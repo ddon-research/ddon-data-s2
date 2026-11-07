@@ -74,8 +74,6 @@ __attribute__((weak)) void cQuestResourceLoadManager::move() {
 }
 
 cQuestResourceLoadManager::cQuestResourceLoadManager() {
-    DDON_STUB("cQuestResourceLoadManager::cQuestResourceLoadManager")
-    /* stub */
 }
 
 cQuestResourceLoadManager::~cQuestResourceLoadManager() {
@@ -114,9 +112,8 @@ cQuestResourceLoadManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 cQuestResourceLoadManager::MyDTI cQuestResourceLoadManager::DTI("cQuestResourceLoadManager", &::cQuestFunctionManagerBase::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cQuestResourceLoadManager::MyDTI::newInstance() const {
-    DDON_STUB("cQuestResourceLoadManager::MyDTI::newInstance")
-    return nullptr;
+MtObject* cQuestResourceLoadManager::MyDTI::newInstance() const {
+    return new (16u) cQuestResourceLoadManager;
 }
 
 const MtDTI& cQuestResourceLoadManager::cLoadTask::getDTI() const {

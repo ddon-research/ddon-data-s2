@@ -161,6 +161,10 @@ const MtDTI& uGUICaplinkTrophyList::cListItem::getDTI() const {
     return uGUICaplinkTrophyList::cListItem::DTI;
 }
 
+inline void* uGUICaplinkTrophyList::cListItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::cListItem::DTI)->memAlloc(sz, align, uGUICaplinkTrophyList::cListItem::DTI.getID());
+}
+
 inline void uGUICaplinkTrophyList::cListItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::cListItem::DTI)->memFree(p_addr);
 }
@@ -169,9 +173,8 @@ uGUICaplinkTrophyList::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 uGUICaplinkTrophyList::cListItem::MyDTI uGUICaplinkTrophyList::cListItem::DTI("uGUICaplinkTrophyList::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICaplinkTrophyList::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUICaplinkTrophyList::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICaplinkTrophyList::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUICaplinkTrophyList::cListItem;
 }
 
 const MtDTI& uGUICaplinkTrophyList::cListInfo::getDTI() const {

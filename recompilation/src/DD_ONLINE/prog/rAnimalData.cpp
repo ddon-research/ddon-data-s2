@@ -14,8 +14,16 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cAnimalData>::allocData(unsigned int);
+#endif
+
 const MtDTI& cAnimalData::getDTI() const {
     return cAnimalData::DTI;
+}
+
+inline void* cAnimalData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAnimalData::DTI)->memAlloc(sz, align, cAnimalData::DTI.getID());
 }
 
 inline void cAnimalData::operator delete(void* p_addr) {
@@ -45,9 +53,8 @@ cAnimalData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 
 cAnimalData::MyDTI cAnimalData::DTI("cAnimalData", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAnimalData::MyDTI::newInstance() const {
-    DDON_STUB("cAnimalData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAnimalData::MyDTI::newInstance() const {
+    return new (16u) cAnimalData;
 }
 
 const MtDTI& rAnimalData::getDTI() const {

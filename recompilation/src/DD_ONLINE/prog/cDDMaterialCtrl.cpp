@@ -708,8 +708,34 @@ const MtDTI& cDDMaterialCtrl::cShaderDataEmission::getDTI() const {
     return cDDMaterialCtrl::cShaderDataEmission::DTI;
 }
 
+inline void* cDDMaterialCtrl::cShaderDataEmission::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataEmission::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataEmission::DTI.getID());
+}
+
 inline void cDDMaterialCtrl::cShaderDataEmission::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataEmission::DTI)->memFree(p_addr);
+}
+
+inline cDDMaterialCtrl::cShaderDataEmission::cShaderDataEmission() {
+    mEmissionColor.x = MtVector3::Zero.x;
+    mEmissionColor.y = MtVector3::Zero.y;
+    mEmissionColor.z = MtVector3::Zero.z;
+    mEmissionColor.pad_ = 0.0f;
+    mEmissionBlendColor.x = MtVector3::Zero.x;
+    mEmissionBlendColor.y = MtVector3::Zero.y;
+    mEmissionBlendColor.z = MtVector3::Zero.z;
+    mEmissionBlendColor.pad_ = 0.0f;
+    mEmissionBlendFactor = 0.0f;
+    mEmissionIntensity = 1.0f;
+    mDiffuseColor.x = MtVector3::Zero.x;
+    mDiffuseColor.y = MtVector3::Zero.y;
+    mDiffuseColor.z = MtVector3::Zero.z;
+    mDiffuseColor.pad_ = 0.0f;
+    mDiffuseBlendColor.x = MtVector3::Zero.x;
+    mDiffuseBlendColor.y = MtVector3::Zero.y;
+    mDiffuseBlendColor.z = MtVector3::Zero.z;
+    mDiffuseBlendColor.pad_ = 0.0f;
+    mDiffuseBlendFactor = 0.0f;
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataEmission::createProperty(MtPropertyList& s) {
@@ -721,9 +747,8 @@ cDDMaterialCtrl::cShaderDataEmission::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* p
 
 cDDMaterialCtrl::cShaderDataEmission::MyDTI cDDMaterialCtrl::cShaderDataEmission::DTI("cDDMaterialCtrl::cShaderDataEmission", &::cDDMaterialCtrl::cShaderData::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataEmission::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataEmission::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataEmission::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataEmission;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterial::getDTI() const {
@@ -918,8 +943,6 @@ inline void cDDMaterialCtrl::cShaderDataAnimationToDefault::operator delete(void
 }
 
 cDDMaterialCtrl::cShaderDataAnimationToDefault::~cShaderDataAnimationToDefault() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataAnimationToDefault::~cShaderDataAnimationToDefault")
-    /* stub */
 }
 
 __attribute__((weak)) s32 cDDMaterialCtrl::cShaderDataAnimationToDefault::getEndValueInt(const nDraw::Animation::PARAM_INT* ParamInt, cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {

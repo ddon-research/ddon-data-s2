@@ -99,6 +99,8 @@ DD_ONLINE/prog/rGatheringItem.cpp
 XFramework/cBVHGrass.cpp
 XFramework/rGrass.cpp
 XFramework/rGrassWind.cpp
+XFramework/uGrassEffect.cpp
+XFramework/uGrassWind.cpp
 DD_ONLINE/prog/rHeadCtrl.cpp
 DD_ONLINE/prog/rHumanEnemyCustomSkill.cpp
 DD_ONLINE/prog/rHumanEnemyEquip.cpp
@@ -121,13 +123,10 @@ DD_ONLINE/prog/cFSMOrderParam.cpp
 DD_ONLINE/prog/cFSMRelate.cpp
 DD_ONLINE/prog/cFSMUnit.cpp
 DD_ONLINE/prog/cNetSessionManager.cpp
-DD_ONLINE/prog/cSetInfo.cpp
 DD_ONLINE/prog/cSetInfoCharacter.cpp
-DD_ONLINE/prog/cSetInfoCoord.cpp
 DD_ONLINE/prog/cSetInfoEnemy.cpp
 DD_ONLINE/prog/cSetInfoGeneralPoint.cpp
 DD_ONLINE/prog/cSetInfoNpc.cpp
-DD_ONLINE/prog/cSetInfoOm.cpp
 DD_ONLINE/prog/cWeatherScript.cpp
 DD_ONLINE/prog/cZoneIndoor.cpp
 DD_ONLINE/prog/cZoneListenerLight.cpp
@@ -317,6 +316,7 @@ MT/MtDtiSelecter.cpp
 MT/MtEaseCurve.cpp
 MT/MtFile.cpp
 MT/MtFilePath.cpp
+MT/MtFunctionReplacement.cpp
 MT/MtGeomAABB.cpp
 MT/MtGeomCapsule.cpp
 MT/MtGeomCylinder.cpp
@@ -329,6 +329,7 @@ MT/MtGeometry3D.cpp
 MT/MtJsonReader.cpp
 MT/MtLogisticMap.cpp
 MT/MtMath.cpp
+generated/shared/MtMathUtil.cpp
 MT/MtMemory.cpp
 MT/MtMemoryAllocator.cpp
 MT/MtNetAchievement.cpp
@@ -357,6 +358,7 @@ MT/MtProfiler.cpp
 MT/MtProperty.cpp
 MT/MtPropertyList.cpp
 MT/MtRandom.cpp
+MT/MtScalableAllocator.cpp
 MT/MtSerializer.cpp
 MT/MtStlAllocator.cpp
 MT/MtStlCustom.cpp
@@ -622,6 +624,9 @@ DD_ONLINE/prog/cScenario.cpp
 DD_ONLINE/prog/cScenarioElement.cpp
 DD_ONLINE/prog/cSeedServerConnection.cpp
 DD_ONLINE/prog/cServerUIClientControl.cpp
+DD_ONLINE/prog/cSetInfo.cpp
+DD_ONLINE/prog/cSetInfoCoord.cpp
+DD_ONLINE/prog/cSetInfoOm.cpp
 DD_ONLINE/prog/cShlNotifyInfo.cpp
 XFramework/cSoundCompressor.cpp
 XFramework/cSoundEffect.cpp
@@ -772,6 +777,7 @@ XFramework/nDrawMaterialStdPN.cpp
 XFramework/nDrawQuery.cpp
 XFramework/nDrawRasterizerState.cpp
 XFramework/nDrawResource.cpp
+XFramework/nDrawSamplerState.cpp
 XFramework/nDrawScene.cpp
 XFramework/nDrawTexture.cpp
 XFramework/nDrawVertexBuffer.cpp
@@ -791,6 +797,7 @@ DD_ONLINE/prog/nJobParam.cpp
 DD_ONLINE/prog/nLayout.cpp
 DD_ONLINE/prog/nMarker.cpp
 DD_ONLINE/prog/nMenuKeyConfig.cpp
+XFramework/nMotion.cpp
 DD_ONLINE/prog/nNet.cpp
 DD_ONLINE/prog/nNetMsgData.cpp
 XFramework/nNetworkAchievement.cpp
@@ -824,6 +831,7 @@ DD_ONLINE/prog/nQuest.cpp
 DD_ONLINE/prog/nRegionStatus.cpp
 DD_ONLINE/prog/nShlBase.cpp
 DD_ONLINE/prog/nShlStick.cpp
+generated/shared/nSound.cpp
 DD_ONLINE/prog/nTalk.cpp
 generated/shared/nUnicode.cpp
 DD_ONLINE/prog/nWeather.cpp
@@ -1022,6 +1030,7 @@ XFramework/sVibration.cpp
 DD_ONLINE/prog/sWorkRate.cpp
 DD_ONLINE/prog/sWorldOffset.cpp
 XFramework/sZone.cpp
+generated/shared/sampler.cpp
 generated/shared/texture.cpp
 DD_ONLINE/prog/uAimCheck.cpp
 DD_ONLINE/prog/uAnimal.cpp

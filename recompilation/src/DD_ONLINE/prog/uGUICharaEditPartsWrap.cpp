@@ -1887,8 +1887,6 @@ inline void uGUICharaEditPartsWrap::cPartsHList::operator delete(void* p_addr) {
 }
 
 uGUICharaEditPartsWrap::cPartsHList::~cPartsHList() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsHList::~cPartsHList")
-    /* stub */
 }
 
 void uGUICharaEditPartsWrap::cPartsHList::setFocus(bool b) {

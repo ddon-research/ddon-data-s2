@@ -2550,6 +2550,18 @@ namespace nQuest {
 
 }  // namespace nQuest
 
+namespace nQuest {
+extern const nQuest::QUEST_TYPE cycleContentTypeTbl[2];
+}
+
+namespace nQuest {
+extern const nQuest::SCHEDULE_ID INVALID_SCHEDULE_ID;
+}
+
+namespace nQuest {
+extern const nQuest::QUEST_ID INVALID_QUEST_ID;
+}
+
 inline void* nQuest::cQuestInfoBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

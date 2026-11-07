@@ -256,6 +256,10 @@ inline void* CDataCommunityCharacterBaseInfo::operator new(size_t sz, void* p_ad
     return p_addr;
 }
 
+inline CDataCommunityCharacterBaseInfo::CDataCommunityCharacterBaseInfo() {
+    this->m_unCharacterID = 0;
+}
+
 inline void* CDataFriendInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

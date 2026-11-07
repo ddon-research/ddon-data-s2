@@ -19,6 +19,10 @@ const MtDTI& cEmSoundTable::getDTI() const {
     return cEmSoundTable::DTI;
 }
 
+inline void* cEmSoundTable::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cEmSoundTable::DTI)->memAlloc(sz, align, cEmSoundTable::DTI.getID());
+}
+
 inline void cEmSoundTable::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEmSoundTable::DTI)->memFree(p_addr);
 }
@@ -32,9 +36,8 @@ cEmSoundTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 
 cEmSoundTable::MyDTI cEmSoundTable::DTI("cEmSoundTable", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cEmSoundTable::MyDTI::newInstance() const {
-    DDON_STUB("cEmSoundTable::MyDTI::newInstance")
-    return nullptr;
+MtObject* cEmSoundTable::MyDTI::newInstance() const {
+    return new (16u) cEmSoundTable;
 }
 
 const MtDTI& rEmSoundTable::getDTI() const {

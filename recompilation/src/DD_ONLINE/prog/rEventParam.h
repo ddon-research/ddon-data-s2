@@ -235,6 +235,10 @@ inline void* rEventParam::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cEventParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEventParam::DTI)->memFree(p_addr);
+}
+
 inline void* cEventParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEventParam::DTI)->memAlloc(sz, align, ::cEventParam::DTI.::MtDTI::getID());
 }

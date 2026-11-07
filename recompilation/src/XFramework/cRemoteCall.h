@@ -87,7 +87,7 @@ public:
     virtual void serialize(MtStream& queue);  // vtable slot 6
     virtual void deserialize(MtStream& queue);  // vtable slot 7
     u32 getAttribute() const;
-    void setAttribute(u32 attr);
+    void setAttribute(u32 attr = 0);
     static void writeOut(MtStream& out, cRemoteCall& call);
     static cRemoteCall* newInstance(MtStream& in);
 private:
@@ -110,6 +110,10 @@ public:
 
 inline void* cRemoteCall::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void cRemoteCall::setAttribute(u32 attr) {
+    this->mAttribute = 0;
 }
 
 inline cRemoteCall::MyType::MyType() {

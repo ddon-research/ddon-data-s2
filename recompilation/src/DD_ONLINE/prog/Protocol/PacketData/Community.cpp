@@ -27,13 +27,20 @@ __attribute__((weak)) void CDataCharacterListElement::operator delete(void* p_ad
     CDataCharacterListElement::getAllocator()->memFree(p_addr);
 }
 
+CDataCharacterListElement::CDataCharacterListElement() {
+    m_ucOnlineStatus = 0;
+    m_usServerID = 0;
+    m_BaseInfo.m_wstrClanName.value = nullptr;
+    m_BaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    m_BaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+}
+
 CDataCharacterListElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 CDataCharacterListElement::MyDTI CDataCharacterListElement::DTI("CDataCharacterListElement", &::CPacketDataBase::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataCharacterListElement::MyDTI::newInstance() const {
-    DDON_STUB("CDataCharacterListElement::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataCharacterListElement::MyDTI::newInstance() const {
+    return new (16u) CDataCharacterListElement;
 }
 
 const MtDTI& CDataCharacterName::getDTI() const {
@@ -85,9 +92,8 @@ CDataCommunityCharacterBaseInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 CDataCommunityCharacterBaseInfo::MyDTI CDataCommunityCharacterBaseInfo::DTI("CDataCommunityCharacterBaseInfo", &::CPacketDataBase::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataCommunityCharacterBaseInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataCommunityCharacterBaseInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataCommunityCharacterBaseInfo::MyDTI::newInstance() const {
+    return new (16u) CDataCommunityCharacterBaseInfo;
 }
 
 const MtDTI& CDataFriendInfo::getDTI() const {

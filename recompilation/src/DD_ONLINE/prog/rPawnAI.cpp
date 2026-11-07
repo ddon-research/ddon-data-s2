@@ -38,6 +38,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cPawnAIAction>::allocData(unsigned int);
+#endif
+
 const MtDTI& cPawnAIActInter::getDTI() const {
     return cPawnAIActInter::DTI;
 }
@@ -218,8 +222,6 @@ inline rPawnAIAction::rPawnAIAction() {
 }
 
 rPawnAIAction::~rPawnAIAction() {
-    DDON_STUB("rPawnAIAction::~rPawnAIAction")
-    /* stub */
 }
 
 bool rPawnAIAction::loadData(MtDataReader& r, cPawnAIAction* pData) {

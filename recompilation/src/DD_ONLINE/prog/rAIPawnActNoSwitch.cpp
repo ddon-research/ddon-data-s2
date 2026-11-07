@@ -6,12 +6,15 @@
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
-#include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "nDDOUtility.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
+#endif
+
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cAIPawnActNoSwitch>::allocData(unsigned int);
 #endif
 
 const MtDTI& cAIPawnActNoSwitch::getDTI() const {
@@ -49,8 +52,6 @@ inline void rAIPawnActNoSwitch::operator delete(void* p_addr) {
 }
 
 rAIPawnActNoSwitch::~rAIPawnActNoSwitch() {
-    DDON_STUB("rAIPawnActNoSwitch::~rAIPawnActNoSwitch")
-    /* stub */
 }
 
 __attribute__((weak)) bool rAIPawnActNoSwitch::loadCore(MtDataReader& r) {

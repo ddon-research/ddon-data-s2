@@ -109,6 +109,18 @@ inline void* CDataJobOrbDevoteElement::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline CDataJobOrbDevoteElement::CDataJobOrbDevoteElement() {
+    this->m_unElementID = 0;
+    this->m_ucJobID = 0;
+    this->m_unRequireOrb = 0;
+    this->m_ucOrbRewardType = 0;
+    this->m_bIsReleased = false;
+    this->m_unPosX = 0;
+    this->m_unPosY = 0;
+    this->m_unParamID = 0;
+    this->m_unParamValue = 0;
+}
+
 inline void* CDataJobOrbTreeStatus::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

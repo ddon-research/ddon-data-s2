@@ -103,6 +103,7 @@ class cZoneMultiStack;
 class cpAIPawnEmChecker;
 class cpCorePointCtrl;
 class cpEffectStatusManager;
+class cpEnemyThink;
 class cpHpDamageCtrl;
 class cpItemThrow;
 class cpJob09;
@@ -111,6 +112,7 @@ class cpObjCollisionBase;
 class cpOcdCtrl;
 class cpPathFinding;
 class cpPawnThink;
+class cpReaction;
 class cpShakeCtrl;
 class cpStateManager;
 class cpStatusChange;
@@ -398,6 +400,7 @@ class MtArray : public MtObject
     friend class cpAIPawnEmChecker;
     friend class cpCorePointCtrl;
     friend class cpEffectStatusManager;
+    friend class cpEnemyThink;
     friend class cpHpDamageCtrl;
     friend class cpItemThrow;
     friend class cpJob09;
@@ -406,6 +409,7 @@ class MtArray : public MtObject
     friend class cpOcdCtrl;
     friend class cpPathFinding;
     friend class cpPawnThink;
+    friend class cpReaction;
     friend class cpShakeCtrl;
     friend class cpStateManager;
     friend class cpStatusChange;
@@ -947,10 +951,62 @@ inline void* MtTree::Node::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
 template <typename T>
 MtTypedArray<T>::~MtTypedArray() {
 }
 
 template <typename T>
 inline MtTypedArray<T>::MtTypedArray() {
+}
+
+#include <string.h>
+inline void MtArray::add(MtObject* pobj) {
+    if (mLength < mBufsiz) {
+        mpArray[mLength++] = pobj;
+    } else {
+        extendBuffer(mBufsiz + 32);
+        mpArray[mLength++] = pobj;
+    }
+}
+
+inline void MtArray::clear(bool buffree) {
+    if (buffree) {
+        if (mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(mpArray);
+        }
+        mpArray = nullptr;
+        mBufsiz = 0;
+    }
+    mLength = 0;
+}
+
+inline void MtArray::erase() {
+    if (mAutoDelete) {
+        for (u32 i = 0; i < mLength; i++) {
+            if (mpArray[i] != nullptr) {
+                delete mpArray[i];
+            }
+        }
+        memset(mpArray, 0, static_cast<size_t>(mLength) * 8);
+    }
+    mLength = 0;
+}
+
+inline void MtArray::extendBuffer(u32 siz) {
+    MtObject** t0 = static_cast<MtObject**>(MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(sizeof(MtObject*) * siz, 16));
+    memset(t0, 0, sizeof(MtObject*) * siz);
+    memcpy(t0, mpArray, sizeof(MtObject*) * mLength);
+    MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(mpArray);
+    mpArray = t0;
+    mBufsiz = siz;
+}
+
+inline void MtArray::reserve(u32 siz) {
+    if (mBufsiz < siz) {
+        extendBuffer(siz);
+    }
 }

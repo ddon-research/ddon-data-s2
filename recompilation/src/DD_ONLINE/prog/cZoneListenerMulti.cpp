@@ -32,8 +32,21 @@ const MtDTI& cZoneContactInfo::getDTI() const {
     return cZoneContactInfo::DTI;
 }
 
+inline void* cZoneContactInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cZoneContactInfo::DTI)->memAlloc(sz, align, cZoneContactInfo::DTI.getID());
+}
+
 inline void cZoneContactInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cZoneContactInfo::DTI)->memFree(p_addr);
+}
+
+inline cZoneContactInfo::cZoneContactInfo() {
+    mOffset.x = MtVector3::Zero.x;
+    mOffset.y = MtVector3::Zero.y;
+    mOffset.z = MtVector3::Zero.z;
+    mOffset.pad_ = 0.0f;
+    mHandle = -1;
+    mGroupId = -1;
 }
 
 __attribute__((weak)) void cZoneContactInfo::createProperty(MtPropertyList& s) {
@@ -45,9 +58,8 @@ cZoneContactInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 cZoneContactInfo::MyDTI cZoneContactInfo::DTI("cZoneContactInfo", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cZoneContactInfo::MyDTI::newInstance() const {
-    DDON_STUB("cZoneContactInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cZoneContactInfo::MyDTI::newInstance() const {
+    return new (16u) cZoneContactInfo;
 }
 
 const MtDTI& cZoneContactInfoList::getDTI() const {

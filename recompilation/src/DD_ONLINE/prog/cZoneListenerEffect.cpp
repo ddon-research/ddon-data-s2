@@ -20,8 +20,20 @@ const MtDTI& cZoneListenerEffect::getDTI() const {
     return cZoneListenerEffect::DTI;
 }
 
+inline void* cZoneListenerEffect::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cZoneListenerEffect::DTI)->memAlloc(sz, align, cZoneListenerEffect::DTI.getID());
+}
+
 inline void cZoneListenerEffect::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cZoneListenerEffect::DTI)->memFree(p_addr);
+}
+
+inline cZoneListenerEffect::cZoneListenerEffect() {
+    mbHited = false;
+    mCheckPos.x = MtVector3::Zero.x;
+    mCheckPos.y = MtVector3::Zero.y;
+    mCheckPos.z = MtVector3::Zero.z;
+    mCheckPos.pad_ = 0.0f;
 }
 
 cZoneListenerEffect::~cZoneListenerEffect() {
@@ -36,9 +48,8 @@ cZoneListenerEffect::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 cZoneListenerEffect::MyDTI cZoneListenerEffect::DTI("cZoneListenerEffect", &::cZoneListener::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cZoneListenerEffect::MyDTI::newInstance() const {
-    DDON_STUB("cZoneListenerEffect::MyDTI::newInstance")
-    return nullptr;
+MtObject* cZoneListenerEffect::MyDTI::newInstance() const {
+    return new (16u) cZoneListenerEffect;
 }
 
 const MtDTI& cZoneListenerEffectColor::getDTI() const {

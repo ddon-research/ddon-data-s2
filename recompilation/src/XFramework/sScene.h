@@ -55,6 +55,7 @@ using uintptr = __uintptr_t;
 class sScene : public cSystem
 {
     friend class cSwing;
+    friend class uGrassWind;
     friend class uLight;
     friend class uShadow;
 public:
@@ -254,7 +255,7 @@ public:
     virtual u32 getTextureMipLimite(MT_CTSTR path);  // vtable slot 19
     void setTextureDetail(u32);
     void setTextureMipLimite(u32);
-    void setUberWindThreshold(s32 num);
+    void setUberWindThreshold(s32 num = -1);
     s32 getUberWindThreshold() const;
     void setApproximateLightingEnable(bool enable);
     bool getApproximateLightingEnable() const;
@@ -377,6 +378,10 @@ inline void* sScene::operator new(size_t sz, void* p_addr) {
 
 inline sScene* sScene::getInstance() {
     return ::sScene::mpInstance;
+}
+
+inline void sScene::setUberWindThreshold(s32 num) {
+    this->mUberWindThreshold = -1;
 }
 
 inline void* sScene::TextureInfo::operator new(size_t sz, void* p_addr) {

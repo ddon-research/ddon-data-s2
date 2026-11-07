@@ -14,8 +14,16 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cFacialEditJointPreset>::allocData(unsigned int);
+#endif
+
 const MtDTI& cFacialEditJointPreset::getDTI() const {
     return cFacialEditJointPreset::DTI;
+}
+
+inline void* cFacialEditJointPreset::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cFacialEditJointPreset::DTI)->memAlloc(sz, align, cFacialEditJointPreset::DTI.getID());
 }
 
 inline void cFacialEditJointPreset::operator delete(void* p_addr) {
@@ -24,9 +32,18 @@ inline void cFacialEditJointPreset::operator delete(void* p_addr) {
 
 cFacialEditJointPreset::cFacialEditJointPreset() {
     mJntNo = 0;
-    mTrans = MtVector3::Zero;
-    mRot = MtVector3::Zero;
-    mScale = MtVector3::One;
+    mTrans.x = MtVector3::Zero.x;
+    mTrans.y = MtVector3::Zero.y;
+    mTrans.z = MtVector3::Zero.z;
+    mTrans.pad_ = 0.0f;
+    mRot.x = MtVector3::Zero.x;
+    mRot.y = MtVector3::Zero.y;
+    mRot.z = MtVector3::Zero.z;
+    mRot.pad_ = 0.0f;
+    mScale.x = MtVector3::One.x;
+    mScale.y = MtVector3::One.y;
+    mScale.z = MtVector3::One.z;
+    mScale.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void cFacialEditJointPreset::createProperty(MtPropertyList& s) {
@@ -38,9 +55,8 @@ cFacialEditJointPreset::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 cFacialEditJointPreset::MyDTI cFacialEditJointPreset::DTI("cFacialEditJointPreset", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFacialEditJointPreset::MyDTI::newInstance() const {
-    DDON_STUB("cFacialEditJointPreset::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFacialEditJointPreset::MyDTI::newInstance() const {
+    return new (16u) cFacialEditJointPreset;
 }
 
 const MtDTI& rFacialEditJointPreset::getDTI() const {

@@ -110,3 +110,15 @@ inline cTbl2ChatMacro::cTbl2ChatMacro() {
 inline void* rTbl2ChatMacro::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cTbl2ChatMacro::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cTbl2ChatMacro::DTI)->memFree(p_addr);
+}
+
+inline void* cTbl2ChatMacro::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cTbl2ChatMacro::DTI)->memAlloc(sz, align, ::cTbl2ChatMacro::DTI.::MtDTI::getID());
+}

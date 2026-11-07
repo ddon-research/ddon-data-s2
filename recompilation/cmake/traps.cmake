@@ -1,15 +1,16 @@
-# Writes traps.cpp: a definition for every symbol the sample's link leaves
+# Writes a program's traps file: a definition for every symbol its link leaves
 # undefined. The reconstruction declares functions whose bodies it does not
-# have (and objects it does not define); a load that reaches one stops there
+# have (and objects it does not define); a run that reaches one stops there
 # and names it (`ddon_trap`), instead of the program failing to link.
 #
-# Run by CMakeLists.txt as `cmake -P`, with:
+# Run by TrapLink.cmake as `cmake -P`, with:
 #   CXX       the C++ compiler, which links
-#   ARGS      a file with the link's arguments, one per line (the sample's
+#   ARGS      a file with the link's arguments, one per line (the program's
 #             objects, the library, the link options)
 #   CXXFILT   llvm-cxxfilt or c++filt, to read the names
-#   TRAPS_FILE  traps.cpp
+#   TRAPS_FILE  the file to write
 #   WORK      a directory for the trial link's files
+#   PROGRAM_NAME  the program, for the messages
 #
 # A function becomes a function that traps; a class's vtable, a table of
 # such functions; an object (a class's MtDTI, a static member), zeroed
@@ -39,7 +40,7 @@ if(NOT linked EQUAL 0 AND NOT symbols)
   message(FATAL_ERROR "traps: the trial link failed with no undefined symbol; see ${WORK}/trial-link.log")
 endif()
 
-set(text "// Generated at build time by traps.cmake: what the sample's link lacks.\n")
+set(text "// Generated at build time by traps.cmake: what ${PROGRAM_NAME}'s link lacks.\n")
 string(APPEND text "extern \"C\" [[noreturn]] void ddon_trap(const char*);\n")
 list(LENGTH symbols count)
 if(count GREATER 0)
@@ -81,4 +82,4 @@ if(count GREATER 0)
   endforeach()
 endif()
 file(WRITE "${TRAPS_FILE}" "${text}")
-message(STATUS "traps: ${count} symbols the reconstruction lacks on the sample's path")
+message(STATUS "traps: ${count} symbols the reconstruction lacks on ${PROGRAM_NAME}'s path")

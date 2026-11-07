@@ -14,6 +14,7 @@ class MtDTI;
 class MtObject;
 class MtProperty;
 class MtPropertyList;
+class MtScalableAllocator;
 class MtUI;
 class cSystem;
 class sMain;
@@ -35,6 +36,7 @@ using uintptr = __uintptr_t;
 
 class MtAllocator : public MtObject
 {
+    friend class MtScalableAllocator;
     friend class cSystem;
     friend class sMain;
 public:

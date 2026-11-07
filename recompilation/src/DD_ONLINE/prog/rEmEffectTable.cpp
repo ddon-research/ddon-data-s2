@@ -22,6 +22,10 @@ const MtDTI& cEmEffectTable::getDTI() const {
     return cEmEffectTable::DTI;
 }
 
+inline void* cEmEffectTable::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cEmEffectTable::DTI)->memAlloc(sz, align, cEmEffectTable::DTI.getID());
+}
+
 inline void cEmEffectTable::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEmEffectTable::DTI)->memFree(p_addr);
 }
@@ -35,9 +39,8 @@ cEmEffectTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 cEmEffectTable::MyDTI cEmEffectTable::DTI("cEmEffectTable", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cEmEffectTable::MyDTI::newInstance() const {
-    DDON_STUB("cEmEffectTable::MyDTI::newInstance")
-    return nullptr;
+MtObject* cEmEffectTable::MyDTI::newInstance() const {
+    return new (16u) cEmEffectTable;
 }
 
 const MtDTI& rEmEffectTable::getDTI() const {

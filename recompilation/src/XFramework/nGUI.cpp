@@ -86,6 +86,31 @@ nGUI::Language::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 nGUI::Language::MyDTI nGUI::Language::DTI("nGUI::Language", &::MtObject::DTI, 8ul, 0u, 0u);
 
+MT_CTSTR nGUI::Language::LANGUAGE_SHORT_NAME[22] = {
+    "jpn",
+    "eng",
+    "fre",
+    "spa",
+    "ger",
+    "ita",
+    "kor",
+    "chT",
+    "chS",
+    "por",
+    "rus",
+    "pol",
+    "dut",
+    "fin",
+    "swe",
+    "dan",
+    "nor",
+    "cze",
+    "hun",
+    "slo",
+    "oth",
+    "ptB",
+};
+
 __attribute__((weak)) MtObject* nGUI::Language::MyDTI::newInstance() const {
     DDON_STUB("nGUI::Language::MyDTI::newInstance")
     return nullptr;

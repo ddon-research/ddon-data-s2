@@ -38,6 +38,30 @@
 void elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(cGUIObjMessage*, cGUIObjMessage*, float, bool) __asm__("_Z14SetMessageTimeP14cGUIObjMessageS0_fb");
 void elf_v_Z15SetMessagePointP14cGUIObjMessagejb(cGUIObjMessage*, unsigned int, bool) __asm__("_Z15SetMessagePointP14cGUIObjMessagejb");
 
+static const nQuest::QUEST_UI_DISP_TYPE QuestSortTableMain[5] = {
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(0),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(1),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(2),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(3),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(4),
+};
+
+static const nQuest::QUEST_UI_DISP_TYPE QuestSortTableSet[5] = {
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(1),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(0),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(2),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(3),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(4),
+};
+
+static const nQuest::QUEST_UI_DISP_TYPE QuestSortTableLight[5] = {
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(2),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(3),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(0),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(1),
+    static_cast<const nQuest::QUEST_UI_DISP_TYPE>(4),
+};
+
 const MtDTI& uGUIQuestActive::getDTI() const {
     return uGUIQuestActive::DTI;
 }

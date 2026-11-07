@@ -101,6 +101,8 @@ set(DDON_SOURCES
   src/XFramework/cBVHGrass.cpp
   src/XFramework/rGrass.cpp
   src/XFramework/rGrassWind.cpp
+  src/XFramework/uGrassEffect.cpp
+  src/XFramework/uGrassWind.cpp
   src/DD_ONLINE/prog/rHeadCtrl.cpp
   src/DD_ONLINE/prog/rHumanEnemyCustomSkill.cpp
   src/DD_ONLINE/prog/rHumanEnemyEquip.cpp
@@ -123,13 +125,10 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cFSMRelate.cpp
   src/DD_ONLINE/prog/cFSMUnit.cpp
   src/DD_ONLINE/prog/cNetSessionManager.cpp
-  src/DD_ONLINE/prog/cSetInfo.cpp
   src/DD_ONLINE/prog/cSetInfoCharacter.cpp
-  src/DD_ONLINE/prog/cSetInfoCoord.cpp
   src/DD_ONLINE/prog/cSetInfoEnemy.cpp
   src/DD_ONLINE/prog/cSetInfoGeneralPoint.cpp
   src/DD_ONLINE/prog/cSetInfoNpc.cpp
-  src/DD_ONLINE/prog/cSetInfoOm.cpp
   src/DD_ONLINE/prog/cWeatherScript.cpp
   src/DD_ONLINE/prog/cZoneIndoor.cpp
   src/DD_ONLINE/prog/cZoneListenerLight.cpp
@@ -319,6 +318,7 @@ set(DDON_SOURCES
   src/MT/MtEaseCurve.cpp
   src/MT/MtFile.cpp
   src/MT/MtFilePath.cpp
+  src/MT/MtFunctionReplacement.cpp
   src/MT/MtGeomAABB.cpp
   src/MT/MtGeomCapsule.cpp
   src/MT/MtGeomCylinder.cpp
@@ -331,6 +331,7 @@ set(DDON_SOURCES
   src/MT/MtJsonReader.cpp
   src/MT/MtLogisticMap.cpp
   src/MT/MtMath.cpp
+  src/generated/shared/MtMathUtil.cpp
   src/MT/MtMemory.cpp
   src/MT/MtMemoryAllocator.cpp
   src/MT/MtNetAchievement.cpp
@@ -359,6 +360,7 @@ set(DDON_SOURCES
   src/MT/MtProperty.cpp
   src/MT/MtPropertyList.cpp
   src/MT/MtRandom.cpp
+  src/MT/MtScalableAllocator.cpp
   src/MT/MtSerializer.cpp
   src/MT/MtStlAllocator.cpp
   src/MT/MtStlCustom.cpp
@@ -624,6 +626,9 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cScenarioElement.cpp
   src/DD_ONLINE/prog/cSeedServerConnection.cpp
   src/DD_ONLINE/prog/cServerUIClientControl.cpp
+  src/DD_ONLINE/prog/cSetInfo.cpp
+  src/DD_ONLINE/prog/cSetInfoCoord.cpp
+  src/DD_ONLINE/prog/cSetInfoOm.cpp
   src/DD_ONLINE/prog/cShlNotifyInfo.cpp
   src/XFramework/cSoundCompressor.cpp
   src/XFramework/cSoundEffect.cpp
@@ -774,6 +779,7 @@ set(DDON_SOURCES
   src/XFramework/nDrawQuery.cpp
   src/XFramework/nDrawRasterizerState.cpp
   src/XFramework/nDrawResource.cpp
+  src/XFramework/nDrawSamplerState.cpp
   src/XFramework/nDrawScene.cpp
   src/XFramework/nDrawTexture.cpp
   src/XFramework/nDrawVertexBuffer.cpp
@@ -793,6 +799,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/nLayout.cpp
   src/DD_ONLINE/prog/nMarker.cpp
   src/DD_ONLINE/prog/nMenuKeyConfig.cpp
+  src/XFramework/nMotion.cpp
   src/DD_ONLINE/prog/nNet.cpp
   src/DD_ONLINE/prog/nNetMsgData.cpp
   src/XFramework/nNetworkAchievement.cpp
@@ -826,6 +833,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/nRegionStatus.cpp
   src/DD_ONLINE/prog/nShlBase.cpp
   src/DD_ONLINE/prog/nShlStick.cpp
+  src/generated/shared/nSound.cpp
   src/DD_ONLINE/prog/nTalk.cpp
   src/generated/shared/nUnicode.cpp
   src/DD_ONLINE/prog/nWeather.cpp
@@ -1024,6 +1032,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/sWorkRate.cpp
   src/DD_ONLINE/prog/sWorldOffset.cpp
   src/XFramework/sZone.cpp
+  src/generated/shared/sampler.cpp
   src/generated/shared/texture.cpp
   src/DD_ONLINE/prog/uAimCheck.cpp
   src/DD_ONLINE/prog/uAnimal.cpp

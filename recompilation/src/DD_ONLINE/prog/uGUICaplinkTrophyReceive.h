@@ -275,8 +275,8 @@ private:
     u32 evCtrlButton(cControl::Message* msg);
     bool evCtrlScrl(cControl::Message* msg);
     bool isRequest(u32 flag);
-    void setRequest(u32 flag);
-    void clearRequest(u32 flag);
+    void setRequest(u32 flag = 0);
+    void clearRequest(u32 flag = 0);
     void requestServer(u32 next_flow_id);
     void requestNext();
     bool requestReceiveReward();
@@ -307,6 +307,14 @@ inline void* uGUICaplinkTrophyReceive::operator new(size_t sz, void* p_addr) {
 
 inline void uGUICaplinkTrophyReceive::setOwner(uGUICaplinkTopMenu* pOwner) {
     this->mpOwner = pOwner;
+}
+
+inline void uGUICaplinkTrophyReceive::setRequest(u32 flag) {
+    this->mRequestFlag = this->mRequestFlag | 1u;
+}
+
+inline void uGUICaplinkTrophyReceive::clearRequest(u32 flag) {
+    this->mRequestFlag = this->mRequestFlag & 0xFFFFFFFEu;
 }
 
 inline void* uGUICaplinkTrophyReceive::cListItem::operator new(size_t sz, void* p_addr) {

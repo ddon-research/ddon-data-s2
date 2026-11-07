@@ -220,6 +220,13 @@ inline void* cReaction::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cReaction::cReaction() {
+    this->mAllCondition = false;
+    this->mForceReaction = 0;
+    this->mActPrio = 1;
+    this->mOptionFlg = 0;
+}
+
 inline void* cReaction::cCondition::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

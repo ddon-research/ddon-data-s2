@@ -17,6 +17,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cStageMap>::deleteData();
+#endif
+
 const MtDTI& cStageMap::getDTI() const {
     return cStageMap::DTI;
 }
@@ -72,6 +76,10 @@ const MtDTI& cStageMap::cParam::getDTI() const {
     return cStageMap::cParam::DTI;
 }
 
+inline void* cStageMap::cParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cStageMap::cParam::DTI)->memAlloc(sz, align, cStageMap::cParam::DTI.getID());
+}
+
 inline cStageMap::cParam::cParam() {
     mAreaNo = 0;
     mSize = 0.0f;
@@ -95,9 +103,8 @@ cStageMap::cParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 cStageMap::cParam::MyDTI cStageMap::cParam::DTI("cStageMap::cParam", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cStageMap::cParam::MyDTI::newInstance() const {
-    DDON_STUB("cStageMap::cParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cStageMap::cParam::MyDTI::newInstance() const {
+    return new (16u) cStageMap::cParam;
 }
 
 const MtDTI& rStageMap::getDTI() const {

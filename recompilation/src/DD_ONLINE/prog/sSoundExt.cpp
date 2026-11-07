@@ -7,6 +7,7 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
+#include "../../generated/shared/MtMathUtil.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtRandom.h"
@@ -68,6 +69,14 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+u32 mViewPortBit = 1;
+
+u32 CALLBACK_SE_NP = 1;
+
+u32 CALLBACK_SE = 3;
+
+u32 CALLBACK_STREAM = 4;
 
 const MtDTI& cSplitBgm::getDTI() const {
     return cSplitBgm::DTI;

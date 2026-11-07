@@ -29,6 +29,14 @@
 #define DDON_STUB(name)
 #endif
 
+static const nNetMsgData::stNetPos NetPosZero = {
+    0x0p+0,
+    0x0p+0f,
+    0x0p+0,
+};
+
+static CHAR_NAME dummyCharName;
+
 const MtDTI& cContextInterface::getDTI() const {
     return cContextInterface::DTI;
 }

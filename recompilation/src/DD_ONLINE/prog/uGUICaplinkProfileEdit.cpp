@@ -630,6 +630,10 @@ const MtDTI& uGUICaplinkProfileEdit::cContentItemBase::getDTI() const {
     return uGUICaplinkProfileEdit::cContentItemBase::DTI;
 }
 
+inline void* uGUICaplinkProfileEdit::cContentItemBase::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cContentItemBase::DTI)->memAlloc(sz, align, uGUICaplinkProfileEdit::cContentItemBase::DTI.getID());
+}
+
 inline void uGUICaplinkProfileEdit::cContentItemBase::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cContentItemBase::DTI)->memFree(p_addr);
 }
@@ -638,9 +642,8 @@ uGUICaplinkProfileEdit::cContentItemBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDT
 
 uGUICaplinkProfileEdit::cContentItemBase::MyDTI uGUICaplinkProfileEdit::cContentItemBase::DTI("uGUICaplinkProfileEdit::cContentItemBase", &::uGUIBase::cScrollListItemBase::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICaplinkProfileEdit::cContentItemBase::MyDTI::newInstance() const {
-    DDON_STUB("uGUICaplinkProfileEdit::cContentItemBase::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICaplinkProfileEdit::cContentItemBase::MyDTI::newInstance() const {
+    return new (16u) uGUICaplinkProfileEdit::cContentItemBase;
 }
 
 const MtDTI& uGUICaplinkProfileEdit::cPulldownContent::getDTI() const {

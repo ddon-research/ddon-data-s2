@@ -16,6 +16,10 @@ const MtDTI& cErosionRegionScaleChange::getDTI() const {
     return cErosionRegionScaleChange::DTI;
 }
 
+inline void* cErosionRegionScaleChange::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cErosionRegionScaleChange::DTI)->memAlloc(sz, align, cErosionRegionScaleChange::DTI.getID());
+}
+
 inline void cErosionRegionScaleChange::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cErosionRegionScaleChange::DTI)->memFree(p_addr);
 }
@@ -32,9 +36,8 @@ cErosionRegionScaleChange::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 cErosionRegionScaleChange::MyDTI cErosionRegionScaleChange::DTI("cErosionRegionScaleChange", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cErosionRegionScaleChange::MyDTI::newInstance() const {
-    DDON_STUB("cErosionRegionScaleChange::MyDTI::newInstance")
-    return nullptr;
+MtObject* cErosionRegionScaleChange::MyDTI::newInstance() const {
+    return new (16u) cErosionRegionScaleChange;
 }
 
 const MtDTI& rErosionRegionScaleChange::getDTI() const {

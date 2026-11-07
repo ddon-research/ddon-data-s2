@@ -503,6 +503,10 @@ const MtDTI& uGUIQuestDelivery::cListItem::getDTI() const {
     return uGUIQuestDelivery::cListItem::DTI;
 }
 
+inline void* uGUIQuestDelivery::cListItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIQuestDelivery::cListItem::DTI)->memAlloc(sz, align, uGUIQuestDelivery::cListItem::DTI.getID());
+}
+
 inline void uGUIQuestDelivery::cListItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIQuestDelivery::cListItem::DTI)->memFree(p_addr);
 }
@@ -511,9 +515,8 @@ uGUIQuestDelivery::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 
 uGUIQuestDelivery::cListItem::MyDTI uGUIQuestDelivery::cListItem::DTI("uGUIQuestDelivery::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIQuestDelivery::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIQuestDelivery::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIQuestDelivery::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIQuestDelivery::cListItem;
 }
 
 const MtDTI& uGUIQuestDelivery::cDeliveryItem::getDTI() const {

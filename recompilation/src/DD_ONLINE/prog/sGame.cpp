@@ -102,6 +102,38 @@
 #define DDON_STUB(name)
 #endif
 
+static const u32 RoleAllocation[10] = {
+    1,
+    1,
+    1,
+    2,
+    3,
+    1,
+    1,
+    2,
+    3,
+    2,
+};
+
+static const u32 RoleDps[5] = {
+    1,
+    2,
+    3,
+    6,
+    7,
+};
+
+static const u32 RoleHealer[3] = {
+    4,
+    8,
+    10,
+};
+
+static const u32 RoleTank[2] = {
+    5,
+    9,
+};
+
 const MtDTI& cChargeEffectUID::getDTI() const {
     return cChargeEffectUID::DTI;
 }
@@ -552,9 +584,29 @@ void sGame::sendContextFreeMarker() {
     mpNetRpc->sendNetGame(nNetMsgData::nGame::NET_MSG_ID_GAME_FREEMARKER, nNetMsg::MSG_PRIO_MAX, nNetMsg::MSG_ADR_ALL, 0u);
 }
 
-__attribute__((weak)) void sGame::resetChargeFlagAll() {
-    DDON_STUB("sGame::resetChargeFlagAll")
-    /* stub */
+void sGame::resetChargeFlagAll() {
+    if (mChargeCourseParam.mLength != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            setChargeCourse(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(i0_3)]) + 8), false, 0ul, false, false, 0u);
+            if ((i0_3 + 1u) < mChargeCourseParam.mLength) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    for (unsigned int i2_0 = 0;;) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 13504)) != 0) {
+            if (i2_0 >= (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13512))) {
+                break;
+            } else {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 13504)) + i2_0) + 0) = 0;
+                i2_0 += 1u;
+            }
+        } else {
+            break;
+        }
+    }
 }
 
 void sGame::clearChargeCourse() {

@@ -81,7 +81,7 @@ namespace nFsm {
     protected:
         void setRno0(u8 r0, u8 r1);
         u8 getRno1() const;
-        void setRno1(u8 r1);
+        void setRno1(u8 r1 = 1);
     public:
         void start(const cFSMOrderParamCamera* const pParamCamera);
         void end();
@@ -116,4 +116,8 @@ inline void* nFsm::cCameraCtrl::operator new(size_t sz, void* p_addr) {
 
 inline bool nFsm::cCameraCtrl::isDisable() const {
     return this->mRno0 != 0;
+}
+
+inline void nFsm::cCameraCtrl::setRno1(u8 r1) {
+    this->mRno1 = 1;
 }

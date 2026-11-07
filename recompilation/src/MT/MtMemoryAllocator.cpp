@@ -6,10 +6,13 @@
 #include "MtDTI.h"
 #include "MtMemory.h"
 #include "MtObject.h"
+#include "MtScalableAllocator.h"
 #include "MtString.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+static MT_STR gWorkBuffer;
 
 MtAllocator* MtMemoryAllocator::getAllocator(const MtDTI& dti) {
     return MtMemory::mpAllocatorType[dti.mAllocatorIndex];

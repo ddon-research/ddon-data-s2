@@ -76,6 +76,28 @@
 #define DDON_STUB(name)
 #endif
 
+namespace nHumanBow {
+u32 job03NoArrowWait = 1104;
+}
+
+namespace nHumanBow {
+u32 job03NoArrowWalkMotNo[4] = {
+    1106,
+    1107,
+    1108,
+    1108,
+};
+}
+
+namespace nHumanBow {
+u32 job03NoArrowRunMotNo[4] = {
+    1110,
+    1111,
+    1112,
+    1112,
+};
+}
+
 const MtDTI& cPlActWpnBow::getDTI() const {
     return cPlActWpnBow::DTI;
 }

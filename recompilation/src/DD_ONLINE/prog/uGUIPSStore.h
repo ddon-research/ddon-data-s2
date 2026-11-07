@@ -398,8 +398,20 @@ inline void* uGUIPSStore::cStationListItem::operator new(size_t sz, void* p_addr
     return p_addr;
 }
 
+inline uGUIPSStore::cStationListItem::cStationListItem() {
+    this->mItemIndex = 0;
+    this->mpObjStack = nullptr;
+    this->mpObjContent = nullptr;
+    this->mpInstList = nullptr;
+    this->mpInstButton = nullptr;
+    this->mpInstIcon = nullptr;
+}
+
 inline void* uGUIPSStore::cHistoryListItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIPSStore::cHistoryListItem::cHistoryListItem() {
 }
 
 inline void* uGUIPSStore::cStationListInfo::operator new(size_t sz, void* p_addr) {

@@ -50,6 +50,19 @@ namespace Gnm {
 
 namespace sce {
 namespace Gnm {
+    enum AnisotropyRatio
+    {
+        kAnisotropyRatio1 = 0,
+        kAnisotropyRatio2 = 1,
+        kAnisotropyRatio4 = 2,
+        kAnisotropyRatio8 = 3,
+        kAnisotropyRatio16 = 4,
+    };
+}  // namespace Gnm
+}  // namespace sce
+
+namespace sce {
+namespace Gnm {
     enum BlendFunc
     {
         kBlendFuncAdd = 0,
@@ -84,6 +97,18 @@ namespace Gnm {
         kBlendMultiplierInverseSrc1Alpha = 18,
         kBlendMultiplierConstantAlpha = 19,
         kBlendMultiplierOneMinusConstantAlpha = 20,
+    };
+}  // namespace Gnm
+}  // namespace sce
+
+namespace sce {
+namespace Gnm {
+    enum BorderColor
+    {
+        kBorderColorTransBlack = 0,
+        kBorderColorOpaqueBlack = 1,
+        kBorderColorOpaqueWhite = 2,
+        kBorderColorFromTable = 3,
     };
 }  // namespace Gnm
 }  // namespace sce
@@ -251,6 +276,22 @@ namespace Gnm {
 
 namespace sce {
 namespace Gnm {
+    enum DepthCompare
+    {
+        kDepthCompareNever = 0,
+        kDepthCompareLess = 1,
+        kDepthCompareEqual = 2,
+        kDepthCompareLessEqual = 3,
+        kDepthCompareGreater = 4,
+        kDepthCompareNotEqual = 5,
+        kDepthCompareGreaterEqual = 6,
+        kDepthCompareAlways = 7,
+    };
+}  // namespace Gnm
+}  // namespace sce
+
+namespace sce {
+namespace Gnm {
     enum DepthControlZWrite
     {
         kDepthControlZWriteDisable = 0,
@@ -407,6 +448,18 @@ namespace Gnm {
 
 namespace sce {
 namespace Gnm {
+    enum FilterMode
+    {
+        kFilterModePoint = 0,
+        kFilterModeBilinear = 1,
+        kFilterModeAnisoPoint = 2,
+        kFilterModeAnisoBilinear = 3,
+    };
+}  // namespace Gnm
+}  // namespace sce
+
+namespace sce {
+namespace Gnm {
     enum GsMaxOutputPrimitiveDwordSize
     {
         kGsMaxOutputPrimitiveDwordSize1024 = 0,
@@ -448,6 +501,17 @@ namespace Gnm {
         kIndexSize32 = 1,
         kIndexSize16ForDispatchDraw = 16,
         kIndexSize32ForDispatchDraw = 17,
+    };
+}  // namespace Gnm
+}  // namespace sce
+
+namespace sce {
+namespace Gnm {
+    enum MipFilterMode
+    {
+        kMipFilterModeNone = 0,
+        kMipFilterModePoint = 1,
+        kMipFilterModeLinear = 2,
     };
 }  // namespace Gnm
 }  // namespace sce
@@ -1113,6 +1177,22 @@ namespace Gnm {
 
 namespace sce {
 namespace Gnm {
+    enum WrapMode
+    {
+        kWrapModeWrap = 0,
+        kWrapModeMirror = 1,
+        kWrapModeClampLastTexel = 2,
+        kWrapModeMirrorOnceLastTexel = 3,
+        kWrapModeClampHalfBorder = 4,
+        kWrapModeMirrorOnceHalfBorder = 5,
+        kWrapModeClampBorder = 6,
+        kWrapModeMirrorOnceBorder = 7,
+    };
+}  // namespace Gnm
+}  // namespace sce
+
+namespace sce {
+namespace Gnm {
     enum WriteDataConfirmMode
     {
         kWriteDataConfirmDisable = 0,
@@ -1127,6 +1207,17 @@ namespace Gnm {
     {
         kZCompareBaseZMin = 0,
         kZCompareBaseZMax = 1,
+    };
+}  // namespace Gnm
+}  // namespace sce
+
+namespace sce {
+namespace Gnm {
+    enum ZFilterMode
+    {
+        kZFilterModeNone = 0,
+        kZFilterModePoint = 1,
+        kZFilterModeLinear = 2,
     };
 }  // namespace Gnm
 }  // namespace sce

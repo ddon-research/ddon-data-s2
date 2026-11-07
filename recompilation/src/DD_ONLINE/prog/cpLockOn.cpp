@@ -41,8 +41,11 @@ inline void cpLockOn::operator delete(void* p_addr) {
 }
 
 cpLockOn::cpLockOn() {
-    DDON_STUB("cpLockOn::cpLockOn")
-    /* stub */
+    mpResource = nullptr;
+    mpModel = nullptr;
+    sLockOnManager::getInstance()->registerLockOn(this);
+    mNoEntry = false;
+    mRequestLockOffAll = nLockOnTarget::STATE_NONE;
 }
 
 cpLockOn::~cpLockOn() {
@@ -373,22 +376,30 @@ const MtDTI& cpLockOn::cLockOnTarget::getDTI() const {
     return cpLockOn::cLockOnTarget::DTI;
 }
 
+inline void* cpLockOn::cLockOnTarget::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cpLockOn::cLockOnTarget::DTI)->memAlloc(sz, align, cpLockOn::cLockOnTarget::DTI.getID());
+}
+
 inline void cpLockOn::cLockOnTarget::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cpLockOn::cLockOnTarget::DTI)->memFree(p_addr);
 }
 
 cpLockOn::cLockOnTarget::cLockOnTarget() {
-    DDON_STUB("cpLockOn::cLockOnTarget::cLockOnTarget")
-    /* stub */
+    mBaseRadius = 0.0f;
+    mBaseDir = MtVector3::AxisZ;
+    mOfsPos = MtVector3::Zero;
+    mCalcOfsPos = false;
+    mAttr = 0;
+    mJointInfoID = 0;
+    mLockOnState = nLockOnTarget::STATE_NORMAL;
 }
 
 cpLockOn::cLockOnTarget::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cpLockOn::cLockOnTarget::MyDTI cpLockOn::cLockOnTarget::DTI("cpLockOn::cLockOnTarget", &::cGeneralPoint::DTI, 160ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpLockOn::cLockOnTarget::MyDTI::newInstance() const {
-    DDON_STUB("cpLockOn::cLockOnTarget::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpLockOn::cLockOnTarget::MyDTI::newInstance() const {
+    return new (16u) cpLockOn::cLockOnTarget;
 }
 
 template MtTypedArray<cpLockOn::cLockOnTarget>::~MtTypedArray();

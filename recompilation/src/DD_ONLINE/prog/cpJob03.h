@@ -150,7 +150,7 @@ public:
     bool isJustShot();
     void setIsJustShot(bool flag);
     void changeArrowType();
-    void setArrowEquipType(u32 type);
+    void setArrowEquipType(u32 type = 0);
     u32 getArrowEquipType();
     u32 getArrowType(u32 uId);
     void setShotArrowType(u32 type);
@@ -284,6 +284,10 @@ inline u32 cpJob03::getArrowNum() const {
 
 inline u32 cpJob03::getArrowNumMax() const {
     return this->mArrowNumMax_Gi;
+}
+
+inline void cpJob03::setArrowEquipType(u32 type) {
+    this->mArrowEquipType = 0;
 }
 
 inline void cpJob03::requestMoveSpline() {

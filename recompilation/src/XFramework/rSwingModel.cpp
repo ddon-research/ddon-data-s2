@@ -9,6 +9,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPropertyList.h"
+#include "../MT/MtStream.h"
 #include "../MT/MtTime.h"
 #include "cResource.h"
 #include "nDrawVertexBuffer.h"
@@ -54,8 +55,56 @@ bool rSwingModel::save(MtStream& out) {
 }
 
 __attribute__((weak)) bool rSwingModel::load(MtStream& in) {
-    DDON_STUB("rSwingModel::load")
-    return {};
+    HEADER header;
+    in.read(&header, sizeof(HEADER));
+    if (header.magic != HEADER_MAGIC) {
+        return false;
+    }
+    if (header.version != DATA_VERSION) {
+        return false;
+    }
+    u32 prim_count = 0u;
+    in.read(&prim_count, 4u);
+    u64 t3 = prim_count;
+    u64 t4 = t3 * sizeof(PRIMITIVE_QUANT_INFO);
+    PRIMITIVE_QUANT_INFO* t0 = static_cast<PRIMITIVE_QUANT_INFO*>(MtMemoryAllocator::getAllocator(rSwingModel::DTI)->memAlloc(t4, 16u));
+    if (t3 != 0u) {
+        PRIMITIVE_QUANT_INFO* t1 = t0;
+        PRIMITIVE_QUANT_INFO* t5 = t0 + t3;
+        do {
+            t1->quant_scale = MtVector3();
+            t1->quant_offset = MtVector3();
+            ++t1;
+        } while (t1 != t5);
+    }
+    this->mpPrimQuantInfo = t0;
+    in.read(t0, prim_count * sizeof(PRIMITIVE_QUANT_INFO));
+    u32 vertex_buffer_size;
+    in.read(&vertex_buffer_size, 4u);
+    bool check = true;
+    if (vertex_buffer_size != 0u) {
+        nDraw::VertexBuffer* t2 = new (16u) nDraw::VertexBuffer(vertex_buffer_size, nDraw::USAGE_DEFAULT, nullptr);
+        this->mpVertexBuffer = t2;
+        void* pdata = t2->map(nDraw::MAP_WRITE_DISCARD);
+        check = (pdata != nullptr);
+        if (check) {
+            in.read(pdata, vertex_buffer_size);
+            this->mpVertexBuffer->unmap();
+        }
+    } else {
+        if (this->mpPrimQuantInfo != nullptr) {
+            PRIMITIVE_QUANT_INFO* t6 = this->mpPrimQuantInfo;
+            MtMemoryAllocator::getAllocator(rSwingModel::DTI)->memFree(t6);
+            this->mpPrimQuantInfo = nullptr;
+        }
+    }
+    in.read(&this->mSwingMode, 4u);
+    in.read(&this->mFrequencyFactor, 4u);
+    in.read(&this->mHighPrecisionMode, 1u);
+    in.read(&this->mAdjustPosition, 1u);
+    in.read(&this->mAdjustNormalTangent, 1u);
+    in.read(&this->mUseWorldPosition, 1u);
+    return check;
 }
 
 MT_CTSTR rSwingModel::getExt() const {

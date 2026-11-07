@@ -285,7 +285,7 @@ public:
     SceUserServiceUserId getUserId() const;
     const SceSaveDataTitleId* getTitleId() const;
     const SceSaveDataFingerprint* getFingerprint() const;
-    void setListSaveCanCreateNum(u32 Num);
+    void setListSaveCanCreateNum(u32 Num = 5);
     RESULT beginListLoad();
     RESULT beginListSave();
     RESULT beginListDelete();
@@ -386,4 +386,8 @@ inline const SceSaveDataTitleId* sSavedata::getTitleId() const {
 
 inline const SceSaveDataFingerprint* sSavedata::getFingerprint() const {
     return this->mFingerprint;
+}
+
+inline void sSavedata::setListSaveCanCreateNum(u32 Num) {
+    this->mListSaveCanCreateNum = 5;
 }

@@ -33,9 +33,22 @@ void* cSetInfoNpc::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoNpc::cSetInfoNpc() {
-    DDON_STUB("cSetInfoNpc::cSetInfoNpc")
-    /* stub */
+__attribute__((noinline)) cSetInfoNpc::cSetInfoNpc() {
+    mNpcId = -1;
+    mFilePath = "";
+    mIsCommunicate = false;
+    mClothType = 0;
+    mDefNPCMotCategory = 0;
+    mDefNPCMotNo = -1;
+    mLantern = 0;
+    mThinkIndex = 0;
+    mJobLv = 0;
+    mDisableScrAdj = false;
+    mDisableLedgerFinger = false;
+    mIsForceListTalk = false;
+    mIsAttand = false;
+    mDisableTouchAction = false;
+    mDispElseQuestTalk = true;
 }
 
 cSetInfoNpc::~cSetInfoNpc() {
@@ -47,8 +60,112 @@ __attribute__((weak)) void cSetInfoNpc::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) bool cSetInfoNpc::load(MtDataReader& r) {
-    DDON_STUB("cSetInfoNpc::load")
-    return {};
+    mNpcId = r.readS32();
+    char t0[256];
+    r.readString(t0, 256u);
+    mFilePath = t0;
+    {
+        bool t1 = false;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            u8 t2 = r.mBuffer[r.mSeekPt];
+            r.mSeekPt = r.mSeekPt + 1;
+            t1 = t2 != 0;
+        }
+        mIsCommunicate = t1;
+    }
+    {
+        u8& t4 = mClothType;
+        u8 t3 = 0;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            t3 = r.mBuffer[r.mSeekPt];
+            r.mSeekPt = r.mSeekPt + 1;
+        }
+        t4 = t3;
+    }
+    {
+        s8& t6 = mDefNPCMotCategory;
+        s8 t5 = 0;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            t5 = static_cast<s8>(r.mBuffer[r.mSeekPt]);
+            r.mSeekPt = r.mSeekPt + 1;
+        }
+        t6 = t5;
+    }
+    {
+        s8& t8 = mDefNPCMotNo;
+        s8 t7 = 0;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            t7 = static_cast<s8>(r.mBuffer[r.mSeekPt]);
+            r.mSeekPt = r.mSeekPt + 1;
+        }
+        t8 = t7;
+    }
+    mThinkIndex = r.readU16();
+    mJobLv = r.readU16();
+    {
+        u8& t10 = mLantern;
+        u8 t9 = 0;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            t9 = r.mBuffer[r.mSeekPt];
+            r.mSeekPt = r.mSeekPt + 1;
+        }
+        t10 = t9;
+    }
+    {
+        bool t11 = false;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            u8 t12 = r.mBuffer[r.mSeekPt];
+            r.mSeekPt = r.mSeekPt + 1;
+            t11 = t12 != 0;
+        }
+        mDisableScrAdj = t11;
+    }
+    {
+        bool t13 = false;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            u8 t14 = r.mBuffer[r.mSeekPt];
+            r.mSeekPt = r.mSeekPt + 1;
+            t13 = t14 != 0;
+        }
+        mDisableLedgerFinger = t13;
+    }
+    {
+        bool t15 = false;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            u8 t16 = r.mBuffer[r.mSeekPt];
+            r.mSeekPt = r.mSeekPt + 1;
+            t15 = t16 != 0;
+        }
+        mIsForceListTalk = t15;
+    }
+    {
+        bool t17 = false;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            u8 t18 = r.mBuffer[r.mSeekPt];
+            r.mSeekPt = r.mSeekPt + 1;
+            t17 = t18 != 0;
+        }
+        mIsAttand = t17;
+    }
+    {
+        bool t19 = false;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            u8 t20 = r.mBuffer[r.mSeekPt];
+            r.mSeekPt = r.mSeekPt + 1;
+            t19 = t20 != 0;
+        }
+        mDisableTouchAction = t19;
+    }
+    {
+        bool t21 = false;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            u8 t22 = r.mBuffer[r.mSeekPt];
+            r.mSeekPt = r.mSeekPt + 1;
+            t21 = t22 != 0;
+        }
+        mDispElseQuestTalk = t21;
+    }
+    return this->cSetInfoCharacter::load(r);
 }
 
 __attribute__((weak)) bool cSetInfoNpc::save(MtDataWriter& w) {

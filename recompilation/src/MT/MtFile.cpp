@@ -178,8 +178,14 @@ bool MtFile::isAsyncReadable() {
 }
 
 __attribute__((weak)) u32 MtFile::getDriveType(MT_CTSTR path) {
-    DDON_STUB("MtFile::getDriveType")
-    return {};
+        MtFile::DRIVETYPE type = DRIVETYPE_HOME;
+        u32 offset = 0;
+        u32 src_offset = 0;
+        do {
+            mpPathDriveTypeFunc(path + offset, type, src_offset, nullptr);
+            offset += src_offset;
+        } while (type == DRIVETYPE_ABS);
+        return type;
 }
 
 __attribute__((weak)) bool MtFile::checkAcceptableName(MT_CTSTR filename, MT_CTSTR findName) {

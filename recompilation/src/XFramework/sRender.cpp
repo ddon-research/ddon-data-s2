@@ -25,6 +25,7 @@
 #include "nDrawBuffer.h"
 #include "nDrawIndexBuffer.h"
 #include "nDrawResource.h"
+#include "nDrawSamplerState.h"
 #include "nDrawScene.h"
 #include "nDrawTexture.h"
 #include "nDrawVertexBuffer.h"
@@ -36,6 +37,7 @@
 #include "sScene.h"
 #include "sShader2.h"
 #include "sUnit.h"
+#include "../generated/shared/sampler.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

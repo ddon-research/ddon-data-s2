@@ -32,8 +32,11 @@ inline void cpPivotCtrl::operator delete(void* p_addr) {
 }
 
 cpPivotCtrl::cpPivotCtrl() {
-    DDON_STUB("cpPivotCtrl::cpPivotCtrl")
-    /* stub */
+    mpModel = nullptr;
+    mPivotPos = MtVector3::Zero;
+    mPivotJointNo = 255;
+    mPivotOffset = MtVector3::Zero;
+    mOrgPos = MtVector3::Zero;
 }
 
 cpPivotCtrl::~cpPivotCtrl() {
@@ -94,8 +97,7 @@ cpPivotCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 
 cpPivotCtrl::MyDTI cpPivotCtrl::DTI("cpPivotCtrl", &::cpComponent::DTI, 160ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpPivotCtrl::MyDTI::newInstance() const {
-    DDON_STUB("cpPivotCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpPivotCtrl::MyDTI::newInstance() const {
+    return new (16u) cpPivotCtrl;
 }
 

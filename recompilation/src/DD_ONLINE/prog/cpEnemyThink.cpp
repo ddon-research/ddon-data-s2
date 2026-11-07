@@ -79,8 +79,18 @@ inline void cpEnemyThink::operator delete(void* p_addr) {
 }
 
 cpEnemyThink::cpEnemyThink() {
-    DDON_STUB("cpEnemyThink::cpEnemyThink")
-    /* stub */
+    mDamagePos = MtVector3::Zero;
+    mIsBigEnemy = false;
+    mTargetJumpPos = MtVector3::Zero;
+    mTargetJumpDir = 0.0f;
+    mpRageTable = nullptr;
+    mRage.mAutoDelete = true;
+    mIsRage = false;
+    mIsThinkStop = false;
+    mIsFmsTarget = false;
+    mpFsmTarget = nullptr;
+    mVecFsmTarget = MtVector3::Zero;
+    mpModel = nullptr;
 }
 
 cpEnemyThink::~cpEnemyThink() {
@@ -256,9 +266,8 @@ cpEnemyThink::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, 
 
 cpEnemyThink::MyDTI cpEnemyThink::DTI("cpEnemyThink", &::cpThinkBase::DTI, 5104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpEnemyThink::MyDTI::newInstance() const {
-    DDON_STUB("cpEnemyThink::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpEnemyThink::MyDTI::newInstance() const {
+    return new (16u) cpEnemyThink;
 }
 
 const MtDTI& rRageTable::getDTI() const {

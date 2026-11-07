@@ -246,8 +246,8 @@ void cQuestManagerBase::callbackGetQuestList(u32 errorCode) {
 }
 
 cQuestManagerBase::cQuestManagerBase(MT_CTSTR managerName) {
-    DDON_STUB("cQuestManagerBase::cQuestManagerBase")
-    /* stub */
+    mIsReqGetQuestList = false;
+    mQuestTask.mAutoDelete = true;
 }
 
 cQuestManagerBase::~cQuestManagerBase() {

@@ -102,12 +102,22 @@ __attribute__((weak)) void CDataPartyMemberMinimum::operator delete(void* p_addr
     CDataPartyMemberMinimum::getAllocator()->memFree(p_addr);
 }
 
+CDataPartyMemberMinimum::CDataPartyMemberMinimum() {
+    m_ucMemberType = 0;
+    m_CommunityCharacterBaseInfo.m_wstrClanName.value = nullptr;
+    m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+    m_bIsLeader = false;
+    m_bIsPawn = false;
+    m_nMemberIndex = 0;
+    m_unPawnId = 0;
+}
+
 CDataPartyMemberMinimum::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 CDataPartyMemberMinimum::MyDTI CDataPartyMemberMinimum::DTI("CDataPartyMemberMinimum", &::CPacketDataBase::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataPartyMemberMinimum::MyDTI::newInstance() const {
-    DDON_STUB("CDataPartyMemberMinimum::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPartyMemberMinimum::MyDTI::newInstance() const {
+    return new (16u) CDataPartyMemberMinimum;
 }
 

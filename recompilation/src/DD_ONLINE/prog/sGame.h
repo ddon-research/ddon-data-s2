@@ -337,7 +337,7 @@ public:
     bool isNewGame() const;
     void setIsNewGame(bool flag);
     bool isViaPrologue() const;
-    void setIsViaPrologue(bool flag);
+    void setIsViaPrologue(bool flag = false);
     bool isPlayPrologue();
     bool isPlayerEditNow() const;
     void setIsPlayerEditNow(bool flag);
@@ -787,6 +787,10 @@ inline s32 sGame::getReturnStageNo() const {
 
 inline s32 sGame::getReturnStartPosNo() const {
     return this->mReturnStartPosNo;
+}
+
+inline void sGame::setIsViaPrologue(bool flag) {
+    this->mIsViaPrologue = false;
 }
 
 inline void sGame::offDisableActionPlayer() {

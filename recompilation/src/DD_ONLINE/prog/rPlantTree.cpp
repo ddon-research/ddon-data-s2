@@ -121,6 +121,10 @@ const MtDTI& rPlantTree::Tree::Point::getDTI() const {
     return rPlantTree::Tree::Point::DTI;
 }
 
+inline void* rPlantTree::Tree::Point::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rPlantTree::Tree::Point::DTI)->memAlloc(sz, align, rPlantTree::Tree::Point::DTI.getID());
+}
+
 inline void rPlantTree::Tree::Point::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rPlantTree::Tree::Point::DTI)->memFree(p_addr);
 }
@@ -149,8 +153,7 @@ rPlantTree::Tree::Point::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 rPlantTree::Tree::Point::MyDTI rPlantTree::Tree::Point::DTI("rPlantTree::Tree::Point", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rPlantTree::Tree::Point::MyDTI::newInstance() const {
-    DDON_STUB("rPlantTree::Tree::Point::MyDTI::newInstance")
-    return nullptr;
+MtObject* rPlantTree::Tree::Point::MyDTI::newInstance() const {
+    return new (16u) rPlantTree::Tree::Point;
 }
 

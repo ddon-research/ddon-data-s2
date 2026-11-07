@@ -26,6 +26,10 @@ const MtDTI& cGroundAttrInfo::getDTI() const {
     return cGroundAttrInfo::DTI;
 }
 
+inline void* cGroundAttrInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cGroundAttrInfo::DTI)->memAlloc(sz, align, cGroundAttrInfo::DTI.getID());
+}
+
 inline void cGroundAttrInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cGroundAttrInfo::DTI)->memFree(p_addr);
 }
@@ -45,9 +49,8 @@ cGroundAttrInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 cGroundAttrInfo::MyDTI cGroundAttrInfo::DTI("cGroundAttrInfo", &::MtObject::DTI, 288ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cGroundAttrInfo::MyDTI::newInstance() const {
-    DDON_STUB("cGroundAttrInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cGroundAttrInfo::MyDTI::newInstance() const {
+    return new (16u) cGroundAttrInfo;
 }
 
 const MtDTI& cpScrCollision::getDTI() const {

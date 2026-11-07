@@ -44,8 +44,18 @@
 #define DDON_STUB(name)
 #endif
 
+static const f32 beardownTimerTbl[3][3] = {
+    {0x1p+3f, 0x1.4p+3f, 0x1.4p+2f},
+    {0x1.8p+3f, 0x1.ep+3f, 0x1.2p+3f},
+    {0x1.8p+1f, 0x1p+2f, 0x1p+1f},
+};
+
 const MtDTI& cCatchInfo::getDTI() const {
     return cCatchInfo::DTI;
+}
+
+inline void* cCatchInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCatchInfo::DTI)->memAlloc(sz, align, cCatchInfo::DTI.getID());
 }
 
 inline void cCatchInfo::operator delete(void* p_addr) {
@@ -57,7 +67,10 @@ inline cCatchInfo::cCatchInfo() {
     mReleaseType = 0;
     mCatchUid = 0;
     mJointNo = 0xFF;
-    mHitPos = MtVector3::Zero;
+    mHitPos.x = MtVector3::Zero.x;
+    mHitPos.y = MtVector3::Zero.y;
+    mHitPos.z = MtVector3::Zero.z;
+    mHitPos.pad_ = 0.0f;
 }
 
 cCatchInfo::~cCatchInfo() {
@@ -67,17 +80,31 @@ cCatchInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u3
 
 cCatchInfo::MyDTI cCatchInfo::DTI("cCatchInfo", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCatchInfo::MyDTI::newInstance() const {
-    DDON_STUB("cCatchInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCatchInfo::MyDTI::newInstance() const {
+    return new (16u) cCatchInfo;
 }
 
 const MtDTI& cCaughtInfo::getDTI() const {
     return cCaughtInfo::DTI;
 }
 
+inline void* cCaughtInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCaughtInfo::DTI)->memAlloc(sz, align, cCaughtInfo::DTI.getID());
+}
+
 inline void cCaughtInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCaughtInfo::DTI)->memFree(p_addr);
+}
+
+inline cCaughtInfo::cCaughtInfo() {
+    mCatchType = 0;
+    mEscapeType = 0;
+    mCatchUid = 0;
+    mJointNo = 0xFF;
+    mHitPos.x = MtVector3::Zero.x;
+    mHitPos.y = MtVector3::Zero.y;
+    mHitPos.z = MtVector3::Zero.z;
+    mHitPos.pad_ = 0.0f;
 }
 
 cCaughtInfo::~cCaughtInfo() {
@@ -87,9 +114,8 @@ cCaughtInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 
 cCaughtInfo::MyDTI cCaughtInfo::DTI("cCaughtInfo", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCaughtInfo::MyDTI::newInstance() const {
-    DDON_STUB("cCaughtInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCaughtInfo::MyDTI::newInstance() const {
+    return new (16u) cCaughtInfo;
 }
 
 const MtDTI& cpCatchCtrl::getDTI() const {

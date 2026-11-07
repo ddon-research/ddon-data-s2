@@ -6,6 +6,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../MT/MtRandom.h"
@@ -40,8 +41,17 @@ inline void uSoundSequenceSe::operator delete(void* p_addr) {
 }
 
 uSoundSequenceSe::uSoundSequenceSe() {
-    DDON_STUB("uSoundSequenceSe::uSoundSequenceSe")
-    /* stub */
+    mSeqState = 0;
+    mSeqStateOld = 0;
+    mJointNo = 0;
+    mVolume = 0.0f;
+    mRequestMode = 0;
+    mpTgtModel = nullptr;
+    mpSeqSeWork = nullptr;
+    mpSequenceSe = nullptr;
+    mCallPos = MtVector3::Zero;
+    mIsSetCallPos = false;
+    mIsAutoDelete = false;
 }
 
 uSoundSequenceSe::~uSoundSequenceSe() {
@@ -139,8 +149,7 @@ uSoundSequenceSe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 uSoundSequenceSe::MyDTI uSoundSequenceSe::DTI("uSoundSequenceSe", &::cUnit::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uSoundSequenceSe::MyDTI::newInstance() const {
-    DDON_STUB("uSoundSequenceSe::MyDTI::newInstance")
-    return nullptr;
+MtObject* uSoundSequenceSe::MyDTI::newInstance() const {
+    return new (16u) uSoundSequenceSe;
 }
 

@@ -193,42 +193,42 @@ public:
     void customCircleActionProc(u32 act);
     void climbCircleActionProc(u32 act);
     bool isHealingCircle();
-    void setHealingCircleFlg(bool flg);
+    void setHealingCircleFlg(bool flg = false);
     void deleteHealingCircle();
     bool isShiftHealingCircle();
     void setShiftHealingCircleFlg(bool flg);
     void createShiftHealingCircle();
     void deleteShiftHealingCircle();
     bool isAttackCircle();
-    void setAttackCircleFlg(bool flg);
+    void setAttackCircleFlg(bool flg = false);
     void deleteAttackCircle();
     bool isShiftAttackCircle();
     void setShiftAttackCircleFlg(bool flg);
     void createShiftAttackCircle();
     void deleteShiftAttackCircle();
     bool isDefenceCircle();
-    void setDefenceCircleFlg(bool flg);
+    void setDefenceCircleFlg(bool flg = false);
     void deleteDefenceCircle();
     bool isShiftDefenceCircle();
     void setShiftDefenceCircleFlg(bool flg);
     void createShiftDefenceCircle();
     void deleteShiftDefenceCircle();
     bool isIronField();
-    void setIronFieldFlg(bool flg);
+    void setIronFieldFlg(bool flg = false);
     void deleteIronField();
     bool isShiftIronCircle();
     void setShiftIronCircleFlg(bool flg);
     void createShiftIronCircle();
     void deleteShiftIronCircle();
     bool isSaintgCircle();
-    void setSaintCircleFlg(bool flg);
+    void setSaintCircleFlg(bool flg = false);
     void deleteSaintCircle();
     bool isShiftSaintCircle();
     void setShiftSaintCircleFlg(bool flg);
     void createShiftSaintCircle();
     void deleteShiftSaintCircle();
     bool isSolaceCircle();
-    void setSolaceCircleFlg(bool flg);
+    void setSolaceCircleFlg(bool flg = false);
     void deleteSolaceCircle();
     bool isShiftSolaceCircle();
     void setShiftSolaceCircleFlg(bool flg);
@@ -252,7 +252,7 @@ public:
     const uDDOModel* getOptionBigShlSecond();
     void resetHealHateInterval();
     bool isCanFloating();
-    void setCanFloating(bool flg);
+    void setCanFloating(bool flg = false);
     s32 getAirChantCount() const;
     void addgeAirChantCount();
     void killAllCircle();
@@ -297,6 +297,34 @@ inline void* cpJob04::operator new(size_t sz, void* p_addr) {
 
 inline void cpJob04::setFeildBit(u32 bit) {
     this->mCircleFlgs = bit;
+}
+
+inline void cpJob04::setHealingCircleFlg(bool flg) {
+    this->mCircleFlgs = this->mCircleFlgs & 0xFFFFFFFBu;
+}
+
+inline void cpJob04::setAttackCircleFlg(bool flg) {
+    this->mCircleFlgs = this->mCircleFlgs & 0xFFFFFFFEu;
+}
+
+inline void cpJob04::setDefenceCircleFlg(bool flg) {
+    this->mCircleFlgs = this->mCircleFlgs & 0xFFFFFFFDu;
+}
+
+inline void cpJob04::setIronFieldFlg(bool flg) {
+    this->mCircleFlgs = this->mCircleFlgs & 0xFFFFFFEFu;
+}
+
+inline void cpJob04::setSaintCircleFlg(bool flg) {
+    this->mCircleFlgs = this->mCircleFlgs & 0xFFFFFFDFu;
+}
+
+inline void cpJob04::setSolaceCircleFlg(bool flg) {
+    this->mCircleFlgs = this->mCircleFlgs & 0xFFFFFFBFu;
+}
+
+inline void cpJob04::setCanFloating(bool flg) {
+    this->mCanFloating = false;
 }
 
 inline s32 cpJob04::getAirChantCount() const {

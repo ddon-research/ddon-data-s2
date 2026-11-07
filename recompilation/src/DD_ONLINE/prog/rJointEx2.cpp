@@ -13,8 +13,16 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cJointEx2>::allocData(unsigned int);
+#endif
+
 const MtDTI& cJointEx2::getDTI() const {
     return cJointEx2::DTI;
+}
+
+inline void* cJointEx2::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cJointEx2::DTI)->memAlloc(sz, align, cJointEx2::DTI.getID());
 }
 
 inline void cJointEx2::operator delete(void* p_addr) {
@@ -27,7 +35,10 @@ cJointEx2::cJointEx2() {
     mAxis = 7;
     mRate = 0.5f;
     mTwistRate = 0.0f;
-    mRotAdd = MtVector3::Zero;
+    mRotAdd.x = MtVector3::Zero.x;
+    mRotAdd.y = MtVector3::Zero.y;
+    mRotAdd.z = MtVector3::Zero.z;
+    mRotAdd.pad_ = 0.0f;
     mLimitAxis = 0;
     mLimitMin = 0.0f;
     mLimitMax = 0.0f;
@@ -37,9 +48,8 @@ cJointEx2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32
 
 cJointEx2::MyDTI cJointEx2::DTI("cJointEx2", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cJointEx2::MyDTI::newInstance() const {
-    DDON_STUB("cJointEx2::MyDTI::newInstance")
-    return nullptr;
+MtObject* cJointEx2::MyDTI::newInstance() const {
+    return new (16u) cJointEx2;
 }
 
 const MtDTI& rJointEx2::getDTI() const {

@@ -92,6 +92,10 @@ const MtDTI& rMapSpotData::Data::getDTI() const {
     return rMapSpotData::Data::DTI;
 }
 
+inline void* rMapSpotData::Data::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rMapSpotData::Data::DTI)->memAlloc(sz, align, rMapSpotData::Data::DTI.getID());
+}
+
 inline void rMapSpotData::Data::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rMapSpotData::Data::DTI)->memFree(p_addr);
 }
@@ -120,8 +124,7 @@ rMapSpotData::Data::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 rMapSpotData::Data::MyDTI rMapSpotData::Data::DTI("rMapSpotData::Data", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rMapSpotData::Data::MyDTI::newInstance() const {
-    DDON_STUB("rMapSpotData::Data::MyDTI::newInstance")
-    return nullptr;
+MtObject* rMapSpotData::Data::MyDTI::newInstance() const {
+    return new (16u) rMapSpotData::Data;
 }
 

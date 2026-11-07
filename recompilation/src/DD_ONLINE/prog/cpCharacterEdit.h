@@ -414,7 +414,7 @@ public:
     void setEquipComponent(cpEquip* pEquip);
     void setFlag(u32);
     u32 getFlag();
-    void onFlag(u32 flag);
+    void onFlag(u32 flag = 1);
     void offFlag(u32);
     f32 getHeightScale();
     void setResource(rCharacterEdit* pRes);
@@ -484,7 +484,7 @@ public:
     bool isBaking();
     rCharacterEditColorDef* getColorDef(u32 type);
     bool isSleep();
-    void setSleep(bool sleep);
+    void setSleep(bool sleep = false);
 protected:
     void setMuscleConstRes(rCharacterEditMuscle* pRes);
     rCharacterEditMuscle* getMuscleConstRes();
@@ -600,6 +600,10 @@ inline void* cpCharacterEdit::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cpCharacterEdit::onFlag(u32 flag) {
+    this->mFlag = this->mFlag | 1u;
+}
+
 inline f32 cpCharacterEdit::getHeightScale() {
     return this->mHeightScale;
 }
@@ -670,6 +674,11 @@ inline void cpCharacterEdit::setBaking() {
 
 inline rCharacterEditColorDef* cpCharacterEdit::getColorDef(u32 type) {
     return this->mpColorDef[type];
+}
+
+inline void cpCharacterEdit::setSleep(bool sleep) {
+    this->mSleepRno = 0;
+    this->mSleep = false;
 }
 
 inline bool cpCharacterEdit::isNeedUpdateMatrixRetry() const {

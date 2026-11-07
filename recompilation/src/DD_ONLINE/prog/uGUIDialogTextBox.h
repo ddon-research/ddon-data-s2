@@ -84,7 +84,7 @@ public:
     virtual void moveInput();  // vtable slot 87
     virtual void moveEvent();  // vtable slot 88
     void setTitle(MT_CTSTR msg);
-    void setTitleAnalyze(bool isAnalyze);
+    void setTitleAnalyze(bool isAnalyze = false);
     void setMsg(MT_CTSTR msg);
     MT_CTSTR getMsg();
     void setMsgMax(u32 uMax);
@@ -123,6 +123,10 @@ public:
 
 inline void* uGUIDialogTextBox::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void uGUIDialogTextBox::setTitleAnalyze(bool isAnalyze) {
+    this->mIsTitleAnalyze = false;
 }
 
 inline void uGUIDialogTextBox::setCheckNGWord() {

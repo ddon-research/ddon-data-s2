@@ -287,7 +287,7 @@ public:
     void setWorkRateMode(bool Flg);
     bool getWorkRateMode() const;
     void applyCustomWorkRateType(u32);
-    void setCustomWorkRateType(u32 Data);
+    void setCustomWorkRateType(u32 Data = 2);
     u32 getCustomWorkRateType() const;
     void setParentActor(uDDOModel* pParent, bool Flg0, bool Flg1);
     uDDOModel* getParentActor() const;
@@ -534,6 +534,10 @@ inline void uEffectExt::setWorkRateMode(bool Flg) {
 
 inline bool uEffectExt::getWorkRateMode() const {
     return this->mWorkRateMode;
+}
+
+inline void uEffectExt::setCustomWorkRateType(u32 Data) {
+    this->mCustomWorkRateType = 2;
 }
 
 inline void uEffectExt::setParentBaseModelFlag(bool Flg) {

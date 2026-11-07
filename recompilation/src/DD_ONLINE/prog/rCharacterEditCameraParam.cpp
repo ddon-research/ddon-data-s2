@@ -37,8 +37,28 @@ const MtDTI& cCharacterEditCameraParam::cCameraParam::getDTI() const {
     return cCharacterEditCameraParam::cCameraParam::DTI;
 }
 
+inline void* cCharacterEditCameraParam::cCameraParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCharacterEditCameraParam::cCameraParam::DTI)->memAlloc(sz, align, cCharacterEditCameraParam::cCameraParam::DTI.getID());
+}
+
 inline void cCharacterEditCameraParam::cCameraParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCharacterEditCameraParam::cCameraParam::DTI)->memFree(p_addr);
+}
+
+cCharacterEditCameraParam::cCameraParam::cCameraParam() {
+    mAttachJoint = 3;
+    mTargetOffset.x = MtVector3::Zero.x;
+    mTargetOffset.y = MtVector3::Zero.y;
+    mTargetOffset.z = MtVector3::Zero.z;
+    mTargetOffset.pad_ = 0.0f;
+    mCameraOffset.x = mTargetOffset.x;
+    mCameraOffset.y = mTargetOffset.y;
+    mCameraOffset.z = mTargetOffset.z;
+    mCameraOffset.pad_ = 0.0f;
+    mGlobalOffset.x = mCameraOffset.x;
+    mGlobalOffset.y = mCameraOffset.y;
+    mGlobalOffset.z = mCameraOffset.z;
+    mGlobalOffset.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void cCharacterEditCameraParam::cCameraParam::createProperty(MtPropertyList& s) {
@@ -50,9 +70,8 @@ cCharacterEditCameraParam::cCameraParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI
 
 cCharacterEditCameraParam::cCameraParam::MyDTI cCharacterEditCameraParam::cCameraParam::DTI("cCharacterEditCameraParam::cCameraParam", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCharacterEditCameraParam::cCameraParam::MyDTI::newInstance() const {
-    DDON_STUB("cCharacterEditCameraParam::cCameraParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCharacterEditCameraParam::cCameraParam::MyDTI::newInstance() const {
+    return new (16u) cCharacterEditCameraParam::cCameraParam;
 }
 
 const MtDTI& rCharacterEditCameraParam::getDTI() const {

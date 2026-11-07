@@ -12,6 +12,8 @@
 #define DDON_STUB(name)
 #endif
 
+static s32 mUniqueIDCounter;
+
 const MtDTI& cGeneralPoint::getDTI() const {
     return cGeneralPoint::DTI;
 }

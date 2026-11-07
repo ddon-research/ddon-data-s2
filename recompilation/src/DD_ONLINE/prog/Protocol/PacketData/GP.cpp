@@ -305,8 +305,7 @@ CDataGPShopLineupElementCourse::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 CDataGPShopLineupElementCourse::MyDTI CDataGPShopLineupElementCourse::DTI("CDataGPShopLineupElementCourse", &::CPacketDataBase::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataGPShopLineupElementCourse::MyDTI::newInstance() const {
-    DDON_STUB("CDataGPShopLineupElementCourse::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGPShopLineupElementCourse::MyDTI::newInstance() const {
+    return new (16u) CDataGPShopLineupElementCourse;
 }
 

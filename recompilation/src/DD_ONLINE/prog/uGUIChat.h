@@ -898,6 +898,13 @@ inline void* uGUIChat::cLogItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUIChat::cLogItem::cLogItem() : mCursorInfo() {
+    this->mpOBJ_msg_id_mouseover = nullptr;
+    this->mpOBJ_msg_id_m_id = nullptr;
+    this->mpINST_msg_log_item = nullptr;
+    this->mpINST_Null_log_item = nullptr;
+}
+
 inline void* uGUIChat::cLogInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

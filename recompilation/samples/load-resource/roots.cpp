@@ -12,6 +12,7 @@ extern const DdonRoot ddon_sample_rCraftUpGradeExp;
 extern const DdonRoot ddon_sample_rEffectStrip;
 extern const DdonRoot ddon_sample_rKeyCustomParam;
 extern const DdonRoot ddon_sample_rLanguageResIDConverter;
+extern const DdonRoot ddon_sample_rMsgSet;
 extern const DdonRoot ddon_sample_rNpcConstItem;
 extern const DdonRoot ddon_sample_rNpcCustomSkill;
 extern const DdonRoot ddon_sample_rPartsCtrlTable;
@@ -35,6 +36,7 @@ const DdonRoot* const ddon_sample_roots[] = {
     &ddon_sample_rEffectStrip,
     &ddon_sample_rKeyCustomParam,
     &ddon_sample_rLanguageResIDConverter,
+    &ddon_sample_rMsgSet,
     &ddon_sample_rNpcConstItem,
     &ddon_sample_rNpcCustomSkill,
     &ddon_sample_rPartsCtrlTable,

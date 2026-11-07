@@ -173,6 +173,10 @@ inline void* rStageMap::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cStageMap::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStageMap::DTI)->memFree(p_addr);
+}
+
 inline void* cStageMap::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cStageMap::DTI)->memAlloc(sz, align, ::cStageMap::DTI.::MtDTI::getID());
 }

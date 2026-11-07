@@ -593,14 +593,20 @@ __attribute__((weak)) u32 uModel::Motion::calcSequence(u32 page, s32 minframe, s
 
 static auto ddon_emit_0x01b63840 __attribute__((used)) = &uModel::Motion::getKeyFrameNum;
 
-__attribute__((weak)) bool uModel::Motion::hasKeyFrame(u32 idx) const {
-    DDON_STUB("uModel::Motion::hasKeyFrame")
-    return {};
+bool uModel::Motion::hasKeyFrame(u32 idx) const {
+    if (idx < mKeyFrameNum) {
+        return mpKeyFrameInfo[idx].key_num != 0;
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) u16 uModel::Motion::getKeyFrameWork(u32 idx) const {
-    DDON_STUB("uModel::Motion::getKeyFrameWork")
-    return {};
+u16 uModel::Motion::getKeyFrameWork(u32 idx) const {
+    if (idx < mKeyFrameNum) {
+        return static_cast<unsigned short>(mpKeyFrameInfo[idx].info >> 8);
+    } else {
+        return 0;
+    }
 }
 
 u32 uModel::Motion::getKeyFrame(u32 idx) const {

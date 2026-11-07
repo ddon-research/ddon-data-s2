@@ -66,8 +66,6 @@ cSetInfoOm::cSetInfoOm() {
 }
 
 cSetInfoOm::~cSetInfoOm() {
-    DDON_STUB("cSetInfoOm::~cSetInfoOm")
-    /* stub */
 }
 
 __attribute__((weak)) void cSetInfoOm::createProperty(MtPropertyList& s) {
@@ -409,9 +407,7 @@ const MtDTI& cSetInfoOmBadStatus::getDTI() const {
     return cSetInfoOmBadStatus::DTI;
 }
 
-cSetInfoOmBadStatus::~cSetInfoOmBadStatus() {
-    DDON_STUB("cSetInfoOmBadStatus::~cSetInfoOmBadStatus")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmBadStatus::~cSetInfoOmBadStatus() {
 }
 
 __attribute__((weak)) void cSetInfoOmBadStatus::createProperty(MtPropertyList& s) {
@@ -512,8 +508,107 @@ cSetInfoOmBadStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 cSetInfoOmBadStatus::MyDTI cSetInfoOmBadStatus::DTI("cSetInfoOmBadStatus", &::cSetInfoOm::DTI, 160ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cSetInfoOmBadStatus::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmBadStatus::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cSetInfoOmBadStatus;
+}
+
+const MtDTI& cSetInfoOmBlock::getDTI() const {
+    return cSetInfoOmBlock::DTI;
+}
+
+inline void* cSetInfoOmBlock::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmBlock::DTI)->memAlloc(sz, align, cSetInfoOmBlock::DTI.getID());
+}
+
+__attribute__((noinline)) cSetInfoOmBlock::~cSetInfoOmBlock() {
+}
+
+__attribute__((weak)) void cSetInfoOmBlock::createProperty(MtPropertyList& s) {
+    DDON_STUB("cSetInfoOmBlock::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void cSetInfoOmBlock::createToolProperty(MtPropertyList& s) {
+}
+
+bool cSetInfoOmBlock::load(MtDataReader& r) {
+    nDDOIO::readData(r, mQuestID);
+    return this->cSetInfoOm::load(r);
+}
+
+bool cSetInfoOmBlock::save(MtDataWriter& w) {
+    nDDOIO::writeData(w, mQuestID);
+    return this->cSetInfoOm::save(w);
+}
+
+bool cSetInfoOmBlock::applyInfo(cUnit* pu) const {
+    if (this->cSetInfoCoord::applyInfo(pu)) {
+        const MtDTI& t0 = pu->getDTI();
+        MT_CTSTR v0_1 = uOmModel::DTI.mName;
+        const MtDTI* v0_0 = &t0;
+        bool b1_0;
+        const MtDTI* v1_1;
+        MT_CTSTR v1_2;
+        for (;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    return false;
+                }
+            } else {
+                const MtDTI& t1 = pu->getDTI();
+                v1_2 = uOmModel::DTI.mName;
+                b1_0 = true;
+                v1_1 = &t1;
+                break;
+            }
+        }
+        for (;;) {
+            if (v1_2 == v1_1->mName) {
+                return b1_0;
+            } else {
+                if (v1_1->mpParent != nullptr) {
+                    v1_1 = v1_1->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool cSetInfoOmBlock::applyParam(cOmControl::InputLot& param) const {
+    this->cSetInfoOm::applyParam(param);
+    param.mQuestID = mQuestID;
+    return true;
+}
+
+void cSetInfoOmBlock::copy(cSetInfo* p) {
+    this->cSetInfoOm::copy(p);
+    const MtDTI& t0 = p->getDTI();
+    MT_CTSTR v0_1 = cSetInfoOmBlock::DTI.mName;
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            cSetInfoOmBlock* pSic = static_cast<cSetInfoOmBlock*>(p);
+            mQuestID = pSic->mQuestID;
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
+}
+
+cSetInfoOmBlock::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cSetInfoOmBlock::MyDTI cSetInfoOmBlock::DTI("cSetInfoOmBlock", &::cSetInfoOm::DTI, 120ul, 0u, 0u);
+
+MtObject* cSetInfoOmBlock::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmBlock;
 }
 
 const MtDTI& cSetInfoOmBoard::getDTI() const {
@@ -524,14 +619,11 @@ void* cSetInfoOmBoard::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmBoard::cSetInfoOmBoard() {
-    DDON_STUB("cSetInfoOmBoard::cSetInfoOmBoard")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmBoard::cSetInfoOmBoard() {
+        mBoardID = 0;
 }
 
-cSetInfoOmBoard::~cSetInfoOmBoard() {
-    DDON_STUB("cSetInfoOmBoard::~cSetInfoOmBoard")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmBoard::~cSetInfoOmBoard() {
 }
 
 __attribute__((weak)) void cSetInfoOmBoard::createProperty(MtPropertyList& s) {
@@ -636,14 +728,19 @@ void* cSetInfoOmBowlOfLife::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmBowlOfLife::cSetInfoOmBowlOfLife() {
-    DDON_STUB("cSetInfoOmBowlOfLife::cSetInfoOmBowlOfLife")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmBowlOfLife::cSetInfoOmBowlOfLife() {
+        mbWaitBowlOfLife = true;
+        mbFullBowlOfLife = false;
+        mbSetEM = false;
+        mbInvisible = false;
+        mIsQuest = false;
+        mQuestId = 0;
+        mKind = 0;
+        mGroup = 0;
+        mID = 0;
 }
 
-cSetInfoOmBowlOfLife::~cSetInfoOmBowlOfLife() {
-    DDON_STUB("cSetInfoOmBowlOfLife::~cSetInfoOmBowlOfLife")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmBowlOfLife::~cSetInfoOmBowlOfLife() {
 }
 
 __attribute__((weak)) void cSetInfoOmBowlOfLife::createProperty(MtPropertyList& s) {
@@ -655,8 +752,56 @@ __attribute__((weak)) void cSetInfoOmBowlOfLife::createToolProperty(MtPropertyLi
 }
 
 __attribute__((weak)) bool cSetInfoOmBowlOfLife::load(MtDataReader& r) {
-    DDON_STUB("cSetInfoOmBowlOfLife::load")
-    return {};
+        {
+            bool t0 = false;
+            if (r.mSeekPt < r.mBufsiz || r.refill()) {
+                u8 t2 = r.mBuffer[r.mSeekPt];
+                r.mSeekPt = r.mSeekPt + 1;
+                t0 = t2 != 0;
+            }
+            mbWaitBowlOfLife = t0;
+        }
+        {
+            bool t0 = false;
+            if (r.mSeekPt < r.mBufsiz || r.refill()) {
+                u8 t2 = r.mBuffer[r.mSeekPt];
+                r.mSeekPt = r.mSeekPt + 1;
+                t0 = t2 != 0;
+            }
+            mbFullBowlOfLife = t0;
+        }
+        {
+            bool t0 = false;
+            if (r.mSeekPt < r.mBufsiz || r.refill()) {
+                u8 t2 = r.mBuffer[r.mSeekPt];
+                r.mSeekPt = r.mSeekPt + 1;
+                t0 = t2 != 0;
+            }
+            mbSetEM = t0;
+        }
+        {
+            bool t0 = false;
+            if (r.mSeekPt < r.mBufsiz || r.refill()) {
+                u8 t2 = r.mBuffer[r.mSeekPt];
+                r.mSeekPt = r.mSeekPt + 1;
+                t0 = t2 != 0;
+            }
+            mbInvisible = t0;
+        }
+        {
+            bool t0 = false;
+            if (r.mSeekPt < r.mBufsiz || r.refill()) {
+                u8 t2 = r.mBuffer[r.mSeekPt];
+                r.mSeekPt = r.mSeekPt + 1;
+                t0 = t2 != 0;
+            }
+            mIsQuest = t0;
+        }
+        mQuestId = r.readU32();
+        mKind = r.readU16();
+        mGroup = r.readU16();
+        mID = r.readU16();
+        return this->cSetInfoOm::load(r);
 }
 
 bool cSetInfoOmBowlOfLife::save(MtDataWriter& w) {
@@ -1114,6 +1259,106 @@ __attribute__((weak)) MtObject* cSetInfoOmBowlOfLife::MyDTI::newInstance() const
     return nullptr;
 }
 
+const MtDTI& cSetInfoOmBreakTarget::getDTI() const {
+    return cSetInfoOmBreakTarget::DTI;
+}
+
+inline void* cSetInfoOmBreakTarget::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmBreakTarget::DTI)->memAlloc(sz, align, cSetInfoOmBreakTarget::DTI.getID());
+}
+
+__attribute__((noinline)) cSetInfoOmBreakTarget::~cSetInfoOmBreakTarget() {
+}
+
+__attribute__((weak)) void cSetInfoOmBreakTarget::createProperty(MtPropertyList& s) {
+    DDON_STUB("cSetInfoOmBreakTarget::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void cSetInfoOmBreakTarget::createToolProperty(MtPropertyList& s) {
+}
+
+bool cSetInfoOmBreakTarget::load(MtDataReader& r) {
+    nDDOIO::readData(r, mBreakHitNum);
+    return this->cSetInfoOm::load(r);
+}
+
+bool cSetInfoOmBreakTarget::save(MtDataWriter& w) {
+    nDDOIO::writeData(w, mBreakHitNum);
+    return this->cSetInfoOm::save(w);
+}
+
+bool cSetInfoOmBreakTarget::applyInfo(cUnit* pu) const {
+    if (this->cSetInfoCoord::applyInfo(pu)) {
+        const MtDTI& t0 = pu->getDTI();
+        MT_CTSTR v0_1 = uOmModel::DTI.mName;
+        const MtDTI* v0_0 = &t0;
+        bool b1_0;
+        const MtDTI* v1_1;
+        MT_CTSTR v1_2;
+        for (;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    return false;
+                }
+            } else {
+                const MtDTI& t1 = pu->getDTI();
+                v1_2 = uOmModel::DTI.mName;
+                b1_0 = true;
+                v1_1 = &t1;
+                break;
+            }
+        }
+        for (;;) {
+            if (v1_2 == v1_1->mName) {
+                return b1_0;
+            } else {
+                if (v1_1->mpParent != nullptr) {
+                    v1_1 = v1_1->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool cSetInfoOmBreakTarget::applyParam(cOmControl::InputLot& param) const {
+    this->cSetInfoOm::applyParam(param);
+    param.mBreakHitNum = mBreakHitNum;
+    return true;
+}
+
+void cSetInfoOmBreakTarget::copy(cSetInfo* p) {
+    this->cSetInfoOm::copy(p);
+    const MtDTI& t0 = p->getDTI();
+    MT_CTSTR v0_1 = cSetInfoOmBreakTarget::DTI.mName;
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            cSetInfoOmBreakTarget* pSic = static_cast<cSetInfoOmBreakTarget*>(p);
+            mBreakHitNum = pSic->mBreakHitNum;
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
+}
+
+cSetInfoOmBreakTarget::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cSetInfoOmBreakTarget::MyDTI cSetInfoOmBreakTarget::DTI("cSetInfoOmBreakTarget", &::cSetInfoOm::DTI, 120ul, 0u, 0u);
+
+MtObject* cSetInfoOmBreakTarget::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmBreakTarget;
+}
+
 const MtDTI& cSetInfoOmCtrl::getDTI() const {
     return cSetInfoOmCtrl::DTI;
 }
@@ -1126,14 +1371,15 @@ inline void cSetInfoOmCtrl::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cSetInfoOmCtrl::DTI)->memFree(p_addr);
 }
 
-cSetInfoOmCtrl::cSetInfoOmCtrl() {
-    DDON_STUB("cSetInfoOmCtrl::cSetInfoOmCtrl")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmCtrl::cSetInfoOmCtrl() {
+        mKeyItemNo = 0;
+        mIsQuest = false;
+        mQuestId = 0;
+        mAddGroupNo = -1;
+        mAddSubGroupNo = -1;
 }
 
 cSetInfoOmCtrl::~cSetInfoOmCtrl() {
-    DDON_STUB("cSetInfoOmCtrl::~cSetInfoOmCtrl")
-    /* stub */
 }
 
 __attribute__((weak)) void cSetInfoOmCtrl::createProperty(MtPropertyList& s) {
@@ -1145,8 +1391,29 @@ __attribute__((weak)) void cSetInfoOmCtrl::createToolProperty(MtPropertyList& s)
 }
 
 __attribute__((weak)) bool cSetInfoOmCtrl::load(MtDataReader& r) {
-    DDON_STUB("cSetInfoOmCtrl::load")
-    return {};
+        mKeyItemNo = r.readU32();
+        {
+            bool t0 = false;
+            if (r.mSeekPt < r.mBufsiz || r.refill()) {
+                u8 t2 = r.mBuffer[r.mSeekPt];
+                r.mSeekPt = r.mSeekPt + 1;
+                t0 = t2 != 0;
+            }
+            mIsQuest = t0;
+        }
+        mQuestId = r.readU32();
+        for (u32 i = 0; i < 4; i++) {
+            mLinkParam[i].mKind = r.readU16();
+            mLinkParam[i].mGroup = r.readU16();
+            mLinkParam[i].mID = r.readU16();
+            mLinkParam[i].mTransition = r.readU32();
+            mLinkParam[i].mState = r.readU32();
+            mLinkParam[i].mCamEvNo = r.readS32();
+            nDDOIO::readData(r, mLinkParam[i].mrFSMCam);
+        }
+        mAddGroupNo = r.readS32();
+        mAddSubGroupNo = r.readS32();
+        return this->cSetInfoOm::load(r);
 }
 
 __attribute__((weak)) bool cSetInfoOmCtrl::save(MtDataWriter& w) {
@@ -1290,14 +1557,17 @@ void* cSetInfoOmDoor::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmDoor::cSetInfoOmDoor() {
-    DDON_STUB("cSetInfoOmDoor::cSetInfoOmDoor")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmDoor::cSetInfoOmDoor() {
+        mbPRT = false;
+        mPRTPos = MtVector3::Zero;
+        mPRTScale = 1.0f;
+        mTextType = 0;
+        mTextQuestNo = 0;
+        mTextNo = 0;
+        mQuestID = 0;
 }
 
-cSetInfoOmDoor::~cSetInfoOmDoor() {
-    DDON_STUB("cSetInfoOmDoor::~cSetInfoOmDoor")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmDoor::~cSetInfoOmDoor() {
 }
 
 __attribute__((weak)) void cSetInfoOmDoor::createProperty(MtPropertyList& s) {
@@ -1426,14 +1696,11 @@ void* cSetInfoOmElfSW::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmElfSW::cSetInfoOmElfSW() {
-    DDON_STUB("cSetInfoOmElfSW::cSetInfoOmElfSW")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmElfSW::cSetInfoOmElfSW() {
+        mPLCount = 1;
 }
 
-cSetInfoOmElfSW::~cSetInfoOmElfSW() {
-    DDON_STUB("cSetInfoOmElfSW::~cSetInfoOmElfSW")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmElfSW::~cSetInfoOmElfSW() {
 }
 
 __attribute__((weak)) void cSetInfoOmElfSW::createProperty(MtPropertyList& s) {
@@ -1526,6 +1793,110 @@ __attribute__((weak)) MtObject* cSetInfoOmElfSW::MyDTI::newInstance() const {
     return nullptr;
 }
 
+const MtDTI& cSetInfoOmEx::getDTI() const {
+    return cSetInfoOmEx::DTI;
+}
+
+inline void* cSetInfoOmEx::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmEx::DTI)->memAlloc(sz, align, cSetInfoOmEx::DTI.getID());
+}
+
+__attribute__((noinline)) cSetInfoOmEx::~cSetInfoOmEx() {
+}
+
+__attribute__((weak)) void cSetInfoOmEx::createProperty(MtPropertyList& s) {
+    DDON_STUB("cSetInfoOmEx::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void cSetInfoOmEx::createToolProperty(MtPropertyList& s) {
+}
+
+MtUI* cSetInfoOmEx::createUI(MtProperty& prop) {
+    return this->cSetInfoCoord::createUI(prop);
+}
+
+bool cSetInfoOmEx::load(MtDataReader& r) {
+    nDDOIO::readData(r, mQuestID);
+    return this->cSetInfoOm::load(r);
+}
+
+bool cSetInfoOmEx::save(MtDataWriter& w) {
+    nDDOIO::writeData(w, mQuestID);
+    return this->cSetInfoOm::save(w);
+}
+
+bool cSetInfoOmEx::applyInfo(cUnit* pu) const {
+    if (this->cSetInfoCoord::applyInfo(pu)) {
+        const MtDTI& t0 = pu->getDTI();
+        MT_CTSTR v0_1 = uOmModel::DTI.mName;
+        const MtDTI* v0_0 = &t0;
+        bool b1_0;
+        const MtDTI* v1_1;
+        MT_CTSTR v1_2;
+        for (;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    return false;
+                }
+            } else {
+                const MtDTI& t1 = pu->getDTI();
+                v1_2 = uOmModel::DTI.mName;
+                b1_0 = true;
+                v1_1 = &t1;
+                break;
+            }
+        }
+        for (;;) {
+            if (v1_2 == v1_1->mName) {
+                return b1_0;
+            } else {
+                if (v1_1->mpParent != nullptr) {
+                    v1_1 = v1_1->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool cSetInfoOmEx::applyParam(cOmControl::InputLot& param) const {
+    this->cSetInfoOm::applyParam(param);
+    param.mQuestID = mQuestID;
+    return true;
+}
+
+void cSetInfoOmEx::copy(cSetInfo* p) {
+    this->cSetInfoOm::copy(p);
+    const MtDTI& t0 = p->getDTI();
+    MT_CTSTR v0_1 = cSetInfoOmEx::DTI.mName;
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            cSetInfoOmEx* pSic = static_cast<cSetInfoOmEx*>(p);
+            mQuestID = pSic->mQuestID;
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
+}
+
+cSetInfoOmEx::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cSetInfoOmEx::MyDTI cSetInfoOmEx::DTI("cSetInfoOmEx", &::cSetInfoOm::DTI, 120ul, 0u, 0u);
+
+MtObject* cSetInfoOmEx::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmEx;
+}
+
 const MtDTI& cSetInfoOmFall::getDTI() const {
     return cSetInfoOmFall::DTI;
 }
@@ -1534,14 +1905,11 @@ void* cSetInfoOmFall::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmFall::cSetInfoOmFall() {
-    DDON_STUB("cSetInfoOmFall::cSetInfoOmFall")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmFall::cSetInfoOmFall() {
+        mFallHeight = 800.0f;
 }
 
-cSetInfoOmFall::~cSetInfoOmFall() {
-    DDON_STUB("cSetInfoOmFall::~cSetInfoOmFall")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmFall::~cSetInfoOmFall() {
 }
 
 __attribute__((weak)) void cSetInfoOmFall::createProperty(MtPropertyList& s) {
@@ -1643,13 +2011,13 @@ void* cSetInfoOmGather::operator new(size_t sz, void* p_addr) {
 }
 
 cSetInfoOmGather::cSetInfoOmGather() {
-    DDON_STUB("cSetInfoOmGather::cSetInfoOmGather")
-    /* stub */
+    mItemListID = 0;
+    mGatheringType = 0;
+    mIsGatherEnemy = false;
+    mEnemyGroupNo = -1;
 }
 
-cSetInfoOmGather::~cSetInfoOmGather() {
-    DDON_STUB("cSetInfoOmGather::~cSetInfoOmGather")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmGather::~cSetInfoOmGather() {
 }
 
 __attribute__((weak)) void cSetInfoOmGather::createProperty(MtPropertyList& s) {
@@ -1797,9 +2165,7 @@ cSetInfoOmHakuryuu::cSetInfoOmHakuryuu() {
     /* stub */
 }
 
-cSetInfoOmHakuryuu::~cSetInfoOmHakuryuu() {
-    DDON_STUB("cSetInfoOmHakuryuu::~cSetInfoOmHakuryuu")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmHakuryuu::~cSetInfoOmHakuryuu() {
 }
 
 __attribute__((weak)) void cSetInfoOmHakuryuu::createProperty(MtPropertyList& s) {
@@ -1900,14 +2266,11 @@ void* cSetInfoOmHeal::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmHeal::cSetInfoOmHeal() {
-    DDON_STUB("cSetInfoOmHeal::cSetInfoOmHeal")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmHeal::cSetInfoOmHeal() {
+        mHealType = 0;
 }
 
-cSetInfoOmHeal::~cSetInfoOmHeal() {
-    DDON_STUB("cSetInfoOmHeal::~cSetInfoOmHeal")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmHeal::~cSetInfoOmHeal() {
 }
 
 __attribute__((weak)) void cSetInfoOmHeal::createProperty(MtPropertyList& s) {
@@ -2012,14 +2375,11 @@ void* cSetInfoOmLadder::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmLadder::cSetInfoOmLadder() {
-    DDON_STUB("cSetInfoOmLadder::cSetInfoOmLadder")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmLadder::cSetInfoOmLadder() {
+        mHeight = 5;
 }
 
-cSetInfoOmLadder::~cSetInfoOmLadder() {
-    DDON_STUB("cSetInfoOmLadder::~cSetInfoOmLadder")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmLadder::~cSetInfoOmLadder() {
 }
 
 __attribute__((weak)) void cSetInfoOmLadder::createProperty(MtPropertyList& s) {
@@ -2124,14 +2484,12 @@ void* cSetInfoOmLever::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmLever::cSetInfoOmLever() {
-    DDON_STUB("cSetInfoOmLever::cSetInfoOmLever")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmLever::cSetInfoOmLever() {
+        mbReqLever = false;
+        mCamEvNo = -1;
 }
 
-cSetInfoOmLever::~cSetInfoOmLever() {
-    DDON_STUB("cSetInfoOmLever::~cSetInfoOmLever")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmLever::~cSetInfoOmLever() {
 }
 
 __attribute__((weak)) void cSetInfoOmLever::createProperty(MtPropertyList& s) {
@@ -2245,14 +2603,13 @@ void* cSetInfoOmNav::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmNav::cSetInfoOmNav() {
-    DDON_STUB("cSetInfoOmNav::cSetInfoOmNav")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmNav::cSetInfoOmNav() {
+        mNavOBBExtent.x = 50.0f;
+        mNavOBBExtent.y = 50.0f;
+        mNavOBBExtent.z = 50.0f;
 }
 
-cSetInfoOmNav::~cSetInfoOmNav() {
-    DDON_STUB("cSetInfoOmNav::~cSetInfoOmNav")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmNav::~cSetInfoOmNav() {
 }
 
 __attribute__((weak)) void cSetInfoOmNav::createProperty(MtPropertyList& s) {
@@ -2352,6 +2709,293 @@ __attribute__((weak)) MtObject* cSetInfoOmNav::MyDTI::newInstance() const {
     return nullptr;
 }
 
+const MtDTI& cSetInfoOmOldDoor::getDTI() const {
+    return cSetInfoOmOldDoor::DTI;
+}
+
+inline void* cSetInfoOmOldDoor::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmOldDoor::DTI)->memAlloc(sz, align, cSetInfoOmOldDoor::DTI.getID());
+}
+
+__attribute__((noinline)) cSetInfoOmOldDoor::~cSetInfoOmOldDoor() {
+}
+
+__attribute__((weak)) void cSetInfoOmOldDoor::createProperty(MtPropertyList& s) {
+    DDON_STUB("cSetInfoOmOldDoor::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void cSetInfoOmOldDoor::createToolProperty(MtPropertyList& s) {
+}
+
+MtUI* cSetInfoOmOldDoor::createUI(MtProperty& prop) {
+    return this->cSetInfoCoord::createUI(prop);
+}
+
+bool cSetInfoOmOldDoor::load(MtDataReader& r) {
+    nDDOIO::readData(r, mIsQuest);
+    nDDOIO::readData(r, mQuestId);
+    nDDOIO::readData(r, mKind[0]);
+    nDDOIO::readData(r, mGroup[0]);
+    nDDOIO::readData(r, mID[0]);
+    nDDOIO::readData(r, mKind[1]);
+    nDDOIO::readData(r, mGroup[1]);
+    nDDOIO::readData(r, mID[1]);
+    nDDOIO::readData(r, mKind[2]);
+    nDDOIO::readData(r, mGroup[2]);
+    nDDOIO::readData(r, mID[2]);
+    return this->cSetInfoOm::load(r);
+}
+
+bool cSetInfoOmOldDoor::save(MtDataWriter& w) {
+    bool t0 = mIsQuest;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
+    w.mSeekPt = w.mSeekPt + 1u;
+    w.writeU32(mQuestId);
+    w.writeU16(mKind[0]);
+    w.writeU16(mGroup[0]);
+    w.writeU16(mID[0]);
+    w.writeU16(mKind[1]);
+    w.writeU16(mGroup[1]);
+    w.writeU16(mID[1]);
+    w.writeU16(mKind[2]);
+    w.writeU16(mGroup[2]);
+    w.writeU16(mID[2]);
+    return this->cSetInfoOm::save(w);
+}
+
+bool cSetInfoOmOldDoor::applyInfo(cUnit* pu) const {
+    if (this->cSetInfoCoord::applyInfo(pu)) {
+        const MtDTI& t0 = pu->getDTI();
+        MT_CTSTR v0_1 = uOmModel::DTI.mName;
+        const MtDTI* v0_0 = &t0;
+        bool b1_0;
+        const MtDTI* v1_1;
+        MT_CTSTR v1_2;
+        for (;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    return false;
+                }
+            } else {
+                const MtDTI& t1 = pu->getDTI();
+                v1_2 = uOmModel::DTI.mName;
+                b1_0 = true;
+                v1_1 = &t1;
+                break;
+            }
+        }
+        for (;;) {
+            if (v1_2 == v1_1->mName) {
+                return b1_0;
+            } else {
+                if (v1_1->mpParent != nullptr) {
+                    v1_1 = v1_1->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+__attribute__((weak)) bool cSetInfoOmOldDoor::applyParam(cOmControl::InputLot& param) const {
+    DDON_STUB("cSetInfoOmOldDoor::applyParam")
+    return {};
+}
+
+void cSetInfoOmOldDoor::copy(cSetInfo* p) {
+    this->cSetInfoOm::copy(p);
+    const MtDTI& t0 = p->getDTI();
+    MT_CTSTR v0_1 = cSetInfoOmOldDoor::DTI.mName;
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            cSetInfoOmOldDoor* pSic = static_cast<cSetInfoOmOldDoor*>(p);
+            mIsQuest = pSic->mIsQuest;
+            mQuestId = pSic->mQuestId;
+            mKind[0] = pSic->mKind[0];
+            mGroup[0] = pSic->mGroup[0];
+            mID[0] = pSic->mID[0];
+            mKind[1] = pSic->mKind[1];
+            mGroup[1] = pSic->mGroup[1];
+            mID[1] = pSic->mID[1];
+            mKind[2] = pSic->mKind[2];
+            mGroup[2] = pSic->mGroup[2];
+            mID[2] = pSic->mID[2];
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
+}
+
+cSetInfoOmOldDoor::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cSetInfoOmOldDoor::MyDTI cSetInfoOmOldDoor::DTI("cSetInfoOmOldDoor", &::cSetInfoOm::DTI, 136ul, 0u, 0u);
+
+MtObject* cSetInfoOmOldDoor::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmOldDoor;
+}
+
+const MtDTI& cSetInfoOmOneWay::getDTI() const {
+    return cSetInfoOmOneWay::DTI;
+}
+
+__attribute__((noinline)) cSetInfoOmOneWay::~cSetInfoOmOneWay() {
+}
+
+__attribute__((weak)) void cSetInfoOmOneWay::createProperty(MtPropertyList& s) {
+    DDON_STUB("cSetInfoOmOneWay::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) void cSetInfoOmOneWay::createToolProperty(MtPropertyList& s) {
+}
+
+bool cSetInfoOmOneWay::load(MtDataReader& r) {
+    mWarpPos[0] = r.readV3();
+    mWarpPos[1] = r.readV3();
+    mWarpPos[2] = r.readV3();
+    mWarpPos[3] = r.readV3();
+    mQuestID = r.readU32();
+    return this->cSetInfoOm::load(r);
+}
+
+__attribute__((weak)) bool cSetInfoOmOneWay::save(MtDataWriter& w) {
+    DDON_STUB("cSetInfoOmOneWay::save")
+    return {};
+}
+
+bool cSetInfoOmOneWay::applyInfo(cUnit* pu) const {
+    if (this->cSetInfoCoord::applyInfo(pu)) {
+        const MtDTI& t0 = pu->getDTI();
+        MT_CTSTR v0_1 = uOmModel::DTI.mName;
+        const MtDTI* v0_0 = &t0;
+        const MtDTI* v1_0;
+        MT_CTSTR v1_1;
+        for (;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    return false;
+                }
+            } else {
+                const MtDTI& t1 = pu->getDTI();
+                v1_1 = uOmModel::DTI.mName;
+                v1_0 = &t1;
+                break;
+            }
+        }
+        bool b2_0;
+        const MtDTI* v2_1;
+        MT_CTSTR v2_2;
+        for (;;) {
+            if (v1_1 != v1_0->mName) {
+                if (v1_0->mpParent != nullptr) {
+                    v1_0 = v1_0->mpParent;
+                } else {
+                    return false;
+                }
+            } else {
+                const MtDTI& t2 = pu->getDTI();
+                v2_2 = uOmModel::DTI.mName;
+                b2_0 = true;
+                v2_1 = &t2;
+                break;
+            }
+        }
+        for (;;) {
+            if (v2_2 == v2_1->mName) {
+                return b2_0;
+            } else {
+                if (v2_1->mpParent != nullptr) {
+                    v2_1 = v2_1->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool cSetInfoOmOneWay::applyParam(cOmControl::InputLot& param) const {
+    this->cSetInfoOm::applyParam(param);
+    param.mQuestID = mQuestID;
+    param.mWarpPos[0] = mWarpPos[0];
+    param.mWarpPos[1] = mWarpPos[1];
+    param.mWarpPos[2] = mWarpPos[2];
+    param.mWarpPos[3] = mWarpPos[3];
+    return true;
+}
+
+void cSetInfoOmOneWay::copy(cSetInfo* p) {
+    this->cSetInfoOm::copy(p);
+    const MtDTI& t0 = p->getDTI();
+    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cSetInfoOmEx::DTI) + 8);
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+            } else {
+                break;
+            }
+        } else {
+            mQuestID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 112);
+            break;
+        }
+    }
+    const MtDTI& t1 = p->getDTI();
+    unsigned long v2_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cSetInfoOmOneWay::DTI) + 8);
+    for (const MtDTI* v2_0 = &t1;;) {
+        if (v2_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + 8))) {
+            cSetInfoOmOneWay* pSic = static_cast<cSetInfoOmOneWay*>(p);
+            mWarpPos[0].x = pSic->mWarpPos[0].x;
+            mWarpPos[0].y = pSic->mWarpPos[0].y;
+            mWarpPos[0].z = pSic->mWarpPos[0].z;
+            mWarpPos[0].pad_ = 0.0f;
+            mWarpPos[1].x = pSic->mWarpPos[1].x;
+            mWarpPos[1].y = pSic->mWarpPos[1].y;
+            mWarpPos[1].z = pSic->mWarpPos[1].z;
+            mWarpPos[1].pad_ = 0.0f;
+            mWarpPos[2].x = pSic->mWarpPos[2].x;
+            mWarpPos[2].y = pSic->mWarpPos[2].y;
+            mWarpPos[2].z = pSic->mWarpPos[2].z;
+            mWarpPos[2].pad_ = 0.0f;
+            mWarpPos[3].x = pSic->mWarpPos[3].x;
+            mWarpPos[3].y = pSic->mWarpPos[3].y;
+            mWarpPos[3].z = pSic->mWarpPos[3].z;
+            mWarpPos[3].pad_ = 0.0f;
+            return;
+        } else {
+            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + 32)) != 0) {
+                v2_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + 32));
+            } else {
+                break;
+            }
+        }
+    }
+}
+
+cSetInfoOmOneWay::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cSetInfoOmOneWay::MyDTI cSetInfoOmOneWay::DTI("cSetInfoOmOneWay", &::cSetInfoOmEx::DTI, 192ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cSetInfoOmOneWay::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmOneWay;
+}
+
 const MtDTI& cSetInfoOmRange::getDTI() const {
     return cSetInfoOmRange::DTI;
 }
@@ -2365,9 +3009,7 @@ cSetInfoOmRange::cSetInfoOmRange() {
     /* stub */
 }
 
-cSetInfoOmRange::~cSetInfoOmRange() {
-    DDON_STUB("cSetInfoOmRange::~cSetInfoOmRange")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmRange::~cSetInfoOmRange() {
 }
 
 __attribute__((weak)) void cSetInfoOmRange::createProperty(MtPropertyList& s) {
@@ -2503,14 +3145,13 @@ void* cSetInfoOmText::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmText::cSetInfoOmText() {
-    DDON_STUB("cSetInfoOmText::cSetInfoOmText")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmText::cSetInfoOmText() {
+        mTextNo = 0;
+        mTextQuestNo = 0;
+        mTextType = 0;
 }
 
-cSetInfoOmText::~cSetInfoOmText() {
-    DDON_STUB("cSetInfoOmText::~cSetInfoOmText")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmText::~cSetInfoOmText() {
 }
 
 __attribute__((weak)) void cSetInfoOmText::createProperty(MtPropertyList& s) {
@@ -2623,14 +3264,10 @@ void* cSetInfoOmTreasureBox::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmTreasureBox::cSetInfoOmTreasureBox() {
-    DDON_STUB("cSetInfoOmTreasureBox::cSetInfoOmTreasureBox")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmTreasureBox::cSetInfoOmTreasureBox() {
 }
 
-cSetInfoOmTreasureBox::~cSetInfoOmTreasureBox() {
-    DDON_STUB("cSetInfoOmTreasureBox::~cSetInfoOmTreasureBox")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmTreasureBox::~cSetInfoOmTreasureBox() {
 }
 
 void cSetInfoOmTreasureBox::createProperty(MtPropertyList& s) {
@@ -2783,14 +3420,21 @@ void* cSetInfoOmWall::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmWall::cSetInfoOmWall() {
-    DDON_STUB("cSetInfoOmWall::cSetInfoOmWall")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmWall::cSetInfoOmWall() {
+    mWallType = 0;
+    MtVector3 extent;
+    extent.x = 50.0f;
+    extent.y = 50.0f;
+    extent.z = 50.0f;
+    mNavOBB.extent = extent;
+    typedef float t0 __attribute__((vector_size(16), aligned(1)));
+    *reinterpret_cast<t0*>(&mNavOBB.coord.m[0]) = *reinterpret_cast<const t0*>(&MtMatrix::Identity.m[0]);
+    *reinterpret_cast<t0*>(&mNavOBB.coord.m[1]) = *reinterpret_cast<const t0*>(&MtMatrix::Identity.m[1]);
+    *reinterpret_cast<t0*>(&mNavOBB.coord.m[2]) = *reinterpret_cast<const t0*>(&MtMatrix::Identity.m[2]);
+    *reinterpret_cast<t0*>(&mNavOBB.coord.m[3]) = *reinterpret_cast<const t0*>(&MtMatrix::Identity.m[3]);
 }
 
-cSetInfoOmWall::~cSetInfoOmWall() {
-    DDON_STUB("cSetInfoOmWall::~cSetInfoOmWall")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmWall::~cSetInfoOmWall() {
 }
 
 __attribute__((weak)) void cSetInfoOmWall::createProperty(MtPropertyList& s) {
@@ -2802,8 +3446,18 @@ __attribute__((weak)) void cSetInfoOmWall::createToolProperty(MtPropertyList& s)
 }
 
 __attribute__((weak)) bool cSetInfoOmWall::load(MtDataReader& r) {
-    DDON_STUB("cSetInfoOmWall::load")
-    return {};
+    nDDOIO::readData(r, mWallType);
+    typedef float t0 __attribute__((vector_size(16), aligned(1)));
+    MtFloat4 t1 = r.readV4();
+    *reinterpret_cast<t0*>(&mNavOBB.coord.m[0]) = *reinterpret_cast<t0*>(&t1);
+    MtFloat4 t2 = r.readV4();
+    *reinterpret_cast<t0*>(&mNavOBB.coord.m[1]) = *reinterpret_cast<t0*>(&t2);
+    MtFloat4 t3 = r.readV4();
+    *reinterpret_cast<t0*>(&mNavOBB.coord.m[2]) = *reinterpret_cast<t0*>(&t3);
+    MtFloat4 t4 = r.readV4();
+    *reinterpret_cast<t0*>(&mNavOBB.coord.m[3]) = *reinterpret_cast<t0*>(&t4);
+    mNavOBB.extent = r.readV3();
+    return this->cSetInfoOm::load(r);
 }
 
 __attribute__((weak)) bool cSetInfoOmWall::save(MtDataWriter& w) {
@@ -2876,14 +3530,20 @@ void* cSetInfoOmWarp::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-cSetInfoOmWarp::cSetInfoOmWarp() {
-    DDON_STUB("cSetInfoOmWarp::cSetInfoOmWarp")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmWarp::cSetInfoOmWarp() {
+        for (u32 i = 0; i < 3; i++) {
+            mStageNo[i] = 0;
+            mStartPosNo[i] = 0;
+            mQuestNo[i] = 0;
+            mFlagNo[i] = 0;
+            mSpotId[i] = 0;
+        }
+        mTextType = 0;
+        mTextQuestNo = 0;
+        mTextNo = 0;
 }
 
-cSetInfoOmWarp::~cSetInfoOmWarp() {
-    DDON_STUB("cSetInfoOmWarp::~cSetInfoOmWarp")
-    /* stub */
+__attribute__((noinline)) cSetInfoOmWarp::~cSetInfoOmWarp() {
 }
 
 __attribute__((weak)) void cSetInfoOmWarp::createProperty(MtPropertyList& s) {

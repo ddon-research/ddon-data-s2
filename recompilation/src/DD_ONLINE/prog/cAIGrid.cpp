@@ -7,6 +7,7 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
 #include "../../XFramework/cAIObject.h"
 #include "../../generated/shared/nDDOMath.h"
@@ -33,8 +34,15 @@ inline void cAIGrid::operator delete(void* p_addr) {
 }
 
 cAIGrid::cAIGrid() {
-    DDON_STUB("cAIGrid::cAIGrid")
-    /* stub */
+    mGridXNum = 0;
+    mGridZNum = 0;
+    mGridZeroRealPos.x = MtVector3::Zero.x;
+    mGridZeroRealPos.y = MtVector3::Zero.y;
+    mGridZeroRealPos.z = MtVector3::Zero.z;
+    mGridZeroRealPos.pad_ = 0.0f;
+    mpGridValue = nullptr;
+    mGridEnableYMin = -50.0f;
+    mGridEnableYMax = 300.0f;
 }
 
 cAIGrid::cAIGrid(f32 x, f32 z) {
@@ -282,8 +290,7 @@ cAIGrid::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 a
 
 cAIGrid::MyDTI cAIGrid::DTI("cAIGrid", &::cAIObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIGrid::MyDTI::newInstance() const {
-    DDON_STUB("cAIGrid::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIGrid::MyDTI::newInstance() const {
+    return new (16u) cAIGrid;
 }
 

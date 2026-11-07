@@ -15,8 +15,16 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cCaughtInfoParam>::allocData(unsigned int);
+#endif
+
 const MtDTI& cCaughtInfoParam::getDTI() const {
     return cCaughtInfoParam::DTI;
+}
+
+inline void* cCaughtInfoParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCaughtInfoParam::DTI)->memAlloc(sz, align, cCaughtInfoParam::DTI.getID());
 }
 
 inline void cCaughtInfoParam::operator delete(void* p_addr) {
@@ -26,8 +34,14 @@ inline void cCaughtInfoParam::operator delete(void* p_addr) {
 cCaughtInfoParam::cCaughtInfoParam() {
     mCatchType = 0;
     mCaughtActionTblNo = 0;
-    mConstOffsetPos = MtVector3::Zero;
-    mConstOffsetAngle = MtVector3::Zero;
+    mConstOffsetPos.x = MtVector3::Zero.x;
+    mConstOffsetPos.y = MtVector3::Zero.y;
+    mConstOffsetPos.z = MtVector3::Zero.z;
+    mConstOffsetPos.pad_ = 0.0f;
+    mConstOffsetAngle.x = MtVector3::Zero.x;
+    mConstOffsetAngle.y = MtVector3::Zero.y;
+    mConstOffsetAngle.z = MtVector3::Zero.z;
+    mConstOffsetAngle.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void cCaughtInfoParam::createProperty(MtPropertyList& s) {
@@ -39,9 +53,8 @@ cCaughtInfoParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 cCaughtInfoParam::MyDTI cCaughtInfoParam::DTI("cCaughtInfoParam", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCaughtInfoParam::MyDTI::newInstance() const {
-    DDON_STUB("cCaughtInfoParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCaughtInfoParam::MyDTI::newInstance() const {
+    return new (16u) cCaughtInfoParam;
 }
 
 const MtDTI& rCaughtInfoParam::getDTI() const {

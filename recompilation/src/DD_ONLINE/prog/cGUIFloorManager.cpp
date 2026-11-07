@@ -52,8 +52,14 @@ inline void cGUIFloorManager::operator delete(void* p_addr) {
 }
 
 cGUIFloorManager::cGUIFloorManager() {
-    DDON_STUB("cGUIFloorManager::cGUIFloorManager")
-    /* stub */
+    mParamArray.mAutoDelete = true;
+    mPartsIndex = 0;
+    mFloorId = 1024;
+    mHitPartsIdx = 0xFFFFFFFF;
+    mHitIdx = 0xFFFFFFFF;
+    mHitGroupNo = -1;
+    mpCurrentRes = nullptr;
+    mIsWarpDungeon = false;
 }
 
 cGUIFloorManager::~cGUIFloorManager() {
@@ -156,9 +162,8 @@ cGUIFloorManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 cGUIFloorManager::MyDTI cGUIFloorManager::DTI("cGUIFloorManager", &::MtObject::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cGUIFloorManager::MyDTI::newInstance() const {
-    DDON_STUB("cGUIFloorManager::MyDTI::newInstance")
-    return nullptr;
+MtObject* cGUIFloorManager::MyDTI::newInstance() const {
+    return new (16u) cGUIFloorManager;
 }
 
 const MtDTI& cGUIFloorManager::cParam::getDTI() const {

@@ -200,7 +200,7 @@ public:
     bool isPlayingNow();
     bool isRequestEvent();
     bool isReserveEvent();
-    void setEventPlay(bool f);
+    void setEventPlay(bool f = false);
     bool isEventPlay();
     nStage::stEventParam& getReqEventParam();
     cEventParam* getExecEventParam();
@@ -345,6 +345,10 @@ inline void* sEventManager::operator new(size_t sz, void* p_addr) {
 
 inline sEventManager* sEventManager::getInstance() {
     return ::sEventManager::mpInstance;
+}
+
+inline void sEventManager::setEventPlay(bool f) {
+    this->mEventPlay = false;
 }
 
 inline cEventParam* sEventManager::getExecEventParam() {

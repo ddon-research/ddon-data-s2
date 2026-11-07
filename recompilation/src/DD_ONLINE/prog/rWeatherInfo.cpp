@@ -30,6 +30,11 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cWeatherInfo>::allocData(unsigned int);
+extern template __attribute__((noinline)) void rTbl2<cWeatherParamEfcInfo>::allocData(unsigned int);
+#endif
+
 const MtDTI& cWeatherCloudModel::getDTI() const {
     return cWeatherCloudModel::DTI;
 }
@@ -61,6 +66,10 @@ const MtDTI& cWeatherFogInfo::getDTI() const {
     return cWeatherFogInfo::DTI;
 }
 
+inline void* cWeatherFogInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cWeatherFogInfo::DTI)->memAlloc(sz, align, cWeatherFogInfo::DTI.getID());
+}
+
 inline void cWeatherFogInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cWeatherFogInfo::DTI)->memFree(p_addr);
 }
@@ -74,9 +83,8 @@ cWeatherFogInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 cWeatherFogInfo::MyDTI cWeatherFogInfo::DTI("cWeatherFogInfo", &::cWeatherObjectRes::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cWeatherFogInfo::MyDTI::newInstance() const {
-    DDON_STUB("cWeatherFogInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cWeatherFogInfo::MyDTI::newInstance() const {
+    return new (16u) cWeatherFogInfo;
 }
 
 const MtDTI& cWeatherInfo::getDTI() const {
@@ -108,13 +116,33 @@ const MtDTI& cWeatherParam::getDTI() const {
     return cWeatherParam::DTI;
 }
 
+inline void* cWeatherParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cWeatherParam::DTI)->memAlloc(sz, align, cWeatherParam::DTI.getID());
+}
+
 inline void cWeatherParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cWeatherParam::DTI)->memFree(p_addr);
 }
 
 cWeatherParam::cWeatherParam() {
-    DDON_STUB("cWeatherParam::cWeatherParam")
-    /* stub */
+    mSunColor.x = 21.6f;
+    mSunColor.y = 23.49f;
+    mSunColor.z = 27.0f;
+    mSunColor.pad_ = 0.0f;
+    mMieScattering.x = 7.554876f;
+    mMieScattering.y = 7.554876f;
+    mMieScattering.z = 7.554876f;
+    mMieScattering.pad_ = 0.0f;
+    mMieDensity = 1.0f;
+    mCloudHeight = 4000.0f;
+    mCloudiness = 0.0f;
+    mCloudThickness = 100.0f;
+    mCloudScattering = 0.0f;
+    mCloudEccentricity = 0.4f;
+    mMoonLRate = 1.0f;
+    mSunIntensityRate = 1.0f;
+    mEnvMapBaseScale = 1.0f;
+    mFogDensity = 1.0f;
 }
 
 __attribute__((weak)) void cWeatherParam::lerp(cWeatherParam* pDst, const cWeatherParam& a, const cWeatherParam& b, f32 rate) {
@@ -131,9 +159,8 @@ cWeatherParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 
 cWeatherParam::MyDTI cWeatherParam::DTI("cWeatherParam", &::cWeatherObjectRes::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cWeatherParam::MyDTI::newInstance() const {
-    DDON_STUB("cWeatherParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cWeatherParam::MyDTI::newInstance() const {
+    return new (16u) cWeatherParam;
 }
 
 const MtDTI& cWeatherParamEfcInfo::getDTI() const {

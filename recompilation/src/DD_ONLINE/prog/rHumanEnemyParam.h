@@ -106,6 +106,16 @@ inline void* cHumanEnemyParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cHumanEnemyParam::cHumanEnemyParam() {
+    this->mMaxHp = 0;
+    this->mGuardDef = 500;
+    this->mWepAtk = 50;
+    this->mWepMAtk = 50;
+    this->mGuardCounterCnt = 3;
+    this->mReturnTerritoryContTime = 5400.0f;
+    this->mBeardownEffective = 0;
+}
+
 inline void* rHumanEnemyParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -116,4 +126,8 @@ inline void* rHumanEnemyParam::operator new(size_t sz, void* p_addr) {
 
 inline void cHumanEnemyParam::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cHumanEnemyParam::DTI)->memFree(p_addr);
+}
+
+inline void* cHumanEnemyParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHumanEnemyParam::DTI)->memAlloc(sz, align, ::cHumanEnemyParam::DTI.::MtDTI::getID());
 }

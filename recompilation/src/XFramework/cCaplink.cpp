@@ -19,6 +19,57 @@
 #define DDON_STUB(name)
 #endif
 
+namespace nCaplink {
+static char WebsocketKey[25] = {
+    100,
+    71,
+    104,
+    108,
+    73,
+    72,
+    78,
+    104,
+    98,
+    88,
+    66,
+    115,
+    90,
+    83,
+    66,
+    117,
+    98,
+    50,
+    53,
+    106,
+    90,
+    81,
+    61,
+    61,
+    0,
+};
+}
+
+namespace nCaplink {
+static u8 iv[16] = {
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+};
+}
+
 const MtDTI& nCaplink::Object::getDTI() const {
     return nCaplink::Object::DTI;
 }

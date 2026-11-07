@@ -17,6 +17,10 @@ const MtDTI& cTargetCursorOffset::getDTI() const {
     return cTargetCursorOffset::DTI;
 }
 
+inline void* cTargetCursorOffset::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cTargetCursorOffset::DTI)->memAlloc(sz, align, cTargetCursorOffset::DTI.getID());
+}
+
 inline void cTargetCursorOffset::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cTargetCursorOffset::DTI)->memFree(p_addr);
 }
@@ -24,16 +28,18 @@ inline void cTargetCursorOffset::operator delete(void* p_addr) {
 cTargetCursorOffset::cTargetCursorOffset() {
     mId = 0;
     mJointNo = -1;
-    mOffsetFromJoint = MtVector3::Zero;
+    mOffsetFromJoint.x = MtVector3::Zero.x;
+    mOffsetFromJoint.y = MtVector3::Zero.y;
+    mOffsetFromJoint.z = MtVector3::Zero.z;
+    mOffsetFromJoint.pad_ = 0.0f;
 }
 
 cTargetCursorOffset::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cTargetCursorOffset::MyDTI cTargetCursorOffset::DTI("cTargetCursorOffset", &::cUIResource::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cTargetCursorOffset::MyDTI::newInstance() const {
-    DDON_STUB("cTargetCursorOffset::MyDTI::newInstance")
-    return nullptr;
+MtObject* cTargetCursorOffset::MyDTI::newInstance() const {
+    return new (16u) cTargetCursorOffset;
 }
 
 const MtDTI& rTargetCursorOffset::getDTI() const {

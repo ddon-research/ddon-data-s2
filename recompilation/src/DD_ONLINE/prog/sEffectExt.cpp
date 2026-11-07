@@ -10,6 +10,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtLogisticMap.h"
 #include "../../MT/MtMath.h"
+#include "../../generated/shared/MtMathUtil.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
@@ -1292,6 +1293,10 @@ const MtDTI& sEffectExt::cEfcCameraQuakeData::getDTI() const {
     return sEffectExt::cEfcCameraQuakeData::DTI;
 }
 
+inline void* sEffectExt::cEfcCameraQuakeData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeData::DTI)->memAlloc(sz, align, sEffectExt::cEfcCameraQuakeData::DTI.getID());
+}
+
 inline void sEffectExt::cEfcCameraQuakeData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeData::DTI)->memFree(p_addr);
 }
@@ -1300,9 +1305,8 @@ sEffectExt::cEfcCameraQuakeData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 sEffectExt::cEfcCameraQuakeData::MyDTI sEffectExt::cEfcCameraQuakeData::DTI("sEffectExt::cEfcCameraQuakeData", &::MtObject::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sEffectExt::cEfcCameraQuakeData::MyDTI::newInstance() const {
-    DDON_STUB("sEffectExt::cEfcCameraQuakeData::MyDTI::newInstance")
-    return nullptr;
+MtObject* sEffectExt::cEfcCameraQuakeData::MyDTI::newInstance() const {
+    return new (16u) sEffectExt::cEfcCameraQuakeData;
 }
 
 const MtDTI& sEffectExt::cEfcCameraQuakeDataLarge::getDTI() const {

@@ -16,6 +16,10 @@ const MtDTI& cEmWeakSafe::getDTI() const {
     return cEmWeakSafe::DTI;
 }
 
+inline void* cEmWeakSafe::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cEmWeakSafe::DTI)->memAlloc(sz, align, cEmWeakSafe::DTI.getID());
+}
+
 inline void cEmWeakSafe::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEmWeakSafe::DTI)->memFree(p_addr);
 }
@@ -24,16 +28,18 @@ cEmWeakSafe::cEmWeakSafe() {
     mParentJntNo = -1;
     mKeepSphereRad = 5.0f;
     mSafeJntNo = 0;
-    mOffset = MtVector3::Zero;
+    mOffset.x = MtVector3::Zero.x;
+    mOffset.y = MtVector3::Zero.y;
+    mOffset.z = MtVector3::Zero.z;
+    mOffset.pad_ = 0.0f;
 }
 
 cEmWeakSafe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cEmWeakSafe::MyDTI cEmWeakSafe::DTI("cEmWeakSafe", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cEmWeakSafe::MyDTI::newInstance() const {
-    DDON_STUB("cEmWeakSafe::MyDTI::newInstance")
-    return nullptr;
+MtObject* cEmWeakSafe::MyDTI::newInstance() const {
+    return new (16u) cEmWeakSafe;
 }
 
 const MtDTI& rEmWeakSafe::getDTI() const {

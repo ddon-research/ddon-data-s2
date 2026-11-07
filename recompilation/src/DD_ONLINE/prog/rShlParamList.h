@@ -153,6 +153,12 @@ inline void* cShlGroupParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cShlGroupParam::cShlGroupParam() {
+    this->ddoVersion = 1;
+    this->seOption = 1;
+    this->isNoArc = false;
+}
+
 inline u32 cShlGroupParam::getParamNum() const {
     return this->mShlList.mLength;
 }

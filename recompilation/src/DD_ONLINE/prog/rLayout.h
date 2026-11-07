@@ -60,6 +60,12 @@ using u32 = unsigned int;
 using u64 = __uint64_t;
 using u8 = unsigned char;
 
+namespace gLot {
+
+    s32 getS32_Key(const MtString& inName, MT_CTSTR key_, bool i);
+
+}  // namespace gLot
+
 class rLayout : public cResource
 {
 public:

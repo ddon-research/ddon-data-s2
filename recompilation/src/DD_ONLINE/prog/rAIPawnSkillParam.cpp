@@ -7,12 +7,15 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cAIObject.h"
-#include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "nDDOUtility.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
+#endif
+
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cAIPawnSkillParamNode>::allocData(unsigned int);
 #endif
 
 const MtDTI& cAIPawnSkillParamNode::getDTI() const {
@@ -89,8 +92,6 @@ inline void rAIPawnSkillParamTbl::operator delete(void* p_addr) {
 }
 
 rAIPawnSkillParamTbl::~rAIPawnSkillParamTbl() {
-    DDON_STUB("rAIPawnSkillParamTbl::~rAIPawnSkillParamTbl")
-    /* stub */
 }
 
 __attribute__((weak)) bool rAIPawnSkillParamTbl::loadCore(MtDataReader& r) {

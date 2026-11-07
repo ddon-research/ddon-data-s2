@@ -15,6 +15,12 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cChildRegionStatusParam>::allocData(unsigned int);
+extern template __attribute__((noinline)) void rTbl2<cChildRegionStatusParamList>::allocData(unsigned int);
+extern template __attribute__((noinline)) void rTbl2<cParentRegionStatusParam>::allocData(unsigned int);
+#endif
+
 const MtDTI& cChildRegionStatusParam::getDTI() const {
     return cChildRegionStatusParam::DTI;
 }

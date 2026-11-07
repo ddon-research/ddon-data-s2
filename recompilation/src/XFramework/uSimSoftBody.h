@@ -269,8 +269,8 @@ public:
     void disableApproxScrCollision();
     void enableColliderCollision();
     void disableColliderCollision();
-    void setSbcType(u32 type);
-    void setSbcFilter(u32 filter);
+    void setSbcType(u32 type = 1);
+    void setSbcFilter(u32 filter = 537329664);
     void setColliderType(u32 type);
     void setWindGroupMask(u32);
     void setColliderFilter(u32);
@@ -570,6 +570,14 @@ inline void uSimSoftBody::disableApproxScrCollision() {
     this->mApproxScrCollision = false;
     this->mColTerrainListSize = 0;
     this->mCallCreateApproxScrCollisionGPU = false;
+}
+
+inline void uSimSoftBody::setSbcType(u32 type) {
+    this->mSbcType = 1;
+}
+
+inline void uSimSoftBody::setSbcFilter(u32 filter) {
+    this->mSbcFilter = 0x20070000;
 }
 
 inline void uSimSoftBody::setColliderType(u32 type) {

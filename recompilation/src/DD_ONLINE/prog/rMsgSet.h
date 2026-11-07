@@ -72,7 +72,7 @@ public:
         static void operator delete[](void* p_addr);
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
-        cMsgData(u32 msgSerial, u32 msgType, u32 jumpGrpSerial, u32 dispType, u32 dispTime, u32 setMot, s32 voiceReqNo, u8 TalkFaceType);
+        cMsgData(u32 msgSerial = 0, u32 msgType = 0, u32 jumpGrpSerial = 0, u32 dispType = 0, u32 dispTime = 0, u32 setMot = 0, s32 voiceReqNo = -1, u8 TalkFaceType = 1);
         virtual ~cMsgData();
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         bool load(MtDataReader& r);
@@ -202,6 +202,18 @@ inline void* rMsgSet::cMsgData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline rMsgSet::cMsgData::cMsgData(u32 msgSerial, u32 msgType, u32 jumpGrpSerial, u32 dispType, u32 dispTime, u32 setMot, s32 voiceReqNo, u8 TalkFaceType) {
+    this->mSetMotion = 0;
+    this->mDispType = 0;
+    this->mDispTime = 0;
+    this->mMsgType = 0;
+    this->mJumpGroupSerial = 0;
+    this->mMsgSerial = 0;
+    this->mGmdIndex = 0;
+    this->mVoiceReqNo = -1;
+    this->mTalkFaceType = 1;
+}
+
 inline u32 rMsgSet::cMsgData::getGmdIndex() {
     return this->mGmdIndex;
 }
@@ -216,4 +228,21 @@ inline s32 rMsgSet::cMsgData::getVoiceReqNo() {
 
 inline u32 rMsgSet::cMsgData::getSetMotionNo() {
     return this->mSetMotion;
+}
+
+inline u32 rMsgSet::getMsgGroupNum() {
+    return mArray.length();
+}
+
+inline rMsgSet::cMsgGroup::cMsgGroup(u32 GroupSerial, u32 GroupType, u32 NpcId, u32 GrpNameSerial, bool NameDispOff) {
+    mGroupSerial = GroupSerial;
+    mGroupType = GroupType;
+    mNpcId = NpcId;
+    mGroupNameSerial = GrpNameSerial;
+    mNameDispOff = NameDispOff;
+    mMsgData.setAutoDelete(true);
+}
+
+inline u32 rMsgSet::cMsgGroup::getMsgDataNum() {
+    return mMsgData.length();
 }

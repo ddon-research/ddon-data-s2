@@ -357,6 +357,19 @@ __attribute__((weak)) void uGUIGPShopDialog::updateEventCodeLine() {
     /* stub */
 }
 
+inline void uGUIGPShopDialog::updateConfirmCaution(bool IsDisp) {
+    if (mpGSCaution != nullptr) {
+        mpGSCaution->setVisible(false);
+    }
+    if (mpGSCautionTxt != nullptr) {
+        mpGSCautionTxt->setVisible(false);
+    }
+    if (mpCaution == nullptr) {
+        return;
+    }
+    mpCaution->setVisible(false);
+}
+
 __attribute__((weak)) void uGUIGPShopDialog::updateScrollLimitListDisp(uGUIBase::cScrollListItemBase* pDispItem, uGUIBase::cScrollListInfoBase* pListItem, u32 Index) {
     DDON_STUB("uGUIGPShopDialog::updateScrollLimitListDisp")
     /* stub */
@@ -426,6 +439,10 @@ const MtDTI& uGUIGPShopDialog::cScrollLimitDispList::getDTI() const {
     return uGUIGPShopDialog::cScrollLimitDispList::DTI;
 }
 
+inline void* uGUIGPShopDialog::cScrollLimitDispList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIGPShopDialog::cScrollLimitDispList::DTI)->memAlloc(sz, align, uGUIGPShopDialog::cScrollLimitDispList::DTI.getID());
+}
+
 inline void uGUIGPShopDialog::cScrollLimitDispList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIGPShopDialog::cScrollLimitDispList::DTI)->memFree(p_addr);
 }
@@ -434,13 +451,16 @@ uGUIGPShopDialog::cScrollLimitDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI*
 
 uGUIGPShopDialog::cScrollLimitDispList::MyDTI uGUIGPShopDialog::cScrollLimitDispList::DTI("uGUIGPShopDialog::cScrollLimitDispList", &::uGUIBase::cScrollListItemBase::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIGPShopDialog::cScrollLimitDispList::MyDTI::newInstance() const {
-    DDON_STUB("uGUIGPShopDialog::cScrollLimitDispList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIGPShopDialog::cScrollLimitDispList::MyDTI::newInstance() const {
+    return new (16u) uGUIGPShopDialog::cScrollLimitDispList;
 }
 
 const MtDTI& uGUIGPShopDialog::cScrollHistoryDispList::getDTI() const {
     return uGUIGPShopDialog::cScrollHistoryDispList::DTI;
+}
+
+inline void* uGUIGPShopDialog::cScrollHistoryDispList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIGPShopDialog::cScrollHistoryDispList::DTI)->memAlloc(sz, align, uGUIGPShopDialog::cScrollHistoryDispList::DTI.getID());
 }
 
 inline void uGUIGPShopDialog::cScrollHistoryDispList::operator delete(void* p_addr) {
@@ -451,9 +471,8 @@ uGUIGPShopDialog::cScrollHistoryDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDT
 
 uGUIGPShopDialog::cScrollHistoryDispList::MyDTI uGUIGPShopDialog::cScrollHistoryDispList::DTI("uGUIGPShopDialog::cScrollHistoryDispList", &::uGUIBase::cScrollListItemBase::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIGPShopDialog::cScrollHistoryDispList::MyDTI::newInstance() const {
-    DDON_STUB("uGUIGPShopDialog::cScrollHistoryDispList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIGPShopDialog::cScrollHistoryDispList::MyDTI::newInstance() const {
+    return new (16u) uGUIGPShopDialog::cScrollHistoryDispList;
 }
 
 const MtDTI& uGUIGPShopDialog::cScrollLimitItemList::getDTI() const {

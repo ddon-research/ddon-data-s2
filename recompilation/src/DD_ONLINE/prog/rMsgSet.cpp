@@ -52,13 +52,90 @@ __attribute__((weak)) void rMsgSet::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) bool rMsgSet::load(MtStream& in) {
-    DDON_STUB("rMsgSet::load")
-    return {};
+    MtDataReader r(in, 4096u);
+    if (!r.isReadable()) {
+        return false;
+    }
+    const u32 LoadMagic = r.readU32();
+    const u32 LoadVersion = r.readU16();
+    if (LoadMagic != MAGIC || LoadVersion != DATA_VERSION) {
+        return false;
+    }
+    mArray.setAutoDelete(false);
+    const u32 LoadMsgGroupTotalNum = r.readU32();
+    const u32 LoadMsgDataTotalNum = r.readU32();
+    const u32 AllocateSize = LoadMsgGroupTotalNum * sizeof(cMsgGroup) + LoadMsgDataTotalNum * sizeof(cMsgData);
+    void* pAllocateBuffer = MtMemoryAllocator::getAllocator(DTI)->memAlloc(AllocateSize, 16u, DTI.getID());
+    if (pAllocateBuffer == nullptr) {
+        deleteAllocateMemory();
+        return false;
+    }
+    mpNativeMsgGroupArray = static_cast<cMsgGroup*>(pAllocateBuffer);
+    for (u32 i = 0; i < LoadMsgGroupTotalNum; i++) {
+        new (&static_cast<cMsgGroup*>(pAllocateBuffer)[i]) cMsgGroup(0u, 0u, 0u, 0u, false);
+    }
+    mNativeMsgGroupArrayNum = LoadMsgGroupTotalNum;
+    mpNativeMsgDataArray = reinterpret_cast<cMsgData*>(&static_cast<cMsgGroup*>(pAllocateBuffer)[LoadMsgGroupTotalNum]);
+    for (u32 i = 0; i < LoadMsgDataTotalNum; i++) {
+        new (&reinterpret_cast<cMsgData*>(&static_cast<cMsgGroup*>(pAllocateBuffer)[LoadMsgGroupTotalNum])[i]) cMsgData(0u, 0u, 0u, 0u, 0u, 0u, -1, 1u);
+    }
+    mNativeMsgDataArrayNum = LoadMsgDataTotalNum;
+    u32 MsgGroupUseCount = 0;
+    u32 MsgDataUseCount = 0;
+    mArray.resize(LoadMsgGroupTotalNum);
+    for (u32 i = 0; i < LoadMsgGroupTotalNum; i++) {
+        const u8 GroupEnable = r.readU8();
+        if (GroupEnable == 0) {
+            mArray.mpArray[static_cast<s32>(i)] = nullptr;
+            continue;
+        }
+        if (MsgGroupUseCount > LoadMsgGroupTotalNum) {
+            deleteAllocateMemory();
+            return false;
+        }
+        mArray.mpArray[static_cast<s32>(i)] = &mpNativeMsgGroupArray[MsgGroupUseCount++];
+        if (!static_cast<cMsgGroup*>(mArray.mpArray[static_cast<s32>(i)])->load(r, mpNativeMsgDataArray, MsgDataUseCount, LoadMsgDataTotalNum)) {
+            deleteAllocateMemory();
+            return false;
+        }
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rMsgSet::save(MtStream& out) {
-    DDON_STUB("rMsgSet::save")
-    return {};
+    MtDataWriter w(out, 4096u, 4096u);
+    if (!w.isWritable()) {
+        return false;
+    }
+    w.writeU32(MAGIC);
+    w.writeU16(DATA_VERSION);
+    u32 MsgGroupTotalNum = 0;
+    u32 MsgDataTotalNum = 0;
+    for (u32 i = 0; i < getMsgGroupNum(); i++) {
+        cMsgGroup* pNowGroup = getGroupData(i);
+        if (pNowGroup == nullptr) {
+            continue;
+        }
+        const u32 MsgDataNum = pNowGroup->getMsgDataNum();
+        for (u32 j = 0; j < MsgDataNum; j++) {
+            if (pNowGroup->getMsgData(j) != nullptr) {
+                MsgDataTotalNum++;
+            }
+        }
+        MsgGroupTotalNum++;
+    }
+    w.writeU32(MsgGroupTotalNum);
+    w.writeU32(MsgDataTotalNum);
+    for (u32 i = 0; i < mArray.mLength; i++) {
+        cMsgGroup* pNowGroup = getGroupData(i);
+        if (pNowGroup == nullptr) {
+            w.writeU8(0u);
+            continue;
+        }
+        w.writeU8(1u);
+        pNowGroup->save(w);
+    }
+    return true;
 }
 
 rMsgSet::cMsgGroup* rMsgSet::getGroupData(u32 Idx) {
@@ -190,13 +267,54 @@ __attribute__((weak)) void rMsgSet::cMsgGroup::createProperty(MtPropertyList& s)
 }
 
 __attribute__((weak)) bool rMsgSet::cMsgGroup::load(MtDataReader& r, rMsgSet::cMsgData* PreAllocMsgDataArray, u32& PreAllocMsgDataUseCount, const u32 PreAllocMsgDataMaxCount) {
-    DDON_STUB("rMsgSet::cMsgGroup::load")
-    return {};
+    nDDOIO::readData(r, mGroupSerial);
+    nDDOIO::readData(r, mNpcId);
+    nDDOIO::readData(r, mGroupNameSerial);
+    nDDOIO::readData(r, mGroupType);
+    nDDOIO::readData(r, mNameDispOff);
+    mMsgData.setAutoDelete(false);
+    const u32 MsgDataNum = r.readU32();
+    mMsgData.resize(MsgDataNum);
+    for (u32 i = 0; i < MsgDataNum; i++) {
+        const u8 DataEnable = r.readU8();
+        if (DataEnable == 0) {
+            mMsgData.mpArray[static_cast<s32>(i)] = nullptr;
+            continue;
+        }
+        if (PreAllocMsgDataUseCount > PreAllocMsgDataMaxCount) {
+            if (mMsgData.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(mMsgData.mpArray);
+            }
+            mMsgData.mpArray = nullptr;
+            mMsgData.mBufsiz = 0;
+            mMsgData.mLength = 0;
+            mMsgData.setAutoDelete(true);
+            return false;
+        }
+        mMsgData.mpArray[static_cast<s32>(i)] = &PreAllocMsgDataArray[PreAllocMsgDataUseCount++];
+        static_cast<rMsgSet::cMsgData*>(mMsgData.mpArray[static_cast<s32>(i)])->load(r);
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rMsgSet::cMsgGroup::save(MtDataWriter& w) {
-    DDON_STUB("rMsgSet::cMsgGroup::save")
-    return {};
+    nDDOIO::writeData(w, mGroupSerial);
+    nDDOIO::writeData(w, mNpcId);
+    nDDOIO::writeData(w, mGroupNameSerial);
+    nDDOIO::writeData(w, mGroupType);
+    nDDOIO::writeData(w, mNameDispOff);
+    const u32 MsgDataNum = getMsgDataNum();
+    w.writeU32(MsgDataNum);
+    for (u32 i = 0; i < MsgDataNum; i++) {
+        cMsgData* pNowData = getMsgData(i);
+        if (pNowData == nullptr) {
+            w.writeU8(0u);
+            continue;
+        }
+        w.writeU8(1u);
+        pNowData->save(w);
+    }
+    return true;
 }
 
 rMsgSet::cMsgData* rMsgSet::cMsgGroup::getMsgData(u32 Idx) {

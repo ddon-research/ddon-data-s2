@@ -68,6 +68,10 @@ inline MtAllocator* CDataEntryItemParam::getAllocator() {
     return MtMemoryAllocator::getAllocator(CDataEntryItemParam::DTI);
 }
 
+inline void* CDataEntryItemParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataEntryItemParam::DTI)->memAlloc(sz, align, CDataEntryItemParam::DTI.getID());
+}
+
 __attribute__((weak)) void CDataEntryItemParam::operator delete(void* p_addr) {
     CDataEntryItemParam::getAllocator()->memFree(p_addr);
 }
@@ -76,9 +80,8 @@ CDataEntryItemParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 CDataEntryItemParam::MyDTI CDataEntryItemParam::DTI("CDataEntryItemParam", &::CPacketDataBase::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataEntryItemParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataEntryItemParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataEntryItemParam::MyDTI::newInstance() const {
+    return new (16u) CDataEntryItemParam;
 }
 
 const MtDTI& CDataEntryMemberData::getDTI() const {

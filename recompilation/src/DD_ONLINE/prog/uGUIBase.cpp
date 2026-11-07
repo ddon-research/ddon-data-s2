@@ -88,6 +88,28 @@
 #define DDON_STUB(name)
 #endif
 
+namespace nGUIExt {
+static const u32 EQUIP_SLOT_TABLE[17] = {
+    1,
+    3,
+    4,
+    6,
+    7,
+    5,
+    8,
+    9,
+    15,
+    2,
+    17,
+    18,
+    10,
+    11,
+    12,
+    13,
+    14,
+};
+}
+
 const MtDTI& uGUIBase::getDTI() const {
     return uGUIBase::DTI;
 }
@@ -2499,13 +2521,16 @@ const MtDTI& uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::getDTI() con
     return uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::DTI;
 }
 
+inline void* uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::DTI.getID());
+}
+
 inline void uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) MtObject* uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::MyDTI::newInstance() const {
-    DDON_STUB("uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::MyDTI::newInstance() const {
+    return new (16u) uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD;
 }
 
 const MtDTI& uGUIBase::cReferenceUIPullDown::cMsg::getDTI() const {
@@ -7134,9 +7159,47 @@ s32 uGUIBase::cReferenceUIRadioButton::getSelectIndex() {
     }
 }
 
-__attribute__((weak)) void uGUIBase::cReferenceUIRadioButton::addMouseTouchList(cControl* pCtrl, s32 startPos, s32 vol, bool autoErase) {
-    DDON_STUB("uGUIBase::cReferenceUIRadioButton::addMouseTouchList")
-    /* stub */
+void uGUIBase::cReferenceUIRadioButton::addMouseTouchList(cControl* pCtrl, s32 startPos, s32 vol, bool autoErase) {
+    if (pCtrl != nullptr) {
+        if (mMode == MODE_MULTI) {
+            u32 v0_8 = mArray.size();
+            if (v0_8 != 0) {
+                for (unsigned int i0_10 = 0;;) {
+                    MtObject* t0 = mArray.getBuffer()[static_cast<int>(i0_10)];
+                    if (t0 != nullptr) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 80)) != 0) {
+                            if (autoErase) {
+                                if (vol > -1) {
+                                    pCtrl->eraseMouseTouchListPosVol(static_cast<s32>(startPos + i0_10), vol);
+                                } else {
+                                    pCtrl->eraseMouseTouchList(static_cast<s32>(startPos + i0_10));
+                                }
+                            }
+                            pCtrl->addMouseTouchList(reinterpret_cast<cGUIInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 48)), reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 80)), static_cast<s32>(startPos + i0_10), static_cast<cGUIObject*>(nullptr), 1u, 1u, vol);
+                        }
+                    }
+                    if (v0_8 != (i0_10 + 1u)) {
+                        i0_10 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (mMode == MODE_SINGLE) {
+                if (mSingleObject.mpObjMouseOver != nullptr) {
+                    if (autoErase) {
+                        if (vol > -1) {
+                            pCtrl->eraseMouseTouchListPosVol(startPos, vol);
+                        } else {
+                            pCtrl->eraseMouseTouchList(startPos);
+                        }
+                    }
+                    pCtrl->addMouseTouchList(reinterpret_cast<cGUIInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 168)), static_cast<cGUIObject*>(mSingleObject.mpObjMouseOver), startPos, static_cast<cGUIObject*>(nullptr), 1u, 1u, vol);
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) bool uGUIBase::cReferenceUIRadioButton::setupPointerPos() {

@@ -379,7 +379,7 @@ public:
     u32 getOldTag() const;
     s32 getOldPos() const;
     bool isDiifPos();
-    void setSingleInputMode(bool flag);
+    void setSingleInputMode(bool flag = false);
     s32 getBindPos() const;
     virtual f32 getRatioMultiLine(s32 DispRange) const;  // vtable slot 20
     virtual f32 getRatio() const;  // vtable slot 21
@@ -488,6 +488,10 @@ inline uGUIBase* cControl::getParent() const {
 
 inline s32 cControl::getOldPos() const {
     return this->mOldPos;
+}
+
+inline void cControl::setSingleInputMode(bool flag) {
+    this->mSingleInputMode = false;
 }
 
 inline s32 cControl::getBindPos() const {

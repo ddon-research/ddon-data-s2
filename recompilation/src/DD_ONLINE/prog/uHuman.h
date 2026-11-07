@@ -681,7 +681,7 @@ public:
     bool isAgainDash() const;
     void setSlipSlope(bool flag);
     bool isSlipSlope() const;
-    void setIsAirCatchUse(bool flag);
+    void setIsAirCatchUse(bool flag = false);
     bool isAirCatchUse();
     void setIsDispErosionIcon(bool flag);
     bool isDispErosionIcon();
@@ -845,11 +845,11 @@ public:
     bool isCanUseSCM();
     void setIsBeforeAttackHit(bool flg);
     bool isBeforeAttackHit();
-    void setIsBeforeGuarded(bool flg);
+    void setIsBeforeGuarded(bool flg = false);
     bool isBeforeGuarded();
     void setIsCanNextCustmSkillLevel(bool flg);
     bool isCanNextCustmSkillLevel() const;
-    void setIsRecevedDamage(bool flg);
+    void setIsRecevedDamage(bool flg = false);
     bool isRecevedDamage();
     bool isTiring();
     void setIsCanSetEmotion(bool flg);
@@ -920,7 +920,7 @@ public:
     void initEnemyClimbInfo();
     cEnemyClimbInfo* getEnemyClimbInfo();
     bool isTrodden() const;
-    void setTrodden(bool isTrodden);
+    void setTrodden(bool isTrodden = false);
     f32 getTroddenAngleY() const;
     void setTroddenAngleY(f32);
     bool checkCliffHang();
@@ -1127,7 +1127,7 @@ public:
     rModel* getRPickel();
     rModel* getRAxa();
     bool isShotDead();
-    void setShotDead(bool flg);
+    void setShotDead(bool flg = false);
     bool isUseLockOn();
     void setUseLockOn(bool flg);
     bool getForwardLeg();
@@ -1530,6 +1530,10 @@ inline void uHuman::onCanShlConst() {
     this->mIsCanShlConst = true;
 }
 
+inline void uHuman::setIsAirCatchUse(bool flag) {
+    this->mIsAirCatchUse = false;
+}
+
 inline f32 uHuman::getMoveRateInWater() {
     return this->mMoveRateInWater;
 }
@@ -1546,8 +1550,16 @@ inline bool uHuman::isCancellableAction() {
     return this->mIsCancellableAction;
 }
 
+inline void uHuman::setIsBeforeGuarded(bool flg) {
+    this->mIsBeforeGuarded = false;
+}
+
 inline bool uHuman::isBeforeGuarded() {
     return this->mIsBeforeGuarded;
+}
+
+inline void uHuman::setIsRecevedDamage(bool flg) {
+    this->mIsRecevedDamage = false;
 }
 
 inline bool uHuman::isCanSetEmotion() {
@@ -1582,6 +1594,10 @@ inline void uHuman::setClimbEnemy(uDDOModel* pmod) {
     this->mpClimbEnemy = pmod;
 }
 
+inline void uHuman::setTrodden(bool isTrodden) {
+    this->mIsTrodden = false;
+}
+
 inline void uHuman::setTankerTargetedByEnemy() {
     this->mTankerTargetedByEnemy = true;
 }
@@ -1600,6 +1616,10 @@ inline rModel* uHuman::getRPickel() {
 
 inline rModel* uHuman::getRAxa() {
     return this->mprModAxa;
+}
+
+inline void uHuman::setShotDead(bool flg) {
+    this->mIsShotDead = false;
 }
 
 inline void uHuman::onUsingDamageProtect() {

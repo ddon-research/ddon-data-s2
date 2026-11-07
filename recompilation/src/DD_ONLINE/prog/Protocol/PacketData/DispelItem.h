@@ -424,3 +424,10 @@ inline CDataDispelLotPlus::CDataDispelLotPlus() {
 inline void* CDataDispelResultInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline CDataDispelResultInfo::CDataDispelResultInfo() {
+    this->m_ucColor = 0;
+    this->m_ucPlus = 0;
+    this->m_unItemID = 0;
+    this->m_unItemNum = 0;
+}

@@ -33,8 +33,7 @@ void* cEquipData::operator new(size_t sz, u32 align) {
 }
 
 cEquipData::cEquipData() {
-    DDON_STUB("cEquipData::cEquipData")
-    /* stub */
+    init();
 }
 
 cEquipData::~cEquipData() {
@@ -763,9 +762,8 @@ cEquipData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u3
 
 cEquipData::MyDTI cEquipData::DTI("cEquipData", &::MtObject::DTI, 4712ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cEquipData::MyDTI::newInstance() const {
-    DDON_STUB("cEquipData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cEquipData::MyDTI::newInstance() const {
+    return new (16u) cEquipData;
 }
 
 const MtDTI& nEquipAbilityInfo::cEquipAbilityData::getDTI() const {

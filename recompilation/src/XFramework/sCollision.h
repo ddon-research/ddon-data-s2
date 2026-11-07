@@ -3234,7 +3234,7 @@ public:
     MtRangeF getWallDegreeMinusByRangeF();
     void setCeilingDegreeByRangeF(const MtRangeF& rangeF);
     MtRangeF getCeilingDegreeByRangeF();
-    void setDefaultAttributeForceGround(u32 attr);
+    void setDefaultAttributeForceGround(u32 attr = 65536);
     u32 getDefaultAttributeForceGround();
     void setDefaultAttributeForceSlope(u32);
     void setDefaultAttributeForceWall(u32 attr);
@@ -3473,7 +3473,7 @@ public:
     void resetNodeSize();
     u32 getColliderRunCount() const;
     u32 getColliderRunCountMax() const;
-    void setDefaultMaterial(u32 attr);
+    void setDefaultMaterial(u32 attr = 536870912);
     u32 getDefaultMaterial();
     static void drawGeomConvex(MtGeometry& geom, MtColor color, const MtVector3& offset);
     virtual MtColor getDrawColorTriangleEdge(rCollision* pRSbc, const rCollision::PartsInfo* pRPartsInfo, const rCollision::Triangle* pTriangle);  // vtable slot 13
@@ -3917,6 +3917,14 @@ protected:
 
 inline void* sCollision::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void sCollision::setDefaultAttributeForceGround(u32 attr) {
+    this->mTriangleAttributeForceGround = 0x10000;
+}
+
+inline void sCollision::setDefaultMaterial(u32 attr) {
+    this->mDefaultMaterial = 0x20000000;
 }
 
 inline sCollision* sCollision::getInstance() {

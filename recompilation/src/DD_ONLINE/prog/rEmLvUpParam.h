@@ -28,6 +28,7 @@ using u32 = unsigned int;
 
 class cEmLvUpParam : public MtObject
 {
+    friend class rEmLvUpParam;
 public:
     enum RES_STATUS
     {

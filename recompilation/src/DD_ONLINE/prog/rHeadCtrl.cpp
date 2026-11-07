@@ -14,6 +14,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cHeadCtrl>::allocData(unsigned int);
+#endif
+
 const MtDTI& cHeadCtrl::getDTI() const {
     return cHeadCtrl::DTI;
 }
@@ -70,8 +74,7 @@ rHeadCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32
 rHeadCtrl::MyDTI rHeadCtrl::DTI("rHeadCtrl", &::rTbl2Base::DTI, 184ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rHeadCtrl::MyDTI::newInstance() const {
-    DDON_STUB("rHeadCtrl::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rHeadCtrl;
 }
 
 template cHeadCtrl* rTbl2<cHeadCtrl>::getData(unsigned int);

@@ -19,6 +19,10 @@ const MtDTI& cJointInfo::getDTI() const {
     return cJointInfo::DTI;
 }
 
+inline void* cJointInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cJointInfo::DTI)->memAlloc(sz, align, cJointInfo::DTI.getID());
+}
+
 inline void cJointInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cJointInfo::DTI)->memFree(p_addr);
 }
@@ -27,7 +31,10 @@ cJointInfo::cJointInfo() {
     mJntNo = 255;
     mAttr = 0;
     mRadius = 0.0f;
-    mOfsPos = MtVector3::Zero;
+    mOfsPos.x = MtVector3::Zero.x;
+    mOfsPos.y = MtVector3::Zero.y;
+    mOfsPos.z = MtVector3::Zero.z;
+    mOfsPos.pad_ = 0.0f;
     mJointInfoID = 0;
 }
 
@@ -40,9 +47,8 @@ cJointInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u3
 
 cJointInfo::MyDTI cJointInfo::DTI("cJointInfo", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cJointInfo::MyDTI::newInstance() const {
-    DDON_STUB("cJointInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cJointInfo::MyDTI::newInstance() const {
+    return new (16u) cJointInfo;
 }
 
 const MtDTI& rJointInfo::getDTI() const {

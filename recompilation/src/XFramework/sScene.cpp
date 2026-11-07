@@ -33,10 +33,15 @@
 #include "sResource.h"
 #include "sShader2.h"
 #include "sUnit.h"
+#include "uFog.h"
+#include "uGrassEffect.h"
+#include "uGrassWind.h"
 #include "uShadow.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+uFog::FOG_PARAM* sScene_mFogZeroParam;
 
 const MtDTI& sScene::getDTI() const {
     return sScene::DTI;

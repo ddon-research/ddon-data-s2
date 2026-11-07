@@ -202,7 +202,7 @@ public:
     u32 getTokenKey();
     void tokenSplit(MT_CTSTR in_key, MT_CTSTR in_addr);
     void setTokenParam(MtString key, MtString urn, MtString url);
-    void setGetAuthAddr(bool flg);
+    void setGetAuthAddr(bool flg = false);
     void setAuthAddrReqSucces(bool flg);
     bool isAuthAddrReqSucces();
 private:
@@ -267,4 +267,8 @@ inline s32 sScreenShot::getShotStageNo() {
 
 inline void sScreenShot::setShotCategory(u32 cate) {
     this->mShotCategory = cate;
+}
+
+inline void sScreenShot::setGetAuthAddr(bool flg) {
+    this->mIsGetAuthAddr = false;
 }

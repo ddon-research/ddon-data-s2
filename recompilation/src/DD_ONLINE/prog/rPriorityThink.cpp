@@ -14,7 +14,6 @@
 #include "cAITargetInfo.h"
 #include "cContextInterface.h"
 #include "cGeneralPoint.h"
-#include "../../XFramework/cResource.h"
 #include "cpAIPawnEmChecker.h"
 #include "cpComponent.h"
 #include "cpCorePointCtrl.h"
@@ -38,6 +37,10 @@
 #include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
+#endif
+
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cPrioThkCode>::allocData(unsigned int);
 #endif
 
 const MtDTI& cPrioThkCmd::getDTI() const {
@@ -304,8 +307,6 @@ inline void rPriorityThink::operator delete(void* p_addr) {
 }
 
 rPriorityThink::~rPriorityThink() {
-    DDON_STUB("rPriorityThink::~rPriorityThink")
-    /* stub */
 }
 
 bool rPriorityThink::loadData(MtDataReader& in, cPrioThkCode* pData) {

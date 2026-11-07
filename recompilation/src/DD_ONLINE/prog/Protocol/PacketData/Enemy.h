@@ -157,6 +157,10 @@ public:
     static MyDTI DTI;
 };
 
+namespace nEnemy {
+extern const nEnemy::EM_BASIC_INFO emBaseInfoTbl[386];
+}
+
 inline void* CDataNamedEnemyParamClient::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

@@ -24,6 +24,14 @@
 #define DDON_STUB(name)
 #endif
 
+static int s_sclsiz[5] = {
+    50,
+    80,
+    100,
+    120,
+    150,
+};
+
 const MtDTI& cBrowserKeepString::getDTI() const {
     return cBrowserKeepString::DTI;
 }
@@ -180,6 +188,11 @@ __attribute__((weak)) bool cBrowserPS4::setDrawBuffer(void* pDst, u32 pitch, u32
 cBrowserPS4::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cBrowserPS4::MyDTI cBrowserPS4::DTI("cBrowserPS4", &::MtObject::DTI, 576ul, 0u, 0u);
+
+const char* cBrowserPS4::mUserAgentTable[2][2] = {
+    {"DDON-Viewer-GAME-PS4-HD/1.2", "DDON-Viewer-LAUNCHER-PS4-HD/1.2"},
+    {"DDON-Viewer-GAME-PS4-SD/1.2", "DDON-Viewer-LAUNCHER-PS4-SD/1.2"},
+};
 
 __attribute__((weak)) MtObject* cBrowserPS4::MyDTI::newInstance() const {
     DDON_STUB("cBrowserPS4::MyDTI::newInstance")

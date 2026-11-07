@@ -139,3 +139,7 @@ inline void* rEmSoundTable::operator new(size_t sz, void* p_addr) {
 inline void cEmSoundTable::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cEmSoundTable::DTI)->memFree(p_addr);
 }
+
+inline void* cEmSoundTable::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmSoundTable::DTI)->memAlloc(sz, align, ::cEmSoundTable::DTI.::MtDTI::getID());
+}

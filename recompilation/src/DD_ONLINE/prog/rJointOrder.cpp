@@ -7,10 +7,13 @@
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
-#include "../../XFramework/cResource.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
+#endif
+
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cJointOrder>::allocData(unsigned int);
 #endif
 
 const MtDTI& cJointOrder::getDTI() const {
@@ -54,8 +57,6 @@ inline void rJointOrder::operator delete(void* p_addr) {
 }
 
 rJointOrder::~rJointOrder() {
-    DDON_STUB("rJointOrder::~rJointOrder")
-    /* stub */
 }
 
 bool rJointOrder::loadData(MtDataReader& r, cJointOrder* pData) {

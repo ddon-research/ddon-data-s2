@@ -150,6 +150,10 @@ inline rCollNode::rCollNode() {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cCollNode::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCollNode::DTI)->memFree(p_addr);
+}
+
 inline void* cCollNode::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCollNode::DTI)->memAlloc(sz, align, ::cCollNode::DTI.::MtDTI::getID());
 }

@@ -60,7 +60,7 @@ namespace nDraw {
         virtual void update(f32 dt);  // vtable slot 8
         virtual u32 setDrawState(cDraw* pdraw, nDraw::PASS_TYPE overrideDrawPass);  // vtable slot 13
         void setBaseShaderMode(u32 mode);
-        void setShaderMode(u32 mode);
+        void setShaderMode(u32 mode = 2);
         void setAlphaClipThreshold(f32 val);
         f32 getAlphaClipThreshold();
         void setBlendAlphaThreshold(f32 val);
@@ -104,6 +104,10 @@ inline void* nDraw::DDMrlStdEstObj::operator new(size_t sz, void* p_addr) {
 
 inline void nDraw::DDMrlStdEstObj::setBaseShaderMode(u32 mode) {
     this->mBaseShaderMode = mode;
+}
+
+inline void nDraw::DDMrlStdEstObj::setShaderMode(u32 mode) {
+    this->mShaderMode = 2;
 }
 
 inline void nDraw::DDMrlStdEstObj::setAlphaClipThreshold(f32 val) {

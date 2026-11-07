@@ -25,6 +25,7 @@ option(DDON_BUILD_TESTS "Build the layout tests" ON)
 
 include(cmake/Sources.cmake)
 include(cmake/Platform.cmake)
+include(cmake/TrapLink.cmake)
 
 add_library(ddon_reconstruction STATIC ${DDON_SOURCES})
 target_compile_features(ddon_reconstruction PUBLIC cxx_std_17)

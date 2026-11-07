@@ -173,12 +173,15 @@ const MtDTI& cThinkMgrName::cThinkMgrTargetData::getDTI() const {
     return cThinkMgrName::cThinkMgrTargetData::DTI;
 }
 
+inline void* cThinkMgrName::cThinkMgrTargetData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkMgrTargetData::DTI)->memAlloc(sz, align, ::cThinkMgrName::cThinkMgrTargetData::DTI.getID());
+}
+
 inline void cThinkMgrName::cThinkMgrTargetData::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkMgrTargetData::DTI)->memFree(p_addr);
 }
 
 cThinkMgrName::cThinkMgrTargetData::cThinkMgrTargetData() {
-    mTargetPos.pad_ = 0.0f;
     mMyPos.x = ::MtVector3::Zero.x;
     mMyPos.y = ::MtVector3::Zero.y;
     mMyPos.z = ::MtVector3::Zero.z;
@@ -261,9 +264,8 @@ cThinkMgrName::cThinkMgrTargetData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps,
 
 cThinkMgrName::cThinkMgrTargetData::MyDTI cThinkMgrName::cThinkMgrTargetData::DTI("cThinkMgrTargetData", &::MtObject::DTI, 144ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cThinkMgrName::cThinkMgrTargetData::MyDTI::newInstance() const {
-    DDON_STUB("cThinkMgrName::cThinkMgrTargetData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cThinkMgrName::cThinkMgrTargetData::MyDTI::newInstance() const {
+    return new (16u) ::cThinkMgrName::cThinkMgrTargetData;
 }
 
 const MtDTI& cThinkMgrName::cThinkMgrTargetMgr::getDTI() const {

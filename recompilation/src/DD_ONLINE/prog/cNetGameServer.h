@@ -3964,7 +3964,7 @@ public:
     bool getStageList();
     bool areaChange();
     bool areaChange(u32 stageNo);
-    void setAreaChangeJumpType(u32 type);
+    void setAreaChangeJumpType(u32 type = 1);
     bool getEnemySetList();
     bool getEnemySetList(CDataStageLayoutID SLID, u32 subId);
     bool enemyKilled();
@@ -4682,7 +4682,7 @@ public:
     void onConnectionClosed(s32 errCode);
     void propOnConnectionClosed();
     void onRecvLobbyJoinNotice(CLobbyMemberInfo& info, bool isPushBack);
-    void onRecvLobbyDataMsgResult(s32 code);
+    void onRecvLobbyDataMsgResult(s32 code = 0);
     void OnPacket_S2C_LOBBY_JOIN_RES(nUserSession::CPacket_S2C_LOBBY_JOIN_RES& packet);
     void OnPacket_S2C_LOBBY_LEAVE_RES(nUserSession::CPacket_S2C_LOBBY_LEAVE_RES& packet);
     void OnPacket_S2C_USER_LIST_LEAVE_NTC(nUserSession::CPacket_S2C_USER_LIST_LEAVE_NTC& packet);
@@ -5278,6 +5278,10 @@ inline void cNetGameServer::setGachaPrePrice(u64 gp, u64 ticket) {
     this->mGachaPrePriceTicket = ticket;
 }
 
+inline void cNetGameServer::setAreaChangeJumpType(u32 type) {
+    this->mReqAreaChangeJumpType = 1;
+}
+
 inline u32 cNetGameServer::getGatheringItemListGroupId() {
     return this->mRecvGatheringItemListGroupId;
 }
@@ -5336,6 +5340,11 @@ inline CharacterListElementVec& cNetGameServer::getGroupChatMemberListRef() {
 
 inline bool cNetGameServer::isResetInstanceArea() {
     return this->mIsResetInstanceArea;
+}
+
+inline void cNetGameServer::onRecvLobbyDataMsgResult(s32 code) {
+    this->mStatus[27] = static_cast<sNetworkExt::NET_STAT>(2);
+    this->mErrorCode[27] = static_cast<nError::ERROR_CODE>(0);
 }
 
 inline void* cNetGameServer::cCtrlFlow::operator new(size_t sz, void* p_addr) {

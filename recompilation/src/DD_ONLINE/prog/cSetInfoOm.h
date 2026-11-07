@@ -31,11 +31,14 @@ class rAIFSM;
 // Declarations
 class cSetInfoOm;
 class cSetInfoOmBadStatus;
+class cSetInfoOmBlock;
 class cSetInfoOmBoard;
 class cSetInfoOmBowlOfLife;
+class cSetInfoOmBreakTarget;
 class cSetInfoOmCtrl;
 class cSetInfoOmDoor;
 class cSetInfoOmElfSW;
+class cSetInfoOmEx;
 class cSetInfoOmFall;
 class cSetInfoOmGather;
 class cSetInfoOmHakuryuu;
@@ -43,6 +46,8 @@ class cSetInfoOmHeal;
 class cSetInfoOmLadder;
 class cSetInfoOmLever;
 class cSetInfoOmNav;
+class cSetInfoOmOldDoor;
+class cSetInfoOmOneWay;
 class cSetInfoOmRange;
 class cSetInfoOmText;
 class cSetInfoOmTreasureBox;
@@ -161,6 +166,45 @@ public:
     static MyDTI DTI;
 };
 
+class cSetInfoOmBlock : public cSetInfoOm
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cSetInfoOmBlock();
+    virtual ~cSetInfoOmBlock();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void createToolProperty(MtPropertyList& s);  // vtable slot 6
+    virtual bool load(MtDataReader& r);  // vtable slot 7
+    virtual bool save(MtDataWriter& w);  // vtable slot 8
+    virtual bool applyInfo(cUnit* pu) const;  // vtable slot 9
+    virtual bool applyParam(cOmControl::InputLot& param) const;  // vtable slot 14
+    virtual void copy(cSetInfo* p);  // vtable slot 11
+public:
+    u32 mQuestID;  // offset: 0x70
+    static MyDTI DTI;
+};
+
 class cSetInfoOmBoard : public cSetInfoOm
 {
 public:
@@ -245,6 +289,45 @@ public:
     u16 mKind;  // offset: 0x78
     u16 mGroup;  // offset: 0x7a
     u16 mID;  // offset: 0x7c
+    static MyDTI DTI;
+};
+
+class cSetInfoOmBreakTarget : public cSetInfoOm
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cSetInfoOmBreakTarget();
+    virtual ~cSetInfoOmBreakTarget();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void createToolProperty(MtPropertyList& s);  // vtable slot 6
+    virtual bool load(MtDataReader& r);  // vtable slot 7
+    virtual bool save(MtDataWriter& w);  // vtable slot 8
+    virtual bool applyInfo(cUnit* pu) const;  // vtable slot 9
+    virtual bool applyParam(cOmControl::InputLot& param) const;  // vtable slot 14
+    virtual void copy(cSetInfo* p);  // vtable slot 11
+public:
+    u32 mBreakHitNum;  // offset: 0x70
     static MyDTI DTI;
 };
 
@@ -414,6 +497,46 @@ public:
     virtual void copy(cSetInfo* p);  // vtable slot 11
 public:
     u32 mPLCount;  // offset: 0x70
+    static MyDTI DTI;
+};
+
+class cSetInfoOmEx : public cSetInfoOm
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cSetInfoOmEx();
+    virtual ~cSetInfoOmEx();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void createToolProperty(MtPropertyList& s);  // vtable slot 6
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual bool load(MtDataReader& r);  // vtable slot 7
+    virtual bool save(MtDataWriter& w);  // vtable slot 8
+    virtual bool applyInfo(cUnit* pu) const;  // vtable slot 9
+    virtual bool applyParam(cOmControl::InputLot& param) const;  // vtable slot 14
+    virtual void copy(cSetInfo* p);  // vtable slot 11
+public:
+    u32 mQuestID;  // offset: 0x70
     static MyDTI DTI;
 };
 
@@ -700,6 +823,89 @@ public:
     static MyDTI DTI;
 };
 
+class cSetInfoOmOldDoor : public cSetInfoOm
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cSetInfoOmOldDoor();
+    virtual ~cSetInfoOmOldDoor();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void createToolProperty(MtPropertyList& s);  // vtable slot 6
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual bool load(MtDataReader& r);  // vtable slot 7
+    virtual bool save(MtDataWriter& w);  // vtable slot 8
+    virtual bool applyInfo(cUnit* pu) const;  // vtable slot 9
+    virtual bool applyParam(cOmControl::InputLot& param) const;  // vtable slot 14
+    virtual void copy(cSetInfo* p);  // vtable slot 11
+public:
+    bool mIsQuest;  // offset: 0x6e
+    u32 mQuestId;  // offset: 0x70
+    u16 mKind[3];  // offset: 0x74
+    u16 mGroup[3];  // offset: 0x7a
+    u16 mID[3];  // offset: 0x80
+    static MyDTI DTI;
+};
+
+class cSetInfoOmOneWay : public cSetInfoOmEx
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cSetInfoOmOneWay();
+    virtual ~cSetInfoOmOneWay();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void createToolProperty(MtPropertyList& s);  // vtable slot 6
+    virtual bool load(MtDataReader& r);  // vtable slot 7
+    virtual bool save(MtDataWriter& w);  // vtable slot 8
+    virtual bool applyInfo(cUnit* pu) const;  // vtable slot 9
+    virtual bool applyParam(cOmControl::InputLot& param) const;  // vtable slot 14
+    virtual void copy(cSetInfo* p);  // vtable slot 11
+public:
+    MtVector3 mWarpPos[4];  // offset: 0x80
+    static MyDTI DTI;
+};
+
 class cSetInfoOmRange : public cSetInfoOm
 {
 public:
@@ -925,6 +1131,22 @@ inline void* cSetInfoOmBadStatus::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void* cSetInfoOmBlock::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cSetInfoOmBlock::cSetInfoOmBlock() {
+    this->mQuestID = 0;
+}
+
+inline void* cSetInfoOmBreakTarget::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cSetInfoOmBreakTarget::cSetInfoOmBreakTarget() {
+    this->mBreakHitNum = 1;
+}
+
 inline void* cSetInfoOmCtrl::cLinkParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -936,6 +1158,36 @@ inline cSetInfoOmCtrl::cLinkParam::cLinkParam() {
     this->mTransition = 0;
     this->mState = 0;
     this->mCamEvNo = -1;
+}
+
+inline void* cSetInfoOmEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cSetInfoOmEx::cSetInfoOmEx() {
+    this->mQuestID = 0;
+}
+
+inline void* cSetInfoOmOldDoor::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cSetInfoOmOldDoor::cSetInfoOmOldDoor() {
+    this->mIsQuest = false;
+    this->mID[2] = 0;
+    this->mID[0] = 0;
+    this->mID[1] = 0;
+    this->mKind[2] = 0;
+    this->mGroup[0] = 0;
+    this->mGroup[1] = 0;
+    this->mGroup[2] = 0;
+    this->mQuestId = 0;
+    this->mKind[0] = 0;
+    this->mKind[1] = 0;
+}
+
+inline void* cSetInfoOmOneWay::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline u32 cSetInfoOmWarp::getStageNo(u32 idx) {
@@ -980,4 +1232,111 @@ inline void cSetInfoOmWarp::setSpotId(u32 val, u32 idx) {
 
 inline u32 cSetInfoOmWarp::getDataNum() {
     return 3;
+}
+
+inline cSetInfoOmBadStatus::cSetInfoOmBadStatus() {
+    mBadRadius = 10.0f;
+    mBadHeight = 10.0f;
+    mBadPos = MtVector3::Zero;
+    mBreakHitNum = 1;
+}
+
+inline void cSetInfoOmBadStatus::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmBadStatus::DTI)->memFree(p_addr);
+}
+
+inline void* cSetInfoOmBadStatus::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmBadStatus::DTI)->memAlloc(sz, align, cSetInfoOmBadStatus::DTI.getID());
+}
+
+inline void cSetInfoOmBlock::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmBlock::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmBoard::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmBoard::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmBowlOfLife::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmBowlOfLife::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmBreakTarget::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmBreakTarget::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmDoor::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmDoor::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmElfSW::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmElfSW::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmEx::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmEx::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmFall::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmFall::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmGather::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmGather::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmHakuryuu::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmHakuryuu::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmHeal::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmHeal::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmLadder::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmLadder::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmLever::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmLever::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmNav::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmNav::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmOldDoor::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmOldDoor::DTI)->memFree(p_addr);
+}
+
+inline cSetInfoOmOneWay::cSetInfoOmOneWay() {
+    __builtin_memset(mWarpPos, 0, sizeof(mWarpPos));
+}
+
+inline void cSetInfoOmOneWay::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmOneWay::DTI)->memFree(p_addr);
+}
+
+inline void* cSetInfoOmOneWay::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmOneWay::DTI)->memAlloc(sz, align, cSetInfoOmOneWay::DTI.getID());
+}
+
+inline void cSetInfoOmRange::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmRange::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmText::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmText::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmTreasureBox::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmTreasureBox::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmWall::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmWall::DTI)->memFree(p_addr);
+}
+
+inline void cSetInfoOmWarp::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoOmWarp::DTI)->memFree(p_addr);
 }

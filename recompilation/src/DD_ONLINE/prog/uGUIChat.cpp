@@ -43,6 +43,57 @@
 #define DDON_STUB(name)
 #endif
 
+static const u32 tblAddress[7] = {
+    1,
+    0,
+    2,
+    6,
+    4,
+    5,
+    7,
+};
+
+static const u32 tblChatAreaToMsgIds[8] = {
+    1,
+    0,
+    2,
+    2,
+    5,
+    6,
+    3,
+    11,
+};
+
+static const u32 tblChannelIndexToMsgIds[12] = {
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+};
+
+static const u32 tblAddCh[12] = {
+    4,
+    2,
+    24,
+    32768,
+    1048576,
+    96,
+    32640,
+    262144,
+    524288,
+    2097152,
+    131072,
+    65536,
+};
+
 const MtDTI& uGUIChat::getDTI() const {
     return uGUIChat::DTI;
 }
@@ -920,6 +971,10 @@ const MtDTI& uGUIChat::cLogItem::getDTI() const {
     return uGUIChat::cLogItem::DTI;
 }
 
+inline void* uGUIChat::cLogItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIChat::cLogItem::DTI)->memAlloc(sz, align, uGUIChat::cLogItem::DTI.getID());
+}
+
 inline void uGUIChat::cLogItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIChat::cLogItem::DTI)->memFree(p_addr);
 }
@@ -960,9 +1015,8 @@ uGUIChat::cLogItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 uGUIChat::cLogItem::MyDTI uGUIChat::cLogItem::DTI("uGUIChat::cLogItem", &::uGUIBase::cScrollListItemBase::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIChat::cLogItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIChat::cLogItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIChat::cLogItem::MyDTI::newInstance() const {
+    return new (16u) uGUIChat::cLogItem;
 }
 
 const MtDTI& uGUIChat::cLogInfo::getDTI() const {

@@ -6,6 +6,14 @@
 #define DDON_STUB(name)
 #endif
 
+namespace nAutomation {
+static u32 mCallbackNum;
+}
+
+namespace nAutomation {
+static void* mCallbackList[4];
+}
+
 __attribute__((weak)) void nAutomation::finalize() {
     DDON_STUB("nAutomation::finalize")
     /* stub */

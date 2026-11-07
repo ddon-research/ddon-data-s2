@@ -420,6 +420,10 @@ __attribute__((weak)) void rFieldAreaList::cFieldAreaInfo::cStageNo::createPrope
     /* stub */
 }
 
+void rFieldAreaList::cFieldAreaInfo::cStageNo::load(MtDataReader& r) {
+    mStageNo = r.readS32();
+}
+
 rFieldAreaList::cFieldAreaInfo::cStageNo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rFieldAreaList::cFieldAreaInfo::cStageNo::MyDTI rFieldAreaList::cFieldAreaInfo::cStageNo::DTI("rFieldAreaList::cFieldAreaInfo::cStageNo", &::MtObject::DTI, 16ul, 0u, 0u);

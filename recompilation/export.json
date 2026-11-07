@@ -1,14 +1,14 @@
 {
   "bundle": {
-    "golden": "golden/031-t307",
-    "name": "output_2026-11-03_031_merge307",
-    "rendered": 24590
+    "golden": "golden/031-t349",
+    "name": "output_2026-11-07_031_merge349",
+    "rendered": 24857
   },
   "census": {
-    "approximate": 4088,
+    "approximate": 4020,
     "includes_to_regroup": 0,
-    "proven": 20502,
-    "stubs": 19723
+    "proven": 20837,
+    "stubs": 19521
   },
   "files": [
     {
@@ -1224,6 +1224,30 @@
       "src": "XFramework/rGrassWind.h"
     },
     {
+      "bundle": "rGrassWind/uGrassEffect.cpp",
+      "detail": "XFramework/uGrassEffect.h",
+      "origin": "dwarf",
+      "src": "XFramework/uGrassEffect.cpp"
+    },
+    {
+      "bundle": "rGrassWind/uGrassEffect.h",
+      "detail": "XFramework/uGrassEffect.h",
+      "origin": "dwarf",
+      "src": "XFramework/uGrassEffect.h"
+    },
+    {
+      "bundle": "rGrassWind/uGrassWind.cpp",
+      "detail": "XFramework/uGrassWind.h",
+      "origin": "dwarf",
+      "src": "XFramework/uGrassWind.cpp"
+    },
+    {
+      "bundle": "rGrassWind/uGrassWind.h",
+      "detail": "XFramework/uGrassWind.h",
+      "origin": "dwarf",
+      "src": "XFramework/uGrassWind.h"
+    },
+    {
       "bundle": "rHeadCtrl/rHeadCtrl.cpp",
       "detail": "DD_ONLINE/prog/rHeadCtrl.h",
       "origin": "dwarf",
@@ -1488,18 +1512,6 @@
       "src": "DD_ONLINE/prog/cNetSessionManager.h"
     },
     {
-      "bundle": "rLayout/cSetInfo.cpp",
-      "detail": "DD_ONLINE/prog/cSetInfo.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cSetInfo.cpp"
-    },
-    {
-      "bundle": "rLayout/cSetInfo.h",
-      "detail": "DD_ONLINE/prog/cSetInfo.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cSetInfo.h"
-    },
-    {
       "bundle": "rLayout/cSetInfoCharacter.cpp",
       "detail": "DD_ONLINE/prog/cSetInfoCharacter.h",
       "origin": "dwarf",
@@ -1510,18 +1522,6 @@
       "detail": "DD_ONLINE/prog/cSetInfoCharacter.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/cSetInfoCharacter.h"
-    },
-    {
-      "bundle": "rLayout/cSetInfoCoord.cpp",
-      "detail": "DD_ONLINE/prog/cSetInfoCoord.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cSetInfoCoord.cpp"
-    },
-    {
-      "bundle": "rLayout/cSetInfoCoord.h",
-      "detail": "DD_ONLINE/prog/cSetInfoCoord.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cSetInfoCoord.h"
     },
     {
       "bundle": "rLayout/cSetInfoEnemy.cpp",
@@ -1558,18 +1558,6 @@
       "detail": "DD_ONLINE/prog/cSetInfoNpc.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/cSetInfoNpc.h"
-    },
-    {
-      "bundle": "rLayout/cSetInfoOm.cpp",
-      "detail": "DD_ONLINE/prog/cSetInfoOm.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cSetInfoOm.cpp"
-    },
-    {
-      "bundle": "rLayout/cSetInfoOm.h",
-      "detail": "DD_ONLINE/prog/cSetInfoOm.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/cSetInfoOm.h"
     },
     {
       "bundle": "rLayout/cWeatherScript.cpp",
@@ -3882,6 +3870,18 @@
       "src": "MT/MtFilePath.h"
     },
     {
+      "bundle": "shared/MtFunctionReplacement.cpp",
+      "detail": "MT/MtFunctionReplacement.h",
+      "origin": "dwarf",
+      "src": "MT/MtFunctionReplacement.cpp"
+    },
+    {
+      "bundle": "shared/MtFunctionReplacement.h",
+      "detail": "MT/MtFunctionReplacement.h",
+      "origin": "dwarf",
+      "src": "MT/MtFunctionReplacement.h"
+    },
+    {
       "bundle": "shared/MtGeomAABB.cpp",
       "detail": "MT/MtGeomAABB.h",
       "origin": "dwarf",
@@ -4024,6 +4024,18 @@
       "detail": "MT/MtMath.h",
       "origin": "dwarf",
       "src": "MT/MtMath.h"
+    },
+    {
+      "bundle": "shared/MtMathUtil.cpp",
+      "detail": "no class with a decl_file",
+      "origin": "generated",
+      "src": "generated/shared/MtMathUtil.cpp"
+    },
+    {
+      "bundle": "shared/MtMathUtil.h",
+      "detail": "no class with a decl_file",
+      "origin": "generated",
+      "src": "generated/shared/MtMathUtil.h"
     },
     {
       "bundle": "shared/MtMemory.cpp",
@@ -4360,6 +4372,18 @@
       "detail": "MT/MtRandom.h",
       "origin": "dwarf",
       "src": "MT/MtRandom.h"
+    },
+    {
+      "bundle": "shared/MtScalableAllocator.cpp",
+      "detail": "MT/MtScalableAllocator.h",
+      "origin": "dwarf",
+      "src": "MT/MtScalableAllocator.cpp"
+    },
+    {
+      "bundle": "shared/MtScalableAllocator.h",
+      "detail": "MT/MtScalableAllocator.h",
+      "origin": "dwarf",
+      "src": "MT/MtScalableAllocator.h"
     },
     {
       "bundle": "shared/MtSerializer.cpp",
@@ -7578,6 +7602,42 @@
       "src": "DD_ONLINE/prog/cServerUIClientControl.h"
     },
     {
+      "bundle": "shared/cSetInfo.cpp",
+      "detail": "DD_ONLINE/prog/cSetInfo.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cSetInfo.cpp"
+    },
+    {
+      "bundle": "shared/cSetInfo.h",
+      "detail": "DD_ONLINE/prog/cSetInfo.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cSetInfo.h"
+    },
+    {
+      "bundle": "shared/cSetInfoCoord.cpp",
+      "detail": "DD_ONLINE/prog/cSetInfoCoord.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cSetInfoCoord.cpp"
+    },
+    {
+      "bundle": "shared/cSetInfoCoord.h",
+      "detail": "DD_ONLINE/prog/cSetInfoCoord.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cSetInfoCoord.h"
+    },
+    {
+      "bundle": "shared/cSetInfoOm.cpp",
+      "detail": "DD_ONLINE/prog/cSetInfoOm.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cSetInfoOm.cpp"
+    },
+    {
+      "bundle": "shared/cSetInfoOm.h",
+      "detail": "DD_ONLINE/prog/cSetInfoOm.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/cSetInfoOm.h"
+    },
+    {
       "bundle": "shared/cShlNotifyInfo.cpp",
       "detail": "DD_ONLINE/prog/cShlNotifyInfo.h",
       "origin": "dwarf",
@@ -9486,6 +9546,18 @@
       "src": "XFramework/nDrawResource.h"
     },
     {
+      "bundle": "shared/nDrawSamplerState.cpp",
+      "detail": "XFramework/nDrawSamplerState.h",
+      "origin": "dwarf",
+      "src": "XFramework/nDrawSamplerState.cpp"
+    },
+    {
+      "bundle": "shared/nDrawSamplerState.h",
+      "detail": "XFramework/nDrawSamplerState.h",
+      "origin": "dwarf",
+      "src": "XFramework/nDrawSamplerState.h"
+    },
+    {
       "bundle": "shared/nDrawScene.cpp",
       "detail": "XFramework/nDrawScene.h",
       "origin": "dwarf",
@@ -9784,6 +9856,12 @@
       "detail": "DD_ONLINE/prog/nMenuKeyConfig.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/nMenuKeyConfig.h"
+    },
+    {
+      "bundle": "shared/nMotion.cpp",
+      "detail": "XFramework/nMotion.h",
+      "origin": "dwarf",
+      "src": "XFramework/nMotion.cpp"
     },
     {
       "bundle": "shared/nMotion.h",
@@ -10186,6 +10264,18 @@
       "detail": "DD_ONLINE/prog/nShlStick.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/nShlStick.h"
+    },
+    {
+      "bundle": "shared/nSound.cpp",
+      "detail": "no class with a decl_file",
+      "origin": "generated",
+      "src": "generated/shared/nSound.cpp"
+    },
+    {
+      "bundle": "shared/nSound.h",
+      "detail": "no class with a decl_file",
+      "origin": "generated",
+      "src": "generated/shared/nSound.h"
     },
     {
       "bundle": "shared/nStage.h",
@@ -12646,6 +12736,18 @@
       "detail": "XFramework/sZone.h",
       "origin": "dwarf",
       "src": "XFramework/sZone.h"
+    },
+    {
+      "bundle": "shared/sampler.cpp",
+      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/sampler.h",
+      "origin": "generated",
+      "src": "generated/shared/sampler.cpp"
+    },
+    {
+      "bundle": "shared/sampler.h",
+      "detail": "declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/sampler.h",
+      "origin": "generated",
+      "src": "generated/shared/sampler.h"
     },
     {
       "bundle": "shared/save_data.h",
@@ -15306,8 +15408,8 @@
       "src": "ZLIB/1.2.8/zlib.h"
     }
   ],
-  "from_dwarf": 2450,
-  "generated": 99,
+  "from_dwarf": 2461,
+  "generated": 105,
   "notes": "stripped",
   "originals_with_several_headers": {}
 }

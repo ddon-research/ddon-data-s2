@@ -156,6 +156,11 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cCollNode>::deleteData();
+extern template __attribute__((noinline)) void rTbl2<cJointOrder>::deleteData();
+#endif
+
 const MtDTI& rTbl2Base::getDTI() const {
     return rTbl2Base::DTI;
 }
@@ -185,29 +190,6 @@ rTbl2Base::MyDTI rTbl2Base::DTI("rTbl2Base", &::cResource::DTI, 112ul, 0u, 0u);
 
 MtObject* rTbl2Base::MyDTI::newInstance() const {
     return new (16u) rTbl2Base;
-}
-
-template <typename T>
-void rTbl2<T>::allocData(u32 num) {
-    if (this->mpData != nullptr) {
-        delete[] this->mpData;
-        this->mpData = nullptr;
-    }
-    this->mDataNum = 0;
-    if (num == 0) {
-        return;
-    }
-    this->mpData = new (16u) T[num];
-    this->mDataNum = num;
-}
-
-template <typename T>
-void rTbl2<T>::deleteData() {
-    if (this->mpData != nullptr) {
-        delete[] this->mpData;
-        this->mpData = nullptr;
-    }
-    this->mDataNum = 0;
 }
 
 template nJobParam::cJobInfo* rTbl2<nJobParam::cJobInfo>::getData(unsigned int);

@@ -901,8 +901,27 @@ const MtDTI& cFSMUnit::uEvHeadTarget::getDTI() const {
     return cFSMUnit::uEvHeadTarget::DTI;
 }
 
+inline void* cFSMUnit::uEvHeadTarget::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cFSMUnit::uEvHeadTarget::DTI)->memAlloc(sz, align, cFSMUnit::uEvHeadTarget::DTI.getID());
+}
+
 inline void cFSMUnit::uEvHeadTarget::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::uEvHeadTarget::DTI)->memFree(p_addr);
+}
+
+inline cFSMUnit::uEvHeadTarget::uEvHeadTarget() {
+    mType = 0;
+    mGroup = 0;
+    mId = 0;
+    mTargetPos.x = MtVector3::Zero.x;
+    mTargetPos.y = MtVector3::Zero.y;
+    mTargetPos.z = MtVector3::Zero.z;
+    mTargetPos.pad_ = 0.0f;
+    mTargetOfsPos.x = MtVector3::Zero.x;
+    mTargetOfsPos.y = MtVector3::Zero.y;
+    mTargetOfsPos.z = MtVector3::Zero.z;
+    mTargetOfsPos.pad_ = 0.0f;
+    mTargetJointId = 0;
 }
 
 cFSMUnit::uEvHeadTarget::~uEvHeadTarget() {
@@ -932,9 +951,8 @@ cFSMUnit::uEvHeadTarget::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 cFSMUnit::uEvHeadTarget::MyDTI cFSMUnit::uEvHeadTarget::DTI("cFSMUnit::uEvHeadTarget", &::uCoord::DTI, 336ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMUnit::uEvHeadTarget::MyDTI::newInstance() const {
-    DDON_STUB("cFSMUnit::uEvHeadTarget::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMUnit::uEvHeadTarget::MyDTI::newInstance() const {
+    return new (16u) cFSMUnit::uEvHeadTarget;
 }
 
 const MtDTI& cFSMUnit::cParamSetMotion::getDTI() const {

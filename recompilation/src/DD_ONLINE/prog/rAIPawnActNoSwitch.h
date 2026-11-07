@@ -117,6 +117,10 @@ inline rAIPawnActNoSwitch::rAIPawnActNoSwitch() {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cAIPawnActNoSwitch::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIPawnActNoSwitch::DTI)->memFree(p_addr);
+}
+
 inline void* cAIPawnActNoSwitch::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAIPawnActNoSwitch::DTI)->memAlloc(sz, align, ::cAIPawnActNoSwitch::DTI.::MtDTI::getID());
 }

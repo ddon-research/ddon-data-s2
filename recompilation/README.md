@@ -101,7 +101,7 @@ made. The line says whether `load` returned true and how many of the file's
 bytes it consumed; the exit code is 0 for a whole load and 1 otherwise. A
 load that reaches a function the reconstruction does not have stops there
 and names it (exit 3): the build writes such a function for each one the
-library lacks (`traps.cmake`). A sub-resource the file names (a texture, a
+library lacks (`cmake/traps.cmake`). A sub-resource the file names (a texture, a
 model) is another file: the program hands the load an empty placeholder and
 says so.
 

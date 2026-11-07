@@ -16,6 +16,7 @@ class cSetInfoEnemy;
 class cSetInfoOmBowlOfLife;
 class cSetInfoOmGather;
 class cSetInfoOmLever;
+class cSetInfoOmOldDoor;
 class cSetInfoOmRange;
 class cSetInfoOmTreasureBox;
 class cShopGoods;
@@ -65,6 +66,7 @@ class MtDataWriter
     friend class cSetInfoOmBowlOfLife;
     friend class cSetInfoOmGather;
     friend class cSetInfoOmLever;
+    friend class cSetInfoOmOldDoor;
     friend class cSetInfoOmRange;
     friend class cSetInfoOmTreasureBox;
     friend class cShopGoods;
@@ -154,3 +156,15 @@ public:
 protected:
     static const s32 FRAME_MAX = 64;
 };
+
+inline bool MtDataWriter::isWritable() const {
+    return mStream.isWritable();
+}
+
+inline void MtDataWriter::writeU8(u8 n) {
+    if (mSeekPt >= mBufsiz) {
+        flush();
+    }
+    mBuffer[mSeekPt] = n;
+    mSeekPt = mSeekPt + 1u;
+}

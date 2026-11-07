@@ -139,6 +139,10 @@ inline rAIPawnSkillParamTbl::rAIPawnSkillParamTbl() {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cAIPawnSkillParamNode::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIPawnSkillParamNode::DTI)->memFree(p_addr);
+}
+
 inline void* cAIPawnSkillParamNode::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAIPawnSkillParamNode::DTI)->memAlloc(sz, align, ::cAIPawnSkillParamNode::DTI.::MtDTI::getID());
 }

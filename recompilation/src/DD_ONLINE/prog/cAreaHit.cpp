@@ -43,9 +43,16 @@ void* AreaHitShape::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-AreaHitShape::AreaHitShape() {
-    DDON_STUB("AreaHitShape::AreaHitShape")
-    /* stub */
+__attribute__((noinline)) AreaHitShape::AreaHitShape() {
+    mCheckAngle = 0.0f;
+    mCheckRange = 0.0f;
+    mCheckToward = 0.0f;
+    mAngleFlag = false;
+    mTowardFlag = false;
+    mIsDeleteZone = true;
+    mpZone = nullptr;
+    mZoneBoundingBox.minpos = MtVector3::Zero;
+    mZoneBoundingBox.maxpos = MtVector3::One;
 }
 
 AreaHitShape::~AreaHitShape() {
@@ -137,6 +144,10 @@ __attribute__((weak)) MtObject* AreaHitShape::MyDTI::newInstance() const {
 
 const MtDTI& cAreaHit::getDTI() const {
     return cAreaHit::DTI;
+}
+
+inline void* cAreaHit::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAreaHit::DTI)->memAlloc(sz, align, cAreaHit::DTI.getID());
 }
 
 inline void cAreaHit::operator delete(void* p_addr) {
@@ -293,8 +304,7 @@ cAreaHit::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 
 
 cAreaHit::MyDTI cAreaHit::DTI("cAreaHit", &::MtObject::DTI, 160ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAreaHit::MyDTI::newInstance() const {
-    DDON_STUB("cAreaHit::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAreaHit::MyDTI::newInstance() const {
+    return new (16u) cAreaHit;
 }
 

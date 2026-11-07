@@ -336,8 +336,16 @@ inline void* cChildRegionStatusParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParam::DTI)->memAlloc(sz, align, ::cChildRegionStatusParam::DTI.::MtDTI::getID());
 }
 
+inline void cChildRegionStatusParamList::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParamList::DTI)->memFree(p_addr);
+}
+
 inline void* cChildRegionStatusParamList::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParamList::DTI)->memAlloc(sz, align, ::cChildRegionStatusParamList::DTI.::MtDTI::getID());
+}
+
+inline void cParentRegionStatusParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cParentRegionStatusParam::DTI)->memFree(p_addr);
 }
 
 inline void* cParentRegionStatusParam::operator new[](size_t sz, u32 align) {

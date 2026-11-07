@@ -163,6 +163,13 @@ rScenario::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32
 
 rScenario::MyDTI rScenario::DTI("rScenario", &::cResource::DTI, 144ul, 0u, 0u);
 
+MT_CTSTR rScenario::mSubExt[4] = {
+    "sce",
+    "door",
+    "fsm",
+    "custom",
+};
+
 MtObject* rScenario::MyDTI::newInstance() const {
     return new (16u) rScenario;
 }

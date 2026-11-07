@@ -148,3 +148,6 @@ inline void nDDOIO::writeData(MtDataWriter& w, cResPathBase& data) {
 inline void nDDOIO::writeData(MtDataWriter& w, u64 data) {
     w.writeU64(data);
 }
+inline void nDDOIO::writeData(MtDataWriter& w, bool data) {
+    w.writeU8(data);
+}

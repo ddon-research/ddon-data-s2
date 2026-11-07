@@ -127,11 +127,11 @@ public:
     void setPriority(u32 prio);
     u32 getPriority() const;
     u32 getScreenLayer() const;
-    void setScreenLayer(u32 layer);
+    void setScreenLayer(u32 layer = 1);
     void setDepthToAlpha(bool enable);
     bool isDepthToAlpha() const;
     bool isFXAA() const;
-    void setFXAA(bool enable);
+    void setFXAA(bool enable = false);
     bool isDistortionEnabled() const;
     void setDistortionEnable(bool enable);
 protected:
@@ -195,6 +195,14 @@ inline u32 uScreenSpace::getTextureSize() {
 
 inline rRenderTargetTexture* uScreenSpace::getRenderTarget() const {
     return this->mpRenderTarget;
+}
+
+inline void uScreenSpace::setScreenLayer(u32 layer) {
+    this->mLayer = 1;
+}
+
+inline void uScreenSpace::setFXAA(bool enable) {
+    this->mFXAA = false;
 }
 
 inline bool uScreenSpace::isDistortionEnabled() const {

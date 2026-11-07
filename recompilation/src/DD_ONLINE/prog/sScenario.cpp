@@ -37,6 +37,10 @@ const MtDTI& SCE_AH_LIST::getDTI() const {
     return SCE_AH_LIST::DTI;
 }
 
+inline void* SCE_AH_LIST::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(SCE_AH_LIST::DTI)->memAlloc(sz, align, SCE_AH_LIST::DTI.getID());
+}
+
 SCE_AH_LIST::~SCE_AH_LIST() {
 }
 
@@ -61,9 +65,8 @@ SCE_AH_LIST::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 
 SCE_AH_LIST::MyDTI SCE_AH_LIST::DTI("SCE_AH_LIST", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* SCE_AH_LIST::MyDTI::newInstance() const {
-    DDON_STUB("SCE_AH_LIST::MyDTI::newInstance")
-    return nullptr;
+MtObject* SCE_AH_LIST::MyDTI::newInstance() const {
+    return new (16u) SCE_AH_LIST;
 }
 
 const MtDTI& sScenario::getDTI() const {

@@ -16,6 +16,10 @@ const MtDTI& cHumanEnemyParam::getDTI() const {
     return cHumanEnemyParam::DTI;
 }
 
+inline void* cHumanEnemyParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cHumanEnemyParam::DTI)->memAlloc(sz, align, cHumanEnemyParam::DTI.getID());
+}
+
 inline void cHumanEnemyParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cHumanEnemyParam::DTI)->memFree(p_addr);
 }
@@ -24,9 +28,8 @@ cHumanEnemyParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 cHumanEnemyParam::MyDTI cHumanEnemyParam::DTI("cHumanEnemyParam", &::nJobParam::cJobInfo::DTI, 144ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cHumanEnemyParam::MyDTI::newInstance() const {
-    DDON_STUB("cHumanEnemyParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cHumanEnemyParam::MyDTI::newInstance() const {
+    return new (16u) cHumanEnemyParam;
 }
 
 const MtDTI& rHumanEnemyParam::getDTI() const {

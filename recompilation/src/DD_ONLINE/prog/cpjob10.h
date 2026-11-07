@@ -95,6 +95,7 @@ public:
     public:
         class cSpiritState : public MtObject
         {
+            friend class cpJob10;
         public:
             class MyDTI;
         public:
@@ -459,10 +460,6 @@ inline f32 cpJob10::cSpiritManager::getSpirit() const {
     return this->mSpirit_Gi;
 }
 
-inline void cpJob10::cSpiritManager::setSpirit(f32 val) {
-    this->mSpirit_Gi = val;
-}
-
 inline uHuman* cpJob10::cSpiritManager::getHuman() const {
     return this->mpParent->::cpJobBase::mpHuman;
 }
@@ -475,12 +472,28 @@ inline void cpJob10::cSpiritManager::dodge() {
     this->mpStateNow->dodge();
 }
 
-inline void cpJob10::cSpiritManager::setSpirit_Gi(f32 NewValue) {
-    this->mSpirit_Gi = NewValue;
+inline cpJob10::cSpiritManager::cSpiritManager() {
+    this->mpStateNow = static_cast<cpJob10::cSpiritManager::cSpiritState*>(&this->mStateNormal);
+    this->mpParent = nullptr;
+    this->mSpirit_Gi = 0.0f;
+    this->mStateNormal.::cpJob10::cSpiritManager::cSpiritState::mpParent = this;
+    this->mStateBoost.::cpJob10::cSpiritManager::cSpiritState::mpParent = this;
+}
+
+inline cpJob10::cSpiritManager::cSpiritManager(cpJob10* pParent) {
+    this->mpStateNow = static_cast<cpJob10::cSpiritManager::cSpiritState*>(&this->mStateNormal);
+    this->mpParent = pParent;
+    this->mSpirit_Gi = 0.0f;
+    this->mStateNormal.::cpJob10::cSpiritManager::cSpiritState::mpParent = this;
+    this->mStateBoost.::cpJob10::cSpiritManager::cSpiritState::mpParent = this;
 }
 
 inline void* cpJob10::cSpiritManager::cSpiritStateNormal::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cpJob10::cSpiritManager::cSpiritStateNormal::cSpiritStateNormal() {
+    this->mSpiritTimer = 0.0f;
 }
 
 inline void* cpJob10::cSpiritManager::cSpiritState::operator new(size_t sz, void* p_addr) {
@@ -493,4 +506,8 @@ inline cpJob10::cSpiritManager::cSpiritState::cSpiritState() {
 
 inline void* cpJob10::cSpiritManager::cSpiritStateBoost::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cpJob10::cSpiritManager::cSpiritStateBoost::cSpiritStateBoost() {
+    this->mBoostMode = 2;
 }

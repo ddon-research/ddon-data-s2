@@ -163,6 +163,9 @@ inline void* SCE_AH_LIST::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline SCE_AH_LIST::SCE_AH_LIST() {
+}
+
 inline void* sScenario::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

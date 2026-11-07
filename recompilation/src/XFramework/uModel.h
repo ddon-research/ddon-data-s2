@@ -688,7 +688,7 @@ public:
     virtual bool adjustHand(Joint* pjnt, const MtVector3& world_rootpos);  // vtable slot 41
     virtual bool adjustFoot(Joint* pjnt, const MtVector3& world_rootpos);  // vtable slot 42
     bool isFootAdjust();
-    void setFootAdjust(bool f);
+    void setFootAdjust(bool f = false);
     bool isAnkleAdjust();
     void setAnkleAdjust(bool f);
     f32 getHeelHeight();
@@ -825,6 +825,10 @@ inline void uModel::updateJointDependency() {
 
 inline u32 uModel::getKeyFrameNum() const {
     return this->mKeyFrameNum;
+}
+
+inline void uModel::setFootAdjust(bool f) {
+    this->mFootAdjust = false;
 }
 
 inline void* uModel::Joint::operator new(size_t sz, void* p_addr) {

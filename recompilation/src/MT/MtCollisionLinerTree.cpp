@@ -20,8 +20,33 @@ inline void MtCollisionUtil::MtLinerTree::operator delete(void* p_addr) {
 }
 
 MtCollisionUtil::MtLinerTree::MtLinerTree() {
-    DDON_STUB("MtCollisionUtil::MtLinerTree::MtLinerTree")
-    /* stub */
+    mTreeMode = eMODE_QUADTREE;
+    mRegistElemNum = 0;
+    mTreeLevel = 0;
+    mpLevelRootIndex = nullptr;
+    mpAxisSplitAreaNum = nullptr;
+    mpAxisSplitNum = nullptr;
+    mpTreeArray = nullptr;
+    mpAreaSizeR = nullptr;
+    mpAreaSize = nullptr;
+    mAreaAABBMinPos.x = ::MtVector3::Zero.x;
+    mAreaAABBMinPos.y = ::MtVector3::Zero.y;
+    mAreaAABBMinPos.z = ::MtVector3::Zero.z;
+    mAreaAABBMinPos.pad_ = 0.0f;
+    mAreaAABBMaxPos.x = ::MtVector3::Zero.x;
+    mAreaAABBMaxPos.y = ::MtVector3::Zero.y;
+    mAreaAABBMaxPos.z = ::MtVector3::Zero.z;
+    mAreaAABBMaxPos.pad_ = 0.0f;
+    mpFlgAnalizeTreeArray = nullptr;
+    mElemNumTotal = 0;
+    mFlgAnalizeMode = false;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 184) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 176) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 168) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 160) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 152) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 144) = 0;
+    mpCallbackOwner = nullptr;
 }
 
 MtCollisionUtil::MtLinerTree::~MtLinerTree() {

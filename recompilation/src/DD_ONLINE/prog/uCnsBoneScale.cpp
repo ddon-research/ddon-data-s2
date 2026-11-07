@@ -19,13 +19,21 @@ const MtDTI& cCnsBoneScaleCtrl::getDTI() const {
     return cCnsBoneScaleCtrl::DTI;
 }
 
+inline void* cCnsBoneScaleCtrl::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCnsBoneScaleCtrl::DTI)->memAlloc(sz, align, cCnsBoneScaleCtrl::DTI.getID());
+}
+
 inline void cCnsBoneScaleCtrl::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCnsBoneScaleCtrl::DTI)->memFree(p_addr);
 }
 
 cCnsBoneScaleCtrl::cCnsBoneScaleCtrl() {
-    DDON_STUB("cCnsBoneScaleCtrl::cCnsBoneScaleCtrl")
-    /* stub */
+    mbEnable = false;
+    mpCnsBoneScale = nullptr;
+    mStartScale = MtVector3::Zero;
+    mScale = MtVector3::Zero;
+    mFrame = 0.0f;
+    mNo = 0;
 }
 
 cCnsBoneScaleCtrl::~cCnsBoneScaleCtrl() {
@@ -69,9 +77,8 @@ cCnsBoneScaleCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 cCnsBoneScaleCtrl::MyDTI cCnsBoneScaleCtrl::DTI("cCnsBoneScaleCtrl", &::MtObject::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCnsBoneScaleCtrl::MyDTI::newInstance() const {
-    DDON_STUB("cCnsBoneScaleCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCnsBoneScaleCtrl::MyDTI::newInstance() const {
+    return new (16u) cCnsBoneScaleCtrl;
 }
 
 const MtDTI& uCnsBoneScale::getDTI() const {

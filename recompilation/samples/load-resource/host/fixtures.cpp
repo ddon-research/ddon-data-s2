@@ -301,6 +301,83 @@ extern MtAllocator* ddon_allocator_types[64] __asm__("_ZN8MtMemory15mpAllocatorT
 // private), set from the same entry below.
 MtAllocator* ddon_string_allocator __asm__("_ZN8MtString11mpAllocatorE") = nullptr;
 
+// `MtFile::mpPathDriveTypeFunc` (031 plan-X30, the coordinator's ruling: a
+// fixture, with `sFile` left out of the closure). `_GLOBAL__sub_I_sFile.cpp`
+// (0xe48fc0) installs `sFile::getDriveType` (0xe48940) in the ELF; this one
+// gives its answers for a path's prefix: the drive, the bytes the prefix takes
+// and the native mount. It departs from the ELF where `sFile`'s state decides:
+// the temp and download mounts are empty, so an absolute path under them is
+// HOME and `cache:` and `download:` mount at "", and `sFile::isDownloadFile`
+// answers false (no download drive). Only where a bundle has the class: a
+// `--root` bundle may not.
+#if __has_include("MtFile.h")
+#include "MtFile.h"
+
+namespace {
+
+bool host_is_separator(char c) { return c == '/' || c == '\\'; }
+
+bool host_is_digit(char c) { return c >= '0' && c <= '9'; }
+
+// `/addcont` and one digit, or two up to 63, before a separator
+// (0xe48940's `/addcont` test).
+bool host_addcont_path(const char* path) {
+    if (__builtin_strncmp(path, "/addcont", 8) != 0 || !host_is_digit(path[8])) {
+        return false;
+    }
+    if (host_is_separator(path[9])) {
+        return true;
+    }
+    if (!host_is_separator(path[10])) {
+        return false;
+    }
+    return path[8] <= '5' ? host_is_digit(path[9])
+                          : path[8] == '6' && path[9] >= '0' && path[9] <= '3';
+}
+
+void host_drive_type(MT_CTSTR path, MtFile::DRIVETYPE& type, u32& offset, MT_STR mount) {
+    struct Prefix {
+        const char* text;
+        u32 length;
+        MtFile::DRIVETYPE type;
+        const char* mount;
+        bool separator;  // A separator must follow it, and it holds no `:`.
+    };
+    static const Prefix prefixes[] = {
+        {"app0:", 5, MtFile::DRIVETYPE_APP, "/app0", false},
+        {"cache:", 6, MtFile::DRIVETYPE_TEMP, "", false},
+        {"download:", 9, MtFile::DRIVETYPE_DOWNLOAD, "", false},
+        {"abs:", 4, MtFile::DRIVETYPE_ABS, "", false},
+        {"avcont:", 7, MtFile::DRIVETYPE_AVCONTENTS, "/av_contents/content_tmp", false},
+        {"addcont:", 8, MtFile::DRIVETYPE_ADDCONT, "/addcont", false},
+        {"/app0", 5, MtFile::DRIVETYPE_APP, "/app0", true},
+        {"/av_contents/content_tmp", 24, MtFile::DRIVETYPE_AVCONTENTS, "/av_contents/content_tmp",
+         true},
+    };
+    Prefix answer{"", 0, MtFile::DRIVETYPE_HOME, "/app0", false};
+    for (const Prefix& prefix : prefixes) {
+        if (__builtin_strncmp(path, prefix.text, prefix.length) == 0
+            && (!prefix.separator || host_is_separator(path[prefix.length]))) {
+            answer = prefix;
+            break;
+        }
+    }
+    if (answer.length == 0 && host_addcont_path(path)) {
+        answer = Prefix{"", 8, MtFile::DRIVETYPE_ADDCONT, "/addcont", false};
+    }
+    type = answer.type;
+    offset = answer.length;
+    if (mount != nullptr) {
+        __builtin_strcpy(mount, answer.mount);
+    }
+}
+
+}  // namespace
+
+MtFile::PATH_DRIVETYPE_FUNC ddon_path_drive_type
+    __asm__("_ZN6MtFile19mpPathDriveTypeFuncE") = &host_drive_type;
+#endif
+
 // No body in the bundle (inline-only in the ELF), and the host allocator's
 // base: its members are the engine's bookkeeping, unused by the host heap.
 MtAllocator::MtAllocator() {}

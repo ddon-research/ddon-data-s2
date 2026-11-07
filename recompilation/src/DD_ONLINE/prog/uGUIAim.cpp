@@ -35,6 +35,55 @@
 #define DDON_STUB(name)
 #endif
 
+static const f32 MAGIC_BOW_SIGHT_COLORS1[3][4] = {
+    {0x1p+0f, 0x1p+0f, 0x1p+0f, 0x1p+0f},
+    {0x1p+0f, 0x1p+0f, 0x1p+0f, 0x1p+0f},
+    {0x1.656566p-1f, 0x1p+0f, 0x1.737374p-1f, 0x1p+0f},
+};
+
+static const f32 MAGIC_BOW_SIGHT_COLORS2[3][4] = {
+    {0x1p+0f, 0x1p+0f, 0x1p+0f, 0x1p+0f},
+    {0x1p+0f, 0x1p+0f, 0x1p+0f, 0x1p+0f},
+    {0x1.656566p-1f, 0x1p+0f, 0x1.737374p-1f, 0x1p+0f},
+};
+
+static const f32 DEFAULT_COLOR[4] = {
+    0x1p+0f,
+    0x1p+0f,
+    0x1p+0f,
+    0x1p+0f,
+};
+
+static const f32 MAGIC_BOW_MARKER_COLORS[3][4] = {
+    {0x1p+0f, 0x1p+0f, 0x1p+0f, 0x1p+0f},
+    {0x1p+0f, 0x1p+0f, 0x1p+0f, 0x1p+0f},
+    {0x1.656566p-1f, 0x1p+0f, 0x1.737374p-1f, 0x1p+0f},
+};
+
+static const f32 MAGIC_MARKER_COLORS[3][4] = {
+    {0x1p+0f, 0x1p+0f, 0x1p+0f, 0x1p+0f},
+    {0x1p+0f, 0x1p+0f, 0x1p+0f, 0x1p+0f},
+    {0x1.656566p-1f, 0x1p+0f, 0x1.737374p-1f, 0x1p+0f},
+};
+
+static const u32 ElementArcherMarkerSeqIds[3][3] = {
+    {1000002, 1000006, 1000003},
+    {2, 1, 3},
+    {1000004, 1000007, 1000005},
+};
+
+static const u32 MagicMarkerSeqIds[3] = {
+    2,
+    1,
+    3,
+};
+
+static const u32 SeekerMarkerSeqIds[3] = {
+    2,
+    1,
+    0,
+};
+
 const MtDTI& uGUIAim::getDTI() const {
     return uGUIAim::DTI;
 }

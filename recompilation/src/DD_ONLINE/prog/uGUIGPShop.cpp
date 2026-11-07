@@ -1906,6 +1906,10 @@ const MtDTI& uGUIGPShop::cScrollHistoryDispList::getDTI() const {
     return uGUIGPShop::cScrollHistoryDispList::DTI;
 }
 
+inline void* uGUIGPShop::cScrollHistoryDispList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollHistoryDispList::DTI)->memAlloc(sz, align, uGUIGPShop::cScrollHistoryDispList::DTI.getID());
+}
+
 inline void uGUIGPShop::cScrollHistoryDispList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollHistoryDispList::DTI)->memFree(p_addr);
 }
@@ -1914,9 +1918,8 @@ uGUIGPShop::cScrollHistoryDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps,
 
 uGUIGPShop::cScrollHistoryDispList::MyDTI uGUIGPShop::cScrollHistoryDispList::DTI("uGUIGPShop::cScrollHistoryDispList", &::uGUIBase::cScrollListItemBase::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIGPShop::cScrollHistoryDispList::MyDTI::newInstance() const {
-    DDON_STUB("uGUIGPShop::cScrollHistoryDispList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIGPShop::cScrollHistoryDispList::MyDTI::newInstance() const {
+    return new (16u) uGUIGPShop::cScrollHistoryDispList;
 }
 
 const MtDTI& uGUIGPShop::cScrollCOGDispList::getDTI() const {

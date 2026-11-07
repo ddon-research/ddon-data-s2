@@ -132,7 +132,7 @@ private:
     bool isInit();
     void cycleContentsCallback(u32 ErrorCode);
     void onStatus(u32 Status);
-    void offStatus(u32 Status);
+    void offStatus(u32 Status = 1);
     bool isOnStatus(u32 Status);
     void settingEntryboardInfoEnableCtrl(bool flg);
     bool isOpenFlag(u32 flag) const;
@@ -171,4 +171,8 @@ inline void* cGUIContentsExecutor::operator new(size_t sz, void* p_addr) {
 
 inline void cGUIContentsExecutor::setNpcId(u32 npc) {
     this->mNpcId = npc;
+}
+
+inline void cGUIContentsExecutor::offStatus(u32 Status) {
+    this->mStatus = this->mStatus & 0xFFFFFFFEu;
 }

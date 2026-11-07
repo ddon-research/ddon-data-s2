@@ -484,8 +484,34 @@ inline void* uGUIRankingBoard::cListItem::operator new(size_t sz, void* p_addr) 
     return p_addr;
 }
 
+inline uGUIRankingBoard::cListItem::cListItem() {
+    this->mpObjTexIcon = nullptr;
+    this->mpObjMsgPeriod = nullptr;
+    this->mpObjMsgTitle = nullptr;
+    this->mpObjMsgState = nullptr;
+    this->mpObjNullFocus = nullptr;
+    this->mpInstAnimNewIcon = nullptr;
+    this->mpInstAnim = nullptr;
+    this->mpInstNull = nullptr;
+}
+
 inline void* uGUIRankingBoard::cRankingItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIRankingBoard::cRankingItem::cRankingItem() {
+    this->mpObjTexBase = nullptr;
+    this->mpObjTexIcon = nullptr;
+    this->mpObjMsgSortRank = nullptr;
+    this->mpObjNullSortRank = nullptr;
+    this->mpObjMsgPtUnit = nullptr;
+    this->mpObjMsgPt = nullptr;
+    this->mpObjMsgRankingUnit = nullptr;
+    this->mpObjMsgRanking = nullptr;
+    this->mpObjMsgClanName = nullptr;
+    this->mpObjMsgName = nullptr;
+    this->mpInstAnim = nullptr;
+    this->mpInstNull = nullptr;
 }
 
 inline uGUIRankingBoard::stMyRanking::stMyRanking() {

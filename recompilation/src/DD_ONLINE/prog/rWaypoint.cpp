@@ -147,6 +147,10 @@ const MtDTI& rWaypoint::cPoint::getDTI() const {
     return rWaypoint::cPoint::DTI;
 }
 
+void* rWaypoint::cPoint::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rWaypoint::cPoint::DTI)->memAlloc(sz, align, rWaypoint::cPoint::DTI.getID());
+}
+
 inline void rWaypoint::cPoint::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rWaypoint::cPoint::DTI)->memFree(p_addr);
 }
@@ -180,9 +184,8 @@ rWaypoint::cPoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 rWaypoint::cPoint::MyDTI rWaypoint::cPoint::DTI("rWaypoint::cPoint", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rWaypoint::cPoint::MyDTI::newInstance() const {
-    DDON_STUB("rWaypoint::cPoint::MyDTI::newInstance")
-    return nullptr;
+MtObject* rWaypoint::cPoint::MyDTI::newInstance() const {
+    return new (16u) rWaypoint::cPoint;
 }
 
 const MtDTI& rWaypoint::cRoute::getDTI() const {

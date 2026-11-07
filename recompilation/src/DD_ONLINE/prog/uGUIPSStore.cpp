@@ -614,6 +614,10 @@ const MtDTI& uGUIPSStore::cStationListItem::getDTI() const {
     return uGUIPSStore::cStationListItem::DTI;
 }
 
+inline void* uGUIPSStore::cStationListItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIPSStore::cStationListItem::DTI)->memAlloc(sz, align, uGUIPSStore::cStationListItem::DTI.getID());
+}
+
 inline void uGUIPSStore::cStationListItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPSStore::cStationListItem::DTI)->memFree(p_addr);
 }
@@ -622,13 +626,16 @@ uGUIPSStore::cStationListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 uGUIPSStore::cStationListItem::MyDTI uGUIPSStore::cStationListItem::DTI("uGUIPSStore::cStationListItem", &::uGUIBase::cScrollListItemBase::DTI, 136ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIPSStore::cStationListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIPSStore::cStationListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIPSStore::cStationListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIPSStore::cStationListItem;
 }
 
 const MtDTI& uGUIPSStore::cHistoryListItem::getDTI() const {
     return uGUIPSStore::cHistoryListItem::DTI;
+}
+
+inline void* uGUIPSStore::cHistoryListItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIPSStore::cHistoryListItem::DTI)->memAlloc(sz, align, uGUIPSStore::cHistoryListItem::DTI.getID());
 }
 
 inline void uGUIPSStore::cHistoryListItem::operator delete(void* p_addr) {
@@ -639,9 +646,8 @@ uGUIPSStore::cHistoryListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 uGUIPSStore::cHistoryListItem::MyDTI uGUIPSStore::cHistoryListItem::DTI("uGUIPSStore::cHistoryListItem", &::uGUIBase::cScrollListItemBase::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIPSStore::cHistoryListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIPSStore::cHistoryListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIPSStore::cHistoryListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIPSStore::cHistoryListItem;
 }
 
 const MtDTI& uGUIPSStore::cStationListInfo::getDTI() const {

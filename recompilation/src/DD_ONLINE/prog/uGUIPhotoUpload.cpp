@@ -31,6 +31,12 @@
 #define DDON_STUB(name)
 #endif
 
+static const u32 contentsControlNum[3] = {
+    1,
+    1,
+    2,
+};
+
 const MtDTI& uGUIPhotoUpload::getDTI() const {
     return uGUIPhotoUpload::DTI;
 }

@@ -333,14 +333,74 @@ void uSoundMotionSe::requestStream(rSoundStreamRequest* pRequest, u32 reqNo, u32
     static_cast<sSoundExt*>(sSound::getInstance())->requestStream(pRequest, reqNo, thisId, pCoord, jointId, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
-__attribute__((weak)) void uSoundMotionSe::requestSe(cResource* pRequest, u32 reqNo, u32 thisId) {
-    DDON_STUB("uSoundMotionSe::requestSe")
-    /* stub */
+void uSoundMotionSe::requestSe(cResource* pRequest, u32 reqNo, u32 thisId) {
+    if ((sSound::mpInstance) != nullptr) {
+        if (pRequest != nullptr) {
+            const MtDTI& t0 = pRequest->getDTI();
+            MT_CTSTR v0_1 = rSoundRequest::DTI.mName;
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                } else {
+                    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(static_cast<rSoundRequest*>(pRequest), reqNo, thisId, 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+                    return;
+                }
+            }
+            const MtDTI& t1 = pRequest->getDTI();
+            MT_CTSTR v2_1 = rSoundStreamRequest::DTI.mName;
+            for (const MtDTI* v2_0 = &t1;;) {
+                if (v2_1 == v2_0->mName) {
+                    static_cast<sSoundExt*>(sSound::getInstance())->requestStream(static_cast<rSoundStreamRequest*>(pRequest), reqNo, thisId, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+                    return;
+                } else {
+                    if (v2_0->mpParent != nullptr) {
+                        v2_0 = v2_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void uSoundMotionSe::requestSe(cResource* pRequest, u32 reqNo, u32 thisId, MtVector3& pos) {
-    DDON_STUB("uSoundMotionSe::requestSe")
-    /* stub */
+void uSoundMotionSe::requestSe(cResource* pRequest, u32 reqNo, u32 thisId, MtVector3& pos) {
+    if ((sSound::mpInstance) != nullptr) {
+        if (pRequest != nullptr) {
+            const MtDTI& t0 = pRequest->getDTI();
+            MT_CTSTR v0_1 = rSoundRequest::DTI.mName;
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                } else {
+                    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(static_cast<rSoundRequest*>(pRequest), reqNo, thisId, pos, 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+                    return;
+                }
+            }
+            const MtDTI& t1 = pRequest->getDTI();
+            MT_CTSTR v2_1 = rSoundStreamRequest::DTI.mName;
+            for (const MtDTI* v2_0 = &t1;;) {
+                if (v2_1 != v2_0->mName) {
+                    if (v2_0->mpParent != nullptr) {
+                        v2_0 = v2_0->mpParent;
+                    } else {
+                        break;
+                    }
+                } else {
+                    static_cast<sSoundExt*>(sSound::getInstance())->requestStream(static_cast<rSoundStreamRequest*>(pRequest), reqNo, thisId, pos, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+                    return;
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uSoundMotionSe::requestSe(cResource* pRequest, u32 reqNo, u32 thisId, MtVector3& pos, MtQuaternion& quaternion) {

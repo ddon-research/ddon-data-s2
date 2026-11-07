@@ -875,7 +875,7 @@ public:
     void requestReward();
     void rewardCallback(u32 ErrorCode);
     void onStatus(u32 Status);
-    void offStatus(u32 Status);
+    void offStatus(u32 Status = 1);
     bool isOnStatus(u32 Status);
     void initNews();
     void initEventPop();
@@ -1184,6 +1184,10 @@ inline void* uGUINewspaper::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void uGUINewspaper::offStatus(u32 Status) {
+    this->mStatus = this->mStatus & 0xFFFFFFFEu;
+}
+
 inline uGUINewspaper::_infoMonsterList::_infoMonsterList() {
 }
 
@@ -1205,8 +1209,28 @@ inline void* uGUINewspaper::cScrollAreaDispList::operator new(size_t sz, void* p
     return p_addr;
 }
 
+inline uGUINewspaper::cScrollAreaDispList::cScrollAreaDispList() {
+    this->mIndex = -1;
+    this->mpObjMsgLandName = nullptr;
+    this->mpInstAnimLand = nullptr;
+    this->mpObjMsgAreaName = nullptr;
+    this->mpInstAnimArea = nullptr;
+}
+
 inline void* uGUINewspaper::cScrollQuestDispList::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUINewspaper::cScrollQuestDispList::cScrollQuestDispList() {
+    this->mIndex = -1;
+    this->mpObjMsgLevel = nullptr;
+    this->mpInstAnimLevel = nullptr;
+    this->mpObjMsgName = nullptr;
+    this->mpInstAnimName = nullptr;
+    this->mpInstAnimClear = nullptr;
+    this->mpInstAnimBonus = nullptr;
+    this->mpInstAnimParty = nullptr;
+    this->mpInstAnimLimit = nullptr;
 }
 
 inline uGUINewspaper::_QuestInfoButton::_QuestInfoButton() {
@@ -1216,12 +1240,38 @@ inline void* uGUINewspaper::cScrollRankingDispList::operator new(size_t sz, void
     return p_addr;
 }
 
+inline uGUINewspaper::cScrollRankingDispList::cScrollRankingDispList() {
+    this->mIndex = -1;
+    this->mpArrow = nullptr;
+    this->mpIcon = nullptr;
+    this->mpPlate = nullptr;
+    this->mpPoint = nullptr;
+    this->mpClan = nullptr;
+    this->mpName = nullptr;
+    this->mpRank = nullptr;
+    this->mpInst = nullptr;
+}
+
 inline void* uGUINewspaper::cScrollRewardSummaryItemList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUINewspaper::cScrollRewardSummaryItemList::cScrollRewardSummaryItemList() {
+    this->mIndex = -1;
+    this->mpListIcon = nullptr;
+    this->mpMyMark = nullptr;
+    this->mpLabel = nullptr;
+    this->mpNull = nullptr;
+}
+
 inline void* uGUINewspaper::cScrollRewardDetailItemList::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUINewspaper::cScrollRewardDetailItemList::cScrollRewardDetailItemList() {
+    this->mIndex = -1;
+    this->mpItemName = nullptr;
+    this->mpNull = nullptr;
 }
 
 inline void* uGUINewspaper::cScrollAreaItemList::operator new(size_t sz, void* p_addr) {

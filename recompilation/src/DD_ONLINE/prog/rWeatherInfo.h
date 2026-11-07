@@ -591,8 +591,16 @@ inline void* cWeatherFogInfo::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cWeatherFogInfo::DTI)->memAlloc(sz, align, ::cWeatherFogInfo::DTI.::MtDTI::getID());
 }
 
+inline void cWeatherInfo::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherInfo::DTI)->memFree(p_addr);
+}
+
 inline void* cWeatherInfo::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cWeatherInfo::DTI)->memAlloc(sz, align, ::cWeatherInfo::DTI.::MtDTI::getID());
+}
+
+inline void cWeatherParamEfcInfo::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherParamEfcInfo::DTI)->memFree(p_addr);
 }
 
 inline void* cWeatherParamEfcInfo::operator new[](size_t sz, u32 align) {

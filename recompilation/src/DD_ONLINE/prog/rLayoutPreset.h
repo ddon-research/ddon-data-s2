@@ -112,3 +112,15 @@ inline cLayoutPreset::cLayoutPreset() {
 inline void* rLayoutPreset::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cLayoutPreset::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cLayoutPreset::DTI)->memFree(p_addr);
+}
+
+inline void* cLayoutPreset::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cLayoutPreset::DTI)->memAlloc(sz, align, ::cLayoutPreset::DTI.::MtDTI::getID());
+}

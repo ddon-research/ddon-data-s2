@@ -619,6 +619,12 @@ inline void* uGUIKeyConfig::cCategoryItem::operator new(size_t sz, void* p_addr)
     return p_addr;
 }
 
+inline uGUIKeyConfig::cCategoryItem::cCategoryItem() {
+    this->mpOBJ_fix_check_f_check = nullptr;
+    this->mpOBJ_msg_list_m_txt = nullptr;
+    this->mpINST_Null_list = nullptr;
+}
+
 inline void* uGUIKeyConfig::cCategoryInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

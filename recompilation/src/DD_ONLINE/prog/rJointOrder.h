@@ -119,6 +119,10 @@ inline rJointOrder::rJointOrder() {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cJointOrder::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cJointOrder::DTI)->memFree(p_addr);
+}
+
 inline void* cJointOrder::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cJointOrder::DTI)->memAlloc(sz, align, ::cJointOrder::DTI.::MtDTI::getID());
 }

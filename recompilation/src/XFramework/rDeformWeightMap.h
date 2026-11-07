@@ -155,3 +155,50 @@ public:
 inline void* rDeformWeightMap::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline rDeformWeightMap::rDeformWeightMap() {
+    this->::cResource::mAttr = 22;
+    this->mHeader.magic = 0x4D5744;
+    this->mHeader.version = 53;
+    this->mGrassWind = false;
+    this->mDetailedWind = false;
+    this->mPseudoWind = false;
+    this->mWindScalePoint = 80.0f;
+    this->mWindScaleDirection = 10.0f;
+    this->mNCollision = false;
+    this->mScrCollision = false;
+    this->mImageSpaceCollision = false;
+    this->mApproxScrCollision = false;
+    this->mNCGlobalWeight = 0.0f;
+    this->mSbcType = 0x7FFFFFFF;
+    this->mSbcFilter = 0x3FFFFFFF;
+    this->mWindGroupMask = 0xFFFFFFFF;
+    this->mColliderCollision = false;
+    this->mColliderType = 1;
+    this->mColliderFilter = 0x3FFFFFFF;
+    this->mVtxColSize = 3.0f;
+    this->mAvoidZFight = 1.0f;
+    this->mResetRestart = true;
+    this->mSimCulling = true;
+    this->mAlpha = 1.0f;
+    this->mMaxIterate = 1;
+    this->mGravity.x = 0.0f;
+    this->mGravity.y = -980.0f;
+    this->mGravity.z = 0.0f;
+    this->mGravity.pad_ = 0.0f;
+    this->mWeightOffset = 0.0f;
+    this->mBaseJointNo = -1;
+    this->mLocalOnly = false;
+    this->mWorldCoeffTrans = 1.0f;
+    this->mWorldCoeffRot = 1.0f;
+    this->mSoundThreashold = 100.0f;
+    this->mNumLOD = 0;
+    this->mpQuadVB = nullptr;
+    this->mpLOD = nullptr;
+    this->mPrimNum = 0;
+    this->mpReductionVertexBase = nullptr;
+    this->mpIsSimPerPrim = nullptr;
+    this->mVertexBaseNum = 0;
+    this->mSoftBodyVBstride = 0;
+    this->mpVertexBase = nullptr;
+}

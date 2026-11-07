@@ -156,6 +156,10 @@ const MtDTI& rStageConnect::Data::getDTI() const {
     return rStageConnect::Data::DTI;
 }
 
+inline void* rStageConnect::Data::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rStageConnect::Data::DTI)->memAlloc(sz, align, rStageConnect::Data::DTI.getID());
+}
+
 inline void rStageConnect::Data::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rStageConnect::Data::DTI)->memFree(p_addr);
 }
@@ -179,9 +183,8 @@ rStageConnect::Data::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 rStageConnect::Data::MyDTI rStageConnect::Data::DTI("rStageConnect::Data", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rStageConnect::Data::MyDTI::newInstance() const {
-    DDON_STUB("rStageConnect::Data::MyDTI::newInstance")
-    return nullptr;
+MtObject* rStageConnect::Data::MyDTI::newInstance() const {
+    return new (16u) rStageConnect::Data;
 }
 
 const MtDTI& rStageConnect::Connect::getDTI() const {

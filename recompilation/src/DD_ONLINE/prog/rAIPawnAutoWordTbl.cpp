@@ -16,6 +16,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cAIPawnAutoWordNode>::allocData(unsigned int);
+#endif
+
 const MtDTI& cAIPawnAutoMotionNode::getDTI() const {
     return cAIPawnAutoMotionNode::DTI;
 }

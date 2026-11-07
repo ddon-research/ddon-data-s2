@@ -5,7 +5,7 @@
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
 #include "../../../../MT/MtMemoryAllocator.h"
-#include "../../../../MT/MtString.h"
+#include "../../../../MT/MtObject.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -56,8 +56,7 @@ CDataRankingData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 CDataRankingData::MyDTI CDataRankingData::DTI("CDataRankingData", &::CPacketDataBase::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataRankingData::MyDTI::newInstance() const {
-    DDON_STUB("CDataRankingData::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataRankingData::MyDTI::newInstance() const {
+    return new (16u) CDataRankingData;
 }
 

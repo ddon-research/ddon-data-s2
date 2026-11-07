@@ -23,6 +23,10 @@ const MtDTI& cQuakeParam::getDTI() const {
     return cQuakeParam::DTI;
 }
 
+inline void* cQuakeParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cQuakeParam::DTI)->memAlloc(sz, align, cQuakeParam::DTI.getID());
+}
+
 inline cQuakeParam::cQuakeParam() {
     mTailTime = 0.0f;
     mHeadTime = 0.0f;
@@ -86,9 +90,8 @@ cQuakeParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 
 cQuakeParam::MyDTI cQuakeParam::DTI("cQuakeParam", &::MtObject::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cQuakeParam::MyDTI::newInstance() const {
-    DDON_STUB("cQuakeParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cQuakeParam::MyDTI::newInstance() const {
+    return new (16u) cQuakeParam;
 }
 
 const MtDTI& rCameraQuakeList::getDTI() const {

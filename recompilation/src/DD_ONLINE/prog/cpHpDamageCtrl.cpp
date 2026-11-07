@@ -68,6 +68,10 @@ const MtDTI& cDamageEffInfo::getDTI() const {
     return cDamageEffInfo::DTI;
 }
 
+inline void* cDamageEffInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDamageEffInfo::DTI)->memAlloc(sz, align, cDamageEffInfo::DTI.getID());
+}
+
 inline void cDamageEffInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDamageEffInfo::DTI)->memFree(p_addr);
 }
@@ -77,9 +81,18 @@ inline cDamageEffInfo::cDamageEffInfo() {
     mpAttacker = nullptr;
     mPhysTypeEff = 2;
     mJointNo = 0;
-    mHitPos = MtVector3::Zero;
-    mHitNormal = MtVector3::Zero;
-    mOffsetFromJoint = MtVector3::Zero;
+    mHitPos.x = MtVector3::Zero.x;
+    mHitPos.y = MtVector3::Zero.y;
+    mHitPos.z = MtVector3::Zero.z;
+    mHitPos.pad_ = 0.0f;
+    mHitNormal.x = MtVector3::Zero.x;
+    mHitNormal.y = MtVector3::Zero.y;
+    mHitNormal.z = MtVector3::Zero.z;
+    mHitNormal.pad_ = 0.0f;
+    mOffsetFromJoint.x = MtVector3::Zero.x;
+    mOffsetFromJoint.y = MtVector3::Zero.y;
+    mOffsetFromJoint.z = MtVector3::Zero.z;
+    mOffsetFromJoint.pad_ = 0.0f;
     mSurfaceType = 0;
     mElemntType = nDDOGame::ELEMENT_TYPE_INIT;
     mEffectAngle = 1;
@@ -95,13 +108,16 @@ cDamageEffInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 cDamageEffInfo::MyDTI cDamageEffInfo::DTI("cDamageEffInfo", &::MtObject::DTI, 112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDamageEffInfo::MyDTI::newInstance() const {
-    DDON_STUB("cDamageEffInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDamageEffInfo::MyDTI::newInstance() const {
+    return new (16u) cDamageEffInfo;
 }
 
 const MtDTI& cDamageSeInfo::getDTI() const {
     return cDamageSeInfo::DTI;
+}
+
+inline void* cDamageSeInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDamageSeInfo::DTI)->memAlloc(sz, align, cDamageSeInfo::DTI.getID());
 }
 
 inline void cDamageSeInfo::operator delete(void* p_addr) {
@@ -141,9 +157,8 @@ cDamageSeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 
 cDamageSeInfo::MyDTI cDamageSeInfo::DTI("cDamageSeInfo", &::MtObject::DTI, 144ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDamageSeInfo::MyDTI::newInstance() const {
-    DDON_STUB("cDamageSeInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDamageSeInfo::MyDTI::newInstance() const {
+    return new (16u) cDamageSeInfo;
 }
 
 const MtDTI& cpHpDamageCtrl::getDTI() const {

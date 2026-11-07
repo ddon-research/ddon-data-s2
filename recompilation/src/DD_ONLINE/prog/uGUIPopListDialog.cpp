@@ -218,6 +218,10 @@ const MtDTI& uGUIPopListDialog::cListItem::getDTI() const {
     return uGUIPopListDialog::cListItem::DTI;
 }
 
+inline void* uGUIPopListDialog::cListItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIPopListDialog::cListItem::DTI)->memAlloc(sz, align, uGUIPopListDialog::cListItem::DTI.getID());
+}
+
 inline void uGUIPopListDialog::cListItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPopListDialog::cListItem::DTI)->memFree(p_addr);
 }
@@ -226,9 +230,8 @@ uGUIPopListDialog::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 
 uGUIPopListDialog::cListItem::MyDTI uGUIPopListDialog::cListItem::DTI("uGUIPopListDialog::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIPopListDialog::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIPopListDialog::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIPopListDialog::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIPopListDialog::cListItem;
 }
 
 const MtDTI& uGUIPopListDialog::cListInfo::getDTI() const {

@@ -467,6 +467,9 @@ inline void* CDataClientPartyListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline CDataClientPartyListInfo::CDataClientPartyListInfo() {
+}
+
 inline bool nNet::cProgress::getWaitFlag() {
     return this->mWaitFlag;
 }

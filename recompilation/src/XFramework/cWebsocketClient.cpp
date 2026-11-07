@@ -17,6 +17,153 @@
 #define DDON_STUB(name)
 #endif
 
+static const char hostField[7] = {
+    72,
+    111,
+    115,
+    116,
+    58,
+    32,
+    0,
+};
+
+static const char upgradeField[10] = {
+    85,
+    112,
+    103,
+    114,
+    97,
+    100,
+    101,
+    58,
+    32,
+    0,
+};
+
+static const char websocket[10] = {
+    119,
+    101,
+    98,
+    115,
+    111,
+    99,
+    107,
+    101,
+    116,
+    0,
+};
+
+static const char connectionField[13] = {
+    67,
+    111,
+    110,
+    110,
+    101,
+    99,
+    116,
+    105,
+    111,
+    110,
+    58,
+    32,
+    0,
+};
+
+static const char upgrade2[8] = {
+    85,
+    112,
+    103,
+    114,
+    97,
+    100,
+    101,
+    0,
+};
+
+static const char keyField[20] = {
+    83,
+    101,
+    99,
+    45,
+    87,
+    101,
+    98,
+    83,
+    111,
+    99,
+    107,
+    101,
+    116,
+    45,
+    75,
+    101,
+    121,
+    58,
+    32,
+    0,
+};
+
+static const char protocolField[25] = {
+    83,
+    101,
+    99,
+    45,
+    87,
+    101,
+    98,
+    83,
+    111,
+    99,
+    107,
+    101,
+    116,
+    45,
+    80,
+    114,
+    111,
+    116,
+    111,
+    99,
+    111,
+    108,
+    58,
+    32,
+    0,
+};
+
+static const char versionField[24] = {
+    83,
+    101,
+    99,
+    45,
+    87,
+    101,
+    98,
+    83,
+    111,
+    99,
+    107,
+    101,
+    116,
+    45,
+    86,
+    101,
+    114,
+    115,
+    105,
+    111,
+    110,
+    58,
+    32,
+    0,
+};
+
+static const char version[3] = {
+    49,
+    51,
+    0,
+};
+
 const MtDTI& cWebsocketClient::getDTI() const {
     return cWebsocketClient::DTI;
 }

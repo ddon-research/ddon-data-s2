@@ -540,6 +540,10 @@ const MtDTI& uGUIMissionResult::cResultScrollItem::getDTI() const {
     return uGUIMissionResult::cResultScrollItem::DTI;
 }
 
+inline void* uGUIMissionResult::cResultScrollItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIMissionResult::cResultScrollItem::DTI)->memAlloc(sz, align, uGUIMissionResult::cResultScrollItem::DTI.getID());
+}
+
 inline void uGUIMissionResult::cResultScrollItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMissionResult::cResultScrollItem::DTI)->memFree(p_addr);
 }
@@ -548,9 +552,8 @@ uGUIMissionResult::cResultScrollItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* p
 
 uGUIMissionResult::cResultScrollItem::MyDTI uGUIMissionResult::cResultScrollItem::DTI("uGUIMissionResult::cResultScrollItem", &::uGUIBase::cScrollListItemBase::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIMissionResult::cResultScrollItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIMissionResult::cResultScrollItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIMissionResult::cResultScrollItem::MyDTI::newInstance() const {
+    return new (16u) uGUIMissionResult::cResultScrollItem;
 }
 
 const MtDTI& uGUIMissionResult::cResultScrollInfo::getDTI() const {

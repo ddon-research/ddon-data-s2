@@ -1021,6 +1021,25 @@ inline void* sEffectExt::cEfcCameraQuakeData::operator new(size_t sz, void* p_ad
     return p_addr;
 }
 
+inline sEffectExt::cEfcCameraQuakeData::cEfcCameraQuakeData() {
+    this->mMainTime = 0.0f;
+    this->mTailTime = 0.0f;
+    this->mTaskNo = 0;
+    this->mHeadTime = 0.0f;
+    this->mMagunitude.z = 0.0f;
+    this->mMagunitude.pad_ = 0.0f;
+    this->mMagunitude.x = 0.0f;
+    this->mMagunitude.y = 0.0f;
+    this->mbAsync = false;
+    this->mBalance = 0.0f;
+    this->mPeriod = 0.0f;
+    this->mRoll = 0.0f;
+    this->mSpread = 0.0f;
+    this->mDamping = 0.0f;
+    this->mPos.pad_ = 0.0f;
+    this->mRadius = 0.0f;
+}
+
 inline void* sEffectExt::cEfcCameraQuakeDataLarge::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

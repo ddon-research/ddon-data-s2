@@ -256,7 +256,7 @@ public:
     void changeWeapon(nWeapon::WEAPON_CATEGORY wepCategory, u64 ResId, u32 index, u8 partsPatern, s8 colorPatern);
     void resetSimulation();
     void setGrassWind(bool isGrassWind);
-    void onFlag(u32 flag);
+    void onFlag(u32 flag = 1);
     void offFlag(u32);
     bool isFlag(u32);
     void setFlag(u32);
@@ -327,6 +327,10 @@ inline cpEquip::cEquipInfo* cpEquip::getMakeupInfo() {
 
 inline rEquipPreset* cpEquip::getEquipPreset() {
     return this->mpEquipPresetRes;
+}
+
+inline void cpEquip::onFlag(u32 flag) {
+    this->mFlag = this->mFlag | 1u;
 }
 
 inline void* cpEquip::cEquipInfo::operator new(size_t sz, void* p_addr) {

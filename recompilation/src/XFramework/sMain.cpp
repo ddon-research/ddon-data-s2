@@ -225,6 +225,8 @@ sMain::MyDTI sMain::DTI("sMain", &::cSystem::DTI, 0x57AB8ul, 0u, 0u);
 
 sMain* sMain::mpInstance;
 
+MT_CTSTR sMain::mBuildVersion = "MasterRelease PS4 Dec 21 2016 13:39:53";
+
 __attribute__((weak)) MtObject* sMain::MyDTI::newInstance() const {
     DDON_STUB("sMain::MyDTI::newInstance")
     return nullptr;

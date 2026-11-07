@@ -143,6 +143,10 @@ inline rAIPawnEmParam::rAIPawnEmParam() {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cAIPawnEmNode::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIPawnEmNode::DTI)->memFree(p_addr);
+}
+
 inline void* cAIPawnEmNode::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAIPawnEmNode::DTI)->memAlloc(sz, align, ::cAIPawnEmNode::DTI.::MtDTI::getID());
 }

@@ -22,6 +22,30 @@
 #define DDON_STUB(name)
 #endif
 
+namespace nDraw {
+extern const SO_HANDLE GLOBAL_CBUFFER_TABLE[6] = {
+    3107172719,
+    1834312050,
+    2487669104,
+    1121288563,
+    3283497335,
+    4178317688,
+};
+}
+
+namespace nDraw {
+extern const SO_HANDLE ALPHATEST_FUNCTION_TABLE[8] = {
+    2951476277,
+    154842168,
+    1150649402,
+    282342457,
+    3502453814,
+    1842766907,
+    237450295,
+    2230391859,
+};
+}
+
 const MtDTI& cDraw::getDTI() const {
     return cDraw::DTI;
 }
@@ -49,9 +73,46 @@ __attribute__((weak)) void cDraw::scatterCommand(cDraw* subdraw, u32 num) {
     /* stub */
 }
 
-__attribute__((weak)) void cDraw::gatherCommand(cDraw* subdraw, u32 num) {
-    DDON_STUB("cDraw::gatherCommand")
-    /* stub */
+void cDraw::gatherCommand(cDraw* subdraw, u32 num) {
+    if (num != 0) {
+        u32 i = 0;
+        cDraw* p0_3 = subdraw;
+        CMD_BRANCH* * p1_10;
+        u32 v1_12;
+        for (;;) {
+            u32 t0 = subdraw[i].mTagNum;
+            memcpy(static_cast<void*>(&mTags[mTagNum]), static_cast<const void*>(subdraw[i].mTags), static_cast<size_t>(t0) * 16);
+            mTagNum = t0 + mTagNum;
+            if (subdraw[i].mBranchNum != 0) {
+                p1_10 = &p0_3->mpBranches[0];
+                v1_12 = subdraw[i].mBranchNum;
+                for (;;) {
+                    CMD_BRANCH* t1 = *p1_10;
+                    u32 t2 = mMaxTag;
+                    u32 t3 = t1->tag_num;
+                    TAG* t4 = mTags;
+                    mMaxTag = t2 - t3;
+                    memcpy(static_cast<void*>(&t4[t2 - t3]), static_cast<const void*>(t1->tags), static_cast<size_t>(t3) * 16);
+                    t1->tags = &t4[t2 - t3];
+                    u32 t5 = mBranchNum;
+                    mBranchNum = t5 + 1u;
+                    mpBranches[t5] = t1;
+                    if ((v1_12 - 1u) != 0) {
+                        p1_10 += 1;
+                        v1_12 += 0xFFFFFFFFu;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            if (num != (i + 1u)) {
+                i = i + 1u;
+                p0_3 += 1;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cDraw::beginScene(nDraw::Scene* pscene, nDraw::DRAW_MODE mode, MT_CTSTR name) {

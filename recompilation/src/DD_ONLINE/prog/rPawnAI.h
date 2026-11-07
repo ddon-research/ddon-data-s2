@@ -220,6 +220,10 @@ inline void* rPawnAIAction::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cPawnAIAction::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnAIAction::DTI)->memFree(p_addr);
+}
+
 inline void* cPawnAIAction::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cPawnAIAction::DTI)->memAlloc(sz, align, ::cPawnAIAction::DTI.::MtDTI::getID());
 }

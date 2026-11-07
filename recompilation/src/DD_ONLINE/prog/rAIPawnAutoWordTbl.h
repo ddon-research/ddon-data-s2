@@ -223,6 +223,10 @@ inline void* rAIPawnAutoWordTbl::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cAIPawnAutoWordNode::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIPawnAutoWordNode::DTI)->memFree(p_addr);
+}
+
 inline void* cAIPawnAutoWordNode::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAIPawnAutoWordNode::DTI)->memAlloc(sz, align, ::cAIPawnAutoWordNode::DTI.::MtDTI::getID());
 }

@@ -51,6 +51,71 @@
 #define DDON_STUB(name)
 #endif
 
+static const u8 ELEMENT_DISP_FIX_FRAMES[7] = {
+    5,
+    5,
+    0,
+    1,
+    2,
+    4,
+    3,
+};
+
+static const u32 STOCK_GAUGE_SEQ_IDS[7] = {
+    1000013,
+    1000014,
+    1000015,
+    1000016,
+    1000017,
+    1000018,
+    1000019,
+};
+
+static const u8 ELEMENT_STOCK_GAUGE_FIX_FRAME_BASES[7] = {
+    50,
+    50,
+    0,
+    10,
+    20,
+    40,
+    30,
+};
+
+static const s32 OnlineStatusStringIds[13] = {
+    -1,
+    -1,
+    -1,
+    8,
+    -1,
+    -1,
+    -1,
+    9,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+};
+
+static const f32 JobIndex2Frame[10] = {
+    0x0p+0f,
+    0x1p+0f,
+    0x1p+1f,
+    0x1.8p+1f,
+    0x1p+2f,
+    0x1.4p+2f,
+    0x1.8p+2f,
+    0x1.cp+2f,
+    0x1p+3f,
+    0x1.2p+3f,
+};
+
+static const f32 RoleIndex2Frame[3] = {
+    0x0p+0f,
+    0x1p+1f,
+    0x1p+0f,
+};
+
 const MtDTI& uGUIGauge::getDTI() const {
     return uGUIGauge::DTI;
 }

@@ -121,6 +121,10 @@ inline void* rWepCateResTbl::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cWepCateResTbl::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWepCateResTbl::DTI)->memFree(p_addr);
+}
+
 inline void* cWepCateResTbl::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cWepCateResTbl::DTI)->memAlloc(sz, align, ::cWepCateResTbl::DTI.::MtDTI::getID());
 }

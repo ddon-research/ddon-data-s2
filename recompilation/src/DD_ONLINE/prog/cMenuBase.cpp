@@ -134,6 +134,116 @@
 #define DDON_STUB(name)
 #endif
 
+namespace nNet {
+static const u32 RECOMMEND_ROLE_LIST_4[3] = {
+    2,
+    1,
+    1,
+};
+}
+
+static const u32 tblErrMsg[99] = {
+    184,
+    145,
+    146,
+    147,
+    148,
+    149,
+    285,
+    286,
+    227,
+    150,
+    151,
+    152,
+    153,
+    154,
+    374,
+    254,
+    155,
+    156,
+    157,
+    492,
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    252,
+    253,
+    287,
+    288,
+    350,
+    227,
+    165,
+    255,
+    166,
+    167,
+    168,
+    169,
+    211,
+    470,
+    170,
+    171,
+    254,
+    227,
+    227,
+    254,
+    172,
+    173,
+    422,
+    174,
+    466,
+    175,
+    176,
+    445,
+    177,
+    445,
+    255,
+    254,
+    178,
+    348,
+    254,
+    254,
+    179,
+    347,
+    180,
+    181,
+    182,
+    183,
+    227,
+    499,
+    147,
+    289,
+    290,
+    151,
+    351,
+    392,
+    227,
+    227,
+    142,
+    227,
+    254,
+    281,
+    348,
+    422,
+    227,
+    504,
+    438,
+    437,
+    436,
+    471,
+    450,
+    449,
+    451,
+    481,
+    493,
+    488,
+    489,
+    494,
+};
+
 const MtDTI& cMenuActiveList::getDTI() const {
     return cMenuActiveList::DTI;
 }
@@ -2024,6 +2134,10 @@ const MtDTI& cMenuEditBlackList::getDTI() const {
     return cMenuEditBlackList::DTI;
 }
 
+inline void* cMenuEditBlackList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cMenuEditBlackList::DTI)->memAlloc(sz, align, cMenuEditBlackList::DTI.getID());
+}
+
 inline void cMenuEditBlackList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuEditBlackList::DTI)->memFree(p_addr);
 }
@@ -2047,9 +2161,8 @@ cMenuEditBlackList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 cMenuEditBlackList::MyDTI cMenuEditBlackList::DTI("cMenuEditBlackList", &::cMenuBase::DTI, 232ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuEditBlackList::MyDTI::newInstance() const {
-    DDON_STUB("cMenuEditBlackList::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuEditBlackList::MyDTI::newInstance() const {
+    return new (16u) cMenuEditBlackList;
 }
 
 const MtDTI& cMenuEditFavoritePawn::getDTI() const {

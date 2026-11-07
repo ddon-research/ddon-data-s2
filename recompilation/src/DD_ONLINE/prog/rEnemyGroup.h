@@ -156,6 +156,10 @@ inline void* rEnemyGroup::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cEnemyGroup::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyGroup::DTI)->memFree(p_addr);
+}
+
 inline void* cEnemyGroup::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEnemyGroup::DTI)->memAlloc(sz, align, ::cEnemyGroup::DTI.::MtDTI::getID());
 }

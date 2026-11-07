@@ -9238,6 +9238,9 @@ inline void* cMenuEditBlackList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cMenuEditBlackList::cMenuEditBlackList() {
+}
+
 inline void* cMenuEditFavoritePawn::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

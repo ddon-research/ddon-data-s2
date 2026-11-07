@@ -597,6 +597,10 @@ const MtDTI& uGUICommunityList::cScrollDispList::getDTI() const {
     return uGUICommunityList::cScrollDispList::DTI;
 }
 
+inline void* uGUICommunityList::cScrollDispList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUICommunityList::cScrollDispList::DTI)->memAlloc(sz, align, uGUICommunityList::cScrollDispList::DTI.getID());
+}
+
 inline void uGUICommunityList::cScrollDispList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICommunityList::cScrollDispList::DTI)->memFree(p_addr);
 }
@@ -605,9 +609,8 @@ uGUICommunityList::cScrollDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps,
 
 uGUICommunityList::cScrollDispList::MyDTI uGUICommunityList::cScrollDispList::DTI("uGUICommunityList::cScrollDispList", &::uGUIBase::cScrollListItemBase::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICommunityList::cScrollDispList::MyDTI::newInstance() const {
-    DDON_STUB("uGUICommunityList::cScrollDispList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICommunityList::cScrollDispList::MyDTI::newInstance() const {
+    return new (16u) uGUICommunityList::cScrollDispList;
 }
 
 const MtDTI& uGUICommunityList::cScrollItemList::getDTI() const {

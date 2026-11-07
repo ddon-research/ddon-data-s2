@@ -141,3 +141,22 @@ inline void cHeadCtrl::operator delete[](void* p_addr) {
 inline void* cHeadCtrl::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cHeadCtrl::DTI)->memAlloc(sz, align, ::cHeadCtrl::DTI.::MtDTI::getID());
 }
+
+inline void* rHeadCtrl::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rHeadCtrl::DTI)->memAlloc(sz, align, rHeadCtrl::DTI.getID());
+}
+
+inline rHeadCtrl::rHeadCtrl() {
+    mBaseJntNo = -1;
+    mBaseAngleSpeed = 20.0f;
+    mBaseAngleLimit.x = 150.0f;
+    mBaseAngleLimit.y = 150.0f;
+    mPitchSpeed = 5.0f;
+    mBasePitchLimit.x = 60.0f;
+    mBasePitchLimit.y = 0.0f;
+    mSafeRange.x = 50.0f;
+    mSafeRange.y = 0.0f;
+    mMotionSync = 0u;
+    mSeqPage = 2u;
+    mSeqNo = 18u;
+}

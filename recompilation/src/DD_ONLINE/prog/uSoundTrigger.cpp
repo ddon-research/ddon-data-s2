@@ -42,8 +42,37 @@ const MtDTI& cSoundTriggerLayoutInfo::getDTI() const {
     return cSoundTriggerLayoutInfo::DTI;
 }
 
+inline void* cSoundTriggerLayoutInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSoundTriggerLayoutInfo::DTI)->memAlloc(sz, align, cSoundTriggerLayoutInfo::DTI.getID());
+}
+
 inline void cSoundTriggerLayoutInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cSoundTriggerLayoutInfo::DTI)->memFree(p_addr);
+}
+
+inline cSoundTriggerLayoutInfo::cSoundTriggerLayoutInfo() {
+    mPanelType = 0;
+    mpUSequenceSe[1] = nullptr;
+    mpUSequenceSe[0] = nullptr;
+    mPanelNormal[0].x = MtVector3::Zero.x;
+    mPanelNormal[0].y = MtVector3::Zero.y;
+    mPanelNormal[0].z = MtVector3::Zero.z;
+    mPanelNormal[0].pad_ = 0.0f;
+    mPanelNormal[1].x = MtVector3::Zero.x;
+    mPanelNormal[1].y = MtVector3::Zero.y;
+    mPanelNormal[1].z = MtVector3::Zero.z;
+    mPanelNormal[1].pad_ = 0.0f;
+    mContentsIndex[10] = -1;
+    mContentsIndex[8] = -1;
+    mContentsIndex[9] = -1;
+    mContentsIndex[6] = -1;
+    mContentsIndex[7] = -1;
+    mContentsIndex[4] = -1;
+    mContentsIndex[5] = -1;
+    mContentsIndex[2] = -1;
+    mContentsIndex[3] = -1;
+    mContentsIndex[0] = -1;
+    mContentsIndex[1] = -1;
 }
 
 cSoundTriggerLayoutInfo::~cSoundTriggerLayoutInfo() {
@@ -99,9 +128,8 @@ cSoundTriggerLayoutInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 cSoundTriggerLayoutInfo::MyDTI cSoundTriggerLayoutInfo::DTI("cSoundTriggerLayoutInfo", &::cSoundLayoutInfo::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSoundTriggerLayoutInfo::MyDTI::newInstance() const {
-    DDON_STUB("cSoundTriggerLayoutInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSoundTriggerLayoutInfo::MyDTI::newInstance() const {
+    return new (16u) cSoundTriggerLayoutInfo;
 }
 
 const MtDTI& cSoundTriggerListener::getDTI() const {
@@ -194,8 +222,6 @@ nSoundTrigger::cCategory::cCategory() {
 }
 
 nSoundTrigger::cCategory::~cCategory() {
-    DDON_STUB("nSoundTrigger::cCategory::~cCategory")
-    /* stub */
 }
 
 MtUI* nSoundTrigger::cCategory::createUI(MtProperty& prop) {

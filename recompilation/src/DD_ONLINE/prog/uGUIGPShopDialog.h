@@ -256,7 +256,7 @@ public:
     static void operator delete[](void* p_addr);
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
-    void setStartType(u32 Type);
+    void setStartType(u32 Type = 0);
     void setOnlineShopOpen();
     bool isSelectedGSBuy();
     uGUIGPShopDialog();
@@ -307,7 +307,7 @@ private:
     void updateTextBox(bool mIsOperate);
     void updateEventCodeLine();
     void updateEventCodeButton(bool mIsOperate);
-    void updateConfirmCaution(bool IsDisp);
+    void updateConfirmCaution(bool IsDisp = false);
     void updateScrollLimitListDisp(uGUIBase::cScrollListItemBase* pDispItem, uGUIBase::cScrollListInfoBase* pListItem, u32 Index);
     void updateScrollLimitListHide(uGUIBase::cScrollListItemBase* pDispItem);
     void updateScrollHistoryListDisp(uGUIBase::cScrollListItemBase* pDispItem, uGUIBase::cScrollListInfoBase* pListItem, u32 Index);
@@ -381,6 +381,10 @@ inline void* uGUIGPShopDialog::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void uGUIGPShopDialog::setStartType(u32 Type) {
+    this->mInitType = 0;
+}
+
 inline void uGUIGPShopDialog::setOnlineShopOpen() {
     this->mIsOnlineShopOpen = true;
 }
@@ -389,8 +393,23 @@ inline void* uGUIGPShopDialog::cScrollLimitDispList::operator new(size_t sz, voi
     return p_addr;
 }
 
+inline uGUIGPShopDialog::cScrollLimitDispList::cScrollLimitDispList() {
+    this->mpFreeGoldStone = nullptr;
+    this->mpBuyGoldStone = nullptr;
+    this->mpTime = nullptr;
+    this->mpInst = nullptr;
+}
+
 inline void* uGUIGPShopDialog::cScrollHistoryDispList::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIGPShopDialog::cScrollHistoryDispList::cScrollHistoryDispList() {
+    this->mpGoldStone = nullptr;
+    this->mpKind = nullptr;
+    this->mpName = nullptr;
+    this->mpTime = nullptr;
+    this->mpInst = nullptr;
 }
 
 inline void* uGUIGPShopDialog::cScrollLimitItemList::operator new(size_t sz, void* p_addr) {

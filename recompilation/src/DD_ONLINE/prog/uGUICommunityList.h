@@ -640,6 +640,11 @@ inline void* uGUICommunityList::cScrollDispList::operator new(size_t sz, void* p
     return p_addr;
 }
 
+inline uGUICommunityList::cScrollDispList::cScrollDispList() {
+    this->mpInData = nullptr;
+    this->mpInstance = nullptr;
+}
+
 inline void* uGUICommunityList::cScrollItemList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

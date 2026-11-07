@@ -12,6 +12,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cAttackParam>::allocData(unsigned int);
+#endif
+
 const MtDTI& cAttackParam::getDTI() const {
     return cAttackParam::DTI;
 }

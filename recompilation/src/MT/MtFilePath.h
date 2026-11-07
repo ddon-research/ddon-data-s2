@@ -42,3 +42,7 @@ public:
     static const u32 MAX_FNAME = 256;
     static const u32 MAX_DRIVE = 32;
 };
+
+inline MT_CTSTR MtFilePath::getFileTitle() {
+    return mFileTitle;
+}

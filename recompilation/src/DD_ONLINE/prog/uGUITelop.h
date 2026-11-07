@@ -91,7 +91,7 @@ public:
     virtual void move();  // vtable slot 9
     rGUIMessage* getMessageResource();
     void setMessageResource(rGUIMessage* pRes);
-    void setType(u32 uType);
+    void setType(u32 uType = 1);
     void setNameNpc(MT_CTSTR msg, u32 uPage);
     void setMessage(MT_CTSTR msg, u32 uPage);
     void setCntSkipChk(f32 fCnt, u32 uPage);
@@ -127,6 +127,10 @@ inline void* uGUITelop::operator new(size_t sz, void* p_addr) {
 
 inline rGUIMessage* uGUITelop::getMessageResource() {
     return this->mpMessageResource;
+}
+
+inline void uGUITelop::setType(u32 uType) {
+    this->mType = 1;
 }
 
 inline u32 uGUITelop::getMessageIndex() {

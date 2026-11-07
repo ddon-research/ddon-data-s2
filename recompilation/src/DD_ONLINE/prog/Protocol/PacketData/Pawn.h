@@ -893,6 +893,9 @@ inline void* CDataPawnProfile::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline CDataPawnProfile::CDataPawnProfile() {
+}
+
 inline void* CDataPawnReaction::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

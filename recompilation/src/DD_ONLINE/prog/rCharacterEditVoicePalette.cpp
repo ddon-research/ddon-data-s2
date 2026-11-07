@@ -12,6 +12,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cCharacterEditVoicePalette>::allocData(unsigned int);
+#endif
+
 const MtDTI& cCharacterEditVoicePalette::getDTI() const {
     return cCharacterEditVoicePalette::DTI;
 }

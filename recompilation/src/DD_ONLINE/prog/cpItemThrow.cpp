@@ -31,6 +31,12 @@
 #define DDON_STUB(name)
 #endif
 
+nKeyCommand::stKeyCommand ItemHoldCommandJob[3] = {
+    {4294967295, 4294967295, 28, 1, 0, 1, 0, 65535, 65535, 4, 152, 0, 255, false},
+    {4294967295, 4294967295, 28, 1, 0, 2, 0, 65535, 65535, 4, 152, 0, 255, false},
+    {4294967295, 4294967295, 0, 0, 0, 0, 0, 65535, 65535, 0, 0, 0, 255, false},
+};
+
 const MtDTI& cpItemThrow::getDTI() const {
     return cpItemThrow::DTI;
 }

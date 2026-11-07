@@ -46,6 +46,32 @@
 #define DDON_STUB(name)
 #endif
 
+static const nKeyCustom::KB_CUSTOM tblTrgChkKb[12] = {
+    static_cast<const nKeyCustom::KB_CUSTOM>(68),
+    static_cast<const nKeyCustom::KB_CUSTOM>(69),
+    static_cast<const nKeyCustom::KB_CUSTOM>(70),
+    static_cast<const nKeyCustom::KB_CUSTOM>(71),
+    static_cast<const nKeyCustom::KB_CUSTOM>(72),
+    static_cast<const nKeyCustom::KB_CUSTOM>(73),
+    static_cast<const nKeyCustom::KB_CUSTOM>(74),
+    static_cast<const nKeyCustom::KB_CUSTOM>(75),
+    static_cast<const nKeyCustom::KB_CUSTOM>(76),
+    static_cast<const nKeyCustom::KB_CUSTOM>(77),
+    static_cast<const nKeyCustom::KB_CUSTOM>(78),
+    static_cast<const nKeyCustom::KB_CUSTOM>(79),
+};
+
+static const u32 tblSCCKey[8] = {
+    4,
+    7,
+    5,
+    6,
+    0,
+    3,
+    1,
+    2,
+};
+
 const MtDTI& uGUIFKeyPalette::getDTI() const {
     return uGUIFKeyPalette::DTI;
 }

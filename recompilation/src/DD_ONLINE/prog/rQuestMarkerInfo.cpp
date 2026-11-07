@@ -110,6 +110,10 @@ const MtDTI& rQuestMarkerInfo::cInfo::getDTI() const {
     return rQuestMarkerInfo::cInfo::DTI;
 }
 
+void* rQuestMarkerInfo::cInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rQuestMarkerInfo::cInfo::DTI)->memAlloc(sz, align, rQuestMarkerInfo::cInfo::DTI.getID());
+}
+
 inline void rQuestMarkerInfo::cInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rQuestMarkerInfo::cInfo::DTI)->memFree(p_addr);
 }
@@ -146,9 +150,8 @@ rQuestMarkerInfo::cInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 rQuestMarkerInfo::cInfo::MyDTI rQuestMarkerInfo::cInfo::DTI("rQuestMarkerInfo::cInfo", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rQuestMarkerInfo::cInfo::MyDTI::newInstance() const {
-    DDON_STUB("rQuestMarkerInfo::cInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* rQuestMarkerInfo::cInfo::MyDTI::newInstance() const {
+    return new (16u) rQuestMarkerInfo::cInfo;
 }
 
 template MtTypedArray<rQuestMarkerInfo::cInfo>::~MtTypedArray();

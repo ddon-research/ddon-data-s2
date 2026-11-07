@@ -23,8 +23,28 @@ inline MtAllocator* cCommonSkyFogData::getAllocator() {
     return MtMemoryAllocator::getAllocator(cCommonSkyFogData::DTI);
 }
 
+inline void* cCommonSkyFogData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCommonSkyFogData::DTI)->memAlloc(sz, align, cCommonSkyFogData::DTI.getID());
+}
+
 __attribute__((weak)) void cCommonSkyFogData::operator delete(void* p_addr) {
     cCommonSkyFogData::getAllocator()->memFree(p_addr);
+}
+
+cCommonSkyFogData::cCommonSkyFogData() {
+    mIsEnable = false;
+    mColor.x = MtVector3::One.x;
+    mColor.y = MtVector3::One.y;
+    mColor.z = MtVector3::One.z;
+    mColor.pad_ = 0.0f;
+    mIntensity = 1.0f;
+    mDensity = 1.0f;
+    mExponentDensity = 1.0f;
+    mStart = 1000.0f;
+    mEnd = 3000.0f;
+    mSupplementFrame = 30.0f;
+    mKind = 0;
+    mId = 0;
 }
 
 void cCommonSkyFogData::init() {
@@ -67,13 +87,16 @@ cCommonSkyFogData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 cCommonSkyFogData::MyDTI cCommonSkyFogData::DTI("cCommonSkyFogData", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCommonSkyFogData::MyDTI::newInstance() const {
-    DDON_STUB("cCommonSkyFogData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCommonSkyFogData::MyDTI::newInstance() const {
+    return new (16u) cCommonSkyFogData;
 }
 
 const MtDTI& cDayNightColorFogParam::getDTI() const {
     return cDayNightColorFogParam::DTI;
+}
+
+inline void* cDayNightColorFogParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDayNightColorFogParam::DTI)->memAlloc(sz, align, cDayNightColorFogParam::DTI.getID());
 }
 
 inline void cDayNightColorFogParam::operator delete(void* p_addr) {
@@ -81,8 +104,22 @@ inline void cDayNightColorFogParam::operator delete(void* p_addr) {
 }
 
 cDayNightColorFogParam::cDayNightColorFogParam() {
-    DDON_STUB("cDayNightColorFogParam::cDayNightColorFogParam")
-    /* stub */
+    mHeightStart = 100.0f;
+    mHeightEnd = 0.0f;
+    mHeightDensity = 1.0f;
+    mHeightColor.x = MtVector3::One.x;
+    mHeightColor.y = MtVector3::One.y;
+    mHeightColor.z = MtVector3::One.z;
+    mHeightColor.pad_ = 0.0f;
+    mStart = 1000.0f;
+    mEnd = 30000.0f;
+    mDensity = 1.0f;
+    mColor = MtVector3::One;
+    mDiffuseBlendFactor = 1.0f;
+    mIsEnable = false;
+    mSupplementFrame = 30.0f;
+    mId = -1;
+    mKind = 0;
 }
 
 __attribute__((weak)) void cDayNightColorFogParam::lerp(const cDayNightColorFogParam& a, const cDayNightColorFogParam& b, f32 rate) {
@@ -99,8 +136,7 @@ cDayNightColorFogParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 cDayNightColorFogParam::MyDTI cDayNightColorFogParam::DTI("cDayNightColorFogParam", &::cWeatherObjectRes::DTI, 112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDayNightColorFogParam::MyDTI::newInstance() const {
-    DDON_STUB("cDayNightColorFogParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDayNightColorFogParam::MyDTI::newInstance() const {
+    return new (16u) cDayNightColorFogParam;
 }
 

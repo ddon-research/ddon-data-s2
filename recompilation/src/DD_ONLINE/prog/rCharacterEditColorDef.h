@@ -115,3 +115,7 @@ inline void* rCharacterEditColorDef::operator new(size_t sz, void* p_addr) {
 inline void cCharacterEditColorDef::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cCharacterEditColorDef::DTI)->memFree(p_addr);
 }
+
+inline void* cCharacterEditColorDef::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCharacterEditColorDef::DTI)->memAlloc(sz, align, ::cCharacterEditColorDef::DTI.::MtDTI::getID());
+}

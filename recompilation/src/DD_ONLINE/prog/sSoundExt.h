@@ -547,7 +547,7 @@ public:
     bool isGlobalGeneratorZoneOut();
     void setGlobalTriggerZoneOut(bool isOut);
     void setGlobalGeneratorZoneOut(bool isOut);
-    void setGlobalOcclusionZoneOut(bool isOut);
+    void setGlobalOcclusionZoneOut(bool isOut = false);
     void setOtherGeneratorZoneIn(bool isIn);
     void setOtherTriggerZoneIn(bool isIn);
 private:
@@ -737,6 +737,10 @@ inline void sSoundExt::moveSoundZoneCtrl() {
     this->mIsGlobalGeneratorZoneOut = this->mIsOtherGeneratorZoneIn;
     this->mIsOtherTriggerZoneIn = false;
     this->mIsOtherGeneratorZoneIn = false;
+}
+
+inline void sSoundExt::setGlobalOcclusionZoneOut(bool isOut) {
+    this->mIsGlobalOcclusionZoneOut = false;
 }
 
 inline void* sSoundExt::cVoiceRequest::operator new(size_t sz, void* p_addr) {

@@ -205,7 +205,7 @@ public:
     bool isCheckLockOnModeActPal() const;
     const cpLockOn::cLockOnTarget* getLockonTarget(f32 range, f32 angle);
     bool checkCndSuccessAttackAvoid() const;
-    void setSuccessAttackAvoid(bool flag);
+    void setSuccessAttackAvoid(bool flag = false);
     void checkCs03AvoidFlg();
     MtVector3 getLookAtPos() const;
     f32 getWireLookAtLength() const;
@@ -285,6 +285,10 @@ inline void cpJob02::clearPullUpInfo() {
     this->mPullUpInfo.mInfoArray.elems[0].mIsEnable = false;
     this->mPullUpInfo.mInfoArray.elems[1].mIsEnable = false;
     this->mPullUpInfo.mInfoArray.elems[2].mIsEnable = false;
+}
+
+inline void cpJob02::setSuccessAttackAvoid(bool flag) {
+    this->mIsAvoid_CS03 = false;
 }
 
 inline void cpJob02::clearCS12Counter() {

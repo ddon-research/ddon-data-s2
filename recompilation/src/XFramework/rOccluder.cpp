@@ -7,6 +7,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPropertyList.h"
+#include "../MT/MtStream.h"
 #include "cResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -27,9 +28,12 @@ inline void rOccluder::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rOccluder::DTI)->memFree(p_addr);
 }
 
-rOccluder::~rOccluder() {
-    DDON_STUB("rOccluder::~rOccluder")
-    /* stub */
+__attribute__((noinline)) rOccluder::~rOccluder() {
+        if (this->mpOccluder != nullptr) {
+            size_t* t1 = reinterpret_cast<size_t*>(this->mpOccluder) - 2;
+            MtMemoryAllocator::getAllocator(rOccluder::cQuad::DTI)->memFree(t1);
+            this->mpOccluder = nullptr;
+        }
 }
 
 __attribute__((weak)) void rOccluder::createProperty(MtPropertyList& s) {
@@ -47,8 +51,37 @@ __attribute__((weak)) bool rOccluder::save(MtStream& out) {
 }
 
 __attribute__((weak)) bool rOccluder::load(MtStream& in) {
-    DDON_STUB("rOccluder::load")
-    return {};
+        HEADER header;
+        in.read(&header, 8u);
+        if (header.magic != HEADER_MAGIC) {
+            return false;
+        }
+        if (header.version != DATA_VERSION) {
+            return false;
+        }
+        in.read(&this->mOccluderCount, 4u);
+        if (this->mpOccluder != nullptr) {
+            size_t* t1 = reinterpret_cast<size_t*>(this->mpOccluder) - 2;
+            MtMemoryAllocator::getAllocator(rOccluder::cQuad::DTI)->memFree(t1);
+            this->mpOccluder = nullptr;
+        }
+        size_t t2 = this->mOccluderCount;
+        size_t* t3 = static_cast<size_t*>(MtMemoryAllocator::getAllocator(rOccluder::cQuad::DTI)->memAlloc(t2 * sizeof(rOccluder::cQuad) + 16u, 16u, rOccluder::cQuad::DTI.mID));
+        t3[1] = t2;
+        rOccluder::cQuad* t4 = reinterpret_cast<rOccluder::cQuad*>(t3 + 2);
+        if (t2 != 0u) {
+            rOccluder::cQuad* t5 = t4;
+            rOccluder::cQuad* t6 = t4 + t2;
+            do {
+                new (t5) rOccluder::cQuad;
+                t5++;
+            } while (t5 != t6);
+        }
+        this->mpOccluder = t4;
+        for (u32 i = 0; i < this->mOccluderCount; i++) {
+            this->mpOccluder[i].load(in);
+        }
+        return true;
 }
 
 MT_CTSTR rOccluder::getExt() const {
@@ -98,5 +131,32 @@ rOccluder::cQuad::MyDTI rOccluder::cQuad::DTI("rOccluder::cQuad", &::MtObject::D
 __attribute__((weak)) MtObject* rOccluder::cQuad::MyDTI::newInstance() const {
     DDON_STUB("rOccluder::cQuad::MyDTI::newInstance")
     return nullptr;
+}
+
+inline rOccluder::cQuad::cQuad() {
+    mActive = true;
+    mEnable = false;
+    MtVector3 QUAD[4];
+    QUAD[0].x = 100.0f;
+    QUAD[0].y = 100.0f;
+    QUAD[0].z = 0.0f;
+    QUAD[1].x = -100.0f;
+    QUAD[1].y = 100.0f;
+    QUAD[1].z = 0.0f;
+    QUAD[2].x = -100.0f;
+    QUAD[2].y = -100.0f;
+    QUAD[2].z = 0.0f;
+    QUAD[3].x = 100.0f;
+    QUAD[3].y = -100.0f;
+    QUAD[3].z = 0.0f;
+    for (u32 i = 0; i < 4u; i++) {
+        mQuad[i] = QUAD[i];
+    }
+}
+
+inline bool rOccluder::cQuad::load(MtStream& in) {
+    in.read(&mActive, 1u);
+    in.read(mQuad, 64u);
+    return true;
 }
 

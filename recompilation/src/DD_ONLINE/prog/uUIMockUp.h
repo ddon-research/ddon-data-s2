@@ -169,7 +169,7 @@ public:
     f32 getMotionMaxFrame(u32 MotNo);
     void useEmotion();
     void setChatSubMenu(bool bFlg);
-    void setEnableRotate(bool isEnable);
+    void setEnableRotate(bool isEnable = false);
 private:
     void createModel(bool isForceCreate);
     void setupModelContext(const cContextInstHm* pContextHm, u32 Mode);
@@ -227,6 +227,10 @@ inline void* uUIMockUp::operator new(size_t sz, void* p_addr) {
 
 inline void uUIMockUp::useEmotion() {
     this->mIsUseEmotion = true;
+}
+
+inline void uUIMockUp::setEnableRotate(bool isEnable) {
+    this->mIsEnableRotate = false;
 }
 
 inline void uUIMockUp::setupCameraDist() {

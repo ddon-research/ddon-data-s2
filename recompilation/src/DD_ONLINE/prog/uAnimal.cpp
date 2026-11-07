@@ -47,6 +47,10 @@ const MtDTI& uAnimal::getDTI() const {
     return uAnimal::DTI;
 }
 
+inline void* uAnimal::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uAnimal::DTI)->memAlloc(sz, align, uAnimal::DTI.getID());
+}
+
 inline void uAnimal::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uAnimal::DTI)->memFree(p_addr);
 }
@@ -133,9 +137,8 @@ uAnimal::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 a
 
 uAnimal::MyDTI uAnimal::DTI("uAnimal", &::uDDOModel::DTI, 9376ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uAnimal::MyDTI::newInstance() const {
-    DDON_STUB("uAnimal::MyDTI::newInstance")
-    return nullptr;
+MtObject* uAnimal::MyDTI::newInstance() const {
+    return new (16u) uAnimal;
 }
 
 const MtDTI& uAnimal::ActBase::getDTI() const {

@@ -29,6 +29,7 @@ class MtNetObject;
 class MtNetRanking;
 class MtNetServiceError;
 class MtObject;
+class MtScalableAllocator;
 class MtStream;
 class MtThread;
 class cAIConditionTreeNode;
@@ -78,11 +79,14 @@ class cSetInfoCharacter;
 class cSetInfoGeneralPoint;
 class cSetInfoOm;
 class cSetInfoOmBadStatus;
+class cSetInfoOmBlock;
 class cSetInfoOmBoard;
 class cSetInfoOmBowlOfLife;
+class cSetInfoOmBreakTarget;
 class cSetInfoOmCtrl;
 class cSetInfoOmDoor;
 class cSetInfoOmElfSW;
+class cSetInfoOmEx;
 class cSetInfoOmFall;
 class cSetInfoOmGather;
 class cSetInfoOmHakuryuu;
@@ -90,6 +94,8 @@ class cSetInfoOmHeal;
 class cSetInfoOmLadder;
 class cSetInfoOmLever;
 class cSetInfoOmNav;
+class cSetInfoOmOldDoor;
+class cSetInfoOmOneWay;
 class cSetInfoOmRange;
 class cSetInfoOmText;
 class cSetInfoOmTreasureBox;
@@ -140,6 +146,7 @@ namespace nDraw { class MaterialStdEst; }
 namespace nDraw { class MaterialStdPN; }
 namespace nDraw { class OcclusionQuery; }
 namespace nDraw { class RasterizerState; }
+namespace nDraw { class SamplerState; }
 namespace nDraw { class Scene; }
 namespace nDraw { class Texture; }
 namespace nDraw { class VertexBuffer; }
@@ -172,6 +179,7 @@ class rAIPathBase;
 class rArchive;
 class rCameraList;
 class rCollisionHeightField;
+class rDeformWeightMap;
 class rDynamicSbc;
 class rEffect2D;
 class rEffectAnim;
@@ -249,6 +257,7 @@ class uScrollCollisionGeometryModel;
 class uShadow;
 class uSimSoftBody;
 class uSimpleEffect;
+class uSoundMotionSe;
 
 // Declarations
 class MtDTI;
@@ -291,6 +300,7 @@ class MtDTI
     friend class MtNetObject;
     friend class MtNetRanking;
     friend class MtNetServiceError;
+    friend class MtScalableAllocator;
     friend class MtStream;
     friend class MtThread;
     friend class cAIConditionTreeNode;
@@ -340,11 +350,14 @@ class MtDTI
     friend class cSetInfoGeneralPoint;
     friend class cSetInfoOm;
     friend class cSetInfoOmBadStatus;
+    friend class cSetInfoOmBlock;
     friend class cSetInfoOmBoard;
     friend class cSetInfoOmBowlOfLife;
+    friend class cSetInfoOmBreakTarget;
     friend class cSetInfoOmCtrl;
     friend class cSetInfoOmDoor;
     friend class cSetInfoOmElfSW;
+    friend class cSetInfoOmEx;
     friend class cSetInfoOmFall;
     friend class cSetInfoOmGather;
     friend class cSetInfoOmHakuryuu;
@@ -352,6 +365,8 @@ class MtDTI
     friend class cSetInfoOmLadder;
     friend class cSetInfoOmLever;
     friend class cSetInfoOmNav;
+    friend class cSetInfoOmOldDoor;
+    friend class cSetInfoOmOneWay;
     friend class cSetInfoOmRange;
     friend class cSetInfoOmText;
     friend class cSetInfoOmTreasureBox;
@@ -402,6 +417,7 @@ class MtDTI
     friend class nDraw::MaterialStdPN;
     friend class nDraw::OcclusionQuery;
     friend class nDraw::RasterizerState;
+    friend class nDraw::SamplerState;
     friend class nDraw::Scene;
     friend class nDraw::Texture;
     friend class nDraw::VertexBuffer;
@@ -434,6 +450,7 @@ class MtDTI
     friend class rArchive;
     friend class rCameraList;
     friend class rCollisionHeightField;
+    friend class rDeformWeightMap;
     friend class rDynamicSbc;
     friend class rEffect2D;
     friend class rEffectAnim;
@@ -511,6 +528,7 @@ class MtDTI
     friend class uShadow;
     friend class uSimSoftBody;
     friend class uSimpleEffect;
+    friend class uSoundMotionSe;
 public:
     enum ATTR
     {

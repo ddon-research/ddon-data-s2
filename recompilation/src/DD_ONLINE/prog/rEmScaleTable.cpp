@@ -18,6 +18,10 @@ const MtDTI& cEmScaleTable::getDTI() const {
     return cEmScaleTable::DTI;
 }
 
+inline void* cEmScaleTable::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cEmScaleTable::DTI)->memAlloc(sz, align, cEmScaleTable::DTI.getID());
+}
+
 inline void cEmScaleTable::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEmScaleTable::DTI)->memFree(p_addr);
 }
@@ -31,9 +35,8 @@ cEmScaleTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 
 cEmScaleTable::MyDTI cEmScaleTable::DTI("cEmScaleTable", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cEmScaleTable::MyDTI::newInstance() const {
-    DDON_STUB("cEmScaleTable::MyDTI::newInstance")
-    return nullptr;
+MtObject* cEmScaleTable::MyDTI::newInstance() const {
+    return new (16u) cEmScaleTable;
 }
 
 const MtDTI& rEmScaleTable::getDTI() const {

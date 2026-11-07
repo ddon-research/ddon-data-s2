@@ -41,8 +41,31 @@ inline void cpSlave::operator delete(void* p_addr) {
 }
 
 cpSlave::cpSlave() {
-    DDON_STUB("cpSlave::cpSlave")
-    /* stub */
+    mMoveTargetPos = MtVector3::Zero;
+    mRotTargetAngle = 0.0f;
+    mWalkBorder = 50.0f;
+    mRunBorder = 200.0f;
+    mDashBorder = 440.0f;
+    mInterpolateType = 0;
+    mDefInterpolatePosTimer = 10.0f;
+    mDefInterpolateAngleTimer = 10.0f;
+    mInterpolatePosTimer = 0.0f;
+    mInterpolateAngleTimer = 0.0f;
+    minterpolateForMoveTime = 0.0f;
+    mBeginMyDir = MtVector3::Zero;
+    mFirstReceivePos = true;
+    mForceSetPos = false;
+    mFirstReceiveAngle = true;
+    mForceSetAngle = false;
+    mIsFirstMove = true;
+    mIsMove = false;
+    mPositionInterValRate = 1.0f;
+    mMoveMaxSpeed = 0.0f;
+    mMoveMinSpeed = 0.0f;
+    mMoveLength = 0.0f;
+    mOldMoveLength = 0.0f;
+    mClogTimer = 0.0f;
+    mTargetLength = 0.0f;
 }
 
 cpSlave::~cpSlave() {
@@ -219,8 +242,7 @@ cpSlave::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 a
 
 cpSlave::MyDTI cpSlave::DTI("cpSlave", &::cpThinkBase::DTI, 320ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpSlave::MyDTI::newInstance() const {
-    DDON_STUB("cpSlave::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpSlave::MyDTI::newInstance() const {
+    return new (16u) cpSlave;
 }
 

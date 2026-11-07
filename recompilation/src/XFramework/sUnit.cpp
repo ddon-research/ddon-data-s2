@@ -480,8 +480,80 @@ const MtArray* sUnit::getGroupArray(u32 group) const {
 }
 
 __attribute__((weak)) void sUnit::removeUnitGroupAll(cUnit* punit) {
-    DDON_STUB("sUnit::removeUnitGroupAll")
-    /* stub */
+    if (punit == nullptr) {
+        return;
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
+    if (mGroupCount != 0) {
+        u64 group = punit->mUnitGroup;
+        unsigned int i2_9 = 0;
+        unsigned int i3_2;
+        u32 v6_0;
+        unsigned int v6_2;
+        unsigned int v7_1;
+        u32 v7_2;
+        unsigned int v7_6;
+        for (;;) {
+            if ((group & 1ul) != 0) {
+                u32 v3_0 = mUnitGroup[i2_9].mUnits.mLength;
+                if (v3_0 != 0) {
+                    MtObject* * v3_1 = mUnitGroup[i2_9].mUnits.mpArray;
+                    i3_2 = 0;
+                    for (;;) {
+                        if (punit == v3_1[i3_2]) {
+                            if (!mUnitGroup[i2_9].mUnits.mAutoDelete) {
+                                v6_0 = v3_0;
+                            } else {
+                                delete punit;
+                                v6_0 = mUnitGroup[i2_9].mUnits.mLength;
+                            }
+                            v6_2 = i3_2 + 1u;
+                            if (v6_2 < v6_0) {
+                                v7_1 = v6_2;
+                                v7_2 = v6_0;
+                                v7_6 = i3_2;
+                                for (;;) {
+                                    mUnitGroup[i2_9].mUnits.mpArray[v7_6] = mUnitGroup[i2_9].mUnits.mpArray[v7_1];
+                                    if (v7_2 != (v7_1 + 1u)) {
+                                        v7_6 = v7_1;
+                                        v7_1 = v7_1 + 1u;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                            }
+                            mUnitGroup[i2_9].mUnits.mLength = v6_0 - 1u;
+                            break;
+                        } else {
+                            if ((i3_2 + 1u) < v3_0) {
+                                i3_2 = i3_2 + 1u;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if ((i2_9 + 1u) < mGroupCount) {
+                group = group >> 1;
+                i2_9 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
+    punit->mUnitGroup = 0;
 }
 
 __attribute__((weak)) void sUnit::resetDrawCommandCacheCount() {

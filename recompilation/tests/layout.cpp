@@ -551,4 +551,6 @@ static_assert(sizeof(::sKeyboardInterface) == 18744, "sKeyboardInterface: DWARF'
 static_assert(sizeof(::uGUIInputText) == 39344, "uGUIInputText: DWARF's byte_size is 39344");
 static_assert(sizeof(::uGUIPopCnvWnd) == 27136, "uGUIPopCnvWnd: DWARF's byte_size is 27136");
 
+extern "C" [[noreturn]] void ddon_trap(const char*) { __builtin_trap(); }
+
 int main() { return 0; }

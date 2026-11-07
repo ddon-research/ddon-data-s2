@@ -144,6 +144,10 @@ const MtDTI& nMarker::cMarkerInfo::cVector3::getDTI() const {
     return nMarker::cMarkerInfo::cVector3::DTI;
 }
 
+inline void* nMarker::cMarkerInfo::cVector3::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cVector3::DTI)->memAlloc(sz, align, ::nMarker::cMarkerInfo::cVector3::DTI.getID());
+}
+
 inline void nMarker::cMarkerInfo::cVector3::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cVector3::DTI)->memFree(p_addr);
 }
@@ -161,8 +165,10 @@ inline nMarker::cMarkerInfo::cVector3::cVector3() {
 }
 
 nMarker::cMarkerInfo::cVector3::cVector3(const MtVector3& pos) {
-    DDON_STUB("nMarker::cMarkerInfo::cVector3::cVector3")
-    /* stub */
+    mRealPos.x = pos.x;
+    mRealPos.y = pos.y;
+    mRealPos.z = pos.z;
+    mRealPos.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void nMarker::cMarkerInfo::cVector3::createProperty(MtPropertyList& s) {
@@ -172,9 +178,8 @@ nMarker::cMarkerInfo::cVector3::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 nMarker::cMarkerInfo::cVector3::MyDTI nMarker::cMarkerInfo::cVector3::DTI("nMarker::cMarkerInfo::cVector3", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nMarker::cMarkerInfo::cVector3::MyDTI::newInstance() const {
-    DDON_STUB("nMarker::cMarkerInfo::cVector3::MyDTI::newInstance")
-    return nullptr;
+MtObject* nMarker::cMarkerInfo::cVector3::MyDTI::newInstance() const {
+    return new (16u) ::nMarker::cMarkerInfo::cVector3;
 }
 
 const MtDTI& nMarker::cMarkerInfo::cCtrlFlag::getDTI() const {

@@ -135,7 +135,7 @@ public:
     void outsideDecide();
 private:
     void setFlowId(u32 flow_id);
-    void setFlowIdNext(u32 flow_id);
+    void setFlowIdNext(u32 flow_id = 2);
     virtual void moveInput();  // vtable slot 87
     virtual void moveEvent();  // vtable slot 88
     void updateInit();
@@ -186,6 +186,10 @@ public:
 
 inline void* uGUIContentsBoard::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void uGUIContentsBoard::setFlowIdNext(u32 flow_id) {
+    this->mFlowIdNext = 2;
 }
 
 inline void* uGUIContentsBoard::cListItemInfo::operator new(size_t sz, void* p_addr) {

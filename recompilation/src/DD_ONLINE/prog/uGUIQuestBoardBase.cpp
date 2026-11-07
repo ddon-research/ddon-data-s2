@@ -7,6 +7,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "cControl.h"
 #include "../../XFramework/cGUIInstance.h"
@@ -155,6 +156,10 @@ const MtDTI& uGUIQuestBoardBase::cListHeader::getDTI() const {
     return uGUIQuestBoardBase::cListHeader::DTI;
 }
 
+inline void* uGUIQuestBoardBase::cListHeader::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::cListHeader::DTI)->memAlloc(sz, align, uGUIQuestBoardBase::cListHeader::DTI.getID());
+}
+
 inline void uGUIQuestBoardBase::cListHeader::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::cListHeader::DTI)->memFree(p_addr);
 }
@@ -163,13 +168,16 @@ uGUIQuestBoardBase::cListHeader::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 uGUIQuestBoardBase::cListHeader::MyDTI uGUIQuestBoardBase::cListHeader::DTI("uGUIQuestBoardBase::cListHeader", &::uGUIBase::cScrollListItemBase::DTI, 136ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIQuestBoardBase::cListHeader::MyDTI::newInstance() const {
-    DDON_STUB("uGUIQuestBoardBase::cListHeader::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIQuestBoardBase::cListHeader::MyDTI::newInstance() const {
+    return new (16u) uGUIQuestBoardBase::cListHeader;
 }
 
 const MtDTI& uGUIQuestBoardBase::cListItem::getDTI() const {
     return uGUIQuestBoardBase::cListItem::DTI;
+}
+
+inline void* uGUIQuestBoardBase::cListItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::cListItem::DTI)->memAlloc(sz, align, uGUIQuestBoardBase::cListItem::DTI.getID());
 }
 
 inline void uGUIQuestBoardBase::cListItem::operator delete(void* p_addr) {
@@ -180,8 +188,7 @@ uGUIQuestBoardBase::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 uGUIQuestBoardBase::cListItem::MyDTI uGUIQuestBoardBase::cListItem::DTI("uGUIQuestBoardBase::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 144ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIQuestBoardBase::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIQuestBoardBase::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIQuestBoardBase::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIQuestBoardBase::cListItem;
 }
 

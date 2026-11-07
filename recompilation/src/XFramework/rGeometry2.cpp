@@ -248,8 +248,26 @@ const MtDTI& rGeometry2::cGeometry::getDTI() const {
     return rGeometry2::cGeometry::DTI;
 }
 
+inline void* rGeometry2::cGeometry::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rGeometry2::cGeometry::DTI)->memAlloc(sz, align, rGeometry2::cGeometry::DTI.mID);
+}
+
 inline void rGeometry2::cGeometry::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rGeometry2::cGeometry::DTI)->memFree(p_addr);
+}
+
+inline rGeometry2::cGeometry::cGeometry() {
+    mpAttachGeometry = nullptr;
+    mAttachMode = 0;
+    mJointNo0 = 0xFF;
+    mJointNo1 = 0xFF;
+    mFlgEnableScale = true;
+    mpAttachModel = nullptr;
+    mBeforeAttachPos0.x = MtVector3::Zero.x;
+    mBeforeAttachPos0.y = MtVector3::Zero.y;
+    mBeforeAttachPos0.z = MtVector3::Zero.z;
+    mBeforeAttachPos0.pad_ = 0.0f;
+    mpAddonObject = nullptr;
 }
 
 rGeometry2::cGeometry::~cGeometry() {
@@ -411,8 +429,7 @@ rGeometry2::cGeometry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 rGeometry2::cGeometry::MyDTI rGeometry2::cGeometry::DTI("rGeometry2::cGeometry", &::nCollision::cGeometry::DTI, 112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rGeometry2::cGeometry::MyDTI::newInstance() const {
-    DDON_STUB("rGeometry2::cGeometry::MyDTI::newInstance")
-    return nullptr;
+MtObject* rGeometry2::cGeometry::MyDTI::newInstance() const {
+    return new (16u) rGeometry2::cGeometry;
 }
 

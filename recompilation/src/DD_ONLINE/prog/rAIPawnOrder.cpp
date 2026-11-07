@@ -14,6 +14,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cAIPawnOrderParam>::allocData(unsigned int);
+#endif
+
 const MtDTI& cAIPawnOrderParam::getDTI() const {
     return cAIPawnOrderParam::DTI;
 }
@@ -35,8 +39,7 @@ cAIPawnOrderParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 cAIPawnOrderParam::MyDTI cAIPawnOrderParam::DTI("cAIPawnOrderParam", &::cAIResource::DTI, 64ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cAIPawnOrderParam::MyDTI::newInstance() const {
-    DDON_STUB("cAIPawnOrderParam::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cAIPawnOrderParam;
 }
 
 const MtDTI& rAIPawnOrder::getDTI() const {

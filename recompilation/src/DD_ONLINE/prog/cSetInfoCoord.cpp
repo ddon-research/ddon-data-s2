@@ -49,8 +49,27 @@ __attribute__((weak)) void cSetInfoCoord::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) bool cSetInfoCoord::load(MtDataReader& r) {
-    DDON_STUB("cSetInfoCoord::load")
-    return {};
+        char t0[256];
+        r.readString(t0, 256u);
+        mName = t0;
+        mUnitID = r.readS32();
+        MtVector3 pos;
+        MtVector3 angle;
+        MtVector3 scale;
+        pos = r.readV3();
+        angle = r.readV3();
+        scale = r.readV3();
+        mPosition.x = pos.x;
+        mPosition.y = pos.y;
+        mPosition.z = pos.z;
+        mAngle.x = angle.x;
+        mAngle.y = angle.y;
+        mAngle.z = angle.z;
+        mScale.x = scale.x;
+        mScale.y = scale.y;
+        mScale.z = scale.z;
+        mAreaHitNo = r.readS32();
+        return true;
 }
 
 __attribute__((weak)) bool cSetInfoCoord::save(MtDataWriter& w) {

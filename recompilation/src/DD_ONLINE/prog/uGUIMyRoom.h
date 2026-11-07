@@ -574,6 +574,11 @@ inline void* uGUIMyRoom::cList::cItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUIMyRoom::cList::cItem::cItem() {
+    this->mpOBJ_msg_list_m_list = nullptr;
+    this->mpINST_Null_list01 = nullptr;
+}
+
 inline void* uGUIMyRoom::cList::cInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

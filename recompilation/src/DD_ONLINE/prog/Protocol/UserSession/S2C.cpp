@@ -224,17 +224,29 @@ inline MtAllocator* nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::getAllocator()
     return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::DTI);
 }
 
+inline void* nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::DTI.getID());
+}
+
 __attribute__((weak)) void nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::operator delete(void* p_addr) {
     ::nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::getAllocator()->memFree(p_addr);
+}
+
+nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::CPacket_S2C_ADD_BLACK_LIST_RES() {
+    m_usError = 0;
+    m_nResult = 0;
+    m_bIsReceived = false;
+    m_CharacterBaseInfo.m_wstrClanName.value = nullptr;
+    m_CharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    m_CharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
 }
 
 nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::MyDTI nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::DTI("CPacket_S2C_ADD_BLACK_LIST_RES", &::CPacketDataBase::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_AREA_CHANGE_RES::getDTI() const {
@@ -291,9 +303,8 @@ nUserSession::CPacket_S2C_AREA_RANK_UP_RES::MyDTI::MyDTI(MT_CTSTR class_name, Mt
 
 nUserSession::CPacket_S2C_AREA_RANK_UP_RES::MyDTI nUserSession::CPacket_S2C_AREA_RANK_UP_RES::DTI("CPacket_S2C_AREA_RANK_UP_RES", &::CPacketDataBase::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_AREA_RANK_UP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_AREA_RANK_UP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_AREA_RANK_UP_RES::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_AREA_RANK_UP_RES;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_AREA_WARP_RES::getDTI() const {
@@ -6300,6 +6311,10 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::getAlloca
     return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::DTI);
 }
 
+inline void* nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::DTI.getID());
+}
+
 __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::operator delete(void* p_addr) {
     ::nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::getAllocator()->memFree(p_addr);
 }
@@ -6308,9 +6323,8 @@ nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_n
 
 nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::MyDTI nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::DTI("CPacket_S2C_GET_PAWN_PROFILE_NOTICE", &::CPacketDataBase::DTI, 144ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES::getDTI() const {
@@ -12544,17 +12558,29 @@ inline MtAllocator* nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::getAllocator() 
     return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::DTI);
 }
 
+inline void* nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::DTI.getID());
+}
+
 __attribute__((weak)) void nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::operator delete(void* p_addr) {
     ::nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::getAllocator()->memFree(p_addr);
+}
+
+nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::CPacket_S2C_SEND_TELL_MSG_RES() {
+    m_usError = 0;
+    m_nResult = 0;
+    m_bIsReceived = false;
+    m_CharacterBaseInfo.m_wstrClanName.value = nullptr;
+    m_CharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    m_CharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
 }
 
 nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::MyDTI nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::DTI("CPacket_S2C_SEND_TELL_MSG_RES", &::CPacketDataBase::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_SEND_TELL_MSG_RES;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::getDTI() const {

@@ -22,6 +22,7 @@ class MtStream;
 class MtString;
 class MtUI;
 class cUnit;
+class uGrassEffect;
 
 // Declarations
 class rGrassWind;
@@ -37,6 +38,7 @@ using u32 = unsigned int;
 
 class rGrassWind : public cResource
 {
+    friend class uGrassEffect;
 public:
     class MyDTI;
     class cParamSet;

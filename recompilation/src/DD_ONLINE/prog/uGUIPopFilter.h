@@ -265,7 +265,7 @@ public:
     void setBtnTitle(s32 id, s32 id2);
     void editRefName(u32 idx, MtString str);
     void setSize(MtSize size);
-    void setAdjustSize(bool flag);
+    void setAdjustSize(bool flag = false);
     bool addReference(REF_TYPE type, s32 def, MT_CTSTR str, TITLE_PRE style, s32 max, s32 min, MT_CTSTR name, ATTR_BIT bit);
     bool addReference(REF_TYPE type, s32 def, s32 titleid, TITLE_PRE style, s32 nameid, s32 max, s32 min, ATTR_BIT bit);
     bool addJobIcon(s32 def, MT_CTSTR str, bool all, MT_CTSTR checkboxname, TITLE_PRE style);
@@ -294,7 +294,7 @@ public:
     void setDecideEnable(bool flag);
     s32 getRefIndex(REF_TYPE type);
     void setNotClose(bool flag);
-    void setWaitReq(bool flag);
+    void setWaitReq(bool flag = false);
     void setCheckNum(s32 num);
     void setBtnDefautPos(u32 pos);
 private:
@@ -382,6 +382,14 @@ public:
 
 inline void* uGUIPopFilter::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void uGUIPopFilter::setAdjustSize(bool flag) {
+    this->mAdjustSize = false;
+}
+
+inline void uGUIPopFilter::setWaitReq(bool flag) {
+    this->mWaitReq = false;
 }
 
 inline void uGUIPopFilter::evCancel() {

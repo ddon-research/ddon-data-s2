@@ -36,6 +36,7 @@
 #include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "nHumanMsg.h"
+#include "nKeyCommand.h"
 #include "rAttackParam.h"
 #include "../../XFramework/rModel.h"
 #include "../../XFramework/rSoundRequest.h"
@@ -67,6 +68,39 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+nKeyCommand::stKeyCommand Job03BaseActCommand[12] = {
+    {8200, 4294967295, 27, 1, 0, 1, 0, 1, 2, 0, 0, 0, 255, false},
+    {8200, 4294967295, 28, 1, 0, 1, 0, 1, 2, 0, 0, 0, 255, false},
+    {8194, 4294967295, 4, 2, 0, 1, 0, 1, 2, 2, 0, 0, 255, false},
+    {8195, 4294967295, 5, 2, 0, 1, 0, 1, 2, 2, 0, 0, 255, false},
+    {8194, 4294967295, 4, 2, 0, 2, 0, 1, 2, 2, 0, 0, 255, false},
+    {8195, 4294967295, 5, 2, 0, 2, 0, 1, 2, 2, 0, 0, 255, false},
+    {8202, 4294967295, 2, 1, 0, 1, 0, 1, 2, 1, 74, 0, 255, false},
+    {8203, 4294967295, 2, 1, 0, 2, 0, 1, 2, 1, 74, 0, 255, false},
+    {8196, 4294967295, 1, 1, 0, 1, 0, 1, 2, 0, 0, 0, 255, false},
+    {8198, 4294967295, 1, 1, 0, 2, 0, 1, 2, 0, 0, 0, 255, false},
+    {8204, 4294967295, 1, 1, 0, 32, 0, 1, 2, 1, 0, 0, 255, false},
+    {4294967295, 4294967295, 0, 0, 0, 0, 0, 65535, 65535, 0, 0, 0, 255, false},
+};
+
+nKeyCommand::stKeyCommand Job03CustomSkillCommand[11] = {
+    {4102, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 0, 0, 7, false},
+    {4104, 4294967295, 3, 1, 0, 1, 0, 7, 8, 0, 0, 0, 9, false},
+    {4109, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 73, 0, 13, false},
+    {0, 4112, 33, 1, 0, 1, 0, 9, 10, 0, 0, 0, 14, false},
+    {0, 4114, 33, 1, 0, 1, 0, 9, 10, 0, 0, 0, 14, false},
+    {0, 4115, 33, 1, 0, 1, 0, 9, 10, 0, 0, 0, 14, false},
+    {0, 4117, 33, 1, 0, 1, 0, 9, 10, 0, 0, 0, 14, false},
+    {38, 4123, 33, 1, 0, 32, 0, 9, 10, 0, 0, 0, 14, false},
+    {4112, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 73, 0, 14, false},
+    {4123, 4294967295, 3, 1, 0, 32, 0, 5, 6, 0, 73, 0, 14, false},
+    {4294967295, 4294967295, 0, 0, 0, 0, 0, 65535, 65535, 0, 0, 0, 255, false},
+};
+
+nKeyCommand::stKeyCommandForFunction Job03FuncCommandTbl[1] = {
+    {-1, 0, 0, static_cast<nKeyCommand::KEY_CMD_FUNC_SP>(4294967295), 255},
+};
 
 const MtDTI& cpJob03::getDTI() const {
     return cpJob03::DTI;

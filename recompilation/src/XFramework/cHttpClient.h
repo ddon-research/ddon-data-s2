@@ -123,11 +123,11 @@ public:
     u32 getSecurityFlags();
     void setSecurityFlags(u32 flags);
     u32 getRedirectPolicy();
-    void setRedirectPolicy(u32 policy);
+    void setRedirectPolicy(u32 policy = 1);
     void setCertificate(void*, u32);
     void setCertificate(MT_CTSTR);
     void setSocketLib(s32);
-    void setTimeout(MtNetTime::Total timeout);
+    void setTimeout(MtNetTime::Total timeout = 30000);
     void cbErrorEncounterd(s32 error);
     bool isDone();
     s32 getState();
@@ -202,6 +202,14 @@ inline void* cHttpClient::operator new(size_t sz, void* p_addr) {
 
 inline void cHttpClient::setUserAgent(MT_CTSTR pUserAgentString) {
     this->mpUserAgentString = pUserAgentString;
+}
+
+inline void cHttpClient::setRedirectPolicy(u32 policy) {
+    this->mRedirectPolicy = 1;
+}
+
+inline void cHttpClient::setTimeout(MtNetTime::Total timeout) {
+    this->mTimeout = 30000;
 }
 
 inline cHttpClient::Listener::Listener() {

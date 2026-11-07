@@ -220,6 +220,10 @@ inline void* uGUICaplinkTag::cListItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUICaplinkTag::cListItem::cListItem() {
+    this->mpObjMsg = nullptr;
+}
+
 inline void* uGUICaplinkTag::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

@@ -42,6 +42,17 @@
 #define DDON_STUB(name)
 #endif
 
+static const MT_WCHAR DefaultUserNameFormat[8] = {
+    12467,
+    12531,
+    12501,
+    12451,
+    12464,
+    37,
+    100,
+    0,
+};
+
 const MtDTI& sInputManager::getDTI() const {
     return sInputManager::DTI;
 }

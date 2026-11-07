@@ -288,7 +288,7 @@ private:
     void setupAreaMaster(u32 mode);
     void updateAreaMaster();
     bool isRequest(u32 flag);
-    void setRequest(u32 flag);
+    void setRequest(u32 flag = 0);
     void clearRequest(u32 flag);
     void requestServer(u32 next_flow_id);
     bool requestAreaBaseInfoList();
@@ -345,6 +345,10 @@ private:
 
 inline void* uGUIMenuAreaInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void uGUIMenuAreaInfo::setRequest(u32 flag) {
+    this->mRequestFlag = this->mRequestFlag | 1u;
 }
 
 inline void* uGUIMenuAreaInfo::cListItem::operator new(size_t sz, void* p_addr) {

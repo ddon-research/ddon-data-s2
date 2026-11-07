@@ -88,7 +88,7 @@ public:
     void setMgcShortChargeHosei(f32 hosei);
     void setPysShortChargeHosei(f32 hosei);
     f32 getChargeRate(u8 level) const;
-    f32 getCharge(u8 level) const;
+    f32 getCharge(u8 level = 0) const;
     bool isCharging();
     f32 getChargeMax(u8) const;
     bool cheackJust();
@@ -185,4 +185,8 @@ inline void cpChargeCtrl::setMgcShortChargeHosei(f32 hosei) {
 
 inline void cpChargeCtrl::setPysShortChargeHosei(f32 hosei) {
     this->mPysShortChargeHosei = hosei;
+}
+
+inline f32 cpChargeCtrl::getCharge(u8 level) const {
+    return this->mCharge_Gi[0];
 }

@@ -15,6 +15,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cCollNode>::allocData(unsigned int);
+#endif
+
 const MtDTI& cCollNode::getDTI() const {
     return cCollNode::DTI;
 }
@@ -65,8 +69,6 @@ inline void rCollNode::operator delete(void* p_addr) {
 }
 
 rCollNode::~rCollNode() {
-    DDON_STUB("rCollNode::~rCollNode")
-    /* stub */
 }
 
 __attribute__((weak)) bool rCollNode::loadData(MtDataReader& in, cCollNode* pData) {

@@ -30,6 +30,7 @@
 #include "sUnit.h"
 #include "uBaseModel.h"
 #include "uCoord.h"
+#include "uGrassWind.h"
 #include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

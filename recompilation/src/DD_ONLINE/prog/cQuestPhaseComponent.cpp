@@ -30,6 +30,10 @@ const MtDTI& cQuestPhaseCpDivide::getDTI() const {
     return cQuestPhaseCpDivide::DTI;
 }
 
+inline void* cQuestPhaseCpDivide::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cQuestPhaseCpDivide::DTI)->memAlloc(sz, align, cQuestPhaseCpDivide::DTI.getID());
+}
+
 inline void cQuestPhaseCpDivide::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cQuestPhaseCpDivide::DTI)->memFree(p_addr);
 }
@@ -316,8 +320,19 @@ void cQuestPhaseCpDivide::callbackLeaveParty(u32 characterId) {
 }
 
 cQuestPhaseCpDivide::cQuestPhaseCpDivide() {
-    DDON_STUB("cQuestPhaseCpDivide::cQuestPhaseCpDivide")
-    /* stub */
+    mIsFinishedEnemyAction = false;
+    mIsSetup = false;
+    mExistDividePlayer = false;
+    mStageNo = 0;
+    mStartPosNo = 0;
+    mHasRequestedCharacterId[6] = 0;
+    mHasRequestedCharacterId[7] = 0;
+    mHasRequestedCharacterId[4] = 0;
+    mHasRequestedCharacterId[5] = 0;
+    mHasRequestedCharacterId[2] = 0;
+    mHasRequestedCharacterId[3] = 0;
+    mHasRequestedCharacterId[0] = 0;
+    mHasRequestedCharacterId[1] = 0;
 }
 
 __attribute__((weak)) void cQuestPhaseCpDivide::createProperty(MtPropertyList& s) {
@@ -327,9 +342,8 @@ cQuestPhaseCpDivide::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 cQuestPhaseCpDivide::MyDTI cQuestPhaseCpDivide::DTI("cQuestPhaseCpDivide", &::cQuestPhaseComponent::DTI, 312ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cQuestPhaseCpDivide::MyDTI::newInstance() const {
-    DDON_STUB("cQuestPhaseCpDivide::MyDTI::newInstance")
-    return nullptr;
+MtObject* cQuestPhaseCpDivide::MyDTI::newInstance() const {
+    return new (16u) cQuestPhaseCpDivide;
 }
 
 const MtDTI& cQuestPhaseCpDivide::cPlayerState::getDTI() const {

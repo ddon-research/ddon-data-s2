@@ -63,7 +63,7 @@ public:
     virtual void kill();  // vtable slot 8
     virtual void updatePtr();  // vtable slot 9
     virtual void setupComponentPtr();  // vtable slot 12
-    void setId(u32 id);
+    void setId(u32 id = 0);
     s32 getId();
     u32 getDamageAction();
     u32 getCatchAction();
@@ -108,6 +108,10 @@ public:
 
 inline void* cpActionSelect::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void cpActionSelect::setId(u32 id) {
+    this->mId = 0;
 }
 
 inline s32 cpActionSelect::getId() {

@@ -2218,6 +2218,10 @@ const MtDTI& uGUINewspaper::cScrollAreaDispList::getDTI() const {
     return uGUINewspaper::cScrollAreaDispList::DTI;
 }
 
+inline void* uGUINewspaper::cScrollAreaDispList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollAreaDispList::DTI)->memAlloc(sz, align, uGUINewspaper::cScrollAreaDispList::DTI.getID());
+}
+
 inline void uGUINewspaper::cScrollAreaDispList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollAreaDispList::DTI)->memFree(p_addr);
 }
@@ -2226,13 +2230,16 @@ uGUINewspaper::cScrollAreaDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps,
 
 uGUINewspaper::cScrollAreaDispList::MyDTI uGUINewspaper::cScrollAreaDispList::DTI("uGUINewspaper::cScrollAreaDispList", &::uGUIBase::cScrollListItemBase::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUINewspaper::cScrollAreaDispList::MyDTI::newInstance() const {
-    DDON_STUB("uGUINewspaper::cScrollAreaDispList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUINewspaper::cScrollAreaDispList::MyDTI::newInstance() const {
+    return new (16u) uGUINewspaper::cScrollAreaDispList;
 }
 
 const MtDTI& uGUINewspaper::cScrollQuestDispList::getDTI() const {
     return uGUINewspaper::cScrollQuestDispList::DTI;
+}
+
+inline void* uGUINewspaper::cScrollQuestDispList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollQuestDispList::DTI)->memAlloc(sz, align, uGUINewspaper::cScrollQuestDispList::DTI.getID());
 }
 
 inline void uGUINewspaper::cScrollQuestDispList::operator delete(void* p_addr) {
@@ -2243,13 +2250,16 @@ uGUINewspaper::cScrollQuestDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 
 uGUINewspaper::cScrollQuestDispList::MyDTI uGUINewspaper::cScrollQuestDispList::DTI("uGUINewspaper::cScrollQuestDispList", &::uGUIBase::cScrollListItemBase::DTI, 160ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUINewspaper::cScrollQuestDispList::MyDTI::newInstance() const {
-    DDON_STUB("uGUINewspaper::cScrollQuestDispList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUINewspaper::cScrollQuestDispList::MyDTI::newInstance() const {
+    return new (16u) uGUINewspaper::cScrollQuestDispList;
 }
 
 const MtDTI& uGUINewspaper::cScrollRankingDispList::getDTI() const {
     return uGUINewspaper::cScrollRankingDispList::DTI;
+}
+
+inline void* uGUINewspaper::cScrollRankingDispList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRankingDispList::DTI)->memAlloc(sz, align, uGUINewspaper::cScrollRankingDispList::DTI.getID());
 }
 
 inline void uGUINewspaper::cScrollRankingDispList::operator delete(void* p_addr) {
@@ -2260,13 +2270,16 @@ uGUINewspaper::cScrollRankingDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* 
 
 uGUINewspaper::cScrollRankingDispList::MyDTI uGUINewspaper::cScrollRankingDispList::DTI("uGUINewspaper::cScrollRankingDispList", &::uGUIBase::cScrollListItemBase::DTI, 160ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUINewspaper::cScrollRankingDispList::MyDTI::newInstance() const {
-    DDON_STUB("uGUINewspaper::cScrollRankingDispList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUINewspaper::cScrollRankingDispList::MyDTI::newInstance() const {
+    return new (16u) uGUINewspaper::cScrollRankingDispList;
 }
 
 const MtDTI& uGUINewspaper::cScrollRewardSummaryItemList::getDTI() const {
     return uGUINewspaper::cScrollRewardSummaryItemList::DTI;
+}
+
+inline void* uGUINewspaper::cScrollRewardSummaryItemList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardSummaryItemList::DTI)->memAlloc(sz, align, uGUINewspaper::cScrollRewardSummaryItemList::DTI.getID());
 }
 
 inline void uGUINewspaper::cScrollRewardSummaryItemList::operator delete(void* p_addr) {
@@ -2277,13 +2290,16 @@ uGUINewspaper::cScrollRewardSummaryItemList::MyDTI::MyDTI(MT_CTSTR class_name, M
 
 uGUINewspaper::cScrollRewardSummaryItemList::MyDTI uGUINewspaper::cScrollRewardSummaryItemList::DTI("uGUINewspaper::cScrollRewardSummaryItemList", &::uGUIBase::cScrollListItemBase::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUINewspaper::cScrollRewardSummaryItemList::MyDTI::newInstance() const {
-    DDON_STUB("uGUINewspaper::cScrollRewardSummaryItemList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUINewspaper::cScrollRewardSummaryItemList::MyDTI::newInstance() const {
+    return new (16u) uGUINewspaper::cScrollRewardSummaryItemList;
 }
 
 const MtDTI& uGUINewspaper::cScrollRewardDetailItemList::getDTI() const {
     return uGUINewspaper::cScrollRewardDetailItemList::DTI;
+}
+
+inline void* uGUINewspaper::cScrollRewardDetailItemList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardDetailItemList::DTI)->memAlloc(sz, align, uGUINewspaper::cScrollRewardDetailItemList::DTI.getID());
 }
 
 inline void uGUINewspaper::cScrollRewardDetailItemList::operator delete(void* p_addr) {
@@ -2294,9 +2310,8 @@ uGUINewspaper::cScrollRewardDetailItemList::MyDTI::MyDTI(MT_CTSTR class_name, Mt
 
 uGUINewspaper::cScrollRewardDetailItemList::MyDTI uGUINewspaper::cScrollRewardDetailItemList::DTI("uGUINewspaper::cScrollRewardDetailItemList", &::uGUIBase::cScrollListItemBase::DTI, 112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUINewspaper::cScrollRewardDetailItemList::MyDTI::newInstance() const {
-    DDON_STUB("uGUINewspaper::cScrollRewardDetailItemList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUINewspaper::cScrollRewardDetailItemList::MyDTI::newInstance() const {
+    return new (16u) uGUINewspaper::cScrollRewardDetailItemList;
 }
 
 const MtDTI& uGUINewspaper::cScrollAreaItemList::getDTI() const {

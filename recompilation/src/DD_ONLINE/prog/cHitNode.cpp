@@ -21,6 +21,21 @@
 #define DDON_STUB(name)
 #endif
 
+u32 VsGroupAttr[12] = {
+    1,
+    2,
+    3,
+    8,
+    0,
+    32,
+    32,
+    128,
+    1152,
+    3,
+    1024,
+    2048,
+};
+
 const MtDTI& cHitNode::getDTI() const {
     return cHitNode::DTI;
 }

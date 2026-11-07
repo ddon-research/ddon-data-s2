@@ -52,12 +52,22 @@ __attribute__((weak)) void CDataLobbyMemberInfo::operator delete(void* p_addr) {
     CDataLobbyMemberInfo::getAllocator()->memFree(p_addr);
 }
 
+CDataLobbyMemberInfo::CDataLobbyMemberInfo() {
+    m_unPawnId = 0;
+    m_ucPlatform = 0;
+    m_ucClientVersion = 0;
+    m_ucSessionStatus = 0;
+    m_ucOnlineStatus = 0;
+    m_CommunityCharacterBaseInfo.m_wstrClanName.value = nullptr;
+    m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+}
+
 CDataLobbyMemberInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 CDataLobbyMemberInfo::MyDTI CDataLobbyMemberInfo::DTI("CDataLobbyMemberInfo", &::CPacketDataBase::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataLobbyMemberInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataLobbyMemberInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataLobbyMemberInfo::MyDTI::newInstance() const {
+    return new (16u) CDataLobbyMemberInfo;
 }
 

@@ -25,6 +25,14 @@
 #define DDON_STUB(name)
 #endif
 
+static const u8 ShareRanges[5] = {
+    1,
+    2,
+    3,
+    4,
+    5,
+};
+
 const MtDTI& uGUICharacterEditPopCard::getDTI() const {
     return uGUICharacterEditPopCard::DTI;
 }

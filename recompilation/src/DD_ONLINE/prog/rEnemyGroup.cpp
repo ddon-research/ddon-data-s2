@@ -14,6 +14,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cEnemyGroup>::deleteData();
+#endif
+
 const MtDTI& cEnemyGroup::getDTI() const {
     return cEnemyGroup::DTI;
 }

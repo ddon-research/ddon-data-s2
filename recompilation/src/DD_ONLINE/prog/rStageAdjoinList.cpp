@@ -230,6 +230,10 @@ __attribute__((weak)) void rStageAdjoinList::cAdjoinInfo::cIndex::createProperty
     /* stub */
 }
 
+void rStageAdjoinList::cAdjoinInfo::cIndex::load(MtDataReader& r) {
+    mIndex = r.readU16();
+}
+
 rStageAdjoinList::cAdjoinInfo::cIndex::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rStageAdjoinList::cAdjoinInfo::cIndex::MyDTI rStageAdjoinList::cAdjoinInfo::cIndex::DTI("rStageAdjoinList::cAdjoinInfo::cIndex", &::MtObject::DTI, 16ul, 0u, 0u);

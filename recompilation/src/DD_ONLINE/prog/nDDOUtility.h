@@ -843,6 +843,13 @@ inline nDDOUtility::cBitSet<10>::~cBitSet() {
 inline nDDOUtility::cBitSet<11>::~cBitSet() {
 }
 
+inline nDDOUtility::cBitSet<128>::cBitSet() {
+    mBit[0] = 0u;
+    mBit[1] = 0u;
+    mBit[2] = 0u;
+    mBit[3] = 0u;
+}
+
 inline nDDOUtility::cBitSet<128>::~cBitSet() {
 }
 

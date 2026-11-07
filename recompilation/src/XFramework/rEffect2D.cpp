@@ -173,13 +173,104 @@ rEffect2D::~rEffect2D() {
 }
 
 __attribute__((weak)) void rEffect2D::setupResourceInfo() {
-    DDON_STUB("rEffect2D::setupResourceInfo")
-    /* stub */
+        u32 ctr;
+        ResourceInfo* pResourceInfo;
+        E2D_UNIT* pUnitParam = reinterpret_cast<E2D_UNIT*>(this->mpParamBuff);
+        E2D_INDEX* pIndex;
+        this->mRTTextureNum = 0;
+        if (this->mpRTTexture[0] != nullptr) {
+            this->mpRTTexture[0]->release();
+            this->mpRTTexture[0] = nullptr;
+        }
+        if (pUnitParam->RTBaseMapPath[0] != 0) {
+            this->mpRTTexture[0] = static_cast<rRenderTargetTexture*>(sResource::getInstance()->create(rRenderTargetTexture::DTI, pUnitParam->RTBaseMapPath, 1u));
+            if (this->mpRTTexture[0] != nullptr) {
+                this->mRTTextureNum++;
+            }
+        }
+        if (this->mpRTTexture[1] != nullptr) {
+            this->mpRTTexture[1]->release();
+            this->mpRTTexture[1] = nullptr;
+        }
+        if (pUnitParam->RTNormalMapPath[0] != 0) {
+            this->mpRTTexture[1] = static_cast<rRenderTargetTexture*>(sResource::getInstance()->create(rRenderTargetTexture::DTI, pUnitParam->RTNormalMapPath, 1u));
+            if (this->mpRTTexture[1] != nullptr) {
+                this->mRTTextureNum++;
+            }
+        }
+        if (this->mpRTTexture[2] != nullptr) {
+            this->mpRTTexture[2]->release();
+            this->mpRTTexture[2] = nullptr;
+        }
+        if (pUnitParam->RTMaskMapPath[0] != 0) {
+            this->mpRTTexture[2] = static_cast<rRenderTargetTexture*>(sResource::getInstance()->create(rRenderTargetTexture::DTI, pUnitParam->RTMaskMapPath, 1u));
+            if (this->mpRTTexture[2] != nullptr) {
+                this->mRTTextureNum++;
+            }
+        }
+        if (this->mpBackTexture[0] != nullptr) {
+            this->mpBackTexture[0]->release();
+            this->mpBackTexture[0] = nullptr;
+        }
+        if (pUnitParam->BackBaseMapPath[0] != 0) {
+            this->mpBackTexture[0] = static_cast<rTexture*>(sResource::getInstance()->create(rTexture::DTI, pUnitParam->BackBaseMapPath, 1u));
+        }
+        if (this->mpBackTexture[1] != nullptr) {
+            this->mpBackTexture[1]->release();
+            this->mpBackTexture[1] = nullptr;
+        }
+        if (pUnitParam->BackNormalMapPath[0] != 0) {
+            this->mpBackTexture[1] = static_cast<rTexture*>(sResource::getInstance()->create(rTexture::DTI, pUnitParam->BackNormalMapPath, 1u));
+        }
+        if (this->mpBackTexture[2] != nullptr) {
+            this->mpBackTexture[2]->release();
+            this->mpBackTexture[2] = nullptr;
+        }
+        if (pUnitParam->BackMaskMapPath[0] != 0) {
+            this->mpBackTexture[2] = static_cast<rTexture*>(sResource::getInstance()->create(rTexture::DTI, pUnitParam->BackMaskMapPath, 1u));
+        }
+        if (this->mResourceInfo != nullptr) {
+            for (ctr = 0; ctr < this->mResourceInfoNum; ctr++) {
+                pResourceInfo = &this->mResourceInfo[ctr];
+                E2D_INDEX* t0 = reinterpret_cast<E2D_INDEX*>(this->mpParamBuff + sizeof(E2D_UNIT));
+                pResourceInfo->releaseResources();
+                pIndex = &t0[ctr];
+                E2D_PARTICLE_COMMON* t1 = pIndex->ParticleParamOffset != 0u ? reinterpret_cast<E2D_PARTICLE_COMMON*>(this->mpParamBuff + pIndex->ParticleParamOffset) : nullptr;
+                pResourceInfo->createParticleResources(t1, pIndex->ParticleType);
+            }
+        }
 }
 
 __attribute__((weak)) void rEffect2D::freeMemory() {
-    DDON_STUB("rEffect2D::freeMemory")
-    /* stub */
+        for (u32 ctr = 0; ctr < 3u; ctr++) {
+            if (this->mpRTTexture[ctr] != nullptr) {
+                this->mpRTTexture[ctr]->release();
+                this->mpRTTexture[ctr] = nullptr;
+            }
+        }
+        this->mRTTextureNum = 0;
+        for (u32 ctr = 0; ctr < 3u; ctr++) {
+            if (this->mpBackTexture[ctr] != nullptr) {
+                this->mpBackTexture[ctr]->release();
+                this->mpBackTexture[ctr] = nullptr;
+            }
+        }
+        if (this->mResourceInfo != nullptr) {
+            for (u32 ctr = 0; ctr < this->mResourceInfoNum; ctr++) {
+                this->mResourceInfo[ctr].releaseResources();
+            }
+            if (this->mResourceInfo != nullptr) {
+                size_t* t0 = reinterpret_cast<size_t*>(this->mResourceInfo) - 1;
+                MtMemoryAllocator::getAllocator(rEffect2D::DTI)->memFree(t0);
+            }
+            this->mResourceInfo = nullptr;
+            this->mResourceInfoNum = 0;
+        }
+        if (this->mpParamBuff != nullptr) {
+            MtMemoryAllocator::getAllocator(rEffect2D::DTI)->memFree(this->mpParamBuff);
+            this->mpParamBuff = nullptr;
+        }
+        this->mParamBuffSize = 0;
 }
 
 rEffect2D::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -191,8 +282,29 @@ MtObject* rEffect2D::MyDTI::newInstance() const {
 }
 
 __attribute__((weak)) void rEffect2D::ResourceInfo::createParticleResources(rEffect2D::E2D_PARTICLE_COMMON* pParticleParam, u32 ParticleType) {
-    DDON_STUB("rEffect2D::ResourceInfo::createParticleResources")
-    /* stub */
+        if (pParticleParam != nullptr) {
+            switch (ParticleType) {
+            case rEffect2D::PARTICLE_TYPE_SPRITE:
+            case rEffect2D::PARTICLE_TYPE_POLYLINE:
+            case rEffect2D::PARTICLE_TYPE_TEXLINE: {
+                rEffect2D::E2D_PARTICLE_PRIM_COMMON* pPrimCommonParam = static_cast<rEffect2D::E2D_PARTICLE_PRIM_COMMON*>(pParticleParam);
+                createAnim(pPrimCommonParam->AnimPath);
+                u32 num = 0;
+                for (u32 ctr = 0; ctr < rEffect2D::MAX_TEX; ctr++) {
+                    num += createTexture(pPrimCommonParam->TexturePath[ctr], ctr);
+                }
+                if (num == 0) {
+                    mStatus |= STATUS_NO_TEX_CREATE;
+                }
+                break;
+            }
+            case rEffect2D::PARTICLE_TYPE_MODEL:
+                createModel(static_cast<rEffect2D::E2D_PARTICLE_MODEL*>(pParticleParam)->ModelPath);
+                break;
+            default:
+                break;
+            }
+        }
 }
 
 rEffectAnim* rEffect2D::ResourceInfo::getAnim() {
@@ -205,5 +317,58 @@ rModel* rEffect2D::ResourceInfo::getModel() {
 
 bool rEffect2D::ResourceInfo::checkCreate() {
     return static_cast<unsigned short>(mStatus) == 0;
+}
+
+inline void rEffect2D::ResourceInfo::createAnim(MT_CHAR* pPath) {
+    if (pPath[0] != 0) {
+        mpChar = sResource::getInstance()->create(rEffectAnim::DTI, pPath, 1u);
+        if (mpChar == nullptr) {
+            mStatus |= STATUS_EAN_CREATE_FAILED;
+        }
+    } else {
+        mStatus |= STATUS_NO_EAN_CREATE;
+    }
+}
+
+inline void rEffect2D::ResourceInfo::createModel(MT_CHAR* pPath) {
+    if (pPath[0] != 0) {
+        mpChar = sResource::getInstance()->create(rModel::DTI, pPath, 1u);
+        if (mpChar == nullptr) {
+            mStatus |= STATUS_MOD_CREATE_FAILED;
+        }
+    } else {
+        mStatus |= STATUS_NO_MOD_CREATE;
+    }
+}
+
+inline bool rEffect2D::ResourceInfo::createTexture(MT_CHAR* pPath, u32 No) {
+    if (pPath[0] == 0) {
+        return false;
+    }
+    mpTexture[No] = static_cast<rTexture*>(sResource::getInstance()->create(rTexture::DTI, pPath, 128u));
+    if (mpTexture[No] != nullptr) {
+        return true;
+    }
+    mpTexture[No] = static_cast<rTexture*>(sResource::getInstance()->create(rTexture::DTI, pPath, 1u));
+    if (mpTexture[No] != nullptr) {
+        return true;
+    }
+    mStatus |= 1u << No;
+    return false;
+}
+
+inline void rEffect2D::ResourceInfo::releaseResources() {
+    u32 ctr;
+    mStatus = 0;
+    for (ctr = 0; ctr < 3u; ctr++) {
+        if (mpTexture[ctr] != nullptr) {
+            mpTexture[ctr]->release();
+            mpTexture[ctr] = nullptr;
+        }
+    }
+    if (mpChar != nullptr) {
+        mpChar->release();
+        mpChar = nullptr;
+    }
 }
 

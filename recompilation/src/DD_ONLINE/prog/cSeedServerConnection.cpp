@@ -18,6 +18,25 @@
 #define DDON_STUB(name)
 #endif
 
+static u8 iv[16] = {
+    36,
+    99,
+    98,
+    77,
+    54,
+    87,
+    80,
+    41,
+    97,
+    88,
+    61,
+    37,
+    74,
+    94,
+    122,
+    65,
+};
+
 const MtDTI& cSeedServerConnection::getDTI() const {
     return cSeedServerConnection::DTI;
 }

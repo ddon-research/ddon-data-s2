@@ -142,6 +142,10 @@ const MtDTI& rOmKey::cOmKey::getDTI() const {
     return rOmKey::cOmKey::DTI;
 }
 
+inline void* rOmKey::cOmKey::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rOmKey::cOmKey::DTI)->memAlloc(sz, align, rOmKey::cOmKey::DTI.getID());
+}
+
 inline void rOmKey::cOmKey::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rOmKey::cOmKey::DTI)->memFree(p_addr);
 }
@@ -149,7 +153,10 @@ inline void rOmKey::cOmKey::operator delete(void* p_addr) {
 inline rOmKey::cOmKey::cOmKey() {
     mOmID = -1;
     mKeyType = 0;
-    mPos = MtVector3::Zero;
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
     mbHorizontal = false;
 }
 
@@ -165,9 +172,8 @@ rOmKey::cOmKey::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 rOmKey::cOmKey::MyDTI rOmKey::cOmKey::DTI("rOmKey::cOmKey", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rOmKey::cOmKey::MyDTI::newInstance() const {
-    DDON_STUB("rOmKey::cOmKey::MyDTI::newInstance")
-    return nullptr;
+MtObject* rOmKey::cOmKey::MyDTI::newInstance() const {
+    return new (16u) rOmKey::cOmKey;
 }
 
 const MtDTI& rOmKey::cItem::getDTI() const {

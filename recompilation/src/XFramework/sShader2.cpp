@@ -19,6 +19,7 @@
 #include "nDrawInputLayout.h"
 #include "nDrawMaterialNull.h"
 #include "nDrawRasterizerState.h"
+#include "nDrawSamplerState.h"
 #include "nDrawShader.h"
 #include "rArchive.h"
 #include "rShaderPackage.h"

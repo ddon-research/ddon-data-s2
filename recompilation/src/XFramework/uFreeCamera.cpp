@@ -29,8 +29,16 @@ inline void uFreeCamera::operator delete(void* p_addr) {
 }
 
 uFreeCamera::uFreeCamera() {
-    DDON_STUB("uFreeCamera::uFreeCamera")
-    /* stub */
+    mpParent = nullptr;
+    mParentNo = -1;
+    mpTarget = nullptr;
+    mTargetNo = -1;
+    mControlSpeed.x = MtVector3::One.x;
+    mControlSpeed.y = MtVector3::One.y;
+    mControlSpeed.z = MtVector3::One.z;
+    mControlSpeed.pad_ = 0.0f;
+    mPadControl = false;
+    mControlPad = -1;
 }
 
 uFreeCamera::~uFreeCamera() {

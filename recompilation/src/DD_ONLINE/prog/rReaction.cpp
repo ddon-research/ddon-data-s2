@@ -12,8 +12,16 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cReaction>::allocData(unsigned int);
+#endif
+
 const MtDTI& cReaction::getDTI() const {
     return cReaction::DTI;
+}
+
+inline void* cReaction::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cReaction::DTI)->memAlloc(sz, align, cReaction::DTI.getID());
 }
 
 inline void cReaction::operator delete(void* p_addr) {
@@ -24,9 +32,8 @@ cReaction::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32
 
 cReaction::MyDTI cReaction::DTI("cReaction", &::MtObject::DTI, 312ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cReaction::MyDTI::newInstance() const {
-    DDON_STUB("cReaction::MyDTI::newInstance")
-    return nullptr;
+MtObject* cReaction::MyDTI::newInstance() const {
+    return new (16u) cReaction;
 }
 
 const MtDTI& cReaction::cCondition::getDTI() const {
@@ -102,8 +109,41 @@ inline void rReaction::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rReaction::loadData(MtDataReader& r, cReaction* pData) {
-    DDON_STUB("rReaction::loadData")
-    return {};
+        pData->mReactTrigger.mTrigger = r.readU32();
+        pData->mReactTrigger.mParam = r.readU32();
+        pData->mReactTrigger.mParam1 = r.readU32();
+        pData->mReactTrigger.mCount = r.readU32();
+        for (u32 i = 0; i < cReaction::REACT_COND_NUM; i++) {
+            cReaction::cCondition* ptr = &pData->mReactCondition[i];
+            ptr->mCondition = r.readU32();
+            ptr->mParam0 = r.readU64();
+            ptr->mParam1 = r.readU64();
+            ptr->mCkAndOR = r.readU32();
+            bool t0 = false;
+            if (r.mSeekPt < r.mBufsiz || r.refill()) {
+                u8 t2 = r.mBuffer[r.mSeekPt];
+                r.mSeekPt = r.mSeekPt + 1;
+                t0 = t2 != 0;
+            }
+            ptr->mReverse = t0;
+        }
+        bool t1 = false;
+        if (r.mSeekPt < r.mBufsiz || r.refill()) {
+            u8 t2 = r.mBuffer[r.mSeekPt];
+            r.mSeekPt = r.mSeekPt + 1;
+            t1 = t2 != 0;
+        }
+        pData->mAllCondition = t1;
+        for (u32 i = 0; i < cReaction::REACT_ACT_NUM; i++) {
+            cReaction::cAction* ptr = &pData->mReactAction[i];
+            ptr->mPercent = r.readU32();
+            ptr->mActNoLand = r.readU32();
+            ptr->mActNoAir = r.readU32();
+            ptr->mActNoDown = r.readU32();
+        }
+        pData->mForceReaction = r.readU32();
+        pData->mOptionFlg = r.readU32();
+        return true;
 }
 
 MT_CTSTR rReaction::getExt() const {

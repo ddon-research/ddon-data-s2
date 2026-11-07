@@ -6,6 +6,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cDraw.h"
@@ -37,8 +38,22 @@ inline void uSkyCloudModel::operator delete(void* p_addr) {
 }
 
 uSkyCloudModel::uSkyCloudModel() {
-    DDON_STUB("uSkyCloudModel::uSkyCloudModel")
-    /* stub */
+    mWeatherID = -1;
+    mDayOnly = false;
+    mViewType = 0;
+    mType = 0;
+    mSunColorHeight = 200000.0f;
+    mSunColorScale = 0.1f;
+    mSaturationScale = 1.0f;
+    mIntensityScale = 1.0f;
+    mAmbColorHeight = 200000.0f;
+    mAmbColorScale = 1.0f;
+    mSunDir = MtVector3::AxisY;
+    mSunColor = MtVector3::Zero;
+    mAmbColor = MtVector3::Zero;
+    mFogMulRate = 1.0f;
+    mFogAddRate = 1.0f;
+    mDrawMode = 19;
 }
 
 uSkyCloudModel::~uSkyCloudModel() {
@@ -81,8 +96,7 @@ uSkyCloudModel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 uSkyCloudModel::MyDTI uSkyCloudModel::DTI("uSkyCloudModel", &::uBaseModel::DTI, 4640ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uSkyCloudModel::MyDTI::newInstance() const {
-    DDON_STUB("uSkyCloudModel::MyDTI::newInstance")
-    return nullptr;
+MtObject* uSkyCloudModel::MyDTI::newInstance() const {
+    return new (16u) uSkyCloudModel;
 }
 

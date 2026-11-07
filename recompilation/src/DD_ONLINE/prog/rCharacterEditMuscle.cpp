@@ -18,6 +18,10 @@ const MtDTI& cCharacterEditMuscle::getDTI() const {
     return cCharacterEditMuscle::DTI;
 }
 
+inline void* cCharacterEditMuscle::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCharacterEditMuscle::DTI)->memAlloc(sz, align, cCharacterEditMuscle::DTI.getID());
+}
+
 inline void cCharacterEditMuscle::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCharacterEditMuscle::DTI)->memFree(p_addr);
 }
@@ -31,9 +35,8 @@ cCharacterEditMuscle::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 cCharacterEditMuscle::MyDTI cCharacterEditMuscle::DTI("cCharacterEditMuscle", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCharacterEditMuscle::MyDTI::newInstance() const {
-    DDON_STUB("cCharacterEditMuscle::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCharacterEditMuscle::MyDTI::newInstance() const {
+    return new (16u) cCharacterEditMuscle;
 }
 
 const MtDTI& rCharacterEditMuscle::getDTI() const {

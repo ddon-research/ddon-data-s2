@@ -48,8 +48,12 @@ inline void cpReaction::operator delete(void* p_addr) {
 }
 
 cpReaction::cpReaction() {
-    DDON_STUB("cpReaction::cpReaction")
-    /* stub */
+    mprReaction = nullptr;
+    mpModel = nullptr;
+    mChoiceActNo = 0xFFFFFFFF;
+    mChoiceOptionFlg = 0;
+    mTriggerFlag = 0;
+    mTriggerFreeWorkArray.mAutoDelete = true;
 }
 
 cpReaction::~cpReaction() {
@@ -431,9 +435,8 @@ cpReaction::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u3
 
 cpReaction::MyDTI cpReaction::DTI("cpReaction", &::cpComponent::DTI, 152ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpReaction::MyDTI::newInstance() const {
-    DDON_STUB("cpReaction::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpReaction::MyDTI::newInstance() const {
+    return new (16u) cpReaction;
 }
 
 const MtDTI& cpReaction::cTriggerFree::getDTI() const {

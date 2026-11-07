@@ -575,7 +575,7 @@ public:
     bool isRequestList() const;
     void setSetupList(bool);
     bool isSetupList() const;
-    void setResetList(bool f);
+    void setResetList(bool f = false);
     bool isResetList() const;
     void setRequestSubList(u32 no, bool f);
     bool isRequestSubList(u32 no) const;
@@ -840,6 +840,10 @@ inline bool cGroupParam::isDieStageBoss() const {
     return this->mIsDieStageBoss;
 }
 
+inline void cGroupParam::setResetList(bool f) {
+    this->mIsResetList = false;
+}
+
 inline bool cGroupParam::isResetList() const {
     return this->mIsResetList;
 }
@@ -895,4 +899,16 @@ inline void* cGroupParam::cUnitData::operator new(size_t sz, void* p_addr) {
 
 inline void* rLayoutGroupParamList::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cGroupParam::stDeleteCondition::stDeleteCondition() {
+    mDeleteCondition = 0;
+}
+
+inline cGroupParam::stLoadCondition::stLoadCondition() {
+    mLoadCondition = 0;
+}
+
+inline cGroupParam::stSetCondition::stSetCondition() {
+    mSetCondition = 0;
 }

@@ -249,6 +249,12 @@ inline void* uGUICaplinkTrophyList::cListItem::operator new(size_t sz, void* p_a
     return p_addr;
 }
 
+inline uGUICaplinkTrophyList::cListItem::cListItem() {
+    this->mpObjMsgStatus = nullptr;
+    this->mpObjMsgTrophyName = nullptr;
+    this->mpInstAnimStatus = nullptr;
+}
+
 inline uGUICaplinkTrophyList::stDetail::stDetail() {
 }
 

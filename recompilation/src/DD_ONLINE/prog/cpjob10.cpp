@@ -34,6 +34,7 @@
 #include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "nHumanMsg.h"
+#include "nKeyCommand.h"
 #include "rAttackParam.h"
 #include "rCollNode.h"
 #include "rEffectProvider.h"
@@ -68,6 +69,104 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+static const u32 boostMotTbl[34] = {
+    1034,
+    1035,
+    1036,
+    1044,
+    1045,
+    1046,
+    1049,
+    1050,
+    1051,
+    1052,
+    1053,
+    1064,
+    1065,
+    1066,
+    1067,
+    1124,
+    1126,
+    1128,
+    1129,
+    1130,
+    1134,
+    1135,
+    1136,
+    1137,
+    1139,
+    1140,
+    1141,
+    1142,
+    1143,
+    1175,
+    1177,
+    1176,
+    1178,
+    4294967295,
+};
+
+nKeyCommand::stKeyCommand Job10BaseActCommand[17] = {
+    {8197, 8196, 1, 1, 0, 1, 4294967296, 1, 2, 0, 0, 0, 255, false},
+    {8196, 8192, 1, 1, 0, 1, 4294967296, 17, 65535, 0, 57, 0, 255, false},
+    {8194, 8193, 1, 1, 0, 1, 4294967296, 1, 2, 0, 0, 0, 255, false},
+    {8193, 8192, 1, 1, 0, 1, 4294967296, 1, 2, 0, 0, 0, 255, false},
+    {8192, 4294967295, 1, 1, 0, 1, 0, 1, 2, 0, 0, 0, 255, false},
+    {8202, 4294967295, 2, 1, 0, 1, 0, 1, 2, 0, 0, 0, 255, false},
+    {8204, 4294967295, 2, 1, 0, 2, 0, 1, 2, 0, 0, 0, 255, false},
+    {8204, 8199, 2, 1, 0, 2, 0, 16, 17, 0, 0, 0, 255, false},
+    {8198, 4294967295, 14, 1, 0, 1, 0, 7, 8, 0, 0, 0, 255, false},
+    {8199, 4294967295, 1, 1, 3, 2, 0, 1, 2, 0, 0, 0, 255, false},
+    {8200, 8199, 1, 1, 0, 2, 0, 16, 17, 0, 0, 0, 255, false},
+    {8200, 4294967295, 1, 1, 0, 2, 0, 1, 2, 0, 0, 0, 255, false},
+    {8209, 4294967295, 27, 1, 0, 1, 0, 1, 2, 0, 156, 0, 255, false},
+    {8208, 4294967295, 28, 1, 0, 1, 0, 1, 2, 0, 156, 0, 255, false},
+    {8206, 4294967295, 1, 1, 0, 32, 0, 1, 2, 1, 0, 0, 255, false},
+    {72, 8199, 13, 1, 0, 2, 16384, 16, 17, 1, 28, 0, 255, false},
+    {4294967295, 4294967295, 0, 0, 0, 0, 0, 65535, 65535, 0, 0, 0, 255, false},
+};
+
+nKeyCommand::stKeyCommand Job10CustomSkillCommand[29] = {
+    {4096, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 0, 0, 1, true},
+    {4099, 4097, 3, 1, 0, 2, 0, 16, 17, 0, 32, 0, 1, true},
+    {4099, 4097, 38, 1, 0, 2, 0, 16, 17, 0, 32, 0, 1, true},
+    {4102, 4294967295, 3, 1, 0, 1, 0, 65535, 65535, 0, 165, 0, 2, true},
+    {4101, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 168, 0, 2, true},
+    {4101, 4294967295, 3, 1, 0, 1, 0, 7, 8, 0, 169, 0, 2, true},
+    {4101, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 170, 0, 2, true},
+    {4104, 4294967295, 3, 1, 0, 2, 0, 65535, 65535, 0, 166, 0, 2, true},
+    {4103, 4294967295, 3, 1, 0, 2, 0, 7, 8, 0, 159, 0, 2, true},
+    {8198, 4105, 14, 1, 0, 1, 0, 7, 8, 0, 0, 0, 255, true},
+    {4106, 4105, 33, 1, 0, 1, 0, 3, 4, 0, 0, 0, 3, true},
+    {4105, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 0, 0, 3, true},
+    {0, 4110, 33, 1, 0, 1, 0, 3, 4, 0, 0, 0, 4, true},
+    {4111, 4110, 3, 6, 0, 1, 0, 16, 17, 0, 160, 0, 4, true},
+    {4112, 4110, 3, 6, 0, 1, 0, 16, 17, 0, 161, 0, 4, true},
+    {4113, 4110, 3, 6, 0, 1, 0, 16, 17, 0, 162, 0, 4, true},
+    {4110, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 0, 0, 4, true},
+    {4116, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 163, 0, 5, true},
+    {4118, 4294967295, 3, 1, 0, 2, 0, 5, 6, 0, 163, 0, 5, true},
+    {4114, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 0, 0, 5, true},
+    {4122, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 164, 0, 6, true},
+    {4123, 4294967295, 3, 1, 0, 32, 0, 5, 6, 0, 164, 0, 6, true},
+    {4120, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 0, 0, 6, true},
+    {4124, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 0, 0, 7, true},
+    {0, 4126, 33, 1, 0, 1, 0, 3, 4, 0, 0, 0, 8, false},
+    {4129, 4128, 33, 1, 0, 1, 0, 3, 4, 0, 0, 0, 8, true},
+    {4127, 4126, 3, 6, 0, 1, 0, 16, 17, 0, 167, 0, 8, true},
+    {4126, 4294967295, 3, 1, 0, 1, 0, 5, 6, 0, 0, 0, 8, true},
+    {4294967295, 4294967295, 0, 0, 0, 0, 0, 65535, 65535, 0, 0, 0, 255, false},
+};
+
+nKeyCommand::stKeyCommandForFunction Job10FuncCommandTbl[6] = {
+    {16, 28, 1, static_cast<nKeyCommand::KEY_CMD_FUNC_SP>(14), 255},
+    {16, 27, 1, static_cast<nKeyCommand::KEY_CMD_FUNC_SP>(14), 255},
+    {17, 27, 1, static_cast<nKeyCommand::KEY_CMD_FUNC_SP>(15), 255},
+    {17, 28, 1, static_cast<nKeyCommand::KEY_CMD_FUNC_SP>(15), 255},
+    {8, 10, 1, static_cast<nKeyCommand::KEY_CMD_FUNC_SP>(9), 255},
+    {-1, 0, 0, static_cast<nKeyCommand::KEY_CMD_FUNC_SP>(4294967295), 255},
+};
 
 const MtDTI& cpJob10::getDTI() const {
     return cpJob10::DTI;
@@ -853,6 +952,10 @@ const MtDTI& cpJob10::cSpiritManager::getDTI() const {
     return cpJob10::cSpiritManager::DTI;
 }
 
+inline void* cpJob10::cSpiritManager::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::DTI)->memAlloc(sz, align, cpJob10::cSpiritManager::DTI.getID());
+}
+
 inline void cpJob10::cSpiritManager::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::DTI)->memFree(p_addr);
 }
@@ -922,13 +1025,16 @@ cpJob10::cSpiritManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 cpJob10::cSpiritManager::MyDTI cpJob10::cSpiritManager::DTI("cpJob10::cSpiritManager", &::MtObject::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpJob10::cSpiritManager::MyDTI::newInstance() const {
-    DDON_STUB("cpJob10::cSpiritManager::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpJob10::cSpiritManager::MyDTI::newInstance() const {
+    return new (16u) cpJob10::cSpiritManager;
 }
 
 const MtDTI& cpJob10::cSpiritManager::cSpiritStateNormal::getDTI() const {
     return cpJob10::cSpiritManager::cSpiritStateNormal::DTI;
+}
+
+inline void* cpJob10::cSpiritManager::cSpiritStateNormal::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::cSpiritStateNormal::DTI)->memAlloc(sz, align, cpJob10::cSpiritManager::cSpiritStateNormal::DTI.getID());
 }
 
 inline void cpJob10::cSpiritManager::cSpiritStateNormal::operator delete(void* p_addr) {
@@ -966,9 +1072,8 @@ cpJob10::cSpiritManager::cSpiritStateNormal::MyDTI::MyDTI(MT_CTSTR class_name, M
 
 cpJob10::cSpiritManager::cSpiritStateNormal::MyDTI cpJob10::cSpiritManager::cSpiritStateNormal::DTI("cpJob10::cSpiritManager::cSpiritStateNormal", &::cpJob10::cSpiritManager::cSpiritState::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpJob10::cSpiritManager::cSpiritStateNormal::MyDTI::newInstance() const {
-    DDON_STUB("cpJob10::cSpiritManager::cSpiritStateNormal::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpJob10::cSpiritManager::cSpiritStateNormal::MyDTI::newInstance() const {
+    return new (16u) cpJob10::cSpiritManager::cSpiritStateNormal;
 }
 
 const MtDTI& cpJob10::cSpiritManager::cSpiritState::getDTI() const {
@@ -1015,6 +1120,10 @@ const MtDTI& cpJob10::cSpiritManager::cSpiritStateBoost::getDTI() const {
     return cpJob10::cSpiritManager::cSpiritStateBoost::DTI;
 }
 
+inline void* cpJob10::cSpiritManager::cSpiritStateBoost::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::cSpiritStateBoost::DTI)->memAlloc(sz, align, cpJob10::cSpiritManager::cSpiritStateBoost::DTI.getID());
+}
+
 inline void cpJob10::cSpiritManager::cSpiritStateBoost::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::cSpiritStateBoost::DTI)->memFree(p_addr);
 }
@@ -1041,9 +1150,8 @@ cpJob10::cSpiritManager::cSpiritStateBoost::MyDTI::MyDTI(MT_CTSTR class_name, Mt
 
 cpJob10::cSpiritManager::cSpiritStateBoost::MyDTI cpJob10::cSpiritManager::cSpiritStateBoost::DTI("cpJob10::cSpiritManager::cSpiritStateBoost", &::cpJob10::cSpiritManager::cSpiritState::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpJob10::cSpiritManager::cSpiritStateBoost::MyDTI::newInstance() const {
-    DDON_STUB("cpJob10::cSpiritManager::cSpiritStateBoost::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpJob10::cSpiritManager::cSpiritStateBoost::MyDTI::newInstance() const {
+    return new (16u) cpJob10::cSpiritManager::cSpiritStateBoost;
 }
 
 template MtTypedArray<uShlBase>::~MtTypedArray();

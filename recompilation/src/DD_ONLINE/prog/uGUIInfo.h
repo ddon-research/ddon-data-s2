@@ -279,6 +279,12 @@ inline void* uGUIInfo::cListItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUIInfo::cListItem::cListItem() {
+    this->mpObjMsg = nullptr;
+    this->mpInstAnim = nullptr;
+    this->mpInstNull = nullptr;
+}
+
 inline void* uGUIInfo::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

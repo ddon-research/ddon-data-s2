@@ -7,6 +7,7 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cCaplinkContext.h"
 #include "../../XFramework/cCaplinkDataDef.h"
@@ -213,6 +214,10 @@ const MtDTI& uGUICaplinkTag::cListItem::getDTI() const {
     return uGUICaplinkTag::cListItem::DTI;
 }
 
+inline void* uGUICaplinkTag::cListItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUICaplinkTag::cListItem::DTI)->memAlloc(sz, align, uGUICaplinkTag::cListItem::DTI.getID());
+}
+
 inline void uGUICaplinkTag::cListItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkTag::cListItem::DTI)->memFree(p_addr);
 }
@@ -221,9 +226,8 @@ uGUICaplinkTag::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 uGUICaplinkTag::cListItem::MyDTI uGUICaplinkTag::cListItem::DTI("uGUICaplinkTag::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICaplinkTag::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUICaplinkTag::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICaplinkTag::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUICaplinkTag::cListItem;
 }
 
 const MtDTI& uGUICaplinkTag::cListInfo::getDTI() const {

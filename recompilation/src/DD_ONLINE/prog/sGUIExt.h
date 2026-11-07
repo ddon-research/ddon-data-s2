@@ -1749,7 +1749,7 @@ public:
         u32 analyzeCmdPart(MT_CHAR* pMsgSrc, MT_CHAR* pMsgArg, u32 uMode);
         void setChatErrorCmd();
         void setCmdF(u32);
-        void orCmdF(u32 uFlag);
+        void orCmdF(u32 uFlag = 1);
         void xorCmdF(u32);
         void clrCmdF(u32 uFlag);
         bool isCmdF(u32 uFlag);
@@ -3452,6 +3452,10 @@ inline void* sGUIExt::cSCM::operator new(size_t sz, void* p_addr) {
 
 inline void* sGUIExt::cChatMacro::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void sGUIExt::cChatMacro::orCmdF(u32 uFlag) {
+    this->mCmdF = this->mCmdF | 1u;
 }
 
 inline void* sGUIExt::cJpegDecode::operator new(size_t sz, void* p_addr) {

@@ -88,7 +88,7 @@ public:
     u32 getSeqCtrlSeqNoFlag() const;
     void setSeqVibPriority(u32);
     u32 getSeqVibPriority() const;
-    void setSeqVibReqType(u8 Type);
+    void setSeqVibReqType(u8 Type = 1);
     u8 getSeqVibReqType() const;
     void updateSequence();
 protected:
@@ -115,4 +115,8 @@ inline void* cpVibration::operator new(size_t sz, void* p_addr) {
 
 inline void cpVibration::setOwnerModel(uBaseModel* pModel) {
     this->mpOwnerModel = pModel;
+}
+
+inline void cpVibration::setSeqVibReqType(u8 Type) {
+    this->mSeqVibReqType = 1;
 }

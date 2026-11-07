@@ -420,6 +420,10 @@ inline rPriorityThink::rPriorityThink() {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cPrioThkCode::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCode::DTI)->memFree(p_addr);
+}
+
 inline void* cPrioThkCode::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cPrioThkCode::DTI)->memAlloc(sz, align, ::cPrioThkCode::DTI.::MtDTI::getID());
 }

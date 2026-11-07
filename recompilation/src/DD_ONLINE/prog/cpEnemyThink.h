@@ -124,7 +124,7 @@ public:
     bool isChangeRage();
     void setEnemyThinkTargetLock(uDDOModel*, const MtVector3&);
     bool IsFsmTarget();
-    void setEnemyThinkTargetLockFlg(bool enable);
+    void setEnemyThinkTargetLockFlg(bool enable = false);
     void checkThinkMode();
     uDDOModel* getNewTarget();
     MtVector3 getTargetJumpPos();
@@ -207,6 +207,10 @@ inline cRage::cRage() {
 
 inline void* cpEnemyThink::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void cpEnemyThink::setEnemyThinkTargetLockFlg(bool enable) {
+    this->mIsFmsTarget = false;
 }
 
 inline cThinkMgrName::cThinkMgr* cpEnemyThink::getcThink() {

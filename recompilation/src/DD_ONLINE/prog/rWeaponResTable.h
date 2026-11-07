@@ -144,6 +144,10 @@ inline void* rWeaponResTable::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cWeaponResTable::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeaponResTable::DTI)->memFree(p_addr);
+}
+
 inline void* cWeaponResTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cWeaponResTable::DTI)->memAlloc(sz, align, ::cWeaponResTable::DTI.::MtDTI::getID());
 }

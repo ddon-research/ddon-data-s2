@@ -207,6 +207,41 @@
 #define DDON_STUB(name)
 #endif
 
+namespace nUnicode {
+static const MT_CHAR ALTERNATE_UTF8[4] = {
+    -30,
+    -106,
+    -95,
+    0,
+};
+}
+
+static const u32 reward_emotion_voice_id_table[5] = {
+    66,
+    52,
+    54,
+    65,
+    68,
+};
+
+static const u32 reward_emotion_no_table[5] = {
+    69,
+    45,
+    46,
+    47,
+    48,
+};
+
+static const MT_CHAR CLANEMBLEMMARK_ARCNAME_FORMAT[7] = {
+    99,
+    101,
+    37,
+    48,
+    52,
+    100,
+    0,
+};
+
 const MtDTI& sGUIExt::getDTI() const {
     return sGUIExt::DTI;
 }

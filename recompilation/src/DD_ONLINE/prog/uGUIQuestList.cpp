@@ -46,6 +46,16 @@
 #define DDON_STUB(name)
 #endif
 
+namespace nGUIExt {
+static const u32 QUEST_TYPE_MSG_ID[5] = {
+    20,
+    21,
+    22,
+    22,
+    22,
+};
+}
+
 const MtDTI& uGUIQuestList::getDTI() const {
     return uGUIQuestList::DTI;
 }

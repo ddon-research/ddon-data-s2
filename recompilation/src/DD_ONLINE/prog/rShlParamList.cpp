@@ -20,6 +20,10 @@ const MtDTI& cShlGroupParam::getDTI() const {
     return cShlGroupParam::DTI;
 }
 
+inline void* cShlGroupParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cShlGroupParam::DTI)->memAlloc(sz, align, cShlGroupParam::DTI.getID());
+}
+
 inline void cShlGroupParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cShlGroupParam::DTI)->memFree(p_addr);
 }
@@ -48,9 +52,8 @@ cShlGroupParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 cShlGroupParam::MyDTI cShlGroupParam::DTI("cShlGroupParam", &::MtObject::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cShlGroupParam::MyDTI::newInstance() const {
-    DDON_STUB("cShlGroupParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cShlGroupParam::MyDTI::newInstance() const {
+    return new (16u) cShlGroupParam;
 }
 
 const MtDTI& rShlParamList::getDTI() const {

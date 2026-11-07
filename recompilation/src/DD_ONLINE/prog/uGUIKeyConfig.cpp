@@ -31,6 +31,98 @@
 #define DDON_STUB(name)
 #endif
 
+static const sKeyboard::KB_TYPE available_keys[89] = {
+    static_cast<const sKeyboard::KB_TYPE>(16),
+    static_cast<const sKeyboard::KB_TYPE>(17),
+    static_cast<const sKeyboard::KB_TYPE>(18),
+    static_cast<const sKeyboard::KB_TYPE>(8),
+    static_cast<const sKeyboard::KB_TYPE>(9),
+    static_cast<const sKeyboard::KB_TYPE>(13),
+    static_cast<const sKeyboard::KB_TYPE>(32),
+    static_cast<const sKeyboard::KB_TYPE>(37),
+    static_cast<const sKeyboard::KB_TYPE>(38),
+    static_cast<const sKeyboard::KB_TYPE>(39),
+    static_cast<const sKeyboard::KB_TYPE>(40),
+    static_cast<const sKeyboard::KB_TYPE>(49),
+    static_cast<const sKeyboard::KB_TYPE>(50),
+    static_cast<const sKeyboard::KB_TYPE>(51),
+    static_cast<const sKeyboard::KB_TYPE>(52),
+    static_cast<const sKeyboard::KB_TYPE>(53),
+    static_cast<const sKeyboard::KB_TYPE>(54),
+    static_cast<const sKeyboard::KB_TYPE>(55),
+    static_cast<const sKeyboard::KB_TYPE>(56),
+    static_cast<const sKeyboard::KB_TYPE>(57),
+    static_cast<const sKeyboard::KB_TYPE>(48),
+    static_cast<const sKeyboard::KB_TYPE>(97),
+    static_cast<const sKeyboard::KB_TYPE>(98),
+    static_cast<const sKeyboard::KB_TYPE>(99),
+    static_cast<const sKeyboard::KB_TYPE>(100),
+    static_cast<const sKeyboard::KB_TYPE>(101),
+    static_cast<const sKeyboard::KB_TYPE>(102),
+    static_cast<const sKeyboard::KB_TYPE>(103),
+    static_cast<const sKeyboard::KB_TYPE>(104),
+    static_cast<const sKeyboard::KB_TYPE>(105),
+    static_cast<const sKeyboard::KB_TYPE>(96),
+    static_cast<const sKeyboard::KB_TYPE>(65),
+    static_cast<const sKeyboard::KB_TYPE>(66),
+    static_cast<const sKeyboard::KB_TYPE>(67),
+    static_cast<const sKeyboard::KB_TYPE>(68),
+    static_cast<const sKeyboard::KB_TYPE>(69),
+    static_cast<const sKeyboard::KB_TYPE>(70),
+    static_cast<const sKeyboard::KB_TYPE>(71),
+    static_cast<const sKeyboard::KB_TYPE>(72),
+    static_cast<const sKeyboard::KB_TYPE>(73),
+    static_cast<const sKeyboard::KB_TYPE>(74),
+    static_cast<const sKeyboard::KB_TYPE>(75),
+    static_cast<const sKeyboard::KB_TYPE>(76),
+    static_cast<const sKeyboard::KB_TYPE>(77),
+    static_cast<const sKeyboard::KB_TYPE>(78),
+    static_cast<const sKeyboard::KB_TYPE>(79),
+    static_cast<const sKeyboard::KB_TYPE>(80),
+    static_cast<const sKeyboard::KB_TYPE>(81),
+    static_cast<const sKeyboard::KB_TYPE>(82),
+    static_cast<const sKeyboard::KB_TYPE>(83),
+    static_cast<const sKeyboard::KB_TYPE>(84),
+    static_cast<const sKeyboard::KB_TYPE>(85),
+    static_cast<const sKeyboard::KB_TYPE>(86),
+    static_cast<const sKeyboard::KB_TYPE>(87),
+    static_cast<const sKeyboard::KB_TYPE>(88),
+    static_cast<const sKeyboard::KB_TYPE>(89),
+    static_cast<const sKeyboard::KB_TYPE>(90),
+    static_cast<const sKeyboard::KB_TYPE>(189),
+    static_cast<const sKeyboard::KB_TYPE>(222),
+    static_cast<const sKeyboard::KB_TYPE>(192),
+    static_cast<const sKeyboard::KB_TYPE>(219),
+    static_cast<const sKeyboard::KB_TYPE>(221),
+    static_cast<const sKeyboard::KB_TYPE>(186),
+    static_cast<const sKeyboard::KB_TYPE>(187),
+    static_cast<const sKeyboard::KB_TYPE>(188),
+    static_cast<const sKeyboard::KB_TYPE>(190),
+    static_cast<const sKeyboard::KB_TYPE>(191),
+    static_cast<const sKeyboard::KB_TYPE>(112),
+    static_cast<const sKeyboard::KB_TYPE>(113),
+    static_cast<const sKeyboard::KB_TYPE>(114),
+    static_cast<const sKeyboard::KB_TYPE>(115),
+    static_cast<const sKeyboard::KB_TYPE>(116),
+    static_cast<const sKeyboard::KB_TYPE>(117),
+    static_cast<const sKeyboard::KB_TYPE>(118),
+    static_cast<const sKeyboard::KB_TYPE>(119),
+    static_cast<const sKeyboard::KB_TYPE>(120),
+    static_cast<const sKeyboard::KB_TYPE>(121),
+    static_cast<const sKeyboard::KB_TYPE>(122),
+    static_cast<const sKeyboard::KB_TYPE>(123),
+    static_cast<const sKeyboard::KB_TYPE>(27),
+    static_cast<const sKeyboard::KB_TYPE>(33),
+    static_cast<const sKeyboard::KB_TYPE>(34),
+    static_cast<const sKeyboard::KB_TYPE>(36),
+    static_cast<const sKeyboard::KB_TYPE>(35),
+    static_cast<const sKeyboard::KB_TYPE>(45),
+    static_cast<const sKeyboard::KB_TYPE>(46),
+    static_cast<const sKeyboard::KB_TYPE>(1),
+    static_cast<const sKeyboard::KB_TYPE>(2),
+    static_cast<const sKeyboard::KB_TYPE>(4),
+};
+
 const MtDTI& uGUIKeyConfig::getDTI() const {
     return uGUIKeyConfig::DTI;
 }
@@ -360,6 +452,10 @@ const MtDTI& uGUIKeyConfig::cCategoryItem::getDTI() const {
     return uGUIKeyConfig::cCategoryItem::DTI;
 }
 
+inline void* uGUIKeyConfig::cCategoryItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIKeyConfig::cCategoryItem::DTI)->memAlloc(sz, align, uGUIKeyConfig::cCategoryItem::DTI.getID());
+}
+
 inline void uGUIKeyConfig::cCategoryItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIKeyConfig::cCategoryItem::DTI)->memFree(p_addr);
 }
@@ -425,9 +521,8 @@ uGUIKeyConfig::cCategoryItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 
 uGUIKeyConfig::cCategoryItem::MyDTI uGUIKeyConfig::cCategoryItem::DTI("uGUIKeyConfig::cCategoryItem", &::uGUIBase::cScrollListItemBase::DTI, 112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIKeyConfig::cCategoryItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIKeyConfig::cCategoryItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIKeyConfig::cCategoryItem::MyDTI::newInstance() const {
+    return new (16u) uGUIKeyConfig::cCategoryItem;
 }
 
 const MtDTI& uGUIKeyConfig::cCategoryInfo::getDTI() const {

@@ -25826,6 +25826,16 @@ inline void* nUserSession::CPacket_S2C_AREA_RANK_UP_RES::operator new(size_t sz,
     return p_addr;
 }
 
+inline nUserSession::CPacket_S2C_AREA_RANK_UP_RES::CPacket_S2C_AREA_RANK_UP_RES() {
+    this->m_usError = 0;
+    this->m_unNextAreaPoint = 0;
+    this->m_unAreaRank = 0;
+    this->m_unAreaPoint = 0;
+    this->m_nResult = 0;
+    this->m_unAreaId = 0;
+    this->m_bIsReceived = false;
+}
+
 inline u32 nUserSession::CPacket_S2C_AREA_RANK_UP_RES::AreaRank() const {
     return this->m_unAreaRank;
 }
@@ -28429,6 +28439,13 @@ inline const MtTypedArray<CDataLearnedAcquirementParam>& nUserSession::CPacket_S
 
 inline void* nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::CPacket_S2C_GET_PAWN_PROFILE_NOTICE() {
+    this->m_usError = 0;
+    this->m_unCharacterId = 0;
+    this->m_unPawnId = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES::operator new(size_t sz, void* p_addr) {

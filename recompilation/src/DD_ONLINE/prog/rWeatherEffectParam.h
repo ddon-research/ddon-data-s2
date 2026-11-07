@@ -161,3 +161,18 @@ inline void* cEffectCorrectParam::operator new(size_t sz, void* p_addr) {
 inline void* rWeatherEffectParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rWeatherEffectParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rWeatherEffectParam::DTI)->memAlloc(sz, align, rWeatherEffectParam::DTI.getID());
+}
+
+inline rWeatherEffectParam::rWeatherEffectParam() {
+    setAttribute(18u);
+    for (u32 type = 0u; type < 7u; type++) {
+        mpParamList[type].mAutoDelete = true;
+    }
+}

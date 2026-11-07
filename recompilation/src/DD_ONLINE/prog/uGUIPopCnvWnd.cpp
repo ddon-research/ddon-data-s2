@@ -24,6 +24,20 @@
 #define DDON_STUB(name)
 #endif
 
+static const u32 pop_transliteration_msg_window_ObjectIdTable2[11] = {
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    12,
+};
+
 const MtDTI& uGUIPopCnvWnd::getDTI() const {
     return uGUIPopCnvWnd::DTI;
 }

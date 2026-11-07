@@ -76,6 +76,28 @@
 #define DDON_STUB(name)
 #endif
 
+static const nGUIExt::JobParam JobParams[10] = {
+    {static_cast<nHuman::JOB_ENUM>(1), 1, 1, 1, 2},
+    {static_cast<nHuman::JOB_ENUM>(3), 3, 3, 7, 0},
+    {static_cast<nHuman::JOB_ENUM>(4), 4, 4, 11, 0},
+    {static_cast<nHuman::JOB_ENUM>(5), 5, 5, 4, 5},
+    {static_cast<nHuman::JOB_ENUM>(2), 2, 2, 6, 0},
+    {static_cast<nHuman::JOB_ENUM>(6), 6, 6, 12, 0},
+    {static_cast<nHuman::JOB_ENUM>(8), 8, 8, 9, 0},
+    {static_cast<nHuman::JOB_ENUM>(7), 7, 7, 3, 0},
+    {static_cast<nHuman::JOB_ENUM>(9), 9, 9, 8, 0},
+    {static_cast<nHuman::JOB_ENUM>(10), 10, 10, 13, 0},
+};
+
+namespace nGUIExt {
+static const nKeyCustom::KB_CUSTOM KEY_CUSTOM_SKILL[4] = {
+    static_cast<const nKeyCustom::KB_CUSTOM>(16),
+    static_cast<const nKeyCustom::KB_CUSTOM>(17),
+    static_cast<const nKeyCustom::KB_CUSTOM>(14),
+    static_cast<const nKeyCustom::KB_CUSTOM>(15),
+};
+}
+
 __attribute__((weak)) void cGUIUtility::makeDateString(u64 time, MtString& rStr) {
     DDON_STUB("cGUIUtility::makeDateString")
     /* stub */

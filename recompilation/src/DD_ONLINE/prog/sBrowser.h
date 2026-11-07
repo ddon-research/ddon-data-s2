@@ -212,7 +212,7 @@ public:
     int getErrorCategory();
     void setErrorFlowType(int FlowType);
     int getErrorFlowType();
-    void setDraw(bool isDraw);
+    void setDraw(bool isDraw = false);
     bool isDraw();
     void seCursortDraw(bool isDraw);
     bool isCursorDraw();
@@ -262,8 +262,8 @@ public:
     bool isInputEnable();
     rGUIFont* getGUIFont();
     bool isSNJFontDisp();
-    void setFunctionButtonEnable(u32 FunctionButton);
-    void setFunctionButtonDisable(u32 FunctionButton);
+    void setFunctionButtonEnable(u32 FunctionButton = 15);
+    void setFunctionButtonDisable(u32 FunctionButton = 4);
     u32 getFunctionButton() const;
     static void setPut1Code(SNJ_BROWSER_BITMAP* dstbmp, int dstx, int dsty, int dstdrww, int dstdrwh, unsigned short cod, unsigned int col, const SNJ_BROWSER_RECT* clp, const SNJ_BROWSER_FONTINFO* fntinf, int* pResult);
     void setSaveCOGID(MT_CTSTR COGID_string);
@@ -421,6 +421,10 @@ inline int sBrowser::getErrorFlowType() {
     return this->mErrorFlowType;
 }
 
+inline void sBrowser::setDraw(bool isDraw) {
+    this->mIsDraw = false;
+}
+
 inline void sBrowser::setBufferSize(u32 buf_size) {
     this->mBufferSize = buf_size;
 }
@@ -431,6 +435,14 @@ inline void sBrowser::setLoginServerPort(u32 port) {
 
 inline bool sBrowser::isInputEnable() {
     return this->mIsInputEnable;
+}
+
+inline void sBrowser::setFunctionButtonEnable(u32 FunctionButton) {
+    this->mFunctionButton = this->mFunctionButton | 15u;
+}
+
+inline void sBrowser::setFunctionButtonDisable(u32 FunctionButton) {
+    this->mFunctionButton = this->mFunctionButton & 0xFFFFFFFBu;
 }
 
 inline u32 sBrowser::getFunctionButton() const {

@@ -118,6 +118,10 @@ inline void* rJumpParamTbl::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void cJumpParam::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cJumpParam::DTI)->memFree(p_addr);
+}
+
 inline void* cJumpParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cJumpParam::DTI)->memAlloc(sz, align, ::cJumpParam::DTI.::MtDTI::getID());
 }

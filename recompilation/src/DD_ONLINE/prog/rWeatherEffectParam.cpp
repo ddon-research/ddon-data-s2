@@ -32,6 +32,19 @@ cEffectCorrectParam::cEffectCorrectParam() {
 cEffectCorrectParam::~cEffectCorrectParam() {
 }
 
+void cEffectCorrectParam::load(MtDataReader& r) {
+    mTime = r.readU32();
+    mEfcColorParam.Color.rgba = r.readU32();
+    mEfcColorParam.ColorBlend = r.readF32();
+    mEfcColorParam.Intensity = r.readF32();
+    mEfcColorParam.IntensityBlend = r.readF32();
+    mEfcColorParam.EnvMapPowerScale = r.readF32();
+    mEfcColorParam.ShadowColor.rgba = r.readU32();
+    mEfcColorParam.ShadowColorBlend = r.readF32();
+    mEfcColorParam.ShadowIntensity = r.readF32();
+    mEfcColorParam.ShadowIntensityBlend = r.readF32();
+}
+
 void cEffectCorrectParam::lerpEffectColorParam(stEffectColorParam* pDst, const stEffectColorParam& a, const stEffectColorParam& b, f32 rate) {
     pDst->Color.rgba = static_cast<u32>(((static_cast<unsigned long>((((((b.Color.rgba >> 8) & 255u) - ((a.Color.rgba >> 8) & 255u)) * static_cast<int>(256.0f * rate)) + (a.Color.rgba & 0xFFFFFF00u)) & 0xFF00u) | static_cast<unsigned long>((((a.Color.rgba >> 16) * 0x10000u) + ((((((b.Color.rgba >> 16) & 255u) - ((a.Color.rgba >> 16) & 255u)) * static_cast<int>(256.0f * rate)) >> 8) * 0x10000u)) & 0xFF0000u)) | static_cast<unsigned long>(static_cast<unsigned char>(a.Color.rgba + (static_cast<unsigned int>((static_cast<unsigned char>(b.Color.rgba) - static_cast<unsigned char>(a.Color.rgba)) * static_cast<int>(256.0f * rate)) >> 8)))) | static_cast<unsigned long>(((a.Color.rgba >> 24) * 0x1000000u) + (((((b.Color.rgba >> 24) - (a.Color.rgba >> 24)) * static_cast<int>(256.0f * rate)) >> 8) * 0x1000000u)));
     pDst->ColorBlend = nDDOMath::lerp(a.ColorBlend, b.ColorBlend, rate);
@@ -119,8 +132,7 @@ rWeatherEffectParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 rWeatherEffectParam::MyDTI rWeatherEffectParam::DTI("rWeatherEffectParam", &::cResource::DTI, 336ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rWeatherEffectParam::MyDTI::newInstance() const {
-    DDON_STUB("rWeatherEffectParam::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rWeatherEffectParam;
 }
 
 template MtTypedArray<cEffectCorrectParam>::~MtTypedArray();

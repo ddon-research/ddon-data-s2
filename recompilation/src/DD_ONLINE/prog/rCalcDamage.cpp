@@ -15,6 +15,10 @@
 #define DDON_STUB(name)
 #endif
 
+#ifndef DDON_SIGNATURE_PROBE
+extern template __attribute__((noinline)) void rTbl2<cDmJobAdjParam>::allocData(unsigned int);
+#endif
+
 const MtDTI& cAdjLimitParam::getDTI() const {
     return cAdjLimitParam::DTI;
 }

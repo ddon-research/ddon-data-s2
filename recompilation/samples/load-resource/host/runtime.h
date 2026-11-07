@@ -45,4 +45,8 @@ extern "C" [[noreturn]] void ddon_trap(const char* name);
 // Engine services the fixtures provide, set up before any file runs.
 void ddon_fixtures_init();
 
-int ddon_harness_main(int argc, char** argv, const DdonRoot& root);
+// `place_path` gives a constructed root its file's game path, before `load`
+// (031 plan-S49b): a list line is `<file>\t<game path>`; a line with no tab,
+// or no `place_path`, gives none.
+int ddon_harness_main(int argc, char** argv, const DdonRoot& root,
+                      void (*place_path)(void* root, const char* path) = nullptr);

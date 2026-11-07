@@ -90,8 +90,6 @@ __attribute__((weak)) void cQuestSvNoticeManager::popNotice(const MtDTI& popNoti
 }
 
 cQuestSvNoticeManager::cQuestSvNoticeManager() {
-    DDON_STUB("cQuestSvNoticeManager::cQuestSvNoticeManager")
-    /* stub */
 }
 
 __attribute__((noinline)) cQuestSvNoticeManager::~cQuestSvNoticeManager() {
@@ -156,9 +154,8 @@ cQuestSvNoticeManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 cQuestSvNoticeManager::MyDTI cQuestSvNoticeManager::DTI("cQuestSvNoticeManager", &::cQuestFunctionManagerBase::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cQuestSvNoticeManager::MyDTI::newInstance() const {
-    DDON_STUB("cQuestSvNoticeManager::MyDTI::newInstance")
-    return nullptr;
+MtObject* cQuestSvNoticeManager::MyDTI::newInstance() const {
+    return new (16u) cQuestSvNoticeManager;
 }
 
 template MtTypedArray<cQuestSvNotice>::~MtTypedArray();

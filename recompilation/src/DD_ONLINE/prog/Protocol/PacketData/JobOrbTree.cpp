@@ -32,9 +32,8 @@ CDataJobOrbDevoteElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t si
 
 CDataJobOrbDevoteElement::MyDTI CDataJobOrbDevoteElement::DTI("CDataJobOrbDevoteElement", &::CPacketDataBase::DTI, 112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataJobOrbDevoteElement::MyDTI::newInstance() const {
-    DDON_STUB("CDataJobOrbDevoteElement::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataJobOrbDevoteElement::MyDTI::newInstance() const {
+    return new (16u) CDataJobOrbDevoteElement;
 }
 
 const MtDTI& CDataJobOrbTreeStatus::getDTI() const {

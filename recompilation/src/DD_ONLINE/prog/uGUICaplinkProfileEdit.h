@@ -462,6 +462,11 @@ inline void* uGUICaplinkProfileEdit::cContentItemBase::operator new(size_t sz, v
     return p_addr;
 }
 
+inline uGUICaplinkProfileEdit::cContentItemBase::cContentItemBase() {
+    this->mpObjMsg = nullptr;
+    this->mpInst = nullptr;
+}
+
 inline void* uGUICaplinkProfileEdit::cPulldownContent::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

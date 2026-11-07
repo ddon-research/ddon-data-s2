@@ -349,6 +349,11 @@ inline void* uGUIQuestDelivery::cListItem::operator new(size_t sz, void* p_addr)
     return p_addr;
 }
 
+inline uGUIQuestDelivery::cListItem::cListItem() {
+    this->mpObjMsgTitle = nullptr;
+    this->mpInstAnim = nullptr;
+}
+
 inline void* uGUIQuestDelivery::cDeliveryItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

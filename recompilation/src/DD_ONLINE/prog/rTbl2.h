@@ -64,7 +64,7 @@ class rTbl2 : public rTbl2Base
 {
 public:
     rTbl2();
-    virtual ~rTbl2();
+    inline virtual ~rTbl2();
     virtual bool loadData(MtDataReader&, T*) = 0;  // vtable slot 16
     virtual T* getData(u32 idx);  // vtable slot 17
     virtual const T* getData(u32 idx) const;  // vtable slot 18
@@ -74,8 +74,8 @@ public:
     bool loadRoot(MtDataReader& r);
     virtual u32 getDataVersion() const = 0;  // vtable slot 20
 protected:
-    virtual bool loadCore(MtDataReader& r);  // vtable slot 21
-    void allocData(u32 num);
+    inline virtual bool loadCore(MtDataReader& r);  // vtable slot 21
+    inline void allocData(u32 num);
     void deleteData();
 public:
     T* mpData;  // offset: 0x70
@@ -157,5 +157,28 @@ template <typename T>
 inline rTbl2<T>::rTbl2() {
     this->::cResource::setAttribute(16u);
     this->mpData = nullptr;
+    this->mDataNum = 0;
+}
+
+template <typename T>
+void rTbl2<T>::allocData(u32 num) {
+    if (this->mpData != nullptr) {
+        delete[] this->mpData;
+        this->mpData = nullptr;
+    }
+    this->mDataNum = 0;
+    if (num == 0) {
+        return;
+    }
+    this->mpData = new (16u) T[num];
+    this->mDataNum = num;
+}
+
+template <typename T>
+void rTbl2<T>::deleteData() {
+    if (this->mpData != nullptr) {
+        delete[] this->mpData;
+        this->mpData = nullptr;
+    }
     this->mDataNum = 0;
 }

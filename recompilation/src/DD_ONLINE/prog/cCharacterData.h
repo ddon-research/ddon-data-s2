@@ -833,7 +833,7 @@ public:
         void setValid(bool flag);
         u16 getLv() const;
         void addLv(u16);
-        void setLv(u16 lv);
+        void setLv(u16 lv = 1);
         u32 getCraftExt(u32);
         void addCraftExt(u32, u32);
         u16 getAutoMotion(u32 situation) const;
@@ -1082,4 +1082,8 @@ inline void cCharacterData::setMaxAbilityCost(u32 cost) {
 
 inline u32 cCharacterData::getValidInfo() const {
     return this->mCharData.mValidInfoBit;
+}
+
+inline void cCharacterData::stPawnData::setLv(u16 lv) {
+    this->mLv = 1;
 }

@@ -469,6 +469,10 @@ const MtDTI& uGUIRankingBoard::cListItem::getDTI() const {
     return uGUIRankingBoard::cListItem::DTI;
 }
 
+inline void* uGUIRankingBoard::cListItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIRankingBoard::cListItem::DTI)->memAlloc(sz, align, uGUIRankingBoard::cListItem::DTI.getID());
+}
+
 inline void uGUIRankingBoard::cListItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIRankingBoard::cListItem::DTI)->memFree(p_addr);
 }
@@ -477,9 +481,8 @@ uGUIRankingBoard::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 
 uGUIRankingBoard::cListItem::MyDTI uGUIRankingBoard::cListItem::DTI("uGUIRankingBoard::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 152ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIRankingBoard::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIRankingBoard::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIRankingBoard::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIRankingBoard::cListItem;
 }
 
 uGUIRankingBoard::stRanking::stRanking() {
@@ -491,6 +494,10 @@ const MtDTI& uGUIRankingBoard::cRankingItem::getDTI() const {
     return uGUIRankingBoard::cRankingItem::DTI;
 }
 
+inline void* uGUIRankingBoard::cRankingItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIRankingBoard::cRankingItem::DTI)->memAlloc(sz, align, uGUIRankingBoard::cRankingItem::DTI.getID());
+}
+
 inline void uGUIRankingBoard::cRankingItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIRankingBoard::cRankingItem::DTI)->memFree(p_addr);
 }
@@ -499,9 +506,8 @@ uGUIRankingBoard::cRankingItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 uGUIRankingBoard::cRankingItem::MyDTI uGUIRankingBoard::cRankingItem::DTI("uGUIRankingBoard::cRankingItem", &::uGUIBase::cScrollListItemBase::DTI, 184ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIRankingBoard::cRankingItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIRankingBoard::cRankingItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIRankingBoard::cRankingItem::MyDTI::newInstance() const {
+    return new (16u) uGUIRankingBoard::cRankingItem;
 }
 
 const MtDTI& uGUIRankingBoard::cListInfo::getDTI() const {

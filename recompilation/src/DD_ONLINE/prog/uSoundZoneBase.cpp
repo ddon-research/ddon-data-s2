@@ -76,13 +76,16 @@ const MtDTI& cSoundZoneListener::getDTI() const {
     return cSoundZoneListener::DTI;
 }
 
+inline void* cSoundZoneListener::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSoundZoneListener::DTI)->memAlloc(sz, align, cSoundZoneListener::DTI.getID());
+}
+
 inline void cSoundZoneListener::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cSoundZoneListener::DTI)->memFree(p_addr);
 }
 
 cSoundZoneListener::cSoundZoneListener() {
-    DDON_STUB("cSoundZoneListener::cSoundZoneListener")
-    /* stub */
+    mMyPos = MtVector3::Zero;
 }
 
 cSoundZoneListener::~cSoundZoneListener() {
@@ -110,9 +113,8 @@ cSoundZoneListener::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 cSoundZoneListener::MyDTI cSoundZoneListener::DTI("cSoundZoneListener", &::cZoneListener::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSoundZoneListener::MyDTI::newInstance() const {
-    DDON_STUB("cSoundZoneListener::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSoundZoneListener::MyDTI::newInstance() const {
+    return new (16u) cSoundZoneListener;
 }
 
 const MtDTI& nSoundZoneBase::cSoundZoneContents::getDTI() const {

@@ -17,6 +17,10 @@ const MtDTI& cWeaponOffset::getDTI() const {
     return cWeaponOffset::DTI;
 }
 
+inline void* cWeaponOffset::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cWeaponOffset::DTI)->memAlloc(sz, align, cWeaponOffset::DTI.getID());
+}
+
 inline void cWeaponOffset::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cWeaponOffset::DTI)->memFree(p_addr);
 }
@@ -69,9 +73,8 @@ cWeaponOffset::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 
 cWeaponOffset::MyDTI cWeaponOffset::DTI("cWeaponOffset", &::MtObject::DTI, 208ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cWeaponOffset::MyDTI::newInstance() const {
-    DDON_STUB("cWeaponOffset::MyDTI::newInstance")
-    return nullptr;
+MtObject* cWeaponOffset::MyDTI::newInstance() const {
+    return new (16u) cWeaponOffset;
 }
 
 const MtDTI& rWeaponOffset::getDTI() const {

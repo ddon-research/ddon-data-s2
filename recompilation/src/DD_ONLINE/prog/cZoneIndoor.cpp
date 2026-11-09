@@ -90,8 +90,58 @@ inline void cZoneIndoorLight::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) cZoneIndoorLight::~cZoneIndoorLight() {
-    DDON_STUB("cZoneIndoorLight::~cZoneIndoorLight")
-    /* stub */
+    if (mDayFogParamArray.mLength != 0) {
+        u32 v0_0 = mDayFogParamArray.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mDayFogParamArray.mpArray[i0_3] != nullptr) {
+                delete mDayFogParamArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mDayFogParamArray.mLength) {
+                    v0_0 = mDayFogParamArray.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mDayFogParamArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDayFogParamArray.mpArray));
+    }
+    mDayFogParamArray.mpArray = nullptr;
+    mDayFogParamArray.mBufsiz = 0;
+    mDayFogParamArray.mLength = 0;
+    if (mNightFogParamArray.mLength != 0) {
+        u32 v2_0 = mNightFogParamArray.mLength;
+        for (unsigned int i2_3 = 0;;) {
+            if (mNightFogParamArray.mpArray[i2_3] != nullptr) {
+                delete mNightFogParamArray.mpArray[i2_3];
+                if ((i2_3 + 1u) < mNightFogParamArray.mLength) {
+                    v2_0 = mNightFogParamArray.mLength;
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mNightFogParamArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNightFogParamArray.mpArray));
+    }
+    mNightFogParamArray.mpArray = nullptr;
+    mNightFogParamArray.mBufsiz = 0;
+    mNightFogParamArray.mLength = 0;
 }
 
 __attribute__((weak)) const cIndoorSkyFogParam* cZoneIndoorLight::getDayFogParam(u32 WeatherId) {

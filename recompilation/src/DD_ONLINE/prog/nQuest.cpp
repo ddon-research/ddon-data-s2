@@ -240,8 +240,6 @@ nQuest::cOrderCondition::cOrderCondition(u8 type, u32 param1, u32 param2) {
 }
 
 nQuest::cOrderCondition::~cOrderCondition() {
-    DDON_STUB("nQuest::cOrderCondition::~cOrderCondition")
-    /* stub */
 }
 
 __attribute__((weak)) void nQuest::cOrderCondition::createProperty(MtPropertyList& s) {
@@ -1545,8 +1543,6 @@ u32 nQuest::cCycleContentsRankingInfo::getRank() const {
 }
 
 nQuest::cCycleContentsRankingInfo::~cCycleContentsRankingInfo() {
-    DDON_STUB("nQuest::cCycleContentsRankingInfo::~cCycleContentsRankingInfo")
-    /* stub */
 }
 
 __attribute__((weak)) void nQuest::cCycleContentsRankingInfo::createProperty(MtPropertyList& s) {

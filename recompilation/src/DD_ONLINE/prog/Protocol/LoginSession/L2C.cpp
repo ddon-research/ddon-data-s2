@@ -363,9 +363,22 @@ inline void nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::operator delete(v
     ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::ReadPacket")
-    return {};
+s32 nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_unResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_CourseInfo) != 0) {
+                if (::nPacket::Read(*pPacket, m_Effects) != 0) {
+                    if (::nPacket::Read(*pPacket, m_unVersion) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

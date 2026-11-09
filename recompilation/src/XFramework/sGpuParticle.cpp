@@ -30,6 +30,10 @@ void* sGpuParticle::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(sGpuParticle::DTI)->memAlloc(sz, align, sGpuParticle::DTI.mID);
 }
 
+inline void sGpuParticle::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sGpuParticle::DTI)->memFree(p_addr);
+}
+
 __attribute__((weak)) void sGpuParticle::begin() {
     DDON_STUB("sGpuParticle::begin")
     /* stub */

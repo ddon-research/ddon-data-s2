@@ -901,6 +901,12 @@ inline void* rLayoutGroupParamList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cGroupParam::cID::cID() {
+    // unproven
+    mLayoutID.mLayoutID = 0;
+    mSplitID.mSplitID = 0;
+}
+
 inline cGroupParam::stDeleteCondition::stDeleteCondition() {
     mDeleteCondition = 0;
 }

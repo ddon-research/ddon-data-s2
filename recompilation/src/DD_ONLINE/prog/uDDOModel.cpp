@@ -444,18 +444,11 @@ cContextInstance* uDDOModel::getContextInst() {
 
 uControlNpc* uDDOModel::getCtrlNpc() {
     if (mpCtrl != nullptr) {
-        if (mpCtrl->isEnable()) {
-            if (!mpCtrl->isNpc()) {
-                return nullptr;
-            } else {
-                return static_cast<uControlNpc*>(mpCtrl);
-            }
-        } else {
-            return nullptr;
+        if (mpCtrl->isEnable() && mpCtrl->isNpc()) {
+            return static_cast<uControlNpc*>(mpCtrl);
         }
-    } else {
-        return nullptr;
     }
+    return nullptr;
 }
 
 void uDDOModel::setMaster(bool is_master) {
@@ -1156,28 +1149,8 @@ __attribute__((weak)) void uDDOModel::addDamageMsg(const cDamageMsg& msg) {
     /* stub */
 }
 
-void uDDOModel::clearDamageMsg() {
-    if (mDamageMsgArray.mLength != 0) {
-        u32 v0_0 = mDamageMsgArray.mLength;
-        for (unsigned int i0_3 = 0;;) {
-            if (mDamageMsgArray.mpArray[i0_3] != nullptr) {
-                delete mDamageMsgArray.mpArray[i0_3];
-                if ((i0_3 + 1u) < mDamageMsgArray.mLength) {
-                    v0_0 = mDamageMsgArray.mLength;
-                    i0_3 += 1u;
-                } else {
-                    break;
-                }
-            } else {
-                if ((i0_3 + 1u) < v0_0) {
-                    i0_3 += 1u;
-                } else {
-                    break;
-                }
-            }
-        }
-    }
-    mDamageMsgArray.mLength = 0;
+__attribute__((weak)) void uDDOModel::clearDamageMsg() {
+    mDamageMsgArray.deleteAll(false);
 }
 
 void uDDOModel::makeGuardAttackInfo(cHitInfo* pHitInfo) {

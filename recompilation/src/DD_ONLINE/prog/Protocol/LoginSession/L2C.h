@@ -26,6 +26,7 @@ class MtAllocator;
 class MtDTI;
 class MtObject;
 class MtString;
+class cSeedLoginSvConnection;
 class sGame;
 
 // Declarations
@@ -409,6 +410,7 @@ namespace nLoginSession {
 namespace nLoginSession {
     class CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC : public ::CPacketDataBase
     {
+        friend class ::cSeedLoginSvConnection;
     public:
         class MyDTI;
     public:

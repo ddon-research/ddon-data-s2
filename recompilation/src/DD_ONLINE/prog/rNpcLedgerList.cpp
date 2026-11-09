@@ -243,9 +243,8 @@ rNpcLedgerList::cItem::cInstitution::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 
 rNpcLedgerList::cItem::cInstitution::MyDTI rNpcLedgerList::cItem::cInstitution::DTI("rNpcLedgerList::cItem::cInstitution", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rNpcLedgerList::cItem::cInstitution::MyDTI::newInstance() const {
-    DDON_STUB("rNpcLedgerList::cItem::cInstitution::MyDTI::newInstance")
-    return nullptr;
+MtObject* rNpcLedgerList::cItem::cInstitution::MyDTI::newInstance() const {
+    return new (16u) rNpcLedgerList::cItem::cInstitution;
 }
 
 const MtDTI& rNpcLedgerList::cItem::cInstitutionOpenData::getDTI() const {
@@ -265,9 +264,8 @@ rNpcLedgerList::cItem::cInstitutionOpenData::MyDTI::MyDTI(MT_CTSTR class_name, M
 
 rNpcLedgerList::cItem::cInstitutionOpenData::MyDTI rNpcLedgerList::cItem::cInstitutionOpenData::DTI("rNpcLedgerList::cItem::cInstitutionOpenData", &::MtObject::DTI, 16ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rNpcLedgerList::cItem::cInstitutionOpenData::MyDTI::newInstance() const {
-    DDON_STUB("rNpcLedgerList::cItem::cInstitutionOpenData::MyDTI::newInstance")
-    return nullptr;
+MtObject* rNpcLedgerList::cItem::cInstitutionOpenData::MyDTI::newInstance() const {
+    return new (16u) rNpcLedgerList::cItem::cInstitutionOpenData;
 }
 
 template MtTypedArray<rNpcLedgerList::cItem::cInstitution>::~MtTypedArray();
@@ -275,4 +273,8 @@ template MtTypedArray<rNpcLedgerList::cItem::cInstitution>::~MtTypedArray();
 template MtTypedArray<rNpcLedgerList::cItem::cInstitutionOpenData>::~MtTypedArray();
 
 template MtTypedArray<rNpcLedgerList::cItem>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rNpcLedgerList::cItem::cInstitution>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rNpcLedgerList::cItem::cInstitutionOpenData>&);
 

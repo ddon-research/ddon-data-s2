@@ -4,6 +4,7 @@
 #include <cstddef>
 
 // Dependencies
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtObject.h"
 
@@ -65,6 +66,10 @@ namespace nPacket {
     int Write(CPacket& packet, u16 v);
     int Write(CPacket& packet, MT_CTSTR t);
     int Write(CPacket& packet, const MtString& str);
+    template <typename T> int Read(CPacket& packet, T& d);
+    template <typename T> int Read(CPacket& packet, MtTypedArray<T>& ar);
+    template <typename T> int Write(CPacket& packet, const T& d);
+    template <typename T> int Write(CPacket& packet, const MtTypedArray<T>& mtar);
 
 }  // namespace nPacket
 

@@ -155,8 +155,7 @@ cChildRegionStatusParamList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 cChildRegionStatusParamList::MyDTI cChildRegionStatusParamList::DTI("cChildRegionStatusParamList", &::MtObject::DTI, 32ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cChildRegionStatusParamList::MyDTI::newInstance() const {
-    DDON_STUB("cChildRegionStatusParamList::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cChildRegionStatusParamList;
 }
 
 const MtDTI& cParentRegionStatusParam::getDTI() const {
@@ -180,8 +179,7 @@ cParentRegionStatusParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t si
 cParentRegionStatusParam::MyDTI cParentRegionStatusParam::DTI("cParentRegionStatusParam", &::MtObject::DTI, 128ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cParentRegionStatusParam::MyDTI::newInstance() const {
-    DDON_STUB("cParentRegionStatusParam::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cParentRegionStatusParam;
 }
 
 const MtDTI& rChildRegionStatusParam::getDTI() const {
@@ -197,8 +195,68 @@ inline void rChildRegionStatusParam::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rChildRegionStatusParam::loadData(MtDataReader& in, cChildRegionStatusParam* pData) {
-    DDON_STUB("rChildRegionStatusParam::loadData")
-    return {};
+    nDDOIO::readData(in, pData->mNo);
+    for (u32 i = 0u; i < 2u; i++) {
+        nDDOIO::readData(in, pData->mParentNo[i]);
+    }
+    for (u32 i = 0u; i < 4u; i++) {
+        nDDOIO::readData(in, pData->mAttackTolerance[i]);
+    }
+    for (u32 i = 1u; i < 7u; i++) {
+        nDDOIO::readData(in, pData->mMagicTolerance[i]);
+    }
+    nDDOIO::readData(in, pData->mShrinkAdj);
+    nDDOIO::readData(in, pData->mBlowAdj);
+    nDDOIO::readData(in, pData->mDownAdj);
+    nDDOIO::readData(in, pData->mOcdAdj);
+    nDDOIO::readData(in, pData->mRageShrinkAdj);
+    for (u32 i = 0u; i < 4u; i++) {
+        nDDOIO::readData(in, pData->mShrinkDamageRatePhys[i]);
+    }
+    for (u32 i = 0u; i < 7u; i++) {
+        nDDOIO::readData(in, pData->mShrinkDamageRateMagic[i]);
+    }
+    for (u32 i = 0u; i < 4u; i++) {
+        nDDOIO::readData(in, pData->mBlowDamageRatePhys[i]);
+    }
+    for (u32 i = 0u; i < 7u; i++) {
+        nDDOIO::readData(in, pData->mBlowDamageRateMagic[i]);
+    }
+    for (u32 i = 0u; i < 4u; i++) {
+        nDDOIO::readData(in, pData->mDownDamageRatePhys[i]);
+    }
+    for (u32 i = 0u; i < 7u; i++) {
+        nDDOIO::readData(in, pData->mDownDamageRateMagic[i]);
+    }
+    for (u32 i = 0u; i < 4u; i++) {
+        nDDOIO::readData(in, pData->mShakeAdjPhys[i]);
+    }
+    for (u32 i = 0u; i < 7u; i++) {
+        nDDOIO::readData(in, pData->mShakeAdjMagic[i]);
+    }
+    nDDOIO::readData(in, pData->mShakeAdjShake);
+    nDDOIO::readData(in, pData->mHitStopAdj);
+    nDDOIO::readData(in, pData->mHitSlowAdj);
+    nDDOIO::readData(in, pData->mHitStopDefenceAttr);
+    nDDOIO::readData(in, pData->mSurface);
+    nDDOIO::readData(in, pData->mIsClimbBonus);
+    nDDOIO::readData(in, pData->mIsDownWeakRegion);
+    nDDOIO::readData(in, pData->mCorePointType);
+    nDDOIO::readData(in, pData->mCorePointID);
+    nDDOIO::readData(in, pData->mCoreJointNo);
+    pData->mCoreJointOffset = in.readV3();
+    nDDOIO::readData(in, pData->mCoreEpvIndex);
+    nDDOIO::readData(in, pData->mCoreEpvElementNo);
+    for (u32 i = 0u; i < 4u; i++) {
+        nDDOIO::readData(in, pData->mAttackReactionType[i]);
+    }
+    nDDOIO::readData(in, pData->mIsElementWeakRegion[1]);
+    nDDOIO::readData(in, pData->mIsElementWeakRegion[2]);
+    nDDOIO::readData(in, pData->mIsElementWeakRegion[3]);
+    nDDOIO::readData(in, pData->mIsElementWeakRegion[4]);
+    nDDOIO::readData(in, pData->mIsElementWeakRegion[5]);
+    nDDOIO::readData(in, pData->mIsElementWeakRegion[6]);
+    return true;
 }
 
 MT_CTSTR rChildRegionStatusParam::getExt() const {
@@ -225,9 +283,18 @@ inline void* rChildRegionStatusParamList::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rChildRegionStatusParamList::DTI)->memAlloc(sz, align, rChildRegionStatusParamList::DTI.getID());
 }
 
+inline void rChildRegionStatusParamList::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rChildRegionStatusParamList::DTI)->memFree(p_addr);
+}
+
 __attribute__((weak)) bool rChildRegionStatusParamList::loadData(MtDataReader& in, cChildRegionStatusParamList* pData) {
-    DDON_STUB("rChildRegionStatusParamList::loadData")
-    return {};
+    if (pData->mpChildRegion != nullptr && pData->mpChildRegion->loadRoot(in)) {
+        nDDOIO::readData(in, pData->mStatusNo);
+        nDDOIO::readData(in, pData->mStatusType);
+        nDDOIO::readData(in, pData->mStatusPrio);
+        return true;
+    }
+    return false;
 }
 
 MT_CTSTR rChildRegionStatusParamList::getExt() const {
@@ -254,9 +321,41 @@ inline void* rParentRegionStatusParam::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rParentRegionStatusParam::DTI)->memAlloc(sz, align, rParentRegionStatusParam::DTI.getID());
 }
 
+inline void rParentRegionStatusParam::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rParentRegionStatusParam::DTI)->memFree(p_addr);
+}
+
 __attribute__((weak)) bool rParentRegionStatusParam::loadData(MtDataReader& in, cParentRegionStatusParam* pData) {
-    DDON_STUB("rParentRegionStatusParam::loadData")
-    return {};
+    nDDOIO::readData(in, pData->mNo);
+    nDDOIO::readData(in, pData->mRegionCategory);
+    nDDOIO::readData(in, pData->mIsReGenerate);
+    nDDOIO::readData(in, pData->mRegenerateProprirty);
+    nDDOIO::readData(in, pData->mHPForEdit[0]);
+    nDDOIO::readData(in, pData->mHPForEdit[1]);
+    nDDOIO::readData(in, pData->mHPForEdit[2]);
+    nDDOIO::readData(in, pData->mHPForEdit[3]);
+    nDDOIO::readData(in, pData->mHPForEdit[4]);
+    pData->mHpMax = pData->getHpMaxFromHpEdit();
+    nDDOIO::readData(in, pData->mShPMax);
+    nDDOIO::readData(in, pData->mShPSpeed);
+    nDDOIO::readData(in, pData->mShPResetTimerMax);
+    nDDOIO::readData(in, pData->mBlPMax);
+    nDDOIO::readData(in, pData->mBlPSpeed);
+    nDDOIO::readData(in, pData->mBlResetTimerMax);
+    nDDOIO::readData(in, pData->mDownPMax);
+    nDDOIO::readData(in, pData->mDownPSpeed);
+    nDDOIO::readData(in, pData->mDownPResetTimerMax);
+    nDDOIO::readData(in, pData->mShakePMax);
+    nDDOIO::readData(in, pData->mShakePSpeed);
+    nDDOIO::readData(in, pData->mShakeResetTimerMax);
+    nDDOIO::readData(in, pData->mRageShrinkMax);
+    nDDOIO::readData(in, pData->mIsDamageToMain);
+    nDDOIO::readData(in, pData->mBreakReactionNo);
+    bool ret = false;
+    if (pData->mpBreakInfo != nullptr) {
+        ret = pData->mpBreakInfo->loadRoot(in);
+    }
+    return ret;
 }
 
 MT_CTSTR rParentRegionStatusParam::getExt() const {

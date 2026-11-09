@@ -45,32 +45,18 @@ void uGUIQuestBoardBase::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIQuestBoardBase::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_BOARD_GUI"), 129u, 1472628100l))) != nullptr) {
-            if (mpGMDQuest == nullptr) {
-                if ((mpGMDQuest = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
-                    mpGMDQuest;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_BOARD_GUI"), 129u, 1472628100l))) == nullptr)) {
+        return false;
+    }
+    if (mpGMDQuest == nullptr) {
+        if ((mpGMDQuest = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+            mpGMDQuest;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDQuest == nullptr) {
-            if ((mpGMDQuest = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
-                mpGMDQuest;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return true;
     }
 }
 

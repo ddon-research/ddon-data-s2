@@ -32,8 +32,6 @@ inline void rEffectProvider::operator delete(void* p_addr) {
 }
 
 rEffectProvider::~rEffectProvider() {
-    DDON_STUB("rEffectProvider::~rEffectProvider")
-    /* stub */
 }
 
 MT_CTSTR rEffectProvider::getExt() const {
@@ -99,8 +97,24 @@ rEffectProvider::INFO_EFFECT::~INFO_EFFECT() {
 }
 
 __attribute__((weak)) void rEffectProvider::INFO_EFFECT::clear() {
-    DDON_STUB("rEffectProvider::INFO_EFFECT::clear")
-    /* stub */
+        for (u32 i = 0; i < mEffectIndexNum; i++) {
+            mpEffectIndex[i].~EffectIndex();
+        }
+        MtMemoryAllocator::getAllocator(rEffectProvider::INFO_EFFECT::DTI)->memFree(mpEffectIndex);
+        mpEffectIndex = nullptr;
+        mEffectIndexNum = 0;
+        for (u32 i = 0; i < mMotSyncListNum; i++) {
+            mpMotSyncList[i].~EffectMotSyncParam();
+        }
+        MtMemoryAllocator::getAllocator(rEffectProvider::INFO_EFFECT::DTI)->memFree(mpMotSyncList);
+        mpMotSyncList = nullptr;
+        mMotSyncListNum = 0;
+        for (u32 i = 0; i < mEventListNum; i++) {
+            mpEventList[i].~EffectEventParam();
+        }
+        MtMemoryAllocator::getAllocator(rEffectProvider::INFO_EFFECT::DTI)->memFree(mpEventList);
+        mpEventList = nullptr;
+        mEventListNum = 0;
 }
 
 rEffectProvider::EffectElement* rEffectProvider::INFO_EFFECT::getEffectElement(s32 IndexNo, s32 ElementNo) const {
@@ -172,17 +186,13 @@ inline void rEffectProvider::EffectIndex::operator delete(void* p_addr) {
 }
 
 rEffectProvider::EffectIndex::~EffectIndex() {
-    if (mEffectElementNum == 0) {
-        MtMemoryAllocator::getAllocator(rEffectProvider::EffectIndex::DTI)->memFree(static_cast<void*>(mpEffectElement));
-        mpEffectElement = nullptr;
-        mEffectElementNum = 0;
-        return;
-    }
     unsigned int i3 = 0;
-    do {
-        mpEffectElement[i3].~EffectElement();
-        i3 += 1u;
-    } while (i3 < mEffectElementNum);
+    if (mEffectElementNum != 0) {
+        do {
+            mpEffectElement[i3].~EffectElement();
+            i3 += 1u;
+        } while (i3 < mEffectElementNum);
+    }
     MtMemoryAllocator::getAllocator(rEffectProvider::EffectIndex::DTI)->memFree(static_cast<void*>(mpEffectElement));
     mpEffectElement = nullptr;
     mEffectElementNum = 0;
@@ -205,8 +215,18 @@ inline void rEffectProvider::EffectElement::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rEffectProvider::EffectElement::~EffectElement() {
-    DDON_STUB("rEffectProvider::EffectElement::~EffectElement")
-    /* stub */
+        for (u32 i = 0; i < EFC_LIST_MAX; i++) {
+            if (mpEffectList[i] != nullptr) {
+                mpEffectList[i]->release();
+                mpEffectList[i] = nullptr;
+            }
+        }
+        for (u32 i = 0; i < EFC_2D_MAX; i++) {
+            if (mpEffect2D[i] != nullptr) {
+                mpEffect2D[i]->release();
+                mpEffect2D[i] = nullptr;
+            }
+        }
 }
 
 void rEffectProvider::EffectElement::setEffectList(rEffectList* pEffectList, u32 no) {
@@ -254,8 +274,6 @@ inline void rEffectProvider::EffectParam::operator delete(void* p_addr) {
 }
 
 rEffectProvider::EffectParam::~EffectParam() {
-    DDON_STUB("rEffectProvider::EffectParam::~EffectParam")
-    /* stub */
 }
 
 rEffectProvider::EffectParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

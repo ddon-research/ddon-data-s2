@@ -322,23 +322,14 @@ bool cpHpDamageCtrl::isDead() {
     if (v0_0 != 0) {
         MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if (v0_1[i0_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 0) {
-                    if ((i0_2 + 1u) < v0_0) {
-                        i0_2 = i0_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_0 = static_cast<cParentRegionStatus*>(v0_1[i0_2])->isDead();
-                    return v2_0;
-                }
+            if ((v0_1[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 0)) {
+                v2_0 = static_cast<cParentRegionStatus*>(v0_1[i0_2])->isDead();
+                return v2_0;
+            }
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
             } else {
-                if ((i0_2 + 1u) < v0_0) {
-                    i0_2 = i0_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_0 = false;
@@ -354,23 +345,14 @@ bool cpHpDamageCtrl::isDead(u32 index) const {
     if (v0_0 != 0) {
         MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if (v0_1[i0_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != index) {
-                    if ((i0_2 + 1u) < v0_0) {
-                        i0_2 = i0_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_0 = static_cast<cParentRegionStatus*>(v0_1[i0_2])->isDead();
-                    return v2_0;
-                }
+            if ((v0_1[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == index)) {
+                v2_0 = static_cast<cParentRegionStatus*>(v0_1[i0_2])->isDead();
+                return v2_0;
+            }
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
             } else {
-                if ((i0_2 + 1u) < v0_0) {
-                    i0_2 = i0_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_0 = false;
@@ -490,24 +472,15 @@ void cpHpDamageCtrl::addDamage(HP_DATATYPE damage, bool isNoDeath, u32 index) {
     if (v0_3 != 0) {
         MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         for (unsigned int i0_0 = 0;;) {
-            if (v0_1[i0_0] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_0]) + 8)) != index) {
-                    if ((i0_0 + 1u) < v0_3) {
-                        i0_0 = i0_0 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    static_cast<cParentRegionStatus*>(v0_1[i0_0])->addDamage(damage, isNoDeath, nObjCollision::INV_THROUGH_TYPE_NONE);
-                    mLastDamageTime = 0.0f;
-                    return;
-                }
+            if ((v0_1[i0_0] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_0]) + 8)) == index)) {
+                static_cast<cParentRegionStatus*>(v0_1[i0_0])->addDamage(damage, isNoDeath, nObjCollision::INV_THROUGH_TYPE_NONE);
+                mLastDamageTime = 0.0f;
+                return;
+            }
+            if ((i0_0 + 1u) < v0_3) {
+                i0_0 = i0_0 + 1u;
             } else {
-                if ((i0_0 + 1u) < v0_3) {
-                    i0_0 = i0_0 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
     }
@@ -921,23 +894,14 @@ void cpHpDamageCtrl::checkReplaceInfo(cHitInfoAfter& HitInfo) {
             if (v0_0 != 0) {
                 MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
                 for (unsigned int i0_2 = 0;;) {
-                    if (v0_1[i0_2] != nullptr) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 0) {
-                            if ((i0_2 + 1u) < v0_0) {
-                                i0_2 = i0_2 + 1u;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            HitInfo.mCommonInfo.mpParentRegion[1] = static_cast<cParentRegionStatus*>(v0_1[i0_2]);
-                            return;
-                        }
+                    if ((v0_1[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 0)) {
+                        HitInfo.mCommonInfo.mpParentRegion[1] = static_cast<cParentRegionStatus*>(v0_1[i0_2]);
+                        return;
+                    }
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
-                        if ((i0_2 + 1u) < v0_0) {
-                            i0_2 = i0_2 + 1u;
-                        } else {
-                            break;
-                        }
+                        break;
                     }
                 }
             }

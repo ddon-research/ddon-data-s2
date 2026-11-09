@@ -177,8 +177,6 @@ inline void* cMenuEntryBoardInvite::operator new(size_t sz, u32 align) {
 }
 
 cMenuEntryBoardInvite::~cMenuEntryBoardInvite() {
-    DDON_STUB("cMenuEntryBoardInvite::~cMenuEntryBoardInvite")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuEntryBoardInvite::initEntryBoardInvite(s32 type, u32 characterId, MtString& firstName, MtString& lastName) {
@@ -213,8 +211,6 @@ inline void* cMenuEntryBoardItem::operator new(size_t sz, u32 align) {
 }
 
 cMenuEntryBoardItem::~cMenuEntryBoardItem() {
-    DDON_STUB("cMenuEntryBoardItem::~cMenuEntryBoardItem")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuEntryBoardItem::initEntryBoardItem(u64 boardId, s32 type, nNet::stEntryBoardItemInfo& info, bool solo) {
@@ -592,7 +588,7 @@ inline void cMenuGetEntryBoardItem::operator delete(void* p_addr) {
 cMenuGetEntryBoardItem::~cMenuGetEntryBoardItem() {
 }
 
-__attribute__((weak)) void cMenuGetEntryBoardItem::initGetEntryBoardItem(u64 boardId, u32 entryId, nNet::stEntryBoardItemInfo* pDstInfo, bool serverIn) {
+void cMenuGetEntryBoardItem::initGetEntryBoardItem(u64 boardId, u32 entryId, nNet::stEntryBoardItemInfo* pDstInfo, bool serverIn) {
         initMenu();
         mMenuRno[0] = 0;
         mBoardId = boardId;

@@ -58,15 +58,10 @@ __attribute__((weak)) void uGUIRankingBoard::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIRankingBoard::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_RANKINGBOARD_GUI"), 129u, 1439278855l))) != nullptr) {
-            return loadGMDarc(getArcTag(0u), "RES_ID_GMD", 0u);
-        } else {
-            return false;
-        }
-    } else {
-        return loadGMDarc(getArcTag(0u), "RES_ID_GMD", 0u);
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_RANKINGBOARD_GUI"), 129u, 1439278855l))) == nullptr)) {
+        return false;
     }
+    return loadGMDarc(getArcTag(0u), "RES_ID_GMD", 0u);
 }
 
 __attribute__((weak)) void uGUIRankingBoard::setup() {

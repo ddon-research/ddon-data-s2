@@ -3,6 +3,7 @@
 #include "runtime.h"
 
 extern const DdonRoot ddon_sample_rGUIMessage;
+extern const DdonRoot ddon_sample_rAIPawnEmParam;
 extern const DdonRoot ddon_sample_rAchievementHeader;
 extern const DdonRoot ddon_sample_rBitTable;
 extern const DdonRoot ddon_sample_rCharacterEdit;
@@ -17,16 +18,19 @@ extern const DdonRoot ddon_sample_rNpcConstItem;
 extern const DdonRoot ddon_sample_rNpcCustomSkill;
 extern const DdonRoot ddon_sample_rPartsCtrlTable;
 extern const DdonRoot ddon_sample_rRoomWearParam;
+extern const DdonRoot ddon_sample_rSituationMsgCtrl;
 extern const DdonRoot ddon_sample_rSndPitchLimit;
 extern const DdonRoot ddon_sample_rSoundOptData;
 extern const DdonRoot ddon_sample_rStarCatalog;
 extern const DdonRoot ddon_sample_rStartPosArea;
 extern const DdonRoot ddon_sample_rStatusGainTable;
+extern const DdonRoot ddon_sample_rSwingModel;
 extern const DdonRoot ddon_sample_rVibration;
 
 extern const DdonRoot* const ddon_sample_roots[];
 const DdonRoot* const ddon_sample_roots[] = {
     &ddon_sample_rGUIMessage,
+    &ddon_sample_rAIPawnEmParam,
     &ddon_sample_rAchievementHeader,
     &ddon_sample_rBitTable,
     &ddon_sample_rCharacterEdit,
@@ -41,11 +45,13 @@ const DdonRoot* const ddon_sample_roots[] = {
     &ddon_sample_rNpcCustomSkill,
     &ddon_sample_rPartsCtrlTable,
     &ddon_sample_rRoomWearParam,
+    &ddon_sample_rSituationMsgCtrl,
     &ddon_sample_rSndPitchLimit,
     &ddon_sample_rSoundOptData,
     &ddon_sample_rStarCatalog,
     &ddon_sample_rStartPosArea,
     &ddon_sample_rStatusGainTable,
+    &ddon_sample_rSwingModel,
     &ddon_sample_rVibration,
     nullptr,
 };

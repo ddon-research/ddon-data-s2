@@ -1629,78 +1629,43 @@ void sGUIExt::callbackJobChange(void* param) {
 }
 
 u32 sGUIExt::requestGetJobChangeList(bool isForceUpdate) {
-    if (!isForceUpdate) {
-        if (mNetMgr.getJobChangeList().mLength == 0) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[10].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 10;
-        } else {
+    if (!isForceUpdate && (mNetMgr.getJobChangeList().mLength != 0)) {
+        return 0;
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[10].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 10;
+}
+
+u32 sGUIExt::requestGetCustomSkillParam(u32 job_id, bool isForceUpdate) {
+    if (((static_cast<unsigned long>(mNetMgr.mData.ReleasedJobBit) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) != 0) {
+        if (!isForceUpdate && mNetMgr.isReceiveCustomSkillParam(job_id)) {
             return 0;
         }
-    } else {
         if (mThreadSafe || (cSystem::mJobSafe)) {
             if (scePthreadMutexLock(&mCS.mCSection) != 0) {
                 abort();
             }
         }
-        mNetMgr.mReqData[10].IsRequest = true;
+        mNetMgr.mReqData[1].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[1].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
+        mNetMgr.mReqData[1].IsRequest = true;
         mNetMgr.mIsComplete = false;
         if (mThreadSafe || (cSystem::mJobSafe)) {
             if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
                 abort();
             }
         }
-        return 10;
-    }
-}
-
-u32 sGUIExt::requestGetCustomSkillParam(u32 job_id, bool isForceUpdate) {
-    if (((static_cast<unsigned long>(mNetMgr.mData.ReleasedJobBit) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) != 0) {
-        if (!isForceUpdate) {
-            if (!mNetMgr.isReceiveCustomSkillParam(job_id)) {
-                if (mThreadSafe || (cSystem::mJobSafe)) {
-                    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                }
-                mNetMgr.mReqData[1].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[1].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
-                mNetMgr.mReqData[1].IsRequest = true;
-                mNetMgr.mIsComplete = false;
-                if (mThreadSafe || (cSystem::mJobSafe)) {
-                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                }
-                return 1;
-            } else {
-                return 0;
-            }
-        } else {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[1].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[1].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
-            mNetMgr.mReqData[1].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 1;
-        }
+        return 1;
     } else {
         return 0;
     }
@@ -1709,71 +1674,15 @@ u32 sGUIExt::requestGetCustomSkillParam(u32 job_id, bool isForceUpdate) {
 u32 sGUIExt::requestGetAbilityParam(u32 job_id, bool isForceUpdate) {
     if (job_id != 0) {
         if (((static_cast<unsigned long>(mNetMgr.mData.ReleasedJobBit) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) != 0) {
-            if (!isForceUpdate) {
-                if (((static_cast<unsigned long>(mNetMgr.mData.ReceiveAbilityParam) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) == 0) {
-                    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
-                        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                            abort();
-                        }
-                    }
-                    mNetMgr.mReqData[2].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[2].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
-                    mNetMgr.mReqData[2].IsRequest = true;
-                    mNetMgr.mIsComplete = false;
-                    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
-                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                            abort();
-                        }
-                    }
-                    return 2;
-                } else {
-                    return 0;
-                }
-            } else {
-                if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
-                    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                }
-                mNetMgr.mReqData[2].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[2].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
-                mNetMgr.mReqData[2].IsRequest = true;
-                mNetMgr.mIsComplete = false;
-                if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
-                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                }
-                return 2;
-            }
-        } else {
-            return 0;
-        }
-    } else {
-        if (!isForceUpdate) {
-            if (((static_cast<unsigned long>(mNetMgr.mData.ReceiveAbilityParam) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) == 0) {
-                if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
-                    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                }
-                mNetMgr.mReqData[2].Bit = mNetMgr.mReqData[2].Bit | 2048u;
-                mNetMgr.mReqData[2].IsRequest = true;
-                mNetMgr.mIsComplete = false;
-                if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
-                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                }
-                return 2;
-            } else {
+            if (!isForceUpdate && (((static_cast<unsigned long>(mNetMgr.mData.ReceiveAbilityParam) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) != 0)) {
                 return 0;
             }
-        } else {
             if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
                 if (scePthreadMutexLock(&mCS.mCSection) != 0) {
                     abort();
                 }
             }
-            mNetMgr.mReqData[2].Bit = mNetMgr.mReqData[2].Bit | 2048u;
+            mNetMgr.mReqData[2].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[2].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
             mNetMgr.mReqData[2].IsRequest = true;
             mNetMgr.mIsComplete = false;
             if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
@@ -1782,614 +1691,352 @@ u32 sGUIExt::requestGetAbilityParam(u32 job_id, bool isForceUpdate) {
                 }
             }
             return 2;
+        } else {
+            return 0;
         }
+    } else {
+        if (!isForceUpdate && (((static_cast<unsigned long>(mNetMgr.mData.ReceiveAbilityParam) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) != 0)) {
+            return 0;
+        }
+        if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+        mNetMgr.mReqData[2].Bit = mNetMgr.mReqData[2].Bit | 2048u;
+        mNetMgr.mReqData[2].IsRequest = true;
+        mNetMgr.mIsComplete = false;
+        if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+        return 2;
     }
 }
 
 u32 sGUIExt::requestGetLearnedCustomSkill(bool isForceUpdate) {
-    if (mNetMgr.mData.ReceiveCustomSkill) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[3].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 3;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[3].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 3;
+    if (mNetMgr.mData.ReceiveCustomSkill && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[3].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 3;
 }
 
 u32 sGUIExt::requestGetLearnedNormalSkill(bool isForceUpdate) {
-    if (mNetMgr.mData.ReceiveNormalSkill) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[4].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 4;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[4].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 4;
+    if (mNetMgr.mData.ReceiveNormalSkill && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[4].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 4;
 }
 
 u32 sGUIExt::requestGetLearnedAbility(bool isForceUpdate) {
-    if (mNetMgr.mData.ReceiveAbility) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[5].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 5;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[5].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 5;
+    if (mNetMgr.mData.ReceiveAbility && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[5].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 5;
 }
 
 u32 sGUIExt::requestGetSetCustomSkill(u32 job_id, bool isForceUpdate) {
     if (((static_cast<unsigned long>(mNetMgr.mData.ReleasedJobBit) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) != 0) {
-        if ((static_cast<unsigned long>(mNetMgr.mData.ReceiveSetCustomSkill) & (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31))) != 0) {
-            if (isForceUpdate) {
-                if (mThreadSafe || (cSystem::mJobSafe)) {
-                    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                }
-                mNetMgr.mReqData[6].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[6].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
-                mNetMgr.mReqData[6].IsRequest = true;
-                mNetMgr.mIsComplete = false;
-                if (mThreadSafe || (cSystem::mJobSafe)) {
-                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                }
-                return 6;
-            } else {
-                return 0;
-            }
-        } else {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[6].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[6].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
-            mNetMgr.mReqData[6].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 6;
+        if (((static_cast<unsigned long>(mNetMgr.mData.ReceiveSetCustomSkill) & (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31))) != 0) && !isForceUpdate) {
+            return 0;
         }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+        mNetMgr.mReqData[6].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[6].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
+        mNetMgr.mReqData[6].IsRequest = true;
+        mNetMgr.mIsComplete = false;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+        return 6;
     } else {
         return 0;
     }
 }
 
 u32 sGUIExt::requestGetSetAbility(bool isForceUpdate) {
-    if (mNetMgr.mData.ReceiveSetAbility) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[7].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 7;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[7].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 7;
+    if (mNetMgr.mData.ReceiveSetAbility && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[7].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 7;
 }
 
 u32 sGUIExt::requestGetPresetAbility(bool isForceUpdate) {
-    if (mNetMgr.mData.ReceivePresetAbility) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[8].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 8;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[8].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 8;
+    if (mNetMgr.mData.ReceivePresetAbility && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[8].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 8;
 }
 
 u32 sGUIExt::requestGetAbilityCost(bool isForceUpdate) {
-    if (mNetMgr.mData.ReceiveAbilityCost) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[9].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 9;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[9].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 9;
+    if (mNetMgr.mData.ReceiveAbilityCost && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[9].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 9;
 }
 
 u32 sGUIExt::requestGetDogmaOrb(bool isForceUpdate) {
-    if (mNetMgr.mData.ReceiveDogmaOrb) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[11].Param = 0;
-            mNetMgr.mReqData[11].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 11;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[11].Param = 0;
-        mNetMgr.mReqData[11].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 11;
+    if (mNetMgr.mData.ReceiveDogmaOrb && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[11].Param = 0;
+    mNetMgr.mReqData[11].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 11;
 }
 
 u32 sGUIExt::requestGetOrbGainExtendParam(bool isForceUpdate) {
-    if (mNetMgr.mData.ReceiveOrbGainExtendParam) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[12].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 12;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[12].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 12;
+    if (mNetMgr.mData.ReceiveOrbGainExtendParam && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[12].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 12;
 }
 
 u32 sGUIExt::requestGetPawnDogmaOrb(u32 PawnId, bool isForceUpdate) {
-    if (mNetMgr.mData.ReceiveDogmaOrb) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[13].Param = PawnId;
-            mNetMgr.mReqData[13].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 13;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[13].Param = PawnId;
-        mNetMgr.mReqData[13].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 13;
+    if (mNetMgr.mData.ReceiveDogmaOrb && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[13].Param = PawnId;
+    mNetMgr.mReqData[13].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 13;
 }
 
 u32 sGUIExt::requestGetPawnLearnedCustomSkill(u32 pawn_id, bool isForceUpdate) {
     checkPawnSkillReceiveId(pawn_id);
-    if (mNetMgr.mData.ReceivePawnCustomSkill) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[14].Param = pawn_id;
-            mNetMgr.mReqData[14].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 14;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[14].Param = pawn_id;
-        mNetMgr.mReqData[14].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 14;
+    if (mNetMgr.mData.ReceivePawnCustomSkill && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[14].Param = pawn_id;
+    mNetMgr.mReqData[14].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 14;
 }
 
 u32 sGUIExt::requestGetPawnLearnedNormalSkill(u32 pawn_id, bool isForceUpdate) {
     checkPawnSkillReceiveId(pawn_id);
-    if (mNetMgr.mData.ReceivePawnNormalSkill) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[15].Param = pawn_id;
-            mNetMgr.mReqData[15].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 15;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[15].Param = pawn_id;
-        mNetMgr.mReqData[15].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 15;
+    if (mNetMgr.mData.ReceivePawnNormalSkill && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[15].Param = pawn_id;
+    mNetMgr.mReqData[15].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 15;
 }
 
 u32 sGUIExt::requestGetPawnLearnedAbility(u32 pawn_id, bool isForceUpdate) {
     checkPawnSkillReceiveId(pawn_id);
-    if (mNetMgr.mData.ReceivePawnAbility) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[16].Param = pawn_id;
-            mNetMgr.mReqData[16].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 16;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[16].Param = pawn_id;
-        mNetMgr.mReqData[16].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 16;
+    if (mNetMgr.mData.ReceivePawnAbility && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[16].Param = pawn_id;
+    mNetMgr.mReqData[16].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 16;
 }
 
 u32 sGUIExt::requestGetPawnSetCustomSkill(u32 pawn_id, u32 job_id, bool isForceUpdate) {
     checkPawnSkillReceiveId(pawn_id);
-    if (((static_cast<unsigned long>(mNetMgr.mData.ReceivePawnSetCustomSkill) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) != 0) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[17].Param = pawn_id;
-            mNetMgr.mReqData[17].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[17].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
-            mNetMgr.mReqData[17].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 17;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[17].Param = pawn_id;
-        mNetMgr.mReqData[17].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[17].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
-        mNetMgr.mReqData[17].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 17;
+    if ((((static_cast<unsigned long>(mNetMgr.mData.ReceivePawnSetCustomSkill) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) != 0) && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[17].Param = pawn_id;
+    mNetMgr.mReqData[17].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[17].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
+    mNetMgr.mReqData[17].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 17;
 }
 
 u32 sGUIExt::requestGetPawnSetAbility(u32 pawn_id, bool isForceUpdate) {
     checkPawnSkillReceiveId(pawn_id);
-    if (mNetMgr.mData.ReceivePawnSetAbility) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[18].Param = pawn_id;
-            mNetMgr.mReqData[18].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 18;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[18].Param = pawn_id;
-        mNetMgr.mReqData[18].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 18;
+    if (mNetMgr.mData.ReceivePawnSetAbility && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[18].Param = pawn_id;
+    mNetMgr.mReqData[18].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 18;
 }
 
 u32 sGUIExt::requestGetPawnAbilityCost(u32 pawn_id, bool isForceUpdate) {
     checkPawnSkillReceiveId(pawn_id);
-    if (mNetMgr.mData.ReceivePawnAbilityCost) {
-        if (isForceUpdate) {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            mNetMgr.mReqData[19].Param = pawn_id;
-            mNetMgr.mReqData[19].IsRequest = true;
-            mNetMgr.mIsComplete = false;
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-            return 19;
-        } else {
-            return 0;
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        mNetMgr.mReqData[19].Param = pawn_id;
-        mNetMgr.mReqData[19].IsRequest = true;
-        mNetMgr.mIsComplete = false;
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-        return 19;
+    if (mNetMgr.mData.ReceivePawnAbilityCost && !isForceUpdate) {
+        return 0;
     }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mNetMgr.mReqData[19].Param = pawn_id;
+    mNetMgr.mReqData[19].IsRequest = true;
+    mNetMgr.mIsComplete = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return 19;
 }
 
 __attribute__((weak)) void sGUIExt::checkPawnSkillReceiveId(u32 pawn_id) {
@@ -3675,15 +3322,10 @@ bool sGUIExt::isGameMenuOpenEnable(bool bChkEnableMenuUI) {
             return false;
         }
     }
-    if (mpGUIGameMenu != nullptr) {
-        if (mpGUIGameMenu->mResult == uGUIBase::RESULT_EXIT) {
-            return isGameMenuOpenEnableWithoutUI();
-        } else {
-            return false;
-        }
-    } else {
-        return isGameMenuOpenEnableWithoutUI();
+    if ((mpGUIGameMenu != nullptr) && (mpGUIGameMenu->mResult != uGUIBase::RESULT_EXIT)) {
+        return false;
     }
+    return isGameMenuOpenEnableWithoutUI();
 }
 
 __attribute__((weak)) bool sGUIExt::isGameMenuOpenEnableWithoutUI() {
@@ -5142,15 +4784,10 @@ __attribute__((weak)) void sGUIExt::deleteQuestBoard() {
 }
 
 bool sGUIExt::isExecuteQuestBoard() {
-    if (mpGUIQuestBoard != nullptr) {
-        if (mpGUIQuestBoard != mpSingletonMenu) {
-            return false;
-        } else {
-            return mpGUIQuestBoard->mResult == uGUIBase::RESULT_NONE;
-        }
-    } else {
-        return false;
+    if ((mpGUIQuestBoard != nullptr) && (mpGUIQuestBoard == mpSingletonMenu)) {
+        return mpGUIQuestBoard->mResult == uGUIBase::RESULT_NONE;
     }
+    return false;
 }
 
 void sGUIExt::createClanQuestBoard() {
@@ -5169,15 +4806,10 @@ __attribute__((weak)) void sGUIExt::deleteClanQuestBoard() {
 }
 
 bool sGUIExt::isExecuteClanQuestBoard() {
-    if (mpGUIClanQuestBoard != nullptr) {
-        if (mpGUIClanQuestBoard != mpSingletonMenu) {
-            return false;
-        } else {
-            return mpGUIClanQuestBoard->mResult == uGUIBase::RESULT_NONE;
-        }
-    } else {
-        return false;
+    if ((mpGUIClanQuestBoard != nullptr) && (mpGUIClanQuestBoard == mpSingletonMenu)) {
+        return mpGUIClanQuestBoard->mResult == uGUIBase::RESULT_NONE;
     }
+    return false;
 }
 
 __attribute__((weak)) void sGUIExt::createQuestInfo(const MtVector3& pos, nQuest::SCHEDULE_ID* pSchedule) {
@@ -5214,15 +4846,10 @@ __attribute__((weak)) void sGUIExt::deleteDelivery() {
 }
 
 bool sGUIExt::isExecuteDelivery() {
-    if (mpGUIQuestDelivery != nullptr) {
-        if (mpGUIQuestDelivery != mpSingletonMenu) {
-            return false;
-        } else {
-            return mpGUIQuestDelivery->mResult == uGUIBase::RESULT_NONE;
-        }
-    } else {
-        return false;
+    if ((mpGUIQuestDelivery != nullptr) && (mpGUIQuestDelivery == mpSingletonMenu)) {
+        return mpGUIQuestDelivery->mResult == uGUIBase::RESULT_NONE;
     }
+    return false;
 }
 
 __attribute__((weak)) void sGUIExt::createDeliveryItem(nQuest::cGUIDeliveryData* pIndexData) {
@@ -5236,15 +4863,10 @@ __attribute__((weak)) void sGUIExt::deleteDeliveryItem() {
 }
 
 bool sGUIExt::isExecuteDeliveryItem() {
-    if (mpGUIQuestDelivery != nullptr) {
-        if (mpGUIQuestDelivery != mpSingletonMenu) {
-            return false;
-        } else {
-            return mpGUIQuestDelivery->mResult == uGUIBase::RESULT_NONE;
-        }
-    } else {
-        return false;
+    if ((mpGUIQuestDelivery != nullptr) && (mpGUIQuestDelivery == mpSingletonMenu)) {
+        return mpGUIQuestDelivery->mResult == uGUIBase::RESULT_NONE;
     }
+    return false;
 }
 
 __attribute__((weak)) void sGUIExt::createShopTitle(sGUIExt::SHOPTITLE_TYPE::TitleType Title, sGUIExt::SHOPTITLE_TYPE::Type Type) {
@@ -7678,8 +7300,58 @@ MtObject* sGUIExt::cWardInfo::MyDTI::newInstance() const {
 }
 
 __attribute__((noinline)) sGUIExt::cSameWardInfo::~cSameWardInfo() {
-    DDON_STUB("sGUIExt::cSameWardInfo::~cSameWardInfo")
-    /* stub */
+    if (mSrcWardInfo.mLength != 0) {
+        u32 v0_0 = mSrcWardInfo.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mSrcWardInfo.mpArray[i0_3] != nullptr) {
+                delete mSrcWardInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mSrcWardInfo.mLength) {
+                    v0_0 = mSrcWardInfo.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mSrcWardInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSrcWardInfo.mpArray));
+    }
+    mSrcWardInfo.mpArray = nullptr;
+    mSrcWardInfo.mBufsiz = 0;
+    mSrcWardInfo.mLength = 0;
+    if (mDstWardInfo.mLength != 0) {
+        u32 v2_0 = mDstWardInfo.mLength;
+        for (unsigned int i2_3 = 0;;) {
+            if (mDstWardInfo.mpArray[i2_3] != nullptr) {
+                delete mDstWardInfo.mpArray[i2_3];
+                if ((i2_3 + 1u) < mDstWardInfo.mLength) {
+                    v2_0 = mDstWardInfo.mLength;
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mDstWardInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDstWardInfo.mpArray));
+    }
+    mDstWardInfo.mpArray = nullptr;
+    mDstWardInfo.mBufsiz = 0;
+    mDstWardInfo.mLength = 0;
 }
 
 const MtDTI& sGUIExt::cSameWardInfo::getDTI() const {

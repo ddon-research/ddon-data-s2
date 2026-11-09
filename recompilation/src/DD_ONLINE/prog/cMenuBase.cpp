@@ -701,39 +701,24 @@ bool cMenuBase::isMove() {
 }
 
 bool cMenuBase::isUpdateCursor() {
-    if (sMenu::getInstance()->checkMoveMenu(this, false)) {
-        if (mBusyFlag) {
-            return false;
-        } else {
-            return mIsUpdateCursor;
-        }
-    } else {
-        return false;
+    if (sMenu::getInstance()->checkMoveMenu(this, false) && !mBusyFlag) {
+        return mIsUpdateCursor;
     }
+    return false;
 }
 
 bool cMenuBase::isUpdateTab() {
-    if (sMenu::getInstance()->checkMoveMenu(this, false)) {
-        if (mBusyFlag) {
-            return false;
-        } else {
-            return mIsUpdateTab;
-        }
-    } else {
-        return false;
+    if (sMenu::getInstance()->checkMoveMenu(this, false) && !mBusyFlag) {
+        return mIsUpdateTab;
     }
+    return false;
 }
 
 bool cMenuBase::isUpdateButton() {
-    if (sMenu::getInstance()->checkMoveMenu(this, false)) {
-        if (mBusyFlag) {
-            return false;
-        } else {
-            return mIsUpdateButton;
-        }
-    } else {
-        return false;
+    if (sMenu::getInstance()->checkMoveMenu(this, false) && !mBusyFlag) {
+        return mIsUpdateButton;
     }
+    return false;
 }
 
 __attribute__((weak)) s32 cMenuBase::getConvertCursorIdx(s32 idx) {
@@ -888,15 +873,10 @@ __attribute__((weak)) bool cMenuBase::isCancelFromGUI() {
 }
 
 bool cMenuBase::isUseGUI() {
-    if (mpGUIMenu == nullptr) {
-        if (mpRefGUI != nullptr) {
-            return mUseGUIMenu;
-        } else {
-            return false;
-        }
-    } else {
-        return mUseGUIMenu;
+    if ((mpGUIMenu == nullptr) && (mpRefGUI == nullptr)) {
+        return false;
     }
+    return mUseGUIMenu;
 }
 
 __attribute__((weak)) bool cMenuBase::isGUIWindowActive() const {
@@ -1315,15 +1295,10 @@ void cMenuBreakupParty::exitMenu() {
 }
 
 bool cMenuBreakupParty::callbackCheckCloseDialog() {
-    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getGameSessionMemberNum(true) == 1) {
-        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
-            return sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE;
-        } else {
-            return true;
-        }
-    } else {
-        return sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE;
+    if ((static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getGameSessionMemberNum(true) == 1) && !static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+        return true;
     }
+    return sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE;
 }
 
 cMenuBreakupParty::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4853,15 +4828,10 @@ void cMenuPartyMemberList::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::M
 }
 
 bool cMenuPartyMemberList::callbackCheckCloseDialog() {
-    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getGameSessionMemberNum(true) == 1) {
-        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
-            return sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE;
-        } else {
-            return true;
-        }
-    } else {
-        return sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE;
+    if ((static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getGameSessionMemberNum(true) == 1) && !static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+        return true;
     }
+    return sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE;
 }
 
 cMenuPartyMemberList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

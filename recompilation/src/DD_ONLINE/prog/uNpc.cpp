@@ -305,8 +305,6 @@ void uNpc::setGripFinger() {
 }
 
 uNpc::~uNpc() {
-    DDON_STUB("uNpc::~uNpc")
-    /* stub */
 }
 
 void uNpc::createProperty(MtPropertyList& s) {

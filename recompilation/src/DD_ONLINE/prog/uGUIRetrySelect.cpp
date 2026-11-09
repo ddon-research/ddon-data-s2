@@ -60,32 +60,18 @@ void uGUIRetrySelect::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIRetrySelect::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_RETRY_SELECT_GUI"), 129u, 1436533414l))) != nullptr) {
-            if (mpGMDRes == nullptr) {
-                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
-                    mpGMDRes;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_RETRY_SELECT_GUI"), 129u, 1436533414l))) == nullptr)) {
+        return false;
+    }
+    if (mpGMDRes == nullptr) {
+        if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+            mpGMDRes;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDRes == nullptr) {
-            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
-                mpGMDRes;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return true;
     }
 }
 

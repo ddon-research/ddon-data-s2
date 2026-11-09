@@ -98,10 +98,12 @@ class cWeatherScriptIO;
 class cWebsocketClient;
 class cZCEFLControl;
 class cZoneContactInfoList;
+class cZoneIndoorLight;
 class cZoneLayout;
 class cZoneMultiStack;
 class cpAIPawnEmChecker;
 class cpCorePointCtrl;
+class cpDDMrlMgr;
 class cpEffectStatusManager;
 class cpEnemyThink;
 class cpHpDamageCtrl;
@@ -173,6 +175,7 @@ class rCraftRecipe;
 class rCycleQuestInfo;
 class rDungeonMarker;
 class rFieldAreaAdjoinList;
+class rFieldAreaList;
 class rFieldAreaMarkerInfo;
 class rGUIMapSetting;
 class rGeometry2;
@@ -395,10 +398,12 @@ class MtArray : public MtObject
     friend class cWebsocketClient;
     friend class cZCEFLControl;
     friend class cZoneContactInfoList;
+    friend class cZoneIndoorLight;
     friend class cZoneLayout;
     friend class cZoneMultiStack;
     friend class cpAIPawnEmChecker;
     friend class cpCorePointCtrl;
+    friend class cpDDMrlMgr;
     friend class cpEffectStatusManager;
     friend class cpEnemyThink;
     friend class cpHpDamageCtrl;
@@ -469,6 +474,7 @@ class MtArray : public MtObject
     friend class rCycleQuestInfo;
     friend class rDungeonMarker;
     friend class rFieldAreaAdjoinList;
+    friend class rFieldAreaList;
     friend class rFieldAreaMarkerInfo;
     friend class rGUIMapSetting;
     friend class rGeometry2;
@@ -888,7 +894,7 @@ public:
     MtTypedArray();
     MtTypedArray(const MtTypedArray<T>& that);
     virtual ~MtTypedArray();
-    void add(T* obj);
+    inline void add(T* obj);
     void add(const MtTypedArray<T>& that);
     T* & operator[](u32 index);
     T* operator[](u32 index) const;
@@ -963,6 +969,11 @@ template <typename T>
 inline MtTypedArray<T>::MtTypedArray() {
 }
 
+template <typename T>
+inline void MtTypedArray<T>::add(T* obj) {
+    MtArray::add(obj);
+}
+
 #include <string.h>
 inline void MtArray::add(MtObject* pobj) {
     if (mLength < mBufsiz) {
@@ -982,6 +993,13 @@ inline void MtArray::clear(bool buffree) {
         mBufsiz = 0;
     }
     mLength = 0;
+}
+
+inline void MtArray::deleteAll(bool buffree) {
+    for (u32 i = 0; i < mLength; i++) {
+        delete mpArray[i];
+    }
+    clear(buffree);
 }
 
 inline void MtArray::erase() {

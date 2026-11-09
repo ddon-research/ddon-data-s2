@@ -27,8 +27,6 @@ inline void cAIPawnEmNode::operator delete(void* p_addr) {
 }
 
 cAIPawnEmNode::~cAIPawnEmNode() {
-    DDON_STUB("cAIPawnEmNode::~cAIPawnEmNode")
-    /* stub */
 }
 
 cAIPawnEmNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -36,8 +34,7 @@ cAIPawnEmNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 cAIPawnEmNode::MyDTI cAIPawnEmNode::DTI("cAIPawnEmNode", &::cAIResource::DTI, 80ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cAIPawnEmNode::MyDTI::newInstance() const {
-    DDON_STUB("cAIPawnEmNode::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cAIPawnEmNode;
 }
 
 const MtDTI& rAIPawnEmParam::getDTI() const {
@@ -57,16 +54,20 @@ rAIPawnEmParam::~rAIPawnEmParam() {
 
 bool rAIPawnEmParam::loadData(MtDataReader& r, cAIPawnEmNode* pData) {
     pData->mEmStatusNo = r.readU32();
+    cAIPawnActionGroupFlag* held0 = &pData->mWeakAttrFlag;
     u32 t0 = r.readU32();
-    r.read(static_cast<void*>(&pData->mWeakAttrFlag), t0 * 4u);
+    cAIPawnActionGroupFlag* held1 = &pData->mDisableAttrFlag;
+    r.read(static_cast<void*>(held0), t0 * 4u);
     u32 t1 = r.readU32();
-    r.read(static_cast<void*>(&pData->mDisableAttrFlag), t1 * 4u);
+    cAIPawnTargetPosFlag* held2 = &pData->mTargetPosFlag;
+    r.read(static_cast<void*>(held1), t1 * 4u);
     u32 t2 = r.readU32();
-    r.read(static_cast<void*>(&pData->mTargetPosFlag), t2 * 4u);
+    r.read(static_cast<void*>(held2), t2 * 4u);
     pData->mActiveCoreRegionNo = r.readS32();
     pData->mAddPrio = r.readS32();
+    cAIPawnEmParamFlag* held3 = &pData->mAIPawnEmParamFlag;
     u32 t3 = r.readU32();
-    r.read(static_cast<void*>(&pData->mAIPawnEmParamFlag), t3 * 4u);
+    r.read(static_cast<void*>(held3), t3 * 4u);
     nDDOIO::readData(r, pData->mFlgDefaultAttr);
     pData->mAttackNoInterval = r.readU8() != 0;
     nDDOIO::readData(r, pData->mLayer);

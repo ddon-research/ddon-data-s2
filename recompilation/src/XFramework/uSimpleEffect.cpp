@@ -32,6 +32,10 @@ void* uSimpleEffect::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uSimpleEffect::DTI)->memAlloc(sz, align, uSimpleEffect::DTI.mID);
 }
 
+inline void uSimpleEffect::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uSimpleEffect::DTI)->memFree(p_addr);
+}
+
 uSimpleEffect::uSimpleEffect() {
     mpVertices = nullptr;
     mParticleNum = 0;

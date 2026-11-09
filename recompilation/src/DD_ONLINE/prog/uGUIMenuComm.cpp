@@ -65,32 +65,18 @@ void uGUIMenuComm::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIMenuComm::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_COMMUNICATION_GUI"), 129u, 1425607449l))) != nullptr) {
-            if (mpGUIMsgGuide == nullptr) {
-                if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_SIMPLE_COMMUNICATION_GMD"), 129u, 0l))) != nullptr) {
-                    mpGUIMsgGuide;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_COMMUNICATION_GUI"), 129u, 1425607449l))) == nullptr)) {
+        return false;
+    }
+    if (mpGUIMsgGuide == nullptr) {
+        if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_SIMPLE_COMMUNICATION_GMD"), 129u, 0l))) != nullptr) {
+            mpGUIMsgGuide;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGUIMsgGuide == nullptr) {
-            if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_SIMPLE_COMMUNICATION_GMD"), 129u, 0l))) != nullptr) {
-                mpGUIMsgGuide;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return true;
     }
 }
 

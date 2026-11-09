@@ -221,7 +221,34 @@ inline void* rAIPawnAutoWordTbl::operator new(size_t sz, void* p_addr) {
 
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
+
+inline cAIPawnAutoMotionNode::cAIPawnAutoMotionNode() {
+    mEMotActionNo = 0xffffffffu;
+    mMotType = 0u;
+    mGroupNo = 0u;
+    mGroupSelectType = 1u;
+    mWaitMoveType = 0u;
+    mBeginMinFrame = 120.0f;
+    mBeginMaxFrame = 180.0f;
+}
+
+inline void cAIPawnAutoMotionNode::load(MtDataReader& r) {
+    mEMotActionNo = r.readU32();
+    mMotType = r.readU32();
+    mGroupNo = r.readU32();
+    mGroupSelectType = r.readU32();
+    mBeginMinFrame = r.readF32();
+    mBeginMaxFrame = r.readF32();
+    u32 num = r.readU32();
+    r.read(&mEnableSituation, num * 4u);
+    mWaitMoveType = r.readU32();
+}
+
+inline void* cAIPawnAutoMotionNode::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIPawnAutoMotionNode::DTI)->memAlloc(sz, align, cAIPawnAutoMotionNode::DTI.getID());
+}
 
 inline void cAIPawnAutoWordNode::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cAIPawnAutoWordNode::DTI)->memFree(p_addr);

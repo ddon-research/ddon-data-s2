@@ -142,3 +142,5 @@ MtObject* rWaypoint2::cRoute2::MyDTI::newInstance() const {
 
 template MtTypedArray<rWaypoint2::cRoute2>::~MtTypedArray();
 
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rWaypoint2::cRoute2>&);
+

@@ -256,6 +256,7 @@ namespace nNetMsgData {
     void composeOcdActiveMsg(nObjCondition::stOcdActiveMsg& dstMsg, const nObjCondition::stOcdActiveInfo& srcInfo);
     u8 getOcdMsgBankMask();
     u8 getOcdMsgActiveMask();
+    template <typename T> void pop(T& val, nNetMsg::cDecoder& dec);
 
 }  // namespace nNetMsgData
 

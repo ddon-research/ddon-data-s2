@@ -33,23 +33,16 @@ __attribute__((weak)) bool rArchive::load(MtStream& in) {
 }
 
 void rArchive::clear() {
-    if (mResourceNum == 0) {
-        MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(static_cast<void*>(mpResource));
-        mpResource = nullptr;
-        mResourceNum = 0;
-        mTotalSize = 0;
-        mCurrentSize = 0;
-        mbCrypted = 0;
-        return;
-    }
     u32 i = 0;
-    do {
-        if (mpResource[i] != nullptr) {
-            mpResource[i]->cResource::release();
-            mpResource[i] = nullptr;
-        }
-        i += 1u;
-    } while (i < mResourceNum);
+    if (mResourceNum != 0) {
+        do {
+            if (mpResource[i] != nullptr) {
+                mpResource[i]->cResource::release();
+                mpResource[i] = nullptr;
+            }
+            i += 1u;
+        } while (i < mResourceNum);
+    }
     MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(static_cast<void*>(mpResource));
     mpResource = nullptr;
     mResourceNum = 0;
@@ -76,23 +69,16 @@ static auto ddon_emit_0x01b91630 __attribute__((used)) = &rArchive::getResourceN
 static auto ddon_emit_0x01b91660 __attribute__((used)) = &rArchive::getResource;
 
 rArchive::~rArchive() {
-    if (mResourceNum == 0) {
-        MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(static_cast<void*>(mpResource));
-        mpResource = nullptr;
-        mResourceNum = 0;
-        mTotalSize = 0;
-        mCurrentSize = 0;
-        mbCrypted = 0;
-        return;
-    }
     unsigned int i3 = 0;
-    do {
-        if (mpResource[i3] != nullptr) {
-            mpResource[i3]->cResource::release();
-            mpResource[i3] = nullptr;
-        }
-        i3 += 1u;
-    } while (i3 < mResourceNum);
+    if (mResourceNum != 0) {
+        do {
+            if (mpResource[i3] != nullptr) {
+                mpResource[i3]->cResource::release();
+                mpResource[i3] = nullptr;
+            }
+            i3 += 1u;
+        } while (i3 < mResourceNum);
+    }
     MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(static_cast<void*>(mpResource));
     mpResource = nullptr;
     mResourceNum = 0;

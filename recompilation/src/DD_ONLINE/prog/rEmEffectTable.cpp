@@ -100,9 +100,26 @@ bool rEmEffectTable::loadData(MtDataReader& in, cEmEffectTable* pData) {
     return true;
 }
 
-__attribute__((weak)) bool rEmEffectTable::saveData(MtDataWriter& out, cEmEffectTable* pData) {
-    DDON_STUB("rEmEffectTable::saveData")
-    return {};
+bool rEmEffectTable::saveData(MtDataWriter& out, cEmEffectTable* pData) {
+    out.writeU32(pData->mIdx);
+    out.writeU32(pData->mEffectSyncBitNo);
+    out.writeU32(pData->mEffectResNo);
+    out.writeS32(pData->mEffectEndType);
+    out.writeS32(pData->mEffectIndexNo);
+    out.writeS32(pData->mEffectElementNo);
+    out.writeU32(pData->mBoneNo);
+    MtFloat3 frame56;
+    frame56.x = pData->mOffsetPos.x;
+    frame56.y = pData->mOffsetPos.y;
+    frame56.z = pData->mOffsetPos.z;
+    out.writeV3(frame56);
+    bool t0 = pData->mDieNoCall;
+    if (out.mSeekPt >= out.mBufsiz) {
+        out.flush();
+    }
+    out.mBuffer[out.mSeekPt] = static_cast<u8>(t0);
+    out.mSeekPt = out.mSeekPt + 1u;
+    return true;
 }
 
 rEmEffectTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

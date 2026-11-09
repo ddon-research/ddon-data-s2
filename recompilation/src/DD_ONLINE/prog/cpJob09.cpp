@@ -831,18 +831,12 @@ __attribute__((weak)) void cpJob09::makeDamageAttackInfoCS13(cHitInfoAfter* pHit
 
 bool cpJob09::canGraze(cHitInfoAfter* pHitInfo) const {
     if (pHitInfo->mHpDamageInfo.mDamage > 0.0f) {
-        return false;
     } else {
-        if (pHitInfo->checkAttackParamGuard(nObjCollision::GUARD_ANGLE_NO_GUARD)) {
-            return false;
-        } else {
-            if (pHitInfo->checkAttackParamAttackId(6u)) {
-                return false;
-            } else {
-                return !pHitInfo->checkAttackParamAttackId(70u);
-            }
+        if (!pHitInfo->checkAttackParamGuard(nObjCollision::GUARD_ANGLE_NO_GUARD) && !pHitInfo->checkAttackParamAttackId(6u)) {
+            return !pHitInfo->checkAttackParamAttackId(70u);
         }
     }
+    return false;
 }
 
 __attribute__((weak)) void cpJob09::updateGraze() {

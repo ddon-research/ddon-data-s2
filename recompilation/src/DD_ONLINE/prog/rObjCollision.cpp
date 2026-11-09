@@ -64,8 +64,43 @@ __attribute__((weak)) void rObjCollision::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) bool rObjCollision::load(MtStream& in) {
-    DDON_STUB("rObjCollision::load")
-    return {};
+    if (mpCollIndex != nullptr) {
+        mpCollIndex->release();
+        mpCollIndex = nullptr;
+    }
+    if (mpCollNode != nullptr) {
+        mpCollNode->release();
+        mpCollNode = nullptr;
+    }
+    if (mpAttackParam != nullptr) {
+        mpAttackParam->release();
+        mpAttackParam = nullptr;
+    }
+    mpCollIndex = new (16u) rCollIndex;
+    mpCollNode = new (16u) rCollNode;
+    mpAttackParam = new (16u) rAttackParam;
+    MtDataReader r(in, 4096u);
+    u32 magic;
+    u16 version;
+    u16 dmy;
+    nDDOIO::readData(r, magic);
+    nDDOIO::readData(r, version);
+    nDDOIO::readData(r, dmy);
+    bool t0 = false;
+    getPath();
+    if (magic == mMagic && version == DATA_VERSION) {
+        if (mpCollIndex != nullptr) {
+            mpCollIndex->loadRoot(r);
+        }
+        if (mpCollNode != nullptr) {
+            mpCollNode->loadRoot(r);
+        }
+        t0 = true;
+        if (mpAttackParam != nullptr) {
+            mpAttackParam->loadRoot(r);
+        }
+    }
+    return t0;
 }
 
 bool rObjCollision::save(MtStream& out) {

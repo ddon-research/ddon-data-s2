@@ -129,23 +129,14 @@ const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfoFromStageN
                 MtObject* * v1_3 = v0_4[i0_5].mStageNoList.getBuffer();
                 i1_0 = 0;
                 for (;;) {
-                    if (v1_3[static_cast<int>(i1_0)] != nullptr) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_3[static_cast<int>(i1_0)]) + 8)) != static_cast<unsigned int>(stageNo)) {
-                            if ((i1_0 + 1u) < stageNum) {
-                                i1_0 += 1u;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            v4_0 = &v0_4[i0_5];
-                            return v4_0;
-                        }
+                    if ((v1_3[static_cast<int>(i1_0)] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_3[static_cast<int>(i1_0)]) + 8)) == static_cast<unsigned int>(stageNo))) {
+                        v4_0 = &v0_4[i0_5];
+                        return v4_0;
+                    }
+                    if ((i1_0 + 1u) < stageNum) {
+                        i1_0 += 1u;
                     } else {
-                        if ((i1_0 + 1u) < stageNum) {
-                            i1_0 += 1u;
-                        } else {
-                            break;
-                        }
+                        break;
                     }
                 }
             }
@@ -381,8 +372,58 @@ u32 rFieldAreaList::cFieldAreaInfo::getGMDIndex() const {
 }
 
 __attribute__((noinline)) rFieldAreaList::cFieldAreaInfo::~cFieldAreaInfo() {
-    DDON_STUB("rFieldAreaList::cFieldAreaInfo::~cFieldAreaInfo")
-    /* stub */
+    if (mStageNoList.mLength != 0) {
+        u32 v0_0 = mStageNoList.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mStageNoList.mpArray[i0_3] != nullptr) {
+                delete mStageNoList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mStageNoList.mLength) {
+                    v0_0 = mStageNoList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mStageNoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mStageNoList.mpArray));
+    }
+    mStageNoList.mpArray = nullptr;
+    mStageNoList.mBufsiz = 0;
+    mStageNoList.mLength = 0;
+    if (mBelongStageNoList.mLength != 0) {
+        u32 v2_0 = mBelongStageNoList.mLength;
+        for (unsigned int i2_3 = 0;;) {
+            if (mBelongStageNoList.mpArray[i2_3] != nullptr) {
+                delete mBelongStageNoList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mBelongStageNoList.mLength) {
+                    v2_0 = mBelongStageNoList.mLength;
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mBelongStageNoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mBelongStageNoList.mpArray));
+    }
+    mBelongStageNoList.mpArray = nullptr;
+    mBelongStageNoList.mBufsiz = 0;
+    mBelongStageNoList.mLength = 0;
 }
 
 __attribute__((weak)) void rFieldAreaList::cFieldAreaInfo::createProperty(MtPropertyList& s) {
@@ -433,4 +474,6 @@ MtObject* rFieldAreaList::cFieldAreaInfo::cStageNo::MyDTI::newInstance() const {
 }
 
 template MtTypedArray<rFieldAreaList::cFieldAreaInfo::cStageNo>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rFieldAreaList::cFieldAreaInfo::cStageNo>&);
 

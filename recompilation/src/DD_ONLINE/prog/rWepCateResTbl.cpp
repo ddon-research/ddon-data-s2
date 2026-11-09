@@ -27,8 +27,6 @@ const MtDTI& cWepCateResTbl::getDTI() const {
 }
 
 cWepCateResTbl::~cWepCateResTbl() {
-    DDON_STUB("cWepCateResTbl::~cWepCateResTbl")
-    /* stub */
 }
 
 __attribute__((weak)) void cWepCateResTbl::createProperty(MtPropertyList& s) {

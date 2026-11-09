@@ -168,3 +168,16 @@ inline rTutorialQuestGroup::cGroup::cGroup() {
 inline void* rTutorialQuestGroup::cGroup::cQuestId::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "nQuest.h"
+
+inline rTutorialQuestGroup::cGroup::cQuestId::cQuestId() {
+    mId = nQuest::INVALID_QUEST_ID;
+}
+
+inline void* rTutorialQuestGroup::cGroup::cQuestId::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rTutorialQuestGroup::cGroup::cQuestId::DTI)->memAlloc(sz, align, rTutorialQuestGroup::cGroup::cQuestId::DTI.getID());
+}

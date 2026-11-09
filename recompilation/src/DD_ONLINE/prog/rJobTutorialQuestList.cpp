@@ -139,10 +139,11 @@ rJobTutorialQuestList::cQuestId::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 rJobTutorialQuestList::cQuestId::MyDTI rJobTutorialQuestList::cQuestId::DTI("rJobTutorialQuestList::cQuestId", &::MtObject::DTI, 16ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rJobTutorialQuestList::cQuestId::MyDTI::newInstance() const {
-    DDON_STUB("rJobTutorialQuestList::cQuestId::MyDTI::newInstance")
-    return nullptr;
+MtObject* rJobTutorialQuestList::cQuestId::MyDTI::newInstance() const {
+    return new (16u) rJobTutorialQuestList::cQuestId;
 }
 
 template MtTypedArray<rJobTutorialQuestList::cQuestId>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rJobTutorialQuestList::cQuestId>&);
 

@@ -714,15 +714,10 @@ __attribute__((weak)) void sRender::setPhotoExportTriggerFromMemory(void* pdata,
 }
 
 sRender::EXPORT_RESULT sRender::photoExportResult() {
-    if (mpExportThread != nullptr) {
-        if (mpExportThread->getStatus() == MtThread::TERMINATED) {
-            return static_cast<EXPORT_RESULT>(mExportParam.success);
-        } else {
-            return EXPORT_PROCESSED;
-        }
-    } else {
-        return static_cast<EXPORT_RESULT>(mExportParam.success);
+    if ((mpExportThread != nullptr) && (mpExportThread->getStatus() != MtThread::TERMINATED)) {
+        return EXPORT_PROCESSED;
     }
+    return static_cast<EXPORT_RESULT>(mExportParam.success);
 }
 
 void sRender::setPhotoExportParam(MT_CTSTR photo_title, MT_CTSTR game_title, MT_CTSTR comment) {

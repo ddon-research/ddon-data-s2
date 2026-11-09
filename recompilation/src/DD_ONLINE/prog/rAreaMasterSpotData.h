@@ -398,6 +398,7 @@ inline void* rAreaMasterSpotDetailData::operator new(size_t sz, void* p_addr) {
 
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 
 inline void cAreaMasterRankData::operator delete[](void* p_addr) {
@@ -422,4 +423,17 @@ inline void cAreaMasterSpotDetailData::operator delete[](void* p_addr) {
 
 inline void* cAreaMasterSpotDetailData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, ::cAreaMasterSpotDetailData::DTI.::MtDTI::getID());
+}
+
+inline void cSpotEnemyData::load(MtDataReader& r) {
+    mEnemyGroupId = r.readU32();
+    mEnemyNamedId = r.readU32();
+    mLevel = r.readU16();
+    mRank = r.readU8();
+}
+
+inline void cSpotItemData::load(MtDataReader& r) {
+    mItemId = r.readU32();
+    mIsFeature = r.readU8();
+    mIsCannotPawnTake = r.readU8();
 }

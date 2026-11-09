@@ -146,6 +146,10 @@ const MtDTI& uOmSwingModelInstancing::getDTI() const {
     return uOmSwingModelInstancing::DTI;
 }
 
+inline void uOmSwingModelInstancing::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uOmSwingModelInstancing::DTI)->memFree(p_addr);
+}
+
 __attribute__((weak)) void uOmSwingModelInstancing::move() {
     DDON_STUB("uOmSwingModelInstancing::move")
     /* stub */

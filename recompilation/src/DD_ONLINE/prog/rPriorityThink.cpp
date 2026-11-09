@@ -313,10 +313,12 @@ bool rPriorityThink::loadData(MtDataReader& in, cPrioThkCode* pData) {
     nDDOIO::readMtArrayEx(in, pData->mCommands);
     pData->mPrio = in.readS32();
     pData->mID = in.readU32();
+    cAIPawnOrderFlag* held0 = &pData->mDisableOrder;
     u32 t0 = in.readU32();
-    in.read(static_cast<void*>(&pData->mDisableOrder), t0 * 4u);
+    cAIPawnOrderTypeFlag* held1 = &pData->mDisableTypeFlag;
+    in.read(static_cast<void*>(held0), t0 * 4u);
     u32 t1 = in.readU32();
-    in.read(static_cast<void*>(&pData->mDisableTypeFlag), t1 * 4u);
+    in.read(static_cast<void*>(held1), t1 * 4u);
     nDDOIO::readData(in, pData->mCodeFlag);
     return true;
 }

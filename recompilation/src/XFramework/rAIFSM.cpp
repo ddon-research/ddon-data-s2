@@ -28,6 +28,10 @@ inline void* cAIFSMCluster::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAIFSMCluster::DTI)->memAlloc(sz, align, cAIFSMCluster::DTI.mID);
 }
 
+inline void cAIFSMCluster::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIFSMCluster::DTI)->memFree(p_addr);
+}
+
 cAIFSMCluster::~cAIFSMCluster() {
     if (mpNodeList != nullptr) {
         if (mNodeNum != 0) {

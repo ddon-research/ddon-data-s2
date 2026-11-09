@@ -79,212 +79,35 @@ void uGUIOption::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIOption::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_GUI"), 129u, 1418969807l))) != nullptr) {
-            if (mOptionType != 2) {
-                if (mOptionType == 1) {
-                    if (mpTblMORes == nullptr) {
-                        if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INTITLE_PS4_TMO"), 129u, 0l))) != nullptr) {
-                            if (mpGUIMsg == nullptr) {
-                                if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                                    mpGUIMsg;
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                return true;
-                            }
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        if (mpGUIMsg == nullptr) {
-                            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                                mpGUIMsg;
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return true;
-                        }
-                    }
-                } else {
-                    if (mOptionType == 0) {
-                        if (mpTblMORes == nullptr) {
-                            if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INSTAGE_PS4_TMO"), 129u, 0l))) != nullptr) {
-                                if (mpGUIMsg == nullptr) {
-                                    if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                                        mpGUIMsg;
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                } else {
-                                    return true;
-                                }
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            if (mpGUIMsg == nullptr) {
-                                if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                                    mpGUIMsg;
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                return true;
-                            }
-                        }
-                    } else {
-                        if (mpGUIMsg == nullptr) {
-                            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                                mpGUIMsg;
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return true;
-                        }
-                    }
-                }
-            } else {
-                if (mpTblMORes == nullptr) {
-                    if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONCHARACTER_TMO"), 129u, 0l))) != nullptr) {
-                        if (mpGUIMsg == nullptr) {
-                            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                                mpGUIMsg;
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return true;
-                        }
-                    } else {
-                        return false;
-                    }
-                } else {
-                    if (mpGUIMsg == nullptr) {
-                        if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                            mpGUIMsg;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_GUI"), 129u, 1418969807l))) == nullptr)) {
+        return false;
+    }
+    if (mOptionType != 2) {
+        if (mOptionType == 1) {
+            if ((mpTblMORes == nullptr) && ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INTITLE_PS4_TMO"), 129u, 0l))) == nullptr)) {
+                return false;
+            }
+        } else {
+            if (mOptionType == 0) {
+                if ((mpTblMORes == nullptr) && ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INSTAGE_PS4_TMO"), 129u, 0l))) == nullptr)) {
+                    return false;
                 }
             }
+        }
+    } else {
+        if ((mpTblMORes == nullptr) && ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONCHARACTER_TMO"), 129u, 0l))) == nullptr)) {
+            return false;
+        }
+    }
+    if (mpGUIMsg == nullptr) {
+        if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+            mpGUIMsg;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mOptionType != 2) {
-            if (mOptionType == 1) {
-                if (mpTblMORes == nullptr) {
-                    if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INTITLE_PS4_TMO"), 129u, 0l))) != nullptr) {
-                        if (mpGUIMsg == nullptr) {
-                            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                                mpGUIMsg;
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return true;
-                        }
-                    } else {
-                        return false;
-                    }
-                } else {
-                    if (mpGUIMsg == nullptr) {
-                        if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                            mpGUIMsg;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
-            } else {
-                if (mOptionType == 0) {
-                    if (mpTblMORes == nullptr) {
-                        if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INSTAGE_PS4_TMO"), 129u, 0l))) != nullptr) {
-                            if (mpGUIMsg == nullptr) {
-                                if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                                    mpGUIMsg;
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                return true;
-                            }
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        if (mpGUIMsg == nullptr) {
-                            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                                mpGUIMsg;
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return true;
-                        }
-                    }
-                } else {
-                    if (mpGUIMsg == nullptr) {
-                        if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                            mpGUIMsg;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
-            }
-        } else {
-            if (mpTblMORes == nullptr) {
-                if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONCHARACTER_TMO"), 129u, 0l))) != nullptr) {
-                    if (mpGUIMsg == nullptr) {
-                        if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                            mpGUIMsg;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                if (mpGUIMsg == nullptr) {
-                    if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
-                        mpGUIMsg;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            }
-        }
+        return true;
     }
 }
 

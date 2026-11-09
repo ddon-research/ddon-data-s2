@@ -154,3 +154,5 @@ MtObject* rPawnQuestTalk::cTalkData::MyDTI::newInstance() const {
 
 template MtTypedArray<rPawnQuestTalk::cTalkData>::~MtTypedArray();
 
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rPawnQuestTalk::cTalkData>&);
+

@@ -29,8 +29,6 @@ inline void cAIPawnAutoMotionNode::operator delete(void* p_addr) {
 }
 
 cAIPawnAutoMotionNode::~cAIPawnAutoMotionNode() {
-    DDON_STUB("cAIPawnAutoMotionNode::~cAIPawnAutoMotionNode")
-    /* stub */
 }
 
 u32 cAIPawnAutoMotionNode::getEMotActionNo() {
@@ -41,9 +39,8 @@ cAIPawnAutoMotionNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 cAIPawnAutoMotionNode::MyDTI cAIPawnAutoMotionNode::DTI("cAIPawnAutoMotionNode", &::cAIResource::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIPawnAutoMotionNode::MyDTI::newInstance() const {
-    DDON_STUB("cAIPawnAutoMotionNode::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIPawnAutoMotionNode::MyDTI::newInstance() const {
+    return new (16u) cAIPawnAutoMotionNode;
 }
 
 const MtDTI& cAIPawnAutoWordNode::getDTI() const {
@@ -146,6 +143,10 @@ inline void* rAIPawnAutoWordTbl::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rAIPawnAutoWordTbl::DTI)->memAlloc(sz, align, rAIPawnAutoWordTbl::DTI.getID());
 }
 
+inline void rAIPawnAutoWordTbl::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rAIPawnAutoWordTbl::DTI)->memFree(p_addr);
+}
+
 bool rAIPawnAutoWordTbl::loadData(MtDataReader& r, cAIPawnAutoWordNode* pData) {
     pData->mAutoWordSituationID = r.readU32();
     pData->mAutoCommonSituationID = r.readU32();
@@ -188,6 +189,8 @@ MtObject* rAIPawnAutoWordTbl::MyDTI::newInstance() const {
 }
 
 template MtTypedArray<cAIPawnAutoMotionNode>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<cAIPawnAutoMotionNode>&);
 
 template cAIPawnAutoWordNode* rTbl2<cAIPawnAutoWordNode>::getData(unsigned int);
 

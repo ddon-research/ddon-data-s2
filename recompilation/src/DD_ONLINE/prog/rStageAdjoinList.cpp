@@ -238,9 +238,8 @@ rStageAdjoinList::cAdjoinInfo::cIndex::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* 
 
 rStageAdjoinList::cAdjoinInfo::cIndex::MyDTI rStageAdjoinList::cAdjoinInfo::cIndex::DTI("rStageAdjoinList::cAdjoinInfo::cIndex", &::MtObject::DTI, 16ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rStageAdjoinList::cAdjoinInfo::cIndex::MyDTI::newInstance() const {
-    DDON_STUB("rStageAdjoinList::cAdjoinInfo::cIndex::MyDTI::newInstance")
-    return nullptr;
+MtObject* rStageAdjoinList::cAdjoinInfo::cIndex::MyDTI::newInstance() const {
+    return new (16u) rStageAdjoinList::cAdjoinInfo::cIndex;
 }
 
 const MtDTI& rStageAdjoinList::cJumpPosition::getDTI() const {
@@ -276,4 +275,20 @@ template MtTypedArray<rStageAdjoinList::cAdjoinInfo::cIndex>::~MtTypedArray();
 template MtTypedArray<rStageAdjoinList::cAdjoinInfo>::~MtTypedArray();
 
 template MtTypedArray<rStageAdjoinList::cJumpPosition>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rStageAdjoinList::cAdjoinInfo>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rStageAdjoinList::cJumpPosition>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rStageAdjoinList::cAdjoinInfo::cIndex>&);
+
+template <typename T>
+void nDDOIO::writeMtArray(MtDataWriter& w, MtTypedArray<T>& ar) {
+    w.writeU32(ar.size());
+    for (u32 i = 0; i < ar.size(); i++) {
+        static_cast<T*>(ar.getBuffer()[(s32)i])->save(w);
+    }
+}
+
+template void nDDOIO::writeMtArray(MtDataWriter&, MtTypedArray<rStageAdjoinList::cAdjoinInfo>&);
 

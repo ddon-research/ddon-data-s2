@@ -224,29 +224,19 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                                         u32 t5 = cContextInterface::getSex(pContext);
                                         if (static_cast<sSoundExt*>(t4)->createPawnTalkVoiceArcTag(t5, cContextInterface::getVoice(pContext)) == 0) {
                                             u8 t6 = cContextInterface::getHumanType(pContext);
-                                            if (t6 == 0) {
-                                                if (mArcTicket[35].mNum != 0) {
-                                                    return mFlagCsLoadRequest;
-                                                } else {
-                                                    return true;
-                                                }
-                                            } else {
-                                                return mFlagCsLoadRequest;
+                                            if ((t6 == 0) && (mArcTicket[35].mNum == 0)) {
+                                                return true;
                                             }
+                                            return mFlagCsLoadRequest;
                                         } else {
                                             return true;
                                         }
                                     } else {
                                         u8 t6 = cContextInterface::getHumanType(pContext);
-                                        if (t6 == 0) {
-                                            if (mArcTicket[35].mNum != 0) {
-                                                return mFlagCsLoadRequest;
-                                            } else {
-                                                return true;
-                                            }
-                                        } else {
-                                            return mFlagCsLoadRequest;
+                                        if ((t6 == 0) && (mArcTicket[35].mNum == 0)) {
+                                            return true;
                                         }
+                                        return mFlagCsLoadRequest;
                                     }
                                 } else {
                                     return true;
@@ -257,29 +247,19 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                                     u32 t5 = cContextInterface::getSex(pContext);
                                     if (static_cast<sSoundExt*>(t4)->createPawnTalkVoiceArcTag(t5, cContextInterface::getVoice(pContext)) == 0) {
                                         u8 t6 = cContextInterface::getHumanType(pContext);
-                                        if (t6 == 0) {
-                                            if (mArcTicket[35].mNum != 0) {
-                                                return mFlagCsLoadRequest;
-                                            } else {
-                                                return true;
-                                            }
-                                        } else {
-                                            return mFlagCsLoadRequest;
+                                        if ((t6 == 0) && (mArcTicket[35].mNum == 0)) {
+                                            return true;
                                         }
+                                        return mFlagCsLoadRequest;
                                     } else {
                                         return true;
                                     }
                                 } else {
                                     u8 t6 = cContextInterface::getHumanType(pContext);
-                                    if (t6 == 0) {
-                                        if (mArcTicket[35].mNum != 0) {
-                                            return mFlagCsLoadRequest;
-                                        } else {
-                                            return true;
-                                        }
-                                    } else {
-                                        return mFlagCsLoadRequest;
+                                    if ((t6 == 0) && (mArcTicket[35].mNum == 0)) {
+                                        return true;
                                     }
+                                    return mFlagCsLoadRequest;
                                 }
                             }
                         } else {
@@ -294,29 +274,19 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                                     u32 t5 = cContextInterface::getSex(pContext);
                                     if (static_cast<sSoundExt*>(t4)->createPawnTalkVoiceArcTag(t5, cContextInterface::getVoice(pContext)) == 0) {
                                         u8 t6 = cContextInterface::getHumanType(pContext);
-                                        if (t6 == 0) {
-                                            if (mArcTicket[35].mNum != 0) {
-                                                return mFlagCsLoadRequest;
-                                            } else {
-                                                return true;
-                                            }
-                                        } else {
-                                            return mFlagCsLoadRequest;
+                                        if ((t6 == 0) && (mArcTicket[35].mNum == 0)) {
+                                            return true;
                                         }
+                                        return mFlagCsLoadRequest;
                                     } else {
                                         return true;
                                     }
                                 } else {
                                     u8 t6 = cContextInterface::getHumanType(pContext);
-                                    if (t6 == 0) {
-                                        if (mArcTicket[35].mNum != 0) {
-                                            return mFlagCsLoadRequest;
-                                        } else {
-                                            return true;
-                                        }
-                                    } else {
-                                        return mFlagCsLoadRequest;
+                                    if ((t6 == 0) && (mArcTicket[35].mNum == 0)) {
+                                        return true;
                                     }
+                                    return mFlagCsLoadRequest;
                                 }
                             } else {
                                 return true;
@@ -327,29 +297,19 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                                 u32 t5 = cContextInterface::getSex(pContext);
                                 if (static_cast<sSoundExt*>(t4)->createPawnTalkVoiceArcTag(t5, cContextInterface::getVoice(pContext)) == 0) {
                                     u8 t6 = cContextInterface::getHumanType(pContext);
-                                    if (t6 == 0) {
-                                        if (mArcTicket[35].mNum != 0) {
-                                            return mFlagCsLoadRequest;
-                                        } else {
-                                            return true;
-                                        }
-                                    } else {
-                                        return mFlagCsLoadRequest;
+                                    if ((t6 == 0) && (mArcTicket[35].mNum == 0)) {
+                                        return true;
                                     }
+                                    return mFlagCsLoadRequest;
                                 } else {
                                     return true;
                                 }
                             } else {
                                 u8 t6 = cContextInterface::getHumanType(pContext);
-                                if (t6 == 0) {
-                                    if (mArcTicket[35].mNum != 0) {
-                                        return mFlagCsLoadRequest;
-                                    } else {
-                                        return true;
-                                    }
-                                } else {
-                                    return mFlagCsLoadRequest;
+                                if ((t6 == 0) && (mArcTicket[35].mNum == 0)) {
+                                    return true;
                                 }
+                                return mFlagCsLoadRequest;
                             }
                         }
                     }
@@ -358,15 +318,10 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                 }
             } else {
                 u8 t6 = cContextInterface::getHumanType(pContext);
-                if (t6 == 0) {
-                    if (mArcTicket[35].mNum != 0) {
-                        return mFlagCsLoadRequest;
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return mFlagCsLoadRequest;
+                if ((t6 == 0) && (mArcTicket[35].mNum == 0)) {
+                    return true;
                 }
+                return mFlagCsLoadRequest;
             }
         } else {
             return true;

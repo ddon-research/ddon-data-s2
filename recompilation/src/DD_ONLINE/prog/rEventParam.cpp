@@ -89,6 +89,10 @@ inline void* rEventParam::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rEventParam::DTI)->memAlloc(sz, align, rEventParam::DTI.getID());
 }
 
+inline void rEventParam::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rEventParam::DTI)->memFree(p_addr);
+}
+
 __attribute__((weak)) bool rEventParam::loadData(MtDataReader& in, cEventParam* pData) {
     DDON_STUB("rEventParam::loadData")
     return {};

@@ -35,17 +35,13 @@ inline rSoundBossBgm::rSoundBossBgm() {
 }
 
 rSoundBossBgm::~rSoundBossBgm() {
-    if (mArrayDataNum == 0) {
-        MtMemoryAllocator::getAllocator(rSoundBossBgm::DTI)->memFree(static_cast<void*>(mpArrayData));
-        mpArrayData = nullptr;
-        mArrayDataNum = 0;
-        return;
-    }
     unsigned int i3 = 0;
-    do {
-        mpArrayData[i3].~cSoundBossBgm();
-        i3 += 1u;
-    } while (i3 < mArrayDataNum);
+    if (mArrayDataNum != 0) {
+        do {
+            mpArrayData[i3].~cSoundBossBgm();
+            i3 += 1u;
+        } while (i3 < mArrayDataNum);
+    }
     MtMemoryAllocator::getAllocator(rSoundBossBgm::DTI)->memFree(static_cast<void*>(mpArrayData));
     mpArrayData = nullptr;
     mArrayDataNum = 0;

@@ -2292,6 +2292,10 @@ const MtDTI& nZone::cContentsPool::cContentsList::getDTI() const {
     return nZone::cContentsPool::cContentsList::DTI;
 }
 
+inline void nZone::cContentsPool::cContentsList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::cContentsPool::cContentsList::DTI)->memFree(p_addr);
+}
+
 nZone::cContentsPool::cContentsList::~cContentsList() {
     DDON_STUB("nZone::cContentsPool::cContentsList::~cContentsList")
     /* stub */

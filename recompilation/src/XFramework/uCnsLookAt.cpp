@@ -91,18 +91,11 @@ u32 uCnsLookAt::getDependentJointNum() {
 
 uModel::Joint* uCnsLookAt::getDependentJoint(u32 Idx) {
     if (mpTargetModel != nullptr) {
-        if (mpTargetModel->mJointTable[mTargetJointNo] != 0xFF) {
-            if ((&mpTargetModel->mJoint[mpTargetModel->mJointTable[mTargetJointNo]]) == nullptr) {
-                return nullptr;
-            } else {
-                return &mpTargetModel->mJoint[mpTargetModel->mJointTable[mTargetJointNo]];
-            }
-        } else {
-            return nullptr;
+        if ((mpTargetModel->mJointTable[mTargetJointNo] != 0xFF) && ((&mpTargetModel->mJoint[mpTargetModel->mJointTable[mTargetJointNo]]) != nullptr)) {
+            return &mpTargetModel->mJoint[mpTargetModel->mJointTable[mTargetJointNo]];
         }
-    } else {
-        return nullptr;
     }
+    return nullptr;
 }
 
 void uCnsLookAt::evSetJoints(uModel::Joint* * pJnts, u32 Num) {

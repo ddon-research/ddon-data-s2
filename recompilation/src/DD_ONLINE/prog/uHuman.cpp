@@ -905,61 +905,31 @@ bool uHuman::callbackHealedAfter_apply_slave(cHitInfoAfter* pHitInfo) {
                     HP_DATATYPE white = cContextInterface::getHpWhite(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter);
                     mHealSeCaller.mIsHp = hp < white;
                     if (pHitInfo->mHealedInfo.mStaminaHealVal > 0.0f) {
-                        if (mpContextPlayerInfo != nullptr) {
-                            if (mpContextPlayerInfo->getFinalMaxStamina() > mpContextPlayerInfo->mBaseInfo.mStamina_pri) {
-                                mHealSeCaller.mIsStamina = true;
-                                if (hp < white) {
-                                }
-                                return true;
-                            } else {
-                                if (hp < white) {
-                                    return true;
-                                } else {
-                                    return mHealSeCaller.isStamina();
-                                }
-                            }
-                        } else {
+                        if ((mpContextPlayerInfo != nullptr) && (mpContextPlayerInfo->getFinalMaxStamina() > mpContextPlayerInfo->mBaseInfo.mStamina_pri)) {
+                            mHealSeCaller.mIsStamina = true;
                             if (hp < white) {
-                                return true;
-                            } else {
-                                return mHealSeCaller.isStamina();
                             }
-                        }
-                    } else {
-                        if (hp < white) {
                             return true;
-                        } else {
-                            return mHealSeCaller.isStamina();
                         }
+                    }
+                    if (hp < white) {
+                        return true;
+                    } else {
+                        return mHealSeCaller.isStamina();
                     }
                 } else {
                     if (pHitInfo->mHealedInfo.mStaminaHealVal > 0.0f) {
-                        if (mpContextPlayerInfo != nullptr) {
-                            if (mpContextPlayerInfo->getFinalMaxStamina() > mpContextPlayerInfo->mBaseInfo.mStamina_pri) {
-                                mHealSeCaller.mIsStamina = true;
-                                if (mHealSeCaller.mIsHp) {
-                                }
-                                return true;
-                            } else {
-                                if (mHealSeCaller.mIsHp) {
-                                    return true;
-                                } else {
-                                    return mHealSeCaller.isStamina();
-                                }
-                            }
-                        } else {
+                        if ((mpContextPlayerInfo != nullptr) && (mpContextPlayerInfo->getFinalMaxStamina() > mpContextPlayerInfo->mBaseInfo.mStamina_pri)) {
+                            mHealSeCaller.mIsStamina = true;
                             if (mHealSeCaller.mIsHp) {
-                                return true;
-                            } else {
-                                return mHealSeCaller.isStamina();
                             }
-                        }
-                    } else {
-                        if (mHealSeCaller.mIsHp) {
                             return true;
-                        } else {
-                            return mHealSeCaller.isStamina();
                         }
+                    }
+                    if (mHealSeCaller.mIsHp) {
+                        return true;
+                    } else {
+                        return mHealSeCaller.isStamina();
                     }
                 }
             }
@@ -1821,64 +1791,36 @@ bool uHuman::isCantBoostSpirit(nKeyCommand::stGenericParam& param) {
                 if (mpContextPlayerInfo != nullptr) {
                     if (mpContextPlayerInfo->mCurrentJob_pri == 10) {
                         f32 t0 = mpJob10->getSpiritRate();
-                        if (t0 != 1.0f) {
-                            if (mpJob10->isBoosting()) {
-                                return false;
-                            } else {
-                                return static_cast<bool>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 8944)) & 1u);
-                            }
-                        } else {
-                            return false;
+                        if ((t0 != 1.0f) && !mpJob10->isBoosting()) {
+                            return static_cast<bool>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 8944)) & 1u);
                         }
-                    } else {
                         return false;
                     }
-                } else {
-                    return false;
                 }
-            } else {
-                return false;
             }
         } else {
             if (mpContextPlayerInfo != nullptr) {
                 if (mpContextPlayerInfo->mCurrentJob_pri == 10) {
                     f32 t0 = mpJob10->getSpiritRate();
-                    if (t0 != 1.0f) {
-                        if (mpJob10->isBoosting()) {
-                            return false;
-                        } else {
-                            return static_cast<bool>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 8944)) & 1u);
-                        }
-                    } else {
-                        return false;
+                    if ((t0 != 1.0f) && !mpJob10->isBoosting()) {
+                        return static_cast<bool>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 8944)) & 1u);
                     }
-                } else {
                     return false;
                 }
-            } else {
-                return false;
             }
         }
     } else {
         if (mpContextPlayerInfo != nullptr) {
             if (mpContextPlayerInfo->mCurrentJob_pri == 10) {
                 f32 t0 = mpJob10->getSpiritRate();
-                if (t0 != 1.0f) {
-                    if (mpJob10->isBoosting()) {
-                        return false;
-                    } else {
-                        return static_cast<bool>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 8944)) & 1u);
-                    }
-                } else {
-                    return false;
+                if ((t0 != 1.0f) && !mpJob10->isBoosting()) {
+                    return static_cast<bool>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 8944)) & 1u);
                 }
-            } else {
                 return false;
             }
-        } else {
-            return false;
         }
     }
+    return false;
 }
 
 bool uHuman::isNowBoosting(nKeyCommand::stGenericParam& param) {
@@ -4618,15 +4560,10 @@ __attribute__((weak)) void uHuman::LeadToInvincible() {
 }
 
 u32 uHuman::convertJobCommonMotion(u32 motNo, bool isBattle) {
-    if (isBattle) {
-        if (cContextInterface::isCustomWork(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter, static_cast<u16>(1))) {
-            return (getMotionInfo(motNo | 768u) == nullptr) ? motNo : (motNo | 768u);
-        } else {
-            return motNo;
-        }
-    } else {
-        return (getMotionInfo(motNo | 768u) == nullptr) ? motNo : (motNo | 768u);
+    if (isBattle && !cContextInterface::isCustomWork(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter, static_cast<u16>(1))) {
+        return motNo;
     }
+    return (getMotionInfo(motNo | 768u) == nullptr) ? motNo : (motNo | 768u);
 }
 
 __attribute__((weak)) bool uHuman::isEventEndWaitSet() {

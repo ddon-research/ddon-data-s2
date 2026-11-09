@@ -1149,41 +1149,23 @@ u32 uGUIItemBase01::evCtrlCancel(cControl::Message* msg) {
 
 u32 uGUIItemBase01::evCtrlChangeBox(cControl::Message* msg) {
     if (msg != nullptr) {
-        if (isCheckMode()) {
-            if (msg->reason == nGUIExt::TRG_START) {
-                setInputEvent(71u);
-                return 0;
-            } else {
-                if (static_cast<sGUIExt*>(sGUI::getInstance())->isGameMenuCreate(static_cast<uGUIBase*>(this))) {
-                    if (isFocus()) {
-                        if (!isCatchMode()) {
-                            setFlowId(10u);
-                        }
-                    }
-                    return 0;
-                } else {
-                    u32 result = this->uGUIUseItemBase::evCtrlChangeBox(msg);
-                    if (!mFocus) {
-                        mIsMouseOver = false;
-                    }
-                    return result;
+        if (isCheckMode() && (msg->reason == nGUIExt::TRG_START)) {
+            setInputEvent(71u);
+            return 0;
+        }
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->isGameMenuCreate(static_cast<uGUIBase*>(this))) {
+            if (isFocus()) {
+                if (!isCatchMode()) {
+                    setFlowId(10u);
                 }
             }
+            return 0;
         } else {
-            if (static_cast<sGUIExt*>(sGUI::getInstance())->isGameMenuCreate(static_cast<uGUIBase*>(this))) {
-                if (isFocus()) {
-                    if (!isCatchMode()) {
-                        setFlowId(10u);
-                    }
-                }
-                return 0;
-            } else {
-                u32 result = this->uGUIUseItemBase::evCtrlChangeBox(msg);
-                if (!mFocus) {
-                    mIsMouseOver = false;
-                }
-                return result;
+            u32 result = this->uGUIUseItemBase::evCtrlChangeBox(msg);
+            if (!mFocus) {
+                mIsMouseOver = false;
             }
+            return result;
         }
     } else {
         u32 result = this->uGUIUseItemBase::evCtrlChangeBox(static_cast<cControl::Message*>(nullptr));

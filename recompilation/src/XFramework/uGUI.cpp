@@ -102,22 +102,13 @@ __attribute__((weak)) void uGUI::setResource(rGUI* pResource) {
 
 bool uGUI::setResourceWithCheck(rGUI* pResource, t64 t, bool isForceSet) {
     if (t != pResource->getUpdateTime2()) {
-        if (!isForceSet) {
-            if (errorResourceCheck(pResource)) {
-                setResource(pResource);
-                return true;
-            } else {
-                setResource(static_cast<rGUI*>(nullptr));
-                return false;
-            }
-        } else {
-            setResource(pResource);
-            return true;
+        if (!isForceSet && !errorResourceCheck(pResource)) {
+            setResource(static_cast<rGUI*>(nullptr));
+            return false;
         }
-    } else {
-        setResource(pResource);
-        return true;
     }
+    setResource(pResource);
+    return true;
 }
 
 bool uGUI::errorResourceCheck(rGUI* pResource) {

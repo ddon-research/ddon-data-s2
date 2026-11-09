@@ -1336,15 +1336,10 @@ __attribute__((weak)) bool cQuestTask::canMove() const {
 
 __attribute__((weak)) cQuestPersonalData* cQuestTask::getPersonalData(cQuestTask::PERSONAL_DATA_TYPE personalData) {
     if (personalData != PERSONAL_DATA_TYPE_LEADER) {
-        if (personalData == PERSONAL_DATA_TYPE_PARTY) {
-            if (mpLeaderData == nullptr) {
-                return mpMyData;
-            } else {
-                return mpLeaderData;
-            }
-        } else {
-            return mpMyData;
+        if ((personalData == PERSONAL_DATA_TYPE_PARTY) && (mpLeaderData != nullptr)) {
+            return mpLeaderData;
         }
+        return mpMyData;
     } else {
         return mpLeaderData;
     }
@@ -1930,22 +1925,13 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkTalkNpc(s32 stageNo, 
 }
 
 bool cQuestTask::cQuestProcess::checkDieEnemy(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
-    if (static_cast<sAreaExt*>(sArea::getInstance())->isStage()) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 176)) == static_cast<unsigned int>(stageNo)) {
-            if (setNo > -1) {
-                return sSetManager::getInstance()->isKilledEnemy(static_cast<u32>(groupNo), static_cast<u32>(setNo));
-            } else {
-                return sSetManager::getInstance()->isKilledEnemyGroup(static_cast<u32>(groupNo));
-            }
-        } else {
-            return false;
-        }
+    if (static_cast<sAreaExt*>(sArea::getInstance())->isStage() && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 176)) != static_cast<unsigned int>(stageNo))) {
+        return false;
+    }
+    if (setNo > -1) {
+        return sSetManager::getInstance()->isKilledEnemy(static_cast<u32>(groupNo), static_cast<u32>(setNo));
     } else {
-        if (setNo > -1) {
-            return sSetManager::getInstance()->isKilledEnemy(static_cast<u32>(groupNo), static_cast<u32>(setNo));
-        } else {
-            return sSetManager::getInstance()->isKilledEnemyGroup(static_cast<u32>(groupNo));
-        }
+        return sSetManager::getInstance()->isKilledEnemyGroup(static_cast<u32>(groupNo));
     }
 }
 
@@ -2043,18 +2029,11 @@ bool cQuestTask::cQuestProcess::checkPadding02(s32 param01, s32 param02, s32 par
 
 bool cQuestTask::cQuestProcess::checkStageNo(s32 stageNo, s32 param02, s32 param03, s32 param04) {
     if (static_cast<sAreaExt*>(sArea::getInstance())->isStage()) {
-        if (sArea::getInstance()->mpArea[2]->cArea::isInit()) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 324)) != 0xFFFFFFFFu) {
-                return false;
-            } else {
-                return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) == static_cast<unsigned int>(stageNo);
-            }
-        } else {
-            return false;
+        if (sArea::getInstance()->mpArea[2]->cArea::isInit() && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 324)) == 0xFFFFFFFFu)) {
+            return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) == static_cast<unsigned int>(stageNo);
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::checkEventEnd(s32 stageNo, s32 eventNo, s32 param03, s32 param04) {
@@ -2067,20 +2046,13 @@ bool cQuestTask::cQuestProcess::checkPrt(s32 stageNo, s32 x, s32 y, s32 z) {
         mPrtUniqueId = nLayout::createUniqueIDQuestProcess(getQuestTask()->getQuestIdU32(), mCurrentBlockNo, stageNo, *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 182));
     }
     if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 21740)) == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
-        if (sQuestManagerExt::getInstance()->getPRTMgr()->getAdvanceFlag()) {
-            if (sQuestManagerExt::getInstance()->getPRTMgr()->mAdvancePRTOMType == 1) {
-                return false;
-            } else {
-                cPRTManager* t0 = sQuestManagerExt::getInstance()->getPRTMgr();
-                const u32 advancePrtUniqueId = nLayout::createUniqueIDQuestProcess(t0->mAdvancePRT.questNo, t0->mAdvancePRT.blockNo, t0->mAdvancePRT.stageNo, t0->mAdvancePRT.processNo);
-                return mPrtUniqueId == advancePrtUniqueId;
-            }
-        } else {
-            return false;
+        if (sQuestManagerExt::getInstance()->getPRTMgr()->getAdvanceFlag() && (sQuestManagerExt::getInstance()->getPRTMgr()->mAdvancePRTOMType != 1)) {
+            cPRTManager* t0 = sQuestManagerExt::getInstance()->getPRTMgr();
+            const u32 advancePrtUniqueId = nLayout::createUniqueIDQuestProcess(t0->mAdvancePRT.questNo, t0->mAdvancePRT.blockNo, t0->mAdvancePRT.stageNo, t0->mAdvancePRT.processNo);
+            return mPrtUniqueId == advancePrtUniqueId;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 bool cQuestTask::cQuestProcess::checkClearcount(s32 minCount, s32 maxCount, s32 param03, s32 param04) {
@@ -2139,18 +2111,11 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkNpcTouchAndOrderUi(s3
 
 bool cQuestTask::cQuestProcess::checkStageNoNotEq(s32 stageNo, s32 param02, s32 param03, s32 param04) {
     if (static_cast<sAreaExt*>(sArea::getInstance())->isStage()) {
-        if (sArea::getInstance()->mpArea[2]->cArea::isInit()) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 324)) != 0xFFFFFFFFu) {
-                return false;
-            } else {
-                return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) != static_cast<unsigned int>(stageNo);
-            }
-        } else {
-            return false;
+        if (sArea::getInstance()->mpArea[2]->cArea::isInit() && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 324)) == 0xFFFFFFFFu)) {
+            return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) != static_cast<unsigned int>(stageNo);
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::checkWarlevel(s32 warLevel, s32 param02, s32 param03, s32 param04) {
@@ -2749,15 +2714,10 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkQuestOmEndText(s32 st
 }
 
 bool cQuestTask::cQuestProcess::checkOpenAreaMaster(s32 areaId, s32 param02, s32 param03, s32 param04) {
-    if (areaId != 0) {
-        if (areaId == static_cast<int>(sQuestManagerExt::getInstance()->getAreaId())) {
-            return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(getQuestTask()) + 666)) & 16) >> 4);
-        } else {
-            return false;
-        }
-    } else {
-        return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(getQuestTask()) + 666)) & 16) >> 4);
+    if ((areaId != 0) && (areaId != static_cast<int>(sQuestManagerExt::getInstance()->getAreaId()))) {
+        return false;
     }
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(getQuestTask()) + 666)) & 16) >> 4);
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::checkHaveItemAllBag(s32 itemId, s32 itemNum, s32 param03, s32 param04) {
@@ -2775,18 +2735,11 @@ bool cQuestTask::cQuestProcess::checkOpenQuestBoard(s32 param01, s32 param02, s3
 
 bool cQuestTask::cQuestProcess::checkStageNoWithoutMarker(s32 stageNo, s32 param02, s32 param03, s32 param04) {
     if (static_cast<sAreaExt*>(sArea::getInstance())->isStage()) {
-        if (sArea::getInstance()->mpArea[2]->cArea::isInit()) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 324)) != 0xFFFFFFFFu) {
-                return false;
-            } else {
-                return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) == static_cast<unsigned int>(stageNo);
-            }
-        } else {
-            return false;
+        if (sArea::getInstance()->mpArea[2]->cArea::isInit() && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 324)) == 0xFFFFFFFFu)) {
+            return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) == static_cast<unsigned int>(stageNo);
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 bool cQuestTask::cQuestProcess::checkTalkQuestNpcUnitMarker(s32 stageNo, s32 groupNo, s32 setNo, s32 questId) {
@@ -3290,21 +3243,12 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsTakePictures(s32 pa
 bool cQuestTask::cQuestProcess::checkIsStageForMainQuest(s32 stageNo, s32 param02, s32 param03, s32 param04) {
     if (sQuestManagerExt::getInstance()->isBlankLeaderOrder()) {
         if (static_cast<sAreaExt*>(sArea::getInstance())->isStage()) {
-            if (sArea::getInstance()->mpArea[2]->cArea::isInit()) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 324)) != 0xFFFFFFFFu) {
-                    return false;
-                } else {
-                    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) == static_cast<unsigned int>(stageNo);
-                }
-            } else {
-                return false;
+            if (sArea::getInstance()->mpArea[2]->cArea::isInit() && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 324)) == 0xFFFFFFFFu)) {
+                return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) == static_cast<unsigned int>(stageNo);
             }
-        } else {
-            return false;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsReleasePawnExpedition(s32 param01, s32 param02, s32 param03, s32 param04) {

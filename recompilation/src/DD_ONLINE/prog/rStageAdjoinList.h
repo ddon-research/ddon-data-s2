@@ -219,3 +219,37 @@ inline rStageAdjoinList::cJumpPosition::cJumpPosition() {
     this->mQuestId = 0;
     this->mFlagId = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../generated/shared/nDDOIO.h"
+
+inline void rStageAdjoinList::cAdjoinInfo::load(MtDataReader& r) {
+    nDDOIO::readMtArray(r, mIndex);
+    mDestinationStageNo = r.readU16();
+    mNextStageNo = r.readU16();
+    mPriority = r.readU8();
+}
+
+inline void rStageAdjoinList::cAdjoinInfo::save(MtDataWriter& w) {
+    nDDOIO::writeMtArray(w, mIndex);
+    nDDOIO::writeData(w, mDestinationStageNo);
+    nDDOIO::writeData(w, mNextStageNo);
+    nDDOIO::writeData(w, mPriority);
+}
+
+inline void* rStageAdjoinList::cAdjoinInfo::cIndex::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rStageAdjoinList::cAdjoinInfo::cIndex::DTI)->memAlloc(sz, align, rStageAdjoinList::cAdjoinInfo::cIndex::DTI.getID());
+}
+
+inline void rStageAdjoinList::cAdjoinInfo::cIndex::save(MtDataWriter& w) {
+    nDDOIO::writeData(w, mIndex);
+}
+
+inline void rStageAdjoinList::cJumpPosition::load(MtDataReader& r) {
+    mPos = r.readV3();
+    mQuestId = r.readU32();
+    mFlagId = r.readU32();
+}

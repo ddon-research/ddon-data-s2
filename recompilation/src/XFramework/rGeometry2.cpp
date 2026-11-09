@@ -62,8 +62,9 @@ bool rGeometry2::load(MtStream& in) {
     clear();
     mMagic = 0;
     mVersion = 0;
+    u32* held0 = &mVersion;
     in.read(static_cast<void*>(&mMagic), 4u);
-    in.read(static_cast<void*>(&mVersion), 4u);
+    in.read(static_cast<void*>(held0), 4u);
     if (mMagic == 0x326F6567) {
         if (mVersion == 0xBFB81A4) {
             MtSerializer sz(65536);
@@ -77,8 +78,9 @@ bool rGeometry2::save(MtStream& out) {
     if (mpGeometry != nullptr) {
         mMagic = 0x326F6567;
         mVersion = 0xBFB81A4;
+        u32* held0 = &mVersion;
         out.write(static_cast<const void*>(&mMagic), 4u);
-        out.write(static_cast<const void*>(&mVersion), 4u);
+        out.write(static_cast<const void*>(held0), 4u);
         MtSerializer sz(65536);
         return sz.serializeBinary(out, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
     } else {

@@ -143,8 +143,23 @@ inline rAIPawnEmParam::rAIPawnEmParam() {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline cAIPawnEmNode::cAIPawnEmNode() {
+    mEmStatusNo = 0u;
+    mActiveCoreRegionNo = -1;
+    mAddPrio = 1;
+    mFlgDefaultAttr = false;
+    mAttackNoInterval = false;
+    mLayer = -1;
+    mActiveMaskEffectResionNo = -1;
+    mEmSpStatus = 0;
+}
+
 inline void cAIPawnEmNode::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cAIPawnEmNode::DTI)->memFree(p_addr);
+}
+
+inline void* cAIPawnEmNode::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIPawnEmNode::DTI)->memAlloc(sz, align, cAIPawnEmNode::DTI.getID());
 }
 
 inline void* cAIPawnEmNode::operator new[](size_t sz, u32 align) {

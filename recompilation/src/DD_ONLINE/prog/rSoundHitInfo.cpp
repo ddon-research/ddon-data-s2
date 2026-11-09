@@ -36,17 +36,13 @@ inline rSoundHitInfo::rSoundHitInfo() {
 }
 
 rSoundHitInfo::~rSoundHitInfo() {
-    if (mArrayDataNum == 0) {
-        MtMemoryAllocator::getAllocator(rSoundHitInfo::DTI)->memFree(static_cast<void*>(mpArrayData));
-        mpArrayData = nullptr;
-        mArrayDataNum = 0;
-        return;
-    }
     unsigned int i3 = 0;
-    do {
-        mpArrayData[i3].~cSoundHitInfo();
-        i3 += 1u;
-    } while (i3 < mArrayDataNum);
+    if (mArrayDataNum != 0) {
+        do {
+            mpArrayData[i3].~cSoundHitInfo();
+            i3 += 1u;
+        } while (i3 < mArrayDataNum);
+    }
     MtMemoryAllocator::getAllocator(rSoundHitInfo::DTI)->memFree(static_cast<void*>(mpArrayData));
     mpArrayData = nullptr;
     mArrayDataNum = 0;
@@ -62,14 +58,13 @@ bool rSoundHitInfo::save(MtStream& out) {
     (&w)->writeS32(4802643);
     (&w)->writeU32(5u);
     (&w)->writeU32(mArrayDataNum);
-    if (mArrayDataNum == 0) {
-        return true;
-    }
     u32 i = 0;
-    do {
-        mpArrayData[i].save(w);
-        i += 1u;
-    } while (i < mArrayDataNum);
+    if (mArrayDataNum != 0) {
+        do {
+            mpArrayData[i].save(w);
+            i += 1u;
+        } while (i < mArrayDataNum);
+    }
     return true;
 }
 

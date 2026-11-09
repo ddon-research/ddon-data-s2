@@ -5,6 +5,22 @@
 #define DDON_STUB(name)
 #endif
 
+MtColor MtColor::Red(255, 0, 0, 255);
+
+MtColor MtColor::Green(0, 255, 0, 255);
+
+MtColor MtColor::Yellow(255, 255, 0, 255);
+
+MtColor MtColor::Pink(255, 0, 255, 255);
+
+MtColor MtColor::White(255, 255, 255, 255);
+
+MtColor MtColor::Black(0, 0, 0, 255);
+
+MtColor MtColor::Gray(128, 128, 128, 255);
+
+MtColor MtColor::Orange(255, 165, 0, 255);
+
 __attribute__((weak)) MtColorHLS MtColorHLS::fromRGB(const MtColorF& c) {
     DDON_STUB("MtColorHLS::fromRGB")
     __builtin_unreachable();

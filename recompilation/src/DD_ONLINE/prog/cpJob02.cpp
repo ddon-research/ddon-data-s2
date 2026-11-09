@@ -515,15 +515,10 @@ bool cpJob02::checkTransCS06(s32 ActNo) {
                         if (ActNo == 4111) {
                             return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpHuman) + 8945)) & 32) >> 5);
                         } else {
-                            if (ActNo == 4110) {
-                                if (((mpHuman->mObjStatus >> 8) & 32ul) != 0) {
-                                    return false;
-                                } else {
-                                    return (mpHuman->mObjStatus & 4ul) == 0;
-                                }
-                            } else {
-                                return false;
+                            if ((ActNo == 4110) && (((mpHuman->mObjStatus >> 8) & 32ul) == 0)) {
+                                return (mpHuman->mObjStatus & 4ul) == 0;
                             }
+                            return false;
                         }
                     } else {
                         if ((mpHuman->mObjStatus & 4ul) != 0) {

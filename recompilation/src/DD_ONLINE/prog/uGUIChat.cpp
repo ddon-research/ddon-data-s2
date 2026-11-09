@@ -43,6 +43,8 @@
 #define DDON_STUB(name)
 #endif
 
+double elf_d_ZL13FixWindowSizeRN8uGUIBase17cAdjustableWindowERK7MtSizeF(uGUIBase::cAdjustableWindow&, const MtSizeF&) __asm__("_ZL13FixWindowSizeRN8uGUIBase17cAdjustableWindowERK7MtSizeF");
+
 static const u32 tblAddress[7] = {
     1,
     0,
@@ -954,9 +956,11 @@ __attribute__((weak)) MtSizeF uGUIChat::cCheckList::calcWindowSize(f32 totalWidt
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void uGUIChat::cCheckList::setWindowSize(uGUIBase::cAdjustableWindow& window, const MtSize& windowSize) {
-    DDON_STUB("uGUIChat::cCheckList::setWindowSize")
-    /* stub */
+void uGUIChat::cCheckList::setWindowSize(uGUIBase::cAdjustableWindow& window, const MtSize& windowSize) {
+    MtSizeF frame32;
+    frame32.w = static_cast<float>(windowSize.w);
+    frame32.h = static_cast<float>(windowSize.h);
+    elf_d_ZL13FixWindowSizeRN8uGUIBase17cAdjustableWindowERK7MtSizeF(window, frame32);
 }
 
 uGUIChat::cCheckList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

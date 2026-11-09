@@ -60,15 +60,10 @@ __attribute__((weak)) void uGUICaplinkChat::createProperty(MtPropertyList& s) {
 }
 
 bool uGUICaplinkChat::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_CHAT_GUI"), 129u, 1435920503l))) != nullptr) {
-            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
-        } else {
-            return false;
-        }
-    } else {
-        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_CHAT_GUI"), 129u, 1435920503l))) == nullptr)) {
+        return false;
     }
+    return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
 }
 
 __attribute__((weak)) void uGUICaplinkChat::setup() {
@@ -222,31 +217,18 @@ u32 uGUICaplinkChat::evCtrlDecide(cControl::Message* msg) {
                 return 1;
             }
         }
-        if (mIsInputEnable) {
-            if (sKeyboardInterface::getInstance()->isBusy()) {
-                if (msg != nullptr) {
-                    msg->changeSE = 0;
-                }
-                return 0;
-            } else {
-                if (msg != nullptr) {
-                    msg->changeSE = 4;
-                }
-                setInputEvent(66u);
-                return 1;
-            }
-        } else {
+        if (mIsInputEnable && !sKeyboardInterface::getInstance()->isBusy()) {
             if (msg != nullptr) {
-                msg->changeSE = 0;
+                msg->changeSE = 4;
             }
-            return 0;
+            setInputEvent(66u);
+            return 1;
         }
-    } else {
-        if (msg != nullptr) {
-            msg->changeSE = 0;
-        }
-        return 0;
     }
+    if (msg != nullptr) {
+        msg->changeSE = 0;
+    }
+    return 0;
 }
 
 u32 uGUICaplinkChat::evCtrlCancel(cControl::Message* msg) {
@@ -299,7 +281,6 @@ u32 uGUICaplinkChat::evCtrlMouseClick(cControl::Message* msg) {
             if (msg->pSender != mpMenuCtrl) {
                 msg->changeSE = 0;
                 setInputEvent(0u);
-                return 0;
             } else {
                 if (mpMenuCtrl != nullptr) {
                     if (mpMenuCtrl->mCurrentPos != 0) {
@@ -324,33 +305,22 @@ u32 uGUICaplinkChat::evCtrlMouseClick(cControl::Message* msg) {
                             return 1;
                         }
                     }
-                    if (mIsInputEnable) {
-                        if (sKeyboardInterface::getInstance()->isBusy()) {
-                            msg->changeSE = 0;
-                            return 0;
-                        } else {
-                            msg->changeSE = 4;
-                            setInputEvent(66u);
-                            return 1;
-                        }
-                    } else {
-                        msg->changeSE = 0;
-                        return 0;
+                    if (mIsInputEnable && !sKeyboardInterface::getInstance()->isBusy()) {
+                        msg->changeSE = 4;
+                        setInputEvent(66u);
+                        return 1;
                     }
-                } else {
-                    msg->changeSE = 0;
-                    return 0;
                 }
+                msg->changeSE = 0;
             }
         } else {
             msg->changeSE = 0;
             setInputEvent(0u);
-            return 0;
         }
     } else {
         setInputEvent(0u);
-        return 0;
     }
+    return 0;
 }
 
 uGUICaplinkChat::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

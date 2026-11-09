@@ -31,9 +31,8 @@ cAISensorNodeRes::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 cAISensorNodeRes::MyDTI cAISensorNodeRes::DTI("cAISensorNodeRes", &::cAIResource::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAISensorNodeRes::MyDTI::newInstance() const {
-    DDON_STUB("cAISensorNodeRes::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAISensorNodeRes::MyDTI::newInstance() const {
+    return new (16u) cAISensorNodeRes;
 }
 
 const MtDTI& rAISensor::getDTI() const {
@@ -101,4 +100,6 @@ MtObject* rAISensor::MyDTI::newInstance() const {
 }
 
 template MtTypedArray<cAISensorNodeRes>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<cAISensorNodeRes>&);
 

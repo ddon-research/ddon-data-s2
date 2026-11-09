@@ -63,6 +63,9 @@ using u8 = unsigned char;
 namespace gLot {
 
     s32 getS32_Key(const MtString& inName, MT_CTSTR key_, bool i);
+    template <typename AllocClassType> AllocClassType* getRootPositionSearchSupport(u8* pMemAllocRoot, u32& MemoryPos, const u32 ClassAllocateNum);
+    template <typename AllocClassType> void placementNewFree(AllocClassType* pClassTbl, const u32 ClassNum);
+    template <typename AllocClassType> AllocClassType* placementNewAlloc(u8* pMemAllocRoot, u32& MemoryPos, const u32 ClassAllocateNum);
 
 }  // namespace gLot
 

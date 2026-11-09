@@ -584,29 +584,20 @@ void sWeatherManager::setWeatherID(s32 weatherID, f32 blend) {
                 } else {
                     for (unsigned int i0_3 = 0;;) {
                         cWeatherParamInfo* t0 = v0_10->getData(i0_3);
-                        if (t0 != nullptr) {
-                            if (t0->mWeatherID != weatherID) {
-                                if ((i0_3 + 1u) < v0_10->getDataNum()) {
-                                    i0_3 += 1u;
-                                } else {
-                                    break;
-                                }
-                            } else {
-                                v2_9 = weatherID;
-                                mWeatherIDOld = mWeatherID;
-                                mWeatherID = static_cast<s32>(v2_9);
-                                mWeatherBlend = blend;
-                                updateWeatherParamNowOld();
-                                mWeatherChangeFrame = mpWeatherInfoNow->mToFrame;
-                                changeWeatherScript(blend > 0.5f);
-                                return;
-                            }
+                        if ((t0 != nullptr) && (t0->mWeatherID == weatherID)) {
+                            v2_9 = weatherID;
+                            mWeatherIDOld = mWeatherID;
+                            mWeatherID = static_cast<s32>(v2_9);
+                            mWeatherBlend = blend;
+                            updateWeatherParamNowOld();
+                            mWeatherChangeFrame = mpWeatherInfoNow->mToFrame;
+                            changeWeatherScript(blend > 0.5f);
+                            return;
+                        }
+                        if ((i0_3 + 1u) < v0_10->getDataNum()) {
+                            i0_3 += 1u;
                         } else {
-                            if ((i0_3 + 1u) < v0_10->getDataNum()) {
-                                i0_3 += 1u;
-                            } else {
-                                break;
-                            }
+                            break;
                         }
                     }
                     v2_9 = 1;

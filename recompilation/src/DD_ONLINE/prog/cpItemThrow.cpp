@@ -95,23 +95,16 @@ void cpItemThrow::updatePtr() {
 }
 
 bool cpItemThrow::requestThrowItem(u32 id, MT_CTSTR uid) {
-    if (mIsItemMode) {
-        return false;
-    } else {
-        if (mIsRequestThrowAct) {
-            return false;
-        } else {
-            if (sPlayerManager::getInstance()->isItemSeal(mpHuman)) {
-                return false;
-            } else {
-                mThrowItemId = id;
-                mThrowItemUId = uid;
-                mIsRequestThrowAct = true;
-                mItemReqKeepTime = 90.0f;
-                return true;
-            }
+    if (!mIsItemMode) {
+        if (!mIsRequestThrowAct && !sPlayerManager::getInstance()->isItemSeal(mpHuman)) {
+            mThrowItemId = id;
+            mThrowItemUId = uid;
+            mIsRequestThrowAct = true;
+            mItemReqKeepTime = 90.0f;
+            return true;
         }
     }
+    return false;
 }
 
 __attribute__((weak)) void cpItemThrow::checkItemMode() {
@@ -124,15 +117,10 @@ uModel* cpItemThrow::getItemModel() const {
 }
 
 MT_CTSTR cpItemThrow::getNowThrowItemUId() const {
-    if (!mIsItemMode) {
-        if (mIsRequestThrowAct) {
-            return mThrowItemUId;
-        } else {
-            return "";
-        }
-    } else {
-        return mThrowItemUId;
+    if (!mIsItemMode && !mIsRequestThrowAct) {
+        return "";
     }
+    return mThrowItemUId;
 }
 
 __attribute__((weak)) void cpItemThrow::changeCommandItemTbl() {

@@ -109,7 +109,7 @@ __attribute__((weak)) void cpSoftBody::update() {
     /* stub */
 }
 
-__attribute__((weak)) void cpSoftBody::release() {
+void cpSoftBody::release() {
         if (mpSimSoftBody) {
             mpSimSoftBody->kill();
             mpSimSoftBody = nullptr;

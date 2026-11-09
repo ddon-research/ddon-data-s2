@@ -144,3 +144,5 @@ MtObject* rQuestTextData::cTextData::MyDTI::newInstance() const {
 
 template MtTypedArray<rQuestTextData::cTextData>::~MtTypedArray();
 
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rQuestTextData::cTextData>&);
+

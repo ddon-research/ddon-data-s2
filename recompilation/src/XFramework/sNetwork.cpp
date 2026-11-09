@@ -40,12 +40,16 @@ sNetwork::sNetwork(MtNetCore::InitParam* param) {
     /* stub */
 }
 
-__attribute__((noinline)) sNetwork::~sNetwork() {
-    DDON_STUB("sNetwork::~sNetwork")
-    /* stub */
+sNetwork::~sNetwork() {
+    this->sNetwork::reset();
+    if (mpCore != nullptr) {
+        delete mpCore;
+        mpCore = nullptr;
+    }
+    sNetwork::mpInstance = nullptr;
 }
 
-void sNetwork::reset() {
+__attribute__((weak)) void sNetwork::reset() {
     if ((sMain::mpInstance)->mExit) {
         MtNetCore::onGuideAppShutdown();
     }

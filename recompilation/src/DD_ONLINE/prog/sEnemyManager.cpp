@@ -312,16 +312,11 @@ u32 sEnemyManager::getEnemyGroupId(u32 em_id) {
                                         break;
                                     }
                                 } else {
-                                    if (v2_9 == nullptr) {
-                                        break;
-                                    } else {
-                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_9) + 8)) != em_id) {
-                                            break;
-                                        } else {
-                                            v6_1 = v1_3->mEnemyGroupId;
-                                            return v6_1;
-                                        }
+                                    if ((v2_9 != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_9) + 8)) == em_id)) {
+                                        v6_1 = v1_3->mEnemyGroupId;
+                                        return v6_1;
                                     }
+                                    break;
                                 }
                             }
                             if ((i1_10 + 1u) < v1_3->mEmList.mLength) {
@@ -373,16 +368,11 @@ s32 sEnemyManager::getMsgIndexFromEnemyId(u32 em_id) {
                                         break;
                                     }
                                 } else {
-                                    if (v2_9 == nullptr) {
-                                        break;
-                                    } else {
-                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_9) + 8)) != em_id) {
-                                            break;
-                                        } else {
-                                            v6_1 = v1_3->mMsgIndex;
-                                            return static_cast<s32>(v6_1);
-                                        }
+                                    if ((v2_9 != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_9) + 8)) == em_id)) {
+                                        v6_1 = v1_3->mMsgIndex;
+                                        return static_cast<s32>(v6_1);
                                     }
+                                    break;
                                 }
                             }
                             if ((i1_10 + 1u) < v1_3->mEmList.mLength) {

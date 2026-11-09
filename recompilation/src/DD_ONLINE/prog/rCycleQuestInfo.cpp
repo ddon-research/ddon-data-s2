@@ -178,9 +178,8 @@ rCycleQuestInfo::cCycleQuestInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 rCycleQuestInfo::cCycleQuestInfo::MyDTI rCycleQuestInfo::cCycleQuestInfo::DTI("rCycleQuestInfo::cCycleQuestInfo", &::MtObject::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rCycleQuestInfo::cCycleQuestInfo::MyDTI::newInstance() const {
-    DDON_STUB("rCycleQuestInfo::cCycleQuestInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* rCycleQuestInfo::cCycleQuestInfo::MyDTI::newInstance() const {
+    return new (16u) rCycleQuestInfo::cCycleQuestInfo;
 }
 
 const MtDTI& rCycleQuestInfo::cCycleQuestSituationInfo::getDTI() const {
@@ -214,4 +213,8 @@ MtObject* rCycleQuestInfo::cCycleQuestSituationInfo::MyDTI::newInstance() const 
 template MtTypedArray<rCycleQuestInfo::cCycleQuestInfo>::~MtTypedArray();
 
 template MtTypedArray<rCycleQuestInfo::cCycleQuestSituationInfo>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rCycleQuestInfo::cCycleQuestInfo>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rCycleQuestInfo::cCycleQuestSituationInfo>&);
 

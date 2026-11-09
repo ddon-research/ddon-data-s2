@@ -923,6 +923,10 @@ void* cGUIInstRoot::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cGUIInstRoot::DTI)->memAlloc(sz, align, cGUIInstRoot::DTI.mID);
 }
 
+inline void cGUIInstRoot::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIInstRoot::DTI)->memFree(p_addr);
+}
+
 cGUIInstRoot::cGUIInstRoot() {
     DDON_STUB("cGUIInstRoot::cGUIInstRoot")
     /* stub */
@@ -974,6 +978,10 @@ const MtDTI& cGUIInstScissorMask::getDTI() const {
 
 void* cGUIInstScissorMask::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void cGUIInstScissorMask::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIInstScissorMask::DTI)->memFree(p_addr);
 }
 
 cGUIInstScissorMask::cGUIInstScissorMask() {
@@ -1048,6 +1056,10 @@ __attribute__((weak)) MtObject* cGUIInstScissorMask::MyDTI::newInstance() const 
 
 const MtDTI& cGUIInstance::getDTI() const {
     return cGUIInstance::DTI;
+}
+
+inline void cGUIInstance::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIInstance::DTI)->memFree(p_addr);
 }
 
 cGUIInstance::~cGUIInstance() {

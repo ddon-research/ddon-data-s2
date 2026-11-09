@@ -263,15 +263,10 @@ uGUIClanScoutBase::~uGUIClanScoutBase() {
 }
 
 bool uGUIClanScoutBase::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CLAN_SCOUT_GUI"), 129u, 1434093049l))) != nullptr) {
-            return loadGMDarc(getArcTag(0u), "RES_ID_CLAN_SCOUT_GMD", 0u);
-        } else {
-            return false;
-        }
-    } else {
-        return loadGMDarc(getArcTag(0u), "RES_ID_CLAN_SCOUT_GMD", 0u);
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CLAN_SCOUT_GUI"), 129u, 1434093049l))) == nullptr)) {
+        return false;
     }
+    return loadGMDarc(getArcTag(0u), "RES_ID_CLAN_SCOUT_GMD", 0u);
 }
 
 void uGUIClanScoutBase::setup() {

@@ -29,6 +29,10 @@ const MtDTI& cGUIObj2D::getDTI() const {
     return cGUIObj2D::DTI;
 }
 
+inline void cGUIObj2D::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIObj2D::DTI)->memFree(p_addr);
+}
+
 cGUIObj2D::cGUIObj2D() {
     DDON_STUB("cGUIObj2D::cGUIObj2D")
     /* stub */
@@ -955,6 +959,10 @@ void* cGUIObjNull::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cGUIObjNull::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIObjNull::DTI)->memFree(p_addr);
+}
+
 cGUIObjNull::cGUIObjNull() {
     DDON_STUB("cGUIObjNull::cGUIObjNull")
     /* stub */
@@ -1396,6 +1404,10 @@ const MtDTI& cGUIObjScissorMask::getDTI() const {
 
 void* cGUIObjScissorMask::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void cGUIObjScissorMask::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIObjScissorMask::DTI)->memFree(p_addr);
 }
 
 cGUIObjScissorMask::cGUIObjScissorMask() {
@@ -1876,6 +1888,10 @@ const MtDTI& cGUIObject::getDTI() const {
 
 MtAllocator* cGUIObject::getAllocator() {
     return MtMemoryAllocator::getAllocator(cGUIObject::DTI);
+}
+
+inline void cGUIObject::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIObject::DTI)->memFree(p_addr);
 }
 
 cGUIObject::~cGUIObject() {

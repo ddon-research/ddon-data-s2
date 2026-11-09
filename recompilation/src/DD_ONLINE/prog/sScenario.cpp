@@ -91,8 +91,8 @@ sScenario::sScenario() {
 }
 
 sScenario::~sScenario() {
-    DDON_STUB("sScenario::~sScenario")
-    /* stub */
+    final();
+    sScenario::mpInstance = nullptr;
 }
 
 __attribute__((weak)) void sScenario::init() {
@@ -110,7 +110,7 @@ __attribute__((weak)) void sScenario::move() {
     /* stub */
 }
 
-void sScenario::final() {
+__attribute__((weak)) void sScenario::final() {
     unsigned int i0_8 = 0;
     u32 v1_0;
     unsigned int i1_7;

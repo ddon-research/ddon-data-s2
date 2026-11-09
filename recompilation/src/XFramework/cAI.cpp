@@ -290,6 +290,10 @@ const MtDTI& cAIGraph::Node::getDTI() const {
     return cAIGraph::Node::DTI;
 }
 
+inline void cAIGraph::Node::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIGraph::Node::DTI)->memFree(p_addr);
+}
+
 cAIGraph::Node::~Node() {
     if (!mAutoDeleteLink) {
         return;
@@ -323,6 +327,10 @@ __attribute__((weak)) MtObject* cAIGraph::Node::MyDTI::newInstance() const {
 
 const MtDTI& cAIGraph::Area::getDTI() const {
     return cAIGraph::Area::DTI;
+}
+
+inline void cAIGraph::Area::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIGraph::Area::DTI)->memFree(p_addr);
 }
 
 cAIGraph::Area::~Area() {
@@ -413,6 +421,10 @@ MtObject* cAITreeBase::MyDTI::newInstance() const {
 
 const MtDTI& cAITreeBase::Node::getDTI() const {
     return cAITreeBase::Node::DTI;
+}
+
+inline void cAITreeBase::Node::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAITreeBase::Node::DTI)->memFree(p_addr);
 }
 
 cAITreeBase::Node::~Node() {

@@ -115,3 +115,12 @@ inline rAreaInfoJointArea::cAreaInfoJointArea::cAreaInfoJointArea() {
     this->mMAJAId = 0;
     this->mAreaId = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtDataReader.h"
+
+inline bool rAreaInfoJointArea::cAreaInfoJointArea::load(MtDataReader& r) {
+    mAreaId = r.readU32();
+    mMAJAId = r.readU32();
+    return true;
+}

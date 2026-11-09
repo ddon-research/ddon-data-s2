@@ -364,7 +364,7 @@ __attribute__((weak)) void cNetLoginServer::updateRTT() {
     }
 }
 
-__attribute__((weak)) void cNetLoginServer::reqSpecialError(s32 errCode, s32 msgNo, bool isDisconnect, bool isReturnLauncher) {
+void cNetLoginServer::reqSpecialError(s32 errCode, s32 msgNo, bool isDisconnect, bool isReturnLauncher) {
         MtNetError error;
         error.mNo = errCode;
         error.mNative = 0;
@@ -644,9 +644,14 @@ __attribute__((weak)) BOOL cSeedLoginSvConnection::OnPacket_L2C_GET_ERROR_MESSAG
     return {};
 }
 
-__attribute__((weak)) BOOL cSeedLoginSvConnection::OnPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC(CPacket* pPacket) {
-    DDON_STUB("cSeedLoginSvConnection::OnPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC")
-    return {};
+BOOL cSeedLoginSvConnection::OnPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC(CPacket* pPacket) {
+    nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC* t0 = mpGetErrorMessageListPacket;
+    if (nPacket::Read(*pPacket, t0->m_usError) != 0) {
+        if (nPacket::Read(*pPacket, t0->m_ErrorMessage) != 0) {
+            t0->m_bIsReceived = true;
+        }
+    }
+    return 1;
 }
 
 __attribute__((weak)) BOOL cSeedLoginSvConnection::OnPacket_L2C_GET_LOGIN_SETTING_RES(CPacket* pPacket) {

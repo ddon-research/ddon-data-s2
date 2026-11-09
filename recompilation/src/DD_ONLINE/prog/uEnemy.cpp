@@ -162,8 +162,6 @@ uEnemy::uEnemy() {
 }
 
 __attribute__((noinline)) uEnemy::~uEnemy() {
-    DDON_STUB("uEnemy::~uEnemy")
-    /* stub */
 }
 
 __attribute__((weak)) void uEnemy::createComponent() {
@@ -400,27 +398,17 @@ void uEnemy::setFsmTarget(uDDOModel* pTargetModel, const MtVector3& targetPos, s
 }
 
 cpErosionEnemy* uEnemy::getErosionEnemy() const {
-    if (getErosionEnemyBase() != nullptr) {
-        if (!getErosionEnemyBase()->isErosionEnemy()) {
-            return nullptr;
-        } else {
-            return static_cast<cpErosionEnemy*>(getErosionEnemyBase());
-        }
-    } else {
-        return nullptr;
+    if ((getErosionEnemyBase() != nullptr) && getErosionEnemyBase()->isErosionEnemy()) {
+        return static_cast<cpErosionEnemy*>(getErosionEnemyBase());
     }
+    return nullptr;
 }
 
 cpErosionSuperEnemy* uEnemy::getErosionEnemySuper() const {
-    if (getErosionEnemyBase() != nullptr) {
-        if (!getErosionEnemyBase()->isErosionEnemySuper()) {
-            return nullptr;
-        } else {
-            return static_cast<cpErosionSuperEnemy*>(getErosionEnemyBase());
-        }
-    } else {
-        return nullptr;
+    if ((getErosionEnemyBase() != nullptr) && getErosionEnemyBase()->isErosionEnemySuper()) {
+        return static_cast<cpErosionSuperEnemy*>(getErosionEnemyBase());
     }
+    return nullptr;
 }
 
 __attribute__((weak)) void uEnemy::callbackFall() {
@@ -1064,18 +1052,11 @@ bool uEnemy::isStatusRage() const {
 
 bool uEnemy::isRageNow() const {
     if (mpEnemyThink != nullptr) {
-        if (mpEnemyThink->mIsRage) {
-            if ((mObjStatus & 0x80000000ul) != 0) {
-                return false;
-            } else {
-                return (mObjStatus & 0x20000ul) == 0;
-            }
-        } else {
-            return false;
+        if (mpEnemyThink->mIsRage && ((mObjStatus & 0x80000000ul) == 0)) {
+            return (mObjStatus & 0x20000ul) == 0;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 bool uEnemy::isSwitchShakeToDown() const {
@@ -1508,30 +1489,15 @@ bool uEnemy::isActiveRageShrink() const {
             if ((mpCharParamEnemy->getCharParamEnemy()->mDamageBounisFlag & 2u) != 0) {
                 if (mpEnemyThink != nullptr) {
                     if (mpEnemyThink->mIsRage) {
-                        if (!isDead()) {
-                            if ((mObjStatus & 0x20000ul) != 0) {
-                                return false;
-                            } else {
-                                return (mObjStatus & 0x80000000ul) == 0;
-                            }
-                        } else {
-                            return false;
+                        if (!isDead() && ((mObjStatus & 0x20000ul) == 0)) {
+                            return (mObjStatus & 0x80000000ul) == 0;
                         }
-                    } else {
-                        return false;
                     }
-                } else {
-                    return false;
                 }
-            } else {
-                return false;
             }
-        } else {
-            return false;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 bool uEnemy::isRageShrinkInvisible() const {
@@ -1585,30 +1551,15 @@ bool uEnemy::isActiveShakeChanceTime(nObjCollision::SHAKE_CHANCE_TYPE chanceType
             if ((mpCharParamEnemy->getCharParamEnemy()->mDamageBounisFlag & 2u) != 0) {
                 if (mpEnemyThink != nullptr) {
                     if (mpEnemyThink->mIsRage) {
-                        if (isDead()) {
-                            return false;
-                        } else {
-                            if ((mObjStatus & 0x80020000ul) != 0) {
-                                return false;
-                            } else {
-                                return mShakeChanceInfo[chanceType].mIsActive;
-                            }
+                        if (!isDead() && ((mObjStatus & 0x80020000ul) == 0)) {
+                            return mShakeChanceInfo[chanceType].mIsActive;
                         }
-                    } else {
-                        return false;
                     }
-                } else {
-                    return false;
                 }
-            } else {
-                return false;
             }
-        } else {
-            return false;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 void uEnemy::activateShakeChanceTime(nObjCollision::SHAKE_CHANCE_TYPE chanceType) {

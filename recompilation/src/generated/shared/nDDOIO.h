@@ -5,6 +5,8 @@
 
 // Dependencies
 #include "../../MT/MtCollection.h"
+#include "../../DD_ONLINE/prog/nDDOUtility.h"
+#include "../../DD_ONLINE/prog/res_ptr.h"
 
 // Forward declarations
 class MtColor;
@@ -82,9 +84,23 @@ namespace nDDOIO {
     void writeData(MtDataWriter& w, const MtSphere& data);
     void readData(MtDataReader& r, cResource* & pr);
     void writeData(MtDataWriter& w, cResource* pr);
+    template <typename T> void readData(MtDataReader& r, res_ptr<T>& pr);
+    template <typename T> void readData(MtDataReader& r, nDDOUtility::cScopedPtr<T>& ptr);
+    template <typename T> void writeData(MtDataWriter& w, res_ptr<T>& pr);
+    template <unsigned int N> void readData(MtDataReader& r, nDDOUtility::cBitSet<N>& data);
+    template <unsigned int N> void writeData(MtDataWriter& w, nDDOUtility::cBitSet<N>& data);
     template <typename T> void readMtArray(MtDataReader& r, MtTypedArray<T>& ar);
+    template <typename T> void readClass(MtDataReader& r, T* & ptr);
+    template <typename T> void readClass(MtDataReader& r, T& obj);
     template <typename T> void writeMtArray(MtDataWriter& w, MtTypedArray<T>& ar);
+    template <typename T> void writeClass(MtDataWriter& w, T* ptr);
+    template <typename T> void readFunc(MtDataReader& r, T* pClass, void(T::*pFunc)(u32));
+    template <typename T> void readFunc(MtDataReader& r, T* pClass, void(T::*pFunc)(bool));
+    template <typename T> void readFunc(MtDataReader& r, T* pClass, void(T::*pFunc)(s32));
+    template <typename T> void writeFunc(MtDataWriter& w, const T* pClass, u32(T::*pFunc)());
+    template <typename T> void writeFunc(MtDataWriter& w, const T* pClass, s32(T::*pFunc)());
     template <typename T> void readMtArrayEx(MtDataReader& r, MtTypedArray<T>& ar);
+    template <typename T, unsigned int N> void readData(MtDataReader& r, nDDOUtility::cArray<T, N>& val);
 
 }  // namespace nDDOIO
 
@@ -148,6 +164,28 @@ inline void nDDOIO::writeData(MtDataWriter& w, cResPathBase& data) {
 inline void nDDOIO::writeData(MtDataWriter& w, u64 data) {
     w.writeU64(data);
 }
+template <typename T>
+void nDDOIO::readMtArray(MtDataReader& r, MtTypedArray<T>& ar) {
+    ar.deleteAll(true);
+    u32 num = r.readU32();
+    if (num > 0) {
+        ar.reserve(num);
+    }
+    for (u32 i = 0; i < num; i++) {
+        T* pElement = static_cast<T*>(T::DTI.newInstance());
+        pElement->load(r);
+        ar.add(pElement);
+    }
+}
+
+inline void nDDOIO::writeData(MtDataWriter& w, u8 data) {
+    w.writeU8(data);
+}
+
 inline void nDDOIO::writeData(MtDataWriter& w, bool data) {
     w.writeU8(data);
+}
+
+inline void nDDOIO::writeData(MtDataWriter& w, u16 data) {
+    w.writeU16(data);
 }

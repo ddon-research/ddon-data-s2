@@ -273,18 +273,11 @@ __attribute__((weak)) bool cControl::execute() {
 
 bool cControl::isExecuteEnable() {
     if (mpParentGUI != nullptr) {
-        if (mpParentGUI->isEnableControlExecution()) {
-            if ((mCtrlF & 32u) != 0) {
-                return false;
-            } else {
-                return mFocus;
-            }
-        } else {
-            return false;
+        if (mpParentGUI->isEnableControlExecution() && ((mCtrlF & 32u) == 0)) {
+            return mFocus;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 bool cControl::isMouseMove() {

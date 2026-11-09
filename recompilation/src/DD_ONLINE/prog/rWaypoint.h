@@ -170,3 +170,13 @@ inline void* rWaypoint::cRoute::operator new(size_t sz, void* p_addr) {
 
 inline rWaypoint::cRoute::cRoute() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtDataReader.h"
+#include "../../generated/shared/nDDOIO.h"
+
+inline bool rWaypoint::cPoint::load(MtDataReader& r) {
+    mPos = r.readV3();
+    nDDOIO::readData(r, mRadius);
+    return true;
+}

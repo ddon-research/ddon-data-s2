@@ -146,6 +146,10 @@ const MtDTI& cAIConditionTree::OperationWorkNode::getDTI() const {
     return cAIConditionTree::OperationWorkNode::DTI;
 }
 
+inline void cAIConditionTree::OperationWorkNode::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIConditionTree::OperationWorkNode::DTI)->memFree(p_addr);
+}
+
 cAIConditionTree::OperationWorkNode::~OperationWorkNode() {
     DDON_STUB("cAIConditionTree::OperationWorkNode::~OperationWorkNode")
     /* stub */
@@ -215,6 +219,10 @@ __attribute__((weak)) MtObject* cAIConditionTree::OperationWorkNode::MyDTI::newI
 
 const MtDTI& cAIConditionTree::ConstWorkNode::getDTI() const {
     return cAIConditionTree::ConstWorkNode::DTI;
+}
+
+inline void cAIConditionTree::ConstWorkNode::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIConditionTree::ConstWorkNode::DTI)->memFree(p_addr);
 }
 
 cAIConditionTree::ConstWorkNode::~ConstWorkNode() {
@@ -309,6 +317,10 @@ __attribute__((weak)) MtObject* cAIConditionTree::ConstWorkNode::MyDTI::newInsta
 
 const MtDTI& cAIConditionTree::ConstEnumWorkNode::getDTI() const {
     return cAIConditionTree::ConstEnumWorkNode::DTI;
+}
+
+inline void cAIConditionTree::ConstEnumWorkNode::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIConditionTree::ConstEnumWorkNode::DTI)->memFree(p_addr);
 }
 
 cAIConditionTree::ConstEnumWorkNode::~ConstEnumWorkNode() {
@@ -434,6 +446,10 @@ const MtDTI& cAIConditionTreeNode::getDTI() const {
 
 inline void* cAIConditionTreeNode::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAIConditionTreeNode::DTI)->memAlloc(sz, align, cAIConditionTreeNode::DTI.mID);
+}
+
+inline void cAIConditionTreeNode::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIConditionTreeNode::DTI)->memFree(p_addr);
 }
 
 cAIConditionTreeNode::~cAIConditionTreeNode() {

@@ -56,32 +56,18 @@ __attribute__((noinline)) uGUIPSStore::~uGUIPSStore() {
 }
 
 bool uGUIPSStore::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_DLC_STATION_GUI"), 129u, 1436277534l))) != nullptr) {
-            if (mpGMDRes == nullptr) {
-                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_DLC_STATION_GMD"), 129u, 0l))) != nullptr) {
-                    mpGMDRes;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_DLC_STATION_GUI"), 129u, 1436277534l))) == nullptr)) {
+        return false;
+    }
+    if (mpGMDRes == nullptr) {
+        if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_DLC_STATION_GMD"), 129u, 0l))) != nullptr) {
+            mpGMDRes;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDRes == nullptr) {
-            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_DLC_STATION_GMD"), 129u, 0l))) != nullptr) {
-                mpGMDRes;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return true;
     }
 }
 
@@ -672,8 +658,6 @@ const MtDTI& uGUIPSStore::cHistoryListInfo::getDTI() const {
 }
 
 uGUIPSStore::cHistoryListInfo::~cHistoryListInfo() {
-    DDON_STUB("uGUIPSStore::cHistoryListInfo::~cHistoryListInfo")
-    /* stub */
 }
 
 uGUIPSStore::cHistoryListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

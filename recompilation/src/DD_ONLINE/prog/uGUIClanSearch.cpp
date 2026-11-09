@@ -357,31 +357,13 @@ uGUIClanSearchBase::~uGUIClanSearchBase() {
 }
 
 bool uGUIClanSearchBase::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CLAN_SEARCH_GUI"), 129u, 1475035308l))) != nullptr) {
-            if (mpSeRes == nullptr) {
-                if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_CLAN_SRQR"), 129u, 0l))) != nullptr) {
-                    return loadGMDarc(getArcTag(0u), "RES_ID_CLAN_SEARCH_GMD", 0u);
-                } else {
-                    return false;
-                }
-            } else {
-                return loadGMDarc(getArcTag(0u), "RES_ID_CLAN_SEARCH_GMD", 0u);
-            }
-        } else {
-            return false;
-        }
-    } else {
-        if (mpSeRes == nullptr) {
-            if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_CLAN_SRQR"), 129u, 0l))) != nullptr) {
-                return loadGMDarc(getArcTag(0u), "RES_ID_CLAN_SEARCH_GMD", 0u);
-            } else {
-                return false;
-            }
-        } else {
-            return loadGMDarc(getArcTag(0u), "RES_ID_CLAN_SEARCH_GMD", 0u);
-        }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CLAN_SEARCH_GUI"), 129u, 1475035308l))) == nullptr)) {
+        return false;
     }
+    if ((mpSeRes == nullptr) && ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_CLAN_SRQR"), 129u, 0l))) == nullptr)) {
+        return false;
+    }
+    return loadGMDarc(getArcTag(0u), "RES_ID_CLAN_SEARCH_GMD", 0u);
 }
 
 void uGUIClanSearchBase::setup() {

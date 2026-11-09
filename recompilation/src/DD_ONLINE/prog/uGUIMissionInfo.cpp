@@ -79,15 +79,10 @@ __attribute__((noinline)) uGUIMissionInfo::~uGUIMissionInfo() {
 }
 
 bool uGUIMissionInfo::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MISSION_INFO_GUI"), 129u, 1478682932l))) != nullptr) {
-            return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
-        } else {
-            return false;
-        }
-    } else {
-        return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MISSION_INFO_GUI"), 129u, 1478682932l))) == nullptr)) {
+        return false;
     }
+    return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
 }
 
 __attribute__((weak)) void uGUIMissionInfo::setup() {
@@ -139,24 +134,15 @@ bool uGUIMissionInfo::isSelectDecideButton() {
     }
     if (mpBtnHCtrl != nullptr) {
         if (mpBtnHCtrl->mCurrentPos != 0) {
-            if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
-                if (mInvitation == true) {
-                    return false;
-                } else {
-                    mIsSkipAction = true;
-                    return true;
-                }
-            } else {
-                return false;
+            if ((sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) && (mInvitation != true)) {
+                mIsSkipAction = true;
+                return true;
             }
-        } else {
-            mIsSkipAction = true;
-            return true;
+            return false;
         }
-    } else {
-        mIsSkipAction = true;
-        return true;
     }
+    mIsSkipAction = true;
+    return true;
 }
 
 void uGUIMissionInfo::initSystem(bool focus) {

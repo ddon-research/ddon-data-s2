@@ -50,8 +50,58 @@ cpDDMrlMgr::cpDDMrlMgr() {
 }
 
 __attribute__((noinline)) cpDDMrlMgr::~cpDDMrlMgr() {
-    DDON_STUB("cpDDMrlMgr::~cpDDMrlMgr")
-    /* stub */
+    if (mNowMARD.mLength != 0) {
+        u32 v0_0 = mNowMARD.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mNowMARD.mpArray[i0_3] != nullptr) {
+                delete mNowMARD.mpArray[i0_3];
+                if ((i0_3 + 1u) < mNowMARD.mLength) {
+                    v0_0 = mNowMARD.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mNowMARD.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNowMARD.mpArray));
+    }
+    mNowMARD.mpArray = nullptr;
+    mNowMARD.mBufsiz = 0;
+    mNowMARD.mLength = 0;
+    if (mOldMARD.mLength != 0) {
+        u32 v2_0 = mOldMARD.mLength;
+        for (unsigned int i2_3 = 0;;) {
+            if (mOldMARD.mpArray[i2_3] != nullptr) {
+                delete mOldMARD.mpArray[i2_3];
+                if ((i2_3 + 1u) < mOldMARD.mLength) {
+                    v2_0 = mOldMARD.mLength;
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mOldMARD.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mOldMARD.mpArray));
+    }
+    mOldMARD.mpArray = nullptr;
+    mOldMARD.mBufsiz = 0;
+    mOldMARD.mLength = 0;
 }
 
 void cpDDMrlMgr::setup() {

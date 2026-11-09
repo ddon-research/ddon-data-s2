@@ -216,3 +216,30 @@ inline void* rNpcLedgerList::cItem::cInstitution::operator new(size_t sz, void* 
 inline void* rNpcLedgerList::cItem::cInstitutionOpenData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../generated/shared/nDDOIO.h"
+
+inline bool rNpcLedgerList::cItem::cInstitution::load(MtDataReader& r) {
+    mInstitutionId = r.readU32();
+    mInstitutionParam = r.readU32();
+    nDDOIO::readMtArray(r, mInstitutionOpenList);
+    return true;
+}
+
+inline void* rNpcLedgerList::cItem::cInstitution::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::cInstitution::DTI)->memAlloc(sz, align, rNpcLedgerList::cItem::cInstitution::DTI.getID());
+}
+
+inline bool rNpcLedgerList::cItem::cInstitutionOpenData::load(MtDataReader& r) {
+    mType = r.readU32();
+    mFlagNo = r.readU32();
+    return true;
+}
+
+inline void* rNpcLedgerList::cItem::cInstitutionOpenData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::cInstitutionOpenData::DTI)->memAlloc(sz, align, rNpcLedgerList::cItem::cInstitutionOpenData::DTI.getID());
+}

@@ -121,3 +121,15 @@ inline rSituationMsgCtrl::cSituationData::cSituationData(u32 GroupSerial, u32 St
     this->mEndQuestId = 0;
     this->mIsEndQuestIdStart = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtDataWriter.h"
+
+inline bool rSituationMsgCtrl::cSituationData::save(MtDataWriter& w) {
+    w.writeU32(mGroupSerial);
+    w.writeU32(mStartQuestId);
+    w.writeU8(mIsStartQuestIdStart);
+    w.writeU32(mEndQuestId);
+    w.writeU8(mIsEndQuestIdStart);
+    return true;
+}

@@ -44,15 +44,10 @@ uGUIDialogTextBox::~uGUIDialogTextBox() {
 }
 
 bool uGUIDialogTextBox::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_INPUT_FORM_GUI"), 129u, 1419160100l))) != nullptr) {
-            return loadGMDarc(getArcTag(0u), "RES_ID_DIALOGTEXTBOX_RES_GMD", 0u);
-        } else {
-            return false;
-        }
-    } else {
-        return loadGMDarc(getArcTag(0u), "RES_ID_DIALOGTEXTBOX_RES_GMD", 0u);
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_INPUT_FORM_GUI"), 129u, 1419160100l))) == nullptr)) {
+        return false;
     }
+    return loadGMDarc(getArcTag(0u), "RES_ID_DIALOGTEXTBOX_RES_GMD", 0u);
 }
 
 __attribute__((weak)) void uGUIDialogTextBox::setup() {

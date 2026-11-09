@@ -117,3 +117,12 @@ inline rTutorialDialogMessage::cDialogPage::cDialogPage() {
     this->mTextGmdIdx = 0;
     this->mImageId = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtDataReader.h"
+
+inline bool rTutorialDialogMessage::cDialogPage::load(MtDataReader& r) {
+    mTextGmdIdx = r.readU32();
+    mImageId = r.readU32();
+    return true;
+}

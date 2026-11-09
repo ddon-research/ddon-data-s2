@@ -473,23 +473,14 @@ cGroupParam::EmSetInfo* cGroupParam::getEmSetInfo(u32 posId) {
     } else {
         MtObject* * v0_1 = mSetInfoList.mpArray;
         for (u32 v0_0 = mSetInfoList.mLength - 1u;;) {
-            if (v0_1[v0_0] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[v0_0]) + 8)) != posId) {
-                    if (static_cast<int>(v0_0 - 1u) > -1) {
-                        v0_0 += 0xFFFFFFFFu;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_0 = v0_1[v0_0];
-                    return static_cast<EmSetInfo*>(v2_0);
-                }
+            if ((v0_1[v0_0] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[v0_0]) + 8)) == posId)) {
+                v2_0 = v0_1[v0_0];
+                return static_cast<EmSetInfo*>(v2_0);
+            }
+            if (static_cast<int>(v0_0 - 1u) > -1) {
+                v0_0 += 0xFFFFFFFFu;
             } else {
-                if (static_cast<int>(v0_0 - 1u) > -1) {
-                    v0_0 += 0xFFFFFFFFu;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_0 = nullptr;
@@ -1197,8 +1188,171 @@ void rLayoutGroupParamList::clear() {
 }
 
 __attribute__((weak)) bool rLayoutGroupParamList::load(MtStream& in) {
-    DDON_STUB("rLayoutGroupParamList::load")
-    return {};
+    MtDataReader r(in, 4096u);
+    if (r.readU32() != 0x6c7067u) {
+        return false;
+    }
+    u32 ver = r.readU32();
+    if (ver != 64u) {
+        return false;
+    }
+    clear();
+    MtDataReader& t1 = r;
+    u32* t0 = mGroupList;
+    u32 num = t1.readU32();
+    t1.read(t0, num * 4u);
+    const u32 groupNum = r.readU32();
+    if (groupNum == 0) {
+        mGroupNum = 0;
+        mpGroupParamBuff = nullptr;
+        return true;
+    }
+    nLayoutGroupParam::NeedAllocCountInfo info;
+    r.read(&info, sizeof(info));
+    u32 TotalAllocSize = groupNum * sizeof(cGroupParam) + info.AreaHitShapeTotalNum * sizeof(AreaHitShape) + info.ShapeInfoSphereTotalNum * sizeof(nZone::ShapeInfoSphere) + info.IdTotalNum * sizeof(cGroupParam::cID) + info.ShapeInfoConeTotalNum * sizeof(nZone::ShapeInfoCone) + info.ShapeInfoOBBTotalNum * sizeof(nZone::ShapeInfoOBB) + info.LifeAreaTotalNum * sizeof(cGroupParam::cLifeArea) + info.ShapeInfoCylinderTotalNum * sizeof(nZone::ShapeInfoCylinder) + info.ShapeInfoAABBTotalNum * sizeof(nZone::ShapeInfoAABB) + info.ShapeInfoAreaTotalNum * sizeof(nZone::ShapeInfoArea);
+    nCollisionUtil::LoadBuffer MemBuffer;
+    MemBuffer.pBuffer = static_cast<u8*>(MtMemoryAllocator::getAllocator(rLayoutGroupParamList::DTI)->memAlloc(TotalAllocSize, 16u, rLayoutGroupParamList::DTI.getID()));
+    if (MemBuffer.pBuffer == nullptr) {
+        return false;
+    }
+    MemBuffer.Position = 0;
+    memset(&mAllocInfo, 0, sizeof(mAllocInfo));
+    u8* t2 = MemBuffer.pBuffer;
+    for (u32 t3 = 0; t3 < groupNum; t3++) {
+        new (t2 + MemBuffer.Position) cGroupParam();
+        MemBuffer.Position += sizeof(cGroupParam);
+    }
+    mpGroupParamBuff = reinterpret_cast<cGroupParam*>(t2);
+    
+    AreaHitShape* t4 = nullptr;
+    u32 t21 = info.AreaHitShapeTotalNum;
+    if (t21 != 0) {
+        t4 = reinterpret_cast<AreaHitShape*>(t2 + MemBuffer.Position);
+        for (u32 t3 = 0; t3 < t21; t3++) {
+            new (t2 + MemBuffer.Position) AreaHitShape();
+            MemBuffer.Position += sizeof(AreaHitShape);
+        }
+    }
+    mAllocInfo.pAreaHitShapeArray = t4;
+    mAllocInfo.AreaHitShapeUseNum = 0;
+    mAllocInfo.AreaHitShapeMaxNum = info.AreaHitShapeTotalNum;
+    
+    nZone::ShapeInfoArea* t5 = nullptr;
+    u32 t22 = info.ShapeInfoAreaTotalNum;
+    if (t22 != 0) {
+        t5 = reinterpret_cast<nZone::ShapeInfoArea*>(t2 + MemBuffer.Position);
+        for (u32 t3 = 0; t3 < t22; t3++) {
+            new (t2 + MemBuffer.Position) nZone::ShapeInfoArea();
+            MemBuffer.Position += sizeof(nZone::ShapeInfoArea);
+        }
+    }
+    mAllocInfo.ShapeAllocInfo.pShapeBoxArray = t5;
+    mAllocInfo.ShapeAllocInfo.ShapeBoxUseNum = 0;
+    mAllocInfo.ShapeAllocInfo.ShapeBoxMaxNum = info.ShapeInfoAreaTotalNum;
+    
+    nZone::ShapeInfoSphere* t6 = nullptr;
+    u32 t23 = info.ShapeInfoSphereTotalNum;
+    if (t23 != 0) {
+        t6 = reinterpret_cast<nZone::ShapeInfoSphere*>(t2 + MemBuffer.Position);
+        for (u32 t3 = 0; t3 < t23; t3++) {
+            new (t2 + MemBuffer.Position) nZone::ShapeInfoSphere();
+            MemBuffer.Position += sizeof(nZone::ShapeInfoSphere);
+        }
+    }
+    mAllocInfo.ShapeAllocInfo.pShapeSphereArray = t6;
+    mAllocInfo.ShapeAllocInfo.ShapeSphereUseNum = 0;
+    mAllocInfo.ShapeAllocInfo.ShapeSphereMaxNum = info.ShapeInfoSphereTotalNum;
+    
+    nZone::ShapeInfoCylinder* t7 = nullptr;
+    u32 t24 = info.ShapeInfoCylinderTotalNum;
+    if (t24 != 0) {
+        t7 = reinterpret_cast<nZone::ShapeInfoCylinder*>(t2 + MemBuffer.Position);
+        for (u32 t3 = 0; t3 < t24; t3++) {
+            new (t2 + MemBuffer.Position) nZone::ShapeInfoCylinder();
+            MemBuffer.Position += sizeof(nZone::ShapeInfoCylinder);
+        }
+    }
+    mAllocInfo.ShapeAllocInfo.pShapeCylinderArray = t7;
+    mAllocInfo.ShapeAllocInfo.ShapeCylinderUseNum = 0;
+    mAllocInfo.ShapeAllocInfo.ShapeCylinderMaxNum = info.ShapeInfoCylinderTotalNum;
+    
+    nZone::ShapeInfoCone* t8 = nullptr;
+    u32 t25 = info.ShapeInfoConeTotalNum;
+    if (t25 != 0) {
+        t8 = reinterpret_cast<nZone::ShapeInfoCone*>(t2 + MemBuffer.Position);
+        for (u32 t3 = 0; t3 < t25; t3++) {
+            new (t2 + MemBuffer.Position) nZone::ShapeInfoCone();
+            MemBuffer.Position += sizeof(nZone::ShapeInfoCone);
+        }
+    }
+    mAllocInfo.ShapeAllocInfo.pShapeConeArray = t8;
+    mAllocInfo.ShapeAllocInfo.ShapeConeUseNum = 0;
+    mAllocInfo.ShapeAllocInfo.ShapeConeMaxNum = info.ShapeInfoConeTotalNum;
+    
+    nZone::ShapeInfoAABB* t9 = nullptr;
+    u32 t26 = info.ShapeInfoAABBTotalNum;
+    if (t26 != 0) {
+        t9 = reinterpret_cast<nZone::ShapeInfoAABB*>(t2 + MemBuffer.Position);
+        for (u32 t3 = 0; t3 < t26; t3++) {
+            new (t2 + MemBuffer.Position) nZone::ShapeInfoAABB();
+            MemBuffer.Position += sizeof(nZone::ShapeInfoAABB);
+        }
+    }
+    mAllocInfo.ShapeAllocInfo.pShapeAABBArray = t9;
+    mAllocInfo.ShapeAllocInfo.ShapeAABBUseNum = 0;
+    mAllocInfo.ShapeAllocInfo.ShapeAABBMaxNum = info.ShapeInfoAABBTotalNum;
+    
+    nZone::ShapeInfoOBB* t10 = nullptr;
+    u32 t27 = info.ShapeInfoOBBTotalNum;
+    if (t27 != 0) {
+        t10 = reinterpret_cast<nZone::ShapeInfoOBB*>(t2 + MemBuffer.Position);
+        for (u32 t3 = 0; t3 < t27; t3++) {
+            new (t2 + MemBuffer.Position) nZone::ShapeInfoOBB();
+            MemBuffer.Position += sizeof(nZone::ShapeInfoOBB);
+        }
+    }
+    mAllocInfo.ShapeAllocInfo.pShapeOBBArray = t10;
+    mAllocInfo.ShapeAllocInfo.ShapeOBBUseNum = 0;
+    mAllocInfo.ShapeAllocInfo.ShapeOBBMaxNum = info.ShapeInfoOBBTotalNum;
+    
+    cGroupParam::cLifeArea* t11 = nullptr;
+    u32 t28 = info.LifeAreaTotalNum;
+    if (t28 != 0) {
+        t11 = reinterpret_cast<cGroupParam::cLifeArea*>(t2 + MemBuffer.Position);
+        for (u32 t3 = 0; t3 < t28; t3++) {
+            new (t2 + MemBuffer.Position) cGroupParam::cLifeArea();
+            MemBuffer.Position += sizeof(cGroupParam::cLifeArea);
+        }
+    }
+    mAllocInfo.pLifeAreaArray = t11;
+    mAllocInfo.LifeAreaUseNum = 0;
+    mAllocInfo.LifeAreaMaxNum = info.LifeAreaTotalNum;
+    
+    cGroupParam::cID* t12 = nullptr;
+    u32 t29 = info.IdTotalNum;
+    if (t29 != 0) {
+        t12 = reinterpret_cast<cGroupParam::cID*>(t2 + MemBuffer.Position);
+        for (u32 t3 = 0; t3 < t29; t3++) {
+            new (t2 + MemBuffer.Position) cGroupParam::cID();
+            MemBuffer.Position += sizeof(cGroupParam::cID);
+        }
+    }
+    mAllocInfo.pIdArray = t12;
+    mAllocInfo.IdUseNum = 0;
+    mAllocInfo.IdMaxNum = info.IdTotalNum;
+    
+    u32 t13 = 0;
+    for (u32 i = 0; i < GROUP_NUM; i++) {
+        if (static_cast<s32>(mGroupList[i]) < 0) {
+            if (t13 == groupNum) {
+                return false;
+            }
+            mpGroupParamBuff[t13].load(r, mAllocInfo);
+            t13++;
+        }
+    }
+    mGroupNum = groupNum;
+    return true;
 }
 
 bool rLayoutGroupParamList::save(MtStream& out) {

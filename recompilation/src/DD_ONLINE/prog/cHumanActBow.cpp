@@ -165,9 +165,21 @@ void cPlActWpnBow::updateEfcHandle() {
     }
 }
 
-__attribute__((weak)) void cPlActWpnBow::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cPlActWpnBow::applyWorldOffset")
-    /* stub */
+void cPlActWpnBow::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    uHuman* t0 = mpHuman;
+    const MtVector3& t1 = t0->getBowNetAimPos();
+    const f32 t2 = t1.x;
+    const f32 t3 = t1.y;
+    const f32 t4 = offset.x;
+    const f32 t5 = offset.y;
+    const f32 t6 = t1.z;
+    const f32 t7 = offset.z;
+    MtVector3 frame56;
+    frame56.x = t2 + t4;
+    frame56.y = t3 + t5;
+    frame56.z = t6 + t7;
+    frame56.pad_ = 0.0f;
+    t0->setBowNetAimPos(frame56);
 }
 
 __attribute__((weak)) void cPlActWpnBow::checkLow() {

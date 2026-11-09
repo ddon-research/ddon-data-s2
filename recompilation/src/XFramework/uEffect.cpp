@@ -424,9 +424,8 @@ bool uEffect::isCreateChildUnit() const {
     return mChildUnitLevel < (sEffect::mpInstance)->mChildUnitLevel;
 }
 
-__attribute__((weak)) MT_CTSTR uEffect::getEffectListPath() const {
-    DDON_STUB("uEffect::getEffectListPath")
-    return {};
+MT_CTSTR uEffect::getEffectListPath() const {
+    return (mpEffectList == nullptr) ? "No Resource!" : (&mpEffectList->mPath[0]);
 }
 
 __attribute__((weak)) MtVector3 uEffect::calcDir(const MtVector3& Rot, u32 Order, u32 AxisType) {

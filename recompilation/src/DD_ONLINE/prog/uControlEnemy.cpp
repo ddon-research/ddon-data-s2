@@ -28,8 +28,6 @@ inline void* uControlEnemy::operator new(size_t sz, u32 align) {
 }
 
 uControlEnemy::~uControlEnemy() {
-    DDON_STUB("uControlEnemy::~uControlEnemy")
-    /* stub */
 }
 
 void uControlEnemy::createProperty(MtPropertyList& s) {

@@ -68,44 +68,25 @@ void uGUIJobSelect::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIJobSelect::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JOBSEL_GUI"), 129u, 1418709948l))) != nullptr) {
-            if (loadGMDarc(getArcTag(0u), "RES_ID_JOB_INFO_GMD", 0u)) {
-                if (loadGMDarc(getArcTag(0u), "RES_ID_CHARACTER_EDIT_JOB_GMD", 1u)) {
-                    if (loadGMDarc(getArcTag(0u), "RES_ID_CHARACTER_EDIT_HELP_GMD", 2u)) {
-                        if (loadGMDarc(getArcTag(0u), "RES_ID_CHARACTER_EDIT_DIALOG_GMD", 3u)) {
-                            if (mpGUIMsgsSecond.elems[0] == nullptr) {
-                                if ((mpGUIMsgsSecond.elems[0] = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JOB_SKILL_MANAGER_GMD"), 129u, 0l))) != nullptr) {
-                                    if (mpGUIMsgsSecond.elems[1] == nullptr) {
-                                        if ((mpGUIMsgsSecond.elems[1] = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_WEAPON_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                                            mpGUIMsgsSecond.elems[1];
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
-                                    } else {
-                                        return true;
-                                    }
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                if (mpGUIMsgsSecond.elems[1] == nullptr) {
-                                    if ((mpGUIMsgsSecond.elems[1] = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_WEAPON_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                                        mpGUIMsgsSecond.elems[1];
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                } else {
-                                    return true;
-                                }
-                            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JOBSEL_GUI"), 129u, 1418709948l))) == nullptr)) {
+        return false;
+    }
+    if (loadGMDarc(getArcTag(0u), "RES_ID_JOB_INFO_GMD", 0u)) {
+        if (loadGMDarc(getArcTag(0u), "RES_ID_CHARACTER_EDIT_JOB_GMD", 1u)) {
+            if (loadGMDarc(getArcTag(0u), "RES_ID_CHARACTER_EDIT_HELP_GMD", 2u)) {
+                if (loadGMDarc(getArcTag(0u), "RES_ID_CHARACTER_EDIT_DIALOG_GMD", 3u)) {
+                    if ((mpGUIMsgsSecond.elems[0] == nullptr) && ((mpGUIMsgsSecond.elems[0] = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JOB_SKILL_MANAGER_GMD"), 129u, 0l))) == nullptr)) {
+                        return false;
+                    }
+                    if (mpGUIMsgsSecond.elems[1] == nullptr) {
+                        if ((mpGUIMsgsSecond.elems[1] = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_WEAPON_CTGR_GMD"), 129u, 0l))) != nullptr) {
+                            mpGUIMsgsSecond.elems[1];
+                            return true;
                         } else {
                             return false;
                         }
                     } else {
-                        return false;
+                        return true;
                     }
                 } else {
                     return false;
@@ -117,49 +98,7 @@ bool uGUIJobSelect::loadResource() {
             return false;
         }
     } else {
-        if (loadGMDarc(getArcTag(0u), "RES_ID_JOB_INFO_GMD", 0u)) {
-            if (loadGMDarc(getArcTag(0u), "RES_ID_CHARACTER_EDIT_JOB_GMD", 1u)) {
-                if (loadGMDarc(getArcTag(0u), "RES_ID_CHARACTER_EDIT_HELP_GMD", 2u)) {
-                    if (loadGMDarc(getArcTag(0u), "RES_ID_CHARACTER_EDIT_DIALOG_GMD", 3u)) {
-                        if (mpGUIMsgsSecond.elems[0] == nullptr) {
-                            if ((mpGUIMsgsSecond.elems[0] = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JOB_SKILL_MANAGER_GMD"), 129u, 0l))) != nullptr) {
-                                if (mpGUIMsgsSecond.elems[1] == nullptr) {
-                                    if ((mpGUIMsgsSecond.elems[1] = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_WEAPON_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                                        mpGUIMsgsSecond.elems[1];
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                } else {
-                                    return true;
-                                }
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            if (mpGUIMsgsSecond.elems[1] == nullptr) {
-                                if ((mpGUIMsgsSecond.elems[1] = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_WEAPON_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                                    mpGUIMsgsSecond.elems[1];
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                return true;
-                            }
-                        }
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        return false;
     }
 }
 

@@ -265,9 +265,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_AREA_CHANGE_RES::operator d
     ::nUserSession::CPacket_S2C_AREA_CHANGE_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_AREA_CHANGE_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_AREA_CHANGE_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_AREA_CHANGE_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unStageNo) != 0) {
+                if (::nPacket::Read(*pPacket, m_bIsBase) != 0) {
+                    if (::nPacket::Read(*pPacket, m_StageFeatureList) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_AREA_CHANGE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -294,9 +307,28 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_AREA_RANK_UP_RES::operator 
     ::nUserSession::CPacket_S2C_AREA_RANK_UP_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_AREA_RANK_UP_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_AREA_RANK_UP_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_AREA_RANK_UP_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unAreaId) != 0) {
+                if (::nPacket::Read(*pPacket, m_unAreaRank) != 0) {
+                    if (::nPacket::Read(*pPacket, m_unAreaPoint) != 0) {
+                        if (::nPacket::Read(*pPacket, m_unNextAreaPoint) != 0) {
+                            if (::nPacket::Read(*pPacket, m_ReleaseList) != 0) {
+                                if (::nPacket::Read(*pPacket, m_ReleaseWarpList) != 0) {
+                                    m_bIsReceived = true;
+                                    return 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_AREA_RANK_UP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1304,9 +1336,38 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::ope
     ::nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_FunctionInfo.m_ReleaseIdList) != 0) {
+                if (::nPacket::Read(*pPacket, m_DungeonInfo.m_ReleaseIdList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_PawnExpeditionInfo.m_ucSallyStatus) != 0) {
+                        if (::nPacket::Read(*pPacket, m_PawnExpeditionInfo.m_ucGoldenSallyPrice) != 0) {
+                            if (::nPacket::Read(*pPacket, m_PawnExpeditionInfo.m_ucChargeSallyPrice) != 0) {
+                                if (::nPacket::Read(*pPacket, m_PartnerPawnInfo.m_MyPartnerPawnList) != 0) {
+                                    if (::nPacket::Read(*pPacket, m_PartnerPawnInfo.m_MemberPartnerPawnList) != 0) {
+                                        if (::nPacket::Read(*pPacket, m_ConciergeInfo.m_unNpcId) != 0) {
+                                            if (::nPacket::Read(*pPacket, m_ConciergeInfo.m_ClanConciergeNpcList) != 0) {
+                                                if (::nPacket::Read(*pPacket, m_ShopLineupNameList) != 0) {
+                                                    if (::nPacket::Read(*pPacket, m_ClanValueInfoList) != 0) {
+                                                        m_bIsReceived = true;
+                                                        return 1;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2215,9 +2276,26 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIS
     ::nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_BuffItemList) != 0) {
+                if (::nPacket::Read(*pPacket, m_unClanPoint) != 0) {
+                    if (::nPacket::Read(*pPacket, m_ShopInfo.m_unClanPoint) != 0) {
+                        if (::nPacket::Read(*pPacket, m_ShopInfo.m_CurrentFunctionList) != 0) {
+                            if (::nPacket::Read(*pPacket, m_ShopInfo.m_CurrentBuffList) != 0) {
+                                m_bIsReceived = true;
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2245,9 +2323,26 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM
     ::nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_FunctionItemList) != 0) {
+                if (::nPacket::Read(*pPacket, m_unClanPoint) != 0) {
+                    if (::nPacket::Read(*pPacket, m_ShopInfo.m_unClanPoint) != 0) {
+                        if (::nPacket::Read(*pPacket, m_ShopInfo.m_CurrentFunctionList) != 0) {
+                            if (::nPacket::Read(*pPacket, m_ShopInfo.m_CurrentBuffList) != 0) {
+                                m_bIsReceived = true;
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4293,9 +4388,38 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::o
     ::nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unAreaId) != 0) {
+                if (::nPacket::Read(*pPacket, m_unRank) != 0) {
+                    if (::nPacket::Read(*pPacket, m_unPoint) != 0) {
+                        if (::nPacket::Read(*pPacket, m_unWeekPoint) != 0) {
+                            if (::nPacket::Read(*pPacket, m_unLastWeekPoint) != 0) {
+                                if (::nPacket::Read(*pPacket, m_unToNextPoint) != 0) {
+                                    if (::nPacket::Read(*pPacket, m_ReleaseList) != 0) {
+                                        if (::nPacket::Read(*pPacket, m_bCanReciveSupply) != 0) {
+                                            if (::nPacket::Read(*pPacket, m_bCanRankUp) != 0) {
+                                                if (::nPacket::Read(*pPacket, m_SupplyItemInfoList) != 0) {
+                                                    if (::nPacket::Read(*pPacket, m_AreaRankUpQuestInfoList) != 0) {
+                                                        m_bIsReceived = true;
+                                                        return 1;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4584,9 +4708,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RE
     ::nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_unResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_CharacterEquipList) != 0) {
+                if (::nPacket::Read(*pPacket, m_EquipJobItemList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_PawnEquipItemList) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4733,9 +4870,24 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::oper
     ::nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_CraftProduct.m_unItemID) != 0) {
+                if (::nPacket::Read(*pPacket, m_CraftProduct.m_unItemNum) != 0) {
+                    if (::nPacket::Read(*pPacket, m_CraftProduct.m_ucPlusValue) != 0) {
+                        if (::nPacket::Read(*pPacket, m_UpdateItemList) != 0) {
+                            m_bIsReceived = true;
+                            return 1;
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4762,9 +4914,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES
     ::nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_CraftProgressList) != 0) {
+                if (::nPacket::Read(*pPacket, m_CraftMyPawnList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_CreatedReicpeList) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4791,9 +4956,26 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::oper
     ::nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_ColorRegulateItemList) != 0) {
+                if (::nPacket::Read(*pPacket, m_TimeSaveCostList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_unReasonableCraftLv) != 0) {
+                        if (::nPacket::Read(*pPacket, m_unCraftItemLv) != 0) {
+                            if (::nPacket::Read(*pPacket, m_ucCreateCountMax) != 0) {
+                                m_bIsReceived = true;
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4868,9 +5050,26 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NOW_POIN
     ::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NOW_POINT_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NOW_POINT_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NOW_POINT_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NOW_POINT_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_unResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unCycleContentsScheduleId) != 0) {
+                if (::nPacket::Read(*pPacket, m_QuestPointDetail.m_QuestPointList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_QuestPointDetail.m_QuestEnemyPointList) != 0) {
+                        if (::nPacket::Read(*pPacket, m_QuestPointDetail.m_QuestRegionBreakPointList) != 0) {
+                            if (::nPacket::Read(*pPacket, m_QuestPointDetail.m_QuestDeliveryPointList) != 0) {
+                                m_bIsReceived = true;
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NOW_POINT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4898,9 +5097,26 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_POINT_LI
     ::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_POINT_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_POINT_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_POINT_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_POINT_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_unResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unCycleContentsScheduleId) != 0) {
+                if (::nPacket::Read(*pPacket, m_QuestPointDetail.m_QuestPointList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_QuestPointDetail.m_QuestEnemyPointList) != 0) {
+                        if (::nPacket::Read(*pPacket, m_QuestPointDetail.m_QuestRegionBreakPointList) != 0) {
+                            if (::nPacket::Read(*pPacket, m_QuestPointDetail.m_QuestDeliveryPointList) != 0) {
+                                m_bIsReceived = true;
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_POINT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4952,9 +5168,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_R
     ::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unCycleContentsScheduleId) != 0) {
+                if (::nPacket::Read(*pPacket, m_CycleContentsRewardList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_bIsAddRewardBox) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -5077,9 +5306,26 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::ope
     ::nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_LayoutId.m_unStageID) != 0) {
+                if (::nPacket::Read(*pPacket, m_LayoutId.m_ucLayerNo) != 0) {
+                    if (::nPacket::Read(*pPacket, m_LayoutId.m_unGroupID) != 0) {
+                        if (::nPacket::Read(*pPacket, m_unId) != 0) {
+                            if (::nPacket::Read(*pPacket, m_ItemList) != 0) {
+                                m_bIsReceived = true;
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -5106,9 +5352,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES:
     ::nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unGroupID) != 0) {
+                if (::nPacket::Read(*pPacket, m_unEndContentsType) != 0) {
+                    if (::nPacket::Read(*pPacket, m_EndContentsGroup.m_TimeGainQuestList) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -5227,9 +5486,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::operat
     ::nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_FriendInfoList) != 0) {
+                if (::nPacket::Read(*pPacket, m_ApplyingCharacterList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_ApprovingCharacterList) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -5282,9 +5554,30 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES
     ::nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_LayoutId.m_unStageID) != 0) {
+                if (::nPacket::Read(*pPacket, m_LayoutId.m_ucLayerNo) != 0) {
+                    if (::nPacket::Read(*pPacket, m_LayoutId.m_unGroupID) != 0) {
+                        if (::nPacket::Read(*pPacket, m_unPosId) != 0) {
+                            if (::nPacket::Read(*pPacket, m_wstrGatheringItemUID) != 0) {
+                                if (::nPacket::Read(*pPacket, m_bIsGatheringItemBreak) != 0) {
+                                    if (::nPacket::Read(*pPacket, m_ItemList) != 0) {
+                                        m_bIsReceived = true;
+                                        return 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -5311,9 +5604,26 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::ope
     ::nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_LayoutId.m_unStageID) != 0) {
+                if (::nPacket::Read(*pPacket, m_LayoutId.m_ucLayerNo) != 0) {
+                    if (::nPacket::Read(*pPacket, m_LayoutId.m_unGroupID) != 0) {
+                        if (::nPacket::Read(*pPacket, m_unPosId) != 0) {
+                            if (::nPacket::Read(*pPacket, m_GatheringItemGetRequestList) != 0) {
+                                m_bIsReceived = true;
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -5504,9 +5814,24 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::op
     ::nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_JobChangeInfo) != 0) {
+                if (::nPacket::Read(*pPacket, m_JobReleaseInfo) != 0) {
+                    if (::nPacket::Read(*pPacket, m_PawnJobChangeInfoList) != 0) {
+                        if (::nPacket::Read(*pPacket, m_PlayPointList) != 0) {
+                            m_bIsReceived = true;
+                            return 1;
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -5654,9 +5979,26 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::o
     ::nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unBaseID) != 0) {
+                if (::nPacket::Read(*pPacket, m_LightQuestList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_ucNotCompleteQuestNum) != 0) {
+                        if (::nPacket::Read(*pPacket, m_ucGpCompletePriceGp) != 0) {
+                            if (::nPacket::Read(*pPacket, m_bGpCompleteEnable) != 0) {
+                                m_bIsReceived = true;
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -5905,9 +6247,24 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::operat
     ::nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_PawnList) != 0) {
+                if (::nPacket::Read(*pPacket, m_PartnerInfo.m_unPawnId) != 0) {
+                    if (::nPacket::Read(*pPacket, m_PartnerInfo.m_unLikability) != 0) {
+                        if (::nPacket::Read(*pPacket, m_PartnerInfo.m_ucPersonality) != 0) {
+                            m_bIsReceived = true;
+                            return 1;
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -6194,9 +6551,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES::op
     ::nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_unResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unPawnID) != 0) {
+                if (::nPacket::Read(*pPacket, m_CharacterEquipList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_EquipJobItemList) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -6415,9 +6785,26 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::o
     ::nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unPawnID) != 0) {
+                if (::nPacket::Read(*pPacket, m_PawnTotalScore.m_unRentalCount) != 0) {
+                    if (::nPacket::Read(*pPacket, m_PawnTotalScore.m_unBattleCount) != 0) {
+                        if (::nPacket::Read(*pPacket, m_PawnTotalScore.m_unCraftCount) != 0) {
+                            if (::nPacket::Read(*pPacket, m_PawnTotalScore.m_AveragePawnFeedbackList) != 0) {
+                                m_bIsReceived = true;
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -7094,9 +7481,24 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES
     ::nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unDistributeID) != 0) {
+                if (::nPacket::Read(*pPacket, m_SetQuestInfoList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_usAreaBaseMinLevel) != 0) {
+                        if (::nPacket::Read(*pPacket, m_usAreaBaseMaxLevel) != 0) {
+                            m_bIsReceived = true;
+                            return 1;
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -7786,9 +8188,24 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::op
     ::nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_unResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unLineupId) != 0) {
+                if (::nPacket::Read(*pPacket, m_CommonIdList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_unBalance) != 0) {
+                        if (::nPacket::Read(*pPacket, m_wstrLineupName) != 0) {
+                            m_bIsReceived = true;
+                            return 1;
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -8171,9 +8588,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_R
     ::nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_ucJobId) != 0) {
+                if (::nPacket::Read(*pPacket, m_ucJobValueType) != 0) {
+                    if (::nPacket::Read(*pPacket, m_JobValueShopItemList) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -9191,9 +9621,28 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_OPEN_UI_NTC::operator delet
     ::nUserSession::CPacket_S2C_OPEN_UI_NTC::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_OPEN_UI_NTC::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_OPEN_UI_NTC::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_OPEN_UI_NTC::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_unId) != 0) {
+            if (::nPacket::Read(*pPacket, m_usType) != 0) {
+                if (::nPacket::Read(*pPacket, m_wstrTitleJP) != 0) {
+                    if (::nPacket::Read(*pPacket, m_wstrTitleEN) != 0) {
+                        if (::nPacket::Read(*pPacket, m_unArgNum1) != 0) {
+                            if (::nPacket::Read(*pPacket, m_Commands) != 0) {
+                                if (::nPacket::Read(*pPacket, m_Elements) != 0) {
+                                    m_bIsReceived = true;
+                                    return 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_OPEN_UI_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -10338,9 +10787,26 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_I
     ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_ucSallyCount) != 0) {
+                if (::nPacket::Read(*pPacket, m_AreaIdList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_HotSpotInfoList) != 0) {
+                        if (::nPacket::Read(*pPacket, m_ActiveBuffLineupList) != 0) {
+                            if (::nPacket::Read(*pPacket, m_ClanSallySpotInfoList) != 0) {
+                                m_bIsReceived = true;
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -11454,9 +11920,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::operato
     ::nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_ucQuestProgressResult) != 0) {
+                if (::nPacket::Read(*pPacket, m_unQuestScheduleId) != 0) {
+                    if (::nPacket::Read(*pPacket, m_QuestProcessStateList) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -11483,9 +11962,24 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_PROGRESS_WORK_SAVE_NO
     ::nUserSession::CPacket_S2C_QUEST_PROGRESS_WORK_SAVE_NOTICE::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_QUEST_PROGRESS_WORK_SAVE_NOTICE::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_PROGRESS_WORK_SAVE_NOTICE::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_QUEST_PROGRESS_WORK_SAVE_NOTICE::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_unQuestScheduleId) != 0) {
+            if (::nPacket::Read(*pPacket, m_usProcessNo) != 0) {
+                if (::nPacket::Read(*pPacket, m_usSequenceNo) != 0) {
+                    if (::nPacket::Read(*pPacket, m_usBlockNo) != 0) {
+                        if (::nPacket::Read(*pPacket, m_WorkList) != 0) {
+                            m_bIsReceived = true;
+                            return 1;
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_QUEST_PROGRESS_WORK_SAVE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -11919,9 +12413,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_
     ::nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unRank) != 0) {
+                if (::nPacket::Read(*pPacket, m_RankingData) != 0) {
+                    if (::nPacket::Read(*pPacket, m_llModified) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -11948,9 +12455,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::oper
     ::nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unRank) != 0) {
+                if (::nPacket::Read(*pPacket, m_RankingData) != 0) {
+                    if (::nPacket::Read(*pPacket, m_llModified) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -12316,9 +12836,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_R
     ::nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_ucJobID) != 0) {
+                if (::nPacket::Read(*pPacket, m_ReleaseElementList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_NewOrderIdList) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -12345,9 +12878,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_RESET_CRAFTPOINT_RES::opera
     ::nUserSession::CPacket_S2C_RESET_CRAFTPOINT_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_RESET_CRAFTPOINT_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_RESET_CRAFTPOINT_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_RESET_CRAFTPOINT_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unPawnID) != 0) {
+                if (::nPacket::Read(*pPacket, m_CraftSkillList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_unCraftPoint) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_RESET_CRAFTPOINT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -13477,9 +14023,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::o
     ::nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_usTotalStampNum) != 0) {
+                if (::nPacket::Read(*pPacket, m_StampBonusDaily) != 0) {
+                    if (::nPacket::Read(*pPacket, m_StampBonusTotal) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -13574,9 +14133,44 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_START_EQUIP_GRADE_UP_RES::o
     ::nUserSession::CPacket_S2C_START_EQUIP_GRADE_UP_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_START_EQUIP_GRADE_UP_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_START_EQUIP_GRADE_UP_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_START_EQUIP_GRADE_UP_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_wstrGradeUpItemUID) != 0) {
+                if (::nPacket::Read(*pPacket, m_unGradeUpItemID) != 0) {
+                    if (::nPacket::Read(*pPacket, m_GradeUpItemIDList) != 0) {
+                        if (::nPacket::Read(*pPacket, m_unAddEquipPoint) != 0) {
+                            if (::nPacket::Read(*pPacket, m_unTotalEquipPoint) != 0) {
+                                if (::nPacket::Read(*pPacket, m_unEquipGrade) != 0) {
+                                    if (::nPacket::Read(*pPacket, m_unGold) != 0) {
+                                        if (::nPacket::Read(*pPacket, m_bIsGreatSuccess) != 0) {
+                                            if (::nPacket::Read(*pPacket, m_CurrentEquip.m_wstrItemUID) != 0) {
+                                                if (::nPacket::Read(*pPacket, m_CurrentEquip.m_EquipSlot.m_unCharacterId) != 0) {
+                                                    if (::nPacket::Read(*pPacket, m_CurrentEquip.m_EquipSlot.m_unPawnId) != 0) {
+                                                        if (::nPacket::Read(*pPacket, m_CurrentEquip.m_EquipSlot.m_ucEquipType) != 0) {
+                                                            if (::nPacket::Read(*pPacket, m_CurrentEquip.m_EquipSlot.m_ucEquipSlotNo) != 0) {
+                                                                if (::nPacket::Read(*pPacket, m_unBeforeItemID) != 0) {
+                                                                    m_bIsReceived = true;
+                                                                    return 1;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_START_EQUIP_GRADE_UP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -13772,9 +14366,26 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RE
     ::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_ullId) != 0) {
+                if (::nPacket::Read(*pPacket, m_AttachmentList.m_ItemList) != 0) {
+                    if (::nPacket::Read(*pPacket, m_AttachmentList.m_GPList) != 0) {
+                        if (::nPacket::Read(*pPacket, m_AttachmentList.m_OptionCourseList) != 0) {
+                            if (::nPacket::Read(*pPacket, m_AttachmentList.m_LegendPawnList) != 0) {
+                                m_bIsReceived = true;
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -14658,9 +15269,22 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::o
     ::nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) s32 nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::ReadPacket(CPacket* pPacket) {
-    DDON_STUB("nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::ReadPacket")
-    return {};
+s32 nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::ReadPacket(CPacket* pPacket) {
+    if (::nPacket::Read(*pPacket, m_usError) != 0) {
+        if (::nPacket::Read(*pPacket, m_nResult) != 0) {
+            if (::nPacket::Read(*pPacket, m_unIntervalGameHour) != 0) {
+                if (::nPacket::Read(*pPacket, m_unGameDayToEarthMin) != 0) {
+                    if (::nPacket::Read(*pPacket, m_ForecastList) != 0) {
+                        m_bIsReceived = true;
+                        return 1;
+                    }
+                }
+            }
+        }
+        return m_usError != 0;
+    } else {
+        return 0;
+    }
 }
 
 nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

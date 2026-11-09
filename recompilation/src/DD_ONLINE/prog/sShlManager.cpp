@@ -52,8 +52,7 @@ sShlManager::sShlManager() {
 }
 
 sShlManager::~sShlManager() {
-    DDON_STUB("sShlManager::~sShlManager")
-    /* stub */
+    sShlManager::mpInstance = nullptr;
 }
 
 __attribute__((weak)) void sShlManager::createProperty(MtPropertyList& s) {

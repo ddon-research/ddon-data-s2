@@ -1,14 +1,14 @@
 {
   "bundle": {
-    "golden": "golden/031-t349",
-    "name": "output_2026-11-07_031_merge349",
-    "rendered": 24857
+    "golden": "golden/031-t404",
+    "name": "output_2026-11-09_031_merge404",
+    "rendered": 24949
   },
   "census": {
-    "approximate": 4020,
+    "approximate": 4044,
     "includes_to_regroup": 0,
-    "proven": 20837,
-    "stubs": 19521
+    "proven": 20905,
+    "stubs": 19396
   },
   "files": [
     {

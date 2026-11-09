@@ -233,9 +233,8 @@ rDungeonMarker::cWarpInfo::cIndex::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 
 rDungeonMarker::cWarpInfo::cIndex::MyDTI rDungeonMarker::cWarpInfo::cIndex::DTI("rDungeonMarker::cWarpInfo::cIndex", &::MtObject::DTI, 16ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rDungeonMarker::cWarpInfo::cIndex::MyDTI::newInstance() const {
-    DDON_STUB("rDungeonMarker::cWarpInfo::cIndex::MyDTI::newInstance")
-    return nullptr;
+MtObject* rDungeonMarker::cWarpInfo::cIndex::MyDTI::newInstance() const {
+    return new (16u) rDungeonMarker::cWarpInfo::cIndex;
 }
 
 const MtDTI& rDungeonMarker::cPosition::getDTI() const {
@@ -278,4 +277,20 @@ template MtTypedArray<rDungeonMarker::cPosition>::~MtTypedArray();
 template MtTypedArray<rDungeonMarker::cWarpInfo::cIndex>::~MtTypedArray();
 
 template MtTypedArray<rDungeonMarker::cWarpInfo>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rDungeonMarker::cWarpInfo>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rDungeonMarker::cPosition>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rDungeonMarker::cWarpInfo::cIndex>&);
+
+template <typename T>
+void nDDOIO::writeMtArray(MtDataWriter& w, MtTypedArray<T>& ar) {
+    w.writeU32(ar.size());
+    for (u32 i = 0; i < ar.size(); i++) {
+        static_cast<T*>(ar.getBuffer()[(s32)i])->save(w);
+    }
+}
+
+template void nDDOIO::writeMtArray(MtDataWriter&, MtTypedArray<rDungeonMarker::cWarpInfo>&);
 

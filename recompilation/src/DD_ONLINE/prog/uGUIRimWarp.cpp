@@ -70,134 +70,24 @@ __attribute__((weak)) void uGUIRimWarp::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIRimWarp::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_WARP_GUI"), 129u, 1467795096l))) != nullptr) {
-            if (mpGMDRes == nullptr) {
-                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
-                    if (mpLobbyWarpLoc == nullptr) {
-                        if ((mpLobbyWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                            if (mpWarpLoc == nullptr) {
-                                if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                                    mpWarpLoc;
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                return true;
-                            }
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        if (mpWarpLoc == nullptr) {
-                            if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                                mpWarpLoc;
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return true;
-                        }
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                if (mpLobbyWarpLoc == nullptr) {
-                    if ((mpLobbyWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                        if (mpWarpLoc == nullptr) {
-                            if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                                mpWarpLoc;
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return true;
-                        }
-                    } else {
-                        return false;
-                    }
-                } else {
-                    if (mpWarpLoc == nullptr) {
-                        if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                            mpWarpLoc;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_WARP_GUI"), 129u, 1467795096l))) == nullptr)) {
+        return false;
+    }
+    if ((mpGMDRes == nullptr) && ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) == nullptr)) {
+        return false;
+    }
+    if ((mpLobbyWarpLoc == nullptr) && ((mpLobbyWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), 129u, 0l))) == nullptr)) {
+        return false;
+    }
+    if (mpWarpLoc == nullptr) {
+        if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+            mpWarpLoc;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDRes == nullptr) {
-            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
-                if (mpLobbyWarpLoc == nullptr) {
-                    if ((mpLobbyWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                        if (mpWarpLoc == nullptr) {
-                            if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                                mpWarpLoc;
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return true;
-                        }
-                    } else {
-                        return false;
-                    }
-                } else {
-                    if (mpWarpLoc == nullptr) {
-                        if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                            mpWarpLoc;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
-            } else {
-                return false;
-            }
-        } else {
-            if (mpLobbyWarpLoc == nullptr) {
-                if ((mpLobbyWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                    if (mpWarpLoc == nullptr) {
-                        if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                            mpWarpLoc;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                if (mpWarpLoc == nullptr) {
-                    if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
-                        mpWarpLoc;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            }
-        }
+        return true;
     }
 }
 

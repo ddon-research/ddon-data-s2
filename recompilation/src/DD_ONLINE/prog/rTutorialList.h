@@ -121,3 +121,15 @@ inline rTutorialList::cTutorialNode::cTutorialNode() {
     this->mId = 0;
     this->mSortNo = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtDataReader.h"
+
+inline bool rTutorialList::cTutorialNode::load(MtDataReader& r) {
+    mId = r.readU32();
+    mSortNo = r.readU32();
+    mTitleGmdIdx = r.readU32();
+    mCategory = r.readU32();
+    mOpenQuestId = r.readU32();
+    return true;
+}

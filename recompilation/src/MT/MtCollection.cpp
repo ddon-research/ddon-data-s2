@@ -333,6 +333,10 @@ inline void* MtMap::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtMap::DTI)->memAlloc(sz, align, MtMap::DTI.mID);
 }
 
+inline void MtMap::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(MtMap::DTI)->memFree(p_addr);
+}
+
 inline MtMap::MtMap() {
     memset(static_cast<void*>(&mpHashTable[0]), 0, 18441ul);
 }

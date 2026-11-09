@@ -136,3 +136,38 @@ inline void* cAISensorNodeRes::operator new(size_t sz, void* p_addr) {
 inline void* rAISensor::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline cAISensorNodeRes::cAISensorNodeRes() {
+    mSphere.pos = MtFloat3A::Zero;
+    mSphere.r = 8000.0f;
+    mDir = MtVector3::AxisZ;
+    mEffectiveAngle = 6.283186f;
+    mJntNo = -1;
+    mGroupFlag = 0u;
+    mUserFlag = 0u;
+    mStatusFlag = 0u;
+}
+
+inline void cAISensorNodeRes::load(MtDataReader& r) {
+    mSphere.pos.x = r.readF32();
+    mSphere.pos.y = r.readF32();
+    mSphere.pos.z = r.readF32();
+    mSphere.r = r.readF32();
+    mDir = r.readV3();
+    mEffectiveAngle = r.readF32();
+    u32 num = r.readU32();
+    r.read(&mCategoryFlag, num * 4u);
+    mGroupFlag = r.readU32();
+    mUserFlag = r.readU32();
+    mStatusFlag = r.readU32();
+    mJntNo = r.readS32();
+}
+
+inline void* cAISensorNodeRes::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAISensorNodeRes::DTI)->memAlloc(sz, align, cAISensorNodeRes::DTI.getID());
+}

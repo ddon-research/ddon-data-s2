@@ -166,6 +166,10 @@ inline void* rWeatherEffectParam::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline void* cEffectCorrectParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cEffectCorrectParam::DTI)->memAlloc(sz, align, cEffectCorrectParam::DTI.getID());
+}
+
 inline void* rWeatherEffectParam::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rWeatherEffectParam::DTI)->memAlloc(sz, align, rWeatherEffectParam::DTI.getID());
 }

@@ -31,6 +31,7 @@ namespace nZone { class ShapeInfoOBB; }
 namespace nZone { class ShapeInfoPanel; }
 namespace nZone { class ShapeInfoSphere; }
 namespace nZone { class cLayoutElement; }
+class rEmEffectTable;
 class rItemList;
 class rMsgSet;
 class sInputManager;
@@ -81,6 +82,7 @@ class MtDataWriter
     friend class nZone::ShapeInfoPanel;
     friend class nZone::ShapeInfoSphere;
     friend class nZone::cLayoutElement;
+    friend class rEmEffectTable;
     friend class rItemList;
     friend class rMsgSet;
     friend class sInputManager;

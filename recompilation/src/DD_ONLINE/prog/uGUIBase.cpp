@@ -1302,15 +1302,10 @@ __attribute__((weak)) bool uGUIBase::autoWrapMessage(MT_STR pDst, MT_CTSTR pSrc,
 }
 
 bool uGUIBase::isNoRegistSystemCallBack() {
-    if (mGUIExtNetMgrUseId != 0) {
-        return false;
-    } else {
-        if (mpItemMgrRequest != nullptr) {
-            return false;
-        } else {
-            return !cQuestSvRequestManager::hasRequest(static_cast<const MtObject*>(this));
-        }
+    if ((mGUIExtNetMgrUseId == 0) && (mpItemMgrRequest == nullptr)) {
+        return !cQuestSvRequestManager::hasRequest(static_cast<const MtObject*>(this));
     }
+    return false;
 }
 
 inline void uGUIBase::releaseRegistSystemCallBack() {
@@ -2261,82 +2256,43 @@ __attribute__((weak)) void uGUIBase::cReferenceUIPullDown::execute() {
 
 bool uGUIBase::cReferenceUIPullDown::moveEvent() {
     if (mState == STATE_IDLE) {
-        if (!mIsInputEvent) {
-            if (mScrList.isInputEvent()) {
-                if (mpUnit->mInputEventId <= 51u) {
-                    if (((0x2100000000000ul >> static_cast<unsigned long>(mpUnit->mInputEventId & 63u)) & 1ul) == 0) {
-                        if (((0x8200000000000ul >> static_cast<unsigned long>(mpUnit->mInputEventId & 63u)) & 1ul) != 0) {
-                            mCancel = true;
-                            mState = STATE_CLOSE_INIT;
-                            return true;
+        if (!mIsInputEvent && !mScrList.isInputEvent()) {
+            return false;
+        }
+        if (mpUnit->mInputEventId <= 51u) {
+            if (((0x2100000000000ul >> static_cast<unsigned long>(mpUnit->mInputEventId & 63u)) & 1ul) == 0) {
+                if (((0x8200000000000ul >> static_cast<unsigned long>(mpUnit->mInputEventId & 63u)) & 1ul) != 0) {
+                    mCancel = true;
+                    mState = STATE_CLOSE_INIT;
+                    return true;
+                } else {
+                    if (((0x4400000000000ul >> static_cast<unsigned long>(mpUnit->mInputEventId & 63u)) & 1ul) != 0) {
+                        mDecide = true;
+                        mState = STATE_CLOSE_INIT;
+                        if (mScrList.mpVCtrl != nullptr) {
+                            if (mScrList.mpVCtrl->getCurrentPos() < static_cast<int>(mMsgArray.mLength)) {
+                                changeTitleText(static_cast<u32>(mScrList.mpVCtrl->getCurrentPos()));
+                            }
                         } else {
-                            if (((0x4400000000000ul >> static_cast<unsigned long>(mpUnit->mInputEventId & 63u)) & 1ul) != 0) {
-                                mDecide = true;
-                                mState = STATE_CLOSE_INIT;
-                                if (mScrList.mpVCtrl != nullptr) {
-                                    if (mScrList.mpVCtrl->getCurrentPos() < static_cast<int>(mMsgArray.mLength)) {
-                                        changeTitleText(static_cast<u32>(mScrList.mpVCtrl->getCurrentPos()));
-                                    }
-                                } else {
-                                    if (static_cast<int>(mMsgArray.mLength) > 0) {
-                                        changeTitleText(0u);
-                                    }
-                                }
-                                return true;
-                            } else {
-                                return false;
+                            if (static_cast<int>(mMsgArray.mLength) > 0) {
+                                changeTitleText(0u);
                             }
                         }
-                    } else {
-                        if (mScrList.mpVCtrl != nullptr) {
-                            mScrList.setListPos(static_cast<u32>(mScrList.mpVCtrl->getCurrentPos()), false);
-                        } else {
-                            mScrList.setListPos(0u, false);
-                        }
                         return true;
+                    } else {
+                        return false;
                     }
-                } else {
-                    return false;
                 }
             } else {
-                return false;
+                if (mScrList.mpVCtrl != nullptr) {
+                    mScrList.setListPos(static_cast<u32>(mScrList.mpVCtrl->getCurrentPos()), false);
+                } else {
+                    mScrList.setListPos(0u, false);
+                }
+                return true;
             }
         } else {
-            if (mpUnit->mInputEventId <= 51u) {
-                if (((0x2100000000000ul >> static_cast<unsigned long>(mpUnit->mInputEventId & 63u)) & 1ul) == 0) {
-                    if (((0x8200000000000ul >> static_cast<unsigned long>(mpUnit->mInputEventId & 63u)) & 1ul) != 0) {
-                        mCancel = true;
-                        mState = STATE_CLOSE_INIT;
-                        return true;
-                    } else {
-                        if (((0x4400000000000ul >> static_cast<unsigned long>(mpUnit->mInputEventId & 63u)) & 1ul) != 0) {
-                            mDecide = true;
-                            mState = STATE_CLOSE_INIT;
-                            if (mScrList.mpVCtrl != nullptr) {
-                                if (mScrList.mpVCtrl->getCurrentPos() < static_cast<int>(mMsgArray.mLength)) {
-                                    changeTitleText(static_cast<u32>(mScrList.mpVCtrl->getCurrentPos()));
-                                }
-                            } else {
-                                if (static_cast<int>(mMsgArray.mLength) > 0) {
-                                    changeTitleText(0u);
-                                }
-                            }
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                } else {
-                    if (mScrList.mpVCtrl != nullptr) {
-                        mScrList.setListPos(static_cast<u32>(mScrList.mpVCtrl->getCurrentPos()), false);
-                    } else {
-                        mScrList.setListPos(0u, false);
-                    }
-                    return true;
-                }
-            } else {
-                return false;
-            }
+            return false;
         }
     } else {
         return false;
@@ -3105,31 +3061,18 @@ void uGUIBase::cScrollList::setEnableKey(bool flag) {
 bool uGUIBase::cScrollList::moveEvent() {
     if (mIsInputEvent) {
         if (mpOwner->getInputEvent() <= 15u) {
-            if (((48640ul >> static_cast<unsigned long>(mpOwner->getInputEvent() & 31u)) & 1ul) == 0) {
-                if (((16400ul >> static_cast<unsigned long>(mpOwner->getInputEvent() & 31u)) & 1ul) != 0) {
-                    if (mpVCtrl != nullptr) {
-                        setListPos(static_cast<u32>(mpVCtrl->getCurrentPos()), false);
-                    } else {
-                        setListPos(0u, false);
-                    }
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                if (mpVCtrl != nullptr) {
-                    setListPos(static_cast<u32>(mpVCtrl->getCurrentPos()), false);
-                } else {
-                    setListPos(0u, false);
-                }
-                return true;
+            if ((((48640ul >> static_cast<unsigned long>(mpOwner->getInputEvent() & 31u)) & 1ul) == 0) && (((16400ul >> static_cast<unsigned long>(mpOwner->getInputEvent() & 31u)) & 1ul) == 0)) {
+                return false;
             }
-        } else {
-            return false;
+            if (mpVCtrl != nullptr) {
+                setListPos(static_cast<u32>(mpVCtrl->getCurrentPos()), false);
+            } else {
+                setListPos(0u, false);
+            }
+            return true;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 u32 uGUIBase::cScrollList::getInputEvent() {
@@ -3241,15 +3184,10 @@ __attribute__((weak)) void uGUIBase::cScrollCtrl::moveScroll(s32 scroll_num) {
 }
 
 bool uGUIBase::cScrollCtrl::update(f32 delta_time) {
-    if (mIsAutoUpdateMouseOperation) {
-        if (!updateMouseOperation(delta_time)) {
-            return updateScroll(delta_time);
-        } else {
-            return true;
-        }
-    } else {
-        return updateScroll(delta_time);
+    if (mIsAutoUpdateMouseOperation && updateMouseOperation(delta_time)) {
+        return true;
     }
+    return updateScroll(delta_time);
 }
 
 __attribute__((weak)) bool uGUIBase::cScrollCtrl::updateMouseOperation(f32 delta_time) {

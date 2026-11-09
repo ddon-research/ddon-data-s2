@@ -57,32 +57,18 @@ uGUINpcWindow::~uGUINpcWindow() {
 }
 
 bool uGUINpcWindow::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NPCWINDOW04_GUI"), 129u, 1432186983l))) != nullptr) {
-            if (mpGUIMsg == nullptr) {
-                if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NPCWINDOW_RES_GMD"), 129u, 0l))) != nullptr) {
-                    mpGUIMsg;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NPCWINDOW04_GUI"), 129u, 1432186983l))) == nullptr)) {
+        return false;
+    }
+    if (mpGUIMsg == nullptr) {
+        if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NPCWINDOW_RES_GMD"), 129u, 0l))) != nullptr) {
+            mpGUIMsg;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGUIMsg == nullptr) {
-            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NPCWINDOW_RES_GMD"), 129u, 0l))) != nullptr) {
-                mpGUIMsg;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return true;
     }
 }
 

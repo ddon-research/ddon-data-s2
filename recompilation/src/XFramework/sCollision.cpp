@@ -2193,6 +2193,10 @@ const MtDTI& sCollision::cSbcHeightField::getDTI() const {
     return sCollision::cSbcHeightField::DTI;
 }
 
+inline void sCollision::cSbcHeightField::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sCollision::cSbcHeightField::DTI)->memFree(p_addr);
+}
+
 sCollision::cSbcHeightField::cSbcHeightField() {
     DDON_STUB("sCollision::cSbcHeightField::cSbcHeightField")
     /* stub */

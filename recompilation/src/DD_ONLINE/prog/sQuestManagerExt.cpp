@@ -383,24 +383,15 @@ void sQuestManagerExt::notifyReloadMasterData() {
     } else {
         MtObject* * v12_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         for (unsigned int i12_2 = 0;;) {
-            if (v12_1[i12_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v12_1[i12_2]) + 8)) != 7) {
-                    if ((i12_2 + 1u) < v12_0) {
-                        i12_2 = i12_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v14_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v12_1[i12_2])->getQuestManager();
-                    v14_4->callbackReloadMasterData();
-                    return;
-                }
+            if ((v12_1[i12_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v12_1[i12_2]) + 8)) == 7)) {
+                v14_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v12_1[i12_2])->getQuestManager();
+                v14_4->callbackReloadMasterData();
+                return;
+            }
+            if ((i12_2 + 1u) < v12_0) {
+                i12_2 = i12_2 + 1u;
             } else {
-                if ((i12_2 + 1u) < v12_0) {
-                    i12_2 = i12_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v14_4 = nullptr;
@@ -1897,23 +1888,14 @@ __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContents
         } else {
             MtObject* * v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             for (unsigned int i2_2 = 0;;) {
-                if (v2_1[i2_2] != nullptr) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 6) {
-                        if ((i2_2 + 1u) < v2_0) {
-                            i2_2 = i2_2 + 1u;
-                        } else {
-                            break;
-                        }
-                    } else {
-                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
-                        return static_cast<cCycleQuestManagerBase*>(v8_0);
-                    }
+                if ((v2_1[i2_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) == 6)) {
+                    v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
+                    return static_cast<cCycleQuestManagerBase*>(v8_0);
+                }
+                if ((i2_2 + 1u) < v2_0) {
+                    i2_2 = i2_2 + 1u;
                 } else {
-                    if ((i2_2 + 1u) < v2_0) {
-                        i2_2 = i2_2 + 1u;
-                    } else {
-                        break;
-                    }
+                    break;
                 }
             }
             v8_0 = nullptr;
@@ -1956,23 +1938,14 @@ __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContents
             } else {
                 MtObject* * v6_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
                 for (unsigned int i6_2 = 0;;) {
-                    if (v6_1[i6_2] != nullptr) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + 8)) != 7) {
-                            if ((i6_2 + 1u) < v6_0) {
-                                i6_2 = i6_2 + 1u;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->getQuestManager();
-                            return static_cast<cCycleQuestManagerBase*>(v8_0);
-                        }
+                    if ((v6_1[i6_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + 8)) == 7)) {
+                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->getQuestManager();
+                        return static_cast<cCycleQuestManagerBase*>(v8_0);
+                    }
+                    if ((i6_2 + 1u) < v6_0) {
+                        i6_2 = i6_2 + 1u;
                     } else {
-                        if ((i6_2 + 1u) < v6_0) {
-                            i6_2 = i6_2 + 1u;
-                        } else {
-                            break;
-                        }
+                        break;
                     }
                 }
                 v8_0 = nullptr;
@@ -2021,23 +1994,14 @@ __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContents
         } else {
             MtObject* * v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             for (unsigned int i2_2 = 0;;) {
-                if (v2_1[i2_2] != nullptr) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 6) {
-                        if ((i2_2 + 1u) < v2_0) {
-                            i2_2 = i2_2 + 1u;
-                        } else {
-                            break;
-                        }
-                    } else {
-                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
-                        return static_cast<cCycleQuestManagerBase*>(v8_0);
-                    }
+                if ((v2_1[i2_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) == 6)) {
+                    v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
+                    return static_cast<cCycleQuestManagerBase*>(v8_0);
+                }
+                if ((i2_2 + 1u) < v2_0) {
+                    i2_2 = i2_2 + 1u;
                 } else {
-                    if ((i2_2 + 1u) < v2_0) {
-                        i2_2 = i2_2 + 1u;
-                    } else {
-                        break;
-                    }
+                    break;
                 }
             }
             v8_0 = nullptr;
@@ -2080,23 +2044,14 @@ __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContents
             } else {
                 MtObject* * v6_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
                 for (unsigned int i6_2 = 0;;) {
-                    if (v6_1[i6_2] != nullptr) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + 8)) != 7) {
-                            if ((i6_2 + 1u) < v6_0) {
-                                i6_2 = i6_2 + 1u;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->getQuestManager();
-                            return static_cast<cCycleQuestManagerBase*>(v8_0);
-                        }
+                    if ((v6_1[i6_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + 8)) == 7)) {
+                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->getQuestManager();
+                        return static_cast<cCycleQuestManagerBase*>(v8_0);
+                    }
+                    if ((i6_2 + 1u) < v6_0) {
+                        i6_2 = i6_2 + 1u;
                     } else {
-                        if ((i6_2 + 1u) < v6_0) {
-                            i6_2 = i6_2 + 1u;
-                        } else {
-                            break;
-                        }
+                        break;
                     }
                 }
                 v8_0 = nullptr;
@@ -2145,23 +2100,14 @@ __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContents
         } else {
             MtObject* * v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             for (unsigned int i2_2 = 0;;) {
-                if (v2_1[i2_2] != nullptr) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 6) {
-                        if ((i2_2 + 1u) < v2_0) {
-                            i2_2 = i2_2 + 1u;
-                        } else {
-                            break;
-                        }
-                    } else {
-                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
-                        return static_cast<cCycleQuestManagerBase*>(v8_0);
-                    }
+                if ((v2_1[i2_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) == 6)) {
+                    v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
+                    return static_cast<cCycleQuestManagerBase*>(v8_0);
+                }
+                if ((i2_2 + 1u) < v2_0) {
+                    i2_2 = i2_2 + 1u;
                 } else {
-                    if ((i2_2 + 1u) < v2_0) {
-                        i2_2 = i2_2 + 1u;
-                    } else {
-                        break;
-                    }
+                    break;
                 }
             }
             v8_0 = nullptr;
@@ -2204,23 +2150,14 @@ __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContents
             } else {
                 MtObject* * v6_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
                 for (unsigned int i6_2 = 0;;) {
-                    if (v6_1[i6_2] != nullptr) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + 8)) != 7) {
-                            if ((i6_2 + 1u) < v6_0) {
-                                i6_2 = i6_2 + 1u;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->getQuestManager();
-                            return static_cast<cCycleQuestManagerBase*>(v8_0);
-                        }
+                    if ((v6_1[i6_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + 8)) == 7)) {
+                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->getQuestManager();
+                        return static_cast<cCycleQuestManagerBase*>(v8_0);
+                    }
+                    if ((i6_2 + 1u) < v6_0) {
+                        i6_2 = i6_2 + 1u;
                     } else {
-                        if ((i6_2 + 1u) < v6_0) {
-                            i6_2 = i6_2 + 1u;
-                        } else {
-                            break;
-                        }
+                        break;
                     }
                 }
                 v8_0 = nullptr;
@@ -2325,23 +2262,14 @@ u32 sQuestManagerExt::getEndContentsPurposeNum() const {
         } else {
             MtObject* * v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             for (unsigned int i2_2 = 0;;) {
-                if (v2_1[i2_2] != nullptr) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 8) {
-                        if ((i2_2 + 1u) < v2_0) {
-                            i2_2 = i2_2 + 1u;
-                        } else {
-                            break;
-                        }
-                    } else {
-                        v4_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
-                        return static_cast<cEndContentsManager*>(v4_4)->getEndContentsPurposeNum();
-                    }
+                if ((v2_1[i2_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) == 8)) {
+                    v4_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
+                    return static_cast<cEndContentsManager*>(v4_4)->getEndContentsPurposeNum();
+                }
+                if ((i2_2 + 1u) < v2_0) {
+                    i2_2 = i2_2 + 1u;
                 } else {
-                    if ((i2_2 + 1u) < v2_0) {
-                        i2_2 = i2_2 + 1u;
-                    } else {
-                        break;
-                    }
+                    break;
                 }
             }
             v4_4 = nullptr;
@@ -3896,23 +3824,14 @@ u32 sQuestManagerExt::getAreaReleaseByRankUp(u32 index) const {
     } else {
         MtObject* * v0_0 = mFunctionInfo.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if (v0_0[i0_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 9) {
-                    if ((i0_2 + 1u) < v0_3) {
-                        i0_2 = i0_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_3 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
-                    return static_cast<cAreaReleaseManager*>(v2_3)->getAreaReleaseByRankUp(index);
-                }
+            if ((v0_0[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 9)) {
+                v2_3 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                return static_cast<cAreaReleaseManager*>(v2_3)->getAreaReleaseByRankUp(index);
+            }
+            if ((i0_2 + 1u) < v0_3) {
+                i0_2 = i0_2 + 1u;
             } else {
-                if ((i0_2 + 1u) < v0_3) {
-                    i0_2 = i0_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_3 = nullptr;
@@ -4215,23 +4134,14 @@ bool sQuestManagerExt::isWaitDivide() const {
     } else {
         MtObject* * v0_0 = mFunctionInfo.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if (v0_0[i0_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
-                    if ((i0_2 + 1u) < v0_1) {
-                        i0_2 = i0_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
-                    return cQuestPhaseState::isDivideProcess(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
-                }
+            if ((v0_0[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 12)) {
+                v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                return cQuestPhaseState::isDivideProcess(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
             } else {
-                if ((i0_2 + 1u) < v0_1) {
-                    i0_2 = i0_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_4 = nullptr;
@@ -4247,23 +4157,14 @@ bool sQuestManagerExt::isDivideSetup() const {
     } else {
         MtObject* * v0_0 = mFunctionInfo.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if (v0_0[i0_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
-                    if ((i0_2 + 1u) < v0_1) {
-                        i0_2 = i0_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
-                    return cQuestPhaseState::isDivideSetup(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
-                }
+            if ((v0_0[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 12)) {
+                v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                return cQuestPhaseState::isDivideSetup(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
             } else {
-                if ((i0_2 + 1u) < v0_1) {
-                    i0_2 = i0_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_4 = nullptr;
@@ -4283,23 +4184,14 @@ bool sQuestManagerExt::isSucceededDevide() const {
     } else {
         MtObject* * v0_0 = mFunctionInfo.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if (v0_0[i0_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
-                    if ((i0_2 + 1u) < v0_1) {
-                        i0_2 = i0_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
-                    return cQuestPhaseState::isDivideSuccess(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
-                }
+            if ((v0_0[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 12)) {
+                v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                return cQuestPhaseState::isDivideSuccess(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
             } else {
-                if ((i0_2 + 1u) < v0_1) {
-                    i0_2 = i0_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_4 = nullptr;
@@ -4548,23 +4440,14 @@ bool sQuestManagerExt::hasRequestedWarpPlayer(u32 characterId) const {
     } else {
         MtObject* * v0_0 = mFunctionInfo.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if (v0_0[i0_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
-                    if ((i0_2 + 1u) < v0_1) {
-                        i0_2 = i0_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
-                    return cQuestPhaseState::hasRequestedWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState(), characterId);
-                }
+            if ((v0_0[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 12)) {
+                v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                return cQuestPhaseState::hasRequestedWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState(), characterId);
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
             } else {
-                if ((i0_2 + 1u) < v0_1) {
-                    i0_2 = i0_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_4 = nullptr;
@@ -4580,24 +4463,15 @@ void sQuestManagerExt::requestWarpPlayer(u32 characterId) {
     } else {
         MtObject* * v0_0 = mFunctionInfo.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if (v0_0[i0_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
-                    if ((i0_2 + 1u) < v0_1) {
-                        i0_2 = i0_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
-                    cQuestPhaseState::requestWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState(), characterId);
-                    return;
-                }
+            if ((v0_0[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 12)) {
+                v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                cQuestPhaseState::requestWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState(), characterId);
+                return;
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
             } else {
-                if ((i0_2 + 1u) < v0_1) {
-                    i0_2 = i0_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_4 = nullptr;
@@ -4613,23 +4487,14 @@ bool sQuestManagerExt::isExistDividePlayer() const {
     } else {
         MtObject* * v0_0 = mFunctionInfo.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if (v0_0[i0_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
-                    if ((i0_2 + 1u) < v0_1) {
-                        i0_2 = i0_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
-                    return cQuestPhaseState::isExistDividePlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
-                }
+            if ((v0_0[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 12)) {
+                v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                return cQuestPhaseState::isExistDividePlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
             } else {
-                if ((i0_2 + 1u) < v0_1) {
-                    i0_2 = i0_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_4 = nullptr;
@@ -4645,23 +4510,14 @@ bool sQuestManagerExt::isFinishedEnemyDivideAction() const {
     } else {
         MtObject* * v0_0 = mFunctionInfo.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if (v0_0[i0_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
-                    if ((i0_2 + 1u) < v0_1) {
-                        i0_2 = i0_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
-                    return cQuestPhaseState::isFinishedEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
-                }
+            if ((v0_0[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 12)) {
+                v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                return cQuestPhaseState::isFinishedEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
             } else {
-                if ((i0_2 + 1u) < v0_1) {
-                    i0_2 = i0_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_4 = nullptr;
@@ -4677,24 +4533,15 @@ void sQuestManagerExt::finishEnemyDivideAction() {
     } else {
         MtObject* * v0_0 = mFunctionInfo.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if (v0_0[i0_2] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
-                    if ((i0_2 + 1u) < v0_1) {
-                        i0_2 = i0_2 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
-                    cQuestPhaseState::finishEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
-                    return;
-                }
+            if ((v0_0[i0_2] != nullptr) && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 12)) {
+                v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                cQuestPhaseState::finishEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
+                return;
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
             } else {
-                if ((i0_2 + 1u) < v0_1) {
-                    i0_2 = i0_2 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_4 = nullptr;
@@ -4879,8 +4726,6 @@ sQuestManagerExt::cSystemLogNode::cSystemLogNode(MT_CTSTR message, nQuest::QUEST
 }
 
 __attribute__((noinline)) sQuestManagerExt::cSystemLogNode::~cSystemLogNode() {
-    DDON_STUB("sQuestManagerExt::cSystemLogNode::~cSystemLogNode")
-    /* stub */
 }
 
 sQuestManagerExt::cSystemLogNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

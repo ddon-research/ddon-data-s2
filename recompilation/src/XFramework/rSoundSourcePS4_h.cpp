@@ -91,51 +91,29 @@ bool rSoundSourceStreamAT9::close() {
         if (scePthreadMutexLock(&mCS.mCSection) != 0) {
             abort();
         }
-        if (mpBuffer == nullptr) {
-            if (mpFile != nullptr) {
-                s32 t0 = mOpenCtr;
-                mOpenCtr = t0 - 1;
-                if (t0 > 0) {
-                    if (mOpenCtr == 0) {
-                        if (mpFile != nullptr) {
-                            mpFile->close();
-                        }
-                    }
-                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                    return true;
-                } else {
-                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                    return false;
-                }
-            } else {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-                return false;
+        if ((mpBuffer == nullptr) && (mpFile == nullptr)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
+            return false;
+        }
+        s32 t0 = mOpenCtr;
+        mOpenCtr = t0 - 1;
+        if (t0 > 0) {
+            if (mOpenCtr == 0) {
+                if (mpFile != nullptr) {
+                    mpFile->close();
+                }
+            }
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+            return true;
         } else {
-            s32 t0 = mOpenCtr;
-            mOpenCtr = t0 - 1;
-            if (t0 > 0) {
-                if (mOpenCtr == 0) {
-                    if (mpFile != nullptr) {
-                        mpFile->close();
-                    }
-                }
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-                return true;
-            } else {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-                return false;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
+            return false;
         }
     }
 }

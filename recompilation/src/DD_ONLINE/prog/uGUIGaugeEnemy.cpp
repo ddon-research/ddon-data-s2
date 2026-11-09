@@ -84,18 +84,11 @@ __attribute__((weak)) void uGUIGaugeEnemy::SetHateIcon(uGUIGaugeEnemy::HateIcon&
 
 bool uGUIGaugeEnemy::IsDispAngerGauge(const uEnemy* enemy) {
     if (enemy != nullptr) {
-        if (enemy->isShakedActionEnemy()) {
-            if ((enemy->mObjStatus & 0x80020000ul) != 0) {
-                return false;
-            } else {
-                return enemy->isStatusRage();
-            }
-        } else {
-            return false;
+        if (enemy->isShakedActionEnemy() && ((enemy->mObjStatus & 0x80020000ul) == 0)) {
+            return enemy->isStatusRage();
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 __attribute__((weak)) void uGUIGaugeEnemy::CenteringName(cGUIObjMessage* pOBJ_msg_name_m_lang, cGUIObjMessage* pOBJ_msg_name_m_lv, cGUIObjMessage* pOBJ_msg_name_m_name, f32 spacingLvAndLvNum, f32 spacingLvNumAndName) {

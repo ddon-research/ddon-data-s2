@@ -115,3 +115,12 @@ inline rAreaInfoStage::cAreaInfoStage::cAreaInfoStage() {
     this->mStageNo = 0;
     this->mAreaId = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtDataReader.h"
+
+inline bool rAreaInfoStage::cAreaInfoStage::load(MtDataReader& r) {
+    mStageNo = r.readU32();
+    mAreaId = r.readU32();
+    return true;
+}

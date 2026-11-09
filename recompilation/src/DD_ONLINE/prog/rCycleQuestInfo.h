@@ -167,3 +167,45 @@ inline rCycleQuestInfo::cCycleQuestSituationInfo::cCycleQuestSituationInfo() {
     this->mSituationNo = 0;
     this->mSituationNameIdx = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../generated/shared/nDDOIO.h"
+
+inline rCycleQuestInfo::cCycleQuestInfo::cCycleQuestInfo() {
+    mCycleNo = 0u;
+    mCycleSubNo = 0u;
+    mContentNameIdx = 0u;
+    mContentInfoIdx = 0u;
+    mGatherInfoIdx = 0u;
+    mGatherNpcId = 0u;
+    mGatherStageNo = 0u;
+    mGatherStartPos = 0u;
+}
+
+inline bool rCycleQuestInfo::cCycleQuestInfo::load(MtDataReader& r) {
+    mCycleNo = r.readU32();
+    mCycleSubNo = r.readU32();
+    mContentNameIdx = r.readU32();
+    mContentInfoIdx = r.readU32();
+    mGatherInfoIdx = r.readU32();
+    nDDOIO::readMtArray(r, mSituationInfo);
+    mGatherNpcId = r.readU32();
+    mGatherStageNo = r.readU32();
+    mGatherStartPos = r.readU32();
+    return true;
+}
+
+inline void* rCycleQuestInfo::cCycleQuestInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rCycleQuestInfo::cCycleQuestInfo::DTI)->memAlloc(sz, align, rCycleQuestInfo::cCycleQuestInfo::DTI.getID());
+}
+
+inline bool rCycleQuestInfo::cCycleQuestSituationInfo::load(MtDataReader& r) {
+    mSituationNo = r.readU32();
+    mSituationNameIdx = r.readU32();
+    mSituationStateIdx = r.readU32();
+    mSituationDetailIdx = r.readU32();
+    return true;
+}

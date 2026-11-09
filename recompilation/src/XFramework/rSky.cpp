@@ -134,9 +134,43 @@ __attribute__((weak)) bool rSky::load(MtStream& in) {
     return true;
 }
 
-__attribute__((weak)) bool rSky::save(MtStream& out) {
-    DDON_STUB("rSky::save")
-    return {};
+bool rSky::save(MtStream& out) {
+    MtDataWriter w(out, 4096u, 4096u);
+    w.MtDataWriter::writeS32(542722899);
+    w.MtDataWriter::writeU32(6u);
+    w.MtDataWriter::write(static_cast<const void*>(&mSunColor), 16u);
+    w.MtDataWriter::writeF32(mRayleighScatteringBase);
+    w.MtDataWriter::write(static_cast<const void*>(&mRamda), 16u);
+    w.MtDataWriter::write(static_cast<const void*>(&mStarryAmbientColor), 16u);
+    w.MtDataWriter::writeF32(mObliquity);
+    w.MtDataWriter::writeU32(mSpinDirection);
+    w.MtDataWriter::writeU32(mEclipticLongitude);
+    w.MtDataWriter::writeF32(mLatitude);
+    w.MtDataWriter::writeF32(mSunMultiplier);
+    w.MtDataWriter::writeF32(mEarthRadius);
+    w.MtDataWriter::writeF32(mAtmosphereHeight);
+    w.MtDataWriter::writeF32(mAtmosphereAverageDensityHeight);
+    w.MtDataWriter::writeF32(mAerosolHeight);
+    w.MtDataWriter::writeF32(mAerosolAverageDensityHeight);
+    w.MtDataWriter::writeF32(mSecondaryScattering);
+    w.MtDataWriter::writeF32(mSunBodySize);
+    w.MtDataWriter::writeF32(mSunRadius);
+    w.MtDataWriter::writeF32(mSunDistance);
+    w.writeString((mpSunTexture == nullptr) ? "" : (&mpSunTexture->mPath[0]));
+    w.MtDataWriter::write(static_cast<const void*>(&mStarrySkyColor[0]), 64u);
+    w.MtDataWriter::writeF32(mStarrySkyColorT1);
+    w.MtDataWriter::writeF32(mStarrySkyColorT2);
+    w.MtDataWriter::writeF32(mMoonAge);
+    w.MtDataWriter::writeF32(mMoonFluctuationAmplitude);
+    w.MtDataWriter::writeF32(mMoonFluctuationPhase);
+    w.MtDataWriter::write(static_cast<const void*>(&mMoonColor), 16u);
+    w.MtDataWriter::writeF32(mMoonMultiplier);
+    w.MtDataWriter::writeF32(mMoonBodySize);
+    w.MtDataWriter::writeF32(mMoonRadius);
+    w.MtDataWriter::writeF32(mMoonDistance);
+    w.MtDataWriter::writeF32(mEarthShine);
+    w.writeString((mpMoonTexture == nullptr) ? "" : (&mpMoonTexture->mPath[0]));
+    return true;
 }
 
 MT_CTSTR rSky::getExt() const {

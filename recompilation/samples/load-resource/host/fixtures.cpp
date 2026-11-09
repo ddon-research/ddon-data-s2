@@ -118,12 +118,12 @@ namespace {
 // The engine's heap, as the host's.
 class HostAllocator final : public MtAllocator {
 public:
-    void* memAlloc(size_t size, u32 align) override { return ddon_host_alloc(size, align); }
-    void* memAlloc(size_t size, u32 align, u32) override { return ddon_host_alloc(size, align); }
+    void* memAlloc(size_t size, u32 align) override { return ddon_game_alloc(size, align); }
+    void* memAlloc(size_t size, u32 align, u32) override { return ddon_game_alloc(size, align); }
     void* memAlloc(size_t size, u32 align, u32, u32) override {
-        return ddon_host_alloc(size, align);
+        return ddon_game_alloc(size, align);
     }
-    void memFree(void* ptr) override { ddon_host_free(ptr); }
+    void memFree(void* ptr) override { ddon_game_free(ptr); }
     size_t memSize(void* ptr) override { return ddon_host_size(ptr); }
 };
 
@@ -164,7 +164,8 @@ struct ReleaseOf {
 template struct Grant<&sResource::addRef, AddRefOf>;
 template struct Grant<&sResource::release, ReleaseOf>;
 
-// The placeholders alive, so a release of any other resource traps.
+// The placeholders alive; `host_release` takes only these and what the game
+// built itself, and any other resource traps.
 constexpr unsigned kPlaceholders = 4096;
 cResource* placeholders[kPlaceholders];
 unsigned placeholder_count = 0;
@@ -218,7 +219,24 @@ void host_add_ref(sResource*, cResource* resource) {
 void host_release(sResource*, cResource* resource) {
     cResource** slot = placeholder_of(resource);
     if (slot == nullptr) {
-        ddon_trap("sResource (host): release of a resource the host did not create");
+        // A resource the game built itself through the engine's allocators
+        // (`new (16u) rRegionBreakInfo()`, ELF 0x6e3170; rObjCollision's three
+        // tables, 031 plan-S55), alive by its block: `cResource::cResource`
+        // starts its count at 1, and its owner's destructor releases it through
+        // the manager (0xe5e8f0). Anything else, a block already freed among
+        // them, is no resource here. The block's table is the only test: this
+        // reads the object only after it.
+        if (!ddon_game_allocated(resource)) {
+            ddon_trap("sResource (host): release of a resource the host did not create");
+        }
+        auto& count = resource->*member(RefCountOf{});
+        if (count <= 0) {
+            ddon_trap("sResource (host): release of a game-built resource whose count is already zero");
+        }
+        if (--count == 0) {
+            delete static_cast<MtObject*>(resource);
+        }
+        return;
     }
     if (--(resource->*member(RefCountOf{})) > 0) {
         return;

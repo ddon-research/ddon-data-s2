@@ -82,7 +82,9 @@ namespace nDDOUtility {
     void requestOnTutorialFlg(s32 questTarget);
     void arraySuffle(MtArray& dst, s32 begin, s32 end);
     void getParentDirName(MT_CTSTR filePath, MT_CHAR* dirPath);
+    template <typename T> void updateUnitPtr(T* * ppUnit);
     template <typename T> void arrayCopy(MtTypedArray<T>& dst, const MtTypedArray<T>& src);
+    template <typename T> void updateUnitPtrArrayErase(MtTypedArray<T>* pArray);
 
 }  // namespace nDDOUtility
 
@@ -107,27 +109,42 @@ namespace nDDOUtility {
 }  // namespace nDDOUtility
 
 namespace nDDOUtility {
-    template <>
-    class cBitSet<10>
+    template <unsigned int BIT_NUM>
+    class cBitSet
     {
     public:
         enum
         {
-            AR_NUM = 1,
+            AR_NUM = (BIT_NUM + 31) / 32,
         };
     public:
         cBitSet();
-        ~cBitSet();
+        cBitSet(u32 val0);
+        ~cBitSet() {
+        }
+        cBitSet& operator=(const cBitSet& r);
         bool check(u32 bit) const;
-        bool checkOr(const nDDOUtility::cBitSet<10>& src) const;
-        bool checkAnd(const nDDOUtility::cBitSet<10>& src) const;
+        bool checkOr(const cBitSet& src) const;
+        bool checkOr(u32 no0, u32 no1) const;
+        bool checkOr(u32 no0, u32 no1, u32 no2) const;
+        bool checkAnd(const cBitSet& src) const;
         bool checkNone() const;
         void set(u32 bit);
+        void set(const cBitSet& src);
+        void set(u32, u32);
+        void set(u32, u32, u32);
+        void off(u32 bit);
+        void andEq(const cBitSet& src);
+        bool eq(const cBitSet&);
+        void onoff(u32 bit, bool on);
         void clear();
+        void clear(u8 val);
+        u32 searchEmpty() const;
         static u32 getArrayNum();
+        u32 getArrayData(u32 index) const;
         u32* toArrayPtr();
     private:
-        u32 mBit[1];  // offset: 0x0
+        u32 mBit[AR_NUM];
     };
 }  // namespace nDDOUtility
 
@@ -150,40 +167,6 @@ namespace nDDOUtility {
         u32* toArrayPtr();
     private:
         u32 mBit[1];  // offset: 0x0
-    };
-}  // namespace nDDOUtility
-
-namespace nDDOUtility {
-    template <>
-    class cBitSet<128>
-    {
-    public:
-        enum
-        {
-            AR_NUM = 4,
-        };
-    public:
-        cBitSet();
-        cBitSet(u32 val0);
-        ~cBitSet();
-        nDDOUtility::cBitSet<128>& operator=(const nDDOUtility::cBitSet<128>& r);
-        bool check(u32 bit) const;
-        bool checkOr(const nDDOUtility::cBitSet<128>& src) const;
-        bool checkOr(u32 no0, u32 no1) const;
-        bool checkOr(u32 no0, u32 no1, u32 no2) const;
-        bool checkAnd(const nDDOUtility::cBitSet<128>& src) const;
-        bool checkNone() const;
-        void set(u32 bit);
-        void set(const nDDOUtility::cBitSet<128>& src);
-        void off(u32 bit);
-        void andEq(const nDDOUtility::cBitSet<128>& src);
-        void onoff(u32 bit, bool on);
-        void clear();
-        static u32 getArrayNum();
-        u32 getArrayData(u32 index) const;
-        u32* toArrayPtr();
-    private:
-        u32 mBit[4];  // offset: 0x0
     };
 }  // namespace nDDOUtility
 
@@ -317,30 +300,6 @@ namespace nDDOUtility {
 
 namespace nDDOUtility {
     template <>
-    class cBitSet<256>
-    {
-    public:
-        enum
-        {
-            AR_NUM = 8,
-        };
-    public:
-        cBitSet();
-        ~cBitSet();
-        bool check(u32 bit) const;
-        bool checkNone() const;
-        void set(u32 bit);
-        void off(u32 bit);
-        void clear();
-        static u32 getArrayNum();
-        u32* toArrayPtr();
-    private:
-        u32 mBit[8];  // offset: 0x0
-    };
-}  // namespace nDDOUtility
-
-namespace nDDOUtility {
-    template <>
     class cBitSet<2>
     {
     public:
@@ -355,38 +314,6 @@ namespace nDDOUtility {
         bool check(u32 bit) const;
         void set(u32 bit);
         void clear();
-        static u32 getArrayNum();
-        u32 getArrayData(u32 index) const;
-        u32* toArrayPtr();
-    private:
-        u32 mBit[1];  // offset: 0x0
-    };
-}  // namespace nDDOUtility
-
-namespace nDDOUtility {
-    template <>
-    class cBitSet<32>
-    {
-    public:
-        enum
-        {
-            AR_NUM = 1,
-        };
-    public:
-        cBitSet();
-        ~cBitSet();
-        nDDOUtility::cBitSet<32>& operator=(const nDDOUtility::cBitSet<32>& r);
-        bool check(u32 bit) const;
-        void set(u32 bit);
-        void set(u32, u32);
-        void set(u32, u32, u32);
-        void off(u32 bit);
-        void andEq(const nDDOUtility::cBitSet<32>& src);
-        bool eq(const nDDOUtility::cBitSet<32>&);
-        void onoff(u32 bit, bool on);
-        void clear();
-        void clear(u8 val);
-        u32 searchEmpty() const;
         static u32 getArrayNum();
         u32 getArrayData(u32 index) const;
         u32* toArrayPtr();
@@ -486,32 +413,6 @@ namespace nDDOUtility {
 
 namespace nDDOUtility {
     template <>
-    class cBitSet<4>
-    {
-    public:
-        enum
-        {
-            AR_NUM = 1,
-        };
-    public:
-        cBitSet();
-        ~cBitSet();
-        nDDOUtility::cBitSet<4>& operator=(const nDDOUtility::cBitSet<4>& r);
-        bool check(u32 bit) const;
-        void set(u32 bit);
-        void off(u32 bit);
-        void onoff(u32 bit, bool on);
-        void clear();
-        static u32 getArrayNum();
-        u32 getArrayData(u32 index) const;
-        u32* toArrayPtr();
-    private:
-        u32 mBit[1];  // offset: 0x0
-    };
-}  // namespace nDDOUtility
-
-namespace nDDOUtility {
-    template <>
     class cBitSet<512>
     {
     public:
@@ -569,58 +470,6 @@ namespace nDDOUtility {
         void clear();
         u32 calcBitNum32(u32 Flag) const;
         u32 calcBitNum() const;
-    private:
-        u32 mBit[1];  // offset: 0x0
-    };
-}  // namespace nDDOUtility
-
-namespace nDDOUtility {
-    template <>
-    class cBitSet<64>
-    {
-    public:
-        enum
-        {
-            AR_NUM = 2,
-        };
-    public:
-        cBitSet();
-        cBitSet(u32 val0);
-        ~cBitSet();
-        bool check(u32 bit) const;
-        bool checkNone() const;
-        void set(u32 bit);
-        void off(u32 bit);
-        void onoff(u32 bit, bool on);
-        void clear();
-        static u32 getArrayNum();
-        u32 getArrayData(u32 index) const;
-        u32* toArrayPtr();
-    private:
-        u32 mBit[2];  // offset: 0x0
-    };
-}  // namespace nDDOUtility
-
-namespace nDDOUtility {
-    template <>
-    class cBitSet<6>
-    {
-    public:
-        enum
-        {
-            AR_NUM = 1,
-        };
-    public:
-        cBitSet();
-        ~cBitSet();
-        bool check(u32 bit) const;
-        bool checkOr(const nDDOUtility::cBitSet<6>& src) const;
-        void set(u32 bit);
-        void off(u32 bit);
-        void onoff(u32 bit, bool on);
-        void clear();
-        static u32 getArrayNum();
-        u32* toArrayPtr();
     private:
         u32 mBit[1];  // offset: 0x0
     };
@@ -837,29 +686,10 @@ namespace nDDOUtility {
     };
 }  // namespace nDDOUtility
 
-inline nDDOUtility::cBitSet<10>::~cBitSet() {
-}
-
 inline nDDOUtility::cBitSet<11>::~cBitSet() {
 }
 
-inline nDDOUtility::cBitSet<128>::cBitSet() {
-    mBit[0] = 0u;
-    mBit[1] = 0u;
-    mBit[2] = 0u;
-    mBit[3] = 0u;
-}
-
-inline nDDOUtility::cBitSet<128>::~cBitSet() {
-}
-
 inline nDDOUtility::cBitSet<22>::~cBitSet() {
-}
-
-inline nDDOUtility::cBitSet<256>::~cBitSet() {
-}
-
-inline nDDOUtility::cBitSet<32>::~cBitSet() {
 }
 
 inline nDDOUtility::cBitSet<33>::~cBitSet() {
@@ -868,13 +698,34 @@ inline nDDOUtility::cBitSet<33>::~cBitSet() {
 inline nDDOUtility::cBitSet<3>::~cBitSet() {
 }
 
-inline nDDOUtility::cBitSet<4>::~cBitSet() {
-}
-
 inline nDDOUtility::cBitSet<5>::~cBitSet() {
 }
 
 inline nDDOUtility::cBitSet<7>::~cBitSet() {
+}
+
+template <> inline nDDOUtility::cBitSet<10>::cBitSet() {
+    mBit[0] = 0u;
+}
+
+template <> inline nDDOUtility::cBitSet<128>::cBitSet() {
+    mBit[0] = 0u;
+    mBit[1] = 0u;
+    mBit[2] = 0u;
+    mBit[3] = 0u;
+}
+
+template <> inline nDDOUtility::cBitSet<32>::cBitSet() {
+    mBit[0] = 0u;
+}
+
+template <> inline nDDOUtility::cBitSet<64>::cBitSet() {
+    mBit[0] = 0u;
+    mBit[1] = 0u;
+}
+
+template <> inline nDDOUtility::cBitSet<6>::cBitSet() {
+    mBit[0] = 0u;
 }
 
 // Included after the classes: the generic bodies below need these complete.

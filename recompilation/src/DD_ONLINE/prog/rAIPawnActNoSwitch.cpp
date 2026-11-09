@@ -62,8 +62,9 @@ __attribute__((weak)) bool rAIPawnActNoSwitch::loadCore(MtDataReader& r) {
 bool rAIPawnActNoSwitch::loadData(MtDataReader& r, cAIPawnActNoSwitch* pData) {
     pData->mEmActNo = r.readU32();
     pData->mPwActNo = r.readU32();
+    cPwActSwTypeFlag* held0 = &pData->mTypeFlag;
     u32 t0 = r.readU32();
-    r.read(static_cast<void*>(&pData->mTypeFlag), t0 * 4u);
+    r.read(static_cast<void*>(held0), t0 * 4u);
     return true;
 }
 

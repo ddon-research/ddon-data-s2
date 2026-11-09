@@ -37,6 +37,11 @@ void ddon_placeholder_released();
 void* ddon_host_alloc(std::size_t size, std::size_t align);
 void ddon_host_free(void* memory);
 std::size_t ddon_host_size(void* memory);
+// The engine's allocators' storage (`fixtures.cpp`), each block known while it
+// lives: what the game itself allocated, by its start (031 plan-S53b).
+void* ddon_game_alloc(std::size_t size, std::size_t align);
+void ddon_game_free(void* memory);
+bool ddon_game_allocated(const void* memory);
 
 // A body that does not exist in the bundle was reached: the run of this
 // file ends here (generated traps call it).

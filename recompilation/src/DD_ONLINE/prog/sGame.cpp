@@ -806,15 +806,10 @@ __attribute__((weak)) const CGPCourseEffectParam* sGame::getChargeEffectUID(u32 
 
 bool sGame::isChargeAnnounce(nGpCourse::E_GP_COURSE_ANNOUNCE_TYPE type, bool isParty) {
     if (type != nGpCourse::GP_COURSE_ANNOUNCE_TYPE_ENABLE) {
-        if (type == nGpCourse::GP_COURSE_ANNOUNCE_TYPE_ENABLE_LOGIN) {
-            if (isParty) {
-                return false;
-            } else {
-                return mIsLobbyIn;
-            }
-        } else {
-            return false;
+        if ((type == nGpCourse::GP_COURSE_ANNOUNCE_TYPE_ENABLE_LOGIN) && !isParty) {
+            return mIsLobbyIn;
         }
+        return false;
     } else {
         return true;
     }

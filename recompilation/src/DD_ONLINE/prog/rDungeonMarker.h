@@ -213,3 +213,40 @@ inline void* rDungeonMarker::cWarpInfo::cIndex::operator new(size_t sz, void* p_
 inline void* rDungeonMarker::cPosition::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../generated/shared/nDDOIO.h"
+
+inline void rDungeonMarker::cPosition::load(MtDataReader& r) {
+    mPos = r.readV3();
+}
+
+inline void rDungeonMarker::cWarpInfo::load(MtDataReader& r) {
+    mGroupNo = r.readS16();
+    mTargetStageNo = r.readU16();
+    mTargetGroupNo = r.readS16();
+    nDDOIO::readMtArray(r, mPosIndex);
+}
+
+inline void rDungeonMarker::cWarpInfo::save(MtDataWriter& w) {
+    w.writeS16(mGroupNo);
+    nDDOIO::writeData(w, mTargetStageNo);
+    w.writeS16(mTargetGroupNo);
+    nDDOIO::writeMtArray(w, mPosIndex);
+}
+
+inline void rDungeonMarker::cWarpInfo::cIndex::load(MtDataReader& r) {
+    mIndex = r.readU8();
+}
+
+inline void* rDungeonMarker::cWarpInfo::cIndex::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rDungeonMarker::cWarpInfo::cIndex::DTI)->memAlloc(sz, align, rDungeonMarker::cWarpInfo::cIndex::DTI.getID());
+}
+
+inline void rDungeonMarker::cWarpInfo::cIndex::save(MtDataWriter& w) {
+    nDDOIO::writeData(w, mIndex);
+}

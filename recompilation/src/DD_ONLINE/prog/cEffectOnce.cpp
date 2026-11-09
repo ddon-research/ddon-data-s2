@@ -153,6 +153,10 @@ const MtDTI& cOnceRequestEffectTypeSuperErosionCam::getDTI() const {
     return cOnceRequestEffectTypeSuperErosionCam::DTI;
 }
 
+inline void cOnceRequestEffectTypeSuperErosionCam::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cOnceRequestEffectTypeSuperErosionCam::DTI)->memFree(p_addr);
+}
+
 __attribute__((weak)) void cOnceRequestEffectTypeSuperErosionCam::update() {
     DDON_STUB("cOnceRequestEffectTypeSuperErosionCam::update")
     /* stub */

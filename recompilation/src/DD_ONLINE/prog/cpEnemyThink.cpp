@@ -113,7 +113,6 @@ void cpEnemyThink::before() {
 u32 cpEnemyThink::callbackGetAction() {
     if (mIsThinkStop) {
         mIsThinkStop = false;
-        return 0xFFFFFFFF;
     } else {
         if (mpModel != nullptr) {
             if (mpModel->mGuardComponent.mpActMgr != nullptr) {
@@ -122,102 +121,34 @@ u32 cpEnemyThink::callbackGetAction() {
                         u32 t0 = mpModel->getActMgrPtr()->getActionNo();
                         if (((mpModel->getActMgrPtr()->getActionNo() >> 8) & 32u) == 0) {
                             if ((mpModel->getActMgrPtr()->getActionNo() & 12288u) == 12288) {
-                                if (mpModel->getActMgrPtr()->getActionNo() != 0xFFFFFFFFu) {
-                                    if (mpModel->getActMgrPtr()->isEndAction()) {
-                                        if (!mpModel->getActMgrPtr()->isEndAction()) {
-                                            if (mcThink.isActTrue()) {
-                                                mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                            } else {
-                                                mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                                if (t0 != 0xFFFFFFFFu) {
-                                                    return 0xFFFFFFFF;
-                                                }
-                                            }
-                                        } else {
-                                            mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                        }
-                                        return getActionNo();
-                                    } else {
-                                        return 0xFFFFFFFF;
-                                    }
-                                } else {
-                                    if (!mpModel->getActMgrPtr()->isEndAction()) {
-                                        if (mcThink.isActTrue()) {
-                                            mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                        } else {
-                                            mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                            if (t0 != 0xFFFFFFFFu) {
-                                                return 0xFFFFFFFF;
-                                            }
-                                        }
-                                    } else {
-                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                    }
-                                    return getActionNo();
-                                }
-                            } else {
-                                if (!mpModel->getActMgrPtr()->isEndAction()) {
-                                    if (mcThink.isActTrue()) {
-                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                    } else {
-                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                        if (t0 != 0xFFFFFFFFu) {
-                                            return 0xFFFFFFFF;
-                                        }
-                                    }
-                                } else {
-                                    mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                }
-                                return getActionNo();
-                            }
-                        } else {
-                            if (mpModel->getActMgrPtr()->getActionNo() != 0xFFFFFFFFu) {
-                                if (mpModel->getActMgrPtr()->isEndAction()) {
-                                    if (!mpModel->getActMgrPtr()->isEndAction()) {
-                                        if (mcThink.isActTrue()) {
-                                            mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                        } else {
-                                            mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                            if (t0 != 0xFFFFFFFFu) {
-                                                return 0xFFFFFFFF;
-                                            }
-                                        }
-                                    } else {
-                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                    }
-                                    return getActionNo();
-                                } else {
+                                if ((mpModel->getActMgrPtr()->getActionNo() != 0xFFFFFFFFu) && !mpModel->getActMgrPtr()->isEndAction()) {
                                     return 0xFFFFFFFF;
                                 }
-                            } else {
-                                if (!mpModel->getActMgrPtr()->isEndAction()) {
-                                    if (mcThink.isActTrue()) {
-                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                    } else {
-                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                        if (t0 != 0xFFFFFFFFu) {
-                                            return 0xFFFFFFFF;
-                                        }
-                                    }
-                                } else {
-                                    mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
-                                }
-                                return getActionNo();
+                            }
+                        } else {
+                            if ((mpModel->getActMgrPtr()->getActionNo() != 0xFFFFFFFFu) && !mpModel->getActMgrPtr()->isEndAction()) {
+                                return 0xFFFFFFFF;
                             }
                         }
-                    } else {
-                        return 0xFFFFFFFF;
+                        if (!mpModel->getActMgrPtr()->isEndAction()) {
+                            if (mcThink.isActTrue()) {
+                                mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
+                            } else {
+                                mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
+                                if (t0 != 0xFFFFFFFFu) {
+                                    return 0xFFFFFFFF;
+                                }
+                            }
+                        } else {
+                            mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
+                        }
+                        return getActionNo();
                     }
-                } else {
-                    return 0xFFFFFFFF;
                 }
-            } else {
-                return 0xFFFFFFFF;
             }
-        } else {
-            return 0xFFFFFFFF;
         }
     }
+    return 0xFFFFFFFF;
 }
 
 void cpEnemyThink::updatePtr() {

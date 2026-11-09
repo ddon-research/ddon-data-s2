@@ -567,29 +567,36 @@ cNpcConstItem* sNpcManager::getNpcConstItem(u32 index) const {
 
 __attribute__((weak)) bool sNpcManager::isHaveFunction(u32 NpcId, u32 FunctionId) {
     rNpcLedgerList* t0 = mpLedgerList;
-    unsigned int i0_3;
-    const rNpcLedgerList::cItem* pNpcInfo;
     if (t0 != nullptr) {
-        pNpcInfo = t0->searchNpcInfo(NpcId);
+        const rNpcLedgerList::cItem* pNpcInfo = t0->searchNpcInfo(NpcId);
         if (pNpcInfo != nullptr) {
             if (FunctionId <= 60u) {
-                if ((NpcId - 9000u) <= 9u) {
-                    if (FunctionId == 37) {
-                        return true;
-                    } else {
-                        const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t2 = pNpcInfo->getInstitutionList();
-                        if (t2.mLength == 0) {
-                            return false;
-                        } else {
-                            i0_3 = 0;
-                        }
-                    }
+                if (((NpcId - 9000u) <= 9u) && (FunctionId == 37)) {
+                    return true;
+                }
+                const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t2 = pNpcInfo->getInstitutionList();
+                if (t2.mLength == 0) {
+                    return false;
                 } else {
-                    const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t2 = pNpcInfo->getInstitutionList();
-                    if (t2.mLength == 0) {
-                        return false;
-                    } else {
-                        i0_3 = 0;
+                    for (unsigned int i0_3 = 0;;) {
+                        const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t4 = pNpcInfo->getInstitutionList();
+                        const unsigned long t6 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t4) + 24);
+                        unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t6 + static_cast<unsigned long>(i0_3 * 8u)) + 0);
+                        if (t7 != 0) {
+                            const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t8 = pNpcInfo->getInstitutionList();
+                            const unsigned long t10 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t8) + 24);
+                            unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10 + static_cast<unsigned long>(i0_3 * 8u)) + 0);
+                            unsigned int t12 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t11) + 40);
+                            if (t12 == FunctionId) {
+                                return true;
+                            }
+                        }
+                        const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t13 = pNpcInfo->getInstitutionList();
+                        if ((i0_3 + 1u) < t13.mLength) {
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
                     }
                 }
             } else {
@@ -597,28 +604,6 @@ __attribute__((weak)) bool sNpcManager::isHaveFunction(u32 NpcId, u32 FunctionId
             }
         } else {
             return false;
-        }
-    } else {
-        return false;
-    }
-    for (;;) {
-        const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t4 = pNpcInfo->getInstitutionList();
-        const unsigned long t6 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t4) + 24);
-        unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t6 + static_cast<unsigned long>(i0_3 * 8u)) + 0);
-        if (t7 != 0) {
-            const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t8 = pNpcInfo->getInstitutionList();
-            const unsigned long t10 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t8) + 24);
-            unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10 + static_cast<unsigned long>(i0_3 * 8u)) + 0);
-            unsigned int t12 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t11) + 40);
-            if (t12 == FunctionId) {
-                return true;
-            }
-        }
-        const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t13 = pNpcInfo->getInstitutionList();
-        if ((i0_3 + 1u) < t13.mLength) {
-            i0_3 += 1u;
-        } else {
-            break;
         }
     }
     return false;

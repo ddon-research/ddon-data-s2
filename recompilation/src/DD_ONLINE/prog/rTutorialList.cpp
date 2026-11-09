@@ -142,3 +142,5 @@ MtObject* rTutorialList::cTutorialNode::MyDTI::newInstance() const {
 
 template MtTypedArray<rTutorialList::cTutorialNode>::~MtTypedArray();
 
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rTutorialList::cTutorialNode>&);
+

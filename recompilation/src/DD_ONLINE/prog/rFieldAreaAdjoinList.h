@@ -170,3 +170,18 @@ inline rFieldAreaAdjoinList::cAdjoinInfo::cAdjoinInfo() {
 inline void* rFieldAreaAdjoinList::cAdjoinInfo::cVector3::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::load(MtDataReader& r) {
+    mPos = r.readV3();
+    mQuestId = r.readU32();
+    mFlagId = r.readU32();
+}
+
+inline void* rFieldAreaAdjoinList::cAdjoinInfo::cVector3::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI)->memAlloc(sz, align, rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI.getID());
+}

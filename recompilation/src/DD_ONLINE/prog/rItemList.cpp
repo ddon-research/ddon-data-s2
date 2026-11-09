@@ -74,14 +74,13 @@ bool rItemList::save(MtStream& out) {
     w.MtDataWriter::writeU32(mArrayWeaponParamDataNum);
     w.MtDataWriter::writeU32(mArrayProtectParamDataNum);
     w.MtDataWriter::writeU32(mArrayEquipParamS8DataNum);
-    if (mArrayDataNum == 0) {
-        return true;
-    }
     u32 i = 0;
-    do {
-        mpItemList[i].save(w);
-        i += 1u;
-    } while (i < mArrayDataNum);
+    if (mArrayDataNum != 0) {
+        do {
+            mpItemList[i].save(w);
+            i += 1u;
+        } while (i < mArrayDataNum);
+    }
     return true;
 }
 
@@ -99,32 +98,13 @@ u32 rItemList::getListNum() const {
 }
 
 __attribute__((weak)) void rItemList::releaseWork() {
-    if (mArrayDataNum == 0) {
-        MtMemoryAllocator::getAllocator(rItemList::DTI)->memFree(static_cast<void*>(mpItemList));
-        mpItemList = nullptr;
-        mArrayDataNum = 0;
-        MtMemoryAllocator::getAllocator(rItemList::DTI)->memFree(static_cast<void*>(mpParamList));
-        mpParamList = nullptr;
-        mArrayParamDataNum = 0;
-        MtMemoryAllocator::getAllocator(rItemList::DTI)->memFree(static_cast<void*>(mpVsParamList));
-        mpVsParamList = nullptr;
-        mArrayVsParamDataNum = 0;
-        MtMemoryAllocator::getAllocator(rItemList::DTI)->memFree(static_cast<void*>(mpWeaponParamList));
-        mpWeaponParamList = nullptr;
-        mArrayWeaponParamDataNum = 0;
-        MtMemoryAllocator::getAllocator(rItemList::DTI)->memFree(static_cast<void*>(mpProtectParamList));
-        mpProtectParamList = nullptr;
-        mArrayProtectParamDataNum = 0;
-        MtMemoryAllocator::getAllocator(rItemList::DTI)->memFree(static_cast<void*>(mpEquipParamS8List));
-        mpEquipParamS8List = nullptr;
-        mArrayEquipParamS8DataNum = 0;
-        return;
-    }
     u32 i = 0;
-    do {
-        mpItemList[i].~rItemParam();
-        i += 1u;
-    } while (i < mArrayDataNum);
+    if (mArrayDataNum != 0) {
+        do {
+            mpItemList[i].~rItemParam();
+            i += 1u;
+        } while (i < mArrayDataNum);
+    }
     MtMemoryAllocator::getAllocator(rItemList::DTI)->memFree(static_cast<void*>(mpItemList));
     mpItemList = nullptr;
     mArrayDataNum = 0;

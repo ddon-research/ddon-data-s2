@@ -200,3 +200,11 @@ inline MtColorF::MtColorF(f32 _r, f32 _g, f32 _b) {
 
 inline MtColorHLS::MtColorHLS() {
 }
+
+inline MtColor::MtColor(u32 _r, u32 _g, u32 _b, u32 _a) {
+    // unproven
+    this->r = _r;
+    this->g = _g;
+    this->b = _b;
+    this->a = _a;
+}

@@ -50,6 +50,10 @@ inline void* rAIPawnOrder::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rAIPawnOrder::DTI)->memAlloc(sz, align, rAIPawnOrder::DTI.getID());
 }
 
+inline void rAIPawnOrder::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rAIPawnOrder::DTI)->memFree(p_addr);
+}
+
 __attribute__((weak)) bool rAIPawnOrder::loadCore(MtDataReader& r) {
         return this->rTbl2<cAIPawnOrderParam>::loadCore(r);
 }
@@ -63,8 +67,9 @@ bool rAIPawnOrder::loadData(MtDataReader& in, cAIPawnOrderParam* pData) {
     pData->mOrderAttrFlag = in.readU32();
     pData->mOrderSpID = in.readU32();
     pData->mOrderAttrActID = in.readU32();
+    cAIPawnActionGroupFlag* held0 = &pData->mOrderAttrActGroup;
     u32 t0 = in.readU32();
-    in.read(static_cast<void*>(&pData->mOrderAttrActGroup), t0 * 4u);
+    in.read(static_cast<void*>(held0), t0 * 4u);
     nDDOIO::readData(in, pData->mActionCancelFlag);
     return true;
 }

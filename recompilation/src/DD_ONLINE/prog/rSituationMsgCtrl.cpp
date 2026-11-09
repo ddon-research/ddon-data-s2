@@ -136,3 +136,15 @@ MtObject* rSituationMsgCtrl::cSituationData::MyDTI::newInstance() const {
 
 template MtTypedArray<rSituationMsgCtrl::cSituationData>::~MtTypedArray();
 
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rSituationMsgCtrl::cSituationData>&);
+
+template <typename T>
+void nDDOIO::writeMtArray(MtDataWriter& w, MtTypedArray<T>& ar) {
+    w.writeU32(ar.size());
+    for (u32 i = 0; i < ar.size(); i++) {
+        static_cast<T*>(ar.getBuffer()[(s32)i])->save(w);
+    }
+}
+
+template void nDDOIO::writeMtArray(MtDataWriter&, MtTypedArray<rSituationMsgCtrl::cSituationData>&);
+

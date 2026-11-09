@@ -30,8 +30,6 @@ const MtDTI& cWeaponResTable::getDTI() const {
 }
 
 cWeaponResTable::~cWeaponResTable() {
-    DDON_STUB("cWeaponResTable::~cWeaponResTable")
-    /* stub */
 }
 
 __attribute__((weak)) void cWeaponResTable::createProperty(MtPropertyList& s) {

@@ -139,15 +139,10 @@ bool sTalkManager::isMoveGUISingleton() {
 }
 
 bool sTalkManager::isEndGUISingleton() {
-    if (mpGUISingletonMenu != nullptr) {
-        if (mpGUISingletonMenu != static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu) {
-            return true;
-        } else {
-            return mpGUISingletonMenu->mResult == uGUIBase::RESULT_EXIT;
-        }
-    } else {
-        return true;
+    if ((mpGUISingletonMenu != nullptr) && (mpGUISingletonMenu == static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu)) {
+        return mpGUISingletonMenu->mResult == uGUIBase::RESULT_EXIT;
     }
+    return true;
 }
 
 __attribute__((weak)) void sTalkManager::notifyUpdatesQuestPurpose(nQuest::SCHEDULE_ID scheduleId) {
@@ -162,18 +157,11 @@ __attribute__((weak)) void sTalkManager::notifyChangeLeader() {
 
 uControl* sTalkManager::getNpcCtrl() const {
     if (mpTalkTarget != nullptr) {
-        if (mpTalkTarget->getCtrl() != nullptr) {
-            if (!mpTalkTarget->getCtrl()->isNpc()) {
-                return nullptr;
-            } else {
-                return mpTalkTarget->getCtrl();
-            }
-        } else {
-            return nullptr;
+        if ((mpTalkTarget->getCtrl() != nullptr) && mpTalkTarget->getCtrl()->isNpc()) {
+            return mpTalkTarget->getCtrl();
         }
-    } else {
-        return nullptr;
     }
+    return nullptr;
 }
 
 s32 sTalkManager::getNpcId() const {

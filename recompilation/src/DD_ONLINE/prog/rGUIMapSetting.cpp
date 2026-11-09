@@ -189,3 +189,5 @@ MtObject* rGUIMapSetting::cData::MyDTI::newInstance() const {
 
 template MtTypedArray<rGUIMapSetting::cData>::~MtTypedArray();
 
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rGUIMapSetting::cData>&);
+

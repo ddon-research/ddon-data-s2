@@ -169,8 +169,58 @@ cAreaReleaseManager::cAreaReleaseManager() {
 }
 
 __attribute__((noinline)) cAreaReleaseManager::~cAreaReleaseManager() {
-    DDON_STUB("cAreaReleaseManager::~cAreaReleaseManager")
-    /* stub */
+    if (mAreaReleaseInfo.mLength != 0) {
+        u32 v0_0 = mAreaReleaseInfo.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mAreaReleaseInfo.mpArray[i0_3] != nullptr) {
+                delete mAreaReleaseInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAreaReleaseInfo.mLength) {
+                    v0_0 = mAreaReleaseInfo.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mAreaReleaseInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAreaReleaseInfo.mpArray));
+    }
+    mAreaReleaseInfo.mpArray = nullptr;
+    mAreaReleaseInfo.mBufsiz = 0;
+    mAreaReleaseInfo.mLength = 0;
+    if (mAreaReleaseInfoByRankUp.mLength != 0) {
+        u32 v2_0 = mAreaReleaseInfoByRankUp.mLength;
+        for (unsigned int i2_3 = 0;;) {
+            if (mAreaReleaseInfoByRankUp.mpArray[i2_3] != nullptr) {
+                delete mAreaReleaseInfoByRankUp.mpArray[i2_3];
+                if ((i2_3 + 1u) < mAreaReleaseInfoByRankUp.mLength) {
+                    v2_0 = mAreaReleaseInfoByRankUp.mLength;
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mAreaReleaseInfoByRankUp.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAreaReleaseInfoByRankUp.mpArray));
+    }
+    mAreaReleaseInfoByRankUp.mpArray = nullptr;
+    mAreaReleaseInfoByRankUp.mBufsiz = 0;
+    mAreaReleaseInfoByRankUp.mLength = 0;
 }
 
 __attribute__((weak)) void cAreaReleaseManager::createProperty(MtPropertyList& s) {

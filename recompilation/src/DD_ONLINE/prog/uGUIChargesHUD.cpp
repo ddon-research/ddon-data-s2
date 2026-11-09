@@ -33,8 +33,11 @@ inline void uGUIChargesHUD::operator delete(void* p_addr) {
 }
 
 uGUIChargesHUD::~uGUIChargesHUD() {
-    DDON_STUB("uGUIChargesHUD::~uGUIChargesHUD")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 bool uGUIChargesHUD::loadResource() {

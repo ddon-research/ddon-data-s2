@@ -38,8 +38,32 @@ sUnitManager::sUnitManager() {
 }
 
 __attribute__((noinline)) sUnitManager::~sUnitManager() {
-    DDON_STUB("sUnitManager::~sUnitManager")
-    /* stub */
+    if (mLODDistData.mLength != 0) {
+        u32 v0_0 = mLODDistData.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mLODDistData.mpArray[i0_3] != nullptr) {
+                delete mLODDistData.mpArray[i0_3];
+                if ((i0_3 + 1u) < mLODDistData.mLength) {
+                    v0_0 = mLODDistData.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mLODDistData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mLODDistData.mpArray));
+    }
+    mLODDistData.mpArray = nullptr;
+    mLODDistData.mBufsiz = 0;
+    mLODDistData.mLength = 0;
 }
 
 __attribute__((weak)) void sUnitManager::createProperty(MtPropertyList& s) {

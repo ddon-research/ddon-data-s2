@@ -180,3 +180,7 @@ template MtTypedArray<rLandInfo::cLandInfo::cLandAreaInfo>::~MtTypedArray();
 
 template MtTypedArray<rLandInfo::cLandInfo>::~MtTypedArray();
 
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rLandInfo::cLandInfo>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rLandInfo::cLandInfo::cLandAreaInfo>&);
+

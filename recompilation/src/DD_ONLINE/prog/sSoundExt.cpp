@@ -801,23 +801,14 @@ rSoundAreaInfo* sSoundExt::getSoundAreaInfo(s8 areaNo) {
     } else {
         unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sSound::getInstance()) + 295400);
         for (unsigned int i0_3 = 0;;) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_3 * 8u)) + 0)) != 0) {
-                if (static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_3 * 8u)) + 0)) + 24)) != static_cast<unsigned int>(areaNo)) {
-                    if ((i0_3 + 1u) < v0_4) {
-                        i0_3 = i0_3 + 1u;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_3 * 8u)) + 0)) + 8);
-                    return reinterpret_cast<rSoundAreaInfo*>(v2_0);
-                }
+            if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_3 * 8u)) + 0)) != 0) && (static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_3 * 8u)) + 0)) + 24)) == static_cast<unsigned int>(areaNo))) {
+                v2_0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_3 * 8u)) + 0)) + 8);
+                return reinterpret_cast<rSoundAreaInfo*>(v2_0);
+            }
+            if ((i0_3 + 1u) < v0_4) {
+                i0_3 = i0_3 + 1u;
             } else {
-                if ((i0_3 + 1u) < v0_4) {
-                    i0_3 = i0_3 + 1u;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_0 = 0;

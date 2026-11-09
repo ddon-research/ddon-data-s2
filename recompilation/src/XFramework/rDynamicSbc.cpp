@@ -72,16 +72,15 @@ bool rDynamicSbc::save(MtStream& out) {
     fout.MtDataWriter::write(static_cast<const void*>(mpJointInfo), mJointNum * 80u);
     fout.MtDataWriter::write(static_cast<const void*>(mpMaterialInfo), mMaterialNum * 32u);
     fout.MtDataWriter::write(static_cast<const void*>(&mJointTable[0]), 256u);
-    if (mPartsNum == 0) {
-        return true;
-    }
     u32 i = 0;
-    do {
-        fout.MtDataWriter::write(static_cast<const void*>(&mpPartsList[i]), 4u);
-        fout.MtDataWriter::write(static_cast<const void*>(&mpPartsList[i].TriangleNum), 4u);
-        fout.MtDataWriter::write(static_cast<const void*>(mpPartsList[i].pTriangleIndex), mpPartsList[i].TriangleNum * 4u);
-        i += 1u;
-    } while (i < mPartsNum);
+    if (mPartsNum != 0) {
+        do {
+            fout.MtDataWriter::write(static_cast<const void*>(&mpPartsList[i]), 4u);
+            fout.MtDataWriter::write(static_cast<const void*>(&mpPartsList[i].TriangleNum), 4u);
+            fout.MtDataWriter::write(static_cast<const void*>(mpPartsList[i].pTriangleIndex), mpPartsList[i].TriangleNum * 4u);
+            i += 1u;
+        } while (i < mPartsNum);
+    }
     return true;
 }
 

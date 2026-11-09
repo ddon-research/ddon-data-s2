@@ -129,8 +129,39 @@ inline void* rCollGeom::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline cCollGeom::cCollGeom() {
+    mShape = 0;
+    mOption = 0;
+    mScaleOption = 0;
+    mPriority = 8;
+    mLayer = 0;
+    mDmy0 = 0;
+    mIndex = 0;
+    mJnt0 = -1;
+    mJnt1 = -1;
+    mRegionNo = 0;
+    mRadius = 30.0f;
+    mOffset0 = MtVector3::Zero;
+    mOffset1 = MtVector3::Zero;
+    MtVector3 t0;
+    t0.x = 20.0f;
+    t0.y = 20.0f;
+    t0.z = 20.0f;
+    mExtent = t0;
+    mRangeCheckBaseJnt = -1;
+    mAngle0.x = -90.0f;
+    mAngle0.y = 90.0f;
+    mAngle1.x = -90.0f;
+    mAngle1.y = 90.0f;
+    mIsUseData = true;
+}
+
 inline void cCollGeom::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cCollGeom::DTI)->memFree(p_addr);
+}
+
+inline void* cCollGeom::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCollGeom::DTI)->memAlloc(sz, align, cCollGeom::DTI.getID());
 }
 
 inline void* cCollGeom::operator new[](size_t sz, u32 align) {

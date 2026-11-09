@@ -14,6 +14,7 @@ class MtAllocator;
 class MtDTI;
 struct MtFloat3;
 class MtHermiteCurve;
+class MtMatrix;
 class MtObject;
 class MtPropertyList;
 class MtString;
@@ -543,6 +544,8 @@ namespace nGUI {
     void replaceInvalidCharcter(MtString& dstString, MT_CTSTR srcString, MT_CTSTR replaceString, const rGUIFont* pFont);
     MtVector4 getScreenPos(const MtVector3& pos, const sCamera::VIEWPORT_NO vpNo, f32* pProjZ);
     bool checkName(MT_CTSTR name);
+    template <typename T> void calcRotation(const T& object, MtMatrix& mat, const MtMatrix& wmat, const MtVector4& parentScale);
+    template <typename T> void calcScale(const T& object, MtVector4& offsetScale, MtVector4& objectScale, const MtVector4& localScale, const MtVector4& parentScale);
 
 }  // namespace nGUI
 

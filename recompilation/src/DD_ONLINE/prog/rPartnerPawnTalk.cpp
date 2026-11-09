@@ -32,17 +32,13 @@ inline rPartnerPawnTalk::rPartnerPawnTalk() {
 }
 
 rPartnerPawnTalk::~rPartnerPawnTalk() {
-    if (mArrayNum == 0) {
-        MtMemoryAllocator::getAllocator(rPartnerPawnTalk::DTI)->memFree(static_cast<void*>(mpArray));
-        mpArray = nullptr;
-        mArrayNum = 0;
-        return;
-    }
     unsigned int i3 = 0;
-    do {
-        mpArray[i3].~InfoBinary();
-        i3 += 1u;
-    } while (i3 < mArrayNum);
+    if (mArrayNum != 0) {
+        do {
+            mpArray[i3].~InfoBinary();
+            i3 += 1u;
+        } while (i3 < mArrayNum);
+    }
     MtMemoryAllocator::getAllocator(rPartnerPawnTalk::DTI)->memFree(static_cast<void*>(mpArray));
     mpArray = nullptr;
     mArrayNum = 0;

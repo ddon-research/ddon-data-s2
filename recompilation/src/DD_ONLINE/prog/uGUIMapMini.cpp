@@ -53,8 +53,6 @@ uGUIMapMini::uGUIMapMini() {
 }
 
 uGUIMapMini::~uGUIMapMini() {
-    DDON_STUB("uGUIMapMini::~uGUIMapMini")
-    /* stub */
 }
 
 bool uGUIMapMini::loadResource() {
@@ -129,27 +127,15 @@ u32 uGUIMapMini::evCtrlStart(cControl::Message* msg) {
     if (t0 != 1) {
         if (free == 2) {
             if (mPointerCursor.mFocusMarkerId != 0xFFFFFFFFu) {
-                if (mPointerCursor.mFocusMarkerId < mMarker.mLength) {
-                    if (static_cast<sGUIExt*>(sGUI::getInstance())->getMapModeMini() != 1) {
-                        setInputEvent(71u);
-                        return 0;
-                    } else {
-                        return 1;
-                    }
-                } else {
-                    setInputEvent(71u);
-                    return 0;
+                if ((mPointerCursor.mFocusMarkerId < mMarker.mLength) && (static_cast<sGUIExt*>(sGUI::getInstance())->getMapModeMini() == 1)) {
+                    return 1;
                 }
-            } else {
-                setInputEvent(71u);
-                return 0;
             }
-        } else {
-            return 1;
+            setInputEvent(71u);
+            return 0;
         }
-    } else {
-        return 1;
     }
+    return 1;
 }
 
 __attribute__((weak)) void uGUIMapMini::updateBtnGuide() {

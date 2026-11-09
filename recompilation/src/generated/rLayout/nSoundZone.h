@@ -55,5 +55,6 @@ namespace nSoundZone {
     void rotationShape(nZone::ShapeInfoCone* pDst, nZone::ShapeInfoCone* pSrc, const MtMatrix& baseMat, const MtVector3& rot);
     MtVector3 calcNormal(const MtVector3& pos0, const MtVector3& pos1, const MtVector3& pos2);
     MtVector3 calcCenterPos(const MtVector3& pos0, const MtVector3& pos1, const MtVector3& pos2);
+    template <typename _TYPE> void setResourceTemplate(_TYPE* & pMemberResource, _TYPE* pInputResource);
 
 }  // namespace nSoundZone

@@ -139,3 +139,5 @@ MtObject* rAreaInfoJointArea::cAreaInfoJointArea::MyDTI::newInstance() const {
 
 template MtTypedArray<rAreaInfoJointArea::cAreaInfoJointArea>::~MtTypedArray();
 
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rAreaInfoJointArea::cAreaInfoJointArea>&);
+

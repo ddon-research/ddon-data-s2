@@ -24,3 +24,16 @@ static inline int32_t sceAtomicIncrement32(volatile int32_t* ptr)
 {
     return sceAtomicAdd32Relaxed(ptr, 1);
 }
+
+static inline int32_t sceAtomicCompareAndSwap32Relaxed(volatile int32_t* ptr, int32_t compare, int32_t swap)
+{
+    __atomic_compare_exchange_n(ptr, &compare, swap, false, __ATOMIC_RELAXED, __ATOMIC_RELAXED);
+    return compare;
+}
+
+// The default again, for `nDraw::Resource::release` (031 plan-L6): the old
+// value, which equals `compare` when it swapped.
+static inline int32_t sceAtomicCompareAndSwap32(volatile int32_t* ptr, int32_t compare, int32_t swap)
+{
+    return sceAtomicCompareAndSwap32Relaxed(ptr, compare, swap);
+}

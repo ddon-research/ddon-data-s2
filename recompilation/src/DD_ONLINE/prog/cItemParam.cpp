@@ -208,15 +208,10 @@ __attribute__((weak)) u64 cItemParam::getItemPrice() {
 }
 
 MT_CTSTR cItemParam::getItemName() {
-    if (mpItemResParam == nullptr) {
-        if ((mpItemResParam = sItemManager::getInstance()->getItemParam(mItemParam.mItemNo)) != nullptr) {
-            return mpItemResParam->getItemName();
-        } else {
-            return "";
-        }
-    } else {
-        return mpItemResParam->getItemName();
+    if ((mpItemResParam == nullptr) && ((mpItemResParam = sItemManager::getInstance()->getItemParam(mItemParam.mItemNo)) == nullptr)) {
+        return "";
     }
+    return mpItemResParam->getItemName();
 }
 
 __attribute__((weak)) u8 cItemParam::getElementSlot() {

@@ -62,66 +62,21 @@ void uGUIPopSkillInfo::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIPopSkillInfo::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_SKILL_INFO_GUI"), 129u, 1430119094l))) != nullptr) {
-            if (mpGMDRes == nullptr) {
-                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
-                    if (mpGMDAbilityInfo == nullptr) {
-                        if ((mpGMDAbilityInfo = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ABILITY_INFO_GMD"), 129u, 0l))) != nullptr) {
-                            mpGMDAbilityInfo;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                if (mpGMDAbilityInfo == nullptr) {
-                    if ((mpGMDAbilityInfo = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ABILITY_INFO_GMD"), 129u, 0l))) != nullptr) {
-                        mpGMDAbilityInfo;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_SKILL_INFO_GUI"), 129u, 1430119094l))) == nullptr)) {
+        return false;
+    }
+    if ((mpGMDRes == nullptr) && ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) == nullptr)) {
+        return false;
+    }
+    if (mpGMDAbilityInfo == nullptr) {
+        if ((mpGMDAbilityInfo = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ABILITY_INFO_GMD"), 129u, 0l))) != nullptr) {
+            mpGMDAbilityInfo;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDRes == nullptr) {
-            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
-                if (mpGMDAbilityInfo == nullptr) {
-                    if ((mpGMDAbilityInfo = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ABILITY_INFO_GMD"), 129u, 0l))) != nullptr) {
-                        mpGMDAbilityInfo;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            } else {
-                return false;
-            }
-        } else {
-            if (mpGMDAbilityInfo == nullptr) {
-                if ((mpGMDAbilityInfo = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ABILITY_INFO_GMD"), 129u, 0l))) != nullptr) {
-                    mpGMDAbilityInfo;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
-        }
+        return true;
     }
 }
 

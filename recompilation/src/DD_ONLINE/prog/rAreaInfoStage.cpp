@@ -139,3 +139,5 @@ MtObject* rAreaInfoStage::cAreaInfoStage::MyDTI::newInstance() const {
 
 template MtTypedArray<rAreaInfoStage::cAreaInfoStage>::~MtTypedArray();
 
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rAreaInfoStage::cAreaInfoStage>&);
+

@@ -82,8 +82,6 @@ inline void* cMenuApproveClan::operator new(size_t sz, u32 align) {
 }
 
 cMenuApproveClan::~cMenuApproveClan() {
-    DDON_STUB("cMenuApproveClan::~cMenuApproveClan")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuApproveClan::initApproveClan(u32 type, u32 reqId, MtString& charFirstName, MtString& charLastName) {
@@ -447,8 +445,6 @@ inline void* cMenuClanAuthority::operator new(size_t sz, u32 align) {
 }
 
 cMenuClanAuthority::~cMenuClanAuthority() {
-    DDON_STUB("cMenuClanAuthority::~cMenuClanAuthority")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuClanAuthority::initClanAuthority(u32 memberId, MtString& charFirstName, MtString& charLastName, u32 rank, u32 permission, bool change) {
@@ -482,8 +478,6 @@ inline void* cMenuClanChangeMaster::operator new(size_t sz, u32 align) {
 }
 
 cMenuClanChangeMaster::~cMenuClanChangeMaster() {
-    DDON_STUB("cMenuClanChangeMaster::~cMenuClanChangeMaster")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuClanChangeMaster::initClanChangeMaster(u32 memberId, MtString& charFirstName, MtString& charLastName) {
@@ -518,8 +512,6 @@ inline void* cMenuClanDirectInvite::operator new(size_t sz, u32 align) {
 }
 
 cMenuClanDirectInvite::~cMenuClanDirectInvite() {
-    DDON_STUB("cMenuClanDirectInvite::~cMenuClanDirectInvite")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuClanDirectInvite::initClanDirectInvite(u32 characterId, MtString& charFirstName, MtString& charLastName) {
@@ -582,8 +574,6 @@ inline void* cMenuClanExpelMember::operator new(size_t sz, u32 align) {
 }
 
 cMenuClanExpelMember::~cMenuClanExpelMember() {
-    DDON_STUB("cMenuClanExpelMember::~cMenuClanExpelMember")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuClanExpelMember::initClanExpelMember(u32 memberId, MtString& charFirstName, MtString& charLastName) {
@@ -985,8 +975,6 @@ inline void* cMenuClanSetMemberRank::operator new(size_t sz, u32 align) {
 }
 
 cMenuClanSetMemberRank::~cMenuClanSetMemberRank() {
-    DDON_STUB("cMenuClanSetMemberRank::~cMenuClanSetMemberRank")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuClanSetMemberRank::initClanSetMemberRank(u32 memberId, s32 rank, MtString& charFirstName, MtString& charLastName) {
@@ -1671,8 +1659,6 @@ inline void* cMenuInviteClan::operator new(size_t sz, u32 align) {
 }
 
 cMenuInviteClan::~cMenuInviteClan() {
-    DDON_STUB("cMenuInviteClan::~cMenuInviteClan")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuInviteClan::initInviteClan(u32 entryId, MtString& charFirstName, MtString& charLastName) {

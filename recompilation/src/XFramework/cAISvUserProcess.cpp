@@ -22,6 +22,10 @@ inline void* cAISvUserProcess::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAISvUserProcess::DTI)->memAlloc(sz, align, cAISvUserProcess::DTI.mID);
 }
 
+inline void cAISvUserProcess::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAISvUserProcess::DTI)->memFree(p_addr);
+}
+
 cAISvUserProcess::~cAISvUserProcess() {
     if (mpContainerListTop != nullptr) {
         for (cAIUserProcessContainer* v0_5 = mpContainerListTop;;) {

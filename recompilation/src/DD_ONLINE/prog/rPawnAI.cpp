@@ -159,20 +159,25 @@ cPawnAIAction* cPawnAIAction::findActInterfaceFromID(MtTypedArray<cPawnAIAction>
 
 __attribute__((weak)) void cPawnAIAction::load(MtDataReader& r) {
     mPawnActID = r.readU32();
+    cAIPawnActionGroupFlag* held0 = &mGroup;
     u32 t0 = r.readU32();
-    r.read(static_cast<void*>(&mGroup), t0 * 4u);
+    r.read(static_cast<void*>(held0), t0 * 4u);
     mLifeFrame = r.readF32();
     mStandOffFrame = r.readF32();
+    cPawnAIActComCtrlFlag* held1 = &mPawnAIActComCtrlFlag;
     u32 t1 = r.readU32();
-    r.read(static_cast<void*>(&mPawnAIActComCtrlFlag), t1 * 4u);
+    r.read(static_cast<void*>(held1), t1 * 4u);
     mPawnAIActComCtrlOrderID = r.readU32();
+    cPawnAIActCancelFlag* held2 = &mPawnAIActCancelFlag;
     u32 t2 = r.readU32();
-    r.read(static_cast<void*>(&mPawnAIActCancelFlag), t2 * 4u);
+    r.read(static_cast<void*>(held2), t2 * 4u);
     nDDOIO::readMtArray(r, mpActInters);
+    cPawnAIActComCheckFlag* held3 = &mPawnAIActComEnableFlag;
     u32 t3 = r.readU32();
-    r.read(static_cast<void*>(&mPawnAIActComEnableFlag), t3 * 4u);
+    cPawnAIActComCheckFlag* held4 = &mPawnAIActComDisableFlag;
+    r.read(static_cast<void*>(held3), t3 * 4u);
     u32 t4 = r.readU32();
-    r.read(static_cast<void*>(&mPawnAIActComDisableFlag), t4 * 4u);
+    r.read(static_cast<void*>(held4), t4 * 4u);
     mProperTargetType = r.readU32();
     mStaminaRateMin = r.readF32();
     mStaminaRateMax = r.readF32();
@@ -184,8 +189,9 @@ __attribute__((weak)) void cPawnAIAction::load(MtDataReader& r) {
     mUseRateFromStaminaVeryHigh = r.readF32();
     mSupportHpRateMin = r.readF32();
     mSupportHpRateMax = r.readF32();
+    cAIPawnActSupportFlag* held5 = &mSupportPawnActFlag;
     u32 t5 = r.readU32();
-    r.read(static_cast<void*>(&mSupportPawnActFlag), t5 * 4u);
+    r.read(static_cast<void*>(held5), t5 * 4u);
     nDDOIO::readData(r, mEnableJobFlag);
     nDDOIO::readData(r, mUseRate);
     nDDOIO::readData(r, mUseRangeMin);
@@ -251,6 +257,8 @@ MtObject* rPawnAIAction::MyDTI::newInstance() const {
 }
 
 template MtTypedArray<cPawnAIActInter>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<cPawnAIActInter>&);
 
 template cPawnAIAction* rTbl2<cPawnAIAction>::getData(unsigned int);
 

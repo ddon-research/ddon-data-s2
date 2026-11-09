@@ -54,15 +54,10 @@ void uGUICaplinkFilter::createProperty(MtPropertyList& s) {
 }
 
 bool uGUICaplinkFilter::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_FILTER_GUI"), 129u, 1433827923l))) != nullptr) {
-            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
-        } else {
-            return false;
-        }
-    } else {
-        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_FILTER_GUI"), 129u, 1433827923l))) == nullptr)) {
+        return false;
     }
+    return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
 }
 
 __attribute__((weak)) void uGUICaplinkFilter::setup() {

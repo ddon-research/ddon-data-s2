@@ -25,6 +25,10 @@ const MtDTI& nNetwork::nSharedMemory2::CConsistentHash::getDTI() const {
     return nNetwork::nSharedMemory2::CConsistentHash::DTI;
 }
 
+inline void nNetwork::nSharedMemory2::CConsistentHash::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CConsistentHash::DTI)->memFree(p_addr);
+}
+
 nNetwork::nSharedMemory2::CConsistentHash::~CConsistentHash() {
     DDON_STUB("nNetwork::nSharedMemory2::CConsistentHash::~CConsistentHash")
     /* stub */

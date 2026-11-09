@@ -39,17 +39,13 @@ inline rFieldMapData::rFieldMapData() {
 }
 
 rFieldMapData::~rFieldMapData() {
-    if (mArrayDataNum == 0) {
-        MtMemoryAllocator::getAllocator(rFieldMapData::DTI)->memFree(static_cast<void*>(mpArrayData));
-        mpArrayData = nullptr;
-        mArrayDataNum = 0;
-        return;
-    }
     unsigned int i3 = 0;
-    do {
-        mpArrayData[i3].~Data();
-        i3 += 1u;
-    } while (i3 < mArrayDataNum);
+    if (mArrayDataNum != 0) {
+        do {
+            mpArrayData[i3].~Data();
+            i3 += 1u;
+        } while (i3 < mArrayDataNum);
+    }
     MtMemoryAllocator::getAllocator(rFieldMapData::DTI)->memFree(static_cast<void*>(mpArrayData));
     mpArrayData = nullptr;
     mArrayDataNum = 0;

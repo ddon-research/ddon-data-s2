@@ -37,8 +37,7 @@ cCollGeom::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32
 cCollGeom::MyDTI cCollGeom::DTI("cCollGeom", &::MtObject::DTI, 112ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cCollGeom::MyDTI::newInstance() const {
-    DDON_STUB("cCollGeom::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cCollGeom;
 }
 
 const MtDTI& rCollGeom::getDTI() const {
@@ -58,8 +57,27 @@ inline void rCollGeom::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rCollGeom::loadData(MtDataReader& in, cCollGeom* pData) {
-    DDON_STUB("rCollGeom::loadData")
-    return {};
+    nDDOIO::readData(in, pData->mShape);
+    nDDOIO::readData(in, pData->mOption);
+    nDDOIO::readData(in, pData->mScaleOption);
+    nDDOIO::readData(in, pData->mPriority);
+    nDDOIO::readData(in, pData->mLayer);
+    nDDOIO::readData(in, pData->mDmy0);
+    nDDOIO::readData(in, pData->mIndex);
+    nDDOIO::readData(in, pData->mJnt0);
+    nDDOIO::readData(in, pData->mJnt1);
+    nDDOIO::readData(in, pData->mRegionNo);
+    nDDOIO::readData(in, pData->mRangeCheckBaseJnt);
+    nDDOIO::readData(in, pData->mRadius);
+    pData->mAngle0.x = in.readF32();
+    pData->mAngle0.y = in.readF32();
+    pData->mAngle1.x = in.readF32();
+    pData->mAngle1.y = in.readF32();
+    pData->mOffset0 = in.readV3();
+    pData->mOffset1 = in.readV3();
+    pData->mExtent = in.readV3();
+    nDDOIO::readData(in, pData->mIsUseData);
+    return true;
 }
 
 MT_CTSTR rCollGeom::getExt() const {

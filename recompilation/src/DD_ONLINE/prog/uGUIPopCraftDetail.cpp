@@ -58,134 +58,24 @@ void uGUIPopCraftDetail::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIPopCraftDetail::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_CRAFT_DETAIL_GUI"), 129u, 1477041087l))) != nullptr) {
-            if (mpGMDRes == nullptr) {
-                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
-                    if (mpGMDParamRes == nullptr) {
-                        if ((mpGMDParamRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), 129u, 0l))) != nullptr) {
-                            if (mpGMDJewelryCtgr == nullptr) {
-                                if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                                    mpGMDJewelryCtgr;
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                return true;
-                            }
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        if (mpGMDJewelryCtgr == nullptr) {
-                            if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                                mpGMDJewelryCtgr;
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return true;
-                        }
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                if (mpGMDParamRes == nullptr) {
-                    if ((mpGMDParamRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), 129u, 0l))) != nullptr) {
-                        if (mpGMDJewelryCtgr == nullptr) {
-                            if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                                mpGMDJewelryCtgr;
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return true;
-                        }
-                    } else {
-                        return false;
-                    }
-                } else {
-                    if (mpGMDJewelryCtgr == nullptr) {
-                        if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                            mpGMDJewelryCtgr;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_CRAFT_DETAIL_GUI"), 129u, 1477041087l))) == nullptr)) {
+        return false;
+    }
+    if ((mpGMDRes == nullptr) && ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) == nullptr)) {
+        return false;
+    }
+    if ((mpGMDParamRes == nullptr) && ((mpGMDParamRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), 129u, 0l))) == nullptr)) {
+        return false;
+    }
+    if (mpGMDJewelryCtgr == nullptr) {
+        if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
+            mpGMDJewelryCtgr;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDRes == nullptr) {
-            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
-                if (mpGMDParamRes == nullptr) {
-                    if ((mpGMDParamRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), 129u, 0l))) != nullptr) {
-                        if (mpGMDJewelryCtgr == nullptr) {
-                            if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                                mpGMDJewelryCtgr;
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return true;
-                        }
-                    } else {
-                        return false;
-                    }
-                } else {
-                    if (mpGMDJewelryCtgr == nullptr) {
-                        if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                            mpGMDJewelryCtgr;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
-            } else {
-                return false;
-            }
-        } else {
-            if (mpGMDParamRes == nullptr) {
-                if ((mpGMDParamRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), 129u, 0l))) != nullptr) {
-                    if (mpGMDJewelryCtgr == nullptr) {
-                        if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                            mpGMDJewelryCtgr;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                if (mpGMDJewelryCtgr == nullptr) {
-                    if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
-                        mpGMDJewelryCtgr;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            }
-        }
+        return true;
     }
 }
 

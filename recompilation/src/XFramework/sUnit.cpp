@@ -26,6 +26,10 @@ const MtDTI& sUnit::getDTI() const {
     return sUnit::DTI;
 }
 
+inline void sUnit::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sUnit::DTI)->memFree(p_addr);
+}
+
 sUnit::sUnit(u32 line_num, u32 group_num) {
     DDON_STUB("sUnit::sUnit")
     /* stub */

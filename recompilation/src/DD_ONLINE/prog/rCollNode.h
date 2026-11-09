@@ -32,6 +32,7 @@ using u64 = __uint64_t;
 
 class cCollNode : public MtObject
 {
+    friend class rCollNode;
 public:
     enum
     {

@@ -171,30 +171,15 @@ s32 sEventManager::getEventID(s32 stage, s32 no) {
             for (unsigned int i0_3 = 0;;) {
                 cEventParam* t0 = mprEventParam->getData(i0_3);
                 if (t0 != nullptr) {
-                    if (t0->mStage == static_cast<unsigned short>(stage)) {
-                        if (t0->mEvNo != static_cast<unsigned short>(no)) {
-                            if ((i0_3 + 1u) < mprEventParam->getDataNum()) {
-                                i0_3 += 1u;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            v2_10 = i0_3;
-                            return static_cast<s32>(v2_10);
-                        }
-                    } else {
-                        if ((i0_3 + 1u) < mprEventParam->getDataNum()) {
-                            i0_3 += 1u;
-                        } else {
-                            break;
-                        }
+                    if ((t0->mStage == static_cast<unsigned short>(stage)) && (t0->mEvNo == static_cast<unsigned short>(no))) {
+                        v2_10 = i0_3;
+                        return static_cast<s32>(v2_10);
                     }
+                }
+                if ((i0_3 + 1u) < mprEventParam->getDataNum()) {
+                    i0_3 += 1u;
                 } else {
-                    if ((i0_3 + 1u) < mprEventParam->getDataNum()) {
-                        i0_3 += 1u;
-                    } else {
-                        break;
-                    }
+                    break;
                 }
             }
             v2_10 = 0xFFFFFFFF;

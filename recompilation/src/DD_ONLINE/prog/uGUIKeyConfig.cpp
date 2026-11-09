@@ -873,8 +873,6 @@ const MtDTI& uGUIKeyConfig::cKeySettingInfo::getDTI() const {
 }
 
 uGUIKeyConfig::cKeySettingInfo::~cKeySettingInfo() {
-    DDON_STUB("uGUIKeyConfig::cKeySettingInfo::~cKeySettingInfo")
-    /* stub */
 }
 
 void uGUIKeyConfig::cKeySettingInfo::addMouseTouchList(cControl* control, s32 pos) {

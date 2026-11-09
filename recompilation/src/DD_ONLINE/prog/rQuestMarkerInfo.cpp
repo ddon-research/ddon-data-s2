@@ -141,9 +141,14 @@ void rQuestMarkerInfo::cInfo::load(MtDataReader& r) {
     nDDOIO::readData(r, mUniqueId);
 }
 
-__attribute__((weak)) void rQuestMarkerInfo::cInfo::save(MtDataWriter& w) {
-    DDON_STUB("rQuestMarkerInfo::cInfo::save")
-    /* stub */
+void rQuestMarkerInfo::cInfo::save(MtDataWriter& w) {
+    MtFloat3 frame56;
+    frame56.x = mPos.x;
+    frame56.y = mPos.y;
+    frame56.z = mPos.z;
+    w.writeV3(frame56);
+    w.writeU32(mGroupNo);
+    w.writeU32(mUniqueId);
 }
 
 rQuestMarkerInfo::cInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -155,4 +160,6 @@ MtObject* rQuestMarkerInfo::cInfo::MyDTI::newInstance() const {
 }
 
 template MtTypedArray<rQuestMarkerInfo::cInfo>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rQuestMarkerInfo::cInfo>&);
 

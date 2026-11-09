@@ -483,110 +483,24 @@ __attribute__((weak)) void aStage::initStageArchive(s32 stgNo) {
 
 bool aStage::isLoadStageArchive() {
     if (mpStageInfo != nullptr) {
-        if (mLotArcTicket != (sArchiveManager::INVALID_TICKET)) {
-            if (sArchiveManager::getInstance()->isTicketLoadFinish(mLotArcTicket)) {
-                if (mpStageJointCtrl != nullptr) {
-                    if (mpStageJointCtrl->isBlockArcLoadOk()) {
-                        if (mpStageFieldCtrl != nullptr) {
-                            if (!mpStageFieldCtrl->isBlockArcLoadOk()) {
-                                return false;
-                            } else {
-                                sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                                return true;
-                            }
-                        } else {
-                            if (mpStagePartsCtrl != nullptr) {
-                                if (mpStagePartsCtrl->isBlockArcLoadOk()) {
-                                    sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            } else {
-                                sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                                return true;
-                            }
-                        }
-                    } else {
-                        return false;
-                    }
-                } else {
-                    if (mpStageFieldCtrl != nullptr) {
-                        if (!mpStageFieldCtrl->isBlockArcLoadOk()) {
-                            return false;
-                        } else {
-                            sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                            return true;
-                        }
-                    } else {
-                        if (mpStagePartsCtrl != nullptr) {
-                            if (mpStagePartsCtrl->isBlockArcLoadOk()) {
-                                sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                            return true;
-                        }
-                    }
-                }
-            } else {
+        if ((mLotArcTicket != (sArchiveManager::INVALID_TICKET)) && !sArchiveManager::getInstance()->isTicketLoadFinish(mLotArcTicket)) {
+            return false;
+        }
+        if ((mpStageJointCtrl != nullptr) && !mpStageJointCtrl->isBlockArcLoadOk()) {
+            return false;
+        }
+        if (mpStageFieldCtrl != nullptr) {
+            if (!mpStageFieldCtrl->isBlockArcLoadOk()) {
                 return false;
             }
         } else {
-            if (mpStageJointCtrl != nullptr) {
-                if (mpStageJointCtrl->isBlockArcLoadOk()) {
-                    if (mpStageFieldCtrl != nullptr) {
-                        if (!mpStageFieldCtrl->isBlockArcLoadOk()) {
-                            return false;
-                        } else {
-                            sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                            return true;
-                        }
-                    } else {
-                        if (mpStagePartsCtrl != nullptr) {
-                            if (mpStagePartsCtrl->isBlockArcLoadOk()) {
-                                sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                            return true;
-                        }
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                if (mpStageFieldCtrl != nullptr) {
-                    if (!mpStageFieldCtrl->isBlockArcLoadOk()) {
-                        return false;
-                    } else {
-                        sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                        return true;
-                    }
-                } else {
-                    if (mpStagePartsCtrl != nullptr) {
-                        if (mpStagePartsCtrl->isBlockArcLoadOk()) {
-                            sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        sNpcManager::getInstance()->isFinishLoadCoMotionArc();
-                        return true;
-                    }
-                }
+            if ((mpStagePartsCtrl != nullptr) && !mpStagePartsCtrl->isBlockArcLoadOk()) {
+                return false;
             }
         }
-    } else {
-        return true;
+        sNpcManager::getInstance()->isFinishLoadCoMotionArc();
     }
+    return true;
 }
 
 __attribute__((weak)) void aStage::setBlockArcLoad(s32 stgNo) {
@@ -1008,44 +922,25 @@ __attribute__((weak)) bool aStage::addFSMCamEvFromName(u32 stageNo, s32 eventNo)
 
 bool aStage::addFSMCamEvFromName(MT_CTSTR filePath) {
     if (mpFSMTaskCtrl != nullptr) {
-        if (sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE) {
-            return false;
-        } else {
-            if (sGame::getInstance()->mIsGameOverLobby) {
-                return false;
-            } else {
-                uPlayer* t0 = sPlayerManager::getInstance()->getMyPlayer();
-                if (t0 != nullptr) {
-                    if (t0->isEnable()) {
-                        if (t0->getActMgrPtr() != nullptr) {
-                            if (t0->getActMgrPtr()->getActionNo() != 224) {
-                                if (cContextInterface::getActNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, 0u) != 224) {
-                                    if (scePthreadMutexLock(&mCs.mCSection) != 0) {
-                                        abort();
-                                    }
-                                    bool t1 = mpFSMTaskCtrl->addFSMTaskCamEvFromName(filePath);
-                                    int t2 = scePthreadMutexUnlock(&mCs.mCSection);
-                                    if (t2 != 0) {
-                                        abort();
-                                    }
-                                    return t1;
-                                }
+        if ((sSoundManager::getInstance()->getBattleState() != sBattleState::SYS_STATE_BATTLE) && !sGame::getInstance()->mIsGameOverLobby) {
+            uPlayer* t0 = sPlayerManager::getInstance()->getMyPlayer();
+            if ((t0 != nullptr) && t0->isEnable()) {
+                if (t0->getActMgrPtr() != nullptr) {
+                    if (t0->getActMgrPtr()->getActionNo() != 224) {
+                        if (cContextInterface::getActNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, 0u) != 224) {
+                            if (scePthreadMutexLock(&mCs.mCSection) != 0) {
+                                abort();
                             }
-                        } else {
-                            if (cContextInterface::getActNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, 0u) != 224) {
-                                if (scePthreadMutexLock(&mCs.mCSection) != 0) {
-                                    abort();
-                                }
-                                bool t1 = mpFSMTaskCtrl->addFSMTaskCamEvFromName(filePath);
-                                int t2 = scePthreadMutexUnlock(&mCs.mCSection);
-                                if (t2 != 0) {
-                                    abort();
-                                }
-                                return t1;
+                            bool t1 = mpFSMTaskCtrl->addFSMTaskCamEvFromName(filePath);
+                            int t2 = scePthreadMutexUnlock(&mCs.mCSection);
+                            if (t2 != 0) {
+                                abort();
                             }
+                            return t1;
                         }
-                        return false;
-                    } else {
+                    }
+                } else {
+                    if (cContextInterface::getActNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, 0u) != 224) {
                         if (scePthreadMutexLock(&mCs.mCSection) != 0) {
                             abort();
                         }
@@ -1056,22 +951,21 @@ bool aStage::addFSMCamEvFromName(MT_CTSTR filePath) {
                         }
                         return t1;
                     }
-                } else {
-                    if (scePthreadMutexLock(&mCs.mCSection) != 0) {
-                        abort();
-                    }
-                    bool t1 = mpFSMTaskCtrl->addFSMTaskCamEvFromName(filePath);
-                    int t2 = scePthreadMutexUnlock(&mCs.mCSection);
-                    if (t2 != 0) {
-                        abort();
-                    }
-                    return t1;
                 }
+                return false;
             }
+            if (scePthreadMutexLock(&mCs.mCSection) != 0) {
+                abort();
+            }
+            bool t1 = mpFSMTaskCtrl->addFSMTaskCamEvFromName(filePath);
+            int t2 = scePthreadMutexUnlock(&mCs.mCSection);
+            if (t2 != 0) {
+                abort();
+            }
+            return t1;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 __attribute__((weak)) bool aStage::loadWaypoint() {

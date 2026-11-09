@@ -510,36 +510,20 @@ __attribute__((weak)) f32 cpJob07::getAttitudeOfFuryIncreaseFuryParam() {
 
 bool cpJob07::checkCndEnableDelayCombo() const {
     if (mpHuman != nullptr) {
-        if (!mpHuman->mIsBeforeAttackHit) {
-            if (mpHuman->isBeforeGuarded()) {
-                unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
-                if (t0 != 0) {
-                    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)) + 255) > 9) {
-                        return false;
-                    } else {
-                        u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)));
-                        u32 t2 = nHuman::getNormalSkillIdArrayIndex(nHuman::GROW_NORMAL_SKILL_ID_TOP);
-                        return static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * 40u)) + static_cast<unsigned long>(t2 * 4u)) + 3176)) > 0;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
+        if (!mpHuman->mIsBeforeAttackHit && !mpHuman->isBeforeGuarded()) {
+            return false;
+        }
+        unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+        if (t0 != 0) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)) + 255) > 9) {
                 return false;
+            } else {
+                u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)));
+                u32 t2 = nHuman::getNormalSkillIdArrayIndex(nHuman::GROW_NORMAL_SKILL_ID_TOP);
+                return static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * 40u)) + static_cast<unsigned long>(t2 * 4u)) + 3176)) > 0;
             }
         } else {
-            unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
-            if (t0 != 0) {
-                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)) + 255) > 9) {
-                    return false;
-                } else {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)));
-                    u32 t2 = nHuman::getNormalSkillIdArrayIndex(nHuman::GROW_NORMAL_SKILL_ID_TOP);
-                    return static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * 40u)) + static_cast<unsigned long>(t2 * 4u)) + 3176)) > 0;
-                }
-            } else {
-                return false;
-            }
+            return false;
         }
     } else {
         return false;

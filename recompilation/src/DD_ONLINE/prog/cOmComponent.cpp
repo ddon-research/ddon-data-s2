@@ -114,18 +114,11 @@ __attribute__((weak)) void cOmComponent::createComponent(cpComponent* pRootCP, M
 
 bool cOmComponent::isOnFlag(u32 flag) {
     if (((flag >> 8) & 4u) != 0) {
-        if (mpOmControl != nullptr) {
-            if (mpOmControl->mOmID != 522157) {
-                return (flag & mUseComponent) != 0;
-            } else {
-                return true;
-            }
-        } else {
-            return (flag & mUseComponent) != 0;
+        if ((mpOmControl != nullptr) && (mpOmControl->mOmID == 522157)) {
+            return true;
         }
-    } else {
-        return (flag & mUseComponent) != 0;
     }
+    return (flag & mUseComponent) != 0;
 }
 
 __attribute__((weak)) void cOmComponent::initObjCollision(uOmModel* puom, rObjCollision* pRes) {

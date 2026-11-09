@@ -53,32 +53,18 @@ void uGUIRankUp::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIRankUp::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_RANKUP_GUI"), 129u, 1419490149l))) != nullptr) {
-            if (mpSeRes == nullptr) {
-                if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_MASTER_SRQR"), 129u, 0l))) != nullptr) {
-                    mpSeRes;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_RANKUP_GUI"), 129u, 1419490149l))) == nullptr)) {
+        return false;
+    }
+    if (mpSeRes == nullptr) {
+        if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_MASTER_SRQR"), 129u, 0l))) != nullptr) {
+            mpSeRes;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpSeRes == nullptr) {
-            if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_MASTER_SRQR"), 129u, 0l))) != nullptr) {
-                mpSeRes;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return true;
     }
 }
 

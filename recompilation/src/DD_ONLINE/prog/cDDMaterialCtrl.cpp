@@ -178,7 +178,7 @@ __attribute__((weak)) void cDDMaterialCtrl::setBaseShaderMode(u32 mode) {
 
 static auto ddon_emit_0x01964320 __attribute__((used)) = &cDDMaterialCtrl::getBaseShaderMode;
 
-__attribute__((weak)) void cDDMaterialCtrl::setShaderMode(u32 mode) {
+void cDDMaterialCtrl::setShaderMode(u32 mode) {
         if (mode <= 7 && mode != mShaderMode) {
             static_cast<cShaderDataStatusAilments*>(mShaderData.mpArray[mShaderMode])->end(mpOwner, mode);
             static_cast<cShaderDataStatusAilments*>(mShaderData.mpArray[mode])->init(mpOwner, mpBakeModel, this);

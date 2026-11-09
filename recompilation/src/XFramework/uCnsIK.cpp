@@ -201,108 +201,42 @@ uModel::Joint* uCnsIK::getDependentJoint(u32 Idx) {
     if (mEffectorTargetModelEnable) {
         if (!mUpVectorTargetModelEnable) {
             if (mpEffectorTargetModel != nullptr) {
-                if (mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)] != 0xFF) {
-                    if ((&mpEffectorTargetModel->mJoint[mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)]]) == nullptr) {
-                        return nullptr;
-                    } else {
-                        return &mpEffectorTargetModel->mJoint[mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)]];
-                    }
-                } else {
-                    return nullptr;
+                if ((mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)] != 0xFF) && ((&mpEffectorTargetModel->mJoint[mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)]]) != nullptr)) {
+                    return &mpEffectorTargetModel->mJoint[mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)]];
                 }
-            } else {
-                return nullptr;
             }
         } else {
             if (Idx != 1) {
                 if (Idx == 0) {
                     if (mpEffectorTargetModel != nullptr) {
-                        if (mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)] != 0xFF) {
-                            if ((&mpEffectorTargetModel->mJoint[mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)]]) == nullptr) {
-                                if (mpUpVectorTargetModel != nullptr) {
-                                    if (mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)] != 0xFF) {
-                                        if ((&mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]]) == nullptr) {
-                                            return nullptr;
-                                        } else {
-                                            return &mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]];
-                                        }
-                                    } else {
-                                        return nullptr;
-                                    }
-                                } else {
-                                    return nullptr;
-                                }
-                            } else {
-                                return &mpEffectorTargetModel->mJoint[mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)]];
-                            }
-                        } else {
-                            if (mpUpVectorTargetModel != nullptr) {
-                                if (mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)] != 0xFF) {
-                                    if ((&mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]]) == nullptr) {
-                                        return nullptr;
-                                    } else {
-                                        return &mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]];
-                                    }
-                                } else {
-                                    return nullptr;
-                                }
-                            } else {
-                                return nullptr;
-                            }
-                        }
-                    } else {
-                        if (mpUpVectorTargetModel != nullptr) {
-                            if (mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)] != 0xFF) {
-                                if ((&mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]]) == nullptr) {
-                                    return nullptr;
-                                } else {
-                                    return &mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]];
-                                }
-                            } else {
-                                return nullptr;
-                            }
-                        } else {
-                            return nullptr;
+                        if ((mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)] != 0xFF) && ((&mpEffectorTargetModel->mJoint[mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)]]) != nullptr)) {
+                            return &mpEffectorTargetModel->mJoint[mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3832)]];
                         }
                     }
-                } else {
-                    return nullptr;
+                    if (mpUpVectorTargetModel != nullptr) {
+                        if ((mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)] != 0xFF) && ((&mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]]) != nullptr)) {
+                            return &mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]];
+                        }
+                    }
                 }
             } else {
                 if (mpUpVectorTargetModel != nullptr) {
-                    if (mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)] != 0xFF) {
-                        if ((&mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]]) == nullptr) {
-                            return nullptr;
-                        } else {
-                            return &mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]];
-                        }
-                    } else {
-                        return nullptr;
+                    if ((mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)] != 0xFF) && ((&mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]]) != nullptr)) {
+                        return &mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]];
                     }
-                } else {
-                    return nullptr;
                 }
             }
         }
     } else {
         if (mUpVectorTargetModelEnable) {
             if (mpUpVectorTargetModel != nullptr) {
-                if (mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)] != 0xFF) {
-                    if ((&mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]]) == nullptr) {
-                        return nullptr;
-                    } else {
-                        return &mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]];
-                    }
-                } else {
-                    return nullptr;
+                if ((mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)] != 0xFF) && ((&mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]]) != nullptr)) {
+                    return &mpUpVectorTargetModel->mJoint[mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3848)]];
                 }
-            } else {
-                return nullptr;
             }
-        } else {
-            return nullptr;
         }
     }
+    return nullptr;
 }
 
 __attribute__((weak)) void uCnsIK::draw(cDraw* pDraw) {

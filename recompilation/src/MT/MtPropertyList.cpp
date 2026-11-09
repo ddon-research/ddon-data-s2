@@ -29,23 +29,14 @@ MtProperty* MtPropertyList::find(MtProperty::TYPE type, MT_CTSTR name) const {
         v2_8 = nullptr;
     } else {
         for (MtProperty* pe = mpElement;;) {
-            if (pe->mType == static_cast<unsigned int>(type)) {
-                if (strcmp(pe->mName, name) != 0) {
-                    if (pe->mpPrev != nullptr) {
-                        pe = pe->mpPrev;
-                    } else {
-                        break;
-                    }
-                } else {
-                    v2_8 = pe;
-                    return v2_8;
-                }
+            if ((pe->mType == static_cast<unsigned int>(type)) && (strcmp(pe->mName, name) == 0)) {
+                v2_8 = pe;
+                return v2_8;
+            }
+            if (pe->mpPrev != nullptr) {
+                pe = pe->mpPrev;
             } else {
-                if (pe->mpPrev != nullptr) {
-                    pe = pe->mpPrev;
-                } else {
-                    break;
-                }
+                break;
             }
         }
         v2_8 = nullptr;

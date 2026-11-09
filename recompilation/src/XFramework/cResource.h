@@ -60,6 +60,7 @@ class sResource;
 class sSoundExt;
 class uCnsDDOIK;
 class uCnsIK;
+class uEffect;
 
 // Declarations
 class cResource;
@@ -121,6 +122,7 @@ class cResource : public MtObject
     friend class sSoundExt;
     friend class uCnsDDOIK;
     friend class uCnsIK;
+    friend class uEffect;
 public:
     enum CONVERT_TYPE
     {

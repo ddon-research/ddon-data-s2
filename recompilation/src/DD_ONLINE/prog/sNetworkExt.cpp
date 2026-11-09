@@ -408,15 +408,10 @@ bool sNetworkExt::isClanApproved() {
 
 bool sNetworkExt::isEnableCreateClan() {
     if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 34744)) == 0) {
-        if (mIsClanScoutEntry) {
-            return false;
-        } else {
-            if (mIsApplyClan) {
-                return false;
-            } else {
-                return static_cast<unsigned long>(mClanIntervalTime) < static_cast<unsigned long>(mWorldServerTime.getTime() - mLastClanLeaveTime);
-            }
+        if (!mIsClanScoutEntry && !mIsApplyClan) {
+            return static_cast<unsigned long>(mClanIntervalTime) < static_cast<unsigned long>(mWorldServerTime.getTime() - mLastClanLeaveTime);
         }
+        return false;
     } else {
         return static_cast<unsigned long>(mClanIntervalTime) < static_cast<unsigned long>(mWorldServerTime.getTime() - mLastClanLeaveTime);
     }
@@ -660,22 +655,13 @@ bool sNetworkExt::isEntryBoardItem() {
 }
 
 bool sNetworkExt::isEntryLeader() {
-    if (!mIsEntryBoardItem) {
-        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
-            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
-                return static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader();
-            } else {
-                return mIsEntryItemLeader;
-            }
-        } else {
-            return false;
-        }
+    if (!mIsEntryBoardItem && !static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+        return false;
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader();
     } else {
-        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
-            return static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader();
-        } else {
-            return mIsEntryItemLeader;
-        }
+        return mIsEntryItemLeader;
     }
 }
 

@@ -58,15 +58,10 @@ uGUIEntryBoard::~uGUIEntryBoard() {
 }
 
 bool uGUIEntryBoard::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ENTRYBOARD_GUI"), 129u, 1431672609l))) != nullptr) {
-            return loadGMDarc(getArcTag(0u), "RES_ID_ENTRY_BOARD_GMD", 0u);
-        } else {
-            return false;
-        }
-    } else {
-        return loadGMDarc(getArcTag(0u), "RES_ID_ENTRY_BOARD_GMD", 0u);
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ENTRYBOARD_GUI"), 129u, 1431672609l))) == nullptr)) {
+        return false;
     }
+    return loadGMDarc(getArcTag(0u), "RES_ID_ENTRY_BOARD_GMD", 0u);
 }
 
 __attribute__((weak)) void uGUIEntryBoard::setup() {

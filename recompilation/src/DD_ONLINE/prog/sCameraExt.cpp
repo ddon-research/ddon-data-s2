@@ -399,122 +399,62 @@ bool sCameraExt::requestExGameCameraCmnActResource(u32 no, const uDDOModel* pReq
             } else {
                 uCameraGame* t0 = mpGameCamera;
                 if (t0 != nullptr) {
-                    if (!isForceSet) {
-                        if (t0->canChangeExCamera(mprParamListCmnAct->getParam(no), pReqOwner)) {
+                    if (!isForceSet && !t0->canChangeExCamera(mprParamListCmnAct->getParam(no), pReqOwner)) {
+                        return false;
+                    }
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                            abort();
+                        }
+                        uCameraGame* t1 = mpGameCamera;
+                        if (mprParamListCmnAct != nullptr) {
+                            const cCamExParam* t2 = mprParamListCmnAct->getParam(no);
+                            bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
                             if (mThreadSafe || (cSystem::mJobSafe)) {
-                                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                                int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                if (t4 != 0) {
                                     abort();
                                 }
-                                uCameraGame* t1 = mpGameCamera;
-                                if (mprParamListCmnAct != nullptr) {
-                                    const cCamExParam* t2 = mprParamListCmnAct->getParam(no);
-                                    bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                    if (mThreadSafe || (cSystem::mJobSafe)) {
-                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                        if (t4 != 0) {
-                                            abort();
-                                        }
-                                        return t3;
-                                    } else {
-                                        return t3;
-                                    }
-                                } else {
-                                    bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                    if (mThreadSafe || (cSystem::mJobSafe)) {
-                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                        if (t4 != 0) {
-                                            abort();
-                                        }
-                                        return t3;
-                                    } else {
-                                        return t3;
-                                    }
-                                }
+                                return t3;
                             } else {
-                                uCameraGame* t1 = mpGameCamera;
-                                if (mprParamListCmnAct != nullptr) {
-                                    const cCamExParam* t2 = mprParamListCmnAct->getParam(no);
-                                    bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                    if (mThreadSafe || (cSystem::mJobSafe)) {
-                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                        if (t4 != 0) {
-                                            abort();
-                                        }
-                                        return t3;
-                                    } else {
-                                        return t3;
-                                    }
-                                } else {
-                                    bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                    if (mThreadSafe || (cSystem::mJobSafe)) {
-                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                        if (t4 != 0) {
-                                            abort();
-                                        }
-                                        return t3;
-                                    } else {
-                                        return t3;
-                                    }
-                                }
+                                return t3;
                             }
                         } else {
-                            return false;
+                            bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
+                                int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                if (t4 != 0) {
+                                    abort();
+                                }
+                                return t3;
+                            } else {
+                                return t3;
+                            }
                         }
                     } else {
-                        if (mThreadSafe || (cSystem::mJobSafe)) {
-                            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                                abort();
-                            }
-                            uCameraGame* t1 = mpGameCamera;
-                            if (mprParamListCmnAct != nullptr) {
-                                const cCamExParam* t2 = mprParamListCmnAct->getParam(no);
-                                bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                if (mThreadSafe || (cSystem::mJobSafe)) {
-                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                    if (t4 != 0) {
-                                        abort();
-                                    }
-                                    return t3;
-                                } else {
-                                    return t3;
+                        uCameraGame* t1 = mpGameCamera;
+                        if (mprParamListCmnAct != nullptr) {
+                            const cCamExParam* t2 = mprParamListCmnAct->getParam(no);
+                            bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
+                                int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                if (t4 != 0) {
+                                    abort();
                                 }
+                                return t3;
                             } else {
-                                bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                if (mThreadSafe || (cSystem::mJobSafe)) {
-                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                    if (t4 != 0) {
-                                        abort();
-                                    }
-                                    return t3;
-                                } else {
-                                    return t3;
-                                }
+                                return t3;
                             }
                         } else {
-                            uCameraGame* t1 = mpGameCamera;
-                            if (mprParamListCmnAct != nullptr) {
-                                const cCamExParam* t2 = mprParamListCmnAct->getParam(no);
-                                bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                if (mThreadSafe || (cSystem::mJobSafe)) {
-                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                    if (t4 != 0) {
-                                        abort();
-                                    }
-                                    return t3;
-                                } else {
-                                    return t3;
+                            bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
+                                int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                if (t4 != 0) {
+                                    abort();
                                 }
+                                return t3;
                             } else {
-                                bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                if (mThreadSafe || (cSystem::mJobSafe)) {
-                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                    if (t4 != 0) {
-                                        abort();
-                                    }
-                                    return t3;
-                                } else {
-                                    return t3;
-                                }
+                                return t3;
                             }
                         }
                     }
@@ -538,122 +478,62 @@ bool sCameraExt::requestExGameCameraCmnEvtResource(u32 no, const uDDOModel* pReq
             } else {
                 uCameraGame* t0 = mpGameCamera;
                 if (t0 != nullptr) {
-                    if (!isForceSet) {
-                        if (t0->canChangeExCamera(mprParamListCmnEvt->getParam(no), pReqOwner)) {
+                    if (!isForceSet && !t0->canChangeExCamera(mprParamListCmnEvt->getParam(no), pReqOwner)) {
+                        return false;
+                    }
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                            abort();
+                        }
+                        uCameraGame* t1 = mpGameCamera;
+                        if (mprParamListCmnEvt != nullptr) {
+                            const cCamExParam* t2 = mprParamListCmnEvt->getParam(no);
+                            bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
                             if (mThreadSafe || (cSystem::mJobSafe)) {
-                                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                                int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                if (t4 != 0) {
                                     abort();
                                 }
-                                uCameraGame* t1 = mpGameCamera;
-                                if (mprParamListCmnEvt != nullptr) {
-                                    const cCamExParam* t2 = mprParamListCmnEvt->getParam(no);
-                                    bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                    if (mThreadSafe || (cSystem::mJobSafe)) {
-                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                        if (t4 != 0) {
-                                            abort();
-                                        }
-                                        return t3;
-                                    } else {
-                                        return t3;
-                                    }
-                                } else {
-                                    bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                    if (mThreadSafe || (cSystem::mJobSafe)) {
-                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                        if (t4 != 0) {
-                                            abort();
-                                        }
-                                        return t3;
-                                    } else {
-                                        return t3;
-                                    }
-                                }
+                                return t3;
                             } else {
-                                uCameraGame* t1 = mpGameCamera;
-                                if (mprParamListCmnEvt != nullptr) {
-                                    const cCamExParam* t2 = mprParamListCmnEvt->getParam(no);
-                                    bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                    if (mThreadSafe || (cSystem::mJobSafe)) {
-                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                        if (t4 != 0) {
-                                            abort();
-                                        }
-                                        return t3;
-                                    } else {
-                                        return t3;
-                                    }
-                                } else {
-                                    bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                    if (mThreadSafe || (cSystem::mJobSafe)) {
-                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                        if (t4 != 0) {
-                                            abort();
-                                        }
-                                        return t3;
-                                    } else {
-                                        return t3;
-                                    }
-                                }
+                                return t3;
                             }
                         } else {
-                            return false;
+                            bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
+                                int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                if (t4 != 0) {
+                                    abort();
+                                }
+                                return t3;
+                            } else {
+                                return t3;
+                            }
                         }
                     } else {
-                        if (mThreadSafe || (cSystem::mJobSafe)) {
-                            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-                                abort();
-                            }
-                            uCameraGame* t1 = mpGameCamera;
-                            if (mprParamListCmnEvt != nullptr) {
-                                const cCamExParam* t2 = mprParamListCmnEvt->getParam(no);
-                                bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                if (mThreadSafe || (cSystem::mJobSafe)) {
-                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                    if (t4 != 0) {
-                                        abort();
-                                    }
-                                    return t3;
-                                } else {
-                                    return t3;
+                        uCameraGame* t1 = mpGameCamera;
+                        if (mprParamListCmnEvt != nullptr) {
+                            const cCamExParam* t2 = mprParamListCmnEvt->getParam(no);
+                            bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
+                                int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                if (t4 != 0) {
+                                    abort();
                                 }
+                                return t3;
                             } else {
-                                bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                if (mThreadSafe || (cSystem::mJobSafe)) {
-                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                    if (t4 != 0) {
-                                        abort();
-                                    }
-                                    return t3;
-                                } else {
-                                    return t3;
-                                }
+                                return t3;
                             }
                         } else {
-                            uCameraGame* t1 = mpGameCamera;
-                            if (mprParamListCmnEvt != nullptr) {
-                                const cCamExParam* t2 = mprParamListCmnEvt->getParam(no);
-                                bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                if (mThreadSafe || (cSystem::mJobSafe)) {
-                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                    if (t4 != 0) {
-                                        abort();
-                                    }
-                                    return t3;
-                                } else {
-                                    return t3;
+                            bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
+                                int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                if (t4 != 0) {
+                                    abort();
                                 }
+                                return t3;
                             } else {
-                                bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
-                                if (mThreadSafe || (cSystem::mJobSafe)) {
-                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
-                                    if (t4 != 0) {
-                                        abort();
-                                    }
-                                    return t3;
-                                } else {
-                                    return t3;
-                                }
+                                return t3;
                             }
                         }
                     }

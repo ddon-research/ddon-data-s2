@@ -27,6 +27,10 @@ inline void* rAIPathBase::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rAIPathBase::DTI)->memAlloc(sz, align, rAIPathBase::DTI.mID);
 }
 
+inline void rAIPathBase::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rAIPathBase::DTI)->memFree(p_addr);
+}
+
 rAIPathBase::rAIPathBase() {
     mAttr = 16;
     mNumberOfTotalAreaLink = 0;

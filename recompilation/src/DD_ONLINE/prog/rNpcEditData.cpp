@@ -10,7 +10,6 @@
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
-#include "../../generated/shared/nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -39,30 +38,34 @@ __attribute__((weak)) void rNpcEditData::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-__attribute__((weak)) bool rNpcEditData::load(MtStream& in) {
-        MtDataReader r(in, 4096u);
-        u32 header;
-        nDDOIO::readData(r, header);
-        if (header != 0x44454e) {
+bool rNpcEditData::load(MtStream& in) {
+    MtDataReader r(in, 4096u);
+    u32 header = (&r)->readU32();
+    if (header == 0x44454E) {
+        u32 dataVersion = (&r)->readU32();
+        if (dataVersion == 3) {
+            unsigned int* held0 = &this->mEquip[0];
+            u32 t3 = (&r)->readU32();
+            (&r)->read(static_cast<void*>(held0), t3 * 4u);
+            mItem = (&r)->readU32();
+            return true;
+        } else {
             return false;
         }
-        u32 dataVersion;
-        nDDOIO::readData(r, dataVersion);
-        if (dataVersion != 3) {
-            return false;
-        }
-        u32* t2 = this->mEquip;
-        u32 t1;
-        nDDOIO::readData(r, t1);
-        MtDataReader& t0 = r;
-        t0.read(t2, t1 * sizeof(u32));
-        nDDOIO::readData(r, this->mItem);
-        return true;
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) bool rNpcEditData::save(MtStream& out) {
-    DDON_STUB("rNpcEditData::save")
-    return {};
+bool rNpcEditData::save(MtStream& out) {
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeU32(0x44454Eu);
+    (&w)->writeU32(3u);
+    unsigned int* held0 = &this->mEquip[0];
+    (&w)->writeU32(16u);
+    (&w)->write(static_cast<const void*>(held0), 64u);
+    (&w)->writeU32(mItem);
+    return true;
 }
 
 rNpcEditData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

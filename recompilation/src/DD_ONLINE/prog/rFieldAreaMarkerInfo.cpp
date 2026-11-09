@@ -135,9 +135,15 @@ void rFieldAreaMarkerInfo::cMarkerInfo::load(MtDataReader& r) {
     nDDOIO::readData(r, mUniqueId);
 }
 
-__attribute__((weak)) void rFieldAreaMarkerInfo::cMarkerInfo::save(MtDataWriter& w) {
-    DDON_STUB("rFieldAreaMarkerInfo::cMarkerInfo::save")
-    /* stub */
+void rFieldAreaMarkerInfo::cMarkerInfo::save(MtDataWriter& w) {
+    MtFloat3 frame56;
+    frame56.x = mPos.x;
+    frame56.y = mPos.y;
+    frame56.z = mPos.z;
+    w.writeV3(frame56);
+    w.writeS32(mStageNo);
+    w.writeU32(mGroupNo);
+    w.writeU32(mUniqueId);
 }
 
 rFieldAreaMarkerInfo::cMarkerInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -149,4 +155,6 @@ MtObject* rFieldAreaMarkerInfo::cMarkerInfo::MyDTI::newInstance() const {
 }
 
 template MtTypedArray<rFieldAreaMarkerInfo::cMarkerInfo>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rFieldAreaMarkerInfo::cMarkerInfo>&);
 

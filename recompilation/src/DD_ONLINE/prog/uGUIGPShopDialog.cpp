@@ -51,37 +51,35 @@ inline void uGUIGPShopDialog::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIGPShopDialog::~uGUIGPShopDialog() {
-    DDON_STUB("uGUIGPShopDialog::~uGUIGPShopDialog")
-    /* stub */
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->releaseGPPeriodPacket();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
+    }
+    if (mpGPShop == nullptr) {
+        return;
+    }
+    mpGPShop->kill();
+    mpGPShop = nullptr;
 }
 
 bool uGUIGPShopDialog::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOP_DIALOG_GUI"), 129u, 1428652135l))) != nullptr) {
-            if (mpGMDRes == nullptr) {
-                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOPDIALOG_RES_GMD"), 129u, 0l))) != nullptr) {
-                    mpGMDRes;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOP_DIALOG_GUI"), 129u, 1428652135l))) == nullptr)) {
+        return false;
+    }
+    if (mpGMDRes == nullptr) {
+        if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOPDIALOG_RES_GMD"), 129u, 0l))) != nullptr) {
+            mpGMDRes;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDRes == nullptr) {
-            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOPDIALOG_RES_GMD"), 129u, 0l))) != nullptr) {
-                mpGMDRes;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return true;
     }
 }
 

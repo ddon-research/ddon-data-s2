@@ -127,19 +127,12 @@ public:
 };
 
 inline u8 MtDataReader::readU8() {
-    if (this->mSeekPt >= this->mBufsiz) {
-        if (this->::MtDataReader::refill()) {
-            u8 n = this->mBuffer[this->mSeekPt];
-            this->mSeekPt = this->mSeekPt + 1u;
-            return n;
-        } else {
-            return 0;
-        }
-    } else {
-        u8 n = this->mBuffer[this->mSeekPt];
-        this->mSeekPt = this->mSeekPt + 1u;
-        return n;
+    if ((this->mSeekPt >= this->mBufsiz) && !this->::MtDataReader::refill()) {
+        return 0;
     }
+    u8 n = this->mBuffer[this->mSeekPt];
+    this->mSeekPt = this->mSeekPt + 1u;
+    return n;
 }
 
 inline bool MtDataReader::isReadable() const {

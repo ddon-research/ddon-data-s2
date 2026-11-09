@@ -118,3 +118,13 @@ inline rAreaInfo::cAreaInfo::cAreaInfo() {
     this->mPosX = 0;
     this->mPosY = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtDataReader.h"
+
+inline bool rAreaInfo::cAreaInfo::load(MtDataReader& r) {
+    mAreaId = r.readU32();
+    mPosX = r.readS32();
+    mPosY = r.readS32();
+    return true;
+}

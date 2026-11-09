@@ -252,42 +252,14 @@ void cpErosionEnemyBase::reqOnSyncFlag(u64 syncFlag) {
 bool cpErosionEnemyBase::isErosionCancelStatus(bool isCheckOcdCnacel) const {
     if (!mpEnemy->isMoveFreeze()) {
         if (isCheckOcdCnacel) {
-            if (mpEnemy->getOcdCtrlPtr() != nullptr) {
-                if (!mpEnemy->getOcdCtrlPtr()->isOcdActive(16386u)) {
-                    if ((mpEnemy->uDDOModel::mUnitId & 2u) != 0) {
-                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpEnemy) + 10088)) == 0) {
-                            return mpEnemy->isDead();
-                        } else {
-                            return true;
-                        }
-                    } else {
-                        return mpEnemy->isDead();
-                    }
-                } else {
-                    return true;
-                }
-            } else {
-                if ((mpEnemy->uDDOModel::mUnitId & 2u) != 0) {
-                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpEnemy) + 10088)) == 0) {
-                        return mpEnemy->isDead();
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return mpEnemy->isDead();
-                }
-            }
-        } else {
-            if ((mpEnemy->uDDOModel::mUnitId & 2u) != 0) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpEnemy) + 10088)) == 0) {
-                    return mpEnemy->isDead();
-                } else {
-                    return true;
-                }
-            } else {
-                return mpEnemy->isDead();
+            if ((mpEnemy->getOcdCtrlPtr() != nullptr) && mpEnemy->getOcdCtrlPtr()->isOcdActive(16386u)) {
+                return true;
             }
         }
+        if (((mpEnemy->uDDOModel::mUnitId & 2u) != 0) && ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpEnemy) + 10088)) != 0)) {
+            return true;
+        }
+        return mpEnemy->isDead();
     } else {
         return true;
     }

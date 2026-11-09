@@ -111,25 +111,15 @@ void cTalkMsgData::setDispGrpSerialNo(u32 SerialNo) {
             unsigned int i0_3 = 0;
             for (rMsgSet* v0_5 = mpMsgSetData;;) {
                 rMsgSet::cMsgGroup* t0 = v0_5->getGroupData(i0_3);
-                if (t0 != nullptr) {
-                    if (t0->mGroupSerial != SerialNo) {
-                        if ((i0_3 + 1u) < mpMsgSetData->mArray.mLength) {
-                            i0_3 += 1u;
-                            v0_5 = mpMsgSetData;
-                        } else {
-                            break;
-                        }
-                    } else {
-                        mDispGrpNo = i0_3;
-                        return;
-                    }
+                if ((t0 != nullptr) && (t0->mGroupSerial == SerialNo)) {
+                    mDispGrpNo = i0_3;
+                    return;
+                }
+                if ((i0_3 + 1u) < mpMsgSetData->mArray.mLength) {
+                    i0_3 += 1u;
+                    v0_5 = mpMsgSetData;
                 } else {
-                    if ((i0_3 + 1u) < mpMsgSetData->mArray.mLength) {
-                        i0_3 += 1u;
-                        v0_5 = mpMsgSetData;
-                    } else {
-                        break;
-                    }
+                    break;
                 }
             }
         }

@@ -175,9 +175,14 @@ MtUI* rWaypoint::cPoint::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) bool rWaypoint::cPoint::save(MtDataWriter& w) {
-    DDON_STUB("rWaypoint::cPoint::save")
-    return {};
+bool rWaypoint::cPoint::save(MtDataWriter& w) {
+    MtFloat3 frame56;
+    frame56.x = mPos.x;
+    frame56.y = mPos.y;
+    frame56.z = mPos.z;
+    w.writeV3(frame56);
+    w.writeF32(mRadius);
+    return true;
 }
 
 rWaypoint::cPoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -223,4 +228,8 @@ MtObject* rWaypoint::cRoute::MyDTI::newInstance() const {
 template MtTypedArray<rWaypoint::cPoint>::~MtTypedArray();
 
 template MtTypedArray<rWaypoint::cRoute>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rWaypoint::cPoint>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rWaypoint::cRoute>&);
 

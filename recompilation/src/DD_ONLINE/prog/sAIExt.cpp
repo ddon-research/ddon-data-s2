@@ -117,30 +117,20 @@ cAISvNavPathFinding* sAIExt::getNavigationMeshService(u32 idx) {
     }
     if (idx <= 2u) {
         cAISvNavPathFinding* p_sv_nav = mSvNavStack.elems[idx].mpSvNav;
-        if (p_sv_nav != nullptr) {
-            if (!p_sv_nav->isNavigationMesh()) {
-                if (mThreadSafe || (cSystem::mJobSafe)) {
-                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                }
-                return nullptr;
-            } else {
-                if (mThreadSafe || (cSystem::mJobSafe)) {
-                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                        abort();
-                    }
-                }
-                return p_sv_nav;
-            }
-        } else {
+        if ((p_sv_nav != nullptr) && p_sv_nav->isNavigationMesh()) {
             if (mThreadSafe || (cSystem::mJobSafe)) {
                 if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
                     abort();
                 }
             }
-            return nullptr;
+            return p_sv_nav;
         }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+        return nullptr;
     } else {
         if (mThreadSafe || (cSystem::mJobSafe)) {
             if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {

@@ -170,10 +170,11 @@ rFieldAreaAdjoinList::cAdjoinInfo::cVector3::MyDTI::MyDTI(MT_CTSTR class_name, M
 
 rFieldAreaAdjoinList::cAdjoinInfo::cVector3::MyDTI rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI("rFieldAreaAdjoinList::cAdjoinInfo::cVector3", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rFieldAreaAdjoinList::cAdjoinInfo::cVector3::MyDTI::newInstance() const {
-    DDON_STUB("rFieldAreaAdjoinList::cAdjoinInfo::cVector3::MyDTI::newInstance")
-    return nullptr;
+MtObject* rFieldAreaAdjoinList::cAdjoinInfo::cVector3::MyDTI::newInstance() const {
+    return new (16u) rFieldAreaAdjoinList::cAdjoinInfo::cVector3;
 }
 
 template MtTypedArray<rFieldAreaAdjoinList::cAdjoinInfo::cVector3>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rFieldAreaAdjoinList::cAdjoinInfo::cVector3>&);
 

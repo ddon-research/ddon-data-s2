@@ -269,18 +269,11 @@ __attribute__((weak)) void cBakeModelEx::setCustomSimSoftBody(MT_CTSTR path, Bak
 
 u32 cBakeModelEx::callDrawPrimWrapper(cDraw* pdraw, u32 primIdx, u32 step, u32 lodidx) {
     if (!mDisableSoftBody) {
-        if (mpCustomSoftBody != nullptr) {
-            if ((mpCustomSoftBody->mBuildState & 6u) != 0) {
-                return 1;
-            } else {
-                return mpCustomSoftBody->callDrawPrim(pdraw, primIdx, step);
-            }
-        } else {
-            return 1;
+        if ((mpCustomSoftBody != nullptr) && ((mpCustomSoftBody->mBuildState & 6u) == 0)) {
+            return mpCustomSoftBody->callDrawPrim(pdraw, primIdx, step);
         }
-    } else {
-        return 1;
     }
+    return 1;
 }
 
 __attribute__((weak)) void cBakeModelEx::resetSoftBodyStream(cDraw* pdraw) {

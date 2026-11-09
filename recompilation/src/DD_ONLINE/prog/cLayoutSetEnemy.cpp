@@ -145,30 +145,15 @@ s32 cLayoutSetEnemy::getEnemySetTblIndex(s32 uinitID) {
             for (unsigned int i0_3 = 0;;) {
                 cLayoutPreset* t0 = pPri->getData(i0_3);
                 if (t0 != nullptr) {
-                    if (t0->mCtrlType == 32) {
-                        if (t0->mID != static_cast<unsigned int>(uinitID)) {
-                            if ((i0_3 + 1u) < pPri->getDataNum()) {
-                                i0_3 += 1u;
-                            } else {
-                                break;
-                            }
-                        } else {
-                            v2_9 = i0_3;
-                            return static_cast<s32>(v2_9);
-                        }
-                    } else {
-                        if ((i0_3 + 1u) < pPri->getDataNum()) {
-                            i0_3 += 1u;
-                        } else {
-                            break;
-                        }
+                    if ((t0->mCtrlType == 32) && (t0->mID == static_cast<unsigned int>(uinitID))) {
+                        v2_9 = i0_3;
+                        return static_cast<s32>(v2_9);
                     }
+                }
+                if ((i0_3 + 1u) < pPri->getDataNum()) {
+                    i0_3 += 1u;
                 } else {
-                    if ((i0_3 + 1u) < pPri->getDataNum()) {
-                        i0_3 += 1u;
-                    } else {
-                        break;
-                    }
+                    break;
                 }
             }
             v2_9 = 0xFFFFFFFF;

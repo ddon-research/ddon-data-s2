@@ -184,9 +184,34 @@ bool rEditStageParam::Info::load(MtDataReader& r) {
     return true;
 }
 
-__attribute__((weak)) bool rEditStageParam::Info::save(MtDataWriter& w) {
-    DDON_STUB("rEditStageParam::Info::save")
-    return {};
+bool rEditStageParam::Info::save(MtDataWriter& w) {
+    w.writeString(&mModelSdl[0]);
+    w.writeString(&mFilterSdl[0]);
+    w.writeString(&mLightSdl[0]);
+    w.writeString(&mOmListSdl[0]);
+    w.writeU32(mReverb);
+    MtFloat3 frame56;
+    frame56.x = mPlPos.x;
+    frame56.y = mPlPos.y;
+    frame56.z = mPlPos.z;
+    w.writeV3(frame56);
+    w.writeF32(mPlRotY);
+    w.writeString(&mWeatherStageInfo[0]);
+    w.writeString(&mWeatherParamInfo[0]);
+    w.writeU32(mWeatherData[0].mWeatherID);
+    w.writeU32(mWeatherData[0].mHour);
+    w.writeU32(mWeatherData[0].mMinite);
+    w.writeU32(mWeatherData[1].mWeatherID);
+    w.writeU32(mWeatherData[1].mHour);
+    w.writeU32(mWeatherData[1].mMinite);
+    w.writeU64(mpSkyWep.mId);
+    w.writeU64(mpRoomWep.mId);
+    w.writeU64(mpEpv.mId);
+    w.writeS32(mEpvIndexAlways);
+    w.writeS32(mEpvIndexDay);
+    w.writeS32(mEpvIndexNight);
+    w.writeU32(mFlag);
+    return true;
 }
 
 void rEditStageParam::Info::setModelName(const MtString& name) {

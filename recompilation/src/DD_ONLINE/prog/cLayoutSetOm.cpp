@@ -84,15 +84,10 @@ __attribute__((weak)) void cLayoutSetOm::createProperty(MtPropertyList& s) {
 
 MtObject* cLayoutSetOm::setLayoutUnit(rLayout* pLayout, u32 no, bool isForceSet, u32 mode) {
     if (pLayout != nullptr) {
-        if (getGroupParam() != nullptr) {
-            if (getGroupParam()->mKillAreaType != cGroupParam::KILL_AREA_ALL) {
-                return setLayoutUnitSever(pLayout, no, false, mode);
-            } else {
-                return setLayoutUnitClient(pLayout, no, isForceSet, mode);
-            }
-        } else {
-            return setLayoutUnitSever(pLayout, no, false, mode);
+        if ((getGroupParam() != nullptr) && (getGroupParam()->mKillAreaType == cGroupParam::KILL_AREA_ALL)) {
+            return setLayoutUnitClient(pLayout, no, isForceSet, mode);
         }
+        return setLayoutUnitSever(pLayout, no, false, mode);
     } else {
         return nullptr;
     }

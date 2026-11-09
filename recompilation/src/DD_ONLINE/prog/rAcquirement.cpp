@@ -158,6 +158,10 @@ inline void* rAcquirement::rCustomSkillData::operator new(size_t sz, u32 align) 
     return ::MtMemoryAllocator::getAllocator(::rAcquirement::rCustomSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::rCustomSkillData::DTI.getID());
 }
 
+inline void rAcquirement::rCustomSkillData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAcquirement::rCustomSkillData::DTI)->memFree(p_addr);
+}
+
 bool rAcquirement::rCustomSkillData::loadData(MtDataReader& r, rAcquirement::cCustomSkillData* pData) {
     ::nDDOIO::readData(r, pData->mId);
     ::nDDOIO::readData(r, pData->mMsgNameIndex);
@@ -262,6 +266,10 @@ inline void* rAcquirement::rAbilityAddData::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rAcquirement::rAbilityAddData::DTI)->memAlloc(sz, align, ::rAcquirement::rAbilityAddData::DTI.getID());
 }
 
+inline void rAcquirement::rAbilityAddData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAcquirement::rAbilityAddData::DTI)->memFree(p_addr);
+}
+
 bool rAcquirement::rAbilityAddData::loadData(MtDataReader& r, rAcquirement::cAbilityAddData* pData) {
     ::nDDOIO::readData(r, pData->mId);
     ::nDDOIO::readData(r, pData->mSortCategory);
@@ -288,6 +296,10 @@ MtObject* rAcquirement::rAbilityAddData::MyDTI::newInstance() const {
 template MtTypedArray<rAcquirement::cAbilityLevelData>::~MtTypedArray();
 
 template MtTypedArray<rAcquirement::cSkillLevelData>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rAcquirement::cSkillLevelData>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rAcquirement::cAbilityLevelData>&);
 
 template rAcquirement::cAbilityAddData* rTbl2<rAcquirement::cAbilityAddData>::getData(unsigned int);
 

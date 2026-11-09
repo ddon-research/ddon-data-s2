@@ -63,40 +63,22 @@ void uGUILoginBonus::createProperty(MtPropertyList& s) {
 }
 
 bool uGUILoginBonus::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOGINBONUS_GUI"), 129u, 1434077486l))) != nullptr) {
-            if (loadGMDarc(getArcTag(0u), "RES_ID_STAMPBONUS_GMD", 0u)) {
-                if (mpSeRes == nullptr) {
-                    if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_LOGIN_SRQR"), 129u, 0l))) != nullptr) {
-                        mpSeRes;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOGINBONUS_GUI"), 129u, 1434077486l))) == nullptr)) {
+        return false;
+    }
+    if (loadGMDarc(getArcTag(0u), "RES_ID_STAMPBONUS_GMD", 0u)) {
+        if (mpSeRes == nullptr) {
+            if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_LOGIN_SRQR"), 129u, 0l))) != nullptr) {
+                mpSeRes;
+                return true;
             } else {
                 return false;
             }
         } else {
-            return false;
+            return true;
         }
     } else {
-        if (loadGMDarc(getArcTag(0u), "RES_ID_STAMPBONUS_GMD", 0u)) {
-            if (mpSeRes == nullptr) {
-                if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_LOGIN_SRQR"), 129u, 0l))) != nullptr) {
-                    mpSeRes;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
-        } else {
-            return false;
-        }
+        return false;
     }
 }
 
@@ -587,34 +569,23 @@ u32 uGUILoginBonus::evCtrlAdjCursor(cControl::Message* msg) {
             if (t0 == t1) {
                 nGUIExt::MSG_REASON t2 = msg->reason;
                 s32 t3 = t0->getCurrentRow();
-                if (t3 == 0) {
-                    if (t2 != nGUIExt::TRG_DOWN) {
-                        s32 t4 = t0->getRow();
-                        if (t3 == (t4 - 1)) {
-                            if (t2 == nGUIExt::BTN_START) {
-                                unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 0);
-                                s32 t6 = t0->getOldPos();
-                                unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 144);
-                                t0->setCurrentPos(t6, false);
-                                if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
-                                    nGUIExt::MSG_REASON t10 = msg->reason;
-                                    if (t10 == nGUIExt::BTN_START) {
-                                        mIsPushUpBtn = true;
-                                    }
-                                }
-                                setInputEvent(70u);
-                                return 0;
-                            }
+                if ((t3 == 0) && (t2 == nGUIExt::TRG_DOWN)) {
+                    unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 0);
+                    s32 t6 = t0->getOldPos();
+                    unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 144);
+                    t0->setCurrentPos(t6, false);
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        nGUIExt::MSG_REASON t10 = msg->reason;
+                        if (t10 == nGUIExt::BTN_START) {
+                            mIsPushUpBtn = true;
                         }
-                        if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
-                            nGUIExt::MSG_REASON t10 = msg->reason;
-                            if (t10 == nGUIExt::BTN_START) {
-                                mIsPushUpBtn = true;
-                            }
-                        }
-                        setInputEvent(70u);
-                        return 0;
-                    } else {
+                    }
+                    setInputEvent(70u);
+                    return 0;
+                }
+                s32 t4 = t0->getRow();
+                if (t3 == (t4 - 1)) {
+                    if (t2 == nGUIExt::BTN_START) {
                         unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 0);
                         s32 t6 = t0->getOldPos();
                         unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 144);
@@ -628,33 +599,15 @@ u32 uGUILoginBonus::evCtrlAdjCursor(cControl::Message* msg) {
                         setInputEvent(70u);
                         return 0;
                     }
-                } else {
-                    s32 t4 = t0->getRow();
-                    if (t3 == (t4 - 1)) {
-                        if (t2 == nGUIExt::BTN_START) {
-                            unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 0);
-                            s32 t6 = t0->getOldPos();
-                            unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 144);
-                            t0->setCurrentPos(t6, false);
-                            if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
-                                nGUIExt::MSG_REASON t10 = msg->reason;
-                                if (t10 == nGUIExt::BTN_START) {
-                                    mIsPushUpBtn = true;
-                                }
-                            }
-                            setInputEvent(70u);
-                            return 0;
-                        }
-                    }
-                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
-                        nGUIExt::MSG_REASON t10 = msg->reason;
-                        if (t10 == nGUIExt::BTN_START) {
-                            mIsPushUpBtn = true;
-                        }
-                    }
-                    setInputEvent(70u);
-                    return 0;
                 }
+                if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                    nGUIExt::MSG_REASON t10 = msg->reason;
+                    if (t10 == nGUIExt::BTN_START) {
+                        mIsPushUpBtn = true;
+                    }
+                }
+                setInputEvent(70u);
+                return 0;
             } else {
                 if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                     nGUIExt::MSG_REASON t10 = msg->reason;
@@ -697,34 +650,23 @@ u32 uGUILoginBonus::evCtrlLClick(cControl::Message* msg) {
                 if (t5 == t6) {
                     nGUIExt::MSG_REASON t7 = msg->reason;
                     s32 t8 = t5->getCurrentRow();
-                    if (t8 == 0) {
-                        if (t7 != nGUIExt::TRG_DOWN) {
-                            s32 t9 = t5->getRow();
-                            if (t8 == (t9 - 1)) {
-                                if (t7 == nGUIExt::BTN_START) {
-                                    unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 0);
-                                    s32 t11 = t5->getOldPos();
-                                    unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + 144);
-                                    t5->setCurrentPos(t11, false);
-                                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
-                                        nGUIExt::MSG_REASON t15 = msg->reason;
-                                        if (t15 == nGUIExt::BTN_START) {
-                                            mIsPushUpBtn = true;
-                                        }
-                                    }
-                                    setInputEvent(70u);
-                                    return 0;
-                                }
+                    if ((t8 == 0) && (t7 == nGUIExt::TRG_DOWN)) {
+                        unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 0);
+                        s32 t11 = t5->getOldPos();
+                        unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + 144);
+                        t5->setCurrentPos(t11, false);
+                        if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                            nGUIExt::MSG_REASON t15 = msg->reason;
+                            if (t15 == nGUIExt::BTN_START) {
+                                mIsPushUpBtn = true;
                             }
-                            if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
-                                nGUIExt::MSG_REASON t15 = msg->reason;
-                                if (t15 == nGUIExt::BTN_START) {
-                                    mIsPushUpBtn = true;
-                                }
-                            }
-                            setInputEvent(70u);
-                            return 0;
-                        } else {
+                        }
+                        setInputEvent(70u);
+                        return 0;
+                    }
+                    s32 t9 = t5->getRow();
+                    if (t8 == (t9 - 1)) {
+                        if (t7 == nGUIExt::BTN_START) {
                             unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 0);
                             s32 t11 = t5->getOldPos();
                             unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + 144);
@@ -738,33 +680,15 @@ u32 uGUILoginBonus::evCtrlLClick(cControl::Message* msg) {
                             setInputEvent(70u);
                             return 0;
                         }
-                    } else {
-                        s32 t9 = t5->getRow();
-                        if (t8 == (t9 - 1)) {
-                            if (t7 == nGUIExt::BTN_START) {
-                                unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 0);
-                                s32 t11 = t5->getOldPos();
-                                unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + 144);
-                                t5->setCurrentPos(t11, false);
-                                if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
-                                    nGUIExt::MSG_REASON t15 = msg->reason;
-                                    if (t15 == nGUIExt::BTN_START) {
-                                        mIsPushUpBtn = true;
-                                    }
-                                }
-                                setInputEvent(70u);
-                                return 0;
-                            }
-                        }
-                        if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
-                            nGUIExt::MSG_REASON t15 = msg->reason;
-                            if (t15 == nGUIExt::BTN_START) {
-                                mIsPushUpBtn = true;
-                            }
-                        }
-                        setInputEvent(70u);
-                        return 0;
                     }
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        nGUIExt::MSG_REASON t15 = msg->reason;
+                        if (t15 == nGUIExt::BTN_START) {
+                            mIsPushUpBtn = true;
+                        }
+                    }
+                    setInputEvent(70u);
+                    return 0;
                 } else {
                     if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                         nGUIExt::MSG_REASON t15 = msg->reason;

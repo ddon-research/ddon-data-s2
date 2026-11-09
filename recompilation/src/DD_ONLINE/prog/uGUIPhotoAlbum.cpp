@@ -59,32 +59,18 @@ uGUIPhotoAlbum::~uGUIPhotoAlbum() {
 }
 
 bool uGUIPhotoAlbum::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_ALBUM_GUI"), 129u, 1435891201l))) != nullptr) {
-            if (mpGMDRes == nullptr) {
-                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_ALBUM_GMD"), 129u, 0l))) != nullptr) {
-                    mpGMDRes;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_ALBUM_GUI"), 129u, 1435891201l))) == nullptr)) {
+        return false;
+    }
+    if (mpGMDRes == nullptr) {
+        if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_ALBUM_GMD"), 129u, 0l))) != nullptr) {
+            mpGMDRes;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDRes == nullptr) {
-            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_ALBUM_GMD"), 129u, 0l))) != nullptr) {
-                mpGMDRes;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return true;
     }
 }
 

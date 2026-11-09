@@ -16,6 +16,10 @@ const MtDTI& sArea::getDTI() const {
     return sArea::DTI;
 }
 
+inline void sArea::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sArea::DTI)->memFree(p_addr);
+}
+
 sArea::sArea() {
     DDON_STUB("sArea::sArea")
     /* stub */

@@ -194,6 +194,10 @@ inline void* rAreaMasterSpotDetailData::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, rAreaMasterSpotDetailData::DTI.getID());
 }
 
+inline void rAreaMasterSpotDetailData::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rAreaMasterSpotDetailData::DTI)->memFree(p_addr);
+}
+
 bool rAreaMasterSpotDetailData::loadData(MtDataReader& r, cAreaMasterSpotDetailData* pData) {
     nDDOIO::readData(r, pData->mSpotId);
     nDDOIO::readMtArray(r, pData->mItemArray);
@@ -220,6 +224,10 @@ MtObject* rAreaMasterSpotDetailData::MyDTI::newInstance() const {
 template MtTypedArray<cSpotEnemyData>::~MtTypedArray();
 
 template MtTypedArray<cSpotItemData>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<cSpotItemData>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<cSpotEnemyData>&);
 
 template cAreaMasterRankData* rTbl2<cAreaMasterRankData>::getData(unsigned int);
 

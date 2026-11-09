@@ -65,15 +65,10 @@ void uGUICaplinkTalk::createProperty(MtPropertyList& s) {
 }
 
 bool uGUICaplinkTalk::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_TALK_GUI"), 129u, 1448867480l))) != nullptr) {
-            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
-        } else {
-            return false;
-        }
-    } else {
-        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_TALK_GUI"), 129u, 1448867480l))) == nullptr)) {
+        return false;
     }
+    return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
 }
 
 __attribute__((weak)) void uGUICaplinkTalk::setup() {
@@ -386,29 +381,20 @@ __attribute__((weak)) void uGUICaplinkTalk::eventDecide() {
 }
 
 __attribute__((weak)) u32 uGUICaplinkTalk::evCtrlDecide(cControl::Message* msg) {
-    if (mMain.mButton.uGUIBase::cReferenceUIButton::isFocus()) {
-        if (mMain.mButton.mIsEnable) {
-            if (msg != nullptr) {
-                msg->changeSE = 4;
-            }
-            setInputEvent(66u);
-            return 1;
-        } else {
-            sGUI* t0 = sGUI::getInstance();
-            static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 204u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
-            if (msg != nullptr) {
-                msg->changeSE = 20;
-            }
-            setInputEvent(2u);
-            return 0;
-        }
-    } else {
+    if (mMain.mButton.uGUIBase::cReferenceUIButton::isFocus() && !mMain.mButton.mIsEnable) {
+        sGUI* t0 = sGUI::getInstance();
+        static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 204u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
         if (msg != nullptr) {
-            msg->changeSE = 4;
+            msg->changeSE = 20;
         }
-        setInputEvent(66u);
-        return 1;
+        setInputEvent(2u);
+        return 0;
     }
+    if (msg != nullptr) {
+        msg->changeSE = 4;
+    }
+    setInputEvent(66u);
+    return 1;
 }
 
 u32 uGUICaplinkTalk::evCtrlCancel(cControl::Message* msg) {
@@ -434,28 +420,19 @@ u32 uGUICaplinkTalk::evCtrlAdjustPage(cControl::Message* msg) {
 
 u32 uGUICaplinkTalk::evCtrlMouseClick(cControl::Message* msg) {
     if (msg != nullptr) {
-        if (msg->pSender != nullptr) {
-            if (msg->pSender != mpListCtrl) {
-                setInputEvent(0u);
-                return 0;
+        if ((msg->pSender != nullptr) && (msg->pSender == mpListCtrl)) {
+            if (mFlowId == 10) {
+                adjustMemberListCursor();
             } else {
-                if (mFlowId == 10) {
-                    adjustMemberListCursor();
-                } else {
-                    if (mFlowId == 2) {
-                        adjustTalkListCursor();
-                    }
+                if (mFlowId == 2) {
+                    adjustTalkListCursor();
                 }
-                return evCtrlDecide(msg);
             }
-        } else {
-            setInputEvent(0u);
-            return 0;
+            return evCtrlDecide(msg);
         }
-    } else {
-        setInputEvent(0u);
-        return 0;
     }
+    setInputEvent(0u);
+    return 0;
 }
 
 uGUICaplinkTalk::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

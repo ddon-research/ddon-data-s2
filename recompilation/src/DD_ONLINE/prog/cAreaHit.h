@@ -115,7 +115,7 @@ public:
     virtual ~AreaHitShape();
     virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
-    virtual bool load(MtDataReader& r, NativeAllocInfo* pBuffer);  // vtable slot 6
+    virtual bool load(MtDataReader& r, NativeAllocInfo* pBuffer = nullptr);  // vtable slot 6
     virtual bool save(MtDataWriter& w);  // vtable slot 7
     void traceForIOCheck();
     virtual AreaHitShape& operator=(const AreaHitShape& shape);  // vtable slot 8

@@ -129,7 +129,7 @@ __attribute__((weak)) cMenuDialogFlow::RET cMenuDialogFlow::moveFlow() {
     return {};
 }
 
-__attribute__((weak)) void cMenuDialogFlow::pushFlow() {
+void cMenuDialogFlow::pushFlow() {
         switch (mRno) {
         case RNO_SELECT:
             if (mAttr & ATTR_COM_WAIT) {

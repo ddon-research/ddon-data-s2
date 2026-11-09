@@ -80,66 +80,21 @@ __attribute__((noinline)) uGUINewspaper::~uGUINewspaper() {
 }
 
 bool uGUINewspaper::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NEWS03_GUI"), 129u, 1460428396l))) != nullptr) {
-            if (mpGMDRes == nullptr) {
-                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NEWSPAPER_RES_GMD"), 129u, 0l))) != nullptr) {
-                    if (mpGMDQuestRes == nullptr) {
-                        if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), 129u, 0l))) != nullptr) {
-                            mpGMDQuestRes;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                if (mpGMDQuestRes == nullptr) {
-                    if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), 129u, 0l))) != nullptr) {
-                        mpGMDQuestRes;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NEWS03_GUI"), 129u, 1460428396l))) == nullptr)) {
+        return false;
+    }
+    if ((mpGMDRes == nullptr) && ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NEWSPAPER_RES_GMD"), 129u, 0l))) == nullptr)) {
+        return false;
+    }
+    if (mpGMDQuestRes == nullptr) {
+        if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), 129u, 0l))) != nullptr) {
+            mpGMDQuestRes;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDRes == nullptr) {
-            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NEWSPAPER_RES_GMD"), 129u, 0l))) != nullptr) {
-                if (mpGMDQuestRes == nullptr) {
-                    if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), 129u, 0l))) != nullptr) {
-                        mpGMDQuestRes;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            } else {
-                return false;
-            }
-        } else {
-            if (mpGMDQuestRes == nullptr) {
-                if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), 129u, 0l))) != nullptr) {
-                    mpGMDQuestRes;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
-        }
+        return true;
     }
 }
 
@@ -1504,25 +1459,15 @@ __attribute__((weak)) bool uGUINewspaper::isEnableJoinContents() {
                         if (t0 != nullptr) {
                             if (t0->getCycleContentsPeriod() == nQuest::CYCLE_CONTENTS_PERIOD_HOLDING) {
                                 const nQuest::cCycleContentsInfo* t1 = sQuestManagerExt::getInstance()->getHoldingCycleContentsInfo(static_cast<u32>(mNowEventNo));
-                                if (t1 != nullptr) {
-                                    if (t1->getCycleContentsPeriodRealTime() != nQuest::CYCLE_CONTENTS_PERIOD_HOLDING) {
-                                        mNoEntryType = 5;
-                                        return false;
-                                    } else {
-                                        return true;
-                                    }
-                                } else {
-                                    mNoEntryType = 5;
-                                    return false;
+                                if ((t1 != nullptr) && (t1->getCycleContentsPeriodRealTime() == nQuest::CYCLE_CONTENTS_PERIOD_HOLDING)) {
+                                    return true;
                                 }
-                            } else {
                                 mNoEntryType = 5;
                                 return false;
                             }
-                        } else {
-                            mNoEntryType = 5;
-                            return false;
                         }
+                        mNoEntryType = 5;
+                        return false;
                     }
                 }
             }
@@ -2202,8 +2147,6 @@ inline void* uGUINewspaper::cCycleContentsNewsInfo::operator new(size_t sz, u32 
 }
 
 uGUINewspaper::cCycleContentsNewsInfo::~cCycleContentsNewsInfo() {
-    DDON_STUB("uGUINewspaper::cCycleContentsNewsInfo::~cCycleContentsNewsInfo")
-    /* stub */
 }
 
 uGUINewspaper::cCycleContentsNewsInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

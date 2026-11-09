@@ -46,8 +46,20 @@ cFurniture::cFurniture() {
 }
 
 cFurniture::~cFurniture() {
-    DDON_STUB("cFurniture::~cFurniture")
-    /* stub */
+    release();
+    if (mpFurnitureData != nullptr) {
+        mpFurnitureData->release();
+        mpFurnitureData = nullptr;
+    }
+    if (mpFurnitureItem != nullptr) {
+        mpFurnitureItem->release();
+        mpFurnitureItem = nullptr;
+    }
+    if (mpFurnitureLayout == nullptr) {
+        return;
+    }
+    mpFurnitureLayout->release();
+    mpFurnitureLayout = nullptr;
 }
 
 __attribute__((weak)) void cFurniture::init() {
@@ -120,7 +132,7 @@ __attribute__((weak)) void cFurniture::change(u32 item_id, bool onoff) {
     /* stub */
 }
 
-void cFurniture::release() {
+__attribute__((weak)) void cFurniture::release() {
     if (mInfoDisp.mLength != 0) {
         u32 v0_0 = mInfoDisp.mLength;
         for (unsigned int i0_3 = 0;;) {

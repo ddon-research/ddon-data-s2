@@ -75,8 +75,8 @@ sInputManager::sInputManager() {
 }
 
 sInputManager::~sInputManager() {
-    DDON_STUB("sInputManager::~sInputManager")
-    /* stub */
+    releaseResource();
+    sInputManager::mpInstance = nullptr;
 }
 
 void sInputManager::reset() {
@@ -100,7 +100,7 @@ void sInputManager::loadResource() {
     mArcLoadFinish = true;
 }
 
-void sInputManager::releaseResource() {
+__attribute__((weak)) void sInputManager::releaseResource() {
     if (mprCommonPresetKey != nullptr) {
         mprCommonPresetKey->release();
         mprCommonPresetKey = nullptr;

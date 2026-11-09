@@ -287,18 +287,11 @@ u32 cpJob05::replaceCollisionAttr(u32 attr, const cCollNode* pCollNode) {
                 return attr & 0xFFFFFDFFu;
             }
         }
-        if ((mpHuman->uDDOModel::mUnitId & 1024u) != 0) {
-            if ((mpHuman->mObjStatusOld & 256ul) != 0) {
-                return attr;
-            } else {
-                return ((mpHuman->getActMgrPtr()->getActionNo() - 8201u) <= 11u) ? attr : (attr & 0xFFFFFDFFu);
-            }
-        } else {
-            return attr;
+        if (((mpHuman->uDDOModel::mUnitId & 1024u) != 0) && ((mpHuman->mObjStatusOld & 256ul) == 0)) {
+            return ((mpHuman->getActMgrPtr()->getActionNo() - 8201u) <= 11u) ? attr : (attr & 0xFFFFFDFFu);
         }
-    } else {
-        return attr;
     }
+    return attr;
 }
 
 __attribute__((weak)) void cpJob05::checkReplaceInfo(cHitInfoAfter& HitInfo) {

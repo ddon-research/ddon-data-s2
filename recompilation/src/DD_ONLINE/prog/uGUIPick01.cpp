@@ -68,15 +68,10 @@ void uGUIPick01::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIPick01::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PICK01_GUI"), 129u, 1436330666l))) != nullptr) {
-            return loadGMDarc(getArcTag(0u), "RES_ID_PICK_RES_GMD", 0u);
-        } else {
-            return false;
-        }
-    } else {
-        return loadGMDarc(getArcTag(0u), "RES_ID_PICK_RES_GMD", 0u);
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PICK01_GUI"), 129u, 1436330666l))) == nullptr)) {
+        return false;
     }
+    return loadGMDarc(getArcTag(0u), "RES_ID_PICK_RES_GMD", 0u);
 }
 
 __attribute__((weak)) void uGUIPick01::setup() {

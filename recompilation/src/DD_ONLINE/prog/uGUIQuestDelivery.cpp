@@ -59,66 +59,21 @@ __attribute__((weak)) void uGUIQuestDelivery::createProperty(MtPropertyList& s) 
 }
 
 bool uGUIQuestDelivery::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_DELIVERY_GUI"), 129u, 1436273720l))) != nullptr) {
-            if (mpGMDDeliveryRes == nullptr) {
-                if ((mpGMDDeliveryRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_DELIVERY_GMD"), 129u, 0l))) != nullptr) {
-                    if (mpGMDQuestRes == nullptr) {
-                        if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_GMD"), 129u, 0l))) != nullptr) {
-                            mpGMDQuestRes;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                if (mpGMDQuestRes == nullptr) {
-                    if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_GMD"), 129u, 0l))) != nullptr) {
-                        mpGMDQuestRes;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_DELIVERY_GUI"), 129u, 1436273720l))) == nullptr)) {
+        return false;
+    }
+    if ((mpGMDDeliveryRes == nullptr) && ((mpGMDDeliveryRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_DELIVERY_GMD"), 129u, 0l))) == nullptr)) {
+        return false;
+    }
+    if (mpGMDQuestRes == nullptr) {
+        if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_GMD"), 129u, 0l))) != nullptr) {
+            mpGMDQuestRes;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDDeliveryRes == nullptr) {
-            if ((mpGMDDeliveryRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_DELIVERY_GMD"), 129u, 0l))) != nullptr) {
-                if (mpGMDQuestRes == nullptr) {
-                    if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_GMD"), 129u, 0l))) != nullptr) {
-                        mpGMDQuestRes;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            } else {
-                return false;
-            }
-        } else {
-            if (mpGMDQuestRes == nullptr) {
-                if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_GMD"), 129u, 0l))) != nullptr) {
-                    mpGMDQuestRes;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
-        }
+        return true;
     }
 }
 
@@ -439,27 +394,18 @@ __attribute__((weak)) void uGUIQuestDelivery::eventCancel() {
 }
 
 u32 uGUIQuestDelivery::evCtrlDecide(cControl::Message* msg) {
-    if (mpIndexData != nullptr) {
-        if (mpIndexData->isPreWaitDeliver()) {
-            if (msg != nullptr) {
-                msg->changeSE = 20;
-            }
-            setInputEvent(2u);
-            return 0;
-        } else {
-            if (msg != nullptr) {
-                msg->changeSE = 34;
-            }
-            setInputEvent(66u);
-            return 1;
-        }
-    } else {
+    if ((mpIndexData != nullptr) && !mpIndexData->isPreWaitDeliver()) {
         if (msg != nullptr) {
-            msg->changeSE = 20;
+            msg->changeSE = 34;
         }
-        setInputEvent(2u);
-        return 0;
+        setInputEvent(66u);
+        return 1;
     }
+    if (msg != nullptr) {
+        msg->changeSE = 20;
+    }
+    setInputEvent(2u);
+    return 0;
 }
 
 u32 uGUIQuestDelivery::evCtrlCancel(cControl::Message* msg) {

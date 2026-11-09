@@ -9,6 +9,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtPrimitive3D.h"
 #include "../../XFramework/cAIObject.h"
 #include "../../generated/shared/nDDOMath.h"
 #include "nPawn.h"
@@ -125,9 +126,13 @@ __attribute__((weak)) void cAIGrid::setGridValue(s32 val, f32 decreaseRatio, f32
     /* stub */
 }
 
-__attribute__((weak)) void cAIGrid::setGridValue(s32 val, f32 decreaseRatio, const MtSphere& shape, u32 flag) {
-    DDON_STUB("cAIGrid::setGridValue")
-    /* stub */
+void cAIGrid::setGridValue(s32 val, f32 decreaseRatio, const MtSphere& shape, u32 flag) {
+    MtVector3 frame40;
+    frame40.x = shape.pos.x;
+    frame40.y = shape.pos.y;
+    frame40.z = shape.pos.z;
+    frame40.pad_ = 0.0f;
+    setGridValue(val, shape.pos.z, shape.r, 0.0f, frame40, flag);
 }
 
 __attribute__((weak)) void cAIGrid::setGridValue(s32 val, f32 decreaseRatio, const MtCapsule& shape, u32 flag) {

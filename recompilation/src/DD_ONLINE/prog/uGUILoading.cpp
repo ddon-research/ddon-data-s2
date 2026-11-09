@@ -56,32 +56,18 @@ __attribute__((noinline)) uGUILoading::~uGUILoading() {
 }
 
 bool uGUILoading::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOADING00_GUI"), 129u, 1419489049l))) != nullptr) {
-            if (mpLoadingParam == nullptr) {
-                if ((mpLoadingParam = static_cast<rLoadingParam*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LDPARAM_LDP"), 129u, 0l))) != nullptr) {
-                    mpLoadingParam;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOADING00_GUI"), 129u, 1419489049l))) == nullptr)) {
+        return false;
+    }
+    if (mpLoadingParam == nullptr) {
+        if ((mpLoadingParam = static_cast<rLoadingParam*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LDPARAM_LDP"), 129u, 0l))) != nullptr) {
+            mpLoadingParam;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpLoadingParam == nullptr) {
-            if ((mpLoadingParam = static_cast<rLoadingParam*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LDPARAM_LDP"), 129u, 0l))) != nullptr) {
-                mpLoadingParam;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return true;
     }
 }
 

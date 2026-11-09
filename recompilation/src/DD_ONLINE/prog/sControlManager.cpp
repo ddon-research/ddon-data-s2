@@ -107,8 +107,32 @@ sControlManager::sControlManager() {
 }
 
 __attribute__((noinline)) sControlManager::~sControlManager() {
-    DDON_STUB("sControlManager::~sControlManager")
-    /* stub */
+    if (mDispPriorityData.mLength != 0) {
+        u32 v0_0 = mDispPriorityData.mLength;
+        for (unsigned int i0_3 = 0;;) {
+            if (mDispPriorityData.mpArray[i0_3] != nullptr) {
+                delete mDispPriorityData.mpArray[i0_3];
+                if ((i0_3 + 1u) < mDispPriorityData.mLength) {
+                    v0_0 = mDispPriorityData.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mDispPriorityData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDispPriorityData.mpArray));
+    }
+    mDispPriorityData.mpArray = nullptr;
+    mDispPriorityData.mBufsiz = 0;
+    mDispPriorityData.mLength = 0;
 }
 
 __attribute__((weak)) void sControlManager::createProperty(MtPropertyList& s) {

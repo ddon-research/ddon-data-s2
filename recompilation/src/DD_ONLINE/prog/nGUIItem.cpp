@@ -109,48 +109,28 @@ u32 nGUIItem::cItem::getNum() const {
             if (static_cast<unsigned int>(mBagType) <= 31) {
                 if (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) == 0) {
                     if (mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL) < t0) {
-                        if (static_cast<unsigned int>(mBagType) <= 31) {
-                            if (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) == 0) {
-                                return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
-                            } else {
-                                return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_STORAGE);
-                            }
-                        } else {
-                            return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
+                        if ((static_cast<unsigned int>(mBagType) <= 31) && (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) != 0)) {
+                            return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_STORAGE);
                         }
-                    } else {
-                        return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpParam) + 12);
+                        return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
                     }
                 } else {
                     if (mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_STORAGE) < t0) {
-                        if (static_cast<unsigned int>(mBagType) <= 31) {
-                            if (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) == 0) {
-                                return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
-                            } else {
-                                return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_STORAGE);
-                            }
-                        } else {
-                            return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
+                        if ((static_cast<unsigned int>(mBagType) <= 31) && (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) != 0)) {
+                            return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_STORAGE);
                         }
-                    } else {
-                        return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpParam) + 12);
+                        return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
                     }
                 }
             } else {
                 if (mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL) < t0) {
-                    if (static_cast<unsigned int>(mBagType) <= 31) {
-                        if (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) == 0) {
-                            return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
-                        } else {
-                            return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_STORAGE);
-                        }
-                    } else {
-                        return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
+                    if ((static_cast<unsigned int>(mBagType) <= 31) && (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) != 0)) {
+                        return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_STORAGE);
                     }
-                } else {
-                    return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpParam) + 12);
+                    return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
                 }
             }
+            return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpParam) + 12);
         } else {
             return t0;
         }

@@ -103,32 +103,18 @@ __attribute__((noinline)) uGUIMap::~uGUIMap() {
 }
 
 bool uGUIMap::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENU_MAP_GUI"), 129u, 1458870630l))) != nullptr) {
-            if (mpGUIMsgGuide == nullptr) {
-                if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MAP_GMD"), 129u, 0l))) != nullptr) {
-                    mpGUIMsgGuide;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENU_MAP_GUI"), 129u, 1458870630l))) == nullptr)) {
+        return false;
+    }
+    if (mpGUIMsgGuide == nullptr) {
+        if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MAP_GMD"), 129u, 0l))) != nullptr) {
+            mpGUIMsgGuide;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGUIMsgGuide == nullptr) {
-            if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MAP_GMD"), 129u, 0l))) != nullptr) {
-                mpGUIMsgGuide;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return true;
     }
 }
 

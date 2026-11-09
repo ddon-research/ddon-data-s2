@@ -44,8 +44,6 @@ inline void uGUICaplinkMenuBase::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUICaplinkMenuBase::~uGUICaplinkMenuBase() {
-    DDON_STUB("uGUICaplinkMenuBase::~uGUICaplinkMenuBase")
-    /* stub */
 }
 
 __attribute__((weak)) void uGUICaplinkMenuBase::createProperty(MtPropertyList& s) {

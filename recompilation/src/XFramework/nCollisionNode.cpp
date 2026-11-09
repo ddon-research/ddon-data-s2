@@ -35,6 +35,10 @@ const MtDTI& nCollision::cCollisionNode::getDTI() const {
     return nCollision::cCollisionNode::DTI;
 }
 
+inline void nCollision::cCollisionNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cCollisionNode::DTI)->memFree(p_addr);
+}
+
 nCollision::cCollisionNode::cCollisionNode(const MtDTI* pEditGeometryDTI) {
     DDON_STUB("nCollision::cCollisionNode::cCollisionNode")
     /* stub */

@@ -62,15 +62,10 @@ void uGUICaplinkTrophyReceive::createProperty(MtPropertyList& s) {
 }
 
 bool uGUICaplinkTrophyReceive::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_TROPHY_DETAIL_GUI"), 129u, 1456988741l))) != nullptr) {
-            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
-        } else {
-            return false;
-        }
-    } else {
-        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_TROPHY_DETAIL_GUI"), 129u, 1456988741l))) == nullptr)) {
+        return false;
     }
+    return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
 }
 
 __attribute__((weak)) void uGUICaplinkTrophyReceive::setup() {
@@ -273,8 +268,6 @@ inline void uGUICaplinkTrophyReceive::cListItem::operator delete(void* p_addr) {
 }
 
 uGUICaplinkTrophyReceive::cListItem::~cListItem() {
-    DDON_STUB("uGUICaplinkTrophyReceive::cListItem::~cListItem")
-    /* stub */
 }
 
 uGUICaplinkTrophyReceive::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

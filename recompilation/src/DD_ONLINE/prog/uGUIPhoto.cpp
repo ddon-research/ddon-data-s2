@@ -67,66 +67,21 @@ __attribute__((noinline)) uGUIPhoto::~uGUIPhoto() {
 }
 
 bool uGUIPhoto::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_GUI"), 129u, 1421229316l))) != nullptr) {
-            if (mpGMDRes == nullptr) {
-                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_GMD"), 129u, 0l))) != nullptr) {
-                    if (mpFrameGMDRes == nullptr) {
-                        if ((mpFrameGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), 129u, 0l))) != nullptr) {
-                            mpFrameGMDRes;
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                if (mpFrameGMDRes == nullptr) {
-                    if ((mpFrameGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), 129u, 0l))) != nullptr) {
-                        mpFrameGMDRes;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_GUI"), 129u, 1421229316l))) == nullptr)) {
+        return false;
+    }
+    if ((mpGMDRes == nullptr) && ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_GMD"), 129u, 0l))) == nullptr)) {
+        return false;
+    }
+    if (mpFrameGMDRes == nullptr) {
+        if ((mpFrameGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), 129u, 0l))) != nullptr) {
+            mpFrameGMDRes;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDRes == nullptr) {
-            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_GMD"), 129u, 0l))) != nullptr) {
-                if (mpFrameGMDRes == nullptr) {
-                    if ((mpFrameGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), 129u, 0l))) != nullptr) {
-                        mpFrameGMDRes;
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            } else {
-                return false;
-            }
-        } else {
-            if (mpFrameGMDRes == nullptr) {
-                if ((mpFrameGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), 129u, 0l))) != nullptr) {
-                    mpFrameGMDRes;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
-        }
+        return true;
     }
 }
 

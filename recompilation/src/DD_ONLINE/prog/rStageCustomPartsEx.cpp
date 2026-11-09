@@ -453,3 +453,7 @@ MtObject* rStageCustomPartsEx::FilterEx::MyDTI::newInstance() const {
 
 template MtTypedArray<rStageCustomPartsEx::AreaParam>::~MtTypedArray();
 
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<AreaHitShape>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rStageCustomPartsEx::AreaParam>&);
+

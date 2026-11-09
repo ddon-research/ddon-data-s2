@@ -107,7 +107,7 @@ __attribute__((weak)) bool cpInvincibleCtrl::isDamageAttrOldActive(u32 attr) con
     return {};
 }
 
-__attribute__((weak)) bool cpInvincibleCtrl::isDamageAttrActive_Through(nObjCollision::DAMAGE_ATTR_ENUM attrEnum, nObjCollision::UNIT_INV_THROUGH_TYPE type) const {
+bool cpInvincibleCtrl::isDamageAttrActive_Through(nObjCollision::DAMAGE_ATTR_ENUM attrEnum, nObjCollision::UNIT_INV_THROUGH_TYPE type) const {
         u32 attr = 1 << attrEnum;
         if (type) {
             if (this->mDamageAttr & attr) {

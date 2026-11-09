@@ -54,15 +54,10 @@ void uGUIPopEventTop::createProperty(MtPropertyList& s) {
 }
 
 bool uGUIPopEventTop::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_EVENT_TOP_GUI"), 129u, 1440567314l))) != nullptr) {
-            return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
-        } else {
-            return false;
-        }
-    } else {
-        return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_EVENT_TOP_GUI"), 129u, 1440567314l))) == nullptr)) {
+        return false;
     }
+    return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
 }
 
 __attribute__((weak)) void uGUIPopEventTop::setup() {

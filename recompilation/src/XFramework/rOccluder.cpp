@@ -46,8 +46,15 @@ MtUI* rOccluder::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rOccluder::save(MtStream& out) {
-    DDON_STUB("rOccluder::save")
-    return {};
+        HEADER header;
+        header.magic = HEADER_MAGIC;
+        header.version = DATA_VERSION;
+        out.write(&header, 8u);
+        out.write(&this->mOccluderCount, 4u);
+        for (u32 i = 0; i < this->mOccluderCount; i++) {
+            this->mpOccluder[i].save(out);
+        }
+        return true;
 }
 
 __attribute__((weak)) bool rOccluder::load(MtStream& in) {
@@ -157,6 +164,12 @@ inline rOccluder::cQuad::cQuad() {
 inline bool rOccluder::cQuad::load(MtStream& in) {
     in.read(&mActive, 1u);
     in.read(mQuad, 64u);
+    return true;
+}
+
+inline bool rOccluder::cQuad::save(MtStream& out) {
+    out.write(&mActive, 1u);
+    out.write(mQuad, 64u);
     return true;
 }
 

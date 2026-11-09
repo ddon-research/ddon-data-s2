@@ -43,7 +43,7 @@ __attribute__((weak)) f32 cBlowShrinkDmInfo::calcSaveShrinkBlowAttack(const cDmJ
     return {};
 }
 
-__attribute__((weak)) void cBlowShrinkDmInfo::clear() {
+void cBlowShrinkDmInfo::clear() {
         this->mPower = 10.0f;
         this->mBlowWep = 1.0f;
         this->mShrinkWep = 1.0f;

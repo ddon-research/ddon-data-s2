@@ -104,32 +104,18 @@ __attribute__((noinline)) uGUIGPShop::~uGUIGPShop() {
 }
 
 bool uGUIGPShop::loadResource() {
-    if (mpGUIRes == nullptr) {
-        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOP_GUI"), 129u, 1473837398l))) != nullptr) {
-            if (mpGMDRes == nullptr) {
-                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOP_RES_GMD"), 129u, 0l))) != nullptr) {
-                    mpGMDRes;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+    if ((mpGUIRes == nullptr) && ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOP_GUI"), 129u, 1473837398l))) == nullptr)) {
+        return false;
+    }
+    if (mpGMDRes == nullptr) {
+        if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOP_RES_GMD"), 129u, 0l))) != nullptr) {
+            mpGMDRes;
+            return true;
         } else {
             return false;
         }
     } else {
-        if (mpGMDRes == nullptr) {
-            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOP_RES_GMD"), 129u, 0l))) != nullptr) {
-                mpGMDRes;
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return true;
     }
 }
 
@@ -763,38 +749,27 @@ u32 uGUIGPShop::evCtrlChargeCancel(cControl::Message* pMsg) {
 }
 
 u32 uGUIGPShop::evCtrlChargeDecide(cControl::Message* pMsg) {
+    if ((mpCAPChargeButton != nullptr) && (mShopControl.getCurrentPos(5u) == 0)) {
+        if (!mIsNGCAPCharge) {
+            if (sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE) {
+                setInputEvent(86u);
+            } else {
+                setInputEvent(85u);
+            }
+        } else {
+            setInputEvent(86u);
+        }
+        return 1;
+    }
     s32 v0_0;
     int i0_1;
     s32* v0_2;
-    if (mpCAPChargeButton != nullptr) {
-        if (mShopControl.getCurrentPos(5u) != 0) {
-            if (mShopControl.getCurrentPos(5u) == 0) {
-                return 1;
-            } else {
-                v0_0 = mShopControl.getCurrentPos(7u);
-                i0_1 = 0;
-                v0_2 = &mChargeItem[0].mIndex;
-            }
-        } else {
-            if (!mIsNGCAPCharge) {
-                if (sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE) {
-                    setInputEvent(86u);
-                } else {
-                    setInputEvent(85u);
-                }
-            } else {
-                setInputEvent(86u);
-            }
-            return 1;
-        }
+    if (mShopControl.getCurrentPos(5u) == 0) {
+        return 1;
     } else {
-        if (mShopControl.getCurrentPos(5u) == 0) {
-            return 1;
-        } else {
-            v0_0 = mShopControl.getCurrentPos(7u);
-            i0_1 = 0;
-            v0_2 = &mChargeItem[0].mIndex;
-        }
+        v0_0 = mShopControl.getCurrentPos(7u);
+        i0_1 = 0;
+        v0_2 = &mChargeItem[0].mIndex;
     }
     for (;;) {
         if ((*v0_2) != v0_0) {

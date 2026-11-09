@@ -262,22 +262,13 @@ __attribute__((weak)) bool cFSMBase::isFadeOut() const {
 }
 
 bool cFSMBase::isMessageEnded() const {
-    if (sArea::getInstance()->mpArea[2] != nullptr) {
-        if (static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isFsmEventPlay()) {
-            return mCountState >= mFsmMesWaitTime;
-        } else {
-            if (mIsDispMsg) {
-                return sTalkManager::getInstance()->isEndTellMsg();
-            } else {
-                return false;
-            }
-        }
+    if ((sArea::getInstance()->mpArea[2] != nullptr) && static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isFsmEventPlay()) {
+        return mCountState >= mFsmMesWaitTime;
+    }
+    if (mIsDispMsg) {
+        return sTalkManager::getInstance()->isEndTellMsg();
     } else {
-        if (mIsDispMsg) {
-            return sTalkManager::getInstance()->isEndTellMsg();
-        } else {
-            return false;
-        }
+        return false;
     }
 }
 

@@ -19,6 +19,10 @@ const MtDTI& uCnsGroup::getDTI() const {
     return uCnsGroup::DTI;
 }
 
+inline void uCnsGroup::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uCnsGroup::DTI)->memFree(p_addr);
+}
+
 uCnsGroup::uCnsGroup() {
     DDON_STUB("uCnsGroup::uCnsGroup")
     /* stub */

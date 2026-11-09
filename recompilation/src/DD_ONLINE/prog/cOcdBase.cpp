@@ -165,15 +165,10 @@ void cOcdBase::update() {
 bool cOcdBase::isEnableInit() const {
     if (mStatusParam.isEffective()) {
         if (mpModel != nullptr) {
-            if ((static_cast<unsigned long>(mNonInitOST) & static_cast<unsigned long>(mpModel->mObjStatus)) != 0) {
-                return false;
-            } else {
-                if ((static_cast<unsigned long>(mNonInitOST) & static_cast<unsigned long>(mpModel->mObjStatusOld)) != 0) {
-                    return false;
-                } else {
-                    return !mOcdActiveCache.mIsActive;
-                }
+            if (((static_cast<unsigned long>(mNonInitOST) & static_cast<unsigned long>(mpModel->mObjStatus)) == 0) && ((static_cast<unsigned long>(mNonInitOST) & static_cast<unsigned long>(mpModel->mObjStatusOld)) == 0)) {
+                return !mOcdActiveCache.mIsActive;
             }
+            return false;
         } else {
             return !mOcdActiveCache.mIsActive;
         }

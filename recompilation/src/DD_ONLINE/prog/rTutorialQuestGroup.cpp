@@ -217,12 +217,15 @@ rTutorialQuestGroup::cGroup::cQuestId::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* 
 
 rTutorialQuestGroup::cGroup::cQuestId::MyDTI rTutorialQuestGroup::cGroup::cQuestId::DTI("rTutorialQuestGroup::cGroup::cQuestId", &::MtObject::DTI, 16ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rTutorialQuestGroup::cGroup::cQuestId::MyDTI::newInstance() const {
-    DDON_STUB("rTutorialQuestGroup::cGroup::cQuestId::MyDTI::newInstance")
-    return nullptr;
+MtObject* rTutorialQuestGroup::cGroup::cQuestId::MyDTI::newInstance() const {
+    return new (16u) rTutorialQuestGroup::cGroup::cQuestId;
 }
 
 template MtTypedArray<rTutorialQuestGroup::cGroup::cQuestId>::~MtTypedArray();
 
 template MtTypedArray<rTutorialQuestGroup::cGroup>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rTutorialQuestGroup::cGroup::cQuestId>&);
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rTutorialQuestGroup::cGroup>&);
 

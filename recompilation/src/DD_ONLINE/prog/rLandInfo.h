@@ -158,3 +158,18 @@ inline void* rLandInfo::cLandInfo::cLandAreaInfo::operator new(size_t sz, void* 
 inline rLandInfo::cLandInfo::cLandAreaInfo::cLandAreaInfo() {
     this->mAreaId = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtDataReader.h"
+#include "../../generated/shared/nDDOIO.h"
+
+inline bool rLandInfo::cLandInfo::load(MtDataReader& r) {
+    mLandId = r.readU32();
+    nDDOIO::readMtArray(r, mAreaArray);
+    return true;
+}
+
+inline bool rLandInfo::cLandInfo::cLandAreaInfo::load(MtDataReader& r) {
+    mAreaId = r.readU32();
+    return true;
+}

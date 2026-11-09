@@ -137,6 +137,7 @@ public:
 
 class cParentRegionStatusParam : public MtObject
 {
+    friend class rParentRegionStatusParam;
 public:
     enum INTEGER_DIGIT
     {
@@ -327,6 +328,7 @@ inline void* rParentRegionStatusParam::operator new(size_t sz, void* p_addr) {
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "rRegionBreakInfo.h"
 
 inline void cChildRegionStatusParam::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParam::DTI)->memFree(p_addr);
@@ -336,16 +338,66 @@ inline void* cChildRegionStatusParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParam::DTI)->memAlloc(sz, align, ::cChildRegionStatusParam::DTI.::MtDTI::getID());
 }
 
+inline cChildRegionStatusParamList::cChildRegionStatusParamList() {
+    mStatusNo = 0;
+    mStatusType = 2;
+    mStatusPrio = 0;
+    mpChildRegion = new (16u) rChildRegionStatusParam();
+}
+
 inline void cChildRegionStatusParamList::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParamList::DTI)->memFree(p_addr);
+}
+
+inline void* cChildRegionStatusParamList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cChildRegionStatusParamList::DTI)->memAlloc(sz, align, cChildRegionStatusParamList::DTI.getID());
 }
 
 inline void* cChildRegionStatusParamList::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParamList::DTI)->memAlloc(sz, align, ::cChildRegionStatusParamList::DTI.::MtDTI::getID());
 }
 
+inline cParentRegionStatusParam::cParentRegionStatusParam() {
+    mNo = 0;
+    mRegionCategory = 0;
+    mIsReGenerate = false;
+    mRegenerateProprirty = 25;
+    mHpMax = 100;
+    mShPMax = 100.0f;
+    mShPSpeed = 1.0f;
+    mShPResetTimerMax = 60.0f;
+    mBlPMax = 100.0f;
+    mBlPSpeed = 1.0f;
+    mBlResetTimerMax = 60.0f;
+    mDownPMax = 100.0f;
+    mDownPSpeed = 1.0f;
+    mDownPResetTimerMax = 60.0f;
+    mShakePMax = 100.0f;
+    mShakePSpeed = 1.0f;
+    mShakeResetTimerMax = 60.0f;
+    mRageShrinkMax = 100.0f;
+    mIsDamageToMain = true;
+    mBreakReactionNo = -1;
+    for (u32 i = 0u; i < 5u; i++) {
+        mHPForEdit[i] = 0;
+    }
+    mpBreakInfo = new (16u) rRegionBreakInfo();
+}
+
+inline u64 cParentRegionStatusParam::getHpMaxFromHpEdit() const {
+    return static_cast<u64>(mHPForEdit[DIGIT_ZERO])
+        + static_cast<u64>(mHPForEdit[DIGIT_MAN]) * 10000ull
+        + static_cast<u64>(mHPForEdit[DIGIT_OKU]) * 100000000ull
+        + static_cast<u64>(mHPForEdit[DIGIT_THOU]) * 1000000000000ull
+        + static_cast<u64>(mHPForEdit[DIGIT_KEI]) * 10000000000000000ull;
+}
+
 inline void cParentRegionStatusParam::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cParentRegionStatusParam::DTI)->memFree(p_addr);
+}
+
+inline void* cParentRegionStatusParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cParentRegionStatusParam::DTI)->memAlloc(sz, align, cParentRegionStatusParam::DTI.getID());
 }
 
 inline void* cParentRegionStatusParam::operator new[](size_t sz, u32 align) {

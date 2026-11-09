@@ -72,8 +72,22 @@ rCollNode::~rCollNode() {
 }
 
 __attribute__((weak)) bool rCollNode::loadData(MtDataReader& in, cCollNode* pData) {
-    DDON_STUB("rCollNode::loadData")
-    return {};
+    if (pData->mpCollGeom != nullptr) {
+        pData->mpCollGeom->release();
+        pData->mpCollGeom = nullptr;
+    }
+    pData->mpCollGeom = new (16u) rCollGeom;
+    if (pData->mpCollGeom != nullptr) {
+        if (!pData->mpCollGeom->loadRoot(in)) {
+            return false;
+        }
+    }
+    nDDOIO::readData(in, pData->mAttr);
+    nDDOIO::readData(in, pData->mNodeID);
+    nDDOIO::readData(in, pData->mIndex);
+    nDDOIO::readData(in, pData->mColNodeFlag);
+    nDDOIO::readData(in, pData->mHitCollisionFlag);
+    return true;
 }
 
 MT_CTSTR rCollNode::getExt() const {
@@ -85,8 +99,29 @@ u32 rCollNode::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rCollNode::loadCore(MtDataReader& r) {
-    DDON_STUB("rCollNode::loadCore")
-    return {};
+    u32 dat_num;
+    this->::rTbl2Base::readDataValue(r, dat_num);
+    u32 t0 = dat_num;
+    if (this->mpData != nullptr) {
+        delete[] this->mpData;
+        this->mpData = nullptr;
+    }
+    this->mDataNum = 0;
+    if (t0 != 0) {
+        this->mpData = new (16u) cCollNode[t0];
+        this->mDataNum = t0;
+    }
+    if (dat_num != 0) {
+        u32 i = 0;
+        cCollNode* p_dat = this->mpData;
+        do {
+            if (!this->loadData(r, &p_dat[i])) {
+                return false;
+            }
+            i += 1u;
+        } while (i < dat_num);
+    }
+    return true;
 }
 
 rCollNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

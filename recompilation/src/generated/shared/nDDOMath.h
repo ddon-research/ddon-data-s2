@@ -103,5 +103,7 @@ namespace nDDOMath {
     bool calcRotateVectorYZPos(MtMatrix& mat, const MtVector3& DirY, const MtVector3& UpZ, const MtVector3& Pos);
     bool calcRotateVectorZYPos(MtMatrix& mat, const MtVector3& DirZ, const MtVector3& UpY, const MtVector3& Pos);
     MtVector3 deg2rad(const MtVector3& deg_vector);
+    template <typename T> T Sq(T value);
+    template <typename T> T clampValue(T src, T min, T max);
 
 }  // namespace nDDOMath

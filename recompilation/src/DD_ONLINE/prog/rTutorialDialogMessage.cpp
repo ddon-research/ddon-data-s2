@@ -145,3 +145,5 @@ MtObject* rTutorialDialogMessage::cDialogPage::MyDTI::newInstance() const {
 
 template MtTypedArray<rTutorialDialogMessage::cDialogPage>::~MtTypedArray();
 
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rTutorialDialogMessage::cDialogPage>&);
+

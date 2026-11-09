@@ -252,12 +252,17 @@ inline void* rWeatherInfoTbl::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rWeatherInfoTbl::DTI)->memAlloc(sz, align, rWeatherInfoTbl::DTI.getID());
 }
 
+inline void rWeatherInfoTbl::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rWeatherInfoTbl::DTI)->memFree(p_addr);
+}
+
 bool rWeatherInfoTbl::loadData(MtDataReader& in, cWeatherInfo* pData) {
     pData->mID = in.readU16();
     pData->mToFrame = in.readF32();
     pData->mWaterLRate = in.readF32();
+    cWeatherAttrFlag* held0 = &pData->mWeatherAttrFlag;
     u32 t0 = in.readU32();
-    in.read(static_cast<void*>(&pData->mWeatherAttrFlag), t0 * 4u);
+    in.read(static_cast<void*>(held0), t0 * 4u);
     pData->mScriptsEfc.load(in);
     pData->mScriptsSound.load(in);
     return true;
@@ -287,6 +292,10 @@ inline void* rWeatherParamEfcInfo::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rWeatherParamEfcInfo::DTI)->memAlloc(sz, align, rWeatherParamEfcInfo::DTI.getID());
 }
 
+inline void rWeatherParamEfcInfo::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rWeatherParamEfcInfo::DTI)->memFree(p_addr);
+}
+
 __attribute__((weak)) bool rWeatherParamEfcInfo::loadData(MtDataReader& in, cWeatherParamEfcInfo* pData) {
     DDON_STUB("rWeatherParamEfcInfo::loadData")
     return {};
@@ -314,6 +323,10 @@ const MtDTI& rWeatherParamInfoTbl::getDTI() const {
 
 inline void* rWeatherParamInfoTbl::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rWeatherParamInfoTbl::DTI)->memAlloc(sz, align, rWeatherParamInfoTbl::DTI.getID());
+}
+
+inline void rWeatherParamInfoTbl::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rWeatherParamInfoTbl::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rWeatherParamInfoTbl::loadData(MtDataReader& in, cWeatherParamInfo* pData) {
@@ -379,6 +392,8 @@ __attribute__((weak)) MtObject* rWeatherStageInfo::MyDTI::newInstance() const {
 }
 
 template MtTypedArray<cWeatherCloudModel>::~MtTypedArray();
+
+template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<cWeatherCloudModel>&);
 
 template cWeatherFogInfo* rTbl2<cWeatherFogInfo>::getData(unsigned int);
 

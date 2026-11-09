@@ -426,9 +426,16 @@ bool cSetInfoOmBadStatus::load(MtDataReader& r) {
     return this->cSetInfoOm::load(r);
 }
 
-__attribute__((weak)) bool cSetInfoOmBadStatus::save(MtDataWriter& w) {
-    DDON_STUB("cSetInfoOmBadStatus::save")
-    return {};
+bool cSetInfoOmBadStatus::save(MtDataWriter& w) {
+    w.writeF32(mBadRadius);
+    w.writeF32(mBadHeight);
+    MtFloat3 frame56;
+    frame56.x = mBadPos.x;
+    frame56.y = mBadPos.y;
+    frame56.z = mBadPos.z;
+    w.writeV3(frame56);
+    w.writeU32(mBreakHitNum);
+    return this->cSetInfoOm::save(w);
 }
 
 bool cSetInfoOmBadStatus::applyInfo(cUnit* pu) const {
@@ -2629,9 +2636,13 @@ bool cSetInfoOmNav::load(MtDataReader& r) {
     return this->cSetInfoOm::load(r);
 }
 
-__attribute__((weak)) bool cSetInfoOmNav::save(MtDataWriter& w) {
-    DDON_STUB("cSetInfoOmNav::save")
-    return {};
+bool cSetInfoOmNav::save(MtDataWriter& w) {
+    MtFloat3 frame56;
+    frame56.x = mNavOBBExtent.x;
+    frame56.y = mNavOBBExtent.y;
+    frame56.z = mNavOBBExtent.z;
+    w.writeV3(frame56);
+    return this->cSetInfoOm::save(w);
 }
 
 bool cSetInfoOmNav::applyInfo(cUnit* pu) const {
@@ -3559,16 +3570,21 @@ MtUI* cSetInfoOmWarp::createUI(MtProperty& prop) {
 }
 
 bool cSetInfoOmWarp::load(MtDataReader& r) {
+    unsigned int* held0 = &mStageNo[0];
     u32 t0 = r.readU32();
-    r.read(static_cast<void*>(&mStageNo[0]), t0 * 4u);
+    unsigned int* held1 = &mStartPosNo[0];
+    r.read(static_cast<void*>(held0), t0 * 4u);
     u32 t1 = r.readU32();
-    r.read(static_cast<void*>(&mStartPosNo[0]), t1 * 4u);
+    unsigned int* held2 = &mQuestNo[0];
+    r.read(static_cast<void*>(held1), t1 * 4u);
     u32 t2 = r.readU32();
-    r.read(static_cast<void*>(&mQuestNo[0]), t2 * 4u);
+    unsigned int* held3 = &mFlagNo[0];
+    r.read(static_cast<void*>(held2), t2 * 4u);
     u32 t3 = r.readU32();
-    r.read(static_cast<void*>(&mFlagNo[0]), t3 * 4u);
+    unsigned int* held4 = &mSpotId[0];
+    r.read(static_cast<void*>(held3), t3 * 4u);
     u32 t4 = r.readU32();
-    r.read(static_cast<void*>(&mSpotId[0]), t4 * 4u);
+    r.read(static_cast<void*>(held4), t4 * 4u);
     nDDOIO::readData(r, mTextType);
     nDDOIO::readData(r, mTextQuestNo);
     nDDOIO::readData(r, mTextNo);
@@ -3576,16 +3592,21 @@ bool cSetInfoOmWarp::load(MtDataReader& r) {
 }
 
 bool cSetInfoOmWarp::save(MtDataWriter& w) {
+    unsigned int* held0 = &mStageNo[0];
     w.writeU32(3u);
-    w.write(static_cast<const void*>(&mStageNo[0]), 12u);
+    unsigned int* held1 = &mStartPosNo[0];
+    w.write(static_cast<const void*>(held0), 12u);
     w.writeU32(3u);
-    w.write(static_cast<const void*>(&mStartPosNo[0]), 12u);
+    unsigned int* held2 = &mQuestNo[0];
+    w.write(static_cast<const void*>(held1), 12u);
     w.writeU32(3u);
-    w.write(static_cast<const void*>(&mQuestNo[0]), 12u);
+    unsigned int* held3 = &mFlagNo[0];
+    w.write(static_cast<const void*>(held2), 12u);
     w.writeU32(3u);
-    w.write(static_cast<const void*>(&mFlagNo[0]), 12u);
+    unsigned int* held4 = &mSpotId[0];
+    w.write(static_cast<const void*>(held3), 12u);
     w.writeU32(3u);
-    w.write(static_cast<const void*>(&mSpotId[0]), 12u);
+    w.write(static_cast<const void*>(held4), 12u);
     nDDOIO::writeData(w, mTextType);
     nDDOIO::writeData(w, mTextQuestNo);
     nDDOIO::writeData(w, mTextNo);

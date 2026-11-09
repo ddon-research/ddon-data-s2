@@ -258,7 +258,7 @@ __attribute__((weak)) void cOmControl::updateSbc(MtMatrix& mtx) {
     /* stub */
 }
 
-__attribute__((weak)) void cOmControl::setActiveSbc(bool act, u32 type, u32 index, u32 parts) {
+void cOmControl::setActiveSbc(bool act, u32 type, u32 index, u32 parts) {
         if (type >= 2 || index >= 2) {
             return;
         }

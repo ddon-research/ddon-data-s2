@@ -173,75 +173,40 @@ __attribute__((weak)) MT_CTSTR uControlNpc::getName() {
 }
 
 bool uControlNpc::isDispClassName() {
-    if (!mIsForceListTalk) {
-        if (mLayout.mQuestId != 0) {
-            return false;
+    if (!mIsForceListTalk && (mLayout.mQuestId != 0)) {
+        return false;
+    }
+    sNpcManager* t0 = sNpcManager::getInstance();
+    if (t0->isHaveFunction(static_cast<u32>(getNpcId()))) {
+        sNpcManager* t1 = sNpcManager::getInstance();
+        if (t1->isHaveEnableFunction(static_cast<u32>(getNpcId()))) {
+            return (*mFSMFilePath.ptr()) == 0;
         } else {
-            sNpcManager* t0 = sNpcManager::getInstance();
-            if (t0->isHaveFunction(static_cast<u32>(getNpcId()))) {
-                sNpcManager* t1 = sNpcManager::getInstance();
-                if (t1->isHaveEnableFunction(static_cast<u32>(getNpcId()))) {
-                    return (*mFSMFilePath.ptr()) == 0;
-                } else {
-                    return false;
-                }
-            } else {
-                return (*mFSMFilePath.ptr()) == 0;
-            }
+            return false;
         }
     } else {
-        sNpcManager* t0 = sNpcManager::getInstance();
-        if (t0->isHaveFunction(static_cast<u32>(getNpcId()))) {
-            sNpcManager* t1 = sNpcManager::getInstance();
-            if (t1->isHaveEnableFunction(static_cast<u32>(getNpcId()))) {
-                return (*mFSMFilePath.ptr()) == 0;
-            } else {
-                return false;
-            }
-        } else {
-            return (*mFSMFilePath.ptr()) == 0;
-        }
+        return (*mFSMFilePath.ptr()) == 0;
     }
 }
 
 MT_CTSTR uControlNpc::getClassName() {
-    if (!mIsForceListTalk) {
-        if (mLayout.mQuestId != 0) {
-            return "";
-        } else {
-            sNpcManager* t0 = sNpcManager::getInstance();
-            if (t0->isHaveFunction(static_cast<u32>(getNpcId()))) {
-                sNpcManager* t1 = sNpcManager::getInstance();
-                if (t1->isHaveEnableFunction(static_cast<u32>(getNpcId()))) {
-                    if ((*mFSMFilePath.ptr()) == 0) {
-                        return mClassName.ptr();
-                    }
-                }
-                return "";
-            } else {
-                if ((*mFSMFilePath.ptr()) == 0) {
-                    return mClassName.ptr();
-                } else {
-                    return "";
-                }
-            }
-        }
-    } else {
-        sNpcManager* t0 = sNpcManager::getInstance();
-        if (t0->isHaveFunction(static_cast<u32>(getNpcId()))) {
-            sNpcManager* t1 = sNpcManager::getInstance();
-            if (t1->isHaveEnableFunction(static_cast<u32>(getNpcId()))) {
-                if ((*mFSMFilePath.ptr()) == 0) {
-                    return mClassName.ptr();
-                }
-            }
-            return "";
-        } else {
+    if (!mIsForceListTalk && (mLayout.mQuestId != 0)) {
+        return "";
+    }
+    sNpcManager* t0 = sNpcManager::getInstance();
+    if (t0->isHaveFunction(static_cast<u32>(getNpcId()))) {
+        sNpcManager* t1 = sNpcManager::getInstance();
+        if (t1->isHaveEnableFunction(static_cast<u32>(getNpcId()))) {
             if ((*mFSMFilePath.ptr()) == 0) {
                 return mClassName.ptr();
-            } else {
-                return "";
             }
+        }
+        return "";
+    } else {
+        if ((*mFSMFilePath.ptr()) == 0) {
+            return mClassName.ptr();
+        } else {
+            return "";
         }
     }
 }
@@ -322,21 +287,12 @@ void uControlNpc::setRentalPawnSlotNo(u32 slotNo, bool equip) {
 bool uControlNpc::isCharaData() {
     if (mPawnId == 0xFFFFFFFFu) {
         if (mMyPawnSlotNo == 0xFFFFFFFFu) {
-            if (mRentalPawnSlotNo == 0xFFFFFFFFu) {
-                if (mUnitType == 6) {
-                    return mIsPawnData;
-                } else {
-                    return true;
-                }
-            } else {
-                return mIsPawnData;
+            if ((mRentalPawnSlotNo == 0xFFFFFFFFu) && (mUnitType != 6)) {
+                return true;
             }
-        } else {
-            return mIsPawnData;
         }
-    } else {
-        return mIsPawnData;
     }
+    return mIsPawnData;
 }
 
 __attribute__((weak)) void uControlNpc::setEquipInfo() {
@@ -401,15 +357,10 @@ bool uControlNpc::isUseMotionListLight() {
         return false;
     } else {
         if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isPartyLargeStage()) {
-            if (static_cast<sAreaExt*>(sArea::getInstance())->isJobActArea()) {
-                if (sGame::getInstance()->isPlayPrologue()) {
-                    return false;
-                } else {
-                    return mLayout.mQuestId != 0;
-                }
-            } else {
-                return false;
+            if (static_cast<sAreaExt*>(sArea::getInstance())->isJobActArea() && !sGame::getInstance()->isPlayPrologue()) {
+                return mLayout.mQuestId != 0;
             }
+            return false;
         } else {
             return true;
         }
@@ -417,35 +368,15 @@ bool uControlNpc::isUseMotionListLight() {
 }
 
 bool uControlNpc::isArcLoadFinish() {
-    if (isFsmEventNpc()) {
-        if (sNpcManager::getInstance()->isFinishLoadFsmMotionArc()) {
-            sNpcManager* t0 = sNpcManager::getInstance();
-            u32 voiceType = t0->getNpcVoiceType(static_cast<u32>(getNpcId()));
-            if (sNpcManager::getInstance()->isCommonVoiceCategory(voiceType)) {
-                if (sNpcManager::getInstance()->isFinishLoadCommonVoiceArc(voiceType)) {
-                    return this->uControl::isArcLoadFinish();
-                } else {
-                    return false;
-                }
-            } else {
-                return this->uControl::isArcLoadFinish();
-            }
-        } else {
-            return false;
-        }
-    } else {
-        sNpcManager* t0 = sNpcManager::getInstance();
-        u32 voiceType = t0->getNpcVoiceType(static_cast<u32>(getNpcId()));
-        if (sNpcManager::getInstance()->isCommonVoiceCategory(voiceType)) {
-            if (sNpcManager::getInstance()->isFinishLoadCommonVoiceArc(voiceType)) {
-                return this->uControl::isArcLoadFinish();
-            } else {
-                return false;
-            }
-        } else {
-            return this->uControl::isArcLoadFinish();
-        }
+    if (isFsmEventNpc() && !sNpcManager::getInstance()->isFinishLoadFsmMotionArc()) {
+        return false;
     }
+    sNpcManager* t0 = sNpcManager::getInstance();
+    u32 voiceType = t0->getNpcVoiceType(static_cast<u32>(getNpcId()));
+    if (sNpcManager::getInstance()->isCommonVoiceCategory(voiceType) && !sNpcManager::getInstance()->isFinishLoadCommonVoiceArc(voiceType)) {
+        return false;
+    }
+    return this->uControl::isArcLoadFinish();
 }
 
 __attribute__((weak)) void uControlNpc::updateDispWeapon() {

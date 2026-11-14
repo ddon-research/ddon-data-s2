@@ -141,3 +141,19 @@ private:
 public:
     static const u32 KEY_STR_MAX = 56;
 };
+
+inline void MtCipher::getTransKey_Private(MT_CHAR* output) const {
+    __builtin_memcpy(output, this->mTransKey_Guard, KEY_STR_MAX);
+}
+
+inline void MtCipher::setTransKey_Private(const MT_CHAR* NewValue) {
+    __builtin_memcpy(this->mTransKey_Guard, NewValue, KEY_STR_MAX);
+}
+
+inline u32 MtCipher::getKeyLength_Private() const {
+    return this->mKeyLength_Guard;
+}
+
+inline void MtCipher::setKeyLength_Private(u32 NewValue) {
+    this->mKeyLength_Guard = NewValue;
+}

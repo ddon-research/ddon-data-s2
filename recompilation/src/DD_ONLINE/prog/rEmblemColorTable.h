@@ -116,3 +116,13 @@ inline void cEmblemColorTable::operator delete[](void* p_addr) {
 inline void* cEmblemColorTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEmblemColorTable::DTI)->memAlloc(sz, align, ::cEmblemColorTable::DTI.::MtDTI::getID());
 }
+
+inline void* cEmblemColorTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmblemColorTable::DTI)->memAlloc(sz, align, ::cEmblemColorTable::DTI.::MtDTI::getID());
+}
+
+inline cEmblemColorTable::cEmblemColorTable()
+    : mColorNo(0)
+    , mColor(0xffffffffu)
+{
+}

@@ -199,8 +199,16 @@ inline void rAcquirement::rNormalSkillData::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rAcquirement::rNormalSkillData::loadData(MtDataReader& r, rAcquirement::cNormalSkillData* pData) {
-    DDON_STUB("rAcquirement::rNormalSkillData::loadData")
-    return {};
+    ::nDDOIO::readData(r, pData->mNeedJp);
+    ::nDDOIO::readData(r, pData->mNeedLv);
+    ::nDDOIO::readData(r, pData->mSkillNo);
+    ::nDDOIO::readData(r, pData->mIconId);
+    ::nDDOIO::readData(r, pData->mIndex);
+    ::nDDOIO::readData(r, pData->mMsgIndex);
+    ::nDDOIO::readData(r, pData->mCategory);
+    ::nDDOIO::readData(r, pData->mPreSkillIndex);
+    ::nDDOIO::readData(r, pData->mSlotNo);
+    return true;
 }
 
 MT_CTSTR rAcquirement::rNormalSkillData::getExt() const {

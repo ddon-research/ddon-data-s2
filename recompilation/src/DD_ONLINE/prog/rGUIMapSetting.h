@@ -152,3 +152,27 @@ inline rGUIMapSetting::cData::cData() {
 inline s32 rGUIMapSetting::cData::getShapeType() {
     return this->mShapeType;
 }
+
+inline MtAllocator* rGUIMapSetting::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rGUIMapSetting::DTI);
+}
+
+inline void* rGUIMapSetting::operator new(size_t sz, u32 align) {
+    return rGUIMapSetting::getAllocator()->memAlloc(sz, align, rGUIMapSetting::DTI.getID());
+}
+
+inline rGUIMapSetting::rGUIMapSetting()
+    : mRect(0, 0, 0, 0) {
+    setAttribute(ATTR_SAVEABLE | ATTR_NATIVE);
+    mArray.setAutoDelete(true);
+    mCenter.x = 0.0f;
+    mCenter.y = 0.0f;
+    mFloorBaseId = 0;
+    mFloorBaseSizeId = 0;
+    mTextureNumX = 3;
+    mTextureNumY = 4;
+    mUseIdTex = false;
+    mOffsetPosY = 0.0f;
+    mOffsetPosX = 0.0f;
+    mFoundationScale = 0.0f;
+}

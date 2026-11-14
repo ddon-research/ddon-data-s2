@@ -8,6 +8,9 @@
 #include "../MT/MtMath.h"
 #include "rConstraint.h"
 
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
 // Forward declarations
 class MtAllocator;
 class MtDTI;
@@ -184,4 +187,31 @@ public:
 
 inline void* rCnsTinyChain::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void* rCnsTinyChain::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memAlloc(sz, align, rCnsTinyChain::DTI.getID());
+}
+
+inline rCnsTinyChain::Header::Header()
+    : magic(0x435443u)
+    , version(DATA_VERSION)
+{
+}
+
+inline rCnsTinyChain::rCnsTinyChain() {
+    setAttribute(ATTR_NATIVE);
+    mData.calcNum1 = 0;
+    mData.WindScaling = 0.0f;
+    mData.calcNum0 = 0;
+    mData.GlobalTransForceCoef = 0.0f;
+    mData.SpringScaling = 0.0f;
+    mData.GravityScaling = 0.0f;
+    mData.GlobalDamping = 0.0f;
+    mData.Attr = 0;
+    mData.StepTime = 0.0f;
+    mData.ChainGroupNum = 0;
+    mData.ChainNodeAllNum = 0;
+    mpChainNode = nullptr;
+    mpChainGroup = nullptr;
 }

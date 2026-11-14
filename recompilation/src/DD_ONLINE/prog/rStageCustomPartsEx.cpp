@@ -41,13 +41,137 @@ MT_CTSTR rStageCustomPartsEx::getExt() const {
 }
 
 __attribute__((weak)) void rStageCustomPartsEx::destruct() {
-    DDON_STUB("rStageCustomPartsEx::destruct")
-    /* stub */
+    InfoEx* pArrayInfoEx = static_cast<InfoEx*>(this->mpArrayInfo);
+    for (u32 i = 0; i < this->mArrayInfoNum; i++) {
+        InfoEx* p = &pArrayInfoEx[i];
+        p->~InfoEx();
+    }
+    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::DTI)->memFree(static_cast<void*>(this->mpArrayInfo));
+    this->mpArrayInfo = nullptr;
+    this->mArrayInfoNum = 0;
+    
+    FilterEx* pArrayFilterEx = static_cast<FilterEx*>(this->mpArrayFilter);
+    for (u32 i = 0; i < this->mArrayFilterNum; i++) {
+        FilterEx* p = &pArrayFilterEx[i];
+        p->~FilterEx();
+    }
+    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::DTI)->memFree(static_cast<void*>(this->mpArrayFilter));
+    this->mpArrayFilter = nullptr;
+    this->mArrayFilterNum = 0;
+    
+    for (u32 i = 0; i < this->mArrayColorFogNum; i++) {
+        this->mpArrayColorFog[i].~ColorFog();
+    }
+    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::DTI)->memFree(static_cast<void*>(this->mpArrayColorFog));
+    this->mpArrayColorFog = nullptr;
+    this->mArrayColorFogNum = 0;
+    
+    for (u32 i = 0; i < this->mArrayHemiSphLightNum; i++) {
+        this->mpArrayHemiSphLight[i].~HemiSphLight();
+    }
+    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::DTI)->memFree(static_cast<void*>(this->mpArrayHemiSphLight));
+    this->mpArrayHemiSphLight = nullptr;
+    this->mArrayHemiSphLightNum = 0;
+    
+    for (u32 i = 0; i < this->mArrayInfiLightNum; i++) {
+        this->mpArrayInfiLight[i].~InfiLight();
+    }
+    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::DTI)->memFree(static_cast<void*>(this->mpArrayInfiLight));
+    this->mpArrayInfiLight = nullptr;
+    this->mArrayInfiLightNum = 0;
+    
+    for (u32 i = 0; i < this->mArrayPatternNum; i++) {
+        this->mpArrayPattern[i].~Pattern();
+    }
+    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::DTI)->memFree(static_cast<void*>(this->mpArrayPattern));
+    this->mpArrayPattern = nullptr;
+    this->mArrayPatternNum = 0;
 }
 
 __attribute__((weak)) bool rStageCustomPartsEx::load(MtStream& in) {
-    DDON_STUB("rStageCustomPartsEx::load")
-    return {};
+    MtDataReader r(in, 0x1000);
+    if (r.readU32() != 0x78706373) {
+        return false;
+    }
+    u32 ver = r.readU32();
+    if (ver != DATA_VERSION) {
+        return false;
+    }
+    mParam.load(r);
+    
+    const u32 nArrayInfo = r.readU32();
+    void* pArrayInfo = nullptr;
+    if (nArrayInfo != 0) {
+        pArrayInfo = getAllocator()->memAlloc(sizeof(InfoEx) * nArrayInfo, 16);
+        for (u32 i = 0; i < nArrayInfo; ++i) {
+            InfoEx* pInfo = new (&static_cast<InfoEx*>(pArrayInfo)[i]) InfoEx();
+            pInfo->load(r);
+        }
+    }
+    mpArrayInfo = static_cast<Info*>(pArrayInfo);
+    mArrayInfoNum = nArrayInfo;
+    
+    const u32 nArrayFilter = r.readU32();
+    void* pArrayFilter = nullptr;
+    if (nArrayFilter != 0) {
+        pArrayFilter = getAllocator()->memAlloc(sizeof(FilterEx) * nArrayFilter, 16);
+        for (u32 i = 0; i < nArrayFilter; ++i) {
+            FilterEx* pFilter = new (&static_cast<FilterEx*>(pArrayFilter)[i]) FilterEx();
+            pFilter->load(r);
+        }
+    }
+    mpArrayFilter = static_cast<Filter*>(pArrayFilter);
+    mArrayFilterNum = nArrayFilter;
+    
+    const u32 nArrayColorFog = r.readU32();
+    void* pArrayColorFog = nullptr;
+    if (nArrayColorFog != 0) {
+        pArrayColorFog = getAllocator()->memAlloc(sizeof(ColorFog) * nArrayColorFog, 16);
+        for (u32 i = 0; i < nArrayColorFog; ++i) {
+            ColorFog* pColorFog = new (&static_cast<ColorFog*>(pArrayColorFog)[i]) ColorFog();
+            pColorFog->load(r);
+        }
+    }
+    mpArrayColorFog = static_cast<ColorFog*>(pArrayColorFog);
+    mArrayColorFogNum = nArrayColorFog;
+    
+    const u32 nArrayHemiSphLight = r.readU32();
+    void* pArrayHemiSphLight = nullptr;
+    if (nArrayHemiSphLight != 0) {
+        pArrayHemiSphLight = getAllocator()->memAlloc(sizeof(HemiSphLight) * nArrayHemiSphLight, 16);
+        for (u32 i = 0; i < nArrayHemiSphLight; ++i) {
+            HemiSphLight* pHemiSphLight = new (&static_cast<HemiSphLight*>(pArrayHemiSphLight)[i]) HemiSphLight();
+            pHemiSphLight->load(r);
+        }
+    }
+    mpArrayHemiSphLight = static_cast<HemiSphLight*>(pArrayHemiSphLight);
+    mArrayHemiSphLightNum = nArrayHemiSphLight;
+    
+    const u32 nArrayInfiLight = r.readU32();
+    void* pArrayInfiLight = nullptr;
+    if (nArrayInfiLight != 0) {
+        pArrayInfiLight = getAllocator()->memAlloc(sizeof(InfiLight) * nArrayInfiLight, 16);
+        for (u32 i = 0; i < nArrayInfiLight; ++i) {
+            InfiLight* pInfiLight = new (&static_cast<InfiLight*>(pArrayInfiLight)[i]) InfiLight();
+            pInfiLight->load(r);
+        }
+    }
+    mpArrayInfiLight = static_cast<InfiLight*>(pArrayInfiLight);
+    mArrayInfiLightNum = nArrayInfiLight;
+    
+    const u32 nArrayPattern = r.readU32();
+    void* pArrayPattern = nullptr;
+    if (nArrayPattern != 0) {
+        pArrayPattern = getAllocator()->memAlloc(sizeof(Pattern) * nArrayPattern, 16);
+        for (u32 i = 0; i < nArrayPattern; ++i) {
+            Pattern* pPattern = new (&static_cast<Pattern*>(pArrayPattern)[i]) Pattern();
+            pPattern->load(r);
+        }
+    }
+    mpArrayPattern = static_cast<Pattern*>(pArrayPattern);
+    mArrayPatternNum = nArrayPattern;
+    
+    return true;
 }
 
 __attribute__((weak)) bool rStageCustomPartsEx::save(MtStream& out) {
@@ -266,13 +390,49 @@ bool rStageCustomPartsEx::ColorFog::load(MtDataReader& r) {
 }
 
 __attribute__((weak)) bool rStageCustomPartsEx::ColorFog::save(MtDataWriter& w) {
-    DDON_STUB("rStageCustomPartsEx::ColorFog::save")
-    return {};
+    nDDOIO::writeData(w, mBase.mHeightStart);
+    nDDOIO::writeData(w, mBase.mHeightEnd);
+    nDDOIO::writeData(w, mBase.mHeightDensity);
+    nDDOIO::writeData(w, mBase.mHeightColor);
+    nDDOIO::writeData(w, mBase.mStart);
+    nDDOIO::writeData(w, mBase.mEnd);
+    nDDOIO::writeData(w, mBase.mDensity);
+    nDDOIO::writeData(w, mBase.mColor);
+    nDDOIO::writeData(w, mBase.mDiffuseBlendFactor);
+    nDDOIO::writeData(w, mNight.mHeightStart);
+    nDDOIO::writeData(w, mNight.mHeightEnd);
+    nDDOIO::writeData(w, mNight.mHeightDensity);
+    nDDOIO::writeData(w, mNight.mHeightColor);
+    nDDOIO::writeData(w, mNight.mStart);
+    nDDOIO::writeData(w, mNight.mEnd);
+    nDDOIO::writeData(w, mNight.mDensity);
+    nDDOIO::writeData(w, mNight.mColor);
+    nDDOIO::writeData(w, mNight.mDiffuseBlendFactor);
+    return true;
 }
 
 __attribute__((weak)) void rStageCustomPartsEx::ColorFog::clear() {
-    DDON_STUB("rStageCustomPartsEx::ColorFog::clear")
-    /* stub */
+    mBase.mHeightStart = 100.0f;
+    mBase.mHeightEnd = 0.0f;
+    mBase.mHeightDensity = 1.0f;
+    mBase.mHeightColor = MtVector3::One;
+    mBase.mStart = 1000.0f;
+    mBase.mEnd = 30000.0f;
+    mBase.mDensity = 1.0f;
+    mBase.mColor = MtVector3::One;
+    mBase.mDiffuseBlendFactor = 1.0f;
+    
+    mNight.mHeightStart = 100.0f;
+    mNight.mHeightEnd = 0.0f;
+    mNight.mHeightDensity = 1.0f;
+    mNight.mHeightColor = MtVector3::One;
+    mNight.mStart = 1000.0f;
+    mNight.mEnd = 30000.0f;
+    mNight.mDensity = 1.0f;
+    mNight.mColor = MtVector3::One;
+    mNight.mDiffuseBlendFactor = 1.0f;
+    
+    mComment = "";
 }
 
 rStageCustomPartsEx::ColorFog::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -375,8 +535,7 @@ inline void rStageCustomPartsEx::AreaParam::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rStageCustomPartsEx::AreaParam::~AreaParam() {
-    DDON_STUB("rStageCustomPartsEx::AreaParam::~AreaParam")
-    /* stub */
+    clear();
 }
 
 __attribute__((weak)) void rStageCustomPartsEx::AreaParam::createProperty(MtPropertyList& s) {
@@ -405,8 +564,7 @@ inline void rStageCustomPartsEx::InfoEx::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rStageCustomPartsEx::InfoEx::~InfoEx() {
-    DDON_STUB("rStageCustomPartsEx::InfoEx::~InfoEx")
-    /* stub */
+    clear();
 }
 
 __attribute__((weak)) void rStageCustomPartsEx::InfoEx::createProperty(MtPropertyList& s) {
@@ -456,4 +614,14 @@ template MtTypedArray<rStageCustomPartsEx::AreaParam>::~MtTypedArray();
 template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<AreaHitShape>&);
 
 template void nDDOIO::readMtArray(MtDataReader&, MtTypedArray<rStageCustomPartsEx::AreaParam>&);
+
+namespace nDDOIO {
+template <>
+void writeMtArray<rStageCustomPartsEx::AreaParam>(MtDataWriter& w, MtTypedArray<rStageCustomPartsEx::AreaParam>& ar) {
+    w.writeU32(ar.length());
+    for (u32 i = 0; i < ar.length(); i++) {
+        ar[i]->save(w);
+    }
+}
+}
 

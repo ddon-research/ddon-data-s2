@@ -29,8 +29,7 @@ inline void cEventParam::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) cEventParam::~cEventParam() {
-    DDON_STUB("cEventParam::~cEventParam")
-    /* stub */
+    this->mOmList.deleteAll(true);
 }
 
 __attribute__((weak)) void cEventParam::createProperty(MtPropertyList& s) {
@@ -39,8 +38,7 @@ __attribute__((weak)) void cEventParam::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) void cEventParam::setFileName(const MtString& name) {
-    DDON_STUB("cEventParam::setFileName")
-    /* stub */
+    this->mFname = name;
 }
 
 MT_CTSTR cEventParam::getFileName() const {
@@ -52,8 +50,7 @@ cEventParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 cEventParam::MyDTI cEventParam::DTI("cEventParam", &::MtObject::DTI, 80ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cEventParam::MyDTI::newInstance() const {
-    DDON_STUB("cEventParam::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cEventParam;
 }
 
 const MtDTI& cEventParam::cOmList::getDTI() const {
@@ -94,8 +91,30 @@ inline void rEventParam::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rEventParam::loadData(MtDataReader& in, cEventParam* pData) {
-    DDON_STUB("rEventParam::loadData")
-    return {};
+    if (pData == nullptr) {
+        return false;
+    }
+    nDDOIO::readData(in, pData->mType);
+    nDDOIO::readData(in, pData->mStage);
+    nDDOIO::readData(in, pData->mEvNo);
+    nDDOIO::readData(in, pData->mFlag);
+    nDDOIO::readData(in, pData->mFname);
+    nDDOIO::readData(in, pData->mQuestId);
+    nDDOIO::readData(in, pData->mLightCtrl);
+    nDDOIO::readData(in, pData->mStartFadeType);
+    nDDOIO::readData(in, pData->mEndFadeType);
+    nDDOIO::readData(in, pData->mSubMixerBefore);
+    nDDOIO::readData(in, pData->mSubMixerAfter);
+    nDDOIO::readData(in, pData->mOmAQCScale);
+    const u32 nArray = in.readU32();
+    for (u32 i = 0; i < nArray; i++) {
+        cEventParam::cOmList* p = new (16u) cEventParam::cOmList;
+        if (p != nullptr) {
+            p->load(in);
+            pData->addOmList(p);
+        }
+    }
+    return true;
 }
 
 MT_CTSTR rEventParam::getExt() const {

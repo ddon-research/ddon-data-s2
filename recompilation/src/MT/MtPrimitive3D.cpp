@@ -402,6 +402,12 @@ bool MtAABB::getEdge(MtVector3& p0, MtVector3& p1, u32 VoronoiID) const {
     }
 }
 
+extern const unsigned char MtAABB_Empty_bytes[32] __asm__("_ZN6MtAABB5EmptyE");
+alignas(16) const unsigned char MtAABB_Empty_bytes[32] __asm__("_ZN6MtAABB5EmptyE") = {
+    0xff, 0xff, 0x7f, 0x7f, 0xff, 0xff, 0x7f, 0x7f, 0xff, 0xff, 0x7f, 0x7f, 0x00, 0x00, 0x00, 0x00,
+    0xff, 0xff, 0x7f, 0xff, 0xff, 0xff, 0x7f, 0xff, 0xff, 0xff, 0x7f, 0xff, 0x00, 0x00, 0x00, 0x00,
+};
+
 __attribute__((weak)) f32 MtCapsule::getCapSurfaceAxisPos(const MtVector3& SurfacePos) const {
     DDON_STUB("MtCapsule::getCapSurfaceAxisPos")
     return {};
@@ -413,8 +419,18 @@ __attribute__((weak)) MtCapsule MtCapsule::transform(const MtMatrix& mat) const 
 }
 
 __attribute__((weak)) void MtCylinder::getBoundingAABB(MtAABB& aabb) const {
-    DDON_STUB("MtCylinder::getBoundingAABB")
-    /* stub */
+    MtVector3 PosV0(
+        (p0.x < p1.x) ? p0.x : p1.x,
+        (p0.y < p1.y) ? p0.y : p1.y,
+        (p0.z < p1.z) ? p0.z : p1.z
+    );
+    MtVector3 PosV1(
+        (p0.x > p1.x) ? p0.x : p1.x,
+        (p0.y > p1.y) ? p0.y : p1.y,
+        (p0.z > p1.z) ? p0.z : p1.z
+    );
+    aabb.minpos = MtVector3(PosV0.x - r, PosV0.y - r, PosV0.z - r);
+    aabb.maxpos = MtVector3(PosV1.x + r, PosV1.y + r, PosV1.z + r);
 }
 
 MtFrustum::MtFrustum(f32 fov, f32 aspect_ratio, f32 nearz, f32 farz) {
@@ -453,8 +469,36 @@ __attribute__((weak)) void MtFrustum::init(f32 fov, f32 aspect_ratio, f32 nearz,
 }
 
 __attribute__((weak)) void MtOBB::getBoundingAABB(MtAABB& aabb) const {
-    DDON_STUB("MtOBB::getBoundingAABB")
-    /* stub */
+    MtVector3 v[8];
+    const MtVector3 minExtent(-extent.x, -extent.y, -extent.z);
+    const MtVector3 maxExtent = extent;
+    
+    v[0] = MtVector3(minExtent.x, minExtent.y, minExtent.z);
+    v[1] = MtVector3(minExtent.x, minExtent.y, maxExtent.z);
+    v[2] = MtVector3(maxExtent.x, minExtent.y, maxExtent.z);
+    v[3] = MtVector3(maxExtent.x, minExtent.y, minExtent.z);
+    v[4] = MtVector3(minExtent.x, maxExtent.y, minExtent.z);
+    v[5] = MtVector3(minExtent.x, maxExtent.y, maxExtent.z);
+    v[6] = MtVector3(maxExtent.x, maxExtent.y, maxExtent.z);
+    v[7] = MtVector3(maxExtent.x, maxExtent.y, minExtent.z);
+    
+    for (u32 t1 = 0; t1 < 8; ++t1) {
+        v[t1] = MtVector3(
+            v[t1].x * coord.m[0].x + v[t1].y * coord.m[1].x + v[t1].z * coord.m[2].x + coord.m[3].x,
+            v[t1].x * coord.m[0].y + v[t1].y * coord.m[1].y + v[t1].z * coord.m[2].y + coord.m[3].y,
+            v[t1].x * coord.m[0].z + v[t1].y * coord.m[1].z + v[t1].z * coord.m[2].z + coord.m[3].z
+        );
+    }
+    
+    aabb.minpos = v[0];
+    aabb.maxpos = v[0];
+    aabb.inflate(v[1]);
+    aabb.inflate(v[2]);
+    aabb.inflate(v[3]);
+    aabb.inflate(v[4]);
+    aabb.inflate(v[5]);
+    aabb.inflate(v[6]);
+    aabb.inflate(v[7]);
 }
 
 __attribute__((weak)) void MtOBB::getVertex(MtVector3* out) const {

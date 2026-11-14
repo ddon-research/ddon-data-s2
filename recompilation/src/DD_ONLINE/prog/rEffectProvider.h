@@ -1076,3 +1076,218 @@ inline void rEffectProvider::EffectEventParam::setEfcIndexNo(u32 no) {
 inline void rEffectProvider::EffectEventParam::setEfcElementNo(u32 no) {
     this->mEfcElementNo = no;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../XFramework/rEffect2D.h"
+#include "../../XFramework/sResource.h"
+
+inline rEffectProvider::EffectElement::EffectElement() {
+    for (u32 i = 0; i < EFC_LIST_MAX; i++) {
+        mpEffectList[i] = nullptr;
+    }
+    mpEffect2D[0] = nullptr;
+    mEffectReleaseVer = 0;
+    mResourceType = 0;
+    mEffectType = 0;
+}
+
+inline rEffectProvider::EffectParam* rEffectProvider::EffectElement::getEffectParam() {
+    return &mEffectParam;
+}
+
+inline void rEffectProvider::EffectElement::setEffect2D(rEffect2D* pEffect2D, u32 no) {
+    if (mpEffect2D[no] == pEffect2D) return;
+    if (mpEffect2D[no] != nullptr) {
+        mpEffect2D[no]->release();
+        mpEffect2D[no] = nullptr;
+    }
+    if (pEffect2D == nullptr) {
+        mpEffect2D[no] = nullptr;
+        return;
+    }
+    rEffect2D* pNat;
+    if (pEffect2D->isIntermediate()) {
+        pNat = static_cast<rEffect2D*>(sResource::getInstance()->createNative(pEffect2D, 1u));
+    } else {
+        pEffect2D->addRef();
+        pNat = pEffect2D;
+    }
+    mpEffect2D[no] = pNat;
+    if (pNat != nullptr) {
+        pNat->addRef();
+        pNat->release();
+    }
+}
+
+inline rEffectProvider::EffectElement* rEffectProvider::EffectIndex::getEffectElement(s32 index) const {
+    if (index < 0 || index >= static_cast<s32>(mEffectElementNum)) return nullptr;
+    return &mpEffectElement[index];
+}
+
+inline void rEffectProvider::EffectIndex::setEffectElementNum(u32 num) {
+    mEffectElementNum = num;
+}
+
+inline void rEffectProvider::EffectMotSyncParam::setLeaveFlag(bool flag) {
+    mLeaveFlag = flag;
+}
+
+inline void rEffectProvider::EffectMotSyncParam::setSetOnceFlag(bool flag) {
+    mSetOnceFlag = flag;
+}
+
+inline rEffectProvider::EffectParam::EffectParam() {
+    mSetType = EFC_SET_TYPE_CONST;
+    mEndType = EFC_END_TYPE_FINISH;
+    mPosition = MtVector3::Zero;
+    mCamOfs = MtVector3::Zero;
+    mDirection = MtVector3::Zero;
+    mDirectionAmp = MtVector3::Zero;
+    mGroupFlag = 0xFFFFFFFFu;
+    mMaterialFlag = 0xFFFFFFFFu;
+    mAxisType = 6;
+    mOrder = 4;
+    mScale = 1.0f;
+    mScaleAmp = 0.0f;
+    mDeltaTimeCoef = 1.0f;
+    mLoopFrame = 1;
+    mE2DType = E2D_TYPE_NONE;
+    mAdhesionDivideMax = 0;
+    mIncidenceAngleEnable = 0;
+    mLandSetEnable = 0;
+    mLandDirEnable = 0;
+    mLandLength = 100.0f;
+    mOMMaterialEnable = 0;
+    mParentNo = PARENT00;
+    mPosType = POS_TYPE_JOINT;
+    mRotType = ROT_TYPE_JOINT;
+    mJointNo = -1;
+    mDefaultColor = MtColor::White;
+    mDefaultColorRate = 0.0f;
+    mDefaultColorMode = DC_MODE_OVERRIDE;
+    mAlphaScale = 1.0f;
+    mLightPriority = 160;
+    mCustomFlag = 0;
+    mParentRelationFlag = 0;
+    mZoneCorrectType = 0;
+    mWeatherOnBit.clear(0xFF);
+    mZoneOnBit = 0xFFFFFFFFu;
+    mQuakeType = EFC_QUAKE_NONE;
+    mCreateCost = 0;
+    mFinishFadeOutFrame = 0.0f;
+}
+
+inline cWeatherFlag& rEffectProvider::EffectParam::WeatherOnBit() {
+    return mWeatherOnBit;
+}
+
+inline void rEffectProvider::EffectParam::setAdhesionDivideMax(u32 max) {
+    if (max <= 255) mAdhesionDivideMax = max;
+}
+
+inline void rEffectProvider::EffectParam::setAxisType(u32 AxisType) {
+    if (mAxisType != AxisType) mAxisType = AxisType;
+}
+
+inline void rEffectProvider::EffectParam::setCamOfs(const MtVector3& CamOfs) {
+    if (!(mCamOfs == CamOfs)) mCamOfs = CamOfs;
+}
+
+inline void rEffectProvider::EffectParam::setDefaultColor(const MtColor& Color) {
+    if (!(Color == mDefaultColor)) mDefaultColor = Color;
+}
+
+inline void rEffectProvider::EffectParam::setDeltaTimeCoef(f32 coef) {
+    mDeltaTimeCoef = coef;
+}
+
+inline void rEffectProvider::EffectParam::setDirection(const MtVector3& Direction) {
+    if (!(mDirection == Direction)) mDirection = Direction;
+}
+
+inline void rEffectProvider::EffectParam::setDirectionAmp(const MtVector3& Amp) {
+    if (!(mDirectionAmp == Amp)) mDirectionAmp = Amp;
+}
+
+inline void rEffectProvider::EffectParam::setFinishFadeOutFrame(f32 set) {
+    mFinishFadeOutFrame = set;
+}
+
+inline void rEffectProvider::EffectParam::setIncidenceAngleEnable(bool flag) {
+    mIncidenceAngleEnable = flag;
+}
+
+inline void rEffectProvider::EffectParam::setLandDirEnable(bool flag) {
+    mLandDirEnable = flag;
+}
+
+inline void rEffectProvider::EffectParam::setLandSetEnable(bool flag) {
+    mLandSetEnable = flag;
+}
+
+inline void rEffectProvider::EffectParam::setLoopFrame(u32 LoopFrame) {
+    if (LoopFrame != 0 && LoopFrame <= 600) mLoopFrame = LoopFrame;
+}
+
+inline void rEffectProvider::EffectParam::setOMMaterialEnable(bool flag) {
+    mOMMaterialEnable = flag;
+}
+
+inline void rEffectProvider::EffectParam::setPosition(const MtVector3& Position) {
+    if (!(mPosition == Position)) mPosition = Position;
+}
+
+inline void rEffectProvider::EffectParam::setScale(f32 Scale) {
+    if (mScale != Scale) mScale = Scale;
+}
+
+inline void rEffectProvider::EffectParam::setScaleAmp(f32 Amp) {
+    if (mScaleAmp != Amp) mScaleAmp = Amp;
+}
+
+inline void rEffectProvider::EffectParam::setZoneCorrectType(u32 flag) {
+    mZoneCorrectType = flag;
+}
+
+inline MtAllocator* rEffectProvider::INFO_EFFECT::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rEffectProvider::INFO_EFFECT::DTI);
+}
+
+inline rEffectProvider::EffectIndex* rEffectProvider::INFO_EFFECT::getEffectIndex(s32 index) const {
+    if (index < 0 || index >= static_cast<s32>(mEffectIndexNum)) return nullptr;
+    return &mpEffectIndex[index];
+}
+
+inline rEffectProvider::EffectEventParam* rEffectProvider::INFO_EFFECT::getEventList(s32 index) const {
+    if (index < 0 || index >= static_cast<s32>(mEventListNum)) return nullptr;
+    return &mpEventList[index];
+}
+
+inline rEffectProvider::EffectMotSyncParam* rEffectProvider::INFO_EFFECT::getMotSyncList(s32 index) const {
+    if (index < 0 || index >= static_cast<s32>(mMotSyncListNum)) return nullptr;
+    return &mpMotSyncList[index];
+}
+
+inline void rEffectProvider::INFO_EFFECT::setEffectIndex(rEffectProvider::EffectIndex* pEffectIndex) {
+    mpEffectIndex = pEffectIndex;
+}
+
+inline void rEffectProvider::INFO_EFFECT::setEffectIndexNum(u32 num) {
+    mEffectIndexNum = num;
+}
+
+inline void rEffectProvider::INFO_EFFECT::setEventList(rEffectProvider::EffectEventParam* pEventList) {
+    mpEventList = pEventList;
+}
+
+inline void rEffectProvider::INFO_EFFECT::setEventListNum(u32 num) {
+    mEventListNum = num;
+}
+
+inline void rEffectProvider::INFO_EFFECT::setMotSyncList(rEffectProvider::EffectMotSyncParam* pMotSyncList) {
+    mpMotSyncList = pMotSyncList;
+}
+
+inline void rEffectProvider::INFO_EFFECT::setMotSyncListNum(u32 num) {
+    mMotSyncListNum = num;
+}

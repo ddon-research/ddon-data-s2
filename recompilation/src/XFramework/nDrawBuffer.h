@@ -120,3 +120,7 @@ inline void* nDraw::Buffer::operator new(size_t sz, void* p_addr) {
 inline nDraw::USAGE_TYPE nDraw::Buffer::getUsageType() const {
     return this->mUsageType;
 }
+
+inline u32 nDraw::Buffer::getBufferSize() const {
+    return this->mBufSize;
+}

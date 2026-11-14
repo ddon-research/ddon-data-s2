@@ -124,3 +124,19 @@ inline void* rMapSpotData::operator new(size_t sz, void* p_addr) {
 inline void* rMapSpotData::Data::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* rMapSpotData::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rMapSpotData::DTI);
+}
+
+inline bool rMapSpotData::Data::load(MtDataReader& r) {
+    mPos = r.readV3();
+    mMessId = r.readU32();
+    mFloorNo = r.readS32();
+    mGroupNo = r.readS32();
+    mFloorCheck = r.readU8();
+    return true;
+}

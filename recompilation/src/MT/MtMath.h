@@ -1034,3 +1034,118 @@ inline MtVector3::MtVector3(const MtVector3& v) {
     this->z = v.z;
     this->pad_ = 0.0f;
 }
+
+inline bool MtVector3::operator==(const MtVector3& s) const {
+    return x == s.x && y == s.y && z == s.z;
+}
+
+inline const MtVector4& MtVector4::operator=(const MtFloat4& v) {
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
+    this->w = v.w;
+    return *this;
+}
+
+inline MtFloat3A::MtFloat3A(f32 _x, f32 _y, f32 _z) {
+    this->x = _x;
+    this->y = _y;
+    this->z = _z;
+}
+
+inline const MtFloat3A& MtFloat3A::operator=(const MtVector3& v) {
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
+    return *this;
+}
+
+inline MtVector3::MtVector3(f32 _x, f32 _y, f32 _z) {
+    this->x = _x;
+    this->y = _y;
+    this->z = _z;
+    this->pad_ = 0.0f;
+}
+
+inline MtVector3::MtVector3(f32 v) {
+    this->x = v;
+    this->y = v;
+    this->z = v;
+    this->pad_ = 0.0f;
+}
+
+inline MtVector3 MtVector3::operator+(const MtVector3& s) const {
+    return MtVector3(this->x + s.x, this->y + s.y, this->z + s.z);
+}
+
+inline MtVector3 MtVector3::operator+(f32 s) const {
+    return MtVector3(this->x + s, this->y + s, this->z + s);
+}
+
+inline MtVector3 MtVector3::operator-(const MtVector3& s) const {
+    return MtVector3(this->x - s.x, this->y - s.y, this->z - s.z);
+}
+
+inline MtVector3 MtVector3::operator-(f32 s) const {
+    return MtVector3(this->x - s, this->y - s, this->z - s);
+}
+
+inline const MtVector3 MtVector3::minimize(const MtVector3& v) const {
+    return MtVector3(
+        this->x < v.x ? this->x : v.x,
+        this->y < v.y ? this->y : v.y,
+        this->z < v.z ? this->z : v.z
+    );
+}
+
+inline const MtVector3 MtVector3::maximize(const MtVector3& v) const {
+    return MtVector3(
+        this->x > v.x ? this->x : v.x,
+        this->y > v.y ? this->y : v.y,
+        this->z > v.z ? this->z : v.z
+    );
+}
+
+inline MtVector4::MtVector4(f32 _x, f32 _y, f32 _z, f32 _w) {
+    this->x = _x;
+    this->y = _y;
+    this->z = _z;
+    this->w = _w;
+}
+
+inline MtVector4::MtVector4(const MtVector3& v, f32 _w) {
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
+    this->w = _w;
+}
+
+inline const MtVector4& MtVector4::operator=(const MtVector4& v) {
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
+    this->w = v.w;
+    return *this;
+}
+
+inline void MtMatrix::identity() {
+    this->m[0] = MtVector4(1.0f, 0.0f, 0.0f, 0.0f);
+    this->m[1] = MtVector4(0.0f, 1.0f, 0.0f, 0.0f);
+    this->m[2] = MtVector4(0.0f, 0.0f, 1.0f, 0.0f);
+    this->m[3] = MtVector4(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+inline void MtMatrix::setTranslate(const MtVector3& v) {
+    this->m[0] = MtVector4(1.0f, 0.0f, 0.0f, 0.0f);
+    this->m[1] = MtVector4(0.0f, 1.0f, 0.0f, 0.0f);
+    this->m[2] = MtVector4(0.0f, 0.0f, 1.0f, 0.0f);
+    this->m[3] = MtVector4(v, 1.0f);
+}
+
+inline MtMatrix& MtMatrix::operator=(const MtMatrix& s) {
+    this->m[0] = s.m[0];
+    this->m[1] = s.m[1];
+    this->m[2] = s.m[2];
+    this->m[3] = s.m[3];
+    return *this;
+}

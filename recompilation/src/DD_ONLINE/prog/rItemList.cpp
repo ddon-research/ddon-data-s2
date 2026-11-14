@@ -60,8 +60,65 @@ rItemList::~rItemList() {
 }
 
 __attribute__((weak)) bool rItemList::load(MtStream& in) {
-    DDON_STUB("rItemList::load")
-    return {};
+    MtDataReader r(in, 4096u);
+    if (r.readU32() != 0x617069u) {
+        return false;
+    }
+    if (r.readU32() != DATA_VERSION) {
+        return false;
+    }
+    const u32 nArrayNum = r.readU32();
+    void* pListData = nullptr;
+    if (nArrayNum != 0) {
+        pListData = MtMemoryAllocator::getAllocator(rItemList::DTI)->memAlloc(sizeof(rItemParam) * nArrayNum, 16u);
+    }
+    const u32 nArrayParamNum = r.readU32();
+    void* pParamListData = nullptr;
+    if (nArrayParamNum != 0) {
+        pParamListData = MtMemoryAllocator::getAllocator(rItemList::DTI)->memAlloc(sizeof(rParam) * nArrayParamNum, 16u);
+    }
+    const u32 nArrayVsNum = r.readU32();
+    void* pVsListData = nullptr;
+    if (nArrayVsNum != 0) {
+        pVsListData = MtMemoryAllocator::getAllocator(rItemList::DTI)->memAlloc(sizeof(rVsEnemyParam) * nArrayVsNum, 16u);
+    }
+    const u32 nArrayWeaponNum = r.readU32();
+    void* pWeaponListData = nullptr;
+    if (nArrayWeaponNum != 0) {
+        pWeaponListData = MtMemoryAllocator::getAllocator(rItemList::DTI)->memAlloc(sizeof(rWeaponParam) * nArrayWeaponNum, 16u);
+    }
+    const u32 nArrayProtectNum = r.readU32();
+    void* pProtectorListData = nullptr;
+    if (nArrayProtectNum != 0) {
+        pProtectorListData = MtMemoryAllocator::getAllocator(rItemList::DTI)->memAlloc(sizeof(rProtectorParam) * nArrayProtectNum, 16u);
+    }
+    const u32 nArrayKindParamNum = r.readU32();
+    void* pEquipParamS8List = nullptr;
+    if (nArrayKindParamNum != 0) {
+        pEquipParamS8List = MtMemoryAllocator::getAllocator(rItemList::DTI)->memAlloc(sizeof(rEquipParamS8) * nArrayKindParamNum, 16u);
+    }
+    u32 weaponNowNum = 0;
+    u32 protectorNowNum = 0;
+    u32 vsParamNowNum = 0;
+    u32 kindParamNowNum = 0;
+    u32 paramNowNum = 0;
+    for (u32 i = 0; i < nArrayNum; ++i) {
+        rItemParam* pData = new (&static_cast<rItemParam*>(pListData)[i]) rItemParam();
+        pData->load(r, pWeaponListData, &weaponNowNum, pProtectorListData, &protectorNowNum, pVsListData, &vsParamNowNum, pParamListData, &paramNowNum, pEquipParamS8List, &kindParamNowNum);
+    }
+    mpItemList = static_cast<rItemParam*>(pListData);
+    mArrayDataNum = nArrayNum;
+    mpParamList = static_cast<rParam*>(pParamListData);
+    mArrayParamDataNum = nArrayParamNum;
+    mpVsParamList = static_cast<rVsEnemyParam*>(pVsListData);
+    mArrayVsParamDataNum = nArrayVsNum;
+    mpWeaponParamList = static_cast<rWeaponParam*>(pWeaponListData);
+    mArrayWeaponParamDataNum = nArrayWeaponNum;
+    mpProtectParamList = static_cast<rProtectorParam*>(pProtectorListData);
+    mArrayProtectParamDataNum = nArrayProtectNum;
+    mpEquipParamS8List = static_cast<rEquipParamS8*>(pEquipParamS8List);
+    mArrayEquipParamS8DataNum = nArrayKindParamNum;
+    return true;
 }
 
 bool rItemList::save(MtStream& out) {
@@ -188,8 +245,27 @@ rItemList::rItemParam* rItemList::getItemListByArcTagNo(u32 arcTagNo) const {
 }
 
 __attribute__((weak)) void rItemList::createIndexTable() {
-    DDON_STUB("rItemList::createIndexTable")
-    /* stub */
+    u32 listNum = getListNum();
+    u32 maxId = 0;
+    for (u32 i = 0; i < listNum; ++i) {
+        rItemParam* pParam = &mpItemList[i];
+        if (pParam != nullptr) {
+            u32 itemId = pParam->getItemId();
+            if (maxId < itemId) {
+                maxId = itemId;
+            }
+        }
+    }
+    mMaxId = maxId;
+    mpIndexTbl = static_cast<u16*>(MtMemoryAllocator::getAllocator(rItemList::DTI)->memAlloc(sizeof(u16) * (maxId + 1u), 16u));
+    memset(mpIndexTbl, 0xff, sizeof(u16) * (maxId + 1u));
+    for (u32 i = 0; i < listNum; ++i) {
+        rItemParam* pParam = &mpItemList[i];
+        if (pParam != nullptr) {
+            u32 index = pParam->getItemId();
+            mpIndexTbl[index] = static_cast<u16>(i);
+        }
+    }
 }
 
 rItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -209,8 +285,7 @@ inline void rItemList::rItemParam::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rItemList::rItemParam::~rItemParam() {
-    DDON_STUB("rItemList::rItemParam::~rItemParam")
-    /* stub */
+    releaseWork();
 }
 
 __attribute__((weak)) void rItemList::rItemParam::createProperty(MtPropertyList& s) {
@@ -223,13 +298,103 @@ MtUI* rItemList::rItemParam::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rItemList::rItemParam::load(MtDataReader& in, void* pWeaponListData, u32* pWeaponNum, void* pProtectorListData, u32* pProtectorNum, void* pVsListData, u32* pVsNum, void* pParamListData, u32* pParamNum, void* pEquipParamS8List, u32* pEquipParamS8Num) {
-    DDON_STUB("rItemList::rItemParam::load")
-    return {};
+    mItemId = in.readU32();
+    mNameId = in.readU32();
+    mCategory2.mCategory = in.readU32();
+    mPrice = in.readU32();
+    mSortNo = in.readU32();
+    mNameSortNo = in.readU32();
+    mAttackStatus = in.readU32();
+    mIsUseJob = in.readU32();
+    mFlag = in.readU16();
+    mIconNo = in.readU16();
+    mIsUseLv = in.readU16();
+    mCategory = in.readU8();
+    mStackMax = in.readU8();
+    mRank = in.readU8();
+    mGrade = in.readU8();
+    mIconColNo = in.readU8();
+    mParamNum = in.readU32();
+    if (mParamNum != 0) {
+        rParam* pBase = static_cast<rParam*>(pParamListData);
+        u32 num = *pParamNum;
+        for (u32 i = 0; i < mParamNum; ++i) {
+            rParam* pData = new (&pBase[num + i]) rParam(0, 0, 0, 0);
+            pData->load(in);
+            (*pParamNum)++;
+        }
+        mpItemParamList = &pBase[num];
+    }
+    mVsEmNum = in.readU32();
+    if (mVsEmNum != 0) {
+        rVsEnemyParam* pVsBase = static_cast<rVsEnemyParam*>(pVsListData);
+        u32 num = *pVsNum;
+        for (u32 i = 0; i < mVsEmNum; ++i) {
+            rVsEnemyParam* pData = new (&pVsBase[num + i]) rVsEnemyParam(rVsEnemyParam::EM_PHYLOGENY_KIND_NONE, 0);
+            pData->load(in);
+            (*pVsNum)++;
+        }
+        mpVsEmList = &pVsBase[num];
+    }
+    if (isWeaponElement()) {
+        rWeaponParam* pData = new (&static_cast<rWeaponParam*>(pWeaponListData)[*pWeaponNum]) rWeaponParam();
+        u32 abnormalParamNum = 0;
+        u32 num = *pEquipParamS8Num;
+        rEquipParamS8* pEquipParamS8Data = &static_cast<rEquipParamS8*>(pEquipParamS8List)[num];
+        pData->load(in, pEquipParamS8Data, &abnormalParamNum);
+        (*pWeaponNum)++;
+        mpWeaponParam = pData;
+        *pEquipParamS8Num += abnormalParamNum;
+        pData->mpEquipParamS8List = (abnormalParamNum != 0) ? pEquipParamS8Data : nullptr;
+    }
+    if (isProtectorElement()) {
+        rProtectorParam* pData = new (&static_cast<rProtectorParam*>(pProtectorListData)[*pProtectorNum]) rProtectorParam();
+        u32 abnormalParamNum = 0;
+        u32 num = *pEquipParamS8Num;
+        rEquipParamS8* pEquipParamS8Data = &static_cast<rEquipParamS8*>(pEquipParamS8List)[num];
+        pData->load(in, pEquipParamS8Data, &abnormalParamNum);
+        (*pProtectorNum)++;
+        mpProtectorParam = pData;
+        *pEquipParamS8Num += abnormalParamNum;
+        pData->mpEquipParamS8List = (abnormalParamNum != 0) ? pEquipParamS8Data : nullptr;
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rItemList::rItemParam::save(MtDataWriter& out) {
-    DDON_STUB("rItemList::rItemParam::save")
-    return {};
+    out.writeU32(mItemId);
+    out.writeU32(mNameId);
+    out.writeU32(mCategory2.mCategory);
+    out.writeU32(mPrice);
+    out.writeU32(mSortNo);
+    out.writeU32(mNameSortNo);
+    out.writeU32(mAttackStatus);
+    out.writeU32(mIsUseJob);
+    out.writeU16(mFlag);
+    out.writeU16(mIconNo);
+    out.writeU16(mIsUseLv);
+    out.writeU8(mCategory);
+    out.writeU8(mStackMax);
+    out.writeU8(mRank);
+    out.writeU8(mGrade);
+    out.writeU8(mIconColNo);
+    out.writeU32(mParamNum);
+    for (u32 i = 0; i < mParamNum; ++i) {
+        rParam* pParam = &mpItemParamList[i];
+        pParam->save(out);
+    }
+    out.writeU32(mVsEmNum);
+    for (u32 i = 0; i < mVsEmNum; ++i) {
+        rVsEnemyParam* pParam = &mpVsEmList[i];
+        pParam->save(out);
+    }
+    if (mpWeaponParam != nullptr) {
+        mpWeaponParam->save(out);
+    }
+    if (mpProtectorParam != nullptr) {
+        mpProtectorParam->save(out);
+    }
+    return true;
 }
 
 MT_CTSTR rItemList::rItemParam::getItemName() const {
@@ -600,9 +765,12 @@ MtUI* rItemList::rParam::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) bool rItemList::rParam::load(MtDataReader& in) {
-    DDON_STUB("rItemList::rParam::load")
-    return {};
+bool rItemList::rParam::load(MtDataReader& in) {
+    mKindType = static_cast<s16>(in.readU16());
+    mParam.mParam1 = in.readU16();
+    mParam.mParam2 = in.readU16();
+    mParam.mParam3 = in.readU16();
+    return true;
 }
 
 bool rItemList::rParam::save(MtDataWriter& out) {
@@ -681,8 +849,13 @@ inline void rItemList::rWeaponParam::operator delete(void* p_addr) {
 }
 
 rItemList::rWeaponParam::~rWeaponParam() {
-    DDON_STUB("rItemList::rWeaponParam::~rWeaponParam")
-    /* stub */
+    if (mpEquipParamS8List != nullptr) {
+        for (u8 i = 0; i < mEquipParamS8Num; ++i) {
+            mpEquipParamS8List[i].~rEquipParamS8();
+        }
+    }
+    mpEquipParamS8List = nullptr;
+    mEquipParamS8Num = 0;
 }
 
 __attribute__((weak)) void rItemList::rWeaponParam::createProperty(MtPropertyList& s) {
@@ -695,13 +868,60 @@ MtUI* rItemList::rWeaponParam::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rItemList::rWeaponParam::load(MtDataReader& in, rItemList::rEquipParamS8* pArray, u32* pUseNum) {
-    DDON_STUB("rItemList::rWeaponParam::load")
-    return {};
+    mModelTagId = in.readU32();
+    mPowerRev = in.readU32();
+    mChance = in.readU32();
+    mDefense = in.readU32();
+    mMagicDefense = in.readU32();
+    mDurability = in.readU32();
+    mWepCategory = in.readU8();
+    mAttack = in.readU32();
+    mMagicAttack = in.readU32();
+    mShieldStagger = in.readU32();
+    mWeight = in.readU16();
+    mMaxHpRev = in.readU16();
+    mMaxStRev = in.readU16();
+    mColorNo = in.readU8();
+    mSex = in.readU8();
+    mModelParts = in.readU8();
+    mEleSlot = in.readU8();
+    mPhysicalType = in.readU8();
+    mElementType = in.readU8();
+    mEquipParamS8Num = in.readU8();
+    *pUseNum = mEquipParamS8Num;
+    for (u32 i = 0; i < mEquipParamS8Num; ++i) {
+        rEquipParamS8* pData = new (&pArray[i]) rEquipParamS8();
+        pData->load(in);
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rItemList::rWeaponParam::save(MtDataWriter& out) {
-    DDON_STUB("rItemList::rWeaponParam::save")
-    return {};
+    out.writeU32(mModelTagId);
+    out.writeU32(mPowerRev);
+    out.writeU32(mChance);
+    out.writeU32(mDefense);
+    out.writeU32(mMagicDefense);
+    out.writeU32(mDurability);
+    out.writeU8(mWepCategory);
+    out.writeU32(mAttack);
+    out.writeU32(mMagicAttack);
+    out.writeU32(mShieldStagger);
+    out.writeU16(mWeight);
+    out.writeU16(mMaxHpRev);
+    out.writeU16(mMaxStRev);
+    out.writeU8(mColorNo);
+    out.writeU8(mSex);
+    out.writeU8(mModelParts);
+    out.writeU8(mEleSlot);
+    out.writeU8(mPhysicalType);
+    out.writeU8(mElementType);
+    out.writeU8(mEquipParamS8Num);
+    for (u32 i = 0; i < mEquipParamS8Num; ++i) {
+        rEquipParamS8* pEquipParamS8 = &mpEquipParamS8List[i];
+        pEquipParamS8->save(out);
+    }
+    return true;
 }
 
 rItemList::rWeaponParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -730,13 +950,43 @@ MtUI* rItemList::rEquipParamS8::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rItemList::rEquipParamS8::load(MtDataReader& in) {
-    DDON_STUB("rItemList::rEquipParamS8::load")
-    return {};
+    mKindType = in.readU8();
+    mForm = in.readU8();
+    switch (mForm) {
+    case FORM_TYPE_S8:
+        mValue.mValueS8 = in.readS8();
+        break;
+    case FORM_TYPE_U8:
+        mValue.mValueU8 = in.readU8();
+        break;
+    case FORM_TYPE_S16:
+        mValue.mValueS16 = in.readS16();
+        break;
+    case FORM_TYPE_U16:
+        mValue.mValueU16 = in.readU16();
+        break;
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rItemList::rEquipParamS8::save(MtDataWriter& out) {
-    DDON_STUB("rItemList::rEquipParamS8::save")
-    return {};
+    out.writeU8(mKindType);
+    out.writeU8(mForm);
+    switch (mForm) {
+    case FORM_TYPE_S8:
+        out.writeS8(mValue.mValueS8);
+        break;
+    case FORM_TYPE_U8:
+        out.writeU8(mValue.mValueU8);
+        break;
+    case FORM_TYPE_S16:
+        out.writeS16(mValue.mValueS16);
+        break;
+    case FORM_TYPE_U16:
+        out.writeU16(mValue.mValueU16);
+        break;
+    }
+    return true;
 }
 
 rItemList::rEquipParamS8::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -790,8 +1040,13 @@ inline void rItemList::rProtectorParam::operator delete(void* p_addr) {
 }
 
 rItemList::rProtectorParam::~rProtectorParam() {
-    DDON_STUB("rItemList::rProtectorParam::~rProtectorParam")
-    /* stub */
+    if (mpEquipParamS8List != nullptr) {
+        for (u8 i = 0; i < mEquipParamS8Num; ++i) {
+            mpEquipParamS8List[i].~rEquipParamS8();
+        }
+    }
+    mpEquipParamS8List = nullptr;
+    mEquipParamS8Num = 0;
 }
 
 __attribute__((weak)) void rItemList::rProtectorParam::createProperty(MtPropertyList& s) {
@@ -804,8 +1059,28 @@ MtUI* rItemList::rProtectorParam::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rItemList::rProtectorParam::load(MtDataReader& in, rItemList::rEquipParamS8* pArray, u32* pUseNum) {
-    DDON_STUB("rItemList::rProtectorParam::load")
-    return {};
+    mModelTagId = in.readU32();
+    mPowerRev = in.readU32();
+    mChance = in.readU32();
+    mDefense = in.readU32();
+    mMagicDefense = in.readU32();
+    mDurability = in.readU32();
+    mAttack = in.readU32();
+    mMagicAttack = in.readU32();
+    mWeight = in.readU16();
+    mMaxHpRev = in.readU16();
+    mMaxStRev = in.readU16();
+    mColorNo = in.readU8();
+    mSex = in.readU8();
+    mModelParts = in.readU8();
+    mEleSlot = in.readU8();
+    mEquipParamS8Num = in.readU8();
+    *pUseNum = mEquipParamS8Num;
+    for (u32 i = 0; i < mEquipParamS8Num; ++i) {
+        rEquipParamS8* pData = new (&pArray[i]) rEquipParamS8();
+        pData->load(in);
+    }
+    return true;
 }
 
 bool rItemList::rProtectorParam::save(MtDataWriter& out) {

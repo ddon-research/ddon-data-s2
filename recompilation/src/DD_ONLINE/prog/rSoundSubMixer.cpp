@@ -34,8 +34,49 @@ inline void rSoundSubMixer::operator delete(void* p_addr) {
 }
 
 rSoundSubMixer::rSoundSubMixer() {
-    DDON_STUB("rSoundSubMixer::rSoundSubMixer")
-    /* stub */
+    mActive = true;
+    mPriority = DEFAULT_PRIORITY;
+    mIDToIndexTblNum = 0;
+    mpIDToIndexTbl = nullptr;
+    mCurveStyle = rSoundSimpleCurve::CURVE_STYLE_LINEAR;
+    mSendNumAll = 0;
+    mpSendBuff = nullptr;
+    mpCalcBuff = nullptr;
+    mpCalc = nullptr;
+    mpSendNum = nullptr;
+    mpaSendIndex = nullptr;
+    mpaBypass = nullptr;
+    mpaVol = nullptr;
+    mpaEqNo = nullptr;
+    mpaEffectNo = nullptr;
+    mpaAbs = nullptr;
+    mpaTransitionFlag = nullptr;
+    mpaTransitionMode = nullptr;
+    mpaTransitionStatus = nullptr;
+    mpaCurve = nullptr;
+    mpaTransitionTime = nullptr;
+    mpaSustainTime = nullptr;
+    mpaReleaseTime = nullptr;
+    mpaStartVol = nullptr;
+    mpaTargetVol = nullptr;
+    mpaEndVol = nullptr;
+    mpaOrgEqNo = nullptr;
+    mpaOrgEffectNo = nullptr;
+    mpaOrgAbs = nullptr;
+    mpaOrgCurve = nullptr;
+    mpaElapsedTime = nullptr;
+    setAttribute(ATTR_NATIVE | ATTR_SAVEABLE);
+    mFaders.setAutoDelete(true);
+    mOutputFaders.setAutoDelete(true);
+    for (u32 i = 0; i < MAX_EQ_PRESET; i++) {
+        mEQPreset[i] = DEFAULT_EQ_PRESET;
+    }
+    for (u32 i = 0; i < MAX_REVERB_PRESET; i++) {
+        mReverbPreset[i] = DEFAULT_REVERB_PRESET;
+    }
+    for (u32 i = 0; i < MAX_CURVE_NUM; i++) {
+        mpSimpleCurve[i] = nullptr;
+    }
 }
 
 __attribute__((noinline)) rSoundSubMixer::~rSoundSubMixer() {
@@ -122,13 +163,79 @@ MtUI* rSoundSubMixer::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rSoundSubMixer::load(MtStream& in) {
-    DDON_STUB("rSoundSubMixer::load")
-    return {};
+    MtDataReader r(in, MtDataReader::DEFAULT_BUFFERSIZE);
+    NATIVE_FILE_HEADER header;
+    r.read(&header, sizeof(header));
+    if (header.Magic != NativeFileMagic) {
+        return false;
+    }
+    if (header.Version != NativeFileVersion) {
+        return false;
+    }
+    mFaders.deleteAll(true);
+    r.read(&mActive, sizeof(mActive));
+    mPriority = r.readS8();
+    r.align(4);
+    r.read(mEQPreset, sizeof(mEQPreset));
+    r.read(mReverbPreset, sizeof(mReverbPreset));
+    u32 faderNum = r.readU32();
+    for (u32 i = 0; i < faderNum; i++) {
+        Fader* pFader = new (16u) Fader;
+        pFader->setFaderID(r.readU8());
+        pFader->setSendID(r.readS16());
+        pFader->setVol(r.readF32());
+        pFader->setEqNo(r.readS8());
+        pFader->setEffectNo(r.readS8());
+        // workaround
+        u8 absByte = 0;
+        r.read(&absByte, sizeof(absByte));
+        __builtin_memcpy(&pFader->mAbs, &absByte, sizeof(absByte));
+        r.align(4);
+        pFader->setTransitionTime(r.readU16());
+        pFader->setCurve(r.readS16());
+        pFader->setSustainTime(r.readU16());
+        pFader->setReleaseTime(static_cast<u16>(r.readS16()));
+        mFaders.add(pFader);
+        r.align(4);
+    }
+    if (!createFaderIDToIndexTbl()) {
+        mFaders.deleteAll(true);
+        return false;
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rSoundSubMixer::save(MtStream& out) {
-    DDON_STUB("rSoundSubMixer::save")
-    return {};
+    MtDataWriter w(out, MtDataWriter::DEFAULT_BUFFERSIZE, MtDataWriter::DEFAULT_LABELSIZE);
+    NATIVE_FILE_HEADER header;
+    header.Magic = NativeFileMagic;
+    header.Version = NativeFileVersion;
+    w.write(&header, sizeof(header));
+    w.write(&mActive, sizeof(mActive));
+    w.writeS8(mPriority);
+    w.align(4);
+    w.write(mEQPreset, sizeof(mEQPreset));
+    w.write(mReverbPreset, sizeof(mReverbPreset));
+    w.writeU32(mFaders.length());
+    for (u32 i = 0; i < mFaders.length(); i++) {
+        Fader* pFader = static_cast<Fader*>(mFaders.mpArray[static_cast<s32>(i)]);
+        w.writeU8(pFader->getFaderID());
+        w.writeS16(pFader->getSendID());
+        w.writeF32(pFader->getVol());
+        w.writeS8(pFader->getEqNo());
+        w.writeS8(pFader->getEffectNo());
+        // workaround
+        u8 abs;
+        __builtin_memcpy(&abs, &pFader->mAbs, sizeof(abs));
+        w.write(&abs, sizeof(abs));
+        w.align(4);
+        w.writeU16(pFader->getTransitionTime());
+        w.writeS16(pFader->getCurve());
+        w.writeU16(pFader->getSustainTime());
+        w.writeS16(static_cast<s16>(pFader->getReleaseTime()));
+        w.align(4);
+    }
+    return true;
 }
 
 bool rSoundSubMixer::convert(MtStream& out) {
@@ -180,8 +287,20 @@ void rSoundSubMixer::clear() {
 }
 
 __attribute__((weak)) bool rSoundSubMixer::createFaderIDToIndexTbl() {
-    DDON_STUB("rSoundSubMixer::createFaderIDToIndexTbl")
-    return {};
+    MtMemoryAllocator::getAllocator(rSoundSubMixer::DTI)->memFree(mpIDToIndexTbl);
+    mIDToIndexTblNum = getMaxFaderID() + 1;
+    mpIDToIndexTbl = static_cast<s16*>(MtMemoryAllocator::getAllocator(rSoundSubMixer::DTI)->memAlloc(sizeof(s16) * mIDToIndexTblNum, 16u));
+    if (mpIDToIndexTbl == nullptr) {
+        return false;
+    }
+    memset(mpIDToIndexTbl, DEFAULT_FADER_INDEX, sizeof(s16) * mIDToIndexTblNum);
+    for (u16 i = 0; i < mFaders.length(); i++) {
+        Fader* pFader = static_cast<Fader*>(mFaders.mpArray[i]);
+        if (pFader != nullptr) {
+            mpIDToIndexTbl[pFader->getFaderID()] = static_cast<s16>(i);
+        }
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rSoundSubMixer::determineCanBeSetSubMixer(rSoundSubMixer* pPostSubMixer) {

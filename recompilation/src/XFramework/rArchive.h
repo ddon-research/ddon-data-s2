@@ -248,3 +248,68 @@ inline cResource* rArchive::getResource(u32 index) {
 inline void* rArchive::DecompressStream::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemory.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline voidpf zAlloc(voidpf opaque, uInt items, uInt size) {
+    return MtMemory::getAllocator(12u)->memAlloc(items * size, 16u);
+}
+
+inline void zFree(voidpf opaque, voidpf address) {
+    MtMemory::getAllocator(12u)->memFree(address);
+}
+
+inline bool rArchive::invokePathFilter(MT_CTSTR arcPath, const MtDTI& resDTI, MT_CTSTR resPath) {
+    if (mpPathFilterOwner != nullptr && mpPathFilter != nullptr) {
+        return (mpPathFilterOwner->*mpPathFilter)(arcPath, resDTI, resPath);
+    }
+    return true;
+}
+
+inline rArchive::CipherStream::CipherStream(MtStream& st, rArchive::CIPHER_KEY& k) {
+    mpSt = &st;
+    mCi.setKeyString(reinterpret_cast<MT_CTSTR>(k.key));
+    mCi.initializeBF();
+}
+
+inline void* rArchive::DecompressStream::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rArchive::DecompressStream::DTI)->memAlloc(sz, align, rArchive::DecompressStream::DTI.mID);
+}
+
+inline rArchive::DecompressStream::DecompressStream(MtStream* pin, rArchive* parc) {
+    mpIn = pin;
+    mpArc = parc;
+    mpInBuf[0] = MtMemory::getAllocator(7u)->memAlloc(MAX_INBUF, 16u);
+    mpInBuf[1] = MtMemory::getAllocator(7u)->memAlloc(MAX_INBUF, 16u);
+    mInBufsize[0] = 0;
+    mInBufsize[1] = 0;
+    mWbFlag = 0;
+    mCurOut = 0;
+    mCurIn = 0;
+    mCurRead = 0;
+    mMaxLength = pin->getLength();
+    mInOffset = 0;
+}
+
+inline void rArchive::DecompressStream::open(u32 offset, u32 datasize, u32 orgsize) {
+    mDataSize = datasize;
+    mOrgSize = orgsize;
+    mCurOut = 0;
+    mInOffset = offset;
+    mZStream.zalloc = zAlloc;
+    mZStream.zfree = zFree;
+    mZStream.opaque = nullptr;
+    mZStream.next_in = nullptr;
+    mZStream.avail_in = 0;
+    inflateInit_(&mZStream, "1.2.8", static_cast<int>(sizeof(z_stream)));
+}
+
+inline void rArchive::DecompressStream::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rArchive::DecompressStream::DTI)->memFree(p_addr);
+}
+
+inline void rArchive::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(p_addr);
+}

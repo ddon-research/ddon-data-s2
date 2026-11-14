@@ -52,6 +52,8 @@ public:
 public:
     class Fader : public MtObject
     {
+
+    friend class rSoundSubMixer;
     public:
         enum FADER_MODE
         {
@@ -344,4 +346,59 @@ inline u16 rSoundSubMixer::Fader::getReleaseTime() {
 
 inline bool rSoundSubMixer::Fader::getSetFlag() {
     return this->mSetFlag;
+}
+
+inline u8 rSoundSubMixer::getMaxFaderID() {
+    u8 maxID = 0;
+    for (u16 i = 0; i < mFaders.length(); i++) {
+        Fader* pFader = static_cast<Fader*>(mFaders.mpArray[i]);
+        if (maxID < pFader->getFaderID()) {
+            maxID = pFader->getFaderID();
+        }
+    }
+    return maxID;
+}
+
+inline void rSoundSubMixer::Fader::setFaderID(u8 faderID) {
+    this->mFaderID = faderID;
+}
+
+inline void rSoundSubMixer::Fader::setSendID(s16 sendID) {
+    this->mSendID = sendID;
+}
+
+inline void rSoundSubMixer::Fader::setVol(f32 vol) {
+    this->mVol = vol;
+}
+
+inline void rSoundSubMixer::Fader::setEqNo(s8 eqNo) {
+    this->mEqNo = eqNo;
+}
+
+inline void rSoundSubMixer::Fader::setEffectNo(s8 effectNo) {
+    this->mEffectNo = effectNo;
+}
+
+inline void rSoundSubMixer::Fader::setAbs(bool abs) {
+    this->mAbs = abs;
+}
+
+inline void rSoundSubMixer::Fader::setCurve(s16 curve) {
+    this->mCurve = curve;
+}
+
+inline void rSoundSubMixer::Fader::setTransitionTime(u16 transitionTime) {
+    this->mTransitionTime = transitionTime;
+}
+
+inline void rSoundSubMixer::Fader::setSustainTime(u16 sustainTime) {
+    this->mSustainTime = sustainTime;
+}
+
+inline void rSoundSubMixer::Fader::setReleaseTime(u16 releaseTime) {
+    this->mReleaseTime = releaseTime;
+}
+
+inline void rSoundSubMixer::Fader::setSetFlag(bool setFlag) {
+    this->mSetFlag = setFlag;
 }

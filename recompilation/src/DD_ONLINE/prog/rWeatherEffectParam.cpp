@@ -143,8 +143,16 @@ bool rWeatherEffectParam::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rWeatherEffectParam::save(MtStream& out) {
-    DDON_STUB("rWeatherEffectParam::save")
-    return {};
+    MtDataWriter w(out, 4096u, 4096u);
+    nDDOIO::writeData(w, 0x706577u);
+    nDDOIO::writeData(w, 3u);
+    for (u32 type = 0; type < 7; type++) {
+        (&w)->writeU32(mpParamList[type].length());
+        for (u32 t0 = 0; t0 < mpParamList[type].length(); t0++) {
+            static_cast<cEffectCorrectParam*>(mpParamList[type].getBuffer()[(s32)t0])->save(w);
+        }
+    }
+    return true;
 }
 
 MT_CTSTR rWeatherEffectParam::getExt() const {

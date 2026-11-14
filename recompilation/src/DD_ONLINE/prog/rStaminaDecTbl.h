@@ -64,6 +64,8 @@ public:
     virtual void createProperty(MtPropertyList& proplist);  // vtable slot 4
     virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     f32 getStamina() const;
+
+    friend class cStaminaDecList;
 private:
     bool importBinary(MtDataReader& reader);
     bool exportBinary(MtDataWriter& writer);
@@ -108,6 +110,8 @@ public:
     nStamina::VALUE_TYPE getValueType() const;
     nStamina::CONTINUATION_TYPE getContinuationType() const;
     nStamina::UPDATE_TYPE getExecuteType() const;
+
+    friend class rStaminaDecTbl;
 private:
     bool importBinary(MtDataReader& reader);
     bool exportBinary(MtDataWriter& writer);
@@ -186,4 +190,33 @@ inline cStaminaDecParam::cStaminaDecParam() {
 
 inline void* rStaminaDecTbl::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
+
+inline bool cStaminaDecParam::importBinary(MtDataReader& reader) {
+    this->mStamina = reader.readF32();
+    return true;
+}
+
+inline bool cStaminaDecParam::exportBinary(MtDataWriter& writer) {
+    writer.writeF32(this->mStamina);
+    return true;
+}
+
+inline bool cStaminaDecList::exportBinary(MtDataWriter& writer) {
+    u32 size = this->mStaminaDecList.length();
+    writer.writeU32(size);
+    writer.writeU32(this->mStaminaType);
+    writer.writeS32(this->mValueType);
+    writer.writeS32(this->mCType);
+    writer.writeS32(this->mExecuteType);
+    for (u32 i = 0; i < size; i++) {
+        cStaminaDecParam* param = static_cast<cStaminaDecParam*>(this->mStaminaDecList.mpArray[i]);
+        if (param != nullptr) {
+            param->exportBinary(writer);
+        }
+    }
+    return true;
 }

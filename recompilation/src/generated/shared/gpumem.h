@@ -24,3 +24,7 @@ namespace sce {
         };
     }  // namespace Gnm
 }  // namespace sce
+
+inline sce::Gnm::SizeAlign::SizeAlign() : m_size(0), m_align(0) {}
+
+inline sce::Gnm::SizeAlign::SizeAlign(uint32_t size, sce::Gnm::AlignmentType align) : m_size(size), m_align(align) {}

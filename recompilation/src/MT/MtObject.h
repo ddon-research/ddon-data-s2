@@ -57,3 +57,7 @@ public:
 
 inline MtObject::MtObject() {
 }
+
+inline bool MtObject::isKindOf(const MtDTI& dti) const {
+    return getDTI() == dti;
+}

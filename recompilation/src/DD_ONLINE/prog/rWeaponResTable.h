@@ -151,3 +151,19 @@ inline void cWeaponResTable::operator delete[](void* p_addr) {
 inline void* cWeaponResTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cWeaponResTable::DTI)->memAlloc(sz, align, ::cWeaponResTable::DTI.::MtDTI::getID());
 }
+
+inline void* cWeaponResTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeaponResTable::DTI)->memAlloc(sz, align, ::cWeaponResTable::DTI.::MtDTI::getID());
+}
+
+inline void cWeaponResTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeaponResTable::DTI)->memFree(p_addr);
+}
+
+inline cWeaponResTable::cWeaponResTable()
+    : mResVer(0x100)
+    , mIsCheck(false)
+    , mMTag(0)
+    , mSex(0)
+{
+}

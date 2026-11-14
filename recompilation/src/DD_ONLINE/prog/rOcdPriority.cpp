@@ -26,8 +26,28 @@ inline void rOcdPriorityParam::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rOcdPriorityParam::loadData(MtDataReader& in, cOcdPriorityParam* pData) {
-    DDON_STUB("rOcdPriorityParam::loadData")
-    return {};
+    nDDOIO::readData(in, pData->mOcdUID);
+    nDDOIO::readData(in, pData->mIsMultiApply);
+    nDDOIO::readData(in, pData->mIsMultiNumLimit);
+    nDDOIO::readData(in, pData->mMultiApplyNum);
+    nDDOIO::readData(in, pData->mOcdClass);
+    nDDOIO::readData(in, pData->mOcdLank);
+    for (u32 i = 0; i < 27u; ++i) {
+        nDDOIO::readData(in, pData->mIsAnnihilateGoodOcd[i]);
+    }
+    for (u32 i = 0; i < 31u; ++i) {
+        nDDOIO::readData(in, pData->mIsAnnihilateBadOcd[i]);
+    }
+    for (u32 i = 0; i < 5u; ++i) {
+        nDDOIO::readData(in, pData->mIsAnnihilateEnchantOcd[i]);
+    }
+    for (u32 i = 0; i < 9u; ++i) {
+        nDDOIO::readData(in, pData->mIsAnnihilateHumanOcd[i]);
+    }
+    for (u32 i = 0; i < 3u; ++i) {
+        nDDOIO::readData(in, pData->mIsAnnihilateEnemyOcd[i]);
+    }
+    return true;
 }
 
 MT_CTSTR rOcdPriorityParam::getExt() const {

@@ -40,8 +40,85 @@ bool rCollision::load(MtStream& in) {
 }
 
 __attribute__((weak)) void rCollision::clear() {
-    DDON_STUB("rCollision::clear")
-    /* stub */
+    if (mpTriangle != nullptr && reinterpret_cast<Vertex*>(mpTriangle + mHeader.TotalTriangleNum) == mpVertex) {
+        releasePartsBroadPhaseData();
+        if (mpBvh != nullptr) {
+            mpBvh->~cBVHCollision();
+            mpBvh = nullptr;
+        }
+        if (mpGrid != nullptr) {
+            mpGrid->~cGridCollision();
+            mpGrid = nullptr;
+        }
+        if (mpPartsInfo != nullptr) {
+            void* t1 = mpPartsInfo;
+            MtMemoryAllocator::getAllocator(rCollision::DTI)->memFree(t1);
+            mpPartsInfo = nullptr;
+        }
+        if (mpGridRegistInfo != nullptr) {
+            const u32 PartsNum = mHeader.PartsInfoNum;
+            for (u32 i = 0; i < PartsNum; i++) {
+                mpGridRegistInfo[i].~cGridCollisionRegistInfo();
+            }
+            mpGridRegistInfo = nullptr;
+        }
+    } else {
+        releasePartsBroadPhaseData();
+        if (mpPartsInfo != nullptr) {
+            void* t2 = mpPartsInfo;
+            MtMemoryAllocator::getAllocator(rCollision::DTI)->memFree(t2);
+            mpPartsInfo = nullptr;
+        }
+        mHeader.PartsInfoNum = 0;
+        if (mpLeaf != nullptr) {
+            void* t3 = mpLeaf;
+            MtMemoryAllocator::getAllocator(rCollision::DTI)->memFree(t3);
+            mpLeaf = nullptr;
+        }
+        mHeader.TotalLeafNum = 0;
+        if (mpTriangle != nullptr) {
+            void* t4 = mpTriangle;
+            MtMemoryAllocator::getAllocator(rCollision::DTI)->memFree(t4);
+            mpTriangle = nullptr;
+        }
+        mHeader.TotalTriangleNum = 0;
+        if (mpVertex != nullptr) {
+            void* t5 = mpVertex;
+            MtMemoryAllocator::getAllocator(rCollision::DTI)->memFree(t5);
+            mpVertex = nullptr;
+        }
+        mHeader.TotalVertexNum = 0;
+        if (mpMaterialInfo != nullptr) {
+            void* t6 = mpMaterialInfo;
+            MtMemoryAllocator::getAllocator(rCollision::DTI)->memFree(t6);
+            mpMaterialInfo = nullptr;
+        }
+        mpMaterialInfo = nullptr;
+        mHeader.MaterialInfoNum = 0;
+        if (mpBvh != nullptr) {
+            delete mpBvh;
+            mpBvh = nullptr;
+        }
+        if (mpGrid != nullptr) {
+            delete mpGrid;
+            mpGrid = nullptr;
+        }
+        if (mpGridRegistInfo != nullptr) {
+            cGridCollisionRegistInfo* t7 = mpGridRegistInfo;
+            size_t t8 = *(reinterpret_cast<size_t*>(t7) - 1);
+            for (cGridCollisionRegistInfo* t9 = t7 + t8; t9 != t7;) {
+                (--t9)->~cGridCollisionRegistInfo();
+            }
+            void* t10 = reinterpret_cast<char*>(t7) - 16;
+            MtMemoryAllocator::getAllocator(cGridCollision::DTI)->memFree(t10);
+            mpGridRegistInfo = nullptr;
+        }
+    }
+    if (mpSbcModifyClassIDArray != nullptr) {
+        void* t11 = mpSbcModifyClassIDArray;
+        MtMemoryAllocator::getAllocator(rCollision::DTI)->memFree(t11);
+        mpSbcModifyClassIDArray = nullptr;
+    }
 }
 
 MT_CTSTR rCollision::getExt() const {
@@ -74,8 +151,48 @@ __attribute__((weak)) bool rCollision::loadCore(MtDataReader& r, bool FlgEndianC
 }
 
 __attribute__((weak)) void rCollision::releasePartsBroadPhaseData() {
-    DDON_STUB("rCollision::releasePartsBroadPhaseData")
-    /* stub */
+    if (mpPartsInfo != nullptr) {
+        if (mpTriangle != nullptr && reinterpret_cast<Vertex*>(mpTriangle + mHeader.TotalTriangleNum) == mpVertex) {
+            for (u32 i = 0; i < mHeader.PartsInfoNum; i++) {
+                if (mpPartsInfo[i].pBvh != nullptr) {
+                    mpPartsInfo[i].pBvh->~cBVHCollision();
+                    mpPartsInfo[i].pBvh = nullptr;
+                }
+                if (mpPartsInfo[i].pGrid != nullptr) {
+                    mpPartsInfo[i].pGrid->~cGridCollision();
+                    mpPartsInfo[i].pGrid = nullptr;
+                }
+                if (mpPartsInfo[i].pGridRegistInfo != nullptr) {
+                    const u32 PartsTriangleNum = mpPartsInfo[i].TriangleNum;
+                    for (u32 j = 0; j < PartsTriangleNum; j++) {
+                        mpPartsInfo[i].pGridRegistInfo[j].~cGridCollisionRegistInfo();
+                    }
+                    mpPartsInfo[i].pGridRegistInfo = nullptr;
+                }
+            }
+        } else {
+            for (u32 i = 0; i < mHeader.PartsInfoNum; i++) {
+                if (mpPartsInfo[i].pBvh != nullptr) {
+                    delete mpPartsInfo[i].pBvh;
+                    mpPartsInfo[i].pBvh = nullptr;
+                }
+                if (mpPartsInfo[i].pGrid != nullptr) {
+                    delete mpPartsInfo[i].pGrid;
+                    mpPartsInfo[i].pGrid = nullptr;
+                }
+                if (mpPartsInfo[i].pGridRegistInfo != nullptr) {
+                    cGridCollisionRegistInfo* t1 = mpPartsInfo[i].pGridRegistInfo;
+                    size_t t2 = *(reinterpret_cast<size_t*>(t1) - 1);
+                    for (cGridCollisionRegistInfo* t3 = t1 + t2; t3 != t1;) {
+                        (--t3)->~cGridCollisionRegistInfo();
+                    }
+                    void* t4 = reinterpret_cast<char*>(t1) - 16;
+                    MtMemoryAllocator::getAllocator(cGridCollision::DTI)->memFree(t4);
+                    mpPartsInfo[i].pGridRegistInfo = nullptr;
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) bool rCollision::bulkAllocateMemoryAll(const rCollision::Header& LoadHeaderInfo, u32 BroadPhaseInsideWorkSize, nCollisionUtil::LoadBuffer& AllocateResult) {
@@ -88,7 +205,6 @@ rCollision::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u3
 rCollision::MyDTI rCollision::DTI("rCollision", &::cResource::DTI, 272ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rCollision::MyDTI::newInstance() const {
-    DDON_STUB("rCollision::MyDTI::newInstance")
-    return nullptr;
+    return new(16u) rCollision();
 }
 

@@ -27,8 +27,6 @@ inline void cAIPawnSkillParamNode::operator delete(void* p_addr) {
 }
 
 cAIPawnSkillParamNode::~cAIPawnSkillParamNode() {
-    DDON_STUB("cAIPawnSkillParamNode::~cAIPawnSkillParamNode")
-    /* stub */
 }
 
 __attribute__((weak)) void cAIPawnSkillParamNode::load(MtDataReader& r) {
@@ -75,8 +73,7 @@ cAIPawnSkillParamNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 cAIPawnSkillParamNode::MyDTI cAIPawnSkillParamNode::DTI("cAIPawnSkillParamNode", &::cAIResource::DTI, 112ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cAIPawnSkillParamNode::MyDTI::newInstance() const {
-    DDON_STUB("cAIPawnSkillParamNode::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cAIPawnSkillParamNode;
 }
 
 const MtDTI& rAIPawnSkillParamTbl::getDTI() const {

@@ -70,8 +70,31 @@ u32 rCharacterEditModelPalette::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rCharacterEditModelPalette::loadCore(MtDataReader& r) {
-    DDON_STUB("rCharacterEditModelPalette::loadCore")
-    return {};
+    u32 t1;
+    this->readDataValue(r, t1);
+    {
+        u32 t4 = t1;
+        if (this->mpData != nullptr) {
+            delete[] this->mpData;
+            this->mpData = nullptr;
+        }
+        this->mDataNum = 0;
+        if (t4 != 0) {
+            this->mpData = new (16u) cCharacterEditModelPalette[t4];
+            this->mDataNum = t4;
+        }
+    }
+    if (t1 != 0) {
+        u32 t2 = 0;
+        cCharacterEditModelPalette* t3 = this->mpData;
+        do {
+            if (!this->loadData(r, &t3[t2])) {
+                return false;
+            }
+            t2 += 1u;
+        } while (t2 < t1);
+    }
+    return true;
 }
 
 rCharacterEditModelPalette::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

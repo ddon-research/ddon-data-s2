@@ -323,3 +323,10 @@ inline void cAreaHit::setCkToward(f32 r) {
 inline AreaHitShape* cAreaHit::getShapePtr() const {
     return this->mpShape;
 }
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void AreaHitShape::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(AreaHitShape::DTI)->memFree(p_addr);
+}

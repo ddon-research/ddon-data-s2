@@ -8,6 +8,12 @@
 #include "../MT/MtMath.h"
 #include "cResource.h"
 
+#include <string.h>
+#include "../MT/MtMemory.h"
+#include "../MT/MtMemoryAllocator.h"
+#include "nDrawTexture.h"
+#include "nDrawVertexBuffer.h"
+
 // Forward declarations
 class MtAllocator;
 class MtDTI;
@@ -201,4 +207,76 @@ inline rDeformWeightMap::rDeformWeightMap() {
     this->mVertexBaseNum = 0;
     this->mSoftBodyVBstride = 0;
     this->mpVertexBase = nullptr;
+}
+
+inline void* rDeformWeightMap::memAlloc(u32 sz) {
+    return MtMemoryAllocator::getAllocator(rDeformWeightMap::DTI)->memAlloc(sz, 16);
+}
+
+inline void rDeformWeightMap::memFree(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rDeformWeightMap::DTI)->memFree(p_addr);
+}
+
+inline void rDeformWeightMap::transferCpu2Gpu(nDraw::Texture* dst, void* src, s32 xPixel, s32 yLine, s32 pixelByte) {
+    nDraw::MAPPED_TEXTURE tex = dst->map(0, nDraw::MAP_WRITE_DISCARD, nullptr);
+    if (tex.pdata != nullptr) {
+        u8* pDst = static_cast<u8*>(tex.pdata);
+        u8* pSrc = static_cast<u8*>(src);
+        s32 lineBytes = xPixel * pixelByte;
+        for (s32 y = 0; y < yLine; ++y) {
+            memcpy(pDst, pSrc, lineBytes);
+            pSrc += lineBytes;
+            pDst += tex.pitch;
+        }
+    }
+    dst->unmap(0);
+}
+
+inline void rDeformWeightMap::transferGpu2Cpu(void* dst, nDraw::Texture* src, s32 xPixel, s32 yLine, s32 pixelByte) {
+    nDraw::MAPPED_TEXTURE tex = src->map(0, nDraw::MAP_READ, nullptr);
+    if (tex.pdata != nullptr) {
+        u8* pDst = static_cast<u8*>(dst);
+        u8* pSrc = static_cast<u8*>(tex.pdata);
+        s32 lineBytes = xPixel * pixelByte;
+        for (s32 y = 0; y < yLine; ++y) {
+            memcpy(pDst, pSrc, lineBytes);
+            pSrc += tex.pitch;
+            pDst += lineBytes;
+        }
+    }
+    src->unmap(0);
+}
+
+inline rDeformWeightMap::LOD::LOD()
+    : mNumParticles(0)
+    , mVtxTexH(0)
+    , mWindBarycentricIdx(0)
+    , mpTexInit(nullptr)
+    , mpTexFixPrimVtx(nullptr)
+    , mpTexFixJoint(nullptr)
+    , mpTexFixWeight(nullptr)
+    , mpTexFixNormal(nullptr)
+    , mpTexWindNormal(nullptr)
+    , mpTexPseudoWind(nullptr)
+    , mpSoftBodyVB(nullptr)
+    , mVbByteIdx(nullptr)
+    , mVbPrimIdx(nullptr)
+{
+    memset(mpTexBatchVtx, 0, sizeof(mpTexBatchVtx));
+}
+
+inline void* rDeformWeightMap::LOD::memAlloc(size_t sz) {
+    return MtMemoryAllocator::getAllocator(rDeformWeightMap::DTI)->memAlloc(sz, 16);
+}
+
+inline void rDeformWeightMap::LOD::memFree(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rDeformWeightMap::DTI)->memFree(p_addr);
+}
+
+inline void* rDeformWeightMap::LOD::operator new[](size_t s) {
+    return memAlloc(s);
+}
+
+inline void rDeformWeightMap::LOD::operator delete[](void* padr) {
+    memFree(padr);
 }

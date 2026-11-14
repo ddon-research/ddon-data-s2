@@ -51,3 +51,33 @@ public:
 
 inline cResPtrBase::cResPtrBase() {
 }
+
+template <typename T>
+inline res_ptr<T>::res_ptr() {
+    mpPtr = nullptr;
+}
+
+template <typename T>
+inline void res_ptr<T>::setPtr(T* src) {
+    cResPtrBase::setPtr(reinterpret_cast<cResource*&>(mpPtr), reinterpret_cast<cResource*>(src));
+}
+
+template <typename T>
+inline res_ptr<T>::res_ptr(T* src) {
+    mpPtr = nullptr;
+    setPtr(src);
+}
+
+template <typename T>
+inline void res_ptr<T>::releasePtr() {
+    cResPtrBase::releasePtr(reinterpret_cast<cResource*&>(mpPtr));
+}
+
+template <typename T>
+inline res_ptr<T>::~res_ptr() {
+    releasePtr();
+}
+
+inline cResPtrBase::~cResPtrBase() {
+    // unproven
+}

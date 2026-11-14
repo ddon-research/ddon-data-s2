@@ -5,7 +5,7 @@
 1314 headers and 1252 units reconstructed from DWARF and the ELF: every class's declaration, layout and virtual table as DWARF records them, and each method's body where the generator could render it.
 
 - **Reconstructed:** 20905 bodies rendered from the ELF and proven equal to it by recompiling with the game's own compiler release (SDK 2.500), and 4044 rendered bodies the generator marks approximate.
-- **Stubs:** 19396 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
+- **Stubs:** 19116 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
 
 The generator's notes (its inferences, rulings, addresses, refusals and oracle verdicts) are stripped; only comments a reader of the source needs stay (file sections, member offsets, vtable slots, namespace ends, stub markers).
 

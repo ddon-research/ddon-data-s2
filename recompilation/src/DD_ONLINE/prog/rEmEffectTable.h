@@ -137,3 +137,19 @@ inline cEmEffectTable::cEmEffectTable() {
 inline void* rEmEffectTable::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+#include "../../MT/MtDataWriter.h"
+
+inline bool rEmEffectTable::saveData(MtDataWriter& out) {
+    out.writeU32(rTable::mMagic);
+    out.writeU16(cEmEffectTable::DATA_VERSION);
+    out.writeU16(0u);
+    out.writeU32(mArray.length());
+    for (u32 t1 = 0; t1 < mArray.length(); t1++) {
+        cEmEffectTable* t2 = static_cast<cEmEffectTable*>(mArray.getBuffer()[t1]);
+        if (t2 != nullptr) {
+            saveData(out, t2);
+        }
+    }
+    return true;
+}

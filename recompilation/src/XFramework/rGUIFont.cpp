@@ -22,6 +22,10 @@ const MtDTI& rGUIFont::getDTI() const {
     return rGUIFont::DTI;
 }
 
+inline void* rGUIFont::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rGUIFont::DTI)->memAlloc(sz, align, rGUIFont::DTI.getID());
+}
+
 inline void rGUIFont::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rGUIFont::DTI)->memFree(p_addr);
 }
@@ -31,8 +35,88 @@ rGUIFont::~rGUIFont() {
 }
 
 __attribute__((weak)) bool rGUIFont::load(MtStream& in) {
-    DDON_STUB("rGUIFont::load")
-    return {};
+    clear();
+    MtDataReader r(in, 4096u);
+    if (r.readU32() != 0x444647u) {
+        return false;
+    }
+    mVersion = r.readU32();
+    if (mVersion != VERSION) {
+        return false;
+    }
+    mAttr = r.readU32();
+    mSuffix = r.readU32();
+    mFontType = r.readU32();
+    mFontSize = r.readU32();
+    mTextureNum = r.readU32();
+    mCharNum = r.readU32();
+    mDescentNum = r.readU32();
+    mMaxAscent = r.readF32();
+    mMaxDescent = r.readF32();
+    mpDescent = static_cast<f32*>(memAlloc(mDescentNum * 4u));
+    r.read(mpDescent, mDescentNum * 4u);
+    u32 length = r.readU32();
+    mpTexturePath = static_cast<MT_CTSTR>(memAlloc(length + 1u));
+    r.readString(const_cast<MT_STR>(mpTexturePath), length + 1u);
+    mpChar = static_cast<CHAR*>(memAlloc(mCharNum * sizeof(CHAR)));
+    r.read(mpChar, mCharNum * sizeof(CHAR));
+    if (isDynamic()) {
+        mDynamicTextureNum = r.readU32();
+        mDynamicTextureSize = r.readU32();
+        mDynamicTextureFormat = static_cast<nDraw::FORMAT_TYPE>(r.readU32());
+        mDynamicTextureMisc = r.readU32();
+        mpSourceChar = static_cast<SRC_CHAR*>(memAlloc(mCharNum * sizeof(SRC_CHAR)));
+        r.read(mpSourceChar, mCharNum * sizeof(SRC_CHAR));
+        mpDynamicTexture = static_cast<nDraw::Texture**>(memAlloc(mDynamicTextureNum * sizeof(nDraw::Texture*)));
+        MtSize size = getTextureWH(mDynamicTextureSize);
+        for (u32 i = 0; i < mDynamicTextureNum; ++i) {
+            mpDynamicTexture[i] = new (16u) nDraw::Texture(
+                size.w, size.h, 1u, 1u, mDynamicTextureFormat, nDraw::USAGE_DYNAMIC,
+                mDynamicTextureMisc, nullptr, 0u, nullptr, nDraw::TEXMEMORY_VRAM);
+        }
+        MtSize blockSize = getTextureBlockSize(mDynamicTextureFormat);
+        mDynamicCharTW = 0;
+        mDynamicCharTH = static_cast<u32>(getMaxHeight() + 1.0f);
+        for (u32 i = 0; i < mCharNum; ++i) {
+            u32 width = (mpChar[i].tw + blockSize.w - 1) & ~(blockSize.w - 1);
+            mDynamicCharTW = (mDynamicCharTW < width) ? width : mDynamicCharTW;
+            u32 height = (mpChar[i].th + blockSize.h - 1) & ~(blockSize.h - 1);
+            mDynamicCharTH = (mDynamicCharTH < height) ? height : mDynamicCharTH;
+            mpSourceChar[i].index = i;
+            mpSourceChar[i].layoutNext = SRC_CHAR::INVALID_INDEX;
+            mpSourceChar[i].requestNext = SRC_CHAR::INVALID_INDEX;
+        }
+        mDynamicLineNum = size.h / mDynamicCharTH;
+        mpLayoutCharList = static_cast<SRC_CHAR**>(memAlloc(mDynamicTextureNum * mDynamicLineNum * sizeof(SRC_CHAR*)));
+        for (u32 i = 0; i < mDynamicTextureNum * mDynamicLineNum; ++i) {
+            mpLayoutCharList[i] = nullptr;
+        }
+        mpRequestLayoutCharList = static_cast<SRC_CHAR**>(memAlloc(mTextureNum * sizeof(SRC_CHAR*)));
+        if (mpRequestLayoutCharList == nullptr) {
+            clear();
+            return false;
+        }
+    } else {
+        mpTexture = static_cast<rTexture**>(memAlloc(mTextureNum * sizeof(rTexture*)));
+        if (mpTexture == nullptr) {
+            mTextureNum = 0;
+            clear();
+            return false;
+        }
+        for (u32 i = 0; i < mTextureNum; ++i) {
+            mpTexture[i] = nullptr;
+        }
+        for (u32 i = 0; i < mTextureNum; ++i) {
+            MtString path;
+            path.format("%s_%02d%s", mpTexturePath, i, getSuffixString(mSuffix));
+            mpTexture[i] = static_cast<rTexture*>(sResource::getInstance()->create(rTexture::DTI, path.ptr(), sResource::MODE_BLOCKING));
+            if (mpTexture[i] == nullptr) {
+                clear();
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 bool rGUIFont::save(MtStream& out) {
@@ -63,8 +147,54 @@ bool rGUIFont::save(MtStream& out) {
 }
 
 __attribute__((weak)) void rGUIFont::clear() {
-    DDON_STUB("rGUIFont::clear")
-    /* stub */
+    cResource::clear();
+    if (mpChar != nullptr) {
+        memFree(mpChar);
+        mpChar = nullptr;
+    }
+    memFree(const_cast<MT_STR>(mpTexturePath));
+    mpTexturePath = nullptr;
+    if (mpTexture != nullptr) {
+        for (u32 i = 0; i < mTextureNum; ++i) {
+            if (mpTexture[i] != nullptr) {
+                mpTexture[i]->release();
+                mpTexture[i] = nullptr;
+            }
+        }
+        if (mpTexture != nullptr) {
+            memFree(mpTexture);
+            mpTexture = nullptr;
+        }
+    }
+    mTextureNum = 0;
+    mCharNum = 0;
+    memFree(mpDescent);
+    mpDescent = nullptr;
+    if (mpDynamicTexture != nullptr) {
+        for (u32 i = 0; i < mDynamicTextureNum; ++i) {
+            if (mpDynamicTexture[i] != nullptr) {
+                mpDynamicTexture[i]->release();
+                mpDynamicTexture[i] = nullptr;
+            }
+        }
+        if (mpDynamicTexture != nullptr) {
+            memFree(mpDynamicTexture);
+            mpDynamicTexture = nullptr;
+        }
+        if (mpLayoutCharList != nullptr) {
+            memFree(mpLayoutCharList);
+            mpLayoutCharList = nullptr;
+        }
+        if (mpRequestLayoutCharList != nullptr) {
+            memFree(mpRequestLayoutCharList);
+            mpRequestLayoutCharList = nullptr;
+        }
+    }
+    if (mpSourceChar != nullptr) {
+        memFree(mpSourceChar);
+        mpSourceChar = nullptr;
+    }
+    mDynamicTextureNum = 1;
 }
 
 MtUI* rGUIFont::createUI(MtProperty& prop) {
@@ -179,8 +309,24 @@ rGUIFont::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 
 
 rGUIFont::MyDTI rGUIFont::DTI("rGUIFont", &::cResource::DTI, 256ul, 0u, 0u);
 
+const MtSize rGUIFont::TEXTURE_SIZE[14] = {
+    MtSize(256, 256),
+    MtSize(512, 256),
+    MtSize(512, 512),
+    MtSize(1024, 512),
+    MtSize(1024, 1024),
+    MtSize(2048, 1024),
+    MtSize(2048, 2048),
+    MtSize(64, 64),
+    MtSize(128, 64),
+    MtSize(128, 128),
+    MtSize(256, 128),
+    MtSize(4096, 1024),
+    MtSize(4096, 2048),
+    MtSize(4096, 4096),
+};
+
 __attribute__((weak)) MtObject* rGUIFont::MyDTI::newInstance() const {
-    DDON_STUB("rGUIFont::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rGUIFont;
 }
 

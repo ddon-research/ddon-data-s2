@@ -973,3 +973,8 @@ inline uCharacterEditCameraBase::cLimit::cLimit() {
     this->max = 0.0f;
     this->min = 0.0f;
 }
+
+inline void uCharacterEditCameraBase::cLimit::set(f32 _max, f32 _min) {
+    max = _max;
+    min = _min;
+}

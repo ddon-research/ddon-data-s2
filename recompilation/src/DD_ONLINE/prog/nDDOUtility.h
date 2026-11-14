@@ -142,7 +142,9 @@ namespace nDDOUtility {
         u32 searchEmpty() const;
         static u32 getArrayNum();
         u32 getArrayData(u32 index) const;
-        u32* toArrayPtr();
+        u32* toArrayPtr() {
+            return mBit;
+        }
     private:
         u32 mBit[AR_NUM];
     };
@@ -689,6 +691,14 @@ namespace nDDOUtility {
 inline nDDOUtility::cBitSet<11>::~cBitSet() {
 }
 
+inline nDDOUtility::cBitSet<14>::cBitSet() {
+    mBit[0] = 0u;
+}
+
+inline nDDOUtility::cBitSet<14>::~cBitSet() {
+    ;
+}
+
 inline nDDOUtility::cBitSet<22>::~cBitSet() {
 }
 
@@ -717,6 +727,10 @@ template <> inline nDDOUtility::cBitSet<128>::cBitSet() {
 
 template <> inline nDDOUtility::cBitSet<32>::cBitSet() {
     mBit[0] = 0u;
+}
+
+template <> inline void nDDOUtility::cBitSet<32>::clear(u8 val) {
+    mBit[0] = val ? 0xFFFFFFFFu : 0u;
 }
 
 template <> inline nDDOUtility::cBitSet<64>::cBitSet() {

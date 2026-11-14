@@ -1,14 +1,14 @@
 {
   "bundle": {
-    "golden": "golden/031-t404",
-    "name": "output_2026-11-09_031_merge404",
+    "golden": "golden/031-t443",
+    "name": "output_2026-11-14_031_merge443",
     "rendered": 24949
   },
   "census": {
     "approximate": 4044,
     "includes_to_regroup": 0,
     "proven": 20905,
-    "stubs": 19396
+    "stubs": 19116
   },
   "files": [
     {
@@ -1668,18 +1668,6 @@
       "src": "XFramework/rMovie.h"
     },
     {
-      "bundle": "rLayout/rkThinkData.cpp",
-      "detail": "DD_ONLINE/prog/rkThinkData.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/rkThinkData.cpp"
-    },
-    {
-      "bundle": "rLayout/rkThinkData.h",
-      "detail": "DD_ONLINE/prog/rkThinkData.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/rkThinkData.h"
-    },
-    {
       "bundle": "rLayout/sEnvMapManager.cpp",
       "detail": "DD_ONLINE/prog/sEnvMapManager.h",
       "origin": "dwarf",
@@ -2514,6 +2502,18 @@
       "src": "DD_ONLINE/prog/rPlantTree.h"
     },
     {
+      "bundle": "rPlayerExpTable/rPlayerExpTable.cpp",
+      "detail": "DD_ONLINE/prog/rPlayerExpTable.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/rPlayerExpTable.cpp"
+    },
+    {
+      "bundle": "rPlayerExpTable/rPlayerExpTable.h",
+      "detail": "DD_ONLINE/prog/rPlayerExpTable.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/rPlayerExpTable.h"
+    },
+    {
       "bundle": "rPriorityThink/cpAIPawnEmChecker.cpp",
       "detail": "DD_ONLINE/prog/cpAIPawnEmChecker.h",
       "origin": "dwarf",
@@ -3172,6 +3172,18 @@
       "detail": "DD_ONLINE/prog/rWepCateResTbl.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/rWepCateResTbl.h"
+    },
+    {
+      "bundle": "rkThinkData/rkThinkData.cpp",
+      "detail": "DD_ONLINE/prog/rkThinkData.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/rkThinkData.cpp"
+    },
+    {
+      "bundle": "rkThinkData/rkThinkData.h",
+      "detail": "DD_ONLINE/prog/rkThinkData.h",
+      "origin": "dwarf",
+      "src": "DD_ONLINE/prog/rkThinkData.h"
     },
     {
       "bundle": "shared/Achievement.cpp",
@@ -11212,18 +11224,6 @@
       "detail": "DD_ONLINE/prog/rPawnAI.h",
       "origin": "dwarf",
       "src": "DD_ONLINE/prog/rPawnAI.h"
-    },
-    {
-      "bundle": "shared/rPlayerExpTable.cpp",
-      "detail": "DD_ONLINE/prog/rPlayerExpTable.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/rPlayerExpTable.cpp"
-    },
-    {
-      "bundle": "shared/rPlayerExpTable.h",
-      "detail": "DD_ONLINE/prog/rPlayerExpTable.h",
-      "origin": "dwarf",
-      "src": "DD_ONLINE/prog/rPlayerExpTable.h"
     },
     {
       "bundle": "shared/rPriorityThink.cpp",

@@ -177,3 +177,68 @@ inline void cMagicChantParam::operator delete[](void* p_addr) {
 inline void* cMagicChantParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cMagicChantParam::DTI)->memAlloc(sz, align, ::cMagicChantParam::DTI.::MtDTI::getID());
 }
+
+inline MtAllocator* cMagicChantParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cMagicChantParam::DTI);
+}
+
+inline void* cMagicChantParam::operator new(size_t sz, u32 align) {
+    return ::cMagicChantParam::getAllocator()->memAlloc(sz, align, ::cMagicChantParam::DTI.::MtDTI::getID());
+}
+
+inline void cMagicChantParam::setCustomChantTime(f32 NewValue, u32 index) {
+    if (index < 10) {
+        this->mCustomChantTime_Gi[index] = NewValue;
+    }
+}
+
+inline cMagicChantParam::cMagicChantParam() {
+    this->mChantMot = 0;
+    this->setChantTime(0.0f);
+    this->mEndType = 0;
+    this->mIsChant2 = false;
+    this->mChant2Mot = 0;
+    this->setChant2Time(0.0f);
+    this->mIsSetCustomChantTime = false;
+    for (u32 i = 0; i < 10; ++i) {
+        this->setCustomChantTime(0.0f, i);
+    }
+    this->mSetType = 0;
+    this->mIsConst = false;
+    this->mJointNo = 0xff;
+    this->mShotPosOffset = MtMatrix::Identity;
+    this->mNoneLockOnPos = MtMatrix::Identity;
+    this->mNoneLockOnPosNext = MtMatrix::Identity;
+    this->mShotOption = 0;
+    this->mShotMot = 0;
+    this->mIsMotLoop = false;
+    this->mShotLoopingTime = 0.0f;
+    this->mIsUseShotLimitXAngle = false;
+    this->mShotLimitXAngle = 0.0f;
+    this->mEndMotion = 0;
+    this->mChantCameraNumber = 0;
+    this->mShotCameraNumber = 0;
+    this->mEndCameraNumber = 0;
+    this->mShlBornFrame = 0.0f;
+    this->mShlGroupNumber = 0;
+    this->mShlIndexNumber = 0;
+    this->mShlGroupNumberNext = 0;
+    this->mShlIndexNumberNext = 0;
+    this->mIsCanMove = false;
+    this->mChantAttribute = 0;
+    this->mIsUseChantCommand = false;
+    this->mChantCommandLevel = 0;
+    this->mMagocCommandNo = -1;
+    this->mIsUseAutoRock = false;
+    this->mAutoRockRange = 0.0f;
+    this->mAutoRockAngle = 0.0f;
+    this->mChant2EffectIndex = -1;
+    this->mChant2EffectNumber = -1;
+    this->mChant2EffectFrame = 0.0f;
+    this->mChant2SeFrame = 0.0f;
+    this->mIsAimTargetSpot = false;
+    this->mAimTargetSpotMaxRange = 0.0f;
+    this->mAimTargetSpotMinRange = 0.0f;
+    this->mIsNoChantSe = false;
+    this->mAddHealHate = 0.0f;
+}

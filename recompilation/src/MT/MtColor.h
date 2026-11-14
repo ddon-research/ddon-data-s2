@@ -208,3 +208,11 @@ inline MtColor::MtColor(u32 _r, u32 _g, u32 _b, u32 _a) {
     this->b = _b;
     this->a = _a;
 }
+
+inline MtColor::MtColor(u32 _rgba) {
+    rgba = _rgba;
+}
+
+inline bool MtColor::operator==(const MtColor& c) const {
+    return rgba == c.rgba;
+}

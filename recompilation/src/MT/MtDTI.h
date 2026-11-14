@@ -470,6 +470,13 @@ class MtDTI
     friend class rSoundBank;
     friend class rSoundCurveSet;
     friend class rSoundDirectionalSet;
+
+    friend class rSoundAreaInfo;
+    friend class rSoundRequest;
+    friend class rSoundStreamRequest;
+    friend class rZone;
+
+    friend class rSoundReverb;
     friend class rSoundStreamSourcePackage;
     friend class rStarCatalog;
     friend class rSwingModel;
@@ -595,4 +602,17 @@ inline MtDTI::operator const char *() const {
 
 inline u32 MtDTI::getID() const {
     return this->mID;
+}
+
+inline bool MtDTI::compare(const MtDTI& s, const MtDTI& d) const {
+    for (MtDTI* pt = const_cast<MtDTI*>(&s); pt != nullptr; pt = pt->mpParent) {
+        if (pt->mName == d.mName) {
+            return true;
+        }
+    }
+    return false;
+}
+
+inline bool MtDTI::operator==(const MtDTI& type) const {
+    return compare(*this, type);
 }

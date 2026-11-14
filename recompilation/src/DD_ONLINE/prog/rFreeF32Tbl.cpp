@@ -107,8 +107,28 @@ MT_CTSTR rFreeF32Tbl::getExt() const {
 }
 
 __attribute__((weak)) bool rFreeF32Tbl::load(MtStream& in) {
-    DDON_STUB("rFreeF32Tbl::load")
-    return {};
+    MtDataReader r(in, MtDataReader::DEFAULT_BUFFERSIZE);
+    u32 len = in.getLength();
+    allocMem(len);
+    stHeader* p_header = mpHeader;
+    if (p_header == nullptr) {
+        return false;
+    }
+    if (len < HEADER_SIZE) {
+        return false;
+    }
+    in.read(p_header, HEADER_SIZE);
+    if (p_header->Version != DATA_VERSION) {
+        freeMem();
+        return false;
+    }
+    in.read(p_header->Tags, len - HEADER_SIZE);
+    u32 tag_num = p_header->TagNum;
+    for (u32 tag_idx = 0; tag_idx < tag_num; ++tag_idx) {
+        stTag& tag = p_header->Tags[tag_idx];
+        tag.pVal = reinterpret_cast<f32*>(reinterpret_cast<size_t>(tag.pVal) + reinterpret_cast<size_t>(p_header));
+    }
+    return true;
 }
 
 rFreeF32Tbl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

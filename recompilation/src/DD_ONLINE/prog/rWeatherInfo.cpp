@@ -44,22 +44,32 @@ inline void cWeatherCloudModel::operator delete(void* p_addr) {
 }
 
 cWeatherCloudModel::~cWeatherCloudModel() {
-    DDON_STUB("cWeatherCloudModel::~cWeatherCloudModel")
-    /* stub */
 }
 
 __attribute__((weak)) void cWeatherCloudModel::load(MtDataReader& r) {
-    DDON_STUB("cWeatherCloudModel::load")
-    /* stub */
+    char t0[64];
+    const MtDTI* t1;
+    r.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        r.readString(t0, 64u);
+        mpModel.mpPtr = static_cast<rModel*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    nDDOIO::readData(r, mColorType);
+    nDDOIO::readData(r, mSunColorScale);
+    nDDOIO::readData(r, mSaturationScale);
+    nDDOIO::readData(r, mIntensityScale);
+    nDDOIO::readData(r, mFogMulRate);
+    nDDOIO::readData(r, mFogAddRate);
+    nDDOIO::readData(r, mViewType);
 }
 
 cWeatherCloudModel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cWeatherCloudModel::MyDTI cWeatherCloudModel::DTI("cWeatherCloudModel", &::cWeatherObjectRes::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cWeatherCloudModel::MyDTI::newInstance() const {
-    DDON_STUB("cWeatherCloudModel::MyDTI::newInstance")
-    return nullptr;
+MtObject* cWeatherCloudModel::MyDTI::newInstance() const {
+    return new (16u) cWeatherCloudModel;
 }
 
 const MtDTI& cWeatherFogInfo::getDTI() const {
@@ -96,8 +106,9 @@ inline void cWeatherInfo::operator delete(void* p_addr) {
 }
 
 cWeatherInfo::cWeatherInfo() {
-    DDON_STUB("cWeatherInfo::cWeatherInfo")
-    /* stub */
+    mID = 0;
+    mToFrame = 200.0f;
+    mWaterLRate = 1.0f;
 }
 
 cWeatherInfo::~cWeatherInfo() {
@@ -172,8 +183,6 @@ inline void cWeatherParamEfcInfo::operator delete(void* p_addr) {
 }
 
 cWeatherParamEfcInfo::~cWeatherParamEfcInfo() {
-    DDON_STUB("cWeatherParamEfcInfo::~cWeatherParamEfcInfo")
-    /* stub */
 }
 
 cWeatherParamEfcInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -181,8 +190,7 @@ cWeatherParamEfcInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 cWeatherParamEfcInfo::MyDTI cWeatherParamEfcInfo::DTI("cWeatherParamEfcInfo", &::cWeatherObjectRes::DTI, 24ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cWeatherParamEfcInfo::MyDTI::newInstance() const {
-    DDON_STUB("cWeatherParamEfcInfo::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cWeatherParamEfcInfo;
 }
 
 const MtDTI& cWeatherParamInfo::getDTI() const {
@@ -194,8 +202,6 @@ inline void cWeatherParamInfo::operator delete(void* p_addr) {
 }
 
 cWeatherParamInfo::~cWeatherParamInfo() {
-    DDON_STUB("cWeatherParamInfo::~cWeatherParamInfo")
-    /* stub */
 }
 
 cWeatherParamInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -203,8 +209,7 @@ cWeatherParamInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 cWeatherParamInfo::MyDTI cWeatherParamInfo::DTI("cWeatherParamInfo", &::cWeatherObjectRes::DTI, 240ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cWeatherParamInfo::MyDTI::newInstance() const {
-    DDON_STUB("cWeatherParamInfo::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cWeatherParamInfo;
 }
 
 const MtDTI& rWeatherFogInfo::getDTI() const {
@@ -297,8 +302,16 @@ inline void rWeatherParamEfcInfo::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rWeatherParamEfcInfo::loadData(MtDataReader& in, cWeatherParamEfcInfo* pData) {
-    DDON_STUB("rWeatherParamEfcInfo::loadData")
-    return {};
+    nDDOIO::readData(in, pData->mWeatherID);
+    char t0[64];
+    const MtDTI* t1;
+    in.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        in.readString(t0, 64u);
+        pData->mpEfcParam.mpPtr = static_cast<rWeatherEffectParam*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    return true;
 }
 
 MT_CTSTR rWeatherParamEfcInfo::getExt() const {
@@ -330,8 +343,31 @@ inline void rWeatherParamInfoTbl::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rWeatherParamInfoTbl::loadData(MtDataReader& in, cWeatherParamInfo* pData) {
-    DDON_STUB("rWeatherParamInfoTbl::loadData")
-    return {};
+    pData->mWeatherParam.load(in);
+    nDDOIO::readData(in, pData->mWeatherID);
+    nDDOIO::readData(in, pData->mWeatherSoundVolume);
+    nDDOIO::readData(in, pData->mWeatherStarIntensity);
+    nDDOIO::readData(in, pData->mLightMainIntensityScale);
+    nDDOIO::readData(in, pData->mLightMainSatuationScale);
+    nDDOIO::readData(in, pData->mLightSubDayColor);
+    nDDOIO::readData(in, pData->mLightHemiDayColor);
+    nDDOIO::readData(in, pData->mLightHemiDayRevColor);
+    char t0[64];
+    const MtDTI* t1;
+    in.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        in.readString(t0, 64u);
+        pData->mpFogParam.mpPtr = static_cast<rWeatherFogInfo*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    in.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        in.readString(t0, 64u);
+        pData->mpSoundReq.mpPtr = static_cast<rSoundRequest*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    nDDOIO::readMtArray(in, pData->mClouds);
+    return true;
 }
 
 MT_CTSTR rWeatherParamInfoTbl::getExt() const {
@@ -359,8 +395,6 @@ inline void rWeatherStageInfo::operator delete(void* p_addr) {
 }
 
 rWeatherStageInfo::~rWeatherStageInfo() {
-    DDON_STUB("rWeatherStageInfo::~rWeatherStageInfo")
-    /* stub */
 }
 
 __attribute__((weak)) void rWeatherStageInfo::createProperty(MtPropertyList& s) {
@@ -373,13 +407,127 @@ MT_CTSTR rWeatherStageInfo::getExt() const {
 }
 
 __attribute__((weak)) bool rWeatherStageInfo::load(MtStream& in) {
-    DDON_STUB("rWeatherStageInfo::load")
-    return {};
+    char t0[64];
+    const MtDTI* t1;
+    MtDataReader r(in, 4096u);
+    u32 magic;
+    u32 version;
+    nDDOIO::readData(r, magic);
+    nDDOIO::readData(r, version);
+    if (magic != MAGIC_NUM || version != DATA_VERSION) {
+        return false;
+    }
+    r.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        r.readString(t0, 64u);
+        mpSkyRes.mpPtr = static_cast<rSky*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    r.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        r.readString(t0, 64u);
+        mpRefSkyRes.mpPtr = static_cast<rSky*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    r.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        r.readString(t0, 64u);
+        mpModelScheduler.mpPtr = static_cast<rScheduler*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    r.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        r.readString(t0, 64u);
+        mpStarModel.mpPtr = static_cast<rModel*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    r.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        r.readString(t0, 64u);
+        mpStarTex.mpPtr = static_cast<rTexture*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    r.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        r.readString(t0, 64u);
+        mpStarCatalog.mpPtr = static_cast<rStarCatalog*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    nDDOIO::readData(r, mStarSize);
+    nDDOIO::readData(r, mStarrySkyIntensity);
+    nDDOIO::readData(r, mStarTwinkleAmplitude);
+    for (u32 i = 0; i < 2; i++) {
+        nDDOIO::readData(r, mEnvMapBaseColor[i]);
+    }
+    for (u32 i = 0; i < 2; i++) {
+        nDDOIO::readData(r, mEnvMapBlendColorScale[i]);
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rWeatherStageInfo::save(MtStream& out) {
-    DDON_STUB("rWeatherStageInfo::save")
-    return {};
+    MtDataWriter w(out, 4096u, 4096u);
+    u32 magic = MAGIC_NUM;
+    u32 version = DATA_VERSION;
+    nDDOIO::writeData(w, magic);
+    nDDOIO::writeData(w, version);
+    cResource* t0;
+    t0 = mpSkyRes.mpPtr;
+    if (t0 != nullptr) {
+        w.writeString(t0->getDTI().getName());
+        w.writeString(t0->getPath());
+    } else {
+        w.writeString("");
+    }
+    t0 = mpRefSkyRes.mpPtr;
+    if (t0 != nullptr) {
+        w.writeString(t0->getDTI().getName());
+        w.writeString(t0->getPath());
+    } else {
+        w.writeString("");
+    }
+    t0 = mpModelScheduler.mpPtr;
+    if (t0 != nullptr) {
+        w.writeString(t0->getDTI().getName());
+        w.writeString(t0->getPath());
+    } else {
+        w.writeString("");
+    }
+    t0 = mpStarModel.mpPtr;
+    if (t0 != nullptr) {
+        w.writeString(t0->getDTI().getName());
+        w.writeString(t0->getPath());
+    } else {
+        w.writeString("");
+    }
+    t0 = mpStarTex.mpPtr;
+    if (t0 != nullptr) {
+        w.writeString(t0->getDTI().getName());
+        w.writeString(t0->getPath());
+    } else {
+        w.writeString("");
+    }
+    t0 = mpStarCatalog.mpPtr;
+    if (t0 != nullptr) {
+        w.writeString(t0->getDTI().getName());
+        w.writeString(t0->getPath());
+    } else {
+        w.writeString("");
+    }
+    nDDOIO::writeData(w, mStarSize);
+    nDDOIO::writeData(w, mStarrySkyIntensity);
+    nDDOIO::writeData(w, mStarTwinkleAmplitude);
+    for (u32 i = 0; i < 2; i++) {
+        MtFloat3 t1;
+        t1.x = mEnvMapBaseColor[i].x;
+        t1.y = mEnvMapBaseColor[i].y;
+        t1.z = mEnvMapBaseColor[i].z;
+        w.writeV3(t1);
+    }
+    for (u32 i = 0; i < 2; i++) {
+        nDDOIO::writeData(w, mEnvMapBlendColorScale[i]);
+    }
+    return true;
 }
 
 rWeatherStageInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -387,8 +535,7 @@ rWeatherStageInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 rWeatherStageInfo::MyDTI rWeatherStageInfo::DTI("rWeatherStageInfo", &::cResource::DTI, 224ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rWeatherStageInfo::MyDTI::newInstance() const {
-    DDON_STUB("rWeatherStageInfo::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rWeatherStageInfo;
 }
 
 template MtTypedArray<cWeatherCloudModel>::~MtTypedArray();

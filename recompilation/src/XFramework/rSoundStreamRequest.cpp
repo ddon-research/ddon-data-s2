@@ -17,6 +17,10 @@
 #define DDON_STUB(name)
 #endif
 
+inline void* rSoundStreamRequest::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memAlloc(sz, align, rSoundStreamRequest::DTI.mID);
+}
+
 __attribute__((weak)) void rSoundStreamRequest::usage() {
 }
 
@@ -28,9 +32,13 @@ inline void rSoundStreamRequest::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(p_addr);
 }
 
-rSoundStreamRequest::~rSoundStreamRequest() {
-    DDON_STUB("rSoundStreamRequest::~rSoundStreamRequest")
-    /* stub */
+__attribute__((noinline)) rSoundStreamRequest::~rSoundStreamRequest() {
+    MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(mpReqNoToIndexTbl);
+    freeMemory();
+    if (mpStreamSourcePackage != nullptr) {
+        mpStreamSourcePackage->release();
+        mpStreamSourcePackage = nullptr;
+    }
 }
 
 __attribute__((weak)) bool rSoundStreamRequest::load(MtStream& in) {
@@ -77,8 +85,39 @@ rSoundStreamRequest::Element* rSoundStreamRequest::getElement(u32 reqNo) const {
 }
 
 __attribute__((weak)) void rSoundStreamRequest::freeMemory() {
-    DDON_STUB("rSoundStreamRequest::freeMemory")
-    /* stub */
+    if (mpRawData != nullptr) {
+        MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(mpRawData);
+    } else {
+        if (mSourceResourceList.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(mSourceResourceList.mpArray);
+        }
+        mSourceResourceList.mpArray = nullptr;
+        mSourceResourceList.mLength = 0;
+        mSourceResourceList.mBufsiz = 0;
+        MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(mpElement);
+        MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(mpWave);
+        MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(mpSpeakerSets);
+        MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(mpSpeakers);
+        MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(mpDirectionalCurves);
+        MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(mpDirectionalCurveElements);
+    }
+    if (mpSoundSource != nullptr) {
+        delete[] mpSoundSource;
+    }
+    mpRawData = nullptr;
+    mpElement = nullptr;
+    mElementNum = 0;
+    mpSoundSource = nullptr;
+    mpWave = nullptr;
+    mDirectionalCurveElementNum = 0;
+    mSpeakerNum = 0;
+    mDirectionalCurveNum = 0;
+    mpDirectionalCurveElements = nullptr;
+    mSpeakerSetNum = 0;
+    mpDirectionalCurves = nullptr;
+    mpSpeakers = nullptr;
+    mpSpeakerSets = nullptr;
+    mLoadedSize = 0;
 }
 
 __attribute__((weak)) bool rSoundStreamRequest::createReqNoToIndexTbl() {
@@ -91,8 +130,22 @@ rSoundStreamRequest::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 rSoundStreamRequest::MyDTI rSoundStreamRequest::DTI("rSoundStreamRequest", &::cResource::DTI, 264ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rSoundStreamRequest::MyDTI::newInstance() const {
-    DDON_STUB("rSoundStreamRequest::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rSoundStreamRequest;
+}
+
+inline rSoundStreamRequest::SoundSource::~SoundSource() {
+    if (mpStreamSourcePackage != nullptr) {
+        mpStreamSourcePackage->release();
+        mpStreamSourcePackage = nullptr;
+    }
+    if (mpSource != nullptr) {
+        mpSource->release();
+        mpSource = nullptr;
+    }
+}
+
+inline void rSoundStreamRequest::SoundSource::operator delete[](void* ptr) {
+    MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(ptr);
 }
 
 u32 rSoundStreamRequest::SoundSource::getChannelNum() const {

@@ -11,9 +11,24 @@
 #include "../MT/MtString.h"
 #include "cResource.h"
 #include "sSound.h"
+
+#include <string.h>
+#include <ymath.h>
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+inline void* rSoundReverb::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundReverb::DTI)->memAlloc(sz, align, rSoundReverb::DTI.mID);
+}
+
+inline void* rSoundReverb::memAlloc(u32 size, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundReverb::DTI)->memAlloc(size, align, rSoundReverb::DTI.mID);
+}
+
+inline void* rSoundReverb::cSoundReverbData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundReverb::cSoundReverbData::DTI)->memAlloc(sz, align, rSoundReverb::cSoundReverbData::DTI.mID);
+}
 
 const MtDTI& rSoundReverb::getDTI() const {
     return rSoundReverb::DTI;
@@ -24,8 +39,8 @@ inline void rSoundReverb::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rSoundReverb::~rSoundReverb() {
-    DDON_STUB("rSoundReverb::~rSoundReverb")
-    /* stub */
+    mReverb.deleteAll(true);
+    memFree(mpIdToIndexTbl);
 }
 
 MT_CTSTR rSoundReverb::getExt() const {
@@ -38,8 +53,41 @@ __attribute__((weak)) void rSoundReverb::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) bool rSoundReverb::load(MtStream& in) {
-    DDON_STUB("rSoundReverb::load")
-    return {};
+    u32 fillSize = in.getLength();
+    if (fillSize == 0) {
+        return false;
+    }
+    if (mHeader.Magic != NativeFileMagic) {
+        return false;
+    }
+    u8* pTempBuffer = static_cast<u8*>(MtMemory::mpAllocatorType[7]->memAlloc(fillSize, 16));
+    if (pTempBuffer == nullptr) {
+        return false;
+    }
+    if (mHeader.Version != NativeFileVersion) {
+        return false;
+    }
+    u32 readSize = in.read(pTempBuffer, fillSize);
+    HEADER* pHeader = reinterpret_cast<HEADER*>(pTempBuffer);
+    if (readSize != fillSize || pHeader->Magic != NativeFileMagic || pHeader->Version != NativeFileVersion) {
+        MtMemory::mpAllocatorType[7]->memFree(pTempBuffer);
+        return false;
+    }
+    mHeader = *pHeader;
+    mReverb.deleteAll(true);
+    u32* pData = reinterpret_cast<u32*>(pTempBuffer + sizeof(HEADER));
+    for (u32 i = 0; i < pHeader->ArrayNum; i++) {
+        cSoundReverbData* pReverb = new (16u) cSoundReverbData;
+        mReverb.add(pReverb);
+        u32 id = pData[0];
+        f32 outputLevel = *reinterpret_cast<f32*>(&pData[1]);
+        pData += 2;
+        sSound::ReverbParameter* pRevParam = reinterpret_cast<sSound::ReverbParameter*>(pData);
+        pReverb->copy(pRevParam, id, outputLevel, MtString("NONE"));
+        pData += sizeof(sSound::ReverbParameter) / sizeof(u32);
+    }
+    MtMemory::mpAllocatorType[7]->memFree(pTempBuffer);
+    return createIdToIndexTbl();
 }
 
 rSoundReverb::cSoundReverbData* rSoundReverb::getReverbData(s32 index) {
@@ -79,17 +127,46 @@ rSoundReverb::cSoundReverbData* rSoundReverb::getReverbDataFromId(s32 id) {
 }
 
 __attribute__((weak)) bool rSoundReverb::createIdToIndexTbl() {
-    DDON_STUB("rSoundReverb::createIdToIndexTbl")
-    return {};
+    u32 maxId = 0;
+    u32 revNum = mReverb.mLength;
+    for (u32 i = 0; i < revNum; i++) {
+        cSoundReverbData* pRevData = getReverbData(i);
+        if (pRevData != nullptr) {
+            u32 revId = pRevData->mId;
+            if (revId != 0xFFFFFFFF && maxId < revId) {
+                maxId = revId;
+            }
+        }
+    }
+    mIdToIndexTblNum = maxId + 1;
+    memFree(mpIdToIndexTbl);
+    mpIdToIndexTbl = static_cast<u16*>(memAlloc(mIdToIndexTblNum * sizeof(u16), 16));
+    if (mpIdToIndexTbl == nullptr) {
+        return false;
+    }
+    memset(mpIdToIndexTbl, 0xFF, mIdToIndexTblNum * sizeof(u16));
+    for (u32 i = 0; i < revNum; i++) {
+        cSoundReverbData* pRevData = getReverbData(i);
+        if (pRevData != nullptr) {
+            u32 revId = pRevData->mId;
+            if (revId != 0xFFFFFFFF) {
+                mpIdToIndexTbl[revId] = i;
+            }
+        }
+    }
+    return true;
 }
 
 rSoundReverb::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rSoundReverb::MyDTI rSoundReverb::DTI("rSoundReverb", &::cResource::DTI, 176ul, 0u, 0u);
 
+const f32 rSoundReverb::MIN_OUTPUTLEVEL_DB = sSound::I3DL2_REVERB_MIN_OUTPUT_LEVEL != 0.0f ? 20.0f * _FLog(sSound::I3DL2_REVERB_MIN_OUTPUT_LEVEL, 1) : -96.0f;
+const f32 rSoundReverb::MAX_OUTPUTLEVEL_DB = sSound::I3DL2_REVERB_MAX_OUTPUT_LEVEL != 0.0f ? 20.0f * _FLog(sSound::I3DL2_REVERB_MAX_OUTPUT_LEVEL, 1) : -96.0f;
+const f32 rSoundReverb::DEF_OUTPUTLEVEL_DB = sSound::I3DL2_REVERB_DEFAULT_OUTPUT_LEVEL != 0.0f ? 20.0f * _FLog(sSound::I3DL2_REVERB_DEFAULT_OUTPUT_LEVEL, 1) : -96.0f;
+
 __attribute__((weak)) MtObject* rSoundReverb::MyDTI::newInstance() const {
-    DDON_STUB("rSoundReverb::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rSoundReverb;
 }
 
 const MtDTI& rSoundReverb::cSoundReverbData::getDTI() const {
@@ -113,8 +190,11 @@ MtUI* rSoundReverb::cSoundReverbData::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) void rSoundReverb::cSoundReverbData::copy(sSound::ReverbParameter* p_src, u32 id, f32 outputLevel, const MtString& com) {
-    DDON_STUB("rSoundReverb::cSoundReverbData::copy")
-    /* stub */
+    if (p_src != nullptr) {
+        mId = id;
+        mOutputLevel = outputLevel;
+        mReverbData = *p_src;
+    }
 }
 
 rSoundReverb::cSoundReverbData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -122,8 +202,7 @@ rSoundReverb::cSoundReverbData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 rSoundReverb::cSoundReverbData::MyDTI rSoundReverb::cSoundReverbData::DTI("rSoundReverb::cSoundReverbData", &::MtObject::DTI, 72ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rSoundReverb::cSoundReverbData::MyDTI::newInstance() const {
-    DDON_STUB("rSoundReverb::cSoundReverbData::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cSoundReverbData;
 }
 
 template MtTypedArray<rSoundReverb::cSoundReverbData>::~MtTypedArray();

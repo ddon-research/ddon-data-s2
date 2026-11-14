@@ -32,8 +32,34 @@ inline void rNavigationMesh::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rNavigationMesh::~rNavigationMesh() {
-    DDON_STUB("rNavigationMesh::~rNavigationMesh")
-    /* stub */
+    if (mpPolygonVertex != nullptr) {
+        MtMemoryAllocator::getAllocator(rNavigationMesh::DTI)->memFree(mpPolygonVertex);
+    }
+    if (mpNode != nullptr) {
+        nodeData* t1 = mpNode;
+        size_t t2 = *(reinterpret_cast<size_t*>(t1) - 1);
+        for (nodeData* t3 = t1 + t2; t3 != t1;) {
+            (--t3)->nodeData::~nodeData();
+        }
+        void* t4 = reinterpret_cast<char*>(t1) - 16;
+        MtMemoryAllocator::getAllocator(rNavigationMesh::nodeData::DTI)->memFree(t4);
+    }
+    if (mpNodeInfo != nullptr) {
+        void* t5 = reinterpret_cast<char*>(mpNodeInfo) - 16;
+        MtMemoryAllocator::getAllocator(rNavigationMesh::nodeInfo::DTI)->memFree(t5);
+    }
+    if (mpQuadTree != nullptr) {
+        delete mpQuadTree;
+    }
+    if (mpNodeBuffer != nullptr) {
+        MtMemoryAllocator::getAllocator(rNavigationMesh::DTI)->memFree(mpNodeBuffer);
+    }
+    if (mpNearWall != nullptr) {
+        MtMemoryAllocator::getAllocator(rNavigationMesh::DTI)->memFree(mpNearWall);
+    }
+    if (mpWallDistance != nullptr) {
+        MtMemoryAllocator::getAllocator(rNavigationMesh::DTI)->memFree(mpWallDistance);
+    }
 }
 
 MT_CTSTR rNavigationMesh::getExt() const {

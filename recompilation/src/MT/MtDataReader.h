@@ -138,3 +138,12 @@ inline u8 MtDataReader::readU8() {
 inline bool MtDataReader::isReadable() const {
     return mStream.isReadable();
 }
+
+inline s8 MtDataReader::readS8() {
+    if ((this->mSeekPt >= this->mBufsiz) && !this->::MtDataReader::refill()) {
+        return 0;
+    }
+    s8 n = static_cast<s8>(this->mBuffer[this->mSeekPt]);
+    this->mSeekPt = this->mSeekPt + 1u;
+    return n;
+}

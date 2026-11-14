@@ -317,3 +317,51 @@ inline void rEditStageParam::List::setListNo(s8 no, u32 idx) {
 inline u32 rEditStageParam::List::getListNoNum() {
     return 8;
 }
+
+#include <stdio.h>
+#include <string.h>
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* rEditStageParam::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rEditStageParam::DTI);
+}
+
+inline rEditStageParam::Info::Info() {
+    memset(mModelSdl, 0, sizeof(mModelSdl));
+    memset(mFilterSdl, 0, sizeof(mFilterSdl));
+    memset(mLightSdl, 0, sizeof(mLightSdl));
+    memset(mOmListSdl, 0, sizeof(mOmListSdl));
+    mReverb = 0;
+    mPlPos = MtVector3::Zero;
+    mPlRotY = 0.0f;
+    memset(mWeatherStageInfo, 0, sizeof(mWeatherStageInfo));
+    memset(mWeatherParamInfo, 0, sizeof(mWeatherParamInfo));
+    mEpvIndexAlways = 0;
+    mEpvIndexDay = 1;
+    mEpvIndexNight = 2;
+    mFlag = 0;
+    snprintf(mWeatherStageInfo, sizeof(mWeatherStageInfo), "WeatherStageInfo");
+    snprintf(mWeatherParamInfo, sizeof(mWeatherParamInfo), "WeatherParamInfo");
+}
+
+inline rEditStageParam::List::List() {
+    for (u32 i = 0; i < LIST_TBL_NUM; ++i) {
+        mListTbl[i] = -1;
+    }
+}
+
+inline bool rEditStageParam::List::load(MtDataReader& r) {
+    for (u32 i = 0; i < LIST_TBL_NUM; ++i) {
+        mListTbl[i] = r.readS8();
+    }
+    return true;
+}
+
+inline bool rEditStageParam::List::save(MtDataWriter& w) {
+    for (u32 i = 0; i < LIST_TBL_NUM; ++i) {
+        w.writeS8(mListTbl[i]);
+    }
+    return true;
+}

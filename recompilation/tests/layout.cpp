@@ -152,6 +152,7 @@
 #include "../src/DD_ONLINE/prog/rPawnQuestTalk.h"
 #include "../src/DD_ONLINE/prog/rPlPartsInfo.h"
 #include "../src/DD_ONLINE/prog/rPlantTree.h"
+#include "../src/DD_ONLINE/prog/rPlayerExpTable.h"
 #include "../src/DD_ONLINE/prog/rPriorityThink.h"
 #include "../src/DD_ONLINE/prog/rPrologueHmStatus.h"
 #include "../src/DD_ONLINE/prog/rPushRate.h"
@@ -214,6 +215,7 @@
 #include "../src/DD_ONLINE/prog/rWeatherEffectParam.h"
 #include "../src/DD_ONLINE/prog/rWeatherInfo.h"
 #include "../src/DD_ONLINE/prog/rWepCateResTbl.h"
+#include "../src/DD_ONLINE/prog/rkThinkData.h"
 #include "../src/DD_ONLINE/prog/sEffectExt.h"
 #include "../src/DD_ONLINE/prog/sIMEPS4.h"
 #include "../src/DD_ONLINE/prog/sKeyboardInterface.h"
@@ -459,6 +461,7 @@ static_assert(sizeof(::rPawnAIAction) == 128, "rPawnAIAction: DWARF's byte_size 
 static_assert(sizeof(::rPawnQuestTalk) == 144, "rPawnQuestTalk: DWARF's byte_size is 144");
 static_assert(sizeof(::rPlPartsInfo) == 120, "rPlPartsInfo: DWARF's byte_size is 120");
 static_assert(sizeof(::rPlantTree) == 128, "rPlantTree: DWARF's byte_size is 128");
+static_assert(sizeof(::rPlayerExpTable) == 128, "rPlayerExpTable: DWARF's byte_size is 128");
 static_assert(sizeof(::rPriorityThink) == 128, "rPriorityThink: DWARF's byte_size is 128");
 static_assert(sizeof(::rPrologueHmStatus) == 128, "rPrologueHmStatus: DWARF's byte_size is 128");
 static_assert(sizeof(::rPushRate) == 128, "rPushRate: DWARF's byte_size is 128");
@@ -543,6 +546,7 @@ static_assert(sizeof(::rWeatherParamInfoTbl) == 128, "rWeatherParamInfoTbl: DWAR
 static_assert(sizeof(::rWeatherStageInfo) == 224, "rWeatherStageInfo: DWARF's byte_size is 224");
 static_assert(sizeof(::rWepCateResTbl) == 128, "rWepCateResTbl: DWARF's byte_size is 128");
 static_assert(sizeof(::rZone) == 256, "rZone: DWARF's byte_size is 256");
+static_assert(sizeof(::rkThinkData) == 1656, "rkThinkData: DWARF's byte_size is 1656");
 static_assert(sizeof(::nIMEPS4::CandidateDispInfo) == 1136, "nIMEPS4::CandidateDispInfo: DWARF's byte_size is 1136");
 static_assert(sizeof(::nInputText::CandidateList) == 1136, "nInputText::CandidateList: DWARF's byte_size is 1136");
 static_assert(sizeof(::nInputText::ConvertInfo) == 10312, "nInputText::ConvertInfo: DWARF's byte_size is 10312");

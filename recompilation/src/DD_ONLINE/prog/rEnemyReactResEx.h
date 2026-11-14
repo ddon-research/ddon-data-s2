@@ -169,3 +169,51 @@ inline void cEnemyReactRes::operator delete[](void* p_addr) {
 inline void* cEnemyReactRes::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEnemyReactRes::DTI)->memAlloc(sz, align, ::cEnemyReactRes::DTI.::MtDTI::getID());
 }
+
+inline void* rEnemyReactResEx::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEnemyReactResEx::DTI)->memAlloc(sz, align, ::rEnemyReactResEx::DTI.::MtDTI::getID());
+}
+
+inline rEnemyReactResEx::rEnemyReactResEx() {
+    this->mOverallConditionsType = 1;
+    this->mOverallConditions0 = 0.0f;
+    this->mOverallConditions1 = 0.0f;
+    this->mOverallConditionsBit = 0;
+    this->mOverallConditionsBitMode = false;
+    this->mOverallConditionsReverse = false;
+    for (u32 i = 0; i < REACT_WHERE_NUM; ++i) {
+        this->mWhereType[i] = 1;
+        this->mWhereNo[i] = -1;
+    }
+    this->mWhereNoRev = false;
+    this->mPlayTypeGuard = 1;
+    this->mPlayTypeNamed = 1;
+    this->mPlayTypeAnger = 1;
+    this->mPlayTypeNanteki = 1;
+    this->mPlayTypeYojinoboriAttack = 1;
+    this->mPlayTypeHP = false;
+    this->mPlayTypeHPParam[0] = 0.0f;
+    this->mPlayTypeHPParam[1] = 0.0f;
+    this->mPlayTypeHPParamReverse = false;
+    this->mPlayTypeUseSeq = 3;
+    this->mPlayTypeUseSeqWorkNo = 1;
+    this->mPlayTypeSeqNo = 10;
+    this->mPlayTypeSeqWorkNo = 0;
+    this->mResetTypeBlow = false;
+    this->mResetTypeBlowCount = 1;
+    this->mResetTypeShrink = false;
+    this->mResetTypeShrinkCount = 1;
+    this->mResetTypeDown = false;
+    this->mResetTypeDownCount = 1;
+    this->mResetType = 1;
+    this->mFResetParam = 0.0f;
+    this->mUResetParam = 0;
+    this->mResultThinkTable = false;
+    this->mResultThinkTableNo = -1;
+    this->mResultThinkTableActionGet = false;
+    this->mResultAction = false;
+    this->mResultActionNo = 0;
+    for (u32 i = 0; i < 12; ++i) {
+        this->mCountType[i] = false;
+    }
+}

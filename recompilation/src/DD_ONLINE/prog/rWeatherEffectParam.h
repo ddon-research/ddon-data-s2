@@ -165,9 +165,23 @@ inline void* rWeatherEffectParam::operator new(size_t sz, void* p_addr) {
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../generated/shared/nDDOIO.h"
 
 inline void* cEffectCorrectParam::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cEffectCorrectParam::DTI)->memAlloc(sz, align, cEffectCorrectParam::DTI.getID());
+}
+
+inline void cEffectCorrectParam::save(MtDataWriter& w) {
+    nDDOIO::writeData(w, mTime);
+    nDDOIO::writeData(w, mEfcColorParam.Color);
+    nDDOIO::writeData(w, mEfcColorParam.ColorBlend);
+    nDDOIO::writeData(w, mEfcColorParam.Intensity);
+    nDDOIO::writeData(w, mEfcColorParam.IntensityBlend);
+    nDDOIO::writeData(w, mEfcColorParam.EnvMapPowerScale);
+    nDDOIO::writeData(w, mEfcColorParam.ShadowColor);
+    nDDOIO::writeData(w, mEfcColorParam.ShadowColorBlend);
+    nDDOIO::writeData(w, mEfcColorParam.ShadowIntensity);
+    nDDOIO::writeData(w, mEfcColorParam.ShadowIntensityBlend);
 }
 
 inline void* rWeatherEffectParam::operator new(size_t sz, u32 align) {

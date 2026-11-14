@@ -401,10 +401,26 @@ inline MtRangeU16::MtRangeU16() {
 inline MtSize::MtSize() {
 }
 
+inline MtSize::MtSize(s32 sw, s32 sh) {
+    this->w = sw;
+    this->h = sh;
+}
+
+inline MtSize::MtSize(const MtSize& p) {
+    this->wh = p.wh;
+}
+
 inline MtSizeF::MtSizeF() {
 }
 
 inline MtSizeF::MtSizeF(f32 sw, f32 sh) {
     this->w = sw;
     this->h = sh;
+}
+
+inline MtRect::MtRect(s32 sl, s32 st, s32 sr, s32 sb) {
+    this->l = sl;
+    this->t = st;
+    this->r = sr;
+    this->b = sb;
 }

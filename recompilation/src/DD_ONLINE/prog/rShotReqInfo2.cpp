@@ -31,8 +31,7 @@ cShotReqInfo2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 cShotReqInfo2::MyDTI cShotReqInfo2::DTI("cShotReqInfo2", &::MtObject::DTI, 304ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cShotReqInfo2::MyDTI::newInstance() const {
-    DDON_STUB("cShotReqInfo2::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cShotReqInfo2;
 }
 
 const MtDTI& rShotReqInfo2::getDTI() const {
@@ -48,8 +47,24 @@ inline void rShotReqInfo2::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rShotReqInfo2::loadData(MtDataReader& in, cShotReqInfo2* pData) {
-    DDON_STUB("rShotReqInfo2::loadData")
-    return {};
+    for (s16 i = 0; i < cShotReqInfo2::MAX_REQ_NUM; ++i) {
+        nDDOIO::readData(in, pData->mData.elems[i].mIsUse);
+        nDDOIO::readData(in, pData->mData.elems[i].mShotFlag);
+        nDDOIO::readData(in, pData->mData.elems[i].mShotGroup);
+        nDDOIO::readData(in, pData->mData.elems[i].mShotIndex);
+        nDDOIO::readData(in, pData->mData.elems[i].mSetTarget);
+        nDDOIO::readData(in, pData->mData.elems[i].mJointNo);
+        nDDOIO::readData(in, pData->mData.elems[i].mIsConst);
+        nDDOIO::readData(in, pData->mData.elems[i].mOffsetPos);
+        nDDOIO::readData(in, pData->mData.elems[i].mOffsetDir);
+        nDDOIO::readData(in, pData->mData.elems[i].mIsLockOnTarget);
+        nDDOIO::readData(in, pData->mData.elems[i].mLiveRegionNo);
+        nDDOIO::readData(in, pData->mData.elems[i].mEnchantElementType);
+        nDDOIO::readData(in, pData->mData.elems[i].mUseAbsolutePos);
+        nDDOIO::readData(in, pData->mData.elems[i].mHpRateLimit1);
+        nDDOIO::readData(in, pData->mData.elems[i].mHpRateLimit2);
+    }
+    return true;
 }
 
 MT_CTSTR rShotReqInfo2::getExt() const {

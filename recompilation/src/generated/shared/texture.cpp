@@ -9,42 +9,34 @@
 #endif
 
 __attribute__((weak)) uint32_t sce::Gnm::Texture::getBaseAddress256ByteBlocks() const {
-    DDON_STUB("sce::Gnm::Texture::getBaseAddress256ByteBlocks")
-    return {};
+    return (m_regs[0] & 0xFFFFFFFFL) >> 0;
 }
 
 __attribute__((weak)) void* sce::Gnm::Texture::getBaseAddress() const {
-    DDON_STUB("sce::Gnm::Texture::getBaseAddress")
-    return nullptr;
+    return reinterpret_cast<void*>(static_cast<uintptr_t>(getBaseAddress256ByteBlocks()) << 8);
 }
 
 __attribute__((weak)) uint32_t sce::Gnm::Texture::getPitchMinus1() const {
-    DDON_STUB("sce::Gnm::Texture::getPitchMinus1")
-    return {};
+    return (m_regs[4] & 0x07FFE000L) >> 13;
 }
 
 __attribute__((weak)) uint32_t sce::Gnm::Texture::getWidthMinus1() const {
-    DDON_STUB("sce::Gnm::Texture::getWidthMinus1")
-    return {};
+    return m_regs[2] & 0x3fffu;
 }
 
 __attribute__((weak)) uint32_t sce::Gnm::Texture::getHeightMinus1() const {
-    DDON_STUB("sce::Gnm::Texture::getHeightMinus1")
-    return {};
+    return (m_regs[2] & 0x0FFFC000L) >> 14;
 }
 
 __attribute__((weak)) uint32_t sce::Gnm::Texture::getWidth() const {
-    DDON_STUB("sce::Gnm::Texture::getWidth")
-    return {};
+    return getWidthMinus1() + 1;
 }
 
 __attribute__((weak)) uint32_t sce::Gnm::Texture::getHeight() const {
-    DDON_STUB("sce::Gnm::Texture::getHeight")
-    return {};
+    return getHeightMinus1() + 1;
 }
 
 __attribute__((weak)) uint32_t sce::Gnm::Texture::getPitch() const {
-    DDON_STUB("sce::Gnm::Texture::getPitch")
-    return {};
+    return getPitchMinus1() + 1;
 }
 

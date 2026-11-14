@@ -66,8 +66,48 @@ u32 rEnemyReactResEx::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rEnemyReactResEx::loadCore(MtDataReader& r) {
-    DDON_STUB("rEnemyReactResEx::loadCore")
-    return {};
+    nDDOIO::readData(r, this->mOverallConditionsType);
+    nDDOIO::readData(r, this->mOverallConditions0);
+    nDDOIO::readData(r, this->mOverallConditions1);
+    nDDOIO::readData(r, this->mOverallConditionsReverse);
+    nDDOIO::readData(r, this->mOverallConditionsBitMode);
+    for (u32 i = 0; i < REACT_WHERE_NUM; ++i) {
+        nDDOIO::readData(r, this->mWhereType[i]);
+        nDDOIO::readData(r, this->mWhereNo[i]);
+    }
+    nDDOIO::readData(r, this->mWhereNoRev);
+    nDDOIO::readData(r, this->mPlayTypeGuard);
+    nDDOIO::readData(r, this->mPlayTypeNamed);
+    nDDOIO::readData(r, this->mPlayTypeAnger);
+    nDDOIO::readData(r, this->mPlayTypeNanteki);
+    nDDOIO::readData(r, this->mPlayTypeYojinoboriAttack);
+    nDDOIO::readData(r, this->mPlayTypeHP);
+    nDDOIO::readData(r, this->mPlayTypeHPParam[0]);
+    nDDOIO::readData(r, this->mPlayTypeHPParam[1]);
+    nDDOIO::readData(r, this->mPlayTypeHPParamReverse);
+    nDDOIO::readData(r, this->mPlayTypeUseSeq);
+    nDDOIO::readData(r, this->mPlayTypeUseSeqWorkNo);
+    nDDOIO::readData(r, this->mPlayTypeSeqNo);
+    nDDOIO::readData(r, this->mPlayTypeSeqWorkNo);
+    for (u32 i = 0; i < 12u; ++i) {
+        nDDOIO::readData(r, this->mCountType[i]);
+    }
+    nDDOIO::readData(r, this->mResetTypeBlow);
+    nDDOIO::readData(r, this->mResetTypeBlowCount);
+    nDDOIO::readData(r, this->mResetTypeShrink);
+    nDDOIO::readData(r, this->mResetTypeShrinkCount);
+    nDDOIO::readData(r, this->mResetTypeDown);
+    nDDOIO::readData(r, this->mResetTypeDownCount);
+    nDDOIO::readData(r, this->mResetType);
+    nDDOIO::readData(r, this->mFResetParam);
+    nDDOIO::readData(r, this->mUResetParam);
+    nDDOIO::readData(r, this->mResultThinkTable);
+    nDDOIO::readData(r, this->mResultThinkTableNo);
+    nDDOIO::readData(r, this->mResultThinkTableActionGet);
+    nDDOIO::readData(r, this->mResultAction);
+    nDDOIO::readData(r, this->mResultActionNo);
+    nDDOIO::readData(r, this->mOverallConditionsBit);
+    return this->rTbl2<cEnemyReactRes>::loadCore(r);
 }
 
 rEnemyReactResEx::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -75,8 +115,7 @@ rEnemyReactResEx::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 rEnemyReactResEx::MyDTI rEnemyReactResEx::DTI("rEnemyReactResEx", &::rTbl2Base::DTI, 328ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rEnemyReactResEx::MyDTI::newInstance() const {
-    DDON_STUB("rEnemyReactResEx::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rEnemyReactResEx;
 }
 
 template cEnemyReactRes* rTbl2<cEnemyReactRes>::getData(unsigned int);

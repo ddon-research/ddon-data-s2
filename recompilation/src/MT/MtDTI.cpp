@@ -16,8 +16,13 @@ MtDTI::MtDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr, u32 
 }
 
 __attribute__((weak)) const MtDTI* MtDTI::from(MT_CTSTR name, const MtDTI& root) {
-    DDON_STUB("MtDTI::from")
-    return nullptr;
+    if (name == nullptr) {
+        return nullptr;
+    }
+    if (root.mName != nullptr && strcmp(root.mName, name) == 0) {
+        return &root;
+    }
+    return root.getType(name);
 }
 
 const MtDTI* MtDTI::from(u32 id) {

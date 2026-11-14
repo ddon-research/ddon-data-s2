@@ -58,8 +58,7 @@ cWeaponResTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 cWeaponResTable::MyDTI cWeaponResTable::DTI("cWeaponResTable", &::MtObject::DTI, 96ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cWeaponResTable::MyDTI::newInstance() const {
-    DDON_STUB("cWeaponResTable::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cWeaponResTable;
 }
 
 const MtDTI& rWeaponResTable::getDTI() const {
@@ -75,8 +74,17 @@ inline void rWeaponResTable::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rWeaponResTable::loadData(MtDataReader& in, cWeaponResTable* pData) {
-    DDON_STUB("rWeaponResTable::loadData")
-    return {};
+    ::nDDOIO::readData(in, pData->mMTag);
+    ::nDDOIO::readData(in, pData->mArcTag);
+    ::nDDOIO::readData(in, pData->mSex);
+    ::nDDOIO::readData(in, pData->mpModelRes);
+    ::nDDOIO::readData(in, pData->mpModelRes2);
+    ::nDDOIO::readData(in, pData->mpDeformWeightMapRes);
+    ::nDDOIO::readData(in, pData->mpEffRes);
+    ::nDDOIO::readData(in, pData->mpSndRes);
+    ::nDDOIO::readData(in, pData->mpMontageRes);
+    ::nDDOIO::readData(in, pData->mpMontageRes2);
+    return true;
 }
 
 MT_CTSTR rWeaponResTable::getExt() const {

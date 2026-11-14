@@ -52,8 +52,15 @@ inline void rEmDamageDirInfo::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rEmDamageDirInfo::loadData(MtDataReader& in, cEmDamageDirInfo* pData) {
-    DDON_STUB("rEmDamageDirInfo::loadData")
-    return {};
+    nDDOIO::readData(in, pData->mEmCategory);
+    nDDOIO::readData(in, pData->mDmReactionType);
+    nDDOIO::readData(in, pData->mDirJudgeType);
+    nDDOIO::readData(in, pData->mIsAdjustDir);
+    nDDOIO::readData(in, pData->mIsWeightSpeedXZ);
+    nDDOIO::readData(in, pData->mIsWeightSpeedY);
+    nDDOIO::readData(in, pData->mIsWeightAccXZ);
+    nDDOIO::readData(in, pData->mIsWeightAccY);
+    return true;
 }
 
 MT_CTSTR rEmDamageDirInfo::getExt() const {

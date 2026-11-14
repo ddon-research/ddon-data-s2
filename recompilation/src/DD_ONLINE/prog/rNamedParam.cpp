@@ -29,8 +29,30 @@ inline void cNamedParam::operator delete(void* p_addr) {
 }
 
 cNamedParam::cNamedParam() {
-    DDON_STUB("cNamedParam::cNamedParam")
-    /* stub */
+    this->mID = 0;
+    this->mType = NAMED_TYPE_NONE;
+    this->mHpRate = 100;
+    this->mExperience = 100;
+    this->mAttackBasePhys = 100;
+    this->mAttackWepPhys = 100;
+    this->mDefenceBasePhys = 100;
+    this->mDefenceWepPhys = 100;
+    this->mAttackBaseMagic = 100;
+    this->mAttackWepMagic = 100;
+    this->mDefenceBaseMagic = 100;
+    this->mDefenceWepMagic = 100;
+    this->mPower = 100;
+    this->mGuardDefenceBase = 100;
+    this->mGuardDefenceWep = 100;
+    this->mShrinkEnduranceMain = 100;
+    this->mBlowEnduranceMain = 100;
+    this->mDownEnduranceMain = 100;
+    this->mShakeEnduranceMain = 100;
+    this->mHpSub = 100;
+    this->mShrinkEnduranceSub = 100;
+    this->mBlowEnduranceSub = 100;
+    this->mOcdEndurance = 100;
+    this->mAilmentDamage = 100;
 }
 
 __attribute__((weak)) void cNamedParam::createProperty(MtPropertyList& s) {

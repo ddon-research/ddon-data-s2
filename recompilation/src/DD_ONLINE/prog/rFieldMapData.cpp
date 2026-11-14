@@ -56,8 +56,26 @@ MT_CTSTR rFieldMapData::getExt() const {
 }
 
 __attribute__((weak)) bool rFieldMapData::load(MtStream& in) {
-    DDON_STUB("rFieldMapData::load")
-    return {};
+    MtDataReader r(in, 0x1000u);
+    if (r.readU32() != 0x646d66u) {
+        return false;
+    }
+    u32 ver = r.readU32();
+    if (ver != DATA_VERSION) {
+        return false;
+    }
+    const u32 nArrayData = r.readU32();
+    void* pArrayData = nullptr;
+    if (nArrayData != 0) {
+        pArrayData = getAllocator()->memAlloc(sizeof(Data) * nArrayData, 16u);
+        for (u32 i = 0; i < nArrayData; ++i) {
+            Data* pData = new (static_cast<Data*>(pArrayData) + i) Data;
+            pData->load(r);
+        }
+    }
+    mpArrayData = static_cast<Data*>(pArrayData);
+    mArrayDataNum = nArrayData;
+    return true;
 }
 
 rFieldMapData::Data* rFieldMapData::getData(u32 index) const {

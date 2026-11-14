@@ -124,3 +124,7 @@ inline void cLayoutPreset::operator delete[](void* p_addr) {
 inline void* cLayoutPreset::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cLayoutPreset::DTI)->memAlloc(sz, align, ::cLayoutPreset::DTI.::MtDTI::getID());
 }
+
+inline void rLayoutPreset::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLayoutPreset::DTI)->memFree(p_addr);
+}

@@ -7,6 +7,9 @@
 #include "../MT/MtDTI.h"
 #include "cResource.h"
 
+#include <string.h>
+#include "nGUI.h"
+
 // Forward declarations
 class MtAllocator;
 class MtDTI;

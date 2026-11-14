@@ -16,13 +16,20 @@
 #define DDON_STUB(name)
 #endif
 
+inline void* rZone::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rZone::DTI)->memAlloc(sz, align, rZone::DTI.mID);
+}
+
 const MtDTI& rZone::getDTI() const {
     return rZone::DTI;
 }
 
-rZone::~rZone() {
-    DDON_STUB("rZone::~rZone")
-    /* stub */
+inline void rZone::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rZone::DTI)->memFree(p_addr);
+}
+
+__attribute__((noinline)) rZone::~rZone() {
+    clear();
 }
 
 MT_CTSTR rZone::getExt() const {
@@ -40,8 +47,64 @@ __attribute__((weak)) bool rZone::save(MtStream& out) {
 }
 
 __attribute__((weak)) void rZone::clear() {
-    DDON_STUB("rZone::clear")
-    /* stub */
+    if (getDTI().mID == rZone::DTI.mID) {
+        void* pMemoryTop = mpLayoutElements;
+        if (pMemoryTop == nullptr) {
+            return;
+        }
+        for (u32 i = 0; i < mLayoutElementsNum; i++) {
+            mpLayoutElements[i].~cLayoutElement();
+        }
+        if (mpGroupManagerArray != nullptr) {
+            for (u32 i = 0; i < mGroupManagerArrayNum; i++) {
+                mpGroupManagerArray[i].~cGroupManager();
+            }
+        }
+        if (mpGrid != nullptr) {
+            mpGrid->~cGridCollision();
+        }
+        if (mpGridRegisterInfo != nullptr) {
+            for (u32 i = 0; i < mLayoutElementsNum; i++) {
+                mpGridRegisterInfo[i].~cGridCollisionRegistInfo();
+            }
+        }
+        mpUniqueIDTable = nullptr;
+        mUniqueIDTableNum = 0;
+        mpGroupManagerArray = nullptr;
+        mGroupManagerArrayNum = 0;
+        mLayoutElementsNum = 0;
+        mGlobalLayoutIndexArrayNum = 0;
+        mpLayoutElements = nullptr;
+        mpGridRegisterInfo = nullptr;
+        mpGrid = nullptr;
+        mContentsPool.clearContents();
+        MtMemoryAllocator::getAllocator(rZone::DTI)->memFree(pMemoryTop);
+        return;
+    }
+    if (mpLayoutElements != nullptr) {
+        delete[] mpLayoutElements;
+        mpLayoutElements = nullptr;
+    }
+    mLayoutElementsNum = 0;
+    if (mpUniqueIDTable != nullptr) {
+        MtMemoryAllocator::getAllocator(rZone::DTI)->memFree(mpUniqueIDTable);
+        mpUniqueIDTable = nullptr;
+    }
+    mUniqueIDTableNum = 0;
+    if (mpGroupManagerArray != nullptr) {
+        delete[] mpGroupManagerArray;
+        mpGroupManagerArray = nullptr;
+    }
+    mGroupManagerArrayNum = 0;
+    if (mpGrid != nullptr) {
+        delete mpGrid;
+        mpGrid = nullptr;
+    }
+    if (mpGridRegisterInfo != nullptr) {
+        delete[] mpGridRegisterInfo;
+        mpGridRegisterInfo = nullptr;
+    }
+    mContentsPool.clearContents();
 }
 
 u32 rZone::getLayoutIndexFromUniqueID(u32 UniqueID) const {
@@ -76,8 +139,7 @@ rZone::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 att
 rZone::MyDTI rZone::DTI("rZone", &::cResource::DTI, 256ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rZone::MyDTI::newInstance() const {
-    DDON_STUB("rZone::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rZone;
 }
 
 const MtDTI& rZone::cGroupManager::getDTI() const {

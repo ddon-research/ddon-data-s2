@@ -69,8 +69,23 @@ __attribute__((weak)) bool rScheduler::load(MtStream& in) {
 }
 
 __attribute__((noinline)) rScheduler::~rScheduler() {
-    DDON_STUB("rScheduler::~rScheduler")
-    /* stub */
+        if (mpHeader != nullptr) {
+            u32 tnum = mpHeader->track_num;
+            for (u32 i = 0; i < tnum; i++) {
+                rScheduler::TRACK* pt = &mpHeader->track[i];
+                if (pt->track_type == rScheduler::TRACK::TYPE_RESOURCE) {
+                    cResource** pv = reinterpret_cast<cResource**>(pt->key_value);
+                    for (u32 j = 0; j < pt->key_num; j++) {
+                        if (pv[j] != nullptr) {
+                            pv[j]->release();
+                            pv[j] = nullptr;
+                        }
+                    }
+                }
+            }
+            MtMemoryAllocator::getAllocator(rScheduler::DTI)->memFree(mpHeader);
+            mpHeader = nullptr;
+        }
 }
 
 rScheduler::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -31,8 +31,7 @@ cEquipPresetPalette::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 cEquipPresetPalette::MyDTI cEquipPresetPalette::DTI("cEquipPresetPalette", &::cCharacterEditPaletteBase::DTI, 32ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cEquipPresetPalette::MyDTI::newInstance() const {
-    DDON_STUB("cEquipPresetPalette::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cEquipPresetPalette;
 }
 
 const MtDTI& rEquipPresetPalette::getDTI() const {

@@ -9,6 +9,8 @@
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 
+#include "../../MT/MtMemoryAllocator.h"
+
 // Forward declarations
 class MtAllocator;
 class MtDTI;
@@ -150,4 +152,25 @@ inline void* rFieldMapData::operator new(size_t sz, void* p_addr) {
 
 inline void* rFieldMapData::Data::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline MtAllocator* rFieldMapData::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rFieldMapData::DTI);
+}
+
+inline void rFieldMapData::Data::clear() {
+    mType = TYPE_NONE;
+    mMessId = -1;
+    mSpotMessId = 0;
+    mID = 0;
+    mStageNo = -1;
+    mPoint = MtFloat2::Zero;
+    mWorldPos = MtVector3::Zero;
+    mDispWideMap = false;
+    mVersion = 0;
+    mQuestId = 0;
+}
+
+inline rFieldMapData::Data::Data() {
+    clear();
 }

@@ -113,6 +113,9 @@ inline void* cWepCateResTbl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cWepCateResTbl::cWepCateResTbl() : mCategory(0) {
+}
+
 inline void* rWepCateResTbl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

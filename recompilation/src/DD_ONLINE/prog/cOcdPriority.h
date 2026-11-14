@@ -26,6 +26,8 @@ using u32 = unsigned int;
 class cOcdPriorityParam : public MtObject
 {
     friend class sObjCondition;
+
+    friend class rOcdPriorityParam;
 public:
     class MyDTI;
 public:

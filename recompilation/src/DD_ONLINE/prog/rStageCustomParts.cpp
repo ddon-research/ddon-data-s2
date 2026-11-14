@@ -78,8 +78,38 @@ __attribute__((weak)) void rStageCustomParts::destruct() {
 }
 
 __attribute__((weak)) bool rStageCustomParts::load(MtStream& in) {
-    DDON_STUB("rStageCustomParts::load")
-    return {};
+    MtDataReader r(in, 4096u);
+    if (r.readU32() != 0x706373u) {
+        return false;
+    }
+    u32 ver = r.readU32();
+    if (ver != DATA_VERSION) {
+        return false;
+    }
+    mParam.load(r);
+    const u32 nArrayInfo = r.readU32();
+    void* pArrayInfo = nullptr;
+    if (nArrayInfo != 0) {
+        pArrayInfo = MtMemoryAllocator::getAllocator(rStageCustomParts::DTI)->memAlloc(sizeof(Info) * nArrayInfo, 16u);
+        for (u32 i = 0; i < nArrayInfo; i++) {
+            Info* pInfo = new (static_cast<Info*>(pArrayInfo) + i) Info;
+            pInfo->load(r);
+        }
+    }
+    mpArrayInfo = static_cast<Info*>(pArrayInfo);
+    mArrayInfoNum = nArrayInfo;
+    const u32 nArrayFilter = r.readU32();
+    void* pArrayFilter = nullptr;
+    if (nArrayFilter != 0) {
+        pArrayFilter = MtMemoryAllocator::getAllocator(rStageCustomParts::DTI)->memAlloc(sizeof(Filter) * nArrayFilter, 16u);
+        for (u32 i = 0; i < nArrayFilter; i++) {
+            Filter* pFilter = new (static_cast<Filter*>(pArrayFilter) + i) Filter;
+            pFilter->load(r);
+        }
+    }
+    mpArrayFilter = static_cast<Filter*>(pArrayFilter);
+    mArrayFilterNum = nArrayFilter;
+    return true;
 }
 
 bool rStageCustomParts::save(MtStream& out) {
@@ -220,9 +250,8 @@ const MtDTI& rStageCustomParts::Info::getDTI() const {
     return rStageCustomParts::Info::DTI;
 }
 
-rStageCustomParts::Info::Info() {
-    DDON_STUB("rStageCustomParts::Info::Info")
-    /* stub */
+__attribute__((noinline)) rStageCustomParts::Info::Info() {
+    clear();
 }
 
 rStageCustomParts::Info::~Info() {
@@ -238,8 +267,35 @@ MtUI* rStageCustomParts::Info::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rStageCustomParts::Info::load(MtDataReader& r) {
-    DDON_STUB("rStageCustomParts::Info::load")
-    return {};
+    r.readString(mModel, 64u);
+    for (u32 i = 0; i < 3; i++) {
+        r.readString(mScrSbc[i], 64u);
+        r.readString(mEffSbc[i], 64u);
+    }
+    r.readString(mLight, 64u);
+    r.readString(mNaviMesh, 64u);
+    r.readString(mEpv, 64u);
+    r.readString(mOccluder, 64u);
+    mAreaNo = r.readU16();
+    mType = r.readU16();
+    nDDOIO::readData(r, mSize);
+    mOffsetZ = r.readF32();
+    mEpvIndexAlways = r.readS32();
+    mEpvIndexDay = r.readS32();
+    mEpvIndexNight = r.readS32();
+    mColor.rgba = r.readU32();
+    nDDOIO::readData(r, mEfcColorZone);
+    nDDOIO::readData(r, mEfcCtrlZone);
+    nDDOIO::readData(r, mIndoorZoneScr);
+    nDDOIO::readData(r, mIndoorZoneEfc);
+    nDDOIO::readData(r, mLightAndFogZone);
+    nDDOIO::readData(r, mSoundAreaInfo);
+    for (u32 i = 0; i < 3; i++) {
+        nDDOIO::readData(r, mZoneUnitCtrl[i]);
+    }
+    nDDOIO::readData(r, mZoneStatus);
+    nDDOIO::readData(r, mComment);
+    return true;
 }
 
 __attribute__((weak)) bool rStageCustomParts::Info::save(MtDataWriter& w) {
@@ -276,9 +332,25 @@ __attribute__((weak)) bool rStageCustomParts::Info::save(MtDataWriter& w) {
     return true;
 }
 
-__attribute__((weak)) void rStageCustomParts::Info::clear() {
-    DDON_STUB("rStageCustomParts::Info::clear")
-    /* stub */
+void rStageCustomParts::Info::clear() {
+    mModel[0] = 0;
+    for (u32 i = 0; i < 3; i++) {
+        mScrSbc[i][0] = 0;
+        mEffSbc[i][0] = 0;
+    }
+    mLight[0] = 0;
+    mNaviMesh[0] = 0;
+    mEpv[0] = 0;
+    mOccluder[0] = 0;
+    mAreaNo = 0;
+    mSize = 1;
+    mType = 0;
+    mOffsetZ = 0.0f;
+    mEpvIndexAlways = 0;
+    mEpvIndexDay = 1;
+    mEpvIndexNight = 2;
+    mColor = MtColor::White;
+    mComment = "";
 }
 
 void rStageCustomParts::Info::setModelName(const MtString& name) {

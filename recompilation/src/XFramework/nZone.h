@@ -1156,6 +1156,24 @@ inline f32 nZone::ShapeInfoCone::getHeight() const {
     return this->mHeight;
 }
 
+inline void nZone::ShapeInfoCylinder::setParam(const MtCylinder& c) {
+    this->mCylinder = c;
+}
+
+inline nZone::ShapeInfoBase::ShapeInfoBase() : mDecay(1.0f), mIsNativeData(false) {
+}
+
+inline void nZone::ShapeInfoArea::repairHeightAndBottom() {
+    if (this->mHeight < 0.0f) {
+        this->mBottom += this->mHeight;
+        this->mHeight = -this->mHeight;
+        this->mVertex[0].y = this->mBottom;
+        this->mVertex[1].y = this->mBottom;
+        this->mVertex[2].y = this->mBottom;
+        this->mVertex[3].y = this->mBottom;
+    }
+}
+
 inline void* nZone::ShapeInfoGlobal::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

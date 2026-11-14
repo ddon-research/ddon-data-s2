@@ -172,3 +172,41 @@ inline void cCharacterEditCameraParam::operator delete[](void* p_addr) {
 inline void* cCharacterEditCameraParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCharacterEditCameraParam::DTI)->memAlloc(sz, align, ::cCharacterEditCameraParam::DTI.::MtDTI::getID());
 }
+
+inline MtAllocator* cCharacterEditCameraParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCharacterEditCameraParam::DTI);
+}
+
+inline void* cCharacterEditCameraParam::operator new(size_t sz, u32 align) {
+    return ::cCharacterEditCameraParam::getAllocator()->memAlloc(sz, align, ::cCharacterEditCameraParam::DTI.::MtDTI::getID());
+}
+
+inline void cCharacterEditCameraParam::operator delete(void* p_addr) {
+    ::cCharacterEditCameraParam::getAllocator()->memFree(p_addr);
+}
+
+inline cCharacterEditCameraParam::cCharacterEditCameraParam() {
+    mUseFarParam = false;
+    mNearFarParcent = 0.5f;
+    mDefaultLength = 200.0f;
+    mLimitRotateX.set(0.4f, -0.7f);
+    mLimitLength.set(440.0f, 170.0f);
+}
+
+inline MtAllocator* rCharacterEditCameraParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rCharacterEditCameraParam::DTI);
+}
+
+inline void rCharacterEditCameraParam::operator delete(void* p_addr) {
+    ::rCharacterEditCameraParam::getAllocator()->memFree(p_addr);
+}
+
+#include "../../generated/shared/nDDOIO.h"
+
+inline bool cCharacterEditCameraParam::cCameraParam::load(MtDataReader& r) {
+    nDDOIO::readData(r, mAttachJoint);
+    nDDOIO::readData(r, mCameraOffset);
+    nDDOIO::readData(r, mTargetOffset);
+    nDDOIO::readData(r, mGlobalOffset);
+    return true;
+}

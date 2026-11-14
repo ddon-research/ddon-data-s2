@@ -77,13 +77,100 @@ MtUI* AreaHitShape::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool AreaHitShape::load(MtDataReader& r, AreaHitShape::NativeAllocInfo* pBuffer) {
-    DDON_STUB("AreaHitShape::load")
-    return {};
+    nDDOIO::readData(r, mName);
+    nDDOIO::readData(r, mCheckAngle);
+    nDDOIO::readData(r, mCheckRange);
+    nDDOIO::readData(r, mCheckToward);
+    nDDOIO::readData(r, mAngleFlag);
+    nDDOIO::readData(r, mTowardFlag);
+    AREAHIT_SHAPE_TYPE_ENUM type = static_cast<AREAHIT_SHAPE_TYPE_ENUM>(r.readS32());
+    mIsDeleteZone = true;
+    MtCylinder cyl;
+    switch (type) {
+    case AREAHIT_SHAPE_TYPE_BOX:
+        if (pBuffer != nullptr && pBuffer->pShapeBoxArray != nullptr && pBuffer->ShapeBoxUseNum < pBuffer->ShapeBoxMaxNum) {
+            mpZone = &pBuffer->pShapeBoxArray[pBuffer->ShapeBoxUseNum++];
+            mIsDeleteZone = false;
+        } else {
+            mpZone = new (16u) nZone::ShapeInfoArea;
+        }
+        break;
+    case AREAHIT_SHAPE_TYPE_SPHERE:
+        if (pBuffer != nullptr && pBuffer->pShapeSphereArray != nullptr && pBuffer->ShapeSphereUseNum < pBuffer->ShapeSphereMaxNum) {
+            mpZone = &pBuffer->pShapeSphereArray[pBuffer->ShapeSphereUseNum++];
+            mIsDeleteZone = false;
+        } else {
+            mpZone = new (16u) nZone::ShapeInfoSphere;
+        }
+        break;
+    case AREAHIT_SHAPE_TYPE_CYLINDER: {
+        nZone::ShapeInfoCylinder* t1 = nullptr;
+        if (pBuffer != nullptr && pBuffer->pShapeCylinderArray != nullptr && pBuffer->ShapeCylinderUseNum < pBuffer->ShapeCylinderMaxNum) {
+            t1 = &pBuffer->pShapeCylinderArray[pBuffer->ShapeCylinderUseNum++];
+            mIsDeleteZone = false;
+        } else {
+            t1 = new (16u) nZone::ShapeInfoCylinder;
+        }
+        cyl.p0 = MtVector3::Zero;
+        cyl.p1 = MtVector3(0.0f, 100.0f, 0.0f);
+        cyl.r = 50.0f;
+        t1->setParam(cyl);
+        mpZone = t1;
+        break;
+    }
+    case AREAHIT_SHAPE_TYPE_CONE:
+        if (pBuffer != nullptr && pBuffer->pShapeConeArray != nullptr && pBuffer->ShapeConeUseNum < pBuffer->ShapeConeMaxNum) {
+            mpZone = &pBuffer->pShapeConeArray[pBuffer->ShapeConeUseNum++];
+            mIsDeleteZone = false;
+        } else {
+            mpZone = new (16u) nZone::ShapeInfoCone;
+        }
+        break;
+    case AREAHIT_SHAPE_TYPE_AABB:
+        if (pBuffer != nullptr && pBuffer->pShapeAABBArray != nullptr && pBuffer->ShapeAABBUseNum < pBuffer->ShapeAABBMaxNum) {
+            mpZone = &pBuffer->pShapeAABBArray[pBuffer->ShapeAABBUseNum++];
+            mIsDeleteZone = false;
+        } else {
+            mpZone = new (16u) nZone::ShapeInfoAABB;
+        }
+        break;
+    case AREAHIT_SHAPE_TYPE_OBB:
+        if (pBuffer != nullptr && pBuffer->pShapeOBBArray != nullptr && pBuffer->ShapeOBBUseNum < pBuffer->ShapeOBBMaxNum) {
+            mpZone = &pBuffer->pShapeOBBArray[pBuffer->ShapeOBBUseNum++];
+            mIsDeleteZone = false;
+        } else {
+            mpZone = new (16u) nZone::ShapeInfoOBB;
+        }
+        break;
+    default:
+        mpZone = nullptr;
+        break;
+    }
+    if (mpZone == nullptr) {
+        return type == AREAHIT_SHAPE_TYPE_NONE;
+    }
+    mpZone->loadBinary(r);
+    mZoneBoundingBox = mpZone->getAABB();
+    return true;
 }
 
 __attribute__((weak)) bool AreaHitShape::save(MtDataWriter& w) {
-    DDON_STUB("AreaHitShape::save")
-    return {};
+    nDDOIO::writeData(w, mName);
+    nDDOIO::writeData(w, mCheckAngle);
+    nDDOIO::writeData(w, mCheckRange);
+    nDDOIO::writeData(w, mCheckToward);
+    nDDOIO::writeData(w, mAngleFlag);
+    nDDOIO::writeData(w, mTowardFlag);
+    AREAHIT_SHAPE_TYPE_ENUM type = getShapeType();
+    w.writeS32(type);
+    if (type == AREAHIT_SHAPE_TYPE_NONE) {
+        return true;
+    }
+    if (mpZone == nullptr) {
+        return false;
+    }
+    mpZone->saveBinary(w);
+    return true;
 }
 
 __attribute__((weak)) AreaHitShape& AreaHitShape::operator=(const AreaHitShape& shape) {
@@ -96,9 +183,33 @@ __attribute__((weak)) AreaHitShape* AreaHitShape::createShape(AREAHIT_SHAPE_TYPE
     return nullptr;
 }
 
-__attribute__((weak)) AREAHIT_SHAPE_TYPE_ENUM AreaHitShape::getShapeType() const {
-    DDON_STUB("AreaHitShape::getShapeType")
-    return {};
+AREAHIT_SHAPE_TYPE_ENUM AreaHitShape::getShapeType() const {
+    AREAHIT_SHAPE_TYPE_ENUM type = AREAHIT_SHAPE_TYPE_NONE;
+    if (mpZone != nullptr) {
+        switch (mpZone->getShapeType()) {
+        case nZone::ShapeInfoBase::SHAPE_TYPE_AREA:
+            type = AREAHIT_SHAPE_TYPE_BOX;
+            break;
+        case nZone::ShapeInfoBase::SHAPE_TYPE_AABB:
+            type = AREAHIT_SHAPE_TYPE_AABB;
+            break;
+        case nZone::ShapeInfoBase::SHAPE_TYPE_OBB:
+            type = AREAHIT_SHAPE_TYPE_OBB;
+            break;
+        case nZone::ShapeInfoBase::SHAPE_TYPE_SPHERE:
+            type = AREAHIT_SHAPE_TYPE_SPHERE;
+            break;
+        case nZone::ShapeInfoBase::SHAPE_TYPE_CYLINDER:
+            type = AREAHIT_SHAPE_TYPE_CYLINDER;
+            break;
+        case nZone::ShapeInfoBase::SHAPE_TYPE_CONE:
+            type = AREAHIT_SHAPE_TYPE_CONE;
+            break;
+        default:
+            break;
+        }
+    }
+    return type;
 }
 
 __attribute__((weak)) MtVector3 AreaHitShape::getCenter() const {
@@ -138,8 +249,7 @@ AreaHitShape::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, 
 AreaHitShape::MyDTI AreaHitShape::DTI("AreaHitShape", &::MtObject::DTI, 80ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* AreaHitShape::MyDTI::newInstance() const {
-    DDON_STUB("AreaHitShape::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) AreaHitShape;
 }
 
 const MtDTI& cAreaHit::getDTI() const {

@@ -66,8 +66,21 @@ __attribute__((weak)) void cStaminaDecList::createProperty(MtPropertyList& propl
 }
 
 __attribute__((weak)) bool cStaminaDecList::importBinary(MtDataReader& reader) {
-    DDON_STUB("cStaminaDecList::importBinary")
-    return {};
+    mStaminaDecList.deleteAll(true);
+    u32 size = reader.readU32();
+    mStaminaType = reader.readU32();
+    mValueType = static_cast<nStamina::VALUE_TYPE>(reader.readS32());
+    mCType = static_cast<nStamina::CONTINUATION_TYPE>(reader.readS32());
+    mExecuteType = static_cast<nStamina::UPDATE_TYPE>(reader.readS32());
+    mStaminaDecList.reserve(size);
+    for (u32 i = 0; i < size; ++i) {
+        cStaminaDecParam* param = new (16u) cStaminaDecParam;
+        if (param != nullptr) {
+            param->importBinary(reader);
+            mStaminaDecList.add(param);
+        }
+    }
+    return true;
 }
 
 cStaminaDecList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -167,13 +180,40 @@ MtUI* rStaminaDecTbl::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rStaminaDecTbl::load(MtStream& in) {
-    DDON_STUB("rStaminaDecTbl::load")
-    return {};
+    MtDataReader reader(in, 0x1000u);
+    u32 magic = reader.readU32();
+    if (magic != 0x746473u) {
+        return false;
+    }
+    u32 version = reader.readU32();
+    if (version != 5u) {
+        return false;
+    }
+    u32 size = reader.readU32();
+    mDecTbl.deleteAll(true);
+    if (size > 0u) {
+        mDecTbl.reserve(size);
+    }
+    for (u32 i = 0; i < size; ++i) {
+        cStaminaDecList* pData = new (16u) cStaminaDecList;
+        if (pData != nullptr) {
+            pData->importBinary(reader);
+            mDecTbl.add(pData);
+        }
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rStaminaDecTbl::save(MtStream& out) {
-    DDON_STUB("rStaminaDecTbl::save")
-    return {};
+    MtDataWriter writer(out, 0x1000u, 0x1000u);
+    writer.writeU32(0x746473u);
+    writer.writeU32(5u);
+    u32 size = mDecTbl.length();
+    writer.writeU32(size);
+    for (u32 i = 0; i < size; ++i) {
+        static_cast<cStaminaDecList*>(mDecTbl.mpArray[i])->exportBinary(writer);
+    }
+    return true;
 }
 
 void rStaminaDecTbl::clear() {

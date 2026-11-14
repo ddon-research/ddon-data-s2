@@ -64,8 +64,11 @@ inline void rWepCateResTbl::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rWepCateResTbl::loadData(MtDataReader& in, cWepCateResTbl* pData) {
-    DDON_STUB("rWepCateResTbl::loadData")
-    return {};
+    nDDOIO::readData(in, pData->mCategory);
+    nDDOIO::readData(in, pData->mArcTag);
+    nDDOIO::readData(in, pData->mpEffRes);
+    nDDOIO::readData(in, pData->mpSndRes);
+    return true;
 }
 
 MT_CTSTR rWepCateResTbl::getExt() const {

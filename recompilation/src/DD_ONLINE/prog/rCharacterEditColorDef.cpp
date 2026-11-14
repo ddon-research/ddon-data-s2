@@ -28,8 +28,7 @@ cCharacterEditColorDef::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 cCharacterEditColorDef::MyDTI cCharacterEditColorDef::DTI("cCharacterEditColorDef", &::cCharacterEditPaletteBase::DTI, 64ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cCharacterEditColorDef::MyDTI::newInstance() const {
-    DDON_STUB("cCharacterEditColorDef::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cCharacterEditColorDef;
 }
 
 const MtDTI& rCharacterEditColorDef::getDTI() const {

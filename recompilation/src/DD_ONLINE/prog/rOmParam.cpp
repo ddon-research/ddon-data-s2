@@ -72,8 +72,7 @@ cOmParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 
 cOmParam::MyDTI cOmParam::DTI("cOmParam", &::MtObject::DTI, 416ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cOmParam::MyDTI::newInstance() const {
-    DDON_STUB("cOmParam::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cOmParam;
 }
 
 const MtDTI& rOmParam::getDTI() const {
@@ -93,8 +92,7 @@ inline rOmParam::rOmParam() {
 }
 
 __attribute__((weak)) const MtDTI& rOmParam::getDataDTI() {
-    DDON_STUB("rOmParam::getDataDTI")
-    __builtin_unreachable();
+    return cOmParam::DTI;
 }
 
 MT_CTSTR rOmParam::getExt() const {
@@ -111,13 +109,27 @@ bool rOmParam::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rOmParam::loadData(MtDataReader& in) {
-    DDON_STUB("rOmParam::loadData")
-    return {};
+    u32 magic = in.readU32();
+    u32 version = in.readU16();
+    if (magic != mMagic || version != cOmParam::DATA_VERSION) {
+        return false;
+    }
+    u32 dmy = in.readU16();
+    u32 Num = in.readU32();
+    bool ret = true;
+    for (u32 i = 0; i < Num; i++) {
+        cOmParam* pObj = new (16u) cOmParam;
+        if (pObj != nullptr) {
+            loadData(in, pObj);
+            mArray.add(pObj);
+        }
+    }
+    return ret;
 }
 
 __attribute__((weak)) bool rOmParam::save(MtStream& out) {
-    DDON_STUB("rOmParam::save")
-    return {};
+    MtDataWriter w(out, MtDataWriter::DEFAULT_BUFFERSIZE, MtDataWriter::DEFAULT_LABELSIZE);
+    return saveData(w);
 }
 
 bool rOmParam::loadData(MtDataReader& in, cOmParam* pData) {
@@ -185,8 +197,67 @@ bool rOmParam::loadData(MtDataReader& in, cOmParam* pData) {
 }
 
 __attribute__((weak)) bool rOmParam::saveData(MtDataWriter& out, cOmParam* pData) {
-    DDON_STUB("rOmParam::saveData")
-    return {};
+    nDDOIO::writeData(out, pData->mOmID);
+    nDDOIO::writeData(out, pData->mrModel);
+    nDDOIO::writeData(out, pData->mrObjCollision);
+    nDDOIO::writeData(out, pData->mrMotionList);
+    nDDOIO::writeData(out, pData->mrSoundMotionSe);
+    nDDOIO::writeData(out, pData->mUnitDTIID);
+    nDDOIO::writeData(out, pData->mUseComponent);
+    nDDOIO::writeData(out, pData->mOmSetType);
+    nDDOIO::writeData(out, pData->mrEffectProvider);
+    nDDOIO::writeData(out, pData->mrSoundRequest);
+    nDDOIO::writeData(out, pData->mReqSeFlag);
+    nDDOIO::writeData(out, pData->mFxIndex[0]);
+    nDDOIO::writeData(out, pData->mSeIndex[0]);
+    nDDOIO::writeData(out, pData->mFxIndex[1]);
+    nDDOIO::writeData(out, pData->mSeIndex[1]);
+    nDDOIO::writeData(out, pData->mFxIndex[2]);
+    nDDOIO::writeData(out, pData->mSeIndex[2]);
+    nDDOIO::writeData(out, pData->mFxIndex[3]);
+    nDDOIO::writeData(out, pData->mSeIndex[3]);
+    nDDOIO::writeData(out, pData->mrSwingModel);
+    nDDOIO::writeData(out, pData->mrSoftBody);
+    nDDOIO::writeData(out, pData->mrRigidBody);
+    nDDOIO::writeData(out, pData->mrBrRigidBody);
+    nDDOIO::writeData(out, pData->mrBrModel);
+    nDDOIO::writeData(out, pData->mrBrSoftBody);
+    nDDOIO::writeData(out, pData->mrCaught);
+    nDDOIO::writeData(out, pData->mrZone);
+    nDDOIO::writeData(out, pData->mrOmZone);
+    nDDOIO::writeData(out, pData->mrJointInfo);
+    nDDOIO::writeData(out, pData->mDetailBehavior);
+    nDDOIO::writeData(out, pData->mMapIcon);
+    nDDOIO::writeData(out, pData->mKillLength);
+    nDDOIO::writeData(out, pData->mbUseNightColor);
+    nDDOIO::writeData(out, pData->mNightColor);
+    out.writeF32(pData->mRigidTime);
+    out.writeF32(pData->mRigidForce);
+    out.writeF32(pData->mRigidOfsY);
+    out.writeF32(pData->mRigidVelocity);
+    out.writeF32(pData->mRigidWorldOfsY);
+    out.writeF32(pData->mRigid1Frame);
+    out.writeF32(pData->mOffSeLength);
+    nDDOIO::writeData(out, pData->mKeyOfs);
+    nDDOIO::writeData(out, pData->mbNav);
+    nDDOIO::writeData(out, pData->mNavOBBPos);
+    nDDOIO::writeData(out, pData->mNavOBBExtent);
+    nDDOIO::writeData(out, pData->mbAtk);
+    out.writeU32(pData->mShotGroup);
+    out.writeS32(pData->mWepType);
+    out.writeF32(pData->mThrowVelocity);
+    out.writeF32(pData->mThrowVectorY);
+    out.writeU32(pData->mArcTagID);
+    out.writeS32(pData->mTargetJntNo);
+    nDDOIO::writeData(out, pData->mTargetOfs);
+    nDDOIO::writeData(out, pData->mColliOffFrame);
+    nDDOIO::writeData(out, pData->mBlinkType);
+    nDDOIO::writeData(out, pData->mrCollision[0][0]);
+    nDDOIO::writeData(out, pData->mrCollision[0][1]);
+    nDDOIO::writeData(out, pData->mrCollision[1][0]);
+    nDDOIO::writeData(out, pData->mrCollision[1][1]);
+    nDDOIO::writeData(out, pData->mVersion);
+    return true;
 }
 
 rOmParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -134,8 +134,24 @@ inline void* rHeadCtrl::operator new(size_t sz, void* p_addr) {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline cHeadCtrl::cHeadCtrl() {
+    mJntNo = -1;
+    mAngleBlend = 1.0f;
+    mAngleLimit.x = 180.0f;
+    mAngleLimit.y = 180.0f;
+    mLocal = false;
+    mLocalAxis = 1u;
+    mPitchBlend = 1.0f;
+    mPitchLimit.x = 60.0f;
+    mPitchLimit.y = 0.0f;
+}
+
 inline void cHeadCtrl::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cHeadCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cHeadCtrl::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cHeadCtrl::DTI)->memAlloc(sz, align, cHeadCtrl::DTI.getID());
 }
 
 inline void* cHeadCtrl::operator new[](size_t sz, u32 align) {

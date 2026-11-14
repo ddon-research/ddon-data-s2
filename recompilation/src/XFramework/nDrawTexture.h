@@ -3,6 +3,9 @@
 #include <cstdint>
 #include <cstddef>
 
+#include <string.h>
+#include "../generated/shared/gpumem.h"
+
 // Dependencies
 #include "../MT/MtDTI.h"
 #include "../generated/shared/dataformats.h"
@@ -11,6 +14,121 @@
 #include "nDrawResource.h"
 #include "../generated/shared/rendertarget.h"
 #include "../generated/shared/texture.h"
+
+namespace sce {
+    namespace GpuAddress {
+        enum SurfaceType
+        {
+            kSurfaceTypeTextureFlat = 0,
+            kSurfaceTypeColorTargetDisplayable = 1,
+            kSurfaceTypeColorTarget = 2,
+            kSurfaceTypeTextureVolume = 3,
+            kSurfaceTypeDepthOnlyTarget = 4,
+        };
+
+        class TilingParameters
+        {
+        public:
+            int32_t initFromTexture(const sce::Gnm::Texture* texture, uint32_t mipLevel, uint32_t arraySlice);
+            uint32_t m_raw[12];
+        };
+
+        inline int32_t computeSurfaceTileMode(sce::Gnm::TileMode* outTileMode, sce::GpuAddress::SurfaceType surfaceType, sce::Gnm::DataFormat format, uint32_t numSamples) {
+            (void)surfaceType;
+            (void)format;
+            (void)numSamples;
+            if (outTileMode) {
+                *outTileMode = sce::Gnm::kTileModeDisplay_LinearAligned;
+            }
+            return 0;
+        }
+
+        inline int32_t computeTextureSurfaceOffsetAndSize(uint64_t* outOffset, uint64_t* outSize, const sce::Gnm::Texture* texture, uint32_t mipLevel, uint32_t arraySlice) {
+            uint32_t surfFmt = texture->m_regs[1] & 0xffu;
+            uint32_t bpe = 4u;
+            switch (surfFmt) {
+            case sce::Gnm::kSurfaceFormat8:
+                bpe = 1u;
+                break;
+            case sce::Gnm::kSurfaceFormat16:
+            case sce::Gnm::kSurfaceFormat8_8:
+            case sce::Gnm::kSurfaceFormat5_6_5:
+            case sce::Gnm::kSurfaceFormat1_5_5_5:
+            case sce::Gnm::kSurfaceFormat5_5_5_1:
+            case sce::Gnm::kSurfaceFormat4_4_4_4:
+                bpe = 2u;
+                break;
+            case sce::Gnm::kSurfaceFormat32_32:
+            case sce::Gnm::kSurfaceFormat16_16_16_16:
+                bpe = 8u;
+                break;
+            case sce::Gnm::kSurfaceFormat32_32_32:
+                bpe = 12u;
+                break;
+            case sce::Gnm::kSurfaceFormat32_32_32_32:
+                bpe = 16u;
+                break;
+            default:
+                bpe = 4u;
+                break;
+            }
+            uint32_t height = ((texture->m_regs[2] >> 14) & 0x3fffu) + 1u;
+            uint32_t pitch = ((texture->m_regs[4] >> 13) & 0x3fffu) + 1u;
+            uint64_t sliceSize = static_cast<uint64_t>(pitch) * height * bpe;
+            uint64_t offset = static_cast<uint64_t>(arraySlice) * sliceSize;
+            uint64_t curSize = sliceSize;
+            for (uint32_t m = 0; m < mipLevel; ++m) {
+                offset += curSize;
+                curSize = (curSize >= 4u) ? (curSize >> 2) : 1u;
+            }
+            if (outOffset) {
+                *outOffset = offset;
+            }
+            if (outSize) {
+                *outSize = curSize;
+            }
+            return 0;
+        }
+
+        inline int32_t TilingParameters::initFromTexture(const sce::Gnm::Texture* texture, uint32_t mipLevel, uint32_t arraySlice) {
+            uint64_t ofs = 0;
+            uint64_t sz = 0;
+            computeTextureSurfaceOffsetAndSize(&ofs, &sz, texture, mipLevel, arraySlice);
+            for (int i = 0; i < 12; ++i) {
+                m_raw[i] = 0;
+            }
+            m_raw[0] = static_cast<uint32_t>(sz);
+            m_raw[1] = static_cast<uint32_t>(sz >> 32);
+            return 0;
+        }
+
+        inline int32_t computeUntiledSurfaceSize(uint64_t* outSize, sce::Gnm::AlignmentType* outAlign, const sce::GpuAddress::TilingParameters* tp) {
+            if (outSize) {
+                *outSize = static_cast<uint64_t>(tp->m_raw[0]) | (static_cast<uint64_t>(tp->m_raw[1]) << 32);
+            }
+            if (outAlign) {
+                *outAlign = 256u;
+            }
+            return 0;
+        }
+
+        inline int32_t detileSurface(void* outUntiledPixels, const void* tiledPixels, const sce::GpuAddress::TilingParameters* tp) {
+            uint64_t sz = static_cast<uint64_t>(tp->m_raw[0]) | (static_cast<uint64_t>(tp->m_raw[1]) << 32);
+            if (outUntiledPixels && tiledPixels && sz) {
+                memcpy(outUntiledPixels, tiledPixels, static_cast<size_t>(sz));
+            }
+            return 0;
+        }
+
+        inline int32_t tileSurface(void* outTiledPixels, const void* untiledPixels, const sce::GpuAddress::TilingParameters* tp) {
+            uint64_t sz = static_cast<uint64_t>(tp->m_raw[0]) | (static_cast<uint64_t>(tp->m_raw[1]) << 32);
+            if (outTiledPixels && untiledPixels && sz) {
+                memcpy(outTiledPixels, untiledPixels, static_cast<size_t>(sz));
+            }
+            return 0;
+        }
+    }  // namespace GpuAddress
+}  // namespace sce
 
 // Forward declarations
 class MtAllocator;
@@ -379,4 +497,20 @@ inline bool nDraw::Texture::isSRGB() const {
 
 inline u32 nDraw::Texture::getMiscFlags() const {
     return this->mMiscFlags;
+}
+
+inline nDraw::TEXTURE_TYPE nDraw::Texture::getType() const {
+    return static_cast<nDraw::TEXTURE_TYPE>(this->mTextureType);
+}
+
+inline bool nDraw::Texture::isSRGBFormat(nDraw::FORMAT_TYPE fmt) {
+    return fmt == FORMAT_R8G8B8A8_UNORM_SRGB ||
+           fmt == FORMAT_BC1_UNORM_SRGB ||
+           fmt == FORMAT_BC2_UNORM_SRGB ||
+           fmt == FORMAT_BC3_UNORM_SRGB ||
+           fmt == FORMAT_BCX_RGBI_SRGB ||
+           fmt == FORMAT_BCX_RGBY_SRGB ||
+           fmt == FORMAT_B8G8R8A8_UNORM_SRGB ||
+           fmt == FORMAT_BCX_YCCA_SRGB ||
+           fmt == FORMAT_BC7_UNORM_SRGB;
 }

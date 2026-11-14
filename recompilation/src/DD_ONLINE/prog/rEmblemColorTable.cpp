@@ -25,8 +25,7 @@ cEmblemColorTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 cEmblemColorTable::MyDTI cEmblemColorTable::DTI("cEmblemColorTable", &::MtObject::DTI, 16ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cEmblemColorTable::MyDTI::newInstance() const {
-    DDON_STUB("cEmblemColorTable::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cEmblemColorTable;
 }
 
 const MtDTI& rEmblemColorTable::getDTI() const {
@@ -46,7 +45,7 @@ bool rEmblemColorTable::loadData(MtDataReader& r, cEmblemColorTable* pData) {
     s32 gg = r.readS32();
     s32 bb = r.readS32();
     s32 aa = r.readS32();
-    pData->mColor.rgba = static_cast<unsigned int>(((static_cast<unsigned long>(aa * 16777216) | static_cast<unsigned long>((bb * 65536) & 0xFF0000)) | static_cast<unsigned long>(static_cast<unsigned char>(rr))) | static_cast<unsigned long>(static_cast<unsigned short>(gg * 256)));
+    pData->mColor.rgba = static_cast<unsigned int>(((static_cast<unsigned long>(aa * 16777216u) | static_cast<unsigned long>((bb * 65536u) & 0xFF0000)) | static_cast<unsigned long>(static_cast<unsigned char>(rr))) | static_cast<unsigned long>(static_cast<unsigned short>(gg * 256u)));
     return true;
 }
 

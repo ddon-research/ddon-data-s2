@@ -35,8 +35,7 @@ inline rStageList::rStageList() {
 }
 
 rStageList::~rStageList() {
-    DDON_STUB("rStageList::~rStageList")
-    /* stub */
+    destruct();
 }
 
 MT_CTSTR rStageList::getExt() const {
@@ -44,13 +43,38 @@ MT_CTSTR rStageList::getExt() const {
 }
 
 __attribute__((weak)) bool rStageList::load(MtStream& in) {
-    DDON_STUB("rStageList::load")
-    return {};
+    MtDataReader r(in, 4096);
+    if (r.readU32() != 0x746c73u) {
+        return false;
+    }
+    u32 ver = r.readU32();
+    if (ver != DATA_VERSION) {
+        return false;
+    }
+    const u32 nArrayInfo = r.readU32();
+    void* pArrayInfo = nullptr;
+    if (nArrayInfo != 0) {
+        pArrayInfo = getAllocator()->memAlloc(sizeof(Info) * nArrayInfo, 16u);
+        for (u32 i = 0; i < nArrayInfo; i++) {
+            Info* pInfo = new (static_cast<Info*>(pArrayInfo) + i) Info();
+            pInfo->load(r);
+        }
+    }
+    mpArrayInfo = static_cast<Info*>(pArrayInfo);
+    mArrayInfoNum = nArrayInfo;
+    return true;
 }
 
 __attribute__((weak)) bool rStageList::save(MtStream& out) {
-    DDON_STUB("rStageList::save")
-    return {};
+    MtDataWriter w(out, 4096, 4096);
+    w.writeU32(0x746c73u);
+    w.writeU32(DATA_VERSION);
+    w.writeU32(mArrayInfoNum);
+    for (u32 i = 0; i < mArrayInfoNum; i++) {
+        Info* pInfo = &mpArrayInfo[i];
+        pInfo->save(w);
+    }
+    return true;
 }
 
 rStageList::Info* rStageList::getInfo(u32 index) const {

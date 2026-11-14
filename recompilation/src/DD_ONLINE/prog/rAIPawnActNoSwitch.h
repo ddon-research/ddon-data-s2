@@ -106,6 +106,9 @@ inline void* cAIPawnActNoSwitch::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cAIPawnActNoSwitch::cAIPawnActNoSwitch() : mEmActNo(0), mPwActNo(0) {
+}
+
 inline void* rAIPawnActNoSwitch::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -122,5 +125,9 @@ inline void cAIPawnActNoSwitch::operator delete[](void* p_addr) {
 }
 
 inline void* cAIPawnActNoSwitch::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIPawnActNoSwitch::DTI)->memAlloc(sz, align, ::cAIPawnActNoSwitch::DTI.::MtDTI::getID());
+}
+
+inline void* cAIPawnActNoSwitch::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAIPawnActNoSwitch::DTI)->memAlloc(sz, align, ::cAIPawnActNoSwitch::DTI.::MtDTI::getID());
 }

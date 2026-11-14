@@ -58,8 +58,17 @@ inline rNpcLedgerList::rNpcLedgerList() {
 }
 
 __attribute__((noinline)) rNpcLedgerList::~rNpcLedgerList() {
-    DDON_STUB("rNpcLedgerList::~rNpcLedgerList")
-    /* stub */
+    if (mArray.isAutoDelete()) {
+        mArray.deleteAll(true);
+    } else {
+        if (mArray.length() != 0) {
+            cItem* pRoot = mArray[0];
+            if (pRoot != nullptr) {
+                delete[] pRoot;
+            }
+            mArray.clear(true);
+        }
+    }
 }
 
 __attribute__((weak)) void rNpcLedgerList::createProperty(MtPropertyList& s) {
@@ -84,8 +93,37 @@ bool rNpcLedgerList::save(MtStream& out) {
 }
 
 __attribute__((weak)) bool rNpcLedgerList::load(MtStream& in) {
-    DDON_STUB("rNpcLedgerList::load")
-    return {};
+    MtDataReader r(in, 4096u);
+    u32 header = r.readU32();
+    if (header != 0x6c6c6eu) {
+        return false;
+    }
+    u32 dataVersion = r.readU32();
+    if (dataVersion != 6u) {
+        return false;
+    }
+    if (mArray.isAutoDelete()) {
+        mArray.deleteAll(true);
+    } else {
+        if (mArray.length() != 0) {
+            cItem* pRoot = mArray[0];
+            if (pRoot != nullptr) {
+                delete[] pRoot;
+            }
+            mArray.clear(true);
+        }
+    }
+    const u32 num = r.readU32();
+    if (num == 0) {
+        return true;
+    }
+    cItem* pElements = new (16u) cItem[num];
+    mArray.reserve(num);
+    for (u32 i = 0; i < num; i++) {
+        pElements[i].load(r);
+        mArray.add(&pElements[i]);
+    }
+    return true;
 }
 
 rNpcLedgerList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -179,13 +217,31 @@ __attribute__((weak)) void rNpcLedgerList::cItem::createProperty(MtPropertyList&
 }
 
 __attribute__((weak)) bool rNpcLedgerList::cItem::load(MtDataReader& r) {
-    DDON_STUB("rNpcLedgerList::cItem::load")
-    return {};
+    nDDOIO::readData(r, mNpcId);
+    nDDOIO::readData(r, mSex);
+    nDDOIO::readData(r, mNameId);
+    nDDOIO::readData(r, mClassNameId);
+    nDDOIO::readData(r, mJobId);
+    nDDOIO::readData(r, mFinger);
+    nDDOIO::readData(r, mVoiceType);
+    nDDOIO::readData(r, mUnitType);
+    nDDOIO::readData(r, mUnitTypeParam);
+    nDDOIO::readMtArray(r, mInstitutionList);
+    return true;
 }
 
 __attribute__((weak)) bool rNpcLedgerList::cItem::save(MtDataWriter& w) {
-    DDON_STUB("rNpcLedgerList::cItem::save")
-    return {};
+    nDDOIO::writeData(w, mNpcId);
+    nDDOIO::writeData(w, mSex);
+    nDDOIO::writeData(w, mNameId);
+    nDDOIO::writeData(w, mClassNameId);
+    nDDOIO::writeData(w, mJobId);
+    nDDOIO::writeData(w, mFinger);
+    nDDOIO::writeData(w, mVoiceType);
+    nDDOIO::writeData(w, mUnitType);
+    nDDOIO::writeData(w, mUnitTypeParam);
+    nDDOIO::writeMtArray(w, mInstitutionList);
+    return true;
 }
 
 rNpcLedgerList::cItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -193,8 +249,7 @@ rNpcLedgerList::cItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 rNpcLedgerList::cItem::MyDTI rNpcLedgerList::cItem::DTI("rNpcLedgerList::cItem", &::MtObject::DTI, 64ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rNpcLedgerList::cItem::MyDTI::newInstance() const {
-    DDON_STUB("rNpcLedgerList::cItem::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rNpcLedgerList::cItem;
 }
 
 const MtDTI& rNpcLedgerList::cItem::cInstitution::getDTI() const {

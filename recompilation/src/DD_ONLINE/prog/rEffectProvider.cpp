@@ -39,8 +39,199 @@ MT_CTSTR rEffectProvider::getExt() const {
 }
 
 __attribute__((weak)) bool rEffectProvider::load(MtStream& in) {
-    DDON_STUB("rEffectProvider::load")
-    return {};
+        f32 ReaderF32;
+        u32 ReaderU32;
+        MtDataReader r(in, 0x1000u);
+        nDDOIO::readData(r, ReaderU32);
+        if (ReaderU32 != 0x767065u) {
+            return false;
+        }
+        nDDOIO::readData(r, ReaderU32);
+        if (ReaderU32 != EP_VERSION) {
+            return false;
+        }
+        rEffectProvider::INFO_EFFECT* pInfoEffect = &mInfo.mEffectInfo;
+        u32 indexNum;
+        nDDOIO::readData(r, indexNum);
+        pInfoEffect->setEffectIndexNum(indexNum);
+        if (indexNum != 0) {
+            pInfoEffect->setEffectIndex(static_cast<rEffectProvider::EffectIndex*>(rEffectProvider::INFO_EFFECT::getAllocator()->memAlloc(sizeof(rEffectProvider::EffectIndex) * indexNum, 16u)));
+            for (u32 idx = 0; idx < indexNum; idx++) {
+                rEffectProvider::EffectIndex* pIndex = pInfoEffect->getEffectIndex(idx);
+                new (pIndex) rEffectProvider::EffectIndex();
+                if (pIndex == nullptr) continue;
+                u32 elementNum;
+                nDDOIO::readData(r, elementNum);
+                pIndex->setEffectElementNum(elementNum);
+                if (elementNum == 0) continue;
+                pIndex->setEffectElement(static_cast<rEffectProvider::EffectElement*>(rEffectProvider::INFO_EFFECT::getAllocator()->memAlloc(sizeof(rEffectProvider::EffectElement) * elementNum, 16u)));
+                for (u32 elm = 0; elm < elementNum; elm++) {
+                    rEffectProvider::EffectElement* pElement = pIndex->getEffectElement(elm);
+                    new (pElement) rEffectProvider::EffectElement;
+                    if (pElement == nullptr) continue;
+                    u32 ReleaseVer;
+                    nDDOIO::readData(r, ReleaseVer);
+                    for (u32 i = 0; i < EFC_LIST_MAX; i++) {
+                        MT_CHAR path[64] = {};
+                        nDDOIO::readData(r, path, 64u);
+                        if (ReleaseVer <= 0x2020u && path[0] != 0) {
+                            rEffectList* pResource = static_cast<rEffectList*>(sResource::getInstance()->create(rEffectList::DTI, path, 1u));
+                            pElement->setEffectList(pResource, i);
+                            if (pResource != nullptr) {
+                                pResource->release();
+                            }
+                        }
+                    }
+                    for (u32 i = 0; i < EFC_2D_MAX; i++) {
+                        MT_CHAR path[64] = {};
+                        nDDOIO::readData(r, path, 64u);
+                        if (ReleaseVer <= 0x2020u && path[0] != 0) {
+                            rEffect2D* pResource = static_cast<rEffect2D*>(sResource::getInstance()->create(rEffect2D::DTI, path, 1u));
+                            pElement->setEffect2D(pResource, i);
+                            if (pResource != nullptr) {
+                                pResource->release();
+                            }
+                        }
+                    }
+                    nDDOIO::readData(r, ReaderU32);
+                    pElement->setResourceType(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pElement->setEffectType(ReaderU32);
+                    rEffectProvider::EffectParam* pParam = pElement->getEffectParam();
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setSetType(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setEndType(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setGroupFlag(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setMaterialFlag(ReaderU32);
+                    MtVector3 vec;
+                    nDDOIO::readData(r, vec.x);
+                    nDDOIO::readData(r, vec.y);
+                    nDDOIO::readData(r, vec.z);
+                    pParam->setPosition(vec);
+                    nDDOIO::readData(r, vec.x);
+                    nDDOIO::readData(r, vec.y);
+                    nDDOIO::readData(r, vec.z);
+                    pParam->setCamOfs(vec);
+                    nDDOIO::readData(r, vec.x);
+                    nDDOIO::readData(r, vec.y);
+                    nDDOIO::readData(r, vec.z);
+                    pParam->setDirection(vec);
+                    nDDOIO::readData(r, vec.x);
+                    nDDOIO::readData(r, vec.y);
+                    nDDOIO::readData(r, vec.z);
+                    pParam->setDirectionAmp(vec);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setAxisType(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setOrder(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setParentNo(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setJointNo(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setPosType(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setRotType(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setDefaultColor(ReaderU32);
+                    nDDOIO::readData(r, ReaderF32);
+                    pParam->setDefaultColorRate(ReaderF32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setDefaultColorMode(ReaderU32);
+                    nDDOIO::readData(r, ReaderF32);
+                    pParam->setAlphaScale(ReaderF32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setLightPriority(ReaderU32);
+                    nDDOIO::readData(r, ReaderF32);
+                    pParam->setScale(ReaderF32);
+                    nDDOIO::readData(r, ReaderF32);
+                    pParam->setScaleAmp(ReaderF32);
+                    nDDOIO::readData(r, ReaderF32);
+                    pParam->setDeltaTimeCoef(ReaderF32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setIncidenceAngleEnable(ReaderU32 != 0);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setLandSetEnable(ReaderU32 != 0);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setLandDirEnable(ReaderU32 != 0);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setOMMaterialEnable(ReaderU32 != 0);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setZoneCorrectType(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setLoopFrame(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setE2DType(ReaderU32);
+                    nDDOIO::readData(r, ReaderF32);
+                    pParam->setLandLength(ReaderF32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setCustomFlag(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setParentRelationFlagFlag(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setAdhesionDivideMax(ReaderU32);
+                    nDDOIO::readData(r, pParam->WeatherOnBit());
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setZoneOnBit(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setQuakeType(ReaderU32);
+                    nDDOIO::readData(r, ReaderU32);
+                    pParam->setCreateCost(ReaderU32);
+                    nDDOIO::readData(r, ReaderF32);
+                    pParam->setFinishFadeOutFrame(ReaderF32);
+                }
+            }
+        }
+        u32 motSyncNum;
+        nDDOIO::readData(r, motSyncNum);
+        pInfoEffect->setMotSyncListNum(motSyncNum);
+        if (motSyncNum != 0) {
+            rEffectProvider::EffectMotSyncParam* pEffectMotSyncParam = static_cast<rEffectProvider::EffectMotSyncParam*>(rEffectProvider::INFO_EFFECT::getAllocator()->memAlloc(sizeof(rEffectProvider::EffectMotSyncParam) * motSyncNum, 16u));
+            pInfoEffect->setMotSyncList(pEffectMotSyncParam);
+            for (u32 i = 0; i < motSyncNum; i++) {
+                rEffectProvider::EffectMotSyncParam* pParam = new (pInfoEffect->getMotSyncList(i)) rEffectProvider::EffectMotSyncParam;
+                if (pParam == nullptr) continue;
+                nDDOIO::readData(r, ReaderU32);
+                pParam->setMotionNo(ReaderU32);
+                nDDOIO::readData(r, ReaderU32);
+                pParam->setBlendIndex(ReaderU32);
+                nDDOIO::readData(r, ReaderF32);
+                pParam->setStartFrame(ReaderF32);
+                nDDOIO::readData(r, ReaderF32);
+                pParam->setEndFrame(ReaderF32);
+                nDDOIO::readData(r, ReaderF32);
+                pParam->setInterval(ReaderF32);
+                nDDOIO::readData(r, ReaderU32);
+                pParam->setLeaveFlag(ReaderU32 != 0);
+                nDDOIO::readData(r, ReaderU32);
+                pParam->setSetOnceFlag(ReaderU32 != 0);
+                nDDOIO::readData(r, ReaderU32);
+                pParam->setEfcIndexNo(ReaderU32);
+                nDDOIO::readData(r, ReaderU32);
+                pParam->setEfcElementNo(ReaderU32);
+            }
+        }
+        u32 eventNum;
+        nDDOIO::readData(r, eventNum);
+        pInfoEffect->setEventListNum(eventNum);
+        if (eventNum != 0) {
+            rEffectProvider::EffectEventParam* pEffectEventParam = static_cast<rEffectProvider::EffectEventParam*>(rEffectProvider::INFO_EFFECT::getAllocator()->memAlloc(sizeof(rEffectProvider::EffectEventParam) * eventNum, 16u));
+            pInfoEffect->setEventList(pEffectEventParam);
+            for (u32 i = 0; i < eventNum; i++) {
+                rEffectProvider::EffectEventParam* pParam = new (pInfoEffect->getEventList(i)) rEffectProvider::EffectEventParam;
+                if (pParam == nullptr) continue;
+                nDDOIO::readData(r, ReaderU32);
+                pParam->setEventWorkNo(ReaderU32);
+                nDDOIO::readData(r, ReaderU32);
+                pParam->setEfcIndexNo(ReaderU32);
+                nDDOIO::readData(r, ReaderU32);
+                pParam->setEfcElementNo(ReaderU32);
+            }
+        }
+        return true;
 }
 
 __attribute__((weak)) bool rEffectProvider::save(MtStream& out) {
@@ -133,8 +324,11 @@ rEffectProvider::EffectElement* rEffectProvider::INFO_EFFECT::getEffectElement(s
 }
 
 __attribute__((weak)) rEffectProvider::EffectParam* rEffectProvider::INFO_EFFECT::getEffectParam(s32 IndexNo, s32 ElementNo) const {
-    DDON_STUB("rEffectProvider::INFO_EFFECT::getEffectParam")
-    return nullptr;
+        rEffectProvider::EffectElement* pEffectElement = getEffectElement(IndexNo, ElementNo);
+        if (pEffectElement == nullptr) {
+            return nullptr;
+        }
+        return pEffectElement->getEffectParam();
 }
 
 rEffectProvider::INFO_EFFECT::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

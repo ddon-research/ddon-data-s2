@@ -70,8 +70,32 @@ u32 rCharacterEditTexturePalette::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rCharacterEditTexturePalette::loadCore(MtDataReader& r) {
-    DDON_STUB("rCharacterEditTexturePalette::loadCore")
-    return {};
+    u32 t1;
+    this->::rTbl2Base::readDataValue(r, t1);
+    u32 t4 = t1;
+    do {
+        if (this->mpData != nullptr) {
+            delete[] this->mpData;
+            this->mpData = nullptr;
+        }
+        this->mDataNum = 0;
+        if (t4 == 0) {
+            break;
+        }
+        this->mpData = new (16u) cCharacterEditTexturePalette[t4];
+        this->mDataNum = t4;
+    } while (false);
+    if (t1 != 0) {
+        u32 t2 = 0;
+        cCharacterEditTexturePalette* t3 = this->mpData;
+        do {
+            if (!this->loadData(r, &t3[t2])) {
+                return false;
+            }
+            t2 += 1u;
+        } while (t2 < t1);
+    }
+    return true;
 }
 
 rCharacterEditTexturePalette::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

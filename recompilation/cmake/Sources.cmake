@@ -138,7 +138,6 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/nFsm.cpp
   src/generated/rLayout/nSoundZone.cpp
   src/XFramework/rMovie.cpp
-  src/DD_ONLINE/prog/rkThinkData.cpp
   src/DD_ONLINE/prog/sEnvMapManager.cpp
   src/DD_ONLINE/prog/sEventManager.cpp
   src/DD_ONLINE/prog/sNpcManager.cpp
@@ -208,6 +207,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/rPawnQuestTalk.cpp
   src/DD_ONLINE/prog/rPlPartsInfo.cpp
   src/DD_ONLINE/prog/rPlantTree.cpp
+  src/DD_ONLINE/prog/rPlayerExpTable.cpp
   src/DD_ONLINE/prog/cpAIPawnEmChecker.cpp
   src/DD_ONLINE/prog/cpCorePointCtrl.cpp
   src/DD_ONLINE/prog/cpJob04.cpp
@@ -263,6 +263,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/rWeaponOffset.cpp
   src/DD_ONLINE/prog/rWeaponResTable.cpp
   src/DD_ONLINE/prog/rWepCateResTbl.cpp
+  src/DD_ONLINE/prog/rkThinkData.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/Achievement.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/AreaMaster.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/BoxGacha.cpp
@@ -905,7 +906,6 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/rOcdParam.cpp
   src/DD_ONLINE/prog/rOutlineParamList.cpp
   src/DD_ONLINE/prog/rPawnAI.cpp
-  src/DD_ONLINE/prog/rPlayerExpTable.cpp
   src/DD_ONLINE/prog/rPriorityThink.cpp
   src/DD_ONLINE/prog/rQuestMarkerInfo.cpp
   src/DD_ONLINE/prog/rReaction.cpp

@@ -20,8 +20,8 @@ inline void rConstraint::operator delete(void* p_addr) {
 }
 
 rConstraint::rConstraint() {
-    DDON_STUB("rConstraint::rConstraint")
-    /* stub */
+    mID = 0;
+    mPri = 1000;
 }
 
 rConstraint::~rConstraint() {

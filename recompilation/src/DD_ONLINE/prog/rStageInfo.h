@@ -7,6 +7,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../XFramework/cResource.h"
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
 #include "nStage.h"
 #include "../../generated/shared/nZoneUnitCtrl.h"
 #include "rEffectProvider.h"
@@ -80,9 +82,9 @@ public:
     static MtDTI* getMyDTIPtr();
     static void usage();
     virtual const MtDTI& getDTI() const;  // vtable slot 5
-    static MtAllocator* getAllocator();
+    inline static MtAllocator* getAllocator();
     static void setAllocator(u32);
-    static void* operator new(size_t sz, u32 align);
+    inline static void* operator new(size_t sz, u32 align);
     static void* operator new[](size_t sz, u32 align);
     static void* operator new(size_t sz, void* p_addr);
     static void* operator new[](size_t sz, void* p_addr);
@@ -90,7 +92,7 @@ public:
     static void operator delete[](void* p_addr);
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
-    rStageInfo();
+    inline rStageInfo();
     virtual ~rStageInfo();
     virtual MT_CTSTR getExt() const;  // vtable slot 7
     u32 getMagicHeader() const;
@@ -241,6 +243,40 @@ private:
 
 inline void* rStageInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline MtAllocator* rStageInfo::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rStageInfo::DTI);
+}
+
+inline void* rStageInfo::operator new(size_t sz, u32 align) {
+    return getAllocator()->memAlloc(sz, align, rStageInfo::DTI.getID());
+}
+
+__attribute__((always_inline)) inline rStageInfo::rStageInfo()
+    : mprEffectSchdl(nullptr)
+    , mprLanternSchdl(nullptr)
+    , mprLocation(nullptr)
+{
+    setAttribute(ATTR_SAVEABLE | ATTR_NATIVE);
+    mprModel = nullptr;
+    mprFilter = nullptr;
+    mprScrSbc[0] = nullptr;
+    mprScrSbc[1] = nullptr;
+    mprScrSbc[2] = nullptr;
+    mprEffSbc[0] = nullptr;
+    mprEffSbc[1] = nullptr;
+    mprEffSbc[2] = nullptr;
+    mprNaviMesh = nullptr;
+    mprWayPoint = nullptr;
+    mprOCC = nullptr;
+    mprStartPos = nullptr;
+    mprCmrPrmLstFld = nullptr;
+    mprCmrPrmLstEvt = nullptr;
+    mprSoundZone[0] = nullptr;
+    mprSoundZone[1] = nullptr;
+    mprSoundZone[2] = nullptr;
+    clear();
 }
 
 inline rScheduler* rStageInfo::getScrScheduler() const {

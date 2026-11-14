@@ -30,8 +30,7 @@ inline void rStageJoint::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rStageJoint::~rStageJoint() {
-    DDON_STUB("rStageJoint::~rStageJoint")
-    /* stub */
+    destruct();
 }
 
 MT_CTSTR rStageJoint::getExt() const {
@@ -39,8 +38,28 @@ MT_CTSTR rStageJoint::getExt() const {
 }
 
 __attribute__((weak)) bool rStageJoint::load(MtStream& in) {
-    DDON_STUB("rStageJoint::load")
-    return {};
+    MtDataReader r(in, MtDataReader::DEFAULT_BUFFERSIZE);
+    if (r.readU32() != 0x616a73u) {
+        return false;
+    }
+    u32 ver = r.readU32();
+    if (ver != DATA_VERSION) {
+        return false;
+    }
+    mParam.load(r);
+    const u32 nArrayInfo = r.readU32();
+    void* pArrayInfo = nullptr;
+    if (nArrayInfo != 0) {
+        pArrayInfo = getAllocator()->memAlloc(sizeof(Info) * nArrayInfo, 16u);
+        for (u32 i = 0; i < nArrayInfo; i++) {
+            Info* pInfo = new (static_cast<Info*>(pArrayInfo) + i) Info();
+            pInfo->load(r);
+        }
+    }
+    mPersistentInfo.load(r);
+    mpArrayInfo = static_cast<Info*>(pArrayInfo);
+    mArrayInfoNum = nArrayInfo;
+    return true;
 }
 
 rStageJoint::Info* rStageJoint::getInfo(u32 index) const {
@@ -60,8 +79,7 @@ rStageJoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 rStageJoint::MyDTI rStageJoint::DTI("rStageJoint", &::cResource::DTI, 1064ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rStageJoint::MyDTI::newInstance() const {
-    DDON_STUB("rStageJoint::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rStageJoint();
 }
 
 const MtDTI& rStageJoint::Param::getDTI() const {
@@ -73,8 +91,15 @@ inline void rStageJoint::Param::operator delete(void* p_addr) {
 }
 
 rStageJoint::Param::~Param() {
-    DDON_STUB("rStageJoint::Param::~Param")
-    /* stub */
+    if (mpArea != nullptr) {
+        for (u32 i = 0; i < mAreaNumZ; i++) {
+            getAllocator()->memFree(mpArea[i]);
+        }
+        getAllocator()->memFree(mpArea);
+    }
+    mpArea = nullptr;
+    mAreaNumX = 0;
+    mAreaNumZ = 0;
 }
 
 __attribute__((weak)) void rStageJoint::Param::createProperty(MtPropertyList& s) {
@@ -87,13 +112,63 @@ MtUI* rStageJoint::Param::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rStageJoint::Param::load(MtDataReader& r) {
-    DDON_STUB("rStageJoint::Param::load")
-    return {};
+    u32 oldNumZ = mAreaNumZ;
+    nDDOIO::readData(r, mStartX);
+    nDDOIO::readData(r, mStartZ);
+    nDDOIO::readData(r, mDeltaX);
+    nDDOIO::readData(r, mDeltaZ);
+    nDDOIO::readData(r, mAreaNumX);
+    nDDOIO::readData(r, mAreaNumZ);
+    // workaround
+    u32 grid_size = mAreaNumX * mAreaNumX;
+    if (grid_size != 0) {
+        if (mpArea != nullptr) {
+            for (u32 i = 0; i < oldNumZ; i++) {
+                getAllocator()->memFree(mpArea[i]);
+            }
+            getAllocator()->memFree(mpArea);
+        }
+        mpArea = static_cast<s8**>(getAllocator()->memAlloc(sizeof(s8*) * mAreaNumZ, 16u));
+        for (u32 i = 0; i < mAreaNumZ; i++) {
+            mpArea[i] = static_cast<s8*>(getAllocator()->memAlloc(sizeof(s8) * mAreaNumX, 16u));
+            memset(mpArea[i], -1, mAreaNumX);
+        }
+        for (u32 i = 0; i < mAreaNumZ; i++) {
+            for (u32 j = 0; j < mAreaNumX; j++) {
+                s8& t1 = mpArea[i][j];
+                // workaround
+                t1 = static_cast<s8>(r.readU8());
+            }
+        }
+    } else {
+        mpArea = nullptr;
+    }
+    return true;
 }
 
 __attribute__((weak)) void rStageJoint::Param::clear() {
-    DDON_STUB("rStageJoint::Param::clear")
-    /* stub */
+    mStartX = 0.0f;
+    mStartZ = 0.0f;
+    mDeltaX = 100.0f;
+    mDeltaZ = 100.0f;
+    mAreaNumX = 1;
+    mAreaNumZ = 1;
+    if (mpArea != nullptr) {
+        for (u32 i = 0; i < mAreaNumZ; i++) {
+            getAllocator()->memFree(mpArea[i]);
+        }
+        getAllocator()->memFree(mpArea);
+    }
+    u32 size = mAreaNumX * mAreaNumZ;
+    if (size != 0) {
+        mpArea = static_cast<s8**>(getAllocator()->memAlloc(sizeof(s8*) * mAreaNumZ, 16u));
+        for (u32 i = 0; i < mAreaNumZ; i++) {
+            mpArea[i] = static_cast<s8*>(getAllocator()->memAlloc(sizeof(s8) * mAreaNumX, 16u));
+            memset(mpArea[i], -1, mAreaNumX);
+        }
+    } else {
+        mpArea = nullptr;
+    }
 }
 
 __attribute__((weak)) void rStageJoint::Param::setAreaNumX(u32 numX) {
@@ -162,8 +237,37 @@ MtUI* rStageJoint::Info::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rStageJoint::Info::load(MtDataReader& r) {
-    DDON_STUB("rStageJoint::Info::load")
-    return {};
+    nDDOIO::readData(r, mModel, sizeof(mModel));
+    for (u32 i = 0; i < 3u; i++) {
+        nDDOIO::readData(r, mScrSbc[i], sizeof(mScrSbc[i]));
+        nDDOIO::readData(r, mEffSbc[i], sizeof(mEffSbc[i]));
+    }
+    nDDOIO::readData(r, mLight, sizeof(mLight));
+    nDDOIO::readData(r, mNaviMesh, sizeof(mNaviMesh));
+    nDDOIO::readData(r, mPlantTree, sizeof(mPlantTree));
+    nDDOIO::readData(r, mSndInfo, sizeof(mSndInfo));
+    for (u32 i = 0; i < JOINT_AREA_MAX; i++) {
+        // workaround
+        mJoint[i] = static_cast<s8>(r.readU8());
+    }
+    mColor = MtColor(r.readU32());
+    nDDOIO::readData(r, mEpv, sizeof(mEpv));
+    nDDOIO::readData(r, mEpvIndexAlways);
+    nDDOIO::readData(r, mEpvIndexDay);
+    nDDOIO::readData(r, mEpvIndexNight);
+    nDDOIO::readData(r, mEfcColorZone);
+    nDDOIO::readData(r, mEfcCtrlZone);
+    nDDOIO::readData(r, mIndoorZoneScr);
+    nDDOIO::readData(r, mIndoorZoneEfc);
+    nDDOIO::readData(r, mLightAndFogZone);
+    for (u32 i = 0; i < ZONE_UNIT_CTRL_TYPE_NUM; i++) {
+        nDDOIO::readData(r, mZoneUnitCtrl[i]);
+    }
+    nDDOIO::readData(r, mZoneStatus);
+    MT_CHAR t1[256];
+    nDDOIO::readData(r, t1, sizeof(t1));
+    mComment = t1;
+    return true;
 }
 
 void rStageJoint::Info::setModelName(const MtString& name) {

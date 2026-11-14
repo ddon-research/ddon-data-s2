@@ -65,8 +65,7 @@ cEnemyGroup::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 cEnemyGroup::MyDTI cEnemyGroup::DTI("cEnemyGroup", &::MtObject::DTI, 48ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cEnemyGroup::MyDTI::newInstance() const {
-    DDON_STUB("cEnemyGroup::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cEnemyGroup;
 }
 
 const MtDTI& cEnemyGroup::cEmList::getDTI() const {
@@ -107,8 +106,20 @@ inline void rEnemyGroup::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rEnemyGroup::loadData(MtDataReader& in, cEnemyGroup* pData) {
-    DDON_STUB("rEnemyGroup::loadData")
-    return {};
+    if (pData == nullptr) {
+        return false;
+    }
+    pData->mEnemyGroupId = in.readU32();
+    pData->mMsgIndex = in.readU32();
+    const u32 nArray = in.readU32();
+    for (u32 i = 0; i < nArray; ++i) {
+        cEnemyGroup::cEmList* p = new (16u) cEnemyGroup::cEmList;
+        if (p != nullptr) {
+            p->load(in);
+            pData->addEmList(p);
+        }
+    }
+    return true;
 }
 
 MT_CTSTR rEnemyGroup::getExt() const {

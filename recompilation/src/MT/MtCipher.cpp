@@ -613,8 +613,8 @@ MtCipher::~MtCipher() {
 }
 
 __attribute__((weak)) void MtCipher::setKeyString(MT_CTSTR key_str) {
-    DDON_STUB("MtCipher::setKeyString")
-    /* stub */
+    setTransKey_Private(key_str);
+    setKeyLength_Private(static_cast<u32>(__builtin_strlen(key_str)));
 }
 
 __attribute__((weak)) void MtCipher::getSHA1(u8* in, size_t size, u32* hash_out) const {
@@ -637,18 +637,116 @@ __attribute__((weak)) void MtCipher::setKeys(const MtBigInt& modulo, const MtBig
 }
 
 __attribute__((weak)) void MtCipher::initializeBF() {
-    DDON_STUB("MtCipher::initializeBF")
-    /* stub */
+    if (mpPArray != nullptr) {
+        MtMemory::getAllocator(1u)->memFree(static_cast<void*>(mpPArray));
+        mpPArray = nullptr;
+    }
+    if (mpSBox != nullptr) {
+        MtMemory::getAllocator(1u)->memFree(static_cast<void*>(mpSBox));
+        mpSBox = nullptr;
+    }
+    u8 key[56];
+    getTransKey_Private(reinterpret_cast<MT_CHAR*>(key));
+    u32 key_size = getKeyLength_Private();
+    mpPArray = static_cast<u32*>(MtMemory::getAllocator(1u)->memAlloc(72u, 16u));
+    mpSBox = static_cast<u32*>(MtMemory::getAllocator(1u)->memAlloc(4096u, 16u));
+    mpPArray[0] = 0x243f6a88u;
+    mpPArray[1] = 0x85a308d3u;
+    mpPArray[2] = 0x13198a2eu;
+    mpPArray[3] = 0x03707344u;
+    mpPArray[4] = 0xa4093822u;
+    mpPArray[5] = 0x299f31d0u;
+    mpPArray[6] = 0x082efa98u;
+    mpPArray[7] = 0xec4e6c89u;
+    mpPArray[8] = 0x452821e6u;
+    mpPArray[9] = 0x38d01377u;
+    mpPArray[10] = 0xbe5466cfu;
+    mpPArray[11] = 0x34e90c6cu;
+    mpPArray[12] = 0xc0ac29b7u;
+    mpPArray[13] = 0xc97c50ddu;
+    mpPArray[14] = 0x3f84d5b5u;
+    mpPArray[15] = 0xb5470917u;
+    mpPArray[16] = 0x9216d5d9u;
+    mpPArray[17] = 0x8979fb1bu;
+    for (s32 i = 0; i < 4; ++i) {
+        for (s32 j = 0; j < 256; ++j) {
+            mpSBox[i * 256 + j] = bf_S[i][j];
+        }
+    }
+    s32 j = 0;
+    for (s32 i = 0; i < 18; ++i) {
+        MtCipher::half_block temp;
+        temp.w.byte0 = key[j];
+        temp.w.byte1 = key[(j + 1) % key_size];
+        temp.w.byte2 = key[(j + 2) % key_size];
+        temp.w.byte3 = key[(j + 3) % key_size];
+        u32 data = temp.word;
+        mpPArray[i] ^= data;
+        j = (j + 4) % key_size;
+    }
+    u32 datal = 0;
+    u32 datar = 0;
+    for (s32 i = 0; i < 18; i += 2) {
+        encodeBF_ForInitialize(&datal, &datar);
+        mpPArray[i] = datal;
+        mpPArray[i + 1] = datar;
+    }
+    for (s32 i = 0; i < 4; ++i) {
+        for (s32 j = 0; j < 256; j += 2) {
+            encodeBF_ForInitialize(&datal, &datar);
+            mpSBox[i * 256 + j] = datal;
+            mpSBox[i * 256 + j + 1] = datar;
+        }
+    }
 }
 
 __attribute__((weak)) u32 MtCipher::encryptBF(u8* in, u8* out, u32 size) const {
-    DDON_STUB("MtCipher::encryptBF")
-    return {};
+    u32 remain_size = size;
+    while (remain_size != 0) {
+        u32 encode_size;
+        if (remain_size >= 8u) {
+            *reinterpret_cast<u64*>(out) = *reinterpret_cast<u64*>(in);
+            encodeBF(reinterpret_cast<u32*>(out), reinterpret_cast<u32*>(out + 4));
+            in += 8;
+            out += 8;
+            encode_size = 8u;
+        } else {
+            encode_size = remain_size;
+            __builtin_memcpy(out, in, encode_size);
+            __builtin_memset(out + encode_size, 0, 8u - encode_size);
+            encodeBF(reinterpret_cast<u32*>(out), reinterpret_cast<u32*>(out + 4));
+            in += encode_size;
+            out += encode_size;
+        }
+        remain_size -= encode_size;
+    }
+    u32 out_size = (size + 7u) & ~7u;
+    return out_size;
 }
 
 __attribute__((weak)) void MtCipher::decryptBF(u8* in, u8* out, u32 size) const {
-    DDON_STUB("MtCipher::decryptBF")
-    /* stub */
+    u32 remain_size = size;
+    while (remain_size != 0) {
+        u32 decode_size;
+        if (remain_size >= 8u) {
+            *reinterpret_cast<u64*>(out) = *reinterpret_cast<u64*>(in);
+            decodeBF(reinterpret_cast<u32*>(out), reinterpret_cast<u32*>(out + 4));
+            in += 8;
+            out += 8;
+            decode_size = 8u;
+        } else {
+            u32 x[2];
+            x[0] = reinterpret_cast<u32*>(in)[0];
+            x[1] = reinterpret_cast<u32*>(in)[1];
+            decodeBF(&x[0], &x[1]);
+            u8* bptr = reinterpret_cast<u8*>(x);
+            decode_size = remain_size;
+            for (u32 i = 0; i < decode_size; ++i) {
+                *out++ = *bptr++;
+            }
+        }
+        remain_size -= decode_size;
+    }
 }
 
 __attribute__((weak)) void MtCipher::setAESKEY(const u8* key) {
@@ -692,17 +790,83 @@ __attribute__((weak)) MtBigInt MtCipher::mont_rdct(const MtBigInt& modulo, const
 }
 
 __attribute__((weak)) void MtCipher::encodeBF(u32* lx, u32* rx) const {
-    DDON_STUB("MtCipher::encodeBF")
-    /* stub */
+    MtCipher::half_block Xl;
+    MtCipher::half_block Xr;
+    Xl.word = *lx;
+    Xr.word = *rx;
+    Xl.word ^= mpPArray[0];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[1];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[2];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[3];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[4];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[5];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[6];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[7];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[8];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[9];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[10];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[11];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[12];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[13];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[14];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[15];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[16];
+    Xr.word ^= mpPArray[17];
+    *rx = Xl.word;
+    *lx = Xr.word;
 }
 
 __attribute__((weak)) void MtCipher::decodeBF(u32* lx, u32* rx) const {
-    DDON_STUB("MtCipher::decodeBF")
-    /* stub */
+    MtCipher::half_block Xl;
+    MtCipher::half_block Xr;
+    Xl.word = *lx;
+    Xr.word = *rx;
+    Xl.word ^= mpPArray[17];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[16];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[15];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[14];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[13];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[12];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[11];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[10];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[9];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[8];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[7];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[6];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[5];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[4];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[3];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[2];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[1];
+    Xr.word ^= mpPArray[0];
+    *rx = Xl.word;
+    *lx = Xr.word;
 }
 
 __attribute__((weak)) void MtCipher::encodeBF_ForInitialize(u32* lx, u32* rx) const {
-    DDON_STUB("MtCipher::encodeBF_ForInitialize")
-    /* stub */
+    MtCipher::half_block Xl;
+    MtCipher::half_block Xr;
+    Xl.word = *lx;
+    Xr.word = *rx;
+    Xl.word ^= mpPArray[0];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[1];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[2];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[3];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[4];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[5];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[6];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[7];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[8];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[9];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[10];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[11];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[12];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[13];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[14];
+    Xr.word ^= (((mpSBox[Xl.w.byte0] + mpSBox[256 + Xl.w.byte1]) ^ mpSBox[512 + Xl.w.byte2]) + mpSBox[768 + Xl.w.byte3]) ^ mpPArray[15];
+    Xl.word ^= (((mpSBox[Xr.w.byte0] + mpSBox[256 + Xr.w.byte1]) ^ mpSBox[512 + Xr.w.byte2]) + mpSBox[768 + Xr.w.byte3]) ^ mpPArray[16];
+    Xr.word ^= mpPArray[17];
+    *rx = Xl.word;
+    *lx = Xr.word;
 }
 

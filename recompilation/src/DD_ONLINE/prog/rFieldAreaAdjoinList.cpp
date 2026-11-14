@@ -82,13 +82,44 @@ rFieldAreaAdjoinList::~rFieldAreaAdjoinList() {
 }
 
 __attribute__((weak)) bool rFieldAreaAdjoinList::load(MtStream& in) {
-    DDON_STUB("rFieldAreaAdjoinList::load")
-    return {};
+    MtDataReader r(in, MtDataReader::DEFAULT_BUFFERSIZE);
+    u32 header = r.readU32();
+    if (header != 0x414146u) {
+        return false;
+    }
+    u32 dataVersion = r.readU32();
+    if (dataVersion != 2u) {
+        return false;
+    }
+    mFieldAreaId = r.readS16();
+    u32 nArray = r.readU32();
+    void* pArray = MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::DTI)->memAlloc(sizeof(cAdjoinInfo) * nArray, 16u);
+    for (u32 i = 0; i < nArray; ++i) {
+        cAdjoinInfo* pInfo = new (static_cast<cAdjoinInfo*>(pArray) + i) cAdjoinInfo;
+        pInfo->mDestinationStageNo = r.readS16();
+        pInfo->mNextStageNo = r.readS16();
+        nDDOIO::readMtArray(r, pInfo->mPositions);
+        pInfo->mPriority = r.readU8();
+    }
+    mpArray = static_cast<cAdjoinInfo*>(pArray);
+    mArrayNum = nArray;
+    return true;
 }
 
 __attribute__((weak)) bool rFieldAreaAdjoinList::save(MtStream& out) {
-    DDON_STUB("rFieldAreaAdjoinList::save")
-    return {};
+    MtDataWriter w(out, MtDataWriter::DEFAULT_BUFFERSIZE, MtDataWriter::DEFAULT_LABELSIZE);
+    w.writeU32(0x414146u);
+    w.writeU32(2u);
+    w.writeS16(mFieldAreaId);
+    w.writeU32(mArrayNum);
+    for (u32 i = 0; i < mArrayNum; ++i) {
+        cAdjoinInfo* pInfo = &mpArray[i];
+        w.writeS16(pInfo->mDestinationStageNo);
+        w.writeS16(pInfo->mNextStageNo);
+        nDDOIO::writeMtArray(w, pInfo->mPositions);
+        w.writeU8(pInfo->mPriority);
+    }
+    return true;
 }
 
 rFieldAreaAdjoinList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

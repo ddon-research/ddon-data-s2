@@ -36,6 +36,16 @@ __attribute__((weak)) void cMagicCommand::createProperty(MtPropertyList& proplis
     /* stub */
 }
 
+inline bool cMagicCommand::importBinary(MtDataReader& reader) {
+    nDDOIO::readData(reader, mDegree);
+    return true;
+}
+
+inline bool cMagicCommand::exportBinary(MtDataWriter& writer) {
+    nDDOIO::writeData(writer, mDegree);
+    return true;
+}
+
 cMagicCommand::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMagicCommand::MyDTI cMagicCommand::DTI("cMagicCommand", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -53,8 +63,7 @@ inline void cMagicCommandList::operator delete(void* p_addr) {
 }
 
 cMagicCommandList::~cMagicCommandList() {
-    DDON_STUB("cMagicCommandList::~cMagicCommandList")
-    /* stub */
+    clear();
 }
 
 __attribute__((weak)) void cMagicCommandList::createProperty(MtPropertyList& proplist) {
@@ -142,13 +151,75 @@ void cMagicCommandList::clear() {
 }
 
 __attribute__((weak)) bool cMagicCommandList::importBinary(MtDataReader& reader) {
-    DDON_STUB("cMagicCommandList::importBinary")
-    return {};
+    mMagicCommandListEasy.deleteAll(true);
+    mMagicCommandListNormal.deleteAll(true);
+    mMagicCommandListHard.deleteAll(true);
+    
+    u32 size1;
+    nDDOIO::readData(reader, size1);
+    mMagicCommandListEasy.reserve(size1);
+    for (u32 i = 0; i < size1; i++) {
+        cMagicCommand* param = new (16u) cMagicCommand;
+        if (param != nullptr) {
+            param->importBinary(reader);
+            mMagicCommandListEasy.add(param);
+        }
+    }
+    
+    u32 size2;
+    nDDOIO::readData(reader, size2);
+    mMagicCommandListNormal.reserve(size2);
+    for (u32 i = 0; i < size2; i++) {
+        cMagicCommand* param = new (16u) cMagicCommand;
+        if (param != nullptr) {
+            param->importBinary(reader);
+            mMagicCommandListNormal.add(param);
+        }
+    }
+    
+    u32 size3;
+    nDDOIO::readData(reader, size3);
+    mMagicCommandListHard.reserve(size3);
+    for (u32 i = 0; i < size3; i++) {
+        cMagicCommand* param = new (16u) cMagicCommand;
+        if (param != nullptr) {
+            param->importBinary(reader);
+            mMagicCommandListHard.add(param);
+        }
+    }
+    
+    return true;
 }
 
 __attribute__((weak)) bool cMagicCommandList::exportBinary(MtDataWriter& writer) {
-    DDON_STUB("cMagicCommandList::exportBinary")
-    return {};
+    u32 size1 = mMagicCommandListEasy.size();
+    nDDOIO::writeData(writer, size1);
+    for (u32 i = 0; i < size1; i++) {
+        cMagicCommand* param = mMagicCommandListEasy[i];
+        if (param != nullptr) {
+            param->exportBinary(writer);
+        }
+    }
+    
+    u32 size2 = mMagicCommandListNormal.size();
+    nDDOIO::writeData(writer, size2);
+    for (u32 i = 0; i < size2; i++) {
+        cMagicCommand* param = mMagicCommandListNormal[i];
+        if (param != nullptr) {
+            param->exportBinary(writer);
+        }
+    }
+    
+    u32 size3 = mMagicCommandListHard.size();
+    nDDOIO::writeData(writer, size3);
+    for (u32 i = 0; i < size3; i++) {
+        cMagicCommand* param = mMagicCommandListHard[i];
+        if (param != nullptr) {
+            param->exportBinary(writer);
+        }
+    }
+    
+    return true;
 }
 
 cMagicCommandList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -156,8 +227,7 @@ cMagicCommandList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 cMagicCommandList::MyDTI cMagicCommandList::DTI("cMagicCommandList", &::MtObject::DTI, 104ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cMagicCommandList::MyDTI::newInstance() const {
-    DDON_STUB("cMagicCommandList::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cMagicCommandList;
 }
 
 const MtDTI& rMagicCommandList::getDTI() const {
@@ -212,8 +282,19 @@ __attribute__((weak)) void rMagicCommandList::createProperty(MtPropertyList& pro
 }
 
 __attribute__((weak)) bool rMagicCommandList::load(MtStream& in) {
-    DDON_STUB("rMagicCommandList::load")
-    return {};
+    MtDataReader reader(in, 4096u);
+    u32 size1;
+    nDDOIO::readData(reader, size1);
+    mMagicCommandList.deleteAll(true);
+    mMagicCommandList.reserve(size1);
+    for (u32 i = 0; i < size1; i++) {
+        cMagicCommandList* pData = new (16u) cMagicCommandList;
+        if (pData != nullptr) {
+            pData->importBinary(reader);
+            mMagicCommandList.add(pData);
+        }
+    }
+    return true;
 }
 
 bool rMagicCommandList::save(MtStream& out) {

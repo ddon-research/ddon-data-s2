@@ -163,3 +163,22 @@ inline void cEnemyGroup::operator delete[](void* p_addr) {
 inline void* cEnemyGroup::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEnemyGroup::DTI)->memAlloc(sz, align, ::cEnemyGroup::DTI.::MtDTI::getID());
 }
+
+inline cEnemyGroup::cEnemyGroup() {
+    this->mEnemyGroupId = 0;
+    this->mMsgIndex = 0;
+    this->mEmList.setAutoDelete(true);
+}
+
+inline void* cEnemyGroup::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyGroup::DTI)->memAlloc(sz, align, ::cEnemyGroup::DTI.::MtDTI::getID());
+}
+
+inline bool cEnemyGroup::cEmList::load(MtDataReader& r) {
+    this->mEmId = r.readU32();
+    return true;
+}
+
+inline void cEnemyGroup::addEmList(cEnemyGroup::cEmList* p) {
+    this->mEmList.add(p);
+}

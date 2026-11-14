@@ -19,6 +19,8 @@ namespace MtNet { namespace Utility { namespace PS4 { class Json; } } }
 class MtObject;
 class cGeneralPointPtr;
 namespace nDraw { class DepthStencilView; }
+
+namespace nDraw { class Texture; }
 namespace nDraw { class IndexBuffer; }
 namespace nDraw { class VertexBuffer; }
 namespace nNetMsgData { namespace Head { struct stMsgHead; } }
@@ -65,16 +67,22 @@ class MtMemory
     friend class MtObject;
     friend class cGeneralPointPtr;
     friend class nDraw::DepthStencilView;
+
+    friend class nDraw::Texture;
     friend class nDraw::IndexBuffer;
     friend class nDraw::VertexBuffer;
     friend nNetMsgData::Head::stMsgHead* nNetMsgData::Head::deserialize(nNetwork::Decoder& dec);
     friend void nNetMsgData::Head::freeData(nNetMsgData::Head::stMsgHead* pData);
     friend class rArchive;
+
+    friend class rSoundReverb;
     friend class rEffect2D;
     friend class rEffectAnim;
     friend class rEffectList;
     friend class rEffectStrip;
     friend class rVertices;
+
+    friend class rDeformWeightMap;
     friend class rVibration;
     friend class sBrowser;
     friend class sItemManager;
@@ -117,3 +125,7 @@ private:
     static MtAllocator* mpAllocatorType[64];
     static u64 mMemoryLeakFlag;
 };
+
+inline MtAllocator* MtMemory::getAllocator(u32 alloc_type) {
+    return mpAllocatorType[alloc_type];
+}

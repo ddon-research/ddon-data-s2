@@ -318,6 +318,9 @@ class MtArray : public MtObject
     friend class MtCollisionUtil::MtArrayEx;
     friend class SCE_AH_LIST;
     friend class cAINavPathTrace;
+
+    friend class rSoundRequest;
+    friend class rSoundStreamRequest;
     friend class cAIPathTrace;
     friend class cAIRouteInfo;
     friend class cAITargetInfoArray;
@@ -945,6 +948,14 @@ inline MtObject* * MtArray::getBuffer() {
     return this->mpArray;
 }
 
+inline MtObject* & MtArray::operator[](u32 index) {
+    return this->mpArray[index];
+}
+
+inline MtObject* MtArray::operator[](u32 index) const {
+    return this->mpArray[index];
+}
+
 inline void* MtMap::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -972,6 +983,16 @@ inline MtTypedArray<T>::MtTypedArray() {
 template <typename T>
 inline void MtTypedArray<T>::add(T* obj) {
     MtArray::add(obj);
+}
+
+template <typename T>
+inline T* & MtTypedArray<T>::operator[](u32 index) {
+    return reinterpret_cast<T*&>(MtArray::operator[](index));
+}
+
+template <typename T>
+inline T* MtTypedArray<T>::operator[](u32 index) const {
+    return static_cast<T*>(MtArray::operator[](index));
 }
 
 #include <string.h>

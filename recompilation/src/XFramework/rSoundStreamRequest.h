@@ -297,3 +297,23 @@ private:
 inline void* rSoundStreamRequest::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline rSoundStreamRequest::rSoundStreamRequest() {
+    this->::cResource::mAttr = 18;
+    mpRawData = nullptr;
+    mElementNum = 0;
+    mpElement = nullptr;
+    mpSoundSource = nullptr;
+    mpWave = nullptr;
+    mReqNoToIndexTblNum = 0;
+    mpReqNoToIndexTbl = nullptr;
+    mpStreamSourcePackage = nullptr;
+    mDirectionalCurveNum = 0;
+    mDirectionalCurveElementNum = 0;
+    mSpeakerSetNum = 0;
+    mSpeakerNum = 0;
+    mpDirectionalCurveElements = nullptr;
+    mpDirectionalCurves = nullptr;
+    mpSpeakers = nullptr;
+    mpSpeakerSets = nullptr;
+}

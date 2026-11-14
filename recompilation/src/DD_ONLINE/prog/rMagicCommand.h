@@ -34,6 +34,8 @@ using u8 = unsigned char;
 
 class cMagicCommand : public MtObject
 {
+
+    friend class cMagicCommandList;
 public:
     class MyDTI;
 public:
@@ -164,6 +166,17 @@ inline void* cMagicCommand::operator new(size_t sz, void* p_addr) {
 
 inline cMagicCommand::cMagicCommand() {
     this->mDegree = 0.0f;
+}
+
+inline MtAllocator* cMagicCommandList::getAllocator() {
+    return MtMemoryAllocator::getAllocator(cMagicCommandList::DTI);
+}
+
+inline void* cMagicCommandList::operator new(size_t sz, u32 align) {
+    return getAllocator()->memAlloc(sz, align, cMagicCommandList::DTI.getID());
+}
+
+inline cMagicCommandList::cMagicCommandList() {
 }
 
 inline void* cMagicCommandList::operator new(size_t sz, void* p_addr) {

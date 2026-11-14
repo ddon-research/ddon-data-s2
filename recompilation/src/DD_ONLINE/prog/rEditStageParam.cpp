@@ -51,18 +51,76 @@ MT_CTSTR rEditStageParam::getExt() const {
 }
 
 __attribute__((weak)) void rEditStageParam::destruct() {
-    DDON_STUB("rEditStageParam::destruct")
-    /* stub */
+    for (u32 i = 0; i < mArrayInfoNum; ++i) {
+        mpArrayInfo[i].~Info();
+    }
+    getAllocator()->memFree(mpArrayInfo);
+    mpArrayInfo = nullptr;
+    mArrayInfoNum = 0;
+    
+    for (u32 i = 0; i < mArrayListNum; ++i) {
+        mpArrayList[i].~List();
+    }
+    getAllocator()->memFree(mpArrayList);
+    mpArrayList = nullptr;
+    mArrayListNum = 0;
 }
 
 __attribute__((weak)) bool rEditStageParam::load(MtStream& in) {
-    DDON_STUB("rEditStageParam::load")
-    return {};
+    MtDataReader r(in, MtDataReader::DEFAULT_BUFFERSIZE);
+    if (r.readU32() != 0x707365u) {
+        return false;
+    }
+    u32 ver = r.readU32();
+    if (ver != DATA_VERSION) {
+        return false;
+    }
+    
+    const u32 nArrayInfo = r.readU32();
+    void* pArrayInfo = nullptr;
+    if (nArrayInfo != 0) {
+        pArrayInfo = getAllocator()->memAlloc(sizeof(Info) * nArrayInfo, 16u);
+        for (u32 i = 0; i < nArrayInfo; ++i) {
+            Info* pInfo = new (static_cast<Info*>(pArrayInfo) + i) Info;
+            pInfo->load(r);
+        }
+    }
+    mpArrayInfo = static_cast<Info*>(pArrayInfo);
+    mArrayInfoNum = nArrayInfo;
+    
+    const u32 nArrayList = r.readU32();
+    void* pArrayList = nullptr;
+    if (nArrayList != 0) {
+        pArrayList = getAllocator()->memAlloc(sizeof(List) * nArrayList, 16u);
+        for (u32 i = 0; i < nArrayList; ++i) {
+            List* pList = new (static_cast<List*>(pArrayList) + i) List;
+            pList->load(r);
+        }
+    }
+    mpArrayList = static_cast<List*>(pArrayList);
+    mArrayListNum = nArrayList;
+    
+    return true;
 }
 
 __attribute__((weak)) bool rEditStageParam::save(MtStream& out) {
-    DDON_STUB("rEditStageParam::save")
-    return {};
+    MtDataWriter w(out, MtDataWriter::DEFAULT_BUFFERSIZE, MtDataWriter::DEFAULT_LABELSIZE);
+    w.writeU32(0x707365u);
+    w.writeU32(DATA_VERSION);
+    
+    w.writeU32(mArrayInfoNum);
+    for (u32 i = 0; i < mArrayInfoNum; ++i) {
+        Info* pInfo = &mpArrayInfo[i];
+        pInfo->save(w);
+    }
+    
+    w.writeU32(mArrayListNum);
+    for (u32 i = 0; i < mArrayListNum; ++i) {
+        List* pList = &mpArrayList[i];
+        pList->save(w);
+    }
+    
+    return true;
 }
 
 rEditStageParam::Info* rEditStageParam::getInfo(u32 index) const {

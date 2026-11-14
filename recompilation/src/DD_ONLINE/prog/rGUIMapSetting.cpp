@@ -75,13 +75,51 @@ MtUI* rGUIMapSetting::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rGUIMapSetting::load(MtStream& in) {
-    DDON_STUB("rGUIMapSetting::load")
-    return {};
+    MtDataReader r(in, MtDataReader::DEFAULT_BUFFERSIZE);
+    u32 magic;
+    nDDOIO::readData(r, magic);
+    if (magic != DATA_MAGIC) {
+        return false;
+    }
+    u32 version;
+    nDDOIO::readData(r, version);
+    if (version != 6u) { // constant 6 from 0x67cb91
+        return false;
+    }
+    nDDOIO::readData(r, mCenter);
+    nDDOIO::readData(r, mFloorBaseId);
+    nDDOIO::readData(r, mFloorBaseSizeId);
+    nDDOIO::readData(r, mTextureNumX);
+    nDDOIO::readData(r, mTextureNumY);
+    nDDOIO::readData(r, mRect);
+    nDDOIO::readData(r, mFoundationScale);
+    nDDOIO::readData(r, mOffsetPosX);
+    nDDOIO::readData(r, mOffsetPosY);
+    nDDOIO::readData(r, mUseIdTex);
+    nDDOIO::readMtArray(r, mArray);
+    return true;
 }
 
 __attribute__((weak)) bool rGUIMapSetting::save(MtStream& out) {
-    DDON_STUB("rGUIMapSetting::save")
-    return {};
+    MtDataWriter w(out, MtDataWriter::DEFAULT_BUFFERSIZE, MtDataWriter::DEFAULT_LABELSIZE);
+    u32 version = 6u; // constant 6 from 0x67cda5
+    nDDOIO::writeData(w, DATA_MAGIC);
+    nDDOIO::writeData(w, version);
+    nDDOIO::writeData(w, mCenter);
+    nDDOIO::writeData(w, mFloorBaseId);
+    nDDOIO::writeData(w, mFloorBaseSizeId);
+    nDDOIO::writeData(w, mTextureNumX);
+    nDDOIO::writeData(w, mTextureNumY);
+    nDDOIO::writeData(w, mRect);
+    nDDOIO::writeData(w, mFoundationScale);
+    nDDOIO::writeData(w, mOffsetPosX);
+    nDDOIO::writeData(w, mOffsetPosY);
+    nDDOIO::writeData(w, mUseIdTex);
+    nDDOIO::writeData(w, mArray.length());
+    for (u32 i = 0; i < mArray.length(); i++) {
+        mArray[i]->save(w);
+    }
+    return true;
 }
 
 void rGUIMapSetting::clear() {
@@ -123,8 +161,7 @@ rGUIMapSetting::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 rGUIMapSetting::MyDTI rGUIMapSetting::DTI("rGUIMapSetting", &::cResource::DTI, 200ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rGUIMapSetting::MyDTI::newInstance() const {
-    DDON_STUB("rGUIMapSetting::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rGUIMapSetting; // alignment 16u from disassembly at 0x0067bf82
 }
 
 const MtDTI& rGUIMapSetting::cData::getDTI() const {
@@ -163,9 +200,20 @@ __attribute__((weak)) void rGUIMapSetting::cData::setShapeType(s32 n) {
 
 static auto ddon_emit_0x01a93250 __attribute__((used)) = &rGUIMapSetting::cData::getShapeType;
 
-__attribute__((weak)) bool rGUIMapSetting::cData::load(MtDataReader& r) {
-    DDON_STUB("rGUIMapSetting::cData::load")
-    return {};
+bool rGUIMapSetting::cData::load(MtDataReader& r) {
+    if (r.readU32() != 0) {
+        if (mpShape != nullptr) {
+            delete mpShape;
+            mpShape = nullptr;
+        }
+        MT_CHAR t1[256]; // buffer size 256 from 0x67d6b2
+        r.readString(t1, sizeof(t1));
+        const MtDTI* t2 = MtDTI::from(t1, AreaHitShape::DTI);
+        mpShape = static_cast<AreaHitShape*>(t2->newInstance());
+        mpShape->load(r);
+    }
+    mFloorId = r.readU32();
+    return true;
 }
 
 bool rGUIMapSetting::cData::save(MtDataWriter& w) {

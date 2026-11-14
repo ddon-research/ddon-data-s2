@@ -64,13 +64,54 @@ MT_CTSTR rStageCustom::getExt() const {
 }
 
 __attribute__((weak)) bool rStageCustom::load(MtStream& in) {
-    DDON_STUB("rStageCustom::load")
-    return {};
+    MtDataReader r(in, MtDataReader::DEFAULT_BUFFERSIZE);
+    if (r.readU32() != 0x00616373u) {
+        return false;
+    }
+    u32 ver = r.readU32();
+    if (ver != DATA_VERSION) {
+        return false;
+    }
+    {
+        MT_CHAR t1[64];
+        r.readString(t1, 64u);
+        if (t1[0] != '\0') {
+            const MtDTI* t2 = MtDTI::from(t1, cResource::DTI);
+            r.readString(t1, 64u);
+            this->mprParts = static_cast<rStageCustomParts*>(sResource::getInstance()->create(*t2, t1, sResource::MODE_BLOCKING));
+        }
+    }
+    const u32 nArrayArea = r.readU32();
+    void* pArrayArea = nullptr;
+    if (nArrayArea != 0) {
+        pArrayArea = MtMemoryAllocator::getAllocator(rStageCustom::DTI)->memAlloc(sizeof(Area) * nArrayArea, 16u);
+        for (u32 i = 0; i < nArrayArea; i++) {
+            Area* pArea = new (&static_cast<Area*>(pArrayArea)[i]) Area;
+            pArea->load(r);
+        }
+    }
+    this->mpArrayArea = static_cast<Area*>(pArrayArea);
+    this->mArrayAreaNum = nArrayArea;
+    this->setPartsResNumber();
+    return true;
 }
 
 __attribute__((weak)) bool rStageCustom::save(MtStream& out) {
-    DDON_STUB("rStageCustom::save")
-    return {};
+    MtDataWriter w(out, MtDataWriter::DEFAULT_BUFFERSIZE, MtDataWriter::DEFAULT_LABELSIZE);
+    w.writeU32(0x00616373u);
+    w.writeU32(DATA_VERSION);
+    if (this->mprParts != nullptr) {
+        w.writeString(this->mprParts->getDTI().getName());
+        w.writeString(this->mprParts->getPath());
+    } else {
+        w.writeString("");
+    }
+    w.writeU32(this->mArrayAreaNum);
+    for (u32 i = 0; i < this->mArrayAreaNum; i++) {
+        Area* pArea = &this->mpArrayArea[i];
+        pArea->save(w);
+    }
+    return true;
 }
 
 rStageCustom::Area* rStageCustom::getArea(u32 index) const {

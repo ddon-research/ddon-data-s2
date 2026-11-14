@@ -227,6 +227,17 @@ inline void MtString::release() {
     }
 }
 
+inline const MtString& MtString::operator=(const MtString& str) {
+    if (value != str.value) {
+        release();
+        value = str.value;
+        if (value != nullptr) {
+            sceAtomicIncrement32(&value->ref);
+        }
+    }
+    return *this;
+}
+
 __attribute__((used)) inline MtString::~MtString() {
     release();
 }

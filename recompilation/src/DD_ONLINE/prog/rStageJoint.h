@@ -310,3 +310,61 @@ inline MT_CTSTR rStageJoint::Info::getEpvName() const {
 inline MT_CTSTR rStageJoint::Info::getSndInfoName() const {
     return &this->mSndInfo[0];
 }
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include <string.h>
+
+inline MtAllocator* rStageJoint::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rStageJoint::DTI);
+}
+
+inline void* rStageJoint::operator new(size_t sz, u32 align) {
+    return getAllocator()->memAlloc(sz, align, rStageJoint::DTI.getID());
+}
+
+inline void rStageJoint::destruct() {
+    for (u32 i = 0; i < mArrayInfoNum; i++) {
+        mpArrayInfo[i].~Info();
+    }
+    getAllocator()->memFree(mpArrayInfo);
+    mpArrayInfo = nullptr;
+    mArrayInfoNum = 0;
+}
+
+inline MtAllocator* rStageJoint::Param::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rStageJoint::Param::DTI);
+}
+
+inline rStageJoint::Param::Param() {
+    mpArea = nullptr;
+    clear();
+}
+
+inline void rStageJoint::Info::clear() {
+    memset(mSndInfo, 0, sizeof(mSndInfo));
+    memset(mModel, 0, sizeof(mModel));
+    memset(mScrSbc, 0, sizeof(mScrSbc));
+    memset(mEffSbc, 0, sizeof(mEffSbc));
+    memset(mLight, 0, sizeof(mLight));
+    memset(mNaviMesh, 0, sizeof(mNaviMesh));
+    memset(mPlantTree, 0, sizeof(mPlantTree));
+    memset(mJoint, -1, sizeof(mJoint));
+    mColor = MtColor::White;
+    memset(mEpv, 0, sizeof(mEpv));
+    mEpvIndexAlways = -1;
+    mEpvIndexDay = -1;
+    mEpvIndexNight = -1;
+    mVersion = 0;
+}
+
+inline rStageJoint::Info::Info() {
+    clear();
+}
+
+inline rStageJoint::rStageJoint() {
+    setAttribute(ATTR_NATIVE | ATTR_SAVEABLE);
+    clear();
+    mpArrayInfo = nullptr;
+    mArrayInfoNum = 0;
+}

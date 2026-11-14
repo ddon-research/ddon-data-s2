@@ -1550,6 +1550,24 @@ sSound::MyDTI sSound::DTI("sSound", &::cSystem::DTI, 0x48010ul, 0u, 0u);
 
 sSound* sSound::mpInstance;
 
+const f32 sSound::I3DL2_REVERB_MIN_OUTPUT_LEVEL = 0.0f;
+const f32 sSound::I3DL2_REVERB_MAX_OUTPUT_LEVEL = 1.0f;
+const f32 sSound::I3DL2_REVERB_DEFAULT_OUTPUT_LEVEL = 1.0f;
+const s32 sSound::I3DL2_REVERB_DEFAULT_ROOM = -10000;
+const s32 sSound::I3DL2_REVERB_DEFAULT_ROOM_HF = 0;
+const f32 sSound::I3DL2_REVERB_DEFAULT_DECAY_TIME = 1.0f;
+const f32 sSound::I3DL2_REVERB_DEFAULT_DECAY_HF_RATIO = 0.5f;
+const s32 sSound::I3DL2_REVERB_DEFAULT_REFLECTIONS = -10000;
+const f32 sSound::I3DL2_REVERB_DEFAULT_REFLECTIONS_DELAY = 0.02f;
+const s32 sSound::I3DL2_REVERB_DEFAULT_REVERB = -10000;
+const f32 sSound::I3DL2_REVERB_DEFAULT_REVERB_DELAY = 0.04f;
+const f32 sSound::I3DL2_REVERB_DEFAULT_DIFFUSION = 100.0f;
+const f32 sSound::I3DL2_REVERB_DEFAULT_DENSITY = 100.0f;
+const f32 sSound::I3DL2_REVERB_DEFAULT_HF_REFERENCE = 5000.0f;
+const f32 sSound::I3DL2_REVERB_DEFAULT_EARLYREFLECTIONSCALER = 100.0f;
+const f32 sSound::I3DL2_REVERB_DEFAULT_LF_REFERENCE = 20000.0f;
+const f32 sSound::I3DL2_REVERB_DEFAULT_ROOM_LF = -400.0f;
+
 __attribute__((weak)) MtObject* sSound::MyDTI::newInstance() const {
     DDON_STUB("sSound::MyDTI::newInstance")
     return nullptr;

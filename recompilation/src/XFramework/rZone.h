@@ -350,6 +350,24 @@ inline void* rZone::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline rZone::rZone() {
+    mCategoryVersion = 0;
+    mCategoryAttribute = 0x17FF;
+    mCategoryName = "";
+    mCategoryDtiID = 0;
+    mpUniqueIDTable = nullptr;
+    mUniqueIDTableNum = 0;
+    mpGroupManagerArray = nullptr;
+    mGroupManagerArrayNum = 0;
+    mpGlobalLayoutIndexArray = nullptr;
+    mLayoutElementsNum = 0;
+    mGlobalLayoutIndexArrayNum = 0;
+    mpLayoutElements = nullptr;
+    mpGridRegisterInfo = nullptr;
+    mpGrid = nullptr;
+    this->::cResource::mAttr = 18;
+}
+
 inline void* rZone::cGroupManager::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

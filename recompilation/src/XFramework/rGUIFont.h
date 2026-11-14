@@ -238,6 +238,73 @@ inline void* rGUIFont::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline rGUIFont::rGUIFont()
+    : mDynamicTextureNum(1),
+      mDynamicTextureSize(TEXTURE_SIZE_1024_1024),
+      mDynamicTextureFormat(nDraw::FORMAT_B8G8R8A8_UNORM),
+      mDynamicTextureMisc(0),
+      mpSourceChar(nullptr),
+      mpDynamicTexture(nullptr),
+      mpRequestLayoutCharList(nullptr),
+      mpLayoutCharList(nullptr),
+      mLayoutCharCount(0),
+      mLayoutStatus(LAYOUT_NONE),
+      mLayoutingTextureIndex(0),
+      mpLayoutTexture(nullptr),
+      mVersion(VERSION),
+      mTextureNum(0),
+      mCharNum(0),
+      mDescentNum(0),
+      mpDescent(nullptr),
+      mpChar(nullptr),
+      mpTexturePath(nullptr),
+      mpTexture(nullptr),
+      mpLayoutNext(nullptr),
+      mFontType(FONT_TEXTURED),
+      mFontSize(20),
+      mSuffix(SUFFIX_ID_HQ),
+      mAttr(0),
+      mMaxAscent(0.0f),
+      mMaxDescent(0.0f) {
+    setAttribute(ATTR_NATIVE);
+}
+
+inline f32 rGUIFont::getMaxHeight() const {
+    return this->mMaxAscent + this->mMaxDescent;
+}
+
+inline MT_CTSTR rGUIFont::getSuffixString(u32 type) {
+    static const MT_CTSTR suffix[SUFFIX_NUM] = {
+        "",
+        "_ID",
+        "_HQ",
+        "_ID_HQ",
+        "_IDL",
+        "_IDL_HQ",
+        "_AM_NOMIP",
+        "_DUMMY3",
+    };
+    if (type >= SUFFIX_NUM) {
+        return "";
+    }
+    return suffix[type];
+}
+
+// Included after the class: inline methods below need MtSize complete.
+#include "../MT/MtPrimitive2D.h"
+
+inline MtSize rGUIFont::getTextureWH(u32 size) {
+    return TEXTURE_SIZE[size];
+}
+
+inline bool rGUIFont::isBlockFormat(nDraw::FORMAT_TYPE format) {
+    return format == nDraw::FORMAT_BC3_UNORM_SRGB || format == nDraw::FORMAT_BCX_YCCA_SRGB;
+}
+
+inline MtSize rGUIFont::getTextureBlockSize(nDraw::FORMAT_TYPE format) {
+    return isBlockFormat(format) ? MtSize(4, 4) : MtSize(1, 1);
+}
+
 inline u32 rGUIFont::getSuffix() const {
     return this->mSuffix;
 }

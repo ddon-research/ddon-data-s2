@@ -89,3 +89,7 @@ namespace nDraw {
 inline void* nDraw::Resource::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline bool nDraw::Resource::isProtect() const {
+    return this->mRefFrame >= ::nDraw::Resource::mRenderFrame;
+}

@@ -36,3 +36,7 @@ public:
     uLong adler;  // offset: 0x60
     uLong reserved;  // offset: 0x68
 };
+
+extern "C" int inflateInit_(z_stream_s* strm, const char* version, int stream_size);
+extern "C" int inflate(z_stream_s* strm, int flush);
+extern "C" int inflateEnd(z_stream_s* strm);

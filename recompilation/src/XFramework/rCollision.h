@@ -234,9 +234,9 @@ public:
     static MtDTI* getMyDTIPtr();
     static void usage();
     virtual const MtDTI& getDTI() const;  // vtable slot 5
-    static MtAllocator* getAllocator();
+    inline static MtAllocator* getAllocator();
     static void setAllocator(u32);
-    static void* operator new(size_t sz, u32 align);
+    inline static void* operator new(size_t sz, u32 align);
     static void* operator new[](size_t sz, u32 align);
     static void* operator new(size_t sz, void* p_addr);
     static void* operator new[](size_t sz, void* p_addr);
@@ -244,7 +244,7 @@ public:
     static void operator delete[](void* p_addr);
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
-    rCollision();
+    inline rCollision();
     virtual ~rCollision();
     virtual bool load(MtStream& in);  // vtable slot 11
     virtual void clear();  // vtable slot 15
@@ -378,4 +378,30 @@ public:
 
 inline void* rCollision::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+#include <string.h>
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* rCollision::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rCollision::DTI);
+}
+
+inline void* rCollision::operator new(size_t sz, u32 align) {
+    return getAllocator()->memAlloc(sz, align, rCollision::DTI.getID());
+}
+
+__attribute__((always_inline)) inline rCollision::rCollision() {
+    setAttribute(ATTR_SAVEABLE | ATTR_CREATABLE | ATTR_NATIVE);
+    memset(&mHeader, 0, sizeof(mHeader));
+    mpBvh = nullptr;
+    mpGrid = nullptr;
+    mpGridRegistInfo = nullptr;
+    mpPartsInfo = nullptr;
+    mpMaterialInfo = nullptr;
+    mpLeaf = nullptr;
+    mpTriangle = nullptr;
+    mpVertex = nullptr;
+    mpSbcModifyClassIDArray = nullptr;
 }

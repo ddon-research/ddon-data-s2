@@ -136,7 +136,6 @@ DD_ONLINE/prog/cpTransparencyCtrl.cpp
 DD_ONLINE/prog/nFsm.cpp
 generated/rLayout/nSoundZone.cpp
 XFramework/rMovie.cpp
-DD_ONLINE/prog/rkThinkData.cpp
 DD_ONLINE/prog/sEnvMapManager.cpp
 DD_ONLINE/prog/sEventManager.cpp
 DD_ONLINE/prog/sNpcManager.cpp
@@ -206,6 +205,7 @@ DD_ONLINE/prog/sAIExt.cpp
 DD_ONLINE/prog/rPawnQuestTalk.cpp
 DD_ONLINE/prog/rPlPartsInfo.cpp
 DD_ONLINE/prog/rPlantTree.cpp
+DD_ONLINE/prog/rPlayerExpTable.cpp
 DD_ONLINE/prog/cpAIPawnEmChecker.cpp
 DD_ONLINE/prog/cpCorePointCtrl.cpp
 DD_ONLINE/prog/cpJob04.cpp
@@ -261,6 +261,7 @@ DD_ONLINE/prog/rWaypoint2.cpp
 DD_ONLINE/prog/rWeaponOffset.cpp
 DD_ONLINE/prog/rWeaponResTable.cpp
 DD_ONLINE/prog/rWepCateResTbl.cpp
+DD_ONLINE/prog/rkThinkData.cpp
 DD_ONLINE/prog/Protocol/PacketData/Achievement.cpp
 DD_ONLINE/prog/Protocol/PacketData/AreaMaster.cpp
 DD_ONLINE/prog/Protocol/PacketData/BoxGacha.cpp
@@ -903,7 +904,6 @@ DD_ONLINE/prog/rOcdIrAdj.cpp
 DD_ONLINE/prog/rOcdParam.cpp
 DD_ONLINE/prog/rOutlineParamList.cpp
 DD_ONLINE/prog/rPawnAI.cpp
-DD_ONLINE/prog/rPlayerExpTable.cpp
 DD_ONLINE/prog/rPriorityThink.cpp
 DD_ONLINE/prog/rQuestMarkerInfo.cpp
 DD_ONLINE/prog/rReaction.cpp

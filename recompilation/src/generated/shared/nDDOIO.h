@@ -57,7 +57,7 @@ namespace nDDOIO {
     void writeData(MtDataWriter& w, u16 data);
     void readData(MtDataReader& r, MtVector2& data);
     void readData(MtDataReader& r, MtVector3& data);
-    void writeData(MtDataWriter& w, const MtVector3& data);
+    inline void writeData(MtDataWriter& w, const MtVector3& data);
     void readData(MtDataReader& r, f32& data);
     void writeData(MtDataWriter& w, f32 data);
     void readDataArray(MtDataReader& r, u32* data, u32 bufNum);
@@ -77,16 +77,16 @@ namespace nDDOIO {
     void readData(MtDataReader& r, MtString& data);
     void writeData(MtDataWriter& w, const MtString& data);
     void readData(MtDataReader& r, MT_STR data, u32 buf);
-    void writeData(MtDataWriter& w, MT_CTSTR data);
+    inline void writeData(MtDataWriter& w, MT_CTSTR data);
     void readData(MtDataReader& r, MtColor& data);
     void writeData(MtDataWriter& w, const MtColor& data);
     void readData(MtDataReader& r, MtSphere& data);
     void writeData(MtDataWriter& w, const MtSphere& data);
-    void readData(MtDataReader& r, cResource* & pr);
-    void writeData(MtDataWriter& w, cResource* pr);
-    template <typename T> void readData(MtDataReader& r, res_ptr<T>& pr);
+    inline void readData(MtDataReader& r, cResource* & pr);
+    inline void writeData(MtDataWriter& w, cResource* pr);
+    template <typename T> inline void readData(MtDataReader& r, res_ptr<T>& pr);
     template <typename T> void readData(MtDataReader& r, nDDOUtility::cScopedPtr<T>& ptr);
-    template <typename T> void writeData(MtDataWriter& w, res_ptr<T>& pr);
+    template <typename T> inline void writeData(MtDataWriter& w, res_ptr<T>& pr);
     template <unsigned int N> void readData(MtDataReader& r, nDDOUtility::cBitSet<N>& data);
     template <unsigned int N> void writeData(MtDataWriter& w, nDDOUtility::cBitSet<N>& data);
     template <typename T> void readMtArray(MtDataReader& r, MtTypedArray<T>& ar);
@@ -105,9 +105,18 @@ namespace nDDOIO {
 }  // namespace nDDOIO
 
 // Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtColor.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtDataWriter.h"
 #include "../../DD_ONLINE/prog/cResPath.h"
+#include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
+#include "../../XFramework/cResource.h"
+#include "../../XFramework/sResource.h"
+
+#include "../../MT/MtMath.h"
+#include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtString.h"
 
 inline void nDDOIO::readData(MtDataReader& r, u8& data) {
     data = r.::MtDataReader::readU8();
@@ -164,6 +173,16 @@ inline void nDDOIO::writeData(MtDataWriter& w, cResPathBase& data) {
 inline void nDDOIO::writeData(MtDataWriter& w, u64 data) {
     w.writeU64(data);
 }
+
+template <typename T>
+inline void nDDOIO::readClass(MtDataReader& r, T& obj) {
+    obj.load(r);
+}
+template <unsigned int N>
+void nDDOIO::readData(MtDataReader& r, nDDOUtility::cBitSet<N>& data) {
+    readDataArray(r, data.toArrayPtr(), data.AR_NUM);
+}
+
 template <typename T>
 void nDDOIO::readMtArray(MtDataReader& r, MtTypedArray<T>& ar) {
     ar.deleteAll(true);
@@ -178,6 +197,25 @@ void nDDOIO::readMtArray(MtDataReader& r, MtTypedArray<T>& ar) {
     }
 }
 
+inline void nDDOIO::readData(MtDataReader& r, MtVector3& data) {
+    data = r.readV3();
+}
+
+inline void nDDOIO::readData(MtDataReader& r, MT_STR data, u32 buf) {
+    r.readString(data, buf);
+}
+
+inline void nDDOIO::readDataArray(MtDataReader& r, u32* data, u32 bufNum) {
+    u32 num;
+    nDDOIO::readData(r, num);
+    r.read(data, num * sizeof(u32));
+}
+
+inline void nDDOIO::readDataArray(MtDataReader& r, f32* data, u32 bufNum) {
+    u32 num = r.readU32();
+    r.read(data, num * sizeof(f32));
+}
+
 inline void nDDOIO::writeData(MtDataWriter& w, u8 data) {
     w.writeU8(data);
 }
@@ -188,4 +226,95 @@ inline void nDDOIO::writeData(MtDataWriter& w, bool data) {
 
 inline void nDDOIO::writeData(MtDataWriter& w, u16 data) {
     w.writeU16(data);
+}
+
+inline void nDDOIO::writeData(MtDataWriter& w, const MtColor& data) {
+    w.writeU32(data.rgba);
+}
+
+inline void nDDOIO::writeDataArray(MtDataWriter& w, f32* data, u32 num) {
+    w.writeU32(num);
+    w.write(data, num * sizeof(f32));
+}
+
+inline void nDDOIO::readData(MtDataReader& r, cResource* & pr) {
+    MT_CHAR buf[64];
+    r.readString(buf, 64);
+    if (buf[0] != '\0') {
+        const MtDTI* pdti = MtDTI::from(buf, cResource::DTI);
+        r.readString(buf, 64);
+        pr = sResource::getInstance()->create(*pdti, buf, sResource::MODE_BLOCKING);
+    }
+}
+
+inline void nDDOIO::writeData(MtDataWriter& w, cResource* pr) {
+    if (pr != nullptr) {
+        w.writeString(pr->getDTI().getName());
+        w.writeString(pr->getPath());
+    } else {
+        w.writeString("");
+    }
+}
+
+template <typename T>
+inline void nDDOIO::readData(MtDataReader& r, res_ptr<T>& pr) {
+    nDDOIO::readData(r, reinterpret_cast<cResource*&>(pr.mpPtr));
+}
+
+template <typename T>
+inline void nDDOIO::writeData(MtDataWriter& w, res_ptr<T>& pr) {
+    nDDOIO::writeData(w, static_cast<cResource*>(pr.mpPtr));
+}
+
+inline void nDDOIO::writeData(MtDataWriter& w, const MtVector3& data) {
+    MtFloat3 ft3;
+    ft3.x = data.x;
+    ft3.y = data.y;
+    ft3.z = data.z;
+    w.writeV3(ft3);
+}
+
+inline void nDDOIO::writeData(MtDataWriter& w, MT_CTSTR data) {
+    w.writeString(data);
+}
+
+inline void nDDOIO::readData(MtDataReader& r, MtMatrix& data) {
+    data.m[0] = r.readV4();
+    data.m[1] = r.readV4();
+    data.m[2] = r.readV4();
+    data.m[3] = r.readV4();
+}
+
+inline void nDDOIO::readData(MtDataReader& r, MtFloat2& data) {
+    data.x = r.readF32();
+    data.y = r.readF32();
+}
+
+inline void nDDOIO::writeData(MtDataWriter& w, const MtFloat2& data) {
+    w.writeF32(data.x);
+    w.writeF32(data.y);
+}
+
+inline void nDDOIO::readData(MtDataReader& r, MtRect& data) {
+    data.l = r.readS32();
+    data.t = r.readS32();
+    data.r = r.readS32();
+    data.b = r.readS32();
+}
+
+inline void nDDOIO::writeData(MtDataWriter& w, const MtRect& data) {
+    w.writeS32(data.l);
+    w.writeS32(data.t);
+    w.writeS32(data.r);
+    w.writeS32(data.b);
+}
+
+inline void nDDOIO::readData(MtDataReader& r, MtString& data) {
+    MT_CHAR t1[256];
+    r.readString(t1, sizeof(t1));
+    data = t1;
+}
+
+inline void nDDOIO::writeData(MtDataWriter& w, const MtString& data) {
+    w.writeString(data.ptr());
 }

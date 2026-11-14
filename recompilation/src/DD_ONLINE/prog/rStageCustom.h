@@ -145,3 +145,29 @@ inline rStageCustom::Area::Area() {
     this->mFilterNo = 0;
     this->mGroupNo = -1;
 }
+
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
+#include "../../MT/MtFilePath.h"
+#include <cstdlib>
+
+inline bool rStageCustom::Area::load(MtDataReader& r) {
+    this->mAreaNo = static_cast<s8>(r.readU8());
+    this->mFilterNo = r.readU8();
+    this->mGroupNo = r.readS32();
+    return true;
+}
+
+inline bool rStageCustom::Area::save(MtDataWriter& w) {
+    w.writeU8(static_cast<u8>(this->mAreaNo));
+    w.writeU8(this->mFilterNo);
+    w.writeS32(this->mGroupNo);
+    return true;
+}
+
+inline void rStageCustom::setPartsResNumber() {
+    if (this->mprParts != nullptr) {
+        MtFilePath filePath(this->mprParts->getPath());
+        this->mPartsDataNo = static_cast<s32>(std::strtoul(filePath.getFileTitle() + 2, nullptr, 10));
+    }
+}

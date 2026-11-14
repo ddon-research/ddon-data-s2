@@ -582,6 +582,21 @@ inline void* rWeatherStageInfo::operator new(size_t sz, void* p_addr) {
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../generated/shared/nDDOIO.h"
+
+inline cWeatherCloudModel::cWeatherCloudModel() {
+    mColorType = 0;
+    mSunColorScale = 0.1f;
+    mSaturationScale = 0.2f;
+    mIntensityScale = 1.0f;
+    mFogMulRate = 1.0f;
+    mFogAddRate = 1.0f;
+    mViewType = 0;
+}
+
+inline void* cWeatherCloudModel::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cWeatherCloudModel::DTI)->memAlloc(sz, align, cWeatherCloudModel::DTI.getID());
+}
 
 inline void cWeatherFogInfo::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cWeatherFogInfo::DTI)->memFree(p_addr);
@@ -599,18 +614,92 @@ inline void* cWeatherInfo::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cWeatherInfo::DTI)->memAlloc(sz, align, ::cWeatherInfo::DTI.::MtDTI::getID());
 }
 
+inline void cWeatherParam::load(MtDataReader& r) {
+    nDDOIO::readData(r, mSunColor);
+    nDDOIO::readData(r, mMieScattering);
+    nDDOIO::readData(r, mMieDensity);
+    nDDOIO::readData(r, mCloudHeight);
+    nDDOIO::readData(r, mCloudiness);
+    nDDOIO::readData(r, mCloudThickness);
+    nDDOIO::readData(r, mCloudScattering);
+    nDDOIO::readData(r, mCloudEccentricity);
+    nDDOIO::readData(r, mSunIntensityRate);
+    nDDOIO::readData(r, mEnvMapBaseScale);
+    nDDOIO::readData(r, mFogDensity);
+    nDDOIO::readData(r, mMoonLRate);
+}
+
+inline cWeatherParamEfcInfo::cWeatherParamEfcInfo() {
+    mWeatherID = 0;
+}
+
 inline void cWeatherParamEfcInfo::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cWeatherParamEfcInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cWeatherParamEfcInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cWeatherParamEfcInfo::DTI)->memAlloc(sz, align, cWeatherParamEfcInfo::DTI.getID());
 }
 
 inline void* cWeatherParamEfcInfo::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cWeatherParamEfcInfo::DTI)->memAlloc(sz, align, ::cWeatherParamEfcInfo::DTI.::MtDTI::getID());
 }
 
+inline cWeatherParamInfo::cWeatherParamInfo() {
+    mWeatherID = 0;
+    mWeatherSoundVolume = 1.0f;
+    mWeatherStarIntensity = 30.0f;
+    mLightMainIntensityScale = 3.0f;
+    mLightMainSatuationScale = 1.0f;
+    MtVector3 t0;
+    t0.x = 0.055f;
+    t0.y = 0.112f;
+    t0.z = 0.165f;
+    mLightSubDayColor = t0;
+    MtVector3 t1;
+    t1.x = 0.055f;
+    t1.y = 0.112f;
+    t1.z = 0.165f;
+    mLightHemiDayColor = t1;
+    MtVector3 t2;
+    t2.x = 0.03f;
+    t2.y = 0.061f;
+    t2.z = 0.09f;
+    mLightHemiDayRevColor = t2;
+    mClouds.setAutoDelete(true);
+}
+
 inline void cWeatherParamInfo::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cWeatherParamInfo::DTI)->memFree(p_addr);
 }
 
+inline void* cWeatherParamInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cWeatherParamInfo::DTI)->memAlloc(sz, align, cWeatherParamInfo::DTI.getID());
+}
+
 inline void* cWeatherParamInfo::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cWeatherParamInfo::DTI)->memAlloc(sz, align, ::cWeatherParamInfo::DTI.::MtDTI::getID());
+}
+
+inline void* rWeatherStageInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rWeatherStageInfo::DTI)->memAlloc(sz, align, rWeatherStageInfo::DTI.getID());
+}
+
+inline rWeatherStageInfo::rWeatherStageInfo() {
+    setAttribute(18u);
+    mStarSize = 4.0f;
+    mStarrySkyIntensity = 3.0f;
+    mStarTwinkleAmplitude = 0.4f;
+    MtVector3 t0;
+    t0.x = 0.3f;
+    t0.y = 0.3f;
+    t0.z = 0.3f;
+    mEnvMapBaseColor[0] = t0;
+    MtVector3 t1;
+    t1.x = 1.0f;
+    t1.y = 1.0f;
+    t1.z = 1.0f;
+    mEnvMapBaseColor[1] = t1;
+    mEnvMapBlendColorScale[0] = 0.8f;
+    mEnvMapBlendColorScale[1] = 0.05f;
 }

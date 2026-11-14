@@ -338,13 +338,46 @@ rFieldAreaList::~rFieldAreaList() {
 }
 
 __attribute__((weak)) bool rFieldAreaList::load(MtStream& in) {
-    DDON_STUB("rFieldAreaList::load")
-    return {};
+    MtDataReader r(in, MtDataReader::DEFAULT_BUFFERSIZE);
+    u32 header = r.readU32();
+    if (header != 0x6c4146u) {
+        return false;
+    }
+    u32 dataVersion = r.readU32();
+    if (dataVersion != 2u) {
+        return false;
+    }
+    u32 nArray = r.readU32();
+    void* pArray = MtMemoryAllocator::getAllocator(rFieldAreaList::DTI)->memAlloc(sizeof(cFieldAreaInfo) * nArray, 16u);
+    for (u32 i = 0; i < nArray; i++) {
+        cFieldAreaInfo* pInfo = new (&static_cast<cFieldAreaInfo*>(pArray)[i]) cFieldAreaInfo();
+        nDDOIO::readData(r, pInfo->mFieldAreaId);
+        nDDOIO::readData(r, pInfo->mGmdIdx);
+        nDDOIO::readData(r, pInfo->mLandId);
+        nDDOIO::readData(r, pInfo->mAreaId);
+        nDDOIO::readMtArray(r, pInfo->mStageNoList);
+        nDDOIO::readMtArray(r, pInfo->mBelongStageNoList);
+    }
+    mpArray = static_cast<cFieldAreaInfo*>(pArray);
+    mArrayNum = nArray;
+    return true;
 }
 
 __attribute__((weak)) bool rFieldAreaList::save(MtStream& out) {
-    DDON_STUB("rFieldAreaList::save")
-    return {};
+    MtDataWriter w(out, MtDataWriter::DEFAULT_BUFFERSIZE, MtDataWriter::DEFAULT_LABELSIZE);
+    nDDOIO::writeData(w, 0x6c4146u);
+    nDDOIO::writeData(w, 2u);
+    nDDOIO::writeData(w, mArrayNum);
+    for (u32 i = 0; i < mArrayNum; i++) {
+        cFieldAreaInfo* pInfo = &mpArray[i];
+        nDDOIO::writeData(w, pInfo->mFieldAreaId);
+        nDDOIO::writeData(w, pInfo->mGmdIdx);
+        nDDOIO::writeData(w, pInfo->mLandId);
+        nDDOIO::writeData(w, pInfo->mAreaId);
+        nDDOIO::writeMtArray(w, pInfo->mStageNoList);
+        nDDOIO::writeMtArray(w, pInfo->mBelongStageNoList);
+    }
+    return true;
 }
 
 rFieldAreaList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

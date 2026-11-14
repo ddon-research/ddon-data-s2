@@ -78,13 +78,28 @@ bool rEmEffectTable::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rEmEffectTable::loadData(MtDataReader& in) {
-    DDON_STUB("rEmEffectTable::loadData")
-    return {};
+    bool ret = false;
+    u32 magic = in.readU32();
+    u32 version = in.readU16();
+    if (magic == rTable::mMagic && version == cEmEffectTable::DATA_VERSION) {
+        u32 dmy = in.readU16();
+        (void)dmy;
+        u32 Num = in.readU32();
+        for (u32 i = 0; i < Num; i++) {
+            cEmEffectTable* pObj = new (16u) cEmEffectTable;
+            if (pObj != nullptr) {
+                loadData(in, pObj);
+                mArray.add(pObj);
+            }
+        }
+        ret = true;
+    }
+    return ret;
 }
 
 __attribute__((weak)) bool rEmEffectTable::save(MtStream& out) {
-    DDON_STUB("rEmEffectTable::save")
-    return {};
+    MtDataWriter w(out, MtDataWriter::DEFAULT_BUFFERSIZE, MtDataWriter::DEFAULT_LABELSIZE);
+    return saveData(w);
 }
 
 bool rEmEffectTable::loadData(MtDataReader& in, cEmEffectTable* pData) {

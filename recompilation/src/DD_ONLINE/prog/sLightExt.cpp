@@ -45,8 +45,7 @@ cActorLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u
 cActorLight::MyDTI cActorLight::DTI("cActorLight", &::MtObject::DTI, 96ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cActorLight::MyDTI::newInstance() const {
-    DDON_STUB("cActorLight::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cActorLight;
 }
 
 const MtDTI& rActorLight::getDTI() const {
@@ -84,13 +83,28 @@ bool rActorLight::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rActorLight::loadData(MtDataReader& in) {
-    DDON_STUB("rActorLight::loadData")
-    return {};
+    bool ret = false;
+    u32 magic = in.readU32();
+    u32 version = in.readU16();
+    if (magic == rTable::mMagic && version == cActorLight::DATA_VERSION) {
+        u32 dmy = in.readU16();
+        u32 Num = in.readU32();
+        for (u32 i = 0; i < Num; i++) {
+            cActorLight* pObj = new (16u) cActorLight;
+            if (pObj != nullptr) {
+                if (loadData(in, pObj)) {
+                    mArray.add(pObj);
+                }
+            }
+        }
+        ret = true;
+    }
+    return ret;
 }
 
 __attribute__((weak)) bool rActorLight::save(MtStream& out) {
-    DDON_STUB("rActorLight::save")
-    return {};
+    MtDataWriter w(out, MtDataWriter::DEFAULT_BUFFERSIZE, MtDataWriter::DEFAULT_LABELSIZE);
+    return saveData(w);
 }
 
 rActorLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

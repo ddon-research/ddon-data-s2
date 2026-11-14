@@ -6,7 +6,11 @@
 #endif
 
 __attribute__((weak)) u32 MtCRC::getCRC(MT_CTSTR str, u32 crc32) {
-    DDON_STUB("MtCRC::getCRC")
-    return {};
+    u32 n = 0;
+    while (str[n] != '\0') {
+        crc32 = mCRCtable[(crc32 & 0xffu) ^ static_cast<unsigned char>(str[n])] ^ (crc32 >> 8);
+        n++;
+    }
+    return crc32;
 }
 

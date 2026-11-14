@@ -26,8 +26,6 @@ inline void cAIPawnActNoSwitch::operator delete(void* p_addr) {
 }
 
 cAIPawnActNoSwitch::~cAIPawnActNoSwitch() {
-    DDON_STUB("cAIPawnActNoSwitch::~cAIPawnActNoSwitch")
-    /* stub */
 }
 
 cAIPawnActNoSwitch::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -35,8 +33,7 @@ cAIPawnActNoSwitch::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 cAIPawnActNoSwitch::MyDTI cAIPawnActNoSwitch::DTI("cAIPawnActNoSwitch", &::MtObject::DTI, 24ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cAIPawnActNoSwitch::MyDTI::newInstance() const {
-    DDON_STUB("cAIPawnActNoSwitch::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cAIPawnActNoSwitch;
 }
 
 const MtDTI& rAIPawnActNoSwitch::getDTI() const {
@@ -55,8 +52,8 @@ rAIPawnActNoSwitch::~rAIPawnActNoSwitch() {
 }
 
 __attribute__((weak)) bool rAIPawnActNoSwitch::loadCore(MtDataReader& r) {
-    DDON_STUB("rAIPawnActNoSwitch::loadCore")
-    return {};
+    u32 magic = r.readU32();
+    return this->::rTbl2<cAIPawnActNoSwitch>::loadCore(r);
 }
 
 bool rAIPawnActNoSwitch::loadData(MtDataReader& r, cAIPawnActNoSwitch* pData) {
@@ -77,7 +74,25 @@ u32 rAIPawnActNoSwitch::getDataVersion() const {
 }
 
 __attribute__((weak)) const cAIPawnActNoSwitch* rAIPawnActNoSwitch::searchAIPawnActNoSwitch(u32 thkActNo) const {
-    DDON_STUB("rAIPawnActNoSwitch::searchAIPawnActNoSwitch")
+    s32 min_idx = 0;
+    s32 max_idx = this->getDataNum();
+    if (max_idx <= 0) {
+        return nullptr;
+    }
+    max_idx -= 1;
+    while (min_idx <= max_idx) {
+        s32 c_idx = (min_idx + max_idx) / 2;
+        const cAIPawnActNoSwitch* p_node = this->getData(c_idx);
+        u32 chk_id = p_node->mEmActNo;
+        if (chk_id == thkActNo) {
+            return p_node;
+        }
+        if (chk_id < thkActNo) {
+            min_idx = c_idx + 1;
+        } else {
+            max_idx = c_idx - 1;
+        }
+    }
     return nullptr;
 }
 

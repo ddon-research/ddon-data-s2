@@ -207,6 +207,23 @@ inline void* cEventParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cEventParam::cEventParam()
+    : mType(0)
+    , mStage(100)
+    , mEvNo(0)
+    , mFlag(0)
+    , mQuestId(0)
+    , mLightCtrl(0)
+    , mStartFadeType(0)
+    , mEndFadeType(0)
+    , mSubMixerBefore(-1)
+    , mSubMixerAfter(-1)
+    , mOmAQCScale(1.0f)
+    , mVersion(0)
+{
+    this->mOmList.setAutoDelete(true);
+}
+
 inline MtTypedArray<cEventParam::cOmList>* cEventParam::getOmArray() {
     return &this->mOmList;
 }
@@ -227,6 +244,19 @@ inline cEventParam::cOmList::cOmList() {
     this->mSetId = -1;
 }
 
+inline bool cEventParam::cOmList::load(MtDataReader& r) {
+    this->mOmId = r.readU32();
+    this->mCtrlType = r.readU16();
+    this->mLotType = r.readU16();
+    this->mGroupNo = r.readS16();
+    this->mSetId = r.readS16();
+    return true;
+}
+
+inline void cEventParam::addOmList(cEventParam::cOmList* p) {
+    this->mOmList.add(p);
+}
+
 inline void* rEventParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -240,5 +270,9 @@ inline void cEventParam::operator delete[](void* p_addr) {
 }
 
 inline void* cEventParam::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEventParam::DTI)->memAlloc(sz, align, ::cEventParam::DTI.::MtDTI::getID());
+}
+
+inline void* cEventParam::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEventParam::DTI)->memAlloc(sz, align, ::cEventParam::DTI.::MtDTI::getID());
 }

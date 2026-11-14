@@ -120,3 +120,10 @@ inline void* rMapSpotStageList::Data::operator new(size_t sz, void* p_addr) {
 inline rMapSpotStageList::Data::Data() {
     this->mStageNo = 0;
 }
+
+#include "../../MT/MtDataReader.h"
+
+inline bool rMapSpotStageList::Data::load(MtDataReader& r) {
+    mStageNo = r.readS32();
+    return true;
+}

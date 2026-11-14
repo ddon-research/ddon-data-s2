@@ -182,6 +182,27 @@ inline void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::load(MtDataReader& r) {
     mFlagId = r.readU32();
 }
 
+#include "../../MT/MtDataWriter.h"
+#include "../../generated/shared/nDDOIO.h"
+
+inline void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::save(MtDataWriter& w) {
+    MtFloat3 ft3;
+    ft3.x = mPos.x;
+    ft3.y = mPos.y;
+    ft3.z = mPos.z;
+    w.writeV3(ft3);
+    w.writeU32(mQuestId);
+    w.writeU32(mFlagId);
+}
+
+template <>
+inline void nDDOIO::writeMtArray<rFieldAreaAdjoinList::cAdjoinInfo::cVector3>(MtDataWriter& w, MtTypedArray<rFieldAreaAdjoinList::cAdjoinInfo::cVector3>& ar) {
+    w.writeU32(ar.length());
+    for (s32 i = 0; i < ar.length(); i++) {
+        static_cast<rFieldAreaAdjoinList::cAdjoinInfo::cVector3*>(ar.getBuffer()[i])->save(w);
+    }
+}
+
 inline void* rFieldAreaAdjoinList::cAdjoinInfo::cVector3::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI)->memAlloc(sz, align, rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI.getID());
 }

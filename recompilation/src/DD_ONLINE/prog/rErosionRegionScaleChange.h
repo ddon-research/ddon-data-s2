@@ -65,6 +65,8 @@ public:
 private:
     MtVector3 mInitScale;  // offset: 0x10
     f32 mChangeFrame;  // offset: 0x20
+
+    friend class rErosionRegionScaleChange;
 public:
     static MyDTI DTI;
 };

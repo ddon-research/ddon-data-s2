@@ -547,3 +547,7 @@ inline sResource::Iterator::Iterator() {
 inline void* sResource::DecompressStream::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline u32 sResource::getRGrassDataReaderBufferSizeByte() const {
+    return this->mRGrassDataReaderBufferSizeKB << 10;
+}

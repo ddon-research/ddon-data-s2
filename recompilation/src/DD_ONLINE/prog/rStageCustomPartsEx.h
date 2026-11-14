@@ -455,3 +455,103 @@ inline void* rStageCustomPartsEx::FilterEx::operator new(size_t sz, void* p_addr
 inline rStageCustomPartsEx::FilterEx::FilterEx() {
     this->mAddVersion = 512;
 }
+
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../generated/shared/nDDOIO.h"
+
+namespace nDDOIO {
+template <> inline void writeMtArray<AreaHitShape>(MtDataWriter& w, MtTypedArray<AreaHitShape>& ar) {
+    w.writeU32(ar.length());
+    for (u32 i = 0; i < ar.length(); i++) {
+        ar[i]->save(w);
+    }
+}
+template <> void writeMtArray<rStageCustomPartsEx::AreaParam>(MtDataWriter& w, MtTypedArray<rStageCustomPartsEx::AreaParam>& ar);
+}
+
+inline MtAllocator* rStageCustomPartsEx::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::DTI);
+}
+
+inline rStageCustomPartsEx::ColorFog::ColorFog() {
+    clear();
+}
+
+inline bool rStageCustomPartsEx::InfoEx::load(MtDataReader& r) {
+    rStageCustomParts::Info::load(r);
+    nDDOIO::readMtArray(r, this->mAreaParamList);
+    return true;
+}
+
+inline bool rStageCustomPartsEx::FilterEx::load(MtDataReader& r) {
+    rStageCustomParts::Filter::load(r);
+    return true;
+}
+
+inline bool rStageCustomPartsEx::HemiSphLight::load(MtDataReader& r) {
+    nDDOIO::readData(r, this->mLightColor);
+    nDDOIO::readData(r, this->mRevColor);
+    nDDOIO::readData(r, this->mNightColor);
+    nDDOIO::readData(r, this->mNightRevColor);
+    return true;
+}
+
+inline bool rStageCustomPartsEx::InfiLight::load(MtDataReader& r) {
+    nDDOIO::readData(r, this->mLightColor);
+    nDDOIO::readData(r, this->mNightColor);
+    return true;
+}
+
+inline bool rStageCustomPartsEx::Pattern::load(MtDataReader& r) {
+    nDDOIO::readData(r, this->mColorFogNo);
+    nDDOIO::readData(r, this->mHemiSphLightNo);
+    nDDOIO::readData(r, this->mInfiLightNo);
+    return true;
+}
+
+inline bool rStageCustomPartsEx::AreaParam::load(MtDataReader& r) {
+    nDDOIO::readData(r, this->mUseAllFilter);
+    nDDOIO::readData(r, this->mFilterNo);
+    nDDOIO::readData(r, this->mPatternNo);
+    nDDOIO::readMtArray(r, this->mAreaHitShapeList);
+    return true;
+}
+
+inline bool rStageCustomPartsEx::AreaParam::save(MtDataWriter& w) {
+    nDDOIO::writeData(w, this->mUseAllFilter);
+    nDDOIO::writeData(w, this->mFilterNo);
+    nDDOIO::writeData(w, this->mPatternNo);
+    nDDOIO::writeMtArray(w, this->mAreaHitShapeList);
+    return true;
+}
+
+inline void rStageCustomPartsEx::AreaParam::clear() {
+    this->mAreaHitShapeList.deleteAll(true);
+}
+
+inline bool rStageCustomPartsEx::AreaParam::hitCheck(const MtVector3& pos) {
+    for (u32 i = 0; i < this->mAreaHitShapeList.length(); ++i) {
+        AreaHitShape* pShape = this->mAreaHitShapeList[i];
+        if (pShape != nullptr && pShape->hitCheck(pos)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+inline bool rStageCustomPartsEx::InfoEx::save(MtDataWriter& w) {
+    rStageCustomParts::Info::save(w);
+    nDDOIO::writeMtArray(w, this->mAreaParamList);
+    return true;
+}
+
+inline void rStageCustomPartsEx::InfoEx::clear() {
+    rStageCustomParts::Info::clear();
+    this->mAddVersion = 256;
+    this->mAreaParamList.deleteAll(true);
+}
+
+inline bool rStageCustomPartsEx::FilterEx::save(MtDataWriter& w) {
+    rStageCustomParts::Filter::save(w);
+    return true;
+}

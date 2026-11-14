@@ -137,3 +137,40 @@ inline rStageList::Info::Info() {
     this->mMessageId = 0;
     this->mVersion = 39321;
 }
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../generated/shared/nDDOIO.h"
+
+inline MtAllocator* rStageList::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rStageList::DTI);
+}
+
+inline void rStageList::destruct() {
+    for (u32 i = 0; i < this->mArrayInfoNum; i++) {
+        this->mpArrayInfo[i].~Info();
+    }
+    this->getAllocator()->memFree(this->mpArrayInfo);
+    this->mpArrayInfo = nullptr;
+    this->mArrayInfoNum = 0;
+}
+
+inline bool rStageList::Info::load(MtDataReader& r) {
+    nDDOIO::readData(r, this->mStageNo);
+    nDDOIO::readData(r, this->mType);
+    nDDOIO::readData(r, this->mRecommendLevel);
+    nDDOIO::readData(r, this->mMessageId);
+    nDDOIO::readData(r, this->mVersion);
+    return true;
+}
+
+inline bool rStageList::Info::save(MtDataWriter& w) {
+    nDDOIO::writeData(w, this->mStageNo);
+    nDDOIO::writeData(w, this->mType);
+    nDDOIO::writeData(w, this->mRecommendLevel);
+    nDDOIO::writeData(w, this->mMessageId);
+    nDDOIO::writeData(w, this->mVersion);
+    return true;
+}

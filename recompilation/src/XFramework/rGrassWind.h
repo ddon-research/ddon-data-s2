@@ -14,6 +14,8 @@
 // Forward declarations
 class MtAllocator;
 class MtArray;
+
+#include "../MT/MtStream.h"
 class MtDTI;
 class MtObject;
 class MtProperty;
@@ -212,6 +214,22 @@ inline void* rGrassWind::operator new(size_t sz, void* p_addr) {
 
 inline void* rGrassWind::cParamSet::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+#include "../MT/MtMemoryAllocator.h"
+inline void* rGrassWind::cParamSet::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rGrassWind::cParamSet::DTI)->memAlloc(sz, align, rGrassWind::cParamSet::DTI.getID());
+}
+
+inline void rGrassWind::cParamSet::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rGrassWind::cParamSet::DTI)->memFree(p_addr);
+}
+
+inline rGrassWind::cParamSet::cParamSet(MtProperty* prop) {
+    mpParams = nullptr;
+    mParamNum = 0;
+    mMax = 1.0f;
+    mMin = 0.0f;
 }
 
 inline rGrassWind::cParams::cParams() {

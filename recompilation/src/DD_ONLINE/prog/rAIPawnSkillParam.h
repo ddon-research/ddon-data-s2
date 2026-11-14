@@ -146,3 +146,22 @@ inline void cAIPawnSkillParamNode::operator delete[](void* p_addr) {
 inline void* cAIPawnSkillParamNode::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAIPawnSkillParamNode::DTI)->memAlloc(sz, align, ::cAIPawnSkillParamNode::DTI.::MtDTI::getID());
 }
+
+inline void* cAIPawnSkillParamNode::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIPawnSkillParamNode::DTI)->memAlloc(sz, align, ::cAIPawnSkillParamNode::DTI.::MtDTI::getID());
+}
+
+inline cAIPawnSkillParamNode::cAIPawnSkillParamNode() {
+    mJob = 255;
+    mActNo = -1;
+    mNormalSkillId = 255;
+    mSkillRange.MaxRangeXZ = 100.0f;
+    mSkillRange.MinRangeXZ = 0.0f;
+    mSkillRange.MaxRangeY = 300.0f;
+    mSkillRange.MinRangeY = -300.0f;
+    mInputInfo = 0u;
+    mInputInfoReady = 0u;
+    for (u32 i = 0; i < 16u; ++i) {
+        mSkillOcd.elems[i] = 0u;
+    }
+}

@@ -28,8 +28,182 @@ inline void* rArchive::operator new(size_t sz, u32 align) {
 }
 
 __attribute__((weak)) bool rArchive::load(MtStream& in) {
-    DDON_STUB("rArchive::load")
-    return {};
+    ARCHIVE_HDR hdr;
+    if (in.read(&hdr, sizeof(hdr)) != sizeof(hdr)) {
+        return false;
+    }
+    if (hdr.magic != 0x00435241u && hdr.magic != 0x43435241u && hdr.magic != 0x53435241u) {
+        return false;
+    }
+    if (hdr.version != DATA_VERSION) {
+        return false;
+    }
+    mResourceNum = hdr.resource_num;
+    mbCrypted = (hdr.magic == 0x43435241u);
+    mpResource = static_cast<cResource**>(MtMemoryAllocator::getAllocator(rArchive::DTI)->memAlloc(sizeof(cResource*) * hdr.resource_num, 16u));
+    if (mpResource == nullptr) {
+        return false;
+    }
+    __builtin_memset(mpResource, 0, sizeof(cResource*) * hdr.resource_num);
+    if (hdr.magic == 0x00435241u || hdr.magic == 0x43435241u) {
+        bool result = true;
+        RESOURCE_INFO* pinfo = static_cast<RESOURCE_INFO*>(MtMemory::getAllocator(7u)->memAlloc(sizeof(RESOURCE_INFO) * hdr.resource_num, 16u));
+        if (pinfo == nullptr) {
+            MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(mpResource);
+            return false;
+        }
+        if (mbCrypted != 0) {
+            CIPHER_KEY k;
+            if (mpGetCipherKey != nullptr && mpGetCipherKey(k, this)) {
+                MtStream* cin = new (16u) CipherStream(in, k);
+                cin->read(pinfo, hdr.resource_num * sizeof(RESOURCE_INFO));
+                delete cin;
+            } else {
+                cancelRequest();
+            }
+        } else {
+            in.read(pinfo, hdr.resource_num * sizeof(RESOURCE_INFO));
+        }
+        bool* pLoadable = static_cast<bool*>(MtMemory::getAllocator(7u)->memAlloc(sizeof(bool) * hdr.resource_num, 16u));
+        if (pLoadable == nullptr) {
+            MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(mpResource);
+            MtMemory::getAllocator(7u)->memFree(pinfo);
+            return false;
+        }
+        for (u32 i = 0; i < hdr.resource_num; ++i) {
+            const MtDTI* pdti = MtDTI::from(pinfo[i].type);
+            if (pdti != nullptr) {
+                pLoadable[i] = invokePathFilter(getPath(), *pdti, pinfo[i].path);
+            } else {
+                pLoadable[i] = true;
+            }
+        }
+        if ((getAttr() & ATTR_BACKGROUND) == 0 && in.isAsyncReadable()) {
+            u32 readofs = 0;
+            for (u32 i = 0; i < hdr.resource_num; ++i) {
+                if (pLoadable[i]) {
+                    RESOURCE_INFO* pi = &pinfo[i];
+                    readofs = pi->offset;
+                    break;
+                }
+            }
+            in.seek(static_cast<s32>(readofs), MtStream::ORG_BEGIN);
+            MtStream* cin = nullptr;
+            if (mbCrypted != 0) {
+                CIPHER_KEY k;
+                if (mpGetCipherKey != nullptr && mpGetCipherKey(k, this)) {
+                    cin = new (16u) CipherStream(in, k);
+                    sResource::getInstance()->setupDecode(*cin);
+                } else {
+                    cancelRequest();
+                }
+            } else {
+                sResource::getInstance()->setupDecode(in);
+            }
+            for (u32 i = 0; i < hdr.resource_num; ++i) {
+                RESOURCE_INFO* pi = &pinfo[i];
+                const MtDTI* pdti = MtDTI::from(pi->type);
+                s32 quality = static_cast<s32>(pi->quality + getQuality()) - QUALITY_DEFAULT;
+                if (quality < QUALITY_LOWEST) {
+                    quality = QUALITY_LOWEST;
+                }
+                if (quality > QUALITY_HIGHEST) {
+                    quality = QUALITY_HIGHEST;
+                }
+                if (pdti != nullptr && pLoadable[i]) {
+                    mpResource[i] = sResource::getInstance()->entryDecode(pi->path, *pdti, pi->offset - readofs, pi->datasize, pi->orgsize, static_cast<cResource::QUALITY>(quality));
+                } else {
+                    mpResource[i] = nullptr;
+                }
+                mTotalSize += pi->orgsize;
+            }
+            result = sResource::getInstance()->executeDecode(this);
+            if (!result) {
+                clear();
+            }
+            if (cin != nullptr) {
+                delete cin;
+            }
+        } else {
+            for (u32 i = 0; i < hdr.resource_num; ++i) {
+                RESOURCE_INFO* pi = &pinfo[i];
+                mTotalSize += pi->orgsize;
+            }
+            MtStream* cin = nullptr;
+            DecompressStream* sin = nullptr;
+            if (mbCrypted != 0) {
+                CIPHER_KEY k;
+                if (mpGetCipherKey != nullptr && mpGetCipherKey(k, this)) {
+                    cin = new (16u) CipherStream(in, k);
+                    sin = new (16u) DecompressStream(cin, this);
+                } else {
+                    cancelRequest();
+                }
+            } else {
+                sin = new (16u) DecompressStream(&in, this);
+            }
+            for (u32 i = 0; i < hdr.resource_num; ++i) {
+                if (isCancel()) {
+                    clear();
+                    result = false;
+                    break;
+                }
+                RESOURCE_INFO* pi = &pinfo[i];
+                const MtDTI* pdti = MtDTI::from(pi->type);
+                if (pdti == nullptr) {
+                    result = false;
+                    break;
+                }
+                if (pLoadable[i]) {
+                    sin->open(pi->offset, pi->datasize, pi->orgsize);
+                    s32 quality = static_cast<s32>(pi->quality + getQuality()) - QUALITY_DEFAULT;
+                    if (quality < QUALITY_LOWEST) {
+                        quality = QUALITY_LOWEST;
+                    }
+                    if (quality > QUALITY_HIGHEST) {
+                        quality = QUALITY_HIGHEST;
+                    }
+                    mpResource[i] = sResource::getInstance()->create(*sin, *pdti, pi->path, static_cast<cResource::QUALITY>(quality));
+                    sin->close();
+                    mCurrentSize += pi->orgsize;
+                    if (mpResource[i] == nullptr) {
+                        result = false;
+                        break;
+                    }
+                } else {
+                    mpResource[i] = nullptr;
+                    mCurrentSize += pi->orgsize;
+                }
+            }
+            if (sin != nullptr) {
+                delete sin;
+            }
+            if (cin != nullptr) {
+                delete cin;
+            }
+        }
+        MtMemory::getAllocator(7u)->memFree(pLoadable);
+        MtMemory::getAllocator(7u)->memFree(pinfo);
+        return result;
+    } else {
+        u64* rid = static_cast<u64*>(MtMemory::getAllocator(7u)->memAlloc(sizeof(u64) * hdr.resource_num, 16u));
+        if (rid == nullptr) {
+            MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(mpResource);
+            return false;
+        }
+        in.read(rid, hdr.resource_num * sizeof(u64));
+        for (u32 i = 0; i < hdr.resource_num; ++i) {
+            cResource* pr = sResource::getInstance()->create(rid[i]);
+            if (pr != nullptr && !invokePathFilter(getPath(), pr->getDTI(), pr->getPath())) {
+                pr->release();
+                mpResource[i] = nullptr;
+            } else {
+                mpResource[i] = pr;
+            }
+        }
+        MtMemory::getAllocator(7u)->memFree(rid);
+        return true;
+    }
 }
 
 void rArchive::clear() {
@@ -97,8 +271,20 @@ __attribute__((weak)) void rArchive::setResourceTotalSize(u32) {
 }
 
 __attribute__((weak)) u32 rArchive::getResourceTotalSize() {
-    DDON_STUB("rArchive::getResourceTotalSize")
-    return {};
+    u32 size = 0;
+    u32 n = getResourceNum();
+    for (u32 i = 0; i < n; ++i) {
+        cResource* pr = mpResource[i];
+        if (pr != nullptr) {
+            if (pr->isKindOf(rArchive::DTI)) {
+                rArchive* parc = static_cast<rArchive*>(pr);
+                size += parc->getResourceNum() * 8u + 8u;
+            } else {
+                size += pr->getSize();
+            }
+        }
+    }
+    return size;
 }
 
 rArchive::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -130,8 +316,97 @@ bool rArchive::DecompressStream::isReadable() {
 }
 
 __attribute__((weak)) u32 rArchive::DecompressStream::read(void* pbuf, u32 bufsize) {
-    DDON_STUB("rArchive::DecompressStream::read")
-    return {};
+    if (bufsize == 0) {
+        return 0;
+    }
+    z_stream& z = mZStream;
+    z.next_out = static_cast<Bytef*>(pbuf);
+    z.avail_out = bufsize;
+    if (mCurOut >= mOrgSize) {
+        return 0;
+    }
+    if (mCurOut == 0) {
+        u32 offset = mInOffset;
+        s32 targetbuf = static_cast<s32>(offset) / MAX_INBUF;
+        s32 currentbuf = static_cast<s32>(mCurRead) / MAX_INBUF - 1;
+        s32 nextbuf = static_cast<s32>(mCurIn) / MAX_INBUF - 1;
+        if (targetbuf == currentbuf && mInBufsize[mWbFlag ^ 1u] != 0) {
+            mWbFlag ^= 1u;
+            offset &= static_cast<u32>(MAX_INBUF - 1);
+            z.next_in = static_cast<Bytef*>(mpInBuf[mWbFlag]) + offset;
+            z.avail_in = mInBufsize[mWbFlag] - offset;
+            mWbFlag ^= 1u;
+        } else {
+            if (targetbuf == nextbuf && mInBufsize[mWbFlag] != 0) {
+                mpIn->readWait();
+            } else {
+                mCurIn = offset & ~static_cast<u32>(MAX_INBUF - 1);
+                mpIn->seek(static_cast<s32>(mCurIn), MtStream::ORG_BEGIN);
+                u32 insize = MAX_INBUF;
+                mCurIn += MAX_INBUF;
+                if (mCurIn > mMaxLength) {
+                    u32 over = mCurIn - mMaxLength;
+                    insize = (over > static_cast<u32>(MAX_INBUF)) ? 0u : (static_cast<u32>(MAX_INBUF) - over);
+                }
+                mpIn->read(mpInBuf[mWbFlag], insize);
+                mInBufsize[mWbFlag] = insize;
+            }
+            offset &= static_cast<u32>(MAX_INBUF - 1);
+            z.next_in = static_cast<Bytef*>(mpInBuf[mWbFlag]) + offset;
+            z.avail_in = mInBufsize[mWbFlag] - offset;
+            mWbFlag ^= 1u;
+            mCurRead = mCurIn;
+            if (mCurIn < mMaxLength) {
+                u32 insize = MAX_INBUF;
+                mCurIn += MAX_INBUF;
+                if (mCurIn > mMaxLength) {
+                    u32 over = mCurIn - mMaxLength;
+                    insize = (over > static_cast<u32>(MAX_INBUF)) ? 0u : (static_cast<u32>(MAX_INBUF) - over);
+                }
+                mpIn->readAsync(mpInBuf[mWbFlag], insize);
+                mInBufsize[mWbFlag] = insize;
+            } else {
+                mpIn->readWait();
+                mInBufsize[mWbFlag] = 0;
+            }
+        }
+    }
+    mCurOut += bufsize;
+    if (mCurOut > mOrgSize) {
+        bufsize -= (mCurOut - mOrgSize);
+        mCurOut = mOrgSize;
+    }
+    bool isBailedOut = false;
+    do {
+        if (z.avail_in == 0) {
+            z.next_in = static_cast<Bytef*>(mpInBuf[mWbFlag]);
+            z.avail_in = mInBufsize[mWbFlag];
+            mWbFlag ^= 1u;
+            mCurRead = mCurIn;
+            if (mCurIn < mMaxLength) {
+                u32 insize = MAX_INBUF;
+                mCurIn += MAX_INBUF;
+                if (mCurIn > mMaxLength) {
+                    u32 over = mCurIn - mMaxLength;
+                    insize = (over > static_cast<u32>(MAX_INBUF)) ? 0u : (static_cast<u32>(MAX_INBUF) - over);
+                }
+                mInBufsize[mWbFlag] = insize;
+                mpIn->readAsync(mpInBuf[mWbFlag], insize);
+            } else {
+                mInBufsize[mWbFlag] = 0;
+                mpIn->readWait();
+            }
+        }
+        s32 status = inflate(&z, 0);
+        if (status == 1) {
+            break;
+        }
+        if (status != 0) {
+            isBailedOut = true;
+            break;
+        }
+    } while (z.avail_out != 0);
+    return isBailedOut ? 0u : bufsize;
 }
 
 u32 rArchive::DecompressStream::getPosition() {
@@ -143,8 +418,8 @@ u32 rArchive::DecompressStream::getLength() {
 }
 
 __attribute__((weak)) void rArchive::DecompressStream::close() {
-    DDON_STUB("rArchive::DecompressStream::close")
-    /* stub */
+    inflateEnd(&mZStream);
+    mpIn->flush();
 }
 
 rArchive::DecompressStream::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -152,8 +427,7 @@ rArchive::DecompressStream::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t 
 rArchive::DecompressStream::MyDTI rArchive::DecompressStream::DTI("rArchive::DecompressStream", &::MtStream::DTI, 200ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rArchive::DecompressStream::MyDTI::newInstance() const {
-    DDON_STUB("rArchive::DecompressStream::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rArchive::DecompressStream(nullptr, nullptr);
 }
 
 rArchive::CipherStream::~CipherStream() {
@@ -206,8 +480,15 @@ void rArchive::CipherStream::flush() {
 }
 
 __attribute__((weak)) u32 rArchive::CipherStream::read(void* buf, u32 bufsiz) {
-    DDON_STUB("rArchive::CipherStream::read")
-    return {};
+    if (mpSt == nullptr) {
+        return 0;
+    }
+    u32 res = mpSt->read(buf, bufsiz);
+    if (res != 0) {
+        mCi.decryptBF(static_cast<u8*>(buf), static_cast<u8*>(buf), bufsiz);
+        return res;
+    }
+    return 0;
 }
 
 u32 rArchive::CipherStream::readAsync(void* buf, u32 bufsize) {

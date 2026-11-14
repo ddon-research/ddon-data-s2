@@ -7,6 +7,9 @@
 #include "../../MT/MtDTI.h"
 #include "../../XFramework/cResource.h"
 
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
 // Forward declarations
 class MtAllocator;
 class MtDTI;
@@ -104,4 +107,20 @@ public:
 
 inline void* rFreeF32Tbl::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline MtAllocator* rFreeF32Tbl::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rFreeF32Tbl::DTI);
+}
+
+inline void rFreeF32Tbl::freeMem() {
+    if (mpHeader != nullptr) {
+        getAllocator()->memFree(static_cast<void*>(mpHeader));
+        mpHeader = nullptr;
+    }
+}
+
+inline void rFreeF32Tbl::allocMem(u32 size) {
+    freeMem();
+    mpHeader = static_cast<stHeader*>(getAllocator()->memAlloc(size, 16u));
 }

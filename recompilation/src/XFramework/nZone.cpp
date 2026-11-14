@@ -36,14 +36,19 @@ void* nZone::ShapeInfoAABB::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void nZone::ShapeInfoAABB::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoAABB::DTI)->memFree(p_addr);
+}
+
 nZone::ShapeInfoAABB::ShapeInfoAABB() {
-    DDON_STUB("nZone::ShapeInfoAABB::ShapeInfoAABB")
-    /* stub */
+    mAABB.minpos = MtVector3(-50.0f, 0.0f, -50.0f);
+    mAABB.maxpos = MtVector3(50.0f, 100.0f, 50.0f);
+    mDecayY = 1.0f;
+    mDecayZ = 1.0f;
+    mIsEnableExtendedDecay = false;
 }
 
 nZone::ShapeInfoAABB::~ShapeInfoAABB() {
-    DDON_STUB("nZone::ShapeInfoAABB::~ShapeInfoAABB")
-    /* stub */
 }
 
 __attribute__((weak)) void nZone::ShapeInfoAABB::createProperty(MtPropertyList& s) {
@@ -236,8 +241,7 @@ bool nZone::ShapeInfoAABB::isGetAABB() const {
 }
 
 __attribute__((weak)) MtAABB nZone::ShapeInfoAABB::getAABB() const {
-    DDON_STUB("nZone::ShapeInfoAABB::getAABB")
-    __builtin_unreachable();
+    return mAABB;
 }
 
 bool nZone::ShapeInfoAABB::isGetBoundingSphere() const {
@@ -489,14 +493,23 @@ void* nZone::ShapeInfoArea::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-nZone::ShapeInfoArea::ShapeInfoArea() {
-    DDON_STUB("nZone::ShapeInfoArea::ShapeInfoArea")
-    /* stub */
+inline void nZone::ShapeInfoArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoArea::DTI)->memFree(p_addr);
+}
+
+__attribute__((noinline)) nZone::ShapeInfoArea::ShapeInfoArea() {
+    mHeight = 100.0f;
+    mBottom = 0.0f;
+    mConcaveStatus = 0;
+    mFlgConvex = true;
+    mVertex[0] = MtVector3(50.0f, 0.0f, 50.0f);
+    mVertex[1] = MtVector3(50.0f, 0.0f, -50.0f);
+    mVertex[2] = MtVector3(-50.0f, 0.0f, -50.0f);
+    mVertex[3] = MtVector3(-50.0f, 0.0f, 50.0f);
+    mConcaveCrossPos = MtVector3::Zero;
 }
 
 nZone::ShapeInfoArea::~ShapeInfoArea() {
-    DDON_STUB("nZone::ShapeInfoArea::~ShapeInfoArea")
-    /* stub */
 }
 
 __attribute__((weak)) void nZone::ShapeInfoArea::createProperty(MtPropertyList& s) {
@@ -544,13 +557,27 @@ __attribute__((weak)) bool nZone::ShapeInfoArea::getClosest(const MtVector3& pos
 }
 
 __attribute__((weak)) void nZone::ShapeInfoArea::loadBinary(MtDataReader& r) {
-    DDON_STUB("nZone::ShapeInfoArea::loadBinary")
-    /* stub */
+    mDecay = r.readF32();
+    mIsNativeData = (r.readU8() == 1);
+    mHeight = r.readF32();
+    mBottom = r.readF32();
+    r.read(mVertex, sizeof(mVertex));
+    r.read(&mConcaveCrossPos, sizeof(mConcaveCrossPos));
+    mFlgConvex = (r.readU8() != 0);
+    mConcaveStatus = r.readU32();
+    repairHeightAndBottom();
 }
 
 __attribute__((weak)) void nZone::ShapeInfoArea::saveBinary(MtDataWriter& w) {
-    DDON_STUB("nZone::ShapeInfoArea::saveBinary")
-    /* stub */
+    repairHeightAndBottom();
+    w.writeF32(mDecay);
+    w.writeU8(static_cast<u8>(mIsNativeData));
+    w.writeF32(mHeight);
+    w.writeF32(mBottom);
+    w.write(mVertex, sizeof(mVertex));
+    w.write(&mConcaveCrossPos, sizeof(mConcaveCrossPos));
+    w.writeU8(static_cast<u8>(mFlgConvex));
+    w.writeU32(mConcaveStatus);
 }
 
 bool nZone::ShapeInfoArea::isGetAABB() const {
@@ -558,8 +585,12 @@ bool nZone::ShapeInfoArea::isGetAABB() const {
 }
 
 __attribute__((weak)) MtAABB nZone::ShapeInfoArea::getAABB() const {
-    DDON_STUB("nZone::ShapeInfoArea::getAABB")
-    __builtin_unreachable();
+    MtAABB aabb = MtAABB::Empty;
+    for (u32 i = 0; i < VERTEX_NUM; ++i) {
+        aabb.inflate(mVertex[i]);
+    }
+    aabb.maxpos.y += mHeight;
+    return aabb;
 }
 
 bool nZone::ShapeInfoArea::isGetBoundingSphere() const {
@@ -1056,14 +1087,18 @@ void* nZone::ShapeInfoCone::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-nZone::ShapeInfoCone::ShapeInfoCone() {
-    DDON_STUB("nZone::ShapeInfoCone::ShapeInfoCone")
-    /* stub */
+inline void nZone::ShapeInfoCone::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCone::DTI)->memFree(p_addr);
+}
+
+__attribute__((noinline)) nZone::ShapeInfoCone::ShapeInfoCone() {
+    mHeight = 100.0f;
+    mTopRadius = 100.0f;
+    mPos = MtVector3::Zero;
+    mBottomRadius = 50.0f;
 }
 
 nZone::ShapeInfoCone::~ShapeInfoCone() {
-    DDON_STUB("nZone::ShapeInfoCone::~ShapeInfoCone")
-    /* stub */
 }
 
 __attribute__((weak)) void nZone::ShapeInfoCone::createProperty(MtPropertyList& s) {
@@ -1197,8 +1232,10 @@ bool nZone::ShapeInfoCone::isGetAABB() const {
 }
 
 __attribute__((weak)) MtAABB nZone::ShapeInfoCone::getAABB() const {
-    DDON_STUB("nZone::ShapeInfoCone::getAABB")
-    __builtin_unreachable();
+    const f32 RadiusMax = (mBottomRadius > mTopRadius) ? mBottomRadius : mTopRadius;
+    const MtVector3 minpos(mPos.x - RadiusMax, mPos.y, mPos.z - RadiusMax);
+    const MtVector3 maxpos(mPos.x + RadiusMax, mPos.y + mHeight, mPos.z + RadiusMax);
+    return MtAABB(minpos, maxpos);
 }
 
 bool nZone::ShapeInfoCone::isGetBoundingSphere() const {
@@ -1273,14 +1310,17 @@ void* nZone::ShapeInfoCylinder::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-nZone::ShapeInfoCylinder::ShapeInfoCylinder() {
-    DDON_STUB("nZone::ShapeInfoCylinder::ShapeInfoCylinder")
-    /* stub */
+inline void nZone::ShapeInfoCylinder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCylinder::DTI)->memFree(p_addr);
+}
+
+__attribute__((noinline)) nZone::ShapeInfoCylinder::ShapeInfoCylinder() {
+    mCylinder.p0 = MtVector3(0.0f, 100.0f, 0.0f);
+    mCylinder.p1 = MtVector3::Zero;
+    mCylinder.r = 50.0f;
 }
 
 nZone::ShapeInfoCylinder::~ShapeInfoCylinder() {
-    DDON_STUB("nZone::ShapeInfoCylinder::~ShapeInfoCylinder")
-    /* stub */
 }
 
 __attribute__((weak)) void nZone::ShapeInfoCylinder::createProperty(MtPropertyList& s) {
@@ -1511,14 +1551,22 @@ void* nZone::ShapeInfoOBB::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-nZone::ShapeInfoOBB::ShapeInfoOBB() {
-    DDON_STUB("nZone::ShapeInfoOBB::ShapeInfoOBB")
-    /* stub */
+inline void nZone::ShapeInfoOBB::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoOBB::DTI)->memFree(p_addr);
+}
+
+__attribute__((noinline)) nZone::ShapeInfoOBB::ShapeInfoOBB() {
+    MtMatrix mat;
+    mat.identity();
+    mat.setTranslate(MtVector3(0.0f, 50.0f, 0.0f));
+    mOBB.coord = mat;
+    mOBB.extent = MtVector3(50.0f, 50.0f, 50.0f);
+    mDecayY = 1.0f;
+    mDecayZ = 1.0f;
+    mIsEnableExtendedDecay = false;
 }
 
 nZone::ShapeInfoOBB::~ShapeInfoOBB() {
-    DDON_STUB("nZone::ShapeInfoOBB::~ShapeInfoOBB")
-    /* stub */
 }
 
 __attribute__((weak)) void nZone::ShapeInfoOBB::createProperty(MtPropertyList& s) {
@@ -1709,8 +1757,9 @@ bool nZone::ShapeInfoOBB::isGetAABB() const {
 }
 
 __attribute__((weak)) MtAABB nZone::ShapeInfoOBB::getAABB() const {
-    DDON_STUB("nZone::ShapeInfoOBB::getAABB")
-    __builtin_unreachable();
+    MtAABB aabb;
+    mOBB.getBoundingAABB(aabb);
+    return aabb;
 }
 
 bool nZone::ShapeInfoOBB::isGetBoundingSphere() const {
@@ -2016,14 +2065,16 @@ void* nZone::ShapeInfoSphere::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void nZone::ShapeInfoSphere::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoSphere::DTI)->memFree(p_addr);
+}
+
 nZone::ShapeInfoSphere::ShapeInfoSphere() {
-    DDON_STUB("nZone::ShapeInfoSphere::ShapeInfoSphere")
-    /* stub */
+    mSphere.pos = MtFloat3A(0.0f, 50.0f, 0.0f);
+    mSphere.r = 50.0f;
 }
 
 nZone::ShapeInfoSphere::~ShapeInfoSphere() {
-    DDON_STUB("nZone::ShapeInfoSphere::~ShapeInfoSphere")
-    /* stub */
 }
 
 __attribute__((weak)) void nZone::ShapeInfoSphere::createProperty(MtPropertyList& s) {
@@ -2116,8 +2167,10 @@ bool nZone::ShapeInfoSphere::isGetAABB() const {
 }
 
 __attribute__((weak)) MtAABB nZone::ShapeInfoSphere::getAABB() const {
-    DDON_STUB("nZone::ShapeInfoSphere::getAABB")
-    __builtin_unreachable();
+    MtAABB aabb;
+    aabb.minpos = MtVector3(mSphere.pos.x - mSphere.r, mSphere.pos.y - mSphere.r, mSphere.pos.z - mSphere.r);
+    aabb.maxpos = MtVector3(mSphere.pos.x + mSphere.r, mSphere.pos.y + mSphere.r, mSphere.pos.z + mSphere.r);
+    return aabb;
 }
 
 bool nZone::ShapeInfoSphere::isGetBoundingSphere() const {
@@ -2194,14 +2247,13 @@ inline void nZone::cContentsPool::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nZone::cContentsPool::DTI)->memFree(p_addr);
 }
 
-nZone::cContentsPool::cContentsPool() {
-    DDON_STUB("nZone::cContentsPool::cContentsPool")
-    /* stub */
+__attribute__((noinline)) nZone::cContentsPool::cContentsPool() {
+    mContentsListArray.setAutoDelete(true);
+    mFlgNativeData = false;
 }
 
-nZone::cContentsPool::~cContentsPool() {
-    DDON_STUB("nZone::cContentsPool::~cContentsPool")
-    /* stub */
+__attribute__((noinline)) nZone::cContentsPool::~cContentsPool() {
+    clearContents();
 }
 
 __attribute__((weak)) void nZone::cContentsPool::createProperty(MtPropertyList& s) {

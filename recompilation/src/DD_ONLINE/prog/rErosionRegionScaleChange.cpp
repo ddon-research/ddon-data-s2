@@ -53,8 +53,9 @@ inline void rErosionRegionScaleChange::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rErosionRegionScaleChange::loadData(MtDataReader& r, cErosionRegionScaleChange* pData) {
-    DDON_STUB("rErosionRegionScaleChange::loadData")
-    return {};
+    nDDOIO::readData(r, pData->mInitScale);
+    nDDOIO::readData(r, pData->mChangeFrame);
+    return true;
 }
 
 MT_CTSTR rErosionRegionScaleChange::getExt() const {

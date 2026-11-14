@@ -163,3 +163,32 @@ inline void cShotReqInfo2::operator delete[](void* p_addr) {
 inline void* cShotReqInfo2::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cShotReqInfo2::DTI)->memAlloc(sz, align, ::cShotReqInfo2::DTI.::MtDTI::getID());
 }
+
+inline MtAllocator* cShotReqInfo2::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cShotReqInfo2::DTI);
+}
+
+inline void* cShotReqInfo2::operator new(size_t sz, u32 align) {
+    return ::cShotReqInfo2::getAllocator()->memAlloc(sz, align, ::cShotReqInfo2::DTI.::MtDTI::getID());
+}
+
+inline cShotReqInfo2::cShotReqInfo2() {
+    for (s16 i = 0; i < MAX_REQ_NUM; ++i) {
+        stShotReq2Param& param = this->mData.elems[i];
+        param.mIsUse = true;
+        param.mShotFlag = 0;
+        param.mShotGroup = 0;
+        param.mShotIndex = 0;
+        param.mSetTarget = 0;
+        param.mJointNo = 0xff;
+        param.mIsConst = false;
+        param.mOffsetPos = MtVector3::Zero;
+        param.mOffsetDir = MtVector3::Zero;
+        param.mIsLockOnTarget = false;
+        param.mLiveRegionNo = 0;
+        param.mEnchantElementType = 1;
+        param.mUseAbsolutePos = false;
+        param.mHpRateLimit1 = 0.0f;
+        param.mHpRateLimit2 = 100.0f;
+    }
+}

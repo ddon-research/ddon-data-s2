@@ -14,6 +14,10 @@
 #define DDON_STUB(name)
 #endif
 
+inline void* rSoundRequest::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memAlloc(sz, align, rSoundRequest::DTI.mID);
+}
+
 __attribute__((weak)) void rSoundRequest::usage() {
 }
 
@@ -25,9 +29,9 @@ inline void rSoundRequest::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(p_addr);
 }
 
-rSoundRequest::~rSoundRequest() {
-    DDON_STUB("rSoundRequest::~rSoundRequest")
-    /* stub */
+__attribute__((noinline)) rSoundRequest::~rSoundRequest() {
+    MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(mpReqNoToIndexTbl);
+    freeMemory();
 }
 
 __attribute__((weak)) bool rSoundRequest::load(MtStream& in) {
@@ -69,8 +73,50 @@ rSoundRequest::Element* rSoundRequest::getElement(u32 reqNo) const {
 }
 
 __attribute__((weak)) void rSoundRequest::freeMemory() {
-    DDON_STUB("rSoundRequest::freeMemory")
-    /* stub */
+    if (mpRawData != nullptr) {
+        for (u32 i = 0; i < mElementNum; i++) {
+            if (mpElement[i].mpBank != nullptr) {
+                mpElement[i].mpBank->release();
+                mpElement[i].mpBank = nullptr;
+            }
+        }
+        MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(mpRawData);
+    } else {
+        for (u32 i = 0; i < mBankList.mLength; i++) {
+            rSoundBank* pBnk = static_cast<rSoundBank*>(mBankList.mpArray[i]);
+            if (pBnk != nullptr) {
+                pBnk->release();
+            }
+        }
+        if (mBankList.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(mBankList.mpArray);
+        }
+        mBankList.mpArray = nullptr;
+        mBankList.mBufsiz = 0;
+        mBankList.mLength = 0;
+        for (u32 i = 0; i < mElementNum; i++) {
+            if (mpElement[i].mpBank != nullptr) {
+                mpElement[i].mpBank->release();
+                mpElement[i].mpBank = nullptr;
+            }
+        }
+        MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(mpElement);
+        MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(mpSpeakerSets);
+        MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(mpSpeakers);
+        MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(mpDirectionalCurves);
+        MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(mpDirectionalCurveElements);
+    }
+    mpRawData = nullptr;
+    mpElement = nullptr;
+    mElementNum = 0;
+    mpSpeakerSets = nullptr;
+    mpSpeakers = nullptr;
+    mpDirectionalCurves = nullptr;
+    mpDirectionalCurveElements = nullptr;
+    mDirectionalCurveNum = 0;
+    mDirectionalCurveElementNum = 0;
+    mSpeakerSetNum = 0;
+    mSpeakerNum = 0;
 }
 
 __attribute__((weak)) void rSoundRequest::setup() {
@@ -88,8 +134,7 @@ rSoundRequest::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 rSoundRequest::MyDTI rSoundRequest::DTI("rSoundRequest", &::cResource::DTI, 232ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rSoundRequest::MyDTI::newInstance() const {
-    DDON_STUB("rSoundRequest::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rSoundRequest;
 }
 
 template MtTypedArray<rSoundBank>::~MtTypedArray();

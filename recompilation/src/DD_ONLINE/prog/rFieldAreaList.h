@@ -110,7 +110,7 @@ public:
         static void operator delete[](void* p_addr, u32 align);
         const StageNoArray& getStageNoList() const;
         u32 getGMDIndex() const;
-        cFieldAreaInfo();
+        inline cFieldAreaInfo();
         virtual ~cFieldAreaInfo();
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
@@ -176,4 +176,25 @@ inline void* rFieldAreaList::cFieldAreaInfo::cStageNo::operator new(size_t sz, v
 
 inline rFieldAreaList::cFieldAreaInfo::cStageNo::cStageNo() {
     this->mStageNo = -1;
+}
+
+inline rFieldAreaList::cFieldAreaInfo::cFieldAreaInfo()
+    : mFieldAreaId(0), mGmdIdx(0), mVersionId(0x9900), mLandId(0), mAreaId(0) {
+    mStageNoList.setAutoDelete(true);
+    mBelongStageNoList.setAutoDelete(true);
+}
+
+#include "../../MT/MtDataWriter.h"
+#include "../../generated/shared/nDDOIO.h"
+
+inline void rFieldAreaList::cFieldAreaInfo::cStageNo::save(MtDataWriter& w) {
+    w.writeS32(mStageNo);
+}
+
+template <>
+inline void nDDOIO::writeMtArray<rFieldAreaList::cFieldAreaInfo::cStageNo>(MtDataWriter& w, MtTypedArray<rFieldAreaList::cFieldAreaInfo::cStageNo>& ar) {
+    w.writeU32(ar.length());
+    for (u32 i = 0; i < ar.length(); i++) {
+        ar[i]->save(w);
+    }
 }

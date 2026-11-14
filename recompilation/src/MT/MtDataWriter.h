@@ -170,3 +170,11 @@ inline void MtDataWriter::writeU8(u8 n) {
     mBuffer[mSeekPt] = n;
     mSeekPt = mSeekPt + 1u;
 }
+
+inline void MtDataWriter::writeS8(s8 n) {
+    if (mSeekPt >= mBufsiz) {
+        flush();
+    }
+    mBuffer[mSeekPt] = static_cast<u8>(n);
+    mSeekPt = mSeekPt + 1u;
+}

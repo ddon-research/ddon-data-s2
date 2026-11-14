@@ -27,8 +27,6 @@ inline void cAIPawnOrderParam::operator delete(void* p_addr) {
 }
 
 cAIPawnOrderParam::~cAIPawnOrderParam() {
-    DDON_STUB("cAIPawnOrderParam::~cAIPawnOrderParam")
-    /* stub */
 }
 
 __attribute__((weak)) void cAIPawnOrderParam::createProperty(MtPropertyList& s) {

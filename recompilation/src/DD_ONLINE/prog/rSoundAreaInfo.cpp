@@ -19,6 +19,10 @@
 #define DDON_STUB(name)
 #endif
 
+inline void* rSoundAreaInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundAreaInfo::DTI)->memAlloc(sz, align, rSoundAreaInfo::DTI.mID);
+}
+
 const MtDTI& rSoundAreaInfo::getDTI() const {
     return rSoundAreaInfo::DTI;
 }
@@ -28,8 +32,7 @@ inline void rSoundAreaInfo::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rSoundAreaInfo::~rSoundAreaInfo() {
-    DDON_STUB("rSoundAreaInfo::~rSoundAreaInfo")
-    /* stub */
+    clear();
 }
 
 __attribute__((weak)) void rSoundAreaInfo::createProperty(MtPropertyList& s) {
@@ -42,18 +45,180 @@ MT_CTSTR rSoundAreaInfo::getExt() const {
 }
 
 __attribute__((weak)) bool rSoundAreaInfo::load(MtStream& in) {
-    DDON_STUB("rSoundAreaInfo::load")
-    return {};
+    MtDataReader r(in, 4096u);
+    u32 magic = r.readU32();
+    u32 version = r.readU32();
+    char t0[64];
+    const MtDTI* t1;
+    if (magic != 0x726173u || version != DATA_VERSION) {
+        return false;
+    }
+    nDDOIO::readData(r, mStageNo);
+    nDDOIO::readData(r, mAreaNo);
+    nDDOIO::readData(r, mIsAmb);
+    nDDOIO::readData(r, mBgmNo);
+    nDDOIO::readData(r, mDayBgmNo);
+    nDDOIO::readData(r, mNightBgmNo);
+    nDDOIO::readData(r, mIsSecond);
+    nDDOIO::readData(r, mIsAmb2);
+    nDDOIO::readData(r, mBgmNo2);
+    nDDOIO::readData(r, mDayBgmNo2);
+    nDDOIO::readData(r, mNightBgmNo2);
+    nDDOIO::readData(r, mIsCycle);
+    nDDOIO::readData(r, mCycleBgmNo);
+    nDDOIO::readData(r, mBtlBgmNo);
+    nDDOIO::readData(r, mBtlBgmOutroNo);
+    for (u32 i = 0; i < 4u; i++) {
+        nDDOIO::readData(r, mEqLength[i]);
+    }
+    for (u32 i = 0; i < 3u; i++) {
+        r.readString(t0, 64u);
+        if (t0[0] != '\0') {
+            t1 = MtDTI::from(t0, cResource::DTI);
+            r.readString(t0, 64u);
+            mpSndZoneRes[i].mpPtr = static_cast<rZone*>(sResource::getInstance()->create(*t1, t0, 1u));
+        }
+    }
+    for (u32 i = 0; i < ATTRIBUTE_NUM_MAX; i++) {
+        nDDOIO::readData(r, mIsAttribute[i]);
+        r.readString(t0, 64u);
+        if (t0[0] != '\0') {
+            t1 = MtDTI::from(t0, cResource::DTI);
+            r.readString(t0, 64u);
+            mpAttributeSTQRes[i].mpPtr = static_cast<rSoundRequest*>(sResource::getInstance()->create(*t1, t0, 1u));
+        }
+    }
+    r.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        r.readString(t0, 64u);
+        mpAmbientRes.mpPtr = static_cast<rSoundRequest*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    r.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        r.readString(t0, 64u);
+        mpBgmSTQRes.mpPtr = static_cast<rSoundStreamRequest*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    r.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        r.readString(t0, 64u);
+        mpCycleBgmSTQRes.mpPtr = static_cast<rSoundStreamRequest*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    r.readString(t0, 64u);
+    if (t0[0] != '\0') {
+        t1 = MtDTI::from(t0, cResource::DTI);
+        r.readString(t0, 64u);
+        mpBtlBgmSTQRes.mpPtr = static_cast<rSoundStreamRequest*>(sResource::getInstance()->create(*t1, t0, 1u));
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rSoundAreaInfo::save(MtStream& out) {
-    DDON_STUB("rSoundAreaInfo::save")
-    return {};
+    u32 version = DATA_VERSION;
+    u32 magic = 0x726173u;
+    MtDataWriter w(out, 4096u, 4096u);
+    cResource* t0;
+    nDDOIO::writeData(w, magic);
+    nDDOIO::writeData(w, version);
+    nDDOIO::writeData(w, mStageNo);
+    nDDOIO::writeData(w, mAreaNo);
+    nDDOIO::writeData(w, mIsAmb);
+    nDDOIO::writeData(w, mBgmNo);
+    nDDOIO::writeData(w, mDayBgmNo);
+    nDDOIO::writeData(w, mNightBgmNo);
+    nDDOIO::writeData(w, mIsSecond);
+    nDDOIO::writeData(w, mIsAmb2);
+    nDDOIO::writeData(w, mBgmNo2);
+    nDDOIO::writeData(w, mDayBgmNo2);
+    nDDOIO::writeData(w, mNightBgmNo2);
+    nDDOIO::writeData(w, mIsCycle);
+    nDDOIO::writeData(w, mCycleBgmNo);
+    nDDOIO::writeData(w, mBtlBgmNo);
+    nDDOIO::writeData(w, mBtlBgmOutroNo);
+    for (u32 i = 0; i < 4u; i++) {
+        nDDOIO::writeData(w, mEqLength[i]);
+    }
+    for (u32 i = 0; i < 3u; i++) {
+        t0 = mpSndZoneRes[i].mpPtr;
+        if (t0 != nullptr) {
+            w.writeString(t0->getDTI().getName());
+            w.writeString(t0->getPath());
+        } else {
+            w.writeString("");
+        }
+    }
+    for (u32 i = 0; i < ATTRIBUTE_NUM_MAX; i++) {
+        nDDOIO::writeData(w, mIsAttribute[i]);
+        t0 = mpAttributeSTQRes[i].mpPtr;
+        if (t0 != nullptr) {
+            w.writeString(t0->getDTI().getName());
+            w.writeString(t0->getPath());
+        } else {
+            w.writeString("");
+        }
+    }
+    t0 = mpAmbientRes.mpPtr;
+    if (t0 != nullptr) {
+        w.writeString(t0->getDTI().getName());
+        w.writeString(t0->getPath());
+    } else {
+        w.writeString("");
+    }
+    t0 = mpBgmSTQRes.mpPtr;
+    if (t0 != nullptr) {
+        w.writeString(t0->getDTI().getName());
+        w.writeString(t0->getPath());
+    } else {
+        w.writeString("");
+    }
+    t0 = mpCycleBgmSTQRes.mpPtr;
+    if (t0 != nullptr) {
+        w.writeString(t0->getDTI().getName());
+        w.writeString(t0->getPath());
+    } else {
+        w.writeString("");
+    }
+    t0 = mpBtlBgmSTQRes.mpPtr;
+    if (t0 != nullptr) {
+        w.writeString(t0->getDTI().getName());
+        w.writeString(t0->getPath());
+    } else {
+        w.writeString("");
+    }
+    return true;
 }
 
 __attribute__((weak)) void rSoundAreaInfo::clear() {
-    DDON_STUB("rSoundAreaInfo::clear")
-    /* stub */
+    f32 EQTable[4] = {1200.0f, 2000.0f, 2800.0f, 4000.0f};
+    mStageNo = -1;
+    mAreaNo = -1;
+    mIsAmb = false;
+    mBgmNo = 0xFFFFFFFFu;
+    mDayBgmNo = 0xFFFFFFFFu;
+    mNightBgmNo = 0xFFFFFFFFu;
+    mIsSecond = false;
+    mIsAmb2 = false;
+    mBgmNo2 = 0xFFFFFFFFu;
+    mDayBgmNo2 = 0xFFFFFFFFu;
+    mNightBgmNo2 = 0xFFFFFFFFu;
+    mCycleBgmNo = 0xFFFFFFFFu;
+    mBtlBgmNo = 0xFFFFFFFFu;
+    mBtlBgmOutroNo = 0xFFFFFFFFu;
+    mIsCycle = false;
+    for (u32 i = 0; i < 4u; i++) {
+        mEqLength[i] = EQTable[i];
+    }
+    for (u32 i = 0; i < 3u; i++) {
+        mpSndZoneRes[i].releasePtr();
+    }
+    for (u32 i = 0; i < ATTRIBUTE_NUM_MAX; i++) {
+        mIsAttribute[i] = false;
+        mpAttributeSTQRes[i].releasePtr();
+    }
+    mpBgmSTQRes.releasePtr();
+    mpCycleBgmSTQRes.releasePtr();
 }
 
 rZone* rSoundAreaInfo::getSndZoneOcclusion() {
@@ -94,7 +259,6 @@ rSoundAreaInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 rSoundAreaInfo::MyDTI rSoundAreaInfo::DTI("rSoundAreaInfo", &::cResource::DTI, 528ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rSoundAreaInfo::MyDTI::newInstance() const {
-    DDON_STUB("rSoundAreaInfo::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rSoundAreaInfo;
 }
 

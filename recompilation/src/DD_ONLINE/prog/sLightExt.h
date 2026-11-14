@@ -129,3 +129,74 @@ inline void* cActorLight::operator new(size_t sz, void* p_addr) {
 inline void* rActorLight::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtDataWriter.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cActorLight::getAllocator() {
+    return MtMemoryAllocator::getAllocator(cActorLight::DTI);
+}
+
+inline void* cActorLight::operator new(size_t sz, u32 align) {
+    return getAllocator()->memAlloc(sz, align, cActorLight::DTI.getID());
+}
+
+inline void cActorLight::operator delete(void* p_addr) {
+    getAllocator()->memFree(p_addr);
+}
+
+inline cActorLight::cActorLight() {
+    mStageNo = -1;
+    mColor = MtVector3(3.184f, 4.0f, 3.908f);
+    mBalance = -0.5f;
+    mShadowAtten.x = 0.8f;
+    mShadowAtten.y = 0.0f;
+    mPos = MtVector3(20.0f, -40.0f, 50.0f);
+    mStart = 50.0f;
+    mEnd = 150.0f;
+}
+
+inline bool rActorLight::loadData(MtDataReader& in, cActorLight* pData) {
+    pData->mColor = in.readV3();
+    pData->mBalance = in.readF32();
+    pData->mShadowAtten.x = in.readF32();
+    pData->mShadowAtten.y = in.readF32();
+    pData->mPos = in.readV3();
+    pData->mStart = in.readF32();
+    pData->mEnd = in.readF32();
+    return true;
+}
+
+inline bool rActorLight::saveData(MtDataWriter& out, cActorLight* pData) {
+    MtFloat3 v;
+    v.x = pData->mColor.x;
+    v.y = pData->mColor.y;
+    v.z = pData->mColor.z;
+    out.writeV3(v);
+    out.writeF32(pData->mBalance);
+    out.writeF32(pData->mShadowAtten.x);
+    out.writeF32(pData->mShadowAtten.y);
+    v.x = pData->mPos.x;
+    v.y = pData->mPos.y;
+    v.z = pData->mPos.z;
+    out.writeV3(v);
+    out.writeF32(pData->mStart);
+    out.writeF32(pData->mEnd);
+    return true;
+}
+
+inline bool rActorLight::saveData(MtDataWriter& out) {
+    out.writeU32(rTable::mMagic);
+    out.writeU16(cActorLight::DATA_VERSION);
+    out.writeU16(0);
+    out.writeU32(mArray.length());
+    for (u32 i = 0; i < mArray.length(); i++) {
+        cActorLight* pObj = static_cast<cActorLight*>(mArray[i]);
+        if (pObj != nullptr) {
+            saveData(out, pObj);
+        }
+    }
+    return true;
+}

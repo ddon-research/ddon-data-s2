@@ -119,3 +119,20 @@ inline void cCharacterEditColorDef::operator delete[](void* p_addr) {
 inline void* cCharacterEditColorDef::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCharacterEditColorDef::DTI)->memAlloc(sz, align, ::cCharacterEditColorDef::DTI.::MtDTI::getID());
 }
+
+inline MtAllocator* cCharacterEditColorDef::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCharacterEditColorDef::DTI);
+}
+
+inline void* cCharacterEditColorDef::operator new(size_t sz, u32 align) {
+    return ::cCharacterEditColorDef::getAllocator()->memAlloc(sz, align, ::cCharacterEditColorDef::DTI.::MtDTI::getID());
+}
+
+inline cCharacterEditColorDef::cCharacterEditColorDef() {
+    mUse = true;
+    mColor.x = 1.0f;
+    mColor.y = 1.0f;
+    mColor.z = 1.0f;
+    mColor.w = 1.0f;
+    mUIColor = MtColor::White;
+}

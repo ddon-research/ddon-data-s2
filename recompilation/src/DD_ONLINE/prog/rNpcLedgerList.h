@@ -48,6 +48,8 @@ public:
         class MyDTI;
         class cInstitution;
         class cInstitutionOpenData;
+
+    friend class rNpcLedgerList;
     public:
         class MyDTI : public MtDTI
         {
@@ -222,6 +224,60 @@ inline void* rNpcLedgerList::cItem::cInstitutionOpenData::operator new(size_t sz
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../generated/shared/nDDOIO.h"
+
+inline rNpcLedgerList::cItem::cItem()
+    : mNpcId(0)
+    , mClassNameId(0)
+    , mNameId(0)
+    , mUnitTypeParam(0)
+    , mSex(0)
+    , mJobId(0)
+    , mFinger(0)
+    , mVoiceType(0)
+    , mUnitType(0)
+{
+}
+
+inline void* rNpcLedgerList::cItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::DTI)->memAlloc(sz, align, rNpcLedgerList::cItem::DTI.getID());
+}
+
+inline void* rNpcLedgerList::cItem::operator new[](size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::DTI)->memAlloc(sz, align, rNpcLedgerList::cItem::DTI.getID());
+}
+
+inline void rNpcLedgerList::cItem::operator delete[](void* p_addr) {
+    MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::DTI)->memFree(p_addr);
+}
+
+inline bool rNpcLedgerList::cItem::cInstitutionOpenData::save(MtDataWriter& w) {
+    nDDOIO::writeData(w, mType);
+    nDDOIO::writeData(w, mFlagNo);
+    return true;
+}
+
+template <>
+inline void nDDOIO::writeMtArray<rNpcLedgerList::cItem::cInstitutionOpenData>(MtDataWriter& w, MtTypedArray<rNpcLedgerList::cItem::cInstitutionOpenData>& ar) {
+    w.writeU32(ar.length());
+    for (u32 i = 0; i < ar.length(); i++) {
+        static_cast<rNpcLedgerList::cItem::cInstitutionOpenData*>(ar.getBuffer()[static_cast<int>(i)])->save(w);
+    }
+}
+
+inline bool rNpcLedgerList::cItem::cInstitution::save(MtDataWriter& w) {
+    nDDOIO::writeData(w, mInstitutionId);
+    nDDOIO::writeData(w, mInstitutionParam);
+    nDDOIO::writeMtArray(w, mInstitutionOpenList);
+    return true;
+}
+
+template <>
+inline void nDDOIO::writeMtArray<rNpcLedgerList::cItem::cInstitution>(MtDataWriter& w, MtTypedArray<rNpcLedgerList::cItem::cInstitution>& ar) {
+    w.writeU32(ar.length());
+    for (u32 i = 0; i < ar.length(); i++) {
+        static_cast<rNpcLedgerList::cItem::cInstitution*>(ar.getBuffer()[static_cast<int>(i)])->save(w);
+    }
+}
 
 inline bool rNpcLedgerList::cItem::cInstitution::load(MtDataReader& r) {
     mInstitutionId = r.readU32();

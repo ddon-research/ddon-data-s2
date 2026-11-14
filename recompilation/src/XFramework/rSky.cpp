@@ -187,8 +187,8 @@ rSky::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr
 rSky::MyDTI rSky::DTI("rSky", &::cResource::DTI, 384ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rSky::MyDTI::newInstance() const {
-    DDON_STUB("rSky::MyDTI::newInstance")
-    return nullptr;
+    void* t0 = MtMemoryAllocator::getAllocator(rSky::DTI)->memAlloc(sizeof(rSky), 16u, rSky::DTI.getID());
+    return new (t0) rSky;
 }
 
 const MtDTI& rStarCatalog::getDTI() const {

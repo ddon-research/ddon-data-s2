@@ -6,3 +6,19 @@
 #define DDON_STUB(name)
 #endif
 
+sce::Gnm::DataFormat sce::Gnm::DataFormat::build(sce::Gnm::ZFormat zFormat) {
+    sce::Gnm::DataFormat fmt;
+    switch (zFormat) {
+    case sce::Gnm::kZFormat16:
+        fmt.m_asInt = 0x204002u;
+        break;
+    case sce::Gnm::kZFormat32Float:
+        fmt.m_asInt = 0x204704u;
+        break;
+    default:
+        fmt.m_asInt = 0u;
+        break;
+    }
+    return fmt;
+}
+

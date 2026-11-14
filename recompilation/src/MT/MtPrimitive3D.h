@@ -858,6 +858,24 @@ inline MtAABB4::MtAABB4() {
 inline MtCapsule::MtCapsule() {
 }
 
+inline MtCylinder::MtCylinder() {
+}
+
+inline MtAABB::MtAABB(const MtVector3& imin, const MtVector3& imax)
+    : minpos(imin), maxpos(imax) {
+}
+
+inline MtAABB& MtAABB::operator=(const MtAABB& aabb) {
+    this->minpos = aabb.minpos;
+    this->maxpos = aabb.maxpos;
+    return *this;
+}
+
+inline void MtAABB::inflate(const MtVector3& v) {
+    this->minpos = this->minpos.minimize(v);
+    this->maxpos = this->maxpos.maximize(v);
+}
+
 inline MtCone::MtCone() {
 }
 

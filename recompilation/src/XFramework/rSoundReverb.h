@@ -94,6 +94,8 @@ public:
         u32 getReverbId();
         void setReverbId(u32);
         bool convert(MtStream& out);
+        friend class rSoundReverb;
+
     protected:
         u32 mId;  // offset: 0x8
         sSound::ReverbParameter mReverbData;  // offset: 0xc
@@ -150,4 +152,36 @@ inline void* rSoundReverb::operator new(size_t sz, void* p_addr) {
 
 inline void* rSoundReverb::cSoundReverbData::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline rSoundReverb::rSoundReverb() : mHeader(), mpIdToIndexTbl(nullptr), mIdToIndexTblNum(0) {
+    mAttr = 22;
+    mHeader.Magic = NativeFileMagic;
+    mHeader.Version = NativeFileVersion;
+    mReverb.setAutoDelete(true);
+}
+
+inline rSoundReverb::cSoundReverbData::cSoundReverbData() : mId(0xFFFFFFFF), mReverbData(), mOutputLevel(rSoundReverb::DEF_OUTPUTLEVEL_DB) {
+    mReverbData.mRoom = sSound::I3DL2_REVERB_DEFAULT_ROOM;
+    mReverbData.mRoomHF = sSound::I3DL2_REVERB_DEFAULT_ROOM_HF;
+    mReverbData.mDecayTime = sSound::I3DL2_REVERB_DEFAULT_DECAY_TIME;
+    mReverbData.mDecayHFRatio = sSound::I3DL2_REVERB_DEFAULT_DECAY_HF_RATIO;
+    mReverbData.mReflections = sSound::I3DL2_REVERB_DEFAULT_REFLECTIONS;
+    mReverbData.mReflectionsDelay = sSound::I3DL2_REVERB_DEFAULT_REFLECTIONS_DELAY;
+    mReverbData.mReverb = sSound::I3DL2_REVERB_DEFAULT_REVERB;
+    mReverbData.mReverbDelay = sSound::I3DL2_REVERB_DEFAULT_REVERB_DELAY;
+    mReverbData.mDiffusion = sSound::I3DL2_REVERB_DEFAULT_DIFFUSION;
+    mReverbData.mDensity = sSound::I3DL2_REVERB_DEFAULT_DENSITY;
+    mReverbData.mHFReference = sSound::I3DL2_REVERB_DEFAULT_HF_REFERENCE;
+    mReverbData.mEarlyReflectionScaler = sSound::I3DL2_REVERB_DEFAULT_EARLYREFLECTIONSCALER;
+    mReverbData.mLFreference = sSound::I3DL2_REVERB_DEFAULT_LF_REFERENCE;
+    mReverbData.mRoomLF = sSound::I3DL2_REVERB_DEFAULT_ROOM_LF;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void rSoundReverb::memFree(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rSoundReverb::DTI)->memFree(p_addr);
 }

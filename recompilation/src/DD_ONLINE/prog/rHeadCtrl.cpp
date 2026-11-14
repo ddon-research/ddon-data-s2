@@ -31,8 +31,7 @@ cHeadCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32
 cHeadCtrl::MyDTI cHeadCtrl::DTI("cHeadCtrl", &::MtObject::DTI, 48ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cHeadCtrl::MyDTI::newInstance() const {
-    DDON_STUB("cHeadCtrl::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cHeadCtrl;
 }
 
 const MtDTI& rHeadCtrl::getDTI() const {
@@ -65,8 +64,19 @@ u32 rHeadCtrl::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rHeadCtrl::loadCore(MtDataReader& r) {
-    DDON_STUB("rHeadCtrl::loadCore")
-    return {};
+        mBaseJntNo = r.readS32();
+        mBaseAngleSpeed = r.readF32();
+        mBaseAngleLimit.x = r.readF32();
+        mBaseAngleLimit.y = r.readF32();
+        mPitchSpeed = r.readF32();
+        mBasePitchLimit.x = r.readF32();
+        mBasePitchLimit.y = r.readF32();
+        mSafeRange.x = r.readF32();
+        mSafeRange.y = r.readF32();
+        mMotionSync = r.readU32();
+        mSeqPage = r.readU32();
+        mSeqNo = r.readU32();
+        return rTbl2<cHeadCtrl>::loadCore(r);
 }
 
 rHeadCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

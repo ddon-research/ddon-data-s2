@@ -166,8 +166,19 @@ inline void rAreaMasterSpotData::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) bool rAreaMasterSpotData::loadData(MtDataReader& r, cAreaMasterSpotData* pData) {
-    DDON_STUB("rAreaMasterSpotData::loadData")
-    return {};
+    nDDOIO::readData(r, pData->mSpotId);
+    nDDOIO::readData(r, pData->mCategoryNo);
+    nDDOIO::readData(r, pData->mMessageId);
+    nDDOIO::readData(r, pData->mStageNoMap);
+    nDDOIO::readData(r, pData->mPosX);
+    nDDOIO::readData(r, pData->mPosY);
+    nDDOIO::readData(r, pData->mPosZ);
+    nDDOIO::readData(r, pData->mImageId);
+    nDDOIO::readData(r, pData->mRecommendLevel);
+    nDDOIO::readData(r, pData->mKeyType);
+    nDDOIO::readData(r, pData->mMaskType);
+    nDDOIO::readData(r, pData->mPosHide);
+    return true;
 }
 
 MT_CTSTR rAreaMasterSpotData::getExt() const {

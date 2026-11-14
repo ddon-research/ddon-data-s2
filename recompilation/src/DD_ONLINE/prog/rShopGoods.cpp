@@ -43,8 +43,7 @@ cShopGoods::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u3
 cShopGoods::MyDTI cShopGoods::DTI("cShopGoods", &::MtObject::DTI, 96ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cShopGoods::MyDTI::newInstance() const {
-    DDON_STUB("cShopGoods::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cShopGoods;
 }
 
 const MtDTI& cShopGoods::rDate::getDTI() const {
@@ -129,8 +128,7 @@ inline rShopGoods::rShopGoods() {
 }
 
 __attribute__((weak)) const MtDTI& rShopGoods::getDataDTI() {
-    DDON_STUB("rShopGoods::getDataDTI")
-    __builtin_unreachable();
+    return cShopGoods::DTI;
 }
 
 MT_CTSTR rShopGoods::getExt() const {
@@ -147,13 +145,27 @@ bool rShopGoods::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rShopGoods::loadData(MtDataReader& in) {
-    DDON_STUB("rShopGoods::loadData")
-    return {};
+    bool ret = false;
+    u32 magic = in.readU32();
+    u32 version = in.readU16();
+    if (magic == mMagic && version == cShopGoods::DATA_VERSION) {
+        u32 dmy = in.readU16();
+        u32 Num = in.readU32();
+        for (u32 i = 0; i < Num; ++i) {
+            cShopGoods* pObj = new (16u) cShopGoods;
+            if (pObj != nullptr) {
+                loadData(in, pObj);
+                mArray.add(pObj);
+            }
+        }
+        ret = true;
+    }
+    return ret;
 }
 
 __attribute__((weak)) bool rShopGoods::save(MtStream& out) {
-    DDON_STUB("rShopGoods::save")
-    return {};
+    MtDataWriter w(out, MtDataWriter::DEFAULT_BUFFERSIZE, MtDataWriter::DEFAULT_LABELSIZE);
+    return saveData(w);
 }
 
 bool rShopGoods::loadData(MtDataReader& in, cShopGoods* pData) {
@@ -422,8 +434,27 @@ bool rShopGoods::loadData(MtDataReader& in, cShopGoods* pData) {
 }
 
 __attribute__((weak)) bool rShopGoods::saveData(MtDataWriter& out, cShopGoods* pData) {
-    DDON_STUB("rShopGoods::saveData")
-    return {};
+    out.writeU8(pData->mCategory);
+    out.writeU32(pData->mID);
+    out.writeU64(pData->mPrice);
+    out.writeU8(pData->mGoldType);
+    out.writeU8(pData->mSaleType);
+    out.writeU16(pData->mRequiedFavorite);
+    out.writeU16(pData->mStartDate.mYear);
+    out.writeU8(pData->mStartDate.mMonth);
+    out.writeU8(pData->mStartDate.mDay);
+    out.writeU16(pData->mEndDate.mYear);
+    out.writeU8(pData->mEndDate.mMonth);
+    out.writeU8(pData->mEndDate.mDay);
+    out.writeU8(pData->mStockNum);
+    out.writeU8(pData->mMaxStockNum);
+    out.writeU8(pData->mReplenishRate);
+    out.writeU8(pData->mReplenishType);
+    out.writeU16(pData->mInGameDays);
+    out.writeU16(pData->mRealDate.mYear);
+    out.writeU8(pData->mRealDate.mMonth);
+    out.writeU8(pData->mRealDate.mDay);
+    return true;
 }
 
 rShopGoods::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

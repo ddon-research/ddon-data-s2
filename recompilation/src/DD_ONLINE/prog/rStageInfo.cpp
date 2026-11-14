@@ -43,8 +43,7 @@ inline void rStageInfo::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rStageInfo::~rStageInfo() {
-    DDON_STUB("rStageInfo::~rStageInfo")
-    /* stub */
+    clear();
 }
 
 MT_CTSTR rStageInfo::getExt() const {
@@ -61,18 +60,236 @@ MtUI* rStageInfo::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool rStageInfo::load(MtStream& in) {
-    DDON_STUB("rStageInfo::load")
-    return {};
+    MtDataReader r(in, 4096u);
+    if (r.readU32() != 0x697473) {
+        return false;
+    }
+    u32 ver = r.readU32();
+    if (ver != DATA_VERSION) {
+        return false;
+    }
+    
+    mStageNo = r.readS32();
+    nDDOIO::readData(r, reinterpret_cast<cResource*&>(mprModel));
+    nDDOIO::readData(r, reinterpret_cast<cResource*&>(mprFilter));
+    for (u32 i = 0; i < 3; i++) {
+        nDDOIO::readData(r, reinterpret_cast<cResource*&>(mprScrSbc[i]));
+        nDDOIO::readData(r, reinterpret_cast<cResource*&>(mprEffSbc[i]));
+    }
+    nDDOIO::readData(r, reinterpret_cast<cResource*&>(mprNaviMesh));
+    nDDOIO::readData(r, reinterpret_cast<cResource*&>(mprWayPoint));
+    nDDOIO::readData(r, reinterpret_cast<cResource*&>(mprOCC));
+    nDDOIO::readData(r, reinterpret_cast<cResource*&>(mprStartPos));
+    nDDOIO::readData(r, reinterpret_cast<cResource*&>(mprCmrPrmLstFld));
+    nDDOIO::readData(r, reinterpret_cast<cResource*&>(mprCmrPrmLstEvt));
+    
+    nDDOIO::readData(r, mPos);
+    nDDOIO::readData(r, mAng);
+    nDDOIO::readData(r, mSceLoadFlag);
+    nDDOIO::readData(r, mFlag);
+    
+    nDDOIO::readData(r, mpWeatherStageInfo);
+    nDDOIO::readData(r, mpWeatherParamInfoTbl);
+    nDDOIO::readData(r, mpWeatherParamEfcInfo);
+    nDDOIO::readData(r, mpWep);
+    nDDOIO::readData(r, mpStageLightSchdl);
+    nDDOIO::readData(r, mprEpv);
+    nDDOIO::readData(r, mEpvIndexAlways);
+    nDDOIO::readData(r, mEpvIndexDay);
+    nDDOIO::readData(r, mEpvIndexNight);
+    for (u32 i = 0; i < 4; i++) {
+        nDDOIO::readData(r, mpZoneList[i]);
+    }
+    nDDOIO::readData(r, mpZoneIndoorScr);
+    nDDOIO::readData(r, mpZoneIndoorEfc);
+    
+    nDDOIO::readData(r, mDayNightLightChgFrame);
+    nDDOIO::readData(r, mDayNightFogChgFrame);
+    nDDOIO::readData(r, mSkyInfiniteLightGroupType);
+    for (u32 i = 0; i < 3; i++) {
+        nDDOIO::readData(r, mpZoneUnitCtrl[i]);
+    }
+    nDDOIO::readData(r, mpZoneStatus);
+    
+    for (u32 i = 0; i < 3; i++) {
+        nDDOIO::readData(r, reinterpret_cast<cResource*&>(mprSoundZone[i]));
+    }
+    for (u32 i = 0; i < 4; i++) {
+        nDDOIO::readData(r, mEqLength[i]);
+    }
+    nDDOIO::readData(r, mprSoundInfo);
+    nDDOIO::readData(r, mprEffectSchdl);
+    nDDOIO::readData(r, mprLanternSchdl);
+    nDDOIO::readData(r, mIsCraftStage);
+    nDDOIO::readData(r, mprLocation);
+    
+    nDDOIO::readData(r, mGrassVisiblePercentMulValue);
+    nDDOIO::readData(r, mGrassFadeBeginDistance);
+    nDDOIO::readData(r, mGrassFadeEndDistance);
+    nDDOIO::readData(r, mPerformanceFlag);
+    nDDOIO::readData(r, mAnotherMapName, 16u);
+    return true;
 }
 
 __attribute__((weak)) bool rStageInfo::save(MtStream& out) {
-    DDON_STUB("rStageInfo::save")
-    return {};
+    MtDataWriter w(out, 4096u, 4096u);
+    w.writeU32(0x697473);
+    w.writeU32(DATA_VERSION);
+    
+    w.writeS32(mStageNo);
+    nDDOIO::writeData(w, static_cast<cResource*>(mprModel));
+    nDDOIO::writeData(w, static_cast<cResource*>(mprFilter));
+    for (u32 i = 0; i < 3; i++) {
+        nDDOIO::writeData(w, static_cast<cResource*>(mprScrSbc[i]));
+        nDDOIO::writeData(w, static_cast<cResource*>(mprEffSbc[i]));
+    }
+    nDDOIO::writeData(w, static_cast<cResource*>(mprNaviMesh));
+    nDDOIO::writeData(w, static_cast<cResource*>(mprWayPoint));
+    nDDOIO::writeData(w, static_cast<cResource*>(mprOCC));
+    nDDOIO::writeData(w, static_cast<cResource*>(mprStartPos));
+    nDDOIO::writeData(w, static_cast<cResource*>(mprCmrPrmLstFld));
+    nDDOIO::writeData(w, static_cast<cResource*>(mprCmrPrmLstEvt));
+    
+    nDDOIO::writeData(w, mPos);
+    nDDOIO::writeData(w, mAng);
+    nDDOIO::writeData(w, mSceLoadFlag);
+    nDDOIO::writeData(w, mFlag);
+    
+    nDDOIO::writeData(w, mpWeatherStageInfo);
+    nDDOIO::writeData(w, mpWeatherParamInfoTbl);
+    nDDOIO::writeData(w, mpWeatherParamEfcInfo);
+    nDDOIO::writeData(w, mpWep);
+    nDDOIO::writeData(w, mpStageLightSchdl);
+    nDDOIO::writeData(w, mprEpv);
+    nDDOIO::writeData(w, mEpvIndexAlways);
+    nDDOIO::writeData(w, mEpvIndexDay);
+    nDDOIO::writeData(w, mEpvIndexNight);
+    for (u32 i = 0; i < 4; i++) {
+        nDDOIO::writeData(w, mpZoneList[i]);
+    }
+    nDDOIO::writeData(w, mpZoneIndoorScr);
+    nDDOIO::writeData(w, mpZoneIndoorEfc);
+    
+    nDDOIO::writeData(w, mDayNightLightChgFrame);
+    nDDOIO::writeData(w, mDayNightFogChgFrame);
+    nDDOIO::writeData(w, mSkyInfiniteLightGroupType);
+    for (u32 i = 0; i < 3; i++) {
+        nDDOIO::writeData(w, mpZoneUnitCtrl[i]);
+    }
+    nDDOIO::writeData(w, mpZoneStatus);
+    
+    for (u32 i = 0; i < 3; i++) {
+        nDDOIO::writeData(w, static_cast<cResource*>(mprSoundZone[i]));
+    }
+    for (u32 i = 0; i < 4; i++) {
+        nDDOIO::writeData(w, mEqLength[i]);
+    }
+    nDDOIO::writeData(w, mprSoundInfo);
+    nDDOIO::writeData(w, mprEffectSchdl);
+    nDDOIO::writeData(w, mprLanternSchdl);
+    nDDOIO::writeData(w, mIsCraftStage);
+    nDDOIO::writeData(w, mprLocation);
+    
+    nDDOIO::writeData(w, mGrassVisiblePercentMulValue);
+    nDDOIO::writeData(w, mGrassFadeBeginDistance);
+    nDDOIO::writeData(w, mGrassFadeEndDistance);
+    nDDOIO::writeData(w, mPerformanceFlag);
+    nDDOIO::writeData(w, mAnotherMapName);
+    return true;
 }
 
 __attribute__((weak)) void rStageInfo::clear() {
-    DDON_STUB("rStageInfo::clear")
-    /* stub */
+    mStageNo = -1;
+    mPos = MtVector3::Zero;
+    mAng = 0.0f;
+    mFlag = 0;
+    mSceLoadFlag = 0;
+    
+    if (mprModel != nullptr) {
+        mprModel->release();
+        mprModel = nullptr;
+    }
+    if (mprFilter != nullptr) {
+        mprFilter->release();
+        mprFilter = nullptr;
+    }
+    for (u32 i = 0; i < 3; i++) {
+        if (mprScrSbc[i] != nullptr) {
+            mprScrSbc[i]->cResource::release();
+            mprScrSbc[i] = nullptr;
+        }
+        if (mprEffSbc[i] != nullptr) {
+            mprEffSbc[i]->cResource::release();
+            mprEffSbc[i] = nullptr;
+        }
+    }
+    if (mprNaviMesh != nullptr) {
+        mprNaviMesh->release();
+        mprNaviMesh = nullptr;
+    }
+    if (mprWayPoint != nullptr) {
+        mprWayPoint->release();
+        mprWayPoint = nullptr;
+    }
+    if (mprOCC != nullptr) {
+        mprOCC->release();
+        mprOCC = nullptr;
+    }
+    if (mprStartPos != nullptr) {
+        mprStartPos->release();
+        mprStartPos = nullptr;
+    }
+    if (mprCmrPrmLstFld != nullptr) {
+        mprCmrPrmLstFld->release();
+        mprCmrPrmLstFld = nullptr;
+    }
+    if (mprCmrPrmLstEvt != nullptr) {
+        mprCmrPrmLstEvt->release();
+        mprCmrPrmLstEvt = nullptr;
+    }
+    
+    mpWeatherStageInfo.releasePtr();
+    mpWeatherParamInfoTbl.releasePtr();
+    mpWeatherParamEfcInfo.releasePtr();
+    mpWep.releasePtr();
+    mpStageLightSchdl.releasePtr();
+    mprEpv.releasePtr();
+    mEpvIndexAlways = -1;
+    mEpvIndexDay = -1;
+    mEpvIndexNight = -1;
+    for (u32 i = 0; i < 4; i++) {
+        mpZoneList[i].releasePtr();
+    }
+    mpZoneIndoorScr.releasePtr();
+    mpZoneIndoorEfc.releasePtr();
+    
+    mDayNightLightChgFrame = 20.0f;
+    mDayNightFogChgFrame = 20.0f;
+    mSkyInfiniteLightGroupType = 1;
+    
+    for (u32 i = 0; i < 3; i++) {
+        if (mprSoundZone[i] != nullptr) {
+            mprSoundZone[i]->cResource::release();
+            mprSoundZone[i] = nullptr;
+        }
+    }
+    
+    const f32 eq_default[4] = { 1200.0f, 2000.0f, 2800.0f, 4000.0f };
+    for (u32 i = 0; i < 4; i++) {
+        mEqLength[i] = eq_default[i];
+    }
+    
+    mprSoundInfo.releasePtr();
+    mprEffectSchdl.releasePtr();
+    mprLanternSchdl.releasePtr();
+    mIsCraftStage = false;
+    mprLocation.releasePtr();
+    
+    mGrassVisiblePercentMulValue = 1.0f;
+    mGrassFadeBeginDistance = 3000.0f;
+    mGrassFadeEndDistance = 5000.0f;
+    mPerformanceFlag = 0xffffu;
+    memset(mAnotherMapName, 0, sizeof(mAnotherMapName));
 }
 
 static auto ddon_emit_0x01ab38c0 __attribute__((used)) = &rStageInfo::getScrScheduler;
@@ -376,7 +593,6 @@ rStageInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u3
 rStageInfo::MyDTI rStageInfo::DTI("rStageInfo", &::cResource::DTI, 528ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rStageInfo::MyDTI::newInstance() const {
-    DDON_STUB("rStageInfo::MyDTI::newInstance")
-    return nullptr;
+    return new(16u) rStageInfo();
 }
 

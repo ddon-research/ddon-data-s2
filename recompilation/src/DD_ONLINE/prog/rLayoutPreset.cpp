@@ -52,8 +52,10 @@ inline void* rLayoutPreset::operator new(size_t sz, u32 align) {
 }
 
 __attribute__((weak)) bool rLayoutPreset::loadData(MtDataReader& in, cLayoutPreset* pData) {
-    DDON_STUB("rLayoutPreset::loadData")
-    return {};
+    nDDOIO::readData(in, pData->mKeyword);
+    nDDOIO::readData(in, pData->mCtrlType);
+    nDDOIO::readData(in, pData->mID);
+    return true;
 }
 
 MT_CTSTR rLayoutPreset::getExt() const {

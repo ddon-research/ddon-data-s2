@@ -49,8 +49,24 @@ rSoundHitInfo::~rSoundHitInfo() {
 }
 
 __attribute__((weak)) bool rSoundHitInfo::load(MtStream& in) {
-    DDON_STUB("rSoundHitInfo::load")
-    return {};
+    MtDataReader r(in, 4096u);
+    u32 magic = r.readU32();
+    mVersion = r.readU32();
+    if (magic != NativeFileMagic || mVersion != NativeVersion) {
+        return false;
+    }
+    u32 nArrayNum = r.readU32();
+    void* pArrayData = nullptr;
+    if (nArrayNum != 0) {
+        pArrayData = MtMemoryAllocator::getAllocator(rSoundHitInfo::DTI)->memAlloc(sizeof(cSoundHitInfo) * nArrayNum, 16u);
+        for (u32 i = 0; i < nArrayNum; i++) {
+            cSoundHitInfo* pData = new (&static_cast<cSoundHitInfo*>(pArrayData)[i]) cSoundHitInfo();
+            pData->load(r);
+        }
+    }
+    mpArrayData = static_cast<cSoundHitInfo*>(pArrayData);
+    mArrayDataNum = nArrayNum;
+    return true;
 }
 
 bool rSoundHitInfo::save(MtStream& out) {

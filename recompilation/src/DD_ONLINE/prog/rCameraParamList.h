@@ -48,9 +48,9 @@ public:
     static MtDTI* getMyDTIPtr();
     static void usage();
     virtual const MtDTI& getDTI() const;  // vtable slot 5
-    static MtAllocator* getAllocator();
+    inline static MtAllocator* getAllocator();
     static void setAllocator(u32);
-    static void* operator new(size_t sz, u32 align);
+    inline static void* operator new(size_t sz, u32 align);
     static void* operator new[](size_t sz, u32 align);
     static void* operator new(size_t sz, void* p_addr);
     static void* operator new[](size_t sz, void* p_addr);
@@ -58,7 +58,7 @@ public:
     static void operator delete[](void* p_addr);
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
-    rCameraParamList();
+    inline rCameraParamList();
     virtual ~rCameraParamList();
     virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     virtual void clear();  // vtable slot 15
@@ -86,4 +86,24 @@ inline void* rCameraParamList::operator new(size_t sz, void* p_addr) {
 
 inline rCameraList* rCameraParamList::getCameraListResource() {
     return this->mprCameraList;
+}
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* rCameraParamList::getAllocator() {
+    return MtMemoryAllocator::getAllocator(rCameraParamList::DTI);
+}
+
+inline void* rCameraParamList::operator new(size_t sz, u32 align) {
+    return getAllocator()->memAlloc(sz, align, rCameraParamList::DTI.getID());
+}
+
+__attribute__((always_inline)) inline rCameraParamList::rCameraParamList()
+    : mParamList()
+    , mCameraListPath()
+{
+    setAttribute(ATTR_SAVEABLE | ATTR_NATIVE);
+    mParamList.mAutoDelete = true;
+    mprCameraList = nullptr;
 }

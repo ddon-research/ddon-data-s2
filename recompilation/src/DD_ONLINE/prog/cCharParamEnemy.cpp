@@ -28,9 +28,58 @@ inline void cCharParamEnemy::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCharParamEnemy::DTI)->memFree(p_addr);
 }
 
-cCharParamEnemy::cCharParamEnemy() {
-    DDON_STUB("cCharParamEnemy::cCharParamEnemy")
-    /* stub */
+__attribute__((noinline)) cCharParamEnemy::cCharParamEnemy() {
+    u32 i;
+    mAttackBasePhys = 10.0f;
+    mAttackBaseMagic = 10.0f;
+    mAttackWepPhys = 10.0f;
+    mAttackWepMagic = 10.0f;
+    mDefenceBasePhys = 10.0f;
+    mDefenceBaseMagic = 10.0f;
+    mDefenceWepPhys = 10.0f;
+    mDefenceWepMagic = 10.0f;
+    mPower = 10.0f;
+    mWeight = 10.0f;
+    mGuardAttackBase = 10.0f;
+    mGuardDefenceBase = 10.0f;
+    mGuardDefenceWep = 10.0f;
+    mWeaponTypeSe = 0;
+    mEnemyBodySizeSe = 0;
+    mPushGroup = 0;
+    mScrAdjustType = 3;
+    mScrAdjustSize = 0;
+    mFallDamageCheckHeight = 1000.0f;
+    mUseMotionBlendNum = 1;
+    mUseMotionHistory = false;
+    mUseMotionHistoryNum = 0;
+    mReturnTerritoryContTime = 5400.0f;
+    mBeardownEffective = 0;
+    mGuardReactionCheckType = 0;
+    mIsShakedActionEnemy = false;
+    mShakeCureRateRage = 1.0f;
+    mEnemyScaleBase = 1.0f;
+    mcThinkMgrScaleParam = 1.0f;
+    mEnemyLinkRadiusA = 1000.0f;
+    mEnemyLinkRadiusBOn = false;
+    mEnemyLinkRadiusB = 1000.0f;
+    for (i = 0; i < 10; i++) {
+        mEvaluationPLJobs[i] = 1.0f;
+    }
+    for (i = 0; i < 2; i++) {
+        mEvaluationPLSex[i] = 1.0f;
+    }
+    mHangdType = 0;
+    mDownPerformanceOff = false;
+    mIsDispDownGuage = false;
+    mIsNoneAdbantageBGM = false;
+    mEnemyScaleThinkTable = 1.0f;
+    mIsUseEnchant = false;
+    mEnchantType = 1;
+    mDamageSpecialAdjType = 0;
+    mDamageBounisFlag = 0;
+    mShrinkBounisShakeRate = 0.0f;
+    mShakeRateSequence = 1.0f;
+    mScaleDispGui = 1.0f;
 }
 
 __attribute__((weak)) void cCharParamEnemy::createProperty(MtPropertyList& s) {

@@ -109,8 +109,9 @@ inline void cWeatherScriptCmds::operator delete(void* p_addr) {
 }
 
 cWeatherScriptCmds::cWeatherScriptCmds() {
-    DDON_STUB("cWeatherScriptCmds::cWeatherScriptCmds")
-    /* stub */
+    for (u32 i = 0; i < 4; i++) {
+        mScripts.elems[i].setAutoDelete(true);
+    }
 }
 
 cWeatherScriptCmds::~cWeatherScriptCmds() {

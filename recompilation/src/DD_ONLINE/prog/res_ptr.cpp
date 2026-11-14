@@ -7,8 +7,17 @@
 #endif
 
 __attribute__((weak)) void cResPtrBase::setPtr(cResource* & pDst, cResource* pRes) {
-    DDON_STUB("cResPtrBase::setPtr")
-    /* stub */
+    if (pDst == pRes) {
+        return;
+    }
+    if (pDst != nullptr) {
+        pDst->cResource::release();
+        pDst = nullptr;
+    }
+    pDst = pRes;
+    if (pRes != nullptr) {
+        pRes->addRef();
+    }
 }
 
 void cResPtrBase::releasePtr(cResource* & pRes) {

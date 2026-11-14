@@ -102,6 +102,8 @@ class sRender : public cSystem
     friend class cStorageData;
     friend class cUnit;
     friend class nDraw::Resource;
+
+    friend class nDraw::Texture;
     friend class rModel;
     friend class sApp;
     friend class sGUIExt;

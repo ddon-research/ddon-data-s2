@@ -370,3 +370,62 @@ inline f32 rGrass::cSetting::getAspect() {
 inline void* rGrass::cChainGrass::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+#include "../MT/MtAllocator.h"
+#include "../MT/MtDataReader.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rGrass::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rGrass::DTI)->memAlloc(sz, align, rGrass::DTI.getID());
+}
+
+inline void* rGrass::cCluster::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rGrass::cCluster::DTI)->memAlloc(sz, align, rGrass::cCluster::DTI.getID());
+}
+
+inline void* rGrass::cCluster::operator new[](size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rGrass::cCluster::DTI)->memAlloc(sz, align, rGrass::cCluster::DTI.getID());
+}
+
+inline void rGrass::cCluster::operator delete[](void* p_addr) {
+    MtMemoryAllocator::getAllocator(rGrass::cCluster::DTI)->memFree(p_addr);
+}
+
+inline rGrass::cCluster::cCluster() {
+    mVertexBase = 0;
+    mIndexCount = 0;
+    mVertexCount = 0;
+    mGlobalRing = 0;
+    for (u32 i = 0; i < 4; i++) {
+        mWindDirection[0][i] = MtVector4::One;
+    }
+    for (u32 i = 0; i < 4; i++) {
+        mWindDirection[1][i] = MtVector4::One;
+    }
+}
+
+inline bool rGrass::cCluster::load(MtDataReader& in) {
+    in.read(static_cast<void*>(&mVertexBase), 4u);
+    in.read(static_cast<void*>(&mVertexCount), 4u);
+    in.read(static_cast<void*>(&mIndexCount), 4u);
+    in.read(static_cast<void*>(&mDequantizationCoordScale), 16u);
+    in.read(static_cast<void*>(&mDequantizationCoordOffset), 16u);
+    return true;
+}
+
+inline void* rGrass::cSetting::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rGrass::cSetting::DTI)->memAlloc(sz, align, rGrass::cSetting::DTI.getID());
+}
+
+inline void rGrass::cSetting::setRatio(f32 ratio) {
+    this->mRatio = ratio;
+}
+
+inline void* rGrass::cChainGrass::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rGrass::cChainGrass::DTI)->memAlloc(sz, align, rGrass::cChainGrass::DTI.getID());
+}
+
+inline rGrass::cChainGrass::cChainGrass() : mDirection(0.32f, 0.95f, 0.08f) {
+    mPower = 24.0f;
+    mTheta = 0.1f;
+}

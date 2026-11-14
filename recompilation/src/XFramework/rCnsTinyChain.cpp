@@ -20,9 +20,13 @@ inline void rCnsTinyChain::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(p_addr);
 }
 
-rCnsTinyChain::~rCnsTinyChain() {
-    DDON_STUB("rCnsTinyChain::~rCnsTinyChain")
-    /* stub */
+__attribute__((noinline)) rCnsTinyChain::~rCnsTinyChain() {
+    if (mpChainGroup != nullptr) {
+        MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(mpChainGroup);
+    }
+    if (mpChainNode != nullptr) {
+        MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(mpChainNode);
+    }
 }
 
 MT_CTSTR rCnsTinyChain::getExt() const {
@@ -38,8 +42,37 @@ void rCnsTinyChain::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) bool rCnsTinyChain::load(MtStream& in) {
-    DDON_STUB("rCnsTinyChain::load")
-    return {};
+    clear();
+    MtDataReader r(in, MtDataReader::DEFAULT_BUFFERSIZE);
+    r.read(&mHeader, sizeof(Header));
+    if (mHeader.magic != 0x435443u) {
+        return false;
+    }
+    if (mHeader.version != DATA_VERSION) {
+        return false;
+    }
+    r.read(&this->rConstraint::mID, sizeof(this->rConstraint::mID));
+    r.read(&mPri, sizeof(mPri));
+    r.read(&mData, sizeof(ChainData));
+    if (mData.ChainGroupNum != 0) {
+        const u32 size = static_cast<u32>(sizeof(ChainGroup)) * mData.ChainGroupNum;
+        mpChainGroup = static_cast<ChainGroup*>(MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memAlloc(size, 16u));
+        if (mpChainGroup == nullptr) {
+            clear();
+            return false;
+        }
+        r.read(mpChainGroup, size);
+    }
+    if (mData.ChainNodeAllNum != 0) {
+        const u32 size = static_cast<u32>(sizeof(ChainNode)) * mData.ChainNodeAllNum;
+        mpChainNode = static_cast<ChainNode*>(MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memAlloc(size, 16u));
+        if (mpChainNode == nullptr) {
+            clear();
+            return false;
+        }
+        r.read(mpChainNode, size);
+    }
+    return true;
 }
 
 bool rCnsTinyChain::save(MtStream& out) {
@@ -77,7 +110,6 @@ rCnsTinyChain::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 rCnsTinyChain::MyDTI rCnsTinyChain::DTI("rCnsTinyChain", &::rConstraint::DTI, 192ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rCnsTinyChain::MyDTI::newInstance() const {
-    DDON_STUB("rCnsTinyChain::MyDTI::newInstance")
-    return nullptr;
+    return new(16u) rCnsTinyChain();
 }
 

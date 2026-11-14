@@ -27,8 +27,11 @@ inline void rCameraParamList::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rCameraParamList::~rCameraParamList() {
-    DDON_STUB("rCameraParamList::~rCameraParamList")
-    /* stub */
+    mParamList.deleteAll(true);
+    if (mprCameraList != nullptr) {
+        mprCameraList->release();
+        mprCameraList = nullptr;
+    }
 }
 
 __attribute__((weak)) void rCameraParamList::createProperty(MtPropertyList& s) {
@@ -40,8 +43,23 @@ __attribute__((weak)) void rCameraParamList::clear() {
 }
 
 __attribute__((weak)) bool rCameraParamList::load(MtStream& in) {
-    DDON_STUB("rCameraParamList::load")
-    return {};
+    MtSerializer sz(65536);
+    if (sz.deserializeBinary(in, DATA_VERSION, this, MtSerializer::MODE_STATE) == nullptr) {
+        return false;
+    }
+    if (mprCameraList != nullptr) {
+        mprCameraList->release();
+        mprCameraList = nullptr;
+    }
+    mprCameraList = static_cast<rCameraList*>(sArchiveManager::getInstance()->createRes(rCameraList::DTI, mCameraListPath.ptr(), sArchiveManager::ARC_LOAD_MODE_ONCE, false));
+    for (u32 i = 0; i < mParamList.mLength; i++) {
+        cCamExParam* pParam = static_cast<cCamExParam*>(mParamList.mpArray[i]);
+        if (pParam != nullptr) {
+            pParam->mprCameraParamList = this;
+            pParam->mCameraParamListIndex = i;
+        }
+    }
+    return true;
 }
 
 bool rCameraParamList::save(MtStream& out) {
@@ -83,7 +101,6 @@ rCameraParamList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 rCameraParamList::MyDTI rCameraParamList::DTI("rCameraParamList", &::cResource::DTI, 160ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rCameraParamList::MyDTI::newInstance() const {
-    DDON_STUB("rCameraParamList::MyDTI::newInstance")
-    return nullptr;
+    return new(16u) rCameraParamList();
 }
 

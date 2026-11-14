@@ -208,3 +208,83 @@ inline void* cOmParam::operator new(size_t sz, void* p_addr) {
 inline void* rOmParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataWriter.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uOmModel.h"
+
+inline MtAllocator* cOmParam::getAllocator() {
+    return MtMemoryAllocator::getAllocator(cOmParam::DTI);
+}
+
+inline void* cOmParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cOmParam::DTI)->memAlloc(sz, align, cOmParam::DTI.getID());
+}
+
+inline void cOmParam::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cOmParam::DTI)->memFree(p_addr);
+}
+
+inline cOmParam::cOmParam()
+    : mOmID(-1)
+    , mUseComponent(0)
+    , mOmSetType(0)
+    , mDetailBehavior(0)
+    , mReqSeFlag(0)
+    , mColliOffFrame(0)
+    , mJointNum(-1)
+    , mTargetJntNo(-1)
+    , padding0(0)
+    , mTargetOfs(0.0f, 120.0f, 0.0f)
+    , mMapIcon(0)
+    , mKillLength(100.0f)
+    , mbUseNightColor(false)
+    , mNightColor(1.0f, 1.0f, 1.0f)
+    , mRigidTime(0.0f)
+    , mRigidForce(0.0f)
+    , mRigidOfsY(50.0f)
+    , mRigidVelocity(400.0f)
+    , mRigidWorldOfsY(50.0f)
+    , mRigid1Frame(0.0f)
+    , mOffSeLength(10.0f)
+    , padding1(0)
+    , mKeyOfs(MtVector3::Zero)
+    , mbNav(false)
+    , mNavOBBPos(MtVector3::Zero)
+    , mNavOBBExtent(50.0f, 50.0f, 50.0f)
+{
+    mbAtk = false;
+    mShotGroup = 0;
+    mWepType = 0;
+    mThrowVelocity = 1000.0f;
+    mThrowVectorY = 1.0f;
+    mArcTagID = 0;
+    mUnitDTIID = uOmModel::DTI.getID();
+    mUseComponent = 0;
+    mDetailBehavior = 0;
+    mBlinkType = 0;
+    mVersion = 0;
+    for (u32 i = 0; i < FxSndNum; i++) {
+        mFxIndex[i] = -1;
+        mSeIndex[i] = -1;
+    }
+}
+
+inline cOmParam* rOmParam::getData(u32 Idx) {
+    return (Idx < mArray.length()) ? static_cast<cOmParam*>(mArray[Idx]) : nullptr;
+}
+
+inline bool rOmParam::saveData(MtDataWriter& out) {
+    out.writeU32(mMagic);
+    out.writeU16(cOmParam::DATA_VERSION);
+    out.writeU16(0);
+    out.writeU32(mArray.length());
+    for (u32 i = 0; i < mArray.length(); i++) {
+        cOmParam* pData = getData(i);
+        if (pData != nullptr) {
+            saveData(out, pData);
+        }
+    }
+    return true;
+}

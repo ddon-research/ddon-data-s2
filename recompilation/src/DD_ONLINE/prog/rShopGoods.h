@@ -95,7 +95,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         rDate();
-        rDate(u16 year, u8 month, u8 day);
+        inline rDate(u16 year, u8 month, u8 day);
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual bool load(MtDataReader& in);  // vtable slot 6
         virtual bool save(MtDataWriter& out);  // vtable slot 7
@@ -123,7 +123,7 @@ public:
     static void operator delete[](void* p_addr);
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
-    cShopGoods();
+    inline cShopGoods();
     virtual ~cShopGoods() {}
     u8 getStockNum();
     void setStockNum(u8);
@@ -206,4 +206,41 @@ inline cShopGoods::rDate::rDate() {
 
 inline void* rShopGoods::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+#include "../../MT/MtDataWriter.h"
+
+inline bool rShopGoods::saveData(MtDataWriter& out) {
+    out.writeU32(mMagic);
+    out.writeU16(cShopGoods::DATA_VERSION);
+    out.writeU16(0);
+    out.writeU32(mArray.length());
+    for (u32 i = 0; i < mArray.length(); ++i) {
+        cShopGoods* pData = static_cast<cShopGoods*>(mArray.getBuffer()[i]);
+        if (pData != nullptr) {
+            saveData(out, pData);
+        }
+    }
+    return true;
+}
+
+inline cShopGoods::rDate::rDate(u16 year, u8 month, u8 day)
+    : mYear(year), mMonth(month), mDay(day) {}
+
+inline cShopGoods::cShopGoods()
+    : mStartDate(2000, 1, 1)
+    , mEndDate(2000, 1, 1)
+    , mRealDate(2000, 1, 1) {
+    mCategory = 0;
+    mID = 0;
+    mPrice = 0;
+    mGoldType = 0;
+    mGoodsIndex = 0;
+    mSaleType = 0;
+    mRequiedFavorite = 0;
+    mStockNum = 0;
+    mMaxStockNum = 0;
+    mReplenishRate = 0;
+    mReplenishType = 0;
+    mInGameDays = 0;
 }

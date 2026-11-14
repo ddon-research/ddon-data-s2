@@ -1235,6 +1235,80 @@ inline void* rItemList::rItemParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline rItemList::rItemParam::rItemParam() {
+    mItemId = 0;
+    mNameId = 0;
+    mpItemParamList = nullptr;
+    mParamNum = 0;
+    mpVsEmList = nullptr;
+    mVsEmNum = 0;
+    mpProtectorParam = nullptr;
+    mpWeaponParam = nullptr;
+    mStackMax = 1;
+    mIconNo = 0;
+    mIconColNo = 0;
+    mCategory = 0;
+    mFlag = 0;
+    mAttackStatus = 0;
+    mSortNo = 0;
+    mNameSortNo = 0;
+    mCategory2.mCategory = 0;
+    mPrice = 0;
+    mRank = 1;
+    mIsUseJob = 0;
+    mIsUseLv = 1;
+    mGrade = 0;
+}
+
+inline bool rItemList::rItemParam::isWeaponElement() {
+    if (mCategory == CATEGORY_ARMS) {
+        if (mCategory2.mEquipCategory == 1 || mCategory2.mEquipCategory == 2) {
+            return true;
+        }
+    }
+    return false;
+}
+
+inline bool rItemList::rItemParam::isProtectorElement() {
+    if (mCategory == CATEGORY_ARMS) {
+        if (mCategory2.mEquipCategory <= 12) {
+            if (mCategory2.mEquipCategory != 1 && mCategory2.mEquipCategory != 2) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+inline void rItemList::rItemParam::releaseWork() {
+    if (mpItemParamList != nullptr) {
+        for (u32 i = 0; i < mParamNum; ++i) {
+            mpItemParamList[i].~rParam();
+        }
+        mpItemParamList = nullptr;
+        mParamNum = 0;
+    }
+    if (mpVsEmList != nullptr) {
+        for (u32 i = 0; i < mVsEmNum; ++i) {
+            mpVsEmList[i].~rVsEnemyParam();
+        }
+        mpVsEmList = nullptr;
+        mVsEmNum = 0;
+    }
+    if (mpWeaponParam != nullptr) {
+        mpWeaponParam->~rWeaponParam();
+        mpWeaponParam = nullptr;
+    }
+    if (mpProtectorParam != nullptr) {
+        mpProtectorParam->~rProtectorParam();
+        mpProtectorParam = nullptr;
+    }
+}
+
+inline u32 rItemList::rItemParam::getItemId() const {
+    return mItemId;
+}
+
 inline u32 rItemList::rItemParam::getAttackStatus() const {
     return this->mAttackStatus;
 }
@@ -1245,6 +1319,13 @@ inline u32 rItemList::rItemParam::getItemParamNum() {
 
 inline void* rItemList::rParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline rItemList::rParam::rParam(s16 kind, u16 num1, u16 num2, u16 num3) {
+    mKindType = kind;
+    mParam.mParam1 = num1;
+    mParam.mParam2 = num2;
+    mParam.mParam3 = num3;
 }
 
 inline void* rItemList::rVsEnemyParam::operator new(size_t sz, void* p_addr) {
@@ -1286,6 +1367,12 @@ inline rItemList::rWeaponParam::rWeaponParam() {
 
 inline void* rItemList::rEquipParamS8::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline rItemList::rEquipParamS8::rEquipParamS8() {
+    mKindType = 0;
+    mForm = FORM_TYPE_U16;
+    mValue.mValueU16 = 0;
 }
 
 inline void* rItemList::rItemParamXml::operator new(size_t sz, void* p_addr) {

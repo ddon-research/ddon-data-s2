@@ -199,3 +199,20 @@ private:
 inline void* rSoundRequest::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline rSoundRequest::rSoundRequest() {
+    this->::cResource::mAttr = 18;
+    mpRawData = nullptr;
+    mElementNum = 0;
+    mpReqNoToIndexTbl = nullptr;
+    mReqNoToIndexTblNum = 0;
+    mDirectionalCurveNum = 0;
+    mDirectionalCurveElementNum = 0;
+    mSpeakerSetNum = 0;
+    mSpeakerNum = 0;
+    mpDirectionalCurveElements = nullptr;
+    mpDirectionalCurves = nullptr;
+    mpSpeakers = nullptr;
+    mpSpeakerSets = nullptr;
+    mpElement = nullptr;
+}

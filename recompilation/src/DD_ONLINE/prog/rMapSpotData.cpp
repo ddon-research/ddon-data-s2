@@ -59,8 +59,23 @@ MT_CTSTR rMapSpotData::getName() const {
 }
 
 __attribute__((weak)) bool rMapSpotData::load(MtStream& in) {
-    DDON_STUB("rMapSpotData::load")
-    return {};
+    MtDataReader r(in, MtDataReader::DEFAULT_BUFFERSIZE);
+    if (r.readU32() != 0x64736d) {
+        return false;
+    }
+    u32 ver = r.readU32();
+    if (ver != DATA_VERSION) {
+        return false;
+    }
+    const u32 nArray = r.readU32();
+    void* pArray = getAllocator()->memAlloc(sizeof(Data) * nArray, 16u);
+    for (u32 i = 0; i < nArray; ++i) {
+        rMapSpotData::Data* pData = new (&static_cast<Data*>(pArray)[i]) Data();
+        pData->load(r);
+    }
+    mpArray = static_cast<Data*>(pArray);
+    mArrayNum = nArray;
+    return true;
 }
 
 rMapSpotData::Data* rMapSpotData::getData(u32 index) const {

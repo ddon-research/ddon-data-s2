@@ -29,8 +29,7 @@ cCharacterEditCameraParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 cCharacterEditCameraParam::MyDTI cCharacterEditCameraParam::DTI("cCharacterEditCameraParam", &::MtObject::DTI, 208ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cCharacterEditCameraParam::MyDTI::newInstance() const {
-    DDON_STUB("cCharacterEditCameraParam::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cCharacterEditCameraParam;
 }
 
 const MtDTI& cCharacterEditCameraParam::cCameraParam::getDTI() const {
@@ -83,8 +82,16 @@ inline void* rCharacterEditCameraParam::operator new(size_t sz, u32 align) {
 }
 
 __attribute__((weak)) bool rCharacterEditCameraParam::loadData(MtDataReader& r, cCharacterEditCameraParam* pData) {
-    DDON_STUB("rCharacterEditCameraParam::loadData")
-    return {};
+    nDDOIO::readData(r, pData->mName);
+    nDDOIO::readData(r, pData->mUseFarParam);
+    nDDOIO::readData(r, pData->mNearFarParcent);
+    nDDOIO::readData(r, pData->mDefaultLength);
+    pData->mLimitRotateX.load(r);
+    pData->mLimitRotateY.load(r);
+    pData->mLimitLength.load(r);
+    nDDOIO::readClass(r, pData->mNear);
+    nDDOIO::readClass(r, pData->mFar);
+    return true;
 }
 
 MT_CTSTR rCharacterEditCameraParam::getExt() const {

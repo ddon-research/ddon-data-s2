@@ -110,6 +110,13 @@ class cResource : public MtObject
     friend class rSoundBank;
     friend class rSoundCurveSet;
     friend class rSoundDirectionalSet;
+
+    friend class rSoundAreaInfo;
+    friend class rSoundRequest;
+    friend class rSoundStreamRequest;
+    friend class rZone;
+
+    friend class rSoundReverb;
     friend class rStageCustomParts;
     friend class rStarCatalog;
     friend class rSwingModel;
@@ -314,4 +321,20 @@ inline MT_CTSTR cResource::getPath() const {
 
 inline void cResource::setAttribute(u32 attr) {
     this->mAttr = attr;
+}
+
+inline u32 cResource::getAttr() const {
+    return this->mAttr;
+}
+
+inline bool cResource::isCancel() const {
+    return (this->mState & STATE_CANCEL) != 0;
+}
+
+inline void cResource::cancelRequest() {
+    this->mState |= STATE_CANCEL;
+}
+
+inline u32 cResource::getSize() const {
+    return this->mSize;
 }

@@ -91,8 +91,14 @@ bool rPawnQuestTalk::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rPawnQuestTalk::save(MtStream& out) {
-    DDON_STUB("rPawnQuestTalk::save")
-    return {};
+    MtDataWriter w(out, 4096u, 4096u);
+    w.writeU32(0x545150u);
+    w.writeU32(1u);
+    w.writeU32(mTalkDataList.mLength);
+    for (u32 i = 0; i < mTalkDataList.mLength; ++i) {
+        static_cast<rPawnQuestTalk::cTalkData*>(mTalkDataList.mpArray[i])->save(w);
+        }
+    return true;
 }
 
 inline rPawnQuestTalk::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

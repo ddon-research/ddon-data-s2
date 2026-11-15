@@ -262,6 +262,11 @@ void ddon_sample_rPartsCtrlTable_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rPartsCtrlTable_entry;
 const DdonLibraryRoot ddon_sample_rPartsCtrlTable_entry{&ddon_sample_rPartsCtrlTable, ddon_sample_rPartsCtrlTable_place_path};
 
+extern const DdonRoot ddon_sample_rPawnQuestTalk;
+void ddon_sample_rPawnQuestTalk_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rPawnQuestTalk_entry;
+const DdonLibraryRoot ddon_sample_rPawnQuestTalk_entry{&ddon_sample_rPawnQuestTalk, ddon_sample_rPawnQuestTalk_place_path};
+
 extern const DdonRoot ddon_sample_rRoomWearParam;
 void ddon_sample_rRoomWearParam_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rRoomWearParam_entry;
@@ -456,6 +461,7 @@ const DdonLibraryRoot* const ddon_library_roots[] = {
     &ddon_sample_rOcdPriorityParam_entry,
     &ddon_sample_rOmParam_entry,
     &ddon_sample_rPartsCtrlTable_entry,
+    &ddon_sample_rPawnQuestTalk_entry,
     &ddon_sample_rRoomWearParam_entry,
     &ddon_sample_rShopGoods_entry,
     &ddon_sample_rShotReqInfo2_entry,

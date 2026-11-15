@@ -1,14 +1,14 @@
 {
   "bundle": {
-    "golden": "golden/031-t474",
-    "name": "output_2026-11-15_031_merge474",
-    "rendered": 42042
+    "golden": "golden/031-t477",
+    "name": "output_2026-11-15_031_merge477",
+    "rendered": 42043
   },
   "census": {
     "approximate": 4092,
     "includes_to_regroup": 0,
     "proven": 21229,
-    "stubs": 19398
+    "stubs": 19397
   },
   "files": [
     {
@@ -15412,6 +15412,56 @@
   "generated": 105,
   "notes": "stripped",
   "originals_with_several_headers": {},
+  "progress": {
+    "binary": {
+      "classes": 19734,
+      "functions": 81692
+    },
+    "classes": {
+      "complete": 4447,
+      "left": 1836,
+      "partial": 2549,
+      "with_methods": 8832
+    },
+    "methods": {
+      "approximate": 4092,
+      "defined": 61805,
+      "empty": 2014,
+      "no_code": 14181,
+      "no_code_by_source": {
+        "derived_save": 91,
+        "inline": 14090
+      },
+      "not_written": 365,
+      "proven": 21229,
+      "recorded": 527,
+      "recorded_by_source": {
+        "by_load": 82,
+        "generic": 45,
+        "inline": 1,
+        "proven": 399
+      },
+      "rendered": 42043,
+      "rendered_sums": [
+        "proven",
+        "approximate",
+        "recorded",
+        "empty",
+        "no_code"
+      ],
+      "stubs": 19397,
+      "without_body": 19762
+    },
+    "resources": {
+      "derived_round_trips": 1482,
+      "files": 37465,
+      "files_ok": 27382,
+      "roots": 291,
+      "roots_load": 80,
+      "roots_tested": 82,
+      "round_trips": 13717
+    }
+  },
   "rendered": {
     "approximate": 4092,
     "definitions": 61805,
@@ -15422,10 +15472,10 @@
     "proven": 21229,
     "recorded": 399,
     "recorded_generic": 45,
-    "recorded_harness": 81,
+    "recorded_harness": 82,
     "recorded_inline": 1,
-    "rendered": 42042,
-    "stubs": 19398,
+    "rendered": 42043,
+    "stubs": 19397,
     "undefined": 365
   }
 }

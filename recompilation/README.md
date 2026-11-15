@@ -23,6 +23,20 @@ resource classes' load and save graph, with the types they reach.
   bytes. The forced include gives the sources' own `long` 8 bytes after the
   library headers are parsed, and only the MinGW preset uses it.
 
+## Progress
+
+How much of the binary this reconstruction holds, counted when the export was made.
+
+- **Methods:** 42,043 of the 61,805 methods the sources define are rendered, with a body (68%); the binary has 81,692 functions with code. Rendered is the sum of the first five counts:
+  - proven: 21,229, equal to the binary by recompiling them with the game's own compiler release;
+  - approximate: 4,092, rendered from the binary but not proven equal to it;
+  - recorded: 527, written by hand and checked against the binary or by loading their resources' files;
+  - empty: 2,014, where the binary's is a single return;
+  - no code in the binary: 14,181 (inline bodies checked where they are inlined, and saves derived from a load);
+  - without a body: 19,762, of them 19,397 stubs and 365 not written.
+- **Classes:** of the 8,832 classes with methods in the sources, 4,447 are complete (every method has a body, 50%), 2,549 partial and 1,836 left; the binary defines 19,734 classes.
+- **Resources:** 80 of the 82 resource classes tested load every file of theirs (97%), of the 291 the sources hold; 27,382 of their 37,465 files load whole (73%). 13,717 files save back byte for byte through their class's own save, and 1,482 through a save derived from its load.
+
 ## Building
 
 Each script runs from a POSIX shell in this folder (`cd` to it first), and

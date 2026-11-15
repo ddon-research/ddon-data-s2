@@ -6,6 +6,8 @@
 // Dependencies
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+
+#include "../../MT/MtDataWriter.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 
@@ -102,7 +104,12 @@ public:
         void setMsgType(u8 msgType);
     public:
         void load(MtDataReader& r);
-        void save(MtDataWriter& w);
+        inline void save(MtDataWriter& w) {
+            w.writeU32(mGroupSerial);
+            w.writeU8(mMsgType);
+            w.writeU8(mResType);
+            w.writeU8(mParsonality);
+        }
         cTalkData();
         virtual ~cTalkData();
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4

@@ -56,6 +56,7 @@ class rTexture;
 class rTextureJpeg;
 class rVertices;
 class rVibration;
+class rWaypoint;
 class sResource;
 class sSoundExt;
 class uCnsDDOIK;
@@ -125,6 +126,7 @@ class cResource : public MtObject
     friend class rTextureJpeg;
     friend class rVertices;
     friend class rVibration;
+    friend class rWaypoint;
     friend class sResource;
     friend class sSoundExt;
     friend class uCnsDDOIK;

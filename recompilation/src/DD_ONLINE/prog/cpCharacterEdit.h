@@ -600,6 +600,10 @@ inline void* cpCharacterEdit::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cpCharacterEdit::setEquipComponent(cpEquip* pEquip) {
+    this->mpEquip = pEquip;
+}
+
 inline void cpCharacterEdit::onFlag(u32 flag) {
     this->mFlag = this->mFlag | 1u;
 }

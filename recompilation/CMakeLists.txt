@@ -37,10 +37,13 @@ if(DDON_BUILD_TESTS)
   add_subdirectory(tests)
 endif()
 
-# The load-resource sample (samples/load-resource): loads a resource file
-# with the library. It runs on the build's own host, so the PS4 presets
-# leave it out.
+# The load/save library (library/, target ddon_resource) and its
+# load-resource sample (samples/load-resource): they run on the build's own
+# host, so the PS4 presets leave them out.
 option(DDON_BUILD_SAMPLES "Build the load-resource sample (Linux and Windows)" ON)
-if(DDON_BUILD_SAMPLES AND (DDON_PLATFORM STREQUAL "linux" OR DDON_PLATFORM STREQUAL "windows"))
-  add_subdirectory(samples/load-resource)
+if(DDON_PLATFORM STREQUAL "linux" OR DDON_PLATFORM STREQUAL "windows")
+  add_subdirectory(library)
+  if(DDON_BUILD_SAMPLES)
+    add_subdirectory(samples/load-resource)
+  endif()
 endif()

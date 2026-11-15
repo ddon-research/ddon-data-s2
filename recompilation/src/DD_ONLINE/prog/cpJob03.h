@@ -330,6 +330,10 @@ inline f32 cpJob03::getTargetLength() const {
     return this->mTargetLength;
 }
 
+inline void cpJob03::setReserveCustomSkill(cPlActWpnBow::SKILL_TYPE type) {
+    this->mReserveCustomSkill = type;
+}
+
 inline u32 cpJob03::getCS14RendaCount() const {
     return this->mCS14RendaCount;
 }

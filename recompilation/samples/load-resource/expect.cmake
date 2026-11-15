@@ -1,15 +1,24 @@
 # The sample's tests (CMakeLists.txt): run PROGRAM and check its exit code.
 # Without FILE_TEST: no arguments, so the usage and exit 2. With FILE_TEST:
 # DDON_SAMPLE_ROOT's load of DDON_SAMPLE_FILE, which must read the file
-# whole (exit 0); skipped when either is unset.
+# whole (exit 0), and with SAVE_TO also save it as the file's own bytes
+# (`round trip ok`); skipped when either variable is unset.
 if(FILE_TEST)
   if(NOT DEFINED ENV{DDON_SAMPLE_ROOT} OR NOT DEFINED ENV{DDON_SAMPLE_FILE})
     message("skipped: set DDON_SAMPLE_ROOT and DDON_SAMPLE_FILE to load a file")
     return()
   endif()
-  execute_process(COMMAND "${PROGRAM}" "$ENV{DDON_SAMPLE_ROOT}" "$ENV{DDON_SAMPLE_FILE}"
+  set(save)
+  if(SAVE_TO)
+    set(save --save "${SAVE_TO}")
+  endif()
+  execute_process(COMMAND "${PROGRAM}" "$ENV{DDON_SAMPLE_ROOT}" "$ENV{DDON_SAMPLE_FILE}" ${save}
     RESULT_VARIABLE code OUTPUT_VARIABLE out ERROR_VARIABLE err)
   set(expected 0)
+  if(SAVE_TO AND NOT out MATCHES "round trip ok")
+    message("${out}${err}")
+    message(FATAL_ERROR "load-resource: no round trip")
+  endif()
 else()
   execute_process(COMMAND "${PROGRAM}" RESULT_VARIABLE code OUTPUT_VARIABLE out ERROR_VARIABLE err)
   set(expected 2)

@@ -180,6 +180,18 @@ inline cStaminaDecList::cStaminaDecList() {
     this->mStaminaDecList.::MtArray::mAutoDelete = true;
 }
 
+inline u32 cStaminaDecList::getStaminaType() {
+    return this->mStaminaType;
+}
+
+inline nStamina::VALUE_TYPE cStaminaDecList::getValueType() const {
+    return this->mValueType;
+}
+
+inline nStamina::UPDATE_TYPE cStaminaDecList::getExecuteType() const {
+    return this->mExecuteType;
+}
+
 inline void* cStaminaDecParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

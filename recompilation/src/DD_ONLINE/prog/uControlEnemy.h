@@ -184,7 +184,3 @@ inline void uControlEnemy::setRaidBossID(u32 id) {
 inline u32 uControlEnemy::getErosionMode() const {
     return this->mErosionMode;
 }
-
-inline void uControlEnemy::setErosionMode(u32 lv) {
-    this->mErosionMode = lv;
-}

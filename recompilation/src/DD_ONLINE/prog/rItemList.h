@@ -1313,10 +1313,6 @@ inline u32 rItemList::rItemParam::getAttackStatus() const {
     return this->mAttackStatus;
 }
 
-inline u32 rItemList::rItemParam::getItemParamNum() {
-    return this->mParamNum;
-}
-
 inline void* rItemList::rParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

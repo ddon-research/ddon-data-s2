@@ -71,9 +71,11 @@ class cOmControl;
 class cOnceRequestEffectType;
 class cPartsGroupList;
 class cPawnAIAction;
+class cPawnActInterActEnchant;
 class cPawnActInterface;
 class cPawnQuestManager;
 class cPlayPointInfo;
+class cPrioThkCmdIsTarget;
 class cPrioThkIO;
 class cQuestManagerBase;
 class cQuestPersonalData;
@@ -197,6 +199,7 @@ class rQuestList;
 class rQuestMarkerInfo;
 class rQuestTextData;
 class rScenario;
+class rShlParamList;
 class rSituationMsgCtrl;
 class rSoundEQ;
 class rSoundMotionSe;
@@ -374,9 +377,11 @@ class MtArray : public MtObject
     friend class cOnceRequestEffectType;
     friend class cPartsGroupList;
     friend class cPawnAIAction;
+    friend class cPawnActInterActEnchant;
     friend class cPawnActInterface;
     friend class cPawnQuestManager;
     friend class cPlayPointInfo;
+    friend class cPrioThkCmdIsTarget;
     friend class cPrioThkIO;
     friend class cQuestManagerBase;
     friend class cQuestPersonalData;
@@ -499,6 +504,7 @@ class MtArray : public MtObject
     friend class rQuestMarkerInfo;
     friend class rQuestTextData;
     friend class rScenario;
+    friend class rShlParamList;
     friend class rSituationMsgCtrl;
     friend class rSoundEQ;
     friend class rSoundMotionSe;
@@ -993,6 +999,15 @@ inline T* & MtTypedArray<T>::operator[](u32 index) {
 template <typename T>
 inline T* MtTypedArray<T>::operator[](u32 index) const {
     return static_cast<T*>(MtArray::operator[](index));
+}
+
+inline MtObject* MtArray::at(u32 index) {
+    return (index < mLength) ? mpArray[static_cast<s32>(index)] : nullptr;
+}
+
+template <typename T>
+inline T* MtTypedArray<T>::at(u32 index) {
+    return static_cast<T*>(MtArray::at(index));
 }
 
 #include <string.h>

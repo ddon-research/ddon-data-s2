@@ -23,6 +23,7 @@ need() {
 }
 need cmake cmake
 need ninja ninja-build
+[ -f /usr/include/zlib.h ] || { echo "build-wsl: no zlib.h in WSL (the load/save library links zlib); install it with: sudo apt install zlib1g-dev" >&2; missing=1; }
 clang=""
 for candidate in clang++-22 clang++-21 clang++-20 clang++; do
   if command -v "$candidate" >/dev/null; then clang="$candidate"; break; fi

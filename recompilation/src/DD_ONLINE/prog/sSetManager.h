@@ -715,6 +715,10 @@ inline u32 sSetManager::getEnemyDieNum() {
     return this->mEnemyDie.::MtArray::mLength;
 }
 
+inline u32 sSetManager::getSetCount() const {
+    return this->mSetCount;
+}
+
 inline u32 sSetManager::getGroupPrioUpdateCnt() const {
     return this->mGroupPrioUpdateCnt;
 }

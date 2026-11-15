@@ -68,6 +68,7 @@ using uintptr = __uintptr_t;
 
 class cCamInterPreset
 {
+    friend class uCameraGame;
 public:
     enum FRAME_TYPE
     {
@@ -885,6 +886,10 @@ inline void* uCameraGame::operator new(size_t sz, void* p_addr) {
 
 inline const cCamImpBase* uCameraGame::getCamImp() const {
     return this->mpImple;
+}
+
+inline void uCameraGame::endInterporate() {
+    this->mInterPreset.mTimer = this->mInterPreset.mTimeMax;
 }
 
 inline void uCameraGame::requestReset() {

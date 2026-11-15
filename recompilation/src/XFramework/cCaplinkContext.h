@@ -86,3 +86,7 @@ inline void* nCaplink::ContextListener::operator new(size_t sz, void* p_addr) {
 inline s32 nCaplink::ContextListener::getStatus() const {
     return this->mStatus;
 }
+
+inline s32 nCaplink::ContextListener::getErrorType() const {
+    return this->mErrorType;
+}

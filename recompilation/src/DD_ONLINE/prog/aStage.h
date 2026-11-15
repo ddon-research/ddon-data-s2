@@ -32,10 +32,12 @@ class cFSMBase;
 class cFSMTaskCtrl;
 class cOmTreeControl;
 class cPlDeadFlow;
+class cPrioThkCmdIsStageNo;
 class cSplitBgm;
 class cStageEpvCtrl;
 class cTalkMsgData;
 class cUnit;
+class cpTalk;
 namespace nStage { struct stEventParam; }
 class rOccluderEx;
 class rPlantTree;
@@ -90,6 +92,8 @@ using u8 = unsigned char;
 class aStage : public cArea
 {
     friend class cFSMBase;
+    friend class cPrioThkCmdIsStageNo;
+    friend class cpTalk;
     friend class uGUIGaugeEnemy;
     friend class uGUIGaugeEnemyBoss;
     friend class uGUIGaugeNpc;

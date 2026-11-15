@@ -20,12 +20,14 @@ class cGUIUtility;
 class cLayoutSet;
 class cNetGameServer;
 class cQuestTask;
+class cpTalk;
 namespace nFsm { class cCameraCtrl; }
 namespace nSessionManager { class cNetSessionManager; }
 class sGUIExt;
 class sGame;
 class sNpcManager;
 class sSoundExt;
+class sSoundManager;
 class uControl;
 class uControlNpc;
 class uGUIContentsBoard;
@@ -57,12 +59,14 @@ class sArea : public cSystem
     friend class cLayoutSet;
     friend class cNetGameServer;
     friend class cQuestTask;
+    friend class cpTalk;
     friend class nFsm::cCameraCtrl;
     friend class nSessionManager::cNetSessionManager;
     friend class sGUIExt;
     friend class sGame;
     friend class sNpcManager;
     friend class sSoundExt;
+    friend class sSoundManager;
     friend class uControl;
     friend class uControlNpc;
     friend class uGUIContentsBoard;

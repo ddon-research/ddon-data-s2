@@ -171,3 +171,7 @@ inline void* cpTalk::operator new(size_t sz, void* p_addr) {
 inline s32 cpTalk::getNpcId() const {
     return this->mNpcId;
 }
+
+inline void cpTalk::onTalkedSituationTalk() {
+    this->mIsTalkedSituationTalk = true;
+}

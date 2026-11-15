@@ -362,6 +362,12 @@ inline void* nSessionManager::cNetSessionManager::operator new(size_t sz, void* 
     return p_addr;
 }
 
+inline void nSessionManager::cNetSessionManager::clearJoinLobby() {
+    this->mIsNowQuickMatch = false;
+    this->mQuickMatchTimer = 0.0f;
+    this->mQuickMatchRno = 0;
+}
+
 inline s32 nSessionManager::cNetSessionManager::getPartyMemberMaxNum() {
     return this->mPartyMemberMaxNum;
 }

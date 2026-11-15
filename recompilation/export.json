@@ -1,14 +1,14 @@
 {
   "bundle": {
-    "golden": "golden/031-t443",
-    "name": "output_2026-11-14_031_merge443",
-    "rendered": 24949
+    "golden": "golden/031-t474",
+    "name": "output_2026-11-15_031_merge474",
+    "rendered": 42042
   },
   "census": {
-    "approximate": 4044,
+    "approximate": 4092,
     "includes_to_regroup": 0,
-    "proven": 20905,
-    "stubs": 19116
+    "proven": 21229,
+    "stubs": 19398
   },
   "files": [
     {
@@ -15411,5 +15411,21 @@
   "from_dwarf": 2461,
   "generated": 105,
   "notes": "stripped",
-  "originals_with_several_headers": {}
+  "originals_with_several_headers": {},
+  "rendered": {
+    "approximate": 4092,
+    "definitions": 61805,
+    "derived_save": 91,
+    "empty": 2014,
+    "inline_no_code": 14090,
+    "methods_with_code": 47624,
+    "proven": 21229,
+    "recorded": 399,
+    "recorded_generic": 45,
+    "recorded_harness": 81,
+    "recorded_inline": 1,
+    "rendered": 42042,
+    "stubs": 19398,
+    "undefined": 365
+  }
 }

@@ -142,6 +142,14 @@ inline RPC_ID nNetBase::cNetBase::getRpcId() {
     return this->mRpcId;
 }
 
+inline void nNetBase::cNetBase::setLastSendMsgId(u8 id) {
+    this->mLastSendMsgId = id;
+}
+
+inline void nNetBase::cNetBase::setLastSendFrame(u32 frame) {
+    this->mLastSendFrame = frame;
+}
+
 inline nNetMsg::MSG_PRIO nNetBase::cNetBase::getPrio() {
     return this->mPrio;
 }

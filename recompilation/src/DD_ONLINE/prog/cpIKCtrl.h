@@ -233,6 +233,10 @@ inline u32 cIKHandle::getTargetJoint() {
     return this->mTargetJntNo;
 }
 
+inline uCnsDDOIK* cIKHandle::getCnsIK() {
+    return this->mpCnsIK;
+}
+
 inline void* cpIKCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

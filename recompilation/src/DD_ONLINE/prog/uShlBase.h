@@ -650,10 +650,6 @@ inline void* uShlBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline uDDOModel* uShlBase::getParent() {
-    return this->mpParent;
-}
-
 inline uDDOModel* uShlBase::getOwner() {
     return this->mpOwner;
 }

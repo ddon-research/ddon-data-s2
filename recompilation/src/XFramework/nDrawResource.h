@@ -11,6 +11,7 @@
 class MtAllocator;
 class MtDTI;
 class MtPropertyList;
+class cDraw;
 class sGUI;
 class sRender;
 
@@ -28,6 +29,7 @@ using u32 = unsigned int;
 namespace nDraw {
     class Resource : public ::MtObject
     {
+        friend class ::cDraw;
         friend class ::sGUI;
         friend class ::sRender;
     public:

@@ -652,6 +652,10 @@ inline u32 uEffectExt::getCreateCost() {
     return this->mCreateCost;
 }
 
+inline void uEffectExt::setOthersTransparencyPercentage(f32 set) {
+    this->mOthersTransparencyPercentage = set;
+}
+
 inline f32 uEffectExt::getOthersTransparencyPercentage() {
     return this->mOthersTransparencyPercentage;
 }

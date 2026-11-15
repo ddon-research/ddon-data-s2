@@ -97,3 +97,7 @@ inline bool cCorePointMsg::isSended() const {
 inline void cCorePointMsg::notifySended() {
     this->mNetFlag = true;
 }
+
+inline void cCorePointMsg::requestErace() {
+    this->mIsErase = true;
+}

@@ -864,6 +864,10 @@ inline void* cGroupParam::cID::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline const nLayout::stLayoutID& cGroupParam::cID::getLayoutID() const {
+    return this->mLayoutID;
+}
+
 inline void* cGroupParam::EmSetInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

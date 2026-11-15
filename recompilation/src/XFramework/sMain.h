@@ -396,6 +396,10 @@ inline f32 sMain::getFps() const {
     return this->mFps;
 }
 
+inline f32 sMain::getMaxFps() const {
+    return this->mMaxFps;
+}
+
 inline u32 sMain::getFrameTimer() const {
     return this->mFrameTimer;
 }

@@ -125,3 +125,7 @@ public:
 inline void* cpLegCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline void cpLegCtrl::setIKCtrl(cpIKCtrl* pIKCtrl) {
+    this->mpIKCtrl = pIKCtrl;
+}

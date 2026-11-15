@@ -302,6 +302,10 @@ inline bool uStagePartsCtrl::isLightFogZone() const {
     return this->mIsLightFogZone;
 }
 
+inline rStageCustomPartsEx::ColorFog* uStagePartsCtrl::getColorFog() const {
+    return this->mpColorFog;
+}
+
 inline rStageCustomPartsEx::HemiSphLight* uStagePartsCtrl::getHemiSphLight() const {
     return this->mpHemiSphereLight;
 }

@@ -13,6 +13,7 @@ class MtDTI;
 class MtObject;
 class MtVector3;
 class cEfcHandle;
+class uGUIGaugeNpc;
 
 // Declarations
 class uPlayer;
@@ -26,6 +27,7 @@ using u32 = unsigned int;
 
 class uPlayer : public uHuman
 {
+    friend class uGUIGaugeNpc;
 public:
     class MyDTI;
 public:

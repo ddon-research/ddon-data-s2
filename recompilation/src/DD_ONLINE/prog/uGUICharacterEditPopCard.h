@@ -133,10 +133,6 @@ inline void* uGUICharacterEditPopCard::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline void uGUICharacterEditPopCard::setUnitType(uGUICharacterEditPopCard::UNIT_TYPE type) {
-    this->mUnitType = static_cast<uGUICharacterEditPopCard::UNIT_TYPE>(1);
-}
-
 inline void uGUICharacterEditPopCard::evInputPutDownOpen() {
     this->mProc = static_cast<uGUICharacterEditPopCard::PR>(1);
     if (this->mRefPulldown.mIsForbid) {

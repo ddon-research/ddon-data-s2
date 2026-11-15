@@ -169,3 +169,11 @@ private:
 inline void* uGUISaveListComment::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline uGUISaveListComment::EXIT_TYPE uGUISaveListComment::getExitType() const {
+    return this->mExitType;
+}
+
+inline const cStorageDataBase::UserHeader& uGUISaveListComment::getUserHeader() const {
+    return this->mSaveDataHeader;
+}

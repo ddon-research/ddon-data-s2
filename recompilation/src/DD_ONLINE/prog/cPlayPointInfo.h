@@ -112,6 +112,10 @@ inline void cPlayPointInfo::setPlayPointLimit(u32 limit) {
     this->mPlayPointLimit = limit;
 }
 
+inline u32 cPlayPointInfo::getPlayPointLimit() {
+    return this->mPlayPointLimit;
+}
+
 inline void cPlayPointInfo::setPlayPointJobLevel(u32 jobLevel) {
     this->mPlayPointJobLevel = jobLevel;
 }

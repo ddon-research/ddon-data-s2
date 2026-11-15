@@ -179,7 +179,7 @@ public:
     void setSetDir(f32 dir);
     void setUnitMove(bool flag);
     bool getUnitMove();
-    void setUnitDraw(bool flag);
+    void setUnitDraw(bool flag = false);
     bool getUnitDraw();
     bool fadeUnit();
     void setFadeOut();
@@ -345,6 +345,10 @@ inline s32 uControl::getSetNo() const {
 
 inline const cGroupParam* uControl::getGroupParam() const {
     return this->mLayout.mpGroupParam;
+}
+
+inline void uControl::setUnitDraw(bool flag) {
+    this->mUnitDraw = false;
 }
 
 inline bool uControl::isFadeOut() {

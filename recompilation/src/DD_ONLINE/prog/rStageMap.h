@@ -180,3 +180,20 @@ inline void cStageMap::operator delete[](void* p_addr) {
 inline void* cStageMap::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cStageMap::DTI)->memAlloc(sz, align, ::cStageMap::DTI.::MtDTI::getID());
 }
+
+inline void* cStageMap::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStageMap::DTI)->memAlloc(sz, align, ::cStageMap::DTI.::MtDTI::getID());
+}
+
+inline cStageMap::cStageMap()
+    : mStageNo(0), mPartsNum(0), mOffsetY(0.0f), mStageFlag(0) {
+    mParamList.setAutoDelete(true);
+}
+
+inline void cStageMap::addParam(cStageMap::cParam* p) {
+    mParamList.add(p);
+}
+
+inline void cStageMap::cParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStageMap::cParam::DTI)->memFree(p_addr);
+}

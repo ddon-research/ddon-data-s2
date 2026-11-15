@@ -188,6 +188,10 @@ inline cOcdIrAdj::cOcdIrAdj() {
     this->mOcdRank = 1.0f;
 }
 
+inline f32 cOcdIrAdj::getOcdRank() const {
+    return this->mOcdRank;
+}
+
 inline void* cOcdIrAdjPL::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -195,6 +199,10 @@ inline void* cOcdIrAdjPL::operator new(size_t sz, void* p_addr) {
 inline cOcdIrAdjPL::cOcdIrAdjPL() {
     this->mItemLank = 1;
     this->mOcdRank = 1.0f;
+}
+
+inline f32 cOcdIrAdjPL::getOcdRank() const {
+    return this->mOcdRank;
 }
 
 inline void* rOcdIrAdj::operator new(size_t sz, void* p_addr) {

@@ -1,4 +1,4 @@
-// The deserialization harness's second forced include (024 T882). The
+// The host's second forced include. The
 // bundle's `MtStlAllocator<T>` derives from `std::allocator<T>` (DWARF) and
 // declares no `rebind`, so in C++17 it inherits `std::allocator<T>::rebind`,
 // which names `std::allocator<U>`. Host libstdc++ then rejects every
@@ -57,12 +57,12 @@ struct __allocator_traits_base::__rebind<
 }  // namespace std
 #endif
 
-// The SDK containers' layout (026 plan-P118, ruling P118-A). The game's
+// The SDK containers' layout. The game's
 // library (SDK 2.500's Dinkumware, `_HAS_DEBUG_COMPATIBILITY` 1 in yvals.h)
 // puts an 8-byte `_Container_base0::_Myproxy` at offset 0 of every container,
 // so DWARF's `std::vector<T, MtStlAllocator<T>>` is 32 bytes and its map and
-// set are 24, where the host's libstdc++ gives 24 and 48: 136 of the golden's
-// layout.json records differed on this host. Over
+// set are 24, where the host's libstdc++ gives 24 and 48: 136 of the bundle's
+// layout records differed on this host. Over
 // the bundle's allocator, these specializations hold DWARF's members, with
 // their names, types, order and offsets (the DIEs below, from the first CU
 // that holds them). A specialization of a std template on a program-defined

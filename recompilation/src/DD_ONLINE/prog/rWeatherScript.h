@@ -6,9 +6,12 @@
 // Dependencies
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "cResPath.h"
 #include "../../XFramework/cResource.h"
 #include "nDDOUtility.h"
 #include "nWeather.h"
+#include "rEffectProvider.h"
+#include "../../XFramework/rSoundRequest.h"
 #include "res_ptr.h"
 
 // Forward declarations
@@ -18,9 +21,16 @@ class MtDataReader;
 class MtObject;
 class cEfcHandle;
 class cResource;
+class rEffectProvider;
+class rSoundRequest;
 
 // Declarations
+class cWSCEpv;
 class cWSCParam;
+class cWSCSound;
+class cWSCSoundRnd;
+class cWSCSoundVolume;
+class cWSCTimer;
 class cWeatherScriptCmd;
 class cWeatherScriptCmds;
 class cWeatherScriptIO;
@@ -30,6 +40,7 @@ using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
 using f32 = float;
+using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
 
@@ -194,8 +205,244 @@ public:
     static MyDTI DTI;
 };
 
+class cWSCEpv : public cWeatherScriptCmd
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cWSCEpv();
+    virtual void setupCmd(cWeatherScriptIO& io) const;  // vtable slot 6
+    virtual bool updateCmd(cWeatherScriptIO& io) const;  // vtable slot 7
+    virtual void endCmd(cWeatherScriptIO& io) const;  // vtable slot 8
+    virtual void load(MtDataReader& r);  // vtable slot 9
+public:
+    cResPath<rEffectProvider> mResource;  // offset: 0x50
+    s32 mIndexNo;  // offset: 0x58
+    s32 mElementNo;  // offset: 0x5c
+    static MyDTI DTI;
+};
+
+class cWSCSound : public cWeatherScriptCmd
+{
+public:
+    enum
+    {
+        REQ_TYPE_DEF = 0,
+        REQ_TYPE_LOOP = 1,
+        REQ_TYPE_NUM = 2,
+    };
+    enum
+    {
+        REQ_SE_NONE = 0,
+        REQ_SE_END = 1,
+        REQ_SE_NUM = 2,
+    };
+    enum
+    {
+        FREE_IDX_REQ_SE = 0,
+        FREE_IDX_NUM = 1,
+    };
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cWSCSound();
+    virtual void setupCmd(cWeatherScriptIO& io) const;  // vtable slot 6
+    virtual bool updateCmd(cWeatherScriptIO& io) const;  // vtable slot 7
+    virtual void endCmd(cWeatherScriptIO& io) const;  // vtable slot 8
+    virtual void load(MtDataReader& r);  // vtable slot 9
+public:
+    cResPath<rSoundRequest> mResource;  // offset: 0x50
+    u32 mReqNo;  // offset: 0x58
+    u32 mReqType;  // offset: 0x5c
+    static MyDTI DTI;
+};
+
+class cWSCSoundRnd : public cWeatherScriptCmd
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cWSCSoundRnd();
+    virtual void setupCmd(cWeatherScriptIO& io) const;  // vtable slot 6
+    virtual bool updateCmd(cWeatherScriptIO& io) const;  // vtable slot 7
+    virtual void endCmd(cWeatherScriptIO& io) const;  // vtable slot 8
+    virtual void load(MtDataReader& r);  // vtable slot 9
+public:
+    cResPath<rSoundRequest> mResource;  // offset: 0x50
+    f32 mReqFrame;  // offset: 0x58
+    nDDOUtility::cArray<unsigned int, 4> mReqNos;  // offset: 0x5c
+    static MyDTI DTI;
+};
+
+class cWSCSoundVolume : public cWeatherScriptCmd
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cWSCSoundVolume();
+    virtual void setupCmd(cWeatherScriptIO& io) const;  // vtable slot 6
+    virtual bool updateCmd(cWeatherScriptIO& io) const;  // vtable slot 7
+    virtual void endCmd(cWeatherScriptIO& io) const;  // vtable slot 8
+    virtual void load(MtDataReader& r);  // vtable slot 9
+public:
+    f32 mSoundVolume;  // offset: 0x50
+    static MyDTI DTI;
+};
+
+class cWSCTimer : public cWeatherScriptCmd
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cWSCTimer();
+    virtual bool updateCmd(cWeatherScriptIO& io) const;  // vtable slot 7
+public:
+    static MyDTI DTI;
+};
+
+inline void* cWSCEpv::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cWSCEpv::cWSCEpv() {
+    this->mIndexNo = 0;
+    this->mElementNo = 0;
+}
+
 inline void* cWSCParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void* cWSCSound::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cWSCSound::cWSCSound() {
+    this->mReqNo = 0;
+    this->mReqType = 0;
+}
+
+inline void* cWSCSoundRnd::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cWSCSoundRnd::cWSCSoundRnd() : mReqNos() {
+    this->mReqFrame = 300.0f;
+}
+
+inline void* cWSCSoundVolume::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cWSCSoundVolume::cWSCSoundVolume() {
+    this->mSoundVolume = 1.0f;
+}
+
+inline void* cWSCTimer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cWSCTimer::cWSCTimer() {
 }
 
 inline void* cWeatherScriptCmd::operator new(size_t sz, void* p_addr) {

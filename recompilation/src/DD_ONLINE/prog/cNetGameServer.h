@@ -5314,6 +5314,10 @@ inline COrbGainExtendParam& cNetGameServer::getPawnOrbGainExtendParam() {
     return this->mPawnExtendParam;
 }
 
+inline CClanParam& cNetGameServer::getClanParamRef() {
+    return this->mClanParam;
+}
+
 inline void cNetGameServer::setMyTotalClanPoint(u32 totalPoint) {
     this->mMyClanParam.m_ClanServerParam.m_unTotalClanPoint = totalPoint;
 }

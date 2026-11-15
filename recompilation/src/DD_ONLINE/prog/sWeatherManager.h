@@ -746,6 +746,10 @@ inline f32 sWeatherManager::getGrassAmbientOcclusionScale() const {
     return this->mGrassAmbientOcclusion.x;
 }
 
+inline f32 sWeatherManager::getGrassFadeBeginDistance() const {
+    return this->mGrassFadeBeginDistance;
+}
+
 inline f32 sWeatherManager::getGrassFadeEndDistance() const {
     return this->mGrassFadeEndDistance;
 }

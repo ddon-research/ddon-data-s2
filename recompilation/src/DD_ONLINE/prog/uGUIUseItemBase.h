@@ -292,6 +292,10 @@ inline uGUIPopDetail01* uGUIUseItemBase::getPopDetail() {
     return this->mpDetail;
 }
 
+inline uGUIPopNumber01* uGUIUseItemBase::getPopNumber() {
+    return this->mpUnitPopNumber;
+}
+
 inline uGUIPopListDialog* uGUIUseItemBase::getPopListDialog() {
     return this->mpUnitPopList;
 }

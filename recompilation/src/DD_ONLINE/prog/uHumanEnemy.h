@@ -158,6 +158,10 @@ inline void uHumanEnemy::setStartThinkTbl(u32 no) {
     this->mThinkTbl_Select = no;
 }
 
+inline void uHumanEnemy::disableMontageRandom() {
+    this->mIsMontageRandom = false;
+}
+
 inline cpErosionEnemySmall* uHumanEnemy::getErosionEnemySmall() const {
     return this->mpErosionEnemySmall;
 }

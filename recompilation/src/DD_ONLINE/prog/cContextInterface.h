@@ -29,6 +29,10 @@ class cEquipData;
 class cGUIUtility;
 class cItemParam;
 class cParentRegionStatus;
+class cPawnActInterDamage;
+class cPawnActInterReload;
+class cPawnActInterSearchCorePoint;
+class cPawnActInterSearchMaskPoint;
 class cPlayerLoadManager;
 class cpCatchCtrl;
 class cpCorePointCtrl;
@@ -41,6 +45,7 @@ class cpJob05;
 class cpJob07;
 class cpJob09;
 class cpJob10;
+class cpOcdCtrl;
 class cpPawnThink;
 class cpSlave;
 namespace nActionManager { struct stActExParam; }
@@ -93,6 +98,10 @@ class cContextInterface : public MtObject
     friend class aStage;
     friend class cGUIUtility;
     friend class cParentRegionStatus;
+    friend class cPawnActInterDamage;
+    friend class cPawnActInterReload;
+    friend class cPawnActInterSearchCorePoint;
+    friend class cPawnActInterSearchMaskPoint;
     friend class cpCatchCtrl;
     friend class cpCorePointCtrl;
     friend class cpErosionEnemySmall;
@@ -104,6 +113,7 @@ class cContextInterface : public MtObject
     friend class cpJob07;
     friend class cpJob09;
     friend class cpJob10;
+    friend class cpOcdCtrl;
     friend class cpPawnThink;
     friend class cpSlave;
     friend class sControlManager;

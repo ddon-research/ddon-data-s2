@@ -26059,6 +26059,10 @@ inline nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES::CPacket_S2
     this->m_bIsReceived = false;
 }
 
+inline MtTypedArray<CDataEquipJobItem>& nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES::EquipJobItemList() {
+    return this->m_EquipJobItemList;
+}
+
 inline void* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26092,6 +26096,10 @@ inline nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES::CPacket_S2C_CHA
     this->m_unResult = 0;
     this->m_unPawnID = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataEquipJobItem>& nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES::EquipJobItemList() {
+    return this->m_EquipJobItemList;
 }
 
 inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_RES::operator new(size_t sz, void* p_addr) {
@@ -26243,6 +26251,10 @@ inline nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::CPacket_S2C_CHECK
 
 inline void* nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline s32 nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::Result() const {
+    return this->m_nResult;
 }
 
 inline const CClanFunctionInfo& nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::FunctionInfo() const {
@@ -26628,12 +26640,28 @@ inline void* nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::operato
     return p_addr;
 }
 
+inline s32 nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::Result() const {
+    return this->m_nResult;
+}
+
+inline u32 nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::ClanPoint() const {
+    return this->m_unClanPoint;
+}
+
 inline const CClanShopInfo& nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::ShopInfo() const {
     return this->m_ShopInfo;
 }
 
 inline void* nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline s32 nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::Result() const {
+    return this->m_nResult;
+}
+
+inline u32 nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::ClanPoint() const {
+    return this->m_unClanPoint;
 }
 
 inline const CClanShopInfo& nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::ShopInfo() const {
@@ -27522,6 +27550,10 @@ inline void* nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::operator new(si
     return p_addr;
 }
 
+inline u32 nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::AreaId() const {
+    return this->m_unAreaId;
+}
+
 inline u32 nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::ToNextPoint() const {
     return this->m_unToNextPoint;
 }
@@ -27713,6 +27745,10 @@ inline nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::CPacket_S2C_GET_CRAFT_PR
     this->m_bIsReceived = false;
 }
 
+inline s32 nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::Result() const {
+    return this->m_nResult;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -27721,6 +27757,10 @@ inline nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::CPacket_S2C_GET_CR
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline s32 nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::Result() const {
+    return this->m_nResult;
 }
 
 inline MtTypedArray<CDataCommonU32>& nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::CreatedReicpeList() {
@@ -27738,6 +27778,10 @@ inline nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::CPacket_S2C_GET_CRAFT_SE
     this->m_bIsReceived = false;
     this->m_unReasonableCraftLv = 0;
     this->m_unCraftItemLv = 0;
+}
+
+inline s32 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::Result() const {
+    return this->m_nResult;
 }
 
 inline u32 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::CraftItemLv() const {
@@ -27777,8 +27821,16 @@ inline void* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NOW_POINT_LIST_RES::op
     return p_addr;
 }
 
+inline u32 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NOW_POINT_LIST_RES::Result() const {
+    return this->m_unResult;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_POINT_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline u32 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_POINT_LIST_RES::Result() const {
+    return this->m_unResult;
 }
 
 inline CQuestPointDetail& nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_POINT_LIST_RES::QuestPointDetail() {
@@ -27810,6 +27862,10 @@ inline nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::CPacket_S2C_GET_
     this->m_unCycleContentsScheduleId = 0;
     this->m_bIsAddRewardBox = false;
     this->m_bIsReceived = false;
+}
+
+inline s32 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::Result() const {
+    return this->m_nResult;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -27878,6 +27934,10 @@ inline nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::CPacket_S2C_GET_END
     this->m_unGroupID = 0;
     this->m_unEndContentsType = 0;
     this->m_bIsReceived = false;
+}
+
+inline s32 nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::Result() const {
+    return this->m_nResult;
 }
 
 inline u32 nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::GroupID() const {
@@ -28050,6 +28110,10 @@ inline void* nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::operator new(siz
     return p_addr;
 }
 
+inline s32 nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::Result() const {
+    return this->m_nResult;
+}
+
 inline const MtTypedArray<CDataJobChangeInfo>& nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::JobChangeInfo() const {
     return this->m_JobChangeInfo;
 }
@@ -28138,6 +28202,10 @@ inline nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::CPacket_S2C_GET_LIGHT
     this->m_bIsReceived = false;
 }
 
+inline s32 nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::Result() const {
+    return this->m_nResult;
+}
+
 inline MtTypedArray<CDataLightQuestList>& nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::LightQuestList() {
     return this->m_LightQuestList;
 }
@@ -28221,6 +28289,10 @@ inline nUserSession::CPacket_S2C_GET_MATCHING_PROFILE_RES::CPacket_S2C_GET_MATCH
     this->m_bIsReceived = false;
 }
 
+inline s32 nUserSession::CPacket_S2C_GET_MATCHING_PROFILE_RES::Result() const {
+    return this->m_nResult;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_MESSAGE_SET_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28233,6 +28305,10 @@ inline nUserSession::CPacket_S2C_GET_MESSAGE_SET_RES::CPacket_S2C_GET_MESSAGE_SE
 
 inline void* nUserSession::CPacket_S2C_GET_MYPAWN_DATA_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline CPawnInfo& nUserSession::CPacket_S2C_GET_MYPAWN_DATA_RES::PawnInfo() {
+    return this->m_PawnInfo;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -28496,6 +28572,10 @@ inline nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::CPacket_S2C_GET_PAWN_
     this->m_bIsReceived = false;
 }
 
+inline s32 nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::Result() const {
+    return this->m_nResult;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28624,6 +28704,10 @@ inline void* nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_DATA_RES::operator ne
     return p_addr;
 }
 
+inline CPawnInfo& nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_DATA_RES::PawnInfo() {
+    return this->m_PawnInfo;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28666,6 +28750,10 @@ inline nUserSession::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES::CPacket_S2C_GET_REL
 
 inline void* nUserSession::CPacket_S2C_GET_RENTED_PAWN_DATA_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline CPawnInfo& nUserSession::CPacket_S2C_GET_RENTED_PAWN_DATA_RES::PawnInfo() {
+    return this->m_PawnInfo;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_RENTED_PAWN_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -28794,6 +28882,10 @@ inline nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::CPacket_S2C_GET_SE
     this->m_usAreaBaseMinLevel = 0;
     this->m_usAreaBaseMaxLevel = 0;
     this->m_bIsReceived = false;
+}
+
+inline s32 nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::Result() const {
+    return this->m_nResult;
 }
 
 inline u32 nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::DistributeID() const {
@@ -29110,6 +29202,10 @@ inline nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::CPacket_S2C_GP_SHOP_DI
     this->m_bIsReceived = false;
 }
 
+inline u32 nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::Result() const {
+    return this->m_unResult;
+}
+
 inline void* nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -29265,6 +29361,10 @@ inline nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES::CPacket_S2C_JOB_VA
     this->m_bIsReceived = false;
 }
 
+inline s32 nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES::Result() const {
+    return this->m_nResult;
+}
+
 inline void* nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -29275,6 +29375,10 @@ inline nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::CPacket_S2C_JOB_
     this->m_ucJobId = 0;
     this->m_ucJobValueType = 0;
     this->m_bIsReceived = false;
+}
+
+inline s32 nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::Result() const {
+    return this->m_nResult;
 }
 
 inline void* nUserSession::CPacket_S2C_JOIN_LOBBY_QUEST_INFO_NOTICE::operator new(size_t sz, void* p_addr) {
@@ -30152,8 +30256,16 @@ inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES::CPacket_
     this->m_nResult = 0;
 }
 
+inline s32 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES::Result() const {
+    return this->m_nResult;
+}
+
 inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline s32 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::Result() const {
+    return this->m_nResult;
 }
 
 inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::operator new(size_t sz, void* p_addr) {
@@ -30166,6 +30278,10 @@ inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::CPacket_S
     this->m_ucSearchSpotType = 0;
     this->m_bIsGoldenSally = false;
     this->m_bIsReceived = false;
+}
+
+inline s32 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::Result() const {
+    return this->m_nResult;
 }
 
 inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::operator new(size_t sz, void* p_addr) {
@@ -30606,6 +30722,14 @@ inline nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::CPacket_S2C_QUEST_PROGRESS_
     this->m_bIsReceived = false;
 }
 
+inline s32 nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::Result() const {
+    return this->m_nResult;
+}
+
+inline u32 nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::QuestScheduleId() const {
+    return this->m_unQuestScheduleId;
+}
+
 inline MtTypedArray<CDataQuestProcessState>& nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::QuestProcessStateList() {
     return this->m_QuestProcessStateList;
 }
@@ -30798,6 +30922,10 @@ inline nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::CPa
     this->m_bIsReceived = false;
 }
 
+inline s32 nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::Result() const {
+    return this->m_nResult;
+}
+
 inline void* nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -30808,6 +30936,10 @@ inline nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::CPacket_S2C_RANKING_DATA
     this->m_unRank = 0;
     this->m_llModified = 0;
     this->m_bIsReceived = false;
+}
+
+inline s32 nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::Result() const {
+    return this->m_nResult;
 }
 
 inline const MtTypedArray<CDataRankingData>& nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::RankingData() const {
@@ -31394,6 +31526,10 @@ inline nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::CPacket_S2C_STAMP_BON
     this->m_bIsReceived = false;
 }
 
+inline s32 nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::Result() const {
+    return this->m_nResult;
+}
+
 inline void* nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31629,6 +31765,10 @@ inline nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES::CPacket_S2C_TR
     this->m_nResult = 0;
     this->m_unMaxLv = 0;
     this->m_bIsReceived = false;
+}
+
+inline u32 nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES::MaxLv() const {
+    return this->m_unMaxLv;
 }
 
 inline void* nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::operator new(size_t sz, void* p_addr) {

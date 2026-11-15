@@ -103,3 +103,7 @@ public:
 inline void* cpMotionHistory::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline u32 cpMotionHistory::getHistoryMotTypeStartNo() {
+    return this->mHistoryMotTypeStartNo;
+}

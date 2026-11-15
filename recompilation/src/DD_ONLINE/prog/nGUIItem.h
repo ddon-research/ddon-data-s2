@@ -351,10 +351,6 @@ inline rItemList::rItemParam* nGUIItem::cItem::getResourceParam() {
     return this->mprItemParam;
 }
 
-inline void nGUIItem::cItem::setLimitNumToBag(u32 num) {
-    this->mLimitNum3 = num;
-}
-
 inline void* nGUIItem::cItemList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

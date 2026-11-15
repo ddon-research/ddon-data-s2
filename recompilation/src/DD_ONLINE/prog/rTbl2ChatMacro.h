@@ -122,3 +122,7 @@ inline void cTbl2ChatMacro::operator delete[](void* p_addr) {
 inline void* cTbl2ChatMacro::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cTbl2ChatMacro::DTI)->memAlloc(sz, align, ::cTbl2ChatMacro::DTI.::MtDTI::getID());
 }
+
+inline void rTbl2ChatMacro::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTbl2ChatMacro::DTI)->memFree(p_addr);
+}

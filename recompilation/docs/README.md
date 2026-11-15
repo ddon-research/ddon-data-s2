@@ -4,8 +4,16 @@
 
 1314 headers and 1252 units reconstructed from DWARF and the ELF: every class's declaration, layout and virtual table as DWARF records them, and each method's body where the generator could render it.
 
-- **Reconstructed:** 20905 bodies rendered from the ELF and proven equal to it by recompiling with the game's own compiler release (SDK 2.500), and 4044 rendered bodies the generator marks approximate.
-- **Stubs:** 19116 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
+- **Reconstructed:** 42042 methods have a body, of the 61805 the bundle defines (47624 with code in the ELF, 14090 inline with none of their own, 91 derived saves):
+  - 21229 bodies rendered from the ELF and proven equal to it by recompiling with the game's own compiler release (SDK 2.500), and 4092 rendered bodies the generator marks approximate;
+  - 399 recorded bodies, written outside the generator and proven equal to the ELF by the same recompile;
+  - 81 recorded bodies the recompile does not prove, kept because every file of their resource loads (and saves back byte for byte where it saves) with them;
+  - 45 instances of recorded generics and 1 recorded inline body with the ELF's copy;
+  - 2014 empty bodies, where the ELF's is a single `ret`;
+  - 14090 inline bodies with no code of their own, checked where they are inlined;
+  - 91 saves derived by inverting a root's load, for roots whose game code has none (the bundle's `derived/`, which this project does not ship).
+- **Not written:** 365 instances of generics no unit writes.
+- **Stubs:** 19398 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
 
 The generator's notes (its inferences, rulings, addresses, refusals and oracle verdicts) are stripped; only comments a reader of the source needs stay (file sections, member offsets, vtable slots, namespace ends, stub markers).
 
@@ -123,8 +131,9 @@ The generator's notes (its inferences, rulings, addresses, refusals and oracle v
 
 ## Prerequisites
 
-- **Linux:** cmake 3.25 or newer, ninja, clang (17 or newer; 22 tested) and
-  libstdc++, on x86_64: the reconstruction assumes the PS4's LP64 data model,
+- **Linux:** cmake 3.25 or newer, ninja, clang (17 or newer; 22 tested),
+  libstdc++ and zlib's headers (`zlib1g-dev`, for the load/save library), on
+  x86_64: the reconstruction assumes the PS4's LP64 data model,
   and the build gives `wchar_t` the PS4's 2 bytes (`-fshort-wchar`).
 - **PS4:** the Orbis SDK, its directory in `SCE_ORBIS_SDK_DIR`, run from Git
   Bash. The SDK and its headers are not part of this project.
@@ -149,8 +158,8 @@ The generator's notes (its inferences, rulings, addresses, refusals and oracle v
 ## Building
 
 ```sh
-scripts/build-linux.sh               # static library build/linux-clang/libddon_reconstruction.a, then the layout test
-scripts/build-windows.sh             # build/windows-clang/libddon_reconstruction.a with MSYS2 clang64, then the layout test
+scripts/build-linux.sh               # static library build/linux-clang/libddon_reconstruction.a, the load/save library and its sample, then the tests
+scripts/build-windows.sh             # the same under build/windows-clang/ with MSYS2 clang64
 scripts/build-wsl.sh                 # from Git Bash or MSYS2: build-linux.sh inside WSL, building under ~/.cache/ddon-recompilation/ there
 scripts/build-ps4.sh                 # build/ps4/libddon_reconstruction.a with orbis-clang++ and orbis-ar
 scripts/build-ps4.sh --syntax-only   # each unit checked only
@@ -162,7 +171,12 @@ sources are the same on every platform. `host/` holds what a Linux, Windows
 or OpenOrbis build uses in place of the SDK: two forced includes that let
 glibc and libstdc++ live beside the reconstruction's own declarations, the
 Windows and OpenOrbis forced includes, and stand-ins that declare the few SDK
-functions the units call. A PS4 build has nothing to run the layout test on:
+functions the units call. On Linux and Windows, `library/src/stub.h` is
+forced first, so a body the reconstruction refused reports that it ran, and
+the load/save library answers `stub reached`. On Windows, zlib's 4-byte
+`uLong` differs from DWARF's stream, so the link wraps the three zlib calls
+the reconstruction makes and `library/src/zlib-lp64.cpp` copies the stream
+between the two layouts. A PS4 build has nothing to run the layout test on:
 the `ps4-orbis` and `ps4-openorbis` presets compile its static asserts, which
 is the test.
 

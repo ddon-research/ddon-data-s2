@@ -299,6 +299,14 @@ inline void cpJob04::setFeildBit(u32 bit) {
     this->mCircleFlgs = bit;
 }
 
+inline bool cpJob04::getIsHealSpot() const {
+    return this->mIsHealSpot;
+}
+
+inline bool cpJob04::isEnergySpot() {
+    return this->mIsEnergySpot;
+}
+
 inline void cpJob04::setHealingCircleFlg(bool flg) {
     this->mCircleFlgs = this->mCircleFlgs & 0xFFFFFFFBu;
 }

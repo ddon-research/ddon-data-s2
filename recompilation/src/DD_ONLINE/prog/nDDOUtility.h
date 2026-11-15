@@ -174,6 +174,26 @@ namespace nDDOUtility {
 
 namespace nDDOUtility {
     template <>
+    class cBitSet<12>
+    {
+    public:
+        enum
+        {
+            AR_NUM = 1,
+        };
+    public:
+        cBitSet();
+        ~cBitSet();
+        bool check(u32 bit) const;
+        static u32 getArrayNum();
+        u32* toArrayPtr();
+    private:
+        u32 mBit[1];  // offset: 0x0
+    };
+}  // namespace nDDOUtility
+
+namespace nDDOUtility {
+    template <>
     class cBitSet<14>
     {
     public:
@@ -751,21 +771,20 @@ nDDOUtility::cNoObjectArray<T>::~cNoObjectArray() {
     if (this->mAutoDelete) {
         if (this->mLength != 0) {
             u32 v0_0 = this->mLength;
-            for (unsigned int i0_3 = 0;;) {
-                if (this->mpArray[i0_3] != nullptr) {
-                    delete this->mpArray[i0_3];
-                    if ((i0_3 + 1u) < this->mLength) {
-                        v0_0 = this->mLength;
-                        i0_3 += 1u;
-                    } else {
-                        break;
-                    }
+            unsigned int i0_3 = 0;
+            u32 v1_0;
+            for (;;) {
+                if (this->mpArray[i0_3] == nullptr) {
+                    v1_0 = v0_0;
                 } else {
-                    if ((i0_3 + 1u) < v0_0) {
-                        i0_3 += 1u;
-                    } else {
-                        break;
-                    }
+                    delete this->mpArray[i0_3];
+                    v1_0 = this->mLength;
+                }
+                if ((i0_3 + 1u) < v1_0) {
+                    v0_0 = v1_0;
+                    i0_3 += 1u;
+                } else {
+                    break;
                 }
             }
         }

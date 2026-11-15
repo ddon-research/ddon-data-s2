@@ -177,6 +177,10 @@ inline void cpJob07::resetIsEndureSuccess() {
     this->mIsEndureSuccess = false;
 }
 
+inline f32 cpJob07::getAttitudeOfFuryTimer() const {
+    return this->mAttitudeOfFuryTimer;
+}
+
 inline void cpJob07::setIsAttackHitDownEnemy(bool flg) {
     this->mIsAttackHitDownEnemy = false;
 }

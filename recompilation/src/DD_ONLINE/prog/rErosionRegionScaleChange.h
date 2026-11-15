@@ -107,6 +107,10 @@ inline void* cErosionRegionScaleChange::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline const MtVector3& cErosionRegionScaleChange::getInitScale() const {
+    return this->mInitScale;
+}
+
 inline void* rErosionRegionScaleChange::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

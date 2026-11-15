@@ -556,5 +556,6 @@ static_assert(sizeof(::uGUIInputText) == 39344, "uGUIInputText: DWARF's byte_siz
 static_assert(sizeof(::uGUIPopCnvWnd) == 27136, "uGUIPopCnvWnd: DWARF's byte_size is 27136");
 
 extern "C" [[noreturn]] void ddon_trap(const char*) { __builtin_trap(); }
+extern "C" void ddon_stub_hit(const char*) {}
 
 int main() { return 0; }

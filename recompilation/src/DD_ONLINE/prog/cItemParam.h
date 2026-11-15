@@ -197,3 +197,7 @@ inline u32 cItemParam::getItemNum() const {
 inline void cItemParam::setItemNum(u32 ItemNum) {
     this->mItemParam.mItemNum_Guard = static_cast<unsigned short>(ItemNum);
 }
+
+inline u8 cItemParam::getEquipCharType() const {
+    return this->mEquipCharType;
+}

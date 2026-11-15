@@ -190,3 +190,7 @@ inline void cpChargeCtrl::setPysShortChargeHosei(f32 hosei) {
 inline f32 cpChargeCtrl::getCharge(u8 level) const {
     return this->mCharge_Gi[0];
 }
+
+inline u8 cpChargeCtrl::getMaxChargeLevel() const {
+    return this->mMaxChargeLevel;
+}

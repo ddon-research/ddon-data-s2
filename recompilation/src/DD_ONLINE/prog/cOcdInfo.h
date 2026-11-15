@@ -37,6 +37,7 @@ using u8 = unsigned char;
 
 class cOcdActParam
 {
+    friend class cpOcdCtrl;
 public:
     u32 getInitLandActNo() const;
     void setInitLandActNo(u32 NewValue);
@@ -93,6 +94,7 @@ private:
 
 class cOcdInfo : public MtObject
 {
+    friend class cpOcdCtrl;
 public:
     class MyDTI;
 public:

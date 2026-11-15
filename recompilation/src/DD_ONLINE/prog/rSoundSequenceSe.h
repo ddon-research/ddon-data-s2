@@ -205,6 +205,10 @@ inline rSoundRequest* rSoundSequenceSe::getSoundRequest() {
     return this->mpRequest;
 }
 
+inline s32 rSoundSequenceSe::getPauseStatus() {
+    return this->mPauseStatus;
+}
+
 inline void* rSoundSequenceSe::SequenceSe::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

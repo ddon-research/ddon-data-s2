@@ -1,5 +1,5 @@
-// The harness's host stand-in for the PS4 SDK's `<sce_atomic.h>` (026
-// P127b): only what the units call, spelled as SDK 2.500's
+// The harness's host stand-in for the PS4 SDK's `<sce_atomic.h>`: only
+// what the units call, spelled as SDK 2.500's
 // `sce_atomic/sce_atomic_orbis.h` does. It is a static inline function
 // there, defined by clang's own builtin, so it is defined here the same way.
 #pragma once
@@ -19,7 +19,7 @@ static inline int32_t sceAtomicDecrement32(volatile int32_t* ptr)
     return sceAtomicAdd32Relaxed(ptr, -1);
 }
 
-// The add of 1, for `MtString`'s copy constructor (031 plan-S49).
+// The add of 1, for `MtString`'s copy constructor.
 static inline int32_t sceAtomicIncrement32(volatile int32_t* ptr)
 {
     return sceAtomicAdd32Relaxed(ptr, 1);
@@ -31,7 +31,7 @@ static inline int32_t sceAtomicCompareAndSwap32Relaxed(volatile int32_t* ptr, in
     return compare;
 }
 
-// The default again, for `nDraw::Resource::release` (031 plan-L6): the old
+// The default again, for `nDraw::Resource::release`: the old
 // value, which equals `compare` when it swapped.
 static inline int32_t sceAtomicCompareAndSwap32(volatile int32_t* ptr, int32_t compare, int32_t swap)
 {

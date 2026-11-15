@@ -51,6 +51,10 @@ class cHitInfoAfter;
 class cHitNode;
 class cOcdInfo;
 class cParentRegionStatus;
+class cPawnActInterDamage;
+class cPawnActInterReload;
+class cPawnActInterSearchCorePoint;
+class cPawnActInterSearchMaskPoint;
 class cShlNotifyInfo;
 class cState;
 class cUnitDieInfo;
@@ -125,6 +129,7 @@ class uCharacter;
 class uControl;
 class uControlNpc;
 class uEnemy;
+class uGUIGaugeNpc;
 class uHuman;
 class uHumanEnemy;
 class uNpc;
@@ -156,6 +161,10 @@ class uDDOModel : public uModel
     friend class aStage;
     friend class cGUIUtility;
     friend class cParentRegionStatus;
+    friend class cPawnActInterDamage;
+    friend class cPawnActInterReload;
+    friend class cPawnActInterSearchCorePoint;
+    friend class cPawnActInterSearchMaskPoint;
     friend class cpCatchCtrl;
     friend class cpCorePointCtrl;
     friend class cpEnemyThink;
@@ -173,6 +182,7 @@ class uDDOModel : public uModel
     friend class cpJob10;
     friend class cpLayout;
     friend class cpObjCollisionBase;
+    friend class cpOcdCtrl;
     friend class cpOmBase;
     friend class cpPawnThink;
     friend class cpSlave;
@@ -180,6 +190,7 @@ class uDDOModel : public uModel
     friend class uCharacter;
     friend class uControl;
     friend class uEnemy;
+    friend class uGUIGaugeNpc;
     friend class uHuman;
     friend class uHumanEnemy;
     friend class uNpc;
@@ -908,6 +919,10 @@ inline bool uDDOModel::isNpc() const {
 
 inline uControl* uDDOModel::getCtrl() const {
     return this->mpCtrl;
+}
+
+inline void uDDOModel::releaseContextInst() {
+    this->mContextInterface.mpContextInstance = nullptr;
 }
 
 inline cpWorkRate* uDDOModel::getWorkRatePtr() const {

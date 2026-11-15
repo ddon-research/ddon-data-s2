@@ -325,6 +325,14 @@ inline rStageJoint* uStageJointCtrl::getJointArea() const {
     return this->mpJointArea;
 }
 
+inline f32 uStageJointCtrl::getSplitStartPosX() const {
+    return this->mSplitData.mStartPosX;
+}
+
+inline f32 uStageJointCtrl::getSplitStartPosZ() const {
+    return this->mSplitData.mStartPosZ;
+}
+
 inline void* uStageJointMdl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

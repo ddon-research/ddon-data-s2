@@ -1,5 +1,8 @@
 # Platform settings, one function per target: compile options and include
-# directories only. The sources are the same on every platform.
+# directories only. The sources are the same on every platform. On the
+# Linux and Windows hosts, library/src/stub.h, forced first, makes a body the
+# reconstruction refused (it starts with DDON_STUB("Q::f")) report that it ran,
+# so the load/save library answers `stub reached` rather than a half load.
 
 function(ddon_apply_platform target)
   if(DDON_PLATFORM STREQUAL "linux")
@@ -15,6 +18,7 @@ function(ddon_apply_platform target)
       --target=x86_64-linux-gnu
       -fshort-wchar
       -fno-rtti -fno-exceptions -w
+      "SHELL:-include ${PROJECT_SOURCE_DIR}/library/src/stub.h"
       "SHELL:-include ${PROJECT_SOURCE_DIR}/host/host-libc.h"
       "SHELL:-include ${PROJECT_SOURCE_DIR}/host/host-stl.h")
     target_include_directories(${target} SYSTEM PUBLIC ${PROJECT_SOURCE_DIR}/host/sdk)
@@ -65,6 +69,7 @@ function(ddon_apply_platform target)
     target_compile_options(${target} PUBLIC
       --target=x86_64-w64-windows-gnu
       -fno-rtti -fno-exceptions -w
+      "SHELL:-include ${PROJECT_SOURCE_DIR}/library/src/stub.h"
       "SHELL:-include ${PROJECT_SOURCE_DIR}/host/host-containers.h"
       "SHELL:-include ${PROJECT_SOURCE_DIR}/host/windows-lp64.h")
     target_include_directories(${target} SYSTEM PUBLIC ${PROJECT_SOURCE_DIR}/host/sdk)

@@ -112,6 +112,7 @@ class sGame;
 class uCnsBowUpper;
 class uCnsTurnUpper;
 class uDDOModel;
+class uGUIGaugeNpc;
 class uJobEquip;
 class uModel;
 class uShlBase;
@@ -149,6 +150,7 @@ class uHuman : public uCharacter
     friend class cpJob09;
     friend class cpTransparencyCtrl;
     friend class sGame;
+    friend class uGUIGaugeNpc;
 public:
     enum CLIMB_JOLT_TYPE
     {

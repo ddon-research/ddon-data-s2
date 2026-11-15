@@ -31,8 +31,10 @@ class rPrologueHmStatus;
 class sCameraExt;
 class sEffectExt;
 class sOmManager;
+class sSoundManager;
 class uBaseModel;
 class uDDOModel;
+class uGUIGaugeNpc;
 class uHuman;
 class uPlayer;
 
@@ -54,6 +56,8 @@ class sPlayerManager : public sUnitManager
     friend class sCameraExt;
     friend class sEffectExt;
     friend class sOmManager;
+    friend class sSoundManager;
+    friend class uGUIGaugeNpc;
 public:
     enum
     {

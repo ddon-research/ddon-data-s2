@@ -393,6 +393,10 @@ inline void cOcdBase::setupImmune() {
     this->mImmuneParam.mImmuneLv = 0;
 }
 
+inline nObjCondition::OCD_IMMUNE_MODE cOcdBase::getImmuneMode() const {
+    return this->mImmuneMode;
+}
+
 inline void cOcdBase::setActiveTimerRate(f32 rate) {
     this->mActiveTimerRate = rate;
 }

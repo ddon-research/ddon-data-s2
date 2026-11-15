@@ -146,3 +146,73 @@ inline void* rSoundEQ::operator new(size_t sz, void* p_addr) {
 inline void* rSoundEQ::cEQData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline void* rSoundEQ::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundEQ::DTI)->memAlloc(sz, align, rSoundEQ::DTI.getID());
+}
+
+inline rSoundEQ::rSoundEQ()
+    : mpIdToIndexTbl(nullptr)
+    , mIdToIndexTblNum(0)
+{
+    memset(&mHeader, 0, sizeof(HEADER));
+    mHeader.Magic = NativeFileMagic;
+    mHeader.Version = NativeFileVersion;
+    mHeader.ArrayNum = 0;
+    mHeader.OneSize = 0;
+    mSoundEQ.setAutoDelete(true);
+    setAttribute(ATTR_NATIVE | ATTR_SAVEABLE | ATTR_CREATABLE);
+}
+
+inline s32 rSoundEQ::getEQDataNum() {
+    return mSoundEQ.length();
+}
+
+inline rSoundEQ::cEQData* rSoundEQ::getEQData(u32 index) {
+    return mSoundEQ.at(index);
+}
+
+inline void rSoundEQ::addData(cEQData* p_data) {
+    mSoundEQ.add(p_data);
+}
+
+inline void rSoundEQ::deleteAllData() {
+    mSoundEQ.deleteAll(true);
+}
+
+inline void* rSoundEQ::memAlloc(u32 size, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundEQ::DTI)->memAlloc(size, align, rSoundEQ::DTI.getID());
+}
+
+inline void rSoundEQ::memFree(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rSoundEQ::DTI)->memFree(p_addr);
+}
+
+inline void* rSoundEQ::cEQData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundEQ::cEQData::DTI)->memAlloc(sz, align, rSoundEQ::cEQData::DTI.getID());
+}
+
+inline rSoundEQ::cEQData::cEQData()
+    : mId(0xFFFFFFFFu)
+    , mCategory(0)
+{
+    mEQData.mEnable = 0;
+    mEQData.mLowType = 0;
+    mEQData.mHighType = 0;
+    mEQData.mLowFreq = sSound::EQ_DEFAULT_LOW_FREQ;
+    mEQData.mLowGain = sSound::EQ_DEFAULT_GAIN;
+    mEQData.mLowQ = sSound::EQ_DEFAULT_Q;
+    mEQData.mMidLowFreq = sSound::EQ_DEFAULT_MID_LOW_FREQ;
+    mEQData.mMidLowGain = sSound::EQ_DEFAULT_GAIN;
+    mEQData.mMidLowQ = sSound::EQ_DEFAULT_Q;
+    mEQData.mMidHighFreq = sSound::EQ_DEFAULT_MID_HIGH_FREQ;
+    mEQData.mMidHighGain = sSound::EQ_DEFAULT_GAIN;
+    mEQData.mMidHighQ = sSound::EQ_DEFAULT_Q;
+    mEQData.mHighFreq = sSound::EQ_DEFAULT_HIGH_FREQ;
+    mEQData.mHighGain = sSound::EQ_DEFAULT_GAIN;
+    mEQData.mHighQ = sSound::EQ_DEFAULT_Q;
+}
+
+inline u32 rSoundEQ::cEQData::getEQId() {
+    return mId;
+}

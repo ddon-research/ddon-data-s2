@@ -108,6 +108,10 @@ inline cEmWorkRateTable::cEmWorkRateTable() {
     this->mWorkRateStatus = 2;
 }
 
+inline u32 cEmWorkRateTable::getWorkRateStatus() const {
+    return this->mWorkRateStatus;
+}
+
 inline void* rEmWorkRateTable::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

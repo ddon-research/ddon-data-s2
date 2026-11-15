@@ -1,4 +1,4 @@
-// The deserialization harness's first forced include (024 T872). The bundle
+// The host's first forced include. The bundle
 // declares the PS4 libc's thread handles from DWARF at global scope
 // (`using pthread_t = pthread*;` in `MtThread.h`, `using pthread_mutex_t =
 // pthread_mutex*;` in `MtSynchronize.h`). glibc's `<pthread.h>` defines the
@@ -22,7 +22,7 @@
 #undef pthread_t
 #undef pthread_mutex_t
 
-// The PS4's `wchar_t` is 2 bytes (026 plan-P118): the harness compiles with
+// The PS4's `wchar_t` is 2 bytes: the build compiles with
 // `-fshort-wchar`, so `nInputText::cUnicodeString`, `sKeyboardInterface` and
 // `nIMEPS4::CandidateDispInfo` have DWARF's layout. glibc's wide-character
 // functions still count 4-byte units, so each one the bundle calls is

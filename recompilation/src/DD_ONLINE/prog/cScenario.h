@@ -273,7 +273,7 @@ public:
     virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     u32 getDetectAttr();
-    void setDetectAttr(u32 d);
+    void setDetectAttr(u32 d = 1);
 public:
     u32 mTaskType;  // offset: 0x8
     u32 mBootType;  // offset: 0xc
@@ -313,4 +313,8 @@ inline cScenarioParam::cScenarioParam() {
 
 inline u32 cScenarioParam::getDetectAttr() {
     return this->mDetectAttr;
+}
+
+inline void cScenarioParam::setDetectAttr(u32 d) {
+    this->mDetectAttr = 1;
 }

@@ -331,6 +331,14 @@ inline f32 rStageInfo::getAng() const {
     return this->mAng;
 }
 
+inline f32 rStageInfo::getGrassFadeBeginDistance() const {
+    return this->mGrassFadeBeginDistance;
+}
+
+inline f32 rStageInfo::getGrassFadeEndDistance() const {
+    return this->mGrassFadeEndDistance;
+}
+
 inline rZone* rStageInfo::getSndZoneOcclusion() {
     return this->mprSoundZone[0];
 }
@@ -353,4 +361,16 @@ inline s32 rStageInfo::getEpvIndexDay() const {
 
 inline s32 rStageInfo::getEpvIndexNight() const {
     return this->mEpvIndexNight;
+}
+
+inline f32 rStageInfo::getDayNightLightChgFrame() const {
+    return this->mDayNightLightChgFrame;
+}
+
+inline f32 rStageInfo::getDayNightFogChgFrame() const {
+    return this->mDayNightFogChgFrame;
+}
+
+inline s32 rStageInfo::getSkyInfiniteLightGroupType() const {
+    return this->mSkyInfiniteLightGroupType;
 }

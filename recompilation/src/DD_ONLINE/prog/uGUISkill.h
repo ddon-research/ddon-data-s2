@@ -984,6 +984,19 @@ inline void* uGUISkill::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void uGUISkill::setSelectInfo(const uGUISkill::cListInfo* pInfo) {
+    if (pInfo == nullptr) {
+        return;
+    }
+    this->mSkillId = pInfo->mId;
+    this->mSkillIndex = pInfo->mIndex;
+    this->mSkillIndexNext = pInfo->mIndexNext;
+    this->mSkillIconId = pInfo->mIconId;
+    this->mSkillLv = pInfo->mLv;
+    this->mSlotNo = pInfo->mSlot;
+    this->mAbilityCost = pInfo->mCost;
+}
+
 inline void uGUISkill::setupCustomJob() {
     if (this->mPullDown.mPullDown.::uGUIBase::cReferenceUIPullDown::mIsForbid) {
         return;

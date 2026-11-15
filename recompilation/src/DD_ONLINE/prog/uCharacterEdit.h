@@ -913,6 +913,10 @@ inline nCharacterEdit::BODY_TYPE uCharacterEdit::getBodyType() const {
     return this->mBodyType;
 }
 
+inline u32 uCharacterEdit::getStageNum() {
+    return this->::uCharacterEditBase::mStageList.mLength;
+}
+
 inline s32 uCharacterEdit::getSlotNo() const {
     return this->mSlotNo;
 }

@@ -116,6 +116,10 @@ inline void* cpShakeCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cpShakeCtrl::setIKCtrl(cpIKCtrl* pIKCtrl) {
+    this->mpIKCtrl = pIKCtrl;
+}
+
 inline rShakeCtrl* cpShakeCtrl::getCurrentResource() {
     return this->mpResource;
 }

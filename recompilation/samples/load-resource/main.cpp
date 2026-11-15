@@ -1,116 +1,174 @@
 // load-resource: loads one resource file of the game with the reconstructed
-// library, the way the engine does it.
+// library, the way the engine does, through the load/save library's API
+// (library/include/ddon/resource.h).
 //
-//   load-resource <root class> <file> [--save <out>] [--dump]
+//   load-resource <root class> <file> [options]
+//   load-resource <root class> --list <file of paths> [options]
 //
-// The engine opens a resource file as an MtStream, creates the resource
-// class through its MtDTI (the class registry's descriptor), and calls the
-// resource's own virtual `load`. This program does the same with the
-// reconstructed classes: every byte it interprets is interpreted by the
-// reconstructed `load`, never by code here.
+// The library opens the file as an MtStream, creates the resource class
+// through its MtDTI (the class registry's descriptor), and calls the
+// resource's own virtual `load`. Every byte it interprets is interpreted by
+// the reconstructed `load`, never by code here.
 
-#include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
+#include <fstream>
+#include <iterator>
 #include <string>
 #include <vector>
 
-#include "runtime.h"   // DdonRoot: how to create, load, save and destroy one root class
-#include "MtStream.h"  // the engine's stream interface (reconstructed)
-
-// The roots this export can load (roots.cpp, generated from the harness
-// report the export was made from), null-terminated.
-extern const DdonRoot* const ddon_sample_roots[];
-// What a root's field dump wrote (host.cpp).
-extern std::string ddon_sample_dump;
+#include "ddon/resource.h"
 
 namespace {
 
-// A file's bytes in memory, as the engine's stream. The same class serves
-// `--save`: writing past the end grows the buffer.
-class MemoryStream final : public MtStream {
-public:
-    explicit MemoryStream(std::vector<unsigned char> bytes = {}) : mBytes(std::move(bytes)) {}
-
-    const std::vector<unsigned char>& bytes() const { return mBytes; }
-    // How often the reader asked for bytes at the end of the file. Once is
-    // normal: the engine's reader refills its buffer after a read that ends
-    // where the buffer does, and gets nothing.
-    unsigned readsAtEnd() const { return mReadsAtEnd; }
-
-    bool isReadable() override { return true; }
-    bool isWritable() override { return true; }
-    bool isSeekable() override { return true; }
-    bool isAsyncReadable() override { return false; }
-    bool isAsyncReading() const override { return false; }
-    bool isAsyncOperationSucceeded() const override { return true; }
-    u32 getPosition() override { return mPos; }
-    u32 getLength() override { return static_cast<u32>(mBytes.size()); }
-
-    u32 read(void* ptr, u32 size) override {
-        u32 left = getLength() - mPos;
-        u32 n = size < left ? size : left;
-        mReadsAtEnd += size != 0 && left == 0;
-        std::memcpy(ptr, mBytes.data() + mPos, n);
-        mPos += n;
-        return n;
-    }
-    u32 readAsync(void* ptr, u32 size) override { return read(ptr, size); }
-
-    u32 write(const void* ptr, u32 size) override {
-        if (mPos + size > mBytes.size()) {
-            mBytes.resize(mPos + size);
-        }
-        std::memcpy(mBytes.data() + mPos, ptr, size);
-        mPos += size;
-        return size;
-    }
-
-    // A seek outside the buffer stops at its edge.
-    u32 seek(s32 offset, MtStream::SEEK_ORIGIN origin) override {
-        std::int64_t base = origin == ORG_BEGIN ? 0 : origin == ORG_CURRENT ? mPos : getLength();
-        std::int64_t target = base + offset;
-        target = target < 0 ? 0 : target > getLength() ? getLength() : target;
-        mPos = static_cast<u32>(target);
-        return mPos;
-    }
-    void skip(u32 size) override { seek(static_cast<s32>(size), ORG_CURRENT); }
-
-private:
-    std::vector<unsigned char> mBytes;
-    u32 mPos = 0;
-    unsigned mReadsAtEnd = 0;
+struct Options {
+    ddon::LoadOptions load;
+    const char* save_path = nullptr;
+    const char* list = nullptr;
+    // The file a trap names: the one loading when it happened.
+    const char* current = nullptr;
 };
 
+Options g_options;
+
+int usage(const char* program) {
+    std::fprintf(stderr,
+                 "usage: %s <root class> <file> [--data <rom>] [--game-path <path>]\n"
+                 "       [--inner in-place|placeholder|isolate] [--save <out>]\n"
+                 "   or: %s <root class> --list <file of paths> [--data <rom>] [--inner ...]\n"
+                 "roots:",
+                 program, program);
+    for (const char* const* root = ddon::roots(); *root != nullptr; ++root) {
+        std::fprintf(stderr, " %s", *root);
+    }
+    std::fprintf(stderr, "\n");
+    return 2;
+}
+
+// A function the reconstruction lacks was reached (cmake/traps.cmake writes
+// one for each): nothing can unwind, so the program ends here, naming it.
+[[noreturn]] void on_trap(const char* name) {
+    std::fflush(stdout);
+    std::fprintf(stderr, "load-resource: %s: the load reached %s, which the reconstruction lacks\n",
+                 g_options.current != nullptr ? g_options.current : "(no file)", name);
+    std::_Exit(3);
+}
+
 bool read_file(const char* path, std::vector<unsigned char>& bytes) {
-    std::FILE* file = std::fopen(path, "rb");
-    if (!file) {
+    std::ifstream in(path, std::ios::binary);
+    if (!in) {
         return false;
     }
-    unsigned char buffer[65536];
-    for (std::size_t n; (n = std::fread(buffer, 1, sizeof buffer, file)) > 0;) {
-        bytes.insert(bytes.end(), buffer, buffer + n);
-    }
-    std::fclose(file);
+    bytes.assign(std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>());
     return true;
 }
 
 bool write_file(const char* path, const std::vector<unsigned char>& bytes) {
-    std::FILE* file = std::fopen(path, "wb");
-    if (!file) {
-        return false;
-    }
-    bool ok = std::fwrite(bytes.data(), 1, bytes.size(), file) == bytes.size();
-    return std::fclose(file) == 0 && ok;
+    std::ofstream out(path, std::ios::binary);
+    out.write(reinterpret_cast<const char*>(bytes.data()), static_cast<std::streamsize>(bytes.size()));
+    return static_cast<bool>(out);
 }
 
-int usage(const char* program) {
-    std::fprintf(stderr, "usage: %s <root class> <file> [--save <out>] [--dump]\nroots:", program);
-    for (const DdonRoot* const* root = ddon_sample_roots; *root; ++root) {
-        std::fprintf(stderr, " %s", (*root)->name);
+// The save's bytes against the file's.
+std::string compare(const std::vector<unsigned char>& file, const std::vector<unsigned char>& saved) {
+    std::size_t n = file.size() < saved.size() ? file.size() : saved.size();
+    for (std::size_t at = 0; at < n; ++at) {
+        if (file[at] != saved[at]) {
+            char text[64];
+            std::snprintf(text, sizeof text, "first difference at 0x%zx", at);
+            return text;
+        }
     }
-    std::fprintf(stderr, "\n");
-    return 2;
+    if (file.size() != saved.size()) {
+        char text[96];
+        std::snprintf(text, sizeof text, "%zu bytes, the file %zu", saved.size(), file.size());
+        return text;
+    }
+    return "round trip ok";
+}
+
+const char* route_name(ddon::SaveRoute route) {
+    return route == ddon::SaveRoute::own ? "own" : "derived";
+}
+
+// One file loaded, with what it reached; with `--save`, saved and compared.
+// Returns 0 for a whole load (and a round trip, when saving), else 1.
+int run_one(const char* root, const char* path, const ddon::LoadOptions& load,
+            const char* save_path) {
+    g_options.current = path;
+    ddon::LoadResult result = ddon::load_file(root, path, load);
+    std::printf("%s: %s, read %u of %u bytes\n", root, ddon::status_name(result.status),
+                static_cast<unsigned>(result.consumed), static_cast<unsigned>(result.size));
+    for (const std::string& stub : result.stubs) {
+        std::printf("  stub reached: %s\n", stub.c_str());
+    }
+    for (const ddon::InnerRequest& inner : result.inner) {
+        std::printf("  inner %s %s (%s, mode %u): %s\n", inner.class_name.c_str(), inner.path.c_str(),
+                    inner.via.c_str(), inner.mode, inner.outcome.c_str());
+    }
+    if (result.status != ddon::Status::ok) {
+        return 1;
+    }
+    int code = 0;
+    if (save_path != nullptr) {
+        ddon::SaveResult saved = ddon::save(result.resource);
+        std::printf("save (%s): %s, %zu bytes", route_name(saved.route),
+                    ddon::status_name(saved.status), saved.bytes.size());
+        for (const std::string& stub : saved.stubs) {
+            std::printf("\n  stub reached: %s", stub.c_str());
+        }
+        if (saved.status == ddon::Status::ok) {
+            std::vector<unsigned char> file;
+            std::string verdict =
+                read_file(path, file) ? compare(file, saved.bytes) : "the file is unreadable";
+            bool written = write_file(save_path, saved.bytes);
+            std::printf(" to %s: %s%s\n", save_path, verdict.c_str(),
+                        written ? "" : " (could not write it)");
+            code = verdict == "round trip ok" && written ? 0 : 1;
+        } else {
+            std::printf("\n");
+            code = 1;
+        }
+    }
+    unsigned left = ddon::destroy(std::move(result.resource));
+    if (left != 0) {
+        std::printf("  %u inner resources left after destroy\n", left);
+    }
+    return code;
+}
+
+// `--list`: each line a file, one result line each; the exit code is the
+// worst (a trap still ends the program, naming the file).
+int run_list(const char* root, const char* list, const ddon::LoadOptions& load) {
+    std::ifstream in(list);
+    if (!in) {
+        std::fprintf(stderr, "load-resource: cannot read %s\n", list);
+        return 2;
+    }
+    int worst = 0;
+    for (std::string line; std::getline(in, line);) {
+        if (!line.empty() && line.back() == '\r') {
+            line.pop_back();
+        }
+        if (line.empty()) {
+            continue;
+        }
+        g_options.current = line.c_str();
+        ddon::LoadResult result = ddon::load_file(root, line.c_str(), load);
+        std::printf("%s\t%s", ddon::status_name(result.status), line.c_str());
+        for (const std::string& stub : result.stubs) {
+            std::printf("\t%s", stub.c_str());
+        }
+        std::printf("\n");
+        std::fflush(stdout);
+        if (result.status != ddon::Status::ok) {
+            worst = 1;
+        } else {
+            ddon::destroy(std::move(result.resource));
+        }
+    }
+    return worst;
 }
 
 }  // namespace
@@ -119,74 +177,56 @@ int main(int argc, char** argv) {
     if (argc < 3) {
         return usage(argv[0]);
     }
-    const char* save_path = nullptr;
-    bool dump = false;
-    for (int i = 3; i < argc; ++i) {
-        if (std::strcmp(argv[i], "--save") == 0 && i + 1 < argc) {
-            save_path = argv[++i];
-        } else if (std::strcmp(argv[i], "--dump") == 0) {
-            dump = true;
+    ddon::set_trap_handler(on_trap);
+    const char* root = argv[1];
+    const char* file = nullptr;
+    // This program's default, the same on every host: the library's
+    // `isolate` needs fork, which a Windows host lacks.
+    g_options.load.inner = ddon::InnerLoads::in_place;
+    for (int i = 2; i < argc; ++i) {
+        const char* arg = argv[i];
+        bool has_value = i + 1 < argc;
+        if (std::strcmp(arg, "--save") == 0 && has_value) {
+            g_options.save_path = argv[++i];
+        } else if (std::strcmp(arg, "--data") == 0 && has_value) {
+            g_options.load.data_root = argv[++i];
+        } else if (std::strcmp(arg, "--game-path") == 0 && has_value) {
+            g_options.load.game_path = argv[++i];
+        } else if (std::strcmp(arg, "--list") == 0 && has_value) {
+            g_options.list = argv[++i];
+        } else if (std::strcmp(arg, "--inner") == 0 && has_value) {
+            const char* mode = argv[++i];
+            if (std::strcmp(mode, "in-place") == 0) {
+                g_options.load.inner = ddon::InnerLoads::in_place;
+            } else if (std::strcmp(mode, "placeholder") == 0) {
+                g_options.load.inner = ddon::InnerLoads::placeholder;
+            } else if (std::strcmp(mode, "isolate") == 0) {
+                g_options.load.inner = ddon::InnerLoads::isolate;
+            } else {
+                return usage(argv[0]);
+            }
+        } else if (file == nullptr && i == 2 && arg[0] != '-') {
+            file = arg;
         } else {
             return usage(argv[0]);
         }
     }
-    const DdonRoot* root = nullptr;
-    for (const DdonRoot* const* entry = ddon_sample_roots; *entry; ++entry) {
-        if (std::strcmp((*entry)->name, argv[1]) == 0) {
-            root = *entry;
-        }
+    bool known = false;
+    for (const char* const* name = ddon::roots(); *name != nullptr; ++name) {
+        known |= std::strcmp(*name, root) == 0;
     }
-    if (!root) {
-        std::fprintf(stderr, "load-resource: no root named %s\n", argv[1]);
+    if (!known) {
+        std::fprintf(stderr, "load-resource: no root named %s\n", root);
         return usage(argv[0]);
     }
-    std::vector<unsigned char> bytes;
-    if (!read_file(argv[2], bytes)) {
-        std::fprintf(stderr, "load-resource: cannot read %s\n", argv[2]);
-        return 2;
+    for (const std::string& stub : ddon::setup_stubs()) {
+        std::printf("set-up reached: %s\n", stub.c_str());
     }
-    const std::size_t size = bytes.size();
-
-    // The engine's services the library calls (its heap, its resource
-    // manager, the class registry), set up once: host/fixtures.cpp.
-    ddon_fixtures_init();
-
-    // Create the resource as the engine does, and let it read the file.
-    MemoryStream in(std::move(bytes));
-    void* object = root->create();
-    bool loaded = root->load(object, in);
-    // The reader seeks back what it buffered and did not use, so the
-    // position after `load` is the bytes the format consumed.
-    u32 read = in.getPosition();
-    std::printf("%s: load %s, read %u of %zu bytes%s\n", root->name,
-                loaded ? "returned true" : "returned false", read, size,
-                in.readsAtEnd() > 1 ? " (and asked again at the end)" : "");
-
-    if (loaded && dump) {
-        if (root->dump) {
-            root->dump(object);
-            std::printf("dump: %s\n", ddon_sample_dump.c_str());
-        } else {
-            std::printf("dump: %s has no field dump (it is no table)\n", root->name);
-        }
+    if (g_options.list != nullptr) {
+        return file == nullptr ? run_list(root, g_options.list, g_options.load) : usage(argv[0]);
     }
-
-    if (loaded && save_path) {
-        if (!root->save) {
-            std::printf("save: %s has no save of its own (cResource::save)\n", root->name);
-        } else {
-            // The resource writes itself back; compare the output with the
-            // file by hand (cmp, fc /b) for a round trip.
-            MemoryStream out;
-            bool saved = root->save(object, out);
-            bool written = write_file(save_path, out.bytes());
-            std::printf("save: %s, %zu bytes to %s%s\n", saved ? "returned true" : "returned false",
-                        out.bytes().size(), save_path, written ? "" : " (could not write it)");
-        }
+    if (file == nullptr) {
+        return usage(argv[0]);
     }
-
-    root->destroy(object);
-    // A whole load: `load` returned true and consumed every byte, asking at
-    // the end no more than once.
-    return loaded && read == size && in.readsAtEnd() <= 1 ? 0 : 1;
+    return run_one(root, file, g_options.load, g_options.save_path);
 }

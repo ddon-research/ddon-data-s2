@@ -462,6 +462,10 @@ inline void cpJob09::setSpAlchemyCurrentLevel(const u32 lv) {
     this->mSpAlchemyCurrentLevel = lv;
 }
 
+inline void cpJob09::setSpAlchemyMinEndLv() {
+    this->mSpAlchemyEndLevel = 3;
+}
+
 inline u32 cpJob09::getMedalIndex() const {
     return this->mCurrentMedalIndex;
 }

@@ -485,7 +485,7 @@ public:
     void setCacheId(uintptr cacheId);
     uintptr getCacheId();
     void setVertexBuffer(u32 slot, nDraw::VertexBuffer* pvbuf, u32 stride, u32 offset);
-    void setIndexBuffer(nDraw::IndexBuffer* pibuf, u32 offset);
+    void setIndexBuffer(nDraw::IndexBuffer* pibuf, u32 offset = 0);
     void setTechnique(SO_HANDLE handle, s32 pass, SO_HANDLE dmytechnique);
     void setPrimitiveTopology(nDraw::PRIMITIVE_TOPOLOGY topology);
     void setAlphaTest(bool enable, nDraw::COMPARISON_FUNC cmpfunc, u8 ref, bool rop_test);

@@ -359,6 +359,10 @@ inline rSoundStreamRequest* sEventManager::getFsmBgmStqr() {
     return this->mpFsmBgmStqr;
 }
 
+inline void sEventManager::setAdjustTarget(uHuman* target) {
+    this->mpAdjustTarget = target;
+}
+
 inline uHuman* sEventManager::getAdjustTarget() {
     return this->mpAdjustTarget;
 }

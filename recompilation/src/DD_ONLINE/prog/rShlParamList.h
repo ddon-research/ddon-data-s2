@@ -166,3 +166,7 @@ inline u32 cShlGroupParam::getParamNum() const {
 inline void* rShlParamList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline u32 rShlParamList::getGroupNum() const {
+    return this->mParamList.mLength;
+}

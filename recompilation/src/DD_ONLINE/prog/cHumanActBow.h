@@ -557,6 +557,10 @@ inline const nHumanBow::cBowActParam* cPlActWpnBow::getActParam() const {
     return this->mpActParam;
 }
 
+inline rEffectProvider* cPlActWpnBow::getEpvCmn() {
+    return this->mprEpvCmn;
+}
+
 inline void* cPlActWpnBowBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

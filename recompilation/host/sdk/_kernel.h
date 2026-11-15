@@ -1,5 +1,5 @@
-// The harness's host stand-in for the PS4 SDK's `<_kernel.h>` (026 P11j3):
-// only what the units call, spelled as the SDK does (C linkage). The
+// The harness's host stand-in for the PS4 SDK's `<_kernel.h>`: only
+// what the units call, spelled as the SDK does (C linkage). The
 // definitions are the runtime's (`runtime.cpp`).
 #pragma once
 

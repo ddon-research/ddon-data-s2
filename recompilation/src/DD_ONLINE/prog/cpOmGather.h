@@ -235,6 +235,18 @@ inline ItemGetInfo::ItemGetInfo() {
     this->mNum = 0;
 }
 
+inline s32 ItemGetInfo::getID() const {
+    return this->mID;
+}
+
+inline s32 ItemGetInfo::getItemID() const {
+    return this->mItemID;
+}
+
+inline u32 ItemGetInfo::getNum() const {
+    return this->mNum;
+}
+
 inline void* cGatherItemList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

@@ -130,3 +130,12 @@ inline rSoundBossBgm::cSoundBossBgm::cSoundBossBgm() {
     this->mBgmNo = 0;
     this->mSrqrId = 0;
 }
+
+#include "../../MT/MtDataReader.h"
+
+inline bool rSoundBossBgm::cSoundBossBgm::load(MtDataReader& in) {
+    this->mEnemyId = in.readU32();
+    this->mBgmNo = in.readU32();
+    this->mSrqrId = in.readU64();
+    return true;
+}

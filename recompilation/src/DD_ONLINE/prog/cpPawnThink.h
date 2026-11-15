@@ -39,6 +39,7 @@ class cGeneralPoint;
 class cHitInfo;
 class cHitNode;
 class cPawnAIAction;
+class cPawnActInterActEnchant;
 class cPawnActInterBreak;
 class cPawnActInterCommon;
 class cPawnActInterDisableMgr;
@@ -91,6 +92,7 @@ using u8 = unsigned char;
 
 class cpPawnThink : public cpComponent
 {
+    friend class cPawnActInterActEnchant;
 public:
     enum
     {
@@ -310,7 +312,7 @@ public:
     void reqPawnTalkSituationReqLvUp();
     void reqPawnTalkSituationItemUse(u32 type);
     bool isCanTalkClimb();
-    void setCanTalkClimb(bool flg);
+    void setCanTalkClimb(bool flg = false);
 private:
     void updatePawnTalkSituationFindParty();
     void updatePawnTalkSituationLvUp();
@@ -573,12 +575,20 @@ inline uDDOModel* cpPawnThink::getThinkMgrTarget() const {
     return this->mpThinkMgrTarget;
 }
 
+inline cAITargetInfoArray& cpPawnThink::getPartyList() {
+    return this->mPartyList;
+}
+
 inline const cAIGrid* cpPawnThink::getDangerGrid() const {
     return this->mpDangerGrid;
 }
 
 inline cEvaluationName::cEvaluation* cpPawnThink::getEvaluation() {
     return &this->mcEvaluation;
+}
+
+inline void cpPawnThink::setCanTalkClimb(bool flg) {
+    this->mPawnTalkSituationEmClimb = false;
 }
 
 inline u32 cpPawnThink::getNowPrioThinkID() {

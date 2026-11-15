@@ -430,10 +430,6 @@ inline void* cNetLoginServer::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline nError::ERROR_CODE cNetLoginServer::getErrorCode(u32 comId) {
-    return this->mErrorCode[4];
-}
-
 inline void cNetLoginServer::setSvPort(u32 port) {
     this->mGuardData.mSvPort = port;
 }

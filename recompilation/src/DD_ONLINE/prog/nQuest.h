@@ -2638,10 +2638,6 @@ inline u32 nQuest::cCycleContentsInfo::getContentsCategory() const {
     return this->mCycleContentsCategory;
 }
 
-inline u32 nQuest::cCycleContentsInfo::getContentsSubCategory() const {
-    return this->mCycleContentsSubCategory;
-}
-
 inline u32 nQuest::cCycleContentsInfo::getSituation() const {
     return this->mBaseSituation;
 }

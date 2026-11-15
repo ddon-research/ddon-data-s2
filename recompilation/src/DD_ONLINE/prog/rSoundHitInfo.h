@@ -208,6 +208,10 @@ inline rSoundHitInfo::cSoundHitInfo::cSoundHitInfo() {
     this->mBone = -1;
 }
 
+inline s32 rSoundHitInfo::cSoundHitInfo::getEtc00() const {
+    return this->mEtc00;
+}
+
 inline s32 rSoundHitInfo::cSoundHitInfo::getEtc01() const {
     return this->mEtc01;
 }

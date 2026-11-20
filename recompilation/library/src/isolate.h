@@ -1,8 +1,7 @@
 // An inner load's isolation: each inner load
 // first runs in a child of its own, so whatever it reaches (a stub, a trap,
 // a crash) stays there, and only a clean one reruns in the caller's process.
-// One implementation for the harness (`runtime.cpp`) and the load/save
-// library (`host.cpp`): `isolate_posix.cpp` forks; `isolate_other.cpp`, for
+// The load/save library's host (`host.cpp`) runs it: `isolate_posix.cpp` forks; `isolate_other.cpp`, for
 // a host without `fork`, isolates nothing (`supported()` is false).
 //
 // The rerun of a clean trial replays it: the same code from the same state,
@@ -22,7 +21,7 @@ namespace isolate {
 // The caller's part of a trial: what its own process keeps beside it.
 class Host {
 public:
-    // In the parent, before the fork and after the child ended (the harness
+    // In the parent, before the fork and after the child ended (a test runner
     // pauses its file's alarm meanwhile).
     virtual void before_fork() {}
     virtual void after_child() {}

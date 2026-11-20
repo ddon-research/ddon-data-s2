@@ -35,7 +35,7 @@ How much of the binary this reconstruction holds, counted when the export was ma
   - no code in the binary: 14,181 (inline bodies checked where they are inlined, and saves derived from a load);
   - without a body: 19,762, of them 19,397 stubs and 365 not written.
 - **Classes:** of the 8,832 classes with methods in the sources, 4,447 are complete (every method has a body, 50%), 2,549 partial and 1,836 left; the binary defines 19,734 classes.
-- **Resources:** 80 of the 82 resource classes tested load every file of theirs (97%), of the 291 the sources hold; 27,382 of their 37,465 files load whole (73%). 13,717 files save back byte for byte through their class's own save, and 1,482 through a save derived from its load.
+- **Resources:** 82 of the 84 resource classes tested load every file of theirs (97%), of the 291 the sources hold; 30,070 of their 40,153 files load whole (74%). 13,717 files save back byte for byte through their class's own save, and 4,170 through a save derived from its load.
 
 ## Building
 
@@ -164,7 +164,8 @@ the load reached a function the reconstruction lacks.
 - `--data <rom>`: the game's `rom` folder. The file's game path and its
   inner files come from it.
 - `--inner in-place|placeholder|isolate`: how inner resources load
-  (default `in-place`).
+  (default `isolate`, the library's own, on Linux; `in-place` on Windows,
+  which cannot isolate).
 - `--save <out>`: saves the loaded resource through its own `save`, writes
   the bytes to `<out>`, and compares them with the file (`round trip ok`, or
   the first difference).

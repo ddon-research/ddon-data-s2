@@ -1,6 +1,6 @@
 // An inner load's isolation by `fork` (`isolate.h`): the trial's fork and
-// the rerun's replay of its verdicts. The harness compiles it inside
-// `runtime.cpp`, the library beside `host.cpp`; a Windows build takes
+// the rerun's replay of its verdicts. The library compiles it
+// beside `host.cpp`; a Windows build takes
 // `isolate_other.cpp` instead.
 #if !defined(_WIN32)
 
@@ -57,8 +57,8 @@ std::string key_text(const DdonInnerKey& key) {
 
 // `<result> <key length> <wall length>\n<key><wall>`.
 void encode(std::string& out, const Verdict& verdict) {
-    out += std::to_string(static_cast<int>(verdict.result)) + " " + std::to_string(verdict.key.size())
-           + " " + std::to_string(verdict.wall.size()) + "\n";
+    out += std::to_string(static_cast<int>(verdict.result)) + " " +
+           std::to_string(verdict.key.size()) + " " + std::to_string(verdict.wall.size()) + "\n";
     out += verdict.key;
     out += verdict.wall;
 }
@@ -73,8 +73,8 @@ std::vector<Verdict> decode(const std::string& text) {
         unsigned long long key = 0;
         unsigned long long wall = 0;
         int used = 0;
-        if (std::sscanf(text.c_str() + at, "%u %llu %llu\n%n", &result, &key, &wall, &used) != 3
-            || used <= 0 || result > static_cast<unsigned>(DdonInnerTrial::wall)) {
+        if (std::sscanf(text.c_str() + at, "%u %llu %llu\n%n", &result, &key, &wall, &used) != 3 ||
+            used <= 0 || result > static_cast<unsigned>(DdonInnerTrial::wall)) {
             return {};
         }
         at += static_cast<std::size_t>(used);
@@ -154,8 +154,8 @@ DdonInnerTrial forked(int (*attempt)(void* context), void* context, char* wall, 
     int status = 0;
     ::waitpid(pid, &status, 0);
     host.after_child();
-    if (got.size() >= 2 && got[0] == 'T' && got[1] >= '0' && got[1] <= '2'
-        && (got.size() == 2 || got[2] == '\n')) {
+    if (got.size() >= 2 && got[0] == 'T' && got[1] >= '0' && got[1] <= '2' &&
+        (got.size() == 2 || got[2] == '\n')) {
         if (got[1] == '2') {
             return DdonInnerTrial::no_file;
         }

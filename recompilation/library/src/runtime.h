@@ -94,5 +94,5 @@ void ddon_fixtures_init();
 // `place_path` gives a constructed root its file's game path, before `load`:
 // a list line is `<file>\t<game path>`; a line with no tab,
 // or no `place_path`, gives none.
-int ddon_harness_main(int argc, char** argv, const DdonRoot& root,
+int ddon_runner_main(int argc, char** argv, const DdonRoot& root,
                       void (*place_path)(void* root, const char* path) = nullptr);

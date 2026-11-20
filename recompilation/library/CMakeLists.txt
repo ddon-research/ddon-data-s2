@@ -4,7 +4,7 @@
 # headers only); src/ holds its implementation, the engine services the
 # loads need (src/engine.cpp, src/host.cpp; src/isolate_posix.cpp forks an
 # inner load, src/isolate_other.cpp is Windows', where it cannot) and the SDK stand-ins
-# (src/sdk.cpp); roots/ holds the roots it offers, generated from the harness
+# (src/sdk.cpp); roots/ holds the roots it offers, generated from the load
 # report the export was made from. Built on the Linux and Windows hosts.
 #
 # A program links it with ddon_add_trap_linked_executable(<name> OBJECTS

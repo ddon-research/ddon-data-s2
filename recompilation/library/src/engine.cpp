@@ -3,7 +3,7 @@
 // that do not interpret file bytes, and replace weak stubs only. The bundle
 // links as an archive, so a member nothing else needs is never pulled in
 // and a fixture of a name the bundle defines would replace its body without
-// a duplicate definition: the harness refuses any fixture symbol the bundle
+// a duplicate definition, and no fixture is a symbol the bundle
 // defines strongly, so a proven body is never shadowed so.
 // No system header here beyond the forced includes: the bundle declares
 // the PS4 libc's types (e.g. `pthread_mutex_t`), which a glibc header parsed
@@ -19,15 +19,14 @@
 // The class registry: `MtDTI::MtDTI` 0xd61660 and
 // `MtCRC::getCRC` 0xd7e390 are engine services whose bodies do not render,
 // transcribed from the ELF's code. The constructor is a strong stub in the bundle
-// (structors are never weak): the harness weakens it there only
+// (structors are never weak): this fixture stands in only
 // while the bundle refuses its body, so the
 // fixture goes when the body renders.
 
 namespace {
 
 // The reflected CRC-32 table, polynomial 0xEDB88320; its values are the
-// ELF's `MtCRC::mCRCtable` at 0x1c1af20 byte for byte (the harness's
-// `crc_table_is_the_elfs` test).
+// ELF's `MtCRC::mCRCtable` at 0x1c1af20 byte for byte.
 struct CrcTable {
     u32 value[256];
 };
@@ -62,7 +61,8 @@ const u32 MtCRC::mCRCtable[256] = {DDON_CRC64(0), DDON_CRC64(64), DDON_CRC64(128
 // inversion; an empty string returns `crc32`.
 u32 MtCRC::getCRC(MT_CTSTR str, u32 crc32) {
     for (; *str != 0; ++str) {
-        crc32 = mCRCtable[static_cast<unsigned char>(crc32) ^ static_cast<unsigned char>(*str)] ^ (crc32 >> 8);
+        crc32 = mCRCtable[static_cast<unsigned char>(crc32) ^ static_cast<unsigned char>(*str)] ^
+                (crc32 >> 8);
     }
     return crc32;
 }
@@ -127,7 +127,7 @@ public:
     size_t memSize(void* ptr) override { return ddon_host_size(ptr); }
 };
 
-// The engine's resource manager, as the host's: the harness loads
+// The engine's resource manager, as the host's: the library loads
 // one root's files, and an inner resource that load asks for is built and
 // loaded as the ELF does, through its own class's `load`:
 // - `create(MtStream&, const MtDTI&, MT_CTSTR, QUALITY)` (slot 13; ELF
@@ -163,10 +163,10 @@ template <auto Member, typename Tag>
 struct Grant {
     friend constexpr auto member(Tag) { return Member; }
 };
-#define DDON_GRANT(Tag, Pointer)          \
-    struct Tag {                          \
+#define DDON_GRANT(Tag, Pointer)           \
+    struct Tag {                           \
         friend constexpr auto member(Tag); \
-    };                                    \
+    };                                     \
     template struct Grant<Pointer, Tag>
 DDON_GRANT(PathOf, &cResource::mPath);
 DDON_GRANT(RefCountOf, &cResource::mRefCount);
@@ -224,9 +224,7 @@ u64 resource_id(const MtDTI& dti, MT_CTSTR path) {
 
 // `mState` and `mQuality` are bit-fields of the word after `mAttr` (DWARF:
 // 0x50 and 0x54), which no member pointer names.
-u32& state_word(cResource* resource) {
-    return *(&(resource->*member(AttrOf{})) + 1);
-}
+u32& state_word(cResource* resource) { return *(&(resource->*member(AttrOf{})) + 1); }
 
 void join_table(cResource* resource) {
     if (resource_count == kResources) {
@@ -261,7 +259,9 @@ void require_constructed(const MtDTI& dti, MT_CTSTR path, const char* via, u32 m
     __builtin_memcpy(&vptr, &dti, sizeof vptr);
     if (vptr == nullptr) {
         ddon_inner_requested(nullptr, path, via, mode, "class not constructed");
-        ddon_trap("sResource (host): the requested class's MtDTI is not constructed (its static initializer is not in the bundle)");
+        ddon_trap(
+            "sResource (host): the requested class's MtDTI is not constructed (its static "
+            "initializer is not in the bundle)");
     }
 }
 
@@ -302,8 +302,8 @@ Loaded load_from_stream(const InnerLoad& request, cResource*& answer) {
     word = ((request.quality & 7u) << 8) | (word & 0xFFFFF8FFu);
     join_table(resource);
     ddon_inner_created();
-    if (resource->*member(SizeOf{}) != 0 && (resource->*member(LoadOf{}))(in)
-        && (resource->*member(LoadEndOf{}))()) {
+    if (resource->*member(SizeOf{}) != 0 && (resource->*member(LoadOf{}))(in) &&
+        (resource->*member(LoadEndOf{}))()) {
         mark_loaded(resource);
         answer = resource;
         return Loaded::yes;
@@ -319,7 +319,7 @@ Loaded load_from_stream(const InnerLoad& request, cResource*& answer) {
 Loaded load_from_file(const InnerLoad& request, cResource*& answer) {
     answer = nullptr;
     cResource* resource = construct(*request.dti, request.path, request.id);
-    u32 quality = (request.mode & 0x8000u) ? 1024u
+    u32 quality = (request.mode & 0x8000u)   ? 1024u
                   : (request.mode & 0x4000u) ? 768u
                   : (request.mode & 0x2000u) ? 256u
                                              : (~(request.mode >> 3) & 0x200u);
@@ -331,8 +331,8 @@ Loaded load_from_file(const InnerLoad& request, cResource*& answer) {
         return Loaded::no_file;
     }
     resource->*member(SizeOf{}) = in->getLength();
-    bool loaded = resource->*member(SizeOf{}) != 0 && (resource->*member(LoadOf{}))(*in)
-                  && (resource->*member(LoadEndOf{}))();
+    bool loaded = resource->*member(SizeOf{}) != 0 && (resource->*member(LoadOf{}))(*in) &&
+                  (resource->*member(LoadEndOf{}))();
     ddon_inner_file_close(in);
     if (!loaded) {
         delete static_cast<MtObject*>(resource);
@@ -389,13 +389,13 @@ cResource* answer_request(const InnerLoad& request, const char* via) {
     const char* name = request.dti->getName();
     char wall[512];
     const DdonInnerKey key{name, request.path, via, request.mode};
-    DdonInnerTrial tried = ddon_inner_trial(key, &trial, const_cast<InnerLoad*>(&request), wall,
-                                            sizeof wall);
+    DdonInnerTrial tried =
+        ddon_inner_trial(key, &trial, const_cast<InnerLoad*>(&request), wall, sizeof wall);
     if (tried == DdonInnerTrial::loaded || tried == DdonInnerTrial::refused) {
         Rerun state{&request, nullptr, Loaded::no_file};
         ddon_inner_rerun(&rerun, &state);
         ddon_inner_requested(name, request.path, via, request.mode,
-                             state.loaded == Loaded::yes ? "loaded"
+                             state.loaded == Loaded::yes       ? "loaded"
                              : state.loaded == Loaded::refused ? "load returned false"
                                                                : "no file");
         return state.answer;
@@ -432,7 +432,8 @@ cResource* host_create(sResource*, const MtDTI& dti, MT_CTSTR path, u32 mode) {
     if ((mode & 0x203u) != 1u) {
         // precreate (0x200) and the asynchronous load (2): the host has
         // neither.
-        ddon_inner_requested(dti.getName(), path, "file", mode, "placeholder: a mode the host does not load");
+        ddon_inner_requested(dti.getName(), path, "file", mode,
+                             "placeholder: a mode the host does not load");
         return placeholder(request);
     }
     cResource* answer = answer_request(request, "file");
@@ -475,7 +476,8 @@ void host_release(sResource*, cResource* resource) {
         }
         auto& count = resource->*member(RefCountOf{});
         if (count <= 0) {
-            ddon_trap("sResource (host): release of a game-built resource whose count is already zero");
+            ddon_trap(
+                "sResource (host): release of a game-built resource whose count is already zero");
         }
         if (--count == 0) {
             delete static_cast<MtObject*>(resource);
@@ -507,7 +509,9 @@ cResource* host_create_by_id(sResource*, u64 id) {
 }
 
 [[noreturn]] void host_resources_other(sResource*) {
-    ddon_trap("sResource (host): a virtual other than create(MtStream&, const MtDTI&, MT_CTSTR, QUALITY), create(const MtDTI&, MT_CTSTR, u32), create(u64), addRef or release");
+    ddon_trap(
+        "sResource (host): a virtual other than create(MtStream&, const MtDTI&, MT_CTSTR, "
+        "QUALITY), create(const MtDTI&, MT_CTSTR, u32), create(u64), addRef or release");
 }
 
 // More slots than `sResource`'s vtable has; each slot the host fills is
@@ -548,21 +552,26 @@ void host_resources_init() {
     using CreateById = cResource* (sResource::*)(u64);
     using CreateFromStream =
         cResource* (sResource::*)(MtStream&, const MtDTI&, MT_CTSTR, cResource::QUALITY);
-    unsigned long create = slot_of(Create{&sResource::create},
-        "sResource (host): create(const MtDTI&, MT_CTSTR, u32) is no virtual of sResource");
+    unsigned long create =
+        slot_of(Create{&sResource::create},
+                "sResource (host): create(const MtDTI&, MT_CTSTR, u32) is no virtual of sResource");
     unsigned long create_from_stream = slot_of(CreateFromStream{&sResource::create},
-        "sResource (host): create(MtStream&, const MtDTI&, MT_CTSTR, QUALITY) is no virtual of sResource");
-    unsigned long create_by_id = slot_of(CreateById{&sResource::create},
-        "sResource (host): create(u64) is no virtual of sResource");
-    unsigned long add_ref = slot_of(Reference{member(AddRefOf{})},
-        "sResource (host): addRef(cResource*) is no virtual of sResource");
-    unsigned long release = slot_of(Reference{member(ReleaseOf{})},
-        "sResource (host): release(cResource*) is no virtual of sResource");
+                                               "sResource (host): create(MtStream&, const MtDTI&, "
+                                               "MT_CTSTR, QUALITY) is no virtual of sResource");
+    unsigned long create_by_id = slot_of(
+        CreateById{&sResource::create}, "sResource (host): create(u64) is no virtual of sResource");
+    unsigned long add_ref =
+        slot_of(Reference{member(AddRefOf{})},
+                "sResource (host): addRef(cResource*) is no virtual of sResource");
+    unsigned long release =
+        slot_of(Reference{member(ReleaseOf{})},
+                "sResource (host): release(cResource*) is no virtual of sResource");
     for (unsigned long i = 0; i < kHostSlots; ++i) {
         host_resources_vtable[2 + i] = reinterpret_cast<void*>(&host_resources_other);
     }
     host_resources_vtable[2 + create] = reinterpret_cast<void*>(&host_create);
-    host_resources_vtable[2 + create_from_stream] = reinterpret_cast<void*>(&host_create_from_stream);
+    host_resources_vtable[2 + create_from_stream] =
+        reinterpret_cast<void*>(&host_create_from_stream);
     host_resources_vtable[2 + create_by_id] = reinterpret_cast<void*>(&host_create_by_id);
     host_resources_vtable[2 + add_ref] = reinterpret_cast<void*>(&host_add_ref);
     host_resources_vtable[2 + release] = reinterpret_cast<void*>(&host_release);
@@ -641,8 +650,8 @@ void host_drive_type(MT_CTSTR path, MtFile::DRIVETYPE& type, u32& offset, MT_STR
     };
     Prefix answer{"", 0, MtFile::DRIVETYPE_HOME, "/app0", false};
     for (const Prefix& prefix : prefixes) {
-        if (__builtin_strncmp(path, prefix.text, prefix.length) == 0
-            && (!prefix.separator || host_is_separator(path[prefix.length]))) {
+        if (__builtin_strncmp(path, prefix.text, prefix.length) == 0 &&
+            (!prefix.separator || host_is_separator(path[prefix.length]))) {
             answer = prefix;
             break;
         }
@@ -659,8 +668,8 @@ void host_drive_type(MT_CTSTR path, MtFile::DRIVETYPE& type, u32& offset, MT_STR
 
 }  // namespace
 
-MtFile::PATH_DRIVETYPE_FUNC ddon_path_drive_type
-    __asm__("_ZN6MtFile19mpPathDriveTypeFuncE") = &host_drive_type;
+MtFile::PATH_DRIVETYPE_FUNC ddon_path_drive_type __asm__("_ZN6MtFile19mpPathDriveTypeFuncE") =
+    &host_drive_type;
 #endif
 
 // `rArchive::mpGetCipherKey`: the getter the PC

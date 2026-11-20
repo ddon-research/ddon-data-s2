@@ -1,7 +1,7 @@
 // The library's default host: every function the
 // seam `runtime.h` declares, for a program that loads resources through the
-// API (`resource.h`) rather than the harness's runner. The harness supplies
-// the same seam from `runtime.cpp`, with its forks, sanitizers and records.
+// API (`resource.h`) rather than a test runner's, which supplies
+// the same seam with its own forks, sanitizers and records.
 // None of these reads a byte of a file the root loads: they hand the engine
 // memory, record what the running entry reached, and open an inner
 // resource's file.
@@ -100,8 +100,8 @@ extern "C" [[noreturn]] void ddon_trap(const char* name) {
 
 // The engine's heap, as the host's: each block keeps the pointer malloc
 // returned and its size just before it, so no platform's aligned allocator or
-// usable-size query is needed. New memory is filled with 0xbe, as the
-// harness does, so a member no constructor sets reads as 0xbebebebe rather
+// usable-size query is needed. New memory is filled with 0xbe, so a
+// member no constructor sets reads as 0xbebebebe rather
 // than as a plausible zero.
 namespace {
 struct Block {
@@ -205,7 +205,7 @@ public:
 // fixtures' rerun is the load, in this process, and what it reaches is the
 // entry's. `placeholder` loads nothing: the placeholder, its reason
 // the option. `isolate` runs it first in a child of its own
-// (`isolate_posix.cpp`), as the harness does: a wall there gets the
+// (`isolate_posix.cpp`): a wall there gets the
 // placeholder, and a clean one reruns here; `resource.cpp` answers
 // `unsupported_option` first where the build cannot isolate.
 DdonInnerTrial ddon_inner_trial(const DdonInnerKey& key, int (*attempt)(void*), void* context,
@@ -243,8 +243,8 @@ std::vector<std::unique_ptr<InnerFile>> g_inner_files;
 // 0x126dfb0: `<root>\<path>.<ext>`), backslashes as slashes; null when the
 // entry has no archive directory or the file is not there.
 MtStream* ddon_inner_file(const char* path, const char* ext) {
-    if (g_entry == nullptr || g_entry->archive_dir.empty() || path == nullptr || ext == nullptr
-        || *ext == 0) {
+    if (g_entry == nullptr || g_entry->archive_dir.empty() || path == nullptr || ext == nullptr ||
+        *ext == 0) {
         return nullptr;
     }
     std::string wanted = g_entry->archive_dir + path + "." + ext;
@@ -260,10 +260,9 @@ MtStream* ddon_inner_file(const char* path, const char* ext) {
 }
 
 void ddon_inner_file_close(MtStream* stream) {
-    auto at = std::find_if(g_inner_files.begin(), g_inner_files.end(),
-                           [&](const std::unique_ptr<InnerFile>& file) {
-                               return &file->stream == stream;
-                           });
+    auto at = std::find_if(
+        g_inner_files.begin(), g_inner_files.end(),
+        [&](const std::unique_ptr<InnerFile>& file) { return &file->stream == stream; });
     if (at != g_inner_files.end()) {
         g_inner_files.erase(at);
     }

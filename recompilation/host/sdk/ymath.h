@@ -1,4 +1,4 @@
-// The harness's host stand-in for the PS4 SDK's `<ymath.h>`, the
+// The host stand-in for the PS4 SDK's `<ymath.h>`, the
 // Dinkumware library's math primitives: only what the units call, spelled as
 // the SDK does (C linkage). The definitions are the runtime's
 // (`runtime.cpp`).

@@ -27,7 +27,8 @@
 #include <utility>
 #include <vector>
 
-template <typename Type> class MtStlAllocator;
+template <typename Type>
+class MtStlAllocator;
 
 namespace std {
 
@@ -35,7 +36,8 @@ namespace std {
 struct _Container_proxy;
 // The tree's node (`_Tree_val<…>::_Nodeptr` is `_Tree_node<value_type,
 // _Voidptr>*`, DIE 0x17641ce); only pointed to.
-template <typename _Value_type, typename _Voidptr> struct _Tree_node;
+template <typename _Value_type, typename _Voidptr>
+struct _Tree_node;
 
 // DIE 0x751a (`_Vector_alloc<false, _Vec_base_types<unsigned int,
 // MtStlAllocator<unsigned int>>>`, 0x20, no allocator member) : 0x7582

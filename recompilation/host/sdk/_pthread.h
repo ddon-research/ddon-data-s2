@@ -1,4 +1,4 @@
-// The harness's host stand-in for the PS4 SDK's `<_pthread.h>`.
+// The host stand-in for the PS4 SDK's `<_pthread.h>`.
 // The bundle's import probe includes the SDK header a unit's imports come
 // from; the host has no such header, so the units that lock a mutex did not
 // compile there. This declares only what the units call, spelled as the SDK

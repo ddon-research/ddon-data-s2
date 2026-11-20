@@ -1,6 +1,6 @@
 // The load/save library's interface: one root's
 // file loaded through the game's own `load`, saved through its own `save`
-// (or the save derived from its load), and destroyed, outside the harness's
+// (or the save derived from its load), and destroyed, outside any
 // test runner. C++17, no exceptions, no RTTI: a result says what happened in
 // its `Status`.
 //
@@ -36,8 +36,8 @@ enum class Status {
     no_save,
     save_returned_false,
     // The save read its output stream or sought outside what it wrote: its
-    // bytes are no round trip (the harness's `read from the output stream`,
-    // `seek outside the output stream`).
+    // bytes are no round trip (a read from the output
+    // stream, a seek outside it).
     save_used_stream,
     // InnerLoads::isolate where this build has no isolation.
     unsupported_option,
@@ -49,7 +49,7 @@ const char* status_name(Status status);
 
 enum class InnerLoads {
     // Each inner load first in a child of its own; a wall gets the
-    // placeholder (the harness's rule). Where the host cannot fork (Windows):
+    // placeholder. Where the host cannot fork (Windows):
     // `unsupported_option`.
     isolate,
     // The class's own load, in this process: a stub inside it fails the root

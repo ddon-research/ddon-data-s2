@@ -2,8 +2,8 @@
 // memory stream through the game's own `load`, its game path in
 // `cResource::mPath` first, and the result's status by the library's `ok`
 // rule: load returned true, every byte consumed, no stub reached, and no read
-// that returned bytes after a read at the end. The harness's attribution of
-// `MtDataReader`'s refill is not reproduced: `reads_at_end` is a note.
+// that returned bytes after a read at the end. Which of those reads
+// are `MtDataReader`'s refill is not told apart: `reads_at_end` is a note.
 
 #include <cstring>
 #include <filesystem>
@@ -21,8 +21,8 @@ namespace ddon {
 
 namespace {
 
-// Reads asked at the end before the load ends as a trap (the harness's cap:
-// a skip by a wrapped count looped 4.29e9 times).
+// Reads asked at the end before the load ends as a trap (a cap: a skip by
+// a wrapped count looped 4.29e9 times).
 constexpr unsigned kEndReads = 65536;
 
 }  // namespace
@@ -162,8 +162,8 @@ struct Placement {
 // extension and with backslashes; that ancestor is the archive directory.
 Placement derived_placement(const std::string& file, const std::string& data) {
     Placement placement;
-    if (data.empty() || file.size() <= data.size() + 1 || file.compare(0, data.size(), data) != 0
-        || file[data.size()] != '/') {
+    if (data.empty() || file.size() <= data.size() + 1 || file.compare(0, data.size(), data) != 0 ||
+        file[data.size()] != '/') {
         return placement;
     }
     std::string root = data;
@@ -186,15 +186,15 @@ Placement derived_placement(const std::string& file, const std::string& data) {
 }
 
 // A given game path: the archive directory is the file's path less its
-// extension less that game path (the harness's `ddon_inner_file`), else
+// extension less that game path, else
 // `data`.
 Placement given_placement(const std::string& file, const char* game, const std::string& data) {
     Placement placement;
     placement.game_path = game;
     std::string stem = without_extension(file);
     std::string wanted = slashed(game);
-    if (!file.empty() && !wanted.empty() && stem.size() > wanted.size()
-        && stem.compare(stem.size() - wanted.size(), wanted.size(), wanted) == 0) {
+    if (!file.empty() && !wanted.empty() && stem.size() > wanted.size() &&
+        stem.compare(stem.size() - wanted.size(), wanted.size(), wanted) == 0) {
         placement.archive_dir = stem.substr(0, stem.size() - wanted.size());
     } else if (!data.empty()) {
         placement.archive_dir = data + "/";
@@ -276,17 +276,28 @@ cResource* Resource::get() const { return static_cast<cResource*>(mObject); }
 
 const char* status_name(Status status) {
     switch (status) {
-    case Status::ok: return "ok";
-    case Status::load_returned_false: return "load returned false";
-    case Status::not_whole: return "not whole";
-    case Status::stub_reached: return "stub reached";
-    case Status::unknown_root: return "unknown root";
-    case Status::format_differs: return "format differs";
-    case Status::no_save: return "no save";
-    case Status::save_returned_false: return "save returned false";
-    case Status::save_used_stream: return "save used its stream";
-    case Status::unsupported_option: return "unsupported option";
-    case Status::io_error: return "io error";
+        case Status::ok:
+            return "ok";
+        case Status::load_returned_false:
+            return "load returned false";
+        case Status::not_whole:
+            return "not whole";
+        case Status::stub_reached:
+            return "stub reached";
+        case Status::unknown_root:
+            return "unknown root";
+        case Status::format_differs:
+            return "format differs";
+        case Status::no_save:
+            return "no save";
+        case Status::save_returned_false:
+            return "save returned false";
+        case Status::save_used_stream:
+            return "save used its stream";
+        case Status::unsupported_option:
+            return "unsupported option";
+        case Status::io_error:
+            return "io error";
     }
     return "unknown status";
 }

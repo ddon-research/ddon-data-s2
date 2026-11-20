@@ -1,7 +1,7 @@
 {
   "bundle": {
-    "golden": "golden/031-t477",
-    "name": "output_2026-11-15_031_merge477",
+    "golden": "golden/035-t508",
+    "name": "output_2026-11-16_035_merge508",
     "rendered": 42043
   },
   "census": {
@@ -15453,12 +15453,12 @@
       "without_body": 19762
     },
     "resources": {
-      "derived_round_trips": 1482,
-      "files": 37465,
-      "files_ok": 27382,
+      "derived_round_trips": 4170,
+      "files": 40153,
+      "files_ok": 30070,
       "roots": 291,
-      "roots_load": 80,
-      "roots_tested": 82,
+      "roots_load": 82,
+      "roots_tested": 84,
       "round_trips": 13717
     }
   },
@@ -15471,8 +15471,8 @@
     "methods_with_code": 47624,
     "proven": 21229,
     "recorded": 399,
+    "recorded_by_load": 82,
     "recorded_generic": 45,
-    "recorded_harness": 82,
     "recorded_inline": 1,
     "rendered": 42043,
     "stubs": 19397,

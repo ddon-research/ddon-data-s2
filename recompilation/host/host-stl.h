@@ -44,14 +44,15 @@ template <template <typename, typename...> class _Template, typename _Tp, typena
           typename _Up>
 struct __allocator_traits_base::__rebind<
     _Template<_Tp, _Args...>, _Up,
-    __void_t<typename _Template<_Tp, _Args...>::template rebind<_Up>::other,
-             typename enable_if<__ddon_inherited_rebind<_Template<_Tp, _Args...>, _Up>::value>::type>>
+    __void_t<
+        typename _Template<_Tp, _Args...>::template rebind<_Up>::other,
+        typename enable_if<__ddon_inherited_rebind<_Template<_Tp, _Args...>, _Up>::value>::type>>
     : __replace_first_arg<_Template<_Tp, _Args...>, _Up> {
-    static_assert(is_same<typename __replace_first_arg<
-                              _Template<_Tp, _Args...>,
-                              typename _Template<_Tp, _Args...>::value_type>::type,
-                          _Template<_Tp, _Args...>>::value,
-                  "allocator_traits<A>::rebind_alloc<A::value_type> must be A");
+    static_assert(
+        is_same<typename __replace_first_arg<_Template<_Tp, _Args...>,
+                                             typename _Template<_Tp, _Args...>::value_type>::type,
+                _Template<_Tp, _Args...>>::value,
+        "allocator_traits<A>::rebind_alloc<A::value_type> must be A");
 };
 
 }  // namespace std
@@ -82,7 +83,8 @@ struct __allocator_traits_base::__rebind<
 #include <utility>
 #include <vector>
 
-template <typename Type> class MtStlAllocator;
+template <typename Type>
+class MtStlAllocator;
 
 namespace std {
 
@@ -90,7 +92,8 @@ namespace std {
 struct _Container_proxy;
 // The tree's node (`_Tree_val<…>::_Nodeptr` is `_Tree_node<value_type,
 // _Voidptr>*`, DIE 0x17641ce); only pointed to.
-template <typename _Value_type, typename _Voidptr> struct _Tree_node;
+template <typename _Value_type, typename _Voidptr>
+struct _Tree_node;
 
 // DIE 0x751a (`_Vector_alloc<false, _Vec_base_types<unsigned int,
 // MtStlAllocator<unsigned int>>>`, 0x20, no allocator member) : 0x7582

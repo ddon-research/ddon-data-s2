@@ -66,12 +66,14 @@ bool read_file(const char* path, std::vector<unsigned char>& bytes) {
 
 bool write_file(const char* path, const std::vector<unsigned char>& bytes) {
     std::ofstream out(path, std::ios::binary);
-    out.write(reinterpret_cast<const char*>(bytes.data()), static_cast<std::streamsize>(bytes.size()));
+    out.write(reinterpret_cast<const char*>(bytes.data()),
+              static_cast<std::streamsize>(bytes.size()));
     return static_cast<bool>(out);
 }
 
 // The save's bytes against the file's.
-std::string compare(const std::vector<unsigned char>& file, const std::vector<unsigned char>& saved) {
+std::string compare(const std::vector<unsigned char>& file,
+                    const std::vector<unsigned char>& saved) {
     std::size_t n = file.size() < saved.size() ? file.size() : saved.size();
     for (std::size_t at = 0; at < n; ++at) {
         if (file[at] != saved[at]) {
@@ -104,8 +106,8 @@ int run_one(const char* root, const char* path, const ddon::LoadOptions& load,
         std::printf("  stub reached: %s\n", stub.c_str());
     }
     for (const ddon::InnerRequest& inner : result.inner) {
-        std::printf("  inner %s %s (%s, mode %u): %s\n", inner.class_name.c_str(), inner.path.c_str(),
-                    inner.via.c_str(), inner.mode, inner.outcome.c_str());
+        std::printf("  inner %s %s (%s, mode %u): %s\n", inner.class_name.c_str(),
+                    inner.path.c_str(), inner.via.c_str(), inner.mode, inner.outcome.c_str());
     }
     if (result.status != ddon::Status::ok) {
         return 1;
@@ -180,9 +182,13 @@ int main(int argc, char** argv) {
     ddon::set_trap_handler(on_trap);
     const char* root = argv[1];
     const char* file = nullptr;
-    // This program's default, the same on every host: the library's
-    // `isolate` needs fork, which a Windows host lacks.
+    // This program's default: the library's own, `isolate`, where the host
+    // can fork; `in_place` on Windows, which cannot.
+#if defined(_WIN32)
     g_options.load.inner = ddon::InnerLoads::in_place;
+#else
+    g_options.load.inner = ddon::InnerLoads::isolate;
+#endif
     for (int i = 2; i < argc; ++i) {
         const char* arg = argv[i];
         bool has_value = i + 1 < argc;

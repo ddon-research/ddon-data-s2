@@ -11,7 +11,7 @@
 #include "resource.h"
 #include "runtime.h"
 
-// One root the library offers: the harness's hooks (`driver::hooks`) and the
+// One root the library offers: its hooks (`driver::hooks`) and the
 // setter of its file's game path, or null.
 struct DdonLibraryRoot {
     const DdonRoot* root;

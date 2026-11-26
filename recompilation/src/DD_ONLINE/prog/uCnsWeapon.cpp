@@ -6,7 +6,6 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
-#include "../../XFramework/cUnit.h"
 #include "../../XFramework/uConstraint.h"
 #include "../../XFramework/uCoord.h"
 #include "../../XFramework/uModel.h"
@@ -31,13 +30,11 @@ inline void uCnsWeapon::operator delete(void* p_addr) {
 }
 
 uCnsWeapon::uCnsWeapon() {
-    DDON_STUB("uCnsWeapon::uCnsWeapon")
-    /* stub */
+    mJoint = 0;
+    mpWeapon = nullptr;
 }
 
 uCnsWeapon::~uCnsWeapon() {
-    DDON_STUB("uCnsWeapon::~uCnsWeapon")
-    /* stub */
 }
 
 __attribute__((weak)) void uCnsWeapon::setResource(cResource* pRes) {
@@ -96,8 +93,7 @@ inline uCnsWeapon::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 uCnsWeapon::MyDTI uCnsWeapon::DTI("uCnsWeapon", &::uConstraint::DTI, 160ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uCnsWeapon::MyDTI::newInstance() const {
-    DDON_STUB("uCnsWeapon::MyDTI::newInstance")
-    return nullptr;
+MtObject* uCnsWeapon::MyDTI::newInstance() const {
+    return new (16u) uCnsWeapon;
 }
 

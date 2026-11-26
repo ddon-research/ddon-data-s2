@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "cEffectCycleCtrl.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -166,10 +167,10 @@ __attribute__((weak)) void cEffectCycleCtrl::update() {
 }
 
 void cEffectCycleCtrl::kill() {
-    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24)) > 0) {
-        unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24);
+    if (static_cast<int>(mEffectPartArray.mLength) > 0) {
+        u32 v0_0 = mEffectPartArray.mLength;
         s32 i = 0;
-        unsigned int v1_0;
+        u32 v1_0;
         for (;;) {
             MtObject* t0 = mEffectPartArray.getBuffer()[i];
             if (t0 == nullptr) {
@@ -180,7 +181,7 @@ void cEffectCycleCtrl::kill() {
                 } else {
                     static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(reinterpret_cast<cEfcHandle*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 48)), 1u);
                     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 48) = 0;
-                    v1_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24);
+                    v1_0 = mEffectPartArray.mLength;
                 }
             }
             if ((i + 1) < static_cast<int>(v1_0)) {
@@ -233,7 +234,7 @@ bool cEffectCycleCtrl::isOrderExist(s32 Order) const {
 }
 
 void cEffectCycleCtrl::setEffectFlag(bool flag) {
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24);
+    u32 v0_0 = mEffectPartArray.mLength;
     if (v0_0 != 0) {
         MtObject* * v0_1 = mEffectPartArray.getBuffer();
         for (unsigned int i0_2 = 0;;) {
@@ -250,7 +251,7 @@ void cEffectCycleCtrl::setEffectFlag(bool flag) {
 }
 
 void cEffectCycleCtrl::setEndEffectFlag(bool flag) {
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24);
+    u32 v0_0 = mEffectPartArray.mLength;
     if (v0_0 != 0) {
         MtObject* * v0_1 = mEffectPartArray.getBuffer();
         for (unsigned int i0_2 = 0;;) {
@@ -267,7 +268,7 @@ void cEffectCycleCtrl::setEndEffectFlag(bool flag) {
 }
 
 void cEffectCycleCtrl::setOutLineFlag(bool flag) {
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24);
+    u32 v0_0 = mEffectPartArray.mLength;
     if (v0_0 != 0) {
         MtObject* * v0_1 = mEffectPartArray.getBuffer();
         for (unsigned int i0_2 = 0;;) {
@@ -288,9 +289,166 @@ __attribute__((weak)) void cEffectCycleCtrl::updateEffectCycle() {
     /* stub */
 }
 
-__attribute__((weak)) void cEffectCycleCtrl::registCyclePart(cCyclePartInfo* pInfo) {
-    DDON_STUB("cEffectCycleCtrl::registCyclePart")
-    /* stub */
+void cEffectCycleCtrl::registCyclePart(cCyclePartInfo* pInfo) {
+    u32 v0_2 = mEffectPartArray.mLength;
+    MtObject* * v0_1;
+    s32 i;
+    u32 v5_0;
+    u32 v5_1;
+    if (static_cast<int>(v0_2) > 0) {
+        v0_1 = mEffectPartArray.getBuffer();
+        i = 0;
+    } else {
+        u32 t0 = mEffectPartArray.mBufsiz;
+        if (v0_2 < t0) {
+            mEffectPartArray.mLength = v0_2 + 1u;
+            mEffectPartArray.mpArray[v0_2] = static_cast<MtObject*>(pInfo);
+            v5_0 = v0_2 + 1u;
+            v5_1 = v0_2 + 0u;
+        } else {
+            void* t1 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t0 + 32u) * 8, 16u);
+            memset(t1, 0, static_cast<size_t>(t0 + 32u) * 8);
+            memcpy(t1, static_cast<const void*>(mEffectPartArray.mpArray), static_cast<size_t>(mEffectPartArray.mLength) * 8);
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mEffectPartArray.mpArray));
+            mEffectPartArray.mpArray = static_cast<MtObject* *>(t1);
+            mEffectPartArray.mBufsiz = t0 + 32u;
+            u32 t2 = mEffectPartArray.mLength;
+            mEffectPartArray.mLength = t2 + 1u;
+            mEffectPartArray.mpArray[t2] = static_cast<MtObject*>(pInfo);
+            v5_0 = t2 + 1u;
+            v5_1 = t2 + 0u;
+        }
+        if (mCurrentPartIndex > -1) {
+            if (mCurrentPartIndex < static_cast<int>(v5_0)) {
+                if (mCurrentPartIndex >= static_cast<int>(v5_1)) {
+                    mCurrentPartIndex = static_cast<s32>(((mCurrentPartIndex + 1) < static_cast<int>(v5_0)) ? static_cast<unsigned int>(mCurrentPartIndex + 1) : 0u);
+                }
+            } else {
+                mCurrentPartIndex = static_cast<s32>(v5_1);
+            }
+        } else {
+            mCurrentPartIndex = static_cast<s32>(v5_1);
+        }
+        return;
+    }
+    for (;;) {
+        if (v0_1[i] != nullptr) {
+            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i]) + 84)) < pInfo->mCycleOrder) {
+                break;
+            }
+        }
+        if ((i + 1) < static_cast<int>(v0_2)) {
+            i = i + 1;
+        } else {
+            u32 t0 = mEffectPartArray.mBufsiz;
+            if (v0_2 < t0) {
+                mEffectPartArray.mLength = v0_2 + 1u;
+                mEffectPartArray.mpArray[v0_2] = static_cast<MtObject*>(pInfo);
+                v5_0 = v0_2 + 1u;
+                v5_1 = v0_2 + 0u;
+            } else {
+                void* t1 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t0 + 32u) * 8, 16u);
+                memset(t1, 0, static_cast<size_t>(t0 + 32u) * 8);
+                memcpy(t1, static_cast<const void*>(mEffectPartArray.mpArray), static_cast<size_t>(mEffectPartArray.mLength) * 8);
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mEffectPartArray.mpArray));
+                mEffectPartArray.mpArray = static_cast<MtObject* *>(t1);
+                mEffectPartArray.mBufsiz = t0 + 32u;
+                u32 t2 = mEffectPartArray.mLength;
+                mEffectPartArray.mLength = t2 + 1u;
+                mEffectPartArray.mpArray[t2] = static_cast<MtObject*>(pInfo);
+                v5_0 = t2 + 1u;
+                v5_1 = t2 + 0u;
+            }
+            if (mCurrentPartIndex > -1) {
+                if (mCurrentPartIndex < static_cast<int>(v5_0)) {
+                    if (mCurrentPartIndex >= static_cast<int>(v5_1)) {
+                        mCurrentPartIndex = static_cast<s32>(((mCurrentPartIndex + 1) < static_cast<int>(v5_0)) ? static_cast<unsigned int>(mCurrentPartIndex + 1) : 0u);
+                    }
+                } else {
+                    mCurrentPartIndex = static_cast<s32>(v5_1);
+                }
+            } else {
+                mCurrentPartIndex = static_cast<s32>(v5_1);
+            }
+            return;
+        }
+    }
+    if ((static_cast<unsigned int>(i) < v0_2) && (v0_1[i & -1] == nullptr)) {
+        v0_1[i & -1] = static_cast<MtObject*>(pInfo);
+        v5_0 = v0_2;
+        v5_1 = 1;
+        if (mCurrentPartIndex > -1) {
+            if (mCurrentPartIndex < static_cast<int>(v5_0)) {
+                if (mCurrentPartIndex >= static_cast<int>(v5_1)) {
+                    mCurrentPartIndex = static_cast<s32>(((mCurrentPartIndex + 1) < static_cast<int>(v5_0)) ? static_cast<unsigned int>(mCurrentPartIndex + 1) : 0u);
+                }
+            } else {
+                mCurrentPartIndex = static_cast<s32>(v5_1);
+            }
+        } else {
+            mCurrentPartIndex = static_cast<s32>(v5_1);
+        }
+        return;
+    }
+    u32 t3 = mEffectPartArray.mBufsiz;
+    u32 v2_0;
+    MtObject* * v2_1;
+    u32 v2_6;
+    u32 v3_0;
+    if (v0_2 < t3) {
+        mEffectPartArray.mLength = v0_2 + 1u;
+        v0_1[v0_2] = nullptr;
+        v2_1 = mEffectPartArray.getBuffer();
+        if (v0_2 == static_cast<unsigned int>(i)) {
+            v3_0 = v0_2 + 1u;
+            goto region_a0ce8;
+        } else {
+            v2_0 = v0_2 + 1u;
+            v2_6 = v0_2;
+        }
+    } else {
+        void* t4 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t3 + 32u) * 8, 16u);
+        memset(t4, 0, static_cast<size_t>(t3 + 32u) * 8);
+        memcpy(t4, static_cast<const void*>(mEffectPartArray.mpArray), static_cast<size_t>(mEffectPartArray.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mEffectPartArray.mpArray));
+        mEffectPartArray.mpArray = static_cast<MtObject* *>(t4);
+        mEffectPartArray.mBufsiz = t3 + 32u;
+        u32 t5 = mEffectPartArray.mLength;
+        mEffectPartArray.mLength = t5 + 1u;
+        mEffectPartArray.mpArray[t5] = nullptr;
+        v2_1 = mEffectPartArray.getBuffer();
+        if (v0_2 == static_cast<unsigned int>(i)) {
+            v3_0 = t5 + 1u;
+            goto region_a0ce8;
+        } else {
+            v2_0 = t5 + 1u;
+            v2_6 = v0_2;
+        }
+    }
+    for (;;) {
+        v2_1[v2_6] = v2_1[v2_6 - 1u];
+        if (i != static_cast<int>(v2_6 - 1u)) {
+            v2_6 += 0xFFFFFFFFu;
+        } else {
+            v3_0 = v2_0;
+            break;
+        }
+    }
+    region_a0ce8:;
+    v2_1[i & -1] = static_cast<MtObject*>(pInfo);
+    v5_0 = v3_0;
+    v5_1 = 1;
+    if (mCurrentPartIndex > -1) {
+        if (mCurrentPartIndex < static_cast<int>(v5_0)) {
+            if (mCurrentPartIndex >= static_cast<int>(v5_1)) {
+                mCurrentPartIndex = static_cast<s32>(((mCurrentPartIndex + 1) < static_cast<int>(v5_0)) ? static_cast<unsigned int>(mCurrentPartIndex + 1) : 0u);
+            }
+        } else {
+            mCurrentPartIndex = static_cast<s32>(v5_1);
+        }
+    } else {
+        mCurrentPartIndex = static_cast<s32>(v5_1);
+    }
 }
 
 __attribute__((weak)) bool cEffectCycleCtrl::erasetCyclePartFromIndex(s32 index) {

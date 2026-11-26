@@ -5,8 +5,9 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
-#include "cUnit.h"
 #include "sPad.h"
 #include "uCamera.h"
 #ifndef DDON_STUB
@@ -42,8 +43,6 @@ uFreeCamera::uFreeCamera() {
 }
 
 uFreeCamera::~uFreeCamera() {
-    DDON_STUB("uFreeCamera::~uFreeCamera")
-    /* stub */
 }
 
 __attribute__((weak)) void uFreeCamera::move() {
@@ -60,9 +59,15 @@ MtUI* uFreeCamera::createUI(MtProperty& prop) {
     return this->uCamera::createUI(prop);
 }
 
-__attribute__((weak)) void uFreeCamera::createProperty(MtPropertyList& s) {
-    DDON_STUB("uFreeCamera::createProperty")
-    /* stub */
+void uFreeCamera::createProperty(MtPropertyList& s) {
+    this->uCamera::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpParent", reinterpret_cast<MtObject* *>(&mpParent), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParentNo", &mParentNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTarget", reinterpret_cast<MtObject* *>(&mpTarget), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetNo", &mTargetNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mControlPad", &mControlPad, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mControlSpeed", &mControlSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPadControl", &mPadControl, 0u, 0u);
 }
 
 __attribute__((weak)) MtMatrix uFreeCamera::getViewMat() {
@@ -70,9 +75,10 @@ __attribute__((weak)) MtMatrix uFreeCamera::getViewMat() {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtMatrix uFreeCamera::getProjMat() {
-    DDON_STUB("uFreeCamera::getProjMat")
-    __builtin_unreachable();
+MtMatrix uFreeCamera::getProjMat() {
+    MtMatrix pj;
+    pj.setPerspectiveFovRH(mNearPlane, mFarPlane, mFov * 0.017453294f, mAspect);
+    return pj;
 }
 
 __attribute__((weak)) MtVector3 uFreeCamera::getWorldTargetPos() {
@@ -84,8 +90,7 @@ inline uFreeCamera::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 uFreeCamera::MyDTI uFreeCamera::DTI("uFreeCamera", &::uCamera::DTI, 240ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uFreeCamera::MyDTI::newInstance() const {
-    DDON_STUB("uFreeCamera::MyDTI::newInstance")
-    return nullptr;
+MtObject* uFreeCamera::MyDTI::newInstance() const {
+    return new (16u) uFreeCamera;
 }
 

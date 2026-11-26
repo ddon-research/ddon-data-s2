@@ -7,6 +7,11 @@ void ddon_sample_rGUIMessage_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rGUIMessage_entry;
 const DdonLibraryRoot ddon_sample_rGUIMessage_entry{&ddon_sample_rGUIMessage, ddon_sample_rGUIMessage_place_path};
 
+extern const DdonRoot ddon_sample_rAIFSM;
+void ddon_sample_rAIFSM_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rAIFSM_entry;
+const DdonLibraryRoot ddon_sample_rAIFSM_entry{&ddon_sample_rAIFSM, ddon_sample_rAIFSM_place_path};
+
 extern const DdonRoot ddon_sample_rAIPawnActNoSwitch;
 void ddon_sample_rAIPawnActNoSwitch_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rAIPawnActNoSwitch_entry;
@@ -21,6 +26,11 @@ extern const DdonRoot ddon_sample_rAIPawnSkillParamTbl;
 void ddon_sample_rAIPawnSkillParamTbl_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rAIPawnSkillParamTbl_entry;
 const DdonLibraryRoot ddon_sample_rAIPawnSkillParamTbl_entry{&ddon_sample_rAIPawnSkillParamTbl, ddon_sample_rAIPawnSkillParamTbl_place_path};
+
+extern const DdonRoot ddon_sample_rAbilityList;
+void ddon_sample_rAbilityList_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rAbilityList_entry;
+const DdonLibraryRoot ddon_sample_rAbilityList_entry{&ddon_sample_rAbilityList, ddon_sample_rAbilityList_place_path};
 
 extern const DdonRoot ddon_sample_rAchievementHeader;
 void ddon_sample_rAchievementHeader_place_path(void* root, const char* path);
@@ -37,6 +47,11 @@ void ddon_sample_rArchive_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rArchive_entry;
 const DdonLibraryRoot ddon_sample_rArchive_entry{&ddon_sample_rArchive, ddon_sample_rArchive_place_path};
 
+extern const DdonRoot ddon_sample_rArchiveListArray;
+void ddon_sample_rArchiveListArray_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rArchiveListArray_entry;
+const DdonLibraryRoot ddon_sample_rArchiveListArray_entry{&ddon_sample_rArchiveListArray, ddon_sample_rArchiveListArray_place_path};
+
 extern const DdonRoot ddon_sample_rAttackParam;
 void ddon_sample_rAttackParam_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rAttackParam_entry;
@@ -46,6 +61,21 @@ extern const DdonRoot ddon_sample_rBitTable;
 void ddon_sample_rBitTable_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rBitTable_entry;
 const DdonLibraryRoot ddon_sample_rBitTable_entry{&ddon_sample_rBitTable, ddon_sample_rBitTable_place_path};
+
+extern const DdonRoot ddon_sample_rBowActParamList;
+void ddon_sample_rBowActParamList_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rBowActParamList_entry;
+const DdonLibraryRoot ddon_sample_rBowActParamList_entry{&ddon_sample_rBowActParamList, ddon_sample_rBowActParamList_place_path};
+
+extern const DdonRoot ddon_sample_rCameraList;
+void ddon_sample_rCameraList_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rCameraList_entry;
+const DdonLibraryRoot ddon_sample_rCameraList_entry{&ddon_sample_rCameraList, ddon_sample_rCameraList_place_path};
+
+extern const DdonRoot ddon_sample_rCameraParamList;
+void ddon_sample_rCameraParamList_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rCameraParamList_entry;
+const DdonLibraryRoot ddon_sample_rCameraParamList_entry{&ddon_sample_rCameraParamList, ddon_sample_rCameraParamList_place_path};
 
 extern const DdonRoot ddon_sample_rCharacterEdit;
 void ddon_sample_rCharacterEdit_place_path(void* root, const char* path);
@@ -62,10 +92,20 @@ void ddon_sample_rCharacterEditColorDef_place_path(void* root, const char* path)
 extern const DdonLibraryRoot ddon_sample_rCharacterEditColorDef_entry;
 const DdonLibraryRoot ddon_sample_rCharacterEditColorDef_entry{&ddon_sample_rCharacterEditColorDef, ddon_sample_rCharacterEditColorDef_place_path};
 
+extern const DdonRoot ddon_sample_rCnsIK;
+void ddon_sample_rCnsIK_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rCnsIK_entry;
+const DdonLibraryRoot ddon_sample_rCnsIK_entry{&ddon_sample_rCnsIK, ddon_sample_rCnsIK_place_path};
+
 extern const DdonRoot ddon_sample_rCnsTinyChain;
 void ddon_sample_rCnsTinyChain_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rCnsTinyChain_entry;
 const DdonLibraryRoot ddon_sample_rCnsTinyChain_entry{&ddon_sample_rCnsTinyChain, ddon_sample_rCnsTinyChain_place_path};
+
+extern const DdonRoot ddon_sample_rCollision;
+void ddon_sample_rCollision_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rCollision_entry;
+const DdonLibraryRoot ddon_sample_rCollision_entry{&ddon_sample_rCollision, ddon_sample_rCollision_place_path};
 
 extern const DdonRoot ddon_sample_rCraftElementExp;
 void ddon_sample_rCraftElementExp_place_path(void* root, const char* path);
@@ -82,6 +122,16 @@ void ddon_sample_rCraftUpGradeExp_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rCraftUpGradeExp_entry;
 const DdonLibraryRoot ddon_sample_rCraftUpGradeExp_entry{&ddon_sample_rCraftUpGradeExp, ddon_sample_rCraftUpGradeExp_place_path};
 
+extern const DdonRoot ddon_sample_rDDOModelMontage;
+void ddon_sample_rDDOModelMontage_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rDDOModelMontage_entry;
+const DdonLibraryRoot ddon_sample_rDDOModelMontage_entry{&ddon_sample_rDDOModelMontage, ddon_sample_rDDOModelMontage_place_path};
+
+extern const DdonRoot ddon_sample_rDDOModelMontageEm;
+void ddon_sample_rDDOModelMontageEm_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rDDOModelMontageEm_entry;
+const DdonLibraryRoot ddon_sample_rDDOModelMontageEm_entry{&ddon_sample_rDDOModelMontageEm, ddon_sample_rDDOModelMontageEm_place_path};
+
 extern const DdonRoot ddon_sample_rDeformWeightMap;
 void ddon_sample_rDeformWeightMap_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rDeformWeightMap_entry;
@@ -91,6 +141,11 @@ extern const DdonRoot ddon_sample_rEditStageParam;
 void ddon_sample_rEditStageParam_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rEditStageParam_entry;
 const DdonLibraryRoot ddon_sample_rEditStageParam_entry{&ddon_sample_rEditStageParam, ddon_sample_rEditStageParam_place_path};
+
+extern const DdonRoot ddon_sample_rEffectProvider;
+void ddon_sample_rEffectProvider_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rEffectProvider_entry;
+const DdonLibraryRoot ddon_sample_rEffectProvider_entry{&ddon_sample_rEffectProvider, ddon_sample_rEffectProvider_place_path};
 
 extern const DdonRoot ddon_sample_rEffectStrip;
 void ddon_sample_rEffectStrip_place_path(void* root, const char* path);
@@ -152,6 +207,16 @@ void ddon_sample_rFreeF32Tbl_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rFreeF32Tbl_entry;
 const DdonLibraryRoot ddon_sample_rFreeF32Tbl_entry{&ddon_sample_rFreeF32Tbl, ddon_sample_rFreeF32Tbl_place_path};
 
+extern const DdonRoot ddon_sample_rFullbodyIKHuman2;
+void ddon_sample_rFullbodyIKHuman2_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rFullbodyIKHuman2_entry;
+const DdonLibraryRoot ddon_sample_rFullbodyIKHuman2_entry{&ddon_sample_rFullbodyIKHuman2, ddon_sample_rFullbodyIKHuman2_place_path};
+
+extern const DdonRoot ddon_sample_rGUI;
+void ddon_sample_rGUI_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rGUI_entry;
+const DdonLibraryRoot ddon_sample_rGUI_entry{&ddon_sample_rGUI, ddon_sample_rGUI_place_path};
+
 extern const DdonRoot ddon_sample_rGUIFont;
 void ddon_sample_rGUIFont_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rGUIFont_entry;
@@ -197,10 +262,20 @@ void ddon_sample_rKeyCustomParam_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rKeyCustomParam_entry;
 const DdonLibraryRoot ddon_sample_rKeyCustomParam_entry{&ddon_sample_rKeyCustomParam, ddon_sample_rKeyCustomParam_place_path};
 
+extern const DdonRoot ddon_sample_rLandInfo;
+void ddon_sample_rLandInfo_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rLandInfo_entry;
+const DdonLibraryRoot ddon_sample_rLandInfo_entry{&ddon_sample_rLandInfo, ddon_sample_rLandInfo_place_path};
+
 extern const DdonRoot ddon_sample_rLanguageResIDConverter;
 void ddon_sample_rLanguageResIDConverter_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rLanguageResIDConverter_entry;
 const DdonLibraryRoot ddon_sample_rLanguageResIDConverter_entry{&ddon_sample_rLanguageResIDConverter, ddon_sample_rLanguageResIDConverter_place_path};
+
+extern const DdonRoot ddon_sample_rLayout;
+void ddon_sample_rLayout_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rLayout_entry;
+const DdonLibraryRoot ddon_sample_rLayout_entry{&ddon_sample_rLayout, ddon_sample_rLayout_place_path};
 
 extern const DdonRoot ddon_sample_rLayoutGroupParamList;
 void ddon_sample_rLayoutGroupParamList_place_path(void* root, const char* path);
@@ -232,10 +307,45 @@ void ddon_sample_rMapSpotStageList_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rMapSpotStageList_entry;
 const DdonLibraryRoot ddon_sample_rMapSpotStageList_entry{&ddon_sample_rMapSpotStageList, ddon_sample_rMapSpotStageList_place_path};
 
+extern const DdonRoot ddon_sample_rMaterial;
+void ddon_sample_rMaterial_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rMaterial_entry;
+const DdonLibraryRoot ddon_sample_rMaterial_entry{&ddon_sample_rMaterial, ddon_sample_rMaterial_place_path};
+
+extern const DdonRoot ddon_sample_rModel;
+void ddon_sample_rModel_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rModel_entry;
+const DdonLibraryRoot ddon_sample_rModel_entry{&ddon_sample_rModel, ddon_sample_rModel_place_path};
+
+extern const DdonRoot ddon_sample_rMotionList;
+void ddon_sample_rMotionList_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rMotionList_entry;
+const DdonLibraryRoot ddon_sample_rMotionList_entry{&ddon_sample_rMotionList, ddon_sample_rMotionList_place_path};
+
 extern const DdonRoot ddon_sample_rMsgSet;
 void ddon_sample_rMsgSet_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rMsgSet_entry;
 const DdonLibraryRoot ddon_sample_rMsgSet_entry{&ddon_sample_rMsgSet, ddon_sample_rMsgSet_place_path};
+
+extern const DdonRoot ddon_sample_rNPCEmoMyRoom;
+void ddon_sample_rNPCEmoMyRoom_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rNPCEmoMyRoom_entry;
+const DdonLibraryRoot ddon_sample_rNPCEmoMyRoom_entry{&ddon_sample_rNPCEmoMyRoom, ddon_sample_rNPCEmoMyRoom_place_path};
+
+extern const DdonRoot ddon_sample_rNPCMotMyRoom;
+void ddon_sample_rNPCMotMyRoom_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rNPCMotMyRoom_entry;
+const DdonLibraryRoot ddon_sample_rNPCMotMyRoom_entry{&ddon_sample_rNPCMotMyRoom, ddon_sample_rNPCMotMyRoom_place_path};
+
+extern const DdonRoot ddon_sample_rNPCMotionSet;
+void ddon_sample_rNPCMotionSet_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rNPCMotionSet_entry;
+const DdonLibraryRoot ddon_sample_rNPCMotionSet_entry{&ddon_sample_rNPCMotionSet, ddon_sample_rNPCMotionSet_place_path};
+
+extern const DdonRoot ddon_sample_rNavigationMesh;
+void ddon_sample_rNavigationMesh_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rNavigationMesh_entry;
+const DdonLibraryRoot ddon_sample_rNavigationMesh_entry{&ddon_sample_rNavigationMesh, ddon_sample_rNavigationMesh_place_path};
 
 extern const DdonRoot ddon_sample_rNpcConstItem;
 void ddon_sample_rNpcConstItem_place_path(void* root, const char* path);
@@ -257,6 +367,11 @@ void ddon_sample_rObjCollision_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rObjCollision_entry;
 const DdonLibraryRoot ddon_sample_rObjCollision_entry{&ddon_sample_rObjCollision, ddon_sample_rObjCollision_place_path};
 
+extern const DdonRoot ddon_sample_rOccluderEx;
+void ddon_sample_rOccluderEx_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rOccluderEx_entry;
+const DdonLibraryRoot ddon_sample_rOccluderEx_entry{&ddon_sample_rOccluderEx, ddon_sample_rOccluderEx_place_path};
+
 extern const DdonRoot ddon_sample_rOcdPriorityParam;
 void ddon_sample_rOcdPriorityParam_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rOcdPriorityParam_entry;
@@ -266,6 +381,11 @@ extern const DdonRoot ddon_sample_rOmParam;
 void ddon_sample_rOmParam_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rOmParam_entry;
 const DdonLibraryRoot ddon_sample_rOmParam_entry{&ddon_sample_rOmParam, ddon_sample_rOmParam_place_path};
+
+extern const DdonRoot ddon_sample_rOutlineParamList;
+void ddon_sample_rOutlineParamList_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rOutlineParamList_entry;
+const DdonLibraryRoot ddon_sample_rOutlineParamList_entry{&ddon_sample_rOutlineParamList, ddon_sample_rOutlineParamList_place_path};
 
 extern const DdonRoot ddon_sample_rPartsCtrlTable;
 void ddon_sample_rPartsCtrlTable_place_path(void* root, const char* path);
@@ -277,10 +397,50 @@ void ddon_sample_rPawnQuestTalk_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rPawnQuestTalk_entry;
 const DdonLibraryRoot ddon_sample_rPawnQuestTalk_entry{&ddon_sample_rPawnQuestTalk, ddon_sample_rPawnQuestTalk_place_path};
 
+extern const DdonRoot ddon_sample_rPlantTree;
+void ddon_sample_rPlantTree_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rPlantTree_entry;
+const DdonLibraryRoot ddon_sample_rPlantTree_entry{&ddon_sample_rPlantTree, ddon_sample_rPlantTree_place_path};
+
+extern const DdonRoot ddon_sample_rPrologueHmStatus;
+void ddon_sample_rPrologueHmStatus_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rPrologueHmStatus_entry;
+const DdonLibraryRoot ddon_sample_rPrologueHmStatus_entry{&ddon_sample_rPrologueHmStatus, ddon_sample_rPrologueHmStatus_place_path};
+
+extern const DdonRoot ddon_sample_rQuestList;
+void ddon_sample_rQuestList_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rQuestList_entry;
+const DdonLibraryRoot ddon_sample_rQuestList_entry{&ddon_sample_rQuestList, ddon_sample_rQuestList_place_path};
+
+extern const DdonRoot ddon_sample_rRenderTargetTexture;
+void ddon_sample_rRenderTargetTexture_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rRenderTargetTexture_entry;
+const DdonLibraryRoot ddon_sample_rRenderTargetTexture_entry{&ddon_sample_rRenderTargetTexture, ddon_sample_rRenderTargetTexture_place_path};
+
+extern const DdonRoot ddon_sample_rRigidBody;
+void ddon_sample_rRigidBody_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rRigidBody_entry;
+const DdonLibraryRoot ddon_sample_rRigidBody_entry{&ddon_sample_rRigidBody, ddon_sample_rRigidBody_place_path};
+
 extern const DdonRoot ddon_sample_rRoomWearParam;
 void ddon_sample_rRoomWearParam_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rRoomWearParam_entry;
 const DdonLibraryRoot ddon_sample_rRoomWearParam_entry{&ddon_sample_rRoomWearParam, ddon_sample_rRoomWearParam_place_path};
+
+extern const DdonRoot ddon_sample_rScenario;
+void ddon_sample_rScenario_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rScenario_entry;
+const DdonLibraryRoot ddon_sample_rScenario_entry{&ddon_sample_rScenario, ddon_sample_rScenario_place_path};
+
+extern const DdonRoot ddon_sample_rScheduler;
+void ddon_sample_rScheduler_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rScheduler_entry;
+const DdonLibraryRoot ddon_sample_rScheduler_entry{&ddon_sample_rScheduler, ddon_sample_rScheduler_place_path};
+
+extern const DdonRoot ddon_sample_rShlParamList;
+void ddon_sample_rShlParamList_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rShlParamList_entry;
+const DdonLibraryRoot ddon_sample_rShlParamList_entry{&ddon_sample_rShlParamList, ddon_sample_rShlParamList_place_path};
 
 extern const DdonRoot ddon_sample_rShopGoods;
 void ddon_sample_rShopGoods_place_path(void* root, const char* path);
@@ -302,10 +462,25 @@ void ddon_sample_rSndPitchLimit_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rSndPitchLimit_entry;
 const DdonLibraryRoot ddon_sample_rSndPitchLimit_entry{&ddon_sample_rSndPitchLimit, ddon_sample_rSndPitchLimit_place_path};
 
+extern const DdonRoot ddon_sample_rSoundAreaInfo;
+void ddon_sample_rSoundAreaInfo_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rSoundAreaInfo_entry;
+const DdonLibraryRoot ddon_sample_rSoundAreaInfo_entry{&ddon_sample_rSoundAreaInfo, ddon_sample_rSoundAreaInfo_place_path};
+
+extern const DdonRoot ddon_sample_rSoundBank;
+void ddon_sample_rSoundBank_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rSoundBank_entry;
+const DdonLibraryRoot ddon_sample_rSoundBank_entry{&ddon_sample_rSoundBank, ddon_sample_rSoundBank_place_path};
+
 extern const DdonRoot ddon_sample_rSoundBossBgm;
 void ddon_sample_rSoundBossBgm_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rSoundBossBgm_entry;
 const DdonLibraryRoot ddon_sample_rSoundBossBgm_entry{&ddon_sample_rSoundBossBgm, ddon_sample_rSoundBossBgm_place_path};
+
+extern const DdonRoot ddon_sample_rSoundDirectionalSet;
+void ddon_sample_rSoundDirectionalSet_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rSoundDirectionalSet_entry;
+const DdonLibraryRoot ddon_sample_rSoundDirectionalSet_entry{&ddon_sample_rSoundDirectionalSet, ddon_sample_rSoundDirectionalSet_place_path};
 
 extern const DdonRoot ddon_sample_rSoundEQ;
 void ddon_sample_rSoundEQ_place_path(void* root, const char* path);
@@ -317,20 +492,45 @@ void ddon_sample_rSoundHitInfo_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rSoundHitInfo_entry;
 const DdonLibraryRoot ddon_sample_rSoundHitInfo_entry{&ddon_sample_rSoundHitInfo, ddon_sample_rSoundHitInfo_place_path};
 
+extern const DdonRoot ddon_sample_rSoundMotionSe;
+void ddon_sample_rSoundMotionSe_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rSoundMotionSe_entry;
+const DdonLibraryRoot ddon_sample_rSoundMotionSe_entry{&ddon_sample_rSoundMotionSe, ddon_sample_rSoundMotionSe_place_path};
+
 extern const DdonRoot ddon_sample_rSoundOptData;
 void ddon_sample_rSoundOptData_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rSoundOptData_entry;
 const DdonLibraryRoot ddon_sample_rSoundOptData_entry{&ddon_sample_rSoundOptData, ddon_sample_rSoundOptData_place_path};
+
+extern const DdonRoot ddon_sample_rSoundParamOfs;
+void ddon_sample_rSoundParamOfs_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rSoundParamOfs_entry;
+const DdonLibraryRoot ddon_sample_rSoundParamOfs_entry{&ddon_sample_rSoundParamOfs, ddon_sample_rSoundParamOfs_place_path};
 
 extern const DdonRoot ddon_sample_rSoundReverb;
 void ddon_sample_rSoundReverb_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rSoundReverb_entry;
 const DdonLibraryRoot ddon_sample_rSoundReverb_entry{&ddon_sample_rSoundReverb, ddon_sample_rSoundReverb_place_path};
 
+extern const DdonRoot ddon_sample_rSoundSequenceSe;
+void ddon_sample_rSoundSequenceSe_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rSoundSequenceSe_entry;
+const DdonLibraryRoot ddon_sample_rSoundSequenceSe_entry{&ddon_sample_rSoundSequenceSe, ddon_sample_rSoundSequenceSe_place_path};
+
+extern const DdonRoot ddon_sample_rSoundStreamRequest;
+void ddon_sample_rSoundStreamRequest_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rSoundStreamRequest_entry;
+const DdonLibraryRoot ddon_sample_rSoundStreamRequest_entry{&ddon_sample_rSoundStreamRequest, ddon_sample_rSoundStreamRequest_place_path};
+
 extern const DdonRoot ddon_sample_rSoundSubMixer;
 void ddon_sample_rSoundSubMixer_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rSoundSubMixer_entry;
 const DdonLibraryRoot ddon_sample_rSoundSubMixer_entry{&ddon_sample_rSoundSubMixer, ddon_sample_rSoundSubMixer_place_path};
+
+extern const DdonRoot ddon_sample_rSoundSubMixerSet;
+void ddon_sample_rSoundSubMixerSet_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rSoundSubMixerSet_entry;
+const DdonLibraryRoot ddon_sample_rSoundSubMixerSet_entry{&ddon_sample_rSoundSubMixerSet, ddon_sample_rSoundSubMixerSet_place_path};
 
 extern const DdonRoot ddon_sample_rStageCustom;
 void ddon_sample_rStageCustom_place_path(void* root, const char* path);
@@ -397,6 +597,21 @@ void ddon_sample_rTbl2ChatMacro_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rTbl2ChatMacro_entry;
 const DdonLibraryRoot ddon_sample_rTbl2ChatMacro_entry{&ddon_sample_rTbl2ChatMacro, ddon_sample_rTbl2ChatMacro_place_path};
 
+extern const DdonRoot ddon_sample_rTblMenuOption;
+void ddon_sample_rTblMenuOption_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rTblMenuOption_entry;
+const DdonLibraryRoot ddon_sample_rTblMenuOption_entry{&ddon_sample_rTblMenuOption, ddon_sample_rTblMenuOption_place_path};
+
+extern const DdonRoot ddon_sample_rTexture;
+void ddon_sample_rTexture_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rTexture_entry;
+const DdonLibraryRoot ddon_sample_rTexture_entry{&ddon_sample_rTexture, ddon_sample_rTexture_place_path};
+
+extern const DdonRoot ddon_sample_rTutorialQuestGroup;
+void ddon_sample_rTutorialQuestGroup_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rTutorialQuestGroup_entry;
+const DdonLibraryRoot ddon_sample_rTutorialQuestGroup_entry{&ddon_sample_rTutorialQuestGroup, ddon_sample_rTutorialQuestGroup_place_path};
+
 extern const DdonRoot ddon_sample_rVibration;
 void ddon_sample_rVibration_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rVibration_entry;
@@ -406,6 +621,11 @@ extern const DdonRoot ddon_sample_rWeaponResTable;
 void ddon_sample_rWeaponResTable_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rWeaponResTable_entry;
 const DdonLibraryRoot ddon_sample_rWeaponResTable_entry{&ddon_sample_rWeaponResTable, ddon_sample_rWeaponResTable_place_path};
+
+extern const DdonRoot ddon_sample_rWeatherInfoTbl;
+void ddon_sample_rWeatherInfoTbl_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rWeatherInfoTbl_entry;
+const DdonLibraryRoot ddon_sample_rWeatherInfoTbl_entry{&ddon_sample_rWeatherInfoTbl, ddon_sample_rWeatherInfoTbl_place_path};
 
 extern const DdonRoot ddon_sample_rWeatherStageInfo;
 void ddon_sample_rWeatherStageInfo_place_path(void* root, const char* path);
@@ -417,26 +637,47 @@ void ddon_sample_rWepCateResTbl_place_path(void* root, const char* path);
 extern const DdonLibraryRoot ddon_sample_rWepCateResTbl_entry;
 const DdonLibraryRoot ddon_sample_rWepCateResTbl_entry{&ddon_sample_rWepCateResTbl, ddon_sample_rWepCateResTbl_place_path};
 
+extern const DdonRoot ddon_sample_rZone;
+void ddon_sample_rZone_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rZone_entry;
+const DdonLibraryRoot ddon_sample_rZone_entry{&ddon_sample_rZone, ddon_sample_rZone_place_path};
+
+extern const DdonRoot ddon_sample_rkThinkData;
+void ddon_sample_rkThinkData_place_path(void* root, const char* path);
+extern const DdonLibraryRoot ddon_sample_rkThinkData_entry;
+const DdonLibraryRoot ddon_sample_rkThinkData_entry{&ddon_sample_rkThinkData, ddon_sample_rkThinkData_place_path};
+
 extern const DdonLibraryRoot* const ddon_library_roots[];
 const DdonLibraryRoot* const ddon_library_roots[] = {
     &ddon_sample_rGUIMessage_entry,
+    &ddon_sample_rAIFSM_entry,
     &ddon_sample_rAIPawnActNoSwitch_entry,
     &ddon_sample_rAIPawnEmParam_entry,
     &ddon_sample_rAIPawnSkillParamTbl_entry,
+    &ddon_sample_rAbilityList_entry,
     &ddon_sample_rAchievementHeader_entry,
     &ddon_sample_rActorLight_entry,
     &ddon_sample_rArchive_entry,
+    &ddon_sample_rArchiveListArray_entry,
     &ddon_sample_rAttackParam_entry,
     &ddon_sample_rBitTable_entry,
+    &ddon_sample_rBowActParamList_entry,
+    &ddon_sample_rCameraList_entry,
+    &ddon_sample_rCameraParamList_entry,
     &ddon_sample_rCharacterEdit_entry,
     &ddon_sample_rCharacterEditCameraParam_entry,
     &ddon_sample_rCharacterEditColorDef_entry,
+    &ddon_sample_rCnsIK_entry,
     &ddon_sample_rCnsTinyChain_entry,
+    &ddon_sample_rCollision_entry,
     &ddon_sample_rCraftElementExp_entry,
     &ddon_sample_rCraftSkillSpd_entry,
     &ddon_sample_rCraftUpGradeExp_entry,
+    &ddon_sample_rDDOModelMontage_entry,
+    &ddon_sample_rDDOModelMontageEm_entry,
     &ddon_sample_rDeformWeightMap_entry,
     &ddon_sample_rEditStageParam_entry,
+    &ddon_sample_rEffectProvider_entry,
     &ddon_sample_rEffectStrip_entry,
     &ddon_sample_rEmEffectTable_entry,
     &ddon_sample_rEmblemColorTable_entry,
@@ -449,6 +690,8 @@ const DdonLibraryRoot* const ddon_library_roots[] = {
     &ddon_sample_rFieldAreaList_entry,
     &ddon_sample_rFieldMapData_entry,
     &ddon_sample_rFreeF32Tbl_entry,
+    &ddon_sample_rFullbodyIKHuman2_entry,
+    &ddon_sample_rGUI_entry,
     &ddon_sample_rGUIFont_entry,
     &ddon_sample_rGUIIconInfo_entry,
     &ddon_sample_rGUIMapSetting_entry,
@@ -458,33 +701,60 @@ const DdonLibraryRoot* const ddon_library_roots[] = {
     &ddon_sample_rItemList_entry,
     &ddon_sample_rJumpParamTbl_entry,
     &ddon_sample_rKeyCustomParam_entry,
+    &ddon_sample_rLandInfo_entry,
     &ddon_sample_rLanguageResIDConverter_entry,
+    &ddon_sample_rLayout_entry,
     &ddon_sample_rLayoutGroupParamList_entry,
     &ddon_sample_rLayoutPreset_entry,
     &ddon_sample_rMagicChantParam_entry,
     &ddon_sample_rMagicCommandList_entry,
     &ddon_sample_rMapSpotData_entry,
     &ddon_sample_rMapSpotStageList_entry,
+    &ddon_sample_rMaterial_entry,
+    &ddon_sample_rModel_entry,
+    &ddon_sample_rMotionList_entry,
     &ddon_sample_rMsgSet_entry,
+    &ddon_sample_rNPCEmoMyRoom_entry,
+    &ddon_sample_rNPCMotMyRoom_entry,
+    &ddon_sample_rNPCMotionSet_entry,
+    &ddon_sample_rNavigationMesh_entry,
     &ddon_sample_rNpcConstItem_entry,
     &ddon_sample_rNpcCustomSkill_entry,
     &ddon_sample_rNpcLedgerList_entry,
     &ddon_sample_rObjCollision_entry,
+    &ddon_sample_rOccluderEx_entry,
     &ddon_sample_rOcdPriorityParam_entry,
     &ddon_sample_rOmParam_entry,
+    &ddon_sample_rOutlineParamList_entry,
     &ddon_sample_rPartsCtrlTable_entry,
     &ddon_sample_rPawnQuestTalk_entry,
+    &ddon_sample_rPlantTree_entry,
+    &ddon_sample_rPrologueHmStatus_entry,
+    &ddon_sample_rQuestList_entry,
+    &ddon_sample_rRenderTargetTexture_entry,
+    &ddon_sample_rRigidBody_entry,
     &ddon_sample_rRoomWearParam_entry,
+    &ddon_sample_rScenario_entry,
+    &ddon_sample_rScheduler_entry,
+    &ddon_sample_rShlParamList_entry,
     &ddon_sample_rShopGoods_entry,
     &ddon_sample_rShotReqInfo2_entry,
     &ddon_sample_rSituationMsgCtrl_entry,
     &ddon_sample_rSndPitchLimit_entry,
+    &ddon_sample_rSoundAreaInfo_entry,
+    &ddon_sample_rSoundBank_entry,
     &ddon_sample_rSoundBossBgm_entry,
+    &ddon_sample_rSoundDirectionalSet_entry,
     &ddon_sample_rSoundEQ_entry,
     &ddon_sample_rSoundHitInfo_entry,
+    &ddon_sample_rSoundMotionSe_entry,
     &ddon_sample_rSoundOptData_entry,
+    &ddon_sample_rSoundParamOfs_entry,
     &ddon_sample_rSoundReverb_entry,
+    &ddon_sample_rSoundSequenceSe_entry,
+    &ddon_sample_rSoundStreamRequest_entry,
     &ddon_sample_rSoundSubMixer_entry,
+    &ddon_sample_rSoundSubMixerSet_entry,
     &ddon_sample_rStageCustom_entry,
     &ddon_sample_rStageCustomParts_entry,
     &ddon_sample_rStageCustomPartsEx_entry,
@@ -498,9 +768,15 @@ const DdonLibraryRoot* const ddon_library_roots[] = {
     &ddon_sample_rStatusGainTable_entry,
     &ddon_sample_rSwingModel_entry,
     &ddon_sample_rTbl2ChatMacro_entry,
+    &ddon_sample_rTblMenuOption_entry,
+    &ddon_sample_rTexture_entry,
+    &ddon_sample_rTutorialQuestGroup_entry,
     &ddon_sample_rVibration_entry,
     &ddon_sample_rWeaponResTable_entry,
+    &ddon_sample_rWeatherInfoTbl_entry,
     &ddon_sample_rWeatherStageInfo_entry,
     &ddon_sample_rWepCateResTbl_entry,
+    &ddon_sample_rZone_entry,
+    &ddon_sample_rkThinkData_entry,
     nullptr,
 };

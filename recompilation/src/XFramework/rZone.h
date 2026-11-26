@@ -10,6 +10,12 @@
 #include "cResource.h"
 #include "nZone.h"
 
+#include "../MT/MtDataReader.h"
+#include "../MT/MtDataWriter.h"
+#include "../MT/MtMemory.h"
+#include "cGridCollision.h"
+#include "nCollision.h"
+
 // Forward declarations
 class MtAllocator;
 class MtDTI;
@@ -63,6 +69,7 @@ public:
     public:
         class cLayoutInfo
         {
+            friend class rZone;
         public:
             cLayoutInfo();
             ~cLayoutInfo();
@@ -87,6 +94,7 @@ public:
     public:
         class cGridInfo
         {
+            friend class rZone;
         public:
             cGridInfo();
             ~cGridInfo();
@@ -113,6 +121,7 @@ public:
     public:
         class cContentsPoolInfo
         {
+            friend class rZone;
         public:
             cContentsPoolInfo();
             ~cContentsPoolInfo();
@@ -137,6 +146,7 @@ public:
     public:
         class cGroupInfo
         {
+            friend class rZone;
         public:
             cGroupInfo();
             ~cGroupInfo();
@@ -167,6 +177,8 @@ public:
         cMemoryHeader();
         ~cMemoryHeader();
         void importMemoryInfo(rZone& owner);
+
+        friend class rZone;
         void load(MtDataReader& r, rZone& owner);
         void save(MtDataWriter& w, rZone& owner);
         void clear();
@@ -372,8 +384,222 @@ inline void* rZone::cGroupManager::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline rZone::cGroupManager::cGroupManager() {
+    this->mpOwner = nullptr;
+    this->mGroupID = -1;
+    this->mpLayoutIndexArray = nullptr;
+    this->mLayoutIndexArrayNum = 0;
+    this->mpGlobalLayoutIndexArray = nullptr;
+    this->mGlobalLayoutIndexArrayNum = 0;
+    this->mpGridRegisterInfo = nullptr;
+    this->mpGrid = nullptr;
+}
+
 inline rZone::cMemoryHeader::cGridInfo::cGridInfo() {
+    mGridRegisterNum = 0;
+    mGridCellNum = 0;
 }
 
 inline rZone::cMemoryHeader::cContentsPoolInfo::cContentsPoolInfo() {
+    mContentsListNum = 0;
+}
+
+inline rZone::cMemoryHeader::cLayoutInfo::cLayoutInfo() : mShapeType(0) {
+}
+inline rZone::cMemoryHeader::cLayoutInfo::~cLayoutInfo() {
+}
+inline void* rZone::cMemoryHeader::cLayoutInfo::operator new[](size_t sz) {
+    return MtMemory::mpAllocatorType[7]->memAlloc(sz, 16u);
+}
+inline void rZone::cMemoryHeader::cLayoutInfo::operator delete[](void* padr) {
+    MtMemory::mpAllocatorType[7]->memFree(padr);
+}
+inline void rZone::cMemoryHeader::cLayoutInfo::load(MtDataReader& r) {
+    mShapeType = r.readU32();
+}
+inline void rZone::cMemoryHeader::cLayoutInfo::save(MtDataWriter& w) {
+    w.writeU32(mShapeType);
+}
+inline u32 rZone::cMemoryHeader::cLayoutInfo::getShapeType() const {
+    return mShapeType;
+}
+inline u32 rZone::cMemoryHeader::cLayoutInfo::calculateRequiredMemoryAlign16() const {
+    switch (static_cast<s32>(mShapeType)) {
+    case 0:
+        return sizeof(nZone::ShapeInfoBase);
+    case 1:
+        return sizeof(nZone::ShapeInfoArea);
+    case 2:
+        return sizeof(nZone::ShapeInfoAABB);
+    case 3:
+        return sizeof(nZone::ShapeInfoOBB);
+    case 4:
+        return sizeof(nZone::ShapeInfoSphere);
+    case 5:
+        return sizeof(nZone::ShapeInfoCapsule);
+    case 6:
+        return sizeof(nZone::ShapeInfoCylinder);
+    case 7:
+        return 0x20;
+    case 8:
+        return 0x30;
+    case 9:
+        return sizeof(nZone::ShapeInfoPanel);
+    case 10:
+        return sizeof(nZone::ShapeInfoCone);
+    case 11:
+        return sizeof(nZone::ShapeInfoGlobal);
+    }
+    return 0;
+}
+
+inline rZone::cMemoryHeader::cGridInfo::~cGridInfo() {
+}
+inline void rZone::cMemoryHeader::cGridInfo::load(MtDataReader& r) {
+    mGridRegisterNum = r.readU32();
+    mGridCellNum = r.readU32();
+}
+inline void rZone::cMemoryHeader::cGridInfo::save(MtDataWriter& w) {
+    w.writeU32(mGridRegisterNum);
+    w.writeU32(mGridCellNum);
+}
+inline u32 rZone::cMemoryHeader::cGridInfo::getGridCellNum() const {
+    return mGridCellNum;
+}
+inline u32 rZone::cMemoryHeader::cGridInfo::calculateRequiredMemoryAlign4() const {
+    return mGridRegisterNum * sizeof(u32) + mGridCellNum * 8;
+}
+
+inline rZone::cMemoryHeader::cContentsPoolInfo::~cContentsPoolInfo() {
+}
+inline void rZone::cMemoryHeader::cContentsPoolInfo::load(MtDataReader& r) {
+    mContentsListNum = r.readU32();
+}
+inline void rZone::cMemoryHeader::cContentsPoolInfo::save(MtDataWriter& w) {
+    w.writeU32(mContentsListNum);
+}
+inline u32 rZone::cMemoryHeader::cContentsPoolInfo::getContentsListNum() const {
+    return mContentsListNum;
+}
+inline u32 rZone::cMemoryHeader::cContentsPoolInfo::calculateRequiredMemoryAlign4() const {
+    return mContentsListNum * sizeof(nZone::cContentsPool::cContentsList);
+}
+
+inline rZone::cMemoryHeader::cGroupInfo::cGroupInfo() : mRegisterLayoutNum(0), mGlobalShapeNum(0) {
+}
+inline rZone::cMemoryHeader::cGroupInfo::~cGroupInfo() {
+}
+inline void* rZone::cMemoryHeader::cGroupInfo::operator new[](size_t sz) {
+    return MtMemory::mpAllocatorType[7]->memAlloc(sz, 16u);
+}
+inline void rZone::cMemoryHeader::cGroupInfo::operator delete[](void* padr) {
+    MtMemory::mpAllocatorType[7]->memFree(padr);
+}
+inline void rZone::cMemoryHeader::cGroupInfo::load(MtDataReader& r, rZone& owner) {
+    mRegisterLayoutNum = r.readU32();
+    mGlobalShapeNum = r.readU32();
+    if (owner.mBroadPhaseMode == 1) {
+        mGroupGridInfo.load(r);
+    }
+}
+inline void rZone::cMemoryHeader::cGroupInfo::save(MtDataWriter& w, rZone& owner) {
+    w.writeU32(mRegisterLayoutNum);
+    w.writeU32(mGlobalShapeNum);
+    if (owner.mBroadPhaseMode == 1) {
+        mGroupGridInfo.save(w);
+    }
+}
+inline u32 rZone::cMemoryHeader::cGroupInfo::getRegisterLayoutNum() const {
+    return mRegisterLayoutNum;
+}
+inline u32 rZone::cMemoryHeader::cGroupInfo::getGlobalShapeNum() const {
+    return mGlobalShapeNum;
+}
+inline rZone::cMemoryHeader::cGridInfo rZone::cMemoryHeader::cGroupInfo::getGroupGridInfo() const {
+    return mGroupGridInfo;
+}
+inline u32 rZone::cMemoryHeader::cGroupInfo::calculateRequiredMemoryAlign4() const {
+    return (mRegisterLayoutNum + mGlobalShapeNum) * sizeof(u32);
+}
+inline u32 rZone::cMemoryHeader::cGroupInfo::calculateRequiredGridMemoryAlign4() const {
+    return mGroupGridInfo.calculateRequiredMemoryAlign4();
+}
+
+inline rZone::cMemoryHeader::cMemoryHeader()
+    : mLayoutInfoNum(0), mpLayoutInfoArray(nullptr), mGlobalLayoutIndexArrayNum(0), mGroupInfoNum(0),
+      mpGroupInfoArray(nullptr), mUniqueIDTableNum(0) {
+}
+inline void rZone::cMemoryHeader::clear() {
+    mLayoutInfoNum = 0;
+    if (mpLayoutInfoArray != nullptr) {
+        delete[] mpLayoutInfoArray;
+        mpLayoutInfoArray = nullptr;
+    }
+    mGroupInfoNum = 0;
+    if (mpGroupInfoArray != nullptr) {
+        delete[] mpGroupInfoArray;
+        mpGroupInfoArray = nullptr;
+    }
+    mGlobalLayoutIndexArrayNum = 0;
+    mUniqueIDTableNum = 0;
+}
+inline rZone::cMemoryHeader::~cMemoryHeader() {
+    clear();
+}
+inline u32 rZone::cMemoryHeader::getLayoutNum() const {
+    return mLayoutInfoNum;
+}
+inline rZone::cMemoryHeader::cLayoutInfo* rZone::cMemoryHeader::getLayoutInfo(u32 index) {
+    return index < mLayoutInfoNum ? &mpLayoutInfoArray[index] : nullptr;
+}
+inline u32 rZone::cMemoryHeader::getGroupNum() const {
+    return mGroupInfoNum;
+}
+inline rZone::cMemoryHeader::cGroupInfo* rZone::cMemoryHeader::getGroupInfo(u32 index) {
+    return index < mGroupInfoNum ? &mpGroupInfoArray[index] : nullptr;
+}
+inline u32 rZone::cMemoryHeader::getGlobalLayoutIndexArrayNum() const {
+    return mGlobalLayoutIndexArrayNum;
+}
+inline u32 rZone::cMemoryHeader::getUniqueIDTableNum() const {
+    return mUniqueIDTableNum;
+}
+
+inline bool rZone::cGroupManager::loadBeforeAllocateAlign4(nCollisionUtil::LoadBuffer& buffer, const rZone::cMemoryHeader::cGroupInfo& AllocateInfo, rZone& owner) {
+    deleteWorkMember();
+    mpOwner = &owner;
+    mLayoutIndexArrayNum = AllocateInfo.getRegisterLayoutNum();
+    mpLayoutIndexArray = static_cast<u32*>(buffer.allocate(mLayoutIndexArrayNum * sizeof(u32)));
+    mGlobalLayoutIndexArrayNum = AllocateInfo.getGlobalShapeNum();
+    mpGlobalLayoutIndexArray = static_cast<u32*>(buffer.allocate(mGlobalLayoutIndexArrayNum * sizeof(u32)));
+    mBroadPhaseMode = owner.mBroadPhaseMode;
+    return true;
+}
+
+inline cGridCollision* rZone::cGroupManager::getGrid() const {
+    return mpGrid;
+}
+inline nZone::cLayoutElement* rZone::getLayoutElement(u32 index) {
+    return index < mLayoutElementsNum ? &mpLayoutElements[index] : nullptr;
+}
+inline void rZone::cMemoryHeader::cLayoutInfo::importLayoutInfo(rZone& owner, u32 LayoutIndex) {
+    mShapeType = owner.getLayoutElement(LayoutIndex)->getShapeType();
+}
+inline void rZone::cMemoryHeader::cGridInfo::importGridInfo(cGridCollision& owner) {
+    mGridRegisterNum = owner.mStaticGridRegistParamNum;
+    mGridCellNum = owner.mGridNumX * owner.mGridNumZ;
+}
+inline void rZone::cMemoryHeader::cContentsPoolInfo::importContentsPoolInfo(rZone& owner) {
+    mContentsListNum = owner.mContentsPool.mContentsListArray.length();
+}
+inline void rZone::cMemoryHeader::cGroupInfo::importGroupInfo(rZone& owner, u32 GroupIndex) {
+    rZone::cGroupManager& Group = owner.mpGroupManagerArray[GroupIndex];
+    mRegisterLayoutNum = Group.getGroupLayoutIndexNum();
+    mGlobalShapeNum = Group.getGroupGlobalLayoutIndexNum();
+    if (owner.mBroadPhaseMode == 1) {
+        cGridCollision* pGrid = Group.getGrid();
+        if (pGrid != nullptr) {
+            mGroupGridInfo.importGridInfo(*pGrid);
+        }
+    }
 }

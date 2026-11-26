@@ -23,12 +23,14 @@ inline void nDraw::VertexBuffer::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nDraw::VertexBuffer::DTI)->memFree(p_addr);
 }
 
-__attribute__((noinline)) nDraw::VertexBuffer::VertexBuffer(u32 size, nDraw::USAGE_TYPE usage, const void* pinitvalues) : nDraw::Buffer(usage) {
+nDraw::VertexBuffer::VertexBuffer(u32 size, nDraw::USAGE_TYPE usage, const void* pinitvalues) : nDraw::Buffer(usage) {
     mBufSize = size;
-    mpBuffer = MtMemory::mpAllocatorType[6]->memAlloc(size, 4u);
-    if (pinitvalues != nullptr) {
-        memcpy(mpBuffer, pinitvalues, size);
+    void* t0 = ::MtMemory::mpAllocatorType[6]->memAlloc(size, 4u);
+    mpBuffer = t0;
+    if (pinitvalues == nullptr) {
+        return;
     }
+    ::memcpy(t0, pinitvalues, size);
 }
 
 __attribute__((weak)) void nDraw::VertexBuffer::suspend() {

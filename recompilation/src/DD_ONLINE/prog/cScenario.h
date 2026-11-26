@@ -243,6 +243,7 @@ public:
 
 class cScenarioParam : public MtObject
 {
+    friend class cScenario;
 public:
     class MyDTI;
 public:
@@ -292,6 +293,10 @@ inline void* cScenario::operator new(size_t sz, void* p_addr) {
 
 inline cAreaHit* cScenario::getArea() {
     return this->mpArea;
+}
+
+inline u32 cScenario::getCheckType() {
+    return this->mpParam->mCheckType;
 }
 
 inline void* cScenarioArg::operator new(size_t sz, void* p_addr) {

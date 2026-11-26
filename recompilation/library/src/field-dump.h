@@ -6,6 +6,7 @@
 // never interprets file bytes: it prints what the root's `load` stored.
 #pragma once
 
+#include <cinttypes>
 #include <cstdio>
 #include <cstring>
 #include <string>
@@ -44,20 +45,20 @@ void ddon_dump_field(std::string& out, const char* name, const void* record, con
         out += std::is_enum_v<T> ? ",\"kind\":\"enum\"" : "";
         if constexpr (std::is_signed_v<U>) {
             out += std::is_enum_v<T> ? "" : ",\"kind\":\"signed\"";
-            out += ",\"value\":\"" + std::to_string(static_cast<long long>(value)) + "\"";
+            out += ",\"value\":\"" + std::to_string(static_cast<std::int64_t>(value)) + "\"";
         } else {
             out += std::is_enum_v<T> ? "" : ",\"kind\":\"unsigned\"";
-            out += ",\"value\":\"" + std::to_string(static_cast<unsigned long long>(value)) + "\"";
+            out += ",\"value\":\"" + std::to_string(static_cast<std::uint64_t>(value)) + "\"";
         }
     } else if constexpr (std::is_floating_point_v<T>) {
-        unsigned long long bits = 0;
+        std::uint64_t bits = 0;
         std::memcpy(&bits, &value, sizeof(T) < sizeof bits ? sizeof(T) : sizeof bits);
         // The longest text is 24 + 16 hex digits + 11 + a 24-character
         // `%.17g` (`-1.2345678901234567e-300`) + the quote: 76 bytes. 64 cut
         // the closing quote off `-0.80000001192092896`.
         char text[128];
         std::snprintf(text, sizeof text,
-                      ",\"kind\":\"float\",\"bits\":\"%llx\",\"value\":\"%.17g\"", bits,
+                      ",\"kind\":\"float\",\"bits\":\"%" PRIx64 "\",\"value\":\"%.17g\"", bits,
                       static_cast<double>(value));
         out += text;
     } else {

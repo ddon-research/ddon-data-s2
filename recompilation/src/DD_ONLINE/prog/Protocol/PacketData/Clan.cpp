@@ -393,6 +393,14 @@ __attribute__((weak)) void CDataClanSearchResult::operator delete(void* p_addr) 
 
 CDataClanSearchResult::CDataClanSearchResult() {
     m_unClanID = 0;
+    m_ucEmblemMarkType = 0;
+    m_ucEmblemBaseType = 0;
+    m_ucEmblemBaseMainColor = 0;
+    m_ucEmblemBaseSubColor = 0;
+    m_unMasterCharacterID = 0;
+    m_usLv = 0;
+    m_usMemberNum = 0;
+    m_unMotto = 0;
     m_llCreated = 0;
     m_MasterCharacterName.m_wstrLastName.value = nullptr;
     m_MasterCharacterName.m_wstrFirstName.value = nullptr;

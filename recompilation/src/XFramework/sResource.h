@@ -31,11 +31,14 @@ struct pthread;
 class rArchive;
 class rCollision;
 class rEffectList;
+class rGrass;
+class rMaterial;
 class rModel;
 class rNavigationMesh;
 class rSoundStreamRequest;
 class uCharacterEdit;
 class uCharacterEditBase;
+class uDOFFilter;
 class uSky;
 struct z_stream_s;
 
@@ -65,11 +68,14 @@ class sResource : public cSystem
     friend class cResource;
     friend class rCollision;
     friend class rEffectList;
+    friend class rGrass;
+    friend class rMaterial;
     friend class rModel;
     friend class rNavigationMesh;
     friend class rSoundStreamRequest;
     friend class uCharacterEdit;
     friend class uCharacterEditBase;
+    friend class uDOFFilter;
     friend class uSky;
 public:
     enum MODE
@@ -109,6 +115,7 @@ public:
 public:
     class TypeInfo : public MtObject
     {
+        friend class sResource;
     public:
         class MyDTI;
     public:
@@ -550,4 +557,8 @@ inline void* sResource::DecompressStream::operator new(size_t sz, void* p_addr) 
 
 inline u32 sResource::getRGrassDataReaderBufferSizeByte() const {
     return this->mRGrassDataReaderBufferSizeKB << 10;
+}
+
+inline u32 sResource::getRTextureDataReaderBufferSizeByte() const {
+    return this->mRTextureDataReaderBufferSizeKB << 10;
 }

@@ -54,8 +54,10 @@ namespace nZone { class ShapeInfoBase; }
 namespace nZone { class ShapeInfoCapsule; }
 namespace nZone { class ShapeInfoCone; }
 namespace nZone { class ShapeInfoCylinder; }
+namespace nZone { class ShapeInfoLine; }
 namespace nZone { class ShapeInfoOBB; }
 namespace nZone { class ShapeInfoPanel; }
+namespace nZone { class ShapeInfoPoint; }
 namespace nZone { class ShapeInfoSphere; }
 class rAttackParam;
 class rHumanEnemyParam;
@@ -132,8 +134,10 @@ class MtDataReader
     friend class nZone::ShapeInfoCapsule;
     friend class nZone::ShapeInfoCone;
     friend class nZone::ShapeInfoCylinder;
+    friend class nZone::ShapeInfoLine;
     friend class nZone::ShapeInfoOBB;
     friend class nZone::ShapeInfoPanel;
+    friend class nZone::ShapeInfoPoint;
     friend class nZone::ShapeInfoSphere;
     friend class rAttackParam;
     friend class rHumanEnemyParam;
@@ -191,6 +195,10 @@ inline u8 MtDataReader::readU8() {
     u8 n = this->mBuffer[this->mSeekPt];
     this->mSeekPt = this->mSeekPt + 1u;
     return n;
+}
+
+inline u32 MtDataReader::getLength() {
+    return mStream.getLength();
 }
 
 inline bool MtDataReader::isReadable() const {

@@ -64,9 +64,15 @@ __attribute__((weak)) void uSoundSequenceSe::move() {
     /* stub */
 }
 
-__attribute__((weak)) void uSoundSequenceSe::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSoundSequenceSe::createProperty")
-    /* stub */
+void uSoundSequenceSe::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mSeqState", &mSeqState, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRequestMode", &mRequestMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVolume", &mVolume, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJointNo", &mJointNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCallPos", &mCallPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTgtModel", reinterpret_cast<MtObject* *>(&mpTgtModel), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SequenceSe", "resource", reinterpret_cast<MT_MFUNC>(&::uSoundSequenceSe::getSequenceSe), reinterpret_cast<MT_MFUNC>(&::uSoundSequenceSe::setSequenceSe), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* uSoundSequenceSe::createUI(MtProperty& prop) {

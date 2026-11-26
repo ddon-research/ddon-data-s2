@@ -6,6 +6,7 @@
 #include "MtMath.h"
 #include "MtObject.h"
 #include "MtPrimitive3D.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -17,9 +18,9 @@ __attribute__((weak)) void MtGeomConvex::load(MtDataReader& fin) {
 __attribute__((weak)) void MtGeomConvex::save(MtDataWriter& fout) {
 }
 
-__attribute__((weak)) void MtGeomConvex::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtGeomConvex::createProperty")
-    /* stub */
+void MtGeomConvex::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 8193u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMargin", &mMargin, 8192u, 0u);
 }
 
 __attribute__((weak)) MtVector3 MtGeomConvex::getSupportMarginConst(const MtVector3& v) const {
@@ -32,14 +33,12 @@ __attribute__((weak)) MtVector3 MtGeomConvex::getSupportMargin(const MtVector3& 
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 MtGeomConvex::getSupport(const MtVector3& v) {
-    DDON_STUB("MtGeomConvex::getSupport")
-    __builtin_unreachable();
+MtVector3 MtGeomConvex::getSupport(const MtVector3& v) {
+    return getSupportConst(v);
 }
 
-__attribute__((weak)) MtVector3 MtGeomConvex::getInternalPos() const {
-    DDON_STUB("MtGeomConvex::getInternalPos")
-    __builtin_unreachable();
+MtVector3 MtGeomConvex::getInternalPos() const {
+    return MtVector3::Zero;
 }
 
 void MtGeomConvex::setMargin(f32 margin) {
@@ -66,9 +65,8 @@ MtObject* MtGeomConvex::MyDTI::newInstance() const {
     return nullptr;
 }
 
-__attribute__((weak)) void MtGeometry::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtGeometry::createProperty")
-    /* stub */
+void MtGeometry::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 8193u, 0u);
 }
 
 __attribute__((weak)) void MtGeometry::getBoundingAABB(MtAABB& aabb) const {

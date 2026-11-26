@@ -97,14 +97,12 @@ bool cpInvincibleCtrl::isInvTypeActive(nObjCollision::UNIT_INV_TYPE type) const 
     return ((static_cast<unsigned long>(getInvTypeFlagPrivate()) >> (static_cast<unsigned long>(type) & 31)) & 1ul) != 0;
 }
 
-__attribute__((weak)) bool cpInvincibleCtrl::isDamageAttrActive(u32 attr) const {
-    DDON_STUB("cpInvincibleCtrl::isDamageAttrActive")
-    return {};
+bool cpInvincibleCtrl::isDamageAttrActive(u32 attr) const {
+    return (attr & mDamageAttr) != 0;
 }
 
-__attribute__((weak)) bool cpInvincibleCtrl::isDamageAttrOldActive(u32 attr) const {
-    DDON_STUB("cpInvincibleCtrl::isDamageAttrOldActive")
-    return {};
+bool cpInvincibleCtrl::isDamageAttrOldActive(u32 attr) const {
+    return (attr & mDamageAttrOld) != 0;
 }
 
 bool cpInvincibleCtrl::isDamageAttrActive_Through(nObjCollision::DAMAGE_ATTR_ENUM attrEnum, nObjCollision::UNIT_INV_THROUGH_TYPE type) const {

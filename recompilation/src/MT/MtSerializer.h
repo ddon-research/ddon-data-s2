@@ -8,6 +8,21 @@
 #include "MtPropertyList.h"
 #include "MtXmlReader.h"
 
+#include "MtPrimitive2D.h"
+#include "MtEaseCurve.h"
+#include "MtOscillator.h"
+#include "MtVariable.h"
+
+#include <cstring>
+#include "MtMemory.h"
+#include "MtAllocator.h"
+#include "MtDTI.h"
+#include "MtColor.h"
+#include "MtCollisionPrimitive3D.h"
+#include "MtPrimitive3D.h"
+#include "MtMath.h"
+#include "MtTime.h"
+
 // Forward declarations
 class MtDTI;
 class MtDataReader;
@@ -240,3 +255,75 @@ private:
     static const s32 MAX_CUSTOMPARAM_VALUE = 128;
     static const s32 MAX_CUSTOMPARAM = 4;
 };
+
+inline bool MtSerializer::isSerializable(MtProperty& prop, MtSerializer::MODE mode) {
+    if (!prop.isSerializable()) {
+        return false;
+    }
+    if (mode == MODE_STATE) {
+        if ((prop.getAttr() & (MtProperty::ATTR_CONFIG | MtProperty::ATTR_STATE)) == MtProperty::ATTR_CONFIG) {
+            return false;
+        }
+    } else if (mode == MODE_CONFIG) {
+        if (!(prop.getAttr() & MtProperty::ATTR_CONFIG)) {
+            return false;
+        }
+    }
+    return !(prop.getAttr() & MtProperty::ATTR_NOBINARY);
+}
+
+inline s32 MtSerializer::getClassID(MtObject* pobj) {
+    for (s32 i = 0; i < mClassIDNum; ++i) {
+        if (mClassID[i].pobject == pobj) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+inline s32 MtSerializer::newClassID(MtObject* pobj) {
+    if (mClassIDNum >= mClassIDMax) {
+        s32 num = mClassIDMax * 2;
+        CLASS_ID* p = static_cast<CLASS_ID*>(MtMemory::getAllocator(MtAllocator::TYPE_SHARED)->memAlloc(sizeof(CLASS_ID) * num, 16));
+        memset(p, 0, sizeof(CLASS_ID) * num);
+        memcpy(p, mClassID, sizeof(CLASS_ID) * mClassIDMax);
+        MtMemory::getAllocator(MtAllocator::TYPE_SHARED)->memFree(mClassID);
+        mClassID = p;
+        mClassIDMax = num;
+    }
+    mClassID[mClassIDNum].pobject = pobj;
+    mClassID[mClassIDNum].binst = 0;
+    return mClassIDNum++;
+}
+
+inline MT_CTSTR MtSerializer::addString(MT_CTSTR str) {
+    for (size_t i = 0; i < mStringPoolPt;) {
+        MT_CTSTR p = reinterpret_cast<MT_CTSTR>(mpStringPool + i);
+        if (strcmp(str, p) == 0) {
+            return p;
+        }
+        i += strlen(p) + 1;
+    }
+    MT_CHAR* pdst = reinterpret_cast<MT_CHAR*>(mpStringPool + mStringPoolPt);
+    strcpy(pdst, str);
+    mStringPoolPt += strlen(str) + 1;
+    return pdst;
+}
+
+inline u32 MtSerializer::getObjectDataType(MtObject* pobj) {
+    const MtDTI& dti = pobj->getDTI();
+    for (u32 i = 0; i < mObjectDataNum; ++i) {
+        if (mpObjectData[i]->id == dti.getID()) {
+            return i;
+        }
+    }
+    return OBJECTDATA_NULL;
+}
+
+inline bool MtSerializer::isClassInst(u32 id) {
+    return mClassID[id].binst;
+}
+
+inline void MtSerializer::setClassInst(u32 id) {
+    mClassID[id].binst = 1;
+}

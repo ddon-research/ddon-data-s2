@@ -134,9 +134,31 @@ __attribute__((noinline)) sControlManager::~sControlManager() {
     mDispPriorityData.mLength = 0;
 }
 
-__attribute__((weak)) void sControlManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("sControlManager::createProperty")
-    /* stub */
+void sControlManager::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "UnitList", static_cast<MtObject*>(&mRefArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Add List", static_cast<MtObject*>(&mAddArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Del List", static_cast<MtObject*>(&mDelArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\350\241\250\347\244\272\346\234\200\345\244\247\350\267\235\351\233\242", &mDispMaxDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\351\201\240\343\201\217\343\201\250\345\210\244\345\256\232\343\201\231\343\202\213\350\267\235\351\233\242", &mFarDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\350\241\250\347\244\272\343\203\246\343\203\213\343\203\203\343\203\210\346\225\260", &mTotalDispUnitNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NPC\343\201\256\346\213\241\345\274\265\343\203\242\343\203\274\343\202\267\343\203\247\343\203\263\343\202\222\343\203\255\343\203\274\343\203\211\343\201\231\343\202\213\350\267\235\351\233\242", &mNpcLoadArcDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NPC\343\201\256\346\213\241\345\274\265\343\203\242\343\203\274\343\202\267\343\203\247\343\203\263\343\202\222\350\247\243\346\224\276\343\201\231\343\202\213\350\267\235\351\233\242", &mNpcReleaseArcDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\350\241\250\347\244\272\347\246\201\346\255\242\346\231\202\351\226\223", &mDisableDispTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\274\267\345\210\266\350\241\250\347\244\272\346\231\202\351\226\223", &mForceDispTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\231\343\202\244\343\202\257\343\201\227\343\201\246\343\201\252\343\201\204\343\203\246\343\203\213\343\203\203\343\203\210\346\225\260", &mNoBakedUnit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\225\343\202\247\343\203\274\343\203\211\344\270\255\343\203\246\343\203\213\343\203\203\343\203\210\346\225\260", &mFadeUnitNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\225\343\202\247\343\203\274\343\203\211\344\270\255\343\203\246\343\203\213\343\203\203\343\203\210\343\201\256\346\234\200\345\244\247\346\225\260", &mFadeUnitMaxNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\242\343\203\207\343\203\253\346\225\260", &mDispObjModelNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\255\343\203\274\343\203\211\344\270\255\343\201\256\343\202\263\343\203\263\343\203\210\343\203\255\343\203\274\343\203\251\343\203\274\346\225\260", &mLoadCtrlNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\255\343\203\274\343\203\211\344\270\255\343\201\256\343\202\263\343\203\263\343\203\210\343\203\255\343\203\274\343\203\251\343\203\274\346\234\200\345\244\247\346\225\260", &mLoadCtrlMaxNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\256\237\351\232\233\343\201\253\350\241\250\347\244\272\343\201\227\343\201\246\343\201\204\343\202\213\343\203\246\343\203\213\343\203\203\343\203\210\346\225\260", &mRealDispUnitNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\256\237\351\232\233\343\201\253\350\241\250\347\244\272\343\201\231\343\202\213\343\203\246\343\203\213\343\203\203\343\203\210\346\234\200\345\244\247\346\225\260", &mRealDispUnitMaxNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MemLimit", &mMemoryLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAQC", &mAQC, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAQCmsec", &mAQCmsec, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAQCUnitMinNum", &mAQCUnitMinNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAQCUnitMaxNum", &mAQCUnitMaxNum, 0u, 0u);
 }
 
 MtUI* sControlManager::createUI(MtProperty& prop) {
@@ -284,7 +306,7 @@ __attribute__((weak)) void sControlManager::releaseUnit(uControl* p) {
 }
 
 void sControlManager::releaseUnitAllFromType(s32 Type, bool IsDeleteContext) {
-    u32 num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 32);
+    u32 num = mRefArray.mLength;
     if (num != 0) {
         for (unsigned int i0_3 = 0;;) {
             if (mRefArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {

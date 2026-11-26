@@ -39,9 +39,11 @@ class cGUIUtility;
 class cGameMoonAge;
 class cGameTime;
 class cGameWeather;
+class cNetGameServer;
 class cPlayPointInfo;
 class cPlayerExpTable;
 class cQuestTask;
+class cSeedLoginSvConnection;
 class cStageCtrl;
 class cStageToSpot;
 class cTalkMsgData;
@@ -49,7 +51,6 @@ class cWeaponResTable;
 class cWepCateResTbl;
 class cpJob02;
 namespace nJobParam { class cHumanBaseInfo; }
-namespace nJobParam { class cJobInfo; }
 namespace nLoginSession { class CPacket_L2C_GP_COURSE_GET_INFO_RES; }
 namespace nNetBase { class cNetBase; }
 namespace nSessionManager { class cNetSessionManager; }
@@ -69,15 +70,18 @@ class rWeaponResTable;
 class rWepCateResTbl;
 class sAreaExt;
 class sCameraExt;
+class sChat;
 class sGUIExt;
 class sItemManager;
 class sNetworkExt;
 class sPlayerManager;
+class sSetManager;
 class sWeatherManager;
 class uControl;
 class uDDOModel;
 class uFade;
 class uGUIEngageInfo;
+class uGUIMapMini;
 class uGUIOption;
 class uGUIPhoto;
 class uHuman;
@@ -107,6 +111,7 @@ using u8 = unsigned char;
 
 class cChargeEffectUID : public MtObject
 {
+    friend class sGame;
 public:
     class MyDTI;
 public:
@@ -158,20 +163,24 @@ class sGame : public cSystem
 {
     friend class aStage;
     friend class cGUIUtility;
+    friend class cNetGameServer;
     friend class cQuestTask;
+    friend class cSeedLoginSvConnection;
     friend class cpJob02;
     friend class nJobParam::cHumanBaseInfo;
-    friend class nJobParam::cJobInfo;
     friend class nNetBase::cNetBase;
     friend class nSessionManager::cNetSessionManager;
     friend class sAreaExt;
     friend class sCameraExt;
+    friend class sChat;
     friend class sGUIExt;
     friend class sItemManager;
     friend class sNetworkExt;
     friend class sPlayerManager;
+    friend class sSetManager;
     friend class sWeatherManager;
     friend class uGUIEngageInfo;
+    friend class uGUIMapMini;
     friend class uGUIOption;
     friend class uGUIPhoto;
 public:

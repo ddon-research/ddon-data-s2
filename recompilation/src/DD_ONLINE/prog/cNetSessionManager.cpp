@@ -12,6 +12,7 @@
 #include "../../MT/MtString.h"
 #include "../../MT/MtTime.h"
 #include "Protocol/PacketData/Party.h"
+#include "Protocol/UserSession/S2C.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
 #include "cContextInstance.h"
@@ -145,9 +146,9 @@ inline void nSessionManager::cLobbyDataMessage::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nSessionManager::cLobbyDataMessage::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void nSessionManager::cLobbyDataMessage::serialize(BitWriter& w) const {
-    DDON_STUB("nSessionManager::cLobbyDataMessage::serialize")
-    /* stub */
+void nSessionManager::cLobbyDataMessage::serialize(BitWriter& w) const {
+    w.writeS32(0);
+    w.writeS32(static_cast<s32>(mMsgType));
 }
 
 void nSessionManager::cLobbyDataMessage::deserialize(BitReader& r) {
@@ -192,9 +193,15 @@ __attribute__((noinline)) nSessionManager::cNetSessionManager::~cNetSessionManag
     /* stub */
 }
 
-__attribute__((weak)) bool nSessionManager::cNetSessionManager::isPartyReqOk(s32 partyListIndex, bool onlyOne, bool large) {
-    DDON_STUB("nSessionManager::cNetSessionManager::isPartyReqOk")
-    return {};
+bool nSessionManager::cNetSessionManager::isPartyReqOk(s32 partyListIndex, bool onlyOne, bool large) {
+    if (static_cast<unsigned int>(partyListIndex) < static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mPartyListInfoVec.mLength) {
+        if (onlyOne && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mPartyListInfoVec.mpArray[partyListIndex]) + 24)) != 1)) {
+            return false;
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void nSessionManager::cNetSessionManager::sendInvite(const CDataPartyListInfo& info) {
@@ -250,9 +257,32 @@ __attribute__((weak)) bool nSessionManager::cNetSessionManager::isPartyLarge(boo
     return {};
 }
 
-__attribute__((weak)) u32 nSessionManager::cNetSessionManager::getPartyMemberCharId(s32 memberIndex) {
-    DDON_STUB("nSessionManager::cNetSessionManager::getPartyMemberCharId")
-    return {};
+u32 nSessionManager::cNetSessionManager::getPartyMemberCharId(s32 memberIndex) {
+    u32 v0_3 = static_cast<sNetworkExt*>(::sNetwork::mpInstance)->getGameServer()->mPartyMemberInfoVec.size();
+    unsigned int v2_0;
+    if (static_cast<int>(v0_3) <= 0) {
+        v2_0 = 0;
+    } else {
+        MtObject* * v0_1 = static_cast<sNetworkExt*>(::sNetwork::mpInstance)->getGameServer()->mPartyMemberInfoVec.getBuffer();
+        for (int i0_2 = 0;;) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 116)) != static_cast<unsigned char>(memberIndex)) {
+                if ((i0_2 + 1) < static_cast<int>(v0_3)) {
+                    i0_2 = i0_2 + 1;
+                } else {
+                    break;
+                }
+            } else {
+                if (v0_1[i0_2] == nullptr) {
+                    v2_0 = 0;
+                } else {
+                    v2_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 24);
+                }
+                return v2_0;
+            }
+        }
+        v2_0 = 0;
+    }
+    return v2_0;
 }
 
 s32 nSessionManager::cNetSessionManager::getSelfIndex(s32 session_id) {
@@ -263,9 +293,13 @@ s32 nSessionManager::cNetSessionManager::getSelfIndex(s32 session_id) {
     }
 }
 
-__attribute__((weak)) s32 nSessionManager::cNetSessionManager::getGameSessionMemberNum(bool isBeforeJoinMember) {
-    DDON_STUB("nSessionManager::cNetSessionManager::getGameSessionMemberNum")
-    return {};
+s32 nSessionManager::cNetSessionManager::getGameSessionMemberNum(bool isBeforeJoinMember) {
+    s32 num = static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mPartyMemberInfoVec.size();
+    if (isBeforeJoinMember) {
+        return static_cast<s32>(num + static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->getPartyInviteJoinMemberPacket()->m_MemberMinimum.mLength);
+    } else {
+        return num;
+    }
 }
 
 __attribute__((weak)) s32 nSessionManager::cNetSessionManager::getGameSessionPlayerMemberNum(bool isBeforeJoinMember) {
@@ -860,9 +894,30 @@ bool nSessionManager::cNetSessionManager::isNowPartyReq() {
     return b2_0;
 }
 
-__attribute__((weak)) CPartyMember* nSessionManager::cNetSessionManager::getInvitedLeaderInfo() {
-    DDON_STUB("nSessionManager::cNetSessionManager::getInvitedLeaderInfo")
-    return nullptr;
+CPartyMember* nSessionManager::cNetSessionManager::getInvitedLeaderInfo() {
+    cNetGameServer* v0_4 = static_cast<sNetworkExt*>(::sNetwork::mpInstance)->getGameServer();
+    u32 v0_1 = v0_4->mInvitePartyListInfo.m_MemberList.size();
+    MtObject* v2_0;
+    if (v0_1 == 0) {
+        v2_0 = nullptr;
+    } else {
+        MtObject* * v0_2 = v0_4->mInvitePartyListInfo.m_MemberList.mpArray;
+        for (u32 i = 0;;) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_2[i]) + 125)) == 0) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[i]) + 24)) == v0_4->mInvitePartyListInfo.m_LeaderBaseInfo.m_unCharacterID) {
+                    v2_0 = v0_2[i];
+                    break;
+                }
+            }
+            if ((i + 1u) < v0_1) {
+                i = i + 1u;
+            } else {
+                v2_0 = nullptr;
+                break;
+            }
+        }
+    }
+    return static_cast<CPartyMember*>(v2_0);
 }
 
 void nSessionManager::cNetSessionManager::sendChatLobby(MT_CTSTR str, nChatMsgType::E_CHAT_MSG_TYPE type) {

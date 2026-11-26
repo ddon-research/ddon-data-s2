@@ -60,13 +60,29 @@ inline void uGUIRimWarp::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIRimWarp::~uGUIRimWarp() {
-    DDON_STUB("uGUIRimWarp::~uGUIRimWarp")
-    /* stub */
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
+    }
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpWarpLoc != nullptr) {
+        mpWarpLoc->release();
+        mpWarpLoc = nullptr;
+    }
+    if (mpLobbyWarpLoc == nullptr) {
+        return;
+    }
+    mpLobbyWarpLoc->release();
+    mpLobbyWarpLoc = nullptr;
 }
 
-__attribute__((weak)) void uGUIRimWarp::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGUIRimWarp::createProperty")
-    /* stub */
+void uGUIRimWarp::createProperty(MtPropertyList& s) {
+    this->uGUI::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mMenuType", &mMenuType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlowId", &mFlowId, 0u, 0u);
 }
 
 bool uGUIRimWarp::loadResource() {
@@ -671,6 +687,10 @@ const MtDTI& uGUIRimWarp::cHeaderItem::getDTI() const {
     return uGUIRimWarp::cHeaderItem::DTI;
 }
 
+inline void* uGUIRimWarp::cHeaderItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIRimWarp::cHeaderItem::DTI)->memAlloc(sz, align, uGUIRimWarp::cHeaderItem::DTI.getID());
+}
+
 inline void uGUIRimWarp::cHeaderItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIRimWarp::cHeaderItem::DTI)->memFree(p_addr);
 }
@@ -679,13 +699,16 @@ inline uGUIRimWarp::cHeaderItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 uGUIRimWarp::cHeaderItem::MyDTI uGUIRimWarp::cHeaderItem::DTI("uGUIRimWarp::cHeaderItem", &::uGUIBase::cScrollListItemBase::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIRimWarp::cHeaderItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIRimWarp::cHeaderItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIRimWarp::cHeaderItem::MyDTI::newInstance() const {
+    return new (16u) uGUIRimWarp::cHeaderItem;
 }
 
 const MtDTI& uGUIRimWarp::cListItem::getDTI() const {
     return uGUIRimWarp::cListItem::DTI;
+}
+
+inline void* uGUIRimWarp::cListItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIRimWarp::cListItem::DTI)->memAlloc(sz, align, uGUIRimWarp::cListItem::DTI.getID());
 }
 
 inline void uGUIRimWarp::cListItem::operator delete(void* p_addr) {
@@ -696,9 +719,8 @@ inline uGUIRimWarp::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 uGUIRimWarp::cListItem::MyDTI uGUIRimWarp::cListItem::DTI("uGUIRimWarp::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 136ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIRimWarp::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIRimWarp::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIRimWarp::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIRimWarp::cListItem;
 }
 
 const MtDTI& uGUIRimWarp::cListInfo::getDTI() const {

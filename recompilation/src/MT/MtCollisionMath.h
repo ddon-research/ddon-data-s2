@@ -350,3 +350,18 @@ inline MtCollisionUtil::MtVectorU4::MtVectorU4() {
 
 inline MtCollisionUtil::MtVectorU43::MtVectorU43() {
 }
+
+inline MtCollisionUtil::MtSoaVector1::MtSoaVector1(const MtCollisionUtil::MtSoaVector1& src) {
+    this->v = src.v;
+}
+
+inline MtCollisionUtil::MtSoaVector1 MtCollisionUtil::MtSoaVector1::operator=(const MtCollisionUtil::MtSoaVector1& _v) {
+    this->v = _v.v;
+    return *this;
+}
+
+inline MtCollisionUtil::MtSoaVector3::MtSoaVector3(const MtCollisionUtil::MtSoaVector3& src) {
+    this->x = src.x;
+    this->y = src.y;
+    this->z = src.z;
+}

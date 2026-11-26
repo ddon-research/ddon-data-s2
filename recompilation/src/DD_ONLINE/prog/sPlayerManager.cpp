@@ -5,6 +5,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "aStage.h"
@@ -144,19 +145,43 @@ __attribute__((weak)) estUnitType<uDDOModel, void> sPlayerManager::createUnit(u3
     __builtin_unreachable();
 }
 
-__attribute__((weak)) uHuman* sPlayerManager::getPlayerParty(s32 memberIndex) {
-    DDON_STUB("sPlayerManager::getPlayerParty")
+uHuman* sPlayerManager::getPlayerParty(s32 memberIndex) {
+    if (memberIndex > -1) {
+        cContextInstHm* pCtx = sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(memberIndex);
+        if (pCtx != nullptr) {
+            if ((pCtx->mIsValid & 11) == 11) {
+                uHuman* pPl = static_cast<uHuman*>(getLayoutUnit(cContextInterface::getUniqueId(static_cast<const cContextInstance*>(pCtx), static_cast<const cContextCharacter*>(nullptr))));
+                return pPl;
+            }
+        }
+        return nullptr;
+    } else {
+        return getMyPlayer();
+    }
+}
+
+uHuman* sPlayerManager::getPlayer(const cContextInstHm* pCtx) {
+    if (pCtx != nullptr) {
+        if ((pCtx->mIsValid & 3) == 3) {
+            return static_cast<uHuman*>(getLayoutUnit(cContextInterface::getUniqueId(static_cast<const cContextInstance*>(pCtx), static_cast<const cContextCharacter*>(nullptr))));
+        }
+    }
     return nullptr;
 }
 
-__attribute__((weak)) uHuman* sPlayerManager::getPlayer(const cContextInstHm* pCtx) {
-    DDON_STUB("sPlayerManager::getPlayer")
-    return nullptr;
-}
-
-__attribute__((weak)) uHuman* sPlayerManager::getPlayerCharacterId(u32 characterId, u32 pawnId) {
-    DDON_STUB("sPlayerManager::getPlayerCharacterId")
-    return nullptr;
+uHuman* sPlayerManager::getPlayerCharacterId(u32 characterId, u32 pawnId) {
+    if (characterId != 0) {
+        const cContextInstHm* pCtx = sContextManager::getInstance()->getContextPlayer(characterId, pawnId);
+        if (pCtx != nullptr) {
+            if ((pCtx->mIsValid & 3) == 3) {
+                uHuman* pPl = static_cast<uHuman*>(getLayoutUnit(cContextInterface::getUniqueId(static_cast<const cContextInstance*>(pCtx), static_cast<const cContextCharacter*>(nullptr))));
+                return pPl;
+            }
+        }
+        return nullptr;
+    } else {
+        return getMyPlayer();
+    }
 }
 
 __attribute__((weak)) void sPlayerManager::playerSyncLoad() {
@@ -164,9 +189,28 @@ __attribute__((weak)) void sPlayerManager::playerSyncLoad() {
     /* stub */
 }
 
-__attribute__((weak)) void sPlayerManager::playerSyncLoadCoreSub(cContextInstHm* pContext) {
-    DDON_STUB("sPlayerManager::playerSyncLoadCoreSub")
-    /* stub */
+void sPlayerManager::playerSyncLoadCoreSub(cContextInstHm* pContext) {
+    if (pContext == nullptr) {
+        return;
+    }
+    if ((pContext->mIsValid & 3) != 3) {
+        return;
+    }
+    cPlayerLoadManager& load_mgr = cContextInterface::getPlayerLoadMgr(pContext);
+    if (load_mgr.getLoadStatus() != 1) {
+        if (load_mgr.getLoadStatus() == 0) {
+            load_mgr.mPlayerLoadStatus = 1;
+            load_mgr.condisionInit(static_cast<cContextInstance*>(pContext));
+            load_mgr.loadRequest(static_cast<cContextInstance*>(pContext), static_cast<rCharacterEdit*>(nullptr), 1u);
+            load_mgr.mPlayerLoadStatus = 3;
+            load_mgr.condisionReset(static_cast<cContextInstance*>(pContext));
+        }
+    } else {
+        load_mgr.condisionInit(static_cast<cContextInstance*>(pContext));
+        load_mgr.loadRequest(static_cast<cContextInstance*>(pContext), static_cast<rCharacterEdit*>(nullptr), 1u);
+        load_mgr.mPlayerLoadStatus = 3;
+        load_mgr.condisionReset(static_cast<cContextInstance*>(pContext));
+    }
 }
 
 void sPlayerManager::returnTicket(u32 uniqId) {
@@ -299,9 +343,32 @@ void sPlayerManager::updatePawnLobbyHeal() {
     }
 }
 
-__attribute__((weak)) bool sPlayerManager::isPawnFarLost(const cContextInstHm* pInst) {
-    DDON_STUB("sPlayerManager::isPawnFarLost")
-    return {};
+bool sPlayerManager::isPawnFarLost(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        if (cContextInterface::isPawnOwner(pInst)) {
+            sContextManager* t1 = sContextManager::getInstance();
+            const cContextInstHm* p_my_context = t1->getContextMyPlayer();
+            if (p_my_context != nullptr) {
+                u32 live_state = cContextInterface::getStateLive(static_cast<const cContextInstance*>(pInst), static_cast<const cContextCharacter*>(nullptr));
+                if ((live_state - 513u) <= 1u) {
+                    MtVector3 frame72(cContextInterface::getNetPos(static_cast<const cContextInstance*>(p_my_context), static_cast<const cContextCharacter*>(nullptr)));
+                    MtVector3 frame88(cContextInterface::getNetPos(static_cast<const cContextInstance*>(pInst), static_cast<const cContextCharacter*>(nullptr)));
+                    float t5 = 10000.0f;
+                    float t6 = -1.0f;
+                    bool t7 = nDDOMath::isInSide(frame72, frame88, t5, t6);
+                    return !t7;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void sPlayerManager::callbackPawnChangeArea(bool isLobby) {
@@ -309,9 +376,55 @@ __attribute__((weak)) void sPlayerManager::callbackPawnChangeArea(bool isLobby) 
     /* stub */
 }
 
-__attribute__((weak)) u32 sPlayerManager::checkPawnChangeAreaState(const cContextInstHm* pInst, bool isLobby) {
-    DDON_STUB("sPlayerManager::checkPawnChangeAreaState")
-    return {};
+u32 sPlayerManager::checkPawnChangeAreaState(const cContextInstHm* pInst, bool isLobby) {
+    if (pInst != nullptr) {
+        if (cContextInterface::isPawnOwner(pInst)) {
+            sContextManager* t1 = sContextManager::getInstance();
+            const cContextInstHm* p_my_context = t1->getContextMyPlayer();
+            if (p_my_context != nullptr) {
+                u32 live_state = cContextInterface::getStateLive(static_cast<const cContextInstance*>(pInst), static_cast<const cContextCharacter*>(nullptr));
+                if ((live_state - 514u) > 1u) {
+                    if (live_state == 513) {
+                        MtVector3 frame104(cContextInterface::getNetPos(static_cast<const cContextInstance*>(p_my_context), static_cast<const cContextCharacter*>(nullptr)));
+                        MtVector3 frame120(cContextInterface::getNetPos(static_cast<const cContextInstance*>(pInst), static_cast<const cContextCharacter*>(nullptr)));
+                        float t5 = 3000.0f;
+                        float t6 = -1.0f;
+                        if (nDDOMath::isInSide(frame104, frame120, t5, t6)) {
+                            return isLobby;
+                        } else {
+                            return 2;
+                        }
+                    } else {
+                        if (live_state == 512) {
+                            if (cContextInterface::isDead(static_cast<const cContextInstance*>(pInst), static_cast<const cContextCharacter*>(nullptr), 0u)) {
+                                MtVector3 frame72(cContextInterface::getNetPos(static_cast<const cContextInstance*>(p_my_context), static_cast<const cContextCharacter*>(nullptr)));
+                                MtVector3 frame88(cContextInterface::getNetPos(static_cast<const cContextInstance*>(pInst), static_cast<const cContextCharacter*>(nullptr)));
+                                float t10 = 3000.0f;
+                                float t11 = -1.0f;
+                                if (nDDOMath::isInSide(frame72, frame88, t10, t11)) {
+                                    return isLobby;
+                                } else {
+                                    return 2;
+                                }
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            return 0;
+                        }
+                    }
+                } else {
+                    return 2;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) void sPlayerManager::applyPrologueStatus() {

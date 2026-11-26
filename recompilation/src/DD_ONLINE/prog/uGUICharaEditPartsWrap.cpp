@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUICharaEditPartsWrap.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -39,9 +40,6 @@ inline void uGUICharaEditPartsWrap::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::DTI)->memFree(p_addr);
 }
 
-uGUICharaEditPartsWrap::~uGUICharaEditPartsWrap() {
-}
-
 void uGUICharaEditPartsWrap::setup() {
     this->uGUIBase::setup();
 }
@@ -75,9 +73,11 @@ inline void uGUICharaEditPartsWrap::cDupliObjectBase::operator delete(void* p_ad
     MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cDupliObjectBase::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) MtVector2 uGUICharaEditPartsWrap::cDupliObjectBase::getPointerPos(uGUIBase* pBase) {
-    DDON_STUB("uGUICharaEditPartsWrap::cDupliObjectBase::getPointerPos")
-    __builtin_unreachable();
+MtVector2 uGUICharaEditPartsWrap::cDupliObjectBase::getPointerPos(uGUIBase* pBase) {
+    MtVector2 result;
+    result.x = MtVector2::Zero.x;
+    result.y = MtVector2::Zero.y;
+    return result;
 }
 
 void uGUICharaEditPartsWrap::cDupliObjectBase::setFocus(bool b) {
@@ -159,9 +159,11 @@ cControl* uGUICharaEditPartsWrap::cPartsBase::getCtrl() {
     return nullptr;
 }
 
-__attribute__((weak)) MtVector2 uGUICharaEditPartsWrap::cPartsBase::getPointerPos(uGUIBase* pBase) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsBase::getPointerPos")
-    __builtin_unreachable();
+MtVector2 uGUICharaEditPartsWrap::cPartsBase::getPointerPos(uGUIBase* pBase) {
+    MtVector2 result;
+    result.x = MtVector2::Zero.x;
+    result.y = MtVector2::Zero.y;
+    return result;
 }
 
 void uGUICharaEditPartsWrap::cPartsBase::setFocus(bool b) {
@@ -433,9 +435,8 @@ __attribute__((weak)) void uGUICharaEditPartsWrap::cPartsSlider::update() {
     /* stub */
 }
 
-__attribute__((weak)) MtVector2 uGUICharaEditPartsWrap::cPartsSlider::getPointerPos(uGUIBase* pBase) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsSlider::getPointerPos")
-    __builtin_unreachable();
+MtVector2 uGUICharaEditPartsWrap::cPartsSlider::getPointerPos(uGUIBase* pBase) {
+    return (&mRefSlider)->getPointerPos();
 }
 
 f32 uGUICharaEditPartsWrap::cPartsSlider::getSelectIdx(u32 idx, nCharacterEdit::PARTS_EVENT ev) {
@@ -557,9 +558,6 @@ inline void uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::operator delete(v
     MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::DTI)->memFree(p_addr);
 }
 
-uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::~cReferenceUIEditSliderExt() {
-}
-
 __attribute__((weak)) void uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::setMsgNumStr(s32 n, bool bInit) {
     DDON_STUB("uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::setMsgNumStr")
     /* stub */
@@ -634,9 +632,19 @@ __attribute__((weak)) void uGUICharaEditPartsWrap::cPartsImage::setToDecidedPoin
     /* stub */
 }
 
-__attribute__((weak)) s32 uGUICharaEditPartsWrap::cPartsImage::findDecidedIndex(s32 editParam) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsImage::findDecidedIndex")
-    return {};
+s32 uGUICharaEditPartsWrap::cPartsImage::findDecidedIndex(s32 editParam) {
+    if (mArray.mLength != 0) {
+        u32 i = 0;
+        do {
+            if (mArray.getBuffer()[static_cast<int>(i)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mArray.getBuffer()[static_cast<int>(i)]) + 56)) == static_cast<unsigned int>(editParam)) {
+                    return static_cast<s32>(i);
+                }
+            }
+            i += 1u;
+        } while (i < mArray.mLength);
+    }
+    return 0;
 }
 
 void uGUICharaEditPartsWrap::cPartsImage::moveInputParts() {
@@ -706,9 +714,18 @@ u32 uGUICharaEditPartsWrap::cPartsImage::evCtrlPartsCancel(cControl::Message* ms
     return 0;
 }
 
-__attribute__((weak)) u32 uGUICharaEditPartsWrap::cPartsImage::evCtrlPartsMouseOver(cControl::Message* msg) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsImage::evCtrlPartsMouseOver")
-    return {};
+u32 uGUICharaEditPartsWrap::cPartsImage::evCtrlPartsMouseOver(cControl::Message* msg) {
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->mMouse.isActiveMouse()) {
+        if (mpCtrlMat != nullptr) {
+            mpCtrlMat->setCurrentPos(msg->mouse_hit_id, false);
+        }
+        if (mpGuiCharacterEdit != nullptr) {
+            if (mpGuiCharacterEdit->mInputEventId == 0) {
+                mpGuiCharacterEdit->setInputEventWrap(94u);
+            }
+        }
+    }
+    return 0;
 }
 
 void uGUICharaEditPartsWrap::cPartsImage::evInputPartsOpen() {
@@ -981,9 +998,18 @@ u32 uGUICharaEditPartsWrap::cPartsColor::evCtrlPartsCancel(cControl::Message* ms
     return 0;
 }
 
-__attribute__((weak)) u32 uGUICharaEditPartsWrap::cPartsColor::evCtrlPartsMouseOver(cControl::Message* msg) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsColor::evCtrlPartsMouseOver")
-    return {};
+u32 uGUICharaEditPartsWrap::cPartsColor::evCtrlPartsMouseOver(cControl::Message* msg) {
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->mMouse.isActiveMouse()) {
+        if (mpCtrlMat != nullptr) {
+            mpCtrlMat->setCurrentPos(msg->mouse_hit_id, false);
+        }
+        if (mpGuiCharacterEdit != nullptr) {
+            if (mpGuiCharacterEdit->mInputEventId == 0) {
+                mpGuiCharacterEdit->setInputEventWrap(94u);
+            }
+        }
+    }
+    return 0;
 }
 
 void uGUICharaEditPartsWrap::cPartsColor::evInputPartsOpen() {
@@ -1265,9 +1291,8 @@ void uGUICharaEditPartsWrap::cPartsPulldown::setFocus(bool b) {
     }
 }
 
-__attribute__((weak)) MtVector2 uGUICharaEditPartsWrap::cPartsPulldown::getPointerPos(uGUIBase* pBase) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsPulldown::getPointerPos")
-    __builtin_unreachable();
+MtVector2 uGUICharaEditPartsWrap::cPartsPulldown::getPointerPos(uGUIBase* pBase) {
+    return (&mRefPulldown)->getPointerPos();
 }
 
 void uGUICharaEditPartsWrap::cPartsPulldown::update() {
@@ -1483,9 +1508,25 @@ void uGUICharaEditPartsWrap::cPartsRadioButton::deleteInstance(uGUICharacterEdit
     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 48) = 0;
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsRadioButton::update() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsRadioButton::update")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsRadioButton::update() {
+    mRefRadioButton.uGUIBase::cReferenceUIRadioButton::setFocus(mFocus);
+    if (mFocus) {
+        if (mOldFocus) {
+            (&mRefRadioButton)->update();
+        }
+        this->uGUICharaEditPartsWrap::cPartsBase::update();
+        return;
+    }
+    if (mRefRadioButton.mArray.mLength == 0) {
+        this->uGUICharaEditPartsWrap::cPartsBase::update();
+        return;
+    }
+    unsigned int i3 = 0;
+    do {
+        static_cast<uGUIBase::cReferenceUIRadioButton::cObject*>(mRefRadioButton.mArray.getBuffer()[static_cast<int>(i3)])->setFocus(false);
+        i3 += 1u;
+    } while (i3 < mRefRadioButton.mArray.mLength);
+    this->uGUICharaEditPartsWrap::cPartsBase::update();
 }
 
 cControl* uGUICharaEditPartsWrap::cPartsRadioButton::getCtrl() {
@@ -1576,9 +1617,8 @@ __attribute__((weak)) void uGUICharaEditPartsWrap::cPartsRadioSlider::update() {
     /* stub */
 }
 
-__attribute__((weak)) MtVector2 uGUICharaEditPartsWrap::cPartsRadioSlider::getPointerPos(uGUIBase* pBase) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsRadioSlider::getPointerPos")
-    __builtin_unreachable();
+MtVector2 uGUICharaEditPartsWrap::cPartsRadioSlider::getPointerPos(uGUIBase* pBase) {
+    return (&mRefRadioButton)->getPointerPos();
 }
 
 __attribute__((weak)) f32 uGUICharaEditPartsWrap::cPartsRadioSlider::getSelectIdx(u32 idx, nCharacterEdit::PARTS_EVENT ev) {
@@ -1698,9 +1738,6 @@ const MtDTI& uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::getDTI() const 
 
 inline void uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::DTI)->memFree(p_addr);
-}
-
-uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::~cReferenceUIRadioButtonExt() {
 }
 
 inline uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1843,14 +1880,39 @@ u32 uGUICharaEditPartsWrap::cPartsMyName::evCtrlPartsMouseClick(cControl::Messag
     return 0;
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsMyName::evInputPartsOpen() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsMyName::evInputPartsOpen")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsMyName::evInputPartsOpen() {
+    mTextFirst.uGUIBase::cReferenceUITextBox::setFocus(false);
+    if (static_cast<unsigned int>(strlen(mTextFirst.mMsg.ptr())) != 0) {
+        mpGuiCharacterEdit->mNameInputed[0] = true;
+    }
+    mTextLast.uGUIBase::cReferenceUITextBox::setFocus(false);
+    if (static_cast<unsigned int>(strlen(mTextLast.mMsg.ptr())) != 0) {
+        mpGuiCharacterEdit->mNameInputed[1] = true;
+    }
+    mNameInputRno = NAME_INPUT_SELECT;
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsMyName::evInputPartsDecide() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsMyName::evInputPartsDecide")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsMyName::evInputPartsDecide() {
+    if (mpCtrlV != nullptr) {
+        if (mpCtrlV->getCurrentPos() == 1) {
+            mTextFirst.uGUIBase::cReferenceUITextBox::setFocus(false);
+            mTextLast.uGUIBase::cReferenceUITextBox::setFocus(true);
+            mNameInputRno = NAME_INPUT_NAME;
+            mTextLast.wakeupKeyboard(1, mTextLast.mMsg.ptr());
+        } else {
+            if (mpCtrlV->getCurrentPos() == 0) {
+                mTextFirst.uGUIBase::cReferenceUITextBox::setFocus(true);
+                mTextLast.uGUIBase::cReferenceUITextBox::setFocus(false);
+                mNameInputRno = NAME_INPUT_NAME;
+                mTextFirst.wakeupKeyboard(1, mTextFirst.mMsg.ptr());
+            }
+        }
+    } else {
+        mTextFirst.uGUIBase::cReferenceUITextBox::setFocus(true);
+        mTextLast.uGUIBase::cReferenceUITextBox::setFocus(false);
+        mNameInputRno = NAME_INPUT_NAME;
+        mTextFirst.wakeupKeyboard(1, mTextFirst.mMsg.ptr());
+    }
 }
 
 __attribute__((weak)) void uGUICharaEditPartsWrap::cPartsMyName::evInputPartsClose() {

@@ -53,9 +53,11 @@ __attribute__((noinline)) rGrass::~rGrass() {
     clear();
 }
 
-__attribute__((weak)) void rGrass::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGrass::createProperty")
-    /* stub */
+void rGrass::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mSettingList", static_cast<MtObject*>(&mSettingList[0]), 33u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), "mClusters", static_cast<MtObject*>(&mClusters), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseComp", &mUseComp, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxLength", &mMaxLength, 1u, 0u);
 }
 
 __attribute__((weak)) bool rGrass::load(MtStream& stream) {
@@ -185,9 +187,12 @@ inline void rGrass::cCluster::operator delete(void* p_addr) {
 rGrass::cCluster::~cCluster() {
 }
 
-__attribute__((weak)) void rGrass::cCluster::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGrass::cCluster::createProperty")
-    /* stub */
+void rGrass::cCluster::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mVertexCount", &mVertexCount, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndexCount", &mIndexCount, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVertexBase", &mVertexBase, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDequantizationCoordScale", &mDequantizationCoordScale, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDequantizationCoordOffset", &mDequantizationCoordOffset, 1u, 0u);
 }
 
 bool rGrass::cCluster::load(MtStream& in) {
@@ -285,9 +290,24 @@ rGrass::cSetting::~cSetting() {
     mpNormalMap = nullptr;
 }
 
-__attribute__((weak)) void rGrass::cSetting::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGrass::cSetting::createProperty")
-    /* stub */
+void rGrass::cSetting::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpAlbedoMap", "resource", reinterpret_cast<MT_MFUNC>(&::rGrass::cSetting::getAlbedoTexture), reinterpret_cast<MT_MFUNC>(&::rGrass::cSetting::setAlbedoTexture), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpMaskMap", "resource", reinterpret_cast<MT_MFUNC>(&::rGrass::cSetting::getMaskTexture), reinterpret_cast<MT_MFUNC>(&::rGrass::cSetting::setMaskTexture), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpNormalMap", "resource", reinterpret_cast<MT_MFUNC>(&::rGrass::cSetting::getNormalTexture), reinterpret_cast<MT_MFUNC>(&::rGrass::cSetting::setNormalTexture), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mColorOne", &mColorOne, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColorTwo", &mColorTwo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpecularPower", &mSpecularPower, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTranslucent", &mTranslucent, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBegin", &mBegin, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWidth", &mWidth, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRatio", &mRatio, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeightCurve", &mWeightCurve, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mScale", reinterpret_cast<MT_MFUNC>(&::rGrass::cSetting::getScale), reinterpret_cast<MT_MFUNC>(&::rGrass::cSetting::setScale), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mAspect", reinterpret_cast<MT_MFUNC>(&::rGrass::cSetting::getAspect), reinterpret_cast<MT_MFUNC>(&::rGrass::cSetting::setAspect), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mChainGrassParams[0]", static_cast<MtObject*>(&mChainGrassParams[0]), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mChainGrassParams[1]", static_cast<MtObject*>(&mChainGrassParams[1]), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAmplification", &mGlobalWindParam.x, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFrequency", &mGlobalWindParam.y, 0u, 0u);
 }
 
 MtUI* rGrass::cSetting::createUI(MtProperty& prop) {
@@ -459,17 +479,17 @@ __attribute__((weak)) void rGrass::cSetting::update() {
 
 static auto ddon_emit_0x01b91a90 __attribute__((used)) = &rGrass::cSetting::getAlbedoTexture;
 
-__attribute__((weak)) void rGrass::cSetting::setAlbedoTexture(rTexture* ptex) {
+void rGrass::cSetting::setAlbedoTexture(rTexture* ptex) {
     if (mpAlbedoMap != nullptr) {
         mpAlbedoMap->release();
         mpAlbedoMap = nullptr;
     }
     if (ptex != nullptr) {
-        if (ptex->isIntermediate()) {
-            mpAlbedoMap = static_cast<rTexture*>(sResource::getInstance()->create(rTexture::DTI, ptex->getPath(), sResource::MODE_BLOCKING));
+        if ((ptex->mAttr & 8u) != 0) {
+            mpAlbedoMap = static_cast<rTexture*>((sResource::mpInstance)->create(rTexture::DTI, &ptex->mPath[0], 1u));
         } else {
             mpAlbedoMap = ptex;
-            mpAlbedoMap->addRef();
+            ptex->addRef();
         }
     } else {
         mpAlbedoMap = nullptr;
@@ -478,17 +498,17 @@ __attribute__((weak)) void rGrass::cSetting::setAlbedoTexture(rTexture* ptex) {
 
 static auto ddon_emit_0x01b91aa0 __attribute__((used)) = &rGrass::cSetting::getMaskTexture;
 
-__attribute__((weak)) void rGrass::cSetting::setMaskTexture(rTexture* ptex) {
+void rGrass::cSetting::setMaskTexture(rTexture* ptex) {
     if (mpMaskMap != nullptr) {
         mpMaskMap->release();
         mpMaskMap = nullptr;
     }
     if (ptex != nullptr) {
-        if (ptex->isIntermediate()) {
-            mpMaskMap = static_cast<rTexture*>(sResource::getInstance()->create(rTexture::DTI, ptex->getPath(), sResource::MODE_BLOCKING));
+        if ((ptex->mAttr & 8u) != 0) {
+            mpMaskMap = static_cast<rTexture*>((sResource::mpInstance)->create(rTexture::DTI, &ptex->mPath[0], 1u));
         } else {
             mpMaskMap = ptex;
-            mpMaskMap->addRef();
+            ptex->addRef();
         }
     } else {
         mpMaskMap = nullptr;
@@ -497,17 +517,17 @@ __attribute__((weak)) void rGrass::cSetting::setMaskTexture(rTexture* ptex) {
 
 static auto ddon_emit_0x01b91ab0 __attribute__((used)) = &rGrass::cSetting::getNormalTexture;
 
-__attribute__((weak)) void rGrass::cSetting::setNormalTexture(rTexture* ptex) {
+void rGrass::cSetting::setNormalTexture(rTexture* ptex) {
     if (mpNormalMap != nullptr) {
         mpNormalMap->release();
         mpNormalMap = nullptr;
     }
     if (ptex != nullptr) {
-        if (ptex->isIntermediate()) {
-            mpNormalMap = static_cast<rTexture*>(sResource::getInstance()->create(rTexture::DTI, ptex->getPath(), sResource::MODE_BLOCKING));
+        if ((ptex->mAttr & 8u) != 0) {
+            mpNormalMap = static_cast<rTexture*>((sResource::mpInstance)->create(rTexture::DTI, &ptex->mPath[0], 1u));
         } else {
             mpNormalMap = ptex;
-            mpNormalMap->addRef();
+            ptex->addRef();
         }
     } else {
         mpNormalMap = nullptr;
@@ -538,9 +558,10 @@ inline void rGrass::cChainGrass::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rGrass::cChainGrass::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rGrass::cChainGrass::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGrass::cChainGrass::createProperty")
-    /* stub */
+void rGrass::cChainGrass::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mDirection", &mDirection, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPower", &mPower, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTheta", &mTheta, 0u, 0u);
 }
 
 MtUI* rGrass::cChainGrass::createUI(MtProperty& prop) {
@@ -554,6 +575,8 @@ rGrass::cChainGrass::MyDTI rGrass::cChainGrass::DTI("rGrass::cChainGrass", &::Mt
 __attribute__((weak)) MtObject* rGrass::cChainGrass::MyDTI::newInstance() const {
     return new (16) rGrass::cChainGrass;
 }
+
+template void cNodeParam<rGrass::cCluster>::createProperty(MtPropertyList&);
 
 template cNodeParam<rGrass::cCluster>::~cNodeParam();
 

@@ -25,9 +25,11 @@ inline void cFurnitureGroup::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFurnitureGroup::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cFurnitureGroup::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFurnitureGroup::createProperty")
-    /* stub */
+void cFurnitureGroup::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCameraNo", &mCameraNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGmdIdx", &mGmdIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSortNo", &mSortNo, 0u, 0u);
 }
 
 MtUI* cFurnitureGroup::createUI(MtProperty& prop) {
@@ -54,9 +56,10 @@ inline void cFurnitureItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFurnitureItem::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cFurnitureItem::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFurnitureItem::createProperty")
-    /* stub */
+void cFurnitureItem::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mItemId", &mItemId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLayoutId", &mLayoutId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOmId", &mOmId, 0u, 0u);
 }
 
 MtUI* cFurnitureItem::createUI(MtProperty& prop) {
@@ -83,9 +86,12 @@ inline void cFurnitureLayout::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFurnitureLayout::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cFurnitureLayout::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFurnitureLayout::createProperty")
-    /* stub */
+void cFurnitureLayout::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsRemovable", &mIsRemovable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupId", &mGroupId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGmdIdx", &mGmdIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSortNo", &mSortNo, 0u, 0u);
 }
 
 MtUI* cFurnitureLayout::createUI(MtProperty& prop) {

@@ -117,7 +117,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuContentsExecutor();
-    virtual ~cMenuContentsExecutor();
+    virtual ~cMenuContentsExecutor() {}
     void initContentsExecutor(CONTENTS_TYPE contentsType, CONTENTS_OPEN_TYPE openType, u32 contentsScheduleId);
     nMenu::MENU_RET moveContentsExecutor();
     virtual void exitMenu();  // vtable slot 15
@@ -542,7 +542,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuEntryBoardMember();
-    virtual ~cMenuEntryBoardMember();
+    virtual ~cMenuEntryBoardMember() {}
     void initEntryBoardMember(MtTypedArray<CDataEntryMemberData>& MemberList, MtTypedArray<CDataEntryRecruitData>& RecruitList, u32 num);
     nMenu::MENU_RET moveEntryBoardMember();
     virtual void exitMenu();  // vtable slot 15
@@ -666,7 +666,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuExtendEntryBoardItem();
-    virtual ~cMenuExtendEntryBoardItem();
+    virtual ~cMenuExtendEntryBoardItem() {}
     void initExtendEntryBoardItem();
     nMenu::MENU_RET moveExtendEntryBoardItem();
 public:
@@ -712,7 +712,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetEntryBoardItem();
-    virtual ~cMenuGetEntryBoardItem();
+    virtual ~cMenuGetEntryBoardItem() {}
     void initGetEntryBoardItem(u64 boardId, u32 entryId, nNet::stEntryBoardItemInfo* pDstInfo, bool serverIn);
     nMenu::MENU_RET moveGetEntryBoardItem();
     virtual void exitMenu();  // vtable slot 15
@@ -766,7 +766,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuInviteEntryBoardItem();
-    virtual ~cMenuInviteEntryBoardItem();
+    virtual ~cMenuInviteEntryBoardItem() {}
     void initInviteEntryBoardItem(nNet::stEntryBoardItemInfo* pDstInfo);
     nMenu::MENU_RET moveInviteEntryBoardItem();
     virtual void exitMenu();  // vtable slot 15
@@ -923,7 +923,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuReadyEntryBoardItem();
-    virtual ~cMenuReadyEntryBoardItem();
+    virtual ~cMenuReadyEntryBoardItem() {}
     void initReadyEntryBoardItem();
     nMenu::MENU_RET moveReadyEntryBoardItem();
 private:
@@ -969,7 +969,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuRecreateEntryBoardItem();
-    virtual ~cMenuRecreateEntryBoardItem();
+    virtual ~cMenuRecreateEntryBoardItem() {}
     void initRecreateEntryBoardItem();
     nMenu::MENU_RET moveRecreateEntryBoardItem();
 public:
@@ -1013,7 +1013,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuReleasePassEntryBoardItem();
-    virtual ~cMenuReleasePassEntryBoardItem();
+    virtual ~cMenuReleasePassEntryBoardItem() {}
     void initReleasePassEntryBoardItem();
     nMenu::MENU_RET moveReleasePassEntryBoardItem();
     virtual void exitMenu();  // vtable slot 15
@@ -1060,7 +1060,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuStartEntryBoardItem();
-    virtual ~cMenuStartEntryBoardItem();
+    virtual ~cMenuStartEntryBoardItem() {}
     void initStartEntryBoardItem();
     nMenu::MENU_RET moveStartEntryBoardItem();
 public:
@@ -1101,6 +1101,10 @@ inline void* cMenuEntryBoardItem::operator new(size_t sz, void* p_addr) {
 
 inline cMenuEntryBoardItem::cMenuEntryBoardItem() {
     this->mpBoardInfo = nullptr;
+}
+
+inline nNet::stEntryBoardItemInfo* cMenuEntryBoardItem::getBoardInfo() {
+    return this->mpBoardInfo;
 }
 
 inline void* cMenuEntryBoardItemList::operator new(size_t sz, void* p_addr) {

@@ -65,8 +65,11 @@ cCharacterData::cCharacterData() {
 }
 
 cCharacterData::~cCharacterData() {
-    DDON_STUB("cCharacterData::~cCharacterData")
-    /* stub */
+    if (mCharData.mpEquipData == nullptr) {
+        return;
+    }
+    delete mCharData.mpEquipData;
+    mCharData.mpEquipData = nullptr;
 }
 
 __attribute__((weak)) void cCharacterData::createProperty(MtPropertyList& s) {
@@ -103,6 +106,10 @@ __attribute__((weak)) void cCharacterData::setMesseageSetPacket(CharacterMsgSetV
 
 void cCharacterData::setInviteWait(bool flag, bool sendFlag) {
     mCharData.mMatchProfile.mInviteWait = flag;
+}
+
+inline void cCharacterData::serializeQuestEtcF(BitWriter& w) const {
+    w.writeU32(mCharData.mQuestEtcF);
 }
 
 __attribute__((weak)) void cCharacterData::setRefPawnHistry(u32 pawnId, const cCharacterData::stPawnData* pPawnData) {
@@ -148,14 +155,34 @@ __attribute__((weak)) bool cCharacterData::stOptionData::deserialize(BitReader& 
     return {};
 }
 
-__attribute__((weak)) nNet::PAWN_SHARE_RANGE cCharacterData::stOptionData::getHeaderShareRange() const {
-    DDON_STUB("cCharacterData::stOptionData::getHeaderShareRange")
-    return {};
+nNet::PAWN_SHARE_RANGE cCharacterData::stOptionData::getHeaderShareRange() const {
+    static const nNet::PAWN_SHARE_RANGE share_ranges[5] = {
+        static_cast<const nNet::PAWN_SHARE_RANGE>(1),
+        static_cast<const nNet::PAWN_SHARE_RANGE>(2),
+        static_cast<const nNet::PAWN_SHARE_RANGE>(3),
+        static_cast<const nNet::PAWN_SHARE_RANGE>(4),
+        static_cast<const nNet::PAWN_SHARE_RANGE>(5),
+    };
+    if (mHeaderDispType <= 4) {
+        return share_ranges[mHeaderDispType];
+    } else {
+        return nNet::PAWN_SHARE_RANGE_ANYONE;
+    }
 }
 
-__attribute__((weak)) u8 cCharacterData::stOptionData::stNameDisp::GetNameType(u8 nameDispType) {
-    DDON_STUB("cCharacterData::stOptionData::stNameDisp::GetNameType")
-    return {};
+u8 cCharacterData::stOptionData::stNameDisp::GetNameType(u8 nameDispType) {
+    static const u8 name_types[5] = {
+        0,
+        1,
+        3,
+        2,
+        4,
+    };
+    if (nameDispType <= 4) {
+        return name_types[nameDispType];
+    } else {
+        return 0;
+    }
 }
 
 void cCharacterData::SCM::stSCMPlt::init() {
@@ -190,9 +217,29 @@ __attribute__((weak)) void cCharacterData::stMatchProfile::setServer() {
     /* stub */
 }
 
-__attribute__((weak)) bool cCharacterData::stTutorialGuide::writeData(BitWriter& w, u32 SaveVersion) const {
-    DDON_STUB("cCharacterData::stTutorialGuide::writeData")
-    return {};
+bool cCharacterData::stTutorialGuide::writeData(BitWriter& w, u32 SaveVersion) const {
+    w.writeU32(mFinishTutorial[0]);
+    w.writeU32(mFinishTutorial[1]);
+    w.writeU32(mFinishTutorial[2]);
+    w.writeU32(mFinishTutorial[3]);
+    w.writeU32(mFinishTutorial[4]);
+    w.writeU32(mFinishTutorial[5]);
+    w.writeU32(mFinishTutorial[6]);
+    w.writeU32(mFinishTutorial[7]);
+    w.writeU32(mFinishTutorial[8]);
+    w.writeU32(mFinishTutorial[9]);
+    w.writeU32(mFinishTutorial[10]);
+    w.writeU32(mFinishTutorial[11]);
+    w.writeU32(mFinishTutorial[12]);
+    w.writeU32(mFinishTutorial[13]);
+    w.writeU32(mFinishTutorial[14]);
+    w.writeU32(mFinishTutorial[15]);
+    w.writeU32(mLatestTutorial[0]);
+    w.writeU32(mLatestTutorial[1]);
+    w.writeU32(mLatestTutorial[2]);
+    w.writeU32(mLatestTutorial[3]);
+    w.writeU32(mLatestTutorial[4]);
+    return true;
 }
 
 void cCharacterData::stTutorialGuide::readData(BitReader& r, u32 CurrentVersion, u32 LoadVersion) {

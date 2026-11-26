@@ -12,6 +12,7 @@
 #include "cContext.h"
 #include "cContextInstance.h"
 #include "cContextPlayerInfo.h"
+#include "cEditParam.h"
 #include "cEquipData.h"
 #include "cNetGameServer.h"
 #include "cPlayerLoadManager.h"
@@ -90,9 +91,12 @@ cContextInstHm* cContextInterface::getContextInstHm() {
     return static_cast<cContextInstHm*>(v2_0);
 }
 
-__attribute__((weak)) u64 cContextInterface::getPosReceiveTime(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getPosReceiveTime")
-    return {};
+u64 cContextInterface::getPosReceiveTime(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return static_cast<u64>(pChara->getPosReceiveTime());
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setPosReceiveTime(cContextInstance* pInst, cContextCharacter* pChara, u64 time) {
@@ -102,9 +106,12 @@ void cContextInterface::setPosReceiveTime(cContextInstance* pInst, cContextChara
     pChara->mPosReceiveTime = static_cast<t64>(time);
 }
 
-__attribute__((weak)) s32 cContextInterface::getPosReceiveInterval(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getPosReceiveInterval")
-    return {};
+s32 cContextInterface::getPosReceiveInterval(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getPosReceiveInterval();
+    } else {
+        return -1;
+    }
 }
 
 void cContextInterface::setPosReceiveInterval(cContextInstance* pInst, cContextCharacter* pChara, s32 interval) {
@@ -126,9 +133,8 @@ void cContextInterface::setNetPos(cContextInstance* pInst, cContextCharacter* pC
     pInst->setNetPos(pos);
 }
 
-__attribute__((weak)) const nNetMsgData::stNetPos& cContextInterface::getNetRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getNetRealPos")
-    __builtin_unreachable();
+const nNetMsgData::stNetPos& cContextInterface::getNetRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    return *((pInst == nullptr) ? (&NetPosZero) : (&pInst->mNetPos));
 }
 
 __attribute__((weak)) void cContextInterface::setNetRealPos(cContextInstance* pInst, const nNetMsgData::stNetPos& pos) {
@@ -136,9 +142,12 @@ __attribute__((weak)) void cContextInterface::setNetRealPos(cContextInstance* pI
     /* stub */
 }
 
-__attribute__((weak)) f32 cContextInterface::getNetDir(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getNetDir")
-    return {};
+f32 cContextInterface::getNetDir(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        return pInst->getNetDir();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setNetDir(cContextInstance* pInst, cContextCharacter* pChara, f32 dir) {
@@ -148,9 +157,12 @@ void cContextInterface::setNetDir(cContextInstance* pInst, cContextCharacter* pC
     pInst->mNetDir = dir;
 }
 
-__attribute__((weak)) s32 cContextInterface::getStageNo(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getStageNo")
-    return {};
+s32 cContextInterface::getStageNo(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        return pInst->getStageNo();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setStageNo(cContextInstance* pInst, cContextCharacter* pChara, s32 StageNo) {
@@ -160,9 +172,12 @@ void cContextInterface::setStageNo(cContextInstance* pInst, cContextCharacter* p
     pInst->mStageNo = StageNo;
 }
 
-__attribute__((weak)) u32 cContextInterface::getUniqueId(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getUniqueId")
-    return {};
+u32 cContextInterface::getUniqueId(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        return pInst->getUniqueId();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setUniqueId(cContextInstance* pInst, cContextCharacter* pChara, u32 UniqueId) {
@@ -172,9 +187,12 @@ void cContextInterface::setUniqueId(cContextInstance* pInst, cContextCharacter* 
     pInst->mUniqueId = UniqueId;
 }
 
-__attribute__((weak)) u32 cContextInterface::getQuestId(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getQuestId")
-    return {};
+u32 cContextInterface::getQuestId(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        return pInst->getQuestId();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setQuestId(cContextInstance* pInst, cContextCharacter* pChara, u32 QuestId) {
@@ -186,7 +204,7 @@ void cContextInterface::setQuestId(cContextInstance* pInst, cContextCharacter* p
 
 bool cContextInterface::getIsReqAction(const cContextInstance* pInst, const cContextCharacter* pChara, u32 idx) {
     if (pChara != nullptr) {
-        return ((static_cast<unsigned long>(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pChara) + 44)) >> static_cast<unsigned long>(idx & 31u)) & 1ul) != 0;
+        return ((static_cast<unsigned long>(pChara->mIsReqAction) >> static_cast<unsigned long>(idx & 31u)) & 1ul) != 0;
     } else {
         return false;
     }
@@ -197,9 +215,11 @@ __attribute__((weak)) void cContextInterface::clrIsReqAction(cContextInstance* p
     /* stub */
 }
 
-__attribute__((weak)) u32 cContextInterface::getActNo(const cContextInstance* pInst, const cContextCharacter* pChara, u32 idx) {
-    DDON_STUB("cContextInterface::getActNo")
-    return {};
+u32 cContextInterface::getActNo(const cContextInstance* pInst, const cContextCharacter* pChara, u32 idx) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->getActNo(idx);
+    }
+    return 0xFFFFFFFF;
 }
 
 __attribute__((weak)) void cContextInterface::setActNo(cContextInstance* pInst, cContextCharacter* pChara, u32 idx, u32 no) {
@@ -207,9 +227,11 @@ __attribute__((weak)) void cContextInterface::setActNo(cContextInstance* pInst, 
     /* stub */
 }
 
-__attribute__((weak)) u8 cContextInterface::getActReqPrio(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getActReqPrio")
-    return {};
+u8 cContextInterface::getActReqPrio(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->getActReqPrio();
+    }
+    return 1;
 }
 
 void cContextInterface::setActReqPrio(cContextInstance* pInst, cContextCharacter* pChara, u8 prio) {
@@ -231,9 +253,29 @@ void cContextInterface::setActReqPrio(cContextInstance* pInst, cContextCharacter
     }
 }
 
-__attribute__((weak)) u32 cContextInterface::getActFreeWork(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getActFreeWork")
-    return {};
+u32 cContextInterface::getActFreeWork(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                const cContextInstChar* pInstChar = static_cast<const cContextInstChar*>(pInst);
+                v2_7 = static_cast<const cContextInstChar*>(pInst)->getActFreeWork();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setActFreeWork(cContextInstance* pInst, cContextCharacter* pChara, u32 work) {
@@ -255,9 +297,12 @@ void cContextInterface::setActFreeWork(cContextInstance* pInst, cContextCharacte
     }
 }
 
-__attribute__((weak)) u64 cContextInterface::getAttackParamUIDForDmVec(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getAttackParamUIDForDmVec")
-    return {};
+u64 cContextInterface::getAttackParamUIDForDmVec(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getAttackParamUIDForDmVec();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setAttackParamUIDForDmVec(cContextInstance* pInst, cContextCharacter* pChara, u64 uID) {
@@ -267,24 +312,95 @@ void cContextInterface::setAttackParamUIDForDmVec(cContextInstance* pInst, cCont
     pChara->mAttackParamUIDForDmVec = uID;
 }
 
-__attribute__((weak)) f32 cContextInterface::getMoveSpeed(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getMoveSpeed")
-    return {};
+f32 cContextInterface::getMoveSpeed(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    f32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0.0f;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        const cContextInstChar* pInstChar = static_cast<const cContextInstChar*>(pInst);
+        v2_7 = static_cast<const cContextInstChar*>(pInst)->getMoveSpeed();
+    }
+    return v2_7;
 }
 
-__attribute__((weak)) void cContextInterface::setMoveSpeed(cContextInstance* pInst, cContextCharacter* pChara, f32 speed) {
-    DDON_STUB("cContextInterface::setMoveSpeed")
-    /* stub */
+void cContextInterface::setMoveSpeed(cContextInstance* pInst, cContextCharacter* pChara, f32 speed) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstChar*>(pInst)->mMoveSpeed = speed;
+                return;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) f32 cContextInterface::getMoveAngle(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getMoveAngle")
-    return {};
+f32 cContextInterface::getMoveAngle(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    f32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0.0f;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_7 = static_cast<const cContextInstChar*>(pInst)->getMoveAngle();
+    }
+    return v2_7;
 }
 
-__attribute__((weak)) void cContextInterface::setMoveAngle(cContextInstance* pInst, cContextCharacter* pChara, f32 angle) {
-    DDON_STUB("cContextInterface::setMoveAngle")
-    /* stub */
+void cContextInterface::setMoveAngle(cContextInstance* pInst, cContextCharacter* pChara, f32 angle) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstChar*>(pInst)->mMoveAngle = angle;
+                return;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) MtVector3 cContextInterface::getCliffPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
@@ -311,14 +427,42 @@ void cContextInterface::setCliffPos(cContextInstance* pInst, cContextCharacter* 
     }
 }
 
-__attribute__((weak)) const nNetMsgData::stNetPos& cContextInterface::getCliffRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getCliffRealPos")
-    __builtin_unreachable();
+const nNetMsgData::stNetPos& cContextInterface::getCliffRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->mCliffPos;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return NetPosZero;
 }
 
-__attribute__((weak)) const MtVector3& cContextInterface::getCliffNormal(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getCliffNormal")
-    __builtin_unreachable();
+const MtVector3& cContextInterface::getCliffNormal(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->mCliffNormal;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return MtVector3::AxisZ;
 }
 
 void cContextInterface::setCliffNormal(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& vec) {
@@ -368,9 +512,23 @@ void cContextInterface::setCliffStartPos(cContextInstance* pInst, cContextCharac
     }
 }
 
-__attribute__((weak)) const nNetMsgData::stNetPos& cContextInterface::getCliffStartRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getCliffStartRealPos")
-    __builtin_unreachable();
+const nNetMsgData::stNetPos& cContextInterface::getCliffStartRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->mCliffStartPos;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return NetPosZero;
 }
 
 __attribute__((weak)) MtVector3 cContextInterface::getCliffStartOldPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
@@ -397,9 +555,23 @@ void cContextInterface::setCliffStartOldPos(cContextInstance* pInst, cContextCha
     }
 }
 
-__attribute__((weak)) const nNetMsgData::stNetPos& cContextInterface::getCliffStartOldRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getCliffStartOldRealPos")
-    __builtin_unreachable();
+const nNetMsgData::stNetPos& cContextInterface::getCliffStartOldRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->mCliffStartOldPos;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return NetPosZero;
 }
 
 __attribute__((weak)) MtVector3 cContextInterface::getWallClimbPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
@@ -426,14 +598,42 @@ void cContextInterface::setWallClimbPos(cContextInstance* pInst, cContextCharact
     }
 }
 
-__attribute__((weak)) const nNetMsgData::stNetPos& cContextInterface::getWallClimbRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getWallClimbRealPos")
-    __builtin_unreachable();
+const nNetMsgData::stNetPos& cContextInterface::getWallClimbRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->mWallClimbPos;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return NetPosZero;
 }
 
-__attribute__((weak)) const MtVector3& cContextInterface::getWallClimbNormal(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getWallClimbNormal")
-    __builtin_unreachable();
+const MtVector3& cContextInterface::getWallClimbNormal(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->mWallClimbNormal;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return MtVector3::Zero;
 }
 
 void cContextInterface::setWallClimbNormal(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
@@ -483,14 +683,47 @@ void cContextInterface::setWallClimbLandPos(cContextInstance* pInst, cContextCha
     }
 }
 
-__attribute__((weak)) const nNetMsgData::stNetPos& cContextInterface::getWallClimbLandRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getWallClimbLandRealPos")
-    __builtin_unreachable();
+const nNetMsgData::stNetPos& cContextInterface::getWallClimbLandRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->mWallClimbLandPos;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return NetPosZero;
 }
 
-__attribute__((weak)) u32 cContextInterface::getTargetUid(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getTargetUid")
-    return {};
+u32 cContextInterface::getTargetUid(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_7 = static_cast<const cContextInstChar*>(pInst)->getTargetUid();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setTargetUid(cContextInstance* pInst, cContextCharacter* pChara, const u32 uid) {
@@ -536,9 +769,23 @@ void cContextInterface::setTargetPos(cContextInstance* pInst, cContextCharacter*
     }
 }
 
-__attribute__((weak)) const nNetMsgData::stNetPos& cContextInterface::getTargetRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getTargetRealPos")
-    __builtin_unreachable();
+const nNetMsgData::stNetPos& cContextInterface::getTargetRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->mTargetPos;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return NetPosZero;
 }
 
 __attribute__((weak)) void cContextInterface::setActExParam(cContextInstance* pInst, cContextCharacter* pChara, u32 idx, const nActionManager::stActExParam* pSrc) {
@@ -546,9 +793,28 @@ __attribute__((weak)) void cContextInterface::setActExParam(cContextInstance* pI
     /* stub */
 }
 
-__attribute__((weak)) u32 cContextInterface::getClimbEnemyUId(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getClimbEnemyUId")
-    return {};
+u32 cContextInterface::getClimbEnemyUId(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_7 = static_cast<const cContextInstChar*>(pInst)->getClimbEnemyUId();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setClimbEnemyUId(cContextInstance* pInst, cContextCharacter* pChara, u32 no) {
@@ -570,9 +836,29 @@ void cContextInterface::setClimbEnemyUId(cContextInstance* pInst, cContextCharac
     }
 }
 
-__attribute__((weak)) s32 cContextInterface::getClimbEnemyJointNo(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getClimbEnemyJointNo")
-    return {};
+s32 cContextInterface::getClimbEnemyJointNo(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    s32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = -1;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                const cContextInstChar* pInstChar = static_cast<const cContextInstChar*>(pInst);
+                v2_7 = static_cast<const cContextInstChar*>(pInst)->getClimbEnemyJointNo();
+                return v2_7;
+            }
+        }
+        v2_7 = -1;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setClimbEnemyJointNo(cContextInstance* pInst, cContextCharacter* pChara, s32 no) {
@@ -594,9 +880,23 @@ void cContextInterface::setClimbEnemyJointNo(cContextInstance* pInst, cContextCh
     }
 }
 
-__attribute__((weak)) const MtVector3& cContextInterface::getClimbEnemyJointOffset(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getClimbEnemyJointOffset")
-    __builtin_unreachable();
+const MtVector3& cContextInterface::getClimbEnemyJointOffset(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->mClimbEnemyJointOffset;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return MtVector3::Zero;
 }
 
 void cContextInterface::setClimbEnemyJointOffset(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& offset) {
@@ -622,9 +922,28 @@ void cContextInterface::setClimbEnemyJointOffset(cContextInstance* pInst, cConte
     }
 }
 
-__attribute__((weak)) u16 cContextInterface::getClimbNodeIndex(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getClimbNodeIndex")
-    return {};
+u16 cContextInterface::getClimbNodeIndex(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u16 v2_0;
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_0 = static_cast<const cContextInstChar*>(pInst)->getClimbNodeIndex();
+                return v2_0;
+            }
+        }
+        v2_0 = 0;
+    } else {
+        v2_0 = 0;
+    }
+    return v2_0;
 }
 
 void cContextInterface::setClimbNodeIndex(cContextInstance* pInst, cContextCharacter* pChara, u16 NodeIndex) {
@@ -646,9 +965,29 @@ void cContextInterface::setClimbNodeIndex(cContextInstance* pInst, cContextChara
     }
 }
 
-__attribute__((weak)) u16 cContextInterface::getClimbGeomIndex(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getClimbGeomIndex")
-    return {};
+u16 cContextInterface::getClimbGeomIndex(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u16 v2_0;
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                const cContextInstChar* pInstChar = static_cast<const cContextInstChar*>(pInst);
+                v2_0 = static_cast<const cContextInstChar*>(pInst)->getClimbGeomIndex();
+                return v2_0;
+            }
+        }
+        v2_0 = 0;
+    } else {
+        v2_0 = 0;
+    }
+    return v2_0;
 }
 
 void cContextInterface::setClimbGeomIndex(cContextInstance* pInst, cContextCharacter* pChara, u16 GeomIndex) {
@@ -694,9 +1033,11 @@ void cContextInterface::setIsDead(cContextInstance* pInst, cContextCharacter* pC
     }
 }
 
-__attribute__((weak)) bool cContextInterface::isInjured(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isInjured")
-    return {};
+bool cContextInterface::isInjured(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->isInjured();
+    }
+    return false;
 }
 
 void cContextInterface::setIsInjured(cContextInstance* pInst, cContextCharacter* pChara, const bool flg) {
@@ -739,9 +1080,11 @@ void cContextInterface::setIsLost(cContextInstance* pInst, cContextCharacter* pC
     }
 }
 
-__attribute__((weak)) bool cContextInterface::isRescue(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isRescue")
-    return {};
+bool cContextInterface::isRescue(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->isRescue();
+    }
+    return false;
 }
 
 void cContextInterface::setIsRescue(cContextInstance* pInst, cContextCharacter* pChara, const bool flg) {
@@ -846,9 +1189,11 @@ __attribute__((weak)) HP_DATATYPE cContextInterface::getHpMaxCheatCheck(const cC
     return {};
 }
 
-__attribute__((weak)) bool cContextInterface::isHpMax_calc(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isHpMax_calc")
-    return {};
+bool cContextInterface::isHpMax_calc(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->isHpMax_calc();
+    }
+    return false;
 }
 
 void cContextInterface::setHpMax_calc(cContextInstance* pInst, cContextCharacter* pChara, bool flag) {
@@ -871,9 +1216,30 @@ void cContextInterface::setHpMax_calc(cContextInstance* pInst, cContextCharacter
     }
 }
 
-__attribute__((weak)) HP_DATATYPE cContextInterface::getHpWhite(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getHpWhite")
-    return {};
+HP_DATATYPE cContextInterface::getHpWhite(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    HP_DATATYPE v2_0;
+    if (pInst == nullptr) {
+        v2_0 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = 0;
+                    return v2_0;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = static_cast<const cContextInstChar*>(pInst)->getHpWhite();
+    }
+    return v2_0;
 }
 
 void cContextInterface::setHpWhite(cContextInstance* pInst, cContextCharacter* pChara, HP_DATATYPE hp) {
@@ -895,14 +1261,58 @@ void cContextInterface::setHpWhite(cContextInstance* pInst, cContextCharacter* p
     }
 }
 
-__attribute__((weak)) void cContextInterface::setStamina(cContextInstance* pInst, cContextCharacter* pChara, f32 stamina) {
-    DDON_STUB("cContextInterface::setStamina")
-    /* stub */
+void cContextInterface::setStamina(cContextInstance* pInst, cContextCharacter* pChara, f32 stamina) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstHm*>(pInst)->mPlayerInfo.mBaseInfo.mStamina_pri = stamina;
+                if (stamina > static_cast<cContextInstHm*>(pInst)->mPlayerInfo.getFinalMaxStamina()) {
+                    static_cast<cContextInstHm*>(pInst)->mPlayerInfo.mBaseInfo.mStamina_pri = static_cast<cContextInstHm*>(pInst)->mPlayerInfo.getFinalMaxStamina();
+                    if (0.0f > static_cast<cContextInstHm*>(pInst)->mPlayerInfo.mBaseInfo.mStamina_pri) {
+                        static_cast<cContextInstHm*>(pInst)->mPlayerInfo.mBaseInfo.mStamina_pri = 0.0f;
+                    }
+                } else {
+                    if (0.0f > stamina) {
+                        static_cast<cContextInstHm*>(pInst)->mPlayerInfo.mBaseInfo.mStamina_pri = 0.0f;
+                    }
+                }
+                return;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) u16 cContextInterface::getUseRegionBit(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getUseRegionBit")
-    return {};
+u16 cContextInterface::getUseRegionBit(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u16 v2_0;
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                const cContextInstChar* pInstChar = static_cast<const cContextInstChar*>(pInst);
+                v2_0 = static_cast<const cContextInstChar*>(pInst)->getUseRegionBit();
+                return v2_0;
+            }
+        }
+        v2_0 = 0;
+    } else {
+        v2_0 = 0;
+    }
+    return v2_0;
 }
 
 void cContextInterface::setUseRegionBit(cContextInstance* pInst, cContextCharacter* pChara, u16 useRegionBit) {
@@ -948,29 +1358,119 @@ void cContextInterface::setLv(cContextInstance* pInst, cContextCharacter* pChara
     }
 }
 
-__attribute__((weak)) f32 cContextInterface::getShakeEndurance(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getShakeEndurance")
-    return {};
+f32 cContextInterface::getShakeEndurance(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    f32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0.0f;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        const cContextInstChar* pInstChar = static_cast<const cContextInstChar*>(pInst);
+        v2_7 = static_cast<const cContextInstChar*>(pInst)->getShakeEndurance();
+    }
+    return v2_7;
 }
 
-__attribute__((weak)) void cContextInterface::setShakeEndurance(cContextInstance* pInst, cContextCharacter* pChara, f32 endurance) {
-    DDON_STUB("cContextInterface::setShakeEndurance")
-    /* stub */
+void cContextInterface::setShakeEndurance(cContextInstance* pInst, cContextCharacter* pChara, f32 endurance) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstChar*>(pInst)->mShakeEndurance = endurance;
+                return;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) f32 cContextInterface::getRageShrinkEndurance(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getRageShrinkEndurance")
-    return {};
+f32 cContextInterface::getRageShrinkEndurance(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    f32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0.0f;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_7 = static_cast<const cContextInstChar*>(pInst)->getRageShrinkEndurance();
+    }
+    return v2_7;
 }
 
-__attribute__((weak)) void cContextInterface::setRageShrinkEndurance(cContextInstance* pInst, cContextCharacter* pChara, f32 endurance) {
-    DDON_STUB("cContextInterface::setRageShrinkEndurance")
-    /* stub */
+void cContextInterface::setRageShrinkEndurance(cContextInstance* pInst, cContextCharacter* pChara, f32 endurance) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstChar*>(pInst)->mRageShrinkEndurance = endurance;
+                return;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) u32 cContextInterface::getOcdActiveMsgNum(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getOcdActiveMsgNum")
-    return {};
+u32 cContextInterface::getOcdActiveMsgNum(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_7 = static_cast<const cContextInstChar*>(pInst)->getOcdActiveMsgNum();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 __attribute__((weak)) const nObjCondition::stOcdActiveMsg& cContextInterface::getOcdActiveMsg(const cContextInstance* pInst, const cContextCharacter* pChara, u32 index) {
@@ -1064,9 +1564,23 @@ void cContextInterface::setOcdActiveTimer(cContextInstance* pInst, cContextChara
     }
 }
 
-__attribute__((weak)) void cContextInterface::setOcdActiveTimer(cContextInstance* pInst, cContextCharacter* pChara, u32 bank, u32 index, f32 timer) {
-    DDON_STUB("cContextInterface::setOcdActiveTimer")
-    /* stub */
+void cContextInterface::setOcdActiveTimer(cContextInstance* pInst, cContextCharacter* pChara, u32 bank, u32 index, f32 timer) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->setOcdActiveTimer(bank, index, timer);
+                return;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 f32 cContextInterface::getOcdActiveTimer(const cContextInstance* pInst, const cContextCharacter* pChara, u32 OcdUID) {
@@ -1286,29 +1800,103 @@ bool cContextInterface::isNpc(const cContextInstHm* pInst) {
     return false;
 }
 
-__attribute__((weak)) f32 cContextInterface::getEnchantRate(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getEnchantRate")
-    return {};
+f32 cContextInterface::getEnchantRate(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    f32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0.0f;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        const cContextInstChar* pInstChar = static_cast<const cContextInstChar*>(pInst);
+        v2_7 = static_cast<const cContextInstChar*>(pInst)->getEnchantRate();
+    }
+    return v2_7;
 }
 
-__attribute__((weak)) void cContextInterface::setEnchantRate(cContextInstance* pInst, cContextCharacter* pChara, f32 rate) {
-    DDON_STUB("cContextInterface::setEnchantRate")
-    /* stub */
+void cContextInterface::setEnchantRate(cContextInstance* pInst, cContextCharacter* pChara, f32 rate) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstChar*>(pInst)->mEnchantRate = rate;
+                return;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) f32 cContextInterface::getAilmentDamage(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getAilmentDamage")
-    return {};
+f32 cContextInterface::getAilmentDamage(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    f32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0.0f;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_7 = static_cast<const cContextInstChar*>(pInst)->getAilmentDamage();
+    }
+    return v2_7;
 }
 
-__attribute__((weak)) void cContextInterface::setAilmentDamage(cContextInstance* pInst, cContextCharacter* pChara, f32 ailment) {
-    DDON_STUB("cContextInterface::setAilmentDamage")
-    /* stub */
+void cContextInterface::setAilmentDamage(cContextInstance* pInst, cContextCharacter* pChara, f32 ailment) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstChar*>(pInst)->mAilmentDamage = ailment;
+                return;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) f32 cContextInterface::getAttackBasePhys(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getAttackBasePhys")
-    return {};
+f32 cContextInterface::getAttackBasePhys(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getAttackBasePhys();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setAttackBasePhys(cContextInstance* pInst, cContextCharacter* pChara, f32 attack) {
@@ -1318,9 +1906,12 @@ void cContextInterface::setAttackBasePhys(cContextInstance* pInst, cContextChara
     pChara->mAttackBasePhys = attack;
 }
 
-__attribute__((weak)) f32 cContextInterface::getAttackBaseMagic(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getAttackBaseMagic")
-    return {};
+f32 cContextInterface::getAttackBaseMagic(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getAttackBaseMagic();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setAttackBaseMagic(cContextInstance* pInst, cContextCharacter* pChara, f32 attack) {
@@ -1330,9 +1921,12 @@ void cContextInterface::setAttackBaseMagic(cContextInstance* pInst, cContextChar
     pChara->mAttackBaseMagic = attack;
 }
 
-__attribute__((weak)) f32 cContextInterface::getAttackWepPhys(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getAttackWepPhys")
-    return {};
+f32 cContextInterface::getAttackWepPhys(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getAttackWepPhys();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setAttackWepPhys(cContextInstance* pInst, cContextCharacter* pChara, f32 attack) {
@@ -1342,9 +1936,12 @@ void cContextInterface::setAttackWepPhys(cContextInstance* pInst, cContextCharac
     pChara->mAttackWepPhys = attack;
 }
 
-__attribute__((weak)) f32 cContextInterface::getAttackWepMagic(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getAttackWepMagic")
-    return {};
+f32 cContextInterface::getAttackWepMagic(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getAttackWepMagic();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setAttackWepMagic(cContextInstance* pInst, cContextCharacter* pChara, f32 attack) {
@@ -1354,9 +1951,12 @@ void cContextInterface::setAttackWepMagic(cContextInstance* pInst, cContextChara
     pChara->mAttackWepMagic = attack;
 }
 
-__attribute__((weak)) f32 cContextInterface::getDefenceBasePhys(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getDefenceBasePhys")
-    return {};
+f32 cContextInterface::getDefenceBasePhys(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getDefenceBasePhys();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setDefenceBasePhys(cContextInstance* pInst, cContextCharacter* pChara, f32 deffence) {
@@ -1366,9 +1966,12 @@ void cContextInterface::setDefenceBasePhys(cContextInstance* pInst, cContextChar
     pChara->mDefenceBasePhys = deffence;
 }
 
-__attribute__((weak)) f32 cContextInterface::getDefenceBaseMagic(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getDefenceBaseMagic")
-    return {};
+f32 cContextInterface::getDefenceBaseMagic(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getDefenceBaseMagic();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setDefenceBaseMagic(cContextInstance* pInst, cContextCharacter* pChara, f32 deffence) {
@@ -1378,9 +1981,12 @@ void cContextInterface::setDefenceBaseMagic(cContextInstance* pInst, cContextCha
     pChara->mDefenceBaseMagic = deffence;
 }
 
-__attribute__((weak)) f32 cContextInterface::getDefenceWepPhys(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getDefenceWepPhys")
-    return {};
+f32 cContextInterface::getDefenceWepPhys(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getDefenceWepPhys();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setDefenceWepPhys(cContextInstance* pInst, cContextCharacter* pChara, f32 deffence) {
@@ -1390,9 +1996,12 @@ void cContextInterface::setDefenceWepPhys(cContextInstance* pInst, cContextChara
     pChara->mDefenceWepPhys = deffence;
 }
 
-__attribute__((weak)) f32 cContextInterface::getDefenceWepMagic(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getDefenceWepMagic")
-    return {};
+f32 cContextInterface::getDefenceWepMagic(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getDefenceWepMagic();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setDefenceWepMagic(cContextInstance* pInst, cContextCharacter* pChara, f32 deffence) {
@@ -1402,9 +2011,12 @@ void cContextInterface::setDefenceWepMagic(cContextInstance* pInst, cContextChar
     pChara->mDefenceWepMagic = deffence;
 }
 
-__attribute__((weak)) f32 cContextInterface::getPower(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getPower")
-    return {};
+f32 cContextInterface::getPower(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getPower();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setPower(cContextInstance* pInst, cContextCharacter* pChara, f32 power) {
@@ -1414,9 +2026,12 @@ void cContextInterface::setPower(cContextInstance* pInst, cContextCharacter* pCh
     pChara->mPower = power;
 }
 
-__attribute__((weak)) f32 cContextInterface::getWeight(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getWeight")
-    return {};
+f32 cContextInterface::getWeight(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getWeight();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setWeight(cContextInstance* pInst, cContextCharacter* pChara, f32 weight) {
@@ -1426,9 +2041,12 @@ void cContextInterface::setWeight(cContextInstance* pInst, cContextCharacter* pC
     pChara->mWeight = weight;
 }
 
-__attribute__((weak)) f32 cContextInterface::getShrinkWep(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getShrinkWep")
-    return {};
+f32 cContextInterface::getShrinkWep(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getShrinkWep();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setShrinkWep(cContextInstance* pInst, cContextCharacter* pChara, f32 shrink) {
@@ -1438,9 +2056,12 @@ void cContextInterface::setShrinkWep(cContextInstance* pInst, cContextCharacter*
     pChara->mShrinkWep = shrink;
 }
 
-__attribute__((weak)) f32 cContextInterface::getBlowWep(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getBlowWep")
-    return {};
+f32 cContextInterface::getBlowWep(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getBlowWep();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setBlowWep(cContextInstance* pInst, cContextCharacter* pChara, f32 blow) {
@@ -1450,9 +2071,12 @@ void cContextInterface::setBlowWep(cContextInstance* pInst, cContextCharacter* p
     pChara->mBlowWep = blow;
 }
 
-__attribute__((weak)) f32 cContextInterface::getDownBase(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getDownBase")
-    return {};
+f32 cContextInterface::getDownBase(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getDownBase();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setDownBase(cContextInstance* pInst, cContextCharacter* pChara, f32 down) {
@@ -1462,9 +2086,12 @@ void cContextInterface::setDownBase(cContextInstance* pInst, cContextCharacter* 
     pChara->mDownBase = down;
 }
 
-__attribute__((weak)) f32 cContextInterface::getDownWep(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getDownWep")
-    return {};
+f32 cContextInterface::getDownWep(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getDownWep();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setDownWep(cContextInstance* pInst, cContextCharacter* pChara, f32 down) {
@@ -1474,9 +2101,12 @@ void cContextInterface::setDownWep(cContextInstance* pInst, cContextCharacter* p
     pChara->mDownWep = down;
 }
 
-__attribute__((weak)) f32 cContextInterface::getShakeBase(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getShakeBase")
-    return {};
+f32 cContextInterface::getShakeBase(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getShakeBase();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setShakeBase(cContextInstance* pInst, cContextCharacter* pChara, f32 shake) {
@@ -1493,9 +2123,12 @@ void cContextInterface::setGuardAttackBase(cContextInstance* pInst, cContextChar
     pChara->mGuardAttackBase = guard;
 }
 
-__attribute__((weak)) f32 cContextInterface::getGuardDefenceBase(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getGuardDefenceBase")
-    return {};
+f32 cContextInterface::getGuardDefenceBase(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getGuardDefenceBase();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setGuardDefenceBase(cContextInstance* pInst, cContextCharacter* pChara, f32 guard) {
@@ -1505,9 +2138,12 @@ void cContextInterface::setGuardDefenceBase(cContextInstance* pInst, cContextCha
     pChara->mGuardDefenceBase = guard;
 }
 
-__attribute__((weak)) f32 cContextInterface::getGuardDefenceWep(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getGuardDefenceWep")
-    return {};
+f32 cContextInterface::getGuardDefenceWep(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getGuardDefenceWep();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setGuardDefenceWep(cContextInstance* pInst, cContextCharacter* pChara, f32 guard) {
@@ -1517,9 +2153,12 @@ void cContextInterface::setGuardDefenceWep(cContextInstance* pInst, cContextChar
     pChara->mGuardDefenceWep = guard;
 }
 
-__attribute__((weak)) u32 cContextInterface::getWeaponTypeSe(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getWeaponTypeSe")
-    return {};
+u32 cContextInterface::getWeaponTypeSe(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getWeaponTypeSe();
+    } else {
+        return 0xFFFFFFFF;
+    }
 }
 
 void cContextInterface::setWeaponTypeSe(cContextInstance* pInst, cContextCharacter* pChara, u32 type) {
@@ -1529,9 +2168,12 @@ void cContextInterface::setWeaponTypeSe(cContextInstance* pInst, cContextCharact
     pChara->mWeaponTypeSe = type;
 }
 
-__attribute__((weak)) u32 cContextInterface::getBodySize(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getBodySize")
-    return {};
+u32 cContextInterface::getBodySize(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getBodySize();
+    } else {
+        return 1;
+    }
 }
 
 void cContextInterface::setBodySize(cContextInstance* pInst, cContextCharacter* pChara, u32 size) {
@@ -1541,9 +2183,12 @@ void cContextInterface::setBodySize(cContextInstance* pInst, cContextCharacter* 
     pChara->mBodySize = size;
 }
 
-__attribute__((weak)) bool cContextInterface::isServerDamage(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isServerDamage")
-    return {};
+bool cContextInterface::isServerDamage(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->isServerDamage();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsServerDamage(cContextInstance* pInst, cContextCharacter* pChara) {
@@ -1587,9 +2232,12 @@ void cContextInterface::addServerDamageMsg(cContextInstance* pInst, cContextChar
     pChara->addServerDamageMsg(pMsg);
 }
 
-__attribute__((weak)) bool cContextInterface::isSlaveDamage(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isSlaveDamage")
-    return {};
+bool cContextInterface::isSlaveDamage(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->isSlaveDamage();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsSlaveDamage(cContextInstance* pInst, cContextCharacter* pChara) {
@@ -1633,9 +2281,28 @@ void cContextInterface::addDamageMsg(cContextInstance* pInst, cContextCharacter*
     pChara->addDamageMsg(pMsg);
 }
 
-__attribute__((weak)) u16 cContextInterface::getActAtkAdjustUniqueId(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getActAtkAdjustUniqueId")
-    return {};
+u16 cContextInterface::getActAtkAdjustUniqueId(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u16 v2_0;
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_0 = static_cast<const cContextInstChar*>(pInst)->getActAtkAdjustUniqueId();
+                return v2_0;
+            }
+        }
+        v2_0 = 0;
+    } else {
+        v2_0 = 0;
+    }
+    return v2_0;
 }
 
 void cContextInterface::setActAtkAdjustUniqueId(cContextInstance* pInst, cContextCharacter* pChara, u16 uid) {
@@ -1657,9 +2324,12 @@ void cContextInterface::setActAtkAdjustUniqueId(cContextInstance* pInst, cContex
     }
 }
 
-__attribute__((weak)) bool cContextInterface::isCatchHit(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isCatchHit")
-    return {};
+bool cContextInterface::isCatchHit(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->isCatchHit();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsCatchHit(cContextInstance* pInst, cContextCharacter* pChara) {
@@ -1676,9 +2346,12 @@ void cContextInterface::clrIsCatchHit(cContextInstance* pInst, cContextCharacter
     pChara->mIsCatchHit = false;
 }
 
-__attribute__((weak)) bool cContextInterface::isCaughtResult(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isCaughtResult")
-    return {};
+bool cContextInterface::isCaughtResult(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->isCaughtResult();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsCaughtResult(cContextInstance* pInst, cContextCharacter* pChara) {
@@ -1695,9 +2368,12 @@ void cContextInterface::clrIsCaughtResult(cContextInstance* pInst, cContextChara
     pChara->mIsCaughtResult = false;
 }
 
-__attribute__((weak)) u8 cContextInterface::getCatchType(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getCatchType")
-    return {};
+u8 cContextInterface::getCatchType(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        return pInst->getCatchType();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setCatchType(cContextInstance* pInst, cContextCharacter* pChara, u8 type) {
@@ -1722,9 +2398,12 @@ void cContextInterface::setCatchJointNo(cContextInstance* pInst, cContextCharact
     pInst->mCatchJointNo = no;
 }
 
-__attribute__((weak)) u32 cContextInterface::getCatchTargetUID(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getCatchTargetUID")
-    return {};
+u32 cContextInterface::getCatchTargetUID(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pInst != nullptr) {
+        return pInst->getCatchTargetUID();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setCatchTargetUID(cContextInstance* pInst, cContextCharacter* pChara, u32 uid) {
@@ -1749,9 +2428,12 @@ void cContextInterface::setCatchHitPos(cContextInstance* pInst, cContextCharacte
     pChara->mCatchHitPos.pad_ = 0.0f;
 }
 
-__attribute__((weak)) bool cContextInterface::getIsOmReleaseThrow(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getIsOmReleaseThrow")
-    return {};
+bool cContextInterface::getIsOmReleaseThrow(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getIsOmReleaseThrow();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsOmReleaseThrow(cContextInstance* pInst, cContextCharacter* pChara, bool isOmReleaseThrow) {
@@ -1761,9 +2443,12 @@ void cContextInterface::setIsOmReleaseThrow(cContextInstance* pInst, cContextCha
     pChara->mIsOmReleaseThrow = isOmReleaseThrow;
 }
 
-__attribute__((weak)) bool cContextInterface::getIsOmReleasePut(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getIsOmReleasePut")
-    return {};
+bool cContextInterface::getIsOmReleasePut(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getIsOmReleasePut();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsOmReleasePut(cContextInstance* pInst, cContextCharacter* pChara, bool isOmReleasePut) {
@@ -1773,9 +2458,8 @@ void cContextInterface::setIsOmReleasePut(cContextInstance* pInst, cContextChara
     pChara->mIsOmReleasePut = isOmReleasePut;
 }
 
-__attribute__((weak)) const nNetMsgData::stNetPos& cContextInterface::getOmReleaseRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getOmReleaseRealPos")
-    __builtin_unreachable();
+const nNetMsgData::stNetPos& cContextInterface::getOmReleaseRealPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    return *((pChara == nullptr) ? (&NetPosZero) : (&pChara->mOmReleasePos));
 }
 
 __attribute__((weak)) MtVector3 cContextInterface::getOmReleasePos(const cContextInstance* pInst, const cContextCharacter* pChara) {
@@ -1790,9 +2474,12 @@ void cContextInterface::setOmReleasePos(cContextInstance* pInst, cContextCharact
     pChara->setOmReleasePos(pos);
 }
 
-__attribute__((weak)) f32 cContextInterface::getOmReleaseAngle(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getOmReleaseAngle")
-    return {};
+f32 cContextInterface::getOmReleaseAngle(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getOmReleaseAngle();
+    } else {
+        return 0.0f;
+    }
 }
 
 void cContextInterface::setOmReleaseAngle(cContextInstance* pInst, cContextCharacter* pChara, f32 angle) {
@@ -1812,14 +2499,50 @@ __attribute__((weak)) void cContextInterface::setOmReleaseQuat(cContextInstance*
     /* stub */
 }
 
-__attribute__((weak)) f32 cContextInterface::getLostTimer(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getLostTimer")
-    return {};
+f32 cContextInterface::getLostTimer(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    f32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0.0f;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        const cContextInstHm* pInstHm = static_cast<const cContextInstHm*>(pInst);
+        v2_7 = static_cast<const cContextInstHm*>(pInst)->getLostTime();
+    }
+    return v2_7;
 }
 
-__attribute__((weak)) void cContextInterface::setLostTimer(cContextInstance* pInst, cContextCharacter* pChara, f32 time) {
-    DDON_STUB("cContextInterface::setLostTimer")
-    /* stub */
+void cContextInterface::setLostTimer(cContextInstance* pInst, cContextCharacter* pChara, f32 time) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstHm*>(pInst)->mLostTime = time;
+                return;
+            }
+        }
+    }
 }
 
 void cContextInterface::subLostTimer(cContextInstance* pInst, cContextCharacter* pChara) {
@@ -1841,9 +2564,12 @@ void cContextInterface::subLostTimer(cContextInstance* pInst, cContextCharacter*
     }
 }
 
-__attribute__((weak)) bool cContextInterface::isIsInstantDead(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isIsInstantDead")
-    return {};
+bool cContextInterface::isIsInstantDead(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->isIsInstantDead();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsInstantDead(cContextInstance* pInst, cContextCharacter* pChara, bool b) {
@@ -1853,9 +2579,12 @@ void cContextInterface::setIsInstantDead(cContextInstance* pInst, cContextCharac
     pChara->mIsInstantDead = b;
 }
 
-__attribute__((weak)) u32 cContextInterface::getShlDelte(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getShlDelte")
-    return {};
+u32 cContextInterface::getShlDelte(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getShlDelte();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setShlDelte(cContextInstance* pInst, cContextCharacter* pChara, u32 bit) {
@@ -1950,9 +2679,12 @@ void cContextInterface::setIsShlReqSlave(cContextInstance* pInst, cContextCharac
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(reinterpret_cast<char*>(pChara) + index) + 1065) = static_cast<unsigned char>(flg);
 }
 
-__attribute__((weak)) bool cContextInterface::isShotReqNoAct(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isShotReqNoAct")
-    return {};
+bool cContextInterface::isShotReqNoAct(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->isShotReqNoAct();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsShotReqNoAct(cContextInstance* pInst, cContextCharacter* pChara, bool flg) {
@@ -2047,9 +2779,12 @@ void cContextInterface::requestShlStickInfoContext(cContextInstance* pInst, cCon
     pChara->requestShlStickInfoContext();
 }
 
-__attribute__((weak)) bool cContextInterface::isStickCreateControl(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isStickCreateControl")
-    return {};
+bool cContextInterface::isStickCreateControl(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->isStickCreateControl();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsStickCreateControl(cContextInstance* pInst, cContextCharacter* pChara, bool flg) {
@@ -2059,29 +2794,44 @@ void cContextInterface::setIsStickCreateControl(cContextInstance* pInst, cContex
     pChara->mIsStickCreateControl = flg;
 }
 
-__attribute__((weak)) u32 cContextInterface::getStickShlUniqueId(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getStickShlUniqueId")
-    return {};
+u32 cContextInterface::getStickShlUniqueId(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getStickShlUniqueId();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 cContextInterface::getStickUniqueId(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getStickUniqueId")
-    return {};
+u32 cContextInterface::getStickUniqueId(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getStickUniqueId();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u8 cContextInterface::getStickJointNo(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getStickJointNo")
-    return {};
+u8 cContextInterface::getStickJointNo(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getStickJointNo();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u8 cContextInterface::getStickShlGroup(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getStickShlGroup")
-    return {};
+u8 cContextInterface::getStickShlGroup(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getStickShlGroup();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u8 cContextInterface::getStickShlIndex(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getStickShlIndex")
-    return {};
+u8 cContextInterface::getStickShlIndex(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getStickShlIndex();
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) const MtVector3 cContextInterface::getStickJointOffset(const cContextInstance* pInst, const cContextCharacter* pChara) {
@@ -2094,9 +2844,12 @@ __attribute__((weak)) const MtVector3 cContextInterface::getStickDirection(const
     __builtin_unreachable();
 }
 
-__attribute__((weak)) bool cContextInterface::isShlKillSync(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isShlKillSync")
-    return {};
+bool cContextInterface::isShlKillSync(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->isShlKillSync();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsShlKillSync(cContextInstance* pInst, cContextCharacter* pChara, bool flg) {
@@ -2106,9 +2859,12 @@ void cContextInterface::setIsShlKillSync(cContextInstance* pInst, cContextCharac
     pChara->mIsShlKillSync = flg;
 }
 
-__attribute__((weak)) bool cContextInterface::isShlSlaveKill(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isShlSlaveKill")
-    return {};
+bool cContextInterface::isShlSlaveKill(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->isShlSlaveKill();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsShlSlaveKill(cContextInstance* pInst, cContextCharacter* pChara, bool flg) {
@@ -2118,9 +2874,12 @@ void cContextInterface::setIsShlSlaveKill(cContextInstance* pInst, cContextChara
     pChara->mIsShlSlaveKill = flg;
 }
 
-__attribute__((weak)) u8 cContextInterface::getSlaveKillSyncSts(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getSlaveKillSyncSts")
-    return {};
+u8 cContextInterface::getSlaveKillSyncSts(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getSlaveKillSyncSts();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setSlaveKillSyncSts(cContextInstance* pInst, cContextCharacter* pChara, u8 bit) {
@@ -2130,9 +2889,29 @@ void cContextInterface::setSlaveKillSyncSts(cContextInstance* pInst, cContextCha
     pChara->mShlSlaveKillSyncSts = bit;
 }
 
-__attribute__((weak)) u32 cContextInterface::getEnemyStatusGroupNum(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getEnemyStatusGroupNum")
-    return {};
+u32 cContextInterface::getEnemyStatusGroupNum(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                const cContextInstChar* pInstChar = static_cast<const cContextInstChar*>(pInst);
+                v2_7 = static_cast<const cContextInstChar*>(pInst)->getEnemyStatusGroupNum();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setEnemyStatusGroupNum(cContextInstance* pInst, cContextCharacter* pChara, u32 groupNum) {
@@ -2159,9 +2938,15 @@ __attribute__((weak)) bool cContextInterface::addEnemyStatusGroup(cContextInstan
     return {};
 }
 
-__attribute__((weak)) u32 cContextInterface::getEnemyStatusGroup(const cContextInstance* pInst, const cContextCharacter* pChara, u32 idx) {
-    DDON_STUB("cContextInterface::getEnemyStatusGroup")
-    return {};
+u32 cContextInterface::getEnemyStatusGroup(const cContextInstance* pInst, const cContextCharacter* pChara, u32 idx) {
+    if (pInst != nullptr) {
+        if (pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+            if (idx <= 15u) {
+                return static_cast<const cContextInstChar*>(pInst)->getEnemyStatusGroup(idx);
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) void cContextInterface::setEnemyStatusGroup(cContextInstance* pInst, cContextCharacter* pChara, u32 idx, u32 group) {
@@ -2169,9 +2954,15 @@ __attribute__((weak)) void cContextInterface::setEnemyStatusGroup(cContextInstan
     /* stub */
 }
 
-__attribute__((weak)) u32 cContextInterface::getEnemyStatusSubGroup(const cContextInstance* pInst, const cContextCharacter* pChara, u32 idx) {
-    DDON_STUB("cContextInterface::getEnemyStatusSubGroup")
-    return {};
+u32 cContextInterface::getEnemyStatusSubGroup(const cContextInstance* pInst, const cContextCharacter* pChara, u32 idx) {
+    if (pInst != nullptr) {
+        if (pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+            if (idx <= 15u) {
+                return static_cast<const cContextInstChar*>(pInst)->getEnemyStatusSubGroup(idx);
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) void cContextInterface::setEnemyStatusSubGroup(cContextInstance* pInst, cContextCharacter* pChara, u32 idx, u32 subGroup) {
@@ -2198,9 +2989,30 @@ void cContextInterface::setEnemyBitReceive(cContextInstance* pInst, cContextChar
     }
 }
 
-__attribute__((weak)) u64 cContextInterface::getEnemyBitCtrlCollision(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getEnemyBitCtrlCollision")
-    return {};
+u64 cContextInterface::getEnemyBitCtrlCollision(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u64 v2_0;
+    if (pInst == nullptr) {
+        v2_0 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = 0;
+                    return v2_0;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = static_cast<const cContextInstChar*>(pInst)->getEnemyBitCtrlCollision();
+    }
+    return v2_0;
 }
 
 void cContextInterface::setEnemyBitCtrlCollision(cContextInstance* pInst, cContextCharacter* pChara, u64 bit) {
@@ -2222,9 +3034,11 @@ void cContextInterface::setEnemyBitCtrlCollision(cContextInstance* pInst, cConte
     }
 }
 
-__attribute__((weak)) u8 cContextInterface::getEnemyCtrRegionSelectNo(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getEnemyCtrRegionSelectNo")
-    return {};
+u8 cContextInterface::getEnemyCtrRegionSelectNo(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->getEnemyCtrRegionSelectNo();
+    }
+    return 0;
 }
 
 void cContextInterface::setEnemyCtrRegionSelectNo(cContextInstance* pInst, cContextCharacter* pChara, u8 selectNo) {
@@ -2246,9 +3060,30 @@ void cContextInterface::setEnemyCtrRegionSelectNo(cContextInstance* pInst, cCont
     }
 }
 
-__attribute__((weak)) u64 cContextInterface::getEnemyBitCtrParts(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getEnemyBitCtrParts")
-    return {};
+u64 cContextInterface::getEnemyBitCtrParts(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u64 v2_0;
+    if (pInst == nullptr) {
+        v2_0 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = 0;
+                    return v2_0;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = static_cast<const cContextInstChar*>(pInst)->getEnemyBitCtrParts();
+    }
+    return v2_0;
 }
 
 void cContextInterface::setEnemyBitCtrParts(cContextInstance* pInst, cContextCharacter* pChara, u64 bit) {
@@ -2270,9 +3105,30 @@ void cContextInterface::setEnemyBitCtrParts(cContextInstance* pInst, cContextCha
     }
 }
 
-__attribute__((weak)) u64 cContextInterface::getEnemyWorkRate(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getEnemyWorkRate")
-    return {};
+u64 cContextInterface::getEnemyWorkRate(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u64 v2_0;
+    if (pInst == nullptr) {
+        v2_0 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = 0;
+                    return v2_0;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = static_cast<const cContextInstChar*>(pInst)->getEnemyWorkRate();
+    }
+    return v2_0;
 }
 
 void cContextInterface::setEnemyWorkRate(cContextInstance* pInst, cContextCharacter* pChara, u64 bit) {
@@ -2294,9 +3150,30 @@ void cContextInterface::setEnemyWorkRate(cContextInstance* pInst, cContextCharac
     }
 }
 
-__attribute__((weak)) u64 cContextInterface::getEnemyScale(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getEnemyScale")
-    return {};
+u64 cContextInterface::getEnemyScale(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u64 v2_0;
+    if (pInst == nullptr) {
+        v2_0 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = 0;
+                    return v2_0;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = static_cast<const cContextInstChar*>(pInst)->getEnemyScale();
+    }
+    return v2_0;
 }
 
 void cContextInterface::setEnemyScale(cContextInstance* pInst, cContextCharacter* pChara, u64 bit) {
@@ -2318,9 +3195,30 @@ void cContextInterface::setEnemyScale(cContextInstance* pInst, cContextCharacter
     }
 }
 
-__attribute__((weak)) u64 cContextInterface::getEnemyBitCtrlMontage(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getEnemyBitCtrlMontage")
-    return {};
+u64 cContextInterface::getEnemyBitCtrlMontage(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u64 v2_0;
+    if (pInst == nullptr) {
+        v2_0 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = 0;
+                    return v2_0;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = static_cast<const cContextInstChar*>(pInst)->getEnemyBitCtrlMontage();
+    }
+    return v2_0;
 }
 
 void cContextInterface::setEnemyBitCtrlMontage(cContextInstance* pInst, cContextCharacter* pChara, u64 bit) {
@@ -2342,9 +3240,28 @@ void cContextInterface::setEnemyBitCtrlMontage(cContextInstance* pInst, cContext
     }
 }
 
-__attribute__((weak)) u32 cContextInterface::getEnemyBitCtrlSyncBit(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getEnemyBitCtrlSyncBit")
-    return {};
+u32 cContextInterface::getEnemyBitCtrlSyncBit(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_7 = static_cast<const cContextInstChar*>(pInst)->getEnemyBitCtrlSyncBit();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setEnemyBitCtrlSyncBit(cContextInstance* pInst, cContextCharacter* pChara, u32 bit) {
@@ -2366,9 +3283,11 @@ void cContextInterface::setEnemyBitCtrlSyncBit(cContextInstance* pInst, cContext
     }
 }
 
-__attribute__((weak)) bool cContextInterface::isEnemyStatusChange(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isEnemyStatusChange")
-    return {};
+bool cContextInterface::isEnemyStatusChange(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->isEnemyStatusChange();
+    }
+    return false;
 }
 
 void cContextInterface::setEnemyStatusChange(cContextInstance* pInst, cContextCharacter* pChara, bool enable) {
@@ -2390,9 +3309,11 @@ void cContextInterface::setEnemyStatusChange(cContextInstance* pInst, cContextCh
     }
 }
 
-__attribute__((weak)) bool cContextInterface::getEnemyWaitting(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getEnemyWaitting")
-    return {};
+bool cContextInterface::getEnemyWaitting(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->getEnemyWaitting();
+    }
+    return false;
 }
 
 void cContextInterface::setEnemyWaitting(cContextInstance* pInst, cContextCharacter* pChara, bool enable) {
@@ -2415,9 +3336,11 @@ void cContextInterface::setEnemyWaitting(cContextInstance* pInst, cContextCharac
     }
 }
 
-__attribute__((weak)) bool cContextInterface::isEnemyWaittingChange(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isEnemyWaittingChange")
-    return {};
+bool cContextInterface::isEnemyWaittingChange(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->isEnemyWaittingChange();
+    }
+    return false;
 }
 
 void cContextInterface::setEnemyWaittingChange(cContextInstance* pInst, cContextCharacter* pChara, bool enable) {
@@ -2440,9 +3363,11 @@ void cContextInterface::setEnemyWaittingChange(cContextInstance* pInst, cContext
     }
 }
 
-__attribute__((weak)) bool cContextInterface::getEnemyStartWait(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getEnemyStartWait")
-    return {};
+bool cContextInterface::getEnemyStartWait(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->getEnemyStartWait();
+    }
+    return false;
 }
 
 void cContextInterface::setEnemyStartWait(cContextInstance* pInst, cContextCharacter* pChara, bool enable) {
@@ -2465,9 +3390,11 @@ void cContextInterface::setEnemyStartWait(cContextInstance* pInst, cContextChara
     }
 }
 
-__attribute__((weak)) bool cContextInterface::isEnemyStartWaitChange(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isEnemyStartWaitChange")
-    return {};
+bool cContextInterface::isEnemyStartWaitChange(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->isEnemyStartWaitChange();
+    }
+    return false;
 }
 
 void cContextInterface::setEnemyStartWaitChange(cContextInstance* pInst, cContextCharacter* pChara, bool enable) {
@@ -2604,9 +3531,28 @@ void cContextInterface::eraseCorePointMsg(cContextInstance* pInst, cContextChara
     }
 }
 
-__attribute__((weak)) u32 cContextInterface::getMontageFixNo(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getMontageFixNo")
-    return {};
+u32 cContextInterface::getMontageFixNo(const cContextInstance* pInst) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_7 = static_cast<const cContextInstChar*>(pInst)->getMontageFixNo();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setMontageFixNo(cContextInstance* pInst, u32 fixNo) {
@@ -2628,9 +3574,29 @@ void cContextInterface::setMontageFixNo(cContextInstance* pInst, u32 fixNo) {
     }
 }
 
-__attribute__((weak)) u32 cContextInterface::getMontageRandom(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getMontageRandom")
-    return {};
+u32 cContextInterface::getMontageRandom(const cContextInstance* pInst) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                const cContextInstChar* pInstChar = static_cast<const cContextInstChar*>(pInst);
+                v2_7 = static_cast<const cContextInstChar*>(pInst)->getMontageRandom();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setMontageRandom(cContextInstance* pInst, u32 rand) {
@@ -2708,9 +3674,29 @@ void cContextInterface::clearCorePointSlaveMsgTop(cContextInstance* pInst, cCont
     pChara->clearCorePointSlaveMsgTop();
 }
 
-__attribute__((weak)) u16 cContextInterface::getCommonWork(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getCommonWork")
-    return {};
+u16 cContextInterface::getCommonWork(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u16 v2_0;
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                const cContextInstChar* pInstChar = static_cast<const cContextInstChar*>(pInst);
+                v2_0 = static_cast<const cContextInstChar*>(pInst)->getCommonWork();
+                return v2_0;
+            }
+        }
+        v2_0 = 0;
+    } else {
+        v2_0 = 0;
+    }
+    return v2_0;
 }
 
 void cContextInterface::setCommonWork(cContextInstance* pInst, cContextCharacter* pChara, u16 work) {
@@ -2769,9 +3755,29 @@ __attribute__((weak)) bool cContextInterface::isCommonWork(const cContextInstanc
     return {};
 }
 
-__attribute__((weak)) u16 cContextInterface::getCustomWork(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getCustomWork")
-    return {};
+u16 cContextInterface::getCustomWork(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u16 v2_0;
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                const cContextInstChar* pInstChar = static_cast<const cContextInstChar*>(pInst);
+                v2_0 = static_cast<const cContextInstChar*>(pInst)->getCustomWork();
+                return v2_0;
+            }
+        }
+        v2_0 = 0;
+    } else {
+        v2_0 = 0;
+    }
+    return v2_0;
 }
 
 void cContextInterface::setCustomWork(cContextInstance* pInst, cContextCharacter* pChara, u16 work) {
@@ -2830,9 +3836,28 @@ __attribute__((weak)) bool cContextInterface::isCustomWork(const cContextInstanc
     return {};
 }
 
-__attribute__((weak)) u32 cContextInterface::getStateLive(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getStateLive")
-    return {};
+u32 cContextInterface::getStateLive(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstChar::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_7 = static_cast<const cContextInstChar*>(pInst)->getStateLive();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setStateLive(cContextInstance* pInst, cContextCharacter* pChara, u32 state) {
@@ -2858,9 +3883,11 @@ void cContextInterface::setStateLive(cContextInstance* pInst, cContextCharacter*
     }
 }
 
-__attribute__((weak)) bool cContextInterface::isStateLiveChange(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::isStateLiveChange")
-    return {};
+bool cContextInterface::isStateLiveChange(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstChar::DTI)) {
+        return static_cast<const cContextInstChar*>(pInst)->isStateLiveChange();
+    }
+    return false;
 }
 
 void cContextInterface::setStateLiveChange(cContextInstance* pInst, cContextCharacter* pChara, bool flg) {
@@ -2933,9 +3960,8 @@ void cContextInterface::pushBowPeriodNetData(cContextInstance* pInst, cContextCh
     pChara->pushBowPeriodNetData(d);
 }
 
-__attribute__((weak)) const MtVector3& cContextInterface::getBowNetAimPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getBowNetAimPos")
-    __builtin_unreachable();
+const MtVector3& cContextInterface::getBowNetAimPos(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    return *((pChara == nullptr) ? (&MtVector3::Zero) : (&pChara->mBowNetAimPos));
 }
 
 void cContextInterface::setBowNetAimPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
@@ -2948,9 +3974,12 @@ void cContextInterface::setBowNetAimPos(cContextInstance* pInst, cContextCharact
     pChara->mBowNetAimPos.pad_ = 0.0f;
 }
 
-__attribute__((weak)) u32 cContextInterface::getBowNetUpdateFlag(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    DDON_STUB("cContextInterface::getBowNetUpdateFlag")
-    return {};
+u32 cContextInterface::getBowNetUpdateFlag(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    if (pChara != nullptr) {
+        return pChara->getBowNetUpdateFlag();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setBowNetUpdateFlag(cContextInstance* pInst, cContextCharacter* pChara, u32 flag) {
@@ -2960,9 +3989,12 @@ void cContextInterface::setBowNetUpdateFlag(cContextInstance* pInst, cContextCha
     pChara->mBowNetUpdateFlag = flag;
 }
 
-__attribute__((weak)) bool cContextInterface::getMasterChangeFlag(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getMasterChangeFlag")
-    return {};
+bool cContextInterface::getMasterChangeFlag(const cContextInstance* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getMasterChangeFlag();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setMasterChangeFlag(cContextInstance* pInst, bool flg) {
@@ -2972,9 +4004,12 @@ void cContextInterface::setMasterChangeFlag(cContextInstance* pInst, bool flg) {
     pInst->mMasterChangeFlag = flg;
 }
 
-__attribute__((weak)) s32 cContextInterface::getMasterIndex(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getMasterIndex")
-    return {};
+s32 cContextInterface::getMasterIndex(const cContextInstance* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getMasterIndex();
+    } else {
+        return -1;
+    }
 }
 
 void cContextInterface::setMasterIndex(cContextInstance* pInst, s32 masterIndex) {
@@ -2984,9 +4019,12 @@ void cContextInterface::setMasterIndex(cContextInstance* pInst, s32 masterIndex)
     pInst->mMasterIndex = masterIndex;
 }
 
-__attribute__((weak)) s32 cContextInterface::getMainEncountArea(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getMainEncountArea")
-    return {};
+s32 cContextInterface::getMainEncountArea(const cContextInstance* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getMainEncountArea();
+    } else {
+        return -1;
+    }
 }
 
 void cContextInterface::setMainEncountArea(cContextInstance* pInst, s32 encountArea) {
@@ -2996,9 +4034,12 @@ void cContextInterface::setMainEncountArea(cContextInstance* pInst, s32 encountA
     pInst->mMainEncountArea = encountArea;
 }
 
-__attribute__((weak)) bool cContextInterface::getSetWaitFlag(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getSetWaitFlag")
-    return {};
+bool cContextInterface::getSetWaitFlag(const cContextInstance* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getSetWaitFlag();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setSetWaitFlag(cContextInstance* pInst, bool flg) {
@@ -3023,9 +4064,15 @@ __attribute__((weak)) bool cContextInterface::isPartyLeader(const cContextInstan
     return {};
 }
 
-__attribute__((weak)) bool cContextInterface::isPartyLeader(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::isPartyLeader")
-    return {};
+bool cContextInterface::isPartyLeader(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        if (pInst->mHumanType == 0) {
+            if ((pInst->getCharId() != 0) && (pInst->getCharId() == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId)) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) bool cContextInterface::isPawnOwner(const cContextInstance* pInst) {
@@ -3087,9 +4134,11 @@ u32 cContextInterface::getRPCID(const cContextInstHm* pInst) {
     return 0;
 }
 
-__attribute__((weak)) u32 cContextInterface::getSex(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getSex")
-    return {};
+u32 cContextInterface::getSex(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        return static_cast<const cContextInstHm*>(pInst)->mSex;
+    }
+    return 0;
 }
 
 u32 cContextInterface::getSex(const cContextInstHm* pInst) {
@@ -3126,19 +4175,62 @@ void cContextInterface::setSex(cContextInstHm* pInst, u32 sex) {
     pInst->mSex = static_cast<unsigned char>(sex);
 }
 
-__attribute__((weak)) rCharacterEdit* cContextInterface::getCharacterEdit(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getCharacterEdit")
-    return nullptr;
+rCharacterEdit* cContextInterface::getCharacterEdit(const cContextInstance* pInst) {
+    rCharacterEdit* v2_0;
+    if (pInst == nullptr) {
+        v2_0 = nullptr;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = nullptr;
+                    return v2_0;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = static_cast<const cContextInstHm*>(pInst)->getCharacterEdit();
+    }
+    return v2_0;
 }
 
-__attribute__((weak)) rCharacterEdit* cContextInterface::getCharacterEdit(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getCharacterEdit")
-    return nullptr;
+rCharacterEdit* cContextInterface::getCharacterEdit(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getCharacterEdit();
+    } else {
+        return nullptr;
+    }
 }
 
-__attribute__((weak)) s32 cContextInterface::getFloorGroupNo(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getFloorGroupNo")
-    return {};
+s32 cContextInterface::getFloorGroupNo(const cContextInstance* pInst) {
+    s32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_7 = static_cast<const cContextInstHm*>(pInst)->getFloorGroupNo();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setFloorGroupNo(cContextInstance* pInst, const s32 no) {
@@ -3167,9 +4259,12 @@ void cContextInterface::setFloorGroupNo(cContextInstHm* pInst, const s32 no) {
     pInst->mFloorGroupNo = no;
 }
 
-__attribute__((weak)) s32 cContextInterface::getStartPosNo(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getStartPosNo")
-    return {};
+s32 cContextInterface::getStartPosNo(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getStartPosNo();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setStartPosNo(cContextInstHm* pInst, const s32 no) {
@@ -3265,19 +4360,27 @@ void cContextInterface::setOnlineStatus(cContextInstHm* pInst, const u8 status) 
     pInst->mOnlineStatus = status;
 }
 
-__attribute__((weak)) u8 cContextInterface::getOnlineStatus(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getOnlineStatus")
-    return {};
+u8 cContextInterface::getOnlineStatus(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getOnlineStatus();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u8 cContextInterface::getJob(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getJob")
-    return {};
+u8 cContextInterface::getJob(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        return static_cast<const cContextInstHm*>(pInst)->mPlayerInfo.getJob();
+    }
+    return 0xFF;
 }
 
-__attribute__((weak)) u8 cContextInterface::getJob(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getJob")
-    return {};
+u8 cContextInterface::getJob(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->mPlayerInfo.getJob();
+    } else {
+        return 0xFF;
+    }
 }
 
 void cContextInterface::setJob(cContextInstance* pInst, u8 Job) {
@@ -3331,9 +4434,12 @@ __attribute__((weak)) u16 cContextInterface::getEquipData(const cContextInstance
     return {};
 }
 
-__attribute__((weak)) u16 cContextInterface::getEquipData(const cContextInstHm* pInst, u8 category, u8 type) {
-    DDON_STUB("cContextInterface::getEquipData")
-    return {};
+u16 cContextInterface::getEquipData(const cContextInstHm* pInst, u8 category, u8 type) {
+    if (pInst != nullptr) {
+        return pInst->mEquip.getEquip(category, type, true);
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) void cContextInterface::setEquipData(cContextInstance* pInst, u8 category, cItemParam* pItem, u8 type) {
@@ -3341,14 +4447,18 @@ __attribute__((weak)) void cContextInterface::setEquipData(cContextInstance* pIn
     /* stub */
 }
 
-__attribute__((weak)) void cContextInterface::setEquipData(cContextInstHm* pInst, u8 category, cItemParam* pItem, u8 type) {
-    DDON_STUB("cContextInterface::setEquipData")
-    /* stub */
+void cContextInterface::setEquipData(cContextInstHm* pInst, u8 category, cItemParam* pItem, u8 type) {
+    if (pInst == nullptr) {
+        return;
+    }
+    pInst->mEquip.setEquip(category, type, pItem);
 }
 
-__attribute__((weak)) void cContextInterface::setEquipFromCharData(cContextInstHm* pInst, const nCharacterData::stEquipData& Data) {
-    DDON_STUB("cContextInterface::setEquipFromCharData")
-    /* stub */
+void cContextInterface::setEquipFromCharData(cContextInstHm* pInst, const nCharacterData::stEquipData& Data) {
+    if (pInst == nullptr) {
+        return;
+    }
+    pInst->mEquip.setEquipFromCharacterData(Data);
 }
 
 void cContextInterface::setPlayerLoadStatus(cContextInstance* pInst, s32 status) {
@@ -3380,39 +4490,56 @@ __attribute__((weak)) cPlayerLoadManager& cContextInterface::getPlayerLoadMgr(cC
     __builtin_unreachable();
 }
 
-__attribute__((weak)) u8 cContextInterface::getVoice(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getVoice")
-    return {};
+u8 cContextInterface::getVoice(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(static_cast<const cContextInstHm*>(pInst)->getCharacterEdit()->mpEditParam) + 48);
+    }
+    return 0;
 }
 
-__attribute__((weak)) u8 cContextInterface::getVoice(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getVoice")
-    return {};
+u8 cContextInterface::getVoice(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pInst->getCharacterEdit()->mpEditParam) + 48);
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) void cContextInterface::setVoice(cContextInstHm* pInst, u8 Voice) {
-    DDON_STUB("cContextInterface::setVoice")
-    /* stub */
+void cContextInterface::setVoice(cContextInstHm* pInst, u8 Voice) {
+    if (pInst == nullptr) {
+        return;
+    }
+    pInst->getCharacterEdit()->mpEditParam->mVoice = Voice;
 }
 
-__attribute__((weak)) s32 cContextInterface::getVoicePitch(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getVoicePitch")
-    return {};
+s32 cContextInterface::getVoicePitch(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getCharacterEdit()->mpEditParam->mVoicePitch;
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) void cContextInterface::setVoicePitch(cContextInstHm* pInst, s32 pitch) {
-    DDON_STUB("cContextInterface::setVoicePitch")
-    /* stub */
+void cContextInterface::setVoicePitch(cContextInstHm* pInst, s32 pitch) {
+    if (pInst == nullptr) {
+        return;
+    }
+    pInst->getCharacterEdit()->mpEditParam->mVoicePitch = pitch;
 }
 
-__attribute__((weak)) u8 cContextInterface::getHumanType(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getHumanType")
-    return {};
+u8 cContextInterface::getHumanType(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        return static_cast<const cContextInstHm*>(pInst)->getHumanType();
+    }
+    return 0;
 }
 
-__attribute__((weak)) u8 cContextInterface::getHumanType(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getHumanType")
-    return {};
+u8 cContextInterface::getHumanType(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getHumanType();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setHumanType(cContextInstance* pInst, u8 type) {
@@ -3441,14 +4568,19 @@ void cContextInterface::setHumanType(cContextInstHm* pInst, u8 type) {
     pInst->mHumanType = type;
 }
 
-__attribute__((weak)) u8 cContextInterface::getPawnType(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getPawnType")
-    return {};
+u8 cContextInterface::getPawnType(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        return static_cast<const cContextInstHm*>(pInst)->getPawnType();
+    }
+    return 0;
 }
 
-__attribute__((weak)) u8 cContextInterface::getPawnType(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getPawnType")
-    return {};
+u8 cContextInterface::getPawnType(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getPawnType();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setPawnType(cContextInstHm* pInst, u8 type) {
@@ -3458,9 +4590,12 @@ void cContextInterface::setPawnType(cContextInstHm* pInst, u8 type) {
     pInst->mPawnType = type;
 }
 
-__attribute__((weak)) u32 cContextInterface::getRawCharacterId(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getRawCharacterId")
-    return {};
+u32 cContextInterface::getRawCharacterId(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getCharId();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setCharacterId(cContextInstHm* pInst, u32 charId) {
@@ -3470,14 +4605,41 @@ void cContextInterface::setCharacterId(cContextInstHm* pInst, u32 charId) {
     pInst->mCharId = charId;
 }
 
-__attribute__((weak)) u32 cContextInterface::getPlCharacterId(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getPlCharacterId")
-    return {};
+u32 cContextInterface::getPlCharacterId(const cContextInstance* pInst) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                if (static_cast<const cContextInstHm*>(pInst)->mHumanType != 0) {
+                    v2_7 = 0;
+                } else {
+                    v2_7 = static_cast<const cContextInstHm*>(pInst)->getCharId();
+                }
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
-__attribute__((weak)) u32 cContextInterface::getPlCharacterId(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getPlCharacterId")
-    return {};
+u32 cContextInterface::getPlCharacterId(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        if (pInst->mHumanType == 0) {
+            return pInst->getCharId();
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) u32 cContextInterface::getPawnOwnerCharacterId(const cContextInstance* pInst) {
@@ -3485,19 +4647,50 @@ __attribute__((weak)) u32 cContextInterface::getPawnOwnerCharacterId(const cCont
     return {};
 }
 
-__attribute__((weak)) u32 cContextInterface::getPawnOwnerCharacterId(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getPawnOwnerCharacterId")
-    return {};
+u32 cContextInterface::getPawnOwnerCharacterId(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        if (pInst->mHumanType == 1) {
+            return pInst->getCharId();
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 cContextInterface::getPawnId(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getPawnId")
-    return {};
+u32 cContextInterface::getPawnId(const cContextInstance* pInst) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                if (static_cast<const cContextInstHm*>(pInst)->mHumanType != 1) {
+                    v2_7 = 0;
+                } else {
+                    v2_7 = static_cast<const cContextInstHm*>(pInst)->getPawnId();
+                }
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
-__attribute__((weak)) u32 cContextInterface::getPawnId(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getPawnId")
-    return {};
+u32 cContextInterface::getPawnId(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        if (pInst->mHumanType == 1) {
+            return pInst->getPawnId();
+        }
+    }
+    return 0;
 }
 
 void cContextInterface::setPawnId(cContextInstHm* pInst, u32 pawnId) {
@@ -3507,9 +4700,22 @@ void cContextInterface::setPawnId(cContextInstHm* pInst, u32 pawnId) {
     pInst->mPawnId = pawnId;
 }
 
-__attribute__((weak)) bool cContextInterface::checkId(const cContextInstHm* pInst, u32 characterId, u32 pawnId) {
-    DDON_STUB("cContextInterface::checkId")
-    return {};
+bool cContextInterface::checkId(const cContextInstHm* pInst, u32 characterId, u32 pawnId) {
+    if (pInst != nullptr) {
+        if (pInst->mCharId == characterId) {
+            if (pInst->mHumanType == 1) {
+                if (pInst->getPawnId() != pawnId) {
+                    return false;
+                }
+            } else {
+                if (pawnId != 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) bool cContextInterface::checkId(const cContextInstance* pInst, const cContextInstHm* pCheckInst) {
@@ -3517,14 +4723,36 @@ __attribute__((weak)) bool cContextInterface::checkId(const cContextInstance* pI
     return {};
 }
 
-__attribute__((weak)) s32 cContextInterface::getMemberIndex(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getMemberIndex")
-    return {};
+s32 cContextInterface::getMemberIndex(const cContextInstance* pInst) {
+    s32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_7 = static_cast<const cContextInstHm*>(pInst)->getMemberIndex();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
-__attribute__((weak)) s32 cContextInterface::getMemberIndex(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getMemberIndex")
-    return {};
+s32 cContextInterface::getMemberIndex(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getMemberIndex();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setMemberIndex(cContextInstHm* pInst, s32 memberIndex) {
@@ -3613,19 +4841,41 @@ __attribute__((weak)) void cContextInterface::setPawnAutoMotion(cContextInstHm* 
     /* stub */
 }
 
-__attribute__((weak)) u16 cContextInterface::getPawnPersonality(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getPawnPersonality")
-    return {};
+u16 cContextInterface::getPawnPersonality(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        if (static_cast<const cContextInstHm*>(pInst)->mpCharacterEdit != nullptr) {
+            if (static_cast<const cContextInstHm*>(pInst)->mpCharacterEdit->mpEditParam != nullptr) {
+                return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(static_cast<const cContextInstHm*>(pInst)->mpCharacterEdit->mpEditParam) + 60);
+            }
+        }
+        return 1;
+    }
+    return 0;
 }
 
-__attribute__((weak)) u16 cContextInterface::getPawnPersonality(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getPawnPersonality")
-    return {};
+u16 cContextInterface::getPawnPersonality(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        if (pInst->mpCharacterEdit != nullptr) {
+            if (pInst->mpCharacterEdit->mpEditParam != nullptr) {
+                return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pInst->mpCharacterEdit->mpEditParam) + 60);
+            }
+        }
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u16 cContextInterface::getPawnTalkLv(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getPawnTalkLv")
-    return {};
+u16 cContextInterface::getPawnTalkLv(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        if (static_cast<const cContextInstHm*>(pInst)->mpCharacterEdit != nullptr) {
+            if (static_cast<const cContextInstHm*>(pInst)->mpCharacterEdit->mpEditParam != nullptr) {
+                return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(static_cast<const cContextInstHm*>(pInst)->mpCharacterEdit->mpEditParam) + 64);
+            }
+        }
+        return 1;
+    }
+    return 0;
 }
 
 __attribute__((weak)) u32 cContextInterface::getPawnTalkCharId(const cContextInstance* pInst, u32 idx) {
@@ -3653,19 +4903,20 @@ __attribute__((weak)) cContextPlayerInfo* cContextInterface::getContextPlayerInf
     return nullptr;
 }
 
-__attribute__((weak)) cContextPlayerInfo* cContextInterface::getContextPlayerInfo(cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getContextPlayerInfo")
-    return nullptr;
+cContextPlayerInfo* cContextInterface::getContextPlayerInfo(cContextInstHm* pInst) {
+    return (pInst == nullptr) ? static_cast<cContextPlayerInfo*>(nullptr) : (&pInst->mPlayerInfo);
 }
 
-__attribute__((weak)) const cContextPlayerInfo* cContextInterface::getContextPlayerInfo(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getContextPlayerInfo")
-    return nullptr;
+const cContextPlayerInfo* cContextInterface::getContextPlayerInfo(const cContextInstHm* pInst) {
+    return (pInst == nullptr) ? static_cast<const cContextPlayerInfo*>(nullptr) : (&pInst->mPlayerInfo);
 }
 
-__attribute__((weak)) u8 cContextInterface::getReviveStock(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getReviveStock")
-    return {};
+u8 cContextInterface::getReviveStock(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getReviveStock();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setReviveStock(cContextInstHm* pInst, u8 num) {
@@ -3675,9 +4926,12 @@ void cContextInterface::setReviveStock(cContextInstHm* pInst, u8 num) {
     pInst->mReviveStock = num;
 }
 
-__attribute__((weak)) s32 cContextInterface::getReviveType(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getReviveType")
-    return {};
+s32 cContextInterface::getReviveType(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getReviveType();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setReviveType(cContextInstance* pInst, s32 type) {
@@ -3742,33 +4996,122 @@ __attribute__((weak)) void cContextInterface::setGroupNoFreeMarker(cContextInstH
     /* stub */
 }
 
-__attribute__((weak)) f32 cContextInterface::getElementGuardTime(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getElementGuardTime")
-    return {};
+f32 cContextInterface::getElementGuardTime(const cContextInstance* pInst) {
+    f32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0.0f;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_7 = static_cast<const cContextInstHm*>(pInst)->getElementGuardTime();
+    }
+    return v2_7;
 }
 
 inline f32 cContextInterface::getElementGuardTime(const cContextInstHm* pInst) {
     return pInst->mElementGuardTime;
 }
 
-__attribute__((weak)) void cContextInterface::setElementGuardTime(cContextInstance* pInst, f32 time) {
-    DDON_STUB("cContextInterface::setElementGuardTime")
-    /* stub */
+void cContextInterface::setElementGuardTime(cContextInstance* pInst, f32 time) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstHm*>(pInst)->mElementGuardTime = time;
+                return;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) f32 cContextInterface::getElementCoverRate(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getElementCoverRate")
-    return {};
+f32 cContextInterface::getElementCoverRate(const cContextInstance* pInst) {
+    f32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0.0f;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_7 = static_cast<const cContextInstHm*>(pInst)->getElementCoverRate();
+    }
+    return v2_7;
 }
 
-__attribute__((weak)) void cContextInterface::setElementCoverRate(cContextInstance* pInst, f32 rate) {
-    DDON_STUB("cContextInterface::setElementCoverRate")
-    /* stub */
+void cContextInterface::setElementCoverRate(cContextInstance* pInst, f32 rate) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstHm*>(pInst)->mElementCoverRate = rate;
+                return;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) nDDOGame::ELEMENT_TYPE cContextInterface::getElementCoverType(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getElementCoverType")
-    return {};
+nDDOGame::ELEMENT_TYPE cContextInterface::getElementCoverType(const cContextInstance* pInst) {
+    nDDOGame::ELEMENT_TYPE v2_7;
+    if (pInst == nullptr) {
+        v2_7 = nDDOGame::ELEMENT_TYPE_START_ELEMENT;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_7 = static_cast<const cContextInstHm*>(pInst)->getElementCoverType();
+                return v2_7;
+            }
+        }
+        v2_7 = nDDOGame::ELEMENT_TYPE_START_ELEMENT;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setElementCoverType(cContextInstance* pInst, nDDOGame::ELEMENT_TYPE type) {
@@ -3790,18 +5133,53 @@ void cContextInterface::setElementCoverType(cContextInstance* pInst, nDDOGame::E
     }
 }
 
-__attribute__((weak)) f32 cContextInterface::getElementCoverDamageRate(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getElementCoverDamageRate")
-    return {};
+f32 cContextInterface::getElementCoverDamageRate(const cContextInstance* pInst) {
+    f32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0.0f;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        if (v0_1 != t0.mName) {
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == nullptr) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_7 = static_cast<const cContextInstHm*>(pInst)->getElementCoverDamageRate();
+    }
+    return v2_7;
 }
 
 inline f32 cContextInterface::getElementCoverDamageRate(const cContextInstHm* pInst) {
     return pInst->mElementCoverDamageRate;
 }
 
-__attribute__((weak)) void cContextInterface::setElementCoverDamageRate(cContextInstance* pInst, f32 rate) {
-    DDON_STUB("cContextInterface::setElementCoverDamageRate")
-    /* stub */
+void cContextInterface::setElementCoverDamageRate(cContextInstance* pInst, f32 rate) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstHm*>(pInst)->mElementCoverDamageRate = rate;
+                return;
+            }
+        }
+    }
 }
 
 f32 cContextInterface::getFJobWork0(const cContextInstance* pInst) {
@@ -3830,9 +5208,23 @@ f32 cContextInterface::getFJobWork0(const cContextInstance* pInst) {
     return v2_7;
 }
 
-__attribute__((weak)) void cContextInterface::setFJobWork0(cContextInstance* pInst, f32 work) {
-    DDON_STUB("cContextInterface::setFJobWork0")
-    /* stub */
+void cContextInterface::setFJobWork0(cContextInstance* pInst, f32 work) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstHm*>(pInst)->mFJobWork0 = work;
+                return;
+            }
+        }
+    }
 }
 
 f32 cContextInterface::getFJobWork1(const cContextInstance* pInst) {
@@ -3861,9 +5253,23 @@ f32 cContextInterface::getFJobWork1(const cContextInstance* pInst) {
     return v2_7;
 }
 
-__attribute__((weak)) void cContextInterface::setFJobWork1(cContextInstance* pInst, f32 work) {
-    DDON_STUB("cContextInterface::setFJobWork1")
-    /* stub */
+void cContextInterface::setFJobWork1(cContextInstance* pInst, f32 work) {
+    if (pInst != nullptr) {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                static_cast<cContextInstHm*>(pInst)->mFJobWork1 = work;
+                return;
+            }
+        }
+    }
 }
 
 s32 cContextInterface::getSJobWork0(const cContextInstance* pInst) {
@@ -3913,9 +5319,28 @@ void cContextInterface::setSJobWork0(cContextInstance* pInst, s32 work) {
     }
 }
 
-__attribute__((weak)) u32 cContextInterface::getHmRandom(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getHmRandom")
-    return {};
+u32 cContextInterface::getHmRandom(const cContextInstance* pInst) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_7 = static_cast<const cContextInstHm*>(pInst)->getHmRandom();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setHmRandom(cContextInstance* pInst, u32 random) {
@@ -3937,9 +5362,11 @@ void cContextInterface::setHmRandom(cContextInstance* pInst, u32 random) {
     }
 }
 
-__attribute__((weak)) u8 cContextInterface::getHmEmEditType(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getHmEmEditType")
-    return {};
+u8 cContextInterface::getHmEmEditType(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        return static_cast<const cContextInstHm*>(pInst)->getHmEmEditType();
+    }
+    return 0;
 }
 
 void cContextInterface::setHmEmEditType(cContextInstance* pInst, u8 type) {
@@ -3985,9 +5412,28 @@ void cContextInterface::setHmEmPresetId(cContextInstance* pInst, u32 random) {
     }
 }
 
-__attribute__((weak)) u32 cContextInterface::getHmEmId(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getHmEmId")
-    return {};
+u32 cContextInterface::getHmEmId(const cContextInstance* pInst) {
+    u32 v2_7;
+    if (pInst == nullptr) {
+        v2_7 = 0;
+    } else {
+        const MtDTI& t0 = pInst->getDTI();
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                v2_7 = static_cast<const cContextInstHm*>(pInst)->getHmEmId();
+                return v2_7;
+            }
+        }
+        v2_7 = 0;
+    }
+    return v2_7;
 }
 
 void cContextInterface::setHmEmId(cContextInstance* pInst, u32 id) {
@@ -4009,9 +5455,12 @@ void cContextInterface::setHmEmId(cContextInstance* pInst, u32 id) {
     }
 }
 
-__attribute__((weak)) bool cContextInterface::isReturnPrepare(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::isReturnPrepare")
-    return {};
+bool cContextInterface::isReturnPrepare(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->isReturnPrepare();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsReturnPrepare(cContextInstHm* pInst, bool flag) {
@@ -4021,9 +5470,12 @@ void cContextInterface::setIsReturnPrepare(cContextInstHm* pInst, bool flag) {
     pInst->mIsReturnPrepare = flag;
 }
 
-__attribute__((weak)) bool cContextInterface::isAreaChangePrepare(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::isAreaChangePrepare")
-    return {};
+bool cContextInterface::isAreaChangePrepare(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->isAreaChangePrepare();
+    } else {
+        return false;
+    }
 }
 
 void cContextInterface::setIsAreaChangePrepare(cContextInstHm* pInst, bool flag) {
@@ -4033,9 +5485,11 @@ void cContextInterface::setIsAreaChangePrepare(cContextInstHm* pInst, bool flag)
     pInst->mIsAreaChangePrepare = flag;
 }
 
-__attribute__((weak)) bool cContextInterface::isReqSetLostAction(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::isReqSetLostAction")
-    return {};
+bool cContextInterface::isReqSetLostAction(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        return static_cast<const cContextInstHm*>(pInst)->isReqSetLostAction();
+    }
+    return false;
 }
 
 void cContextInterface::reqSetLostAction(cContextInstance* pInst, bool flag) {
@@ -4064,9 +5518,12 @@ void cContextInterface::reqSetLostAction(cContextInstHm* pInst, bool flag) {
     pInst->mReqSetLostAction = flag;
 }
 
-__attribute__((weak)) s32 cContextInterface::getOldGaugeContextType(const cContextInstHm* pInst) {
-    DDON_STUB("cContextInterface::getOldGaugeContextType")
-    return {};
+s32 cContextInterface::getOldGaugeContextType(const cContextInstHm* pInst) {
+    if (pInst != nullptr) {
+        return pInst->getOldGaugeContextType();
+    } else {
+        return 0;
+    }
 }
 
 void cContextInterface::setOldGaugeContextType(cContextInstHm* pInst, s32 type) {
@@ -4076,9 +5533,11 @@ void cContextInterface::setOldGaugeContextType(cContextInstHm* pInst, s32 type) 
     pInst->mOldGaugeContextType = type;
 }
 
-__attribute__((weak)) bool cContextInterface::isAbility098(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::isAbility098")
-    return {};
+bool cContextInterface::isAbility098(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        return static_cast<const cContextInstHm*>(pInst)->isAbility098();
+    }
+    return false;
 }
 
 void cContextInterface::setIsAbility098(cContextInstance* pInst, bool flag) {
@@ -4100,19 +5559,21 @@ void cContextInterface::setIsAbility098(cContextInstance* pInst, bool flag) {
     }
 }
 
-__attribute__((weak)) bool cContextInterface::isGutsDisable(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::isGutsDisable")
-    return {};
+bool cContextInterface::isGutsDisable(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        return static_cast<const cContextInstHm*>(pInst)->isGutsDisable();
+    }
+    return false;
 }
 
 void cContextInterface::setIsGutsDisable(cContextInstance* pInst, bool flag) {
     if (pInst != nullptr) {
         const MtDTI& t0 = pInst->getDTI();
-        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cContextInstHm::DTI) + 8);
+        MT_CTSTR v0_1 = cContextInstHm::DTI.mName;
         for (const MtDTI* v0_0 = &t0;;) {
-            if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
-                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
                 } else {
                     break;
                 }
@@ -4125,11 +5586,11 @@ void cContextInterface::setIsGutsDisable(cContextInstance* pInst, bool flag) {
     if (flag) {
         if (pInst != nullptr) {
             const MtDTI& t1 = pInst->getDTI();
-            unsigned long v2_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cContextInstChar::DTI) + 8);
+            MT_CTSTR v2_1 = cContextInstChar::DTI.mName;
             for (const MtDTI* v2_0 = &t1;;) {
-                if (v2_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + 8))) {
-                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + 32)) != 0) {
-                        v2_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + 32));
+                if (v2_1 != v2_0->mName) {
+                    if (v2_0->mpParent != nullptr) {
+                        v2_0 = v2_0->mpParent;
                     } else {
                         break;
                     }
@@ -4142,11 +5603,11 @@ void cContextInterface::setIsGutsDisable(cContextInstance* pInst, bool flag) {
     } else {
         if (pInst != nullptr) {
             const MtDTI& t2 = pInst->getDTI();
-            unsigned long v4_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cContextInstChar::DTI) + 8);
+            MT_CTSTR v4_1 = cContextInstChar::DTI.mName;
             for (const MtDTI* v4_0 = &t2;;) {
-                if (v4_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v4_0) + 8))) {
-                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v4_0) + 32)) != 0) {
-                        v4_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v4_0) + 32));
+                if (v4_1 != v4_0->mName) {
+                    if (v4_0->mpParent != nullptr) {
+                        v4_0 = v4_0->mpParent;
                     } else {
                         break;
                     }
@@ -4166,9 +5627,11 @@ void cContextInterface::setIsGutsDisable(cContextInstHm* pInst, bool flag) {
     pInst->mIsGutsDisable = flag;
 }
 
-__attribute__((weak)) bool cContextInterface::isAbility370(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::isAbility370")
-    return {};
+bool cContextInterface::isAbility370(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        return static_cast<const cContextInstHm*>(pInst)->isAbility370();
+    }
+    return false;
 }
 
 void cContextInterface::setIsAbility370(cContextInstance* pInst, bool flag) {
@@ -4190,9 +5653,11 @@ void cContextInterface::setIsAbility370(cContextInstance* pInst, bool flag) {
     }
 }
 
-__attribute__((weak)) bool cContextInterface::isSyncCustomSkillGroup(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::isSyncCustomSkillGroup")
-    return {};
+bool cContextInterface::isSyncCustomSkillGroup(const cContextInstance* pInst) {
+    if ((pInst != nullptr) && pInst->getDTI().MtDTI::operator==(cContextInstHm::DTI)) {
+        return static_cast<const cContextInstHm*>(pInst)->isSyncCustomSkillGroup();
+    }
+    return false;
 }
 
 void cContextInterface::setIsSyncCustomSkillGroup(cContextInstance* pInst, bool flag) {

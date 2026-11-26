@@ -69,10 +69,11 @@ struct __allocator_traits_base::__rebind<
 // that holds them). A specialization of a std template on a program-defined
 // allocator is allowed ([namespace.std]).
 //
-// Their API is the one the bundle's units use, which is none (the census of
-// the units: no unit calls a member of an MtStlVector, MtStlMap or
+// Their API is the one the bundle's units use, which is the vector's `reserve`
+// and its release (rGUI::setData) and nothing else (the census of
+// the units: no unit calls another member of an MtStlVector, MtStlMap or
 // MtStlSet, nor reads one of these data members): a container is built empty
-// and destroyed, and nothing here allocates. The PS4's map and set allocate
+// and destroyed. The PS4's map and set allocate
 // their head node on construction; here `_Myhead` stays null, as no unit
 // reaches it. A member function a unit comes to call is added here, its
 // storage behind these members.
@@ -109,6 +110,30 @@ public:
     using const_pointer = const _Ty*;
     using reference = _Ty&;
     using const_reference = const _Ty&;
+
+    vector() = default;
+    vector(const vector&) = delete;
+    vector& operator=(const vector&) = delete;
+
+    // `_Tidy`: the storage goes back to the game's allocator.
+    ~vector() {
+        if (_Myfirst != nullptr) {
+            MtStlAllocator<_Ty>().deallocate(_Myfirst, static_cast<size_type>(_Myend - _Myfirst));
+        }
+    }
+
+    // Over an empty vector, the one state the units leave one in
+    // (rGUI::setData): no element moves. Anything else is refused at run time.
+    void reserve(size_type _Count) {
+        if (_Myfirst != nullptr) {
+            __builtin_trap();
+        }
+        if (_Count != 0) {
+            _Myfirst = MtStlAllocator<_Ty>().allocate(_Count);
+            _Mylast = _Myfirst;
+            _Myend = _Myfirst + _Count;
+        }
+    }
 
     _Container_proxy* _Myproxy = nullptr;  // 0x00 (DIE 0x5d85)
     pointer _Myfirst = nullptr;            // 0x08 (DIE 0x7593)

@@ -126,6 +126,7 @@ public:
 public:
     class JointInfo : public MtObject
     {
+        friend class uCnsIK;
     public:
         class MyDTI;
     public:

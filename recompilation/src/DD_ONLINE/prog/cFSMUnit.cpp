@@ -19,6 +19,7 @@
 #include "cContextInterface.h"
 #include "cFSMBase.h"
 #include "cFSMCore.h"
+#include "cFSMOrderParam.h"
 #include "cNetGameServer.h"
 #include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
@@ -429,9 +430,36 @@ __attribute__((weak)) u32 cFSMUnit::stateUpdateSetDisableTouchAction(MtObject* p
     return {};
 }
 
-__attribute__((weak)) u32 cFSMUnit::stateUpdateSetOpenDoor(MtObject* pParam, MtObject* pCaller) {
-    DDON_STUB("cFSMUnit::stateUpdateSetOpenDoor")
-    return {};
+u32 cFSMUnit::stateUpdateSetOpenDoor(MtObject* pParam, MtObject* pCaller) {
+    const MtDTI& t0 = pParam->getDTI();
+    MT_CTSTR v0_1 = cFSMOrderParamSetOpenDoor::DTI.mName;
+    if (v0_1 != t0.mName) {
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_0->mpParent == nullptr) {
+                return 0;
+            } else {
+                if (v0_1 != v0_0->mpParent->mName) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (pParam == nullptr) {
+            return 0;
+        }
+    }
+    if (sArea::getInstance()->mpArea[2] != nullptr) {
+        cFSMOrderParamSetOpenDoor* pParamSetOpenDoor = static_cast<cFSMOrderParamSetOpenDoor*>(pParam);
+        if (pParamSetOpenDoor->mIsQuestSet) {
+            u32 t1 = nLayout::createUniqueIDQuestSet(pParamSetOpenDoor->mQuestId, static_cast<aStage*>(sArea::getInstance()->mpArea[2])->getStageNo(), pParamSetOpenDoor->mGroupNo, pParamSetOpenDoor->mSetNo);
+            sOmManager::getInstance()->setOpenDoor(t1);
+        } else {
+            u32 t2 = nLayout::createUniqueID(nLayout::U_OM, pParamSetOpenDoor->mGroupNo, pParamSetOpenDoor->mSetNo, static_cast<aStage*>(sArea::getInstance()->mpArea[2])->getStageNo());
+            sOmManager::getInstance()->setOpenDoor(t2);
+        }
+    }
+    return 0;
 }
 
 u32 cFSMUnit::stateUpdateSetDispWeapon(MtObject* pParam, MtObject* pCaller) {
@@ -487,11 +515,11 @@ u32 cFSMUnit::stateUpdateSetShadowCast(MtObject* pParam, MtObject* pCaller) {
         if (getOwner() != nullptr) {
             MtObject* v0_9 = static_cast<cpComponent*>(getOwner())->getOwner();
             const MtDTI& t0 = v0_9->getDTI();
-            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uDDOModel::DTI) + 8);
+            MT_CTSTR v0_1 = uDDOModel::DTI.mName;
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
-                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
                     } else {
                         break;
                     }
@@ -534,11 +562,11 @@ u32 cFSMUnit::stateSetCallSeUnit(MtObject* pParam, MtObject* pCaller) {
                 if (getOwner() != nullptr) {
                     MtObject* v0_9 = static_cast<cpComponent*>(getOwner())->getOwner();
                     const MtDTI& t0 = v0_9->getDTI();
-                    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uDDOModel::DTI) + 8);
+                    MT_CTSTR v0_1 = uDDOModel::DTI.mName;
                     for (const MtDTI* v0_0 = &t0;;) {
-                        if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
-                            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+                        if (v0_1 != v0_0->mName) {
+                            if (v0_0->mpParent != nullptr) {
+                                v0_0 = v0_0->mpParent;
                             } else {
                                 break;
                             }
@@ -924,12 +952,13 @@ inline cFSMUnit::uEvHeadTarget::uEvHeadTarget() {
     mTargetJointId = 0;
 }
 
-cFSMUnit::uEvHeadTarget::~uEvHeadTarget() {
-}
-
-__attribute__((weak)) void cFSMUnit::uEvHeadTarget::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::uEvHeadTarget::createProperty")
-    /* stub */
+void cFSMUnit::uEvHeadTarget::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup", &mGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetPos", &mTargetPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetOfsPos", &mTargetOfsPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetJointId", &mTargetJointId, 0u, 0u);
 }
 
 __attribute__((weak)) void cFSMUnit::uEvHeadTarget::setup() {
@@ -959,18 +988,65 @@ const MtDTI& cFSMUnit::cParamSetMotion::getDTI() const {
     return cFSMUnit::cParamSetMotion::DTI;
 }
 
+inline void* cFSMUnit::cParamSetMotion::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetMotion::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetMotion::DTI.getID());
+}
+
 inline void cFSMUnit::cParamSetMotion::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetMotion::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetMotion::~cParamSetMotion() {
-    DDON_STUB("cFSMUnit::cParamSetMotion::~cParamSetMotion")
-    /* stub */
+inline cFSMUnit::cParamSetMotion::cParamSetMotion() {
+    mBankNo = 8;
+    mMotNo = 0;
+    mHokan = 5.0f;
+    mStartFrame = 0.0f;
+    mEndFrame = 0.0f;
+    mMotSpeed = 1.0f;
+    mIsLoop = true;
+    mIsSetDir = false;
+    mIsDispItem = false;
+    mIsSetEndFrame = false;
+    mIsNullTransFix = false;
+    mIsNullTransOff = false;
+    mIsNullAngleFix = false;
+    mDir.x = MtVector3::AxisX.x;
+    mDir.y = MtVector3::AxisX.y;
+    mDir.z = MtVector3::AxisX.z;
+    mDir.pad_ = 0.0f;
+    mSpeed = 0.087266475f;
+    mIsCallVoice = true;
+    mIsUseFingerMotion = false;
+    mFingerMotionNo = 0;
+    mFingerHokan = 5.0f;
+    mFingerSpeed = 1.0f;
+    mIsDisableFall = false;
+    mMotionSeOffBank = -1;
 }
 
 __attribute__((weak)) void cFSMUnit::cParamSetMotion::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetMotion::createProperty")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mBankNo", &mBankNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMotNo", &mMotNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHokan", &mHokan, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartFrame", &mStartFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSetEndFrame", &mIsSetEndFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndFrame", &mEndFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMotSpeed", &mMotSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsLoop", &mIsLoop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsNullTransFix", &mIsNullTransFix, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsNullTransOff", &mIsNullTransOff, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsNullAngleFix", &mIsNullAngleFix, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSetDir", &mIsSetDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDispItem", &mIsDispItem, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDir", &mDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpeed", &mSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsCallVoice", &mIsCallVoice, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUseFingerMotion", &mIsUseFingerMotion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFingerHokan", &mFingerHokan, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFingerSpeed", &mFingerSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFingerMotionNo", &mFingerMotionNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDisableFall", &mIsDisableFall, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMotionSeOffBank", &mMotionSeOffBank, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetMotion::createUI(MtProperty& prop) {
@@ -981,9 +1057,8 @@ inline cFSMUnit::cParamSetMotion::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 cFSMUnit::cParamSetMotion::MyDTI cFSMUnit::cParamSetMotion::DTI("cFSMUnit::cParamSetMotion", &::cAICopiableParameter::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMUnit::cParamSetMotion::MyDTI::newInstance() const {
-    DDON_STUB("cFSMUnit::cParamSetMotion::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMUnit::cParamSetMotion::MyDTI::newInstance() const {
+    return new (16u) cFSMUnit::cParamSetMotion;
 }
 
 const MtDTI& cFSMUnit::cParamSetAction::getDTI() const {
@@ -998,14 +1073,8 @@ inline void cFSMUnit::cParamSetAction::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetAction::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetAction::~cParamSetAction() {
-    DDON_STUB("cFSMUnit::cParamSetAction::~cParamSetAction")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetAction::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetAction::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetAction::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mActionType", &mActionType, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetAction::createUI(MtProperty& prop) {
@@ -1024,18 +1093,39 @@ const MtDTI& cFSMUnit::cParamSetNeck::getDTI() const {
     return cFSMUnit::cParamSetNeck::DTI;
 }
 
+inline void* cFSMUnit::cParamSetNeck::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetNeck::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetNeck::DTI.getID());
+}
+
 inline void cFSMUnit::cParamSetNeck::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetNeck::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetNeck::~cParamSetNeck() {
-    DDON_STUB("cFSMUnit::cParamSetNeck::~cParamSetNeck")
-    /* stub */
+inline cFSMUnit::cParamSetNeck::cParamSetNeck() {
+    mIsSetNeck = false;
+    mTargetType = 0;
+    mTargetPos.x = MtVector3::Zero.x;
+    mTargetPos.y = MtVector3::Zero.y;
+    mTargetPos.z = MtVector3::Zero.z;
+    mTargetPos.pad_ = 0.0f;
+    mTargetGroup = 0;
+    mTargetSetId = 0;
+    mTargetJointId = -1;
+    mDisableSequence = false;
+    mIsAutoOffCtrl = true;
+    mSpeedRate = 1.0f;
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetNeck::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetNeck::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetNeck::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSetNeck", &mIsSetNeck, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetType", &mTargetType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetPos", &mTargetPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetGroup", &mTargetGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetSetId", &mTargetSetId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetJointId", &mTargetJointId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDisableSequence", &mDisableSequence, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsAutoOffCtrl", &mIsAutoOffCtrl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpeedRate", &mSpeedRate, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetNeck::createUI(MtProperty& prop) {
@@ -1046,22 +1136,36 @@ inline cFSMUnit::cParamSetNeck::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cFSMUnit::cParamSetNeck::MyDTI cFSMUnit::cParamSetNeck::DTI("cFSMUnit::cParamSetNeck", &::cAICopiableParameter::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMUnit::cParamSetNeck::MyDTI::newInstance() const {
-    DDON_STUB("cFSMUnit::cParamSetNeck::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMUnit::cParamSetNeck::MyDTI::newInstance() const {
+    return new (16u) cFSMUnit::cParamSetNeck;
 }
 
 const MtDTI& cFSMUnit::cParamSetWait::getDTI() const {
     return cFSMUnit::cParamSetWait::DTI;
 }
 
+inline void* cFSMUnit::cParamSetWait::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetWait::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetWait::DTI.getID());
+}
+
 inline void cFSMUnit::cParamSetWait::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetWait::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetWait::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetWait::createProperty")
-    /* stub */
+inline cFSMUnit::cParamSetWait::cParamSetWait() {
+    mIsSetDir = false;
+    mDir.x = MtVector3::AxisX.x;
+    mDir.y = MtVector3::AxisX.y;
+    mDir.z = MtVector3::AxisX.z;
+    mDir.pad_ = 0.0f;
+    mSpeed = 0.087266475f;
+}
+
+void cFSMUnit::cParamSetWait::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSetDir", &mIsSetDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDir", &mDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpeed", &mSpeed, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetWait::createUI(MtProperty& prop) {
@@ -1072,22 +1176,47 @@ inline cFSMUnit::cParamSetWait::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cFSMUnit::cParamSetWait::MyDTI cFSMUnit::cParamSetWait::DTI("cFSMUnit::cParamSetWait", &::cAICopiableParameter::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMUnit::cParamSetWait::MyDTI::newInstance() const {
-    DDON_STUB("cFSMUnit::cParamSetWait::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMUnit::cParamSetWait::MyDTI::newInstance() const {
+    return new (16u) cFSMUnit::cParamSetWait;
 }
 
 const MtDTI& cFSMUnit::cParamSetGoto::getDTI() const {
     return cFSMUnit::cParamSetGoto::DTI;
 }
 
+inline void* cFSMUnit::cParamSetGoto::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetGoto::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetGoto::DTI.getID());
+}
+
 inline void cFSMUnit::cParamSetGoto::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetGoto::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetGoto::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetGoto::createProperty")
-    /* stub */
+inline cFSMUnit::cParamSetGoto::cParamSetGoto() {
+    mTargetPos.x = MtVector3::Zero.x;
+    mTargetPos.y = MtVector3::Zero.y;
+    mTargetPos.z = MtVector3::Zero.z;
+    mTargetPos.pad_ = 0.0f;
+    mRunType = 0;
+    mStopBorder = 50.0f;
+    mIsSetDir = false;
+    mIsPathFinding = false;
+    mDir.x = MtVector3::AxisX.x;
+    mDir.y = MtVector3::AxisX.y;
+    mDir.z = MtVector3::AxisX.z;
+    mDir.pad_ = 0.0f;
+    mSpeed = 0.087266475f;
+}
+
+void cFSMUnit::cParamSetGoto::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetPos", &mTargetPos, 1024u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRunType", &mRunType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStopBorder", &mStopBorder, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSetDir", &mIsSetDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsPathFinding", &mIsPathFinding, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDir", &mDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpeed", &mSpeed, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetGoto::createUI(MtProperty& prop) {
@@ -1098,9 +1227,8 @@ inline cFSMUnit::cParamSetGoto::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cFSMUnit::cParamSetGoto::MyDTI cFSMUnit::cParamSetGoto::DTI("cFSMUnit::cParamSetGoto", &::cAICopiableParameter::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMUnit::cParamSetGoto::MyDTI::newInstance() const {
-    DDON_STUB("cFSMUnit::cParamSetGoto::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMUnit::cParamSetGoto::MyDTI::newInstance() const {
+    return new (16u) cFSMUnit::cParamSetGoto;
 }
 
 const MtDTI& cFSMUnit::cParamSetGotoTarget::getDTI() const {
@@ -1115,9 +1243,17 @@ inline void cFSMUnit::cParamSetGotoTarget::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetGotoTarget::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetGotoTarget::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetGotoTarget::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetGotoTarget::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetType", &mTargetType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetId", &mTargetId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSetBorder", &mIsSetBorder, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsPathFinding", &mIsPathFinding, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStopBorder", &mStopBorder, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRunType", &mRunType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUseWarp", &mIsUseWarp, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWarpDist", &mWarpDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnableNoFall", &mEnableNoFall, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetGotoTarget::createUI(MtProperty& prop) {
@@ -1136,18 +1272,45 @@ const MtDTI& cFSMUnit::cParamSetMotionGoto::getDTI() const {
     return cFSMUnit::cParamSetMotionGoto::DTI;
 }
 
+inline void* cFSMUnit::cParamSetMotionGoto::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetMotionGoto::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetMotionGoto::DTI.getID());
+}
+
 inline void cFSMUnit::cParamSetMotionGoto::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetMotionGoto::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetMotionGoto::~cParamSetMotionGoto() {
-    DDON_STUB("cFSMUnit::cParamSetMotionGoto::~cParamSetMotionGoto")
-    /* stub */
+inline cFSMUnit::cParamSetMotionGoto::cParamSetMotionGoto() {
+    mTargetPos.x = MtVector3::Zero.x;
+    mTargetPos.y = MtVector3::Zero.y;
+    mTargetPos.z = MtVector3::Zero.z;
+    mTargetPos.pad_ = 0.0f;
+    mStopBorder = 50.0f;
+    mIsSetVelocity = false;
+    mVelocity.x = MtVector3::Zero.x;
+    mVelocity.y = MtVector3::Zero.y;
+    mVelocity.z = MtVector3::Zero.z;
+    mVelocity.pad_ = 0.0f;
+    mAcceleration.x = MtVector3::Zero.x;
+    mAcceleration.y = MtVector3::Zero.y;
+    mAcceleration.z = MtVector3::Zero.z;
+    mIsHover = false;
+    mAccelerationScalar = 0.0f;
+    mAcceleration.pad_ = 0.0f;
+    mVelocityScalar = 0.0f;
+    mIsPosHokan = true;
+    mBankNo = 5;
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetMotionGoto::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetMotionGoto::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetMotionGoto::createProperty(MtPropertyList& s) {
+    this->cFSMUnit::cParamSetMotion::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetPos", &mTargetPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStopBorder", &mStopBorder, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSetVelocity", &mIsSetVelocity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVelocityScalar", &mVelocityScalar, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAccelerationScalar", &mAccelerationScalar, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsHover", &mIsHover, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsPosHokan", &mIsPosHokan, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetMotionGoto::createUI(MtProperty& prop) {
@@ -1158,9 +1321,8 @@ inline cFSMUnit::cParamSetMotionGoto::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* p
 
 cFSMUnit::cParamSetMotionGoto::MyDTI cFSMUnit::cParamSetMotionGoto::DTI("cFSMUnit::cParamSetMotionGoto", &::cFSMUnit::cParamSetMotion::DTI, 176ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMUnit::cParamSetMotionGoto::MyDTI::newInstance() const {
-    DDON_STUB("cFSMUnit::cParamSetMotionGoto::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMUnit::cParamSetMotionGoto::MyDTI::newInstance() const {
+    return new (16u) cFSMUnit::cParamSetMotionGoto;
 }
 
 const MtDTI& cFSMUnit::cParamSetEffect::getDTI() const {
@@ -1175,14 +1337,14 @@ inline void cFSMUnit::cParamSetEffect::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEffect::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetEffect::~cParamSetEffect() {
-    DDON_STUB("cFSMUnit::cParamSetEffect::~cParamSetEffect")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetEffect::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetEffect::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetEffect::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEfcId", &mEfcId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHaveItem", &mHaveItem, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAct", &mAct, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOmId", &mOmId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mElement", &mElement, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetEffect::createUI(MtProperty& prop) {
@@ -1201,18 +1363,27 @@ const MtDTI& cFSMUnit::cParamSetEyeBall::getDTI() const {
     return cFSMUnit::cParamSetEyeBall::DTI;
 }
 
+inline void* cFSMUnit::cParamSetEyeBall::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEyeBall::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetEyeBall::DTI.getID());
+}
+
 inline void cFSMUnit::cParamSetEyeBall::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEyeBall::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetEyeBall::~cParamSetEyeBall() {
-    DDON_STUB("cFSMUnit::cParamSetEyeBall::~cParamSetEyeBall")
-    /* stub */
+inline cFSMUnit::cParamSetEyeBall::cParamSetEyeBall() {
+    mTargetAngle.x = MtVector3::Zero.x;
+    mTargetAngle.y = MtVector3::Zero.y;
+    mTargetAngle.z = MtVector3::Zero.z;
+    mTargetAngle.pad_ = 0.0f;
+    mHokanFrame = 5;
+    mDelayFrame = 0;
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetEyeBall::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetEyeBall::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetEyeBall::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetAngle", &mTargetAngle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHokanFrame", &mHokanFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDelayFrame", &mDelayFrame, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetEyeBall::createUI(MtProperty& prop) {
@@ -1223,9 +1394,8 @@ inline cFSMUnit::cParamSetEyeBall::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 
 cFSMUnit::cParamSetEyeBall::MyDTI cFSMUnit::cParamSetEyeBall::DTI("cFSMUnit::cParamSetEyeBall", &::cAICopiableParameter::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMUnit::cParamSetEyeBall::MyDTI::newInstance() const {
-    DDON_STUB("cFSMUnit::cParamSetEyeBall::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMUnit::cParamSetEyeBall::MyDTI::newInstance() const {
+    return new (16u) cFSMUnit::cParamSetEyeBall;
 }
 
 const MtDTI& cFSMUnit::cParamSetEmDie::getDTI() const {
@@ -1240,14 +1410,8 @@ inline void cFSMUnit::cParamSetEmDie::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEmDie::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetEmDie::~cParamSetEmDie() {
-    DDON_STUB("cFSMUnit::cParamSetEmDie::~cParamSetEmDie")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetEmDie::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetEmDie::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetEmDie::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAct", &mAct, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetEmDie::createUI(MtProperty& prop) {
@@ -1275,13 +1439,11 @@ inline void cFSMUnit::cParamSetWaypoint::operator delete(void* p_addr) {
 }
 
 cFSMUnit::cParamSetWaypoint::~cParamSetWaypoint() {
-    DDON_STUB("cFSMUnit::cParamSetWaypoint::~cParamSetWaypoint")
-    /* stub */
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetWaypoint::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetWaypoint::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetWaypoint::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGotoPointNo", &mGotoPointNo, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetWaypoint::createUI(MtProperty& prop) {
@@ -1309,13 +1471,11 @@ inline void cFSMUnit::cParamSetChangeThink::operator delete(void* p_addr) {
 }
 
 cFSMUnit::cParamSetChangeThink::~cParamSetChangeThink() {
-    DDON_STUB("cFSMUnit::cParamSetChangeThink::~cParamSetChangeThink")
-    /* stub */
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetChangeThink::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetChangeThink::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetChangeThink::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mThink", &mThink, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsInvincible", &mIsInvincible, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetChangeThink::createUI(MtProperty& prop) {
@@ -1343,13 +1503,10 @@ inline void cFSMUnit::cParamSetAdjustScrHit::operator delete(void* p_addr) {
 }
 
 cFSMUnit::cParamSetAdjustScrHit::~cParamSetAdjustScrHit() {
-    DDON_STUB("cFSMUnit::cParamSetAdjustScrHit::~cParamSetAdjustScrHit")
-    /* stub */
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetAdjustScrHit::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetAdjustScrHit::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetAdjustScrHit::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsStop", &mIsStop, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetAdjustScrHit::createUI(MtProperty& prop) {
@@ -1377,13 +1534,10 @@ inline void cFSMUnit::cParamSetAttendNpc::operator delete(void* p_addr) {
 }
 
 cFSMUnit::cParamSetAttendNpc::~cParamSetAttendNpc() {
-    DDON_STUB("cFSMUnit::cParamSetAttendNpc::~cParamSetAttendNpc")
-    /* stub */
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetAttendNpc::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetAttendNpc::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetAttendNpc::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsAttend", &mIsAttend, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetAttendNpc::createUI(MtProperty& prop) {
@@ -1411,13 +1565,10 @@ inline void cFSMUnit::cParamSetDisableTouchAction::operator delete(void* p_addr)
 }
 
 cFSMUnit::cParamSetDisableTouchAction::~cParamSetDisableTouchAction() {
-    DDON_STUB("cFSMUnit::cParamSetDisableTouchAction::~cParamSetDisableTouchAction")
-    /* stub */
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetDisableTouchAction::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetDisableTouchAction::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetDisableTouchAction::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDisableTouch", &mIsDisableTouch, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetDisableTouchAction::createUI(MtProperty& prop) {
@@ -1444,14 +1595,9 @@ inline void cFSMUnit::cParamSetDispWeapon::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetDispWeapon::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetDispWeapon::~cParamSetDispWeapon() {
-    DDON_STUB("cFSMUnit::cParamSetDispWeapon::~cParamSetDispWeapon")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetDispWeapon::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetDispWeapon::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetDispWeapon::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDispWepMain", &mIsDispWepMain, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDispWepSub", &mIsDispWepSub, 0u, 0u);
 }
 
 inline cFSMUnit::cParamSetDispWeapon::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1474,14 +1620,8 @@ inline void cFSMUnit::cParamSetShadowCast::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetShadowCast::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetShadowCast::~cParamSetShadowCast() {
-    DDON_STUB("cFSMUnit::cParamSetShadowCast::~cParamSetShadowCast")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetShadowCast::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetShadowCast::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetShadowCast::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsShadowCast", &mIsShadowCast, 0u, 0u);
 }
 
 inline cFSMUnit::cParamSetShadowCast::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1505,13 +1645,10 @@ inline void cFSMUnit::cParamSetHaveThing::operator delete(void* p_addr) {
 }
 
 cFSMUnit::cParamSetHaveThing::~cParamSetHaveThing() {
-    DDON_STUB("cFSMUnit::cParamSetHaveThing::~cParamSetHaveThing")
-    /* stub */
 }
 
-__attribute__((weak)) void cFSMUnit::cParamSetHaveThing::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetHaveThing::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetHaveThing::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mHaveThing", &mHaveThing, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetHaveThing::createUI(MtProperty& prop) {
@@ -1538,14 +1675,10 @@ inline void cFSMUnit::cParamSetCallSe::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetCallSe::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetCallSe::~cParamSetCallSe() {
-    DDON_STUB("cFSMUnit::cParamSetCallSe::~cParamSetCallSe")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetCallSe::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetCallSe::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetCallSe::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mSeId", &mSeId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJointNo", &mJointNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDelayFrame", &mDelayFrame, 0u, 0u);
 }
 
 inline cFSMUnit::cParamSetCallSe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1568,14 +1701,8 @@ inline void cFSMUnit::cParamSetHakuryuStoneLevel::operator delete(void* p_addr) 
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetHakuryuStoneLevel::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetHakuryuStoneLevel::~cParamSetHakuryuStoneLevel() {
-    DDON_STUB("cFSMUnit::cParamSetHakuryuStoneLevel::~cParamSetHakuryuStoneLevel")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetHakuryuStoneLevel::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetHakuryuStoneLevel::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetHakuryuStoneLevel::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStoneLevel", &mStoneLevel, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetHakuryuStoneLevel::createUI(MtProperty& prop) {
@@ -1602,14 +1729,9 @@ inline void cFSMUnit::cParamSetParts::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetParts::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetParts::~cParamSetParts() {
-    DDON_STUB("cFSMUnit::cParamSetParts::~cParamSetParts")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetParts::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetParts::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetParts::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParts", &mParts, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetParts::createUI(MtProperty& prop) {
@@ -1636,14 +1758,8 @@ inline void cFSMUnit::cParamSetVibUnit::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetVibUnit::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetVibUnit::~cParamSetVibUnit() {
-    DDON_STUB("cFSMUnit::cParamSetVibUnit::~cParamSetVibUnit")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetVibUnit::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetVibUnit::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetVibUnit::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mVib", &mVib, 0u, 0u);
 }
 
 inline cFSMUnit::cParamSetVibUnit::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1666,14 +1782,10 @@ inline void cFSMUnit::cParamSetEmMontage::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEmMontage::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetEmMontage::~cParamSetEmMontage() {
-    DDON_STUB("cFSMUnit::cParamSetEmMontage::~cParamSetEmMontage")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetEmMontage::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetEmMontage::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetEmMontage::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMontage", &mMontage, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDisableMotSeq", &mDisableMotSeq, 0u, 0u);
 }
 
 MtUI* cFSMUnit::cParamSetEmMontage::createUI(MtProperty& prop) {
@@ -1700,14 +1812,8 @@ inline void cFSMUnit::cParamSetHeadCtrl::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetHeadCtrl::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetHeadCtrl::~cParamSetHeadCtrl() {
-    DDON_STUB("cFSMUnit::cParamSetHeadCtrl::~cParamSetHeadCtrl")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetHeadCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetHeadCtrl::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetHeadCtrl::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mHeadCtrl", &mHeadCtrl, 0u, 0u);
 }
 
 inline cFSMUnit::cParamSetHeadCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1730,14 +1836,8 @@ inline void cFSMUnit::cParamSetEyeClose::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEyeClose::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetEyeClose::~cParamSetEyeClose() {
-    DDON_STUB("cFSMUnit::cParamSetEyeClose::~cParamSetEyeClose")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetEyeClose::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetEyeClose::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetEyeClose::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEyeClose", &mEyeClose, 0u, 0u);
 }
 
 inline cFSMUnit::cParamSetEyeClose::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1760,14 +1860,8 @@ inline void cFSMUnit::cParamSetDispMiniMap::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetDispMiniMap::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetDispMiniMap::~cParamSetDispMiniMap() {
-    DDON_STUB("cFSMUnit::cParamSetDispMiniMap::~cParamSetDispMiniMap")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetDispMiniMap::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetDispMiniMap::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetDispMiniMap::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDispMiniMap", &mIsDispMiniMap, 0u, 0u);
 }
 
 inline cFSMUnit::cParamSetDispMiniMap::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1790,14 +1884,8 @@ inline void cFSMUnit::cParamSetIK::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetIK::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetIK::~cParamSetIK() {
-    DDON_STUB("cFSMUnit::cParamSetIK::~cParamSetIK")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetIK::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetIK::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetIK::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mActive", &mActive, 0u, 0u);
 }
 
 inline cFSMUnit::cParamSetIK::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1820,14 +1908,8 @@ inline void cFSMUnit::cParamSetEnemyHP::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEnemyHP::DTI)->memFree(p_addr);
 }
 
-cFSMUnit::cParamSetEnemyHP::~cParamSetEnemyHP() {
-    DDON_STUB("cFSMUnit::cParamSetEnemyHP::~cParamSetEnemyHP")
-    /* stub */
-}
-
-__attribute__((weak)) void cFSMUnit::cParamSetEnemyHP::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMUnit::cParamSetEnemyHP::createProperty")
-    /* stub */
+void cFSMUnit::cParamSetEnemyHP::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mHPParcentage", &mHPParcentage, 0u, 0u);
 }
 
 inline cFSMUnit::cParamSetEnemyHP::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

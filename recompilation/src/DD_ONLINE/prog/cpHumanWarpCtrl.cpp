@@ -40,11 +40,15 @@ inline void cpHumanWarpCtrl::operator delete(void* p_addr) {
 }
 
 cpHumanWarpCtrl::cpHumanWarpCtrl() {
-    DDON_STUB("cpHumanWarpCtrl::cpHumanWarpCtrl")
-    /* stub */
-}
-
-cpHumanWarpCtrl::~cpHumanWarpCtrl() {
+    const f32 t0 = MtVector3::Zero.y;
+    const f32 t1 = MtVector3::Zero.z;
+    mHumanWarpInfo.elems[0].mWarpWorldPos.x = MtVector3::Zero.x;
+    mHumanWarpInfo.elems[0].mWarpWorldPos.y = t0;
+    mHumanWarpInfo.elems[0].mWarpWorldPos.z = t1;
+    mHumanWarpInfo.elems[0].mWarpWorldPos.pad_ = 0.0f;
+    mHumanWarpInfo.elems[0].mWarpAngle = 0.0f;
+    mHumanWarpInfo.elems[0].mWarpRno = 0;
+    mpHuman = nullptr;
 }
 
 __attribute__((weak)) void cpHumanWarpCtrl::setup() {
@@ -108,8 +112,7 @@ inline cpHumanWarpCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 cpHumanWarpCtrl::MyDTI cpHumanWarpCtrl::DTI("cpHumanWarpCtrl", &::cpComponent::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpHumanWarpCtrl::MyDTI::newInstance() const {
-    DDON_STUB("cpHumanWarpCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpHumanWarpCtrl::MyDTI::newInstance() const {
+    return new (16u) cpHumanWarpCtrl;
 }
 

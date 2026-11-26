@@ -30,6 +30,7 @@ class MtVector4;
 class cDraw;
 class cLightVolume;
 class rTexture;
+class sScene;
 
 // Declarations
 class uLight;
@@ -47,6 +48,7 @@ using u64 = __uint64_t;
 
 class uLight : public cUnit
 {
+    friend class sScene;
 public:
     enum MODE
     {
@@ -304,6 +306,10 @@ public:
 
 inline void* uLight::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline MtVector3 uLight::getColor() const {
+    return this->mColor;
 }
 
 inline bool uLight::getApproximateDisable() {

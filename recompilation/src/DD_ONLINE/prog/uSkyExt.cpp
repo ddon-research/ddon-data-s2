@@ -5,6 +5,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cDraw.h"
@@ -79,9 +80,8 @@ void uSkyExt::setStarCount(u32 cnt) {
     this->uSky::setStarCount(cnt);
 }
 
-__attribute__((weak)) MtVector3 uSkyExt::getBaseSunColor() const {
-    DDON_STUB("uSkyExt::getBaseSunColor")
-    __builtin_unreachable();
+MtVector3 uSkyExt::getBaseSunColor() const {
+    return mBaseSunColor;
 }
 
 __attribute__((weak)) void uSkyExt::updateWeather() {
@@ -101,19 +101,20 @@ __attribute__((weak)) void uSkyExt::drawMoon(cDraw* pdraw) {
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 uSkyExt::getSunDirforMoon() {
-    DDON_STUB("uSkyExt::getSunDirforMoon")
-    __builtin_unreachable();
+MtVector3 uSkyExt::getSunDirforMoon() {
+    return mSunDirforMoon;
 }
 
-__attribute__((weak)) void uSkyExt::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSkyExt::createProperty")
-    /* stub */
+void uSkyExt::createProperty(MtPropertyList& s) {
+    this->uSky::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mBaseSunColor", &mBaseSunColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRotX", &mRotX, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRotZ", &mRotZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMoonScale", &mMoonScale, 0u, 0u);
 }
 
-__attribute__((weak)) MtVector3 uSkyExt::getMoonDirection() {
-    DDON_STUB("uSkyExt::getMoonDirection")
-    __builtin_unreachable();
+MtVector3 uSkyExt::getMoonDirection() {
+    return mMoonDirection;
 }
 
 inline uSkyExt::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

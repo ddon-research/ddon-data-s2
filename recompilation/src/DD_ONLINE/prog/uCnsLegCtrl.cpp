@@ -5,6 +5,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cUnit.h"
@@ -36,8 +37,6 @@ uCnsLegCtrl::uCnsLegCtrl() {
 }
 
 uCnsLegCtrl::~uCnsLegCtrl() {
-    DDON_STUB("uCnsLegCtrl::~uCnsLegCtrl")
-    /* stub */
 }
 
 __attribute__((weak)) void uCnsLegCtrl::setResource(cResource* pRes) {
@@ -71,9 +70,11 @@ void uCnsLegCtrl::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
-__attribute__((weak)) void uCnsLegCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsLegCtrl::createProperty")
-    /* stub */
+void uCnsLegCtrl::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnableCenterRot", &mEnableCenterRot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRotMat", &mRotMat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffset", &mOffset, 0u, 0u);
 }
 
 MtUI* uCnsLegCtrl::createUI(MtProperty& prop) {

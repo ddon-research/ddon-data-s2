@@ -1,9 +1,11 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cZoneContents.h"
+#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "nZone.h"
@@ -11,8 +13,16 @@
 #define DDON_STUB(name)
 #endif
 
+inline void cZoneContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneContents::DTI)->memFree(p_addr);
+}
+
 const MtDTI& cZoneContents::getDTI() const {
     return cZoneContents::DTI;
+}
+
+inline void* cZoneContents::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cZoneContents::DTI)->memAlloc(sz, align, cZoneContents::DTI.mID);
 }
 
 cZoneContents::cZoneContents() {
@@ -21,8 +31,6 @@ cZoneContents::cZoneContents() {
 }
 
 cZoneContents::~cZoneContents() {
-    DDON_STUB("cZoneContents::~cZoneContents")
-    /* stub */
 }
 
 void cZoneContents::createProperty(MtPropertyList& s) {
@@ -43,18 +51,19 @@ __attribute__((weak)) bool cZoneContents::copyResource(cZoneContents* pContents)
 }
 
 __attribute__((weak)) void cZoneContents::createPropertyContentsBase(MtPropertyList& s) {
-    DDON_STUB("cZoneContents::createPropertyContentsBase")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mName", &mName, 8193u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCategoryName", &mCategoryName, 8193u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Use", &mFlgUse, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Native", &mIsNativeData, 1u, 0u);
 }
 
 __attribute__((weak)) void cZoneContents::setCategoryName(MT_CTSTR CategoryName) {
-    DDON_STUB("cZoneContents::setCategoryName")
-    /* stub */
+    mName = "";
+    mCategoryName = CategoryName;
 }
 
 __attribute__((weak)) void cZoneContents::setContentsName(MT_CTSTR ContentsName) {
-    DDON_STUB("cZoneContents::setContentsName")
-    /* stub */
+    mName = ContentsName;
 }
 
 __attribute__((weak)) void cZoneContents::setAttribute(u32 attr) {
@@ -84,8 +93,7 @@ inline cZoneContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 cZoneContents::MyDTI cZoneContents::DTI("cZoneContents", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cZoneContents::MyDTI::newInstance() const {
-    DDON_STUB("cZoneContents::MyDTI::newInstance")
-    return nullptr;
+MtObject* cZoneContents::MyDTI::newInstance() const {
+    return new (16u) cZoneContents;
 }
 

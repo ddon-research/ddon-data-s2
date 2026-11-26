@@ -7,7 +7,9 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtRandom.h"
 #include "../MT/MtSynchronize.h"
@@ -62,9 +64,56 @@ __attribute__((weak)) void sEffect::move() {
     /* stub */
 }
 
-__attribute__((weak)) void sEffect::createProperty(MtPropertyList& s) {
-    DDON_STUB("sEffect::createProperty")
-    /* stub */
+void sEffect::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mKillNoMin", reinterpret_cast<MT_MFUNC>(&::sEffect::getKillNoMin), reinterpret_cast<MT_MFUNC>(&::sEffect::setKillNoMin), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mKillNoMax", reinterpret_cast<MT_MFUNC>(&::sEffect::getKillNoMax), reinterpret_cast<MT_MFUNC>(&::sEffect::setKillNoMax), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMBFPass", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiBlurFilterPass), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiBlurFilterPass), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMBFNum", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiBlurFilterNum), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiBlurFilterNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMBFDrawMax", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiBlurFilterDrawMax), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiBlurFilterDrawMax), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMBFDrawPriority", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiBlurFilterDrawPriority), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiBlurFilterDrawPriority), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMCCFPass", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiColorCorrectFilterPass), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiColorCorrectFilterPass), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMCCFNum", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiColorCorrectFilterNum), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiColorCorrectFilterNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMCCFDrawMax", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiColorCorrectFilterDrawMax), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiColorCorrectFilterDrawMax), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMCCFDrawPriority", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiColorCorrectFilterDrawPriority), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiColorCorrectFilterDrawPriority), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMGRFPass", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiGodRaysFilterPass), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiGodRaysFilterPass), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMGRFNum", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiGodRaysFilterNum), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiGodRaysFilterNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMGRFDrawMax", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiGodRaysFilterDrawMax), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiGodRaysFilterDrawMax), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMGRFDrawPriority", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiGodRaysFilterDrawPriority), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiGodRaysFilterDrawPriority), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMBFPass", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiBloomFilterPass), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiBloomFilterPass), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMBFNum", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiBloomFilterNum), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiBloomFilterNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMBFDrawMax", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiBloomFilterDrawMax), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiBloomFilterDrawMax), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMBFDrawPriority", reinterpret_cast<MT_MFUNC>(&::sEffect::getMultiBloomFilterDrawPriority), reinterpret_cast<MT_MFUNC>(&::sEffect::setMultiBloomFilterDrawPriority), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mAdhesionLimitMax", reinterpret_cast<MT_MFUNC>(&::sEffect::getAdhesionLimitMax), reinterpret_cast<MT_MFUNC>(&::sEffect::setAdhesionLimitMax), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mAdhesionLimitCount", &mAdhesionLimitCount, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mExclusionTrait", &mExclusionTrait, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLifeRateCurveFlag", &mLifeRateCurveFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVibrationEnable", &mVibrationEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mChildUnitLevel", &mChildUnitLevel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_RANGEF, "mHMLDist", reinterpret_cast<MT_MFUNC>(&::sEffect::getLODHMLDist), reinterpret_cast<MT_MFUNC>(&::sEffect::setLODHMLDist), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_RANGEF, "mHMMDist", reinterpret_cast<MT_MFUNC>(&::sEffect::getLODHMMDist), reinterpret_cast<MT_MFUNC>(&::sEffect::setLODHMMDist), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_RANGEF, "mHHMDist", reinterpret_cast<MT_MFUNC>(&::sEffect::getLODHHMDist), reinterpret_cast<MT_MFUNC>(&::sEffect::setLODHHMDist), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_RANGEF, "mLMHDist", reinterpret_cast<MT_MFUNC>(&::sEffect::getLODLMHDist), reinterpret_cast<MT_MFUNC>(&::sEffect::setLODLMHDist), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_RANGEF, "mMMHDist", reinterpret_cast<MT_MFUNC>(&::sEffect::getLODMMHDist), reinterpret_cast<MT_MFUNC>(&::sEffect::setLODMMHDist), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_RANGEF, "mMHHDist", reinterpret_cast<MT_MFUNC>(&::sEffect::getLODMHHDist), reinterpret_cast<MT_MFUNC>(&::sEffect::setLODMHHDist), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mDefaultLODType", &mDefaultLODType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mCullDist", reinterpret_cast<MT_MFUNC>(&::sEffect::getCullingDist), reinterpret_cast<MT_MFUNC>(&::sEffect::setCullingDist), 160u, reinterpret_cast<MT_MFUNC>(&::sEffect::getCullingDistTblNum), reinterpret_cast<MT_MFUNC>(&::sEffect::setDummyU32));
+    s << MtProperty(static_cast<MtObject*>(this), "mLensFlareScale", &mLensFlareScale[0], 32u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mAdhesionDivideMax", reinterpret_cast<MT_MFUNC>(&::sEffect::getAdhesionDivideMax), reinterpret_cast<MT_MFUNC>(&::sEffect::setAdhesionDivideMax), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectFps", &mEffectFps, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectFpsEnable", &mEffectFpsEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "EventRandomSeed", reinterpret_cast<MT_MFUNC>(&::sEffect::getEventRandomSeed), reinterpret_cast<MT_MFUNC>(&::sEffect::setEventRandomSeed), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mTempBuffSize", &mTempBuffSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDefaultSizeAdjustType", &mDefaultSizeAdjustType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDefaultScreenSize", &mDefaultScreenSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mOcclusionParticleDraw", reinterpret_cast<MT_MFUNC>(&::sEffect::isOcclusionParticleDraw), reinterpret_cast<MT_MFUNC>(&::sEffect::setOcclusionParticleDraw), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mForceVec", reinterpret_cast<MT_MFUNC>(&::sEffect::getForceVec), reinterpret_cast<MT_MFUNC>(&::sEffect::setForceVec), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mForceDir", reinterpret_cast<MT_MFUNC>(&::sEffect::getForceDir), reinterpret_cast<MT_MFUNC>(&::sEffect::setForceDir), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mForcePower", reinterpret_cast<MT_MFUNC>(&::sEffect::getForcePower), reinterpret_cast<MT_MFUNC>(&::sEffect::setForcePower), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mWindMove", &mWindMove, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindDeltaTimeActive", &mWindDeltaTimeActive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindDeltaTime", &mWindDeltaTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWind", static_cast<MtObject*>(&mWind), 0u, 0u);
 }
 
 MtUI* sEffect::createUI(MtProperty& prop) {
@@ -193,20 +242,14 @@ bool sEffect::isValidMaterial(const nDraw::Material* pMaterial) const {
     return false;
 }
 
-__attribute__((weak)) MtVector3 sEffect::getForceVec() const {
-    DDON_STUB("sEffect::getForceVec")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01b9efa0 __attribute__((used)) = &sEffect::getForceVec;
 
 __attribute__((weak)) void sEffect::setForceVec(const MtVector3& ForceVec) {
     DDON_STUB("sEffect::setForceVec")
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 sEffect::getForceDir() const {
-    DDON_STUB("sEffect::getForceDir")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01b9efd0 __attribute__((used)) = &sEffect::getForceDir;
 
 __attribute__((weak)) void sEffect::setForceDir(const MtVector3& ForceDir) {
     DDON_STUB("sEffect::setForceDir")
@@ -310,34 +353,88 @@ void sEffect::setKillNoMax(u32 KillNoMax) {
     }
 }
 
-__attribute__((weak)) MtRangeF sEffect::getLODHMLDist() const {
-    DDON_STUB("sEffect::getLODHMLDist")
-    __builtin_unreachable();
+MtRangeF sEffect::getLODHMLDist() const {
+    MtRangeF result;
+    const float t0 = mLODDist[0][0];
+    const float t1 = mLODDist[0][1];
+    if (t1 > t0) {
+        result.s = t0;
+        result.r = t1 - t0;
+    } else {
+        result.s = t1;
+        result.r = t0 - t1;
+    }
+    return result;
 }
 
-__attribute__((weak)) MtRangeF sEffect::getLODHMMDist() const {
-    DDON_STUB("sEffect::getLODHMMDist")
-    __builtin_unreachable();
+MtRangeF sEffect::getLODHMMDist() const {
+    MtRangeF result;
+    const float t0 = mLODDist[1][0];
+    const float t1 = mLODDist[1][1];
+    if (t1 > t0) {
+        result.s = t0;
+        result.r = t1 - t0;
+    } else {
+        result.s = t1;
+        result.r = t0 - t1;
+    }
+    return result;
 }
 
-__attribute__((weak)) MtRangeF sEffect::getLODHHMDist() const {
-    DDON_STUB("sEffect::getLODHHMDist")
-    __builtin_unreachable();
+MtRangeF sEffect::getLODHHMDist() const {
+    MtRangeF result;
+    const float t0 = mLODDist[2][0];
+    const float t1 = mLODDist[2][1];
+    if (t1 > t0) {
+        result.s = t0;
+        result.r = t1 - t0;
+    } else {
+        result.s = t1;
+        result.r = t0 - t1;
+    }
+    return result;
 }
 
-__attribute__((weak)) MtRangeF sEffect::getLODLMHDist() const {
-    DDON_STUB("sEffect::getLODLMHDist")
-    __builtin_unreachable();
+MtRangeF sEffect::getLODLMHDist() const {
+    MtRangeF result;
+    const float t0 = mLODDist[3][0];
+    const float t1 = mLODDist[3][1];
+    if (t1 > t0) {
+        result.s = t0;
+        result.r = t1 - t0;
+    } else {
+        result.s = t1;
+        result.r = t0 - t1;
+    }
+    return result;
 }
 
-__attribute__((weak)) MtRangeF sEffect::getLODMMHDist() const {
-    DDON_STUB("sEffect::getLODMMHDist")
-    __builtin_unreachable();
+MtRangeF sEffect::getLODMMHDist() const {
+    MtRangeF result;
+    const float t0 = mLODDist[4][0];
+    const float t1 = mLODDist[4][1];
+    if (t1 > t0) {
+        result.s = t0;
+        result.r = t1 - t0;
+    } else {
+        result.s = t1;
+        result.r = t0 - t1;
+    }
+    return result;
 }
 
-__attribute__((weak)) MtRangeF sEffect::getLODMHHDist() const {
-    DDON_STUB("sEffect::getLODMHHDist")
-    __builtin_unreachable();
+MtRangeF sEffect::getLODMHHDist() const {
+    MtRangeF result;
+    const float t0 = mLODDist[5][0];
+    const float t1 = mLODDist[5][1];
+    if (t1 > t0) {
+        result.s = t0;
+        result.r = t1 - t0;
+    } else {
+        result.s = t1;
+        result.r = t0 - t1;
+    }
+    return result;
 }
 
 void sEffect::setLODHMLDist(const MtRangeF& Dist) {

@@ -12,7 +12,6 @@
 #include "cContextPlayerInfo.h"
 #include "cDelegate.h"
 #include "cEfcHandle.h"
-#include "cEvaluation.h"
 #include "cHitInfoAfter.h"
 #include "cOcdBase.h"
 #include "cOcdDamageInfo.h"
@@ -43,7 +42,7 @@
 #include "cpScrCollision.h"
 #include "cpShlShotCtrl.h"
 #include "nDDOUtility.h"
-#include "../../generated/shared/nEnemyID.h"
+#include "nEnemyID.h"
 #include "../../generated/shared/nErosionEnemyBase.h"
 #include "../../generated/shared/nHuman.h"
 #include "nHumanMsg.h"
@@ -237,9 +236,8 @@ void uHumanEnemy::setThinkMode(u32 thinkMode) {
     mThinkMode = thinkMode;
 }
 
-__attribute__((weak)) cEvaluationName::cEvaluation* uHumanEnemy::getEvaluation() {
-    DDON_STUB("uHumanEnemy::getEvaluation")
-    return nullptr;
+cEvaluationName::cEvaluation* uHumanEnemy::getEvaluation() {
+    return (getPawnThinkPtr() == nullptr) ? static_cast<cEvaluationName::cEvaluation*>(nullptr) : (&getPawnThinkPtr()->mcEvaluation);
 }
 
 __attribute__((weak)) void uHumanEnemy::createComponent() {

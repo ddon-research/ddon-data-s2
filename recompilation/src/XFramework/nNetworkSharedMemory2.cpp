@@ -8,6 +8,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtStlAllocator.h"
 #include "../MT/MtStlCustom.h"
@@ -48,8 +49,29 @@ __attribute__((weak)) MtObject* nNetwork::nSharedMemory2::CConsistentHash::MyDTI
     return nullptr;
 }
 
+const MtDTI& nNetwork::nSharedMemory2::CNode::getDTI() const {
+    return nNetwork::nSharedMemory2::CNode::DTI;
+}
+
+inline void nNetwork::nSharedMemory2::CNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CNode::DTI)->memFree(p_addr);
+}
+
+inline nNetwork::nSharedMemory2::CNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nNetwork::nSharedMemory2::CNode::MyDTI nNetwork::nSharedMemory2::CNode::DTI("nNetwork::nSharedMemory2::CNode", &::MtObject::DTI, 16ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nNetwork::nSharedMemory2::CNode::MyDTI::newInstance() const {
+    DDON_STUB("nNetwork::nSharedMemory2::CNode::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& nNetwork::nSharedMemory2::CProtocol::getDTI() const {
     return nNetwork::nSharedMemory2::CProtocol::DTI;
+}
+
+inline void* nNetwork::nSharedMemory2::CProtocol::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CProtocol::DTI)->memAlloc(sz, align, ::nNetwork::nSharedMemory2::CProtocol::DTI.mID);
 }
 
 inline void nNetwork::nSharedMemory2::CProtocol::operator delete(void* p_addr) {
@@ -70,9 +92,24 @@ inline nNetwork::nSharedMemory2::CProtocol::MyDTI::MyDTI(MT_CTSTR class_name, Mt
 
 nNetwork::nSharedMemory2::CProtocol::MyDTI nNetwork::nSharedMemory2::CProtocol::DTI("nNetwork::nSharedMemory2::CProtocol", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nNetwork::nSharedMemory2::CProtocol::MyDTI::newInstance() const {
-    DDON_STUB("nNetwork::nSharedMemory2::CProtocol::MyDTI::newInstance")
-    return nullptr;
+MtObject* nNetwork::nSharedMemory2::CProtocol::MyDTI::newInstance() const {
+    return new (16u) ::nNetwork::nSharedMemory2::CProtocol;
+}
+
+const MtDTI& nNetwork::nSharedMemory2::CRecord::getDTI() const {
+    return nNetwork::nSharedMemory2::CRecord::DTI;
+}
+
+inline void* nNetwork::nSharedMemory2::CRecord::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CRecord::DTI)->memAlloc(sz, align, ::nNetwork::nSharedMemory2::CRecord::DTI.mID);
+}
+
+inline nNetwork::nSharedMemory2::CRecord::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nNetwork::nSharedMemory2::CRecord::MyDTI nNetwork::nSharedMemory2::CRecord::DTI("nNetwork::nSharedMemory2::CRecord", &::MtObject::DTI, 32ul, 0u, 0u);
+
+MtObject* nNetwork::nSharedMemory2::CRecord::MyDTI::newInstance() const {
+    return new (16u) ::nNetwork::nSharedMemory2::CRecord;
 }
 
 __attribute__((weak)) void nNetwork::nSharedMemory2::CSessionListener::onLeaveMember(s32 index, MtNetSession::Member* member) {
@@ -107,9 +144,9 @@ __attribute__((noinline)) nNetwork::nSharedMemory2::Object::~Object() {
     /* stub */
 }
 
-__attribute__((weak)) void nNetwork::nSharedMemory2::Object::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::nSharedMemory2::Object::createProperty")
-    /* stub */
+void nNetwork::nSharedMemory2::Object::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mInit", &mInit, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mType", &mType, 1u, 0u);
 }
 
 MtUI* nNetwork::nSharedMemory2::Object::createUI(MtProperty& prop) {

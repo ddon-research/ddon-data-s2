@@ -38,6 +38,7 @@ class rGUI;
 class uGUI;
 class uGUIActionPalette;
 class uGUIBase;
+class uGUIBoxGachaInfo;
 class uGUIClanSearch;
 class uGUICommunityList;
 class uGUIFKeyPalette;
@@ -47,6 +48,7 @@ class uGUIMapMini;
 class uGUIPhoto;
 class uGUIPhotoAlbum;
 class uGUIPointer;
+class uGUIPopRmcQuestInfo;
 
 // Declarations
 class cGUIInstAnimControl;
@@ -73,8 +75,11 @@ class cGUIInstance : public MtObject
     friend class cGUIInstRoot;
     friend class cGUIUtility;
     friend class uGUI;
+    friend class uGUIBase;
+    friend class uGUIBoxGachaInfo;
     friend class uGUICommunityList;
     friend class uGUIHudCustomSkillPallet;
+    friend class uGUIPopRmcQuestInfo;
 public:
     class MyDTI;
 public:
@@ -233,6 +238,7 @@ class cGUIInstNull : public cGUIInstance
     friend class uGUIActionPalette;
     friend class uGUIBase;
     friend class uGUIClanSearch;
+    friend class uGUICommunityList;
     friend class uGUIFKeyPalette;
     friend class uGUIGauge;
     friend class uGUIPhoto;

@@ -34,9 +34,20 @@ void* cCamExParamTemplate::operator new(size_t sz, u32 align) {
     return cCamExParamTemplate::getAllocator()->memAlloc(sz, align, cCamExParamTemplate::DTI.getID());
 }
 
-__attribute__((weak)) void cCamExParamTemplate::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCamExParamTemplate::createProperty")
-    /* stub */
+inline void cCamExParamTemplate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(cCamExParamTemplate::DTI)->memFree(p_addr);
+}
+
+void cCamExParamTemplate::createProperty(MtPropertyList& s) {
+    createPropertyCommon(s);
+    createPropertyCameraTarget(s);
+    createPropertyCoord(s);
+    createPropertyInterporate(s);
+    createPropertyCtrl(s);
+    createPropertyChangeInterporate(s);
+    createPropertyAdjust(s);
+    createPropertyEx(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mTemplateParamArray", static_cast<MtObject*>(&mTemplateParamArray), 0u, 0u);
 }
 
 cCamExParamTemplate::~cCamExParamTemplate() {
@@ -57,8 +68,7 @@ inline cCamExParamTemplate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t 
 cCamExParamTemplate::MyDTI cCamExParamTemplate::DTI("cCamExParamTemplate", &::cCamExParam::DTI, 512ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cCamExParamTemplate::MyDTI::newInstance() const {
-    DDON_STUB("cCamExParamTemplate::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cCamExParamTemplate;
 }
 
 const MtDTI& cCamImpTemplate::getDTI() const {

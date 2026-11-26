@@ -15,10 +15,12 @@ class MtObject;
 class MtPropertyList;
 class cDraw;
 class cEfcHandle;
-class cShlParamBakuensen;
+class cShlParamBase;
 
 // Declarations
 class cShlBakuensenLogNode;
+class cShlParamBakuensen;
+class cShlParamBakuensenSpark;
 class uBakuenseSpark;
 class uShlBakuensen;
 
@@ -74,6 +76,74 @@ public:
     virtual void keepLog();  // vtable slot 11
 private:
     void adjustGround();
+public:
+    static MyDTI DTI;
+};
+
+class cShlParamBakuensen : public cShlParamKeepLog
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual MtDTI& getShlDTI() const;  // vtable slot 6
+    cShlParamBakuensen();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void copy(const cShlParamBase* pParamBase);  // vtable slot 11
+private:
+    f32 mLimitDistance;  // offset: 0x180
+    f32 mLimitTime;  // offset: 0x184
+    f32 mReverseSpeed;  // offset: 0x188
+    f32 mShotWaitTime;  // offset: 0x18c
+public:
+    static MyDTI DTI;
+};
+
+class cShlParamBakuensenSpark : public cShlParamBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual MtDTI& getShlDTI() const;  // vtable slot 6
 public:
     static MyDTI DTI;
 };
@@ -184,6 +254,21 @@ inline void* cShlBakuensenLogNode::operator new(size_t sz, void* p_addr) {
 }
 
 inline cShlBakuensenLogNode::cShlBakuensenLogNode() {
+}
+
+inline void* cShlParamBakuensen::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cShlParamBakuensen::cShlParamBakuensen() {
+    this->mReverseSpeed = 0.0f;
+    this->mShotWaitTime = 0.0f;
+    this->mLimitDistance = 0.0f;
+    this->mLimitTime = 0.0f;
+}
+
+inline void* cShlParamBakuensenSpark::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void* uBakuenseSpark::operator new(size_t sz, void* p_addr) {

@@ -110,9 +110,17 @@ __attribute__((weak)) void uWeapon::setup() {
     /* stub */
 }
 
-__attribute__((weak)) void uWeapon::createProperty(MtPropertyList& s) {
-    DDON_STUB("uWeapon::createProperty")
-    /* stub */
+void uWeapon::createProperty(MtPropertyList& s) {
+    this->uDDOModel::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpOwner", reinterpret_cast<MtObject* *>(&mpOwner), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMode", reinterpret_cast<s32*>(&mMode), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStatus", reinterpret_cast<s32*>(&mStatus), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWepCategory", reinterpret_cast<s32*>(&mWepCategory), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCnsJointNo", &mCnsJointNo[0], 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCnsRot", &mCnsRot[0], 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCnsTrans", &mCnsTrans[0], 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCnsFat", &mCnsFat[0], 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeaponScale", &mWeaponScale, 0u, 0u);
 }
 
 __attribute__((weak)) void uWeapon::move() {

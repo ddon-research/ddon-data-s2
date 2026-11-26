@@ -454,8 +454,21 @@ inline void* uGUICaplinkChat::cDateItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUICaplinkChat::cDateItem::cDateItem() {
+    this->mpObjMsgDate = nullptr;
+    this->::uGUIBase::cScrollListItemBase::mItemType = 0;
+}
+
 inline void* uGUICaplinkChat::cSystemItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUICaplinkChat::cSystemItem::cSystemItem() {
+    this->mpObjPolyBase = nullptr;
+    this->mpObjMsgText = nullptr;
+    this->mpObjMsgTime = nullptr;
+    this->mpObjMsgName = nullptr;
+    this->::uGUIBase::cScrollListItemBase::mItemType = 1;
 }
 
 inline void* uGUICaplinkChat::cMessageItem::operator new(size_t sz, void* p_addr) {

@@ -142,9 +142,9 @@ inline void rSoundBossBgm::cSoundBossBgm::operator delete(void* p_addr) {
 rSoundBossBgm::cSoundBossBgm::~cSoundBossBgm() {
 }
 
-__attribute__((weak)) void rSoundBossBgm::cSoundBossBgm::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundBossBgm::cSoundBossBgm::createProperty")
-    /* stub */
+void rSoundBossBgm::cSoundBossBgm::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEnemyId", &mEnemyId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBgmNo", &mBgmNo, 0u, 0u);
 }
 
 inline rSoundBossBgm::cSoundBossBgm::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

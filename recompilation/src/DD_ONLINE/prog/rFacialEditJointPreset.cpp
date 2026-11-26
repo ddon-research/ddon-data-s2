@@ -46,9 +46,11 @@ cFacialEditJointPreset::cFacialEditJointPreset() {
     mScale.pad_ = 0.0f;
 }
 
-__attribute__((weak)) void cFacialEditJointPreset::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFacialEditJointPreset::createProperty")
-    /* stub */
+void cFacialEditJointPreset::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mJntNo", &mJntNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTrans", &mTrans, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRot", &mRot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScale", &mScale, 0u, 0u);
 }
 
 inline cFacialEditJointPreset::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

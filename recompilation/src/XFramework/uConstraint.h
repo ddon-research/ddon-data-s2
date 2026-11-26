@@ -124,7 +124,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     uConstraint();
-    virtual ~uConstraint();
+    virtual ~uConstraint() {}
     void initMember();
     virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     virtual void createProperty(MtPropertyList& s);  // vtable slot 4
@@ -195,6 +195,10 @@ public:
 
 inline void* uConstraint::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uConstraint::uConstraint() {
+    this->::uConstraint::initMember();
 }
 
 inline f32 uConstraint::getBlendWeight() const {

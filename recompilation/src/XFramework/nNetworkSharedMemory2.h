@@ -21,15 +21,16 @@ class MtMemoryStream;
 class MtObject;
 class MtProperty;
 class MtPropertyList;
+class MtStream;
 class MtString;
 class MtUI;
 namespace nNetwork { namespace nSharedMemory2 { class CListener; } }
-namespace nNetwork { namespace nSharedMemory2 { class CNode; } }
-namespace nNetwork { namespace nSharedMemory2 { class CRecord; } }
 
 // Declarations
 namespace nNetwork { namespace nSharedMemory2 { class CConsistentHash; } }
+namespace nNetwork { namespace nSharedMemory2 { class CNode; } }
 namespace nNetwork { namespace nSharedMemory2 { class CProtocol; } }
+namespace nNetwork { namespace nSharedMemory2 { class CRecord; } }
 namespace nNetwork { namespace nSharedMemory2 { class CSessionListener; } }
 namespace nNetwork { namespace nSharedMemory2 { class Object; } }
 namespace nNetwork { namespace nSharedMemory2 { struct THREAD_INFO; } }
@@ -94,6 +95,45 @@ namespace nNetwork {
 
 namespace nNetwork {
     namespace nSharedMemory2 {
+        class CNode : public ::MtObject
+        {
+        public:
+            class MyDTI;
+        public:
+            class MyDTI : public ::MtDTI
+            {
+            public:
+                MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+                virtual MtObject* newInstance() const;  // vtable slot 2
+            };
+        public:
+            static MtDTI* getMyDTIPtr();
+            static void usage();
+            virtual const MtDTI& getDTI() const;  // vtable slot 5
+            static MtAllocator* getAllocator();
+            static void setAllocator(u32);
+            static void* operator new(size_t sz, u32 align);
+            static void* operator new[](size_t sz, u32 align);
+            static void* operator new(size_t sz, void* p_addr);
+            static void* operator new[](size_t sz, void* p_addr);
+            static void operator delete(void* p_addr);
+            static void operator delete[](void* p_addr);
+            static void operator delete(void* p_addr, u32 align);
+            static void operator delete[](void* p_addr, u32 align);
+            CNode();
+            CNode(s32);
+            void setMemberId(s32 member_id);
+            s32 getMemberId();
+        private:
+            s32 mMemberId;  // offset: 0x8
+        public:
+            static MyDTI DTI;
+        };
+    }  // namespace nSharedMemory2
+}  // namespace nNetwork
+
+namespace nNetwork {
+    namespace nSharedMemory2 {
         class CProtocol : public ::MtObject
         {
         public:
@@ -129,6 +169,55 @@ namespace nNetwork {
             nNetwork::nSharedMemory2::Object* mpParent;  // offset: 0x8
             u32 mCallbackIndex;  // offset: 0x10
             bool mInit;  // offset: 0x14
+        public:
+            static MyDTI DTI;
+        };
+    }  // namespace nSharedMemory2
+}  // namespace nNetwork
+
+namespace nNetwork {
+    namespace nSharedMemory2 {
+        class CRecord : public ::MtObject
+        {
+        public:
+            class MyDTI;
+        public:
+            class MyDTI : public ::MtDTI
+            {
+            public:
+                MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+                virtual MtObject* newInstance() const;  // vtable slot 2
+            };
+        public:
+            static MtDTI* getMyDTIPtr();
+            static void usage();
+            virtual const MtDTI& getDTI() const;  // vtable slot 5
+            static MtAllocator* getAllocator();
+            static void setAllocator(u32);
+            static void* operator new(size_t sz, u32 align);
+            static void* operator new[](size_t sz, u32 align);
+            static void* operator new(size_t sz, void* p_addr);
+            static void* operator new[](size_t sz, void* p_addr);
+            static void operator delete(void* p_addr);
+            static void operator delete[](void* p_addr);
+            static void operator delete(void* p_addr, u32 align);
+            static void operator delete[](void* p_addr, u32 align);
+            CRecord();
+            CRecord(MT_CTSTR, bool);
+            virtual void serialize(MtStream& stream) {}  // vtable slot 6
+            virtual void deserialize(MtStream& stream) {}  // vtable slot 7
+            void setName(MT_CTSTR);
+            void setLock(s32 lock);
+            void setNode(nNetwork::nSharedMemory2::CNode* node);
+            MT_CTSTR getName();
+            s32 getLock();
+            bool getReliable();
+            nNetwork::nSharedMemory2::CNode* getNode();
+        private:
+            nNetwork::nSharedMemory2::CNode* mpNode;  // offset: 0x8
+            MtString mName;  // offset: 0x10
+            s32 mLock;  // offset: 0x18
+            bool mReliable;  // offset: 0x1c
         public:
             static MyDTI DTI;
         };
@@ -278,8 +367,25 @@ inline void* nNetwork::nSharedMemory2::CConsistentHash::operator new(size_t sz, 
     return p_addr;
 }
 
+inline void* nNetwork::nSharedMemory2::CNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nNetwork::nSharedMemory2::CProtocol::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nNetwork::nSharedMemory2::CProtocol::CProtocol() {
+    this->mpParent = nullptr;
+}
+
+inline void* nNetwork::nSharedMemory2::CRecord::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nNetwork::nSharedMemory2::CRecord::CRecord() {
+    this->mLock = -1;
+    this->mReliable = true;
 }
 
 inline void* nNetwork::nSharedMemory2::Object::operator new(size_t sz, void* p_addr) {

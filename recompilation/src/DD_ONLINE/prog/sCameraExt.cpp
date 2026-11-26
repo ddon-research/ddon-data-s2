@@ -350,14 +350,71 @@ void sCameraExt::cancelQuake(u32 resIndex, uintptr task) {
     }
 }
 
-__attribute__((weak)) void sCameraExt::cancelQuakeTask(uintptr task) {
-    DDON_STUB("sCameraExt::cancelQuakeTask")
-    /* stub */
+void sCameraExt::cancelQuakeTask(uintptr task) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    if (mpGameCamera != nullptr) {
+        if (mprQuakeList != nullptr) {
+            mpGameCamera->mQuake.del(task, true);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        } else {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        }
+    } else {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void sCameraExt::cancelQuakeAll() {
-    DDON_STUB("sCameraExt::cancelQuakeAll")
-    /* stub */
+void sCameraExt::cancelQuakeAll() {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    if (mpGameCamera != nullptr) {
+        mpGameCamera->mQuake.del(0ul, true);
+        mpGameCamera->mQuake.del(1ul, true);
+        mpGameCamera->mQuake.del(2ul, true);
+        mpGameCamera->mQuake.del(3ul, true);
+        mpGameCamera->mQuake.del(4ul, true);
+        mpGameCamera->mQuake.del(5ul, true);
+        mpGameCamera->mQuake.del(6ul, true);
+        mpGameCamera->mQuake.del(7ul, true);
+        mpGameCamera->mQuake.del(8ul, true);
+        mpGameCamera->mQuake.del(9ul, true);
+        mpGameCamera->mQuake.del(10ul, true);
+        mpGameCamera->mQuake.del(11ul, true);
+        mpGameCamera->mQuake.del(12ul, true);
+        mpGameCamera->mQuake.del(13ul, true);
+        mpGameCamera->mQuake.del(14ul, true);
+        mpGameCamera->mQuake.del(15ul, true);
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    } else {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
 }
 
 void sCameraExt::resetGameCamera() {

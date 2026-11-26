@@ -9,6 +9,7 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cDraw.h"
 #include "nDraw.h"
@@ -33,9 +34,42 @@ inline void nDraw::Animation::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nDraw::Animation::DTI)->memFree(p_addr);
 }
 
+inline u32 nDraw::Animation::getAnimationNum() const {
+    return this->mpList->animation_num;
+}
+
+inline const nDraw::Animation::ANIMATION* nDraw::Animation::getAnimation(u32 no) const {
+    return this->mpList->animations[no];
+}
+
+inline void* nDraw::Animation::allocBuf(BUFSTATE& bs, u32 size) {
+    if (size == 0) {
+        return nullptr;
+    }
+    void* p = bs.pbuf + bs.pt;
+    bs.pt += size;
+    return p;
+}
+
+inline void* nDraw::CBufferSystem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nDraw::CBufferSystem::DTI)->memAlloc(sz, align, ::nDraw::CBufferSystem::DTI.getID());
+}
+
+inline nDraw::CBufferSystem::CBufferSystem(const nDraw::Animation* panm, SO_HANDLE* vdcb, u32 vdcb_num) : mAnimation(nullptr), mVertexDisplacement(nullptr) {
+    generate(panm, vdcb, vdcb_num);
+}
+
 nDraw::Animation::Animation(const nDraw::Animation::ANIMATION_LIST* list) {
-    DDON_STUB("nDraw::Animation::Animation")
-    /* stub */
+    u32 bufsize = 0;
+    void* pbuf = nullptr;
+    ANIMATION_LIST* plist = nullptr;
+    if (list != nullptr) {
+        bufsize = calcBufSize(list);
+        pbuf = MtMemoryAllocator::getAllocator(nDraw::Animation::DTI)->memAlloc(bufsize, 16u);
+        plist = copyAnimationList(pbuf, bufsize, list);
+    }
+    mpList = plist;
+    mBufferSize = bufsize;
 }
 
 __attribute__((noinline)) nDraw::Animation::~Animation() {
@@ -69,102 +103,107 @@ s32 nDraw::Animation::getNo(MT_CTSTR name) const {
 }
 
 __attribute__((weak)) nDraw::Animation::ANIMATION_LIST* nDraw::Animation::copyAnimationList(void* pdst, u32 dst_size, const nDraw::Animation::ANIMATION_LIST* psrc) {
-    DDON_STUB("nDraw::Animation::copyAnimationList")
-    return nullptr;
+    BUFSTATE bs;
+    bs.pbuf = static_cast<u8*>(pdst);
+    bs.bufsize = dst_size;
+    bs.pt = 0;
+    ANIMATION_LIST* ptgt = static_cast<ANIMATION_LIST*>(allocBuf(bs, static_cast<u32>(sizeof(ANIMATION_LIST) + sizeof(ANIMATION*) * (psrc->animation_num - 1))));
+    ptgt->animation_num = psrc->animation_num;
+    for (u32 i = 0; i < ptgt->animation_num; ++i) {
+        ANIMATION* psanm = psrc->animations[i];
+        ANIMATION* pdanm = static_cast<ANIMATION*>(allocBuf(bs, static_cast<u32>(sizeof(ANIMATION) + sizeof(PARAM*) * (psanm->param_num - 1))));
+        pdanm->cbuffers = static_cast<SO_HANDLE*>(allocBuf(bs, static_cast<u32>(sizeof(SO_HANDLE) * psanm->cbuffer_num)));
+        pdanm->cbuffer_num = psanm->cbuffer_num;
+        pdanm->crc = psanm->crc;
+        pdanm->length = psanm->length;
+        pdanm->param_num = psanm->param_num;
+        pdanm->repeat = psanm->repeat;
+        pdanm->run = psanm->run;
+        memcpy(pdanm->cbuffers, psanm->cbuffers, sizeof(SO_HANDLE) * pdanm->cbuffer_num);
+        for (u32 j = 0; j < pdanm->param_num; ++j) {
+            u32 param_size = 0;
+            PARAM* psp = psanm->params[j];
+            switch (psp->type) {
+            case TYPE_FLOAT:
+            case TYPE_INT:
+                param_size = static_cast<u32>(sizeof(PARAM_INT) + sizeof(KEY_INT) * (psp->key_num - 1));
+                break;
+            case TYPE_SAMPLER:
+                param_size = static_cast<u32>(sizeof(PARAM_SAMPLER) + sizeof(KEY_SAMPLER) * (psp->key_num - 1));
+                break;
+            case TYPE_TEXCOORD:
+            case TYPE_TEXCOORD2:
+                param_size = static_cast<u32>(sizeof(PARAM_TEXCOORD) + sizeof(KEY_TEXCOORD) * (psp->key_num - 1));
+                break;
+            case TYPE_TEX:
+                param_size = static_cast<u32>(sizeof(PARAM_TEX) + sizeof(KEY_TEX) * (psp->key_num - 1));
+                break;
+            case TYPE_VECTOR:
+                param_size = static_cast<u32>(sizeof(PARAM_VECTOR) + sizeof(KEY_VECTOR) * (psp->key_num - 1));
+                break;
+            case TYPE_LEGACY:
+                param_size = static_cast<u32>(sizeof(PARAM_LEGACY) + sizeof(LEGACY_ANIMATION) * (psp->key_num - 1));
+                break;
+            default:
+                break;
+            }
+            PARAM* pdp = static_cast<PARAM*>(allocBuf(bs, param_size));
+            memcpy(pdp, psp, param_size);
+            if (psp->type == TYPE_TEX) {
+                PARAM_TEX* pparam_tex = static_cast<PARAM_TEX*>(pdp);
+                for (u32 k = 0; k < pparam_tex->key_num; ++k) {
+                    nDraw::Texture* ptex = pparam_tex->keys[k].value;
+                    if (ptex != nullptr) {
+                        ptex->addRef();
+                    }
+                }
+            }
+            pdanm->params[j] = pdp;
+        }
+        ptgt->animations[i] = pdanm;
+    }
+    return ptgt;
 }
 
 u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) {
-    u32 v4_0;
-    if (list == nullptr) {
-        v4_0 = 0;
-    } else {
-        u32 v0_5 = list->animation_num;
-        if (v0_5 == 0) {
-            v4_0 = (v0_5 * 8u) + 8u;
-        } else {
-            u32 v0_0 = (v0_5 * 8u) + 8u;
-            u32 i = 0;
-            u32 v1_0;
-            u32 v1_2;
-            u32 j;
-            u32 v2_0;
-            u32 v3_0;
-            for (;;) {
-                nDraw::Animation::ANIMATION* v1_5 = list->animations[i];
-                if ((v1_5->param_num & 0xFFFFu) == 0) {
-                    v3_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) & 0x3FFFCu) * 2u)) + (v1_5->cbuffer_num * 4u)) + 24u;
-                } else {
-                    v1_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) & 0x3FFFCu) * 2u)) + (v1_5->cbuffer_num * 4u)) + 24u;
-                    v1_2 = v1_5->param_num;
-                    j = 0;
-                    for (;;) {
-                        switch (v1_5->params[j]->type) {
-                            case 0:
-                            {
-                                v2_0 = (v1_0 + (v1_5->params[j]->key_num * 8u)) + 12u;
-                                break;
-                            }
-                            case 1:
-                            {
-                                v2_0 = (v1_0 + (v1_5->params[j]->key_num * 20u)) + 12u;
-                                break;
-                            }
-                            case 2:
-                            {
-                                v2_0 = (v1_0 + (v1_5->params[j]->key_num * 8u)) + 12u;
-                                break;
-                            }
-                            case 3:
-                            {
-                                v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 4) & 0xFFFFFF0u)) + 8u;
-                                break;
-                            }
-                            case 4:
-                            {
-                                v2_0 = (v1_0 + (v1_5->params[j]->key_num * 80u)) + 12u;
-                                break;
-                            }
-                            case 5:
-                            {
-                                v2_0 = (v1_0 + (v1_5->params[j]->key_num * 8u)) + 8u;
-                                break;
-                            }
-                            case 6:
-                            {
-                                v2_0 = (v1_0 + (v1_5->params[j]->key_num * 24u)) + 12u;
-                                break;
-                            }
-                            case 7:
-                            {
-                                v2_0 = (v1_0 + (v1_5->params[j]->key_num * 24u)) + 12u;
-                                break;
-                            }
-                            default:
-                            {
-                                v2_0 = v1_0;
-                                break;
-                            }
-                        }
-                        if ((j + 1u) < v1_2) {
-                            v1_0 = v2_0;
-                            j = j + 1u;
-                        } else {
-                            v3_0 = v2_0;
-                            break;
-                        }
+        u32 bufsize = 0;
+        if (list != nullptr) {
+            bufsize = list->animation_num * sizeof(ANIMATION*) + 8;
+            for (u32 i = 0; i < list->animation_num; i++) {
+                const ANIMATION* panim = list->animations[i];
+                bufsize += panim->param_num * sizeof(PARAM*) + panim->cbuffer_num * sizeof(SO_HANDLE) + 24;
+                for (u32 j = 0; j < panim->param_num; j++) {
+                    const PARAM* pparam = panim->params[j];
+                    switch (pparam->type) {
+                    case 0:
+                        bufsize += pparam->key_num * sizeof(KEY_INT) + 12;
+                        break;
+                    case 1:
+                        bufsize += pparam->key_num * sizeof(KEY_VECTOR) + 12;
+                        break;
+                    case 2:
+                        bufsize += pparam->key_num * sizeof(KEY_FLOAT) + 12;
+                        break;
+                    case 3:
+                        bufsize += pparam->key_num * sizeof(KEY_TEX) + 8;
+                        break;
+                    case 4:
+                        bufsize += pparam->key_num * 80 + 12;
+                        break;
+                    case 5:
+                        bufsize += pparam->key_num * sizeof(KEY_SAMPLER) + 8;
+                        break;
+                    case 6:
+                        bufsize += pparam->key_num * sizeof(KEY_TEXCOORD) + 12;
+                        break;
+                    case 7:
+                        bufsize += pparam->key_num * 24 + 12;
+                        break;
                     }
-                }
-                if ((i + 1u) < v0_5) {
-                    v0_0 = v3_0;
-                    i = i + 1u;
-                } else {
-                    v4_0 = v3_0;
-                    break;
                 }
             }
         }
-    }
-    return v4_0;
+        return bufsize;
 }
 
 inline nDraw::Animation::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -250,13 +289,55 @@ const MtDTI& nDraw::Material::getDTI() const {
 }
 
 nDraw::Material::Material(SO_HANDLE technique) {
-    DDON_STUB("nDraw::Material::Material")
-    /* stub */
+    mTechnique = technique;
+    mAlphaTestEnable = 0;
+    mAlphaTestCmpFunc = nDraw::CMP_GREATER;
+    mAlphaTestRopTest = 1;
+    mAlphaTestRef = 0;
+    mSelect = 0;
+    mLayerID = 0;
+    mDeferredShadowEnable = 1;
+    mDrawPass = 12;
+    mFogEnable = 1;
+    mStateNum = 0;
+    mProceduralTextureNum = 0;
+    mDeferredLighting = 1;
+    mAlbedoAlpha = 0;
+    mTangent = 0;
+    mHalfLambert = 0;
+    mID = 0;
+    mAnimationSpeed = 1.0f;
+    mpBlendState = nullptr;
+    mpRasterizerState = nullptr;
+    mpDepthStencilState = nullptr;
+    mBlendStateHandle = 0;
+    mStates = nullptr;
+    mProceduralTexture = nullptr;
+    mpAnimation = nullptr;
+    mpCBuffer = nullptr;
+    mLegacyAnimation = true;
+    memset(mAnimationState, 0, sizeof(mAnimationState));
+    for (u32 i = 0; i < 4; ++i) {
+        mAnimationState[i].no = -1;
+    }
+    mBlendFactor = MtColorF::Black;
+    mpBlendState = sShader2::getInstance()->getBlendState(0x4d2c8185u);
+    mBlendStateHandle = 0x4d2c8185u;
+    mStencilRef = 0;
+    mpDepthStencilState = sShader2::getInstance()->getDepthStencilState(0x1b9u);
+    mpRasterizerState = sShader2::getInstance()->getRasterizerState(0x1c2u);
+    mpStateAccessTable[0] = nullptr;
+    memset(mStateAccessTableNum, 0, sizeof(mStateAccessTableNum));
 }
 
-__attribute__((weak)) void nDraw::Material::createProperty(MtPropertyList& s) {
-    DDON_STUB("nDraw::Material::createProperty")
-    /* stub */
+void nDraw::Material::createProperty(MtPropertyList& s) {
+    this->::nDraw::Resource::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR4, "BaseColor", reinterpret_cast<MT_MFUNC>(&::nDraw::Material::getBaseColor), reinterpret_cast<MT_MFUNC>(&::nDraw::Material::setBaseColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR2, "UVOffset", reinterpret_cast<MT_MFUNC>(&::nDraw::Material::getBaseUVOffset), reinterpret_cast<MT_MFUNC>(&::nDraw::Material::setBaseUVOffset), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR2, "UVScale", reinterpret_cast<MT_MFUNC>(&::nDraw::Material::getBaseUVScale), reinterpret_cast<MT_MFUNC>(&::nDraw::Material::setBaseUVScale), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U8, "StencilRef", reinterpret_cast<MT_MFUNC>(&::nDraw::Material::getStencilRef), reinterpret_cast<MT_MFUNC>(&::nDraw::Material::setStencilRef), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "ID", reinterpret_cast<MT_MFUNC>(&::nDraw::Material::getID), reinterpret_cast<MT_MFUNC>(&::nDraw::Material::setID), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mAnimationSpeed", &mAnimationSpeed, 0u, 0u);
 }
 
 MtUI* nDraw::Material::createUI(MtProperty& prop) {
@@ -290,19 +371,31 @@ u8 nDraw::Material::getStencilRef() const {
     return static_cast<u8>(mStencilRef);
 }
 
+inline nDraw::BlendState* sShader2::getBlendState(SO_HANDLE handle) {
+    return static_cast<nDraw::BlendState*>(this->mShaderStates[handle & 0xfffu].pvalue);
+}
+
+inline nDraw::RasterizerState* sShader2::getRasterizerState(SO_HANDLE handle) {
+    return static_cast<nDraw::RasterizerState*>(this->mShaderStates[handle & 0xfffu].pvalue);
+}
+
+inline nDraw::DepthStencilState* sShader2::getDepthStencilState(SO_HANDLE handle) {
+    return static_cast<nDraw::DepthStencilState*>(this->mShaderStates[handle & 0xfffu].pvalue);
+}
+
 __attribute__((weak)) void nDraw::Material::setBlendState(SO_HANDLE state, const MtColorF& blendfactor) {
-    DDON_STUB("nDraw::Material::setBlendState")
-    /* stub */
+    mBlendFactor = blendfactor;
+    mpBlendState = sShader2::getInstance()->getBlendState(state);
+    mBlendStateHandle = state;
 }
 
 __attribute__((weak)) void nDraw::Material::setRasterizerState(SO_HANDLE state) {
-    DDON_STUB("nDraw::Material::setRasterizerState")
-    /* stub */
+    mpRasterizerState = sShader2::getInstance()->getRasterizerState(state);
 }
 
 __attribute__((weak)) void nDraw::Material::setDepthStencilState(SO_HANDLE state, u8 ref) {
-    DDON_STUB("nDraw::Material::setDepthStencilState")
-    /* stub */
+    mStencilRef = ref;
+    mpDepthStencilState = sShader2::getInstance()->getDepthStencilState(state);
 }
 
 __attribute__((weak)) void nDraw::Material::setStateBuffer(const nDraw::Material::STATE* states, u32 state_num, u32 bufsize, bool maketable) {
@@ -311,13 +404,70 @@ __attribute__((weak)) void nDraw::Material::setStateBuffer(const nDraw::Material
 }
 
 __attribute__((weak)) void nDraw::Material::resetAllAnimation() {
-    DDON_STUB("nDraw::Material::resetAllAnimation")
-    /* stub */
+    nDraw::Animation* panm = mpAnimation;
+    memset(mAnimationState, 0, sizeof(mAnimationState));
+    for (u32 i = 0; i < 4; ++i) {
+        mAnimationState[i].no = -1;
+    }
+    if (panm != nullptr) {
+        u32 slot = 0;
+        const u32 n = panm->getAnimationNum();
+        for (u32 i = 0; i < n; ++i) {
+            const nDraw::Animation::ANIMATION* pa = panm->getAnimation(i);
+            if (pa->run && slot < 4) {
+                ANIMATION_STATE astate;
+                astate.no = static_cast<s32>(i);
+                astate.state = 0;
+                astate.frame = 0.0f;
+                mAnimationState[slot] = astate;
+                ++slot;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void nDraw::Material::setAnimationData(nDraw::Animation* panm) {
-    DDON_STUB("nDraw::Material::setAnimationData")
-    /* stub */
+    if (mpAnimation != panm) {
+        if (mpAnimation != nullptr) {
+            mpAnimation->release();
+            mpAnimation = nullptr;
+        }
+        if (mpCBuffer != nullptr) {
+            mpCBuffer->release();
+            mpCBuffer = nullptr;
+        }
+        mpAnimation = panm;
+        if (panm != nullptr) {
+            panm->addRef();
+            for (u32 i = 0; i < mpAnimation->getAnimationNum(); ++i) {
+                const nDraw::Animation::ANIMATION* pa = mpAnimation->getAnimation(i);
+                if (pa->cbuffer_num != 0) {
+                    mpCBuffer = new (16u) nDraw::CBufferSystem(mpAnimation, nullptr, 0);
+                    break;
+                }
+            }
+        }
+    }
+    nDraw::Animation* preset = mpAnimation;
+    memset(mAnimationState, 0, sizeof(mAnimationState));
+    for (u32 i = 0; i < 4; ++i) {
+        mAnimationState[i].no = -1;
+    }
+    if (preset != nullptr) {
+        u32 slot = 0;
+        const u32 n = preset->getAnimationNum();
+        for (u32 i = 0; i < n; ++i) {
+            const nDraw::Animation::ANIMATION* pa = preset->getAnimation(i);
+            if (pa->run && slot < 4) {
+                ANIMATION_STATE astate;
+                astate.no = static_cast<s32>(i);
+                astate.state = 0;
+                astate.frame = 0.0f;
+                mAnimationState[slot] = astate;
+                ++slot;
+            }
+        }
+    }
 }
 
 void nDraw::Material::setAnimation(nDraw::Material::SLOT_TYPE slot, s32 no) {
@@ -483,8 +633,42 @@ __attribute__((weak)) bool nDraw::Material::setShadowRecvState(cDraw* pdraw, u32
 }
 
 __attribute__((weak)) void nDraw::Material::releaseStateBuffer() {
-    DDON_STUB("nDraw::Material::releaseStateBuffer")
-    /* stub */
+    for (u32 i = 0; i < mStateNum; ++i) {
+        STATE* pstate = &mStates[i];
+        switch (pstate->type) {
+        case STATE_SAMPLER: {
+            nDraw::Resource* pss = static_cast<nDraw::Resource*>(pstate->state.pvalue);
+            if (mRefFrame >= nDraw::Resource::mRenderFrame && pss != nullptr) {
+                pss->mRefFrame = nDraw::Resource::mRenderFrame + nDraw::Resource::mProtectFrame;
+            }
+            if (pss != nullptr) {
+                pss->release();
+            }
+            break;
+        }
+        case STATE_TEXTURE: {
+            nDraw::Resource* pt = static_cast<nDraw::Resource*>(pstate->state.pvalue);
+            if (mRefFrame >= nDraw::Resource::mRenderFrame && pt != nullptr) {
+                pt->mRefFrame = nDraw::Resource::mRenderFrame + nDraw::Resource::mProtectFrame;
+            }
+            if (pt != nullptr) {
+                pt->release();
+            }
+            break;
+        }
+        default:
+            break;
+        }
+    }
+    MtMemoryAllocator::getAllocator(nDraw::Material::DTI)->memFree(mStates);
+    mStates = nullptr;
+    mStateNum = 0;
+    MtMemoryAllocator::getAllocator(nDraw::Material::DTI)->memFree(mProceduralTexture);
+    mProceduralTextureNum = 0;
+    mProceduralTexture = nullptr;
+    MtMemoryAllocator::getAllocator(nDraw::Material::DTI)->memFree(mpStateAccessTable[0]);
+    memset(mpStateAccessTable, 0, sizeof(mpStateAccessTable));
+    memset(mStateAccessTableNum, 0, sizeof(mStateAccessTableNum));
 }
 
 nDraw::Material::~Material() {

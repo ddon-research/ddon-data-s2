@@ -30,6 +30,7 @@ class cParentRegionStatus;
 class cpHpDamageCtrl;
 class cpJob08;
 class rAttackParam;
+class sObjCollision;
 class uDDOModel;
 class uHumanEnemy;
 
@@ -229,6 +230,7 @@ public:
 class cHitInfoAfter : public MtObject
 {
     friend class cpHpDamageCtrl;
+    friend class sObjCollision;
 public:
     class MyDTI;
 public:

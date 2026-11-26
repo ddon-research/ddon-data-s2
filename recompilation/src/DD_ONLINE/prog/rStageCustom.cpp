@@ -168,9 +168,10 @@ inline void rStageCustom::Area::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rStageCustom::Area::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rStageCustom::Area::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageCustom::Area::createProperty")
-    /* stub */
+void rStageCustom::Area::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaNo", &mAreaNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFilterNo", &mFilterNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupNo", &mGroupNo, 0u, 0u);
 }
 
 inline rStageCustom::Area::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

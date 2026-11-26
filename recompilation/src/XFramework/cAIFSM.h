@@ -445,7 +445,7 @@ public:
             static void operator delete(void* p_addr, u32 align);
             static void operator delete[](void* p_addr, u32 align);
             ClearTransitionFromAllOnceParam();
-            virtual ~ClearTransitionFromAllOnceParam();
+            virtual ~ClearTransitionFromAllOnceParam() {}
             virtual void copy(cAICopiableParameter* pParam);  // vtable slot 6
             virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
             virtual void createProperty(MtPropertyList& s);  // vtable slot 4
@@ -746,6 +746,30 @@ inline void* cAIFSMData::Core::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cAIFSMData::Core::Core() {
+    this->mpCluster = nullptr;
+    this->mClusterLogNum = 0;
+    this->mpClusterLog = nullptr;
+    this->mClusterNum = 0;
+    this->mFFree[6] = 0.0f;
+    this->mFFree[7] = 0.0f;
+    this->mFFree[4] = 0.0f;
+    this->mFFree[5] = 0.0f;
+    this->mFFree[2] = 0.0f;
+    this->mFFree[3] = 0.0f;
+    this->mFFree[0] = 0.0f;
+    this->mFFree[1] = 0.0f;
+    this->mIFree[6] = 0;
+    this->mIFree[7] = 0;
+    this->mIFree[4] = 0;
+    this->mIFree[5] = 0;
+    this->mIFree[2] = 0;
+    this->mIFree[3] = 0;
+    this->mIFree[0] = 0;
+    this->mIFree[1] = 0;
+    this->mResourceId = 0;
+}
+
 inline u32 cAIFSMData::Core::getClusterNum() const {
     return this->mClusterNum;
 }
@@ -762,8 +786,20 @@ inline void* cAIFSMData::Cluster::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cAIFSMData::Cluster::Cluster() {
+    this->mId = 0;
+    this->mNextId = 0;
+    this->mStatus = 0;
+}
+
 inline void* cAIFSMData::ClusterLog::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cAIFSMData::ClusterLog::ClusterLog() {
+    this->mTransitionOnceStateList = nullptr;
+    this->mClusterId = 0;
+    this->mTransitionOnceStateNum = 0;
 }
 
 inline u32 cAIFSMData::ClusterLog::getTransitionOnceStateNum() const {

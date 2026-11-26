@@ -49,6 +49,7 @@ public:
 public:
     class cQuad : public MtObject
     {
+        friend class rOccluder;
     public:
         class MyDTI;
     public:

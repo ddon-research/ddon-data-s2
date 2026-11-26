@@ -23,6 +23,7 @@
 #include "cOmControl.h"
 #include "../../XFramework/cResource.h"
 #include "cScenario.h"
+#include "cScenarioElement.h"
 #include "../../XFramework/cSystem.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
@@ -314,7 +315,7 @@ __attribute__((weak)) void sOmManager::releaseOmCtrl(cOmControl* pctrl) {
 }
 
 cOmControl* sOmManager::getOmCtrl(u32 uniqueId) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)) != 0) {
+    if (mRefOmCtrlArray.mLength != 0) {
         u32 i = 0;
         do {
             if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i)] != nullptr) {
@@ -323,7 +324,7 @@ cOmControl* sOmManager::getOmCtrl(u32 uniqueId) {
                 }
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)));
+        } while (i < mRefOmCtrlArray.mLength);
     }
     return nullptr;
 }
@@ -448,7 +449,7 @@ void sOmManager::releaseOmInsCtrl(cOmControl* pctrl) {
 }
 
 uOmSwingInstancing* sOmManager::getOmInsUnit(s32 omID) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 432)) != 0) {
+    if (mpuOmIns.mLength != 0) {
         u32 ucnt = 0;
         do {
             if (mpuOmIns.getBuffer()[static_cast<int>(ucnt)] != nullptr) {
@@ -457,7 +458,7 @@ uOmSwingInstancing* sOmManager::getOmInsUnit(s32 omID) {
                 }
             }
             ucnt += 1u;
-        } while (ucnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 432)));
+        } while (ucnt < mpuOmIns.mLength);
     }
     return nullptr;
 }
@@ -541,7 +542,7 @@ void sOmManager::releaseTreeInsCtrl(cOmTreeControl* pctrl) {
 }
 
 uOmSwingInstancing* sOmManager::getTreeInsUnit(s32 omID) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 504)) != 0) {
+    if (mpuTreeIns.mLength != 0) {
         u32 ucnt = 0;
         do {
             if (mpuTreeIns.getBuffer()[static_cast<int>(ucnt)] != nullptr) {
@@ -550,7 +551,7 @@ uOmSwingInstancing* sOmManager::getTreeInsUnit(s32 omID) {
                 }
             }
             ucnt += 1u;
-        } while (ucnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 504)));
+        } while (ucnt < mpuTreeIns.mLength);
     }
     return nullptr;
 }
@@ -588,7 +589,7 @@ inline void sOmManager::moveBell() {
 }
 
 bool sOmManager::isDoor(u32 uniqueId) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)) != 0) {
+    if (mRefOmCtrlArray.mLength != 0) {
         unsigned int i0 = 0;
         do {
             if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)] != nullptr) {
@@ -601,13 +602,13 @@ bool sOmManager::isDoor(u32 uniqueId) {
                 }
             }
             i0 += 1u;
-        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)));
+        } while (i0 < mRefOmCtrlArray.mLength);
     }
     return false;
 }
 
 bool sOmManager::isCanOpenDoor(u32 uniqueId) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)) != 0) {
+    if (mRefOmCtrlArray.mLength != 0) {
         unsigned int i0 = 0;
         do {
             if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)] != nullptr) {
@@ -620,7 +621,7 @@ bool sOmManager::isCanOpenDoor(u32 uniqueId) {
                 }
             }
             i0 += 1u;
-        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)));
+        } while (i0 < mRefOmCtrlArray.mLength);
     }
     return false;
 }
@@ -661,7 +662,7 @@ __attribute__((weak)) bool sOmManager::isBreakable(u32 uniqueId) {
 }
 
 bool sOmManager::isUseItem(u32 uniqueID) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)) != 0) {
+    if (mRefOmCtrlArray.mLength != 0) {
         unsigned int i0 = 0;
         do {
             if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)] != nullptr) {
@@ -670,7 +671,7 @@ bool sOmManager::isUseItem(u32 uniqueID) {
                 }
             }
             i0 += 1u;
-        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)));
+        } while (i0 < mRefOmCtrlArray.mLength);
     }
     return false;
 }
@@ -699,13 +700,16 @@ u32 sOmManager::getAtkOmPosNum() {
     return mAtkOmPosNum;
 }
 
-__attribute__((weak)) const MtVector3& sOmManager::getAtkOmPosNum(u32 index) {
-    DDON_STUB("sOmManager::getAtkOmPosNum")
-    __builtin_unreachable();
+const MtVector3& sOmManager::getAtkOmPosNum(u32 index) {
+    if (index < mAtkOmPosNum) {
+        return mAtkOmPos[index];
+    } else {
+        return MtVector3::Zero;
+    }
 }
 
 cOmControl* sOmManager::getTarasuk() {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 304)) != 0) {
+    if (mFastOmCtrlArray.mLength != 0) {
         u32 cnt = 0;
         do {
             if (mFastOmCtrlArray.getBuffer()[static_cast<int>(cnt)] != nullptr) {
@@ -716,7 +720,7 @@ cOmControl* sOmManager::getTarasuk() {
                 }
             }
             cnt += 1u;
-        } while (cnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 304)));
+        } while (cnt < mFastOmCtrlArray.mLength);
     }
     return nullptr;
 }
@@ -849,9 +853,76 @@ void sOmManager::releaseNyoro() {
     (sOmManager::mpInstance)->mArcNyoro.cArcLoaderBase::releaseArc();
 }
 
-__attribute__((weak)) bool sOmManager::addBad(u32 omID, s32& pitch) {
-    DDON_STUB("sOmManager::addBad")
-    return {};
+bool sOmManager::addBad(u32 omID, s32& pitch) {
+    unsigned int i0_0;
+    unsigned int* p0_1;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) == 0) {
+            if (mBadNum > 4u) {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return false;
+            } else {
+                i0_0 = 0;
+                p0_1 = &mBadOmID[0];
+            }
+        } else {
+            abort();
+        }
+    } else {
+        if (mBadNum > 4u) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            return false;
+        } else {
+            i0_0 = 0;
+            p0_1 = &mBadOmID[0];
+        }
+    }
+    for (;;) {
+        if ((*p0_1) != 0) {
+            if ((i0_0 + 1u) > 4u) {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return false;
+            } else {
+                i0_0 += 1u;
+                p0_1 += 1;
+            }
+        } else {
+            if (i0_0 != 0xFFFFFFFFu) {
+                mBadOmID[static_cast<int>(i0_0)] = omID;
+                pitch = sOmManager__BadPicth[static_cast<int>(i0_0)];
+                mBadNum = mBadNum + 1u;
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+                        return true;
+                    } else {
+                        break;
+                    }
+                } else {
+                    return true;
+                }
+            } else {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return false;
+            }
+        }
+    }
+    abort();
 }
 
 void sOmManager::deleteBad(u32 omID) {
@@ -922,7 +993,7 @@ __attribute__((weak)) bool sOmManager::isDoneGimmick(u32 in_uid) {
 }
 
 uBaseModel* sOmManager::getLayoutUnit(u32 uniqueId) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)) != 0) {
+    if (mRefOmCtrlArray.mLength != 0) {
         unsigned int i1 = 0;
         do {
             if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i1)] != nullptr) {
@@ -931,7 +1002,7 @@ uBaseModel* sOmManager::getLayoutUnit(u32 uniqueId) {
                 }
             }
             i1 += 1u;
-        } while (i1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)));
+        } while (i1 < mRefOmCtrlArray.mLength);
     }
     return nullptr;
 }
@@ -978,7 +1049,7 @@ __attribute__((weak)) void sOmManager::moveAQC() {
 }
 
 void sOmManager::setUnitGroup(bool flag, s32 omNo, u32 setGroup) {
-    u32 num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208);
+    u32 num = mRefOmCtrlArray.mLength;
     if (num != 0) {
         for (unsigned int i0_9 = 0;;) {
             if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i0_9)] != nullptr) {
@@ -1005,15 +1076,15 @@ void sOmManager::setUnitGroup(bool flag, s32 omNo, u32 setGroup) {
             }
         }
     }
-    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
         if (scePthreadMutexLock(&mCS.mCSection) != 0) {
             abort();
             return;
         }
     }
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 432)) != 0) {
+    if (mpuOmIns.mLength != 0) {
         unsigned int i3_3 = 0;
-        num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 432);
+        num = mpuOmIns.mLength;
         for (;;) {
             MtObject* t2 = mpuOmIns.getBuffer()[static_cast<int>(i3_3)];
             if (t2 != nullptr) {
@@ -1039,7 +1110,7 @@ void sOmManager::setUnitGroup(bool flag, s32 omNo, u32 setGroup) {
             }
         }
     }
-    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
         if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
             abort();
             return;
@@ -1210,9 +1281,18 @@ bool sOmManager::isQuestFlag(cOmControl* pctrl, u32 flagNo) const {
     }
 }
 
-__attribute__((weak)) bool sOmManager::isQuestFlag(cOmControl* pctrl, u32 flagNo, nQuest::QUEST_ID questId) const {
-    DDON_STUB("sOmManager::isQuestFlag")
-    return {};
+bool sOmManager::isQuestFlag(cOmControl* pctrl, u32 flagNo, nQuest::QUEST_ID questId) const {
+    if (pctrl != nullptr) {
+        if (pctrl->mLot.mbMyQuest) {
+            bool t0 = sQuestManagerExt::getInstance()->isMyQuestFlag(flagNo, questId);
+            return t0;
+        } else {
+            bool t1 = sQuestManagerExt::getInstance()->isQuestFlag(flagNo, questId);
+            return t1;
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void sOmManager::setShell(const MtVector3& pos, uDDOModel* pudmg) {
@@ -1316,8 +1396,8 @@ inline void sOmManager::cOmArcLoader::operator delete(void* p_addr) {
 }
 
 sOmManager::cOmArcLoader::~cOmArcLoader() {
-    DDON_STUB("sOmManager::cOmArcLoader::~cOmArcLoader")
-    /* stub */
+    mArc.releaseArc();
+    mRnoArc = 0;
 }
 
 __attribute__((weak)) void sOmManager::cOmArcLoader::move() {

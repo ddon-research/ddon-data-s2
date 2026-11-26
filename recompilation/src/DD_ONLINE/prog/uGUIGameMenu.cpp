@@ -161,19 +161,56 @@ __attribute__((noinline)) uGUIGameMenu::~uGUIGameMenu() {
     /* stub */
 }
 
-__attribute__((weak)) f32 uGUIGameMenu::getMenuIconFixFrameFromMsgIdx(u32 uMsgIdx) {
-    DDON_STUB("uGUIGameMenu::getMenuIconFixFrameFromMsgIdx")
-    return {};
+f32 uGUIGameMenu::getMenuIconFixFrameFromMsgIdx(u32 uMsgIdx) {
+    float v0_4 = -1.0f;
+    u32 i = 0;
+    unsigned int i1_0;
+    for (;;) {
+        const PARAM* v1_2 = uGUIGameMenu::mpParamList[i];
+        i1_0 = 0;
+        for (;;) {
+            if (v1_2[i1_0].msgIndex == uMsgIdx) {
+                if (uMsgIdx == 13) {
+                    return 7.0f;
+                } else {
+                    return static_cast<float>(i);
+                }
+            } else {
+                if ((i1_0 + 1u) < CONTENTS_NUM[i]) {
+                    i1_0 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        if ((i + 1u) <= 6u) {
+            i = i + 1u;
+        } else {
+            break;
+        }
+    }
+    return v0_4;
 }
 
-__attribute__((weak)) s32 uGUIGameMenu::getMsgIdxFromSCMMenuId(u32 uSCMMenuId) {
-    DDON_STUB("uGUIGameMenu::getMsgIdxFromSCMMenuId")
-    return {};
+s32 uGUIGameMenu::getMsgIdxFromSCMMenuId(u32 uSCMMenuId) {
+    if (uSCMMenuId <= 54u) {
+        return tblMsgIdxGameMenu[uSCMMenuId];
+    } else {
+        return -1;
+    }
 }
 
-__attribute__((weak)) u32 uGUIGameMenu::getSCMMenuIdFromMsgIdx(u32 uMsgIdx) {
-    DDON_STUB("uGUIGameMenu::getSCMMenuIdFromMsgIdx")
-    return {};
+u32 uGUIGameMenu::getSCMMenuIdFromMsgIdx(u32 uMsgIdx) {
+    u32 i = 0;
+    const int* p2 = tblMsgIdxGameMenu;
+    do {
+        if ((*p2) == static_cast<int>(uMsgIdx)) {
+            return i;
+        }
+        i += 1u;
+        p2 += static_cast<int>(1);
+    } while (i <= 54u);
+    return 0xFFFFFFFF;
 }
 
 void uGUIGameMenu::move() {
@@ -485,9 +522,17 @@ __attribute__((weak)) void uGUIGameMenu::updateEntryBoardReadyWait() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGameMenu::updateInviteEntry() {
-    DDON_STUB("uGUIGameMenu::updateInviteEntry")
-    /* stub */
+void uGUIGameMenu::updateInviteEntry() {
+    if (mSubMenuRno == 1) {
+        if (sMenu::getInstance()->mMenuContentsExecutor.moveContentsExecutor() == nMenu::MENU_RET_EXIT) {
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGameMenu::updateExit);
+        }
+    } else {
+        if (mSubMenuRno == 0) {
+            sMenu::getInstance()->mMenuContentsExecutor.initContentsExecutor(cMenuContentsExecutor::NONE_CONTENTS_TYPE, cMenuContentsExecutor::INVITATION_OPEN, 0u);
+            mSubMenuRno = mSubMenuRno + 1u;
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIGameMenu::setupMoney(uGUIGameMenu::stMoney& money, u64 val) {

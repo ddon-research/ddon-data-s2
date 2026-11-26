@@ -21,6 +21,7 @@
 class MtAllocator;
 class MtDTI;
 class MtObject;
+class cContextPlayerInfo;
 class cCyclePartReqInfo;
 class cEffectCycleCtrl;
 class cHitInfo;
@@ -59,6 +60,7 @@ using u8 = unsigned char;
 
 class cpOcdCtrl : public cpComponent
 {
+    friend class cContextPlayerInfo;
     friend class cOcdMsgCtrl2;
     friend class cQuestTask;
     friend class cpShakeCtrl;

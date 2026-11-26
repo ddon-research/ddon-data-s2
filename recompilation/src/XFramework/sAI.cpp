@@ -8,6 +8,8 @@
 #include "../MT/MtCRC.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "../MT/MtSynchronize.h"
@@ -55,9 +57,29 @@ __attribute__((weak)) void sAI::move() {
     /* stub */
 }
 
-__attribute__((weak)) void sAI::moveAfter() {
-    DDON_STUB("sAI::moveAfter")
-    /* stub */
+void sAI::moveAfter() {
+    if (mpServiceTop != nullptr) {
+        for (cAIService* v0_3 = mpServiceTop;;) {
+            if ((v0_3->mAttribute & 1u) != 0) {
+                if ((sMain::mpInstance)->mSkip == 0) {
+                    if ((sMain::mpInstance)->mPause) {
+                        if ((v0_3->mAttribute & 2u) == 0) {
+                            v0_3->move();
+                        }
+                    } else {
+                        v0_3->move();
+                    }
+                } else {
+                    v0_3->move();
+                }
+            }
+            if (v0_3->mpNextService != nullptr) {
+                v0_3 = v0_3->mpNextService;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 void sAI::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
@@ -71,9 +93,11 @@ void sAI::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_of
     }
 }
 
-__attribute__((weak)) void sAI::createProperty(MtPropertyList& s) {
-    DDON_STUB("sAI::createProperty")
-    /* stub */
+void sAI::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "ServiceList", reinterpret_cast<MT_MFUNC>(&::sAI::getServiceByIndex), reinterpret_cast<MT_MFUNC>(&::sAI::setServiceByIndex), 162u, reinterpret_cast<MT_MFUNC>(&::sAI::getServiceNum), reinterpret_cast<MT_MFUNC>(&::sAI::setServiceNum));
+    s << MtProperty(static_cast<MtObject*>(this), "PerformanceIndicator", &mTaskPerformanceIndicator, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "TaskPerformanceInfoList", reinterpret_cast<MT_MFUNC>(&::sAI::getTaskPerformanceInfo), reinterpret_cast<MT_MFUNC>(&::sAI::setTaskPerformanceInfo), 162u, reinterpret_cast<MT_MFUNC>(&::sAI::getTaskPerformanceInfoNum), reinterpret_cast<MT_MFUNC>(&::sAI::setTaskPerformanceInfoNum));
 }
 
 MtUI* sAI::createUI(MtProperty& prop) {
@@ -104,7 +128,13 @@ u32 sAI::getServiceNum() {
 }
 
 __attribute__((weak)) cAIService* sAI::getService(const MtDTI& dti, MT_CTSTR n) {
-    DDON_STUB("sAI::getService")
+    for (cAIService* pSrv = mpServiceTop; pSrv != nullptr; pSrv = pSrv->mpNextService) {
+        if (pSrv->getDTI() == dti) {
+            if (n == nullptr || strcmp(n, pSrv->mName.ptr()) == 0) {
+                return pSrv;
+            }
+        }
+    }
     return nullptr;
 }
 
@@ -334,9 +364,18 @@ __attribute__((weak)) bool sAI::createTaskPerformanceInfoList() {
     return {};
 }
 
-__attribute__((weak)) void sAI::countTaskClassChild(u32& num, const MtDTI* pDTI) {
-    DDON_STUB("sAI::countTaskClassChild")
-    /* stub */
+void sAI::countTaskClassChild(u32& num, const MtDTI* pDTI) {
+    for (const MtDTI* pChild = pDTI->mpChild;;) {
+        if (pChild == nullptr) {
+            break;
+        } else {
+            if ((pChild->mAttr & 1u) == 0) {
+                num = (num) + 1u;
+            }
+        }
+        countTaskClassChild(num, pChild);
+        pChild = pChild->mpNext;
+    }
 }
 
 __attribute__((weak)) void sAI::setDTIToTaskPerformanceInfo(u32& index, const MtDTI* pDTI) {

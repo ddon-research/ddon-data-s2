@@ -68,7 +68,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cAITaskJobPrim(u32 type, u32 id, cAITask* po, JOB_FUNC func);
-    virtual ~cAITaskJobPrim();
+    virtual ~cAITaskJobPrim() {}
     void callJobFunc();
     cAITaskJobPrim* getNext();
 private:

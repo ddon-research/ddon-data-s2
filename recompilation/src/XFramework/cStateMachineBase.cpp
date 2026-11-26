@@ -72,6 +72,10 @@ const MtDTI& cStateMachineBase::StateBase::getDTI() const {
     return cStateMachineBase::StateBase::DTI;
 }
 
+inline void* cStateMachineBase::StateBase::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cStateMachineBase::StateBase::DTI)->memAlloc(sz, align, cStateMachineBase::StateBase::DTI.mID);
+}
+
 inline void cStateMachineBase::StateBase::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cStateMachineBase::StateBase::DTI)->memFree(p_addr);
 }
@@ -122,8 +126,7 @@ inline cStateMachineBase::StateBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 
 cStateMachineBase::StateBase::MyDTI cStateMachineBase::StateBase::DTI("cStateMachineBase::StateBase", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cStateMachineBase::StateBase::MyDTI::newInstance() const {
-    DDON_STUB("cStateMachineBase::StateBase::MyDTI::newInstance")
-    return nullptr;
+MtObject* cStateMachineBase::StateBase::MyDTI::newInstance() const {
+    return new (16u) cStateMachineBase::StateBase;
 }
 

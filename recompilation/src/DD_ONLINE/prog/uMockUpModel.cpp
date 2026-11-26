@@ -146,9 +146,9 @@ __attribute__((weak)) void uMockUpModel::updateBody(bool SetInitAction) {
             mpIKCtrl->deleteConstraint();
         }
         mpCharacterEdit->updateBody(true);
-        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpCharacterEdit) + 152)) != 0) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpCharacterEdit) + 152)) + 112)) != 0) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpCharacterEdit) + 152)) + 112)) + 28)) != 0) {
+        if (mpCharacterEdit->mpResource != nullptr) {
+            if (mpCharacterEdit->mpResource->mpEditParam != nullptr) {
+                if (mpCharacterEdit->mpResource->mpEditParam->mBodyType != 0) {
                     mSex = 1;
                 } else {
                     mSex = 0;
@@ -169,7 +169,7 @@ __attribute__((weak)) void uMockUpModel::updateBody(bool SetInitAction) {
     }
     mSetInitAction = SetInitAction;
     if (mpCharacterEdit != nullptr) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpCharacterEdit) + 1572)) == 0) {
+        if (!mpCharacterEdit->mIsBaking) {
             setMotionEx(3u, 3302u, 0.0f, 0.0f, 1.0f, 0u);
         }
     }
@@ -200,6 +200,10 @@ __attribute__((weak)) void uMockUpModel::updateArmIK() {
 
 void uMockUpModel::initEquipData() {
     mEquipData.init();
+}
+
+void uMockUpModel::setEquipData(const cEquipData& equip_data) {
+    mEquipData = equip_data;
 }
 
 void uMockUpModel::setupEdit(rCharacterEdit* pRes) {

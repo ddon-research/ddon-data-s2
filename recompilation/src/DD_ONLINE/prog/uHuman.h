@@ -145,6 +145,7 @@ class uHuman : public uCharacter
     friend class cPlActWpnBowBase;
     friend class cpItemThrow;
     friend class cpJob02;
+    friend class cpJob04;
     friend class cpJob05;
     friend class cpJob07;
     friend class cpJob09;
@@ -1550,6 +1551,10 @@ inline const uDDOModel* uHuman::getAutoRunTarget() const {
 
 inline bool uHuman::isCancellableAction() {
     return this->mIsCancellableAction;
+}
+
+inline bool uHuman::isBeforeAttackHit() {
+    return this->mIsBeforeAttackHit;
 }
 
 inline void uHuman::setIsBeforeGuarded(bool flg) {

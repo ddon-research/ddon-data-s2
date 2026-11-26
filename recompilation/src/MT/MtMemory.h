@@ -25,7 +25,9 @@ namespace nDraw { class IndexBuffer; }
 namespace nDraw { class VertexBuffer; }
 namespace nNetMsgData { namespace Head { struct stMsgHead; } }
 namespace nNetwork { class Decoder; }
+namespace nNetwork { class ProtocolStandard; }
 class rArchive;
+class rDynamicSbc;
 class rEffect2D;
 class rEffectAnim;
 class rEffectList;
@@ -53,16 +55,20 @@ using u64 = __uint64_t;
 
 // Functions the classes below befriend, declared first
 namespace MtMemoryAllocator { MtAllocator* getAllocator(const MtDTI& dti); }
+namespace MtMemoryAllocator { void setMtMemoryAllocator(const Initializer& init); }
 namespace nNetMsgData { namespace Head { stMsgHead* deserialize(nNetwork::Decoder& dec); } }
 namespace nNetMsgData { namespace Head { void freeData(stMsgHead* pData); } }
 
 class MtMemory
 {
+    friend class rZone;
+
     friend class MtCipher;
     friend class MtDataReader;
     friend class MtDataWriter;
     friend class MtMemoryAllocator::Initializer;
     friend MtAllocator* MtMemoryAllocator::getAllocator(const MtDTI& dti);
+    friend void MtMemoryAllocator::setMtMemoryAllocator(const MtMemoryAllocator::Initializer& init);
     friend class MtNet::Utility::PS4::Json;
     friend class MtObject;
     friend class cGeneralPointPtr;
@@ -73,9 +79,11 @@ class MtMemory
     friend class nDraw::VertexBuffer;
     friend nNetMsgData::Head::stMsgHead* nNetMsgData::Head::deserialize(nNetwork::Decoder& dec);
     friend void nNetMsgData::Head::freeData(nNetMsgData::Head::stMsgHead* pData);
+    friend class nNetwork::ProtocolStandard;
     friend class rArchive;
 
     friend class rSoundReverb;
+    friend class rDynamicSbc;
     friend class rEffect2D;
     friend class rEffectAnim;
     friend class rEffectList;
@@ -84,6 +92,8 @@ class MtMemory
 
     friend class rDeformWeightMap;
     friend class rVibration;
+
+    friend class cBVHCollision;
     friend class sBrowser;
     friend class sItemManager;
     friend class sMain;

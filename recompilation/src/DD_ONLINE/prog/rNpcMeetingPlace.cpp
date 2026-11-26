@@ -25,9 +25,10 @@ inline void cNpcMeetingPlace::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cNpcMeetingPlace::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cNpcMeetingPlace::createProperty(MtPropertyList& s) {
-    DDON_STUB("cNpcMeetingPlace::createProperty")
-    /* stub */
+void cNpcMeetingPlace::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mNpcId", &mNpcId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartPosNo", &mStartPosNo, 0u, 0u);
 }
 
 inline cNpcMeetingPlace::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

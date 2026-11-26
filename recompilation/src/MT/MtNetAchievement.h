@@ -107,7 +107,7 @@ public:
     {
     public:
         cTrophyRegisterContextThread(void* pcontext);
-        virtual ~cTrophyRegisterContextThread();
+        virtual ~cTrophyRegisterContextThread() {}
     protected:
         virtual void execute(void* pcontext);  // vtable slot 6
     };
@@ -116,7 +116,7 @@ public:
     {
     public:
         cTrophyWriteThread(void* pcontext);
-        virtual ~cTrophyWriteThread();
+        virtual ~cTrophyWriteThread() {}
     protected:
         virtual void execute(void* pcontext);  // vtable slot 6
     };
@@ -125,7 +125,7 @@ public:
     {
     public:
         cTrophyReadThread(void* pcontext);
-        virtual ~cTrophyReadThread();
+        virtual ~cTrophyReadThread() {}
     protected:
         virtual void execute(void* pcontext);  // vtable slot 6
     };

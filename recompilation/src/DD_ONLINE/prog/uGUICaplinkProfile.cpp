@@ -8,7 +8,6 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
-#include "../../XFramework/cCaplinkContext.h"
 #include "../../XFramework/cCaplinkDataDef.h"
 #include "../../XFramework/cCaplinkUserProfileContentListGet.h"
 #include "cControl.h"
@@ -134,8 +133,11 @@ inline void uGUICaplinkProfile::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUICaplinkProfile::~uGUICaplinkProfile() {
-    DDON_STUB("uGUICaplinkProfile::~uGUICaplinkProfile")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 void uGUICaplinkProfile::createProperty(MtPropertyList& s) {
@@ -203,9 +205,72 @@ __attribute__((weak)) void uGUICaplinkProfile::moveEvent() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUICaplinkProfile::updateMove() {
-    DDON_STUB("uGUICaplinkProfile::updateMove")
-    /* stub */
+void uGUICaplinkProfile::updateMove() {
+    switch (mFlowId - 1u) {
+        case 0:
+        {
+            if (sCaplinkManager::getInstance()->mUserProfileGetAns.mStatus != 0) {
+                if (sCaplinkManager::getInstance()->mUserProfileGetAns.mStatus != 3) {
+                    if (sCaplinkManager::getInstance()->mUserProfileGetAns.mStatus == 2) {
+                        mFriendIndex = sCaplinkManager::getInstance()->getFriendIndex(reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 7556))));
+                        setFlowId(2u);
+                    }
+                } else {
+                    setFlowId(6u);
+                }
+            } else {
+                setFlowId(6u);
+            }
+            break;
+        }
+        case 1:
+        {
+            if (sCaplinkManager::getInstance()->mUserProfileContentListGetAns.mStatus != 0) {
+                if (sCaplinkManager::getInstance()->mUserProfileContentListGetAns.mStatus == 3) {
+                    setFlowId(6u);
+                } else {
+                    if (sCaplinkManager::getInstance()->mUserProfileContentListGetAns.mStatus == 2) {
+                        setupList();
+                        if (mMode != 0) {
+                            setFlowId(5u);
+                        } else {
+                            setFlowId(3u);
+                        }
+                    }
+                }
+            } else {
+                setFlowId(6u);
+            }
+            break;
+        }
+        case 2:
+        {
+            mMain.mGuide.uGUIBase::cReferenceUIBtnGuide::update();
+            mGame.mListCtrl.uGUIBase::cScrollList::update(getDeltaTime());
+            mInfo.mProfIcon.update();
+            break;
+        }
+        case 3:
+        {
+            mMain.mGuide.uGUIBase::cReferenceUIBtnGuide::update();
+            mGame.mListCtrl.uGUIBase::cScrollList::update(getDeltaTime());
+            mInfo.mProfIcon.update();
+            break;
+        }
+        case 4:
+        {
+            mMain.mClose.uGUIBase::cReferenceUICloseBtn::update();
+            mMain.mGuide.uGUIBase::cReferenceUIBtnGuide::update();
+            (&mMain.mButton)->update();
+            mGame.mListCtrl.uGUIBase::cScrollList::update(getDeltaTime());
+            mInfo.mProfIcon.update();
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 void uGUICaplinkProfile::updateExit() {

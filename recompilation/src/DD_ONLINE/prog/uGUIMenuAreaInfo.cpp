@@ -307,6 +307,10 @@ const MtDTI& uGUIMenuAreaInfo::cHeaderItem::getDTI() const {
     return uGUIMenuAreaInfo::cHeaderItem::DTI;
 }
 
+inline void* uGUIMenuAreaInfo::cHeaderItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::cHeaderItem::DTI)->memAlloc(sz, align, uGUIMenuAreaInfo::cHeaderItem::DTI.getID());
+}
+
 inline void uGUIMenuAreaInfo::cHeaderItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::cHeaderItem::DTI)->memFree(p_addr);
 }
@@ -315,9 +319,8 @@ inline uGUIMenuAreaInfo::cHeaderItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* p
 
 uGUIMenuAreaInfo::cHeaderItem::MyDTI uGUIMenuAreaInfo::cHeaderItem::DTI("uGUIMenuAreaInfo::cHeaderItem", &::uGUIBase::cScrollListItemBase::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIMenuAreaInfo::cHeaderItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIMenuAreaInfo::cHeaderItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIMenuAreaInfo::cHeaderItem::MyDTI::newInstance() const {
+    return new (16u) uGUIMenuAreaInfo::cHeaderItem;
 }
 
 const MtDTI& uGUIMenuAreaInfo::cListInfo::getDTI() const {

@@ -25,9 +25,13 @@ inline void cEnemyMaterialTable::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEnemyMaterialTable::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cEnemyMaterialTable::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEnemyMaterialTable::createProperty")
-    /* stub */
+void cEnemyMaterialTable::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIdx", &mIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDieIsNoCall", &mDieIsNoCall, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaterialType", &mMaterialType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaterialNo", &mMaterialNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaterialWeakPointNo", &mMaterialWeakPointNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaterialAnimationType", &mMaterialAnimationType, 0u, 0u);
 }
 
 inline cEnemyMaterialTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

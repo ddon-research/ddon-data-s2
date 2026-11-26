@@ -111,9 +111,65 @@ __attribute__((weak)) bool uGUIPick01::setProc(uGUIPick01::PR proc, bool force) 
     return {};
 }
 
-__attribute__((weak)) void uGUIPick01::setOM(cOmControl* pOmCtrl, u32 pick_type) {
-    DDON_STUB("uGUIPick01::setOM")
-    /* stub */
+void uGUIPick01::setOM(cOmControl* pOmCtrl, u32 pick_type) {
+    mpOmCtrl = pOmCtrl;
+    mPickType = pick_type;
+    cGatherItemList* pGatherItemList = pOmCtrl->getGatherItemList();
+    if (pGatherItemList == nullptr) {
+        return;
+    }
+    sGUIExt::stGatheringData* t0 = mpGatheringData;
+    if (t0 == nullptr) {
+        sGUIExt::stGatheringData* t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getGatheringData(static_cast<MtObject*>(this));
+        mpGatheringData = t1;
+        t1->mGatherData.mStageId = static_cast<u32>(sGame::getInstance()->getStageNo());
+        if (mPickType != 2) {
+            if (mPickType == 1) {
+                t1->mGatherData.mGroupId = pGatherItemList->getItemListGroupId();
+                sGUIExt::stGatheringData* t2 = getGatheringData();
+                t2->mGatherData.mLayerNo = pGatherItemList->getItemListLayerNo();
+                sGUIExt::stGatheringData* t3 = getGatheringData();
+                t3->mGatherData.mPosId = pGatherItemList->getItemListPosId();
+            } else {
+                if (mPickType == 0) {
+                    cNetGameServer* t4 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+                    t1->mGatherData.mGroupId = t4->getGatheringItemListGroupId();
+                    t1->mGatherData.mLayerNo = t4->getGatheringItemListLayerNo();
+                    t1->mGatherData.mPosId = t4->getGatheringItemListPosId();
+                }
+            }
+        } else {
+            t1->mGatherData.mGroupId = pGatherItemList->getItemListGroupId();
+            sGUIExt::stGatheringData* t2 = getGatheringData();
+            t2->mGatherData.mLayerNo = pGatherItemList->getItemListLayerNo();
+            sGUIExt::stGatheringData* t3 = getGatheringData();
+            t3->mGatherData.mPosId = pGatherItemList->getItemListPosId();
+        }
+    } else {
+        t0->mGatherData.mStageId = static_cast<u32>(sGame::getInstance()->getStageNo());
+        if (mPickType != 2) {
+            if (mPickType == 1) {
+                t0->mGatherData.mGroupId = pGatherItemList->getItemListGroupId();
+                sGUIExt::stGatheringData* t2 = getGatheringData();
+                t2->mGatherData.mLayerNo = pGatherItemList->getItemListLayerNo();
+                sGUIExt::stGatheringData* t3 = getGatheringData();
+                t3->mGatherData.mPosId = pGatherItemList->getItemListPosId();
+            } else {
+                if (mPickType == 0) {
+                    cNetGameServer* t4 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+                    t0->mGatherData.mGroupId = t4->getGatheringItemListGroupId();
+                    t0->mGatherData.mLayerNo = t4->getGatheringItemListLayerNo();
+                    t0->mGatherData.mPosId = t4->getGatheringItemListPosId();
+                }
+            }
+        } else {
+            t0->mGatherData.mGroupId = pGatherItemList->getItemListGroupId();
+            sGUIExt::stGatheringData* t2 = getGatheringData();
+            t2->mGatherData.mLayerNo = pGatherItemList->getItemListLayerNo();
+            sGUIExt::stGatheringData* t3 = getGatheringData();
+            t3->mGatherData.mPosId = pGatherItemList->getItemListPosId();
+        }
+    }
 }
 
 __attribute__((weak)) bool uGUIPick01::isUseItem() {

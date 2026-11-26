@@ -216,9 +216,66 @@ __attribute__((weak)) void uGUIMissionInfo::moveInput() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIMissionInfo::moveEvent() {
-    DDON_STUB("uGUIMissionInfo::moveEvent")
-    /* stub */
+void uGUIMissionInfo::moveEvent() {
+    switch (getInputEvent() - 66u) {
+        case 0:
+        {
+            mIsDecide = true;
+            break;
+        }
+        case 1:
+        {
+            mIsCancel = true;
+            break;
+        }
+        case 2:
+        {
+            if (mpVCtrl != nullptr) {
+                if (mpVCtrl->getCurrentPos() == 1) {
+                    eventCursorItem();
+                } else {
+                    if (mpVCtrl->getCurrentPos() == 0) {
+                        eventCursorBtn(false);
+                    }
+                }
+            } else {
+                eventCursorBtn(false);
+            }
+            break;
+        }
+        case 3:
+        {
+            eventCursorBtn(false);
+            break;
+        }
+        case 4:
+        {
+            eventCursorItem();
+            break;
+        }
+        case 6:
+        {
+            if (mIsStandAlone) {
+                mIsMemberInfo = true;
+            }
+            break;
+        }
+        case 7:
+        {
+            if (sMenu::getInstance()->mMenuEntryBoardItem.mpGUIMenu == nullptr) {
+                if (sMenu::getInstance()->mMenuEntryBoardItem.mpRefGUI != nullptr) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sMenu::getInstance()->mMenuEntryBoardItem.mpRefGUI) + 2786) = 1;
+                }
+            } else {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sMenu::getInstance()->mMenuEntryBoardItem.mpGUIMenu) + 2786) = 1;
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 void uGUIMissionInfo::updateInit() {

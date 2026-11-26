@@ -132,9 +132,15 @@ __attribute__((noinline)) uControlNpc::~uControlNpc() {
     /* stub */
 }
 
-__attribute__((weak)) void uControlNpc::createProperty(MtPropertyList& s) {
-    DDON_STUB("uControlNpc::createProperty")
-    /* stub */
+void uControlNpc::createProperty(MtPropertyList& s) {
+    this->uControl::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsScrAdjOff", &mIsScrAdjOff, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsAttend", &mIsAttend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDispWepMain", &mIsDispWepMain, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDispWepSub", &mIsDispWepSub, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDisableTouchAction", &mIsDisableTouchAction, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsEyeClose", &mIsEyeClose, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsInvincible", &mIsInvincible, 0u, 0u);
 }
 
 __attribute__((weak)) void uControlNpc::updatePtr() {

@@ -84,6 +84,12 @@ inline void* rCameraParamList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline rCameraParamList::rCameraParamList() {
+    this->::cResource::mAttr = 18;
+    this->mParamList.mAutoDelete = true;
+    this->mprCameraList = nullptr;
+}
+
 inline rCameraList* rCameraParamList::getCameraListResource() {
     return this->mprCameraList;
 }
@@ -93,17 +99,4 @@ inline rCameraList* rCameraParamList::getCameraListResource() {
 
 inline MtAllocator* rCameraParamList::getAllocator() {
     return MtMemoryAllocator::getAllocator(rCameraParamList::DTI);
-}
-
-inline void* rCameraParamList::operator new(size_t sz, u32 align) {
-    return getAllocator()->memAlloc(sz, align, rCameraParamList::DTI.getID());
-}
-
-__attribute__((always_inline)) inline rCameraParamList::rCameraParamList()
-    : mParamList()
-    , mCameraListPath()
-{
-    setAttribute(ATTR_SAVEABLE | ATTR_NATIVE);
-    mParamList.mAutoDelete = true;
-    mprCameraList = nullptr;
 }

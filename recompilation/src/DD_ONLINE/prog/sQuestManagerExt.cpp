@@ -29,6 +29,7 @@
 #include "cCycleQuestSubCategoryManager.h"
 #include "cEndContentsManager.h"
 #include "cGUIUtility.h"
+#include "cLightQuestManager.h"
 #include "cNetGameServer.h"
 #include "cNetSessionManager.h"
 #include "cOmComponent.h"
@@ -162,10 +163,10 @@ bool sQuestManagerExt::isEndTextOm(u32 stageNo, u32 groupNo, s32 setNo) const {
 
 bool sQuestManagerExt::isEndTextOm(u32 stageNo, u32 groupNo, s32 setNo, u32 questSeq) const {
     if (mpTouchOmInfo != nullptr) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpTouchOmInfo) + 16)) != 0) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpTouchOmInfo) + 8)) == ((groupNo * 1024u) | (stageNo & 1023u))) {
+        if (mpTouchOmInfo->isQuestSet()) {
+            if (mpTouchOmInfo->mLayoutId.mLayoutID == ((groupNo * 1024u) | (stageNo & 1023u))) {
                 if (mpTouchOmInfo->mSetNo == static_cast<unsigned int>(setNo)) {
-                    return static_cast<bool>((static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 1866)) & 4) >> 2) & static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpTouchOmInfo) + 16)) == questSeq));
+                    return static_cast<bool>((static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 1866)) & 4) >> 2) & static_cast<unsigned long>(mpTouchOmInfo->mQuestSeq == questSeq));
                 }
             }
         }
@@ -177,9 +178,22 @@ u32 sQuestManagerExt::getTalkEndNpcId() const {
     return mTalkEndNpcId;
 }
 
-__attribute__((weak)) void sQuestManagerExt::notifyTalkEnd(u32 npcId) {
-    DDON_STUB("sQuestManagerExt::notifyTalkEnd")
-    /* stub */
+void sQuestManagerExt::notifyTalkEnd(u32 npcId) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1864) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1864)) | 1;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mTalkEndNpcId = npcId;
+    mIsOrderUIDecide = false;
+    mOrderUIScheduleId.mScheduleId = nQuest::INVALID_SCHEDULE_ID.mScheduleId;
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteQuestInfo();
 }
 
 void sQuestManagerExt::notifyReloadMasterData() {
@@ -536,9 +550,38 @@ void sQuestManagerExt::notifyEndTalkSpecial() {
     }
 }
 
-__attribute__((weak)) void sQuestManagerExt::notifyClearPartyQuest(const nQuest::SCHEDULE_ID& scheduleId) {
-    DDON_STUB("sQuestManagerExt::notifyClearPartyQuest")
-    /* stub */
+void sQuestManagerExt::notifyClearPartyQuest(const nQuest::SCHEDULE_ID& scheduleId) {
+    unsigned int i0_3 = 0;
+    unsigned int i1_2;
+    for (;;) {
+        if (!nQuest::isSoloQuest(static_cast<nQuest::QUEST_TYPE>(i0_3))) {
+            u32 v1_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+            if (v1_0 != 0) {
+                MtObject* * v1_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
+                i1_2 = 0;
+                for (;;) {
+                    if (v1_1[i1_2] != nullptr) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1[i1_2]) + 8)) == i0_3) {
+                            if (static_cast<sQuestManagerExt::cManagerInfo*>(v1_1[i1_2])->getQuestManager() != nullptr) {
+                                static_cast<sQuestManagerExt::cManagerInfo*>(v1_1[i1_2])->getQuestManager()->callbackClear(scheduleId, true);
+                            }
+                            break;
+                        }
+                    }
+                    if ((i1_2 + 1u) < v1_0) {
+                        i1_2 = i1_2 + 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        if ((i0_3 + 1u) != 12) {
+            i0_3 += 1u;
+        } else {
+            break;
+        }
+    }
 }
 
 void sQuestManagerExt::notifyEndTextOm(u32 stageNo, u32 groupNo, s32 setNo, u32 questSeq) {
@@ -1050,7 +1093,7 @@ __attribute__((weak)) void sQuestManagerExt::killedEnemy(u32 stageNo, u32 enemyI
 }
 
 u32 sQuestManagerExt::getKilledEnemyNum(u32 stageNo, u32 enemyId) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 288)) != 0) {
+    if (mKilledEnemy.mLength != 0) {
         unsigned int i0 = 0;
         do {
             if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mKilledEnemy.getBuffer()[static_cast<int>(i0)]) + 8)) == stageNo) {
@@ -1063,9 +1106,22 @@ u32 sQuestManagerExt::getKilledEnemyNum(u32 stageNo, u32 enemyId) {
                 }
             }
             i0 += 1u;
-        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 288)));
+        } while (i0 < mKilledEnemy.mLength);
     }
     return 0;
+}
+
+inline void sQuestManagerExt::resetParam() {
+    unsigned int i1 = 0;
+    if (mKilledEnemy.mLength != 0) {
+        do {
+            if (mKilledEnemy.mpArray[i1] != nullptr) {
+                delete mKilledEnemy.mpArray[i1];
+            }
+            i1 += 1u;
+        } while (i1 < mKilledEnemy.mLength);
+    }
+    mKilledEnemy.mLength = 0;
 }
 
 __attribute__((weak)) void sQuestManagerExt::callQuestAnnounce(const cQuestTask* pTask, s32 announceType, s32 purposeNo, bool isDiscovered, s32 num) {
@@ -1502,9 +1558,19 @@ u32 sQuestManagerExt::getCycleContentsPurposeNum() const {
     }
 }
 
-__attribute__((weak)) MT_CTSTR sQuestManagerExt::getCycleContentsPurpose(u32 idx) const {
-    DDON_STUB("sQuestManagerExt::getCycleContentsPurpose")
-    return {};
+MT_CTSTR sQuestManagerExt::getCycleContentsPurpose(u32 idx) const {
+    cCycleQuestManagerBase* pMgr = getCycleContentsMgrPlayNow();
+    if (pMgr != nullptr) {
+        const s32 purposeNo = pMgr->getCyclePurposeNo(idx);
+        if (purposeNo != -1) {
+            MT_CTSTR t1 = getQuestPurposeMsg(pMgr->getMainTaskQuestId(), purposeNo);
+            return t1;
+        } else {
+            return "";
+        }
+    } else {
+        return "";
+    }
 }
 
 __attribute__((weak)) MT_CTSTR sQuestManagerExt::getCycleContentsNamePlayNow() const {
@@ -2172,19 +2238,85 @@ u32 sQuestManagerExt::getEndContentEntryStartPos() {
     }
 }
 
-__attribute__((weak)) u32 sQuestManagerExt::getEndContentsGroupNo(u32 NpcId) const {
-    DDON_STUB("sQuestManagerExt::getEndContentsGroupNo")
-    return {};
+u32 sQuestManagerExt::getEndContentsGroupNo(u32 NpcId) const {
+    u32 v0_0 = mManagerInfo.mLength;
+    if (v0_0 != 0) {
+        MtObject* * v0_1 = mManagerInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 8) {
+                    if (static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager() != nullptr) {
+                        return static_cast<cEndContentsManager*>(static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager())->getEndContentsGroupNo(NpcId);
+                    } else {
+                        return 0;
+                    }
+                }
+            }
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 sQuestManagerExt::getEndContentsGroupNo(nQuest::QUEST_ID QuestId) const {
-    DDON_STUB("sQuestManagerExt::getEndContentsGroupNo")
-    return {};
+u32 sQuestManagerExt::getEndContentsGroupNo(nQuest::QUEST_ID QuestId) const {
+    u32 t0 = QuestId.toU32();
+    if (static_cast<int>(t0) <= 50208999) {
+        if (static_cast<int>(t0) <= 50204999) {
+            if ((t0 - 0x2FE01A8u) > 1u) {
+                if ((t0 - 0x2FE0590u) > 1u) {
+                    if ((t0 - 0x2FE0978u) <= 1u) {
+                        return 2;
+                    } else {
+                        return 1;
+                    }
+                } else {
+                    return 2;
+                }
+            } else {
+                return 2;
+            }
+        } else {
+            if ((t0 - 0x2FE1148u) <= 3u) {
+                return 4;
+            } else {
+                return 1;
+            }
+        }
+    } else {
+        if (t0 == 0x2FE20E8) {
+            return 3;
+        } else {
+            return 1;
+        }
+    }
 }
 
-__attribute__((weak)) u32 sQuestManagerExt::getEndContentsEntryNpcId(u32 GroupNo) const {
-    DDON_STUB("sQuestManagerExt::getEndContentsEntryNpcId")
-    return {};
+u32 sQuestManagerExt::getEndContentsEntryNpcId(u32 GroupNo) const {
+    u32 v0_0 = mManagerInfo.mLength;
+    if (v0_0 != 0) {
+        MtObject* * v0_1 = mManagerInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 8) {
+                    if (static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager() != nullptr) {
+                        return static_cast<cEndContentsManager*>(static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager())->getEndContentsEntryNpcId(GroupNo);
+                    } else {
+                        return 0;
+                    }
+                }
+            }
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) bool sQuestManagerExt::isEndContentsPlayNow() const {
@@ -2424,9 +2556,8 @@ void sQuestManagerExt::requestGetRewardBoxList() {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getRewardBoxList();
 }
 
-__attribute__((weak)) const RewardBoxRecordVec& sQuestManagerExt::getRewardBoxData() const {
-    DDON_STUB("sQuestManagerExt::getRewardBoxData")
-    __builtin_unreachable();
+const RewardBoxRecordVec& sQuestManagerExt::getRewardBoxData() const {
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getRewardBoxRecordListRef();
 }
 
 __attribute__((weak)) void sQuestManagerExt::completeRewardBoxList() {
@@ -2439,14 +2570,12 @@ void sQuestManagerExt::requestGetCycleContentsRewardList() {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCycleContentsRewardList();
 }
 
-__attribute__((weak)) const RewardBoxRecordVec& sQuestManagerExt::getCycleContentsRewardData() const {
-    DDON_STUB("sQuestManagerExt::getCycleContentsRewardData")
-    __builtin_unreachable();
+const RewardBoxRecordVec& sQuestManagerExt::getCycleContentsRewardData() const {
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCycleContentsRewardListPacket()->m_RewardBoxRecordList;
 }
 
-__attribute__((weak)) const CycleContentsRewardRecordVec& sQuestManagerExt::getCycleContentsRewardExData() const {
-    DDON_STUB("sQuestManagerExt::getCycleContentsRewardExData")
-    __builtin_unreachable();
+const CycleContentsRewardRecordVec& sQuestManagerExt::getCycleContentsRewardExData() const {
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCycleContentsRewardListPacket()->m_CycleContentsRewardRecordList;
 }
 
 __attribute__((weak)) void sQuestManagerExt::completeCycleContentsRewardList() {
@@ -2564,9 +2693,9 @@ __attribute__((weak)) void sQuestManagerExt::releaseRewardBox() {
     /* stub */
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isQuestFlag(u32 flagNo) const {
-    DDON_STUB("sQuestManagerExt::isQuestFlag")
-    return {};
+bool sQuestManagerExt::isQuestFlag(u32 flagNo) const {
+    bool t0 = isQuestFlag(flagNo, nQuest::INVALID_QUEST_ID);
+    return t0;
 }
 
 __attribute__((weak)) bool sQuestManagerExt::isQuestFlag(u32 flagNo, nQuest::QUEST_ID questId) const {
@@ -2574,9 +2703,9 @@ __attribute__((weak)) bool sQuestManagerExt::isQuestFlag(u32 flagNo, nQuest::QUE
     return {};
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isMyQuestFlag(u32 flagNo) const {
-    DDON_STUB("sQuestManagerExt::isMyQuestFlag")
-    return {};
+bool sQuestManagerExt::isMyQuestFlag(u32 flagNo) const {
+    bool t0 = isMyQuestFlag(flagNo, nQuest::INVALID_QUEST_ID);
+    return t0;
 }
 
 __attribute__((weak)) bool sQuestManagerExt::isMyQuestFlag(u32 flagNo, nQuest::QUEST_ID questId) const {
@@ -2684,14 +2813,25 @@ __attribute__((weak)) cQuestTask* sQuestManagerExt::getQuestTask(nQuest::QUEST_I
     return nullptr;
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isPlayMainQuest(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::isPlayMainQuest")
-    return {};
+bool sQuestManagerExt::isPlayMainQuest(nQuest::QUEST_ID questId) const {
+    MtObject* * p0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
+    MtObject* v1_1;
+    for (;;) {
+        v1_1 = *p0_0;
+        if (v1_1 != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == 0) {
+                break;
+            }
+        }
+        p0_0 += 1;
+    }
+    cQuestTask* t0 = static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()->getQuestTask(questId);
+    return t0 != nullptr;
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isEnableOrder(nQuest::SCHEDULE_ID scheduleId) const {
-    DDON_STUB("sQuestManagerExt::isEnableOrder")
-    return {};
+bool sQuestManagerExt::isEnableOrder(nQuest::SCHEDULE_ID scheduleId) const {
+    nQuest::RET_DISABLE_ORDER_CONDITION_TYPE t0 = getEnableOrder(scheduleId, true);
+    return t0 == nQuest::RET_DIS_ORDER_CONDITION_TYPE_NONE;
 }
 
 __attribute__((weak)) bool sQuestManagerExt::isEnableOrderMySelf(nQuest::SCHEDULE_ID scheduleId) const {
@@ -2704,9 +2844,9 @@ __attribute__((weak)) nQuest::RET_DISABLE_ORDER_CONDITION_TYPE sQuestManagerExt:
     return {};
 }
 
-__attribute__((weak)) nQuest::RET_DISABLE_ORDER_CONDITION_TYPE sQuestManagerExt::getEnableOrderMySelf(nQuest::SCHEDULE_ID scheduleId) const {
-    DDON_STUB("sQuestManagerExt::getEnableOrderMySelf")
-    return {};
+nQuest::RET_DISABLE_ORDER_CONDITION_TYPE sQuestManagerExt::getEnableOrderMySelf(nQuest::SCHEDULE_ID scheduleId) const {
+    nQuest::RET_DISABLE_ORDER_CONDITION_TYPE t0 = getEnableOrder(scheduleId, false);
+    return t0;
 }
 
 __attribute__((weak)) bool sQuestManagerExt::canProgress(nQuest::QUEST_ID questId) const {
@@ -2846,9 +2986,8 @@ __attribute__((weak)) nQuest::SCHEDULE_ID sQuestManagerExt::getQuestTargetEmSche
     __builtin_unreachable();
 }
 
-__attribute__((weak)) nQuest::SCHEDULE_ID sQuestManagerExt::getQuestTargetEmScheduleId(uCharacter* pEm) const {
-    DDON_STUB("sQuestManagerExt::getQuestTargetEmScheduleId")
-    __builtin_unreachable();
+nQuest::SCHEDULE_ID sQuestManagerExt::getQuestTargetEmScheduleId(uCharacter* pEm) const {
+    return getQuestTargetEmScheduleId(pEm, static_cast<nQuest::cQuestMarker* *>(nullptr));
 }
 
 __attribute__((weak)) u32 sQuestManagerExt::getQuestTargetOmScheduleId(uOmModel* pOm) const {
@@ -2871,9 +3010,29 @@ __attribute__((weak)) bool sQuestManagerExt::isUpdateIndexListForOrder() const {
     return {};
 }
 
-__attribute__((weak)) void sQuestManagerExt::requestOrderLightQuest(const nQuest::SCHEDULE_ID& scheduleId) {
-    DDON_STUB("sQuestManagerExt::requestOrderLightQuest")
-    /* stub */
+void sQuestManagerExt::requestOrderLightQuest(const nQuest::SCHEDULE_ID& scheduleId) {
+    u32 v0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+    cQuestManagerBase* v2_4;
+    if (v0_0 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 2) {
+                    v2_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    static_cast<cLightQuestManager*>(v2_4)->requestOrderQuest(scheduleId);
 }
 
 __attribute__((weak)) bool sQuestManagerExt::isFinishedOrderLightQuest() const {
@@ -2898,7 +3057,7 @@ bool sQuestManagerExt::isFinishedGpCompleteLightQuest() const {
         }
         p0_0 += 1;
     }
-    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()) + 93)) == 0;
+    return !static_cast<cLightQuestManager*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager())->isFinishedGpComplete();
 }
 
 u32 sQuestManagerExt::getGpCompleteLightQuestErrorCode() const {
@@ -2913,7 +3072,7 @@ u32 sQuestManagerExt::getGpCompleteLightQuestErrorCode() const {
         }
         p0_0 += 1;
     }
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()) + 100);
+    return static_cast<cLightQuestManager*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager())->getGpCompleteErrorCode();
 }
 
 bool sQuestManagerExt::isGpCompleteLightQuest() const {
@@ -2928,7 +3087,7 @@ bool sQuestManagerExt::isGpCompleteLightQuest() const {
         }
         p0_0 += 1;
     }
-    return static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()) + 92));
+    return static_cast<cLightQuestManager*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager())->isGpComplete();
 }
 
 u32 sQuestManagerExt::getNotCompleteLightQuestNum() const {
@@ -2943,7 +3102,7 @@ u32 sQuestManagerExt::getNotCompleteLightQuestNum() const {
         }
         p0_0 += 1;
     }
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()) + 96);
+    return static_cast<cLightQuestManager*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager())->getNotCompleteQuestNum();
 }
 
 u32 sQuestManagerExt::getGpCompleteLightQuestGp() const {
@@ -2958,7 +3117,7 @@ u32 sQuestManagerExt::getGpCompleteLightQuestGp() const {
         }
         p0_0 += 1;
     }
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()) + 88);
+    return static_cast<cLightQuestManager*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager())->getCompleteGp();
 }
 
 __attribute__((weak)) sQuestManagerExt::QUEST_RET sQuestManagerExt::getQuestServerParam(const nQuest::SCHEDULE_ID& scheduleId) {
@@ -3017,9 +3176,9 @@ __attribute__((weak)) bool sQuestManagerExt::isEnableOrderButton(nQuest::SCHEDUL
     return {};
 }
 
-__attribute__((weak)) void sQuestManagerExt::setEndContentsInfo(nQuest::QUEST_ID QuestId, bool isClear) {
-    DDON_STUB("sQuestManagerExt::setEndContentsInfo")
-    /* stub */
+void sQuestManagerExt::setEndContentsInfo(nQuest::QUEST_ID QuestId, bool isClear) {
+    mEndContentsInfo.mQuestId.mQuestId = QuestId.mQuestId;
+    mEndContentsInfo.mIsClear = isClear;
 }
 
 __attribute__((weak)) bool sQuestManagerExt::getTargetEnemyGroupId(nQuest::SCHEDULE_ID scheduleId, u32& val) const {
@@ -3052,9 +3211,13 @@ __attribute__((weak)) bool sQuestManagerExt::isOrderQuest(nQuest::SCHEDULE_ID Sc
     return {};
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isOrderQuest(nQuest::QUEST_ID QuestId) const {
-    DDON_STUB("sQuestManagerExt::isOrderQuest")
-    return {};
+bool sQuestManagerExt::isOrderQuest(nQuest::QUEST_ID QuestId) const {
+    cQuestTask* pTask = getQuestTask(QuestId);
+    if (pTask != nullptr) {
+        return pTask->isOrder();
+    } else {
+        return false;
+    }
 }
 
 bool sQuestManagerExt::isOrderMyMainQuest() const {
@@ -3137,9 +3300,13 @@ __attribute__((weak)) bool sQuestManagerExt::isDiscoverdQuest(nQuest::SCHEDULE_I
     return {};
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isDiscoverdQuest(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::isDiscoverdQuest")
-    return {};
+bool sQuestManagerExt::isDiscoverdQuest(nQuest::QUEST_ID questId) const {
+    cQuestTask* pTask = getQuestTask(questId);
+    if (pTask != nullptr) {
+        return pTask->isDiscovery();
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) bool sQuestManagerExt::isEnableDeliveryLightQuest() const {
@@ -3152,9 +3319,30 @@ __attribute__((weak)) u32 sQuestManagerExt::getOnlyOneQuestTalkScheduleId(u32 Np
     return {};
 }
 
-__attribute__((weak)) u32 sQuestManagerExt::getOnlyOneQuestTalkScheduleId(u32 NpcId, nQuest::QUEST_ID QuestId, bool IsChkQuestId) const {
-    DDON_STUB("sQuestManagerExt::getOnlyOneQuestTalkScheduleId")
-    return {};
+u32 sQuestManagerExt::getOnlyOneQuestTalkScheduleId(u32 NpcId, nQuest::QUEST_ID QuestId, bool IsChkQuestId) const {
+    if (IsChkQuestId) {
+        cQuestTask* pTask = getQuestTask(QuestId);
+        if (pTask != nullptr) {
+            if (!pTask->isDelete()) {
+                if (!pTask->progresses()) {
+                    nQuest::cTalkData* pTalkData = pTask->getTalkData(NpcId);
+                    if (pTalkData != nullptr) {
+                        return pTask->getScheduleIdU32();
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return getOnlyOneQuestTalkScheduleId(NpcId);
+    }
 }
 
 __attribute__((weak)) bool sQuestManagerExt::isHaveEnableQuestTalk(nQuest::QUEST_TYPE questType, u32 npcId, u32 questId, bool IsChkQuestId) const {
@@ -3265,9 +3453,15 @@ __attribute__((weak)) MT_CTSTR sQuestManagerExt::getOrderConditionText(u32 Condi
     return {};
 }
 
-__attribute__((weak)) void sQuestManagerExt::requestRepairMyQuestInfo() {
-    DDON_STUB("sQuestManagerExt::requestRepairMyQuestInfo")
-    /* stub */
+void sQuestManagerExt::requestRepairMyQuestInfo() {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+        return;
+    }
+    cQuestSvRequest* pReq = cQuestSvRequestManager::pushRequest(cQuestSvReqGetPartyQuestProgressInfo::DTI);
+    if (pReq == nullptr) {
+        return;
+    }
+    pReq->setFromClass(static_cast<MtObject*>(this)).setCallbackFunc(static_cast<cQuestSvRequest::PCallbackFunc>(&::sQuestManagerExt::callbackRepairMyQuestInfo));
 }
 
 __attribute__((weak)) void sQuestManagerExt::setTutorialInvincible(uCharacter* pCharacter) {
@@ -3383,9 +3577,10 @@ __attribute__((weak)) bool sQuestManagerExt::isForceInBattleState() {
     return {};
 }
 
-__attribute__((weak)) void sQuestManagerExt::resetEndContentsInfo() {
-    DDON_STUB("sQuestManagerExt::resetEndContentsInfo")
-    /* stub */
+void sQuestManagerExt::resetEndContentsInfo() {
+    mEndContentsInfo.mQuestId.mQuestId = nQuest::INVALID_QUEST_ID.mQuestId;
+    mEndContentsInfo.mIsClear = false;
+    mEndContentsInfo.mPlayTimeMillSec = 0;
 }
 
 __attribute__((weak)) void sQuestManagerExt::callbackQuestProgress(void* pPacket) {
@@ -3817,9 +4012,9 @@ void sQuestManagerExt::csUnlock() {
     }
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isLeaderReturn() const {
-    DDON_STUB("sQuestManagerExt::isLeaderReturn")
-    return {};
+bool sQuestManagerExt::isLeaderReturn() const {
+    bool t0 = cContextInterface::isSessionLost(sContextManager::getInstance()->getContextPartyLeader());
+    return mIsLeaderLost && (mIsLeaderLost != t0);
 }
 
 __attribute__((weak)) void sQuestManagerExt::addLeaderOrderedQuest(nQuest::QUEST_ID questId, nQuest::SCHEDULE_ID scheduleId, bool hasOrdered) {
@@ -3872,9 +4067,51 @@ __attribute__((weak)) void sQuestManagerExt::callbackRegisterFavoriteWarp(u32 sl
     /* stub */
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isJoinLeader() const {
-    DDON_STUB("sQuestManagerExt::isJoinLeader")
-    return {};
+bool sQuestManagerExt::isJoinLeader() const {
+    u32 v0_6 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId;
+    bool b3_0;
+    if (v0_6 == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+        b3_0 = true;
+    } else {
+        sContextManager* v0_3 = sContextManager::getInstance();
+        unsigned int v2_3;
+        if (v0_6 == 0) {
+            v2_3 = 0xFFFFFFFF;
+        } else {
+            u32 v0_5 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mPartyMemberInfoVec.size();
+            if (v0_5 == 0) {
+                v2_3 = 0xFFFFFFFF;
+            } else {
+                MtObject* * v0_4 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mPartyMemberInfoVec.getBuffer();
+                for (unsigned int i0_2 = 0;;) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[static_cast<int>(i0_2)]) + 24)) == v0_6) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_4[static_cast<int>(i0_2)]) + 120)) <= 3) {
+                            if (((12ul >> static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_4[static_cast<int>(i0_2)]) + 120)) & 15)) & 1ul) == 0) {
+                                v2_3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[static_cast<int>(i0_2)]) + 116);
+                                break;
+                            }
+                        } else {
+                            v2_3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[static_cast<int>(i0_2)]) + 116);
+                            break;
+                        }
+                    }
+                    if ((i0_2 + 1u) < v0_5) {
+                        i0_2 += 1u;
+                    } else {
+                        v2_3 = 0xFFFFFFFF;
+                        break;
+                    }
+                }
+            }
+        }
+        cContextInstHm* t0 = v0_3->getContextPartyPlayerFromMemberIndex(static_cast<s32>(v2_3));
+        if (t0 != nullptr) {
+            return (t0->mIsValid & 11) == 11;
+        } else {
+            b3_0 = false;
+        }
+    }
+    return b3_0;
 }
 
 __attribute__((weak)) bool sQuestManagerExt::addSystemLog(MT_CTSTR message, nQuest::QUEST_ID quest_id, MT_CTSTR analizeMsg0, MT_CTSTR analizeMsg1, bool withAnnounce, u32 filter, bool isWarning) {
@@ -4655,8 +4892,6 @@ __attribute__((weak)) void sQuestManagerExt::cCallQuestAnnounce::update() {
 }
 
 sQuestManagerExt::cCallQuestAnnounce::~cCallQuestAnnounce() {
-    DDON_STUB("sQuestManagerExt::cCallQuestAnnounce::~cCallQuestAnnounce")
-    /* stub */
 }
 
 __attribute__((weak)) void sQuestManagerExt::cCallQuestAnnounce::createProperty(MtPropertyList& s) {

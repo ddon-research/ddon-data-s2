@@ -760,11 +760,6 @@ inline void cThinkMgrName::cThinkMgrTargetMgr::clrSelectNewTargetIdx() {
     this->mSelectNewTargetIdx = 0;
 }
 
-inline void cThinkMgrName::cThinkMgrTargetMgr::clrLinkID() {
-    this->mLinkID = 0;
-    this->mLinkIDIdx = 0;
-}
-
 inline void* cThinkMgrName::cThinkTblList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

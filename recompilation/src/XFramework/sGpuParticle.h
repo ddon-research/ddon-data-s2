@@ -158,7 +158,7 @@ public:
         DrawCtx mDrawCtx[6];  // offset: 0x28
     };
 public:
-    struct Particle
+    struct alignas(16) Particle
     {
     public:
         Particle(const MtFloat3& i_pos, const MtColor& i_color, u32 i_scale, u32 i_index, u32 i_intensity, u32 i_rot);

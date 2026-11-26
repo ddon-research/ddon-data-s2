@@ -52,6 +52,7 @@ using u8 = unsigned char;
 
 class uEffect : public uBaseEffect
 {
+    friend class cParticleGenerator;
     friend class cParticleManager;
 public:
     enum STATUS
@@ -342,6 +343,10 @@ inline f32 uEffect::getParticleScale() const {
 
 inline void uEffect::setParticleScale(f32 ParticleScale) {
     this->mParticleScale = ParticleScale;
+}
+
+inline MtVector3 uEffect::getParticle3DScale() const {
+    return this->mParticle3DScale;
 }
 
 inline u32 uEffect::getLifeFrame() const {

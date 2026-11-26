@@ -28,6 +28,7 @@ class rSky;
 class rStarCatalog;
 class rTexture;
 class sWeatherManager;
+class uSkyExt;
 
 // Declarations
 class uSky;
@@ -44,6 +45,7 @@ using u32 = unsigned int;
 class uSky : public cUnit
 {
     friend class sWeatherManager;
+    friend class uSkyExt;
 public:
     enum NORTH_AXIS
     {

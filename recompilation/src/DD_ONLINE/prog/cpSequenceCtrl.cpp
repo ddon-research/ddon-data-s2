@@ -79,9 +79,10 @@ void cpSequenceCtrl::callbackAfterUpdateMotion() {
     updateSequence();
 }
 
-__attribute__((weak)) void cpSequenceCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpSequenceCtrl::createProperty")
-    /* stub */
+void cpSequenceCtrl::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "callbackSequenceTrigger", &callbackSequenceTrigger, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "callbackSequenceRelease", &callbackSequenceRelease, 0u, 0u);
 }
 
 __attribute__((weak)) u32 cpSequenceCtrl::getSequence(u32 page, MOT_TYPE s) {

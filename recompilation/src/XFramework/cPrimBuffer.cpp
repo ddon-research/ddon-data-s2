@@ -4,6 +4,7 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "cPrimObj.h"
 #include "sPrimitive.h"
 #ifndef DDON_STUB
@@ -56,8 +57,7 @@ inline cPrimBuffer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 cPrimBuffer::MyDTI cPrimBuffer::DTI("cPrimBuffer", &::cPrimObj::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cPrimBuffer::MyDTI::newInstance() const {
-    DDON_STUB("cPrimBuffer::MyDTI::newInstance")
-    return nullptr;
+MtObject* cPrimBuffer::MyDTI::newInstance() const {
+    return new (16u) cPrimBuffer;
 }
 

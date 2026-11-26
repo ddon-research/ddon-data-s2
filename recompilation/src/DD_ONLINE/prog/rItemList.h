@@ -24,9 +24,12 @@ class MtString;
 class MtUI;
 class cEquipData;
 namespace nGUIItem { class cItem; }
+class sCraftManager;
 class sItemManager;
 class uGUIBase;
+class uGUICraft;
 class uHuman;
+class uUIMockUp;
 
 // Declarations
 class rItemList;
@@ -211,6 +214,8 @@ public:
 public:
     class rParam : public MtObject
     {
+        friend class nGUIItem::cItem;
+        friend class rItemList;
         friend class sItemManager;
     public:
         enum PARAM_KIND
@@ -989,9 +994,13 @@ public:
     {
         friend class cEquipData;
         friend class nGUIItem::cItem;
+        friend class rItemList;
+        friend class sCraftManager;
         friend class sItemManager;
         friend class uGUIBase;
+        friend class uGUICraft;
         friend class uHuman;
+        friend class uUIMockUp;
     public:
         enum EQUIP_SUB_CATEGORY
         {

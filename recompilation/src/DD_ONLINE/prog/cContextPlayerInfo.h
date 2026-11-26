@@ -393,6 +393,10 @@ inline void* cContextPlayerInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline u8 cContextPlayerInfo::getJob() const {
+    return this->mCurrentJob_pri;
+}
+
 inline const nJobParam::cHumanBaseInfo& cContextPlayerInfo::getBaseInfo() const {
     return this->mBaseInfo;
 }

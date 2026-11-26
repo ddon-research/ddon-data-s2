@@ -74,6 +74,7 @@
 #include "cGUIUtility.h"
 #include "cItemParam.h"
 #include "cMenuBase.h"
+#include "cMenuBaseClan.h"
 #include "cMenuSupport.h"
 #include "cNetLoginServer.h"
 #include "cNetMsgBase.h"
@@ -153,6 +154,14 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+unsigned int elf_u32_ZN7nPacket5WriteI13CDataEditInfoEEiR7CPacketRKT_(CPacket&, const CDataEditInfo&) __asm__("_ZN7nPacket5WriteI13CDataEditInfoEEiR7CPacketRKT_");
+unsigned int elf_u32_ZN7nPacket5WriteI18CDataClanUserParamEEiR7CPacketRKT_(CPacket&, const CDataClanUserParam&) __asm__("_ZN7nPacket5WriteI18CDataClanUserParamEEiR7CPacketRKT_");
+unsigned int elf_u32_ZN7nPacket5WriteI19CDataEntryItemParamEEiR7CPacketRKT_(CPacket&, const CDataEntryItemParam&) __asm__("_ZN7nPacket5WriteI19CDataEntryItemParamEEiR7CPacketRKT_");
+unsigned int elf_u32_ZN7nPacket5WriteI20CDataClanSearchParamEEiR7CPacketRKT_(CPacket&, const CDataClanSearchParam&) __asm__("_ZN7nPacket5WriteI20CDataClanSearchParamEEiR7CPacketRKT_");
+unsigned int elf_u32_ZN7nPacket5WriteI20CDataMatchingProfileEEiR7CPacketRKT_(CPacket&, const CDataMatchingProfile&) __asm__("_ZN7nPacket5WriteI20CDataMatchingProfileEEiR7CPacketRKT_");
+unsigned int elf_u32_ZN7nPacket5WriteI24CDataClanScoutEntryParamEEiR7CPacketRKT_(CPacket&, const CDataClanScoutEntryParam&) __asm__("_ZN7nPacket5WriteI24CDataClanScoutEntryParamEEiR7CPacketRKT_");
+unsigned int elf_u32_ZN7nPacket5WriteI24CDataPawnSearchParameterEEiR7CPacketRKT_(CPacket&, const CDataPawnSearchParameter&) __asm__("_ZN7nPacket5WriteI24CDataPawnSearchParameterEEiR7CPacketRKT_");
 
 const MtDTI& cCompleteQuest::getDTI() const {
     return cCompleteQuest::DTI;
@@ -311,9 +320,141 @@ bool cNetGameServer::reqFinalParty(bool isCallback) {
     return true;
 }
 
-__attribute__((weak)) bool cNetGameServer::finalPartyFlow() {
-    DDON_STUB("cNetGameServer::finalPartyFlow")
-    return {};
+bool cNetGameServer::finalPartyFlow() {
+    switch (mFlow[1].mRno0) {
+        case 0:
+        {
+            mFlow[1].mRno0 = 1;
+            mStatus[40] = sNetworkExt::NET_STAT_ERROR;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(40);
+            mErrorCode[40] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+            if (mpConnection != nullptr) {
+                if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                    if (mpConnection->isLoginSuccess()) {
+                        if (mpConnection->Send_C2S_PARTY_LEAVE_REQ() != 0) {
+                            mStatus[40] = sNetworkExt::NET_STAT_REQ;
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(40);
+                            mComTimer[40] = 0.0f;
+                            mFlow[1].mRno0 = 2;
+                            return false;
+                        } else {
+                            mFlow[1].mRno0 = 4;
+                            return false;
+                        }
+                    } else {
+                        mFlow[1].mRno0 = 4;
+                        return false;
+                    }
+                } else {
+                    mFlow[1].mRno0 = 4;
+                    return false;
+                }
+            } else {
+                mFlow[1].mRno0 = 4;
+                return false;
+            }
+            break;
+        }
+        case 1:
+        {
+            mStatus[40] = sNetworkExt::NET_STAT_ERROR;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(40);
+            mErrorCode[40] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+            if (mpConnection != nullptr) {
+                if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                    if (mpConnection->isLoginSuccess()) {
+                        if (mpConnection->Send_C2S_PARTY_LEAVE_REQ() != 0) {
+                            mStatus[40] = sNetworkExt::NET_STAT_REQ;
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(40);
+                            mComTimer[40] = 0.0f;
+                            mFlow[1].mRno0 = 2;
+                            return false;
+                        } else {
+                            mFlow[1].mRno0 = 4;
+                            return false;
+                        }
+                    } else {
+                        mFlow[1].mRno0 = 4;
+                        return false;
+                    }
+                } else {
+                    mFlow[1].mRno0 = 4;
+                    return false;
+                }
+            } else {
+                mFlow[1].mRno0 = 4;
+                return false;
+            }
+            break;
+        }
+        case 2:
+        {
+            if (mStatus[40] != sNetworkExt::NET_STAT_ERROR) {
+                if (mStatus[40] == sNetworkExt::NET_STAT_SUCCESS) {
+                    mFlow[1].mRno0 = 3;
+                    return false;
+                } else {
+                    return false;
+                }
+            } else {
+                mFlow[1].mRno0 = 3;
+                return false;
+            }
+            break;
+        }
+        case 3:
+        {
+            mFlow[1].mRno0 = 5;
+            return false;
+        }
+        case 4:
+        {
+            mFlow[1].mRno0 = 5;
+            return false;
+        }
+        case 5:
+        {
+            u32 v2_0;
+            if (mPartyMemberInfoVec.mLength == 0) {
+                v2_0 = mPartyMemberInfoVec.mLength;
+            } else {
+                u32 v0_0 = mPartyMemberInfoVec.mLength;
+                unsigned int i0_3 = 0;
+                u32 v1_0;
+                for (;;) {
+                    if (mPartyMemberInfoVec.mpArray[i0_3] == nullptr) {
+                        v1_0 = v0_0;
+                    } else {
+                        delete mPartyMemberInfoVec.mpArray[i0_3];
+                        v1_0 = mPartyMemberInfoVec.mLength;
+                    }
+                    if ((i0_3 + 1u) < v1_0) {
+                        v0_0 = v1_0;
+                        i0_3 += 1u;
+                    } else {
+                        v2_0 = v1_0;
+                        break;
+                    }
+                }
+            }
+            break;
+        }
+        default:
+        {
+            return false;
+        }
+    }
+    if (mPartyMemberInfoVec.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPartyMemberInfoVec.mpArray));
+    }
+    mPartyMemberInfoVec.mpArray = nullptr;
+    mPartyMemberInfoVec.mBufsiz = 0;
+    mPartyMemberInfoVec.mLength = 0;
+    if (mFlow[1].mIsCallback) {
+        (&static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->mListener[0])->onFinalize();
+    }
+    mPartyContentNumber = 0;
+    return true;
 }
 
 bool cNetGameServer::reqCreateParty(bool isInviteAccept) {
@@ -328,9 +469,72 @@ bool cNetGameServer::reqCreateParty(bool isInviteAccept) {
     return true;
 }
 
-__attribute__((weak)) bool cNetGameServer::createPartyFlow() {
-    DDON_STUB("cNetGameServer::createPartyFlow")
-    return {};
+bool cNetGameServer::createPartyFlow() {
+    switch (mFlow[2].mRno0) {
+        case 0:
+        {
+            mFlow[2].mRno0 = 1;
+            if (createParty()) {
+                mFlow[2].mRno0 = 2;
+                return false;
+            } else {
+                mFlow[2].mRno0 = 3;
+                return false;
+            }
+            break;
+        }
+        case 1:
+        {
+            if (createParty()) {
+                mFlow[2].mRno0 = 2;
+                return false;
+            } else {
+                mFlow[2].mRno0 = 3;
+                return false;
+            }
+            break;
+        }
+        case 2:
+        {
+            if (mStatus[28] == sNetworkExt::NET_STAT_ERROR) {
+                mFlow[2].mError.mNo = static_cast<s32>(mErrorCode[28]);
+                mFlow[2].mRno0 = 3;
+                return false;
+            } else {
+                if (mStatus[28] == sNetworkExt::NET_STAT_SUCCESS) {
+                    mFlow[2].mRno0 = 4;
+                    return false;
+                } else {
+                    return false;
+                }
+            }
+            break;
+        }
+        case 3:
+        {
+            mFlow[2].mRno0 = 4;
+            return false;
+        }
+        case 4:
+        {
+            (&static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->mListener[0])->onCreateComplete(mFlow[2].mError.mNo == 0, &mFlow[2].mError);
+            if (mFlow[2].mError.mNo != 0) {
+                if (mPartyMemberInfoVec.mLength != 0) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->finalGameSessionRequest(false);
+                    return true;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+            break;
+        }
+        default:
+        {
+            return false;
+        }
+    }
 }
 
 bool cNetGameServer::reqJoinInviteParty() {
@@ -563,9 +767,27 @@ bool cNetGameServer::sendSetWorldInfo() {
     return false;
 }
 
-__attribute__((weak)) bool cNetGameServer::decideCharacterId(u32 characterId) {
-    DDON_STUB("cNetGameServer::decideCharacterId")
-    return {};
+bool cNetGameServer::decideCharacterId(u32 characterId) {
+    mStatus[14] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(14);
+    mErrorCode[14] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_DECIDE_CHARACTER_ID_REQ(characterId) != 0) {
+                    sGame::getInstance()->mCharData.setDefaultCharacterData(true);
+                    static_cast<sGUIExt*>(sGUI::getInstance())->setServerOption();
+                    mLobbyCharacterId = characterId;
+                    sGame::getInstance()->mIsViaPrologue = false;
+                    mStatus[14] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(14);
+                    mComTimer[14] = 0.0f;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) bool cNetGameServer::sendSetCharacterInfo(cCharacterData* pCharData) {
@@ -876,7 +1098,7 @@ bool cNetGameServer::sendGetActiveQuest() {
     return false;
 }
 
-bool cNetGameServer::createParty() {
+__attribute__((weak)) bool cNetGameServer::createParty() {
     nSessionManager::cNetSessionManager* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager();
     t0->clearPartyReqInfo(0);
     t0->clearPartyReqInfo(1);
@@ -979,7 +1201,7 @@ bool cNetGameServer::reqPartyMemberSetValue(s32 index, bool flag) {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(30);
     mErrorCode[30] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
     if (mpConnection != nullptr) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
             if (mpConnection->isLoginSuccess()) {
                 if (mpConnection->Send_C2S_PARTY_MEMBER_SET_VALUE_REQ(static_cast<unsigned char>(index), static_cast<u8>(flag)) != 0) {
                     mStatus[30] = sNetworkExt::NET_STAT_REQ;
@@ -1032,7 +1254,7 @@ bool cNetGameServer::cancelInviteParty(u32 inviteServerNo, u32 invitePartyId) {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(33);
     mErrorCode[33] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
     if (mpConnection != nullptr) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
             if (mpConnection->isLoginSuccess()) {
                 if (mpConnection->Send_C2S_PARTY_INVITE_CANCEL_REQ(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 21724), mInvitePartyId) != 0) {
                     mStatus[33] = sNetworkExt::NET_STAT_REQ;
@@ -1090,7 +1312,7 @@ bool cNetGameServer::kickParty(s32 memberIndex) {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(41);
     mErrorCode[41] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
     if (mpConnection != nullptr) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
             if (mpConnection->isLoginSuccess()) {
                 if (mpConnection->Send_C2S_PARTY_MEMBER_KICK_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 21752)) != 0) {
                     mStatus[41] = sNetworkExt::NET_STAT_REQ;
@@ -1308,9 +1530,27 @@ __attribute__((weak)) bool cNetGameServer::isPlayEntry(s32 memberIndex) {
     return {};
 }
 
-__attribute__((weak)) bool cNetGameServer::isCheckCreateParty() {
-    DDON_STUB("cNetGameServer::isCheckCreateParty")
-    return {};
+bool cNetGameServer::isCheckCreateParty() {
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (!mIsJoinParty) {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isSessionOnline(1)) {
+                        if (!sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mCreateGameSession), false)) {
+                            if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->checkSessionCommandRequest(0, 0x10000u)) {
+                                if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->checkSessionCommandRequest(0, 0x30000u)) {
+                                    if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->checkSessionCommandRequest(0, 0x90000u) && !static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->checkSessionCommandRequest(1, 0x90000u)) {
+                                        return !static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void cNetGameServer::setPartyMemberSessionStatus(cPartyMemberInfo* pInfo, u8 status, bool isWithPawn) {
@@ -1318,9 +1558,29 @@ __attribute__((weak)) void cNetGameServer::setPartyMemberSessionStatus(cPartyMem
     /* stub */
 }
 
-__attribute__((weak)) void cNetGameServer::setLostAction(cContextInstHm* pInst) {
-    DDON_STUB("cNetGameServer::setLostAction")
-    /* stub */
+void cNetGameServer::setLostAction(cContextInstHm* pInst) {
+    if (pInst == nullptr) {
+        return;
+    }
+    uHuman* pHuman = sPlayerManager::getInstance()->getPlayer(pInst);
+    if (pHuman != nullptr) {
+        cpActionRequest* t0 = pHuman->getActionRequestPtr();
+        t0->mRequestActionReq = 379;
+        t0->mRequestActionNoSend = true;
+        cContextInterface::getStageNo(static_cast<const cContextInstance*>(pInst), static_cast<const cContextCharacter*>(nullptr));
+        if ((sArea::mpInstance) != nullptr) {
+            cContextInterface::setActNo(static_cast<cContextInstance*>(pInst), static_cast<cContextCharacter*>(nullptr), 0u, 379u);
+            MtVector3 frame56(cContextInterface::getLastSafePos(pInst));
+            cContextInterface::setNetPos(static_cast<cContextInstance*>(pInst), static_cast<cContextCharacter*>(nullptr), frame56);
+        }
+    } else {
+        cContextInterface::getStageNo(static_cast<const cContextInstance*>(pInst), static_cast<const cContextCharacter*>(nullptr));
+        if ((sArea::mpInstance) != nullptr) {
+            cContextInterface::setActNo(static_cast<cContextInstance*>(pInst), static_cast<cContextCharacter*>(nullptr), 0u, 379u);
+            MtVector3 frame72(cContextInterface::getLastSafePos(pInst));
+            cContextInterface::setNetPos(static_cast<cContextInstance*>(pInst), static_cast<cContextCharacter*>(nullptr), frame72);
+        }
+    }
 }
 
 __attribute__((weak)) bool cNetGameServer::reqQuickPartyRegister(nNet::QUICK_MATCH_TYPE type, CQuickPartyMatching& matching) {
@@ -1408,7 +1668,7 @@ bool cNetGameServer::deleteMyPawn(s32 slotNo, bool isKeepEquip) {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(60);
     mErrorCode[60] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
     if (mpConnection != nullptr) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
             if (mpConnection->isLoginSuccess()) {
                 if (mpConnection->Send_C2S_DELETE_MYPAWN_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 22312), mIsKeepEquip) != 0) {
                     mStatus[60] = sNetworkExt::NET_STAT_REQ;
@@ -1596,7 +1856,7 @@ bool cNetGameServer::joinPartyMyPawn(s32 slotNo) {
     mErrorCode[73] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
     bool b2_0;
     if (mpConnection != nullptr) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
             if (mpConnection->isLoginSuccess()) {
                 if (mpConnection->Send_C2S_JOIN_PARTY_MYPAWN_REQ(static_cast<unsigned char>(slotNo)) == 0) {
                     b2_0 = false;
@@ -1645,7 +1905,7 @@ bool cNetGameServer::joinPartyRentedPawn(s32 slotNo) {
     mErrorCode[74] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
     bool b2_0;
     if (mpConnection != nullptr) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
             if (mpConnection->isLoginSuccess()) {
                 if (mpConnection->Send_C2S_JOIN_PARTY_RENTED_PAWN_REQ(static_cast<unsigned char>(slotNo)) == 0) {
                     b2_0 = false;
@@ -2128,6 +2388,19 @@ __attribute__((weak)) bool cNetGameServer::consumeStorageItem() {
 __attribute__((weak)) bool cNetGameServer::consumeStorageItem(StorageItemUIDListVec& list) {
     DDON_STUB("cNetGameServer::consumeStorageItem")
     return {};
+}
+
+void cNetGameServer::clearConsumeStorageItemList() {
+    unsigned int i1 = 0;
+    if (mReqStorageItemList.mLength != 0) {
+        do {
+            if (mReqStorageItemList.mpArray[i1] != nullptr) {
+                delete mReqStorageItemList.mpArray[i1];
+            }
+            i1 += 1u;
+        } while (i1 < mReqStorageItemList.mLength);
+    }
+    mReqStorageItemList.mLength = 0;
 }
 
 __attribute__((weak)) bool cNetGameServer::exchangeSlotItem() {
@@ -3702,9 +3975,9 @@ __attribute__((weak)) bool cNetGameServer::areaChange() {
     cSeedGameSvConnection* v0_4 = mpConnection;
     bool b2_0;
     if (v0_4 != nullptr) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4) + 96)) == 4) {
+        if (v0_4->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
             if (v0_4->isLoginSuccess()) {
-                unsigned int v0_5 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 34320);
+                u32 v0_5 = mStageList.mLength;
                 if (v0_5 == 0) {
                     b2_0 = false;
                 } else {
@@ -3842,27 +4115,27 @@ __attribute__((weak)) void cNetGameServer::setStageList(const StageInfoVec& list
 }
 
 u32 cNetGameServer::convertIdToStageNo(u32 id) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 34320)) != 0) {
+    if (mStageList.mLength != 0) {
         u32 i = 0;
         do {
             if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mStageList.getBuffer()[static_cast<int>(i)]) + 8)) == id) {
                 return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mStageList.getBuffer()[static_cast<int>(i)]) + 12);
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 34320)));
+        } while (i < mStageList.mLength);
     }
     return 0;
 }
 
 u32 cNetGameServer::convertStageNoToId(u32 stageNo) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 34320)) != 0) {
+    if (mStageList.mLength != 0) {
         u32 i = 0;
         do {
             if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mStageList.getBuffer()[static_cast<int>(i)]) + 12)) == stageNo) {
                 return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mStageList.getBuffer()[static_cast<int>(i)]) + 8);
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 34320)));
+        } while (i < mStageList.mLength);
     }
     return 0;
 }
@@ -6714,6 +6987,19 @@ bool cNetGameServer::updateClanSetting(bool isNtc) {
     return false;
 }
 
+inline void cNetGameServer::clearClanDirectInvitedList() {
+    unsigned int i1 = 0;
+    if (mClanDirectInvitedList.mLength != 0) {
+        do {
+            if (mClanDirectInvitedList.mpArray[i1] != nullptr) {
+                delete mClanDirectInvitedList.mpArray[i1];
+            }
+            i1 += 1u;
+        } while (i1 < mClanDirectInvitedList.mLength);
+    }
+    mClanDirectInvitedList.mLength = 0;
+}
+
 __attribute__((weak)) bool cNetGameServer::addClanDirectInvitedInfo(const CClanScoutEntryInviteInfo& src) {
     DDON_STUB("cNetGameServer::addClanDirectInvitedInfo")
     return {};
@@ -6724,9 +7010,32 @@ __attribute__((weak)) void cNetGameServer::removeClanDirectInvitedInfo(u32 clanI
     /* stub */
 }
 
-__attribute__((weak)) void cNetGameServer::clearClanDirectInvitedInfo() {
-    DDON_STUB("cNetGameServer::clearClanDirectInvitedInfo")
-    /* stub */
+void cNetGameServer::clearClanDirectInvitedInfo() {
+    if (mClanDirectInvitedList.mLength != 0) {
+        u32 v0_0 = mClanDirectInvitedList.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mClanDirectInvitedList.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mClanDirectInvitedList.mpArray[i0_3];
+                v1_0 = mClanDirectInvitedList.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    mClanDirectInvitedList.mLength = 0;
+    if (sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mMenuClanDirectInvitedList), false)) {
+        if (sMenu::getInstance()->mMenuClanDirectInvitedList.mpList != nullptr) {
+            sMenu::getInstance()->mMenuClanDirectInvitedList.mpList->mReqRemake = true;
+        }
+    }
 }
 
 void cNetGameServer::setMyMoneyClanPoint(u32 moneyPoint) {
@@ -6900,7 +7209,7 @@ bool cNetGameServer::approveFriend(u32 charId, bool isApprove) {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(314);
     mErrorCode[314] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
     if (mpConnection != nullptr) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
             if (mpConnection->isLoginSuccess()) {
                 mIsFriendApprove = isApprove;
                 if (mpConnection->Send_C2S_APPROVE_FRIEND_REQ(charId, static_cast<u8>(isApprove)) != 0) {
@@ -6970,7 +7279,7 @@ __attribute__((weak)) void cNetGameServer::setApprovingFriendList(const Communit
 }
 
 CFriendInfo* cNetGameServer::getFriendInfo(u32 friendNo) {
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 35272);
+    u32 v0_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mFriendList.mLength;
     MtObject* v2_0;
     if (v0_0 == 0) {
         v2_0 = nullptr;
@@ -6995,7 +7304,7 @@ CFriendInfo* cNetGameServer::getFriendInfo(u32 friendNo) {
 }
 
 CFriendInfo* cNetGameServer::getFriendInfoCharId(u32 characterId) {
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 35272);
+    u32 v0_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mFriendList.mLength;
     MtObject* v2_0;
     if (v0_0 == 0) {
         v2_0 = nullptr;
@@ -7248,7 +7557,7 @@ bool cNetGameServer::reqChangeJob(u8 job) {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(392);
     mErrorCode[392] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
     if (mpConnection != nullptr) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
             if (mpConnection->isLoginSuccess()) {
                 if (mpConnection->Send_C2S_CHANGE_JOB_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 35408)) != 0) {
                     mStatus[392] = sNetworkExt::NET_STAT_REQ;
@@ -7269,7 +7578,7 @@ bool cNetGameServer::reqChangePawnJob(u32 pawnID, u8 job) {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(393);
     mErrorCode[393] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
     if (mpConnection != nullptr) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
             if (mpConnection->isLoginSuccess()) {
                 if (mpConnection->Send_C2S_CHANGE_PAWN_JOB_REQ(mChangeJobPawnId, *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 35408)) != 0) {
                     mStatus[393] = sNetworkExt::NET_STAT_REQ;
@@ -9306,8 +9615,12 @@ void cNetGameServer::clearScreenShotCategory() {
     }
 }
 
-__attribute__((weak)) MtTypedArray<CDataScreenShotCategory>* cNetGameServer::getScreenShotCategory() {
-    DDON_STUB("cNetGameServer::getScreenShotCategory")
+MtTypedArray<CDataScreenShotCategory>* cNetGameServer::getScreenShotCategory() {
+    if (mStatus[499] == sNetworkExt::NET_STAT_SUCCESS) {
+        if (mpConnection != nullptr) {
+            return (mpConnection->mpScreenShotCategory == nullptr) ? static_cast<MtTypedArray<CDataScreenShotCategory>*>(nullptr) : (&mpConnection->mpScreenShotCategory->m_CategoryList);
+        }
+    }
     return nullptr;
 }
 
@@ -10071,9 +10384,58 @@ __attribute__((weak)) void cNetGameServer::OnPacket_S2C_LOBBY_JOIN_RES(nUserSess
     /* stub */
 }
 
-__attribute__((weak)) void cNetGameServer::OnPacket_S2C_LOBBY_LEAVE_RES(nUserSession::CPacket_S2C_LOBBY_LEAVE_RES& packet) {
-    DDON_STUB("cNetGameServer::OnPacket_S2C_LOBBY_LEAVE_RES")
-    /* stub */
+void cNetGameServer::OnPacket_S2C_LOBBY_LEAVE_RES(nUserSession::CPacket_S2C_LOBBY_LEAVE_RES& packet) {
+    if (mLobbyMembers.mLength != 0) {
+        u32 v0_0 = mLobbyMembers.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mLobbyMembers.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mLobbyMembers.mpArray[i0_3];
+                v1_0 = mLobbyMembers.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mLobbyMembers.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mLobbyMembers.mpArray));
+    }
+    mLobbyMembers.mpArray = nullptr;
+    mLobbyMembers.mBufsiz = 0;
+    mLobbyMembers.mLength = 0;
+    if (mPartyMemberInfoVec.mLength != 0) {
+        u32 v3_0 = mPartyMemberInfoVec.mLength;
+        unsigned int i3_3 = 0;
+        u32 v4_0;
+        for (;;) {
+            if (mPartyMemberInfoVec.mpArray[i3_3] == nullptr) {
+                v4_0 = v3_0;
+            } else {
+                delete mPartyMemberInfoVec.mpArray[i3_3];
+                v4_0 = mPartyMemberInfoVec.mLength;
+            }
+            if ((i3_3 + 1u) < v4_0) {
+                v3_0 = v4_0;
+                i3_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mPartyMemberInfoVec.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPartyMemberInfoVec.mpArray));
+    }
+    mPartyMemberInfoVec.mpArray = nullptr;
+    mPartyMemberInfoVec.mBufsiz = 0;
+    mPartyMemberInfoVec.mLength = 0;
+    (&static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->mListener[1])->onFinalize();
 }
 
 __attribute__((weak)) void cNetGameServer::OnPacket_S2C_USER_LIST_LEAVE_NTC(nUserSession::CPacket_S2C_USER_LIST_LEAVE_NTC& packet) {
@@ -10169,6 +10531,16 @@ __attribute__((weak)) void cNetGameServer::OnPacket_S2C_PAWN_LOST_RES(nUserSessi
     /* stub */
 }
 
+inline void cNetGameServer::OnPacket_S2C_QUEST_PROGRESS_RES(nUserSession::CPacket_S2C_QUEST_PROGRESS_RES& packet) {
+    mRecvProgressQuestScheduleId = packet.m_unQuestScheduleId;
+    if (packet.m_nResult != 0) {
+        mStatus[145] = sNetworkExt::NET_STAT_ERROR;
+    } else {
+        mStatus[145] = sNetworkExt::NET_STAT_SUCCESS;
+        mpQuestProcessStateList = &mpConnection->mpQuestProgressPacket->m_QuestProcessStateList;
+    }
+}
+
 void cNetGameServer::OnPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES(nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES& packet) {
     if (packet.m_unResult == 0) {
         if (static_cast<int>(packet.m_CharacterEquipList.mLength) > 0) {
@@ -10241,14 +10613,119 @@ void cNetGameServer::OnPacket_S2C_GET_PAWN_EQUIP_LIST_RES(nUserSession::CPacket_
     }
 }
 
-__attribute__((weak)) void cNetGameServer::OnPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES(nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES& packet) {
-    DDON_STUB("cNetGameServer::OnPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES")
-    /* stub */
+void cNetGameServer::OnPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES(nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES& packet) {
+    if (packet.m_unResult == 0) {
+        s32 num = packet.m_EquipJobItemList.mLength;
+        cEquipData& eq_data = cContextInterface::getContextEquip(sContextManager::getInstance()->getContextMyPlayer());
+        if (packet.m_EquipJobItemList.mLength != 0) {
+            u32 v0_0 = packet.m_EquipJobItemList.mLength;
+            unsigned int i0_3 = 0;
+            u32 v1_0;
+            for (;;) {
+                if (packet.m_EquipJobItemList.mpArray[i0_3] == nullptr) {
+                    v1_0 = v0_0;
+                } else {
+                    eq_data.setArrowEquip(static_cast<nCharacterData::ARROW_EQUIP>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(packet.m_EquipJobItemList.mpArray[i0_3]) + 12)), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(packet.m_EquipJobItemList.mpArray[i0_3]) + 8));
+                    v1_0 = packet.m_EquipJobItemList.mLength;
+                }
+                if ((i0_3 + 1u) < v1_0) {
+                    v0_0 = v1_0;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (num > 0) {
+            setEquipJobItemList(packet.m_EquipJobItemList, mRecvChangeEquipJobItemList);
+            return;
+        } else {
+            if (mRecvChangeEquipJobItemList.mLength != 0) {
+                u32 v3_0 = mRecvChangeEquipJobItemList.mLength;
+                unsigned int i3_3 = 0;
+                u32 v4_0;
+                for (;;) {
+                    if (mRecvChangeEquipJobItemList.mpArray[i3_3] == nullptr) {
+                        v4_0 = v3_0;
+                    } else {
+                        delete mRecvChangeEquipJobItemList.mpArray[i3_3];
+                        v4_0 = mRecvChangeEquipJobItemList.mLength;
+                    }
+                    if ((i3_3 + 1u) < v4_0) {
+                        v3_0 = v4_0;
+                        i3_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        if (mRecvChangeEquipJobItemList.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRecvChangeEquipJobItemList.mpArray));
+        }
+        mRecvChangeEquipJobItemList.mpArray = nullptr;
+        mRecvChangeEquipJobItemList.mBufsiz = 0;
+        mRecvChangeEquipJobItemList.mLength = 0;
+    }
 }
 
-__attribute__((weak)) void cNetGameServer::OnPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES(nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES& packet) {
-    DDON_STUB("cNetGameServer::OnPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES")
-    /* stub */
+void cNetGameServer::OnPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES(nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES& packet) {
+    if (packet.m_unResult == 0) {
+        s32 num = packet.m_EquipJobItemList.mLength;
+        cContextInstHm* t0 = sContextManager::getInstance()->getMyPawnContext(packet.PawnID(), 0u);
+        if (t0 != nullptr) {
+            cEquipData& v0_11 = cContextInterface::getContextEquip(t0);
+            if (packet.m_EquipJobItemList.mLength != 0) {
+                u32 v0_0 = packet.m_EquipJobItemList.mLength;
+                unsigned int i0_3 = 0;
+                u32 v1_0;
+                for (;;) {
+                    if (packet.m_EquipJobItemList.mpArray[i0_3] == nullptr) {
+                        v1_0 = v0_0;
+                    } else {
+                        v0_11.setArrowEquip(static_cast<nCharacterData::ARROW_EQUIP>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(packet.m_EquipJobItemList.mpArray[i0_3]) + 12)), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(packet.m_EquipJobItemList.mpArray[i0_3]) + 8));
+                        v1_0 = packet.m_EquipJobItemList.mLength;
+                    }
+                    if ((i0_3 + 1u) < v1_0) {
+                        v0_0 = v1_0;
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        if (num > 0) {
+            setEquipJobItemList(packet.m_EquipJobItemList, mRecvChangePawnEquipJobItemList);
+            mRecvChangePawnEquipJobItemPawnId = packet.PawnID();
+        } else {
+            if (mRecvChangePawnEquipJobItemList.mLength != 0) {
+                u32 v3_0 = mRecvChangePawnEquipJobItemList.mLength;
+                unsigned int i3_3 = 0;
+                u32 v4_0;
+                for (;;) {
+                    if (mRecvChangePawnEquipJobItemList.mpArray[i3_3] == nullptr) {
+                        v4_0 = v3_0;
+                    } else {
+                        delete mRecvChangePawnEquipJobItemList.mpArray[i3_3];
+                        v4_0 = mRecvChangePawnEquipJobItemList.mLength;
+                    }
+                    if ((i3_3 + 1u) < v4_0) {
+                        v3_0 = v4_0;
+                        i3_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            if (mRecvChangePawnEquipJobItemList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRecvChangePawnEquipJobItemList.mpArray));
+            }
+            mRecvChangePawnEquipJobItemList.mpArray = nullptr;
+            mRecvChangePawnEquipJobItemList.mBufsiz = 0;
+            mRecvChangePawnEquipJobItemList.mLength = 0;
+        }
+    }
 }
 
 __attribute__((weak)) void cNetGameServer::OnPacket_S2C_START_EQUIP_GRADE_UP_RES(nUserSession::CPacket_S2C_START_EQUIP_GRADE_UP_RES& packet) {
@@ -10631,13 +11108,32 @@ inline void* cPawnListParam::operator new(size_t sz, u32 align) {
 }
 
 cPawnListParam::~cPawnListParam() {
-    DDON_STUB("cPawnListParam::~cPawnListParam")
-    /* stub */
+    if (mpMyCacheData != nullptr) {
+        delete mpMyCacheData;
+        mpMyCacheData = nullptr;
+    }
+    if (mpRegisterdCacheData != nullptr) {
+        delete mpRegisterdCacheData;
+        mpRegisterdCacheData = nullptr;
+    }
+    if (mpRentedCacheData == nullptr) {
+        return;
+    }
+    delete mpRentedCacheData;
+    mpRentedCacheData = nullptr;
 }
 
-__attribute__((weak)) u8 cPawnListParam::getState() const {
-    DDON_STUB("cPawnListParam::getState")
-    return {};
+u8 cPawnListParam::getState() const {
+    if (m_ucState != 6) {
+        if (!sContextManager::getInstance()->isExistPartyPawn(static_cast<u8>(1), static_cast<u32>(m_nPawnId), true)) {
+            if (!sContextManager::getInstance()->isExistPartyPawn(static_cast<u8>(2), static_cast<u32>(m_nPawnId), true)) {
+                return m_ucState;
+            }
+        }
+        return 5;
+    } else {
+        return 6;
+    }
 }
 
 inline cPawnListParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -12016,9 +12512,9 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_ENEMY_REPOP_NOTIC
     return {};
 }
 
-__attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_ENCOUNTER_PAWN_NOTICE(CPacket* pPacket) {
-    DDON_STUB("cSeedGameSvConnection::OnPacket_S2C_ENCOUNTER_PAWN_NOTICE")
-    return {};
+BOOL cSeedGameSvConnection::OnPacket_S2C_ENCOUNTER_PAWN_NOTICE(CPacket* pPacket) {
+    nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE packet;
+    return packet.ReadPacket(pPacket) != 0;
 }
 
 __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES(CPacket* pPacket) {
@@ -13100,9 +13596,14 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_UPDATE_HIDE_PAWN_
     return {};
 }
 
-__attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE(CPacket* pPacket) {
-    DDON_STUB("cSeedGameSvConnection::OnPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE")
-    return {};
+BOOL cSeedGameSvConnection::OnPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE(CPacket* pPacket) {
+    nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE packet;
+    if (packet.ReadPacket(pPacket) != 0) {
+        sItemManager::getInstance()->updateHideEquip(static_cast<void*>(&packet), 3u, 0u);
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_GET_EQUIP_PRESET_LIST_RES(CPacket* pPacket) {
@@ -13311,9 +13812,9 @@ BOOL cSeedGameSvConnection::OnPacket_S2C_GET_LIMIT_BREAK_RECIPE_RES(CPacket* pPa
     return 1;
 }
 
-__attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE(CPacket* pPacket) {
-    DDON_STUB("cSeedGameSvConnection::OnPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE")
-    return {};
+BOOL cSeedGameSvConnection::OnPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE(CPacket* pPacket) {
+    nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE packet;
+    return packet.ReadPacket(pPacket) != 0;
 }
 
 __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE(CPacket* pPacket) {
@@ -13321,9 +13822,14 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_UPDATE_EQUIP_ELEM
     return {};
 }
 
-__attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE(CPacket* pPacket) {
-    DDON_STUB("cSeedGameSvConnection::OnPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE")
-    return {};
+BOOL cSeedGameSvConnection::OnPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE(CPacket* pPacket) {
+    nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE packet;
+    if (packet.ReadPacket(pPacket) != 0) {
+        sItemManager::getInstance()->setEquipToServer(static_cast<void*>(&packet), 6u);
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_SET_OBJECTIVE_RES(CPacket* pPacket) {
@@ -14686,39 +15192,106 @@ u32 cSeedGameSvConnection::getOnPacketFuncNum() {
     return 781;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PING_REQ(const MtTypedArray<CDataCheatInfo>& in_Info) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PING_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_PING_REQ(const MtTypedArray<CDataCheatInfo>& in_Info) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(1)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Info) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_LOGOUT_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_LOGOUT_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_LOGOUT_REQ() {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(3)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_LOGIN_ANNOUNCEMENT_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_LOGIN_ANNOUNCEMENT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(4)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_MOVE_OUT_SERVER_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_MOVE_OUT_SERVER_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_MOVE_OUT_SERVER_REQ() {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(6)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_SERVER_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_SERVER_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(7)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_GAME_SETTING_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_GAME_SETTING_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(8)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_WORLD_INFO_REQ(u32 in_WorldID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_WORLD_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(9)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_WorldID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_WORLD_INFO_REQ(u32 in_WorldID, const CWorldInfo& in_WorldInfo) {
@@ -14727,23 +15300,65 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_WORLD_INFO_REQ(u32
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_REAL_TIME_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_REAL_TIME_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(11)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_DECIDE_CHARACTER_ID_REQ(u32 in_CharacterID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_DECIDE_CHARACTER_ID_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(12)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_LOBBY_JOIN_REQ(u32 in_CharacterID, u32 in_UserListMaxNum) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_LOBBY_JOIN_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_LOBBY_JOIN_REQ(u32 in_CharacterID, u32 in_UserListMaxNum) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(13)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                    if (nPacket::Write(sendPacket, in_UserListMaxNum) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_LOBBY_LEAVE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_LOBBY_LEAVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(14)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_LOBBY_DATA_MSG_REQ(u8 in_Type, u32 in_CharacterID, const MtMemoryStream& in_Data) {
@@ -14752,83 +15367,255 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_LOBBY_DATA_MSG_REQ(u8 
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_CREATE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_CREATE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(21)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_INVITE_CHARACTER_REQ(u32 in_CharacterId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_INVITE_CHARACTER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(23)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_INVITE_CANCEL_REQ(u16 in_ServerId, u32 in_PartyId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_INVITE_CANCEL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(24)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ServerId) != 0) {
+                    if (nPacket::Write(sendPacket, in_PartyId) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_INVITE_REFUSE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_INVITE_REFUSE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(25)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_INVITE_PREPARE_ACCEPT_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_INVITE_PREPARE_ACCEPT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(26)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_INVITE_ENTRY_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_INVITE_ENTRY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(27)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_JOIN_REQ(u32 in_PartyId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_JOIN_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_PARTY_JOIN_REQ(u32 in_PartyId) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(29)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PartyId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_LEAVE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_LEAVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(31)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_MEMBER_KICK_REQ(u8 in_MemberIndex) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_MEMBER_KICK_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(32)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_MemberIndex) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_BREAKUP_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_BREAKUP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(33)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_CHANGE_LEADER_REQ(u32 in_CharacterID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_CHANGE_LEADER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(34)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_MEMBER_SET_VALUE_REQ(u8 in_Index, u8 in_Value) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_MEMBER_SET_VALUE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(36)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Index) != 0) {
+                    if (nPacket::Write(sendPacket, in_Value) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_QUICK_PARTY_REGISTER_QUEST_REQ(u32 in_QuestScheduleId, const CQuickPartyMatching& in_QuickPartyMatching) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_QUICK_PARTY_REGISTER_QUEST_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_QUICK_PARTY_REGISTER_QUEST_REQ(u32 in_QuestScheduleId, const CQuickPartyMatching& in_QuickPartyMatching) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(38)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestScheduleId) != 0) {
+                    if (nPacket::Write(sendPacket, in_QuickPartyMatching.m_unParam1) != 0) {
+                        if (nPacket::Write(sendPacket, in_QuickPartyMatching.m_unParam2) != 0) {
+                            if (nPacket::Write(sendPacket, in_QuickPartyMatching.m_bIsJobBalance) != 0) {
+                                if (nPacket::Write(sendPacket, in_QuickPartyMatching.m_bIsLevelBalance) != 0) {
+                                    if (nPacket::Write(sendPacket, in_QuickPartyMatching.m_bIsLeader) != 0) {
+                                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                                        return 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_QUICK_PARTY_CANCEL_NTC() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_QUICK_PARTY_CANCEL_NTC")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(39)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_QUICK_PARTY_ENTRY_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_QUICK_PARTY_ENTRY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(40)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_QUICK_PARTY_REFUSE_NTC() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_QUICK_PARTY_REFUSE_NTC")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(41)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CREATE_MYPAWN_REQ(u8 in_SlotNo, const CPawnInfo& in_PawnInfo) {
@@ -14837,133 +15624,413 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CREATE_MYPAWN_REQ(u8 i
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_DELETE_MYPAWN_REQ(u8 in_SlotNo, b8 in_IsKeepEquip) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_DELETE_MYPAWN_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(43)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_SlotNo) != 0) {
+                    if (nPacket::Write(sendPacket, in_IsKeepEquip) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_MYPAWN_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_MYPAWN_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(44)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_MYPAWN_DATA_REQ(u8 in_SlotNo, s32 in_PawnId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_MYPAWN_DATA_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_GET_MYPAWN_DATA_REQ(u8 in_SlotNo, s32 in_PawnId) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(45)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_SlotNo) != 0) {
+                    if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_REGISTERED_PAWN_LIST_REQ(const CPawnSearchParameter& in_SearchParam) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_REGISTERED_PAWN_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(46)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (elf_u32_ZN7nPacket5WriteI24CDataPawnSearchParameterEEiR7CPacketRKT_(sendPacket, in_SearchParam) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_REGISTERED_PAWN_DATA_REQ(s32 in_PawnId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_REGISTERED_PAWN_DATA_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_GET_REGISTERED_PAWN_DATA_REQ(s32 in_PawnId) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(48)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_RENTED_PAWN_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_RENTED_PAWN_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(50)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_RENTED_PAWN_DATA_REQ(u8 in_SlotNo, s32 in_PawnId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_RENTED_PAWN_DATA_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_GET_RENTED_PAWN_DATA_REQ(u8 in_SlotNo, s32 in_PawnId) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(51)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_SlotNo) != 0) {
+                    if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_RETURN_RENTED_PAWN_REQ(u8 in_SlotNo, const MtTypedArray<CDataPawnFeedback>& in_PawnFeedbackList) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_RETURN_RENTED_PAWN_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_RETURN_RENTED_PAWN_REQ(u8 in_SlotNo, const MtTypedArray<CDataPawnFeedback>& in_PawnFeedbackList) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(52)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_SlotNo) != 0) {
+                    if (nPacket::Write(sendPacket, in_PawnFeedbackList) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_JOIN_PARTY_MYPAWN_REQ(u8 in_SlotNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_JOIN_PARTY_MYPAWN_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(54)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_SlotNo) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_JOIN_PARTY_RENTED_PAWN_REQ(u8 in_SlotNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_JOIN_PARTY_RENTED_PAWN_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(55)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_SlotNo) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_FAVORITE_PAWN_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_FAVORITE_PAWN_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(56)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_FAVORITE_PAWN_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_FAVORITE_PAWN_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(57)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_DELETE_FAVORITE_PAWN_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_DELETE_FAVORITE_PAWN_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(58)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_OFFICIAL_PAWN_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_OFFICIAL_PAWN_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(59)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_LEGEND_PAWN_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_LEGEND_PAWN_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(60)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_LOST_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_LOST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(61)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_LOST_PAWN_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_LOST_PAWN_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(62)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_LOST_PAWN_REVIVE_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_LOST_PAWN_REVIVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(63)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_LOST_PAWN_POINT_REVIVE_REQ(u32 in_PawnId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_LOST_PAWN_POINT_REVIVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(64)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_LOST_PAWN_GOLDEN_REVIVE_REQ(u32 in_PawnId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_LOST_PAWN_GOLDEN_REVIVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(65)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_RENTAL_PAWN_LOST_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_RENTAL_PAWN_LOST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(67)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_UPDATE_PAWN_SHARE_RANGE_REQ(u32 in_PawnID, u8 in_ShareRange) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_UPDATE_PAWN_SHARE_RANGE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(69)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    if (nPacket::Write(sendPacket, in_ShareRange) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PAWN_HISTORY_LIST_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PAWN_HISTORY_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(70)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PAWN_TOTAL_SCORE_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PAWN_TOTAL_SCORE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(71)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_NORA_PAWN_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_NORA_PAWN_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(72)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_FREE_RENTAL_PAWN_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_FREE_RENTAL_PAWN_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(73)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_CHARACTER_BIN_SAVEDATA_REQ(const u8(&in_Bin)[1024]) {
@@ -14971,9 +16038,22 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_CHARACTER_BIN_SAVE
     return {};
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_USE_BAG_ITEM_REQ(const char* in_strUID, u32 in_Num) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_USE_BAG_ITEM_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_USE_BAG_ITEM_REQ(const char* in_strUID, u32 in_Num) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(76)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_strUID) != 0) {
+                    if (nPacket::Write(sendPacket, in_Num) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_USE_JOB_ITEMS_REQ(const MtTypedArray<CDataItemUIDList>& in_ItemUIDList) {
@@ -14981,224 +16061,672 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_USE_JOB_ITEMS_REQ(cons
     return {};
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CONSUME_STORAGE_ITEM_REQ(const MtTypedArray<CDataStorageItemUIDList>& in_ConsumeItemList) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CONSUME_STORAGE_ITEM_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_CONSUME_STORAGE_ITEM_REQ(const MtTypedArray<CDataStorageItemUIDList>& in_ConsumeItemList) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(79)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ConsumeItemList) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_POST_ITEM_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_POST_ITEM_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(80)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_LIGHT_QUEST_LIST_REQ(u32 in_BaseID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_LIGHT_QUEST_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(82)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_BaseID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_SET_QUEST_LIST_REQ(u32 in_DistributeID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_SET_QUEST_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(83)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_DistributeID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_MAIN_QUEST_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_MAIN_QUEST_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(84)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_TUTORIAL_QUEST_LIST_REQ(u32 in_StageNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_TUTORIAL_QUEST_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(85)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_StageNo) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_LOT_QUEST_LIST_REQ(u32 in_LotQuestType) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_LOT_QUEST_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(86)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_LotQuestType) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_TIME_LIMITED_QUEST_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_TIME_LIMITED_QUEST_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(87)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_WORLD_MANAGE_QUEST_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_WORLD_MANAGE_QUEST_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(88)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_END_CONTENTS_GROUP_REQ(u32 in_GroupID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_END_CONTENTS_GROUP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(89)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_GroupID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_QUEST_SCHEDULE_INFO_REQ(u32 in_QuestScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_QUEST_SCHEDULE_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(90)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_MAIN_QUEST_COMPLETE_INFO_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_MAIN_QUEST_COMPLETE_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(91)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_RECOMMENDED_QUEST_INFO_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_RECOMMENDED_QUEST_INFO_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(92)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_SET_QUEST_INFO_LIST_REQ(u32 in_DistributeID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_SET_QUEST_INFO_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(93)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_DistributeID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_NEWS_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_NEWS_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(94)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_AREA_BONUS_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_AREA_BONUS_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(95)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_QUEST_ORDER_REQ(u32 in_QuestScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_QUEST_ORDER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(96)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_LIGHT_QUEST_GP_COMPLETE_REQ(u32 in_BaseID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_LIGHT_QUEST_GP_COMPLETE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(99)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_BaseID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHECK_QUEST_DISTRIBUTION_REQ(u32 in_QuestScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHECK_QUEST_DISTRIBUTION_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(100)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_QUEST_CANCEL_REQ(u32 in_QuestScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_QUEST_CANCEL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(101)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_END_DISTRIBUTION_QUEST_CANCEL_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_END_DISTRIBUTION_QUEST_CANCEL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(102)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_QUEST_COMPLETE_FLAG_CLEAR_REQ(u32 in_QuestScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_QUEST_COMPLETE_FLAG_CLEAR_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(103)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_QUEST_DETAIL_LIST_REQ(u32 in_QuestScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_QUEST_DETAIL_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(104)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_QUEST_COMPLETE_LIST_REQ(u8 in_QuestType) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_QUEST_COMPLETE_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(105)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestType) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_PRIORITY_QUEST_REQ(u32 in_QuestScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_PRIORITY_QUEST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(106)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CANCEL_PRIORITY_QUEST_REQ(u32 in_QuestScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CANCEL_PRIORITY_QUEST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(107)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PRIORITY_QUEST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PRIORITY_QUEST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(108)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_SET_QUEST_OPEN_DATE_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_SET_QUEST_OPEN_DATE_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(109)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_QUEST_LAYOUT_FLAG_REQ(u32 in_FlagNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_QUEST_LAYOUT_FLAG_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(110)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_FlagNo) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_STATE_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_STATE_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(111)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_REQ(u32 in_CycleContentsScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(112)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CycleContentsScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PLAY_ENTRY_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PLAY_ENTRY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(113)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PLAY_ENTRY_CANCEL_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PLAY_ENTRY_CANCEL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(114)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PLAY_START_REQ(u32 in_QuestScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PLAY_START_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(115)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PLAY_START_TIMER_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PLAY_START_TIMER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(116)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PLAY_INTERRUPT_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PLAY_INTERRUPT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(117)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PLAY_INTERRUPT_ANSWER_REQ(b8 in_IsInterrupt) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PLAY_INTERRUPT_ANSWER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(118)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_IsInterrupt) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PLAY_END_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PLAY_END_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(119)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CYCLE_CONTENTS_PLAY_START_REQ(u32 in_CycleContentsScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CYCLE_CONTENTS_PLAY_START_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(120)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CycleContentsScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CYCLE_CONTENTS_PLAY_END_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CYCLE_CONTENTS_PLAY_END_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(121)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_POINT_LIST_REQ(u32 in_CycleContentsScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_POINT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(122)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CycleContentsScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_NOW_POINT_LIST_REQ(u32 in_CycleContentsScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_NOW_POINT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(123)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CycleContentsScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_REQ(u32 in_CycleContentsScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(124)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CycleContentsScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_REQ(u32 in_CycleContentsScheduleId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(125)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CycleContentsScheduleId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SEND_BINARY_MSG_ALL_NOTICE(const MtMemoryStream& in_Data) {
@@ -15212,13 +16740,31 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SEND_BINARY_MSG_NOTICE
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_AREA_INFO_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_AREA_INFO_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(131)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_QUEST_PARTY_BONUS_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_QUEST_PARTY_BONUS_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(132)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_REQ(const MtTypedArray<CDataOrderConditionInfo>& in_OrderConditionInfoList) {
@@ -15227,143 +16773,443 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SEND_LEADER_QUEST_ORDE
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PRT_READY_SET_RETURN_SESSION(b8 in_IsReturnSession) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PRT_READY_SET_RETURN_SESSION")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(135)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_IsReturnSession) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_QUEST_LOG_INFO_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_QUEST_LOG_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(136)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_STAGE_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_STAGE_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(137)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_AREA_CHANGE_REQ(u32 in_StageId, u32 in_JumpType) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_AREA_CHANGE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(138)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_StageId) != 0) {
+                    if (nPacket::Write(sendPacket, in_JumpType) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_TRANING_ROOM_GET_ENEMY_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_TRANING_ROOM_GET_ENEMY_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(152)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_TRANING_ROOM_SET_ENEMY_REQ(u32 in_ID, u32 in_LV) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_TRANING_ROOM_SET_ENEMY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(153)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ID) != 0) {
+                    if (nPacket::Write(sendPacket, in_LV) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_OM_INSTANT_KEY_VALUE_REQ(const COmData& in_Data) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_OM_INSTANT_KEY_VALUE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(155)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Data.m_ulKey) != 0) {
+                    if (nPacket::Write(sendPacket, in_Data.m_ulValue) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_OM_INSTANT_KEY_VALUE_ALL_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_OM_INSTANT_KEY_VALUE_ALL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(157)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_EXCHANGE_OM_INSTANT_KEY_VALUE_REQ(const COmData& in_Data) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_EXCHANGE_OM_INSTANT_KEY_VALUE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(158)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Data.m_ulKey) != 0) {
+                    if (nPacket::Write(sendPacket, in_Data.m_ulValue) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_RELEASE_WARP_POINT_REQ(u32 in_WarpPointID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_RELEASE_WARP_POINT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(159)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_WarpPointID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_RELEASE_WARP_POINT_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_RELEASE_WARP_POINT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(160)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_WARP_POINT_LIST_REQ(u32 in_CurrentPointID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_WARP_POINT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(161)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CurrentPointID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_FAVORITE_WARP_POINT_LIST_REQ(u32 in_AreaID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_FAVORITE_WARP_POINT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(163)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_AreaID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_REGISTER_FAVORITE_WARP_REQ(u32 in_SlotNo, u32 in_WarpPointID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_REGISTER_FAVORITE_WARP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(165)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_SlotNo) != 0) {
+                    if (nPacket::Write(sendPacket, in_WarpPointID) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTY_WARP_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTY_WARP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(166)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_AREA_WARP_POINT_LIST_REQ(u32 in_CurrentAreaID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_AREA_WARP_POINT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(167)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CurrentAreaID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_WARP_END_NTC() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_WARP_END_NTC")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(169)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_ONLINE_STATUS_REQ(u8 in_StatusID, b8 in_IsSaveSetting) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_ONLINE_STATUS_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_SET_ONLINE_STATUS_REQ(u8 in_StatusID, b8 in_IsSaveSetting) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(170)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_StatusID) != 0) {
+                    if (nPacket::Write(sendPacket, in_IsSaveSetting) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_EVENT_START_NTC() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_EVENT_START_NTC")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(171)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_EVENT_END_NTC() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_EVENT_END_NTC")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(172)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_FRIEND_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_FRIEND_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(173)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_APPLY_FRIEND_REQ(u32 in_CharacterID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_APPLY_FRIEND_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(174)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_APPROVE_FRIEND_REQ(u32 in_CharacterID, u8 in_IsApproved) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_APPROVE_FRIEND_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(175)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                    if (nPacket::Write(sendPacket, in_IsApproved) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_REMOVE_FRIEND_REQ(u32 in_FriendNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_REMOVE_FRIEND_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(176)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_FriendNo) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_REGISTER_FAVORITE_FRIEND_REQ(u32 in_FriendNo, b8 in_IsFavorite) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_REGISTER_FAVORITE_FRIEND_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(177)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_FriendNo) != 0) {
+                    if (nPacket::Write(sendPacket, in_IsFavorite) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CANCEL_FRIEND_APPLICATION_REQ(u32 in_CharacterID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CANCEL_FRIEND_APPLICATION_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(178)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_RECENT_CHARACTER_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_RECENT_CHARACTER_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(179)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_BLACK_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_BLACK_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(180)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ADD_BLACK_LIST_REQ(const CCommunityCharacterBaseInfo& in_CharacterInfo) {
@@ -15372,268 +17218,839 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ADD_BLACK_LIST_REQ(con
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_REMOVE_BLACK_LIST_REQ(u32 in_CharacterId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_REMOVE_BLACK_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(182)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GROUP_CHAT_GET_MEMBER_LIST_REQ(u64 in_GroupID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GROUP_CHAT_GET_MEMBER_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(183)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_GroupID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GROUP_CHAT_INVITE_CHARACTER_REQ(u64 in_GroupID, u32 in_CharacterID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GROUP_CHAT_INVITE_CHARACTER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(184)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_GroupID) != 0) {
+                    if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GROUP_CHAT_LEAVE_CHARACTER_REQ(u64 in_GroupID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GROUP_CHAT_LEAVE_CHARACTER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(185)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_GroupID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GROUP_CHAT_KICK_CHARACTER_REQ(u64 in_GroupID, u32 in_CharacterID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GROUP_CHAT_KICK_CHARACTER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(186)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_GroupID) != 0) {
+                    if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_ACQUIRABLE_SKILL_LIST_REQ(u8 in_Job) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_ACQUIRABLE_SKILL_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(188)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Job) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_ACQUIRABLE_ABILITY_LIST_REQ(u8 in_Job) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_ACQUIRABLE_ABILITY_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(189)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Job) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_LEARN_NORMAL_SKILL_REQ(u8 in_Job, u32 in_SkillNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_LEARN_NORMAL_SKILL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(190)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Job) != 0) {
+                    if (nPacket::Write(sendPacket, in_SkillNo) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_LEARNED_NORMAL_SKILL_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_LEARNED_NORMAL_SKILL_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(196)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_LEARNED_SKILL_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_LEARNED_SKILL_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(197)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_LEARNED_ABILITY_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_LEARNED_ABILITY_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(198)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(199)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PAWN_LEARNED_SKILL_LIST_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PAWN_LEARNED_SKILL_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(200)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PAWN_LEARNED_ABILITY_LIST_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PAWN_LEARNED_ABILITY_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(201)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_OFF_SKILL_REQ(u8 in_Job, u8 in_SlotNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_OFF_SKILL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(206)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Job) != 0) {
+                    if (nPacket::Write(sendPacket, in_SlotNo) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_OFF_ABILITY_REQ(u8 in_SlotNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_OFF_ABILITY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(207)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_SlotNo) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_OFF_PAWN_ABILITY_REQ(u32 in_PawnID, u8 in_SlotNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_OFF_PAWN_ABILITY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(209)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    if (nPacket::Write(sendPacket, in_SlotNo) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_SET_SKILL_LIST_REQ(u8 in_Job) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_SET_SKILL_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(210)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Job) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_SET_ABILITY_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_SET_ABILITY_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(211)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PAWN_SET_SKILL_LIST_REQ(u32 in_PawnID, u8 in_Job) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PAWN_SET_SKILL_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(212)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    if (nPacket::Write(sendPacket, in_Job) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PAWN_SET_ABILITY_LIST_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PAWN_SET_ABILITY_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(213)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CURRENT_SET_SKILL_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CURRENT_SET_SKILL_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(214)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_RELEASE_SKILL_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_RELEASE_SKILL_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(218)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_RELEASE_ABILITY_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_RELEASE_ABILITY_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(219)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_REGISTER_PRESET_ABILITY_REQ(u32 in_PawnID, u8 in_PresetNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_REGISTER_PRESET_ABILITY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(220)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    if (nPacket::Write(sendPacket, in_PresetNo) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_PRESET_ABILITY_NAME_REQ(u8 in_PresetNo, const char* in_strPresetName) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_PRESET_ABILITY_NAME_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(221)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PresetNo) != 0) {
+                    if (nPacket::Write(sendPacket, in_strPresetName) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PRESET_ABILITY_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PRESET_ABILITY_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(222)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_PRESET_ABILITY_LIST_REQ(u32 in_PawnID, u8 in_PresetNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_PRESET_ABILITY_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(223)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    if (nPacket::Write(sendPacket, in_PresetNo) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_ABILITY_COST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_ABILITY_COST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(225)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PAWN_ABILITY_COST_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PAWN_ABILITY_COST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(226)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_SHOP_GOODS_LIST_REQ(u32 in_ShopID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_SHOP_GOODS_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(227)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ShopID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SELL_ITEM_REQ(const MtTypedArray<CDataStorageItemUIDList>& in_SellItemList) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SELL_ITEM_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_SELL_ITEM_REQ(const MtTypedArray<CDataStorageItemUIDList>& in_SellItemList) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(229)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_SellItemList) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_STAY_PRICE_REQ(u32 in_InnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_STAY_PRICE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(230)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_InnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_HP_RECOVERY_COMPLETE_NOTICE() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_HP_RECOVERY_COMPLETE_NOTICE")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_HP_RECOVERY_COMPLETE_NOTICE() {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(232)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PENALTY_HEAL_STAY_PRICE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PENALTY_HEAL_STAY_PRICE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(235)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_AREA_MASTER_INFO_REQ(u32 in_AreaID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_AREA_MASTER_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(237)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_AreaID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_AREA_RANK_UP_REQ(u32 in_AreaID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_AREA_RANK_UP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(239)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_AreaID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_AREA_SUPPLY_INFO_REQ(u32 in_AreaID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_AREA_SUPPLY_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(240)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_AreaID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_LEADER_AREA_RELEASE_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_LEADER_AREA_RELEASE_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(245)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_AREA_QUEST_HINT_LIST_REQ(u32 in_AreaID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_AREA_QUEST_HINT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(246)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_AreaID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BUY_AREA_QUEST_HINT_REQ(u32 in_AreaID, u32 in_QuestScheduleID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BUY_AREA_QUEST_HINT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(247)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_AreaID) != 0) {
+                    if (nPacket::Write(sendPacket, in_QuestScheduleID) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_SPOT_INFO_LIST_REQ(u32 in_AreaID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_SPOT_INFO_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(248)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_AreaID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_AREA_BASE_INFO_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_AREA_BASE_INFO_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(249)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_JOB_MASTER_ORDER_PROGRESS_REQ(u8 in_JobID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_JOB_MASTER_ORDER_PROGRESS_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(250)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_JobID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_REPORT_JOB_ORDER_PROGRESS_REQ(u8 in_JobID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_REPORT_JOB_ORDER_PROGRESS_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(251)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_JobID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_RELEASE_ORB_ELEMENT_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_RELEASE_ORB_ELEMENT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(255)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_RELEASE_ORB_ELEMENT_REQ(u32 in_ElementID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_RELEASE_ORB_ELEMENT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(256)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ElementID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(257)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_RELEASE_PAWN_ORB_ELEMENT_REQ(u32 in_PawnID, u32 in_ElementID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_RELEASE_PAWN_ORB_ELEMENT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(258)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    if (nPacket::Write(sendPacket, in_ElementID) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_ORB_GAIN_EXTEND_PARAM_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_ORB_GAIN_EXTEND_PARAM_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(259)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CHARACTER_PROFILE_REQ(u32 in_CharacterID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CHARACTER_PROFILE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(260)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_MY_CHARACTER_PROFILE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_MY_CHARACTER_PROFILE_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_GET_MY_CHARACTER_PROFILE_REQ() {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(261)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_AVAILABLE_BACKGROUND_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_AVAILABLE_BACKGROUND_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(262)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_ARISEN_PROFILE_REQ(const CArisenProfile& in_ArisenProfile) {
@@ -15641,44 +18058,126 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_ARISEN_PROFILE_REQ
     return {};
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_PAWN_PROFILE_COMMENT_REQ(u32 in_PawnId, const char* in_strComment) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_PAWN_PROFILE_COMMENT_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_SET_PAWN_PROFILE_COMMENT_REQ(u32 in_PawnId, const char* in_strComment) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(266)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                    if (nPacket::Write(sendPacket, in_strComment) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_UPDATE_ARISEN_PROFILE_SHARE_RANGE_REQ(u8 in_CharacterShareRange, u8 in_PawnShareRange) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_UPDATE_ARISEN_PROFILE_SHARE_RANGE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(267)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterShareRange) != 0) {
+                    if (nPacket::Write(sendPacket, in_PawnShareRange) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_UPDATE_LAST_BASE_NTC(u32 in_BaseID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_UPDATE_LAST_BASE_NTC")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(268)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_BaseID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_RETURN_LOCATION_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_RETURN_LOCATION_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(269)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_PROGRESS_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_PROGRESS_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(270)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_REWARD_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_REWARD_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(271)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(272)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(273)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_REWARD_RECEIVE_REQ(const MtTypedArray<CDataAchieveRewardCommon>& in_RewardList) {
@@ -15687,128 +18186,381 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_REWARD_REC
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_GP_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_GP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(281)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_GP_DETAIL_REQ(b8 in_IsAll) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_GP_DETAIL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(282)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_IsAll) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_GP_PERIOD_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_GP_PERIOD_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(283)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CAP_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CAP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(284)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CAP_TO_GP_CHANGE_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CAP_TO_GP_CHANGE_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(285)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHANGE_CAP_TO_GP_REQ(u32 in_ChangeListID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHANGE_CAP_TO_GP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(286)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ChangeListID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_COG_GET_ID_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_COG_GET_ID_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(287)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_SHOP_DISPLAY_GET_TYPE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_SHOP_DISPLAY_GET_TYPE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(288)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_SHOP_DISPLAY_GET_LINEUP_REQ(u32 in_DisplayID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_SHOP_DISPLAY_GET_LINEUP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(289)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_DisplayID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_SHOP_DISPLAY_BUY_REQ(u32 in_DisplayLineupId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_SHOP_DISPLAY_BUY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(290)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_DisplayLineupId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_SHOP_GET_BUY_HISTORY_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_SHOP_GET_BUY_HISTORY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(296)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_SHOP_GET_CAP_CHARGE_URL_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_SHOP_GET_CAP_CHARGE_URL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(297)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_COURSE_GET_AVAILABLE_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_COURSE_GET_AVAILABLE_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(298)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_COURSE_GET_VALID_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_COURSE_GET_VALID_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(299)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_COURSE_USE_FROM_AVAILABLE_REQ(u32 in_AvailableId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_COURSE_USE_FROM_AVAILABLE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(300)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_AvailableId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_EDIT_GET_VOICE_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_EDIT_GET_VOICE_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(303)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_EDIT_GET_GP_PRICE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_EDIT_GET_GP_PRICE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(304)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_SHOP_CAN_BUY_PAWN_REQ(u32 in_LineupId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_SHOP_CAN_BUY_PAWN_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(305)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_LineupId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GP_SHOP_CAN_BUY_PAWN_VOICE_REQ(u32 in_LineupId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GP_SHOP_CAN_BUY_PAWN_VOICE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(306)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_LineupId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CHARACTER_EQUIP_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CHARACTER_EQUIP_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(307)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHANGE_CHARACTER_EQUIP_REQ(const MtTypedArray<CDataC2SChangeCharacterEquipInfo>& in_ChangeCharacterEquipList) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHANGE_CHARACTER_EQUIP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(308)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ChangeCharacterEquipList) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHANGE_CHARACTER_STORAGE_EQUIP_REQ(const MtTypedArray<CDataC2SChangeCharacterEquipInfo>& in_ChangeCharacterEquipList) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHANGE_CHARACTER_STORAGE_EQUIP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(309)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ChangeCharacterEquipList) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PAWN_EQUIP_LIST_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PAWN_EQUIP_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(310)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHANGE_PAWN_EQUIP_REQ(u32 in_PawnID, const MtTypedArray<CDataC2SChangeCharacterEquipInfo>& in_ChangeCharacterEquipList) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHANGE_PAWN_EQUIP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(311)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    if (nPacket::Write(sendPacket, in_ChangeCharacterEquipList) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHANGE_PAWN_STORAGE_EQUIP_REQ(u32 in_PawnID, const MtTypedArray<CDataC2SChangeCharacterEquipInfo>& in_ChangeCharacterEquipList) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHANGE_PAWN_STORAGE_EQUIP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(312)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    if (nPacket::Write(sendPacket, in_ChangeCharacterEquipList) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHANGE_CHARACTER_EQUIP_JOB_ITEM_REQ(const MtTypedArray<CDataChangeEquipJobItem>& in_ChangeCharacterEquipJobItemList) {
@@ -15817,73 +18569,221 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHANGE_CHARACTER_EQUIP
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_CHARACTER_HEAD_ARMOR_REQ(b8 in_Hide) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_CHARACTER_HEAD_ARMOR_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(315)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Hide) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_PAWN_HEAD_ARMOR_REQ(b8 in_Hide) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_PAWN_HEAD_ARMOR_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(316)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Hide) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_CHARACTER_LANTERN_REQ(b8 in_Hide) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_CHARACTER_LANTERN_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(317)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Hide) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_PAWN_LANTERN_REQ(b8 in_Hide) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_PAWN_LANTERN_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(318)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Hide) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_EQUIP_PRESET_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_EQUIP_PRESET_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(319)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_UPDATE_EQUIP_PRESET_NAME_REQ(u32 in_PresetNo, const char* in_strPresetName) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_UPDATE_EQUIP_PRESET_NAME_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(321)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PresetNo) != 0) {
+                    if (nPacket::Write(sendPacket, in_strPresetName) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_REWARD_BOX_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_REWARD_BOX_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(322)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(325)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_DECIDE_DELIVERY_ITEM_REQ(u32 in_QuestScheduleId, u16 in_ProcessNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_DECIDE_DELIVERY_ITEM_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(329)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestScheduleId) != 0) {
+                    if (nPacket::Write(sendPacket, in_ProcessNo) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PARTY_QUEST_PROGRESS_INFO_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PARTY_QUEST_PROGRESS_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(330)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_DEBUG_MAIN_QUEST_JUMP_REQ(u32 in_QuestId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_DEBUG_MAIN_QUEST_JUMP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(332)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_DEBUG_QUEST_RESET_REQ(u32 in_QuestId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_DEBUG_QUEST_RESET_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(333)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_DEBUG_QUEST_RESET_ALL_REQ(u8 in_QuestType) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_DEBUG_QUEST_RESET_ALL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(334)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_QuestType) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CRAFT_PROGRESS_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CRAFT_PROGRESS_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(342)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_START_CRAFT_REQ(u32 in_RecipeID, const MtTypedArray<CDataCraftMaterial>& in_CraftMaterialList, const char* in_strToppingUID, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList, u32 in_CreateCount) {
@@ -15892,13 +18792,37 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_START_CRAFT_REQ(u32 in
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CRAFT_PRODUCT_INFO_REQ(u32 in_CraftMainPawnID, u8 in_DebugFlag) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CRAFT_PRODUCT_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(344)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CraftMainPawnID) != 0) {
+                    if (nPacket::Write(sendPacket, in_DebugFlag) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CANCEL_CRAFT_REQ(u32 in_CraftMainPawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CANCEL_CRAFT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(346)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CraftMainPawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_START_EQUIP_GRADE_UP_REQ(const char* in_strEquipItemUID, const MtTypedArray<CDataCraftMaterial>& in_CraftMaterialList, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList) {
@@ -15922,193 +18846,583 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_START_EQUIP_COLOR_CHAN
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_MATCHING_PROFILE_REQ(const CMatchingProfile& in_MatchingProfile) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_MATCHING_PROFILE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(355)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (elf_u32_ZN7nPacket5WriteI20CDataMatchingProfileEEiR7CPacketRKT_(sendPacket, in_MatchingProfile) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_CREATE_REQ(const CClanUserParam& in_CreateParam) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_CREATE_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_CLAN_CREATE_REQ(const CClanUserParam& in_CreateParam) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(364)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (elf_u32_ZN7nPacket5WriteI18CDataClanUserParamEEiR7CPacketRKT_(sendPacket, in_CreateParam) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_UPDATE_REQ(const CClanUserParam& in_CreateParam) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_UPDATE_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_CLAN_UPDATE_REQ(const CClanUserParam& in_CreateParam) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(365)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (elf_u32_ZN7nPacket5WriteI18CDataClanUserParamEEiR7CPacketRKT_(sendPacket, in_CreateParam) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_GET_MEMBER_LIST_REQ(u32 in_ClanID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_GET_MEMBER_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(366)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ClanID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_GET_MY_MEMBER_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_GET_MY_MEMBER_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(367)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SEARCH_REQ(const CClanSearchParam& in_SearchParam) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SEARCH_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(368)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (elf_u32_ZN7nPacket5WriteI20CDataClanSearchParamEEiR7CPacketRKT_(sendPacket, in_SearchParam) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_GET_INFO_REQ(u32 in_ClanID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_GET_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(369)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ClanID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_REGISTER_JOIN_REQ(u32 in_ClanID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_REGISTER_JOIN_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(370)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ClanID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_CANCEL_JOIN_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_CANCEL_JOIN_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(371)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_GET_JOIN_REQUESTED_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_GET_JOIN_REQUESTED_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(372)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_GET_MY_JOIN_REQUEST_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_GET_MY_JOIN_REQUEST_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(373)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_APPROVE_JOIN_REQ(u32 in_RequestID, b8 in_IsApprove) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_APPROVE_JOIN_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(374)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_RequestID) != 0) {
+                    if (nPacket::Write(sendPacket, in_IsApprove) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_LEAVE_MEMBER_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_LEAVE_MEMBER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(375)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_EXPEL_MEMBER_REQ(u32 in_CharacterID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_EXPEL_MEMBER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(376)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_NEGOTIATE_MASTER_REQ(u32 in_CharacterID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_NEGOTIATE_MASTER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(377)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SETTING_UPDATE_REQ(b8 in_IsMemberNotice) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SETTING_UPDATE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(380)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_IsMemberNotice) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_INVITE_REQ(u32 in_CharacterId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_INVITE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(381)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_INVITE_ACCEPT_REQ(u32 in_ClanId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_INVITE_ACCEPT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(382)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ClanId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_REGISTER_REQ(const CClanScoutEntryParam& in_Param) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_REGISTER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(383)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (elf_u32_ZN7nPacket5WriteI24CDataClanScoutEntryParamEEiR7CPacketRKT_(sendPacket, in_Param) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_CANCEL_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_CANCEL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(384)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_GET_MY_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_GET_MY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(385)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_SEARCH_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_SEARCH_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(386)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_INVITE_REQ(u32 in_ScoutEntryID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_INVITE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(387)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ScoutEntryID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(388)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_CANCEL_INVITE_REQ(u32 in_InviteID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_CANCEL_INVITE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(389)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_InviteID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(390)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_APPROVE_INVITED_REQ(u32 in_InviteID, b8 in_IsApprove) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_APPROVE_INVITED_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(391)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_InviteID) != 0) {
+                    if (nPacket::Write(sendPacket, in_IsApprove) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_GET_MY_INFO_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_GET_MY_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(392)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_GET_HISTORY_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_GET_HISTORY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(393)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_BASE_GET_INFO_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_BASE_GET_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(394)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_BASE_RELEASE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_BASE_RELEASE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(395)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(396)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SHOP_GET_BUFF_ITEM_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SHOP_GET_BUFF_ITEM_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(397)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SHOP_BUY_FUNCTION_ITEM_REQ(u32 in_LineupId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SHOP_BUY_FUNCTION_ITEM_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(398)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_LineupId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_SHOP_BUY_BUFF_ITEM_REQ(u32 in_LineupId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_SHOP_BUY_BUFF_ITEM_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(399)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_LineupId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_JOB_CHANGE_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_JOB_CHANGE_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(402)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHANGE_JOB_REQ(u8 in_JobID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHANGE_JOB_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(403)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_JobID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHANGE_PAWN_JOB_REQ(u32 in_PawnID, u8 in_JobID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHANGE_PAWN_JOB_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(404)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    if (nPacket::Write(sendPacket, in_JobID) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_LIST_REQ(u64 in_ID, u32 in_Offset, u32 in_Num, const CEntryBoardItemSearchParameter& in_SearchParam) {
@@ -16127,53 +19441,175 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_RECRE
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_LEAVE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_LEAVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(409)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_READY_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_READY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(410)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_FORCE_START_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_FORCE_START_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(411)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_INFO_REQ(u64 in_BoardID, u32 in_EntryID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_INFO_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_INFO_REQ(u64 in_BoardID, u32 in_EntryID) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(412)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_BoardID) != 0) {
+                    if (nPacket::Write(sendPacket, in_EntryID) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_INFO_MYSELF_REQ(b8 in_IsNotice) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_INFO_MYSELF_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_INFO_MYSELF_REQ(b8 in_IsNotice) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(413)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_IsNotice) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(414)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_INFO_CHANGE_REQ(const char* in_strPassword, const CEntryItemParam& in_Param) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_INFO_CHANGE_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_INFO_CHANGE_REQ(const char* in_strPassword, const CEntryItemParam& in_Param) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(416)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_strPassword) != 0) {
+                    if (elf_u32_ZN7nPacket5WriteI19CDataEntryItemParamEEiR7CPacketRKT_(sendPacket, in_Param) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHARACTER_START_BAD_STATUS_NOTICE(u32 in_StatusID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHARACTER_START_BAD_STATUS_NOTICE")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(423)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_StatusID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_SET_CONTEXT_REQ(const CContextSetBase& in_ContextBase) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_SET_CONTEXT_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_GET_SET_CONTEXT_REQ(const CContextSetBase& in_ContextBase) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(425)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ContextBase.m_unID) != 0) {
+                    if (nPacket::Write(sendPacket, in_ContextBase.m_unUniqueID) != 0) {
+                        if (nPacket::Write(sendPacket, in_ContextBase.m_nStageNo) != 0) {
+                            if (nPacket::Write(sendPacket, in_ContextBase.m_nEncountArea) != 0) {
+                                if (nPacket::Write(sendPacket, in_ContextBase.m_nMasterIndex) != 0) {
+                                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                                    return 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_CONTEXT_BASE_NOTICE(const CContextSetBase& in_ContextBase) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SET_CONTEXT_BASE_NOTICE")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_SET_CONTEXT_BASE_NOTICE(const CContextSetBase& in_ContextBase) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(426)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ContextBase.m_unID) != 0) {
+                    if (nPacket::Write(sendPacket, in_ContextBase.m_unUniqueID) != 0) {
+                        if (nPacket::Write(sendPacket, in_ContextBase.m_nStageNo) != 0) {
+                            if (nPacket::Write(sendPacket, in_ContextBase.m_nEncountArea) != 0) {
+                                if (nPacket::Write(sendPacket, in_ContextBase.m_nMasterIndex) != 0) {
+                                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                                    return 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SET_CONTEXT_NOTICE(const CContextSetInfo& in_Context) {
@@ -16187,318 +19623,963 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_MASTER_THROW_REQ(const
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BAZAAR_GET_CHARACTER_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BAZAAR_GET_CHARACTER_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(429)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BAZAAR_GET_ITEM_INFO_REQ(u32 in_ItemId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BAZAAR_GET_ITEM_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(431)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ItemId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BAZAAR_GET_ITEM_HISTORY_INFO_REQ(u32 in_ItemId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BAZAAR_GET_ITEM_HISTORY_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(432)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ItemId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BAZAAR_RE_EXHIBIT_REQ(u64 in_BazaarId, u32 in_Price) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BAZAAR_RE_EXHIBIT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(434)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_BazaarId) != 0) {
+                    if (nPacket::Write(sendPacket, in_Price) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BAZAAR_CANCEL_REQ(u64 in_BazaarId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BAZAAR_CANCEL_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(435)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_BazaarId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BAZAAR_RECEIVE_PROCEEDS_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BAZAAR_RECEIVE_PROCEEDS_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(437)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BAZAAR_GET_ITEM_PRICE_LIMIT_REQ(u32 in_ItemId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BAZAAR_GET_ITEM_PRICE_LIMIT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(438)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ItemId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(440)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_MAIL_GET_LIST_HEAD_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_MAIL_GET_LIST_HEAD_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(441)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_MAIL_GET_LIST_DATA_REQ(u32 in_Offset, u32 in_Num) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_MAIL_GET_LIST_DATA_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(442)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Offset) != 0) {
+                    if (nPacket::Write(sendPacket, in_Num) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_MAIL_GET_LIST_FOOT_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_MAIL_GET_LIST_FOOT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(443)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_MAIL_GET_TEXT_REQ(u64 in_Id) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_MAIL_GET_TEXT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(444)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Id) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_MAIL_DELETE_REQ(u64 in_Id) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_MAIL_DELETE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(445)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Id) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_LIST_HEAD_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_LIST_HEAD_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(447)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_LIST_DATA_REQ(u32 in_Offset, u32 in_Num) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_LIST_DATA_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(448)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Offset) != 0) {
+                    if (nPacket::Write(sendPacket, in_Num) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_LIST_FOOT_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_LIST_FOOT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(449)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_TEXT_REQ(u64 in_Id) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_TEXT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(450)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Id) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_ALL_ITEM_REQ(u64 in_Id) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_ALL_ITEM_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(452)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Id) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_DELETE_REQ(u64 in_Id) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_DELETE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(453)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Id) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_RANKING_BOARD_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_RANKING_BOARD_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(454)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GACHA_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GACHA_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(458)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_WEATHER_FORECAST_GET_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_WEATHER_FORECAST_GET_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(463)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHARACTER_DOWN_NOTICE() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHARACTER_DOWN_NOTICE")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(464)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHARACTER_DOWN_CANCEL_NOTICE() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHARACTER_DOWN_CANCEL_NOTICE")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(465)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHARACTER_DEAD_NOTICE() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHARACTER_DEAD_NOTICE")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(466)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHARACTER_POINT_REVIVE_REQ(u32 in_HpMax) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHARACTER_POINT_REVIVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(467)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_HpMax) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHARACTER_GOLDEN_REVIVE_REQ(u32 in_HpMax) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHARACTER_GOLDEN_REVIVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(468)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_HpMax) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHARACTER_PENALTY_REVIVE_REQ(u32 in_HpMax) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHARACTER_PENALTY_REVIVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(469)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_HpMax) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_DOWN_NOTICE(u32 in_PawnId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_DOWN_NOTICE")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(470)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_DOWN_CANCEL_NOTICE(u32 in_PawnId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_DOWN_CANCEL_NOTICE")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(471)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_DEAD_NOTICE(u32 in_PawnId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_DEAD_NOTICE")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(472)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_POINT_REVIVE_REQ(u32 in_PawnId, u32 in_HpMax) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_POINT_REVIVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(473)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                    if (nPacket::Write(sendPacket, in_HpMax) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_GOLDEN_REVIVE_REQ(u32 in_PawnId, u32 in_HpMax) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_GOLDEN_REVIVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(474)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                    if (nPacket::Write(sendPacket, in_HpMax) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_REVIVE_CHARGEABLE_TIME_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_REVIVE_CHARGEABLE_TIME_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(475)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHARGE_REVIVE_POINT_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHARGE_REVIVE_POINT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(476)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_UPDATE_CHARACTER_EDIT_PARAM_REQ(u8 in_UpdateType, const CEditInfo& in_EditInfo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_UPDATE_CHARACTER_EDIT_PARAM_REQ")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_UPDATE_CHARACTER_EDIT_PARAM_REQ(u8 in_UpdateType, const CEditInfo& in_EditInfo) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(480)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_UpdateType) != 0) {
+                    if (elf_u32_ZN7nPacket5WriteI13CDataEditInfoEEiR7CPacketRKT_(sendPacket, in_EditInfo) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PHOTO_TAKE_NTC() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PHOTO_TAKE_NTC")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(482)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PHOTO_GET_AUTH_ADDRESS_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PHOTO_GET_AUTH_ADDRESS_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(483)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_LOADING_GET_INFO_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_LOADING_GET_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(484)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_STAMP_BONUS_GET_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_STAMP_BONUS_GET_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(486)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_STAMP_BONUS_CHECK_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_STAMP_BONUS_CHECK_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(487)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_STAMP_BONUS_RECIEVE_REQ(u8 in_BonusType) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_STAMP_BONUS_RECIEVE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(488)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_BonusType) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_STAMP_BONUS_ADD_TOTAL_NUM_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_STAMP_BONUS_ADD_TOTAL_NUM_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(489)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_REPORT_SITE_GET_ADDRESS_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_REPORT_SITE_GET_ADDRESS_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(491)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_EVENT_CODE_INPUT_REQ(const char* in_strCode) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_EVENT_CODE_INPUT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(493)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_strCode) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_DLC_GET_BOUGHT_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_DLC_GET_BOUGHT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(495)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_DLC_USE_REQ(u32 in_UseDLCLineupID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_DLC_USE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(496)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_UseDLCLineupID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_DLC_GET_HISTORY_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_DLC_GET_HISTORY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(497)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_END_RETURN_PREPARE_NOTICE() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_END_RETURN_PREPARE_NOTICE")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(498)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_COG_GET_SESSION_KEY_REQ(b8 in_Update) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_COG_GET_SESSION_KEY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(501)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Update) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_COMMUNITY_CHARACTER_STATUS_GET_REQ(u32 in_Type) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_COMMUNITY_CHARACTER_STATUS_GET_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(502)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Type) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GAME_TIME_GET_BASEINFO_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GAME_TIME_GET_BASEINFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(503)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_SUPPORT_POINT_GET_RATE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_SUPPORT_POINT_GET_RATE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(504)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_SCREEN_SHOT_CATEGORY_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_SCREEN_SHOT_CATEGORY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(508)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_DISPEL_ITEM_LIST_REQ(u8 in_Category) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_DISPEL_ITEM_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(0x1FE)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Category) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_EXCHANGE_DISPEL_ITEM_REQ(const MtTypedArray<CDataGetDispelItem>& in_GetDispelItemList) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_EXCHANGE_DISPEL_ITEM_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(511)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_GetDispelItemList) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_RESET_CRAFTPOINT_REQ(u32 in_PawnID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_RESET_CRAFTPOINT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(513)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CHEAT_INFO_RES(s32 in_Result, const MtTypedArray<CDataCheatInfo>& in_Info) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CHEAT_INFO_RES")
-    return {};
+s32 cSeedGameSvConnection::Send_C2S_GET_CHEAT_INFO_RES(s32 in_Result, const MtTypedArray<CDataCheatInfo>& in_Info) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(514)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Result) != 0) {
+                    if (nPacket::Write(sendPacket, in_Info) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CRAFT_SETTING_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CRAFT_SETTING_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(515)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CRAFT_IR_COLLECTION_VALUE_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CRAFT_IR_COLLECTION_VALUE_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(518)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CHARACTER_SEARCH_REQ(const CCharacterSearchParam& in_SearchParam) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CHARACTER_SEARCH_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(519)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_SearchParam.m_wstrFirstName) != 0) {
+                    if (nPacket::Write(sendPacket, in_SearchParam.m_wstrLastName) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_MY_ROOM_RELEASE_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_MY_ROOM_RELEASE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(520)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_FURNITURE_LIST_GET_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_FURNITURE_LIST_GET_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(521)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_FURNITURE_LAYOUT_REQ(const MtTypedArray<CDataFurnitureLayoutData>& in_LayoutList) {
@@ -16507,33 +20588,95 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_FURNITURE_LAYOUT_REQ(c
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_MY_ROOM_BGM_UPDATE_REQ(u32 in_BgmAcquirementNo) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_MY_ROOM_BGM_UPDATE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(523)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_BgmAcquirementNo) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTNER_PAWN_SET_REQ(u32 in_PawnId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTNER_PAWN_SET_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(526)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_LIKABILITY_REWARD_LIST_GET_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_LIKABILITY_REWARD_LIST_GET_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(530)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_LIKABILITY_REWARD_GET_REQ(const MtTypedArray<CDataPartnerPawnReward>& in_RewardUidList, u64 in_UpdateHairUid) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_LIKABILITY_REWARD_GET_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(531)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_RewardUidList) != 0) {
+                    if (nPacket::Write(sendPacket, in_UpdateHairUid) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(532)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(533)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PRESENT_FOR_PARTNER_PAWN_REQ(const MtTypedArray<CDataItemUIDList>& in_ItemUIDList) {
@@ -16542,98 +20685,291 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PRESENT_FOR_PARTNER_PA
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_JOB_ORB_TREE_STATUS_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_JOB_ORB_TREE_STATUS_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(538)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_ALL_JOB_ORB_ELEMENT_LIST_REQ(u8 in_JobID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_ALL_JOB_ORB_ELEMENT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(539)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_JobID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_RELEASE_JOB_ORB_ELEMENT_REQ(u32 in_ElementID) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_RELEASE_JOB_ORB_ELEMENT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(540)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_ElementID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_DISPEL_ITEM_SETTING_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_DISPEL_ITEM_SETTING_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(543)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BOX_GACHA_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BOX_GACHA_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(544)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BOX_GACHA_RESET_REQ(u32 in_Id) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BOX_GACHA_RESET_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(546)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Id) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_BOX_GACHA_DRAW_INFO_REQ(u32 in_Id) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_BOX_GACHA_DRAW_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(547)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Id) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_CRAFT_LOCKED_ELEMENT_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_CRAFT_LOCKED_ELEMENT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(548)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_CONCIERGE_UPDATE_REQ(u32 in_NpcId, u32 in_Price) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_CONCIERGE_UPDATE_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(549)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_NpcId) != 0) {
+                    if (nPacket::Write(sendPacket, in_Price) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_CLAN_CONCIERGE_GET_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_CLAN_CONCIERGE_GET_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(550)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_SALLY_INFO_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_SALLY_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(554)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_MY_SALLY_INFO_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_MY_SALLY_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(555)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_REQ(u8 in_Price) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(556)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Price) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_SALLY_REQ(u32 in_AreaId, u32 in_SpotId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_SALLY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(557)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_AreaId) != 0) {
+                    if (nPacket::Write(sendPacket, in_SpotId) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_REQ(u8 in_Price) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(558)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_Price) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_SALLY_REWARD_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_SALLY_REWARD_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(559)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_CANCEL_SALLY_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_CANCEL_SALLY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(560)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_REWARD_DROP_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_REWARD_DROP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(561)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_REQ(u32 in_PawnRewardBoxId) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(562)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_PawnRewardBoxId) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_UPDATE_EXP_MODE_REQ(const MtTypedArray<CDataJobExpMode>& in_UpdateExpModeList) {
@@ -16642,13 +20978,35 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_UPDATE_EXP_MODE_REQ(co
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_GET_PLAY_POINT_LIST_REQ() {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_GET_PLAY_POINT_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(566)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_JOB_VALUE_SHOP_GET_LINEUP_REQ(u8 in_JobId, u8 in_JobValueType) {
-    DDON_STUB("cSeedGameSvConnection::Send_C2S_JOB_VALUE_SHOP_GET_LINEUP_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(567)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_JobId) != 0) {
+                    if (nPacket::Write(sendPacket, in_JobValueType) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 inline cSeedGameSvConnection::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

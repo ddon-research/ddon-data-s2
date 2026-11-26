@@ -29,9 +29,10 @@ void* cTbl2ChatMacro::operator new(size_t sz, u32 align) {
 cTbl2ChatMacro::~cTbl2ChatMacro() {
 }
 
-__attribute__((weak)) void cTbl2ChatMacro::createProperty(MtPropertyList& s) {
-    DDON_STUB("cTbl2ChatMacro::createProperty")
-    /* stub */
+void cTbl2ChatMacro::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mMacro", &mMacro, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCmdId", &mCmdId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHelpMsgId", &mHelpMsgId, 0u, 0u);
 }
 
 __attribute__((weak)) void cTbl2ChatMacro::copy(cTbl2ChatMacro* pSrc) {

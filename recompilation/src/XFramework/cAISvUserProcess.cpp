@@ -6,6 +6,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "cAIService.h"
@@ -59,9 +60,9 @@ MtUI* cAISvUserProcess::createUI(MtProperty& prop) {
     return nullptr;
 }
 
-__attribute__((weak)) void cAISvUserProcess::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAISvUserProcess::createProperty")
-    /* stub */
+void cAISvUserProcess::createProperty(MtPropertyList& s) {
+    this->cAIService::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "ContainerList", reinterpret_cast<MT_MFUNC>(&::cAISvUserProcess::getContainer), reinterpret_cast<MT_MFUNC>(&::cAISvUserProcess::setContainer), 160u, reinterpret_cast<MT_MFUNC>(&::cAISvUserProcess::getContainerNum), reinterpret_cast<MT_MFUNC>(&::cAISvUserProcess::setContainerNum));
 }
 
 __attribute__((weak)) void cAISvUserProcess::reset() {
@@ -155,7 +156,13 @@ cAIUserProcessContainer* cAISvUserProcess::searchContainer(MT_CTSTR n) {
 }
 
 __attribute__((weak)) cAIUserProcessContainer* cAISvUserProcess::searchContainer(MT_CTSTR n, const MtDTI& dti) {
-    DDON_STUB("cAISvUserProcess::searchContainer")
+    for (cAIUserProcessContainer* pc = mpContainerListTop; pc != nullptr; pc = pc->mpNext) {
+        if (pc->getDTI() == dti) {
+            if (strcmp(n, pc->mName.ptr()) == 0) {
+                return pc;
+            }
+        }
+    }
     return nullptr;
 }
 

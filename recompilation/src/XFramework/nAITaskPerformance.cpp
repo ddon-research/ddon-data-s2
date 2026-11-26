@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -31,9 +32,12 @@ nAI::TaskPerformanceInfo::~TaskPerformanceInfo() {
     /* stub */
 }
 
-__attribute__((weak)) void nAI::TaskPerformanceInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("nAI::TaskPerformanceInfo::createProperty")
-    /* stub */
+void nAI::TaskPerformanceInfo::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_STRING, "mName", reinterpret_cast<MT_MFUNC>(&::nAI::TaskPerformanceInfo::getName), reinterpret_cast<MT_MFUNC>(&::nAI::TaskPerformanceInfo::setName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mPerformanceIndicator", &mPerformanceIndicator, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mAllowTime", &mAllowTime, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mOverloadManageType", &mOverloadManageType, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_CLASSREF, "LODList", reinterpret_cast<MT_MFUNC>(&::nAI::TaskPerformanceInfo::getLOD), reinterpret_cast<MT_MFUNC>(&::nAI::TaskPerformanceInfo::setLOD), 160u, reinterpret_cast<MT_MFUNC>(&::nAI::TaskPerformanceInfo::getLODNum), reinterpret_cast<MT_MFUNC>(&::nAI::TaskPerformanceInfo::setLODNum));
 }
 
 MtUI* nAI::TaskPerformanceInfo::createUI(MtProperty& prop) {
@@ -86,9 +90,10 @@ inline void nAI::TaskPerformanceInfo::LOD::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nAI::TaskPerformanceInfo::LOD::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void nAI::TaskPerformanceInfo::LOD::createProperty(MtPropertyList& s) {
-    DDON_STUB("nAI::TaskPerformanceInfo::LOD::createProperty")
-    /* stub */
+void nAI::TaskPerformanceInfo::LOD::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mEnablePerformanceManage", &mEnablePerformanceManage, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mPerformanceIndicator", &mPerformanceIndicator, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mOverloadManageType", &mOverloadManageType, 0u, 0u);
 }
 
 MtUI* nAI::TaskPerformanceInfo::LOD::createUI(MtProperty& prop) {

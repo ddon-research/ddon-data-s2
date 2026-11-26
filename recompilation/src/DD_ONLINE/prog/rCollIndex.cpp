@@ -26,9 +26,11 @@ inline void cCollIndex::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCollIndex::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cCollIndex::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCollIndex::createProperty")
-    /* stub */
+void cCollIndex::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mNode", &mNode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttack", &mAttack, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLinkTop", &mLinkTop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLinkID", &mLinkID, 0u, 0u);
 }
 
 inline cCollIndex::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

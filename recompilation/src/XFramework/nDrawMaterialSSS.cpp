@@ -6,6 +6,8 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cDraw.h"
 #include "nDraw.h"
@@ -27,9 +29,11 @@ inline void nDraw::MaterialSSS::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nDraw::MaterialSSS::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void nDraw::MaterialSSS::createProperty(MtPropertyList& s) {
-    DDON_STUB("nDraw::MaterialSSS::createProperty")
-    /* stub */
+void nDraw::MaterialSSS::createProperty(MtPropertyList& s) {
+    this->::nDraw::Material::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpDiffuseTexture", reinterpret_cast<MtObject* *>(&mpDiffuseTexture[0]), 35u, 6u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpDistortionTexture", reinterpret_cast<MtObject* *>(&mpDistortionTexture), 3u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpLightMaskTexture", reinterpret_cast<MtObject* *>(&mpLightMaskTexture), 3u, 0u);
 }
 
 MtUI* nDraw::MaterialSSS::createUI(MtProperty& prop) {

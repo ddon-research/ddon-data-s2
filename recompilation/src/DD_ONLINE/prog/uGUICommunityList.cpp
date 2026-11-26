@@ -165,9 +165,21 @@ u32 uGUICommunityList::evCtrlCancel(cControl::Message* msg) {
     return 0;
 }
 
-__attribute__((weak)) void uGUICommunityList::createDisplay() {
-    DDON_STUB("uGUICommunityList::createDisplay")
-    /* stub */
+void uGUICommunityList::createDisplay() {
+    cGUIInstance* t0 = getInstance(221u, false);
+    u32 t1 = mTabNum;
+    mTab.setup(static_cast<uGUIBase*>(this), t0, t1, getTabWidth(2u, 3u), uGUIBase::cReferenceUITab::ALIGN_CENTER);
+    mGuide.setup(static_cast<uGUIBase*>(this), getInstance(224u, false), 0.0f);
+    mGuide.addGuide(uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE_CHANGE_INFO_RU);
+    cGUIInstance* v0_10 = getInstance(213u, false);
+    cGUIInstance* pScrInstParent = v0_10->getParent();
+    for (unsigned int i0_11 = 1; i0_11 != 15; i0_11 += 1u) {
+        cGUIInstance* t2 = duplicateInstance(v0_10);
+        pScrInstParent->addChild(t2);
+        cGUIInstNull* pScrInst = static_cast<cGUIInstNull*>(v0_10);
+        static_cast<cGUIInstNull*>(t2)->setPositionY(pScrInst->mPosition.y + (24.0f * static_cast<float>(i0_11)));
+    }
+    mCloseBtn.setup(static_cast<uGUIBase*>(this), getInstance(223u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUICommunityList::evCtrlCancel));
 }
 
 __attribute__((weak)) void uGUICommunityList::createTabData() {
@@ -387,9 +399,8 @@ bool uGUICommunityList::cTabData::getRemakeListFlag() {
     return false;
 }
 
-__attribute__((weak)) cMenuBase* uGUICommunityList::cTabData::getMyMenu() {
-    DDON_STUB("uGUICommunityList::cTabData::getMyMenu")
-    return nullptr;
+cMenuBase* uGUICommunityList::cTabData::getMyMenu() {
+    return &(sMenu::mpInstance)->mMenuFriendList;
 }
 
 u32 uGUICommunityList::cTabData::getListCount() {
@@ -616,11 +627,6 @@ inline void uGUICommunityList::cTabDataFriendList::operator delete(void* p_addr)
     MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataFriendList::DTI)->memFree(p_addr);
 }
 
-uGUICommunityList::cTabDataFriendList::~cTabDataFriendList() {
-    DDON_STUB("uGUICommunityList::cTabDataFriendList::~cTabDataFriendList")
-    /* stub */
-}
-
 void uGUICommunityList::cTabDataFriendList::init() {
     mpOwner->initScrollList(static_cast<cTabData*>(this));
 }
@@ -643,24 +649,37 @@ __attribute__((weak)) void uGUICommunityList::cTabDataFriendList::setInDataParam
     /* stub */
 }
 
-__attribute__((weak)) void uGUICommunityList::cTabDataFriendList::setNoListMessage() {
-    DDON_STUB("uGUICommunityList::cTabDataFriendList::setNoListMessage")
-    /* stub */
+void uGUICommunityList::cTabDataFriendList::setNoListMessage() {
+    u32 t0 = mScrollList.mInfoArray.mLength;
+    cGUIInstance* t1 = getOwner()->getInstance(295u, false);
+    if (t0 != 0) {
+        if (t1 != nullptr) {
+            t1->setVisible(false);
+        }
+    } else {
+        if (t1 != nullptr) {
+            t1->setVisible(true);
+            uGUICommunityList* t2 = getOwner();
+            cGUIObject* t3 = t2->getObjectFromId(295u, 2u);
+            t2->setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpOwner->getMessageRes(), 16u), 0u, false);
+        } else {
+            uGUICommunityList* t2 = getOwner();
+            cGUIObject* t3 = t2->getObjectFromId(295u, 2u);
+            t2->setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpOwner->getMessageRes(), 16u), 0u, false);
+        }
+    }
 }
 
-__attribute__((weak)) bool uGUICommunityList::cTabDataFriendList::getRemakeListFlag() {
-    DDON_STUB("uGUICommunityList::cTabDataFriendList::getRemakeListFlag")
-    return {};
+bool uGUICommunityList::cTabDataFriendList::getRemakeListFlag() {
+    return sMenu::getInstance()->mMenuFriendList.getRemakeListFlag();
 }
 
-__attribute__((weak)) cMenuBase* uGUICommunityList::cTabDataFriendList::getMyMenu() {
-    DDON_STUB("uGUICommunityList::cTabDataFriendList::getMyMenu")
-    return nullptr;
+cMenuBase* uGUICommunityList::cTabDataFriendList::getMyMenu() {
+    return &(sMenu::mpInstance)->mMenuFriendList;
 }
 
-__attribute__((weak)) u32 uGUICommunityList::cTabDataFriendList::getListCount() {
-    DDON_STUB("uGUICommunityList::cTabDataFriendList::getListCount")
-    return {};
+u32 uGUICommunityList::cTabDataFriendList::getListCount() {
+    return sMenu::getInstance()->mMenuFriendList.getSortCount();
 }
 
 u32 uGUICommunityList::cTabDataFriendList::getListIndex(u32 index) {
@@ -693,11 +712,6 @@ inline void uGUICommunityList::cTabDataActiveList::operator delete(void* p_addr)
     MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataActiveList::DTI)->memFree(p_addr);
 }
 
-uGUICommunityList::cTabDataActiveList::~cTabDataActiveList() {
-    DDON_STUB("uGUICommunityList::cTabDataActiveList::~cTabDataActiveList")
-    /* stub */
-}
-
 void uGUICommunityList::cTabDataActiveList::init() {
     mpOwner->initScrollList(static_cast<cTabData*>(this));
 }
@@ -720,29 +734,44 @@ __attribute__((weak)) void uGUICommunityList::cTabDataActiveList::setInDataParam
     /* stub */
 }
 
-__attribute__((weak)) void uGUICommunityList::cTabDataActiveList::setNoListMessage() {
-    DDON_STUB("uGUICommunityList::cTabDataActiveList::setNoListMessage")
-    /* stub */
+void uGUICommunityList::cTabDataActiveList::setNoListMessage() {
+    u32 t0 = mScrollList.mInfoArray.mLength;
+    cGUIInstance* t1 = getOwner()->getInstance(295u, false);
+    if (t0 != 0) {
+        if (t1 != nullptr) {
+            t1->setVisible(false);
+        }
+    } else {
+        if (t1 != nullptr) {
+            t1->setVisible(true);
+            uGUICommunityList* t2 = getOwner();
+            cGUIObject* t3 = t2->getObjectFromId(295u, 2u);
+            t2->setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpOwner->getMessageRes(), 17u), 0u, false);
+        } else {
+            uGUICommunityList* t2 = getOwner();
+            cGUIObject* t3 = t2->getObjectFromId(295u, 2u);
+            t2->setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpOwner->getMessageRes(), 17u), 0u, false);
+        }
+    }
 }
 
-__attribute__((weak)) void uGUICommunityList::cTabDataActiveList::updateScrollList() {
-    DDON_STUB("uGUICommunityList::cTabDataActiveList::updateScrollList")
-    /* stub */
+void uGUICommunityList::cTabDataActiveList::updateScrollList() {
+    if (sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mMenuActiveList), false)) {
+        sMenu::getInstance()->mMenuActiveList.createSortList(false);
+    }
+    mpOwner->updateScrollList(static_cast<cTabData*>(this));
 }
 
-__attribute__((weak)) bool uGUICommunityList::cTabDataActiveList::getRemakeListFlag() {
-    DDON_STUB("uGUICommunityList::cTabDataActiveList::getRemakeListFlag")
-    return {};
+bool uGUICommunityList::cTabDataActiveList::getRemakeListFlag() {
+    return sMenu::getInstance()->mMenuActiveList.getRemakeListFlag();
 }
 
-__attribute__((weak)) cMenuBase* uGUICommunityList::cTabDataActiveList::getMyMenu() {
-    DDON_STUB("uGUICommunityList::cTabDataActiveList::getMyMenu")
-    return nullptr;
+cMenuBase* uGUICommunityList::cTabDataActiveList::getMyMenu() {
+    return &(sMenu::mpInstance)->mMenuActiveList;
 }
 
-__attribute__((weak)) u32 uGUICommunityList::cTabDataActiveList::getListCount() {
-    DDON_STUB("uGUICommunityList::cTabDataActiveList::getListCount")
-    return {};
+u32 uGUICommunityList::cTabDataActiveList::getListCount() {
+    return sMenu::getInstance()->mMenuActiveList.getSortCount();
 }
 
 u32 uGUICommunityList::cTabDataActiveList::getListIndex(u32 index) {
@@ -778,11 +807,6 @@ inline void uGUICommunityList::cTabDataNearPlayerList::operator delete(void* p_a
     MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataNearPlayerList::DTI)->memFree(p_addr);
 }
 
-uGUICommunityList::cTabDataNearPlayerList::~cTabDataNearPlayerList() {
-    DDON_STUB("uGUICommunityList::cTabDataNearPlayerList::~cTabDataNearPlayerList")
-    /* stub */
-}
-
 void uGUICommunityList::cTabDataNearPlayerList::init() {
     mpOwner->initScrollList(static_cast<cTabData*>(this));
 }
@@ -811,24 +835,37 @@ __attribute__((weak)) void uGUICommunityList::cTabDataNearPlayerList::setInDataP
     /* stub */
 }
 
-__attribute__((weak)) void uGUICommunityList::cTabDataNearPlayerList::setNoListMessage() {
-    DDON_STUB("uGUICommunityList::cTabDataNearPlayerList::setNoListMessage")
-    /* stub */
+void uGUICommunityList::cTabDataNearPlayerList::setNoListMessage() {
+    u32 t0 = mScrollList.mInfoArray.mLength;
+    cGUIInstance* t1 = getOwner()->getInstance(295u, false);
+    if (t0 != 0) {
+        if (t1 != nullptr) {
+            t1->setVisible(false);
+        }
+    } else {
+        if (t1 != nullptr) {
+            t1->setVisible(true);
+            uGUICommunityList* t2 = getOwner();
+            cGUIObject* t3 = t2->getObjectFromId(295u, 2u);
+            t2->setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpOwner->getMessageRes(), 18u), 0u, false);
+        } else {
+            uGUICommunityList* t2 = getOwner();
+            cGUIObject* t3 = t2->getObjectFromId(295u, 2u);
+            t2->setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpOwner->getMessageRes(), 18u), 0u, false);
+        }
+    }
 }
 
-__attribute__((weak)) bool uGUICommunityList::cTabDataNearPlayerList::getRemakeListFlag() {
-    DDON_STUB("uGUICommunityList::cTabDataNearPlayerList::getRemakeListFlag")
-    return {};
+bool uGUICommunityList::cTabDataNearPlayerList::getRemakeListFlag() {
+    return sMenu::getInstance()->mMenuRecentList.getRemakeListFlag();
 }
 
-__attribute__((weak)) cMenuBase* uGUICommunityList::cTabDataNearPlayerList::getMyMenu() {
-    DDON_STUB("uGUICommunityList::cTabDataNearPlayerList::getMyMenu")
-    return nullptr;
+cMenuBase* uGUICommunityList::cTabDataNearPlayerList::getMyMenu() {
+    return &(sMenu::mpInstance)->mMenuRecentList;
 }
 
-__attribute__((weak)) u32 uGUICommunityList::cTabDataNearPlayerList::getListCount() {
-    DDON_STUB("uGUICommunityList::cTabDataNearPlayerList::getListCount")
-    return {};
+u32 uGUICommunityList::cTabDataNearPlayerList::getListCount() {
+    return sMenu::getInstance()->mMenuRecentList.getSortCount();
 }
 
 u32 uGUICommunityList::cTabDataNearPlayerList::getListIndex(u32 index) {
@@ -854,11 +891,6 @@ const MtDTI& uGUICommunityList::cTabDataBlackList::getDTI() const {
 
 inline void uGUICommunityList::cTabDataBlackList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataBlackList::DTI)->memFree(p_addr);
-}
-
-uGUICommunityList::cTabDataBlackList::~cTabDataBlackList() {
-    DDON_STUB("uGUICommunityList::cTabDataBlackList::~cTabDataBlackList")
-    /* stub */
 }
 
 void uGUICommunityList::cTabDataBlackList::init() {
@@ -889,9 +921,25 @@ __attribute__((weak)) void uGUICommunityList::cTabDataBlackList::setInDataParam(
     /* stub */
 }
 
-__attribute__((weak)) void uGUICommunityList::cTabDataBlackList::setNoListMessage() {
-    DDON_STUB("uGUICommunityList::cTabDataBlackList::setNoListMessage")
-    /* stub */
+void uGUICommunityList::cTabDataBlackList::setNoListMessage() {
+    u32 t0 = mScrollList.mInfoArray.mLength;
+    cGUIInstance* t1 = getOwner()->getInstance(295u, false);
+    if (t0 != 0) {
+        if (t1 != nullptr) {
+            t1->setVisible(false);
+        }
+    } else {
+        if (t1 != nullptr) {
+            t1->setVisible(true);
+            uGUICommunityList* t2 = getOwner();
+            cGUIObject* t3 = t2->getObjectFromId(295u, 2u);
+            t2->setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpOwner->getMessageRes(), 19u), 0u, false);
+        } else {
+            uGUICommunityList* t2 = getOwner();
+            cGUIObject* t3 = t2->getObjectFromId(295u, 2u);
+            t2->setObjectMessage(t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpOwner->getMessageRes(), 19u), 0u, false);
+        }
+    }
 }
 
 bool uGUICommunityList::cTabDataBlackList::getRemakeListFlag() {
@@ -902,9 +950,8 @@ bool uGUICommunityList::cTabDataBlackList::getRemakeListFlag() {
     }
 }
 
-__attribute__((weak)) cMenuBase* uGUICommunityList::cTabDataBlackList::getMyMenu() {
-    DDON_STUB("uGUICommunityList::cTabDataBlackList::getMyMenu")
-    return nullptr;
+cMenuBase* uGUICommunityList::cTabDataBlackList::getMyMenu() {
+    return &(sMenu::mpInstance)->mMenuBlackList;
 }
 
 u32 uGUICommunityList::cTabDataBlackList::getListCount() {

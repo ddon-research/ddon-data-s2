@@ -50,8 +50,10 @@ inline void uGUIInfo::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIInfo::~uGUIInfo() {
-    DDON_STUB("uGUIInfo::~uGUIInfo")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
 }
 
 void uGUIInfo::createProperty(MtPropertyList& s) {

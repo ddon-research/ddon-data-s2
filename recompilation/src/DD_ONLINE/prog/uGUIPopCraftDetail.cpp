@@ -49,8 +49,23 @@ inline void uGUIPopCraftDetail::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIPopCraftDetail::~uGUIPopCraftDetail() {
-    DDON_STUB("uGUIPopCraftDetail::~uGUIPopCraftDetail")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
+    }
+    if (mpGMDParamRes != nullptr) {
+        mpGMDParamRes->release();
+        mpGMDParamRes = nullptr;
+    }
+    if (mpGMDJewelryCtgr == nullptr) {
+        return;
+    }
+    mpGMDJewelryCtgr->release();
+    mpGMDJewelryCtgr = nullptr;
 }
 
 void uGUIPopCraftDetail::createProperty(MtPropertyList& s) {

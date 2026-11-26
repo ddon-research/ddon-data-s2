@@ -632,11 +632,31 @@ namespace nDDOUtility {
         nDDOUtility::cKeyFrameValue<f32, MtObject>::value_type getValue(f32 key) const;
     public:
         u32 keyNum;  // offset: 0x8
-        nDDOUtility::cKeyFrameValue<f32, MtObject>::stKeyValue value[8];  // offset: 0xc
-        static nDDOUtility::cKeyFrameValue<f32, MtObject>::MyDTI DTI;
+        stKeyValue value[8];  // offset: 0xc
+        static MyDTI DTI;
         static const u32 MAX_KEY_NUM = 8;
     };
 }  // namespace nDDOUtility
+
+inline nDDOUtility::cKeyFrameValue<MtVector4, MtObject>::stKeyValue::stKeyValue() : key(0.0f), value(0.0f, 0.0f, 0.0f, 0.0f) {
+}
+
+inline nDDOUtility::cKeyFrameValue<MtVector4, MtObject>::cKeyFrameValue() {
+    keyNum = 1u;
+}
+
+inline nDDOUtility::cKeyFrameValue<MtVector4, MtObject>::~cKeyFrameValue() {
+}
+
+inline nDDOUtility::cKeyFrameValue<float, MtObject>::stKeyValue::stKeyValue() : key(0.0f), value(0.0f) {
+}
+
+inline nDDOUtility::cKeyFrameValue<float, MtObject>::cKeyFrameValue() {
+    keyNum = 1u;
+}
+
+inline nDDOUtility::cKeyFrameValue<float, MtObject>::~cKeyFrameValue() {
+}
 
 namespace nDDOUtility {
     template <typename T>
@@ -722,6 +742,10 @@ inline nDDOUtility::cBitSet<14>::~cBitSet() {
 inline nDDOUtility::cBitSet<22>::~cBitSet() {
 }
 
+inline nDDOUtility::cBitSet<2>::cBitSet() {
+    mBit[0] = 0u;
+}
+
 inline nDDOUtility::cBitSet<33>::~cBitSet() {
 }
 
@@ -745,12 +769,27 @@ template <> inline nDDOUtility::cBitSet<128>::cBitSet() {
     mBit[3] = 0u;
 }
 
+template <> inline nDDOUtility::cBitSet<256>::cBitSet() {
+    mBit[0] = 0u;
+    mBit[1] = 0u;
+    mBit[2] = 0u;
+    mBit[3] = 0u;
+    mBit[4] = 0u;
+    mBit[5] = 0u;
+    mBit[6] = 0u;
+    mBit[7] = 0u;
+}
+
 template <> inline nDDOUtility::cBitSet<32>::cBitSet() {
     mBit[0] = 0u;
 }
 
 template <> inline void nDDOUtility::cBitSet<32>::clear(u8 val) {
     mBit[0] = val ? 0xFFFFFFFFu : 0u;
+}
+
+template <> inline nDDOUtility::cBitSet<4>::cBitSet() {
+    mBit[0] = 0u;
 }
 
 template <> inline nDDOUtility::cBitSet<64>::cBitSet() {

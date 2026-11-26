@@ -9,6 +9,7 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cColliderParam.h"
 #include "cUnit.h"
@@ -100,9 +101,20 @@ inline void uGeometry2Collider::cContactInfo::operator delete(void* p_addr) {
 uGeometry2Collider::cContactInfo::~cContactInfo() {
 }
 
-__attribute__((weak)) void uGeometry2Collider::cContactInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGeometry2Collider::cContactInfo::createProperty")
-    /* stub */
+void uGeometry2Collider::cContactInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpHitActiveNode", reinterpret_cast<MtObject* *>(&mpHitActiveNode), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpHitPassiveNode", reinterpret_cast<MtObject* *>(&mpHitPassiveNode), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHitActiveNodeGeometryIndex", &mHitActiveNodeGeometryIndex, 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHitPassiveNodeGeometryIndex", &mHitPassiveNodeGeometryIndex, 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "pos(X)       ", &mContactResult.pos.x, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "pos(Y)       ", &mContactResult.pos.y, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "pos(Z)       ", &mContactResult.pos.z, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "normal(X)    ", &mContactResult.normal.x, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "normal(Y)    ", &mContactResult.normal.y, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "normal(Z)    ", &mContactResult.normal.z, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "distance     ", &mContactResult.distance, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "toi          ", &mContactResult.toi, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "bFind        ", &mContactResult.bFind, 2u, 0u);
 }
 
 inline uGeometry2Collider::cContactInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -129,9 +141,9 @@ inline void uGeometry2Collider::cNodeGeometryInfo::operator delete(void* p_addr)
 uGeometry2Collider::cNodeGeometryInfo::~cNodeGeometryInfo() {
 }
 
-__attribute__((weak)) void uGeometry2Collider::cNodeGeometryInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGeometry2Collider::cNodeGeometryInfo::createProperty")
-    /* stub */
+void uGeometry2Collider::cNodeGeometryInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpRegistGeometry", reinterpret_cast<MtObject* *>(&mpRegistGeometry), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpRegistGeometryParam", reinterpret_cast<MtObject* *>(&mpRegistGeometryParam), 16u, 0u);
 }
 
 inline uGeometry2Collider::cNodeGeometryInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

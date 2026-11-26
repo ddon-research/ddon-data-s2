@@ -11,6 +11,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cAI.h"
 #include "cAIService.h"
@@ -39,9 +40,10 @@ __attribute__((noinline)) cAISvNavPathFinding::~cAISvNavPathFinding() {
 __attribute__((weak)) void cAISvNavPathFinding::reset() {
 }
 
-__attribute__((weak)) void cAISvNavPathFinding::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAISvNavPathFinding::createProperty")
-    /* stub */
+void cAISvNavPathFinding::createProperty(MtPropertyList& s) {
+    this->cAIService::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpGraph", reinterpret_cast<MtObject* *>(&mpGraph), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnableWorldOffset", &mEnableWorldOffset, 0u, 0u);
 }
 
 MtUI* cAISvNavPathFinding::createUI(MtProperty& prop) {
@@ -105,9 +107,45 @@ void cAISvNavPathFinding::setNumberOfVertex(u32 num) {
     mNumberOfVertex = static_cast<unsigned short>(num);
 }
 
-__attribute__((weak)) void cAISvNavPathFinding::setNavCell(rNavigationMesh::nodeData* pNode, u32 index, u32& vn, u32& pn) {
-    DDON_STUB("cAISvNavPathFinding::setNavCell")
-    /* stub */
+void cAISvNavPathFinding::setNavCell(rNavigationMesh::nodeData* pNode, u32 index, u32& vn, u32& pn) {
+    if (index < mNumberOfCell) {
+        navCell* t0 = mpNavCell;
+        t0[index].mIndex = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pNode) + 8);
+        unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pNode) + 80);
+        t0[index].mNumberOfIndex = t1;
+        t0[index].mpVertexIndex = &mpVertexIndex[vn];
+        navCell* v1_1;
+        if (t1 == 0) {
+            v1_1 = t0;
+        } else {
+            for (unsigned int i0_3 = 0;;) {
+                s32 t2 = pNode->getNodeArea(i0_3);
+                navCell* t3 = mpNavCell;
+                t3[index].mpVertexIndex[i0_3] = static_cast<unsigned short>(t2);
+                if ((i0_3 + 1u) < t3[index].mNumberOfIndex) {
+                    i0_3 += 1u;
+                } else {
+                    v1_1 = t3;
+                    break;
+                }
+            }
+        }
+        v1_1[index].mpPortal = &mpPortal[pn];
+        if (pNode->mNumberOfLink != 0) {
+            unsigned int i2_0 = 1;
+            for (navCell* v2_1 = v1_1;;) {
+                v2_1[index].mpPortal[i2_0 - 1u] = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&pNode->mpLinkInformation[i2_0 - 1u]) + 8);
+                if (i2_0 >= pNode->mNumberOfLink) {
+                    break;
+                } else {
+                    i2_0 += 1u;
+                    v2_1 = mpNavCell;
+                }
+            }
+        }
+        vn = pNode->mPolygonArea.mNumberOfIndex + (vn);
+        pn = pNode->mNumberOfLink + (pn);
+    }
 }
 
 __attribute__((weak)) void cAISvNavPathFinding::setTree(cAIQuadTree* pTree) {
@@ -163,6 +201,10 @@ const MtDTI& cAISvNavPathFinding::navCell::getDTI() const {
     return cAISvNavPathFinding::navCell::DTI;
 }
 
+inline void* cAISvNavPathFinding::navCell::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAISvNavPathFinding::navCell::DTI)->memAlloc(sz, align, cAISvNavPathFinding::navCell::DTI.mID);
+}
+
 inline void cAISvNavPathFinding::navCell::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAISvNavPathFinding::navCell::DTI)->memFree(p_addr);
 }
@@ -171,13 +213,16 @@ inline cAISvNavPathFinding::navCell::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 
 cAISvNavPathFinding::navCell::MyDTI cAISvNavPathFinding::navCell::DTI("cAISvNavPathFinding::navCell", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAISvNavPathFinding::navCell::MyDTI::newInstance() const {
-    DDON_STUB("cAISvNavPathFinding::navCell::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAISvNavPathFinding::navCell::MyDTI::newInstance() const {
+    return new (16u) cAISvNavPathFinding::navCell;
 }
 
 const MtDTI& cAISvNavPathFinding::NavArea::getDTI() const {
     return cAISvNavPathFinding::NavArea::DTI;
+}
+
+inline void* cAISvNavPathFinding::NavArea::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAISvNavPathFinding::NavArea::DTI)->memAlloc(sz, align, cAISvNavPathFinding::NavArea::DTI.mID);
 }
 
 cAISvNavPathFinding::NavArea::~NavArea() {
@@ -194,9 +239,8 @@ inline cAISvNavPathFinding::NavArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 
 cAISvNavPathFinding::NavArea::MyDTI cAISvNavPathFinding::NavArea::DTI("cAISvNavPathFinding::NavArea", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAISvNavPathFinding::NavArea::MyDTI::newInstance() const {
-    DDON_STUB("cAISvNavPathFinding::NavArea::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAISvNavPathFinding::NavArea::MyDTI::newInstance() const {
+    return new (16u) cAISvNavPathFinding::NavArea;
 }
 
 const MtDTI& cAISvPathFinding::getDTI() const {
@@ -220,9 +264,10 @@ __attribute__((noinline)) cAISvPathFinding::~cAISvPathFinding() {
 __attribute__((weak)) void cAISvPathFinding::reset() {
 }
 
-__attribute__((weak)) void cAISvPathFinding::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAISvPathFinding::createProperty")
-    /* stub */
+void cAISvPathFinding::createProperty(MtPropertyList& s) {
+    this->cAIService::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpGraph", reinterpret_cast<MtObject* *>(&mpGraph), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnableWorldOffset", &mEnableWorldOffset, 0u, 0u);
 }
 
 MtUI* cAISvPathFinding::createUI(MtProperty& prop) {
@@ -302,6 +347,10 @@ const MtDTI& cAISvPathFinding::Node::getDTI() const {
     return cAISvPathFinding::Node::DTI;
 }
 
+inline void* cAISvPathFinding::Node::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAISvPathFinding::Node::DTI)->memAlloc(sz, align, cAISvPathFinding::Node::DTI.mID);
+}
+
 cAISvPathFinding::Node::Node() {
     mNodeIndex = 0;
     mNumberOfAttr = 0;
@@ -339,8 +388,7 @@ inline cAISvPathFinding::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 cAISvPathFinding::Node::MyDTI cAISvPathFinding::Node::DTI("cAISvPathFinding::Node", &::MtObject::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAISvPathFinding::Node::MyDTI::newInstance() const {
-    DDON_STUB("cAISvPathFinding::Node::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAISvPathFinding::Node::MyDTI::newInstance() const {
+    return new (16u) cAISvPathFinding::Node;
 }
 

@@ -22,6 +22,10 @@ const MtDTI& cSwing::getDTI() const {
     return cSwing::DTI;
 }
 
+inline void* cSwing::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSwing::DTI)->memAlloc(sz, align, cSwing::DTI.mID);
+}
+
 inline void cSwing::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cSwing::DTI)->memFree(p_addr);
 }
@@ -37,8 +41,10 @@ cSwing::~cSwing() {
 }
 
 __attribute__((weak)) void cSwing::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSwing::createProperty")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mWindMask", reinterpret_cast<MT_MFUNC>(&::cSwing::getWindMask), reinterpret_cast<MT_MFUNC>(&::cSwing::setWindMask), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mWindGroup", reinterpret_cast<MT_MFUNC>(&::cSwing::getWindGroup), reinterpret_cast<MT_MFUNC>(&::cSwing::setWindGroup), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mFrequencyFactor", &mFrequencyFactor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeight", &mWeight, 0u, 0u);
 }
 
 MtUI* cSwing::createUI(MtProperty& prop) {
@@ -86,9 +92,8 @@ inline cSwing::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 
 cSwing::MyDTI cSwing::DTI("cSwing", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSwing::MyDTI::newInstance() const {
-    DDON_STUB("cSwing::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSwing::MyDTI::newInstance() const {
+    return new (16u) cSwing;
 }
 
 const MtDTI& cSwingModel::getDTI() const {
@@ -116,9 +121,12 @@ cSwingModel::~cSwingModel() {
     mpDepthBiasTexture = nullptr;
 }
 
-__attribute__((weak)) void cSwingModel::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSwingModel::createProperty")
-    /* stub */
+void cSwingModel::createProperty(MtPropertyList& s) {
+    this->cSwing::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpSwing", "resource", reinterpret_cast<MT_MFUNC>(&::cSwingModel::getSwing), reinterpret_cast<MT_MFUNC>(&::cSwingModel::setSwing), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpAfterSwing", "resource", reinterpret_cast<MT_MFUNC>(&::cSwingModel::getAfterSwing), reinterpret_cast<MT_MFUNC>(&::cSwingModel::setAfterSwing), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mShadowDepthBias", &mShadowDepthBias, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpDepthBiasTexture", "resource", static_cast<void*>(&mpDepthBiasTexture), 0u, 0u);
 }
 
 MtUI* cSwingModel::createUI(MtProperty& prop) {

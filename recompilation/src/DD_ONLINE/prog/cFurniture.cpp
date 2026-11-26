@@ -103,7 +103,7 @@ __attribute__((weak)) void cFurniture::copyInfo(MtTypedArray<cFurniture::Info>& 
 }
 
 bool cFurniture::isSetOm(u32 om_id) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 80)) != 0) {
+    if (mInfoDisp.mLength != 0) {
         u32 i = 0;
         do {
             if (mInfoDisp.getBuffer()[static_cast<int>(i)] != nullptr) {
@@ -112,7 +112,7 @@ bool cFurniture::isSetOm(u32 om_id) {
                 }
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 80)));
+        } while (i < mInfoDisp.mLength);
     }
     return false;
 }

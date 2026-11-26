@@ -19,6 +19,7 @@ class MtUI;
 class MtVector3;
 class cAIService;
 class cAITask;
+class cFSMCore;
 namespace nAI { struct TASK_PERFORMANCE_INFO; }
 namespace nAI { class TaskPerformanceInfo; }
 class rAI;
@@ -40,6 +41,7 @@ using u64 = __uint64_t;
 class sAI : public cSystem
 {
     friend class cAIService;
+    friend class cFSMCore;
     friend class uStagePartsMdl;
 public:
     class MyDTI;

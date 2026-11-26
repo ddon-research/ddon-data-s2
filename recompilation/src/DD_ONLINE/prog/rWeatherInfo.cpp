@@ -397,9 +397,18 @@ inline void rWeatherStageInfo::operator delete(void* p_addr) {
 rWeatherStageInfo::~rWeatherStageInfo() {
 }
 
-__attribute__((weak)) void rWeatherStageInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rWeatherStageInfo::createProperty")
-    /* stub */
+void rWeatherStageInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpSkyRes", "resource", static_cast<void*>(&mpSkyRes), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpRefSkyRes", "resource", static_cast<void*>(&mpRefSkyRes), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpModelScheduler", "resource", static_cast<void*>(&mpModelScheduler), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpStarModel", "resource", static_cast<void*>(&mpStarModel), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpStarTex", "resource", static_cast<void*>(&mpStarTex), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpStarCatalog", "resource", static_cast<void*>(&mpStarCatalog), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStarSize", &mStarSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStarrySkyIntensity", &mStarrySkyIntensity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStarTwinkleAmplitude", &mStarTwinkleAmplitude, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnvMapBaseColor", &mEnvMapBaseColor[0], 2080u, 2u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnvMapBlendColorScale", &mEnvMapBlendColorScale[0], 2080u, 2u);
 }
 
 MT_CTSTR rWeatherStageInfo::getExt() const {

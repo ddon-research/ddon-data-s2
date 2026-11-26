@@ -48,14 +48,28 @@ uStageCraftPawnCtrl::uStageCraftPawnCtrl() {
 uStageCraftPawnCtrl::~uStageCraftPawnCtrl() {
 }
 
-__attribute__((weak)) void uStageCraftPawnCtrl::setup() {
-    DDON_STUB("uStageCraftPawnCtrl::setup")
-    /* stub */
+void uStageCraftPawnCtrl::setup() {
+    memset(static_cast<void*>(&mMainPawnList[0]), 0, 640ul);
+    sCraftManager::getInstance()->mCraftCtrl.reqCraftProgressList();
+    this->cUnit::mRno = 0;
 }
 
-__attribute__((weak)) void uStageCraftPawnCtrl::move() {
-    DDON_STUB("uStageCraftPawnCtrl::move")
-    /* stub */
+void uStageCraftPawnCtrl::move() {
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) == 1) {
+        moveMain();
+    } else {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) == 0) {
+            if (sArea::getInstance()->mpArea[2]->cArea::isInit()) {
+                if (sCraftManager::getInstance()->mCraftCtrl.mIsCraftProgressComplete) {
+                    updatePawnList();
+                    updatePawnDisp();
+                    this->cUnit::mRno = 1;
+                } else {
+                    updatePawnDisp();
+                }
+            }
+        }
+    }
 }
 
 void uStageCraftPawnCtrl::requestUpdatePawn() {
@@ -131,9 +145,53 @@ __attribute__((weak)) void uStageCraftPawnCtrl::updateWorkPawnDispCore(u32(*Pawn
     /* stub */
 }
 
-__attribute__((weak)) void uStageCraftPawnCtrl::onDispPawn(uControlNpc* pCtrlNpc, u32 PawnId) {
-    DDON_STUB("uStageCraftPawnCtrl::onDispPawn")
-    /* stub */
+void uStageCraftPawnCtrl::onDispPawn(uControlNpc* pCtrlNpc, u32 PawnId) {
+    cNetGameServer* v1_0;
+    if (pCtrlNpc == nullptr) {
+        return;
+    } else {
+        cNetGameServer* v0_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+        u32 v0_1 = v0_0->mMyPawnList.mLength;
+        if (v0_1 == 0) {
+            v1_0 = v0_0;
+        } else {
+            MtObject* * v0_2 = v0_0->mMyPawnList.mpArray;
+            for (unsigned int i0_3 = 0;;) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_3)]) + 8)) != PawnId) {
+                    if ((i0_3 + 1u) < v0_1) {
+                        i0_3 += 1u;
+                    } else {
+                        v1_0 = v0_0;
+                        break;
+                    }
+                } else {
+                    pCtrlNpc->setMyPawnSlotNo(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_3)]) + 12), true);
+                    v1_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+                    break;
+                }
+            }
+        }
+    }
+    u32 v2_1 = v1_0->mRentedPawnList.mLength;
+    if (v2_1 != 0) {
+        MtObject* * v2_0 = v1_0->mRentedPawnList.mpArray;
+        for (unsigned int i2_2 = 0;;) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_0[static_cast<int>(i2_2)]) + 8)) != PawnId) {
+                if ((i2_2 + 1u) < v2_1) {
+                    i2_2 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                pCtrlNpc->setRentalPawnSlotNo(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_0[static_cast<int>(i2_2)]) + 12), true);
+                pCtrlNpc->mIsForceDispOff = false;
+                pCtrlNpc->setNpcName(sCraftManager::getInstance()->getPawnName(PawnId));
+                return;
+            }
+        }
+    }
+    pCtrlNpc->mIsForceDispOff = false;
+    pCtrlNpc->setNpcName(sCraftManager::getInstance()->getPawnName(PawnId));
 }
 
 inline uStageCraftPawnCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

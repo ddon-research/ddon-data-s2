@@ -9,7 +9,9 @@
 #include "MtGeometry3D.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtPrimitive3D.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -49,9 +51,11 @@ void MtGeomAABB::save(MtDataWriter& fout) {
     fout.writeF32(mAABB.maxpos.pad_);
 }
 
-__attribute__((weak)) void MtGeomAABB::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtGeomAABB::createProperty")
-    /* stub */
+void MtGeomAABB::createProperty(MtPropertyList& s) {
+    this->MtGeomConvex::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mAABB.minpos", &mAABB.minpos, 8192u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAABB.maxpos", &mAABB.maxpos, 8192u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAABB", &mAABB, 0u, 0u);
 }
 
 void MtGeomAABB::getBoundingAABB(MtAABB& aabb) const {

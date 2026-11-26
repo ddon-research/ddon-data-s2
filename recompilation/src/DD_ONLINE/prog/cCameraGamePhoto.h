@@ -138,6 +138,10 @@ inline void* cCamExParamPhoto::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cCamExParamPhoto::cCamExParamPhoto() {
+    this->::cCamExParam::mType = static_cast<nCameraGame::CAMERA_TYPE>(15);
+}
+
 inline void* cCamImpPhoto::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

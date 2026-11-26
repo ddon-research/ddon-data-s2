@@ -7,6 +7,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "nNetworkQueue.h"
@@ -32,9 +33,15 @@ inline void nNetwork::Callback::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void nNetwork::Callback::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::Callback::createProperty")
-    /* stub */
+void nNetwork::Callback::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBuffering", &mBuffering, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mSmoothing", &mSmoothing, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mSelfBuffering", &mSelfBuffering, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mSelfDelay", &mSelfDelay, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mSelfBufferSize", &mSelfBufferSize, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mQueue", static_cast<MtObject*>(&mQueue[0]), 32u, 16u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mSelfQueue", static_cast<MtObject*>(&mSelfQueue), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mEntry", static_cast<MtObject*>(&mEntry[0]), 32u, 16u);
 }
 
 MtUI* nNetwork::Callback::createUI(MtProperty& prop) {
@@ -100,13 +107,18 @@ const MtDTI& nNetwork::Callback::Entry::getDTI() const {
     return nNetwork::Callback::Entry::DTI;
 }
 
+inline void* nNetwork::Callback::Entry::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::Entry::DTI)->memAlloc(sz, align, ::nNetwork::Callback::Entry::DTI.mID);
+}
+
 inline void nNetwork::Callback::Entry::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::Entry::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void nNetwork::Callback::Entry::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::Callback::Entry::createProperty")
-    /* stub */
+void nNetwork::Callback::Entry::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_CLASSREF, "Parent", reinterpret_cast<MT_MFUNC>(&::nNetwork::Callback::Entry::getClass), reinterpret_cast<MT_MFUNC>(&::nNetwork::Callback::Entry::setClass), 147u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBuffering", &mBuffering, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mRoute", &mRoute, 0u, 0u);
 }
 
 MtObject* nNetwork::Callback::Entry::getClass() {
@@ -124,9 +136,8 @@ inline nNetwork::Callback::Entry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 nNetwork::Callback::Entry::MyDTI nNetwork::Callback::Entry::DTI("nNetwork::Callback::Entry", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nNetwork::Callback::Entry::MyDTI::newInstance() const {
-    DDON_STUB("nNetwork::Callback::Entry::MyDTI::newInstance")
-    return nullptr;
+MtObject* nNetwork::Callback::Entry::MyDTI::newInstance() const {
+    return new (16u) ::nNetwork::Callback::Entry;
 }
 
 const MtDTI& nNetwork::Callback::Queue::getDTI() const {
@@ -137,14 +148,10 @@ inline void nNetwork::Callback::Queue::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::Queue::DTI)->memFree(p_addr);
 }
 
-nNetwork::Callback::Queue::~Queue() {
-    DDON_STUB("nNetwork::Callback::Queue::~Queue")
-    /* stub */
-}
-
-__attribute__((weak)) void nNetwork::Callback::Queue::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::Callback::Queue::createProperty")
-    /* stub */
+void nNetwork::Callback::Queue::createProperty(MtPropertyList& s) {
+    this->::nNetwork::BlockQueue::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mRate", &mRate, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mCall", &mCall, 0u, 0u);
 }
 
 inline nNetwork::Callback::Queue::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

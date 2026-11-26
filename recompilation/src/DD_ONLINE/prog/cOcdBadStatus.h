@@ -52,7 +52,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cOcdHolyAbsorp();
-    virtual ~cOcdHolyAbsorp();
+    virtual ~cOcdHolyAbsorp() {}
     virtual void init(bool initFlag);  // vtable slot 9
     virtual void move();  // vtable slot 10
     virtual void final();  // vtable slot 11

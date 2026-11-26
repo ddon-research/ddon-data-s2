@@ -184,14 +184,66 @@ bool sAIPawnTalkMgr::isPawnTalkSituationFieldIn() const {
     return mPawnTalkFieldInTimer > 0.0f;
 }
 
-__attribute__((weak)) u32 sAIPawnTalkMgr::convTalkSituationToMot(u32 situation) const {
-    DDON_STUB("sAIPawnTalkMgr::convTalkSituationToMot")
-    return {};
+u32 sAIPawnTalkMgr::convTalkSituationToMot(u32 situation) const {
+    static const u32 tbl[32] = {
+        0,
+        1,
+        0,
+        2,
+        5,
+        3,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        9,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        7,
+        8,
+    };
+    if (situation <= 31u) {
+        return tbl[situation];
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 sAIPawnTalkMgr::convTalkSituationFromMot(u32 motSituation) const {
-    DDON_STUB("sAIPawnTalkMgr::convTalkSituationFromMot")
-    return {};
+u32 sAIPawnTalkMgr::convTalkSituationFromMot(u32 motSituation) const {
+    static const u32 tbl[10] = {
+        0,
+        1,
+        3,
+        5,
+        6,
+        4,
+        20,
+        30,
+        31,
+        15,
+    };
+    if (motSituation <= 9u) {
+        return tbl[motSituation];
+    } else {
+        return 0;
+    }
 }
 
 u32 sAIPawnTalkMgr::lotAIPawnTalkMotioin(uDDOModel* pPawn, u32 motSituation, u32* pDstMoveType) {

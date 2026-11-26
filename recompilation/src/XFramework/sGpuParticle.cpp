@@ -7,7 +7,9 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cBlendState.h"
 #include "cDraw.h"
@@ -54,9 +56,27 @@ MtUI* sGpuParticle::createUI(MtProperty& prop) {
     return this->cSystem::createUI(prop);
 }
 
-__attribute__((weak)) void sGpuParticle::createProperty(MtPropertyList& prop_list) {
-    DDON_STUB("sGpuParticle::createProperty")
-    /* stub */
+void sGpuParticle::createProperty(MtPropertyList& prop_list) {
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mContextCount", &mContextCount, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mContextDrawNum", &mContextDrawNum, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mVBSize", &mVBSize, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mTotalVBSize", &mTotalVBSize, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mUsedVBSize", &mUsedVBSize, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mTempVBSize", &mTempVBSize, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mUsedTempVBSize", &mUsedTempVBSize, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mIBSize", &mIBSize, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mTotalIBSize", &mTotalIBSize, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mUsedIBSize", &mUsedIBSize, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mTempIBSize", &mTempIBSize, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mUsedTempIBSize", &mUsedTempIBSize, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mReductionDist", &mReductionDist, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mAutoReduction", &mAutoReduction, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mNearStart", &mNearStart, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mNearEnd", &mNearEnd, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mFarStart", &mFarStart, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mFarEnd", &mFarEnd, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mAlphaClip", &mAlphaClip, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mDrawParticle", &mDrawParticle, 0u, 0u);
 }
 
 __attribute__((weak)) sGpuParticle::Context* sGpuParticle::createContextParticle(u32 max_num) {
@@ -363,8 +383,6 @@ __attribute__((weak)) s32 sGpuParticle::ContextParticle::drawParticleArray(cDraw
 }
 
 sGpuParticle::ContextParticle::~ContextParticle() {
-    DDON_STUB("sGpuParticle::ContextParticle::~ContextParticle")
-    /* stub */
 }
 
 s32 sGpuParticle::ContextPoint::setTexture(cDraw* p_draw, rTexture* p_tex, const MtPoint& base_pos, u32 size, u32 row_num, u32 total_num) {
@@ -387,8 +405,6 @@ __attribute__((weak)) s32 sGpuParticle::ContextPoint::drawParticleArray(cDraw* p
 }
 
 sGpuParticle::ContextPoint::~ContextPoint() {
-    DDON_STUB("sGpuParticle::ContextPoint::~ContextPoint")
-    /* stub */
 }
 
 s32 sGpuParticle::ContextLine::setTexture(cDraw* p_draw, rTexture* p_tex, const MtPoint& base_pos, u32 size, u32 row_num, u32 total_num) {
@@ -410,8 +426,6 @@ __attribute__((weak)) s32 sGpuParticle::ContextLine::drawParticleArray(cDraw* p_
 }
 
 sGpuParticle::ContextLine::~ContextLine() {
-    DDON_STUB("sGpuParticle::ContextLine::~ContextLine")
-    /* stub */
 }
 
 s32 sGpuParticle::ContextPolyline::allocateParticle(cDraw* p_draw) {
@@ -541,8 +555,6 @@ __attribute__((weak)) s32 sGpuParticle::ContextPolyline::drawParticleArray(cDraw
 }
 
 sGpuParticle::ContextPolyline::~ContextPolyline() {
-    DDON_STUB("sGpuParticle::ContextPolyline::~ContextPolyline")
-    /* stub */
 }
 
 void sGpuParticle::ContextPolyline::update(cDraw* p_draw) {

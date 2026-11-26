@@ -138,8 +138,14 @@ __attribute__((weak)) bool uGUIChat::setLog(cGUIObjMessage* objMessage, sChat::s
 }
 
 __attribute__((noinline)) uGUIChat::~uGUIChat() {
-    DDON_STUB("uGUIChat::~uGUIChat")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpGUICList != nullptr) {
+        mpGUICList->kill();
+        mpGUICList = nullptr;
+    }
 }
 
 bool uGUIChat::loadResource() {
@@ -555,8 +561,52 @@ u32 uGUIChat::evCtrlAddChVlCancel(cControl::Message* msg) {
 }
 
 __attribute__((weak)) u32 uGUIChat::evCtrlAddChVlDecide(cControl::Message* msg) {
-    DDON_STUB("uGUIChat::evCtrlAddChVlDecide")
-    return {};
+    if (msg != nullptr) {
+        if (mpCtrlAddChVl != nullptr) {
+            if (mpCtrlAddChVl->mCurrentPos == 1) {
+                if (mpCtrlYoN != nullptr) {
+                    const s32 button_index = mpCtrlYoN->getCurrentPos();
+                    if (button_index == 1) {
+                        msg->changeSE = 5;
+                        setInputEvent(82u);
+                    } else {
+                        if ((button_index == 0) && ((*mPopWndwAddCh.mTextBox.mMsg.ptr()) == 0)) {
+                            sGUI* t0 = sGUI::getInstance();
+                            static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 12u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+                            msg->changeSE = 20;
+                            setInputEvent(2u);
+                            return 0;
+                        }
+                        msg->changeSE = 4;
+                        setInputEvent(83u);
+                    }
+                    return 1;
+                } else {
+                    if ((*mPopWndwAddCh.mTextBox.mMsg.ptr()) != 0) {
+                        msg->changeSE = 4;
+                        setInputEvent(83u);
+                        return 1;
+                    } else {
+                        sGUI* t0 = sGUI::getInstance();
+                        static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 12u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+                        msg->changeSE = 20;
+                        setInputEvent(2u);
+                        return 0;
+                    }
+                }
+            } else {
+                msg->changeSE = 4;
+                setInputEvent(83u);
+                return 1;
+            }
+        } else {
+            msg->changeSE = 4;
+            setInputEvent(83u);
+            return 1;
+        }
+    } else {
+        return 0;
+    }
 }
 
 u32 uGUIChat::evCtrlAddChVlClick(cControl::Message* msg) {

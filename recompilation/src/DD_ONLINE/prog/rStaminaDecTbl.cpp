@@ -102,9 +102,8 @@ inline void cStaminaDecParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cStaminaDecParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cStaminaDecParam::createProperty(MtPropertyList& proplist) {
-    DDON_STUB("cStaminaDecParam::createProperty")
-    /* stub */
+void cStaminaDecParam::createProperty(MtPropertyList& proplist) {
+    proplist << MtProperty(static_cast<MtObject*>(this), "mStamina", &mStamina, 0u, 0u);
 }
 
 MtUI* cStaminaDecParam::createUI(MtProperty& prop) {
@@ -168,9 +167,9 @@ rStaminaDecTbl::~rStaminaDecTbl() {
     mDecTbl.mLength = 0;
 }
 
-__attribute__((weak)) void rStaminaDecTbl::createProperty(MtPropertyList& proplist) {
-    DDON_STUB("rStaminaDecTbl::createProperty")
-    /* stub */
+void rStaminaDecTbl::createProperty(MtPropertyList& proplist) {
+    this->cResource::createProperty(proplist);
+    proplist << MtProperty(static_cast<MtObject*>(this), "mDecTbl", static_cast<MtObject*>(&mDecTbl), 0u, 0u);
 }
 
 MtUI* rStaminaDecTbl::createUI(MtProperty& prop) {

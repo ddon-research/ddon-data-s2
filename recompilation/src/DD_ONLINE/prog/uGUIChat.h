@@ -37,6 +37,7 @@ class sGUIExt;
 class uGUICommunityList;
 
 // Declarations
+struct KeyData;
 class uGUIChat;
 
 // Type aliases from DWARF
@@ -48,6 +49,13 @@ using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
 using u8 = unsigned char;
+
+struct KeyData
+{
+public:
+    u32 mKeyType;  // offset: 0x0
+    MT_CTSTR mChar;  // offset: 0x8
+};
 
 class uGUIChat : public uGUIBase
 {

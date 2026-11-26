@@ -60,9 +60,25 @@ void nGUIItem::cItem::init() {
     mToBagType = ::nItem::STORAGE_TYPE_INVALID;
 }
 
-__attribute__((weak)) nGUIItem::cItem& nGUIItem::cItem::copy(const nGUIItem::cItem& item) {
-    DDON_STUB("nGUIItem::cItem::copy")
-    __builtin_unreachable();
+nGUIItem::cItem& nGUIItem::cItem::copy(const nGUIItem::cItem& item) {
+    mNum = item.mNum;
+    mLimitNum = item.mLimitNum;
+    mLimitNum2 = item.mLimitNum2;
+    mLimitNum3 = item.mLimitNum3;
+    mSlotNo = item.mSlotNo;
+    mItemNo = item.mItemNo;
+    mOmId = item.mOmId;
+    mpParam = item.mpParam;
+    mprItemParam = item.mprItemParam;
+    mpParent = item.mpParent;
+    mSelect = item.mSelect;
+    mUseEnable = item.mUseEnable;
+    mIsPut = item.mIsPut;
+    mFirstSelect = item.mFirstSelect;
+    mLoadFrom = item.mLoadFrom;
+    mBagType = item.mBagType;
+    mToBagType = item.mToBagType;
+    return *this;
 }
 
 void nGUIItem::cItem::setGlobalItem(uGUIBase* pBase) {
@@ -79,7 +95,7 @@ void nGUIItem::cItem::setResourceParam(rItemList::rItemParam* p) {
 
 rItemList::ITEM_CATEGORY nGUIItem::cItem::getCategory() {
     if (mprItemParam != nullptr) {
-        return static_cast<rItemList::ITEM_CATEGORY>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mprItemParam) + 94));
+        return static_cast<rItemList::ITEM_CATEGORY>(mprItemParam->mCategory);
     } else {
         return ::rItemList::CATEGORY_NONE;
     }
@@ -104,7 +120,7 @@ MT_CTSTR nGUIItem::cItem::getName() {
 
 u32 nGUIItem::cItem::getNum() const {
     if (mpParam != nullptr) {
-        unsigned short t0 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpParam) + 12);
+        u16 t0 = mpParam->mItemParam.mItemNum_Guard;
         if (mprItemParam != nullptr) {
             if (static_cast<unsigned int>(mBagType) <= 31) {
                 if (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) == 0) {
@@ -130,7 +146,7 @@ u32 nGUIItem::cItem::getNum() const {
                     return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
                 }
             }
-            return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpParam) + 12);
+            return mpParam->mItemParam.mItemNum_Guard;
         } else {
             return t0;
         }
@@ -235,7 +251,7 @@ rItemList::rParam* nGUIItem::cItem::getParam(rItemList::rParam::PARAM_KIND kind)
             for (rItemList::rItemParam* v0_4 = mprItemParam;;) {
                 rItemList::rParam* t0 = v0_4->getItemParam(i0_2);
                 if (t0 != nullptr) {
-                    if (static_cast<unsigned int>(kind) == static_cast<unsigned int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t0) + 8)))) {
+                    if (static_cast<unsigned int>(kind) == static_cast<unsigned int>(t0->mKindType)) {
                         v2_0 = t0;
                         break;
                     }

@@ -25,9 +25,9 @@ inline void cEmWorkRateTable::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEmWorkRateTable::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cEmWorkRateTable::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEmWorkRateTable::createProperty")
-    /* stub */
+void cEmWorkRateTable::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mWorkRate", &mWorkRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWorkRateStatus", &mWorkRateStatus, 0u, 0u);
 }
 
 inline cEmWorkRateTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

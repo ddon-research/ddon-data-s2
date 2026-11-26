@@ -5,9 +5,9 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
-#include "../../XFramework/cUnit.h"
 #include "../../generated/shared/nDDOMath.h"
 #include "../../XFramework/uConstraint.h"
 #include "../../XFramework/uCoord.h"
@@ -20,13 +20,24 @@ const MtDTI& uCnsBowUpper::getDTI() const {
     return uCnsBowUpper::DTI;
 }
 
+inline void* uCnsBowUpper::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uCnsBowUpper::DTI)->memAlloc(sz, align, uCnsBowUpper::DTI.getID());
+}
+
 inline void uCnsBowUpper::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uCnsBowUpper::DTI)->memFree(p_addr);
 }
 
 uCnsBowUpper::uCnsBowUpper() {
-    DDON_STUB("uCnsBowUpper::uCnsBowUpper")
-    /* stub */
+    mJoint = 0;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 224) = 0;
+    mScl.x = 1.0f;
+    mScl.y = 1.0f;
+    mScl.z = 1.0f;
+    mScl.pad_ = 0.0f;
+    mRot = MtVector3::Zero;
+    mTrans = MtVector3::Zero;
+    mDir = MtVector3::AxisZ;
 }
 
 uCnsBowUpper::~uCnsBowUpper() {
@@ -61,9 +72,13 @@ void uCnsBowUpper::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
-__attribute__((weak)) void uCnsBowUpper::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsBowUpper::createProperty")
-    /* stub */
+void uCnsBowUpper::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCnsBowUpperRes", "resource", reinterpret_cast<MT_MFUNC>(&::uCnsBowUpper::getResource), reinterpret_cast<MT_MFUNC>(&::uConstraint::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mScl", &mScl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOrder", &(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 224)), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRot", &mRot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTrans", &mTrans, 0u, 0u);
 }
 
 MtUI* uCnsBowUpper::createUI(MtProperty& prop) {
@@ -87,8 +102,7 @@ inline uCnsBowUpper::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 uCnsBowUpper::MyDTI uCnsBowUpper::DTI("uCnsBowUpper", &::uConstraint::DTI, 240ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uCnsBowUpper::MyDTI::newInstance() const {
-    DDON_STUB("uCnsBowUpper::MyDTI::newInstance")
-    return nullptr;
+MtObject* uCnsBowUpper::MyDTI::newInstance() const {
+    return new (16u) uCnsBowUpper;
 }
 

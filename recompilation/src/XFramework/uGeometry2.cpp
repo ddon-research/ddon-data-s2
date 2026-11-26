@@ -48,9 +48,19 @@ uGeometry2::~uGeometry2() {
     mpRGeometry2 = nullptr;
 }
 
-__attribute__((weak)) void uGeometry2::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGeometry2::createProperty")
-    /* stub */
+void uGeometry2::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "OwnerInfo", static_cast<MtObject*>(&mOwnerSystem), 6u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "rGeometry2", "resource", reinterpret_cast<MT_MFUNC>(&::uGeometry2::getResourceForUI), reinterpret_cast<MT_MFUNC>(&::uGeometry2::setResourceForUI), 2u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Geometry", static_cast<MtObject*>(&mGeometryArray), 6u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Parent", reinterpret_cast<MtObject* *>(&mpGeometryGroupUnit), 17u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGeometryArray", static_cast<MtObject*>(&mGeometryArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOwnerSystem", static_cast<MtObject*>(&mOwnerSystem), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpRGeometry2", "resource", reinterpret_cast<MT_MFUNC>(&::uGeometry2::getResourceForUI), reinterpret_cast<MT_MFUNC>(&::uGeometry2::setResourceForUI), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpGeometryGroupUnit", reinterpret_cast<MtObject* *>(&mpGeometryGroupUnit), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Active", reinterpret_cast<MT_MFUNC>(&::uGeometry2::isGeometryActive), reinterpret_cast<MT_MFUNC>(&::uGeometry2::setGeometryActive), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Disp", reinterpret_cast<MT_MFUNC>(&::uGeometry2::isGeometryDraw), reinterpret_cast<MT_MFUNC>(&::uGeometry2::setGeometryDraw), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Num", reinterpret_cast<MT_MFUNC>(&::uGeometry2::getGeometryNum), reinterpret_cast<MT_MFUNC>(&::uGeometry2::setDummyU32), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) void uGeometry2::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {

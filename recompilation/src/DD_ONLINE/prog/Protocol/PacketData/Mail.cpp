@@ -105,9 +105,8 @@ inline CDataMailInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 CDataMailInfo::MyDTI CDataMailInfo::DTI("CDataMailInfo", &::CPacketDataBase::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataMailInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataMailInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataMailInfo::MyDTI::newInstance() const {
+    return new (16u) CDataMailInfo;
 }
 
 const MtDTI& CDataMailItemInfo::getDTI() const {

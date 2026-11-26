@@ -9,6 +9,11 @@
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
 
+#include "../MT/MtAllocator.h"
+#include "nCollision.h"
+
+#include <string.h>
+
 // Forward declarations
 class MtAABB;
 class MtAllocator;
@@ -20,6 +25,8 @@ class MtMatrix;
 class MtRay;
 class MtRayY;
 class MtVector3;
+
+namespace nCollisionUtil { struct LoadBuffer; }
 
 // Declarations
 class cGridCollision;
@@ -212,6 +219,17 @@ public:
     size_t memSize(void*);
     u32 getInsideWorkSize() const;
     bool copy(cGridCollision& src, const MtMatrix& mat);
+
+    template <typename IO_CLASS> inline bool load(IO_CLASS& in, nCollisionUtil::LoadBuffer* pBuffer);
+private:
+    template <typename IO_CLASS> bool loadCore(IO_CLASS& in, const bool FlgEnableEndianChange, nCollisionUtil::LoadBuffer* pBuffer);
+
+    template <typename IO_CLASS> bool saveCore(IO_CLASS& out, const bool FlgEnableEndianChange);
+    friend class rZone;
+public:
+    template <typename IO_CLASS> inline bool save(IO_CLASS& out);
+private:
+public:
 private:
     u32 traverseCore(const MtGeometry& TraverseGeometry, MtObject* pObject, TRAVERSE_CALLBACK pCallbackFunc, uintptr SendParamU32, u32 ThreadIndex, bool FlgOneHitEnd);
     void addRefCount(const u32 ThreadIndex, TraverseSystemParam& SendParam);
@@ -310,6 +328,10 @@ public:
     size_t memSize(void*);
     static MtAllocator* getAllocator();
     void copy(cGridCollisionRegistInfo& src, const MtMatrix& mat);
+
+    template <typename IO_CLASS> inline bool load(IO_CLASS& r);
+
+    template <typename IO_CLASS> inline bool save(IO_CLASS& w);
 protected:
     MtFloat3 mRegistAABBMinPos;  // offset: 0x0
     u32 mRegistParam;  // offset: 0xc
@@ -319,4 +341,223 @@ protected:
 
 inline void* cGridCollisionRegistInfo::operator new(size_t sz, void* p) {
     return p;
+}
+
+template <typename IO_CLASS>
+inline bool cGridCollision::load(IO_CLASS& in, nCollisionUtil::LoadBuffer* pBuffer) {
+    return loadCore(in, false, pBuffer);
+}
+
+template <typename IO_CLASS>
+inline bool cGridCollisionRegistInfo::load(IO_CLASS& r) {
+    r.read(&mRegistAABBMinPos, sizeof(mRegistAABBMinPos));
+    r.read(&mRegistParam, sizeof(mRegistParam));
+    r.read(&mRegistAABBMaxPos, sizeof(mRegistAABBMaxPos));
+    memset(mTraverseRefCount, 0, sizeof(mTraverseRefCount));
+    return true;
+}
+
+inline void* cGridCollision::memAlloc(u32 s) {
+    return ::MtMemoryAllocator::getAllocator(cGridCollision::DTI)->memAlloc(s, 16u, cGridCollision::DTI.getID());
+}
+inline void cGridCollision::memFree(void* padr) {
+    ::MtMemoryAllocator::getAllocator(cGridCollision::DTI)->memFree(padr);
+}
+inline void* cGridCollision::cCellRegisterArrayBase::memAlloc(size_t s) {
+    return ::MtMemoryAllocator::getAllocator(cGridCollision::DTI)->memAlloc(s, 16u);
+}
+inline void cGridCollision::cCellRegisterArrayBase::memFree(void* padr) {
+    ::MtMemoryAllocator::getAllocator(cGridCollision::DTI)->memFree(padr);
+}
+inline void* cGridCollision::cCellRegisterArrayBase::operator new[](size_t sz) {
+    return ::MtMemoryAllocator::getAllocator(cGridCollision::DTI)->memAlloc(sz, 16u);
+}
+inline void cGridCollision::cCellRegisterArrayBase::operator delete[](void* padr) {
+    ::MtMemoryAllocator::getAllocator(cGridCollision::DTI)->memFree(padr);
+}
+inline cGridCollision::cCellRegisterArrayBase::cCellRegisterArrayBase() : mpArrayData(nullptr), mArrayRegisterNum(0), mArrayBufferNum(0) {
+}
+inline void cGridCollision::cCellRegisterArrayBase::clear() {
+    if (mpArrayData != nullptr) {
+        memFree(mpArrayData);
+        mpArrayData = nullptr;
+    }
+    mArrayRegisterNum = 0;
+    mArrayBufferNum = 0;
+}
+inline cGridCollision::cCellRegisterArrayBase::~cCellRegisterArrayBase() {
+    clear();
+}
+template <typename _TYPE, unsigned int _BUFFER_OVER_ADD_SIZE>
+inline cGridCollision::cCellRegisterArray<_TYPE, _BUFFER_OVER_ADD_SIZE>::cCellRegisterArray() {
+}
+template <typename _TYPE, unsigned int _BUFFER_OVER_ADD_SIZE>
+inline cGridCollision::cCellRegisterArray<_TYPE, _BUFFER_OVER_ADD_SIZE>::~cCellRegisterArray() {
+}
+template <typename _TYPE, unsigned int _BUFFER_OVER_ADD_SIZE>
+inline bool cGridCollision::cCellRegisterArray<_TYPE, _BUFFER_OVER_ADD_SIZE>::add(_TYPE param) {
+    if (mArrayRegisterNum >= mArrayBufferNum) {
+        void* pNewArray = memAlloc((mArrayBufferNum + _BUFFER_OVER_ADD_SIZE) * sizeof(_TYPE));
+        if (pNewArray == nullptr) {
+            return false;
+        }
+        if (mpArrayData != nullptr) {
+            memcpy(pNewArray, mpArrayData, mArrayRegisterNum * sizeof(_TYPE));
+            memFree(mpArrayData);
+        }
+        mpArrayData = pNewArray;
+        mArrayBufferNum += _BUFFER_OVER_ADD_SIZE;
+    }
+    static_cast<_TYPE*>(mpArrayData)[mArrayRegisterNum] = param;
+    mArrayRegisterNum++;
+    return true;
+}
+inline cGridCollision::cU16Array* cGridCollision::getGridInfo16(s32 x, s32 z) {
+    if (x >= mGridNumX || z >= mGridNumZ) {
+        return nullptr;
+    }
+    return &static_cast<cU16Array*>(mpGridInfo)[x + z * mGridNumX];
+}
+inline cGridCollision::cU32Array* cGridCollision::getGridInfo32(s32 x, s32 z) {
+    if (x >= mGridNumX || z >= mGridNumZ) {
+        return nullptr;
+    }
+    return &static_cast<cU32Array*>(mpGridInfo)[x + z * mGridNumX];
+}
+
+template <typename IO_CLASS>
+bool cGridCollision::loadCore(IO_CLASS& in, const bool FlgEnableEndianChange, nCollisionUtil::LoadBuffer* pBuffer) {
+    clear();
+    in.read(&mMagic, sizeof(mMagic));
+    if (mMagic != MAGIC) {
+        return false;
+    }
+    in.read(&mVersion, sizeof(mVersion));
+    if (mVersion != VERSION) {
+        return false;
+    }
+    in.read(&mBoundingAABB, sizeof(mBoundingAABB));
+    in.read(&mGridNumX, sizeof(mGridNumX));
+    in.read(&mGridNumZ, sizeof(mGridNumZ));
+    in.read(&mCellMode, sizeof(mCellMode));
+    in.read(&mFlgStaticMode, sizeof(mFlgStaticMode));
+    initialize(mBoundingAABB, mGridNumX, mGridNumZ, mCellMode);
+    if (mFlgStaticMode) {
+        if (pBuffer != nullptr) {
+            mFlgOutsideMemoryAllocate = true;
+            mpStaticGridInfo = static_cast<StaticGridInfo*>(pBuffer->allocate(mGridNumX * mGridNumZ * sizeof(StaticGridInfo)));
+        } else {
+            mFlgOutsideMemoryAllocate = false;
+            mpStaticGridInfo = static_cast<StaticGridInfo*>(memAlloc(mGridNumX * mGridNumZ * sizeof(StaticGridInfo)));
+        }
+        in.read(mpStaticGridInfo, mGridNumX * mGridNumZ * sizeof(StaticGridInfo));
+        in.read(&mStaticGridRegistParamNum, sizeof(mStaticGridRegistParamNum));
+        if (mCellMode == 0) {
+            const u32 Size = mStaticGridRegistParamNum * sizeof(u32);
+            mpStaticGridRegistParam = pBuffer != nullptr ? pBuffer->allocate(Size) : memAlloc(Size);
+            in.read(mpStaticGridRegistParam, Size);
+        } else if (mCellMode == 1) {
+            const u32 Size = mStaticGridRegistParamNum * sizeof(u16);
+            mpStaticGridRegistParam = pBuffer != nullptr ? pBuffer->allocate(Size) : memAlloc(Size);
+            in.read(mpStaticGridRegistParam, Size);
+        }
+        return true;
+    }
+    mFlgOutsideMemoryAllocate = false;
+    if (mCellMode == 1) {
+        for (s32 x = 0; x < mGridNumX; x++) {
+            for (s32 z = 0; z < mGridNumZ; z++) {
+                cU16Array* pGridInfo = getGridInfo16(x, z);
+                u32 RegistNum;
+                in.read(&RegistNum, sizeof(RegistNum));
+                for (u32 i = 0; i < RegistNum; i++) {
+                    u16 Param;
+                    in.read(&Param, sizeof(Param));
+                    pGridInfo->add(Param);
+                }
+            }
+        }
+    } else if (mCellMode == 0) {
+        for (s32 x = 0; x < mGridNumX; x++) {
+            for (s32 z = 0; z < mGridNumZ; z++) {
+                cU32Array* pGridInfo = getGridInfo32(x, z);
+                u32 RegistNum;
+                in.read(&RegistNum, sizeof(RegistNum));
+                for (u32 i = 0; i < RegistNum; i++) {
+                    u32 Param;
+                    in.read(&Param, sizeof(Param));
+                    pGridInfo->add(Param);
+                }
+            }
+        }
+    }
+    return true;
+}
+
+template <typename IO_CLASS>
+inline bool cGridCollisionRegistInfo::save(IO_CLASS& w) {
+    w.write(&mRegistAABBMinPos, sizeof(mRegistAABBMinPos));
+    w.write(&mRegistParam, sizeof(mRegistParam));
+    w.write(&mRegistAABBMaxPos, sizeof(mRegistAABBMaxPos));
+    return true;
+}
+template <typename IO_CLASS>
+inline bool cGridCollision::save(IO_CLASS& out) {
+    return saveCore(out, false);
+}
+inline u16 cGridCollision::cCellRegisterArrayBase::length() const {
+    return mArrayRegisterNum;
+}
+template <typename _TYPE, unsigned int _BUFFER_OVER_ADD_SIZE>
+inline _TYPE cGridCollision::cCellRegisterArray<_TYPE, _BUFFER_OVER_ADD_SIZE>::at(u32 GetElementIndex) const {
+    return static_cast<const _TYPE*>(mpArrayData)[GetElementIndex];
+}
+
+template <typename IO_CLASS>
+bool cGridCollision::saveCore(IO_CLASS& out, const bool FlgEnableEndianChange) {
+    mMagic = MAGIC;
+    mVersion = VERSION;
+    out.write(&mMagic, sizeof(mMagic));
+    out.write(&mVersion, sizeof(mVersion));
+    out.write(&mBoundingAABB, sizeof(mBoundingAABB));
+    out.write(&mGridNumX, sizeof(mGridNumX));
+    out.write(&mGridNumZ, sizeof(mGridNumZ));
+    out.write(&mCellMode, sizeof(mCellMode));
+    out.write(&mFlgStaticMode, sizeof(mFlgStaticMode));
+    if (mFlgStaticMode) {
+        if (!FlgEnableEndianChange) {
+            out.write(mpStaticGridInfo, mGridNumX * mGridNumZ * sizeof(StaticGridInfo));
+            out.write(&mStaticGridRegistParamNum, sizeof(mStaticGridRegistParamNum));
+            if (mCellMode == 0) {
+                out.write(mpStaticGridRegistParam, mStaticGridRegistParamNum * sizeof(u32));
+            } else if (mCellMode == 1) {
+                out.write(mpStaticGridRegistParam, mStaticGridRegistParamNum * sizeof(u16));
+            }
+        }
+    } else if (mCellMode == 0) {
+        for (s32 x = 0; x < mGridNumX; x++) {
+            for (s32 z = 0; z < mGridNumZ; z++) {
+                const cU32Array* pGridInfo = &static_cast<cU32Array*>(mpGridInfo)[x + z * mGridNumX];
+                u32 RegistNum = pGridInfo->length();
+                out.write(&RegistNum, sizeof(RegistNum));
+                for (u32 i = 0; i < RegistNum; i++) {
+                    u32 Param = pGridInfo->at(i);
+                    out.write(&Param, sizeof(Param));
+                }
+            }
+        }
+    } else if (mCellMode == 1) {
+        for (s32 x = 0; x < mGridNumX; x++) {
+            for (s32 z = 0; z < mGridNumZ; z++) {
+                const cU16Array* pGridInfo = &static_cast<cU16Array*>(mpGridInfo)[x + z * mGridNumX];
+                u32 RegistNum = pGridInfo->length();
+                out.write(&RegistNum, sizeof(RegistNum));
+                for (u32 i = 0; i < RegistNum; i++) {
+                    u16 Param = pGridInfo->at(i);
+                    out.write(&Param, sizeof(Param));
+                }
+            }
+        }
+    }
+    return true;
 }

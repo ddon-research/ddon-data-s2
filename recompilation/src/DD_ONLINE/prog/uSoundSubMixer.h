@@ -168,7 +168,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         FaderParam();
-        virtual ~FaderParam();
+        virtual ~FaderParam() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
         void setFader(rSoundSubMixer::Fader* pFader);

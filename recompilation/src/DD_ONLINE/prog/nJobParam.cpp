@@ -6,6 +6,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "cContextPlayerInfo.h"
 #include "../../generated/shared/nHuman.h"
@@ -28,9 +29,21 @@ nJobParam::cHumanBaseInfo::~cHumanBaseInfo() {
     /* stub */
 }
 
-__attribute__((weak)) void nJobParam::cHumanBaseInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("nJobParam::cHumanBaseInfo::createProperty")
-    /* stub */
+void nJobParam::cHumanBaseInfo::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_F32, "HP", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getHP), reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::setHP), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_F32, "\346\234\200\345\244\247HP", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getFinalMaxHP), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_F32, "\343\202\271\343\202\277\343\203\237\343\203\212", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getStamina), reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::setStamina), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_F32, "\346\234\200\345\244\247\343\202\271\343\202\277\343\203\237\343\203\212", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getFinalMaxStamina), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "\346\234\200\345\244\247\343\203\255\343\202\271\343\203\210\343\202\277\343\202\244\343\203\236\343\203\274", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getLostPower), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_S32, "\343\202\242\343\203\223\343\203\252\343\203\206\343\202\243\343\202\263\343\202\271\343\203\210\350\250\261\345\256\271\351\207\217", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getAbilityCapacity), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "\345\276\251\346\264\273\345\233\236\346\225\260", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getLostNum), reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::setLostNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "\346\234\200\345\244\247\345\276\251\346\264\273\345\233\236\346\225\260", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getMaxLostNum), reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::setMaxLostNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_F32, "\343\202\252\343\203\274\343\203\226HP", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getGainHp), reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::setGainHp), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_F32, "\343\202\252\343\203\274\343\203\226Stamina", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getGainStamina), reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::setGainStamina), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "\343\202\252\343\203\274\343\203\226Atk", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getGainAtk), reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::setGainAtk), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "\343\202\252\343\203\274\343\203\226Def", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getGainDef), reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::setGainDef), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "\343\202\252\343\203\274\343\203\226MAtk", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getGainMAtk), reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::setGainMAtk), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "\343\202\252\343\203\274\343\203\226MDef", reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::getGainMDef), reinterpret_cast<MT_MFUNC>(&::nJobParam::cHumanBaseInfo::setGainMDef), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 static auto ddon_emit_0x01962960 __attribute__((used)) = &nJobParam::cHumanBaseInfo::getHP;

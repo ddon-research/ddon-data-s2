@@ -27,6 +27,7 @@ class cGUIObject;
 class cItemParam;
 namespace nGUIItem { class cItem; }
 class rGUI;
+class sGUIExt;
 
 // Declarations
 class uGUIPointer;
@@ -43,6 +44,7 @@ using u8 = unsigned char;
 
 class uGUIPointer : public uGUIBase
 {
+    friend class sGUIExt;
 public:
     enum
     {

@@ -6,6 +6,9 @@
 #include "../MT/MtCollision.h"
 #include "../MT/MtCollisionMath.h"
 #include "../MT/MtDTI.h"
+
+#include "../MT/MtDataReader.h"
+#include "nCollision.h"
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
@@ -31,8 +34,12 @@ inline void cBVHCollision::operator delete(void* p_addr) {
 }
 
 cBVHCollision::cBVHCollision() {
-    DDON_STUB("cBVHCollision::cBVHCollision")
-    /* stub */
+    memset(&mHeader, 0, sizeof(mHeader));
+    mpRootNodeBinary = nullptr;
+    mpRootNodeBinaryOptimize = nullptr;
+    mpRootNodeQuad = nullptr;
+    mpLeafIndexArray = nullptr;
+    mpBuildOnlineWork = nullptr;
 }
 
 cBVHCollision::~cBVHCollision() {
@@ -44,13 +51,80 @@ bool cBVHCollision::load(MtDataReader& fin, nCollisionUtil::LoadBuffer* pBuffer)
 }
 
 __attribute__((weak)) bool cBVHCollision::loadCore(MtDataReader& fin, bool FlgEndianChenge, nCollisionUtil::LoadBuffer* pBuffer) {
-    DDON_STUB("cBVHCollision::loadCore")
-    return {};
+    clear();
+    fin.read(&mHeader, sizeof(mHeader));
+    const u32 MyMagic = 0x43485642;
+    if (mHeader.magic != MyMagic) {
+        memset(&mHeader, 0, sizeof(mHeader));
+        return false;
+    }
+    if (mHeader.version != 0x77b17b24) {
+        memset(&mHeader, 0, sizeof(mHeader));
+        return false;
+    }
+    switch (mHeader.type) {
+    case 1: {
+        const u32 AllocateSize = sizeof(NodeQuad) * mHeader.NodeNum;
+        if (pBuffer != nullptr) {
+            mHeader.FlgNodeOutsideAllocateMemory = true;
+            mpRootNodeQuad = static_cast<NodeQuad*>(pBuffer->allocate(AllocateSize));
+        } else {
+            mHeader.FlgNodeOutsideAllocateMemory = false;
+            mpRootNodeQuad = static_cast<NodeQuad*>(MtMemoryAllocator::getAllocator(cBVHCollision::DTI)->memAlloc(AllocateSize, 16u));
+        }
+        fin.read(mpRootNodeQuad, AllocateSize);
+        break;
+    }
+    case 2: {
+        const u32 AllocateSize = sizeof(NodeBinaryOptimize) * mHeader.NodeNum;
+        if (pBuffer != nullptr) {
+            mHeader.FlgNodeOutsideAllocateMemory = true;
+            mpRootNodeBinaryOptimize = static_cast<NodeBinaryOptimize*>(pBuffer->allocate(AllocateSize));
+        } else {
+            mHeader.FlgNodeOutsideAllocateMemory = false;
+            mpRootNodeBinaryOptimize = static_cast<NodeBinaryOptimize*>(MtMemoryAllocator::getAllocator(cBVHCollision::DTI)->memAlloc(AllocateSize, 16u));
+        }
+        fin.read(mpRootNodeBinaryOptimize, sizeof(NodeBinaryOptimize) * mHeader.NodeNum);
+        break;
+    }
+    }
+    return true;
 }
 
 __attribute__((weak)) void cBVHCollision::clear() {
-    DDON_STUB("cBVHCollision::clear")
-    /* stub */
+    if (mHeader.FlgBasicAllocedMultiple) {
+        deleteNodeBinaryBaseCore(mpRootNodeBinary);
+        if (mpRootNodeBinary != nullptr) {
+            delete[] mpRootNodeBinary;
+            mpRootNodeBinary = nullptr;
+        }
+    } else if (mpRootNodeBinary != nullptr) {
+        delete mpRootNodeBinary;
+        mpRootNodeBinary = nullptr;
+    }
+    if (mpRootNodeBinaryOptimize != nullptr) {
+        void* t5 = mpRootNodeBinaryOptimize;
+        MtMemoryAllocator::getAllocator(cBVHCollision::DTI)->memFree(t5);
+        mpRootNodeBinaryOptimize = nullptr;
+    }
+    if (!mHeader.FlgNodeOutsideAllocateMemory) {
+        if (mpRootNodeQuad != nullptr) {
+            void* t6 = mpRootNodeQuad;
+            MtMemoryAllocator::getAllocator(cBVHCollision::DTI)->memFree(t6);
+            mpRootNodeQuad = nullptr;
+        }
+    } else {
+        mpRootNodeQuad = nullptr;
+    }
+    if (mpLeafIndexArray != nullptr) {
+        void* t7 = mpLeafIndexArray;
+        MtMemoryAllocator::getAllocator(cBVHCollision::DTI)->memFree(t7);
+        mpLeafIndexArray = nullptr;
+    }
+    if (mpBuildOnlineWork != nullptr) {
+        delete mpBuildOnlineWork;
+        mpBuildOnlineWork = nullptr;
+    }
 }
 
 void cBVHCollision::buildOnlineFast(const MtAABB& TotalAABB, MtAABB* aabbArray, bool FlgForceRebuild) {
@@ -113,8 +187,14 @@ __attribute__((weak)) MtObject* cBVHCollision::MyDTI::newInstance() const {
 }
 
 cBVHCollision::NodeBinaryBasic::~NodeBinaryBasic() {
-    DDON_STUB("cBVHCollision::NodeBinaryBasic::~NodeBinaryBasic")
-    /* stub */
+    for (u32 i = 0; i < 2; i++) {
+        if (!aFlgDelete[i]) {
+            if (pChild[i] != nullptr) {
+                delete pChild[i];
+                pChild[i] = nullptr;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) MtCollisionUtil::MtVectorU4 cBVHCollision::NodeQuad::isIntersectRayYAll(const MtRayY& rayY) const {

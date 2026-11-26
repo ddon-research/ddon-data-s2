@@ -17,12 +17,12 @@ class MtObject;
 class MtPropertyList;
 class MtVector3;
 class cDraw;
-class cShlParamKeepLog;
 class uDDOModel;
 class uShlBakuensen;
 
 // Declarations
 class cShlLogNode;
+class cShlParamKeepLog;
 class uShlKeepOwnerLog;
 
 namespace nShlKeepLog {
@@ -40,9 +40,11 @@ namespace nShlKeepLog {
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
+using __uint64_t = long unsigned int;
 using f32 = float;
 using size_t = _Sizet;
 using u32 = unsigned int;
+using u64 = __uint64_t;
 
 class cShlLogNode : public MtObject
 {
@@ -88,6 +90,47 @@ protected:
     MtVector3 mDir;  // offset: 0x20
     uDDOModel* mpModel;  // offset: 0x30
     uShlKeepOwnerLog* mpOwnerShl;  // offset: 0x38
+public:
+    static MyDTI DTI;
+};
+
+class cShlParamKeepLog : public cShlParamBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual MtDTI& getShlDTI() const;  // vtable slot 6
+    cShlParamKeepLog();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void copy(const cShlParamBase* pParamBase);  // vtable slot 11
+private:
+    u32 mLogOptionFlag;  // offset: 0x160
+    u32 mLogNodeNumMax;  // offset: 0x164
+    u32 mExecuteAttrFlag;  // offset: 0x168
+    f32 mExeLogTime;  // offset: 0x16c
+    f32 mExeLogDistance;  // offset: 0x170
+    u32 mWaitAttrFlag;  // offset: 0x174
+    u64 mWaitObjStatus;  // offset: 0x178
 public:
     static MyDTI DTI;
 };
@@ -161,6 +204,10 @@ public:
 };
 
 inline void* cShlLogNode::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cShlParamKeepLog::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 

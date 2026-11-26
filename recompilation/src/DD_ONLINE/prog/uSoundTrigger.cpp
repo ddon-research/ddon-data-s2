@@ -18,11 +18,16 @@
 #include "../../XFramework/cZoneContents.h"
 #include "../../XFramework/cZoneLayout.h"
 #include "../../XFramework/cZoneListener.h"
-#include "../../generated/rLayout/nSoundZone.h"
+#include "../../generated/shared/nSoundZone.h"
 #include "../../XFramework/nZone.h"
+#include "../../XFramework/rSoundCurveSet.h"
+#include "../../XFramework/rSoundDirectionalSet.h"
+#include "../../XFramework/rSoundEQ.h"
 #include "../../XFramework/rSoundRequest.h"
+#include "../../XFramework/rSoundReverb.h"
 #include "rSoundSequenceSe.h"
 #include "../../XFramework/rSoundStreamRequest.h"
+#include "rSoundSubMixer.h"
 #include "../../XFramework/rZone.h"
 #include "sPlayerManager.h"
 #include "../../XFramework/sSound.h"
@@ -37,6 +42,64 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+inline void* nSoundTrigger::cFreeWorkContents::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cFreeWorkContents::DTI)->memAlloc(sz, align, ::nSoundTrigger::cFreeWorkContents::DTI.getID());
+}
+inline nSoundTrigger::cFreeWorkContents::cFreeWorkContents() {
+    setContentsName("FreeWork");
+    for (u32 i = 0; i < 4; i++) {
+        mFreeWorkA[i] = 0;
+        mFreeWorkB[i] = 0;
+    }
+}
+
+inline void* nSoundTrigger::cReverbContents::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cReverbContents::DTI)->memAlloc(sz, align, ::nSoundTrigger::cReverbContents::DTI.getID());
+}
+inline nSoundTrigger::cReverbContents::cReverbContents() {
+    setContentsName("Reverb");
+    mReverbIdA = 0;
+    mReverbIdB = 0;
+    mEffectNoA = 0;
+    mEffectNoB = 0;
+    mFadeTimeA = 0;
+    mFadeTimeB = 0;
+    mpReverbA = nullptr;
+    mpReverbB = nullptr;
+}
+
+inline void* nSoundTrigger::cStreamContents::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cStreamContents::DTI)->memAlloc(sz, align, ::nSoundTrigger::cStreamContents::DTI.getID());
+}
+inline nSoundTrigger::cStreamContents::cStreamContents() {
+    setContentsName("Stream");
+    mStreamRequestNoA = 0;
+    mStreamRequestNoB = 0;
+    mpStreamRequestB = nullptr;
+    mpStreamRequestA = nullptr;
+}
+
+inline void* nSoundTrigger::cSeContents::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cSeContents::DTI)->memAlloc(sz, align, ::nSoundTrigger::cSeContents::DTI.getID());
+}
+inline nSoundTrigger::cSeContents::cSeContents() {
+    setContentsName("Se");
+    mRequestNoA = 0;
+    mRequestNoB = 0;
+    mpRequestB = nullptr;
+    mpRequestA = nullptr;
+}
+
+inline void* nSoundTrigger::cBaseContents::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cBaseContents::DTI)->memAlloc(sz, align, ::nSoundTrigger::cBaseContents::DTI.getID());
+}
+inline nSoundTrigger::cBaseContents::cBaseContents() {
+    setContentsName("Base");
+    mFlgUse = true;
+    setAttribute(0x4000u, true);
+    mOption = 0;
+}
 
 const MtDTI& cSoundTriggerLayoutInfo::getDTI() const {
     return cSoundTriggerLayoutInfo::DTI;
@@ -91,14 +154,29 @@ MtUI* cSoundTriggerLayoutInfo::createUI(MtProperty& prop) {
     return this->cSoundLayoutInfo::createUI(prop);
 }
 
-__attribute__((weak)) void cSoundTriggerLayoutInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSoundTriggerLayoutInfo::createProperty")
-    /* stub */
+void cSoundTriggerLayoutInfo::createProperty(MtPropertyList& s) {
+    this->cSoundLayoutInfo::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpUSequenceSe", reinterpret_cast<MtObject* *>(&mpUSequenceSe[0]), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPanelNormal", &mPanelNormal[0], 35u, 2u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPanelType", &mPanelType, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mContentsIndex", &mContentsIndex[0], 33u, 11u);
 }
 
-__attribute__((weak)) void cSoundTriggerLayoutInfo::setContentsIndex(nZone::cLayoutElement* pLayout) {
-    DDON_STUB("cSoundTriggerLayoutInfo::setContentsIndex")
-    /* stub */
+void cSoundTriggerLayoutInfo::setContentsIndex(nZone::cLayoutElement* pLayout) {
+    if (pLayout == nullptr) {
+        return;
+    }
+    mContentsIndex[0] = static_cast<int>(pLayout->getContentsIndex(nSoundTrigger::cBaseContents::DTI, 0u));
+    mContentsIndex[1] = static_cast<int>(pLayout->getContentsIndex(nSoundTrigger::cSeContents::DTI, 0u));
+    mContentsIndex[2] = static_cast<int>(pLayout->getContentsIndex(nSoundTrigger::cStreamContents::DTI, 0u));
+    mContentsIndex[3] = static_cast<int>(pLayout->getContentsIndex(nSoundTrigger::cPlaySeqSeContents::DTI, 0u));
+    mContentsIndex[4] = static_cast<int>(pLayout->getContentsIndex(nSoundTrigger::cStopSeqSeContents::DTI, 0u));
+    mContentsIndex[5] = static_cast<int>(pLayout->getContentsIndex(nSoundTrigger::cCurveSetContents::DTI, 0u));
+    mContentsIndex[6] = static_cast<int>(pLayout->getContentsIndex(nSoundTrigger::cDirectionalSetContents::DTI, 0u));
+    mContentsIndex[7] = static_cast<int>(pLayout->getContentsIndex(nSoundTrigger::cReverbContents::DTI, 0u));
+    mContentsIndex[8] = static_cast<int>(pLayout->getContentsIndex(nSoundTrigger::cEQContents::DTI, 0u));
+    mContentsIndex[9] = static_cast<int>(pLayout->getContentsIndex(nSoundTrigger::cSubMixerContents::DTI, 0u));
+    mContentsIndex[10] = static_cast<int>(pLayout->getContentsIndex(nSoundTrigger::cFreeWorkContents::DTI, 0u));
 }
 
 s32 cSoundTriggerLayoutInfo::getContentsIndex(u32 index) {
@@ -183,18 +261,20 @@ const MtDTI& nSoundTrigger::cBaseContents::getDTI() const {
     return nSoundTrigger::cBaseContents::DTI;
 }
 
+inline void nSoundTrigger::cBaseContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cBaseContents::DTI)->memFree(p_addr);
+}
+
 nSoundTrigger::cBaseContents::~cBaseContents() {
-    DDON_STUB("nSoundTrigger::cBaseContents::~cBaseContents")
-    /* stub */
 }
 
 MtUI* nSoundTrigger::cBaseContents::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nSoundTrigger::cBaseContents::createProperty(MtPropertyList& s) {
-    DDON_STUB("nSoundTrigger::cBaseContents::createProperty")
-    /* stub */
+void nSoundTrigger::cBaseContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Option", &mOption, 0u, 0u);
 }
 
 inline nSoundTrigger::cBaseContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -202,8 +282,7 @@ inline nSoundTrigger::cBaseContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 nSoundTrigger::cBaseContents::MyDTI nSoundTrigger::cBaseContents::DTI("nSoundTrigger::cBaseContents", &::nSoundTrigger::cCategory::DTI, 32ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nSoundTrigger::cBaseContents::MyDTI::newInstance() const {
-    DDON_STUB("nSoundTrigger::cBaseContents::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::nSoundTrigger::cBaseContents;
 }
 
 const MtDTI& nSoundTrigger::cCategory::getDTI() const {
@@ -240,6 +319,214 @@ MtObject* nSoundTrigger::cCategory::MyDTI::newInstance() const {
     return nullptr;
 }
 
+const MtDTI& nSoundTrigger::cCurveSetContents::getDTI() const {
+    return nSoundTrigger::cCurveSetContents::DTI;
+}
+
+inline void nSoundTrigger::cCurveSetContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cCurveSetContents::DTI)->memFree(p_addr);
+}
+
+nSoundTrigger::cCurveSetContents::~cCurveSetContents() {
+    if (mpCurveSetA != nullptr) {
+        mpCurveSetA->release();
+        mpCurveSetA = nullptr;
+    }
+    if (mpCurveSetB == nullptr) {
+        return;
+    }
+    mpCurveSetB->release();
+    mpCurveSetB = nullptr;
+}
+
+MtUI* nSoundTrigger::cCurveSetContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+void nSoundTrigger::cCurveSetContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "CurveSet:A", "resource", static_cast<void*>(&mpCurveSetA), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223CurveSet AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cCurveSetContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221CurveSet BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cCurveSetContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "CurveSet:B", "resource", static_cast<void*>(&mpCurveSetB), 0u, 0u);
+}
+
+__attribute__((weak)) void nSoundTrigger::cCurveSetContents::copyAToB() {
+    DDON_STUB("nSoundTrigger::cCurveSetContents::copyAToB")
+    /* stub */
+}
+
+__attribute__((weak)) void nSoundTrigger::cCurveSetContents::copyBToA() {
+    DDON_STUB("nSoundTrigger::cCurveSetContents::copyBToA")
+    /* stub */
+}
+
+inline nSoundTrigger::cCurveSetContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cCurveSetContents::MyDTI nSoundTrigger::cCurveSetContents::DTI("nSoundTrigger::cCurveSetContents", &::nSoundTrigger::cCategory::DTI, 48ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundTrigger::cCurveSetContents::MyDTI::newInstance() const {
+    DDON_STUB("nSoundTrigger::cCurveSetContents::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nSoundTrigger::cDirectionalSetContents::getDTI() const {
+    return nSoundTrigger::cDirectionalSetContents::DTI;
+}
+
+inline void nSoundTrigger::cDirectionalSetContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cDirectionalSetContents::DTI)->memFree(p_addr);
+}
+
+nSoundTrigger::cDirectionalSetContents::~cDirectionalSetContents() {
+    if (mpDirectionalSetA != nullptr) {
+        mpDirectionalSetA->release();
+        mpDirectionalSetA = nullptr;
+    }
+    if (mpDirectionalSetB == nullptr) {
+        return;
+    }
+    mpDirectionalSetB->release();
+    mpDirectionalSetB = nullptr;
+}
+
+MtUI* nSoundTrigger::cDirectionalSetContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+void nSoundTrigger::cDirectionalSetContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "DirectionalSet:A", "resource", static_cast<void*>(&mpDirectionalSetA), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223DirectionalSet AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cDirectionalSetContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221DirectionalSet BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cDirectionalSetContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "DirectionalSet:B", "resource", static_cast<void*>(&mpDirectionalSetB), 0u, 0u);
+}
+
+__attribute__((weak)) void nSoundTrigger::cDirectionalSetContents::copyAToB() {
+    DDON_STUB("nSoundTrigger::cDirectionalSetContents::copyAToB")
+    /* stub */
+}
+
+__attribute__((weak)) void nSoundTrigger::cDirectionalSetContents::copyBToA() {
+    DDON_STUB("nSoundTrigger::cDirectionalSetContents::copyBToA")
+    /* stub */
+}
+
+inline nSoundTrigger::cDirectionalSetContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cDirectionalSetContents::MyDTI nSoundTrigger::cDirectionalSetContents::DTI("nSoundTrigger::cDirectionalSetContents", &::nSoundTrigger::cCategory::DTI, 48ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundTrigger::cDirectionalSetContents::MyDTI::newInstance() const {
+    DDON_STUB("nSoundTrigger::cDirectionalSetContents::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nSoundTrigger::cEQContents::getDTI() const {
+    return nSoundTrigger::cEQContents::DTI;
+}
+
+inline void nSoundTrigger::cEQContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cEQContents::DTI)->memFree(p_addr);
+}
+
+nSoundTrigger::cEQContents::~cEQContents() {
+    if (mpEQA != nullptr) {
+        mpEQA->release();
+        mpEQA = nullptr;
+    }
+    if (mpEQB == nullptr) {
+        return;
+    }
+    mpEQB->release();
+    mpEQB = nullptr;
+}
+
+MtUI* nSoundTrigger::cEQContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+void nSoundTrigger::cEQContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "EQ:A", "resource", static_cast<void*>(&mpEQA), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "EQID:A", &mEQIdA, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FadeTime:A", &mFadeTimeA, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223EQ AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cEQContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221EQ BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cEQContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "EQ:B", "resource", static_cast<void*>(&mpEQB), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "EQID:B", &mEQIdB, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FadeTime:B", &mFadeTimeB, 0u, 0u);
+}
+
+__attribute__((weak)) void nSoundTrigger::cEQContents::copyAToB() {
+    DDON_STUB("nSoundTrigger::cEQContents::copyAToB")
+    /* stub */
+}
+
+__attribute__((weak)) void nSoundTrigger::cEQContents::copyBToA() {
+    DDON_STUB("nSoundTrigger::cEQContents::copyBToA")
+    /* stub */
+}
+
+inline nSoundTrigger::cEQContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cEQContents::MyDTI nSoundTrigger::cEQContents::DTI("nSoundTrigger::cEQContents", &::nSoundTrigger::cCategory::DTI, 64ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundTrigger::cEQContents::MyDTI::newInstance() const {
+    DDON_STUB("nSoundTrigger::cEQContents::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nSoundTrigger::cFreeWorkContents::getDTI() const {
+    return nSoundTrigger::cFreeWorkContents::DTI;
+}
+
+inline void nSoundTrigger::cFreeWorkContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cFreeWorkContents::DTI)->memFree(p_addr);
+}
+
+nSoundTrigger::cFreeWorkContents::~cFreeWorkContents() {
+}
+
+MtUI* nSoundTrigger::cFreeWorkContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+void nSoundTrigger::cFreeWorkContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkA0", &mFreeWorkA[0], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkA1", &mFreeWorkA[1], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkA2", &mFreeWorkA[2], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkA3", &mFreeWorkA[3], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWork \342\206\223AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cFreeWorkContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWork \342\206\221BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cFreeWorkContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkB0", &mFreeWorkB[0], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkB1", &mFreeWorkB[1], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkB2", &mFreeWorkB[2], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkB3", &mFreeWorkB[3], 0u, 0u);
+}
+
+void nSoundTrigger::cFreeWorkContents::copyAToB() {
+    mFreeWorkB[0] = mFreeWorkA[0];
+    mFreeWorkB[1] = mFreeWorkA[1];
+    mFreeWorkB[2] = mFreeWorkA[2];
+    mFreeWorkB[3] = mFreeWorkA[3];
+}
+
+void nSoundTrigger::cFreeWorkContents::copyBToA() {
+    mFreeWorkA[0] = mFreeWorkB[0];
+    mFreeWorkA[1] = mFreeWorkB[1];
+    mFreeWorkA[2] = mFreeWorkB[2];
+    mFreeWorkA[3] = mFreeWorkB[3];
+}
+
+inline nSoundTrigger::cFreeWorkContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cFreeWorkContents::MyDTI nSoundTrigger::cFreeWorkContents::DTI("nSoundTrigger::cFreeWorkContents", &::nSoundTrigger::cCategory::DTI, 64ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundTrigger::cFreeWorkContents::MyDTI::newInstance() const {
+    return new (16u) ::nSoundTrigger::cFreeWorkContents;
+}
+
 const MtDTI& nSoundTrigger::cPlaySeqSeContents::getDTI() const {
     return nSoundTrigger::cPlaySeqSeContents::DTI;
 }
@@ -264,9 +551,12 @@ MtUI* nSoundTrigger::cPlaySeqSeContents::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nSoundTrigger::cPlaySeqSeContents::createProperty(MtPropertyList& s) {
-    DDON_STUB("nSoundTrigger::cPlaySeqSeContents::createProperty")
-    /* stub */
+void nSoundTrigger::cPlaySeqSeContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SequenceSe:A", "resource", static_cast<void*>(&mpSequenceSeA), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223SequenceSe AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cPlaySeqSeContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221SequenceSe BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cPlaySeqSeContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SequenceSe:B", "resource", static_cast<void*>(&mpSequenceSeB), 0u, 0u);
 }
 
 __attribute__((weak)) void nSoundTrigger::cPlaySeqSeContents::copyAToB() {
@@ -286,6 +576,62 @@ nSoundTrigger::cPlaySeqSeContents::MyDTI nSoundTrigger::cPlaySeqSeContents::DTI(
 __attribute__((weak)) MtObject* nSoundTrigger::cPlaySeqSeContents::MyDTI::newInstance() const {
     DDON_STUB("nSoundTrigger::cPlaySeqSeContents::MyDTI::newInstance")
     return nullptr;
+}
+
+const MtDTI& nSoundTrigger::cReverbContents::getDTI() const {
+    return nSoundTrigger::cReverbContents::DTI;
+}
+
+inline void nSoundTrigger::cReverbContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cReverbContents::DTI)->memFree(p_addr);
+}
+
+nSoundTrigger::cReverbContents::~cReverbContents() {
+    if (mpReverbA != nullptr) {
+        mpReverbA->release();
+        mpReverbA = nullptr;
+    }
+    if (mpReverbB == nullptr) {
+        return;
+    }
+    mpReverbB->release();
+    mpReverbB = nullptr;
+}
+
+MtUI* nSoundTrigger::cReverbContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+void nSoundTrigger::cReverbContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Reverb:A", "resource", static_cast<void*>(&mpReverbA), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "ReverbID:A", &mReverbIdA, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "EffectNo:A", &mEffectNoA, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FadeTime:A", &mFadeTimeA, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223Reverb AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cReverbContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221Reverb BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cReverbContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Reverb:B", "resource", static_cast<void*>(&mpReverbB), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "ReverbID:B", &mReverbIdB, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "EffectNo:B", &mEffectNoB, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FadeTime:B", &mFadeTimeB, 0u, 0u);
+}
+
+__attribute__((weak)) void nSoundTrigger::cReverbContents::copyAToB() {
+    DDON_STUB("nSoundTrigger::cReverbContents::copyAToB")
+    /* stub */
+}
+
+__attribute__((weak)) void nSoundTrigger::cReverbContents::copyBToA() {
+    DDON_STUB("nSoundTrigger::cReverbContents::copyBToA")
+    /* stub */
+}
+
+inline nSoundTrigger::cReverbContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cReverbContents::MyDTI nSoundTrigger::cReverbContents::DTI("nSoundTrigger::cReverbContents", &::nSoundTrigger::cCategory::DTI, 72ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundTrigger::cReverbContents::MyDTI::newInstance() const {
+    return new (16u) ::nSoundTrigger::cReverbContents;
 }
 
 const MtDTI& nSoundTrigger::cSeContents::getDTI() const {
@@ -312,9 +658,14 @@ MtUI* nSoundTrigger::cSeContents::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nSoundTrigger::cSeContents::createProperty(MtPropertyList& s) {
-    DDON_STUB("nSoundTrigger::cSeContents::createProperty")
-    /* stub */
+void nSoundTrigger::cSeContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SeRequest:A", "resource", static_cast<void*>(&mpRequestA), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SeRequestNo:A", &mRequestNoA, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223Se AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cSeContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221Se BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cSeContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SeRequest:B", "resource", static_cast<void*>(&mpRequestB), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SeRequestNo:B", &mRequestNoB, 0u, 0u);
 }
 
 __attribute__((weak)) void nSoundTrigger::cSeContents::copyAToB() {
@@ -332,26 +683,30 @@ inline nSoundTrigger::cSeContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 nSoundTrigger::cSeContents::MyDTI nSoundTrigger::cSeContents::DTI("nSoundTrigger::cSeContents", &::nSoundTrigger::cCategory::DTI, 56ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nSoundTrigger::cSeContents::MyDTI::newInstance() const {
-    DDON_STUB("nSoundTrigger::cSeContents::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::nSoundTrigger::cSeContents;
 }
 
 const MtDTI& nSoundTrigger::cStopSeqSeContents::getDTI() const {
     return nSoundTrigger::cStopSeqSeContents::DTI;
 }
 
+inline void nSoundTrigger::cStopSeqSeContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cStopSeqSeContents::DTI)->memFree(p_addr);
+}
+
 nSoundTrigger::cStopSeqSeContents::~cStopSeqSeContents() {
-    DDON_STUB("nSoundTrigger::cStopSeqSeContents::~cStopSeqSeContents")
-    /* stub */
 }
 
 MtUI* nSoundTrigger::cStopSeqSeContents::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nSoundTrigger::cStopSeqSeContents::createProperty(MtPropertyList& s) {
-    DDON_STUB("nSoundTrigger::cStopSeqSeContents::createProperty")
-    /* stub */
+void nSoundTrigger::cStopSeqSeContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "StopGroupID:A", &mStopGroupId[0][0], 32u, 4u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223StopGroupID AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cStopSeqSeContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221StopGroupID BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cStopSeqSeContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "StopGroupID:B", &mStopGroupId[1][0], 32u, 4u);
 }
 
 void nSoundTrigger::cStopSeqSeContents::copyAToB() {
@@ -401,9 +756,14 @@ MtUI* nSoundTrigger::cStreamContents::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nSoundTrigger::cStreamContents::createProperty(MtPropertyList& s) {
-    DDON_STUB("nSoundTrigger::cStreamContents::createProperty")
-    /* stub */
+void nSoundTrigger::cStreamContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "StreamRequest:A", "resource", static_cast<void*>(&mpStreamRequestA), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "StreamRequestNo:A", &mStreamRequestNoA, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223Stream AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cStreamContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221Stream BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cStreamContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "StreamRequest:B", "resource", static_cast<void*>(&mpStreamRequestB), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "StreamRequestNo:B", &mStreamRequestNoB, 0u, 0u);
 }
 
 __attribute__((weak)) void nSoundTrigger::cStreamContents::copyAToB() {
@@ -421,7 +781,59 @@ inline nSoundTrigger::cStreamContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* 
 nSoundTrigger::cStreamContents::MyDTI nSoundTrigger::cStreamContents::DTI("nSoundTrigger::cStreamContents", &::nSoundTrigger::cCategory::DTI, 56ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nSoundTrigger::cStreamContents::MyDTI::newInstance() const {
-    DDON_STUB("nSoundTrigger::cStreamContents::MyDTI::newInstance")
+    return new (16u) ::nSoundTrigger::cStreamContents;
+}
+
+const MtDTI& nSoundTrigger::cSubMixerContents::getDTI() const {
+    return nSoundTrigger::cSubMixerContents::DTI;
+}
+
+inline void nSoundTrigger::cSubMixerContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cSubMixerContents::DTI)->memFree(p_addr);
+}
+
+nSoundTrigger::cSubMixerContents::~cSubMixerContents() {
+    if (mpSubMixerA != nullptr) {
+        mpSubMixerA->release();
+        mpSubMixerA = nullptr;
+    }
+    if (mpSubMixerB == nullptr) {
+        return;
+    }
+    mpSubMixerB->release();
+    mpSubMixerB = nullptr;
+}
+
+MtUI* nSoundTrigger::cSubMixerContents::createUI(MtProperty& prop) {
+    return this->::MtObject::createUI(prop);
+}
+
+void nSoundTrigger::cSubMixerContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SubMixer:A", "resource", static_cast<void*>(&mpSubMixerA), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SubMixerID:A", &mSubMixerIdA, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223SubMixer AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cSubMixerContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221SubMixer BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cSubMixerContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SubMixer:B", "resource", static_cast<void*>(&mpSubMixerB), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SubMixerID:B", &mSubMixerIdB, 0u, 0u);
+}
+
+void nSoundTrigger::cSubMixerContents::copyAToB() {
+    mSubMixerIdB = mSubMixerIdA;
+    mpSubMixerB = mpSubMixerA;
+}
+
+void nSoundTrigger::cSubMixerContents::copyBToA() {
+    mSubMixerIdA = mSubMixerIdB;
+    mpSubMixerA = mpSubMixerB;
+}
+
+inline nSoundTrigger::cSubMixerContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nSoundTrigger::cSubMixerContents::MyDTI nSoundTrigger::cSubMixerContents::DTI("nSoundTrigger::cSubMixerContents", &::nSoundTrigger::cCategory::DTI, 48ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nSoundTrigger::cSubMixerContents::MyDTI::newInstance() const {
+    DDON_STUB("nSoundTrigger::cSubMixerContents::MyDTI::newInstance")
     return nullptr;
 }
 
@@ -455,9 +867,9 @@ MtUI* uSoundTrigger::createUI(MtProperty& prop) {
     return this->uSoundZoneBase::createUI(prop);
 }
 
-__attribute__((weak)) void uSoundTrigger::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSoundTrigger::createProperty")
-    /* stub */
+void uSoundTrigger::createProperty(MtPropertyList& s) {
+    this->uSoundZoneBase::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneListener", static_cast<MtObject*>(&mZoneListener), 0u, 0u);
 }
 
 void uSoundTrigger::setup() {
@@ -491,9 +903,8 @@ cSoundZoneListener* uSoundTrigger::getZoneListener() {
     return &mZoneListener;
 }
 
-__attribute__((weak)) MtVector3 uSoundTrigger::getZoneListenerPos() {
-    DDON_STUB("uSoundTrigger::getZoneListenerPos")
-    __builtin_unreachable();
+MtVector3 uSoundTrigger::getZoneListenerPos() {
+    return (&mZoneListener)->myPos();
 }
 
 void uSoundTrigger::setZoneListenerPos(const MtVector3& NewListenerPos) {
@@ -620,9 +1031,9 @@ MtUI* uSoundTrigger::cTriggerGroupManager::createUI(MtProperty& prop) {
     return this->uSoundZoneBase::cGroupManager::createUI(prop);
 }
 
-__attribute__((weak)) void uSoundTrigger::cTriggerGroupManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSoundTrigger::cTriggerGroupManager::createProperty")
-    /* stub */
+void uSoundTrigger::cTriggerGroupManager::createProperty(MtPropertyList& s) {
+    this->uSoundZoneBase::cGroupManager::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mHitCount", &mHitCount, 1u, 0u);
 }
 
 inline uSoundTrigger::cTriggerGroupManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -68,9 +68,9 @@ MT_CTSTR rTblMenuComm::getName() const {
     return "rTblMenuComm";
 }
 
-__attribute__((weak)) void rTblMenuComm::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTblMenuComm::createProperty")
-    /* stub */
+void rTblMenuComm::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mResourceType", &mResourceType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mArray", static_cast<MtObject*>(&mArray), 0u, 0u);
 }
 
 bool rTblMenuComm::load(MtStream& in) {
@@ -165,6 +165,10 @@ const MtDTI& rTblMenuComm::cDataList::getDTI() const {
     return rTblMenuComm::cDataList::DTI;
 }
 
+inline void* rTblMenuComm::cDataList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rTblMenuComm::cDataList::DTI)->memAlloc(sz, align, rTblMenuComm::cDataList::DTI.getID());
+}
+
 inline void rTblMenuComm::cDataList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rTblMenuComm::cDataList::DTI)->memFree(p_addr);
 }
@@ -197,9 +201,9 @@ rTblMenuComm::cDataList::~cDataList() {
     mList.mLength = 0;
 }
 
-__attribute__((weak)) void rTblMenuComm::cDataList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTblMenuComm::cDataList::createProperty")
-    /* stub */
+void rTblMenuComm::cDataList::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mCtgrId", &mCtgrId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mList", static_cast<MtObject*>(&mList), 0u, 0u);
 }
 
 bool rTblMenuComm::cDataList::load(MtDataReader& r) {
@@ -214,9 +218,8 @@ inline rTblMenuComm::cDataList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 rTblMenuComm::cDataList::MyDTI rTblMenuComm::cDataList::DTI("rTblMenuComm::cDataList", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rTblMenuComm::cDataList::MyDTI::newInstance() const {
-    DDON_STUB("rTblMenuComm::cDataList::MyDTI::newInstance")
-    return nullptr;
+MtObject* rTblMenuComm::cDataList::MyDTI::newInstance() const {
+    return new (16u) rTblMenuComm::cDataList;
 }
 
 const MtDTI& rTblMenuComm::cData::getDTI() const {
@@ -234,9 +237,10 @@ inline void rTblMenuComm::cData::operator delete(void* p_addr) {
 rTblMenuComm::cData::~cData() {
 }
 
-__attribute__((weak)) void rTblMenuComm::cData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTblMenuComm::cData::createProperty")
-    /* stub */
+void rTblMenuComm::cData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mId2", &mId2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVoiceId", &mVoiceId, 0u, 0u);
 }
 
 bool rTblMenuComm::cData::load(MtDataReader& r) {

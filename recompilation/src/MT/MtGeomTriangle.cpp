@@ -182,9 +182,8 @@ __attribute__((weak)) MtVector3 MtGeomTriangle::getSupportConst(const MtVector3&
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 MtGeomTriangle::getInternalPos() const {
-    DDON_STUB("MtGeomTriangle::getInternalPos")
-    __builtin_unreachable();
+MtVector3 MtGeomTriangle::getInternalPos() const {
+    return mTriangle.getInternalPos();
 }
 
 void MtGeomTriangle::setScale(f32 scale) {

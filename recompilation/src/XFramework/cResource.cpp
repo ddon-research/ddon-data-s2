@@ -6,6 +6,7 @@
 #include "../MT/MtFile.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtTime.h"
 #include "../MT/MtXmlReader.h"
@@ -40,9 +41,15 @@ MtUI* cResource::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cResource::createProperty(MtPropertyList& s) {
-    DDON_STUB("cResource::createProperty")
-    /* stub */
+void cResource::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CSTRING, "mPath", reinterpret_cast<MT_MFUNC>(&::cResource::getPath), reinterpret_cast<MT_MFUNC>(&::cResource::setPath), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRefCount", &mRefCount, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSize", &mSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttr", &mAttr, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mTag", reinterpret_cast<MT_MFUNC>(&::cResource::getTag), reinterpret_cast<MT_MFUNC>(&::cResource::setTag), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mState", reinterpret_cast<MT_MFUNC>(&::cResource::getState), reinterpret_cast<MT_MFUNC>(&::cResource::setState), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mQuality", reinterpret_cast<MT_MFUNC>(&::cResource::getQuality), reinterpret_cast<MT_MFUNC>(&::cResource::setQuality), 145u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) MtTime cResource::getUpdateTime(MT_CTSTR fullpath) {

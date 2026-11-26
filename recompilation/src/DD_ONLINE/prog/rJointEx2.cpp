@@ -35,10 +35,7 @@ cJointEx2::cJointEx2() {
     mAxis = 7;
     mRate = 0.5f;
     mTwistRate = 0.0f;
-    mRotAdd.x = MtVector3::Zero.x;
-    mRotAdd.y = MtVector3::Zero.y;
-    mRotAdd.z = MtVector3::Zero.z;
-    mRotAdd.pad_ = 0.0f;
+    mRotAdd = MtVector3::Zero;
     mLimitAxis = 0;
     mLimitMin = 0.0f;
     mLimitMax = 0.0f;

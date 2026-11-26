@@ -27,11 +27,17 @@ class MtPropertyList;
 class MtString;
 class MtVector3;
 class cCamExParamNml;
+class cCamImpAnim;
+class cCamImpAnimTar;
+class cCamImpMot;
+class cCamImpMotTar;
 class cCamImpNml;
 class cCamImpPhoto;
 class cCamInterAll;
 class cCamInterporateAng3Time;
 class cCamInterporateRange;
+class cCamInterporateRangeAng;
+class cCamInterporateRangeF32;
 class cCamInterporateVec3;
 class rCameraParamList;
 class sCameraExt;
@@ -45,8 +51,10 @@ class uMotionBlurFilter;
 // Declarations
 class cCamExParam;
 class cCamExParamSdr;
+class cCamExParamTarget;
 class cCamImpBase;
 class cCamImpSdr;
+class cCamImpTarget;
 class cCamInterPreset;
 namespace nCameraGame { class cTemplateParam; }
 class uCameraGame;
@@ -188,6 +196,10 @@ namespace nCameraGame {
 
 class uCameraGame : public uCameraBase
 {
+    friend class cCamImpAnim;
+    friend class cCamImpAnimTar;
+    friend class cCamImpMot;
+    friend class cCamImpMotTar;
     friend class cCamImpNml;
     friend class cCamImpPhoto;
     friend class sCameraExt;
@@ -673,6 +685,50 @@ public:
     static MyDTI DTI;
 };
 
+class cCamExParamTarget : public cCamExParam
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    cCamExParamTarget();
+    virtual ~cCamExParamTarget();
+    virtual cCamImpBase* createCamImpInstance(uCameraGame* pCamera) const;  // vtable slot 6
+    virtual void copy(const cCamExParam* pParam);  // vtable slot 8
+public:
+    MtVector3 mCameraOffset;  // offset: 0x1e0
+    nCameraGame::TARGET_TYPE mTargetType;  // offset: 0x1f0
+    u32 mTargetGroup;  // offset: 0x1f4
+    u32 mTargetId;  // offset: 0x1f8
+    s32 mTargetJoint;  // offset: 0x1fc
+    MtVector3 mTargetOffset;  // offset: 0x200
+    MtVector3 mTargetMargin;  // offset: 0x210
+    f32 mMoveDirLookScale;  // offset: 0x220
+    f32 mMoveDirLookRate;  // offset: 0x224
+    u32 mOptionFlag;  // offset: 0x228
+    static MyDTI DTI;
+};
+
 class cCamImpBase : public MtObject
 {
     friend class cCamImpNml;
@@ -834,12 +890,74 @@ public:
     static MyDTI DTI;
 };
 
+class cCamImpTarget : public cCamImpBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cCamImpTarget();
+    virtual ~cCamImpTarget();
+    virtual void applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset);  // vtable slot 6
+protected:
+    virtual void initSub(MtVector3& cameraPos, MtVector3& targetPos, f32& angX, f32& angY);  // vtable slot 9
+    virtual void ctrlSub(MtVector3& idealCam, MtVector3& idealTar, f32& angX, f32& angY);  // vtable slot 10
+    virtual void moveSub(MtVector3& idealCam, MtVector3& idealTar, f32& angX, f32& angY);  // vtable slot 11
+    virtual void interporateSub(MtVector3& cameraPos, MtVector3& targetPos);  // vtable slot 12
+    virtual void adjustSub(MtVector3& cameraPos, MtVector3& targetPos, MtVector3& idealCam, MtVector3& idealTar);  // vtable slot 13
+    virtual void finalSub();  // vtable slot 14
+    virtual nCameraGame::CAMERA_TYPE getType() const;  // vtable slot 7
+protected:
+    const cCamExParamTarget* mpParamTar;  // offset: 0xb0
+    cCamInterporateRange mInterTarget;  // offset: 0xc0
+    cCamInterporateRangeAng mInterCamAngX;  // offset: 0x100
+    cCamInterporateRangeAng mInterCamAngY;  // offset: 0x118
+    cCamInterporateRangeF32 mInterCamDist;  // offset: 0x130
+    cCamInterporateVec3 mInterMoveVec;  // offset: 0x150
+private:
+    f32 mCtrlX;  // offset: 0x190
+    f32 mCtrlY;  // offset: 0x194
+    MtVector3 mLastTargetPos;  // offset: 0x1a0
+    MtVector3 mMoveDirLookVec;  // offset: 0x1b0
+public:
+    static MyDTI DTI;
+};
+
 inline void* cCamExParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cCamExParam::cCamExParam() : mType(static_cast<nCameraGame::CAMERA_TYPE>(0)), mRelVer(0), mPriority(1), mConditionFlag(0u), mConditionPlDist(0.0f), mConditionCamDist(0.0f), mQuakeNo(-1), mIsWaitCameraEnd(false), mEnableFrame(-1.0f), mCantReqFrame(-1.0f), mRequestGroup(-1), mCantReqGroupBit(0u), mCangReqFrameGroup(0.0f), mCameraTarget(static_cast<nCameraGame::TARGET_TYPE>(0)), mGroup(0u), mId(0u), mTargetJoint(-1), mDistance(350.0f), mHeight(120.0f), mOffsetX(0.0f), mOffsetZ(0.0f), mFov(50.0f), mRoll(0.0f), mCtrlOption(0u), mAngLimitXMin(-45.0f), mAngLimitXMax(30.0f), mCtrlCurve(0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f), mInterCamRate(0.3f), mMargin(5.0f, 5.0f, 5.0f), mMarginAdjPow(0.4f), mStartInterType(static_cast<cCamInterPreset::INTER_TYPE>(0)), mStartFrameType(static_cast<cCamInterPreset::FRAME_TYPE>(0)), mStartInterFrame(30.0f), mStartInterCurve(0.0f, 0.0f, 0.25f, 0.15625f, 0.5f, 0.5f, 0.75f, 0.84375f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f), mEndInterType(static_cast<cCamInterPreset::INTER_TYPE>(0)), mEndFrameType(static_cast<cCamInterPreset::FRAME_TYPE>(0)), mEndInterCurve(0.0f, 0.0f, 0.25f, 0.15625f, 0.5f, 0.5f, 0.75f, 0.84375f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f), mEndInterFrame(30.0f), mDofFilterFlag(0u), mDOFFilterNearBlurLimit(0.0f), mDOFFilterFarBlurLimit(0.0f), mDOFFilterNear(0.0f), mDOFFilterFar(200000.0f), mDOFFilterFocal(1000.0f), mDOFFilterGradateColor(1.0f, 1.0f, 1.0f), mprCameraParamList(nullptr), mCameraParamListIndex(0u), mScrAdjustType(static_cast<cCamExParam::SCR_ADJST_TYPE>(0)), mScrAdjustFlag(255u), mScrAdjustHeight(0.0f), mIsKeepAngle(true), mKeepAngleType(static_cast<cCamExParam::KEEP_ANGLE_TYPE>(0)), mKeepTargetPos(0.0f, 0.0f, 0.0f), mSysFlag(0u) {
+}
+
 inline void* cCamExParamSdr::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cCamExParamSdr::cCamExParamSdr() {
+    this->::cCamExParam::mType = static_cast<nCameraGame::CAMERA_TYPE>(8);
+    mSdrParamArray.setAutoDelete(true);
+    mStartInterFrame = mEndInterFrame = 0.0f;
+    mScrAdjustFlag = 248u;
 }
 
 inline void* cCamExParamSdr::cSdrParam::operator new(size_t sz, void* p_addr) {
@@ -850,6 +968,14 @@ inline cCamExParamSdr::cSdrParam::cSdrParam() {
     this->mChFlag = 2;
     this->mIndex = 0;
     this->mFrame = 0.0f;
+}
+
+inline void* cCamExParamTarget::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cCamExParamTarget::cCamExParamTarget() : mCameraOffset(0.0f, 0.0f, 0.0f), mTargetType(static_cast<nCameraGame::TARGET_TYPE>(2)), mTargetGroup(0u), mTargetId(0u), mTargetJoint(0), mTargetOffset(0.0f, 0.0f, 0.0f), mTargetMargin(0.0f, 0.0f, 0.0f), mMoveDirLookScale(0.0f), mMoveDirLookRate(0.0f), mOptionFlag(0u) {
+    this->::cCamExParam::mType = static_cast<nCameraGame::CAMERA_TYPE>(12);
 }
 
 inline void* cCamImpBase::operator new(size_t sz, void* p_addr) {
@@ -876,8 +1002,15 @@ inline const cCamImpBase* cCamImpSdr::getCamImp() const {
     return this->mpImple;
 }
 
+inline void* cCamImpTarget::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nCameraGame::cTemplateParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nCameraGame::cTemplateParam::cTemplateParam() : mIndex(0u), mChFlag(1u), mFrame(0.0f), mTargetTypeA(static_cast<nCameraGame::TEMP_TYPE>(0)), mOffsetA(MtMatrix::Identity), mUnitTypeA(static_cast<UNIT_TYPE>(0)), mTargetJoint_A(-1), mTargetGroup_A(0u), mTargetID_A(0u), mTargetTypeB(static_cast<nCameraGame::TEMP_TYPE>(0)), mOffsetB(MtMatrix::Identity), mUnitTypeB(static_cast<UNIT_TYPE>(0)), mTargetJoint_B(-1), mTargetGroup_B(0u), mTargetID_B(0u), mAnimSpeed(1.0f), mAnimStartFrame(0.0f), mAnimDistScale(1.0f), mIsUseCustomInter(true), mInterType(static_cast<cCamInterPreset::INTER_TYPE>(3)), mInterFrameType(static_cast<cCamInterPreset::FRAME_TYPE>(0)), mInterFrame(0.0f), mInterCurve(0.0f, 0.0f, 0.25f, 0.15625f, 0.5f, 0.5f, 0.75f, 0.84375f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f) {
 }
 
 inline void* uCameraGame::operator new(size_t sz, void* p_addr) {
@@ -922,6 +1055,10 @@ inline const uDDOModel* uCameraGame::getCameraReqOwner() const {
     return this->mpCameraReqOwner;
 }
 
+inline const MtVector3& uCameraGame::getIdealPosCam() const {
+    return this->mIdealPosCam;
+}
+
 inline f32 uCameraGame::getRotationSpeed() const {
     return this->mRotSpeed;
 }
@@ -956,4 +1093,8 @@ inline nCameraGame::CAMERA_TYPE uCameraGame::getOldCameraType() const {
 
 inline void uCameraGame::setOldCameraType(nCameraGame::CAMERA_TYPE type) {
     this->mOldCameraType = type;
+}
+
+inline void uCameraGame::setInvalidPresetInter() {
+    this->mInvalidPresetInter = true;
 }

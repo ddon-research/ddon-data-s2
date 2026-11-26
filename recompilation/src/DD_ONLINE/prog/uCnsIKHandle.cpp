@@ -35,8 +35,6 @@ uCnsIKHandle::uCnsIKHandle() {
 }
 
 uCnsIKHandle::~uCnsIKHandle() {
-    DDON_STUB("uCnsIKHandle::~uCnsIKHandle")
-    /* stub */
 }
 
 __attribute__((weak)) void uCnsIKHandle::setResource(cResource* pRes) {

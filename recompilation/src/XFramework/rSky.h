@@ -15,6 +15,7 @@ class MtObject;
 class MtStream;
 class MtVector3;
 class rTexture;
+class uSky;
 
 // Declarations
 class rSky;
@@ -31,6 +32,7 @@ using u32 = unsigned int;
 
 class rSky : public cResource
 {
+    friend class uSky;
 public:
     class MyDTI;
 public:

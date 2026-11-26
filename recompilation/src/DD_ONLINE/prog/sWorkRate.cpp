@@ -4,6 +4,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cSystem.h"
@@ -41,9 +42,11 @@ __attribute__((weak)) void sWorkRate::move() {
     /* stub */
 }
 
-__attribute__((weak)) void sWorkRate::createProperty(MtPropertyList& s) {
-    DDON_STUB("sWorkRate::createProperty")
-    /* stub */
+void sWorkRate::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mRate", &mRate[0], 32u, 6u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMoveTimer", &mMoveTimer[0], 32u, 6u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPrio", &mPrio[0], 32u, 6u);
 }
 
 __attribute__((weak)) f32 sWorkRate::calc(u32 bit) {

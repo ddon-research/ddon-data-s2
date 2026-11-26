@@ -28,9 +28,13 @@ inline void cPartnerReactParam::operator delete(void* p_addr) {
 cPartnerReactParam::~cPartnerReactParam() {
 }
 
-__attribute__((weak)) void cPartnerReactParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cPartnerReactParam::createProperty")
-    /* stub */
+void cPartnerReactParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "NpcMotNo", &mNpcMotNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NpcMotNo2", &mNpcMotNo2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NpcMotNo3", &mNpcMotNo3, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NpcMotNo4", &mNpcMotNo4, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsNmlAct", &mIsNmlAct, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mActNo", &mActNo, 0u, 0u);
 }
 
 u32 cPartnerReactParam::getActNo() {

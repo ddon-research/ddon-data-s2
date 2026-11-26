@@ -211,12 +211,8 @@ inline void uGUIClanScout::cGUIPageListScoutEntry::operator delete(void* p_addr)
     MtMemoryAllocator::getAllocator(uGUIClanScout::cGUIPageListScoutEntry::DTI)->memFree(p_addr);
 }
 
-uGUIClanScout::cGUIPageListScoutEntry::~cGUIPageListScoutEntry() {
-}
-
-__attribute__((weak)) s32 uGUIClanScout::cGUIPageListScoutEntry::getItemNum() const {
-    DDON_STUB("uGUIClanScout::cGUIPageListScoutEntry::getItemNum")
-    return {};
+s32 uGUIClanScout::cGUIPageListScoutEntry::getItemNum() const {
+    return static_cast<s32>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanScoutEntryListPacket()->m_SearchResult.size());
 }
 
 s32 uGUIClanScout::cGUIPageListScoutEntry::getPageItemNum() const {
@@ -335,6 +331,304 @@ uGUIClanScoutBase::MyDTI uGUIClanScoutBase::DTI("uGUIClanScoutBase", &::uGUIBase
 
 __attribute__((weak)) MtObject* uGUIClanScoutBase::MyDTI::newInstance() const {
     DDON_STUB("uGUIClanScoutBase::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& uGUIClanScoutEntry::getDTI() const {
+    return uGUIClanScoutEntry::DTI;
+}
+
+inline void uGUIClanScoutEntry::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uGUIClanScoutEntry::DTI)->memFree(p_addr);
+}
+
+uGUIClanScoutEntry::uGUIClanScoutEntry() {
+    DDON_STUB("uGUIClanScoutEntry::uGUIClanScoutEntry")
+    /* stub */
+}
+
+uGUIClanScoutEntry::~uGUIClanScoutEntry() {
+}
+
+s32 uGUIClanScoutEntry::getSMenuCursorY() {
+    const s32 pos_v = mControlMgr.getCurrentPos(0u);
+    switch (static_cast<unsigned int>(pos_v)) {
+        case 0:
+        {
+            return (sMenu::mpInstance)->mMenuClanScoutEntry.cMenuBase::getIndexFromMenuId(2);
+        }
+        case 1:
+        {
+            return (sMenu::mpInstance)->mMenuClanScoutEntry.cMenuBase::getIndexFromMenuId(3);
+        }
+        case 2:
+        {
+            return (sMenu::mpInstance)->mMenuClanScoutEntry.cMenuBase::getIndexFromMenuId(5);
+        }
+        case 3:
+        {
+            return (sMenu::mpInstance)->mMenuClanScoutEntry.cMenuBase::getIndexFromMenuId(6);
+        }
+        case 4:
+        {
+            const s32 button_id = mControlMgr.getCurrentPos(1u);
+            if (button_id == 1) {
+                return (sMenu::mpInstance)->mMenuClanScoutEntry.cMenuBase::getIndexFromMenuId(9);
+            } else {
+                if (button_id == 0) {
+                    return (sMenu::mpInstance)->mMenuClanScoutEntry.cMenuBase::getIndexFromMenuId(8);
+                } else {
+                    return (sMenu::mpInstance)->mMenuClanScoutEntry.cMenuBase::getIndexFromMenuId(10);
+                }
+            }
+            break;
+        }
+        default:
+        {
+            return (sMenu::mpInstance)->mMenuClanScoutEntry.cMenuBase::getIndexFromMenuId(10);
+        }
+    }
+}
+
+void uGUIClanScoutEntry::initFlow() {
+    setFlowAndInit(3u, false);
+}
+
+void uGUIClanScoutEntry::setupInstances() {
+    mpINST_window_frame = static_cast<cGUIInstAnimation*>(getInstance(3u, false));
+    mpINST_Null_checklist00 = static_cast<cGUIInstNull*>(getInstance(26u, false));
+}
+
+void uGUIClanScoutEntry::setupObjects() {
+    setObjectMessageFromId(4u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 21u), 0u, false);
+    setObjectMessageFromId(4u, 4u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 22u), 0u, false);
+    setObjectMessageFromId(15u, 3u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 2u), 0u, false);
+    setObjectMessageFromId(17u, 3u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 3u), 0u, false);
+    setObjectMessageFromId(18u, 3u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 4u), 0u, false);
+    setObjectMessageFromId(107u, 3u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 8u), 0u, false);
+}
+
+__attribute__((weak)) void uGUIClanScoutEntry::setupRefrenceUIs() {
+    DDON_STUB("uGUIClanScoutEntry::setupRefrenceUIs")
+    /* stub */
+}
+
+__attribute__((weak)) void uGUIClanScoutEntry::setupControls() {
+    DDON_STUB("uGUIClanScoutEntry::setupControls")
+    /* stub */
+}
+
+__attribute__((weak)) void uGUIClanScoutEntry::moveInput() {
+    DDON_STUB("uGUIClanScoutEntry::moveInput")
+    /* stub */
+}
+
+void uGUIClanScoutEntry::moveEvent() {
+    if (static_cast<int>(getInputEvent()) <= 55) {
+        if (getInputEvent() == 4) {
+            evDecide();
+        }
+    } else {
+        if (getInputEvent() != 56) {
+            if (getInputEvent() == 57) {
+                if (mControlMgr.getCurrentPos(0u) == 1) {
+                    if (mCheckList.mPage == 1) {
+                        mCheckList.setForm(uGUIBase::cReferenceUICheckListForClan::FORM_TIME, mClanParamDay, 0u, false);
+                    } else {
+                        mCheckList.setVisible(false);
+                        if (mpINST_window_frame != nullptr) {
+                            mpINST_window_frame->setVisible(true);
+                        }
+                    }
+                } else {
+                    mCheckList.setVisible(false);
+                    if (mpINST_window_frame != nullptr) {
+                        mpINST_window_frame->setVisible(true);
+                    }
+                }
+            } else {
+                if (getInputEvent() == 67) {
+                    evDecide();
+                }
+            }
+        } else {
+            evCheckListDecide();
+        }
+    }
+}
+
+u32 uGUIClanScoutEntry::evCtrlMove(cControl::Message* msg) {
+    setInputEvent(66u);
+    return 0;
+}
+
+__attribute__((weak)) u32 uGUIClanScoutEntry::evCtrlDecide(cControl::Message* msg) {
+    DDON_STUB("uGUIClanScoutEntry::evCtrlDecide")
+    return {};
+}
+
+u32 uGUIClanScoutEntry::evCtrlCancel(cControl::Message* msg) {
+    setInputEvent(5u);
+    return 0;
+}
+
+__attribute__((weak)) void uGUIClanScoutEntry::evDecide() {
+    DDON_STUB("uGUIClanScoutEntry::evDecide")
+    /* stub */
+}
+
+__attribute__((weak)) void uGUIClanScoutEntry::evCheckListDecide() {
+    sMenu* v0_10 = sMenu::getInstance();
+    s32 t0 = mControlMgr.getCurrentPos(0u);
+    if (t0 != 2) {
+        if (t0 == 1) {
+            if (mCheckList.getPage() == 1) {
+                v0_10->mMenuClanScoutEntry.mEntryParam.m_unActiveTime = 0;
+                for (unsigned int i0_3 = 0;;) {
+                    if (i0_3 >= mCheckList.mCheckBoxNum) {
+                        break;
+                    } else {
+                        if (!mCheckList.isCheck(static_cast<s32>(i0_3))) {
+                            i0_3 += 1u;
+                        } else {
+                            v0_10->mMenuClanScoutEntry.mEntryParam.m_unActiveTime = static_cast<unsigned int>(static_cast<unsigned long>(v0_10->mMenuClanScoutEntry.mEntryParam.m_unActiveTime) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(i0_3 + 1u) & 31)));
+                            break;
+                        }
+                    }
+                }
+                v0_10->mMenuClanScoutEntry.mEntryParam.m_unActiveDays = mClanParamDay;
+                mCheckList.setVisible(false);
+                if (mpINST_window_frame != nullptr) {
+                    mpINST_window_frame->setVisible(true);
+                }
+                mClanPolicyMessages.applyPolicy(sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unMotto, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveDays, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic);
+                return;
+            } else {
+                if (mCheckList.getPage() != 0) {
+                    mCheckList.setVisible(false);
+                    if (mpINST_window_frame != nullptr) {
+                        mpINST_window_frame->setVisible(true);
+                    }
+                    mClanPolicyMessages.applyPolicy(sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unMotto, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveDays, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic);
+                    return;
+                } else {
+                    mClanParamDay = 0;
+                    unsigned int i2_3 = 0;
+                    unsigned int v3_3;
+                    for (;;) {
+                        if (i2_3 >= mCheckList.mCheckBoxNum) {
+                            mCheckList.setForm(uGUIBase::cReferenceUICheckListForClan::FORM_TIME, v0_10->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, 1u, false);
+                            return;
+                        } else {
+                            if (!mCheckList.isCheck(static_cast<s32>(i2_3))) {
+                                i2_3 += 1u;
+                            } else {
+                                v3_3 = i2_3 + 1u;
+                                break;
+                            }
+                        }
+                    }
+                    mClanParamDay = static_cast<unsigned int>(static_cast<unsigned long>(mClanParamDay) | (1ul << static_cast<unsigned long>(v3_3 & 31u)));
+                    mCheckList.setForm(uGUIBase::cReferenceUICheckListForClan::FORM_TIME, v0_10->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, 1u, false);
+                    return;
+                }
+            }
+        } else {
+            if (t0 != 0) {
+                mCheckList.setVisible(false);
+                if (mpINST_window_frame != nullptr) {
+                    mpINST_window_frame->setVisible(true);
+                }
+                mClanPolicyMessages.applyPolicy(sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unMotto, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveDays, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic);
+                return;
+            } else {
+                v0_10->mMenuClanScoutEntry.mEntryParam.m_unMotto = 0;
+                if (mCheckList.mCheckBoxNum == 0) {
+                    mCheckList.setVisible(false);
+                    if (mpINST_window_frame != nullptr) {
+                        mpINST_window_frame->setVisible(true);
+                    }
+                    mClanPolicyMessages.applyPolicy(sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unMotto, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveDays, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic);
+                    return;
+                } else {
+                    for (unsigned int i4_3 = 0;;) {
+                        if (mCheckList.isCheck(static_cast<s32>(i4_3))) {
+                            v0_10->mMenuClanScoutEntry.mEntryParam.m_unMotto = static_cast<unsigned int>(static_cast<unsigned long>(v0_10->mMenuClanScoutEntry.mEntryParam.m_unMotto) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(i4_3 + 1u) & 31)));
+                        }
+                        if ((i4_3 + 1u) < mCheckList.mCheckBoxNum) {
+                            i4_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                    mCheckList.setVisible(false);
+                    if (mpINST_window_frame != nullptr) {
+                        mpINST_window_frame->setVisible(true);
+                    }
+                    mClanPolicyMessages.applyPolicy(sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unMotto, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveDays, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic);
+                    return;
+                }
+            }
+        }
+    } else {
+        v0_10->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic = 0;
+        if (mCheckList.mCheckBoxNum == 0) {
+            mCheckList.setVisible(false);
+            if (mpINST_window_frame != nullptr) {
+                mpINST_window_frame->setVisible(true);
+            }
+            mClanPolicyMessages.applyPolicy(sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unMotto, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveDays, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic);
+            return;
+        } else {
+            for (unsigned int i7_3 = 0;;) {
+                if (mCheckList.isCheck(static_cast<s32>(i7_3))) {
+                    v0_10->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic = static_cast<unsigned int>(static_cast<unsigned long>(v0_10->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(i7_3 + 1u) & 31)));
+                }
+                if ((i7_3 + 1u) < mCheckList.mCheckBoxNum) {
+                    i7_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+            mCheckList.setVisible(false);
+            if (mpINST_window_frame != nullptr) {
+                mpINST_window_frame->setVisible(true);
+            }
+            mClanPolicyMessages.applyPolicy(sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unMotto, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveDays, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic);
+            return;
+        }
+    }
+}
+
+__attribute__((weak)) void uGUIClanScoutEntry::updateFocus() {
+    DDON_STUB("uGUIClanScoutEntry::updateFocus")
+    /* stub */
+}
+
+inline void uGUIClanScoutEntry::updateKeyword() {
+    mClanPolicyMessages.applyPolicy(sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unMotto, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveDays, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic);
+}
+
+void uGUIClanScoutEntry::onUpdateInit() {
+    updateKeyword();
+}
+
+__attribute__((weak)) void uGUIClanScoutEntry::onUpdateWait() {
+    DDON_STUB("uGUIClanScoutEntry::onUpdateWait")
+    /* stub */
+}
+
+__attribute__((weak)) void uGUIClanScoutEntry::onDecide() {
+    DDON_STUB("uGUIClanScoutEntry::onDecide")
+    /* stub */
+}
+
+inline uGUIClanScoutEntry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+uGUIClanScoutEntry::MyDTI uGUIClanScoutEntry::DTI("uGUIClanScoutEntry", &::uGUIClanScoutBase::DTI, 6496ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* uGUIClanScoutEntry::MyDTI::newInstance() const {
+    DDON_STUB("uGUIClanScoutEntry::MyDTI::newInstance")
     return nullptr;
 }
 

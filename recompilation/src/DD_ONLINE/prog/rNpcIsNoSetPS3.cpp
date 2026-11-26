@@ -25,9 +25,11 @@ inline void cNpcIsNoSetPS3::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cNpcIsNoSetPS3::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cNpcIsNoSetPS3::createProperty(MtPropertyList& s) {
-    DDON_STUB("cNpcIsNoSetPS3::createProperty")
-    /* stub */
+void cNpcIsNoSetPS3::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupNo", &mGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUnitNo", &mUnitNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
 }
 
 inline cNpcIsNoSetPS3::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

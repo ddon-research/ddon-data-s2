@@ -1,9 +1,11 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cGUIVariable.h"
+#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -17,23 +19,30 @@ void* cGUIVarFloat::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cGUIVarFloat::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIVarFloat::DTI)->memFree(p_addr);
+}
+
 cGUIVarFloat::cGUIVarFloat() {
     DDON_STUB("cGUIVarFloat::cGUIVarFloat")
     /* stub */
 }
 
 cGUIVarFloat::~cGUIVarFloat() {
-    DDON_STUB("cGUIVarFloat::~cGUIVarFloat")
-    /* stub */
 }
 
 MtUI* cGUIVarFloat::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cGUIVarFloat::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIVarFloat::createProperty")
-    /* stub */
+void cGUIVarFloat::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Id", &mId, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "LoopValue", reinterpret_cast<MT_MFUNC>(&::cGUIVariable::isLoopValue), reinterpret_cast<MT_MFUNC>(&::cGUIVariable::setLoopValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "MinValue", reinterpret_cast<MT_MFUNC>(&::cGUIVarFloat::getMin), reinterpret_cast<MT_MFUNC>(&::cGUIVarFloat::setMin), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "MaxValue", reinterpret_cast<MT_MFUNC>(&::cGUIVarFloat::getMax), reinterpret_cast<MT_MFUNC>(&::cGUIVarFloat::setMax), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "Value", reinterpret_cast<MT_MFUNC>(&::cGUIVarFloat::get), reinterpret_cast<MT_MFUNC>(&::cGUIVarFloat::setValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "OldValue", reinterpret_cast<MT_MFUNC>(&::cGUIVarFloat::getOld), reinterpret_cast<MT_MFUNC>(&::cGUIVarFloat::setOld), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "InitValue", reinterpret_cast<MT_MFUNC>(&::cGUIVarFloat::getInit), reinterpret_cast<MT_MFUNC>(&::cGUIVarFloat::setInit), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 s32 cGUIVarFloat::getS32() const {
@@ -86,33 +95,43 @@ void* cGUIVarInt::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cGUIVarInt::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIVarInt::DTI)->memFree(p_addr);
+}
+
 cGUIVarInt::cGUIVarInt() {
     DDON_STUB("cGUIVarInt::cGUIVarInt")
     /* stub */
 }
 
 cGUIVarInt::~cGUIVarInt() {
-    DDON_STUB("cGUIVarInt::~cGUIVarInt")
-    /* stub */
 }
 
 MtUI* cGUIVarInt::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cGUIVarInt::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIVarInt::createProperty")
-    /* stub */
+void cGUIVarInt::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Id", &mId, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "LoopValue", reinterpret_cast<MT_MFUNC>(&::cGUIVariable::isLoopValue), reinterpret_cast<MT_MFUNC>(&::cGUIVariable::setLoopValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "MinValue", reinterpret_cast<MT_MFUNC>(&::cGUIVarInt::getMin), reinterpret_cast<MT_MFUNC>(&::cGUIVarInt::setMin), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "MaxValue", reinterpret_cast<MT_MFUNC>(&::cGUIVarInt::getMax), reinterpret_cast<MT_MFUNC>(&::cGUIVarInt::setMax), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "Value", reinterpret_cast<MT_MFUNC>(&::cGUIVarInt::get), reinterpret_cast<MT_MFUNC>(&::cGUIVarInt::setValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "OldValue", reinterpret_cast<MT_MFUNC>(&::cGUIVarInt::getOld), reinterpret_cast<MT_MFUNC>(&::cGUIVarInt::setOld), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "InitValue", reinterpret_cast<MT_MFUNC>(&::cGUIVarInt::getInit), reinterpret_cast<MT_MFUNC>(&::cGUIVarInt::setInit), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
-__attribute__((weak)) void cGUIVarInt::createEventProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIVarInt::createEventProperty")
-    /* stub */
+void cGUIVarInt::createEventProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "increment", static_cast<MT_MFUNC>(&::cGUIVarInt::incrementForProperty), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "decrement", static_cast<MT_MFUNC>(&::cGUIVarInt::decrementForProperty), 10u);
 }
 
-__attribute__((weak)) const MT_CTSTR* cGUIVarInt::getEventPropertyTooltip() {
-    DDON_STUB("cGUIVarInt::getEventPropertyTooltip")
-    return nullptr;
+const MT_CTSTR* cGUIVarInt::getEventPropertyTooltip() {
+    static const MT_CTSTR tooltip[2] = {
+        "\347\217\276\345\234\250\343\201\256\345\200\244\343\202\222\357\274\213\357\274\221\343\201\231\343\202\213",
+        "\347\217\276\345\234\250\343\201\256\345\200\244\343\202\222\357\274\215\357\274\221\343\201\231\343\202\213",
+    };
+    return tooltip;
 }
 
 s32 cGUIVarInt::getS32() const {

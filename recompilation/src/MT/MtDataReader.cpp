@@ -29,520 +29,159 @@ MtDataReader::~MtDataReader() {
     mStream.seek(static_cast<s32>(mSeekPt - mBufsiz), MtStream::ORG_CURRENT);
 }
 
-u32 MtDataReader::readString(MT_STR buf, u32 bufmax) {
-    u32 t0 = mSeekPt;
-    u32 t1 = mBufsiz;
-    u32 v4_0;
-    u32 v4_7;
-    unsigned int v12_7;
-    if (t0 < t1) {
-        v4_0 = t1;
-        v4_7 = t0;
-    } else {
-        u32 v0_1;
-        if (t1 != 0) {
-            v0_1 = t1;
-        } else {
-            u32 t2 = mBufsizMax;
-            mBufsiz = t2;
-            v0_1 = t2;
-        }
-        u32 v0_3 = t1 - t0;
-        u32 v3_2;
-        if (t1 == t0) {
-            v3_2 = v0_1;
-        } else {
-            u8* t3 = mBuffer;
-            u8 t4 = t3[t0];
-            *t3 = t4;
-            if (v0_3 != 1) {
-                u32 v1_0 = t1 - t0;
-                for (unsigned int i1_1 = 1;;) {
-                    u32 t5 = mSeekPt;
-                    u8* t6 = mBuffer;
-                    u8 t7 = t6[i1_1 + t5];
-                    t6[i1_1] = t7;
-                    if (v1_0 != (i1_1 + 1u)) {
-                        i1_1 = i1_1 + 1u;
-                    } else {
-                        break;
-                    }
-                }
+__attribute__((weak)) u32 MtDataReader::readString(MT_STR buf, u32 bufmax) {
+        u32 len = 0;
+        s8 c = static_cast<s8>(readU8());
+        while (c != 0) {
+            if (len < bufmax - 1) {
+                buf[len++] = c;
             }
-            v3_2 = mBufsiz;
+            c = static_cast<s8>(readU8());
         }
-        MtStream& t8 = mStream;
-        u8* t9 = mBuffer;
-        u32 t10 = t8.read(static_cast<void*>(&t9[v0_3]), v3_2 - v0_3);
-        mBufsiz = v0_3 + t10;
-        mSeekPt = 0;
-        if (mBufsiz == 0) {
-            v12_7 = 0;
-            buf[v12_7] = 0;
-            return v12_7;
-        } else {
-            v4_0 = v0_3 + t10;
-            v4_7 = 0;
-        }
-    }
-    u8* t11 = mBuffer;
-    u8 t12 = t11[v4_7];
-    mSeekPt = v4_7 + 1u;
-    u32 v5_0;
-    u32 v5_1;
-    u8 v5_2;
-    unsigned int i5_7;
-    if (t12 == 0) {
-        v12_7 = 0;
-        buf[v12_7] = 0;
-        return v12_7;
-    } else {
-        v5_0 = v4_0;
-        v5_1 = v4_7 + 1u;
-        v5_2 = t12;
-        i5_7 = 0;
-    }
-    u32 v6_0;
-    u32 v6_1;
-    unsigned int v6_2;
-    u32 v7_2;
-    u32 v7_4;
-    u32 v8_0;
-    unsigned int i8_1;
-    u32 v10_2;
-    u32 v11_0;
-    u32 v11_1;
-    for (;;) {
-        if (i5_7 >= (bufmax - 1u)) {
-            v6_0 = v5_0;
-            v6_1 = v5_1;
-            v6_2 = i5_7;
-        } else {
-            buf[i5_7] = static_cast<char>(v5_2);
-            u32 t13 = mSeekPt;
-            u32 t14 = mBufsiz;
-            v6_0 = t14;
-            v6_1 = t13;
-            v6_2 = i5_7 + 1u;
-        }
-        if (v6_1 < v6_0) {
-            v11_0 = v6_0;
-            v11_1 = v6_1;
-        } else {
-            if (v6_0 != 0) {
-                v7_2 = v6_0;
-            } else {
-                u32 t15 = mBufsizMax;
-                mBufsiz = t15;
-                v7_2 = t15;
-            }
-            v7_4 = v6_0 - v6_1;
-            if (v6_0 == v6_1) {
-                v10_2 = v7_2;
-            } else {
-                u8* t16 = mBuffer;
-                *t16 = t16[v6_1];
-                if (v7_4 != 1) {
-                    v8_0 = v6_0 - v6_1;
-                    i8_1 = 1;
-                    for (;;) {
-                        u32 t17 = mSeekPt;
-                        u8* t18 = mBuffer;
-                        u8 t19 = t18[i8_1 + t17];
-                        t18[i8_1] = t19;
-                        if (v8_0 != (i8_1 + 1u)) {
-                            i8_1 = i8_1 + 1u;
-                        } else {
-                            break;
-                        }
-                    }
-                }
-                v10_2 = mBufsiz;
-            }
-            MtStream& t20 = mStream;
-            u8* t21 = mBuffer;
-            u32 t22 = t20.read(static_cast<void*>(&t21[v7_4]), v10_2 - v7_4);
-            mBufsiz = v7_4 + t22;
-            mSeekPt = 0;
-            if (mBufsiz == 0) {
-                v12_7 = v6_2;
-                break;
-            } else {
-                v11_0 = v7_4 + t22;
-                v11_1 = 0;
-            }
-        }
-        u8* t23 = mBuffer;
-        u8 t24 = t23[v11_1];
-        mSeekPt = v11_1 + 1u;
-        if (t24 != 0) {
-            v5_0 = v11_0;
-            v5_1 = v11_1 + 1u;
-            v5_2 = t24;
-            i5_7 = v6_2;
-        } else {
-            v12_7 = v6_2;
-            break;
-        }
-    }
-    buf[v12_7] = 0;
-    return v12_7;
+        buf[len] = 0;
+        return len;
 }
 
-u16 MtDataReader::readU16() {
-    if ((mSeekPt + 1u) >= mBufsiz) {
-        if (refill()) {
-            u16 n;
-            __builtin_memcpy(&n, &(*mBuffer), 2);
-            mSeekPt = 2;
-            return n;
-        } else {
+__attribute__((weak)) u16 MtDataReader::readU16() {
+        if (mSeekPt + 1u >= mBufsiz && !refill()) {
             return 0;
         }
-    } else {
         u16 n;
-        __builtin_memcpy(&n, &mBuffer[mSeekPt], 2);
-        mSeekPt = mSeekPt + 2u;
+        __builtin_memcpy(&n, mBuffer + mSeekPt, sizeof(n));
+        mSeekPt += sizeof(n);
         return n;
-    }
 }
 
-u32 MtDataReader::readU32() {
-    if ((mSeekPt + 3u) >= mBufsiz) {
-        if (refill()) {
-            u32 n;
-            __builtin_memcpy(&n, &(*mBuffer), 4);
-            mSeekPt = 4;
-            return n;
-        } else {
+__attribute__((weak)) u32 MtDataReader::readU32() {
+        if (mSeekPt + 3u >= mBufsiz && !refill()) {
             return 0;
         }
-    } else {
         u32 n;
-        __builtin_memcpy(&n, &mBuffer[mSeekPt], 4);
-        mSeekPt = mSeekPt + 4u;
+        __builtin_memcpy(&n, mBuffer + mSeekPt, sizeof(n));
+        mSeekPt += sizeof(n);
         return n;
-    }
 }
 
-u64 MtDataReader::readU64() {
-    if ((mSeekPt + 7u) >= mBufsiz) {
-        if (refill()) {
-            u64 n;
-            __builtin_memcpy(&n, &(*mBuffer), 8);
-            mSeekPt = 8;
-            return n;
-        } else {
+__attribute__((weak)) u64 MtDataReader::readU64() {
+        if (mSeekPt + 7u >= mBufsiz && !refill()) {
             return 0;
         }
-    } else {
         u64 n;
-        __builtin_memcpy(&n, &mBuffer[mSeekPt], 8);
-        mSeekPt = mSeekPt + 8u;
+        __builtin_memcpy(&n, mBuffer + mSeekPt, sizeof(n));
+        mSeekPt += sizeof(n);
         return n;
-    }
 }
 
 size_t MtDataReader::readUPtr() {
     return readU64();
 }
 
-s16 MtDataReader::readS16() {
-    if ((mSeekPt + 1u) >= mBufsiz) {
-        if (refill()) {
-            s16 n;
-            __builtin_memcpy(&n, &(*mBuffer), 2);
-            mSeekPt = 2;
-            return n;
-        } else {
+__attribute__((weak)) s16 MtDataReader::readS16() {
+        if (mSeekPt + 1u >= mBufsiz && !refill()) {
             return 0;
         }
-    } else {
         s16 n;
-        __builtin_memcpy(&n, &mBuffer[mSeekPt], 2);
-        mSeekPt = mSeekPt + 2u;
+        __builtin_memcpy(&n, mBuffer + mSeekPt, sizeof(n));
+        mSeekPt += sizeof(n);
         return n;
-    }
 }
 
-s32 MtDataReader::readS32() {
-    if ((mSeekPt + 3u) >= mBufsiz) {
-        if (refill()) {
-            s32 n;
-            __builtin_memcpy(&n, &(*mBuffer), 4);
-            mSeekPt = 4;
-            return n;
-        } else {
+__attribute__((weak)) s32 MtDataReader::readS32() {
+        if (mSeekPt + 3u >= mBufsiz && !refill()) {
             return 0;
         }
-    } else {
         s32 n;
-        __builtin_memcpy(&n, &mBuffer[mSeekPt], 4);
-        mSeekPt = mSeekPt + 4u;
+        __builtin_memcpy(&n, mBuffer + mSeekPt, sizeof(n));
+        mSeekPt += sizeof(n);
         return n;
-    }
 }
 
-s64 MtDataReader::readS64() {
-    if ((mSeekPt + 7u) >= mBufsiz) {
-        if (refill()) {
-            s64 n;
-            __builtin_memcpy(&n, &(*mBuffer), 8);
-            mSeekPt = 8;
-            return n;
-        } else {
+__attribute__((weak)) s64 MtDataReader::readS64() {
+        if (mSeekPt + 7u >= mBufsiz && !refill()) {
             return 0;
         }
-    } else {
         s64 n;
-        __builtin_memcpy(&n, &mBuffer[mSeekPt], 8);
-        mSeekPt = mSeekPt + 8u;
+        __builtin_memcpy(&n, mBuffer + mSeekPt, sizeof(n));
+        mSeekPt += sizeof(n);
         return n;
-    }
 }
 
 size_t MtDataReader::readSPtr() {
     return static_cast<size_t>(readS64());
 }
 
-f32 MtDataReader::readF32() {
-    if ((mSeekPt + 3u) >= mBufsiz) {
-        if (refill()) {
-            f32 t0;
-            __builtin_memcpy(&t0, &(*mBuffer), 4);
-            mSeekPt = 4;
-            return t0;
-        } else {
-            return 0.0f;
+__attribute__((weak)) f32 MtDataReader::readF32() {
+        if (mSeekPt + 3u >= mBufsiz && !refill()) {
+            return 0;
         }
-    } else {
-        f32 t1;
-        __builtin_memcpy(&t1, &mBuffer[mSeekPt], 4);
-        mSeekPt = mSeekPt + 4u;
-        return t1;
-    }
+        f32 n;
+        __builtin_memcpy(&n, mBuffer + mSeekPt, sizeof(n));
+        mSeekPt += sizeof(n);
+        return n;
 }
 
-f64 MtDataReader::readF64() {
-    if ((mSeekPt + 7u) >= mBufsiz) {
-        if (refill()) {
-            f64 t0;
-            __builtin_memcpy(&t0, &(*mBuffer), 8);
-            mSeekPt = 8;
-            return t0;
-        } else {
-            return 0.0;
+__attribute__((weak)) f64 MtDataReader::readF64() {
+        if (mSeekPt + 7u >= mBufsiz && !refill()) {
+            return 0;
         }
-    } else {
-        f64 t1;
-        __builtin_memcpy(&t1, &mBuffer[mSeekPt], 8);
-        mSeekPt = mSeekPt + 8u;
-        return t1;
-    }
+        f64 n;
+        __builtin_memcpy(&n, mBuffer + mSeekPt, sizeof(n));
+        mSeekPt += sizeof(n);
+        return n;
 }
 
-MtFloat2 MtDataReader::readV2() {
-    u32 t0 = mSeekPt;
-    u32 v0_0 = mBufsiz;
-    u32 v4_1;
-    if ((t0 + 7u) < v0_0) {
-        v4_1 = t0;
-    } else {
-        u32 v0_2;
-        if (v0_0 != 0) {
-            v0_2 = v0_0;
-        } else {
-            mBufsiz = mBufsizMax;
-            v0_2 = mBufsizMax;
+__attribute__((weak)) MtFloat2 MtDataReader::readV2() {
+        if (mSeekPt + 7u >= mBufsiz && !refill()) {
+            return MtFloat2::Zero;
         }
-        u32 v3_2;
-        u32 v3_4;
-        if (v0_0 == t0) {
-            v3_2 = v0_2;
-            v3_4 = v0_0 - t0;
-        } else {
-            *mBuffer = mBuffer[t0];
-            u32 v2_4;
-            if ((v0_0 - t0) == 1) {
-                v2_4 = v0_0 - t0;
-            } else {
-                u32 v1_0 = v0_0 - t0;
-                unsigned int i1_1 = 1;
-                for (u32 v1_4 = v0_0 - t0;;) {
-                    mBuffer[i1_1] = mBuffer[i1_1 + mSeekPt];
-                    if (v1_0 != (i1_1 + 1u)) {
-                        i1_1 = i1_1 + 1u;
-                    } else {
-                        v2_4 = v1_4;
-                        break;
-                    }
-                }
-            }
-            v3_2 = mBufsiz;
-            v3_4 = v2_4;
-        }
-        mBufsiz = v3_4 + mStream.read(static_cast<void*>(&mBuffer[v3_4]), v3_2 - v3_4);
-        mSeekPt = 0;
-        if (mBufsiz == 0) {
-            MtFloat2 ft2;
-            ft2.x = MtFloat2::Zero.x;
-            ft2.y = MtFloat2::Zero.y;
-            return ft2;
-        } else {
-            v4_1 = 0;
-        }
-    }
-    float t1;
-    __builtin_memcpy(&t1, &mBuffer[v4_1], 4);
-    mSeekPt = v4_1 + 4u;
-    float t2;
-    __builtin_memcpy(&t2, &mBuffer[v4_1 + 4u], 4);
-    mSeekPt = v4_1 + 8u;
-    MtFloat2 ft2;
-    ft2.x = t1;
-    ft2.y = t2;
-    return ft2;
+        union { u32 i; f32 f; } ifu;
+        MtFloat2 v;
+        __builtin_memcpy(&ifu, mBuffer + mSeekPt, sizeof(ifu));
+        v.x = ifu.f;
+        mSeekPt += 4;
+        __builtin_memcpy(&ifu, mBuffer + mSeekPt, sizeof(ifu));
+        v.y = ifu.f;
+        mSeekPt += 4;
+        return v;
 }
 
-MtFloat3 MtDataReader::readV3() {
-    u32 t0 = mSeekPt;
-    u32 v0_0 = mBufsiz;
-    u32 v4_1;
-    if ((t0 + 11u) < v0_0) {
-        v4_1 = t0;
-    } else {
-        u32 v0_2;
-        if (v0_0 != 0) {
-            v0_2 = v0_0;
-        } else {
-            mBufsiz = mBufsizMax;
-            v0_2 = mBufsizMax;
+__attribute__((weak)) MtFloat3 MtDataReader::readV3() {
+        if (mSeekPt + 11u >= mBufsiz && !refill()) {
+            return MtFloat3::Zero;
         }
-        u32 v3_2;
-        u32 v3_4;
-        if (v0_0 == t0) {
-            v3_2 = v0_2;
-            v3_4 = v0_0 - t0;
-        } else {
-            *mBuffer = mBuffer[t0];
-            u32 v2_4;
-            if ((v0_0 - t0) == 1) {
-                v2_4 = v0_0 - t0;
-            } else {
-                u32 v1_0 = v0_0 - t0;
-                unsigned int i1_1 = 1;
-                for (u32 v1_4 = v0_0 - t0;;) {
-                    mBuffer[i1_1] = mBuffer[i1_1 + mSeekPt];
-                    if (v1_0 != (i1_1 + 1u)) {
-                        i1_1 = i1_1 + 1u;
-                    } else {
-                        v2_4 = v1_4;
-                        break;
-                    }
-                }
-            }
-            v3_2 = mBufsiz;
-            v3_4 = v2_4;
-        }
-        mBufsiz = v3_4 + mStream.read(static_cast<void*>(&mBuffer[v3_4]), v3_2 - v3_4);
-        mSeekPt = 0;
-        if (mBufsiz == 0) {
-            MtFloat3 ft3;
-            ft3.x = MtFloat3::Zero.x;
-            ft3.y = MtFloat3::Zero.y;
-            ft3.z = MtFloat3::Zero.z;
-            return ft3;
-        } else {
-            v4_1 = 0;
-        }
-    }
-    float t1;
-    __builtin_memcpy(&t1, &mBuffer[v4_1], 4);
-    mSeekPt = v4_1 + 4u;
-    float t2;
-    __builtin_memcpy(&t2, &mBuffer[v4_1 + 4u], 4);
-    mSeekPt = v4_1 + 8u;
-    float t3;
-    __builtin_memcpy(&t3, &mBuffer[v4_1 + 8u], 4);
-    mSeekPt = v4_1 + 12u;
-    MtFloat3 ft3;
-    ft3.x = t1;
-    ft3.y = t2;
-    ft3.z = t3;
-    return ft3;
+        union { u32 i; f32 f; } ifu;
+        MtFloat3 v;
+        __builtin_memcpy(&ifu, mBuffer + mSeekPt, sizeof(ifu));
+        v.x = ifu.f;
+        mSeekPt += 4;
+        __builtin_memcpy(&ifu, mBuffer + mSeekPt, sizeof(ifu));
+        v.y = ifu.f;
+        mSeekPt += 4;
+        __builtin_memcpy(&ifu, mBuffer + mSeekPt, sizeof(ifu));
+        v.z = ifu.f;
+        mSeekPt += 4;
+        return v;
 }
 
-MtFloat4 MtDataReader::readV4() {
-    u32 t0 = mSeekPt;
-    u32 v0_0 = mBufsiz;
-    u32 v4_1;
-    if ((t0 + 15u) < v0_0) {
-        v4_1 = t0;
-    } else {
-        u32 v0_2;
-        if (v0_0 != 0) {
-            v0_2 = v0_0;
-        } else {
-            mBufsiz = mBufsizMax;
-            v0_2 = mBufsizMax;
+__attribute__((weak)) MtFloat4 MtDataReader::readV4() {
+        if (mSeekPt + 15u >= mBufsiz && !refill()) {
+            return MtFloat4::Zero;
         }
-        u32 v3_2;
-        u32 v3_4;
-        if (v0_0 == t0) {
-            v3_2 = v0_2;
-            v3_4 = v0_0 - t0;
-        } else {
-            *mBuffer = mBuffer[t0];
-            u32 v2_4;
-            if ((v0_0 - t0) == 1) {
-                v2_4 = v0_0 - t0;
-            } else {
-                u32 v1_0 = v0_0 - t0;
-                unsigned int i1_1 = 1;
-                for (u32 v1_4 = v0_0 - t0;;) {
-                    mBuffer[i1_1] = mBuffer[i1_1 + mSeekPt];
-                    if (v1_0 != (i1_1 + 1u)) {
-                        i1_1 = i1_1 + 1u;
-                    } else {
-                        v2_4 = v1_4;
-                        break;
-                    }
-                }
-            }
-            v3_2 = mBufsiz;
-            v3_4 = v2_4;
-        }
-        mBufsiz = v3_4 + mStream.read(static_cast<void*>(&mBuffer[v3_4]), v3_2 - v3_4);
-        mSeekPt = 0;
-        if (mBufsiz == 0) {
-            MtFloat4 ft4;
-            ft4.x = MtFloat4::Zero.x;
-            ft4.y = MtFloat4::Zero.y;
-            ft4.z = MtFloat4::Zero.z;
-            ft4.w = MtFloat4::Zero.w;
-            return ft4;
-        } else {
-            v4_1 = 0;
-        }
-    }
-    float t1;
-    __builtin_memcpy(&t1, &mBuffer[v4_1], 4);
-    mSeekPt = v4_1 + 4u;
-    float t2;
-    __builtin_memcpy(&t2, &mBuffer[v4_1 + 4u], 4);
-    mSeekPt = v4_1 + 8u;
-    float t3;
-    __builtin_memcpy(&t3, &mBuffer[v4_1 + 8u], 4);
-    mSeekPt = v4_1 + 12u;
-    float t4;
-    __builtin_memcpy(&t4, &mBuffer[v4_1 + 12u], 4);
-    mSeekPt = v4_1 + 16u;
-    MtFloat4 ft4;
-    ft4.x = t1;
-    ft4.y = t2;
-    ft4.z = t3;
-    ft4.w = t4;
-    return ft4;
+        union { u32 i; f32 f; } ifu;
+        MtFloat4 v;
+        __builtin_memcpy(&ifu, mBuffer + mSeekPt, sizeof(ifu));
+        v.x = ifu.f;
+        mSeekPt += 4;
+        __builtin_memcpy(&ifu, mBuffer + mSeekPt, sizeof(ifu));
+        v.y = ifu.f;
+        mSeekPt += 4;
+        __builtin_memcpy(&ifu, mBuffer + mSeekPt, sizeof(ifu));
+        v.z = ifu.f;
+        mSeekPt += 4;
+        __builtin_memcpy(&ifu, mBuffer + mSeekPt, sizeof(ifu));
+        v.w = ifu.f;
+        mSeekPt += 4;
+        return v;
 }
 
 u32 MtDataReader::read(void* ptr, u32 bytes) {
@@ -563,145 +202,19 @@ u32 MtDataReader::read(void* ptr, u32 bytes) {
     return rb;
 }
 
-void MtDataReader::align(u32 n) {
-    MtStream& t0 = mStream;
-    u32 t1 = t0.getPosition();
-    if (((n - 1u) & ((mSeekPt - mBufsiz) + t1)) != 0) {
-        if (n != ((n - 1u) & ((mSeekPt - mBufsiz) + t1))) {
-            u32 v0_0 = mBufsiz;
-            u32 v0_3 = mSeekPt;
-            u32 v0_10 = n - ((n - 1u) & ((mSeekPt - mBufsiz) + t1));
-            unsigned int i0_11 = 0;
-            u32 v2_0;
-            unsigned int i3_0;
-            u32 v5_1;
-            u32 v6_1;
-            u32 v6_3;
-            for (;;) {
-                if (v0_3 >= v0_0) {
-                    if (v0_0 != 0) {
-                        v2_0 = v0_0;
-                    } else {
-                        u32 t2 = mBufsizMax;
-                        mBufsiz = t2;
-                        v2_0 = t2;
-                    }
-                    if (v0_0 == v0_3) {
-                        v5_1 = v2_0;
-                    } else {
-                        u8* t3 = mBuffer;
-                        u8 t4 = t3[v0_3];
-                        *t3 = t4;
-                        if ((v0_0 - v0_3) != 1) {
-                            i3_0 = 1;
-                            for (;;) {
-                                u32 t5 = mSeekPt;
-                                u8* t6 = mBuffer;
-                                u8 t7 = t6[i3_0 + t5];
-                                t6[i3_0] = t7;
-                                if ((v0_0 - v0_3) != (i3_0 + 1u)) {
-                                    i3_0 = i3_0 + 1u;
-                                } else {
-                                    break;
-                                }
-                            }
-                        }
-                        v5_1 = mBufsiz;
-                    }
-                    MtStream& t8 = mStream;
-                    u8* t9 = mBuffer;
-                    u32 t10 = t8.read(static_cast<void*>(&t9[v0_0 - v0_3]), (v0_3 - v0_0) + v5_1);
-                    mBufsiz = (v0_0 - v0_3) + t10;
-                    if (mBufsiz == 0) {
-                        v6_1 = 0;
-                        v6_3 = 0;
-                    } else {
-                        v6_1 = (v0_0 - v0_3) + t10;
-                        v6_3 = 1;
-                    }
-                } else {
-                    v6_1 = v0_0;
-                    v6_3 = v0_3 + 1u;
-                }
-                mSeekPt = v6_3;
-                if (v0_10 != (i0_11 + 1u)) {
-                    v0_0 = v6_1;
-                    v0_3 = v6_3;
-                    i0_11 += 1u;
-                } else {
-                    break;
-                }
+__attribute__((weak)) void MtDataReader::align(u32 n) {
+        u32 pos = MtDataReader::getPosition() & (n - 1);
+        if (pos != 0) {
+            for (u32 i = 0; i < n - pos; i++) {
+                readU8();
             }
         }
-    }
 }
 
-void MtDataReader::skip(u32 bytes) {
-    if (bytes != 0) {
-        u32 v0_0 = mBufsiz;
-        u32 v0_1 = mSeekPt;
-        unsigned int i0_8 = 0;
-        u32 v2_0;
-        unsigned int i3_0;
-        u32 v5_1;
-        u32 v6_1;
-        u32 v6_2;
-        for (;;) {
-            if (v0_1 >= v0_0) {
-                if (v0_0 != 0) {
-                    v2_0 = v0_0;
-                } else {
-                    u32 t0 = mBufsizMax;
-                    mBufsiz = t0;
-                    v2_0 = t0;
-                }
-                if (v0_0 == v0_1) {
-                    v5_1 = v2_0;
-                } else {
-                    u8* t1 = mBuffer;
-                    u8 t2 = t1[v0_1];
-                    *t1 = t2;
-                    if ((v0_0 - v0_1) != 1) {
-                        i3_0 = 1;
-                        for (;;) {
-                            u32 t3 = mSeekPt;
-                            u8* t4 = mBuffer;
-                            u8 t5 = t4[i3_0 + t3];
-                            t4[i3_0] = t5;
-                            if ((v0_0 - v0_1) != (i3_0 + 1u)) {
-                                i3_0 = i3_0 + 1u;
-                            } else {
-                                break;
-                            }
-                        }
-                    }
-                    v5_1 = mBufsiz;
-                }
-                MtStream& t6 = mStream;
-                u8* t7 = mBuffer;
-                u32 t8 = t6.read(static_cast<void*>(&t7[v0_0 - v0_1]), (v0_1 - v0_0) + v5_1);
-                mBufsiz = (v0_0 - v0_1) + t8;
-                if (mBufsiz == 0) {
-                    v6_1 = 0;
-                    v6_2 = 0;
-                } else {
-                    v6_1 = 1;
-                    v6_2 = (v0_0 - v0_1) + t8;
-                }
-            } else {
-                v6_1 = v0_1 + 1u;
-                v6_2 = v0_0;
-            }
-            mSeekPt = v6_1;
-            if (bytes != (i0_8 + 1u)) {
-                v0_0 = v6_2;
-                v0_1 = v6_1;
-                i0_8 += 1u;
-            } else {
-                break;
-            }
+__attribute__((weak)) void MtDataReader::skip(u32 bytes) {
+        for (u32 i = 0; i < bytes; i++) {
+            readU8();
         }
-    }
 }
 
 void MtDataReader::flush() {

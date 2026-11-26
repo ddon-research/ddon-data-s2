@@ -4,6 +4,8 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "nZone.h"
 #ifndef DDON_STUB
@@ -25,9 +27,8 @@ cZoneExtendObject::cZoneExtendObject() {
 cZoneExtendObject::~cZoneExtendObject() {
 }
 
-__attribute__((weak)) void cZoneExtendObject::createProperty(MtPropertyList& s) {
-    DDON_STUB("cZoneExtendObject::createProperty")
-    /* stub */
+void cZoneExtendObject::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpOwner", reinterpret_cast<MtObject* *>(&mpOwner), 19u, 0u);
 }
 
 inline cZoneExtendObject::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

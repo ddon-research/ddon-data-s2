@@ -85,8 +85,9 @@ void cQuestPhaseManager::release() {
 }
 
 cQuestPhaseManager::cQuestPhaseManager() {
-    DDON_STUB("cQuestPhaseManager::cQuestPhaseManager")
-    /* stub */
+    mpState = nullptr;
+    mPhaseId = 0;
+    cQuestSvNoticeManager::addCallbackFunc(cQuestSvNoticeCallback::DTI, cQuestSvNotQuestPhase::DTI)->cQuestSvNoticeCallback::setFromClass(static_cast<MtObject*>(this)).setCallbackFunc(static_cast<cQuestSvNoticeCallback::PCallbackFunc>(&::cQuestPhaseManager::callbackQuestPhaseNotice));
 }
 
 __attribute__((noinline)) cQuestPhaseManager::~cQuestPhaseManager() {
@@ -121,9 +122,8 @@ __attribute__((noinline)) cQuestPhaseManager::~cQuestPhaseManager() {
     mEventList.mLength = 0;
 }
 
-__attribute__((weak)) void cQuestPhaseManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("cQuestPhaseManager::createProperty")
-    /* stub */
+void cQuestPhaseManager::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpState", reinterpret_cast<MtObject* *>(&mpState), 0u, 0u);
 }
 
 MtUI* cQuestPhaseManager::createUI(MtProperty& prop) {
@@ -134,9 +134,8 @@ inline cQuestPhaseManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 cQuestPhaseManager::MyDTI cQuestPhaseManager::DTI("cQuestPhaseManager", &::cQuestFunctionManagerBase::DTI, 56ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cQuestPhaseManager::MyDTI::newInstance() const {
-    DDON_STUB("cQuestPhaseManager::MyDTI::newInstance")
-    return nullptr;
+MtObject* cQuestPhaseManager::MyDTI::newInstance() const {
+    return new (16u) cQuestPhaseManager;
 }
 
 template MtTypedArray<cQuestPhaseEvent>::~MtTypedArray();

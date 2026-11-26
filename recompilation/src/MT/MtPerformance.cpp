@@ -14,6 +14,10 @@ const MtDTI& MtPerformance::getDTI() const {
     return MtPerformance::DTI;
 }
 
+inline void* MtPerformance::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(MtPerformance::DTI)->memAlloc(sz, align, MtPerformance::DTI.mID);
+}
+
 inline void MtPerformance::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(MtPerformance::DTI)->memFree(p_addr);
 }
@@ -32,13 +36,16 @@ inline MtPerformance::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 MtPerformance::MyDTI MtPerformance::DTI("MtPerformance", &::MtObject::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* MtPerformance::MyDTI::newInstance() const {
-    DDON_STUB("MtPerformance::MyDTI::newInstance")
-    return nullptr;
+MtObject* MtPerformance::MyDTI::newInstance() const {
+    return new (16u) MtPerformance;
 }
 
 const MtDTI& MtPerformanceCounter::getDTI() const {
     return MtPerformanceCounter::DTI;
+}
+
+inline void* MtPerformanceCounter::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(MtPerformanceCounter::DTI)->memAlloc(sz, align, MtPerformanceCounter::DTI.mID);
 }
 
 inline void MtPerformanceCounter::operator delete(void* p_addr) {
@@ -62,9 +69,8 @@ MtPerformanceCounter::MyDTI MtPerformanceCounter::DTI("MtPerformanceCounter", &:
 
 s64 MtPerformanceCounter::mFrequency;
 
-__attribute__((weak)) MtObject* MtPerformanceCounter::MyDTI::newInstance() const {
-    DDON_STUB("MtPerformanceCounter::MyDTI::newInstance")
-    return nullptr;
+MtObject* MtPerformanceCounter::MyDTI::newInstance() const {
+    return new (16u) MtPerformanceCounter;
 }
 
 const MtDTI& MtPerformanceTimer::getDTI() const {

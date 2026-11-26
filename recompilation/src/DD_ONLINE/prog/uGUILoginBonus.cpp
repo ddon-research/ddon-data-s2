@@ -54,8 +54,15 @@ inline void uGUILoginBonus::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUILoginBonus::~uGUILoginBonus() {
-    DDON_STUB("uGUILoginBonus::~uGUILoginBonus")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpSeRes == nullptr) {
+        return;
+    }
+    mpSeRes->release();
+    mpSeRes = nullptr;
 }
 
 void uGUILoginBonus::createProperty(MtPropertyList& s) {

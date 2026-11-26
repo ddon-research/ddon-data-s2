@@ -339,9 +339,8 @@ __attribute__((weak)) nDDOGame::ELEMENT_TYPE cpJob05::getEnchantType() {
     return {};
 }
 
-__attribute__((weak)) bool cpJob05::isElementChangeAction() const {
-    DDON_STUB("cpJob05::isElementChangeAction")
-    return {};
+bool cpJob05::isElementChangeAction() const {
+    return (mpHuman->getActMgrPtr()->getActionNo() - 8220u) <= 5u;
 }
 
 nHuman::HM_SKILL_LV cpJob05::getElementChangeLV() const {

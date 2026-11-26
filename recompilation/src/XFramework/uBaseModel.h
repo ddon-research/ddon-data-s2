@@ -32,6 +32,7 @@ namespace nDraw { class Material; }
 class rMaterial;
 class rModel;
 class uCustomSimSoftBody;
+class uDDOModel;
 class uSimSoftBody;
 
 // Declarations
@@ -58,6 +59,7 @@ class uBaseModel : public uCoord
     friend class cpEquip;
     friend class cpTransparencyCtrl;
     friend class uCustomSimSoftBody;
+    friend class uDDOModel;
     friend class uSimSoftBody;
 public:
     enum VFCULL_LEVEL

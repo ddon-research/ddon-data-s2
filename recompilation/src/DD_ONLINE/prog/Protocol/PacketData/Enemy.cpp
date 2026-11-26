@@ -8,7 +8,7 @@
 #include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
-#include "../../../../generated/shared/nEnemyID.h"
+#include "../../nEnemyID.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

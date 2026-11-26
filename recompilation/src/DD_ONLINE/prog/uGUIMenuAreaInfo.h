@@ -359,6 +359,11 @@ inline void* uGUIMenuAreaInfo::cHeaderItem::operator new(size_t sz, void* p_addr
     return p_addr;
 }
 
+inline uGUIMenuAreaInfo::cHeaderItem::cHeaderItem() {
+    this->mpObjMsg = nullptr;
+    this->::uGUIBase::cScrollListItemBase::mItemType = 1;
+}
+
 inline void* uGUIMenuAreaInfo::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

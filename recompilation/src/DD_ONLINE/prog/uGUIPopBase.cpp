@@ -60,9 +60,10 @@ void uGUIPopBase::setSleepUnit(uGUIBase* p) {
     p->setStopAllContol(true);
 }
 
-__attribute__((weak)) MtSize uGUIPopBase::getWindowSize() {
-    DDON_STUB("uGUIPopBase::getWindowSize")
-    __builtin_unreachable();
+MtSize uGUIPopBase::getWindowSize() {
+    MtSize result;
+    result.wh = MtSize::Zero.wh;
+    return result;
 }
 
 inline uGUIPopBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

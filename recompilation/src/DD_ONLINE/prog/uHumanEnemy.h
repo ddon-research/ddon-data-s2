@@ -5,7 +5,7 @@
 
 // Dependencies
 #include "../../MT/MtDTI.h"
-#include "../../generated/shared/nEnemyID.h"
+#include "nEnemyID.h"
 #include "../../generated/shared/nHuman.h"
 #include "uHuman.h"
 

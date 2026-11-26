@@ -43,6 +43,10 @@ void* cCamExParamPhoto::operator new(size_t sz, u32 align) {
     return cCamExParamPhoto::getAllocator()->memAlloc(sz, align, cCamExParamPhoto::DTI.getID());
 }
 
+inline void cCamExParamPhoto::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(cCamExParamPhoto::DTI)->memFree(p_addr);
+}
+
 void cCamExParamPhoto::createProperty(MtPropertyList& s) {
     createPropertyCommon(s);
     createPropertyCameraTarget(s);
@@ -71,8 +75,7 @@ inline cCamExParamPhoto::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 cCamExParamPhoto::MyDTI cCamExParamPhoto::DTI("cCamExParamPhoto", &::cCamExParam::DTI, 480ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cCamExParamPhoto::MyDTI::newInstance() const {
-    DDON_STUB("cCamExParamPhoto::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cCamExParamPhoto;
 }
 
 const MtDTI& cCamImpPhoto::getDTI() const {

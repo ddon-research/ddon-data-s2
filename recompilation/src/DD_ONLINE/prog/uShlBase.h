@@ -42,6 +42,41 @@ class rEffectProvider;
 class rSoundRequest;
 class uBaseModel;
 class uCoord;
+class uShlAlchemyObj;
+class uShlArrowRainCtrl;
+class uShlBakuensen;
+class uShlBreath;
+class uShlConstErosion;
+class uShlDamageSyncCtrl;
+class uShlElementCover;
+class uShlEnchant;
+class uShlEnergyCharge;
+class uShlFireWallCtrl;
+class uShlFuwaFuwa2;
+class uShlGeneTarget;
+class uShlHitReactionConditionStick;
+class uShlHitReactionSpline;
+class uShlHitReactionStick;
+class uShlJob08CS12Npc;
+class uShlJob08CS13;
+class uShlJob08Cs12Homing;
+class uShlJob08Cs12Pad;
+class uShlJob10CS04;
+class uShlJob10CS06;
+class uShlKeepOwnerLog;
+class uShlLaser;
+class uShlMeteo;
+class uShlMgcArrow;
+class uShlMgcArrowErosion;
+class uShlMgcArrowErosionCtrl;
+class uShlNotifyCatch;
+class uShlPadCtrl;
+class uShlReflectWall;
+class uShlRenmadanCtrl;
+class uShlStateSurveillance;
+class uShlStick;
+class uShlStickCtrl;
+class uShlTarasukuLight;
 
 // Declarations
 class cShlParamBase;
@@ -60,6 +95,7 @@ using u8 = unsigned char;
 
 class cShlParamBase : public MtObject
 {
+    friend class uShlBase;
 public:
     enum SET_TYPE
     {
@@ -302,6 +338,41 @@ public:
 
 class uShlBase : public uDDOModel
 {
+    friend class uShlAlchemyObj;
+    friend class uShlArrowRainCtrl;
+    friend class uShlBakuensen;
+    friend class uShlBreath;
+    friend class uShlConstErosion;
+    friend class uShlDamageSyncCtrl;
+    friend class uShlElementCover;
+    friend class uShlEnchant;
+    friend class uShlEnergyCharge;
+    friend class uShlFireWallCtrl;
+    friend class uShlFuwaFuwa2;
+    friend class uShlGeneTarget;
+    friend class uShlHitReactionConditionStick;
+    friend class uShlHitReactionSpline;
+    friend class uShlHitReactionStick;
+    friend class uShlJob08CS12Npc;
+    friend class uShlJob08CS13;
+    friend class uShlJob08Cs12Homing;
+    friend class uShlJob08Cs12Pad;
+    friend class uShlJob10CS04;
+    friend class uShlJob10CS06;
+    friend class uShlKeepOwnerLog;
+    friend class uShlLaser;
+    friend class uShlMeteo;
+    friend class uShlMgcArrow;
+    friend class uShlMgcArrowErosion;
+    friend class uShlMgcArrowErosionCtrl;
+    friend class uShlNotifyCatch;
+    friend class uShlPadCtrl;
+    friend class uShlReflectWall;
+    friend class uShlRenmadanCtrl;
+    friend class uShlStateSurveillance;
+    friend class uShlStick;
+    friend class uShlStickCtrl;
+    friend class uShlTarasukuLight;
 public:
     enum SIGNAL
     {
@@ -642,6 +713,10 @@ inline void* cShlParamBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline nShlBase::SHL_AXIS cShlParamBase::getShlAxis() const {
+    return this->axis;
+}
+
 inline const cShlGroupParam* cShlParamBase::getGroupParam() const {
     return this->pGroupParam;
 }
@@ -650,10 +725,22 @@ inline void* uShlBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uDDOModel* uShlBase::getParent() {
+    return this->mpParent;
+}
+
 inline uDDOModel* uShlBase::getOwner() {
     return this->mpOwner;
 }
 
+inline f32 uShlBase::getTimer() const {
+    return this->mTimer;
+}
+
 inline const cShlParamBase* uShlBase::getShlParamBase() const {
     return this->mpShlParam2;
+}
+
+inline rSoundRequest* uShlBase::getSeResource() {
+    return this->mprSE;
 }

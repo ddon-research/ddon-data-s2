@@ -13,6 +13,7 @@
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "cResource.h"
@@ -49,56 +50,45 @@ MT_CTSTR rEffectList::getExt() const {
     return "efl";
 }
 
-bool rEffectList::load(MtStream& in) {
-    u32 fileSize = in.getLength();
-    if (fileSize != 0) {
-        u8* pTempBuff = static_cast<u8*>(MtMemory::mpAllocatorType[7]->memAlloc(fileSize, 16u));
-        if (pTempBuff != nullptr) {
-            u32 readSize = in.read(static_cast<void*>(pTempBuff), fileSize);
-            if (fileSize == readSize) {
-                if (reinterpret_cast<EFL_HEADER*>(pTempBuff)->Magic == 0x4C4645) {
-                    if (reinterpret_cast<EFL_HEADER*>(pTempBuff)->Version == 0x20120306) {
-                        mBaseFps = reinterpret_cast<EFL_HEADER*>(pTempBuff)->BaseFps;
-                        unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 152);
-                        unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 144);
-                        mListNum = reinterpret_cast<EFL_HEADER*>(pTempBuff)->ListNum;
-                        mJointNum = reinterpret_cast<EFL_HEADER*>(pTempBuff)->JointNum;
-                        unsigned int t4 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(reinterpret_cast<EFL_HEADER*>(pTempBuff)) + 20);
-                        mUnitGeneratorType = t4;
-                        unsigned int t5 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(reinterpret_cast<EFL_HEADER*>(pTempBuff)) + 20);
-                        mUnitMoveType = (t5 >> 4) & 15u;
-                        unsigned int t6 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(reinterpret_cast<EFL_HEADER*>(pTempBuff)) + 20);
-                        mJointShare = (t6 >> 8) & 15u;
-                        mJointIndexOffset = mListNum << 4;
-                        mUnitGeneratorParamOffset = reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitGeneratorParamOffset;
-                        mUnitMoveParamOffset = reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitMoveParamOffset;
-                        mUnitJointParamOffset = reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitJointParamOffset;
-                        mUnitParamOffset = reinterpret_cast<EFL_HEADER*>(pTempBuff)->UnitParamOffset;
-                        if (allocMemory(reinterpret_cast<EFL_HEADER*>(pTempBuff)->ParamBuffSize)) {
-                            memcpy(static_cast<void*>(mpParamBuff), static_cast<const void*>(&pTempBuff[48]), mParamBuffSize);
-                            setupResourceInfo();
-                            MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
-                            return true;
-                        } else {
-                            MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            } else {
-                MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
-                return false;
-            }
-        } else {
+__attribute__((weak)) bool rEffectList::load(MtStream& in) {
+        u32 fileSize = in.getLength();
+        if (fileSize == 0) {
             return false;
         }
-    } else {
-        return false;
-    }
+        u8* pTempBuff = static_cast<u8*>(MtMemory::mpAllocatorType[7]->memAlloc(fileSize, 16u));
+        if (pTempBuff == nullptr) {
+            return false;
+        }
+        bool result = false;
+        u32 readSize = in.read(pTempBuff, fileSize);
+        if (readSize == fileSize) {
+            EFL_HEADER* pHeader = reinterpret_cast<EFL_HEADER*>(pTempBuff);
+            if (pHeader->Magic != 0x4C4645) {
+                return false;
+            }
+            if (pHeader->Version != 0x20120306) {
+                return false;
+            }
+            mBaseFps = pHeader->BaseFps;
+            u32 listNum = pHeader->ListNum;
+            mListNum = listNum;
+            mJointNum = pHeader->JointNum;
+            mUnitGeneratorType = pHeader->UnitGeneratorType;
+            mUnitMoveType = pHeader->UnitMoveType;
+            mJointShare = pHeader->JointShare;
+            mJointIndexOffset = listNum * 16;
+            mUnitGeneratorParamOffset = pHeader->UnitGeneratorParamOffset;
+            mUnitMoveParamOffset = pHeader->UnitMoveParamOffset;
+            mUnitJointParamOffset = pHeader->UnitJointParamOffset;
+            mUnitParamOffset = pHeader->UnitParamOffset;
+            if (allocMemory(pHeader->ParamBuffSize)) {
+                memcpy(mpParamBuff, pTempBuff + sizeof(EFL_HEADER), mParamBuffSize);
+                setupResourceInfo();
+                result = true;
+            }
+        }
+        MtMemory::mpAllocatorType[7]->memFree(pTempBuff);
+        return result;
 }
 
 bool rEffectList::save(MtStream& out) {
@@ -171,9 +161,15 @@ void rEffectList::clear() {
     mAttr = 22;
 }
 
-__attribute__((weak)) void rEffectList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rEffectList::createProperty")
-    /* stub */
+void rEffectList::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mResourceSize", reinterpret_cast<MT_MFUNC>(&::rEffectList::getResourceSize), reinterpret_cast<MT_MFUNC>(&::rEffectList::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mBaseFps", reinterpret_cast<MT_MFUNC>(&::rEffectList::getBaseFps), reinterpret_cast<MT_MFUNC>(&::rEffectList::setDummyF32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mListNum", reinterpret_cast<MT_MFUNC>(&::rEffectList::getListNum), reinterpret_cast<MT_MFUNC>(&::rEffectList::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mJointNum", reinterpret_cast<MT_MFUNC>(&::rEffectList::getJointNum), reinterpret_cast<MT_MFUNC>(&::rEffectList::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mJointShare", reinterpret_cast<MT_MFUNC>(&::rEffectList::isJointShare), reinterpret_cast<MT_MFUNC>(&::rEffectList::setDummyBool), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mUnitGeneratorType", reinterpret_cast<MT_MFUNC>(&::rEffectList::getUnitGeneratorType), reinterpret_cast<MT_MFUNC>(&::rEffectList::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mUnitMoveType", reinterpret_cast<MT_MFUNC>(&::rEffectList::getUnitMoveType), reinterpret_cast<MT_MFUNC>(&::rEffectList::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* rEffectList::createUI(MtProperty& prop) {

@@ -21,7 +21,9 @@ class MtVector3;
 class cFSMUnit;
 namespace cThinkMgrName { class cThinkMgr; }
 class kTHINKDATA;
+class uCharacter;
 class uDDOModel;
+class uEnemy;
 
 // Declarations
 class cRage;
@@ -88,6 +90,8 @@ public:
 class cpEnemyThink : public cpThinkBase
 {
     friend class cFSMUnit;
+    friend class uCharacter;
+    friend class uEnemy;
 public:
     class MyDTI;
 public:

@@ -56,9 +56,13 @@ MtUI* rSoundSpeakerSetXml::createUI(MtProperty& prop) {
     return this->cResource::createUI(prop);
 }
 
-__attribute__((weak)) void rSoundSpeakerSetXml::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundSpeakerSetXml::createProperty")
-    /* stub */
+void rSoundSpeakerSetXml::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mCoordinate", &mCoordinate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpeakerSetting", &mSpeakerSetting, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpeakerPosition", &mSpeakerPosition[0], 32u, 6u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpeakerOrientation", &mSpeakerOrientation[0], 32u, 6u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpDirectionalCurve", "resource", static_cast<void*>(&mpDirectionalCurve[0]), 32u, 6u);
 }
 
 bool rSoundSpeakerSetXml::load(MtStream& in) {

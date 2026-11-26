@@ -21,6 +21,8 @@ class cWeatherFogInfo;
 class cIndoorSkyFogParam;
 class cZoneIndoorGrassOff;
 class cZoneIndoorLight;
+class cZoneIndoorScrlEfcOff;
+class cZoneIndoorWeatherEffectOff;
 class cZoneIndoorWindCtrl;
 
 // Type aliases from DWARF
@@ -175,6 +177,66 @@ public:
     static MyDTI DTI;
 };
 
+class cZoneIndoorScrlEfcOff : public nSoundTrigger::cCategory
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cZoneIndoorScrlEfcOff();
+public:
+    static MyDTI DTI;
+};
+
+class cZoneIndoorWeatherEffectOff : public nSoundTrigger::cCategory
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cZoneIndoorWeatherEffectOff();
+public:
+    static MyDTI DTI;
+};
+
 class cZoneIndoorWindCtrl : public nSoundTrigger::cCategory
 {
 public:
@@ -274,6 +336,20 @@ inline bool cZoneIndoorLight::isUseSkyFogParam() {
 
 inline f32 cZoneIndoorLight::getSkyColorFogUseFrame() {
     return this->mSkyColorFogUseFrame;
+}
+
+inline void* cZoneIndoorScrlEfcOff::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cZoneIndoorScrlEfcOff::cZoneIndoorScrlEfcOff() {
+}
+
+inline void* cZoneIndoorWeatherEffectOff::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cZoneIndoorWeatherEffectOff::cZoneIndoorWeatherEffectOff() {
 }
 
 inline void* cZoneIndoorWindCtrl::operator new(size_t sz, void* p_addr) {

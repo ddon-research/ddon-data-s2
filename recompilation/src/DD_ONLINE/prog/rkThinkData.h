@@ -147,3 +147,34 @@ inline void* kTHINKDATA::operator new(size_t sz, void* p_addr) {
 inline void* rkThinkData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline rkThinkData::rkThinkData() {
+    this->::cResource::mAttr = 18;
+    this->mArrayListNum = 0;
+    unsigned int i0 = 0;
+    do {
+        this->mpArray[i0] = nullptr;
+        this->mArrayNum[i0] = 0;
+        i0 += 1u;
+    } while (i0 != 128);
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void rkThinkData::destruct() {
+    for (u32 i = 0; i < 128; ++i) {
+        for (u32 j = 0; j < mArrayNum[i]; ++j) {
+            mpArray[i][j].~kTHINKDATA();
+        }
+        MtMemoryAllocator::getAllocator(rkThinkData::DTI)->memFree(mpArray[i]);
+        mpArray[i] = nullptr;
+        mArrayNum[i] = 0;
+    }
+    mArrayListNum = 0;
+}
+
+inline void* rkThinkData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rkThinkData::DTI)->memAlloc(sz, align, rkThinkData::DTI.getID());
+}

@@ -4,6 +4,7 @@
 #include <cstddef>
 
 // Forward declarations
+class MtNetStorageInfo;
 class MtString;
 class cQuestTaskParam;
 class sCaplinkManager;
@@ -26,6 +27,7 @@ using t64 = time_t;
 
 class MtTime
 {
+    friend class MtNetStorageInfo;
     friend class cQuestTaskParam;
     friend class sCaplinkManager;
     friend class sNetworkExt;

@@ -737,14 +737,24 @@ __attribute__((weak)) void uSoundSubMixer::applyExtractCallback(sSound::VoiceAcc
     /* stub */
 }
 
-__attribute__((weak)) void uSoundSubMixer::createPropertyGroupSystemMasterVolume(MtPropertyList& s) {
-    DDON_STUB("uSoundSubMixer::createPropertyGroupSystemMasterVolume")
-    /* stub */
+void uSoundSubMixer::createPropertyGroupSystemMasterVolume(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "Se:", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::getSeMasterVolume), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "BGM:", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::getBgmMasterVolume), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "Vo:", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::getVoiceMasterVolume), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "Env:", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::getEnvMasterVolume), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "Sys:", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::getSystemMasterVolume), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "Event:", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::getEventMasterVolume), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
-__attribute__((weak)) void uSoundSubMixer::createPropertyGroupSubMixerCurveResource(MtPropertyList& s) {
-    DDON_STUB("uSoundSubMixer::createPropertyGroupSubMixerCurveResource")
-    /* stub */
+void uSoundSubMixer::createPropertyGroupSubMixerCurveResource(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Curve0", "resource", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::getResourceSimpleCurve0), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::setResourceSimpleCurve0), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Set Resource", static_cast<MT_MFUNC>(&::uSoundSubMixer::mergeSimpleCurve0), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Curve1", "resource", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::getResourceSimpleCurve1), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::setResourceSimpleCurve1), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Set Resource", static_cast<MT_MFUNC>(&::uSoundSubMixer::mergeSimpleCurve1), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Curve2", "resource", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::getResourceSimpleCurve2), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::setResourceSimpleCurve2), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Set Resource", static_cast<MT_MFUNC>(&::uSoundSubMixer::mergeSimpleCurve2), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Curve3", "resource", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::getResourceSimpleCurve3), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::setResourceSimpleCurve3), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Set Resource", static_cast<MT_MFUNC>(&::uSoundSubMixer::mergeSimpleCurve3), 10u);
 }
 
 __attribute__((weak)) void uSoundSubMixer::createPropertyGroupSubMixer(MtPropertyList& s) {
@@ -811,9 +821,18 @@ inline void uSoundSubMixer::CurrentSubMixer::CurrentFader::operator delete(void*
     MtMemoryAllocator::getAllocator(uSoundSubMixer::CurrentSubMixer::CurrentFader::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSoundSubMixer::CurrentSubMixer::CurrentFader::createProperty")
-    /* stub */
+void uSoundSubMixer::CurrentSubMixer::CurrentFader::createProperty(MtPropertyList& s) {
+    this->rSoundSubMixer::Fader::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mFaderID", &mFaderID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSendID", &mSendID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mVol", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::getVol), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::setVol), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mAbs", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::getAbs), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::setAbs), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S16, "mCurve", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::getCurve), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::setCurve), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mTransitionTime", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::getTransitionTime), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::setTransitionTime), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mSustainTime", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::getSustainTime), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::setSustainTime), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mReleaseTime", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::getReleaseTime), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::setReleaseTime), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S8, "mEqNo", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::getEqNo), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::setEqNo), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S8, "mEffectNo", reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::getEffectNo), reinterpret_cast<MT_MFUNC>(&::uSoundSubMixer::CurrentSubMixer::CurrentFader::setEffectNo), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* uSoundSubMixer::CurrentSubMixer::CurrentFader::createUI(MtProperty& prop) {
@@ -830,9 +849,15 @@ __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setVol
     /* stub */
 }
 
-__attribute__((weak)) bool uSoundSubMixer::CurrentSubMixer::CurrentFader::getAbs() {
-    DDON_STUB("uSoundSubMixer::CurrentSubMixer::CurrentFader::getAbs")
-    return {};
+bool uSoundSubMixer::CurrentSubMixer::CurrentFader::getAbs() {
+    if (mpSoundSubMixer != nullptr) {
+        if (mSubMixerIndex < mpSoundSubMixer->mCurrentSubMixerNum) {
+            if (static_cast<unsigned int>(mFaderIndex) < static_cast<unsigned int>(mpSoundSubMixer->mFaderNum)) {
+                return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpSoundSubMixer->mCalcFaderSubMixers.getBuffer()[static_cast<unsigned long>(mFaderIndex) >> 5]) + 360)) + static_cast<unsigned long>(static_cast<unsigned char>(mSubMixerIndex + (mFaderIndex * 8)) * 8)) + 0)) + 0)) != 0;
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setAbs(bool abs) {
@@ -840,41 +865,71 @@ __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setAbs
     /* stub */
 }
 
-__attribute__((weak)) s16 uSoundSubMixer::CurrentSubMixer::CurrentFader::getCurve() {
-    DDON_STUB("uSoundSubMixer::CurrentSubMixer::CurrentFader::getCurve")
-    return {};
+s16 uSoundSubMixer::CurrentSubMixer::CurrentFader::getCurve() {
+    if (mpSoundSubMixer != nullptr) {
+        if (mSubMixerIndex < mpSoundSubMixer->mCurrentSubMixerNum) {
+            if (static_cast<unsigned int>(mFaderIndex) < static_cast<unsigned int>(mpSoundSubMixer->mFaderNum)) {
+                return static_cast<s16>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpSoundSubMixer->mCalcFaderSubMixers.getBuffer()[static_cast<unsigned long>(mFaderIndex) >> 5]) + 392)) + static_cast<unsigned long>(static_cast<unsigned char>(mSubMixerIndex + (mFaderIndex * 8)) * 8)) + 0)) + 0));
+            }
+        }
+    }
+    return -1;
 }
 
 __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setCurve(s16 curve) {
 }
 
-__attribute__((weak)) u16 uSoundSubMixer::CurrentSubMixer::CurrentFader::getTransitionTime() {
-    DDON_STUB("uSoundSubMixer::CurrentSubMixer::CurrentFader::getTransitionTime")
-    return {};
+u16 uSoundSubMixer::CurrentSubMixer::CurrentFader::getTransitionTime() {
+    if (mpSoundSubMixer != nullptr) {
+        if (mSubMixerIndex < mpSoundSubMixer->mCurrentSubMixerNum) {
+            if (static_cast<unsigned int>(mFaderIndex) < static_cast<unsigned int>(mpSoundSubMixer->mFaderNum)) {
+                return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpSoundSubMixer->mCalcFaderSubMixers.getBuffer()[static_cast<unsigned long>(mFaderIndex) >> 5]) + 400)) + static_cast<unsigned long>(static_cast<unsigned char>(mSubMixerIndex + (mFaderIndex * 8)) * 8)) + 0)) + 0);
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setTransitionTime(u16 transitionTime) {
 }
 
-__attribute__((weak)) u16 uSoundSubMixer::CurrentSubMixer::CurrentFader::getSustainTime() {
-    DDON_STUB("uSoundSubMixer::CurrentSubMixer::CurrentFader::getSustainTime")
-    return {};
+u16 uSoundSubMixer::CurrentSubMixer::CurrentFader::getSustainTime() {
+    if (mpSoundSubMixer != nullptr) {
+        if (mSubMixerIndex < mpSoundSubMixer->mCurrentSubMixerNum) {
+            if (static_cast<unsigned int>(mFaderIndex) < static_cast<unsigned int>(mpSoundSubMixer->mFaderNum)) {
+                return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpSoundSubMixer->mCalcFaderSubMixers.getBuffer()[static_cast<unsigned long>(mFaderIndex) >> 5]) + 408)) + static_cast<unsigned long>(static_cast<unsigned char>(mSubMixerIndex + (mFaderIndex * 8)) * 8)) + 0)) + 0);
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setSustainTime(u16 sustainTime) {
 }
 
-__attribute__((weak)) u16 uSoundSubMixer::CurrentSubMixer::CurrentFader::getReleaseTime() {
-    DDON_STUB("uSoundSubMixer::CurrentSubMixer::CurrentFader::getReleaseTime")
-    return {};
+u16 uSoundSubMixer::CurrentSubMixer::CurrentFader::getReleaseTime() {
+    if (mpSoundSubMixer != nullptr) {
+        if (mSubMixerIndex < mpSoundSubMixer->mCurrentSubMixerNum) {
+            if (static_cast<unsigned int>(mFaderIndex) < static_cast<unsigned int>(mpSoundSubMixer->mFaderNum)) {
+                return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpSoundSubMixer->mCalcFaderSubMixers.getBuffer()[static_cast<unsigned long>(mFaderIndex) >> 5]) + 416)) + static_cast<unsigned long>(static_cast<unsigned char>(mSubMixerIndex + (mFaderIndex * 8)) * 8)) + 0)) + 0);
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setReleaseTime(u16 releaseTime) {
 }
 
-__attribute__((weak)) s8 uSoundSubMixer::CurrentSubMixer::CurrentFader::getEqNo() {
-    DDON_STUB("uSoundSubMixer::CurrentSubMixer::CurrentFader::getEqNo")
-    return {};
+s8 uSoundSubMixer::CurrentSubMixer::CurrentFader::getEqNo() {
+    if (mpSoundSubMixer != nullptr) {
+        if (mSubMixerIndex < mpSoundSubMixer->mCurrentSubMixerNum) {
+            if (static_cast<unsigned int>(mFaderIndex) < static_cast<unsigned int>(mpSoundSubMixer->mFaderNum)) {
+                return static_cast<s8>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpSoundSubMixer->mCalcFaderSubMixers.getBuffer()[static_cast<unsigned long>(mFaderIndex) >> 5]) + 344)) + static_cast<unsigned long>(static_cast<unsigned char>(mSubMixerIndex + (mFaderIndex * 8)) * 8)) + 0)) + 0));
+            }
+        }
+    }
+    return -2;
 }
 
 __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setEqNo(s8 eqNo) {
@@ -882,9 +937,15 @@ __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setEqN
     /* stub */
 }
 
-__attribute__((weak)) s8 uSoundSubMixer::CurrentSubMixer::CurrentFader::getEffectNo() {
-    DDON_STUB("uSoundSubMixer::CurrentSubMixer::CurrentFader::getEffectNo")
-    return {};
+s8 uSoundSubMixer::CurrentSubMixer::CurrentFader::getEffectNo() {
+    if (mpSoundSubMixer != nullptr) {
+        if (mSubMixerIndex < mpSoundSubMixer->mCurrentSubMixerNum) {
+            if (static_cast<unsigned int>(mFaderIndex) < static_cast<unsigned int>(mpSoundSubMixer->mFaderNum)) {
+                return static_cast<s8>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpSoundSubMixer->mCalcFaderSubMixers.getBuffer()[static_cast<unsigned long>(mFaderIndex) >> 5]) + 352)) + static_cast<unsigned long>(static_cast<unsigned char>(mSubMixerIndex + (mFaderIndex * 8)) * 8)) + 0)) + 0));
+            }
+        }
+    }
+    return -2;
 }
 
 __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setEffectNo(s8 effectNo) {
@@ -912,12 +973,13 @@ inline void uSoundSubMixer::FaderParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uSoundSubMixer::FaderParam::DTI)->memFree(p_addr);
 }
 
-uSoundSubMixer::FaderParam::~FaderParam() {
-}
-
-__attribute__((weak)) void uSoundSubMixer::FaderParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSoundSubMixer::FaderParam::createProperty")
-    /* stub */
+void uSoundSubMixer::FaderParam::createProperty(MtPropertyList& s) {
+    this->rSoundSubMixer::Fader::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mFaderID", &mFaderID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSendID", &mSendID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "OutputVol", &mVol, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEqNo", &mEqNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectNo", &mEffectNo, 0u, 0u);
 }
 
 MtUI* uSoundSubMixer::FaderParam::createUI(MtProperty& prop) {

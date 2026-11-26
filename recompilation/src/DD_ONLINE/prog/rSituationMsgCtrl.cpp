@@ -64,9 +64,8 @@ rSituationMsgCtrl::~rSituationMsgCtrl() {
     mArray.mLength = 0;
 }
 
-__attribute__((weak)) void rSituationMsgCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSituationMsgCtrl::createProperty")
-    /* stub */
+void rSituationMsgCtrl::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mArray", static_cast<MtObject*>(&mArray), 0u, 0u);
 }
 
 bool rSituationMsgCtrl::load(MtStream& in) {
@@ -111,9 +110,12 @@ inline void rSituationMsgCtrl::cSituationData::operator delete(void* p_addr) {
 rSituationMsgCtrl::cSituationData::~cSituationData() {
 }
 
-__attribute__((weak)) void rSituationMsgCtrl::cSituationData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSituationMsgCtrl::cSituationData::createProperty")
-    /* stub */
+void rSituationMsgCtrl::cSituationData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupSerial", &mGroupSerial, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartQuestId", &mStartQuestId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsStartQuestIdStart", &mIsStartQuestIdStart, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndQuestId", &mEndQuestId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsEndQuestIdStart", &mIsEndQuestIdStart, 0u, 0u);
 }
 
 bool rSituationMsgCtrl::cSituationData::load(MtDataReader& r) {

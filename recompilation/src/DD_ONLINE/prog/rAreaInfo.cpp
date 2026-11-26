@@ -64,23 +64,22 @@ rAreaInfo::~rAreaInfo() {
     mAreaInfo.mLength = 0;
 }
 
-__attribute__((weak)) void rAreaInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAreaInfo::createProperty")
-    /* stub */
+void rAreaInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaInfo", static_cast<MtObject*>(&mAreaInfo), 0u, 0u);
 }
 
 bool rAreaInfo::save(MtStream& out) {
     MtDataWriter w(out, 4096u, 4096u);
     (&w)->writeU32(0x495241u);
     (&w)->writeU32(2u);
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) != 0) {
+    (&w)->writeU32(mAreaInfo.mLength);
+    if (mAreaInfo.mLength != 0) {
         for (unsigned int i0_3 = 0;;) {
             MtObject* t3 = mAreaInfo.getBuffer()[static_cast<int>(i0_3)];
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 8));
             (&w)->writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 12)));
             (&w)->writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 16)));
-            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120))) {
+            if ((i0_3 + 1u) < mAreaInfo.mLength) {
                 i0_3 += 1u;
             } else {
                 break;
@@ -124,9 +123,10 @@ inline void rAreaInfo::cAreaInfo::operator delete(void* p_addr) {
 rAreaInfo::cAreaInfo::~cAreaInfo() {
 }
 
-__attribute__((weak)) void rAreaInfo::cAreaInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAreaInfo::cAreaInfo::createProperty")
-    /* stub */
+void rAreaInfo::cAreaInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaId", &mAreaId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPosX", &mPosX, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPosY", &mPosY, 0u, 0u);
 }
 
 inline rAreaInfo::cAreaInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

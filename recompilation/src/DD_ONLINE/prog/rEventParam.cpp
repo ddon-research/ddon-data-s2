@@ -32,9 +32,21 @@ __attribute__((noinline)) cEventParam::~cEventParam() {
     this->mOmList.deleteAll(true);
 }
 
-__attribute__((weak)) void cEventParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEventParam::createProperty")
-    /* stub */
+void cEventParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStage", &mStage, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEvNo", &mEvNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlag", &mFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mFname", reinterpret_cast<MT_MFUNC>(&::cEventParam::getFileName), reinterpret_cast<MT_MFUNC>(&::cEventParam::setFileName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLightCtrl", &mLightCtrl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartFadeType", &mStartFadeType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndFadeType", &mEndFadeType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSubMixerBefore", &mSubMixerBefore, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSubMixerAfter", &mSubMixerAfter, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOmAQCScale", &mOmAQCScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVersion", &mVersion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOmList", static_cast<MtObject*>(&mOmList), 0u, 0u);
 }
 
 __attribute__((weak)) void cEventParam::setFileName(const MtString& name) {
@@ -65,9 +77,12 @@ inline void cEventParam::cOmList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEventParam::cOmList::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cEventParam::cOmList::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEventParam::cOmList::createProperty")
-    /* stub */
+void cEventParam::cOmList::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mOmId", &mOmId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCtrlType", &mCtrlType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLotType", &mLotType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupNo", &mGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSetId", &mSetId, 0u, 0u);
 }
 
 inline cEventParam::cOmList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

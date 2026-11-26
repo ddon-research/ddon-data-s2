@@ -4,6 +4,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../XFramework/cGUIObject.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/nGUI.h"
@@ -33,6 +34,14 @@ void* uGUIEngageInfo::operator new(size_t sz, u32 align) {
 
 inline void uGUIEngageInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIEngageInfo::DTI)->memFree(p_addr);
+}
+
+uGUIEngageInfo::uGUIEngageInfo() : uGUIBase(0u, false) {
+    mpOBJ_msg_enemy_m_enemy = nullptr;
+    mpGUIRes = nullptr;
+    mBaseF = mBaseF | 32u;
+    mEndType = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUIEngageInfo"), 0u, false);
 }
 
 uGUIEngageInfo::~uGUIEngageInfo() {
@@ -110,8 +119,7 @@ inline uGUIEngageInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 uGUIEngageInfo::MyDTI uGUIEngageInfo::DTI("uGUIEngageInfo", &::uGUIBase::DTI, 2272ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIEngageInfo::MyDTI::newInstance() const {
-    DDON_STUB("uGUIEngageInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIEngageInfo::MyDTI::newInstance() const {
+    return new (16u) uGUIEngageInfo;
 }
 

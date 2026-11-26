@@ -40,9 +40,10 @@ MT_CTSTR rSoundAttributeSe::getExt() const {
     return "aser";
 }
 
-__attribute__((weak)) void rSoundAttributeSe::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundAttributeSe::createProperty")
-    /* stub */
+void rSoundAttributeSe::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttributeSeDataNum", &mAttributeSeDataNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpAttributeSeData", reinterpret_cast<MT_MFUNC>(&::rSoundAttributeSe::getAttributeSeData), reinterpret_cast<MT_MFUNC>(&::rSoundAttributeSe::setAttributeSeDataList), 1184u, reinterpret_cast<MT_MFUNC>(&::rSoundAttributeSe::getAttributeSeDataNum), reinterpret_cast<MT_MFUNC>(&::rSoundAttributeSe::createAttributeSeDataForProperty));
 }
 
 bool rSoundAttributeSe::load(MtStream& in) {
@@ -114,8 +115,13 @@ void rSoundAttributeSe::requestSe(rSoundRequest* pRequest, u32 reqNo, u32 thisId
 }
 
 __attribute__((weak)) void rSoundAttributeSe::createAttributeSeDataForProperty(u32 num) {
-    DDON_STUB("rSoundAttributeSe::createAttributeSeDataForProperty")
-    /* stub */
+    if (mpAttributeSeData != nullptr) {
+        delete[] mpAttributeSeData;
+        mpAttributeSeData = nullptr;
+        mAttributeSeDataNum = 0;
+    }
+    mpAttributeSeData = new (16u) cSoundAttributeSeData[num];
+    mAttributeSeDataNum = static_cast<s32>(num);
 }
 
 inline rSoundAttributeSe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -134,6 +140,10 @@ inline void* rSoundAttributeSe::cSoundAttributeSeData::operator new(size_t sz, u
     return MtMemoryAllocator::getAllocator(rSoundAttributeSe::cSoundAttributeSeData::DTI)->memAlloc(sz, align, rSoundAttributeSe::cSoundAttributeSeData::DTI.getID());
 }
 
+inline void* rSoundAttributeSe::cSoundAttributeSeData::operator new[](size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSoundAttributeSeData::DTI)->memAlloc(sz, align, cSoundAttributeSeData::DTI.getID());
+}
+
 inline void rSoundAttributeSe::cSoundAttributeSeData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundAttributeSe::cSoundAttributeSeData::DTI)->memFree(p_addr);
 }
@@ -149,9 +159,41 @@ inline rSoundAttributeSe::cSoundAttributeSeData::cSoundAttributeSeData() {
 rSoundAttributeSe::cSoundAttributeSeData::~cSoundAttributeSeData() {
 }
 
-__attribute__((weak)) void rSoundAttributeSe::cSoundAttributeSeData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundAttributeSe::cSoundAttributeSeData::createProperty")
-    /* stub */
+void rSoundAttributeSe::cSoundAttributeSeData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "UseFindIntersect", &mUseFindIntersect, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ReqType", &mReqType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_00", &mSeReqID_00, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_01", &mSeReqID_01, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_02", &mSeReqID_02, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_03", &mSeReqID_03, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_04", &mSeReqID_04, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_05", &mSeReqID_05, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_06", &mSeReqID_06, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_07", &mSeReqID_07, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_08", &mSeReqID_08, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_09", &mSeReqID_09, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_10", &mSeReqID_10, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_11", &mSeReqID_11, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_12", &mSeReqID_12, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_13", &mSeReqID_13, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_14", &mSeReqID_14, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_15", &mSeReqID_15, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_16", &mSeReqID_16, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_17", &mSeReqID_17, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_18", &mSeReqID_18, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_19", &mSeReqID_19, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_20", &mSeReqID_20, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_21", &mSeReqID_21, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_22", &mSeReqID_22, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_23", &mSeReqID_23, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_24", &mSeReqID_24, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_25", &mSeReqID_25, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_26", &mSeReqID_26, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_27", &mSeReqID_27, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_28", &mSeReqID_28, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_29", &mSeReqID_29, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_30", &mSeReqID_30, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqID_31", &mSeReqID_31, 0u, 0u);
 }
 
 MtUI* rSoundAttributeSe::cSoundAttributeSeData::createUI(MtProperty& prop) {

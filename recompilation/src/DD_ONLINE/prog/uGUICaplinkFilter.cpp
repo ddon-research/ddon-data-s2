@@ -45,8 +45,11 @@ inline void uGUICaplinkFilter::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUICaplinkFilter::~uGUICaplinkFilter() {
-    DDON_STUB("uGUICaplinkFilter::~uGUICaplinkFilter")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 void uGUICaplinkFilter::createProperty(MtPropertyList& s) {

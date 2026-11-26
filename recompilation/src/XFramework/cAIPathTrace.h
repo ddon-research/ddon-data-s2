@@ -24,6 +24,7 @@ class MtUI;
 class MtVector3;
 class cAISvPathFinding;
 class cAITaskJobPrimList;
+class cpPathFinding;
 
 // Declarations
 class cAINavPathTrace;
@@ -42,6 +43,7 @@ using u8 = unsigned char;
 
 class cAIPathTrace : public cAIAStar
 {
+    friend class cpPathFinding;
 public:
     enum COMPARE_ATTRIBUTE
     {
@@ -275,7 +277,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cAINavPathTrace();
-    virtual ~cAINavPathTrace();
+    virtual ~cAINavPathTrace() {}
     virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     virtual void createJobList(cAITaskJobPrimList& list);  // vtable slot 6

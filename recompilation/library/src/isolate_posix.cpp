@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include <algorithm>
+#include <cinttypes>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -70,10 +71,11 @@ std::vector<Verdict> decode(const std::string& text) {
     std::size_t at = 0;
     while (at < text.size()) {
         unsigned result = 0;
-        unsigned long long key = 0;
-        unsigned long long wall = 0;
+        std::uint64_t key = 0;
+        std::uint64_t wall = 0;
         int used = 0;
-        if (std::sscanf(text.c_str() + at, "%u %llu %llu\n%n", &result, &key, &wall, &used) != 3 ||
+        if (std::sscanf(text.c_str() + at, "%u %" SCNu64 " %" SCNu64 "\n%n", &result, &key, &wall,
+                        &used) != 3 ||
             used <= 0 || result > static_cast<unsigned>(DdonInnerTrial::wall)) {
             return {};
         }
@@ -219,6 +221,8 @@ int rerun(int (*rerun)(void* context), void* context) {
     }
     return code;
 }
+
+bool replays() { return g_replayed < g_replay.size(); }
 
 bool in_child() { return g_child_out >= 0; }
 

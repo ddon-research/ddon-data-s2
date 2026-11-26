@@ -64,9 +64,19 @@ MT_CTSTR rGUIMapSetting::getName() const {
     return "rGUIMapSetting";
 }
 
-__attribute__((weak)) void rGUIMapSetting::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGUIMapSetting::createProperty")
-    /* stub */
+void rGUIMapSetting::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mArray", static_cast<MtObject*>(&mArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCenter", &mCenter, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFloorBaseId", &mFloorBaseId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFloorBaseSizeId", &mFloorBaseSizeId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTextureNumX", &mTextureNumX, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTextureNumY", &mTextureNumY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFoundationScale", &mFoundationScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetPosX", &mOffsetPosX, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetPosY", &mOffsetPosY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseIdTex", &mUseIdTex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRect", &mRect, 0u, 0u);
 }
 
 MtUI* rGUIMapSetting::createUI(MtProperty& prop) {
@@ -182,9 +192,12 @@ rGUIMapSetting::cData::~cData() {
     mpShape = nullptr;
 }
 
-__attribute__((weak)) void rGUIMapSetting::cData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGUIMapSetting::cData::createProperty")
-    /* stub */
+void rGUIMapSetting::cData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mFloorId", &mFloorId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVisible", &mVisible, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShapeType", &mShapeType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "type", reinterpret_cast<MT_MFUNC>(&::rGUIMapSetting::cData::getShapeType), reinterpret_cast<MT_MFUNC>(&::rGUIMapSetting::cData::setShapeType), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpShape", reinterpret_cast<MtObject* *>(&mpShape), 0u, 0u);
 }
 
 MtUI* rGUIMapSetting::cData::createUI(MtProperty& prop) {

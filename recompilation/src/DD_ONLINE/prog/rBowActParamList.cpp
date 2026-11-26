@@ -60,9 +60,9 @@ rBowActParamList::~rBowActParamList() {
     mParamList.mLength = 0;
 }
 
-__attribute__((weak)) void rBowActParamList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rBowActParamList::createProperty")
-    /* stub */
+void rBowActParamList::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mParamList", static_cast<MtObject*>(&mParamList), 0u, 0u);
 }
 
 __attribute__((weak)) void rBowActParamList::clear() {

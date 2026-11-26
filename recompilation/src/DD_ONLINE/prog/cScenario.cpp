@@ -51,9 +51,16 @@ cScenario::~cScenario() {
     /* stub */
 }
 
-__attribute__((weak)) void cScenario::createProperty(MtPropertyList& s) {
-    DDON_STUB("cScenario::createProperty")
-    /* stub */
+void cScenario::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "Param", reinterpret_cast<MT_MFUNC>(&::cScenario::getParam), reinterpret_cast<MT_MFUNC>(&::cScenario::setParam), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "Arg", reinterpret_cast<MT_MFUNC>(&::cScenario::getArg), reinterpret_cast<MT_MFUNC>(&::cScenario::setArg), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "Shape", reinterpret_cast<MT_MFUNC>(&::cScenario::getAreaShape), reinterpret_cast<MT_MFUNC>(&::cScenario::setAreaShape), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mStatus", &mStatus, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "Name", reinterpret_cast<MT_MFUNC>(&::cScenario::getName), reinterpret_cast<MT_MFUNC>(&::cScenario::setName), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mPriority", reinterpret_cast<MT_MFUNC>(&::cScenario::getPriority), reinterpret_cast<MT_MFUNC>(&::cScenario::setDummyU32), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mTaskType", reinterpret_cast<MT_MFUNC>(&::cScenario::getTaskType), reinterpret_cast<MT_MFUNC>(&::cScenario::setDummyU32), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mBootType", reinterpret_cast<MT_MFUNC>(&::cScenario::getBootType), reinterpret_cast<MT_MFUNC>(&::cScenario::setDummyU32), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "AreaHit", reinterpret_cast<MtObject* *>(&mpArea), 0u, 0u);
 }
 
 MtUI* cScenario::createUI(MtProperty& prop) {
@@ -182,9 +189,20 @@ __attribute__((weak)) void cScenario::setStatus(u32 st, bool b) {
     /* stub */
 }
 
-__attribute__((weak)) bool cScenario::isDetect() {
-    DDON_STUB("cScenario::isDetect")
-    return {};
+bool cScenario::isDetect() {
+    if (getArea() != nullptr) {
+        if (getCheckType() == 1) {
+            return mpParam->mDetectAttr == (mpParam->mDetectAttr & getArea()->mDetect);
+        } else {
+            if (getCheckType() == 0) {
+                return (getArea()->getDetectionInfo() & mpParam->mDetectAttr) != 0;
+            } else {
+                return false;
+            }
+        }
+    } else {
+        return false;
+    }
 }
 
 SCENARIO_PRIO_ENUM cScenario::getPriority() {
@@ -235,9 +253,8 @@ cScenarioArg::cScenarioArg(cScenario* pSce) {
 cScenarioArg::~cScenarioArg() {
 }
 
-__attribute__((weak)) cScenarioArg& cScenarioArg::operator=(const cScenarioArg& s) {
-    DDON_STUB("cScenarioArg::operator=")
-    __builtin_unreachable();
+cScenarioArg& cScenarioArg::operator=(const cScenarioArg& s) {
+    return *this;
 }
 
 __attribute__((weak)) void cScenarioArg::createProperty(MtPropertyList& s) {
@@ -271,14 +288,23 @@ inline void cScenarioParam::operator delete(void* p_addr) {
 cScenarioParam::~cScenarioParam() {
 }
 
-__attribute__((weak)) cScenarioParam& cScenarioParam::operator=(const cScenarioParam& s) {
-    DDON_STUB("cScenarioParam::operator=")
-    __builtin_unreachable();
+cScenarioParam& cScenarioParam::operator=(const cScenarioParam& s) {
+    mStatus = s.mStatus;
+    mDetectAttr = s.mDetectAttr;
+    mTaskType = s.mTaskType;
+    mBootType = s.mBootType;
+    mCheckType = s.mCheckType;
+    mPriority = s.mPriority;
+    return *this;
 }
 
-__attribute__((weak)) void cScenarioParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cScenarioParam::createProperty")
-    /* stub */
+void cScenarioParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mTaskType", &mTaskType, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBootType", &mBootType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStatus", &mStatus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDetectAttr", &mDetectAttr, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCheckType", &mCheckType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 1u, 0u);
 }
 
 MtUI* cScenarioParam::createUI(MtProperty& prop) {

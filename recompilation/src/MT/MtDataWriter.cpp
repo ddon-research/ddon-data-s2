@@ -140,8 +140,42 @@ u32 MtDataWriter::write(const void* ptr, u32 bytes) {
 }
 
 __attribute__((weak)) void MtDataWriter::writeFormat(const void* ptr, MT_CTSTR format, u32 count) {
-    DDON_STUB("MtDataWriter::writeFormat")
-    /* stub */
+    const u8* psrc = static_cast<const u8*>(ptr);
+    for (u32 i = 0; i < count; ++i) {
+        for (MT_CTSTR pi = format; *pi != 0; ++pi) {
+            switch (*pi) {
+            case 'b':
+            case 'B':
+                writeU8(*psrc);
+                psrc += 1;
+                break;
+            case 'w':
+            case 'W':
+                writeU16(*reinterpret_cast<const u16*>(psrc));
+                psrc += 2;
+                break;
+            case 'l':
+            case 'L':
+                writeLabel(*reinterpret_cast<const void* const*>(psrc));
+                psrc += 8;
+                break;
+            case 'q':
+            case 'Q':
+                writeU64(*reinterpret_cast<const u64*>(psrc));
+                psrc += 8;
+                break;
+            case '{':
+                while (*pi != '}') {
+                    ++pi;
+                }
+            case 'd':
+            case 'D':
+                writeU32(*reinterpret_cast<const u32*>(psrc));
+                psrc += 4;
+                break;
+            }
+        }
+    }
 }
 
 void MtDataWriter::flush() {
@@ -162,13 +196,60 @@ u32 MtDataWriter::seek(s32 offset, MtStream::SEEK_ORIGIN origin) {
 }
 
 __attribute__((weak)) bool MtDataWriter::addLabel(const void* addr) {
-    DDON_STUB("MtDataWriter::addLabel")
-    return {};
+    if (addr == nullptr) {
+        return false;
+    }
+    bool exist = false;
+    bool write = false;
+    for (u32 i = mFrame->base; i < mFrame->pt; i++) {
+        if (mLabel[i].address == addr) {
+            if (mLabel[i].backtrack) {
+                u32 sp = mStream.getPosition();
+                u32 pos = sp + mSeekPt;
+                u32 ofs = mLabel[i].offset;
+                if (ofs >= sp) {
+                    setU64(ofs - sp, pos - mFrame->offset);
+                } else {
+                    seek(ofs, static_cast<MtStream::SEEK_ORIGIN>(0));
+                    writeU64(pos - mFrame->offset);
+                    seek(pos, static_cast<MtStream::SEEK_ORIGIN>(0));
+                }
+                mLabel[i].offset = pos - mFrame->offset;
+                mLabel[i].backtrack = 0;
+                write = true;
+            } else {
+                exist = true;
+            }
+        }
+    }
+    if (write) {
+        return true;
+    }
+    if (exist) {
+        return false;
+    }
+    if (mFrame->pt >= mLabelMax) {
+        return false;
+    }
+    mLabel[mFrame->pt].address = addr;
+    mLabel[mFrame->pt].offset = getPosition();
+    mLabel[mFrame->pt].backtrack = 0;
+    mFrame->pt++;
+    return true;
 }
 
 __attribute__((weak)) void MtDataWriter::writeLabel(const void* addr) {
-    DDON_STUB("MtDataWriter::writeLabel")
-    /* stub */
+    for (u32 i = mFrame->base; i < mFrame->pt; i++) {
+        if (mLabel[i].address == addr && !mLabel[i].backtrack) {
+            writeU64(mLabel[i].offset);
+            return;
+        }
+    }
+    mLabel[mFrame->pt].address = addr;
+    mLabel[mFrame->pt].offset = getPosition();
+    mLabel[mFrame->pt].backtrack = 1;
+    mFrame->pt++;
+    writeU64(0);
 }
 
 void MtDataWriter::pushLabel() {
@@ -188,35 +269,13 @@ void MtDataWriter::popLabel() {
     mFrame = &mFrameStack[t0 - 1];
 }
 
-void MtDataWriter::align(u32 n) {
-    u32 t0 = getPosition();
-    if ((t0 & (n - 1u)) != 0) {
-        if (n != (t0 & (n - 1u))) {
-            u32 v0_0 = mSeekPt;
-            u32 i = n - (t0 & (n - 1u));
-            u32 v1_0;
-            for (;;) {
-                u32 t2 = mBufsiz;
-                if (v0_0 < t2) {
-                    v1_0 = v0_0;
-                } else {
-                    flush();
-                    u32 t4 = mSeekPt;
-                    v1_0 = t4;
-                }
-                u8* t5 = mBuffer;
-                t5[v1_0] = 0;
-                u32 t6 = mSeekPt;
-                mSeekPt = t6 + 1u;
-                if ((i - 1u) != 0) {
-                    v0_0 = t6 + 1u;
-                    i += 0xFFFFFFFFu;
-                } else {
-                    break;
-                }
+__attribute__((weak)) void MtDataWriter::align(u32 n) {
+        u32 d = getPosition() & (n - 1);
+        if (d != 0) {
+            for (u32 i = 0; i < n - d; i++) {
+                writeU8(0);
             }
         }
-    }
 }
 
 u32 MtDataWriter::getLength() {

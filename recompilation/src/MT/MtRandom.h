@@ -6,9 +6,11 @@
 // Forward declarations
 struct MtFloat2;
 struct MtFloat3;
+class cPawnAIAction;
 class cPawnActInterReload;
 class sAIPawnTalkMgr;
 class sEffect;
+class uAnimal;
 
 // Declarations
 class MtRandom;
@@ -23,10 +25,12 @@ namespace nDDOMath { f32 random(f32 min, f32 max); }
 
 class MtRandom
 {
+    friend class cPawnAIAction;
     friend class cPawnActInterReload;
     friend f32 nDDOMath::random(f32 min, f32 max);
     friend class sAIPawnTalkMgr;
     friend class sEffect;
+    friend class uAnimal;
 public:
     MtRandom();
     MtRandom(u32 seed);

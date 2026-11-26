@@ -13,6 +13,10 @@ const MtDTI& cAIObject::getDTI() const {
     return cAIObject::DTI;
 }
 
+inline void* cAIObject::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIObject::DTI)->memAlloc(sz, align, cAIObject::DTI.mID);
+}
+
 inline void cAIObject::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAIObject::DTI)->memFree(p_addr);
 }
@@ -34,13 +38,16 @@ inline cAIObject::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 cAIObject::MyDTI cAIObject::DTI("cAIObject", &::MtObject::DTI, 8ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIObject::MyDTI::newInstance() const {
-    DDON_STUB("cAIObject::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIObject::MyDTI::newInstance() const {
+    return new (16u) cAIObject;
 }
 
 const MtDTI& cAIResource::getDTI() const {
     return cAIResource::DTI;
+}
+
+inline void* cAIResource::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIResource::DTI)->memAlloc(sz, align, cAIResource::DTI.mID);
 }
 
 inline void cAIResource::operator delete(void* p_addr) {
@@ -64,8 +71,7 @@ inline cAIResource::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 cAIResource::MyDTI cAIResource::DTI("cAIResource", &::MtObject::DTI, 8ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIResource::MyDTI::newInstance() const {
-    DDON_STUB("cAIResource::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIResource::MyDTI::newInstance() const {
+    return new (16u) cAIResource;
 }
 

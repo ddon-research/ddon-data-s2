@@ -1,6 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rDDOModelMontage.h"
+
+#include "../../MT/MtStream.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
@@ -52,8 +54,29 @@ void rDDOModelMontage::clear() {
 }
 
 __attribute__((weak)) bool rDDOModelMontage::load(MtStream& in) {
-    DDON_STUB("rDDOModelMontage::load")
-    return {};
+    u32 size = in.getLength();
+    mpHeader = static_cast<HEADER*>(getAllocator()->memAlloc(size, 16u));
+    in.read(mpHeader, size);
+    if (mpHeader->magic != 0x00544d44u) {
+        return false;
+    }
+    if (mpHeader->version != DATA_VERSION) {
+        return false;
+    }
+    mpHeader->parts = reinterpret_cast<PARTS*>(reinterpret_cast<uintptr>(mpHeader) + reinterpret_cast<uintptr>(mpHeader->parts));
+    mpHeader->mindex = reinterpret_cast<MONTAGE**>(reinterpret_cast<uintptr>(mpHeader) + reinterpret_cast<uintptr>(mpHeader->mindex));
+    mpHeader->montage = reinterpret_cast<MONTAGE*>(reinterpret_cast<uintptr>(mpHeader) + reinterpret_cast<uintptr>(mpHeader->montage));
+    mpHeader->color = reinterpret_cast<COLOR_INFO*>(reinterpret_cast<uintptr>(mpHeader) + reinterpret_cast<uintptr>(mpHeader->color));
+    mpHeader->hide = reinterpret_cast<HIDE_INFO*>(reinterpret_cast<uintptr>(mpHeader) + reinterpret_cast<uintptr>(mpHeader->hide));
+    mpHeader->se = reinterpret_cast<SE_INFO*>(reinterpret_cast<uintptr>(mpHeader) + reinterpret_cast<uintptr>(mpHeader->se));
+    mpHeader->body = reinterpret_cast<BODY_INFO*>(reinterpret_cast<uintptr>(mpHeader) + reinterpret_cast<uintptr>(mpHeader->body));
+    mpHeader->expression = reinterpret_cast<EXPRESSION_INFO*>(reinterpret_cast<uintptr>(mpHeader) + reinterpret_cast<uintptr>(mpHeader->expression));
+    for (u32 i = 0; i < mpHeader->montage_max; i++) {
+        if (mpHeader->mindex[i] != nullptr) {
+            mpHeader->mindex[i] = reinterpret_cast<MONTAGE*>(reinterpret_cast<uintptr>(mpHeader) + reinterpret_cast<uintptr>(mpHeader->mindex[i]));
+        }
+    }
+    return true;
 }
 
 MT_CTSTR rDDOModelMontage::getExt() const {

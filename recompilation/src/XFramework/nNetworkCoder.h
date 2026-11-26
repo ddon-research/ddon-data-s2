@@ -9,6 +9,7 @@
 // Forward declarations
 class MtMemoryStream;
 class MtStream;
+namespace nNetwork { class ProtocolStandard; }
 
 // Declarations
 namespace nNetwork { class Coder; }
@@ -70,6 +71,7 @@ namespace nNetwork {
 namespace nNetwork {
     class Decoder
     {
+        friend class nNetwork::ProtocolStandard;
     public:
         Decoder(void* buffer, u32 bufsiz);
         Decoder(MtStream& stream);

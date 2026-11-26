@@ -7,6 +7,12 @@
 #define DDON_STUB(name)
 #endif
 
+nNetwork::Coder::Coder(MtStream& stream) : mMemory(static_cast<void*>(nullptr), 0u, 2u), mStream(stream) {
+    mBitOffset = 0;
+    mTempBuffer = 0;
+    mIsOverflow = false;
+}
+
 nNetwork::Coder::~Coder() {
     DDON_STUB("nNetwork::Coder::~Coder")
     /* stub */
@@ -50,6 +56,12 @@ __attribute__((weak)) void nNetwork::Coder::writeBit32(u32 bit, u32 width) {
 __attribute__((weak)) void nNetwork::Coder::writeBit64(u64 bit, u32 width) {
     DDON_STUB("nNetwork::Coder::writeBit64")
     /* stub */
+}
+
+nNetwork::Decoder::Decoder(MtStream& stream) : mMemory(static_cast<void*>(nullptr), 0u, 1u), mStream(stream) {
+    mBitOffset = 8;
+    mTempBuffer = 0;
+    mIsDrain = false;
 }
 
 nNetwork::Decoder::~Decoder() {

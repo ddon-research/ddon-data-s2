@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <math.h>
 #include "cpOcdCtrl.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -32,7 +33,9 @@
 #include "nDDOUtility.h"
 #include "nObjCollision.h"
 #include "nObjCondition.h"
+#include "rOcdElectricParam.h"
 #include "rOcdIrAdj.h"
+#include "rOcdParam.h"
 #include "rOutlineParamList.h"
 #include "../../XFramework/rSoundRequest.h"
 #include "../../XFramework/sEffect.h"
@@ -71,9 +74,24 @@ cpOcdCtrl::cpOcdCtrl() {
     /* stub */
 }
 
-__attribute__((noinline)) cpOcdCtrl::~cpOcdCtrl() {
-    DDON_STUB("cpOcdCtrl::~cpOcdCtrl")
-    /* stub */
+cpOcdCtrl::~cpOcdCtrl() {
+    if (mpOcdStatusCommonParamRes != nullptr) {
+        mpOcdStatusCommonParamRes->release();
+        mpOcdStatusCommonParamRes = nullptr;
+    }
+    if (mpOcdStatusParamRes != nullptr) {
+        mpOcdStatusParamRes->release();
+        mpOcdStatusParamRes = nullptr;
+    }
+    if (mpOcdImmuneParamRes != nullptr) {
+        mpOcdImmuneParamRes->release();
+        mpOcdImmuneParamRes = nullptr;
+    }
+    if (mpOcdElectricParam == nullptr) {
+        return;
+    }
+    mpOcdElectricParam->release();
+    mpOcdElectricParam = nullptr;
 }
 
 __attribute__((weak)) void cpOcdCtrl::setup() {
@@ -266,9 +284,42 @@ __attribute__((weak)) void cpOcdCtrl::calcOcdDamage(cHitInfoAfter* pHitInfo) {
     /* stub */
 }
 
-__attribute__((weak)) f32 cpOcdCtrl::calcOcdIrAdj(cHitInfoAfter* pHitInfo) const {
-    DDON_STUB("cpOcdCtrl::calcOcdIrAdj")
-    return {};
+f32 cpOcdCtrl::calcOcdIrAdj(cHitInfoAfter* pHitInfo) const {
+    if (pHitInfo != nullptr) {
+        uDDOModel* pAtkModel = pHitInfo->mCommonInfo.getAttckerPtr();
+        if (pAtkModel != nullptr) {
+            uDDOModel* pDfdModel = pHitInfo->mCommonInfo.mpDfdModel;
+            if (pDfdModel != nullptr) {
+                if ((pDfdModel->mUnitId & 1026u) != 0) {
+                    sObjCondition* t0 = sObjCondition::getInstance();
+                    const cOcdIrAdj* pIrData = t0->getOcdIrAdjData(pDfdModel->getLv());
+                    const cOcdIrAdjPL* pIrPLData = sObjCondition::getInstance()->getOcdIrAdjPLData(pHitInfo->mOcdDamageInfo.mWepItemRank);
+                    if (pIrData != nullptr) {
+                        if (pIrPLData != nullptr) {
+                            f32 itemRank = pIrPLData->getOcdRank();
+                            if ((pIrData->getOcdRank() + -2.0f) >= itemRank) {
+                                return powf(0.5f, 0.5f * ((pIrData->getOcdRank() + -2.0f) - itemRank));
+                            } else {
+                                return 1.0f;
+                            }
+                        } else {
+                            return 1.0f;
+                        }
+                    } else {
+                        return 1.0f;
+                    }
+                } else {
+                    return 1.0f;
+                }
+            } else {
+                return 1.0f;
+            }
+        } else {
+            return 1.0f;
+        }
+    } else {
+        return 1.0f;
+    }
 }
 
 __attribute__((weak)) void cpOcdCtrl::checkAnnihilation(cOcdInfo* pOcdInfo) {

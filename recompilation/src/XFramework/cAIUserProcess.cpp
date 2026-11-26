@@ -6,6 +6,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "cAIObject.h"
@@ -23,9 +24,6 @@ inline void cAICopiableParameter::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAICopiableParameter::DTI)->memFree(p_addr);
 }
 
-cAICopiableParameter::~cAICopiableParameter() {
-}
-
 __attribute__((weak)) void cAICopiableParameter::copy(cAICopiableParameter* pParam) {
     DDON_STUB("cAICopiableParameter::copy")
     /* stub */
@@ -36,12 +34,15 @@ inline cAICopiableParameter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 cAICopiableParameter::MyDTI cAICopiableParameter::DTI("cAICopiableParameter", &::cAIResource::DTI, 8ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cAICopiableParameter::MyDTI::newInstance() const {
-    DDON_STUB("cAICopiableParameter::MyDTI::newInstance")
-    return nullptr;
+    return new (MtMemoryAllocator::getAllocator(cAICopiableParameter::DTI)->memAlloc(sizeof(cAICopiableParameter), 16u, cAICopiableParameter::DTI.getID())) cAICopiableParameter;
 }
 
 const MtDTI& cAIUserProcess::getDTI() const {
     return cAIUserProcess::DTI;
+}
+
+inline void cAIUserProcess::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIUserProcess::DTI)->memFree(p_addr);
 }
 
 cAIUserProcess::~cAIUserProcess() {
@@ -49,9 +50,9 @@ cAIUserProcess::~cAIUserProcess() {
     /* stub */
 }
 
-__attribute__((weak)) void cAIUserProcess::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIUserProcess::createProperty")
-    /* stub */
+void cAIUserProcess::createProperty(MtPropertyList& s) {
+    this->cAIObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mName", &mName, 0u, 0u);
 }
 
 s32 cAIUserProcess::callProcessWithExamine(MtObject* pOwner, MtObject* pParam, MtObject* pCaller, bool permitsCaller) {
@@ -172,14 +173,18 @@ void* cAIUserProcessCallback::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAIUserProcessCallback::DTI)->memAlloc(sz, align, cAIUserProcessCallback::DTI.mID);
 }
 
+inline void cAIUserProcessCallback::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIUserProcessCallback::DTI)->memFree(p_addr);
+}
+
 cAIUserProcessCallback::~cAIUserProcessCallback() {
     DDON_STUB("cAIUserProcessCallback::~cAIUserProcessCallback")
     /* stub */
 }
 
-__attribute__((weak)) void cAIUserProcessCallback::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIUserProcessCallback::createProperty")
-    /* stub */
+void cAIUserProcessCallback::createProperty(MtPropertyList& s) {
+    this->cAIObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mName", &mName, 0u, 0u);
 }
 
 s32 cAIUserProcessCallback::process(MtObject* pOwner, MtObject* pParam, MtObject* pCaller) {
@@ -208,9 +213,9 @@ cAIUserProcessContainer::~cAIUserProcessContainer() {
     /* stub */
 }
 
-__attribute__((weak)) void cAIUserProcessContainer::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIUserProcessContainer::createProperty")
-    /* stub */
+void cAIUserProcessContainer::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mName", &mName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "ContainerList", reinterpret_cast<MT_MFUNC>(&::cAIUserProcessContainer::getProcess), reinterpret_cast<MT_MFUNC>(&::cAIUserProcessContainer::setProcess), 160u, reinterpret_cast<MT_MFUNC>(&::cAIUserProcessContainer::getProcessNum), reinterpret_cast<MT_MFUNC>(&::cAIUserProcessContainer::setProcessNum));
 }
 
 void cAIUserProcessContainer::addProcess(cAIUserProcess* pProc) {
@@ -344,19 +349,27 @@ inline void* cAIUserProcessReference::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAIUserProcessReference::DTI)->memAlloc(sz, align, cAIUserProcessReference::DTI.mID);
 }
 
-cAIUserProcessReference::~cAIUserProcessReference() {
-    DDON_STUB("cAIUserProcessReference::~cAIUserProcessReference")
-    /* stub */
+inline void cAIUserProcessReference::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIUserProcessReference::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cAIUserProcessReference::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIUserProcessReference::createProperty")
-    /* stub */
+cAIUserProcessReference::~cAIUserProcessReference() {
+}
+
+void cAIUserProcessReference::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mContainerName", &mContainerName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCategoryName", &mCategoryName, 0u, 0u);
 }
 
 __attribute__((weak)) cAIUserProcessContainer* cAIUserProcessReference::getProcessContainer() {
-    DDON_STUB("cAIUserProcessReference::getProcessContainer")
-    return nullptr;
+    if (mCategoryName.ptr()[0] != '\0') {
+        const MtDTI* pdti = MtDTI::from(mCategoryName.ptr(), cAIUserProcessContainer::DTI);
+        if (pdti == nullptr) {
+            return nullptr;
+        }
+        return static_cast<cAISvUserProcess*>(sAI::getInstance()->getService(cAISvUserProcess::DTI, nullptr))->searchContainer(mContainerName.ptr(), *pdti);
+    }
+    return static_cast<cAISvUserProcess*>(sAI::getInstance()->getService(cAISvUserProcess::DTI, nullptr))->searchContainer(mContainerName.ptr());
 }
 
 inline cAIUserProcessReference::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

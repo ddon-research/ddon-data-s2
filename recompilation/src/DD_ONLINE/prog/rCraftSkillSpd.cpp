@@ -25,9 +25,9 @@ inline void cCraftSkillSpdData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCraftSkillSpdData::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cCraftSkillSpdData::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCraftSkillSpdData::createProperty")
-    /* stub */
+void cCraftSkillSpdData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\252\343\203\274\343\203\200\343\203\274\346\231\202\347\237\255\347\216\207", &mSpdRate1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\350\243\234\345\212\251\346\231\202\347\237\255\347\216\207", &mSpdRate2, 0u, 0u);
 }
 
 u32 cCraftSkillSpdData::getRate(u32 type) const {

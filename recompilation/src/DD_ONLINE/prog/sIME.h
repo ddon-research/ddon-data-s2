@@ -4,6 +4,7 @@
 #include <cstddef>
 
 // Forward declarations
+namespace nIMEPS4 { class CandidateDispInfo; }
 namespace nInputText { struct CandidateList; }
 
 // Declarations
@@ -28,6 +29,7 @@ using u32 = unsigned int;
 namespace nIME {
     class CandidateDispInfo
     {
+        friend class nIMEPS4::CandidateDispInfo;
         friend struct nInputText::CandidateList;
     public:
         CandidateDispInfo();

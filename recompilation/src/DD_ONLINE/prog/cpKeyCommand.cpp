@@ -120,9 +120,44 @@ __attribute__((weak)) MtQuaternion cpKeyCommand::callbackGetQuat(u32 actNo) {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void cpKeyCommand::callbackUpdate() {
-    DDON_STUB("cpKeyCommand::callbackUpdate")
-    /* stub */
+void cpKeyCommand::callbackUpdate() {
+    if (mpModel == nullptr) {
+        return;
+    }
+    cpActionManager* pCpActMgr = mpModel->getActMgrPtr();
+    if (pCpActMgr == nullptr) {
+        return;
+    }
+    u32 ActNo = pCpActMgr->getActionNo();
+    const cActParam* pActParam = pCpActMgr->getActParam(ActNo);
+    if (pActParam != nullptr) {
+        if (pActParam->getTurnType() == 0) {
+            mKeyCommandFinalQuat.x = mpModel->mQuat.x;
+            mKeyCommandFinalQuat.y = mpModel->mQuat.y;
+            mKeyCommandFinalQuat.z = mpModel->mQuat.z;
+            mKeyCommandFinalQuat.w = mpModel->mQuat.w;
+        } else {
+            if (pActParam->getTurnType() == 1) {
+                if (mpModel->getInputPtr()->mMoveInfo.speed > 0.2f) {
+                    MtQuaternion frame56(nDDOMath::calcQuaternionFromRotationY(mpModel->getInputPtr()->mMoveInfo.angle));
+                    mKeyCommandFinalQuat.x = frame56.x;
+                    mKeyCommandFinalQuat.y = frame56.y;
+                    mKeyCommandFinalQuat.z = frame56.z;
+                    mKeyCommandFinalQuat.w = frame56.w;
+                } else {
+                    mKeyCommandFinalQuat.x = mpModel->mQuat.x;
+                    mKeyCommandFinalQuat.y = mpModel->mQuat.y;
+                    mKeyCommandFinalQuat.z = mpModel->mQuat.z;
+                    mKeyCommandFinalQuat.w = mpModel->mQuat.w;
+                }
+            }
+        }
+    } else {
+        mKeyCommandFinalQuat.x = mpModel->mQuat.x;
+        mKeyCommandFinalQuat.y = mpModel->mQuat.y;
+        mKeyCommandFinalQuat.z = mpModel->mQuat.z;
+        mKeyCommandFinalQuat.w = mpModel->mQuat.w;
+    }
 }
 
 __attribute__((weak)) void cpKeyCommand::callbackClearReserveAct() {

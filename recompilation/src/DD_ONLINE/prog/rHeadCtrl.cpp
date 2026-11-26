@@ -7,7 +7,6 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
-#include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -83,7 +82,7 @@ inline rHeadCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 rHeadCtrl::MyDTI rHeadCtrl::DTI("rHeadCtrl", &::rTbl2Base::DTI, 184ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rHeadCtrl::MyDTI::newInstance() const {
+MtObject* rHeadCtrl::MyDTI::newInstance() const {
     return new (16u) rHeadCtrl;
 }
 

@@ -152,6 +152,26 @@ inline void* cOutlineParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cOutlineParam::cOutlineParam() {
+    mPriority = 0u;
+    mFrame = 0.0f;
+    mIsLoop = true;
+    mIsOWAgain = false;
+    mEndFrame = 0u;
+    mWeatherRate = 0.0f;
+    mOutlineBlendType = 2u;
+    mOutlineColorType = 2u;
+    mOutlineOColor.value[0].value = MtVector4(1.0f, 1.0f, 1.0f, 1.0f);
+    mOutlineIColor.value[0].value = MtVector4(1.0f, 1.0f, 1.0f, 1.0f);
+    mOutlineBalanceOffset.value[0].value = 0.0f;
+    mOutlineBalanceScale.value[0].value = 1.0f;
+    mOutlineBalance.value[0].value = 2.0f;
+    mIsUseShaderParam = false;
+    mShaderMode = 0u;
+    mShaderBlendRate = 0.0f;
+    mShaderBasePower.value[0].value = 0.0f;
+}
+
 inline void* rOutlineParamList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

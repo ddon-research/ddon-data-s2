@@ -12,6 +12,9 @@
 #define DDON_STUB(name)
 #endif
 
+const u32 cGridCollision::MAGIC = 0x6f637267;
+const u32 cGridCollision::VERSION = 0x77c09c94;
+
 const MtDTI& cGridCollision::getDTI() const {
     return cGridCollision::DTI;
 }
@@ -29,8 +32,23 @@ inline void cGridCollision::operator delete(void* p_addr) {
 }
 
 cGridCollision::cGridCollision() {
-    DDON_STUB("cGridCollision::cGridCollision")
-    /* stub */
+    mMagic = 0;
+    mVersion = 0;
+    mFlgOutsideMemoryAllocate = false;
+    mpGridInfo = nullptr;
+    mGridSize = MtVector3::One;
+    mGridSizeInv = MtVector3::One;
+    mOffset = MtVector3::One;
+    mGridNumX = 0;
+    mGridNumZ = 0;
+    mCellMode = 0;
+    mTotalRegistNum = 0;
+    mFlgStaticMode = false;
+    mpStaticGridInfo = nullptr;
+    mStaticGridRegistParamNum = 0;
+    mpStaticGridRegistParam = nullptr;
+    memset(mTraverseRefCount, 0, sizeof(mTraverseRefCount));
+    memset(mTraverseNest, 0, sizeof(mTraverseNest));
 }
 
 cGridCollision::~cGridCollision() {
@@ -38,13 +56,56 @@ cGridCollision::~cGridCollision() {
 }
 
 __attribute__((weak)) void cGridCollision::initialize(const MtAABB& aabb, u32 GridNumX, u32 GridNumZ, u32 CellMode) {
-    DDON_STUB("cGridCollision::initialize")
-    /* stub */
+    clear();
+    const MtVector3 aabbSize = aabb.maxpos - aabb.minpos;
+    mMagic = MAGIC;
+    mVersion = VERSION;
+    mGridSize = MtVector3(aabbSize.x / GridNumX, 0.0f, aabbSize.z / GridNumZ);
+    mGridSizeInv = MtVector3(1.0f / mGridSize.x, 0.0f, 1.0f / mGridSize.z);
+    mOffset = aabb.minpos;
+    mGridNumX = GridNumX;
+    mGridNumZ = GridNumZ;
+    mBoundingAABB = aabb;
+    memset(mTraverseRefCount, 0, sizeof(mTraverseRefCount));
+    memset(mTraverseNest, 0, sizeof(mTraverseNest));
+    mCellMode = CellMode;
+    if (!mFlgStaticMode) {
+        switch (mCellMode) {
+        case 1:
+            mpGridInfo = new cU16Array[mGridNumX * mGridNumZ];
+            break;
+        case 2:
+            mpGridInfo = nullptr;
+            break;
+        case 0:
+            mpGridInfo = new cU32Array[mGridNumX * mGridNumZ];
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) void cGridCollision::clear() {
-    DDON_STUB("cGridCollision::clear")
-    /* stub */
+    if (mpGridInfo != nullptr) {
+        for (u32 i = 0; i < static_cast<u32>(mGridNumX * mGridNumZ); i++) {
+            mpGridInfo[i].clear();
+        }
+        delete[] mpGridInfo;
+        mpGridInfo = nullptr;
+    }
+    if (mFlgOutsideMemoryAllocate) {
+        mpStaticGridInfo = nullptr;
+        mpStaticGridRegistParam = nullptr;
+    } else {
+        if (mpStaticGridInfo != nullptr) {
+            memFree(mpStaticGridInfo);
+            mpStaticGridInfo = nullptr;
+        }
+        if (mpStaticGridRegistParam != nullptr) {
+            memFree(mpStaticGridRegistParam);
+            mpStaticGridRegistParam = nullptr;
+        }
+    }
+    mFlgOutsideMemoryAllocate = false;
 }
 
 __attribute__((weak)) bool cGridCollision::getCellDataStaticU32(const MtVector3& pos, const u32* & pOutputRootU32, u32& OutputCellDataNum) const {

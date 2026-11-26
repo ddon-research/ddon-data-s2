@@ -70,8 +70,15 @@ cGUIContentsExecutor::cGUIContentsExecutor(bool isLeader) {
 }
 
 cGUIContentsExecutor::~cGUIContentsExecutor() {
-    DDON_STUB("cGUIContentsExecutor::~cGUIContentsExecutor")
-    /* stub */
+    release();
+    if (sGUI::getInstance() != nullptr) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->mIsEntryDepart = false;
+    }
+    if (sQuestManagerExt::getInstance() == nullptr) {
+        return;
+    }
+    sQuestManagerExt::getInstance()->clearRequestEntryInfoSave();
+    sQuestManagerExt::getInstance()->clearEntrySearchFilterSave();
 }
 
 void cGUIContentsExecutor::createProperty(MtPropertyList& s) {

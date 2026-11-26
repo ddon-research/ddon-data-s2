@@ -28,9 +28,9 @@ inline void cNpcConstItem::operator delete(void* p_addr) {
 cNpcConstItem::~cNpcConstItem() {
 }
 
-__attribute__((weak)) void cNpcConstItem::createProperty(MtPropertyList& s) {
-    DDON_STUB("cNpcConstItem::createProperty")
-    /* stub */
+void cNpcConstItem::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "MTag", &mMTag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Offset", &mOffset, 0u, 0u);
 }
 
 inline cNpcConstItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -33,9 +33,7 @@ class MtPropertyList;
 class MtQuaternion;
 class MtVector3;
 class MtVector4;
-class aStage;
 class cCommonSkyFogData;
-class cDDMaterialCtrl;
 class cDayNightColorFogParam;
 class cDayNightLightParam;
 class cEffectCorrectParam;
@@ -204,8 +202,6 @@ public:
 
 class sWeatherManager : public cSystem
 {
-    friend class aStage;
-    friend class cDDMaterialCtrl;
     friend class cOmControl;
 public:
     enum WEATHER_PHASE
@@ -701,6 +697,26 @@ inline f32 cCustomWeatherParam::getCustomShadowGroup1() const {
     return this->mCustomShadowAtten.y;
 }
 
+inline MtVector3 cCustomWeatherParam::getCustomShadowDir() const {
+    return this->mCustomShadowDir;
+}
+
+inline MtVector3 cCustomWeatherParam::getCustomSunDir() const {
+    return this->mCustomSunDir;
+}
+
+inline MtVector3 cCustomWeatherParam::getCustomHemiLightColor() const {
+    return this->mCustomHemiLightColor;
+}
+
+inline MtVector3 cCustomWeatherParam::getCustomHemiLightRevColor() const {
+    return this->mCustomHemiLightRevColor;
+}
+
+inline MtVector3 cCustomWeatherParam::getCustomGrassWindDir() const {
+    return this->mCustomGrassWindDir;
+}
+
 inline f32 cCustomWeatherParam::getCustomGrassFadeBeginDistance() const {
     return this->mCustomGrassFadeBeginDistance;
 }
@@ -719,6 +735,10 @@ inline f32 cCustomWeatherParam::getCustomFogEnd() const {
 
 inline f32 cCustomWeatherParam::getCustomFogExponentDensity() const {
     return this->mCustomFogExponentDensity;
+}
+
+inline MtVector3 cCustomWeatherParam::getCustomFogColor() const {
+    return this->mCustomFogColor;
 }
 
 inline void* sWeatherManager::operator new(size_t sz, void* p_addr) {
@@ -788,6 +808,10 @@ inline f32 sWeatherManager::getLightFogZoneChgFrame() const {
 
 inline void sWeatherManager::setLightFogZoneChgFrame(f32 frame) {
     this->mLightFogZoneChgFrame = frame;
+}
+
+inline f32 sWeatherManager::getWeatherFogDensity() const {
+    return this->mWeatherParamResult.mFogDensity;
 }
 
 inline f32 sWeatherManager::getCloudHeightOffset() const {

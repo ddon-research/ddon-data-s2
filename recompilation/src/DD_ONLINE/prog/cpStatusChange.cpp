@@ -150,11 +150,11 @@ void cpStatusChange::copyStatusOldBit() {
             *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(getOwner()) + 8528)) + 88)) + 16) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(getOwner()) + 8528)) + 88)) + 8);
         }
     }
-    mEmScaleBitCtrl.mOldBitData = static_cast<BitData>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 5328));
-    mLocalBitCtrl.mOldBitData = static_cast<BitData>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 5368));
-    mLocalBitCtrl2.mOldBitData = static_cast<BitData>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 5400));
-    mMontageBitCtrl.mOldBitData = static_cast<BitData>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 5504));
-    mSyncBitCtrl.mOldBitData = static_cast<BitData>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 5432));
+    mEmScaleBitCtrl.mOldBitData = mEmScaleBitCtrl.mCurrentBitData;
+    mLocalBitCtrl.mOldBitData = mLocalBitCtrl.mCurrentBitData;
+    mLocalBitCtrl2.mOldBitData = mLocalBitCtrl2.mCurrentBitData;
+    mMontageBitCtrl.mOldBitData = mMontageBitCtrl.mCurrentBitData;
+    mSyncBitCtrl.mOldBitData = mSyncBitCtrl.mCurrentBitData;
 }
 
 __attribute__((weak)) void cpStatusChange::checkStatusChangeBit(bool setUp) {
@@ -172,9 +172,56 @@ __attribute__((weak)) void cpStatusChange::checkNextGroup(u32 checkGroup, u32 ch
     /* stub */
 }
 
-__attribute__((weak)) void cpStatusChange::setToContextAllBit() {
-    DDON_STUB("cpStatusChange::setToContextAllBit")
-    /* stub */
+void cpStatusChange::setToContextAllBit() {
+    uDDOModel* pOwner = static_cast<uDDOModel*>(getOwner());
+    if (pOwner != nullptr) {
+        if (pOwner->isMaster()) {
+            u64 t0 = cContextInterface::getEnemyBitCtrlCollision(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter);
+            if (pOwner->getObjCollisionPtr() != nullptr) {
+                if (pOwner->getObjCollisionPtr()->mBitCtrl.mCurrentBitData != t0) {
+                    cContextInterface::setEnemyBitCtrlCollision(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, pOwner->getObjCollisionPtr()->mBitCtrl.mCurrentBitData);
+                    cContextInterface::setEnemyStatusChange(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, true);
+                }
+            }
+            u8 t1 = cContextInterface::getEnemyCtrRegionSelectNo(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter);
+            if (pOwner->getRegionStatusCtrlPtr() != nullptr) {
+                if (pOwner->getRegionStatusCtrlPtr()->getStatusNo() != t1) {
+                    cContextInterface::setEnemyCtrRegionSelectNo(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, static_cast<unsigned char>(pOwner->getRegionStatusCtrlPtr()->getStatusNo()));
+                    cContextInterface::setEnemyStatusChange(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, true);
+                }
+            }
+            u64 t2 = cContextInterface::getEnemyBitCtrParts(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter);
+            if (pOwner->mpPartsCtrl != nullptr) {
+                if (pOwner->mpPartsCtrl->getBitCtrl() != nullptr) {
+                    if (pOwner->mpPartsCtrl->getBitCtrl()->getBitData() != t2) {
+                        cContextInterface::setEnemyBitCtrParts(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, pOwner->mpPartsCtrl->getBitCtrl()->getBitData());
+                        cContextInterface::setEnemyStatusChange(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, true);
+                    }
+                }
+            }
+            u64 t3 = cContextInterface::getEnemyBitCtrlMontage(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter);
+            if (mMontageBitCtrl.getBitData() != t3) {
+                cContextInterface::setEnemyBitCtrlMontage(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, mMontageBitCtrl.getBitData());
+                cContextInterface::setEnemyStatusChange(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, true);
+            }
+            u64 t4 = cContextInterface::getEnemyWorkRate(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter);
+            if (t4 != (mEmWorkRateCtrl.getEmWorkRateStatusNo() + 1u)) {
+                cContextInterface::setEnemyWorkRate(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, mEmWorkRateCtrl.getEmWorkRateStatusNo() + 1u);
+                cContextInterface::setEnemyStatusChange(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, true);
+            }
+            u64 t5 = cContextInterface::getEnemyScale(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter);
+            if (mEmScaleBitCtrl.getBitData() != t5) {
+                cContextInterface::setEnemyScale(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, mEmScaleBitCtrl.getBitData());
+                cContextInterface::setEnemyStatusChange(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, true);
+            }
+            u32 t6 = cContextInterface::getEnemyBitCtrlSyncBit(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter);
+            if (mSyncBitCtrl.getBitData() != t6) {
+                cContextInterface::setEnemyBitCtrlSyncBit(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, static_cast<unsigned int>(mSyncBitCtrl.getBitData()));
+                cContextInterface::setEnemyStatusChange(pOwner->mContextInterface.mpContextInstance, pOwner->mContextInterface.mpContextCharacter, true);
+                return;
+            }
+        }
+    }
 }
 
 void cpStatusChange::updateMethodConstantMgr() {
@@ -220,7 +267,7 @@ bool cpStatusChange::repeat_ExecFunc(u32 repeatCount, u32 index) {
                             checkNextGroup(t0->mGroupNo, t0->mGroupSubNo, t0->mNextGroupSubNo, t0->mNextGroupSubOneGo);
                             if (mpResource->getDataNum() != 0) {
                                 for (unsigned int i0_3 = 0;;) {
-                                    if (i0_3 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88))) {
+                                    if (i0_3 < mcStatusChange.mLength) {
                                         if (mcStatusChange.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
                                             *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mcStatusChange.getBuffer()[static_cast<int>(i0_3)]) + 36) = 0;
                                         }

@@ -32,6 +32,7 @@ class cMatrixParticle;
 class cParticle;
 class cParticleLifeCommon;
 class cParticleLifeCurveframe;
+class cParticleLifeFrame;
 class cParticleMoveAdd;
 class cParticleMoveBase;
 class cParticleMoveCommon;
@@ -352,6 +353,21 @@ public:
     u32 mCurveFrame : 16;  // offset: 0xc
     u32 mCurveTimer : 16;  // offset: 0xc
     nEffect::SimpleCurve mLifeRateCurve;  // offset: 0x10
+};
+
+class cParticleLifeFrame : public cParticleLifeCommon
+{
+public:
+    void reductionLifeFrame(u32 Shift);
+public:
+    u32 mAppearFrame : 16;  // offset: 0x4
+    u32 mKeepFrame : 16;  // offset: 0x4
+    u32 mVanishFrame : 16;  // offset: 0x8
+    u32 mLifeTimer : 16;  // offset: 0x8
+    u32 mKeepHoldTimer : 16;  // offset: 0xc
+    u32 mLifeRno : 8;  // offset: 0xc
+    u32 mKeepHoldFlag : 1;  // offset: 0xc
+    u32 mLifeFrame070f : 7;  // offset: 0xc
 };
 
 class cParticleMoveCommon

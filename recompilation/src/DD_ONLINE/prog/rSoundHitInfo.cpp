@@ -116,9 +116,25 @@ inline void rSoundHitInfo::cSoundHitInfo::operator delete(void* p_addr) {
 rSoundHitInfo::cSoundHitInfo::~cSoundHitInfo() {
 }
 
-__attribute__((weak)) void rSoundHitInfo::cSoundHitInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundHitInfo::cSoundHitInfo::createProperty")
-    /* stub */
+void rSoundHitInfo::cSoundHitInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mBody", &mBody, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBone", &mBone, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIron", &mIron, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStone", &mStone, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWood", &mWood, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWater", &mWater, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSmoke", &mSmoke, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAalche", &mAalche, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIce", &mIce, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeek1", &mWeek1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeek2", &mWeek2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEtc00", &mEtc00, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEtc01", &mEtc01, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEtc02", &mEtc02, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEtc03", &mEtc03, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEtc04", &mEtc04, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEtc05", &mEtc05, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEtc06", &mEtc06, 0u, 0u);
 }
 
 MtUI* rSoundHitInfo::cSoundHitInfo::createUI(MtProperty& prop) {

@@ -81,9 +81,15 @@ void cObjHitCache::copy(const cObjHitCache* pSrc, bool copy_node) {
     mpDfdModel = pSrc->mpDfdModel;
 }
 
-__attribute__((weak)) void cObjHitCache::createProperty(MtPropertyList& s) {
-    DDON_STUB("cObjHitCache::createProperty")
-    /* stub */
+void cObjHitCache::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mUID", &mUID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTimer", &mTimer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAge", &mAge, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLinkID", &mLinkID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAtkAttr", &mAtkAttr, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDfdAttr", &mDfdAttr, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpAtkModel", reinterpret_cast<MtObject* *>(&mpAtkModel), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpDfdModel", reinterpret_cast<MtObject* *>(&mpDfdModel), 0u, 0u);
 }
 
 void cObjHitCache::resetHitCache() {

@@ -6,6 +6,7 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtStlAllocator.h"
 #include "../MT/MtStlCustom.h"
@@ -35,9 +36,11 @@ __attribute__((noinline)) cRemoteProcedure::~cRemoteProcedure() {
     /* stub */
 }
 
-__attribute__((weak)) void cRemoteProcedure::createProperty(MtPropertyList& s) {
-    DDON_STUB("cRemoteProcedure::createProperty")
-    /* stub */
+void cRemoteProcedure::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup", &mGroup, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mValid", &mValid, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mKill", &mKill, 0u, 0u);
 }
 
 MtUI* cRemoteProcedure::createUI(MtProperty& prop) {

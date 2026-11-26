@@ -3,6 +3,7 @@
 #include "rErosionRegionScaleChange.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
@@ -52,8 +53,8 @@ inline void rErosionRegionScaleChange::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rErosionRegionScaleChange::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) bool rErosionRegionScaleChange::loadData(MtDataReader& r, cErosionRegionScaleChange* pData) {
-    nDDOIO::readData(r, pData->mInitScale);
+bool rErosionRegionScaleChange::loadData(MtDataReader& r, cErosionRegionScaleChange* pData) {
+    pData->mInitScale = r.readV3();
     nDDOIO::readData(r, pData->mChangeFrame);
     return true;
 }

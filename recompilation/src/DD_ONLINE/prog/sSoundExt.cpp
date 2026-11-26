@@ -13,6 +13,7 @@
 #include "../../MT/MtRandom.h"
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "../../MT/MtType.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
 #include "cComponentManager.h"
@@ -69,6 +70,52 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+static const MT_ENUM SoundArmroSrqrTable[8] = {
+    {"", 0},
+    {"RES_ID_ARMOR_CLO_SRQR", 1},
+    {"RES_ID_ARMOR_CLO_S_SRQR", 2},
+    {"RES_ID_ARMOR_IRO_SRQR", 3},
+    {"RES_ID_ARMOR_IRO_S_SRQR", 4},
+    {"RES_ID_ARMOR_LEA_SRQR", 5},
+    {"RES_ID_ARMOR_LEA_S_SRQR", 6},
+    {"", 7},
+};
+
+static const MT_ENUM SoundHitInfoTable[15] = {
+    {"", 0},
+    {"RES_ID_WEP300_SHI", 1},
+    {"RES_ID_WEP301_SHI", 2},
+    {"RES_ID_WEP302_SHI", 3},
+    {"RES_ID_WEP303_SHI", 4},
+    {"RES_ID_WEP304_SHI", 5},
+    {"RES_ID_WEP305_SHI", 6},
+    {"RES_ID_WEP306_SHI", 7},
+    {"RES_ID_WEP307_SHI", 8},
+    {"RES_ID_WEP308_SHI", 9},
+    {"RES_ID_WEP309_SHI", 10},
+    {"RES_ID_WEP310_SHI", 11},
+    {"RES_ID_WEP311_SHI", 12},
+    {"RES_ID_WEP312_SHI", 13},
+    {"RES_ID_WEP313_SHI", 14},
+};
+
+static const MT_ENUM SoundHitSrqrTable[14] = {
+    {"RES_ID_HIT_WATER_SRQR", 0},
+    {"RES_ID_HIT_BODY_SRQR", 1},
+    {"RES_ID_HIT_BONE_SRQR", 2},
+    {"RES_ID_HIT_WOOD_SRQR", 3},
+    {"RES_ID_HIT_STONE_SRQR", 4},
+    {"RES_ID_HIT_IRON_SRQR", 5},
+    {"RES_ID_HIT_SMOKE_SRQR", 6},
+    {"RES_ID_HIT_ALCHE_SRQR", 7},
+    {"RES_ID_HIT_WEEK_SRQR", 8},
+    {"RES_ID_HIT_WEEK2_SRQR", 9},
+    {"RES_ID_HIT_ETC00_SRQR", 12},
+    {"RES_ID_HIT_ETC01_SRQR", 12},
+    {"RES_ID_HIT_ICE_SRQR", 10},
+    {"RES_ID_HIT_EROSION_SRQR", 11},
+};
 
 u32 mViewPortBit = 1;
 
@@ -522,7 +569,7 @@ __attribute__((weak)) void sSoundExt::loadHitSeTableResource() {
     /* stub */
 }
 
-void sSoundExt::releaseHitSeSrqResource() {
+__attribute__((weak)) void sSoundExt::releaseHitSeSrqResource() {
     if (mprHitSeRequest[0] != nullptr) {
         mprHitSeRequest[0]->cResource::release();
         mprHitSeRequest[0] = nullptr;
@@ -641,9 +688,51 @@ inline void sSoundExt::releaseHitEnchantResource() {
     mprHitEnchantRequest = nullptr;
 }
 
-__attribute__((weak)) void sSoundExt::loadGameCommon() {
-    DDON_STUB("sSoundExt::loadGameCommon")
-    /* stub */
+void sSoundExt::loadGameCommon() {
+    sArchiveManager* t0 = sArchiveManager::getInstance();
+    ARC_TAGID t1 = rArchiveListArray::convTagId("sound_game_common");
+    cResource* t2 = t0->createRes(t1, rArchiveListArray::convSearchId("RES_ID_HM_OFFSET"), 1u, false);
+    if (t2 != nullptr) {
+        mprHmParamOfs = static_cast<rSoundParamOfs*>(t2);
+        t2->addRef();
+        t2->release();
+    }
+    sArchiveManager* t3 = sArchiveManager::getInstance();
+    ARC_TAGID t4 = rArchiveListArray::convTagId("sound_game_common");
+    cResource* t5 = t3->createRes(t4, rArchiveListArray::convSearchId("RES_ID_GAME_BUFF_SRQR"), 1u, false);
+    if (t5 != nullptr) {
+        mprGameBuffRequest = static_cast<rSoundRequest*>(t5);
+    }
+    rSoundRequest* * p0_12 = &mprArmorSeRequest[0];
+    for (unsigned int i0_13 = 0; i0_13 != 128; p0_12 += 1, i0_13 = i0_13 + 16u) {
+        const unsigned long t6 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(reinterpret_cast<const char*>(SoundArmroSrqrTable) + i0_13) + 0);
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t6) + 0)) != 0) {
+            sArchiveManager* t7 = sArchiveManager::getInstance();
+            ARC_TAGID t8 = rArchiveListArray::convTagId("sound_game_common");
+            cResource* t9 = t7->createRes(t8, rArchiveListArray::convSearchId(reinterpret_cast<MT_CTSTR>(t6)), 1u, false);
+            if (t9 != nullptr) {
+                *p0_12 = static_cast<rSoundRequest*>(t9);
+            }
+        }
+    }
+    sArchiveManager* t10 = sArchiveManager::getInstance();
+    ARC_TAGID t11 = rArchiveListArray::convTagId("sound_game_common");
+    cResource* t12 = t10->createRes(t11, rArchiveListArray::convSearchId("RES_ID_INGAME_DEMO_STQR"), 1u, false);
+    if (t12 != nullptr) {
+        mprFsmEvBgmRequest = static_cast<rSoundStreamRequest*>(t12);
+    }
+    sArchiveManager* t13 = sArchiveManager::getInstance();
+    ARC_TAGID t14 = rArchiveListArray::convTagId("sound_game_common");
+    cResource* t15 = t13->createRes(t14, rArchiveListArray::convSearchId("RES_ID_SHL_JOB_SHARE_SRQR"), 1u, false);
+    if (t15 != nullptr) {
+        mprShlJobShareRequest = static_cast<rSoundRequest*>(t15);
+    }
+    sArchiveManager* t16 = sArchiveManager::getInstance();
+    ARC_TAGID t17 = rArchiveListArray::convTagId("sound_game_common");
+    cResource* t18 = t16->createRes(t17, rArchiveListArray::convSearchId("RES_ID_EM_SHARE_SRQR"), 1u, false);
+    if (t18 != nullptr) {
+        mprEnemyShareRequest = static_cast<rSoundRequest*>(t18);
+    }
 }
 
 __attribute__((weak)) void sSoundExt::loadBgmResource(bool isLobby, bool isSplit, rSoundAreaInfo* pInfo) {
@@ -738,9 +827,38 @@ void sSoundExt::releaseBgmResource() {
     mprBattleBgmRequest = nullptr;
 }
 
-__attribute__((weak)) void sSoundExt::releaseBattleCommon() {
-    DDON_STUB("sSoundExt::releaseBattleCommon")
-    /* stub */
+void sSoundExt::releaseBattleCommon() {
+    releaseHitSeSrqResource();
+    for (unsigned int i0_3 = 0; i0_3 != 15; i0_3 = i0_3 + 1u) {
+        if (mprHitInfoResource[i0_3] != nullptr) {
+            mprHitInfoResource[i0_3]->cResource::release();
+            mprHitInfoResource[i0_3] = nullptr;
+        }
+    }
+    if (mprHitInfoEmResource[0] != nullptr) {
+        mprHitInfoEmResource[0]->cResource::release();
+        mprHitInfoEmResource[0] = nullptr;
+    }
+    if (mprHitInfoEmResource[1] != nullptr) {
+        mprHitInfoEmResource[1]->cResource::release();
+        mprHitInfoEmResource[1] = nullptr;
+    }
+    if (mprHitInfoEmResource[2] != nullptr) {
+        mprHitInfoEmResource[2]->cResource::release();
+        mprHitInfoEmResource[2] = nullptr;
+    }
+    if (mprMagicRequest != nullptr) {
+        mprMagicRequest->release();
+        mprMagicRequest = nullptr;
+    }
+    if (mprEnchantRequest != nullptr) {
+        mprEnchantRequest->release();
+        mprEnchantRequest = nullptr;
+    }
+    if (mprHitEnchantRequest != nullptr) {
+        mprHitEnchantRequest->release();
+        mprHitEnchantRequest = nullptr;
+    }
 }
 
 __attribute__((weak)) rSoundStreamRequest* sSoundExt::getEventBgmResource() {

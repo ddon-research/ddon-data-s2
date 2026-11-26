@@ -66,9 +66,8 @@ bool uCustomSimSoftBody::hasTarget() const {
     return false;
 }
 
-__attribute__((weak)) bool uCustomSimSoftBody::isTargetEnable() const {
-    DDON_STUB("uCustomSimSoftBody::isTargetEnable")
-    return {};
+bool uCustomSimSoftBody::isTargetEnable() const {
+    return mpBakeModel->isEnable();
 }
 
 nDraw::VertexBuffer* uCustomSimSoftBody::getTargetVertexBuffer() const {
@@ -87,28 +86,28 @@ u32 uCustomSimSoftBody::getTargetPrimitiveNum() const {
     return mpBakeModel->getPrimitiveNum();
 }
 
-__attribute__((weak)) u32 uCustomSimSoftBody::getTargetJointNum() const {
-    DDON_STUB("uCustomSimSoftBody::getTargetJointNum")
-    return {};
+u32 uCustomSimSoftBody::getTargetJointNum() const {
+    return mpBakeModel->getJointNum();
 }
 
-__attribute__((weak)) bool uCustomSimSoftBody::isTargetPartsDisp(u32 no) const {
-    DDON_STUB("uCustomSimSoftBody::isTargetPartsDisp")
-    return {};
+bool uCustomSimSoftBody::isTargetPartsDisp(u32 no) const {
+    return mpBakeModel->isPartsDisp(no);
 }
 
-__attribute__((weak)) const MtVector3& uCustomSimSoftBody::getTargetPos() const {
-    DDON_STUB("uCustomSimSoftBody::getTargetPos")
-    __builtin_unreachable();
+const MtVector3& uCustomSimSoftBody::getTargetPos() const {
+    return mpBakeModel->getPos();
 }
 
 void uCustomSimSoftBody::setTargetCommonState(cDraw* pdraw) {
     sBakingJointOrder::getInstance()->setCommonStateModelOrder(pdraw, mpBakeModel->mpCallerUnit, mpBakeModel->mpCallBack);
 }
 
-__attribute__((weak)) const MtMatrix& uCustomSimSoftBody::getTargetJointMatrix(s32 jointIndex) const {
-    DDON_STUB("uCustomSimSoftBody::getTargetJointMatrix")
-    __builtin_unreachable();
+const MtMatrix& uCustomSimSoftBody::getTargetJointMatrix(s32 jointIndex) const {
+    if (jointIndex != -1) {
+        return mpBakeModel->getJointFromIndex(jointIndex)->mWmat;
+    } else {
+        return mpBakeModel->getWorldNullMatrix();
+    }
 }
 
 const MtSphere& uCustomSimSoftBody::getTargetBoundingSphere() const {

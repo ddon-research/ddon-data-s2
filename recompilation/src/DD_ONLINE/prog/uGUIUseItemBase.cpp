@@ -49,8 +49,45 @@ inline void uGUIUseItemBase::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIUseItemBase::~uGUIUseItemBase() {
-    DDON_STUB("uGUIUseItemBase::~uGUIUseItemBase")
-    /* stub */
+    if (mIsEndShareUnitUse) {
+        if (mpShareUnit != nullptr) {
+            mpShareUnit->setFlowId(10u);
+            mpShareUnit->mEndMode = true;
+            mIsEndShareUnitUse = false;
+        }
+    }
+    if (mpDetail != nullptr) {
+        mpDetail->kill();
+        mpDetail = nullptr;
+    }
+    if (mpUnitPopNumber != nullptr) {
+        mpUnitPopNumber->kill();
+        mpUnitPopNumber = nullptr;
+    }
+    if (mpUnitPopCmd != nullptr) {
+        mpUnitPopCmd->kill();
+        mpUnitPopCmd = nullptr;
+    }
+    if (mpUnitPopCmd2 != nullptr) {
+        mpUnitPopCmd2->kill();
+        mpUnitPopCmd2 = nullptr;
+    }
+    if (mpUnitPopBuy != nullptr) {
+        mpUnitPopBuy->kill();
+        mpUnitPopBuy = nullptr;
+    }
+    if (mpUnitSystemMsg != nullptr) {
+        mpUnitSystemMsg->kill();
+        mpUnitSystemMsg = nullptr;
+    }
+    if (mpUnitPopList != nullptr) {
+        mpUnitPopList->kill();
+        mpUnitPopList = nullptr;
+    }
+    if (mpWaitPopBase != nullptr) {
+        mpWaitPopBase->kill();
+        mpWaitPopBase = nullptr;
+    }
 }
 
 void uGUIUseItemBase::setup() {
@@ -148,9 +185,21 @@ __attribute__((weak)) u32 uGUIUseItemBase::callbackGetItem(MtObject* pCaller, Mt
     return {};
 }
 
-__attribute__((weak)) u32 uGUIUseItemBase::callbackGetItems(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIUseItemBase::callbackGetItems")
-    return {};
+u32 uGUIUseItemBase::callbackGetItems(MtObject* pCaller, MtObject* pData) {
+    if (pData != nullptr) {
+        if (pData->isKindOf(nGUIItem::cItemList::DTI)) {
+            if (static_cast<nGUIItem::cItemList*>(pData)->sendItems(mFromBagGroup, mToBagGroup) != nGUIItem::RET_TYPE_ERROR) {
+                mItemList.mWaitFlag = 4;
+                setFlowId(8u);
+                if (mpShareUnit != nullptr) {
+                    mpShareUnit->mItemList.mWaitFlag = mItemList.getWaitFlag();
+                    mpShareUnit->setFlowId(8u);
+                }
+                return 3;
+            }
+        }
+    }
+    return 1;
 }
 
 __attribute__((weak)) u32 uGUIUseItemBase::callbackExchangeItem(MtObject* pCaller, MtObject* pData) {
@@ -158,19 +207,50 @@ __attribute__((weak)) u32 uGUIUseItemBase::callbackExchangeItem(MtObject* pCalle
     return {};
 }
 
-__attribute__((weak)) u32 uGUIUseItemBase::callbackMoveItem(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIUseItemBase::callbackMoveItem")
-    return {};
+u32 uGUIUseItemBase::callbackMoveItem(MtObject* pCaller, MtObject* pData) {
+    if (pData != nullptr) {
+        if (!pData->isKindOf(nGUIItem::cItem::DTI)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    } else {
+        return 1;
+    }
 }
 
-__attribute__((weak)) u32 uGUIUseItemBase::callbackEquipItem(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIUseItemBase::callbackEquipItem")
-    return {};
+u32 uGUIUseItemBase::callbackEquipItem(MtObject* pCaller, MtObject* pData) {
+    if (pData != nullptr) {
+        if (!pData->isKindOf(uGUIUseItemBase::cEquipInfo::DTI)) {
+            return 1;
+        } else {
+            cEquipInfo* p = static_cast<cEquipInfo*>(pData);
+            if (p->mpItem != nullptr) {
+                p->mpItem->equip(0xFFFFFFFFu, 0xFFFFFFFFu, nCharacterData::EQUIP_TYPE_PERFORMANCE);
+                setFlowId(8u);
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+    } else {
+        return 1;
+    }
 }
 
-__attribute__((weak)) u32 uGUIUseItemBase::callbackSellItem(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIUseItemBase::callbackSellItem")
-    return {};
+u32 uGUIUseItemBase::callbackSellItem(MtObject* pCaller, MtObject* pData) {
+    if (pData != nullptr) {
+        if (pData->isKindOf(nGUIItem::cItem::DTI)) {
+            if (mpUnitPopBuy != nullptr) {
+                mpUnitPopBuy->setInfoSell(static_cast<const nGUIItem::cItem*>(pData));
+                mItemList.mWaitFlag = 4096;
+                mIsShopExecute = true;
+                setFlowId(5u);
+                return 0;
+            }
+        }
+    }
+    return 1;
 }
 
 __attribute__((weak)) u32 uGUIUseItemBase::callbackPopSellItemList(MtObject* pCaller, MtObject* pData) {
@@ -334,9 +414,51 @@ u32 uGUIUseItemBase::evCtrlChangeBox(cControl::Message* msg) {
     return 0;
 }
 
-__attribute__((weak)) bool uGUIUseItemBase::isEndPopup() {
-    DDON_STUB("uGUIUseItemBase::isEndPopup")
-    return {};
+bool uGUIUseItemBase::isEndPopup() {
+    if (mpUnitPopBuy != nullptr) {
+        if (mIsShopExecute) {
+            if (mpUnitPopBuy->isActive()) {
+                return false;
+            } else {
+                mIsShopExecute = false;
+                return true;
+            }
+        } else {
+            if (mpWaitPopBase != nullptr) {
+                if (mpWaitPopBase->mResult == RESULT_EXIT) {
+                    if (!mpWaitPopBase->getDTI().MtDTI::operator==(uGUIPopListDialog::DTI)) {
+                        if (mpWaitPopBase->getDTI().MtDTI::operator==(uGUISystemMsg::DTI)) {
+                            mpWaitPopBase->mEndType = 0;
+                        }
+                    } else {
+                        mpWaitPopBase->mEndType = 0;
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        }
+    } else {
+        if (mpWaitPopBase != nullptr) {
+            if (mpWaitPopBase->mResult == RESULT_EXIT) {
+                if (!mpWaitPopBase->getDTI().MtDTI::operator==(uGUIPopListDialog::DTI)) {
+                    if (mpWaitPopBase->getDTI().MtDTI::operator==(uGUISystemMsg::DTI)) {
+                        mpWaitPopBase->mEndType = 0;
+                    }
+                } else {
+                    mpWaitPopBase->mEndType = 0;
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIUseItemBase::endShareUnit() {
@@ -424,14 +546,38 @@ __attribute__((weak)) u32 uGUIUseItemBase::_callbackDiscardItem(MtObject* pCalle
     return {};
 }
 
-__attribute__((weak)) u32 uGUIUseItemBase::_callbackDiscardItems(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIUseItemBase::_callbackDiscardItems")
-    return {};
+u32 uGUIUseItemBase::_callbackDiscardItems(MtObject* pCaller, MtObject* pData) {
+    if (pData != nullptr) {
+        if (pData->isKindOf(nGUIItem::cItemList::DTI)) {
+            if (static_cast<nGUIItem::cItemList*>(pData)->discard(mFromBagGroup, mToBagGroup) != nGUIItem::RET_TYPE_ERROR) {
+                mItemList.mWaitFlag = 2;
+                setFlowId(8u);
+                if (mpShareUnit != nullptr) {
+                    mpShareUnit->mItemList.mWaitFlag = mItemList.getWaitFlag();
+                    mpShareUnit->setFlowId(8u);
+                }
+                return 3;
+            }
+        }
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIUseItemBase::_callbackSellItems(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIUseItemBase::_callbackSellItems")
-    return {};
+u32 uGUIUseItemBase::_callbackSellItems(MtObject* pCaller, MtObject* pData) {
+    if (pData != nullptr) {
+        if (pData->isKindOf(nGUIItem::cItemList::DTI)) {
+            if (static_cast<nGUIItem::cItemList*>(pData)->sell(mFromBagGroup, mToBagGroup) != nGUIItem::RET_TYPE_ERROR) {
+                mItemList.mWaitFlag = 4096;
+                setFlowId(8u);
+                if (mpShareUnit != nullptr) {
+                    mpShareUnit->mItemList.mWaitFlag = mItemList.getWaitFlag();
+                    mpShareUnit->setFlowId(8u);
+                }
+                return 3;
+            }
+        }
+    }
+    return 1;
 }
 
 inline uGUIUseItemBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

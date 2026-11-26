@@ -68,8 +68,11 @@ cNetLoginServer::cNetLoginServer() {
 }
 
 cNetLoginServer::~cNetLoginServer() {
-    DDON_STUB("cNetLoginServer::~cNetLoginServer")
-    /* stub */
+    if (mpConnection == nullptr) {
+        return;
+    }
+    delete mpConnection;
+    mpConnection = nullptr;
 }
 
 void cNetLoginServer::clearAll() {
@@ -312,9 +315,29 @@ __attribute__((weak)) bool cNetLoginServer::createCharacter(cCharacterData* pCha
     return {};
 }
 
-__attribute__((weak)) bool cNetLoginServer::isPrologueCharacter(u32 characterId) {
-    DDON_STUB("cNetLoginServer::isPrologueCharacter")
-    return {};
+bool cNetLoginServer::isPrologueCharacter(u32 characterId) {
+    u32 num = getGetCharacterListPacket()->m_CharacterList.mLength;
+    bool b3_0;
+    if (num == 0) {
+        b3_0 = false;
+    } else {
+        MtObject* * v0_3 = getGetCharacterListPacket()->m_CharacterList.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[static_cast<int>(i0_2)]) + 24)) == characterId) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_3[static_cast<int>(i0_2)]) + 368)) == 2) {
+                    b3_0 = true;
+                    return b3_0;
+                }
+            }
+            if ((i0_2 + 1u) < num) {
+                i0_2 += 1u;
+            } else {
+                break;
+            }
+        }
+        b3_0 = false;
+    }
+    return b3_0;
 }
 
 __attribute__((weak)) void cNetLoginServer::copyRecvCharacterDataFromList(cCharacterData& dst, u32 index) {
@@ -394,10 +417,6 @@ nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC* cNetLoginServer::getGetEr
     return mpConnection->mpGetErrorMessageListPacket;
 }
 
-inline nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES* cNetLoginServer::getGetCharacterListPacket() {
-    return mpConnection->mpGetCharacterListPacket;
-}
-
 nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC* cNetLoginServer::getNextConnectServerPacket() {
     return mpConnection->mpNextConnectServerPacket;
 }
@@ -423,9 +442,12 @@ inline void cNetLoginServer::cCtrlFlow::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cNetLoginServer::cCtrlFlow::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cNetLoginServer::cCtrlFlow::createProperty(MtPropertyList& s) {
-    DDON_STUB("cNetLoginServer::cCtrlFlow::createProperty")
-    /* stub */
+void cNetLoginServer::cCtrlFlow::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mRno0", &mRno0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRno1", &mRno1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mError.mNo", &mError.mNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFTimer", &mFTimer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsCallback", &mIsCallback, 0u, 0u);
 }
 
 MtUI* cNetLoginServer::cCtrlFlow::createUI(MtProperty& prop) {
@@ -440,9 +462,10 @@ MtObject* cNetLoginServer::cCtrlFlow::MyDTI::newInstance() const {
     return new (16u) cNetLoginServer::cCtrlFlow;
 }
 
-__attribute__((weak)) void cSeedLoginSvConnection::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSeedLoginSvConnection::createProperty")
-    /* stub */
+void cSeedLoginSvConnection::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpManager", reinterpret_cast<MtObject* *>(&mpManager), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mIsLoginWithSessionKey", reinterpret_cast<MT_MFUNC>(&::cSeedLoginSvConnection::isLoginWithSessionKeyPrivate), reinterpret_cast<MT_MFUNC>(&::cSeedLoginSvConnection::setLoginWithSessionKeyPrivate), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mIsLoginSuccess", reinterpret_cast<MT_MFUNC>(&::cSeedLoginSvConnection::isLoginSuccessPrivate), reinterpret_cast<MT_MFUNC>(&::cSeedLoginSvConnection::setLoginSuccessPrivate), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 const MtDTI& cSeedLoginSvConnection::getDTI() const {
@@ -659,9 +682,32 @@ __attribute__((weak)) BOOL cSeedLoginSvConnection::OnPacket_L2C_GET_LOGIN_SETTIN
     return {};
 }
 
-__attribute__((weak)) BOOL cSeedLoginSvConnection::OnPacket_L2C_GP_COURSE_GET_INFO_RES(CPacket* pPacket) {
-    DDON_STUB("cSeedLoginSvConnection::OnPacket_L2C_GP_COURSE_GET_INFO_RES")
-    return {};
+BOOL cSeedLoginSvConnection::OnPacket_L2C_GP_COURSE_GET_INFO_RES(CPacket* pPacket) {
+    sGame* t0 = sGame::getInstance();
+    t0->clearChargeCourse();
+    if (t0->mPacketGPCourseInfo.ReadPacket(pPacket) != 0) {
+        if (t0->mPacketGPCourseInfo.m_usError == 0) {
+            getManager()->mErrorCode[11] = static_cast<nError::ERROR_CODE>(t0->mPacketGPCourseInfo.m_unResult);
+            if (t0->mPacketGPCourseInfo.m_unResult != 0) {
+                getManager()->mStatus[11] = sNetworkExt::NET_STAT_ERROR;
+                if (!getManager()->mIsNgErrorDialog[11]) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->requestNetworkErrorDialog(static_cast<s32>(t0->mPacketGPCourseInfo.m_unResult));
+                }
+            } else {
+                getManager()->mStatus[11] = sNetworkExt::NET_STAT_SUCCESS;
+            }
+        } else {
+            getManager()->mErrorCode[11] = static_cast<nError::ERROR_CODE>(t0->mPacketGPCourseInfo.m_usError);
+            getManager()->mStatus[11] = sNetworkExt::NET_STAT_ERROR;
+            if (!getManager()->mIsNgErrorDialog[11]) {
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->requestNetworkErrorDialog(t0->mPacketGPCourseInfo.m_usError);
+            }
+        }
+        sGame::getInstance()->initChargeCourse();
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) BOOL cSeedLoginSvConnection::OnPacket_L2C_GET_CHARACTER_LIST_RES(CPacket* pPacket) {
@@ -719,48 +765,133 @@ u32 cSeedLoginSvConnection::getOnPacketFuncNum() {
 }
 
 __attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_PING_REQ() {
-    DDON_STUB("cSeedLoginSvConnection::Send_C2L_PING_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(1)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_LOGIN_REQ(const char* in_strOnetimeToken, u8 in_Platform) {
-    DDON_STUB("cSeedLoginSvConnection::Send_C2L_LOGIN_REQ")
-    return {};
+s32 cSeedLoginSvConnection::Send_C2L_LOGIN_REQ(const char* in_strOnetimeToken, u8 in_Platform) {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(2)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_strOnetimeToken) != 0) {
+                    if (nPacket::Write(sendPacket, in_Platform) != 0) {
+                        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                        Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_LOGOUT_REQ() {
-    DDON_STUB("cSeedLoginSvConnection::Send_C2L_LOGOUT_REQ")
-    return {};
+s32 cSeedLoginSvConnection::Send_C2L_LOGOUT_REQ() {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(3)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_GET_GAME_SESSION_KEY_REQ() {
-    DDON_STUB("cSeedLoginSvConnection::Send_C2L_GET_GAME_SESSION_KEY_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(5)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_GET_ERROR_MESSAGE_LIST_REQ() {
-    DDON_STUB("cSeedLoginSvConnection::Send_C2L_GET_ERROR_MESSAGE_LIST_REQ")
-    return {};
+s32 cSeedLoginSvConnection::Send_C2L_GET_ERROR_MESSAGE_LIST_REQ() {
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(7)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_GET_LOGIN_SETTING_REQ() {
-    DDON_STUB("cSeedLoginSvConnection::Send_C2L_GET_LOGIN_SETTING_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(8)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_GP_COURSE_GET_INFO_REQ() {
-    DDON_STUB("cSeedLoginSvConnection::Send_C2L_GP_COURSE_GET_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(9)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_GET_CHARACTER_LIST_REQ() {
-    DDON_STUB("cSeedLoginSvConnection::Send_C2L_GET_CHARACTER_LIST_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(10)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_DECIDE_CANCEL_CHARACTER_REQ() {
-    DDON_STUB("cSeedLoginSvConnection::Send_C2L_DECIDE_CANCEL_CHARACTER_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(12)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_CREATE_CHARACTER_DATA_REQ(const CCharacterInfo& in_CharacterInfo, u32 in_WaitNum, u8 in_RotationServerID) {
@@ -769,8 +900,19 @@ __attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_CREATE_CHARACTER_DATA
 }
 
 __attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_DELETE_CHARACTER_INFO_REQ(u32 in_CharacterID) {
-    DDON_STUB("cSeedLoginSvConnection::Send_C2L_DELETE_CHARACTER_INFO_REQ")
-    return {};
+    CPacket sendPacket;
+    if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+        if (nPacket::Write(sendPacket, static_cast<u16>(14)) != 0) {
+            if (nPacket::Write(sendPacket, static_cast<u16>(0)) != 0) {
+                if (nPacket::Write(sendPacket, in_CharacterID) != 0) {
+                    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(sendPacket.m_pWriter - sendPacket.m_pReader)), &(*sendPacket.m_pReader));
+                    Send(reinterpret_cast<char*>(sendPacket.m_pReader), static_cast<DWORD>(sendPacket.m_pWriter - sendPacket.m_pReader));
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 inline cSeedLoginSvConnection::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

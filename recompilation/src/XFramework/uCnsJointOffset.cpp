@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
@@ -77,9 +78,14 @@ void uCnsJointOffset::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
 
 static auto ddon_emit_0x01b67450 __attribute__((used)) = &uCnsJointOffset::getJoint;
 
-__attribute__((weak)) void uCnsJointOffset::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsJointOffset::createProperty")
-    /* stub */
+void uCnsJointOffset::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCnsJointOffsetRes", "resource", reinterpret_cast<MT_MFUNC>(&::uCnsJointOffset::getResource), reinterpret_cast<MT_MFUNC>(&::uCnsJointOffset::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "Joint", reinterpret_cast<MT_MFUNC>(&::uCnsJointOffset::getJoint), reinterpret_cast<MT_MFUNC>(&::uCnsJointOffset::setJointForProperty), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mScl", &mScl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOrder", &(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRot", &mRot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTrans", &mTrans, 0u, 0u);
 }
 
 MtUI* uCnsJointOffset::createUI(MtProperty& prop) {

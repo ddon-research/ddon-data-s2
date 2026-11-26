@@ -232,9 +232,13 @@ __attribute__((weak)) MtVector3 MtGeomSphere::getSupportConst(const MtVector3& v
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 MtGeomSphere::getInternalPos() const {
-    DDON_STUB("MtGeomSphere::getInternalPos")
-    __builtin_unreachable();
+MtVector3 MtGeomSphere::getInternalPos() const {
+    MtVector3 result;
+    result.x = mSphere.pos.x;
+    result.y = mSphere.pos.y;
+    result.z = mSphere.pos.z;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 __attribute__((weak)) void MtGeomSphere::setScale(f32 scale) {

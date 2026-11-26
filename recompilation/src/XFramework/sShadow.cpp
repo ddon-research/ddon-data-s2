@@ -15,6 +15,7 @@
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "cDraw.h"
@@ -40,9 +41,15 @@ cShadowPriorityState::~cShadowPriorityState() {
     mpOcclusionQuery = nullptr;
 }
 
-__attribute__((weak)) void cShadowPriorityState::createProperty(MtPropertyList& s) {
-    DDON_STUB("cShadowPriorityState::createProperty")
-    /* stub */
+void cShadowPriorityState::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttenuationDistance", &mAttenuationDistance, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttenuationFade", &mAttenuationFade, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mState", &mState, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVisibleHistory", &mVisibleHistory, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOcclusionVisibleHistory", &mOcclusionVisibleHistory, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIntersectNearPlaneHistory", &mIntersectNearPlaneHistory, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFrameLastOcclusion", &mFrameLastOcclusion, 3u, 0u);
 }
 
 MtUI* cShadowPriorityState::createUI(MtProperty& prop) {
@@ -140,9 +147,36 @@ __attribute__((weak)) void sShadow::move() {
     /* stub */
 }
 
-__attribute__((weak)) void sShadow::createProperty(MtPropertyList& s) {
-    DDON_STUB("sShadow::createProperty")
-    /* stub */
+void sShadow::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mManagementEnable", &mManagementEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "ShadowMapCacheEnable", reinterpret_cast<MT_MFUNC>(&::sShadow::isShadowMapCacheEnable), reinterpret_cast<MT_MFUNC>(&::sShadow::setShadowMapCacheEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mContinuousShadowMapCacheValidation", &mContinuousShadowMapCacheValidation, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mToleranceFrameLengthUpdateShadowMapCache", &mToleranceFrameLengthUpdateShadowMapCache, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "InvalidateAllShadowMapCache", static_cast<MT_MFUNC>(&::sShadow::invalidateAllShadowMapCache), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mCacheEnabledViewNum", reinterpret_cast<MT_MFUNC>(&::sShadow::getCacheEnabledViewNumber), reinterpret_cast<MT_MFUNC>(&::sShadow::setCacheEnabledViewNumber), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "SpotShadowMapSize", reinterpret_cast<MT_MFUNC>(&::sShadow::getSpotShadowMapSize), reinterpret_cast<MT_MFUNC>(&::sShadow::setSpotShadowMapSize), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "SpotShadowMapType", reinterpret_cast<MT_MFUNC>(&::sShadow::getSpotShadowMapType), reinterpret_cast<MT_MFUNC>(&::sShadow::setSpotShadowMapType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "PointShadowMapSize", reinterpret_cast<MT_MFUNC>(&::sShadow::getPointShadowMapSize), reinterpret_cast<MT_MFUNC>(&::sShadow::setPointShadowMapSize), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "PointShadowMapType", reinterpret_cast<MT_MFUNC>(&::sShadow::getPointShadowMapType), reinterpret_cast<MT_MFUNC>(&::sShadow::setPointShadowMapType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mQueryDispEnable", &mQueryDispEnable, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQueryFrameLatencyTolerance", &mQueryFrameLatencyTolerance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQueryVisibleThresholdPixelNumber", &mQueryVisibleThresholdPixelNumber, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mFadeDistance", reinterpret_cast<MT_MFUNC>(&::sShadow::getFadeDistance), reinterpret_cast<MT_MFUNC>(&::sShadow::setFadeDistance), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mVisibleDistance", reinterpret_cast<MT_MFUNC>(&::sShadow::getVisibleDistance), reinterpret_cast<MT_MFUNC>(&::sShadow::setVisibleDistance), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mResourceNum", reinterpret_cast<MT_MFUNC>(&::sShadow::getResourceNumber), reinterpret_cast<MT_MFUNC>(&::sShadow::setResourceNumber), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mAttenuationDelta", &mAttenuationDelta, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlendWeightPriority", &mBlendWeightPriority, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mThresholdPriorityDelta", &mThresholdPriorityDelta, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResourceGroup", static_cast<MtObject*>(&mResourceGroup[0]), 33u, 2u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "Nodes", reinterpret_cast<MT_MFUNC>(&::sShadow::getNode), reinterpret_cast<MT_MFUNC>(&::sShadow::setNode), 163u, reinterpret_cast<MT_MFUNC>(&::sShadow::getNodeNum), reinterpret_cast<MT_MFUNC>(&::sShadow::setNodeNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mIsActiveShadowMulValue", reinterpret_cast<MT_MFUNC>(&::sShadow::isActiveShadowMulValue), reinterpret_cast<MT_MFUNC>(&::sShadow::setActiveShadowMulValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mShadowSizeMulValue", reinterpret_cast<MT_MFUNC>(&::sShadow::getShadowSizeMulValue), reinterpret_cast<MT_MFUNC>(&::sShadow::setShadowSizeMulValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mShadowDistanceMulValue", reinterpret_cast<MT_MFUNC>(&::sShadow::getShadowViewDistanceMulValue), reinterpret_cast<MT_MFUNC>(&::sShadow::setShadowViewDistanceMulValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mCommonPointShadowDistanceBias", &mCommonPointShadowDistanceBias, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCommonPointShadowDistanceBiasEnable", &mCommonPointShadowDistanceBiasEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRestoreShadowMapUseResolve", &mRestoreShadowMapUseResolve, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRestoreShadowMapCacheEnable", &mRestoreShadowMapCacheEnable, 0u, 0u);
 }
 
 MtUI* sShadow::createUI(MtProperty& prop) {
@@ -585,9 +619,9 @@ sShadow::ResourceGroup::~ResourceGroup() {
     releaseResources();
 }
 
-__attribute__((weak)) void sShadow::ResourceGroup::createProperty(MtPropertyList& s) {
-    DDON_STUB("sShadow::ResourceGroup::createProperty")
-    /* stub */
+void sShadow::ResourceGroup::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mResourceType", &mResourceType, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "resource", reinterpret_cast<MT_MFUNC>(&::sShadow::ResourceGroup::getResource), reinterpret_cast<MT_MFUNC>(&::sShadow::ResourceGroup::setResource), 163u, reinterpret_cast<MT_MFUNC>(&::sShadow::ResourceGroup::getResourceNumber), reinterpret_cast<MT_MFUNC>(&::sShadow::ResourceGroup::setResourceNumber));
 }
 
 MtUI* sShadow::ResourceGroup::createUI(MtProperty& prop) {
@@ -644,9 +678,8 @@ inline void sShadow::Resource::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sShadow::Resource::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void sShadow::Resource::createProperty(MtPropertyList& s) {
-    DDON_STUB("sShadow::Resource::createProperty")
-    /* stub */
+void sShadow::Resource::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mDepthMap", reinterpret_cast<MtObject* *>(&mDepthMap), 3u, 0u);
 }
 
 MtUI* sShadow::Resource::createUI(MtProperty& prop) {
@@ -670,9 +703,9 @@ inline void sShadow::ViewConsistentResource::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sShadow::ViewConsistentResource::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void sShadow::ViewConsistentResource::createProperty(MtPropertyList& s) {
-    DDON_STUB("sShadow::ViewConsistentResource::createProperty")
-    /* stub */
+void sShadow::ViewConsistentResource::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mDepthMapCache", reinterpret_cast<MtObject* *>(&mDepthMapCache), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDepthStencilMapCache", reinterpret_cast<MtObject* *>(&mDepthStencilMapCache), 3u, 0u);
 }
 
 MtUI* sShadow::ViewConsistentResource::createUI(MtProperty& prop) {
@@ -692,6 +725,10 @@ const MtDTI& sShadow::Node::getDTI() const {
     return sShadow::Node::DTI;
 }
 
+inline void* sShadow::Node::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sShadow::Node::DTI)->memAlloc(sz, align, sShadow::Node::DTI.mID);
+}
+
 inline void sShadow::Node::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sShadow::Node::DTI)->memFree(p_addr);
 }
@@ -701,9 +738,10 @@ __attribute__((noinline)) sShadow::Node::~Node() {
     /* stub */
 }
 
-__attribute__((weak)) void sShadow::Node::createProperty(MtPropertyList& s) {
-    DDON_STUB("sShadow::Node::createProperty")
-    /* stub */
+void sShadow::Node::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpShadow", reinterpret_cast<MtObject* *>(&mpShadow), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpState", reinterpret_cast<MtObject* *>(&mpState[0]), 34u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpVCResource", reinterpret_cast<MtObject* *>(&mpVCResource), 3u, 0u);
 }
 
 MtUI* sShadow::Node::createUI(MtProperty& prop) {
@@ -719,9 +757,8 @@ inline sShadow::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 sShadow::Node::MyDTI sShadow::Node::DTI("sShadow::Node", &::MtObject::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sShadow::Node::MyDTI::newInstance() const {
-    DDON_STUB("sShadow::Node::MyDTI::newInstance")
-    return nullptr;
+MtObject* sShadow::Node::MyDTI::newInstance() const {
+    return new (16u) sShadow::Node;
 }
 
 __attribute__((weak)) void sShadow::Context::updateView(u32 viewNum) {

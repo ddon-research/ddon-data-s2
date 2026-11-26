@@ -798,6 +798,8 @@ inline rLayout::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 rLayout::MyDTI rLayout::DTI("rLayout", &::cResource::DTI, 528ul, 0u, 0u);
 
+const s32 rLayout::DATA_VERSION = 117;
+
 MT_CTSTR rLayout::typeKeyWord[5] = {
     "_s",
     "_p",
@@ -833,9 +835,14 @@ rLayout::SetInfo::~SetInfo() {
     mpInfo = nullptr;
 }
 
-__attribute__((weak)) void rLayout::SetInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rLayout::SetInfo::createProperty")
-    /* stub */
+void rLayout::SetInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mArea", reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::getArea), reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::setArea), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mGroup", reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::getGroup), reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::setGroup), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "mID", reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::getID), reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::setID), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mSplitX", reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::getSplitX), reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::setSplitX), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mSplitZ", reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::getSplitZ), reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::setSplitZ), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpInfo", reinterpret_cast<MtObject* *>(&mpInfo), 4u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "Name", reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::getName), reinterpret_cast<MT_MFUNC>(&::rLayout::SetInfo::setDummy), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) bool rLayout::SetInfo::load(MtDataReader& r, rLayout::SetInfoBuffer& buffer) {

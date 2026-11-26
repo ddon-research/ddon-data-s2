@@ -521,9 +521,13 @@ __attribute__((weak)) MtVector2 MtRect3D_XZ::getCenter() const {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector2 MtRect3D_XZ::getSize() const {
-    DDON_STUB("MtRect3D_XZ::getSize")
-    __builtin_unreachable();
+MtVector2 MtRect3D_XZ::getSize() const {
+    MtVector2 result;
+    const f32 t0 = rb.y;
+    const f32 t1 = lt.y;
+    result.x = rt.x - lt.x;
+    result.y = t0 - t1;
+    return result;
 }
 
 __attribute__((weak)) void MtTriangle::getBoundingSphere(MtSphere& sphere) const {

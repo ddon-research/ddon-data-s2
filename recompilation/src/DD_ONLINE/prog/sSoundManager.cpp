@@ -280,18 +280,18 @@ __attribute__((weak)) bool sSoundManager::isExistBattleStateEnemyId(u32 emID) {
 }
 
 u32 sSoundManager::getBattleStateAreaBossType() const {
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 256)) != 0) {
+    if (mEmSetStateBtl.mLength != 0) {
         u32 cnt = 0;
         do {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 272)) + static_cast<unsigned long>(cnt * 8u)) + 0)) != 0) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 272)) + static_cast<unsigned long>(cnt * 8u)) + 0)) + 40)) != 0) {
-                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 272)) + static_cast<unsigned long>(cnt * 8u)) + 0)) + 40)) + 9782)) != 0) {
-                        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 272)) + static_cast<unsigned long>(cnt * 8u)) + 0)) + 40)) + 9776);
+            if (mEmSetStateBtl.mpArray[cnt] != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mEmSetStateBtl.mpArray[cnt]) + 40)) != 0) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mEmSetStateBtl.mpArray[cnt]) + 40)) + 9782)) != 0) {
+                        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mEmSetStateBtl.mpArray[cnt]) + 40)) + 9776);
                     }
                 }
             }
             cnt += 1u;
-        } while (cnt < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 256)));
+        } while (cnt < mEmSetStateBtl.mLength);
     }
     return 0;
 }
@@ -938,6 +938,8 @@ void sSoundManager::move() {
     move_222();
 }
 
+alignas(4) unsigned char sSoundManager_mBattleBgmChangeAbility_bytes[60] __asm__("_ZN13sSoundManager23mBattleBgmChangeAbilityE") = {0x23, 0x01, 0x00, 0x00, 0x24, 0x01, 0x00, 0x00, 0x25, 0x01, 0x00, 0x00, 0x26, 0x01, 0x00, 0x00, 0x27, 0x01, 0x00, 0x00, 0xcd, 0x01, 0x00, 0x00, 0xce, 0x01, 0x00, 0x00, 0xcf, 0x01, 0x00, 0x00, 0xd0, 0x01, 0x00, 0x00, 0xd1, 0x01, 0x00, 0x00, 0xd2, 0x01, 0x00, 0x00, 0xd3, 0x01, 0x00, 0x00, 0xd4, 0x01, 0x00, 0x00, 0xd5, 0x01, 0x00, 0x00, 0xd6, 0x01, 0x00, 0x00};
+
 inline sSoundManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sSoundManager::MyDTI sSoundManager::DTI("sSoundManager", &::cSystem::DTI, 704ul, 0u, 0u);
@@ -964,9 +966,18 @@ sSoundManager::cEmSetState::~cEmSetState() {
     mprEm = nullptr;
 }
 
-__attribute__((weak)) void sSoundManager::cEmSetState::createProperty(MtPropertyList& s) {
-    DDON_STUB("sSoundManager::cEmSetState::createProperty")
-    /* stub */
+void sSoundManager::cEmSetState::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mbBGMTarget", &mbBGMTarget, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mbDead", &mbDead, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mbEscape", &mbEscape, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEmRank", &mEmRank, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpuChr", reinterpret_cast<MtObject* *>(&mpuChr), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEmReqNo", &mEmReqNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEmWinReqNo", &mEmWinReqNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mbWin", &mbWin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mbAdv", &mbAdv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mbUseAdv", &mbUseAdv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mprEm", "resource", static_cast<void*>(&mprEm), 0u, 0u);
 }
 
 __attribute__((weak)) bool sSoundManager::cEmSetState::sort(const sSoundManager::cEmSetState* _a, const sSoundManager::cEmSetState* _b, u32 param) {

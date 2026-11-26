@@ -174,9 +174,11 @@ inline rStageConnect::Data::Data() {
     mMapGroup = 0;
 }
 
-__attribute__((weak)) void rStageConnect::Data::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageConnect::Data::createProperty")
-    /* stub */
+void rStageConnect::Data::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPartsNo", &mPartsNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMapGroup", &mMapGroup, 0u, 0u);
 }
 
 inline rStageConnect::Data::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -199,9 +201,11 @@ inline void rStageConnect::Connect::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rStageConnect::Connect::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rStageConnect::Connect::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageConnect::Connect::createProperty")
-    /* stub */
+void rStageConnect::Connect::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStart", &mStart, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGoal", &mGoal, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndexNum", &mIndexNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex[0], 32u, 6u);
 }
 
 inline rStageConnect::Connect::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

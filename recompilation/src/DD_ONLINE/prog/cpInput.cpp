@@ -56,8 +56,6 @@ cpInput::cpInput() {
 }
 
 cpInput::~cpInput() {
-    DDON_STUB("cpInput::~cpInput")
-    /* stub */
 }
 
 void cpInput::setOwner(MtObject* pOwner) {

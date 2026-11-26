@@ -14,6 +14,21 @@
 #define DDON_STUB(name)
 #endif
 
+inline void* cZoneIndoorLight::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneIndoorLight::DTI)->memAlloc(sz, align, ::cZoneIndoorLight::DTI.getID());
+}
+inline cZoneIndoorLight::cZoneIndoorLight() {
+    mLightInfiniteRate = 1.0f;
+    mLightHemiRateDay = 0.5f;
+    mLightHemiRateDayRev = 0.5f;
+    mLightHemiRateNight = 2.0f;
+    mLightHemiRateNightRev = 2.0f;
+    mLightSubRateDay = 2.0f;
+    mLightSubRateNight = 2.0f;
+    mUseSkyFogParam = false;
+    mSkyColorFogUseFrame = 30.0f;
+}
+
 const MtDTI& cIndoorSkyFogParam::getDTI() const {
     return cIndoorSkyFogParam::DTI;
 }
@@ -35,9 +50,12 @@ cIndoorSkyFogParam::cIndoorSkyFogParam() {
     mId = 0;
 }
 
-__attribute__((weak)) void cIndoorSkyFogParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cIndoorSkyFogParam::createProperty")
-    /* stub */
+void cIndoorSkyFogParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mWeatherId", &mWeatherId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIntensity", &mIntensity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDensity", &mDensity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStart", &mStart, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnd", &mEnd, 0u, 0u);
 }
 
 __attribute__((weak)) void cIndoorSkyFogParam::setupFromCopy(const cIndoorSkyFogParam* pData) {
@@ -152,9 +170,19 @@ __attribute__((weak)) const cIndoorSkyFogParam* cZoneIndoorLight::getNightFogPar
     return nullptr;
 }
 
-__attribute__((weak)) void cZoneIndoorLight::createProperty(MtPropertyList& s) {
-    DDON_STUB("cZoneIndoorLight::createProperty")
-    /* stub */
+void cZoneIndoorLight::createProperty(MtPropertyList& s) {
+    this->nSoundTrigger::cCategory::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mLightInfiniteRate", &mLightInfiniteRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLightHemiRateDay", &mLightHemiRateDay, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLightHemiRateDayRev", &mLightHemiRateDayRev, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLightHemiRateNight", &mLightHemiRateNight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLightHemiRateNightRev", &mLightHemiRateNightRev, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLightSubRateDay", &mLightSubRateDay, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLightSubRateNight", &mLightSubRateNight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseSkyFogParam", &mUseSkyFogParam, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDayFogParamArray", static_cast<MtObject*>(&mDayFogParamArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNightFogParamArray", static_cast<MtObject*>(&mNightFogParamArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSkyColorFogUseFrame", &mSkyColorFogUseFrame, 0u, 0u);
 }
 
 inline cZoneIndoorLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -162,8 +190,47 @@ inline cZoneIndoorLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 cZoneIndoorLight::MyDTI cZoneIndoorLight::DTI("cZoneIndoorLight", &::nSoundTrigger::cCategory::DTI, 128ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cZoneIndoorLight::MyDTI::newInstance() const {
-    DDON_STUB("cZoneIndoorLight::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::cZoneIndoorLight;
+}
+
+const MtDTI& cZoneIndoorScrlEfcOff::getDTI() const {
+    return cZoneIndoorScrlEfcOff::DTI;
+}
+
+inline void* cZoneIndoorScrlEfcOff::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cZoneIndoorScrlEfcOff::DTI)->memAlloc(sz, align, cZoneIndoorScrlEfcOff::DTI.getID());
+}
+
+inline void cZoneIndoorScrlEfcOff::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cZoneIndoorScrlEfcOff::DTI)->memFree(p_addr);
+}
+
+inline cZoneIndoorScrlEfcOff::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cZoneIndoorScrlEfcOff::MyDTI cZoneIndoorScrlEfcOff::DTI("cZoneIndoorScrlEfcOff", &::nSoundTrigger::cCategory::DTI, 32ul, 0u, 0u);
+
+MtObject* cZoneIndoorScrlEfcOff::MyDTI::newInstance() const {
+    return new (16u) cZoneIndoorScrlEfcOff;
+}
+
+const MtDTI& cZoneIndoorWeatherEffectOff::getDTI() const {
+    return cZoneIndoorWeatherEffectOff::DTI;
+}
+
+inline void* cZoneIndoorWeatherEffectOff::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cZoneIndoorWeatherEffectOff::DTI)->memAlloc(sz, align, cZoneIndoorWeatherEffectOff::DTI.getID());
+}
+
+inline void cZoneIndoorWeatherEffectOff::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cZoneIndoorWeatherEffectOff::DTI)->memFree(p_addr);
+}
+
+inline cZoneIndoorWeatherEffectOff::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cZoneIndoorWeatherEffectOff::MyDTI cZoneIndoorWeatherEffectOff::DTI("cZoneIndoorWeatherEffectOff", &::nSoundTrigger::cCategory::DTI, 32ul, 0u, 0u);
+
+MtObject* cZoneIndoorWeatherEffectOff::MyDTI::newInstance() const {
+    return new (16u) cZoneIndoorWeatherEffectOff;
 }
 
 const MtDTI& cZoneIndoorWindCtrl::getDTI() const {

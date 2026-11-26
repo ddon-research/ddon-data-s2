@@ -2521,6 +2521,14 @@ inline void* cDDMaterialCtrl::cShaderDataDamage::operator new(size_t sz, void* p
     return p_addr;
 }
 
+inline cDDMaterialCtrl::cShaderDataDamage::cShaderDataDamage() {
+    this->mBlendAlphaBand = 0.0f;
+    this->mAlbedoBlendRate = 0.0f;
+    this->mAlphaClipThreshold = 0.0f;
+    this->mBlendAlphaThreshold = 0.0f;
+    this->mEmissionFactor = 1.0f;
+}
+
 inline f32 cDDMaterialCtrl::cShaderDataDamage::getAlphaClipThreshold() {
     return this->mAlphaClipThreshold;
 }
@@ -2656,6 +2664,10 @@ inline void* cDDMaterialCtrl::cShaderDataMaterial::operator new(size_t sz, void*
     return p_addr;
 }
 
+inline cDDMaterialCtrl::cShaderDataMaterial::cShaderDataMaterial() {
+    this->mIsEnd = false;
+}
+
 inline void* cDDMaterialCtrl::cShaderDataAnimation::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -2679,6 +2691,10 @@ inline void* cDDMaterialCtrl::cShaderDataMaterialOldData::operator new(size_t sz
     return p_addr;
 }
 
+inline cDDMaterialCtrl::cShaderDataMaterialOldData::cShaderDataMaterialOldData() {
+    this->mpBAlphaClipThreshold = nullptr;
+}
+
 inline void* cDDMaterialCtrl::cShaderDataDamageDrawOn::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -2687,16 +2703,31 @@ inline void* cDDMaterialCtrl::cShaderDataDead::operator new(size_t sz, void* p_a
     return p_addr;
 }
 
+inline cDDMaterialCtrl::cShaderDataDead::cShaderDataDead() {
+    this->mPassageFrame = 0.0f;
+    this->mIsEnd = false;
+}
+
 inline void* cDDMaterialCtrl::cShaderDataBloodStain::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cDDMaterialCtrl::cShaderDataBloodStain::cShaderDataBloodStain() {
+    this->mPhase = 0;
 }
 
 inline void* cDDMaterialCtrl::cShaderDataHakuryuStone::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cDDMaterialCtrl::cShaderDataHakuryuStone::cShaderDataHakuryuStone() {
+}
+
 inline void* cDDMaterialCtrl::cShaderDataFireDamage::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cDDMaterialCtrl::cShaderDataFireDamage::cShaderDataFireDamage() {
 }
 
 inline void* cDDMaterialCtrl::cShaderDataFire::operator new(size_t sz, void* p_addr) {
@@ -2735,8 +2766,24 @@ inline void* cDDMaterialCtrl::cShaderDataEmissionEye::operator new(size_t sz, vo
     return p_addr;
 }
 
+inline cDDMaterialCtrl::cShaderDataEmissionEye::cShaderDataEmissionEye() {
+}
+
 inline void* cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::cShaderDataMaterialToDefaultColor() {
+    this->mPastFrame = 0.0f;
+    this->mpAlbedoColor = nullptr;
+    this->mpEmissionColor = nullptr;
+    this->mpReflectiveColor = nullptr;
+    this->mpAlbedoBlendColor = nullptr;
+    this->mpSpecularColor = nullptr;
+    this->mpDiffuseColor = nullptr;
+    this->mEndFrame = 20.0f;
+    this->mForceEquip = false;
+    this->mIsCreateEnchantColor = false;
 }
 
 inline void* cDDMaterialCtrl::cShaderDataMaterialColor::operator new(size_t sz, void* p_addr) {
@@ -2773,6 +2820,12 @@ inline void* cDDMaterialCtrl::cShaderDataMaterialEnchantDark::operator new(size_
 
 inline void* cDDMaterialCtrl::cShaderDataWaterColor::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cDDMaterialCtrl::cShaderDataWaterColor::cShaderDataWaterColor() {
+    this->mpDefWaterColorTop = nullptr;
+    this->mpDefReflectiveColor = nullptr;
+    this->mpDefWaterColorBottom = nullptr;
 }
 
 inline void* cDDMaterialCtrl::cShaderDataConstantMaterialColor::operator new(size_t sz, void* p_addr) {
@@ -2859,6 +2912,26 @@ inline f32 cDDMaterialCtrl::cShaderDataSdlData::getShininess() {
     return this->mShininess;
 }
 
+inline MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getAlbedoColor() {
+    return this->mAlbedoColor;
+}
+
+inline MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getDiffuseColor() {
+    return this->mDiffuseColor;
+}
+
+inline MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getSpecularColor() {
+    return this->mSpecularColor;
+}
+
+inline MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getEmissionColor() {
+    return this->mEmissionColor;
+}
+
+inline MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getReflectiveColor() {
+    return this->mReflectiveColor;
+}
+
 inline f32 cDDMaterialCtrl::cShaderDataSdlData::getBAlphaClipThreshold() {
     return this->mBAlphaClipThreshold;
 }
@@ -2873,6 +2946,10 @@ inline f32 cDDMaterialCtrl::cShaderDataSdlData::getBBlendAlphaThreshold() {
 
 inline f32 cDDMaterialCtrl::cShaderDataSdlData::getBAlbedoBlendRate() {
     return this->mBAlbedoBlendRate;
+}
+
+inline MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getBBlendMapColor() {
+    return this->mBBlendMapColor;
 }
 
 inline f32 cDDMaterialCtrl::cShaderDataSdlData::getEmissionFactor() {

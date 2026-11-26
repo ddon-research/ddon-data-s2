@@ -4,6 +4,8 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
 #include "uConstraint.h"
@@ -24,12 +26,10 @@ rConstraint::rConstraint() {
     mPri = 1000;
 }
 
-rConstraint::~rConstraint() {
-}
-
-__attribute__((weak)) void rConstraint::createProperty(MtPropertyList& s) {
-    DDON_STUB("rConstraint::createProperty")
-    /* stub */
+void rConstraint::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mPri", &(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 116)), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 112)), 0u, 0u);
 }
 
 void rConstraint::copyUnitProperty(uConstraint* pSrcUnit) {

@@ -26,6 +26,7 @@ class cOmControl;
 class uGUIBase;
 class uGUIItemBase01;
 class uGUIPick01;
+class uGUIUseItemBase;
 
 // Declarations
 namespace nGUIItem { class cItem; }
@@ -80,6 +81,7 @@ using u64 = __uint64_t;
 namespace nGUIItem {
     class cItem : public ::cUIObject
     {
+        friend class ::uGUIItemBase01;
     public:
         class MyDTI;
     public:
@@ -204,6 +206,7 @@ namespace nGUIItem {
     {
         friend class ::uGUIItemBase01;
         friend class ::uGUIPick01;
+        friend class ::uGUIUseItemBase;
     public:
         class MyDTI;
     public:
@@ -351,14 +354,18 @@ inline rItemList::rItemParam* nGUIItem::cItem::getResourceParam() {
     return this->mprItemParam;
 }
 
+inline nItem::E_STORAGE_TYPE nGUIItem::cItem::getBagType() const {
+    return this->mBagType;
+}
+
 inline void* nGUIItem::cItemList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline MoveItemUIDFromToVec& nGUIItem::cItemList::getItemList() {
-    return this->mItemList;
+inline u32 nGUIItem::cItemList::getWaitFlag() {
+    return this->mWaitFlag;
 }
 
-inline nItem::E_STORAGE_TYPE nGUIItem::cItemList::getBagType() {
-    return this->mBagType;
+inline MoveItemUIDFromToVec& nGUIItem::cItemList::getItemList() {
+    return this->mItemList;
 }

@@ -118,9 +118,11 @@ void uGUIMouseOverCursor::move() {
     this->uGUIBase::move();
 }
 
-__attribute__((weak)) void uGUIMouseOverCursor::draw(cDraw* pDraw) {
-    DDON_STUB("uGUIMouseOverCursor::draw")
-    /* stub */
+void uGUIMouseOverCursor::draw(cDraw* pDraw) {
+    if (!static_cast<sGUIExt*>(sGUI::getInstance())->mMouse.isActiveMouse()) {
+        return;
+    }
+    this->uGUIBase::draw(pDraw);
 }
 
 __attribute__((weak)) void uGUIMouseOverCursor::reqMouseOverCursor(MtRect rect, u32 uType) {

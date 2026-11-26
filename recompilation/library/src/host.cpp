@@ -116,6 +116,12 @@ Block block_of(void* memory) {
 }
 }  // namespace
 
+// The library's loads keep no notes of their input (rArchive's host writer
+// runs in the test runner only): no bytes.
+const unsigned char* ddon_input_bytes(const MtStream*, std::size_t, std::size_t) { return nullptr; }
+
+void ddon_note_kept_entry(const char*, std::size_t) {}
+
 void* ddon_host_alloc(std::size_t size, std::size_t align) {
     if (align < alignof(Block)) {
         align = alignof(Block);
@@ -138,7 +144,16 @@ void ddon_host_free(void* memory) {
     }
 }
 
+void* ddon_own_alloc(std::size_t size, std::size_t align) { return ddon_host_alloc(size, align); }
+
 std::size_t ddon_host_size(void* memory) { return memory != nullptr ? block_of(memory).size : 0; }
+
+// The library keeps nothing a load overwrites: a derived save that needs it refuses.
+void ddon_keep_overwritten(const void*, unsigned) {}
+bool ddon_overwritten(const void*, unsigned*) { return false; }
+void ddon_keep_property(unsigned, unsigned, const char*, unsigned, bool) {}
+void ddon_keep_value(const MtStream*, unsigned, unsigned, unsigned, unsigned) {}
+bool ddon_put_back_skipped(MtStream&, const DdonPutBack&, unsigned) { return false; }
 
 namespace {
 // The game's live allocations, by start: what `sResource`'s
@@ -166,6 +181,10 @@ void ddon_game_free(void* memory) {
 
 bool ddon_game_allocated(const void* memory) {
     return game_allocations().count(reinterpret_cast<std::uintptr_t>(memory)) != 0;
+}
+
+std::size_t ddon_game_size(const void* memory) {
+    return ddon_game_allocated(memory) ? ddon_host_size(const_cast<void*>(memory)) : 0;
 }
 
 // The library has no field dump.
@@ -242,7 +261,7 @@ std::vector<std::unique_ptr<InnerFile>> g_inner_files;
 // `<archive dir>/<path>.<ext>` (the ELF's `sResource::loadBlocking`,
 // 0x126dfb0: `<root>\<path>.<ext>`), backslashes as slashes; null when the
 // entry has no archive directory or the file is not there.
-MtStream* ddon_inner_file(const char* path, const char* ext) {
+MtStream* ddon_inner_file(const char* path, const char* ext, bool*) {
     if (g_entry == nullptr || g_entry->archive_dir.empty() || path == nullptr || ext == nullptr ||
         *ext == 0) {
         return nullptr;
@@ -258,6 +277,10 @@ MtStream* ddon_inner_file(const char* path, const char* ext) {
     g_inner_files.push_back(std::move(file));
     return &g_inner_files.back()->stream;
 }
+
+// The library translates no file: an archive's entry is read as it is.
+bool ddon_entry_translated(const char*) { return false; }
+MtStream* ddon_entry_image(const void*, std::size_t, const char*) { return nullptr; }
 
 void ddon_inner_file_close(MtStream* stream) {
     auto at = std::find_if(

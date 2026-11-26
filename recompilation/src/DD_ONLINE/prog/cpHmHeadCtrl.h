@@ -105,7 +105,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cpHmHeadCtrl();
-    virtual ~cpHmHeadCtrl();
+    virtual ~cpHmHeadCtrl() {}
     virtual void setOwner(MtObject* pOwner);  // vtable slot 14
     virtual void setup();  // vtable slot 6
     virtual void updatePtr();  // vtable slot 9

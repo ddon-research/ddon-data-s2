@@ -405,9 +405,32 @@ __attribute__((weak)) void uGUICharacterEdit::setPartsVisibleAll(bool b, uGUICha
     /* stub */
 }
 
-__attribute__((weak)) void uGUICharacterEdit::deleteParts(uGUICharaEditPartsWrap::cPartsBase* pBase, bool first) {
-    DDON_STUB("uGUICharacterEdit::deleteParts")
-    /* stub */
+void uGUICharacterEdit::deleteParts(uGUICharaEditPartsWrap::cPartsBase* pBase, bool first) {
+    if (pBase == nullptr) {
+        return;
+    }
+    if (static_cast<int>(pBase->mChildArray.mLength) <= 0) {
+        pBase->deleteInstance(this);
+        if (first) {
+            if (mpPartsArray != nullptr) {
+                delete mpPartsArray;
+                mpPartsArray = nullptr;
+            }
+        }
+        return;
+    }
+    s32 i = 0;
+    do {
+        deleteParts(static_cast<uGUICharaEditPartsWrap::cPartsBase*>(pBase->mChildArray.getBuffer()[i]), false);
+        i += 1;
+    } while (i < static_cast<int>(pBase->mChildArray.mLength));
+    pBase->deleteInstance(this);
+    if (first) {
+        if (mpPartsArray != nullptr) {
+            delete mpPartsArray;
+            mpPartsArray = nullptr;
+        }
+    }
 }
 
 s32 uGUICharacterEdit::getPartsOffsetY(uGUICharaEditPartsWrap::cPartsBase* pBase) {
@@ -1215,9 +1238,9 @@ void uGUICharacterEdit::changePersonal(uGUICharaEditPartsWrap::cPartsBase* pBase
             if (ev == nCharacterEdit::PARTS_EVENT_TOP) {
                 if (pBase != nullptr) {
                     const MtDTI& t1 = pBase->getDTI();
-                    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uGUICharaEditPartsWrap::cPartsRadioButton::DTI) + 8);
+                    MT_CTSTR v0_1 = uGUICharaEditPartsWrap::cPartsRadioButton::DTI.mName;
                     for (const MtDTI* v0_0 = &t1;;) {
-                        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+                        if (v0_1 == v0_0->mName) {
                             if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pBase) + 440)) != 0) {
                                 unsigned int t2 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pBase) + 440)) + 3096);
                                 mpCharacterEdit->getEditParam()->mPersonality = static_cast<s32>(t2 + 1u);
@@ -1227,8 +1250,8 @@ void uGUICharacterEdit::changePersonal(uGUICharaEditPartsWrap::cPartsBase* pBase
                             mpCharacterEdit->requestVoice();
                             return;
                         } else {
-                            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+                            if (v0_0->mpParent != nullptr) {
+                                v0_0 = v0_0->mpParent;
                             } else {
                                 break;
                             }
@@ -1259,7 +1282,7 @@ __attribute__((weak)) void uGUICharacterEdit::evInputOpenStageList() {
 }
 
 void uGUICharacterEdit::evInputCloseStageList(bool isCancel) {
-    unsigned int v0_8 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2416);
+    u32 v0_8 = mListStageArray.mLength;
     if (v0_8 != 0) {
         cControl* v0_9 = mpBottunCtrl_StageSub;
         for (unsigned int i0_3 = 0;;) {
@@ -1306,7 +1329,7 @@ __attribute__((weak)) void uGUICharacterEdit::evInputOpenEquipList() {
 }
 
 void uGUICharacterEdit::evInputCloseEquipList(bool isCancel) {
-    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2448);
+    u32 t0 = mListEquipArray.mLength;
     if (t0 != 0) {
         cControl* v0_9 = mpBottunCtrl_EquipSub;
         for (unsigned int i0_3 = 0;;) {
@@ -1344,15 +1367,15 @@ void uGUICharacterEdit::evInputCloseEquipList(bool isCancel) {
                 sGUI* t15 = sGUI::getInstance();
                 static_cast<sGUIExt*>(t15)->requestSE(0u, 11u);
             } else {
-                unsigned int t16 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pCtrlV) + 3096);
-                unsigned int t17 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2448);
-                if (t16 < t17) {
+                s32 t16 = pCtrlV->mCurrentPos;
+                u32 t17 = mListEquipArray.mLength;
+                if (static_cast<unsigned int>(t16) < t17) {
                     MtObject* * t18 = mListEquipArray.getBuffer();
-                    MtObject* t19 = t18[static_cast<int>(t16)];
+                    MtObject* t19 = t18[t16];
                     if (t19 != nullptr) {
                         unsigned int t20 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t19) + 124);
                         t7->mNeedCoordinateTagID = t20;
-                        MtObject* t21 = t18[static_cast<int>(t16)];
+                        MtObject* t21 = t18[t16];
                         unsigned char t22 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t21) + 120);
                         t7->mIsNeedEquipHead = static_cast<bool>(t22);
                         unsigned char t23 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t19) + 122);
@@ -1523,7 +1546,7 @@ void uGUICharacterEdit::cVerticalListEx::reqPresetSE(cControl::Message* pMsg) {
     }
     if (static_cast<unsigned int>(pMsg->reason) <= 3) {
         if (mpUnit->mpCharacterEdit != nullptr) {
-            static_cast<sSoundExt*>(sSound::getInstance())->requestSe(reinterpret_cast<rSoundRequest*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpUnit->mpCharacterEdit) + 312)), 1u, reinterpret_cast<uintptr>(this), 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+            static_cast<sSoundExt*>(sSound::getInstance())->requestSe(mpUnit->mpCharacterEdit->mpSndReqEdit, 1u, reinterpret_cast<uintptr>(this), 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
         } else {
             static_cast<sSoundExt*>(sSound::getInstance())->requestSe(static_cast<rSoundRequest*>(nullptr), 1u, reinterpret_cast<uintptr>(this), 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
         }

@@ -9,6 +9,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtRandom.h"
 #include "cResource.h"
@@ -32,6 +33,18 @@ inline void uGrassWind::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGrassWind::DTI)->memFree(p_addr);
 }
 
+uGrassWind::uGrassWind(f32 Amplification, f32 Frequency, f32 Phase, u32 Priority) : uGrassEffect(Priority) {
+    mAmplification = Amplification;
+    mFrequency = Frequency;
+    mPhase = Phase;
+    mElapsedPhase = 0.0f;
+    mWindGroup = 1;
+    mpResource = nullptr;
+    mSpeed = 1.0f;
+    (sScene::mpInstance)->sScene::attach(static_cast<cUnit*>(this));
+    mType = 0;
+}
+
 uGrassWind::~uGrassWind() {
     (sScene::mpInstance)->sScene::detach(static_cast<cUnit*>(this));
     if (mpResource == nullptr) {
@@ -42,8 +55,12 @@ uGrassWind::~uGrassWind() {
 }
 
 __attribute__((weak)) void uGrassWind::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGrassWind::createProperty")
-    /* stub */
+    this->uGrassEffect::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mAmplification", &mAmplification, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFrequency", &mFrequency, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPhase", &mPhase, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mElapsedPhase", &mElapsedPhase, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindGroup", &mWindGroup, 2048u, 0u);
 }
 
 MtUI* uGrassWind::createUI(MtProperty& prop) {
@@ -60,9 +77,8 @@ __attribute__((weak)) MtVector4 uGrassWind::getInfo2() {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 uGrassWind::getDirection(const MtVector3& pos) {
-    DDON_STUB("uGrassWind::getDirection")
-    __builtin_unreachable();
+MtVector3 uGrassWind::getDirection(const MtVector3& pos) {
+    return MtVector3::Zero;
 }
 
 __attribute__((weak)) MtVector4 uGrassWind::getAngle(const MtVector3& pos, const f32& phase) {
@@ -70,9 +86,8 @@ __attribute__((weak)) MtVector4 uGrassWind::getAngle(const MtVector3& pos, const
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 uGrassWind::getForce(const MtVector3& pos) {
-    DDON_STUB("uGrassWind::getForce")
-    __builtin_unreachable();
+MtVector3 uGrassWind::getForce(const MtVector3& pos) {
+    return MtVector3::Zero;
 }
 
 sScene::Node* uGrassWind::getSceneNode() {
@@ -108,9 +123,22 @@ uGrassWind::cSwingParameters::cSwingParameters() {
 uGrassWind::cSwingParameters::~cSwingParameters() {
 }
 
-__attribute__((weak)) void uGrassWind::cSwingParameters::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGrassWind::cSwingParameters::createProperty")
-    /* stub */
+void uGrassWind::cSwingParameters::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mUseInterpolateSpeed", &mUseInterpolateSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInterpolateSpeed", &mInterpolateSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseLogistic", &mUseLogistic, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpdateInterval", &mUpdateInterval, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBias", &mBias, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mModelAmp", &mModelAmp, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mModelPhaseCoeff", &mModelPhaseCoeff, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBasePhaseSpeed", &mBasePhaseSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNoiseRate", &mNoiseRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPhaseSpeed", &mPhaseSpeed, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCurrentPhaseSpeed", &mCurrentPhaseSpeed, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBasePhaseSpeed2", &mBasePhaseSpeed2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNoiseRate2", &mNoiseRate2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPhaseSpeed2", &mPhaseSpeed2, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCurrentPhaseSpeed2", &mCurrentPhaseSpeed2, 1u, 0u);
 }
 
 MtUI* uGrassWind::cSwingParameters::createUI(MtProperty& prop) {
@@ -154,9 +182,10 @@ uGrassWindDirection::~uGrassWindDirection() {
     /* stub */
 }
 
-__attribute__((weak)) void uGrassWindDirection::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGrassWindDirection::createProperty")
-    /* stub */
+void uGrassWindDirection::createProperty(MtPropertyList& s) {
+    this->uGrassWind::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mDirection", &mDirection, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParam", static_cast<MtObject*>(&mParam), 0u, 0u);
 }
 
 MtUI* uGrassWindDirection::createUI(MtProperty& prop) {
@@ -191,19 +220,26 @@ void uGrassWindDirection::getAABB(MtAABB& aabb) {
     aabb.maxpos.z = 10000.0f;
 }
 
-__attribute__((weak)) MtVector4 uGrassWindDirection::getInfo() {
-    DDON_STUB("uGrassWindDirection::getInfo")
-    __builtin_unreachable();
+MtVector4 uGrassWindDirection::getInfo() {
+    MtVector4 result;
+    result.x = mDirection.x;
+    result.y = mDirection.y;
+    result.z = mDirection.z;
+    result.w = 0.0f;
+    return result;
 }
 
-__attribute__((weak)) MtVector3 uGrassWindDirection::getDirection(const MtVector3& pos) {
-    DDON_STUB("uGrassWindDirection::getDirection")
-    __builtin_unreachable();
+MtVector3 uGrassWindDirection::getDirection(const MtVector3& pos) {
+    MtVector3 result;
+    result.x = mDirection.x;
+    result.y = mDirection.y;
+    result.z = mDirection.z;
+    result.pad_ = 0.0f;
+    return result;
 }
 
-__attribute__((weak)) MtVector4 uGrassWindDirection::getAngle(const MtVector3& pos, const f32& phase) {
-    DDON_STUB("uGrassWindDirection::getAngle")
-    __builtin_unreachable();
+MtVector4 uGrassWindDirection::getAngle(const MtVector3& pos, const f32& phase) {
+    return mParam.uGrassWind::cSwingParameters::getRotationAngle(pos, phase);
 }
 
 __attribute__((weak)) MtVector3 uGrassWindDirection::getForce(const MtVector3& pos) {

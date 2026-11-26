@@ -162,6 +162,7 @@ namespace nCaplink { class cUserBaseInfo; }
 namespace nCaplink { class cWebsocketServerInfo; }
 class sGUIExt;
 class uGUICaplinkProfile;
+class uGUICaplinkTag;
 class uGUICaplinkTalk;
 
 // Declarations
@@ -189,6 +190,7 @@ class sCaplinkManager : public cSystem
 {
     friend class sGUIExt;
     friend class uGUICaplinkProfile;
+    friend class uGUICaplinkTag;
     friend class uGUICaplinkTalk;
 public:
     enum
@@ -1279,6 +1281,10 @@ inline void sCaplinkManager::updateNotify() {
     } else {
         this->mRnoMain = 16;
     }
+}
+
+inline bool sCaplinkManager::isCompleteRequest() {
+    return this->mIsConnection;
 }
 
 inline void sCaplinkManager::setConfirmInformation() {

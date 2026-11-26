@@ -98,9 +98,50 @@ __attribute__((weak)) void uFullbodyIKHuman2::kill() {
 __attribute__((weak)) void uFullbodyIKHuman2::draw(cDraw* pDraw) {
 }
 
-__attribute__((weak)) void uFullbodyIKHuman2::createProperty(MtPropertyList& s) {
-    DDON_STUB("uFullbodyIKHuman2::createProperty")
-    /* stub */
+void uFullbodyIKHuman2::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpTargetModel", reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::getTargetModel), reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::setTargetModel), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::getResource), reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mPri", &mPri, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIteration", &mIteration, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpperBodyRotRate", &mUpperBodyRotRate, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpperBodyTransRate", &mUpperBodyTransRate, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpperBodySyncRate", &mUpperBodySyncRate, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLowerBodyRotRate", &mLowerBodyRotRate, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLowerBodyTransRate", &mLowerBodyTransRate, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLowerBodySyncRate", &mLowerBodySyncRate, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeadLookAtRate", &mHeadLookAtRate, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpperBodyLookAtRate", &mUpperBodyLookAtRate, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLowerBodyLookAtRate", &mLowerBodyLookAtRate, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWaistHeightLimit", &mWaistHeightLimit, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpineHandleLength", &mSpineHandleLength, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRCollarRotBlend", &mRCollarRotBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLCollarRotBlend", &mLCollarRotBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRCollarUpBlend", &mRCollarUpBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRCollarDownBlend", &mRCollarDownBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRCollarFrontBlend", &mRCollarFrontBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRCollarBackBlend", &mRCollarBackBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLCollarUpBlend", &mLCollarUpBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLCollarDownBlend", &mLCollarDownBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLCollarFrontBlend", &mLCollarFrontBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLCollarBackBlend", &mLCollarBackBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseSpineRot", &mUseSpineRot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpineUpperRotRate", &mSpineUpperRotRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpine0RotRate", &mSpine0RotRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpine1RotRate", &mSpine1RotRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpine2RotRate", &mSpine2RotRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpine3RotRate", &mSpine3RotRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpine4RotRate", &mSpine4RotRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLookAtWorldCoordRot", &mLookAtWorldCoordRot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpdateTargetModel", &mUpdateTargetModel, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "EffectorJoint", reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::getEffectorJoint), reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::setEffectorJoint), 160u, reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::getEffectorJointNum), reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::setEffectorJointNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "JointAssign", reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::getAssignedJoint), reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::setAssignedJoint), 161u, reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::getAssignedJointNum), reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::setAssignedJointNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mRArm", static_cast<MtObject*>(&mRArm), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLArm", static_cast<MtObject*>(&mLArm), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRLeg", static_cast<MtObject*>(&mRLeg), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLLeg", static_cast<MtObject*>(&mLLeg), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLookAt", static_cast<MtObject*>(&mLookAt), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mState", &mState, 1u, 0u);
+    this->uModel::createProperty(s);
 }
 
 MtUI* uFullbodyIKHuman2::createUI(MtProperty& prop) {
@@ -220,8 +261,93 @@ void uFullbodyIKHuman2::updateTargetModel(bool Update) {
 }
 
 __attribute__((weak)) uFullbodyIKHuman2::FBIK_JOINT uFullbodyIKHuman2::getFBIKJointNoFromIndex(uFullbodyIKHuman2::FBIK_JOINT_IDX FBIKJntIdx) {
-    DDON_STUB("uFullbodyIKHuman2::getFBIKJointNoFromIndex")
-    return {};
+    FBIK_JOINT JntNo = JT_NULL;
+    switch (FBIKJntIdx) {
+    case IDX_CENTER:
+        JntNo = JT_CENTER;
+        break;
+    case IDX_RIGHT_SHOULDER:
+        JntNo = JT_RIGHT_SHOULDER;
+        break;
+    case IDX_RIGHT_ELBOW:
+        JntNo = JT_RIGHT_ELBOW;
+        break;
+    case IDX_RIGHT_HAND:
+        JntNo = JT_RIGHT_HAND;
+        break;
+    case IDX_LEFT_SHOULDER:
+        JntNo = JT_LEFT_SHOULDER;
+        break;
+    case IDX_LEFT_ELBOW:
+        JntNo = JT_LEFT_ELBOW;
+        break;
+    case IDX_LEFT_HAND:
+        JntNo = JT_LEFT_HAND;
+        break;
+    case IDX_RIGHT_THIGH:
+        JntNo = JT_RIGHT_THIGH;
+        break;
+    case IDX_RIGHT_KNEE:
+        JntNo = JT_RIGHT_KNEE;
+        break;
+    case IDX_RIGHT_FOOT:
+        JntNo = JT_RIGHT_FOOT;
+        break;
+    case IDX_LEFT_THIGH:
+        JntNo = JT_LEFT_THIGH;
+        break;
+    case IDX_LEFT_KNEE:
+        JntNo = JT_LEFT_KNEE;
+        break;
+    case IDX_LEFT_FOOT:
+        JntNo = JT_LEFT_FOOT;
+        break;
+    case IDX_HEAD:
+        JntNo = JT_HEAD;
+        break;
+    case IDX_NECK:
+        JntNo = JT_NECK;
+        break;
+    case IDX_RIGHT_COLLAR:
+        JntNo = JT_RIGHT_COLLAR;
+        break;
+    case IDX_LEFT_COLLAR:
+        JntNo = JT_LEFT_COLLAR;
+        break;
+    case IDX_SPINE0:
+        JntNo = JT_SPINE0;
+        break;
+    case IDX_SPINE1:
+        JntNo = JT_SPINE1;
+        break;
+    case IDX_SPINE2:
+        JntNo = JT_SPINE2;
+        break;
+    case IDX_SPINE3:
+        JntNo = JT_SPINE3;
+        break;
+    case IDX_SPINE4:
+        JntNo = JT_SPINE4;
+        break;
+    case IDX_UPPER_BODY:
+        JntNo = JT_UPPER_BODY;
+        break;
+    case IDX_LOWER_BODY:
+        JntNo = JT_LOWER_BODY;
+        break;
+    case IDX_CHEST:
+        JntNo = JT_CHEST;
+        break;
+    case IDX_LOOK_AT:
+        JntNo = JT_LOOK_AT;
+        break;
+    case IDX_NULL:
+        JntNo = JT_NULL;
+        break;
+    default:
+        break;
+    }
+    return JntNo;
 }
 
 __attribute__((weak)) uFullbodyIKHuman2::Node* uFullbodyIKHuman2::getNode(uFullbodyIKHuman2::FBIK_JOINT JointNo) {
@@ -348,9 +474,21 @@ inline void uFullbodyIKHuman2::Node::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uFullbodyIKHuman2::Node::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void uFullbodyIKHuman2::Node::createProperty(MtPropertyList& s) {
-    DDON_STUB("uFullbodyIKHuman2::Node::createProperty")
-    /* stub */
+void uFullbodyIKHuman2::Node::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mActive", &mActive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlend", &mBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEff", &mEff, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWMat", &mWMat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOrgMat", &mOrgMat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJntNo", &mJntNo, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFBIKJntNo", &mFBIKJntNo, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAssigned", &mAssigned, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRotate", &mRotate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffOffset", &mEffOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpEffTgtModel", reinterpret_cast<MtObject* *>(&mpEffTgtModel), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffTgtJntNo", &mEffTgtJntNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffTgtAlign", &mEffTgtAlign, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResist", &mResist, 0u, 0u);
 }
 
 MtUI* uFullbodyIKHuman2::Node::createUI(MtProperty& prop) {
@@ -375,8 +513,6 @@ inline void uFullbodyIKHuman2::uCnsUpVectorCalc::operator delete(void* p_addr) {
 }
 
 uFullbodyIKHuman2::uCnsUpVectorCalc::~uCnsUpVectorCalc() {
-    DDON_STUB("uFullbodyIKHuman2::uCnsUpVectorCalc::~uCnsUpVectorCalc")
-    /* stub */
 }
 
 __attribute__((weak)) void uFullbodyIKHuman2::uCnsUpVectorCalc::draw(cDraw* pDraw) {
@@ -389,9 +525,10 @@ cResource* uFullbodyIKHuman2::uCnsUpVectorCalc::getResource() {
     return nullptr;
 }
 
-__attribute__((weak)) void uFullbodyIKHuman2::uCnsUpVectorCalc::createProperty(MtPropertyList& s) {
-    DDON_STUB("uFullbodyIKHuman2::uCnsUpVectorCalc::createProperty")
-    /* stub */
+void uFullbodyIKHuman2::uCnsUpVectorCalc::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "Joint", reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::uCnsUpVectorCalc::getJoint), reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::uCnsUpVectorCalc::setJointForProperty), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mJoint", &mJoint, 1u, 0u);
 }
 
 MtUI* uFullbodyIKHuman2::uCnsUpVectorCalc::createUI(MtProperty& prop) {
@@ -439,8 +576,7 @@ inline void uFullbodyIKHuman2::uCnsFBIKMatrix::operator delete(void* p_addr) {
 }
 
 uFullbodyIKHuman2::uCnsFBIKMatrix::~uCnsFBIKMatrix() {
-    DDON_STUB("uFullbodyIKHuman2::uCnsFBIKMatrix::~uCnsFBIKMatrix")
-    /* stub */
+    removeConstraint();
 }
 
 __attribute__((weak)) void uFullbodyIKHuman2::uCnsFBIKMatrix::draw(cDraw* pDraw) {
@@ -453,9 +589,12 @@ cResource* uFullbodyIKHuman2::uCnsFBIKMatrix::getResource() {
     return nullptr;
 }
 
-__attribute__((weak)) void uFullbodyIKHuman2::uCnsFBIKMatrix::createProperty(MtPropertyList& s) {
-    DDON_STUB("uFullbodyIKHuman2::uCnsFBIKMatrix::createProperty")
-    /* stub */
+void uFullbodyIKHuman2::uCnsFBIKMatrix::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "Joint", reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::uCnsFBIKMatrix::getJoint), reinterpret_cast<MT_MFUNC>(&::uFullbodyIKHuman2::uCnsFBIKMatrix::setJointForProperty), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mMat", &mMat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJoint", &mJoint, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFBIKJntNo", &mFBIKJntNo, 1u, 0u);
 }
 
 MtUI* uFullbodyIKHuman2::uCnsFBIKMatrix::createUI(MtProperty& prop) {

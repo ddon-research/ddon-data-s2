@@ -53,10 +53,12 @@ class rGUIMessage;
 class uGUI;
 class uGUIAnnounce;
 class uGUIBase;
+class uGUIBrowserBG;
 class uGUIInputText;
 class uGUIKeyConfig;
 class uGUIMyRoomPopup;
 class uGUIQuestActive;
+class uGUIQuestList;
 class uGUISkill;
 
 // Declarations
@@ -90,6 +92,7 @@ class cGUIObject : public MtObject
     friend class cGUIObjMessage;
     friend class cGUIObjRoot;
     friend class cGUIObjTexture;
+    friend class uGUIBrowserBG;
 public:
     class MyDTI;
 public:
@@ -383,6 +386,7 @@ class cGUIObjMessage : public cGUIObj2D
     friend class uGUIKeyConfig;
     friend class uGUIMyRoomPopup;
     friend class uGUIQuestActive;
+    friend class uGUIQuestList;
     friend class uGUISkill;
 public:
     class MyDTI;

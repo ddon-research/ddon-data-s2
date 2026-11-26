@@ -153,9 +153,6 @@ inline void uAnimal::ActBase::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uAnimal::ActBase::DTI)->memFree(p_addr);
 }
 
-uAnimal::ActBase::~ActBase() {
-}
-
 void uAnimal::ActBase::init() {
     this->cAction::init();
     mpAnimal = static_cast<uAnimal*>(mpModel);
@@ -179,13 +176,12 @@ const MtDTI& uAnimal::ActFootwork::getDTI() const {
     return uAnimal::ActFootwork::DTI;
 }
 
-inline void uAnimal::ActFootwork::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActFootwork::DTI)->memFree(p_addr);
+inline void* uAnimal::ActFootwork::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uAnimal::ActFootwork::DTI)->memAlloc(sz, align, uAnimal::ActFootwork::DTI.getID());
 }
 
-uAnimal::ActFootwork::~ActFootwork() {
-    DDON_STUB("uAnimal::ActFootwork::~ActFootwork")
-    /* stub */
+inline void uAnimal::ActFootwork::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uAnimal::ActFootwork::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uAnimal::ActFootwork::init() {
@@ -198,22 +194,28 @@ __attribute__((weak)) void uAnimal::ActFootwork::move() {
     /* stub */
 }
 
-__attribute__((weak)) MtObject* uAnimal::ActFootwork::MyDTI::newInstance() const {
-    DDON_STUB("uAnimal::ActFootwork::MyDTI::newInstance")
-    return nullptr;
+MtObject* uAnimal::ActFootwork::MyDTI::newInstance() const {
+    return new (16u) uAnimal::ActFootwork;
 }
 
 const MtDTI& uAnimal::ActWalk::getDTI() const {
     return uAnimal::ActWalk::DTI;
 }
 
+inline void* uAnimal::ActWalk::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uAnimal::ActWalk::DTI)->memAlloc(sz, align, uAnimal::ActWalk::DTI.getID());
+}
+
 inline void uAnimal::ActWalk::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uAnimal::ActWalk::DTI)->memFree(p_addr);
 }
 
-uAnimal::ActWalk::~ActWalk() {
-    DDON_STUB("uAnimal::ActWalk::~ActWalk")
-    /* stub */
+inline uAnimal::ActWalk::ActWalk() {
+    mTimer = 0.0f;
+    mOldPos.x = MtVector3::Zero.x;
+    mOldPos.y = MtVector3::Zero.y;
+    mOldPos.z = MtVector3::Zero.z;
+    mOldPos.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void uAnimal::ActWalk::init() {
@@ -226,22 +228,29 @@ __attribute__((weak)) void uAnimal::ActWalk::move() {
     /* stub */
 }
 
-__attribute__((weak)) MtObject* uAnimal::ActWalk::MyDTI::newInstance() const {
-    DDON_STUB("uAnimal::ActWalk::MyDTI::newInstance")
-    return nullptr;
+MtObject* uAnimal::ActWalk::MyDTI::newInstance() const {
+    return new (16u) uAnimal::ActWalk;
 }
 
 const MtDTI& uAnimal::ActRun::getDTI() const {
     return uAnimal::ActRun::DTI;
 }
 
+inline void* uAnimal::ActRun::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uAnimal::ActRun::DTI)->memAlloc(sz, align, uAnimal::ActRun::DTI.getID());
+}
+
 inline void uAnimal::ActRun::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uAnimal::ActRun::DTI)->memFree(p_addr);
 }
 
-uAnimal::ActRun::~ActRun() {
-    DDON_STUB("uAnimal::ActRun::~ActRun")
-    /* stub */
+inline uAnimal::ActRun::ActRun() {
+    mMotionStart = 0;
+    mTimer = 0.0f;
+    mOldPos.x = MtVector3::Zero.x;
+    mOldPos.y = MtVector3::Zero.y;
+    mOldPos.z = MtVector3::Zero.z;
+    mOldPos.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void uAnimal::ActRun::init() {
@@ -254,50 +263,104 @@ __attribute__((weak)) void uAnimal::ActRun::move() {
     /* stub */
 }
 
-__attribute__((weak)) MtObject* uAnimal::ActRun::MyDTI::newInstance() const {
-    DDON_STUB("uAnimal::ActRun::MyDTI::newInstance")
-    return nullptr;
+MtObject* uAnimal::ActRun::MyDTI::newInstance() const {
+    return new (16u) uAnimal::ActRun;
 }
 
 const MtDTI& uAnimal::ActTurn::getDTI() const {
     return uAnimal::ActTurn::DTI;
 }
 
+inline void* uAnimal::ActTurn::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uAnimal::ActTurn::DTI)->memAlloc(sz, align, uAnimal::ActTurn::DTI.getID());
+}
+
 inline void uAnimal::ActTurn::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uAnimal::ActTurn::DTI)->memFree(p_addr);
 }
 
-uAnimal::ActTurn::~ActTurn() {
-    DDON_STUB("uAnimal::ActTurn::~ActTurn")
-    /* stub */
+void uAnimal::ActTurn::init() {
+    this->cAction::init();
+    mpAnimal = static_cast<uAnimal*>(mpModel);
+    u32 t0 = MtRandom::instance.nrand();
+    mType = t0 & 1u;
+    if ((t0 & 1u) != 0) {
+        if (mpAnimal != nullptr) {
+            if (mpAnimal->isExistMotionNo(16u)) {
+                mpAnimal->setDDOMotion(MOT_BASE, 16u, true, 0u, 15.0f, 0.0f, 1.0f);
+            } else {
+                mpAnimal->setDDOMotion(MOT_BASE, 0u, true, 0u, -1.0f, 0.0f, 1.0f);
+            }
+            if (mpAnimal->mModelType == 9) {
+                if (mType != 0) {
+                    mTurnAngleY = 1.5707965f / (mpAnimal->mMotion[0].getFrameMax() * 0.5f);
+                } else {
+                    mTurnAngleY = -1.5707965f / (mpAnimal->mMotion[0].getFrameMax() * 0.5f);
+                }
+            }
+        } else {
+            if (mpAnimal->mModelType == 9) {
+                mTurnAngleY = 1.5707965f / (mpAnimal->mMotion[0].getFrameMax() * 0.5f);
+            }
+        }
+    } else {
+        if (mpAnimal != nullptr) {
+            if (mpAnimal->isExistMotionNo(15u)) {
+                mpAnimal->setDDOMotion(MOT_BASE, 15u, true, 0u, 15.0f, 0.0f, 1.0f);
+            } else {
+                mpAnimal->setDDOMotion(MOT_BASE, 0u, true, 0u, -1.0f, 0.0f, 1.0f);
+            }
+            if (mpAnimal->mModelType == 9) {
+                if (mType != 0) {
+                    mTurnAngleY = 1.5707965f / (mpAnimal->mMotion[0].getFrameMax() * 0.5f);
+                } else {
+                    mTurnAngleY = -1.5707965f / (mpAnimal->mMotion[0].getFrameMax() * 0.5f);
+                }
+            }
+        } else {
+            if (mpAnimal->mModelType == 9) {
+                mTurnAngleY = -1.5707965f / (mpAnimal->mMotion[0].getFrameMax() * 0.5f);
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void uAnimal::ActTurn::init() {
-    DDON_STUB("uAnimal::ActTurn::init")
-    /* stub */
+void uAnimal::ActTurn::move() {
+    if (mpAnimal->mModelType == 9) {
+        MtVector3 frame56(mpAnimal->getAngle());
+        mpAnimal->setAngle(frame56.y + (mTurnAngleY * sMain::getInstance()->mDeltaTime));
+        if (isActionMotionEnd(MOT_BASE)) {
+            if (mpAnimal != nullptr) {
+                if (mpAnimal->getActMgrPtr() != nullptr) {
+                    mpAnimal->getActMgrPtr()->setAction(1u, false, 0u, 0u, 0u, 0u, 0.0f, 0.0f, 0.0f, 0.0f);
+                }
+            }
+        }
+    } else {
+        if (isActionMotionEnd(MOT_BASE)) {
+            if (mpAnimal != nullptr) {
+                if (mpAnimal->getActMgrPtr() != nullptr) {
+                    mpAnimal->getActMgrPtr()->setAction(1u, false, 0u, 0u, 0u, 0u, 0.0f, 0.0f, 0.0f, 0.0f);
+                }
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void uAnimal::ActTurn::move() {
-    DDON_STUB("uAnimal::ActTurn::move")
-    /* stub */
-}
-
-__attribute__((weak)) MtObject* uAnimal::ActTurn::MyDTI::newInstance() const {
-    DDON_STUB("uAnimal::ActTurn::MyDTI::newInstance")
-    return nullptr;
+MtObject* uAnimal::ActTurn::MyDTI::newInstance() const {
+    return new (16u) uAnimal::ActTurn;
 }
 
 const MtDTI& uAnimal::ActCollapse::getDTI() const {
     return uAnimal::ActCollapse::DTI;
 }
 
-inline void uAnimal::ActCollapse::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActCollapse::DTI)->memFree(p_addr);
+inline void* uAnimal::ActCollapse::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uAnimal::ActCollapse::DTI)->memAlloc(sz, align, uAnimal::ActCollapse::DTI.getID());
 }
 
-uAnimal::ActCollapse::~ActCollapse() {
-    DDON_STUB("uAnimal::ActCollapse::~ActCollapse")
-    /* stub */
+inline void uAnimal::ActCollapse::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uAnimal::ActCollapse::DTI)->memFree(p_addr);
 }
 
 void uAnimal::ActCollapse::init() {
@@ -318,22 +381,29 @@ __attribute__((weak)) void uAnimal::ActCollapse::move() {
     /* stub */
 }
 
-__attribute__((weak)) MtObject* uAnimal::ActCollapse::MyDTI::newInstance() const {
-    DDON_STUB("uAnimal::ActCollapse::MyDTI::newInstance")
-    return nullptr;
+MtObject* uAnimal::ActCollapse::MyDTI::newInstance() const {
+    return new (16u) uAnimal::ActCollapse;
 }
 
 const MtDTI& uAnimal::ActEscape::getDTI() const {
     return uAnimal::ActEscape::DTI;
 }
 
+inline void* uAnimal::ActEscape::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uAnimal::ActEscape::DTI)->memAlloc(sz, align, uAnimal::ActEscape::DTI.getID());
+}
+
 inline void uAnimal::ActEscape::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uAnimal::ActEscape::DTI)->memFree(p_addr);
 }
 
-uAnimal::ActEscape::~ActEscape() {
-    DDON_STUB("uAnimal::ActEscape::~ActEscape")
-    /* stub */
+inline uAnimal::ActEscape::ActEscape() {
+    mRotSpeed = 0.0f;
+    mTimer = 0.0f;
+    mOldPos.x = MtVector3::Zero.x;
+    mOldPos.y = MtVector3::Zero.y;
+    mOldPos.z = MtVector3::Zero.z;
+    mOldPos.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void uAnimal::ActEscape::init() {
@@ -346,22 +416,20 @@ __attribute__((weak)) void uAnimal::ActEscape::move() {
     /* stub */
 }
 
-__attribute__((weak)) MtObject* uAnimal::ActEscape::MyDTI::newInstance() const {
-    DDON_STUB("uAnimal::ActEscape::MyDTI::newInstance")
-    return nullptr;
+MtObject* uAnimal::ActEscape::MyDTI::newInstance() const {
+    return new (16u) uAnimal::ActEscape;
 }
 
 const MtDTI& uAnimal::ActApproach::getDTI() const {
     return uAnimal::ActApproach::DTI;
 }
 
-inline void uAnimal::ActApproach::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActApproach::DTI)->memFree(p_addr);
+inline void* uAnimal::ActApproach::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uAnimal::ActApproach::DTI)->memAlloc(sz, align, uAnimal::ActApproach::DTI.getID());
 }
 
-uAnimal::ActApproach::~ActApproach() {
-    DDON_STUB("uAnimal::ActApproach::~ActApproach")
-    /* stub */
+inline void uAnimal::ActApproach::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uAnimal::ActApproach::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uAnimal::ActApproach::init() {
@@ -374,22 +442,20 @@ __attribute__((weak)) void uAnimal::ActApproach::move() {
     /* stub */
 }
 
-__attribute__((weak)) MtObject* uAnimal::ActApproach::MyDTI::newInstance() const {
-    DDON_STUB("uAnimal::ActApproach::MyDTI::newInstance")
-    return nullptr;
+MtObject* uAnimal::ActApproach::MyDTI::newInstance() const {
+    return new (16u) uAnimal::ActApproach;
 }
 
 const MtDTI& uAnimal::ActFlap::getDTI() const {
     return uAnimal::ActFlap::DTI;
 }
 
-inline void uAnimal::ActFlap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActFlap::DTI)->memFree(p_addr);
+inline void* uAnimal::ActFlap::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uAnimal::ActFlap::DTI)->memAlloc(sz, align, uAnimal::ActFlap::DTI.getID());
 }
 
-uAnimal::ActFlap::~ActFlap() {
-    DDON_STUB("uAnimal::ActFlap::~ActFlap")
-    /* stub */
+inline void uAnimal::ActFlap::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uAnimal::ActFlap::DTI)->memFree(p_addr);
 }
 
 void uAnimal::ActFlap::init() {
@@ -410,13 +476,16 @@ __attribute__((weak)) void uAnimal::ActFlap::move() {
     /* stub */
 }
 
-__attribute__((weak)) MtObject* uAnimal::ActFlap::MyDTI::newInstance() const {
-    DDON_STUB("uAnimal::ActFlap::MyDTI::newInstance")
-    return nullptr;
+MtObject* uAnimal::ActFlap::MyDTI::newInstance() const {
+    return new (16u) uAnimal::ActFlap;
 }
 
 const MtDTI& uAnimal::ActSleep::getDTI() const {
     return uAnimal::ActSleep::DTI;
+}
+
+inline void* uAnimal::ActSleep::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uAnimal::ActSleep::DTI)->memAlloc(sz, align, uAnimal::ActSleep::DTI.getID());
 }
 
 inline void uAnimal::ActSleep::operator delete(void* p_addr) {
@@ -449,8 +518,7 @@ __attribute__((weak)) void uAnimal::ActSleep::move() {
     /* stub */
 }
 
-__attribute__((weak)) MtObject* uAnimal::ActSleep::MyDTI::newInstance() const {
-    DDON_STUB("uAnimal::ActSleep::MyDTI::newInstance")
-    return nullptr;
+MtObject* uAnimal::ActSleep::MyDTI::newInstance() const {
+    return new (16u) uAnimal::ActSleep;
 }
 

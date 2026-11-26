@@ -42,6 +42,7 @@ class rEffectProvider;
 class rOutlineParamList;
 class rTexture;
 class rZone;
+class sWeatherManager;
 class uDDOModel;
 class uEfCam;
 class uEffect;
@@ -140,7 +141,9 @@ public:
 
 class sEffectExt : public sEffect
 {
+    friend class sWeatherManager;
     friend class uEffect2DExt;
+    friend class uEffectExt;
 public:
     enum OUTLINE
     {
@@ -1044,12 +1047,66 @@ inline void* sEffectExt::cEfcCameraQuakeDataLarge::operator new(size_t sz, void*
     return p_addr;
 }
 
+inline sEffectExt::cEfcCameraQuakeDataLarge::cEfcCameraQuakeDataLarge() {
+    this->::sEffectExt::cEfcCameraQuakeData::mTaskNo = 8;
+    this->::sEffectExt::cEfcCameraQuakeData::mHeadTime = 2.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMainTime = 5.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mTailTime = 15.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.x = 5.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.y = 50.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.z = 5.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.pad_ = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mRadius = 4500.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mbAsync = false;
+    this->::sEffectExt::cEfcCameraQuakeData::mBalance = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mPeriod = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mRoll = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mSpread = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mDamping = 0.0f;
+}
+
 inline void* sEffectExt::cEfcCameraQuakeDataMiddle::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline sEffectExt::cEfcCameraQuakeDataMiddle::cEfcCameraQuakeDataMiddle() {
+    this->::sEffectExt::cEfcCameraQuakeData::mTaskNo = 8;
+    this->::sEffectExt::cEfcCameraQuakeData::mHeadTime = 2.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMainTime = 3.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mTailTime = 12.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.x = 2.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.y = 20.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.z = 2.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.pad_ = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mRadius = 2500.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mbAsync = false;
+    this->::sEffectExt::cEfcCameraQuakeData::mBalance = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mPeriod = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mRoll = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mSpread = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mDamping = 0.0f;
+}
+
 inline void* sEffectExt::cEfcCameraQuakeDataSmall::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline sEffectExt::cEfcCameraQuakeDataSmall::cEfcCameraQuakeDataSmall() {
+    this->::sEffectExt::cEfcCameraQuakeData::mTaskNo = 8;
+    this->::sEffectExt::cEfcCameraQuakeData::mHeadTime = 1.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMainTime = 2.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mTailTime = 10.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.x = 0.5f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.y = 5.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.z = 0.5f;
+    this->::sEffectExt::cEfcCameraQuakeData::mMagunitude.pad_ = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mRadius = 1500.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mbAsync = false;
+    this->::sEffectExt::cEfcCameraQuakeData::mBalance = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mPeriod = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mRoll = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mSpread = 0.0f;
+    this->::sEffectExt::cEfcCameraQuakeData::mDamping = 0.0f;
 }
 
 // Included after the classes: the generic bodies below need these complete.

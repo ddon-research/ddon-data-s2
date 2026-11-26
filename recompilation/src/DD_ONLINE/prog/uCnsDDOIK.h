@@ -128,6 +128,7 @@ public:
 public:
     class JointInfo : public MtObject
     {
+        friend class uCnsDDOIK;
     public:
         class MyDTI;
     public:
@@ -573,4 +574,9 @@ inline s32 uCnsDDOIK::JointInfo::getJntNo() const {
 
 inline void* uCnsDDOIK::uCnsJoint::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uCnsDDOIK::uCnsJoint::uCnsJoint() {
+    this->mIsEffector = false;
+    this->mpJointInfo = nullptr;
 }

@@ -77,7 +77,7 @@ bool cpLayout::invalidGroupKill() {
                             if (mpGroupParam->isResetList()) {
                                 if (mpModel != nullptr) {
                                     if (mpModel->getCtrl() != nullptr) {
-                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpModel->getCtrl()) + 358)) == 0) {
+                                        if (!mpModel->getCtrl()->mIsFadeOut) {
                                             mpModel->getCtrl()->setFadeOut();
                                         }
                                     }

@@ -30,13 +30,58 @@ rSoundCurveSet::~rSoundCurveSet() {
 }
 
 __attribute__((weak)) bool rSoundCurveSet::load(MtStream& in) {
-    DDON_STUB("rSoundCurveSet::load")
-    return {};
+    MtDataReader r(in, 4096);
+    u32 size = r.getLength();
+    void* pData = MtMemoryAllocator::getAllocator(rSoundCurveSet::DTI)->memAlloc(size, 16, rSoundCurveSet::DTI.getID());
+    if (pData == nullptr) {
+        return false;
+    }
+    if (r.read(pData, size) != size) {
+        MtMemoryAllocator::getAllocator(rSoundCurveSet::DTI)->memFree(pData);
+        return false;
+    }
+    NATIVE_FILE_HEADER* header = static_cast<NATIVE_FILE_HEADER*>(pData);
+    if (header->Magic != NativeFileMagic || header->Version != NativeFileVersion) {
+        MtMemoryAllocator::getAllocator(rSoundCurveSet::DTI)->memFree(pData);
+        return false;
+    }
+    void* pRawData = mpRawData;
+    MtMemoryAllocator::getAllocator(rSoundCurveSet::DTI)->memFree(pRawData);
+    mpRawData = pData;
+    mpLists = reinterpret_cast<List*>(header + 1);
+    mpCurveRefs = reinterpret_cast<Curve**>(mpLists + header->ListNum);
+    for (u32 i = 0; i < header->CurveNum; i++) {
+        mpCurveRefs[i] = reinterpret_cast<Curve*>(reinterpret_cast<size_t>(mpCurveRefs[i]) + reinterpret_cast<size_t>(mpRawData));
+    }
+    mpCurves = reinterpret_cast<Curve*>(&mpCurveRefs[header->CurveNum]);
+    mCurveNum = header->CurveNum;
+    mListNum = header->ListNum;
+    return true;
 }
 
 __attribute__((weak)) bool rSoundCurveSet::save(MtStream& out) {
-    DDON_STUB("rSoundCurveSet::save")
-    return {};
+    MtDataWriter w(out, 4096, 4096);
+    NATIVE_FILE_HEADER header;
+    header.Magic = NativeFileMagic;
+    header.Version = NativeFileVersion;
+    header.ListNum = mListNum;
+    header.CurveNum = mCurveNum;
+    w.write(&header, sizeof(header));
+    w.write(mpLists, mListNum * sizeof(List));
+    for (u32 i = 0; i < mCurveNum; i++) {
+        w.writeLabel(mpCurveRefs[i]);
+    }
+    for (u32 i = 0; i < mCurveNum; i++) {
+        Curve* pCurve = mpCurveRefs[i];
+        w.addLabel(pCurve);
+        w.write(pCurve, sizeof(Curve));
+        f32* pData = reinterpret_cast<f32*>(pCurve + 1);
+        for (u32 j = 0; j < pCurve->mElementNum; j++) {
+            w.writeF32(*pData++);
+            w.writeF32(*pData++);
+        }
+    }
+    return true;
 }
 
 MT_CTSTR rSoundCurveSet::getExt() const {

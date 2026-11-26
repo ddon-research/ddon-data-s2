@@ -7,6 +7,7 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "cResource.h"
@@ -148,9 +149,24 @@ inline void rSoundEQ::cEQData::operator delete(void* p_addr) {
 rSoundEQ::cEQData::~cEQData() {
 }
 
-__attribute__((weak)) void rSoundEQ::cEQData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundEQ::cEQData::createProperty")
-    /* stub */
+void rSoundEQ::cEQData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCategory", &mCategory, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnable", &mEQData.mEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLowType", &mEQData.mLowType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHighType", &mEQData.mHighType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLowFreq", &mEQData.mLowFreq, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLowGain", &mEQData.mLowGain, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLowQ", &mEQData.mLowQ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMidLowFreq", &mEQData.mMidLowFreq, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMidLowGain", &mEQData.mMidLowGain, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMidLowQ", &mEQData.mMidLowQ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMidHighFreq", &mEQData.mMidHighFreq, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMidHighGain", &mEQData.mMidHighGain, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMidHighQ", &mEQData.mMidHighQ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHighFreq", &mEQData.mHighFreq, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHighGain", &mEQData.mHighGain, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHighQ", &mEQData.mHighQ, 0u, 0u);
 }
 
 MtUI* rSoundEQ::cEQData::createUI(MtProperty& prop) {

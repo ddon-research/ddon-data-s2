@@ -72,9 +72,15 @@ const MtDTI& cQuestSvNoticeCallback::getNoticeClassDTI() const {
     return mNoticeClassDti;
 }
 
-__attribute__((weak)) cQuestSvNoticeCallback& cQuestSvNoticeCallback::setNoticeDTI(const MtDTI& noticeClassDti) {
-    DDON_STUB("cQuestSvNoticeCallback::setNoticeDTI")
-    __builtin_unreachable();
+cQuestSvNoticeCallback& cQuestSvNoticeCallback::setNoticeDTI(const MtDTI& noticeClassDti) {
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 56) = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&noticeClassDti) + 48);
+    mNoticeClassDti.mpLink = noticeClassDti.mpLink;
+    mNoticeClassDti.mpParent = noticeClassDti.mpParent;
+    mNoticeClassDti.mpChild = noticeClassDti.mpChild;
+    const MT_CTSTR t0 = noticeClassDti.mName;
+    mNoticeClassDti.mpNext = noticeClassDti.mpNext;
+    mNoticeClassDti.mName = t0;
+    return *this;
 }
 
 cQuestSvNoticeCallback& cQuestSvNoticeCallback::setFromClass(MtObject* pFrom) {
@@ -82,9 +88,9 @@ cQuestSvNoticeCallback& cQuestSvNoticeCallback::setFromClass(MtObject* pFrom) {
     return *this;
 }
 
-__attribute__((weak)) cQuestSvNoticeCallback& cQuestSvNoticeCallback::setCallbackFunc(cQuestSvNoticeCallback::PCallbackFunc pCallbackFunc) {
-    DDON_STUB("cQuestSvNoticeCallback::setCallbackFunc")
-    __builtin_unreachable();
+cQuestSvNoticeCallback& cQuestSvNoticeCallback::setCallbackFunc(cQuestSvNoticeCallback::PCallbackFunc pCallbackFunc) {
+    mpCallbackFunc = pCallbackFunc;
+    return *this;
 }
 
 __attribute__((weak)) void cQuestSvNoticeCallback::executeCallbackFunc(void* pPacket) {

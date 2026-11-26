@@ -16,8 +16,9 @@ class MtPropertyList;
 class aStage;
 class cArea;
 class cFSMBase;
-class cGUIUtility;
+class cFSMUnit;
 class cLayoutSet;
+class cMenuPartyList;
 class cNetGameServer;
 class cQuestTask;
 class cpTalk;
@@ -30,15 +31,18 @@ class sSoundExt;
 class sSoundManager;
 class uControl;
 class uControlNpc;
+class uEnemy;
 class uGUIContentsBoard;
 class uGUIGaugeEnemy;
 class uGUIGaugeEnemyBoss;
 class uGUIGaugeNpc;
 class uGUIGaugeNpcBase;
+class uGUIItemBase01;
 class uGUINewspaper;
 class uGUIPopTopSel;
 class uHuman;
-class uNpc;
+class uShlArrow;
+class uStageCraftPawnCtrl;
 
 // Declarations
 class sArea;
@@ -51,15 +55,20 @@ using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
 
+// Functions the classes below befriend, declared first
+namespace nDDOUtility { void requestOnTutorialFlg(s32 questTarget); }
+
 class sArea : public cSystem
 {
     friend class aStage;
     friend class cFSMBase;
-    friend class cGUIUtility;
+    friend class cFSMUnit;
     friend class cLayoutSet;
+    friend class cMenuPartyList;
     friend class cNetGameServer;
     friend class cQuestTask;
     friend class cpTalk;
+    friend void nDDOUtility::requestOnTutorialFlg(s32 questTarget);
     friend class nFsm::cCameraCtrl;
     friend class nSessionManager::cNetSessionManager;
     friend class sGUIExt;
@@ -69,15 +78,18 @@ class sArea : public cSystem
     friend class sSoundManager;
     friend class uControl;
     friend class uControlNpc;
+    friend class uEnemy;
     friend class uGUIContentsBoard;
     friend class uGUIGaugeEnemy;
     friend class uGUIGaugeEnemyBoss;
     friend class uGUIGaugeNpc;
     friend class uGUIGaugeNpcBase;
+    friend class uGUIItemBase01;
     friend class uGUINewspaper;
     friend class uGUIPopTopSel;
     friend class uHuman;
-    friend class uNpc;
+    friend class uShlArrow;
+    friend class uStageCraftPawnCtrl;
 public:
     class MyDTI;
     class AreaInfo;

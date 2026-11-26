@@ -4,6 +4,7 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "cPrimObj.h"
 #include "sPrimitive.h"
 #ifndef DDON_STUB
@@ -12,6 +13,10 @@
 
 const MtDTI& cPrimTexHandle::getDTI() const {
     return cPrimTexHandle::DTI;
+}
+
+inline void* cPrimTexHandle::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cPrimTexHandle::DTI)->memAlloc(sz, align, cPrimTexHandle::DTI.mID);
 }
 
 inline void cPrimTexHandle::operator delete(void* p_addr) {
@@ -42,8 +47,7 @@ inline cPrimTexHandle::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 cPrimTexHandle::MyDTI cPrimTexHandle::DTI("cPrimTexHandle", &::cPrimObj::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cPrimTexHandle::MyDTI::newInstance() const {
-    DDON_STUB("cPrimTexHandle::MyDTI::newInstance")
-    return nullptr;
+MtObject* cPrimTexHandle::MyDTI::newInstance() const {
+    return new (16u) cPrimTexHandle;
 }
 

@@ -110,9 +110,8 @@ void aBase::final() {
     mArcTicket = t0;
 }
 
-__attribute__((weak)) const MtDTI& aBase::getParentType() {
-    DDON_STUB("aBase::getParentType")
-    __builtin_unreachable();
+const MtDTI& aBase::getParentType() {
+    return cArea::DTI;
 }
 
 MT_CTSTR aBase::getShaderSegment() {

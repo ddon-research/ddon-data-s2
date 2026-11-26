@@ -44,9 +44,36 @@ sObjCondition::sObjCondition() {
     /* stub */
 }
 
-__attribute__((noinline)) sObjCondition::~sObjCondition() {
-    DDON_STUB("sObjCondition::~sObjCondition")
-    /* stub */
+sObjCondition::~sObjCondition() {
+    sObjCondition::mpInstance = nullptr;
+    if (mpPriOrityTable != nullptr) {
+        mpPriOrityTable->release();
+        mpPriOrityTable = nullptr;
+    }
+    if (mpOcdIrAdjRes != nullptr) {
+        mpOcdIrAdjRes->release();
+        mpOcdIrAdjRes = nullptr;
+    }
+    if (mpOcdIrAdjPLRes != nullptr) {
+        mpOcdIrAdjPLRes->release();
+        mpOcdIrAdjPLRes = nullptr;
+    }
+    if (mpOcdStatusCommonRes.elems[0] != nullptr) {
+        mpOcdStatusCommonRes.elems[0]->cResource::release();
+        mpOcdStatusCommonRes.elems[0] = nullptr;
+    }
+    if (mpOcdStatusCommonRes.elems[1] != nullptr) {
+        mpOcdStatusCommonRes.elems[1]->cResource::release();
+        mpOcdStatusCommonRes.elems[1] = nullptr;
+    }
+    if (mpOcdStatusCommonRes.elems[2] != nullptr) {
+        mpOcdStatusCommonRes.elems[2]->cResource::release();
+        mpOcdStatusCommonRes.elems[2] = nullptr;
+    }
+    if (mpOcdStatusCommonRes.elems[3] != nullptr) {
+        mpOcdStatusCommonRes.elems[3]->cResource::release();
+        mpOcdStatusCommonRes.elems[3] = nullptr;
+    }
 }
 
 __attribute__((weak)) void sObjCondition::reset() {

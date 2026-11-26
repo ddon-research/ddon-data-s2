@@ -5,15 +5,21 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "nNetworkCallback.h"
+#include "nNetworkProtocol.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
 
 const MtDTI& nNetwork::BlockBuffer::getDTI() const {
     return nNetwork::BlockBuffer::DTI;
+}
+
+inline void* nNetwork::BlockBuffer::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::BlockBuffer::DTI)->memAlloc(sz, align, ::nNetwork::BlockBuffer::DTI.mID);
 }
 
 inline void nNetwork::BlockBuffer::operator delete(void* p_addr) {
@@ -25,9 +31,9 @@ nNetwork::BlockBuffer::~BlockBuffer() {
     adjust(0u);
 }
 
-__attribute__((weak)) void nNetwork::BlockBuffer::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::BlockBuffer::createProperty")
-    /* stub */
+void nNetwork::BlockBuffer::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBlockMax", &mBlockMax, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "Length", reinterpret_cast<MT_MFUNC>(&::nNetwork::BlockBuffer::length), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) void nNetwork::BlockBuffer::init(nNetwork::BlockPool* pool, u32 block_max, void* * block_list) {
@@ -53,9 +59,8 @@ inline nNetwork::BlockBuffer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 
 nNetwork::BlockBuffer::MyDTI nNetwork::BlockBuffer::DTI("nNetwork::BlockBuffer", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nNetwork::BlockBuffer::MyDTI::newInstance() const {
-    DDON_STUB("nNetwork::BlockBuffer::MyDTI::newInstance")
-    return nullptr;
+MtObject* nNetwork::BlockBuffer::MyDTI::newInstance() const {
+    return new (16u) ::nNetwork::BlockBuffer;
 }
 
 const MtDTI& nNetwork::BlockPool::getDTI() const {
@@ -131,9 +136,10 @@ nNetwork::BlockQueue::~BlockQueue() {
     /* stub */
 }
 
-__attribute__((weak)) void nNetwork::BlockQueue::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::BlockQueue::createProperty")
-    /* stub */
+void nNetwork::BlockQueue::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBlockMax", &mBlockMax, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "Length", reinterpret_cast<MT_MFUNC>(&::nNetwork::BlockBuffer::length), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mCount", &mCount, 1u, 0u);
 }
 
 __attribute__((weak)) bool nNetwork::BlockQueue::push(const void* data_ptr, u32 data_size) {

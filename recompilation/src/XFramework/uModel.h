@@ -45,6 +45,8 @@ namespace nMotion { struct MPARAM_WORK; }
 namespace nMotion { struct SEQUENCE_INFO; }
 class rModel;
 class rMotionList;
+class uArmor;
+class uCharacterEditBase;
 class uCnsDDOIK;
 class uCnsIK;
 class uCnsLookAt;
@@ -90,6 +92,8 @@ class uModel : public uBaseModel
     friend class cpBakeJoint;
     friend class cpMotionRate;
     friend class cpShakeCtrl;
+    friend class uArmor;
+    friend class uCharacterEditBase;
     friend class uCnsDDOIK;
     friend class uCnsIK;
     friend class uCnsLookAt;
@@ -298,6 +302,7 @@ public:
     {
         friend class cpMotionRate;
         friend class uDDOModel;
+        friend class uHuman;
     public:
         enum ATTRIBUTE
         {
@@ -887,6 +892,10 @@ inline u32 uModel::Motion::getMotionNo() const {
     return this->mMotionNo;
 }
 
+inline f32 uModel::Motion::getFrame() const {
+    return this->mFrame;
+}
+
 inline void uModel::Motion::setFrame(f32 frame) {
     this->mFrame = frame;
     this->mPrevFrame = frame;
@@ -896,12 +905,20 @@ inline f32 uModel::Motion::getPrevFrame() const {
     return this->mPrevFrame;
 }
 
+inline u32 uModel::Motion::getAttr() const {
+    return this->mAttr;
+}
+
 inline f32 uModel::Motion::getSpeed() const {
     return this->mSpeed;
 }
 
 inline void uModel::Motion::setSpeed(f32 NewValue) {
     this->mSpeed = NewValue;
+}
+
+inline f32 uModel::Motion::getFrameMax() const {
+    return this->mFrameMax;
 }
 
 inline u32 uModel::Motion::getKeyFrameNum() const {

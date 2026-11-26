@@ -109,9 +109,12 @@ void sNetworkExt::move() {
     }
 }
 
-__attribute__((weak)) void sNetworkExt::createProperty(MtPropertyList& s) {
-    DDON_STUB("sNetworkExt::createProperty")
-    /* stub */
+void sNetworkExt::createProperty(MtPropertyList& s) {
+    this->sNetwork::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpdateTime", &mUpdateTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBasePeriodicTime", &mBasePeriodicTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpLoginServer", reinterpret_cast<MtObject* *>(&mpLoginServer), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpGameServer", reinterpret_cast<MtObject* *>(&mpGameServer), 0u, 0u);
 }
 
 __attribute__((weak)) void sNetworkExt::createMenu(MtPropertyList& s) {
@@ -323,9 +326,12 @@ u32 sNetworkExt::getMyClanId() {
     return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID;
 }
 
-__attribute__((weak)) MT_CTSTR sNetworkExt::getMyClanNickname() {
-    DDON_STUB("sNetworkExt::getMyClanNickname")
-    return {};
+MT_CTSTR sNetworkExt::getMyClanNickname() {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != 0) {
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanUserParam.m_wstrShortName.ptr();
+    } else {
+        return "";
+    }
 }
 
 bool sNetworkExt::isClanMember(u32 characterId) {
@@ -384,14 +390,14 @@ bool sNetworkExt::isClanInvited() {
 }
 
 bool sNetworkExt::isClanApproved() {
-    if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 34744)) != 0) && (mClanApprovedNum != 0)) {
+    if ((static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != 0) && (mClanApprovedNum != 0)) {
         return true;
     }
     return false;
 }
 
 bool sNetworkExt::isEnableCreateClan() {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 34744)) == 0) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID == 0) {
         if (!mIsClanScoutEntry && !mIsApplyClan) {
             return static_cast<unsigned long>(mClanIntervalTime) < static_cast<unsigned long>(mWorldServerTime.getTime() - mLastClanLeaveTime);
         }
@@ -402,7 +408,7 @@ bool sNetworkExt::isEnableCreateClan() {
 }
 
 void sNetworkExt::reqCreateClanDisableAnnounce() {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 34744)) == 0) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID == 0) {
         if (mIsClanScoutEntry) {
             sGUI* t0 = sGUI::getInstance();
             static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->getMsgCommonDialog(), 383u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
@@ -459,34 +465,32 @@ u32 sNetworkExt::getClanDirectInvitedNum() {
     return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mClanDirectInvitedList.mLength;
 }
 
-__attribute__((weak)) bool sNetworkExt::isClanBaseInfoValid() const {
-    DDON_STUB("sNetworkExt::isClanBaseInfoValid")
-    return {};
+bool sNetworkExt::isClanBaseInfoValid() const {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != 0) {
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanBaseGetInfoResPacket()->isReceived();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) const CClanFunctionInfo& sNetworkExt::getClanFunctionInfo() const {
-    DDON_STUB("sNetworkExt::getClanFunctionInfo")
-    __builtin_unreachable();
+const CClanFunctionInfo& sNetworkExt::getClanFunctionInfo() const {
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanBaseGetInfoResPacket()->m_FunctionInfo;
 }
 
-__attribute__((weak)) const CPawnExpeditionInformation& sNetworkExt::getPawnExpeditionInfo() const {
-    DDON_STUB("sNetworkExt::getPawnExpeditionInfo")
-    __builtin_unreachable();
+const CPawnExpeditionInformation& sNetworkExt::getPawnExpeditionInfo() const {
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanBaseGetInfoResPacket()->m_PawnExpeditionInfo;
 }
 
-__attribute__((weak)) u8 sNetworkExt::getClanPawnSallyState() const {
-    DDON_STUB("sNetworkExt::getClanPawnSallyState")
-    return {};
+u8 sNetworkExt::getClanPawnSallyState() const {
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanBaseGetInfoResPacket()->m_PawnExpeditionInfo.m_ucSallyStatus;
 }
 
-__attribute__((weak)) const MtTypedArray<CDataCommonU32>& sNetworkExt::getClanMyPawnList() const {
-    DDON_STUB("sNetworkExt::getClanMyPawnList")
-    __builtin_unreachable();
+const MtTypedArray<CDataCommonU32>& sNetworkExt::getClanMyPawnList() const {
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanBaseGetInfoResPacket()->m_PartnerPawnInfo.m_MyPartnerPawnList;
 }
 
-__attribute__((weak)) const MtTypedArray<CDataCommonU32>& sNetworkExt::getClanMemberPawnList() const {
-    DDON_STUB("sNetworkExt::getClanMemberPawnList")
-    __builtin_unreachable();
+const MtTypedArray<CDataCommonU32>& sNetworkExt::getClanMemberPawnList() const {
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanBaseGetInfoResPacket()->m_PartnerPawnInfo.m_MemberPartnerPawnList;
 }
 
 void sNetworkExt::setClanMemberMax(u32 num) {

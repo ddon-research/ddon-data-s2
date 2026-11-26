@@ -85,13 +85,20 @@ const MtDTI& uCnsBoneScale::getDTI() const {
     return uCnsBoneScale::DTI;
 }
 
+inline void* uCnsBoneScale::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uCnsBoneScale::DTI)->memAlloc(sz, align, uCnsBoneScale::DTI.getID());
+}
+
 inline void uCnsBoneScale::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uCnsBoneScale::DTI)->memFree(p_addr);
 }
 
+inline uCnsBoneScale::uCnsBoneScale() {
+    mJoint = 0;
+    mScl = MtVector3::One;
+}
+
 uCnsBoneScale::~uCnsBoneScale() {
-    DDON_STUB("uCnsBoneScale::~uCnsBoneScale")
-    /* stub */
 }
 
 __attribute__((weak)) void uCnsBoneScale::setResource(cResource* pRes) {
@@ -125,9 +132,9 @@ void uCnsBoneScale::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
-__attribute__((weak)) void uCnsBoneScale::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsBoneScale::createProperty")
-    /* stub */
+void uCnsBoneScale::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mJoint", &mJoint, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScl", &mScl, 0u, 0u);
 }
 
 MtUI* uCnsBoneScale::createUI(MtProperty& prop) {
@@ -141,8 +148,7 @@ inline uCnsBoneScale::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 uCnsBoneScale::MyDTI uCnsBoneScale::DTI("uCnsBoneScale", &::uConstraint::DTI, 192ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uCnsBoneScale::MyDTI::newInstance() const {
-    DDON_STUB("uCnsBoneScale::MyDTI::newInstance")
-    return nullptr;
+MtObject* uCnsBoneScale::MyDTI::newInstance() const {
+    return new (16u) uCnsBoneScale;
 }
 

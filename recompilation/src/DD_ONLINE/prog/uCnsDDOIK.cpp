@@ -93,8 +93,11 @@ __attribute__((weak)) MtVector3 uCnsDDOIK::calcUpVectorArm(const MtVector3& Inne
 }
 
 __attribute__((noinline)) uCnsDDOIK::~uCnsDDOIK() {
-    DDON_STUB("uCnsDDOIK::~uCnsDDOIK")
-    /* stub */
+    if (mpCnsIKRes == nullptr) {
+        return;
+    }
+    mpCnsIKRes->release();
+    mpCnsIKRes = nullptr;
 }
 
 MT_CTSTR uCnsDDOIK::getName() {
@@ -109,14 +112,66 @@ MtUI* uCnsDDOIK::createUI(MtProperty& prop) {
     return this->uConstraint::createUI(prop);
 }
 
-__attribute__((weak)) void uCnsDDOIK::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsDDOIK::createProperty")
-    /* stub */
+void uCnsDDOIK::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCnsIKRes", "resource", reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::getResource), reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Dir", reinterpret_cast<s32*>(&(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 484))), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Up", reinterpret_cast<s32*>(&(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 488))), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseScale", &mUseScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJointNum", &mJointNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffNo", &mEffNo, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mJointInfo", reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::getJointInfo), reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::setJointInfo), 160u, reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::getJointInfoNum), reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::setJointInfoNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "IK Status", reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::getStatus), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectorControl", &mEffectorControl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetMat", &mOffsetMat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCenterRefJntNo", &mCenterRefJntNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCenterPosOffset", &mCenterPosOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTransScale", &mTransScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Manipulate EffectorPos", &mEffectorPosEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Manipulate Up Vector", &mUpVectorPosEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectorPos", &mEffectorPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpVectorPos", &mUpVectorPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Manipulate EffectorRot", &mEffectorRotEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_MATRIX, "mEffectorRot", reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::getEffectorMat), reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::setEffectorRot), 2176u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectorTargetModelEnable", &mEffectorTargetModelEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpVectorTargetModelEnable", &mUpVectorTargetModelEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpEffectorTargetModel", reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::getEffectorTargetModel), reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::setEffectorTargetModel), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpUpVectorTargetModel", reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::getUpVectorTargetModel), reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::setUpVectorTargetModel), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mEffectorTargetJointNo", reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::getEffectorTargetJointNo), reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::setEffectorTargetJointNo), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mUpVectorTargetJointNo", reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::getUpVectorTargetJointNo), reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::setUpVectorTargetJointNo), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectorLimitEnable", &mEffectorLimitEnable, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJointLimitEnable", &mJointLimitEnable, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffPitchMin", &mEffPitchMin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffPitchMax", &mEffPitchMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffRotMin", &mEffRotMin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffRotMax", &mEffRotMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffDistMin", &mEffDistMin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffDistMax", &mEffDistMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Effector Limit Mode", reinterpret_cast<s32*>(&(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 3296))), 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Joint Limit Mode", reinterpret_cast<s32*>(&(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 3300))), 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Limit Coordinate", reinterpret_cast<s32*>(&(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 3312))), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Limit Coordinate Offset", &mLimitCoordOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Effector Behavior", reinterpret_cast<s32*>(&(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 3308))), 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCollisionEnable", &mCollisionEnable, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Collision Mode", reinterpret_cast<s32*>(&(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 3304))), 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeelOffset", &mHeelOffset, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeelHeight", &mHeelHeight, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Fit Heel", &mFit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Ground Distance Adapt", &mGroundDistAdapt, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFitDir", &mFitDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFitUp", &mFitUp, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Check Upper", &mCheckGroundLengthUpper, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Check Lower", &mCheckGroundLengthLower, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Ground Level", &mGroundLevel, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Ground Normal", &mGroundNormal, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroundDistance", &mGroundDistance, 3u, 0u);
+    createSCollisionParam(s);
 }
 
-__attribute__((weak)) void uCnsDDOIK::createSCollisionParam(MtPropertyList& s) {
-    DDON_STUB("uCnsDDOIK::createSCollisionParam")
-    /* stub */
+void uCnsDDOIK::createSCollisionParam(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "CollisionType", &mCollisionParam.type, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CollisionFilter", &mCollisionParam.filter, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CollisionCheckGroupBit", &mCollisionParam.checkGroupBit, 0u, 0u);
 }
 
 __attribute__((weak)) void uCnsDDOIK::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
@@ -134,9 +189,12 @@ __attribute__((weak)) void uCnsDDOIK::update() {
     /* stub */
 }
 
-__attribute__((weak)) void uCnsDDOIK::remove() {
-    DDON_STUB("uCnsDDOIK::remove")
-    /* stub */
+void uCnsDDOIK::remove() {
+    removeConstraint();
+    mJointInfo[1].mCnsJoint.removeConstraint();
+    mJointInfo[2].mCnsJoint.removeConstraint();
+    mJointInfo[3].mCnsJoint.removeConstraint();
+    mEffectorPosEnable = false;
 }
 
 __attribute__((weak)) void uCnsDDOIK::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
@@ -270,9 +328,17 @@ uModel::Joint* uCnsDDOIK::getDependentJoint(u32 Idx) {
 __attribute__((weak)) void uCnsDDOIK::draw(cDraw* pDraw) {
 }
 
-__attribute__((weak)) void uCnsDDOIK::setPri(u32 Pri) {
-    DDON_STUB("uCnsDDOIK::setPri")
-    /* stub */
+void uCnsDDOIK::setPri(u32 Pri) {
+    this->uConstraint::setPri(Pri);
+    for (s32 i = 0; i <= 3; i += 1) {
+        if (mJointInfo[i].mJntNo == -1) {
+            break;
+        } else {
+            if (i > 0) {
+                (&mJointInfo[i].mCnsJoint)->setPri(mPri);
+            }
+        }
+    }
 }
 
 void uCnsDDOIK::set(uModel* pModel, rCnsIK* pCnsIKRes) {
@@ -320,15 +386,23 @@ inline void uCnsDDOIK::JointInfo::operator delete(void* p_addr) {
 }
 
 uCnsDDOIK::JointInfo::~JointInfo() {
-    DDON_STUB("uCnsDDOIK::JointInfo::~JointInfo")
-    /* stub */
 }
 
 static auto ddon_emit_0x01ad3530 __attribute__((used)) = &uCnsDDOIK::JointInfo::getJntNo;
 
-__attribute__((weak)) void uCnsDDOIK::JointInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsDDOIK::JointInfo::createProperty")
-    /* stub */
+void uCnsDDOIK::JointInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "mJntNo", reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::JointInfo::getJntNo), reinterpret_cast<MT_MFUNC>(&::uCnsDDOIK::JointInfo::setJntNoForProperty), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mRotMin", &mRotMin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRotMax", &mRotMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReverse", &mReverse, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffset", &mOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScaleOffset", &mScaleOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLen", &mLen, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCnsJoint", static_cast<MtObject*>(&mCnsJoint), 2u, 0u);
+    if (mpJoint == nullptr) {
+        return;
+    }
+    s << MtProperty(static_cast<MtObject*>(this), "mpJoint", reinterpret_cast<MtObject* *>(&mpJoint), 18u, 0u);
 }
 
 MtUI* uCnsDDOIK::JointInfo::createUI(MtProperty& prop) {
@@ -353,6 +427,10 @@ const MtDTI& uCnsDDOIK::uCnsJoint::getDTI() const {
     return uCnsDDOIK::uCnsJoint::DTI;
 }
 
+inline void* uCnsDDOIK::uCnsJoint::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uCnsDDOIK::uCnsJoint::DTI)->memAlloc(sz, align, uCnsDDOIK::uCnsJoint::DTI.getID());
+}
+
 inline void uCnsDDOIK::uCnsJoint::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uCnsDDOIK::uCnsJoint::DTI)->memFree(p_addr);
 }
@@ -362,9 +440,9 @@ __attribute__((weak)) void uCnsDDOIK::uCnsJoint::adjust(uModel::Joint* pJoint, u
     /* stub */
 }
 
-__attribute__((weak)) void uCnsDDOIK::uCnsJoint::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsDDOIK::uCnsJoint::createProperty")
-    /* stub */
+void uCnsDDOIK::uCnsJoint::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsEffector", &mIsEffector, 0u, 0u);
 }
 
 cResource* uCnsDDOIK::uCnsJoint::getResource() {
@@ -375,8 +453,7 @@ inline uCnsDDOIK::uCnsJoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 
 uCnsDDOIK::uCnsJoint::MyDTI uCnsDDOIK::uCnsJoint::DTI("uCnsDDOIK::uCnsJoint", &::uConstraint::DTI, 176ul, 0u, 2u);
 
-__attribute__((weak)) MtObject* uCnsDDOIK::uCnsJoint::MyDTI::newInstance() const {
-    DDON_STUB("uCnsDDOIK::uCnsJoint::MyDTI::newInstance")
-    return nullptr;
+MtObject* uCnsDDOIK::uCnsJoint::MyDTI::newInstance() const {
+    return new (16u) uCnsDDOIK::uCnsJoint;
 }
 

@@ -28,6 +28,7 @@ class cDynamicBVHCollision;
 class cSwing;
 class cUnit;
 namespace nDraw { class InputLayout; }
+namespace nDraw { class MaterialStd; }
 namespace nDraw { class Texture; }
 namespace nDraw { class VertexBuffer; }
 class rTexture;
@@ -55,6 +56,7 @@ using uintptr = __uintptr_t;
 class sScene : public cSystem
 {
     friend class cSwing;
+    friend class nDraw::MaterialStd;
     friend class uGrassWind;
     friend class uLight;
     friend class uShadow;
@@ -168,6 +170,7 @@ public:
 public:
     class Node
     {
+        friend class sScene;
     public:
         Node();
         bool isAttached() const;
@@ -386,4 +389,10 @@ inline void sScene::setUberWindThreshold(s32 num) {
 
 inline void* sScene::TextureInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline sScene::TextureInfo::TextureInfo() {
+    this->mEnable = true;
+    this->mName = nullptr;
+    this->mIndex = 0;
 }

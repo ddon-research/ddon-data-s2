@@ -9,6 +9,7 @@
 #include "MtMemory.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
 #include "MtString.h"
 #include "../XFramework/cDynamicBVHCollision.h"
@@ -38,9 +39,11 @@ MtUI* MtCollisionUtil::MtArrayEx::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void MtCollisionUtil::MtArrayEx::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtCollisionUtil::MtArrayEx::createProperty")
-    /* stub */
+void MtCollisionUtil::MtArrayEx::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_BOOL, "mAutoDelete", reinterpret_cast<MT_MFUNC>(&::MtArray::isAutoDelete), reinterpret_cast<MT_MFUNC>(&::MtArray::setAutoDelete), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "mLength", reinterpret_cast<MT_MFUNC>(&::MtArray::length), reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtArrayEx::resize), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_STRING, "ArrayDTI", reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtArrayEx::getElementDtiName), reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtArrayEx::setDummyString), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_CLASSREF, "mpArray", reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtArrayEx::getClass), reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtArrayEx::setClass), 160u, reinterpret_cast<MT_MFUNC>(&::MtArray::length), reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtArrayEx::resize));
 }
 
 void MtCollisionUtil::MtArrayEx::resize(u32 siz) {
@@ -195,9 +198,9 @@ MtUI* MtCollisionUtil::MtDtiObject::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void MtCollisionUtil::MtDtiObject::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtCollisionUtil::MtDtiObject::createProperty")
-    /* stub */
+void MtCollisionUtil::MtDtiObject::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_STRING, "DtiName", reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtDtiObject::getRegistDTIName), reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtDtiObject::registDTIName), 1409u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "DtiID", reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtDtiObject::getRegistDTI_ID), reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtDtiObject::registDTI_ID), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) const MtDTI* MtCollisionUtil::MtDtiObject::getRegistDTI() const {
@@ -251,11 +254,6 @@ __attribute__((weak)) void MtCollisionUtil::MtDtiSelecter::operator delete(void*
     ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtDtiSelecter::DTI)->memFree(p_addr);
 }
 
-MtCollisionUtil::MtDtiSelecter::~MtDtiSelecter() {
-    DDON_STUB("MtCollisionUtil::MtDtiSelecter::~MtDtiSelecter")
-    /* stub */
-}
-
 inline MtCollisionUtil::MtDtiSelecter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 MtCollisionUtil::MtDtiSelecter::MyDTI MtCollisionUtil::MtDtiSelecter::DTI("MtCollisionUtil::MtDtiSelecter", &::MtCollisionUtil::MtDtiSelecterIntermediate::DTI, 16ul, 0u, 0u);
@@ -273,9 +271,6 @@ inline void MtCollisionUtil::MtDtiSelecterIntermediate::operator delete(void* p_
     ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtDtiSelecterIntermediate::DTI)->memFree(p_addr);
 }
 
-MtCollisionUtil::MtDtiSelecterIntermediate::~MtDtiSelecterIntermediate() {
-}
-
 inline MtCollisionUtil::MtDtiSelecterIntermediate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 MtCollisionUtil::MtDtiSelecterIntermediate::MyDTI MtCollisionUtil::MtDtiSelecterIntermediate::DTI("MtCollisionUtil::MtDtiSelecterIntermediate", &::MtDtiSelecter::DTI, 16ul, 0u, 0u);
@@ -289,14 +284,18 @@ const MtDTI& MtCollisionUtil::MtFuncBase::getDTI() const {
     return MtCollisionUtil::MtFuncBase::DTI;
 }
 
+inline void* MtCollisionUtil::MtFuncBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtFuncBase::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtFuncBase::DTI.mID);
+}
+
 MtCollisionUtil::MtFuncBase::~MtFuncBase() {
     DDON_STUB("MtCollisionUtil::MtFuncBase::~MtFuncBase")
     /* stub */
 }
 
-__attribute__((weak)) void MtCollisionUtil::MtFuncBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtCollisionUtil::MtFuncBase::createProperty")
-    /* stub */
+void MtCollisionUtil::MtFuncBase::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_STRING, "name", reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtFuncBase::getName), reinterpret_cast<MT_MFUNC>(&::MtCollisionUtil::MtFuncBase::setNameForIO), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpOwner", &mpOwner, 16u, 0u);
 }
 
 MT_CTSTR MtCollisionUtil::MtFuncBase::getName() {
@@ -312,8 +311,7 @@ inline MtCollisionUtil::MtFuncBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps,
 
 MtCollisionUtil::MtFuncBase::MyDTI MtCollisionUtil::MtFuncBase::DTI("MtCollisionUtil::MtFuncBase", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* MtCollisionUtil::MtFuncBase::MyDTI::newInstance() const {
-    DDON_STUB("MtCollisionUtil::MtFuncBase::MyDTI::newInstance")
-    return nullptr;
+MtObject* MtCollisionUtil::MtFuncBase::MyDTI::newInstance() const {
+    return new (16u) ::MtCollisionUtil::MtFuncBase;
 }
 

@@ -66,6 +66,7 @@
 #include "uEnemy.h"
 #include "uHuman.h"
 #include "uShlBase.h"
+#include "uShlJob10CS06.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -762,19 +763,16 @@ bool cpJob10::canUseCs02AirBlow() const {
     }
 }
 
-__attribute__((weak)) bool cpJob10::canUseCs02Dodge() const {
-    DDON_STUB("cpJob10::canUseCs02Dodge")
-    return {};
+bool cpJob10::canUseCs02Dodge() const {
+    return mpHuman->getStateActionPtr()->getStateNo() == 283;
 }
 
-__attribute__((weak)) bool cpJob10::canUseCs02() const {
-    DDON_STUB("cpJob10::canUseCs02")
-    return {};
+bool cpJob10::canUseCs02() const {
+    return (mpHuman->getActMgrPtr()->getActionNo() - 4105u) > 4u;
 }
 
-__attribute__((weak)) bool cpJob10::canUseCs02FromCs03() const {
-    DDON_STUB("cpJob10::canUseCs02FromCs03")
-    return {};
+bool cpJob10::canUseCs02FromCs03() const {
+    return (mpHuman->getActMgrPtr()->getActionNo() - 4105u) <= 4u;
 }
 
 __attribute__((weak)) f32 cpJob10::getCs04LockOnRange() const {

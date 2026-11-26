@@ -7,8 +7,10 @@
 class BitReader;
 class BitWriter;
 class cItemParam;
+namespace nGUIItem { class cItem; }
 class sItemManager;
 class uGUIBase;
+class uGUIItemBase01;
 class uGUIPopDetail01;
 
 // Declarations
@@ -230,8 +232,10 @@ namespace nCharacterData {
     struct stItemParam
     {
         friend class ::cItemParam;
+        friend class nGUIItem::cItem;
         friend class ::sItemManager;
         friend class ::uGUIBase;
+        friend class ::uGUIItemBase01;
         friend class ::uGUIPopDetail01;
     public:
         u16 getItemNum() const;

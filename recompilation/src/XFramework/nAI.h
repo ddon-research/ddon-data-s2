@@ -61,6 +61,8 @@ namespace nAI {
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         EnumProp(s32 value);
+        EnumProp() : mValue(0), mpEnumObject(nullptr) {}
+
         virtual ~EnumProp();
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         void open();

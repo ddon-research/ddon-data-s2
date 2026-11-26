@@ -535,23 +535,78 @@ __attribute__((weak)) bool cpJob07::checkCndIsAttitudeOfFury() const {
     return {};
 }
 
-__attribute__((weak)) bool cpJob07::checkCndIsSuccessEndure() const {
-    DDON_STUB("cpJob07::checkCndIsSuccessEndure")
-    return {};
+bool cpJob07::checkCndIsSuccessEndure() const {
+    if (mpHuman != nullptr) {
+        u32 nowAct = mpHuman->getActMgrPtr()->getActionNo();
+        if (mIsEndureSuccess) {
+            if ((nowAct - 4114u) > 1u) {
+                if (nowAct != 8213) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) bool cpJob07::checkCndCheckAttackS() const {
-    DDON_STUB("cpJob07::checkCndCheckAttackS")
-    return {};
+bool cpJob07::checkCndCheckAttackS() const {
+    if (mpHuman != nullptr) {
+        if ((mpHuman->getActMgrPtr()->getActionNo() - 8192u) <= 5u) {
+            return mpHuman->isBeforeAttackHit();
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 void cpJob07::resetFuryGaugerTime() {
     mFuryTimer = mpHuman->getJobAdjustParam(11u);
 }
 
-__attribute__((weak)) void cpJob07::FuryNetProc() {
-    DDON_STUB("cpJob07::FuryNetProc")
-    /* stub */
+void cpJob07::FuryNetProc() {
+    uHuman* t0 = mpHuman;
+    u16 work = cContextInterface::getCustomWork(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter);
+    if (mpHuman->isMaster()) {
+        f32 battleFury = getBattleFury_Gi();
+        if (mpHuman->getJobAdjustParam(7u) > battleFury) {
+            cContextInterface::setFJobWork0(t0->mContextInterface.mpContextInstance, battleFury);
+            cContextInterface::setFJobWork1(t0->mContextInterface.mpContextInstance, mFuryTimer);
+            cContextInterface::setCustomWork(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, work & 64767);
+        } else {
+            if (battleFury >= mpHuman->getJobAdjustParam(7u)) {
+                if (mpHuman->getJobAdjustParam(8u) > battleFury) {
+                    cContextInterface::setFJobWork0(t0->mContextInterface.mpContextInstance, battleFury);
+                    cContextInterface::setFJobWork1(t0->mContextInterface.mpContextInstance, mFuryTimer);
+                    cContextInterface::setCustomWork(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, (work & 64767) | 256);
+                } else {
+                    cContextInterface::setFJobWork0(t0->mContextInterface.mpContextInstance, battleFury);
+                    cContextInterface::setFJobWork1(t0->mContextInterface.mpContextInstance, mFuryTimer);
+                    cContextInterface::setCustomWork(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, (work & 64767) | 512);
+                }
+            } else {
+                cContextInterface::setFJobWork0(t0->mContextInterface.mpContextInstance, battleFury);
+                cContextInterface::setFJobWork1(t0->mContextInterface.mpContextInstance, mFuryTimer);
+                cContextInterface::setCustomWork(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, (work & 64767) | 512);
+            }
+        }
+    } else {
+        if ((work & 768) == 256) {
+            mFuryLevel_Gi = 1;
+        } else {
+            if ((work & 768) == 0) {
+                mFuryLevel_Gi = 0;
+            } else {
+                mFuryLevel_Gi = 2;
+            }
+        }
+        cContextInterface::setCustomWork(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, work);
+    }
 }
 
 __attribute__((weak)) void cpJob07::FuryDecreaseProc() {

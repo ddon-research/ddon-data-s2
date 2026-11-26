@@ -3346,6 +3346,13 @@ inline void* cPrioThkCmdConFollowArea::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cPrioThkCmdConFollowArea::cPrioThkCmdConFollowArea() {
+    this->mAreaType = 0;
+    this->mAreaPosType = 0;
+    this->mAreaPosOfsZ = 0.0f;
+    this->mNoContinue = false;
+}
+
 inline void* cPrioThkCmdConHealFountain::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -3762,8 +3769,39 @@ inline rPriorityThink::rPriorityThink() {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline cPrioThkCmdIsOrder::cPrioThkCmdIsOrder() {
+    // unproven
+}
+
+inline void* cPrioThkCmdIsOrder::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsOrder::DTI)->memAlloc(sz, align, cPrioThkCmdIsOrder::DTI.getID());
+}
+
+inline cPrioThkCmdRetActInter::cPrioThkCmdRetActInter() {
+    this->mActionInterfaceID = 0;
+    this->mReqTargetType = 3;
+    this->mReqTargetFrameType = 0;
+    this->mReqTargetFrame = 0.0f;
+    this->mReqTargetRealPos = MtVector3::Zero;
+}
+
+inline void* cPrioThkCmdRetActInter::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
+}
+
+inline cPrioThkCode::cPrioThkCode() {
+    mCommands.setAutoDelete(true);
+    mPrio = 0;
+    mID = 0;
+    mCodeFlag = FLAG_NONE;
+}
+
 inline void cPrioThkCode::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cPrioThkCode::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCode::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cPrioThkCode::DTI)->memAlloc(sz, align, cPrioThkCode::DTI.getID());
 }
 
 inline void* cPrioThkCode::operator new[](size_t sz, u32 align) {

@@ -67,6 +67,67 @@ MtObject* cShlBakuensenLogNode::MyDTI::newInstance() const {
     return new (16u) cShlBakuensenLogNode;
 }
 
+const MtDTI& cShlParamBakuensen::getDTI() const {
+    return cShlParamBakuensen::DTI;
+}
+
+inline void* cShlParamBakuensen::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cShlParamBakuensen::DTI)->memAlloc(sz, align, cShlParamBakuensen::DTI.getID());
+}
+
+inline void cShlParamBakuensen::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(cShlParamBakuensen::DTI)->memFree(p_addr);
+}
+
+MtDTI& cShlParamBakuensen::getShlDTI() const {
+    return uShlBakuensen::DTI;
+}
+
+void cShlParamBakuensen::createProperty(MtPropertyList& s) {
+    this->cShlParamKeepLog::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mLimitDistance", &mLimitDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLimitTime", &mLimitTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReverseSpeed", &mReverseSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShotWaitTime", &mShotWaitTime, 0u, 0u);
+}
+
+__attribute__((weak)) void cShlParamBakuensen::copy(const cShlParamBase* pParamBase) {
+    DDON_STUB("cShlParamBakuensen::copy")
+    /* stub */
+}
+
+inline cShlParamBakuensen::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cShlParamBakuensen::MyDTI cShlParamBakuensen::DTI("cShlParamBakuensen", &::cShlParamKeepLog::DTI, 400ul, 0u, 0u);
+
+MtObject* cShlParamBakuensen::MyDTI::newInstance() const {
+    return new (16u) cShlParamBakuensen;
+}
+
+const MtDTI& cShlParamBakuensenSpark::getDTI() const {
+    return cShlParamBakuensenSpark::DTI;
+}
+
+inline void* cShlParamBakuensenSpark::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cShlParamBakuensenSpark::DTI)->memAlloc(sz, align, cShlParamBakuensenSpark::DTI.getID());
+}
+
+inline void cShlParamBakuensenSpark::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(cShlParamBakuensenSpark::DTI)->memFree(p_addr);
+}
+
+MtDTI& cShlParamBakuensenSpark::getShlDTI() const {
+    return uBakuenseSpark::DTI;
+}
+
+inline cShlParamBakuensenSpark::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cShlParamBakuensenSpark::MyDTI cShlParamBakuensenSpark::DTI("cShlParamBakuensenSpark", &::cShlParamBase::DTI, 352ul, 0u, 0u);
+
+MtObject* cShlParamBakuensenSpark::MyDTI::newInstance() const {
+    return new (16u) cShlParamBakuensenSpark;
+}
+
 const MtDTI& uBakuenseSpark::getDTI() const {
     return uBakuenseSpark::DTI;
 }
@@ -132,6 +193,10 @@ inline void uShlBakuensen::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uShlBakuensen::DTI)->memFree(p_addr);
 }
 
+inline const cShlParamBakuensen* uShlBakuensen::getShlParam() const {
+    return static_cast<const cShlParamBakuensen*>(mpShlParam2);
+}
+
 const MtDTI* uShlBakuensen::getLogNodeDTI() {
     return &cShlBakuensenLogNode::DTI;
 }
@@ -184,9 +249,9 @@ void uShlBakuensen::updateEfcHandle() {
     mpBakuenEfcHandle = nullptr;
 }
 
-__attribute__((weak)) void uShlBakuensen::createProperty(MtPropertyList& s) {
-    DDON_STUB("uShlBakuensen::createProperty")
-    /* stub */
+void uShlBakuensen::createProperty(MtPropertyList& s) {
+    this->uShlKeepOwnerLog::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mReverseSpeed", &mReverseSpeed, 0u, 0u);
 }
 
 void uShlBakuensen::draw(cDraw* pDraw) {

@@ -9,11 +9,16 @@
 #include "MtDataReader.h"
 #include "MtDataWriter.h"
 #include "MtGeomAABB.h"
+#include "MtGeomAABB4.h"
 #include "MtGeomCapsule.h"
 #include "MtGeomCylinder.h"
 #include "MtGeomLine.h"
 #include "MtGeomLineSegment.h"
+#include "MtGeomLineSegment4.h"
+#include "MtGeomLineSweptSphere.h"
 #include "MtGeomOBB.h"
+#include "MtGeomPlane.h"
+#include "MtGeomRay.h"
 #include "MtGeomSphere.h"
 #include "MtGeomTriangle.h"
 #include "MtGeometry3D.h"
@@ -63,6 +68,10 @@ const MtDTI& MtCollisionUtil::MtDataBuffer::getDTI() const {
     return MtCollisionUtil::MtDataBuffer::DTI;
 }
 
+inline void* MtCollisionUtil::MtDataBuffer::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtDataBuffer::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtDataBuffer::DTI.mID);
+}
+
 MtCollisionUtil::MtDataBuffer::~MtDataBuffer() {
     if (mpData != nullptr) {
         return;
@@ -75,9 +84,8 @@ inline MtCollisionUtil::MtDataBuffer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* p
 
 MtCollisionUtil::MtDataBuffer::MyDTI MtCollisionUtil::MtDataBuffer::DTI("MtCollisionUtil::MtDataBuffer", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* MtCollisionUtil::MtDataBuffer::MyDTI::newInstance() const {
-    DDON_STUB("MtCollisionUtil::MtDataBuffer::MyDTI::newInstance")
-    return nullptr;
+MtObject* MtCollisionUtil::MtDataBuffer::MyDTI::newInstance() const {
+    return new (16u) ::MtCollisionUtil::MtDataBuffer;
 }
 
 const MtDTI& MtCollisionUtil::MtFunc::getDTI() const {
@@ -85,8 +93,6 @@ const MtDTI& MtCollisionUtil::MtFunc::getDTI() const {
 }
 
 MtCollisionUtil::MtFunc::~MtFunc() {
-    DDON_STUB("MtCollisionUtil::MtFunc::~MtFunc")
-    /* stub */
 }
 
 inline MtCollisionUtil::MtFunc::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -103,8 +109,6 @@ const MtDTI& MtCollisionUtil::MtFunc32::getDTI() const {
 }
 
 MtCollisionUtil::MtFunc32::~MtFunc32() {
-    DDON_STUB("MtCollisionUtil::MtFunc32::~MtFunc32")
-    /* stub */
 }
 
 inline MtCollisionUtil::MtFunc32::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -121,8 +125,6 @@ const MtDTI& MtCollisionUtil::MtFunc32X2::getDTI() const {
 }
 
 MtCollisionUtil::MtFunc32X2::~MtFunc32X2() {
-    DDON_STUB("MtCollisionUtil::MtFunc32X2::~MtFunc32X2")
-    /* stub */
 }
 
 inline MtCollisionUtil::MtFunc32X2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -139,8 +141,6 @@ const MtDTI& MtCollisionUtil::MtFuncPtr::getDTI() const {
 }
 
 MtCollisionUtil::MtFuncPtr::~MtFuncPtr() {
-    DDON_STUB("MtCollisionUtil::MtFuncPtr::~MtFuncPtr")
-    /* stub */
 }
 
 inline MtCollisionUtil::MtFuncPtr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -157,8 +157,6 @@ const MtDTI& MtCollisionUtil::MtFuncPtr32::getDTI() const {
 }
 
 MtCollisionUtil::MtFuncPtr32::~MtFuncPtr32() {
-    DDON_STUB("MtCollisionUtil::MtFuncPtr32::~MtFuncPtr32")
-    /* stub */
 }
 
 inline MtCollisionUtil::MtFuncPtr32::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -174,6 +172,10 @@ const MtDTI& MtCollisionUtil::MtListElement::getDTI() const {
     return MtCollisionUtil::MtListElement::DTI;
 }
 
+inline void* MtCollisionUtil::MtListElement::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtListElement::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtListElement::DTI.mID);
+}
+
 MtCollisionUtil::MtListElement::~MtListElement() {
     DDON_STUB("MtCollisionUtil::MtListElement::~MtListElement")
     /* stub */
@@ -183,22 +185,27 @@ MtUI* MtCollisionUtil::MtListElement::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void MtCollisionUtil::MtListElement::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtCollisionUtil::MtListElement::createProperty")
-    /* stub */
+void MtCollisionUtil::MtListElement::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpObject", &mpObject, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mFlgAutoDelete", &mFlgAutoDelete, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpNext", reinterpret_cast<MtObject* *>(&mpNext), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpBack", reinterpret_cast<MtObject* *>(&mpBack), 16u, 0u);
 }
 
 inline MtCollisionUtil::MtListElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 MtCollisionUtil::MtListElement::MyDTI MtCollisionUtil::MtListElement::DTI("MtCollisionUtil::MtListElement", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* MtCollisionUtil::MtListElement::MyDTI::newInstance() const {
-    DDON_STUB("MtCollisionUtil::MtListElement::MyDTI::newInstance")
-    return nullptr;
+MtObject* MtCollisionUtil::MtListElement::MyDTI::newInstance() const {
+    return new (16u) ::MtCollisionUtil::MtListElement;
 }
 
 const MtDTI& MtCollisionUtil::MtList::getDTI() const {
     return MtCollisionUtil::MtList::DTI;
+}
+
+inline void* MtCollisionUtil::MtList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtList::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtList::DTI.mID);
 }
 
 MtCollisionUtil::MtList::~MtList() {
@@ -216,18 +223,18 @@ MtUI* MtCollisionUtil::MtList::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void MtCollisionUtil::MtList::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtCollisionUtil::MtList::createProperty")
-    /* stub */
+void MtCollisionUtil::MtList::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpRoot", reinterpret_cast<MtObject* *>(&mpRoot), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpTail", reinterpret_cast<MtObject* *>(&mpTail), 16u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mFlgAutoDelete", &mFlgAutoDelete, 0u, 0u);
 }
 
 inline MtCollisionUtil::MtList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 MtCollisionUtil::MtList::MyDTI MtCollisionUtil::MtList::DTI("MtCollisionUtil::MtList", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* MtCollisionUtil::MtList::MyDTI::newInstance() const {
-    DDON_STUB("MtCollisionUtil::MtList::MyDTI::newInstance")
-    return nullptr;
+MtObject* MtCollisionUtil::MtList::MyDTI::newInstance() const {
+    return new (16u) ::MtCollisionUtil::MtList;
 }
 
 const MtDTI& MtCollisionUtil::MtTreeDTI::getDTI() const {

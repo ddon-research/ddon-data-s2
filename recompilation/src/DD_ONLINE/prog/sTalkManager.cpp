@@ -150,9 +150,8 @@ __attribute__((weak)) void sTalkManager::notifyUpdatesQuestPurpose(nQuest::SCHED
     /* stub */
 }
 
-__attribute__((weak)) void sTalkManager::notifyChangeLeader() {
-    DDON_STUB("sTalkManager::notifyChangeLeader")
-    /* stub */
+void sTalkManager::notifyChangeLeader() {
+    mSelectQuestScheduleId.mScheduleId = nQuest::INVALID_SCHEDULE_ID.mScheduleId;
 }
 
 uControl* sTalkManager::getNpcCtrl() const {
@@ -192,11 +191,11 @@ u32 sTalkManager::getNpcSex() const {
         v2_8 = 0;
     } else {
         const MtDTI& t0 = v0_3->getDTI();
-        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uNpc::DTI) + 8);
+        MT_CTSTR v0_1 = uNpc::DTI.mName;
         for (const MtDTI* v0_0 = &t0;;) {
-            if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
-                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
                 } else {
                     break;
                 }
@@ -254,14 +253,13 @@ u8 sTalkManager::getInnRno0() const {
     }
 }
 
-__attribute__((weak)) void sTalkManager::setScheduleId(nQuest::SCHEDULE_ID scheduleId) {
-    DDON_STUB("sTalkManager::setScheduleId")
-    /* stub */
+void sTalkManager::setScheduleId(nQuest::SCHEDULE_ID scheduleId) {
+    mSelectQuestScheduleId.mScheduleId = scheduleId.mScheduleId;
 }
 
-__attribute__((weak)) void sTalkManager::forceInterrupt() {
-    DDON_STUB("sTalkManager::forceInterrupt")
-    /* stub */
+void sTalkManager::forceInterrupt() {
+    mSelectQuestScheduleId.mScheduleId = nQuest::INVALID_SCHEDULE_ID.mScheduleId;
+    mRno0 = 4;
 }
 
 void sTalkManager::killAllNpcMessage() {
@@ -389,9 +387,103 @@ __attribute__((weak)) void sTalkManager::moveNormalMsg() {
     /* stub */
 }
 
-__attribute__((weak)) void sTalkManager::moveTalkExit() {
-    DDON_STUB("sTalkManager::moveTalkExit")
-    /* stub */
+void sTalkManager::moveTalkExit() {
+    if (sPlayerManager::getInstance()->getMyPlayer() != nullptr) {
+        if (sPlayerManager::getInstance()->getMyPlayer()->mpKeyCommand != nullptr) {
+            if (sPlayerManager::getInstance()->getMyPlayer()->mpKeyCommand->isActive()) {
+                sPlayerManager::getInstance()->getMyPlayer()->mpKeyCommand->setActiveCheckCommand(true, cpKeyCommand::CHECK_CMD_PRI_SYS);
+            }
+        }
+    }
+    sQuestManagerExt* v1_4 = sQuestManagerExt::getInstance();
+    s32 v1_3;
+    if (mpTalkTarget == nullptr) {
+        v1_3 = 0;
+    } else {
+        if (mpTalkTarget->mpTalk == nullptr) {
+            v1_3 = 0;
+        } else {
+            v1_3 = mpTalkTarget->mpTalk->getNpcId();
+        }
+    }
+    v1_4->notifyTalkEnd(static_cast<u32>(v1_3));
+    static_cast<sGUIExt*>(sGUI::getInstance())->finishNpcWindow();
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteTelop();
+    if (mpTalkTarget != nullptr) {
+        mpTalkTarget->requestReleaseTouch(static_cast<uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), nDDOModel::TOUCH_RELEASE_FINISH);
+        mpTalkTarget = nullptr;
+    }
+    sControlManager::getInstance()->resetClanBaseManager();
+    sFlag::getInstance()->setFlag(4u, 14u, false, true, false);
+    if (mpTalkState != nullptr) {
+        mpTalkState->finalize();
+        if (mpTalkState != nullptr) {
+            delete mpTalkState;
+            mpTalkState = nullptr;
+        }
+    }
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteQuestInfo();
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteDeliveryItem();
+    if (mpGUISingletonMenu != nullptr) {
+        if (mpGUISingletonMenu == static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->killSingletonMenu();
+        }
+    }
+    mpGUISingletonMenu = nullptr;
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteShopTitle();
+    if (mSelectData.mLength != 0) {
+        u32 v5_0 = mSelectData.mLength;
+        unsigned int i5_3 = 0;
+        u32 v6_0;
+        for (;;) {
+            if (mSelectData.mpArray[i5_3] == nullptr) {
+                v6_0 = v5_0;
+            } else {
+                delete mSelectData.mpArray[i5_3];
+                v6_0 = mSelectData.mLength;
+            }
+            if ((i5_3 + 1u) < v6_0) {
+                v5_0 = v6_0;
+                i5_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mSelectData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSelectData.mpArray));
+    }
+    mSelectData.mpArray = nullptr;
+    mSelectData.mBufsiz = 0;
+    mSelectData.mLength = 0;
+    if (mSelectMember.mLength != 0) {
+        u32 v9_0 = mSelectMember.mLength;
+        unsigned int i9_3 = 0;
+        u32 v10_0;
+        for (;;) {
+            if (mSelectMember.mpArray[i9_3] == nullptr) {
+                v10_0 = v9_0;
+            } else {
+                delete mSelectMember.mpArray[i9_3];
+                v10_0 = mSelectMember.mLength;
+            }
+            if ((i9_3 + 1u) < v10_0) {
+                v9_0 = v10_0;
+                i9_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mSelectMember.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSelectMember.mpArray));
+    }
+    mSelectMember.mpArray = nullptr;
+    mSelectMember.mBufsiz = 0;
+    mSelectMember.mLength = 0;
+    mRno0 = 0;
+    mSelectQuestScheduleId.mScheduleId = nQuest::INVALID_SCHEDULE_ID.mScheduleId;
+    mIsChangeClanManager = false;
 }
 
 __attribute__((weak)) void sTalkManager::requestVoice(cTalkMsgData& MsgData) {

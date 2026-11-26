@@ -132,7 +132,7 @@ namespace MtCollisionUtil {
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         MtDtiSelecterIntermediate();
-        virtual ~MtDtiSelecterIntermediate();
+        virtual ~MtDtiSelecterIntermediate() {}
     public:
         static MyDTI DTI;
     };
@@ -284,7 +284,7 @@ namespace MtCollisionUtil {
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         MtDtiSelecter();
-        virtual ~MtDtiSelecter();
+        virtual ~MtDtiSelecter() {}
     public:
         static MyDTI DTI;
     };
@@ -308,4 +308,8 @@ inline void* MtCollisionUtil::MtDtiSelecterIntermediate::operator new(size_t sz,
 
 inline void* MtCollisionUtil::MtFuncBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline MtCollisionUtil::MtFuncBase::MtFuncBase() {
+    this->mpName = nullptr;
 }

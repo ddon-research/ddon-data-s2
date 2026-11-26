@@ -8,6 +8,10 @@
 #include "../../DD_ONLINE/prog/nDDOUtility.h"
 #include "../../DD_ONLINE/prog/res_ptr.h"
 
+#include "../../MT/MtMath.h"
+#include "../../MT/MtPrimitive2D.h"
+#include "../../MT/MtString.h"
+
 // Forward declarations
 class MtColor;
 class MtDataReader;
@@ -114,10 +118,6 @@ namespace nDDOIO {
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/sResource.h"
 
-#include "../../MT/MtMath.h"
-#include "../../MT/MtPrimitive2D.h"
-#include "../../MT/MtString.h"
-
 inline void nDDOIO::readData(MtDataReader& r, u8& data) {
     data = r.::MtDataReader::readU8();
 }
@@ -174,6 +174,13 @@ inline void nDDOIO::writeData(MtDataWriter& w, u64 data) {
     w.writeU64(data);
 }
 
+inline void nDDOIO::writeData(MtDataWriter& w, const MtMatrix& data) {
+    w.writeV4(MtFloat4(data.m[0].x, data.m[0].y, data.m[0].z, data.m[0].w));
+    w.writeV4(MtFloat4(data.m[1].x, data.m[1].y, data.m[1].z, data.m[1].w));
+    w.writeV4(MtFloat4(data.m[2].x, data.m[2].y, data.m[2].z, data.m[2].w));
+    w.writeV4(MtFloat4(data.m[3].x, data.m[3].y, data.m[3].z, data.m[3].w));
+}
+
 template <typename T>
 inline void nDDOIO::readClass(MtDataReader& r, T& obj) {
     obj.load(r);
@@ -197,6 +204,20 @@ void nDDOIO::readMtArray(MtDataReader& r, MtTypedArray<T>& ar) {
     }
 }
 
+template <typename T>
+void nDDOIO::readMtArrayEx(MtDataReader& r, MtTypedArray<T>& ar) {
+    ar.deleteAll(true);
+    u32 num = r.readU32();
+    if (num > 0) {
+        ar.reserve(num);
+    }
+    for (u32 i = 0; i < num; i++) {
+        T* pElement = static_cast<T*>(MtDTI::from(r.readU32())->newInstance());
+        pElement->load(r);
+        ar.add(pElement);
+    }
+}
+
 inline void nDDOIO::readData(MtDataReader& r, MtVector3& data) {
     data = r.readV3();
 }
@@ -214,6 +235,11 @@ inline void nDDOIO::readDataArray(MtDataReader& r, u32* data, u32 bufNum) {
 inline void nDDOIO::readDataArray(MtDataReader& r, f32* data, u32 bufNum) {
     u32 num = r.readU32();
     r.read(data, num * sizeof(f32));
+}
+
+inline void nDDOIO::readDataArray(MtDataReader& r, s32* data, u32 bufNum) {
+    u32 num = r.readU32();
+    r.read(data, num * sizeof(s32));
 }
 
 inline void nDDOIO::writeData(MtDataWriter& w, u8 data) {
@@ -317,4 +343,14 @@ inline void nDDOIO::readData(MtDataReader& r, MtString& data) {
 
 inline void nDDOIO::writeData(MtDataWriter& w, const MtString& data) {
     w.writeString(data.ptr());
+}
+
+inline void nDDOIO::writeDataArray(MtDataWriter& w, u32* data, u32 num) {
+    w.writeU32(num);
+    w.write(data, num * sizeof(u32));
+}
+
+template <unsigned int N>
+void nDDOIO::writeData(MtDataWriter& w, nDDOUtility::cBitSet<N>& data) {
+    writeDataArray(w, data.toArrayPtr(), data.AR_NUM);
 }

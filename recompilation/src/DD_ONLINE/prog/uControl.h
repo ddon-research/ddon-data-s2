@@ -22,6 +22,7 @@ class cContextInstance;
 class cContextInterface;
 class cGroupParam;
 class cPlayerLoadManager;
+class cQuestPersonalData;
 class cTagArcLoad;
 class cpLayout;
 namespace nLayout { struct stLayoutID; }
@@ -32,6 +33,7 @@ class rArchive;
 class sControlManager;
 class sSetManager;
 class uCharacter;
+class uControlEnemy;
 class uControlNpc;
 class uDDOModel;
 class uNpc;
@@ -55,10 +57,12 @@ using u8 = unsigned char;
 class uControl : public cUnit
 {
     friend class cPlayerLoadManager;
+    friend class cQuestPersonalData;
     friend class cpLayout;
     friend class sControlManager;
     friend class sSetManager;
     friend class uCharacter;
+    friend class uControlEnemy;
     friend class uControlNpc;
     friend class uNpc;
     friend class uPlayer;
@@ -297,11 +301,6 @@ inline cContextInstance* uControl::getContextInst() {
     return this->mpContextInst;
 }
 
-inline void uControl::setContextInst(cContextInstance* pContextInst) {
-    this->mpContextInst = pContextInst;
-    this->mContextInterface.mpContextInstance = pContextInst;
-}
-
 inline void uControl::releaseSaveNetMessage() {
     this->mIsSaveSendAct = false;
 }
@@ -333,10 +332,6 @@ inline u32 uControl::getBtlBgmReqNo() const {
 
 inline u32 uControl::getNamedParamsId() const {
     return this->mNamedParamsId;
-}
-
-inline void uControl::setSetNo(s32 no) {
-    this->mLayout.mSetNo = no;
 }
 
 inline s32 uControl::getSetNo() const {

@@ -13,7 +13,7 @@
 #include "../../XFramework/cZoneExtendObject.h"
 #include "../../XFramework/cZoneLayout.h"
 #include "../../XFramework/cZoneListener.h"
-#include "../../generated/rLayout/nSoundZone.h"
+#include "../../generated/shared/nSoundZone.h"
 #include "../../XFramework/nZone.h"
 #include "../../XFramework/sZone.h"
 #include "../../XFramework/uModel.h"
@@ -44,9 +44,9 @@ MtUI* cSoundLayoutInfo::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cSoundLayoutInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSoundLayoutInfo::createProperty")
-    /* stub */
+void cSoundLayoutInfo::createProperty(MtPropertyList& s) {
+    this->cZoneExtendObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneHit", &mZoneHit, 3u, 0u);
 }
 
 __attribute__((weak)) void cSoundLayoutInfo::evChangeEnable(bool flag) {
@@ -95,14 +95,13 @@ MtUI* cSoundZoneListener::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cSoundZoneListener::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSoundZoneListener::createProperty")
-    /* stub */
+void cSoundZoneListener::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mMyPos", &mMyPos, 0u, 0u);
+    this->cZoneListener::createProperty(s);
 }
 
-__attribute__((weak)) MtVector3 cSoundZoneListener::myPos() {
-    DDON_STUB("cSoundZoneListener::myPos")
-    __builtin_unreachable();
+MtVector3 cSoundZoneListener::myPos() {
+    return mMyPos;
 }
 
 void cSoundZoneListener::setMyPos(const MtVector3& pos) {
@@ -164,9 +163,10 @@ MtUI* uSoundZoneBase::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uSoundZoneBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSoundZoneBase::createProperty")
-    /* stub */
+void uSoundZoneBase::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "ParentModel", reinterpret_cast<MtObject* *>(&mpParentModel), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParentJntNo", &mParentJntNo, 0u, 0u);
+    this->cUnit::createProperty(s);
 }
 
 __attribute__((weak)) void uSoundZoneBase::setup() {
@@ -258,9 +258,12 @@ cSoundZoneListener* uSoundZoneBase::getZoneListener() {
     return nullptr;
 }
 
-__attribute__((weak)) MtVector3 uSoundZoneBase::getZoneListenerPos() {
-    DDON_STUB("uSoundZoneBase::getZoneListenerPos")
-    __builtin_unreachable();
+MtVector3 uSoundZoneBase::getZoneListenerPos() {
+    if (getZoneListener() != nullptr) {
+        return getZoneListener()->myPos();
+    } else {
+        return MtVector3::Zero;
+    }
 }
 
 void uSoundZoneBase::setZoneListenerPos(const MtVector3& NewListenerPos) {
@@ -283,9 +286,11 @@ cZoneLayout* uSoundZoneBase::getZoneLayout() {
     }
 }
 
-__attribute__((weak)) void uSoundZoneBase::setQuat(MtQuaternion& quat) {
-    DDON_STUB("uSoundZoneBase::setQuat")
-    /* stub */
+void uSoundZoneBase::setQuat(MtQuaternion& quat) {
+    mQuat.x = quat.x;
+    mQuat.y = quat.y;
+    mQuat.z = quat.z;
+    mQuat.w = quat.w;
 }
 
 uSoundZoneBase::cGroupManager* uSoundZoneBase::getGroupManagerFromLayout(nZone::cLayoutElement* pLayoutElement) {
@@ -320,9 +325,27 @@ uSoundZoneBase::cGroupManager* uSoundZoneBase::getGroupManagerFromGroupId(s32 gr
     }
 }
 
-__attribute__((weak)) void uSoundZoneBase::updateZoneHit() {
-    DDON_STUB("uSoundZoneBase::updateZoneHit")
-    /* stub */
+void uSoundZoneBase::updateZoneHit() {
+    cSoundZoneListener* t0 = getZoneListener();
+    if (t0 != nullptr) {
+        cZoneLayout* pZone = t0->getZoneLayout();
+        if (pZone != nullptr) {
+            const u32 layoutNum = pZone->getLayoutElementNum();
+            if (layoutNum != 0) {
+                for (unsigned int i0_3 = 0;;) {
+                    cSoundLayoutInfo* t1 = nSoundZone::getLayoutInfoFromZoneLayout(pZone, i0_3);
+                    if (t1 != nullptr) {
+                        t1->mZoneHit = (((t1->mZoneHit & 13u) == 0) ? (t1->mZoneHit & 0xFFFFFFF0u) : (t1->mZoneHit | 2u)) & 0xFFFFFFF2u;
+                    }
+                    if (layoutNum != (i0_3 + 1u)) {
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 void uSoundZoneBase::clearZoneHit() {

@@ -246,6 +246,10 @@ inline void* cSeedServerConnection::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cSeedServerStream& cSeedServerConnection::readStream() {
+    return *this->mpReadStream;
+}
+
 inline cSeedServerStream& cSeedServerConnection::pendingStream() {
     return this->mPendingStream;
 }

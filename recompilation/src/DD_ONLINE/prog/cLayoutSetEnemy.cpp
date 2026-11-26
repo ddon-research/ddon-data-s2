@@ -10,6 +10,7 @@
 #include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "Protocol/PacketData/Stage.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
 #include "cContextInstance.h"
@@ -227,9 +228,31 @@ __attribute__((weak)) void cLayoutSetEnemy::moveSetUnitSever() {
     /* stub */
 }
 
-__attribute__((weak)) void cLayoutSetEnemy::moveSetUnitSubGroupSever(u32 flagNo, u32 idx) {
-    DDON_STUB("cLayoutSetEnemy::moveSetUnitSubGroupSever")
-    /* stub */
+void cLayoutSetEnemy::moveSetUnitSubGroupSever(u32 flagNo, u32 idx) {
+    cGroupParam* pGP = getGroupParam();
+    if (pGP == nullptr) {
+        return;
+    }
+    if ((flagNo + 1u) <= 31u) {
+        if (((static_cast<unsigned long>(pGP->mSubGroupRequestBit) >> static_cast<unsigned long>((flagNo + 1u) & 31u)) & 1ul) != 0) {
+            if ((static_cast<unsigned long>(pGP->mSubGroupSetupBit) & (1ul << static_cast<unsigned long>(static_cast<unsigned char>(flagNo + 1u) & 31))) != 0) {
+                MtObject* t0 = setLayoutUnitSever(mpRsrc, idx, false, 2u);
+                mUnitArray.mpArray[idx] = t0;
+            } else {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sNetwork::getInstance()) + 3680)) + 712)) == 4) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog();
+                }
+            }
+        } else {
+            CDataStageLayoutID frame80(nLayout::createStageLayoutId(static_cast<u32>(sGame::getInstance()->getStageNo()), pGP->getLayer(), pGP->mDataCommon & 511u));
+            if (!!static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getEnemySetList(frame80, flagNo + 1u)) {
+                pGP->mSubGroupRequestBit = static_cast<unsigned int>(static_cast<unsigned long>(pGP->mSubGroupRequestBit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(flagNo + 1u) & 31)));
+            }
+        }
+    } else {
+        CDataStageLayoutID frame80(nLayout::createStageLayoutId(static_cast<u32>(sGame::getInstance()->getStageNo()), pGP->getLayer(), pGP->mDataCommon & 511u));
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getEnemySetList(frame80, flagNo + 1u);
+    }
 }
 
 inline cLayoutSetEnemy::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

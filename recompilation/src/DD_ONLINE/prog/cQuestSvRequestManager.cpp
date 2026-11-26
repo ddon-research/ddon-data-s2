@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "cQuestSvRequestManager.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -12,7 +13,6 @@
 #include "cQuestResourceLoadManager.h"
 #include "cQuestSvRequest.h"
 #include "nQuest.h"
-#include "../../XFramework/rGUIMessage.h"
 #include "sContextManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
@@ -61,9 +61,50 @@ __attribute__((weak)) bool cQuestSvRequestManager::hasRequest(const MtObject* pF
     return {};
 }
 
-__attribute__((weak)) bool cQuestSvRequestManager::canRequest(bool isDispAnnounce) {
-    DDON_STUB("cQuestSvRequestManager::canRequest")
-    return {};
+bool cQuestSvRequestManager::canRequest(bool isDispAnnounce) {
+    sNetwork* t0 = sNetwork::getInstance();
+    cNetGameServer* t1 = static_cast<sNetworkExt*>(t0)->getGameServer();
+    sNetworkExt::NET_STAT t2 = t1->mStatus[43];
+    if (t2 != sNetworkExt::NET_STAT_REQ) {
+        sGame* t3 = sGame::getInstance();
+        s32 t4 = t3->getSelfMemberIndex();
+        unsigned char t6 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(reinterpret_cast<char*>(t3) + t4) + 216);
+        if (t6 == 0) {
+            if (!isDispAnnounce) {
+                return false;
+            } else {
+                sGUI* t11 = sGUI::getInstance();
+                rGUIMessage* t12 = static_cast<sGUIExt*>(t11)->getMsgCommonDialog();
+                MT_CTSTR t13 = static_cast<sGUIExt*>(t11)->getMsgFromIdxInfo(t12, 385u);
+                static_cast<sGUIExt*>(t11)->requestAnnounce(t13, 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+                return false;
+            }
+        }
+    } else {
+        return false;
+    }
+    u32 i = 0;
+    do {
+        sContextManager* t7 = sContextManager::getInstance();
+        cContextInstHm* t8 = t7->getContextPartyPlayerIndex(i, true);
+        if (t8 != nullptr) {
+            if ((t8->mIsValid & 1) != 0) {
+                if ((t8->mIsValid & 11) != 11) {
+                    if (isDispAnnounce) {
+                        sGUI* t11 = sGUI::getInstance();
+                        rGUIMessage* t12 = static_cast<sGUIExt*>(t11)->getMsgCommonDialog();
+                        MT_CTSTR t13 = static_cast<sGUIExt*>(t11)->getMsgFromIdxInfo(t12, 385u);
+                        static_cast<sGUIExt*>(t11)->requestAnnounce(t13, 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+                        return false;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+        i += 1u;
+    } while (i <= 7u);
+    return true;
 }
 
 bool cQuestSvRequestManager::isEmpty() const {
@@ -75,8 +116,58 @@ bool cQuestSvRequestManager::canReqQuestProgres() const {
 }
 
 __attribute__((weak)) cQuestSvRequestManager& cQuestSvRequestManager::pushRequest(cQuestSvRequest* pSvReq) {
-    DDON_STUB("cQuestSvRequestManager::pushRequest")
-    __builtin_unreachable();
+    if (pSvReq != nullptr) {
+        const MtDTI& t0 = pSvReq->getDTI();
+        MT_CTSTR v0_1 = cQuestSvReqQuestProgress::DTI.mName;
+        const MtDTI* v0_0 = &t0;
+        const MtDTI* v1_0;
+        cQuestSvRequest* v2_2;
+        for (;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                const MtDTI& t1 = pSvReq->getDTI();
+                MT_CTSTR v1_1 = cQuestSvReqQuestProgress::DTI.mName;
+                v1_0 = &t1;
+                for (;;) {
+                    if (v1_1 == v1_0->mName) {
+                        v2_2 = pSvReq;
+                        break;
+                    } else {
+                        if (v1_0->mpParent != nullptr) {
+                            v1_0 = v1_0->mpParent;
+                        } else {
+                            v2_2 = nullptr;
+                            break;
+                        }
+                    }
+                }
+                mpQuestProgressReq = static_cast<cQuestSvReqQuestProgress*>(v2_2);
+                break;
+            }
+        }
+        u32 t2 = mQuestSvRequestQueue.mLength;
+        u32 t3 = mQuestSvRequestQueue.mBufsiz;
+        if (t2 < t3) {
+            mQuestSvRequestQueue.mLength = t2 + 1u;
+            mQuestSvRequestQueue.mpArray[t2] = static_cast<MtObject*>(pSvReq);
+        } else {
+            void* t4 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t3 + 32u) * 8, 16u);
+            memset(t4, 0, static_cast<size_t>(t3 + 32u) * 8);
+            memcpy(t4, static_cast<const void*>(mQuestSvRequestQueue.mpArray), static_cast<size_t>(mQuestSvRequestQueue.mLength) * 8);
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuestSvRequestQueue.mpArray));
+            mQuestSvRequestQueue.mpArray = static_cast<MtObject* *>(t4);
+            mQuestSvRequestQueue.mBufsiz = t3 + 32u;
+            u32 t5 = mQuestSvRequestQueue.mLength;
+            mQuestSvRequestQueue.mLength = t5 + 1u;
+            mQuestSvRequestQueue.mpArray[t5] = static_cast<MtObject*>(pSvReq);
+        }
+    }
+    return *this;
 }
 
 __attribute__((weak)) cQuestSvRequestManager& cQuestSvRequestManager::removeRequest(const MtObject* pFromClass) {

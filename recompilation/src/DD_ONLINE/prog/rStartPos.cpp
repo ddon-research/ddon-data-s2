@@ -72,9 +72,9 @@ MT_CTSTR rStartPos::getName() const {
     return "rStartPos";
 }
 
-__attribute__((weak)) void rStartPos::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStartPos::createProperty")
-    /* stub */
+void rStartPos::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "InfoList", static_cast<MtObject*>(&mInfoList), 1024u, 0u);
 }
 
 MtUI* rStartPos::createUI(MtProperty& prop) {
@@ -163,14 +163,15 @@ inline rStartPos::Info::Info() {
 rStartPos::Info::~Info() {
 }
 
-__attribute__((weak)) void rStartPos::Info::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStartPos::Info::createProperty")
-    /* stub */
+void rStartPos::Info::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Pos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Ang", &mAng, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "OfsPos", reinterpret_cast<MT_MFUNC>(&::rStartPos::Info::getOfsPos), reinterpret_cast<MT_MFUNC>(&::rStartPos::Info::setOfsPos), 160u, reinterpret_cast<MT_MFUNC>(&::rStartPos::Info::getOfsPosNum), reinterpret_cast<MT_MFUNC>(&::rStartPos::Info::setOfsPosNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "OfsAng", reinterpret_cast<MT_MFUNC>(&::rStartPos::Info::getOfsAng), reinterpret_cast<MT_MFUNC>(&::rStartPos::Info::setOfsAng), 160u, reinterpret_cast<MT_MFUNC>(&::rStartPos::Info::getOfsAngNum), reinterpret_cast<MT_MFUNC>(&::rStartPos::Info::setOfsAngNum));
 }
 
-__attribute__((weak)) MtVector3 rStartPos::Info::getOfsPos(u32 idx) const {
-    DDON_STUB("rStartPos::Info::getOfsPos")
-    __builtin_unreachable();
+MtVector3 rStartPos::Info::getOfsPos(u32 idx) const {
+    return mOfsPos[idx];
 }
 
 void rStartPos::Info::setOfsPos(MtVector3& ofs, u32 idx) {

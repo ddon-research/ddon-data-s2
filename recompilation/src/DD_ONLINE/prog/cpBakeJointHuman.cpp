@@ -73,9 +73,10 @@ void cpBakeJointHuman::setOwner(MtObject* pOwner) {
 __attribute__((weak)) void cpBakeJointHuman::setupComponentPtr() {
 }
 
-__attribute__((weak)) void cpBakeJointHuman::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpBakeJointHuman::createProperty")
-    /* stub */
+void cpBakeJointHuman::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mBakeType", &mBakeType, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBakeRequestType", &mBakeRequestType, 0u, 0u);
 }
 
 void cpBakeJointHuman::requestBake(u32 type, s32 timer) {

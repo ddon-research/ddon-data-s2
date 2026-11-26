@@ -216,25 +216,23 @@ void cpHpDamageCtrl::update() {
         mShakeInfo.update(t0);
         mDownInfo.update(t0);
         mRageShrinkInfo.update(t0);
-        if (mParentRegionStatusArray.mLength == 0) {
-            f0 = t0;
-            goto region_4825f3;
-        } else {
+        if (mParentRegionStatusArray.mLength != 0) {
             f0 = t0;
             v0_0 = mParentRegionStatusArray.mLength;
             i0_3 = 0;
+        } else {
+            goto region_4825f3;
         }
     } else {
         mShakeInfo.update(1.0f);
         mDownInfo.update(1.0f);
         mRageShrinkInfo.update(1.0f);
-        if (mParentRegionStatusArray.mLength == 0) {
-            f0 = 1.0f;
-            goto region_4825f3;
-        } else {
+        if (mParentRegionStatusArray.mLength != 0) {
             f0 = 1.0f;
             v0_0 = mParentRegionStatusArray.mLength;
             i0_3 = 0;
+        } else {
+            goto region_4825f3;
         }
     }
     u32 v1_0;

@@ -22,6 +22,7 @@
 #include "sGUIExt.h"
 #include "sGame.h"
 #include "sQuestManagerExt.h"
+#include "uGUISystemMsg.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -88,7 +89,7 @@ __attribute__((weak)) void sTutorialGuide::loadGuideArc(u32 GuideNo) {
 }
 
 bool sTutorialGuide::isFinishLoadGuideData(u32 GuideNo) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 32)) != 0) {
+    if (mOpenGuideList.mLength != 0) {
         u32 i = 0;
         do {
             if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mOpenGuideList.getBuffer()[static_cast<int>(i)]) + 8)) == GuideNo) {
@@ -98,7 +99,7 @@ bool sTutorialGuide::isFinishLoadGuideData(u32 GuideNo) {
                 return false;
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 32)));
+        } while (i < mOpenGuideList.mLength);
     }
     return false;
 }
@@ -124,21 +125,21 @@ void sTutorialGuide::releaseGuideData() {
 }
 
 sTutorialGuide::cOpenGuideNo* sTutorialGuide::getOpenGuideData(u32 GuideNo) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 32)) != 0) {
+    if (mOpenGuideList.mLength != 0) {
         u32 i = 0;
         do {
             if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mOpenGuideList.getBuffer()[static_cast<int>(i)]) + 8)) == GuideNo) {
                 return static_cast<cOpenGuideNo*>(mOpenGuideList.getBuffer()[static_cast<int>(i)]);
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 32)));
+        } while (i < mOpenGuideList.mLength);
     }
     return nullptr;
 }
 
 MT_CTSTR sTutorialGuide::getGuideName(u32 GuideNo) {
     if (mpTutorialList != nullptr) {
-        unsigned int v0_3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpTutorialList) + 120);
+        u32 v0_3 = mpTutorialList->mArray.mLength;
         if (v0_3 != 0) {
             MtObject* * v0_1 = mpTutorialList->mArray.getBuffer();
             for (unsigned int i0_2 = 0;;) {
@@ -167,7 +168,7 @@ u32 sTutorialGuide::getCategory(u32 GuideNo) {
     if (mpTutorialList == nullptr) {
         v2_0 = 0;
     } else {
-        unsigned int v0_3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpTutorialList) + 120);
+        u32 v0_3 = mpTutorialList->mArray.mLength;
         if (v0_3 == 0) {
             v2_0 = 0;
         } else {
@@ -214,9 +215,54 @@ __attribute__((weak)) void sTutorialGuide::addOpenGuideNo(u32 openGuideNo) {
     /* stub */
 }
 
-__attribute__((weak)) void sTutorialGuide::finalGame() {
-    DDON_STUB("sTutorialGuide::finalGame")
-    /* stub */
+void sTutorialGuide::finalGame() {
+    if (mpTutorialDetail != nullptr) {
+        mpTutorialDetail->release();
+        mpTutorialDetail = nullptr;
+    }
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
+    }
+    if (mpTutorialName != nullptr) {
+        mpTutorialName->release();
+        mpTutorialName = nullptr;
+    }
+    if (mpTutorialList != nullptr) {
+        mpTutorialList->release();
+        mpTutorialList = nullptr;
+    }
+    if (mOpenGuideList.mLength != 0) {
+        u32 v0_0 = mOpenGuideList.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mOpenGuideList.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mOpenGuideList.mpArray[i0_3];
+                v1_0 = mOpenGuideList.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mOpenGuideList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mOpenGuideList.mpArray));
+    }
+    mOpenGuideList.mpArray = nullptr;
+    mOpenGuideList.mBufsiz = 0;
+    mOpenGuideList.mLength = 0;
+    cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+    if (mArcTicketTGuide != t0) {
+        sArchiveManager::getInstance()->returnTicket(mArcTicketTGuide);
+        mArcTicketTGuide = t0;
+    }
+    mDispGuideNo = 0;
 }
 
 sTutorialGuide::sTutorialGuide() {
@@ -258,9 +304,8 @@ sTutorialGuide::~sTutorialGuide() {
     sTutorialGuide::mpInstance = nullptr;
 }
 
-__attribute__((weak)) void sTutorialGuide::createProperty(MtPropertyList& s) {
-    DDON_STUB("sTutorialGuide::createProperty")
-    /* stub */
+void sTutorialGuide::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mOpenGuideList", static_cast<MtObject*>(&mOpenGuideList), 0u, 0u);
 }
 
 inline sTutorialGuide::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -304,9 +349,8 @@ sTutorialGuide::cOpenGuideNo::~cOpenGuideNo() {
     }
 }
 
-__attribute__((weak)) void sTutorialGuide::cOpenGuideNo::createProperty(MtPropertyList& s) {
-    DDON_STUB("sTutorialGuide::cOpenGuideNo::createProperty")
-    /* stub */
+void sTutorialGuide::cOpenGuideNo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mGuideNo", &mGuideNo, 0u, 0u);
 }
 
 __attribute__((weak)) void sTutorialGuide::cOpenGuideNo::move() {

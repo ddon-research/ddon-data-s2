@@ -10,14 +10,12 @@
 #define DDON_STUB(name)
 #endif
 
-__attribute__((weak)) u16 MtNetByteOrder::netToHost16(u16 net_u16) {
-    DDON_STUB("MtNetByteOrder::netToHost16")
-    return {};
+u16 MtNetByteOrder::netToHost16(u16 net_u16) {
+    return __builtin_bswap16(static_cast<unsigned short>(net_u16));
 }
 
-__attribute__((weak)) u16 MtNetByteOrder::hostToNet16(u16 host_u16) {
-    DDON_STUB("MtNetByteOrder::hostToNet16")
-    return {};
+u16 MtNetByteOrder::hostToNet16(u16 host_u16) {
+    return __builtin_bswap16(static_cast<unsigned short>(host_u16));
 }
 
 u32 MtNetByteOrder::netToHost32(u32 net_u32) {

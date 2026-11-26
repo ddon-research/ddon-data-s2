@@ -162,3 +162,19 @@ inline void* rCnsIK::operator new(size_t sz, void* p_addr) {
 inline void* rCnsIK::JointInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rCnsIK::JointInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rCnsIK::JointInfo::DTI)->memAlloc(sz, align, rCnsIK::JointInfo::DTI.getID());
+}
+
+inline rCnsIK::JointInfo::JointInfo() {
+    mJntNo = -1;
+    mRotMin = 0.0f;
+    mRotMax = 0.0f;
+    mOffset = 0.0f;
+    mScaleOffset = 1.0f;
+    mReverse = false;
+}

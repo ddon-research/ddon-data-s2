@@ -38,9 +38,23 @@ bool cEnemyStatusChange::IsTypeCheckMaster(u32 type, u32 changeStatus) {
     }
 }
 
-__attribute__((weak)) void cEnemyStatusChange::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEnemyStatusChange::createProperty")
-    /* stub */
+void cEnemyStatusChange::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupNo", &mGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupSubNo", &mGroupSubNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNextGroupSubNo", &mNextGroupSubNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNextGroupSubOneGo", &mNextGroupSubOneGo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "TypeSettingStatusChange", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "TypeReverse", &mTypeReverse, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSystemParam[0]", &mSystemParam[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSystemParam[1]", &mSystemParam[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSystemParam[2]", &mSystemParam[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRepeatSetting", &mRepeatSetting, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mChangeStatus", &mChangeStatus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSelectNo", &mSelectNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBitContrlCommand", &mBitContrlCommand, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParam[0]", &mParam[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParam[1]", &mParam[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSystemParamWait", &mSystemParamWait, 0u, 0u);
 }
 
 inline cEnemyStatusChange::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

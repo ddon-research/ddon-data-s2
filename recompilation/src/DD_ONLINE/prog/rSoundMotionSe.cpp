@@ -73,9 +73,9 @@ MT_CTSTR rSoundMotionSe::getExt() const {
     return "mser";
 }
 
-__attribute__((weak)) void rSoundMotionSe::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundMotionSe::createProperty")
-    /* stub */
+void rSoundMotionSe::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mMotionSe", static_cast<MtObject*>(&mMotionSe), 0u, 0u);
+    this->cResource::createProperty(s);
 }
 
 MtUI* rSoundMotionSe::createUI(MtProperty& prop) {
@@ -113,8 +113,35 @@ rSoundMotionSe::cSoundMotionSeData* rSoundMotionSe::getMotionSeDataFromUniqueID(
 }
 
 __attribute__((weak)) void rSoundMotionSe::createIDToIndexTbl() {
-    DDON_STUB("rSoundMotionSe::createIDToIndexTbl")
-    /* stub */
+    u32 dataNum = mMotionSe.size();
+    u16 maxUniqueID = 0;
+    for (u32 i = 0; i < dataNum; ++i) {
+        cSoundMotionSeData* pData = static_cast<cSoundMotionSeData*>(mMotionSe.getBuffer()[static_cast<s32>(i)]);
+        if (pData != nullptr) {
+            u16 uniqueID = static_cast<u16>(pData->getData()->mUniqueID);
+            if (uniqueID > maxUniqueID) {
+                maxUniqueID = uniqueID;
+            }
+        }
+    }
+    
+    if (mpIDToIndexTbl != nullptr) {
+        getAllocator()->memFree(mpIDToIndexTbl);
+        mpIDToIndexTbl = nullptr;
+    }
+    if (static_cast<s16>(maxUniqueID) < 0) {
+        return;
+    }
+    
+    mIDToIndexTblNum = maxUniqueID + 1;
+    mpIDToIndexTbl = static_cast<u16*>(getAllocator()->memAlloc(sizeof(*mpIDToIndexTbl) * mIDToIndexTblNum, 16));
+    memset(mpIDToIndexTbl, 0xff, sizeof(*mpIDToIndexTbl) * mIDToIndexTblNum);
+    for (u32 i = 0; i < dataNum; ++i) {
+        cSoundMotionSeData* pData = static_cast<cSoundMotionSeData*>(mMotionSe.getBuffer()[static_cast<s32>(i)]);
+        if (pData != nullptr) {
+            mpIDToIndexTbl[pData->getData()->mUniqueID] = static_cast<u16>(i);
+        }
+    }
 }
 
 inline rSoundMotionSe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -136,9 +163,19 @@ inline void rSoundMotionSe::cSoundMotionSeData::operator delete(void* p_addr) {
 rSoundMotionSe::cSoundMotionSeData::~cSoundMotionSeData() {
 }
 
-__attribute__((weak)) void rSoundMotionSe::cSoundMotionSeData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundMotionSe::cSoundMotionSeData::createProperty")
-    /* stub */
+void rSoundMotionSe::cSoundMotionSeData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "UniqueID", &mData.mUniqueID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ReqType", &mData.mRequestType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqNo_1", &mData.mSeReqNo_1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqNo_2", &mData.mSeReqNo_2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeReqNo_3", &mData.mSeReqNo_3, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeJointID", &mData.mSeJointID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SeJointAttachFlag", &mData.mSeJointAttachFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Offset", &mData.mOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UpMarginY", &mData.mUpMarginY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "DownMarginY", &mData.mDownMarginY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "AttributeSeFlag", &mData.mAttributeSeFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "FreeArea", &mData.mFreeArea[0], 32u, 2u);
 }
 
 MtUI* rSoundMotionSe::cSoundMotionSeData::createUI(MtProperty& prop) {
@@ -150,8 +187,7 @@ inline rSoundMotionSe::cSoundMotionSeData::MyDTI::MyDTI(MT_CTSTR class_name, MtD
 rSoundMotionSe::cSoundMotionSeData::MyDTI rSoundMotionSe::cSoundMotionSeData::DTI("rSoundMotionSe::cSoundMotionSeData", &::MtObject::DTI, 64ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rSoundMotionSe::cSoundMotionSeData::MyDTI::newInstance() const {
-    DDON_STUB("rSoundMotionSe::cSoundMotionSeData::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cSoundMotionSeData;
 }
 
 template MtTypedArray<rSoundMotionSe::cSoundMotionSeData>::~MtTypedArray();

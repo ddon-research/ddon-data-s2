@@ -43,8 +43,27 @@ cContextInstChar::~cContextInstChar() {
 }
 
 __attribute__((weak)) void cContextInstChar::createProperty(MtPropertyList& s) {
-    DDON_STUB("cContextInstChar::createProperty")
-    /* stub */
+    this->cContextInstance::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mIsDead", reinterpret_cast<MT_MFUNC>(&::cContextInstChar::isDead), reinterpret_cast<MT_MFUNC>(&::cContextInstChar::setIsDead), 161u, reinterpret_cast<MT_MFUNC>(&::cContextInstChar::getPRegionNum), reinterpret_cast<MT_MFUNC>(&::cContextInstChar::setDummyU32));
+    s << MtProperty(static_cast<MtObject*>(this), "mIsInjured", &mIsInjured, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsLost", &mIsLost, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsRescue", &mIsRescue, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsReturnTerritory", &mIsReturnTerritory, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\350\241\214\345\213\225\347\225\252\345\217\267", &mActNo[0], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\347\247\273\345\213\225\351\200\237\345\272\246", &mMoveSpeed, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\347\247\273\345\213\225\346\226\271\345\220\221", &mMoveAngle, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetUid", &mTargetUid, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetPos.x", &mTargetPos.x, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetPos.y", &mTargetPos.y, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetPos.z", &mTargetPos.z, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\205\261\351\200\232\343\203\257\343\203\274\343\202\257", &mCommonWork, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "PL,\346\225\265\347\224\250\350\207\252\347\224\261\343\203\257\343\203\274\343\202\257", &mCustomWork, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\263\343\203\201\343\203\243\343\203\263\343\203\210\345\200\215\347\216\207", &mEnchantRate, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\347\212\266\346\205\213\347\225\260\345\270\270\345\200\244", &mAilmentDamage, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\347\224\237\346\255\273\343\202\271\343\203\206\343\203\274\343\203\210", &mStateLive, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "LV", reinterpret_cast<MT_MFUNC>(&::cContextInstChar::getLv), reinterpret_cast<MT_MFUNC>(&::cContextInstChar::setLv), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\242\343\203\263\343\202\277\343\203\274\343\202\270\343\203\245\345\233\272\345\256\232\347\225\252\345\217\267", &mMontageFixNo, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\242\343\203\263\343\202\277\343\203\274\343\202\270\343\203\245\343\203\251\343\203\263\343\203\200\343\203\240\345\200\244", &mMontageRandom, 1u, 0u);
 }
 
 MtUI* cContextInstChar::createUI(MtProperty& prop) {
@@ -56,9 +75,8 @@ __attribute__((weak)) void cContextInstChar::reset() {
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cContextInstChar::getCliffPos() const {
-    DDON_STUB("cContextInstChar::getCliffPos")
-    __builtin_unreachable();
+MtVector3 cContextInstChar::getCliffPos() const {
+    return sWorldOffset::getInstance()->getOffsetNetPos(mCliffPos);
 }
 
 __attribute__((weak)) void cContextInstChar::setCliffPos(const MtVector3& pos) {
@@ -66,9 +84,8 @@ __attribute__((weak)) void cContextInstChar::setCliffPos(const MtVector3& pos) {
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cContextInstChar::getCliffStartPos() const {
-    DDON_STUB("cContextInstChar::getCliffStartPos")
-    __builtin_unreachable();
+MtVector3 cContextInstChar::getCliffStartPos() const {
+    return sWorldOffset::getInstance()->getOffsetNetPos(mCliffStartPos);
 }
 
 __attribute__((weak)) void cContextInstChar::setCliffStartPos(const MtVector3& pos) {
@@ -76,9 +93,8 @@ __attribute__((weak)) void cContextInstChar::setCliffStartPos(const MtVector3& p
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cContextInstChar::getCliffStartOldPos() const {
-    DDON_STUB("cContextInstChar::getCliffStartOldPos")
-    __builtin_unreachable();
+MtVector3 cContextInstChar::getCliffStartOldPos() const {
+    return sWorldOffset::getInstance()->getOffsetNetPos(mCliffStartOldPos);
 }
 
 __attribute__((weak)) void cContextInstChar::setCliffStartOldPos(const MtVector3& pos) {
@@ -86,9 +102,8 @@ __attribute__((weak)) void cContextInstChar::setCliffStartOldPos(const MtVector3
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cContextInstChar::getTargetPos() const {
-    DDON_STUB("cContextInstChar::getTargetPos")
-    __builtin_unreachable();
+MtVector3 cContextInstChar::getTargetPos() const {
+    return sWorldOffset::getInstance()->getOffsetNetPos(mTargetPos);
 }
 
 __attribute__((weak)) void cContextInstChar::setTargetPos(const MtVector3& pos) {
@@ -96,9 +111,8 @@ __attribute__((weak)) void cContextInstChar::setTargetPos(const MtVector3& pos) 
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cContextInstChar::getWallClimbPos() const {
-    DDON_STUB("cContextInstChar::getWallClimbPos")
-    __builtin_unreachable();
+MtVector3 cContextInstChar::getWallClimbPos() const {
+    return sWorldOffset::getInstance()->getOffsetNetPos(mWallClimbPos);
 }
 
 __attribute__((weak)) void cContextInstChar::setWallClimbPos(const MtVector3& pos) {
@@ -106,9 +120,8 @@ __attribute__((weak)) void cContextInstChar::setWallClimbPos(const MtVector3& po
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cContextInstChar::getWallClimbLandPos() const {
-    DDON_STUB("cContextInstChar::getWallClimbLandPos")
-    __builtin_unreachable();
+MtVector3 cContextInstChar::getWallClimbLandPos() const {
+    return sWorldOffset::getInstance()->getOffsetNetPos(mWallClimbLandPos);
 }
 
 __attribute__((weak)) void cContextInstChar::setWallClimbLandPos(const MtVector3& pos) {
@@ -307,9 +320,11 @@ const MtDTI& cContextInstEm::getDTI() const {
     return cContextInstEm::DTI;
 }
 
+inline void cContextInstEm::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cContextInstEm::DTI)->memFree(p_addr);
+}
+
 cContextInstEm::~cContextInstEm() {
-    DDON_STUB("cContextInstEm::~cContextInstEm")
-    /* stub */
 }
 
 void cContextInstEm::createProperty(MtPropertyList& s) {
@@ -359,8 +374,32 @@ cContextInstHm::~cContextInstHm() {
 }
 
 __attribute__((weak)) void cContextInstHm::createProperty(MtPropertyList& s) {
-    DDON_STUB("cContextInstHm::createProperty")
-    /* stub */
+    this->cContextInstChar::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "HumanType", &mHumanType, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "PawnType", &mPawnType, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CharId", &mCharId, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "PawnId", &mPawnId, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "PlLoadWep", &mPlayerLoadWeapon, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "PlLoadStatus", &mPlayerLoadStatus, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\255\343\202\271\343\203\210\346\231\202\351\226\223", &mLostTime, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\271\343\203\206\343\203\274\343\202\270", &mStageNo, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\210\235\346\234\237\345\272\247\346\250\231Index", &mStartPosNo, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\200\247\345\210\245", &mSex, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\253\343\203\251\343\203\274\343\202\277\343\202\244\343\203\227", &mColor, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\270\343\203\247\343\203\226", &mJob, 1u, 0u);
+    mEquip.cEquipData::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\344\275\215\347\275\256\345\272\247\346\250\231", &mPosFreeMarker[0], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\271\343\203\206\343\203\274\343\202\270No.", &mStageNoFreeMarker[0], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\260\343\203\253\343\203\274\343\203\227No.", &mGroupNoFreeMarker[0], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\344\275\215\347\275\256\345\272\247\346\250\231", &mPosFreeMarker[1], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\271\343\203\206\343\203\274\343\202\270No.", &mStageNoFreeMarker[1], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\260\343\203\253\343\203\274\343\203\227No.", &mGroupNoFreeMarker[1], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\344\275\215\347\275\256\345\272\247\346\250\231", &mPosFreeMarker[2], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\271\343\203\206\343\203\274\343\202\270No.", &mStageNoFreeMarker[2], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\260\343\203\253\343\203\274\343\203\227No.", &mGroupNoFreeMarker[2], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Ability099", &mIsAbility098, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Guts", &mIsGutsDisable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Ability370", &mIsAbility370, 1u, 0u);
 }
 
 MtUI* cContextInstHm::createUI(MtProperty& prop) {
@@ -385,9 +424,8 @@ __attribute__((weak)) void cContextInstHm::subLostTime() {
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cContextInstHm::getLastSafePos() const {
-    DDON_STUB("cContextInstHm::getLastSafePos")
-    __builtin_unreachable();
+MtVector3 cContextInstHm::getLastSafePos() const {
+    return sWorldOffset::getInstance()->getOffsetNetPos(mSafePos);
 }
 
 __attribute__((weak)) void cContextInstHm::setLastSafePos(const MtVector3& pos) {
@@ -408,9 +446,11 @@ const MtDTI& cContextInstNpc::getDTI() const {
     return cContextInstNpc::DTI;
 }
 
+inline void cContextInstNpc::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cContextInstNpc::DTI)->memFree(p_addr);
+}
+
 cContextInstNpc::~cContextInstNpc() {
-    DDON_STUB("cContextInstNpc::~cContextInstNpc")
-    /* stub */
 }
 
 void cContextInstNpc::createProperty(MtPropertyList& s) {
@@ -451,8 +491,20 @@ cContextInstance::~cContextInstance() {
 }
 
 __attribute__((weak)) void cContextInstance::createProperty(MtPropertyList& s) {
-    DDON_STUB("cContextInstance::createProperty")
-    /* stub */
+    this->cContext::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mUniqueId", &mUniqueId, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\234\211\345\212\271\346\200\247", &mIsValid, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSetWaitFlag", &mSetWaitFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "PosX", &mNetPos.x, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "PosY", &mNetPos.y, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "PosZ", &mNetPos.z, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Dir", &mNetDir, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Stage", &mStageNo, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMasterIndex", &mMasterIndex, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\263\343\202\253\343\202\246\343\203\263\343\203\210\343\202\250\343\203\252\343\202\242", &mMainEncountArea, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\216\264\343\201\277\343\202\277\343\202\244\343\203\227", &mCatchType, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\216\264\343\201\277\347\233\270\346\211\213UID", &mCatchTargetUid, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\216\264\343\201\277\343\202\263\343\203\263\343\202\271\343\203\210\351\226\242\347\257\200", &mCatchJointNo, 1u, 0u);
 }
 
 MtUI* cContextInstance::createUI(MtProperty& prop) {
@@ -477,9 +529,8 @@ void cContextInstance::reset() {
     mQuestId = 0;
 }
 
-__attribute__((weak)) MtVector3 cContextInstance::getNetPos() const {
-    DDON_STUB("cContextInstance::getNetPos")
-    __builtin_unreachable();
+MtVector3 cContextInstance::getNetPos() const {
+    return sWorldOffset::getInstance()->getOffsetNetPos(mNetPos);
 }
 
 __attribute__((weak)) void cContextInstance::setNetPos(const MtVector3& pos) {

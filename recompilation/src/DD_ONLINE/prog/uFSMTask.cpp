@@ -117,9 +117,17 @@ void uFSMTask::forcedTermination() {
     mpCore->mIsEnable = false;
 }
 
-__attribute__((weak)) MT_CTSTR uFSMTask::getFSMName() {
-    DDON_STUB("uFSMTask::getFSMName")
-    return {};
+MT_CTSTR uFSMTask::getFSMName() {
+    cFSMCore* t0 = getFSMCore();
+    if (t0 != nullptr) {
+        if (t0->mFSM.getResource(0u) != nullptr) {
+            return t0->mFSM.getResource(0u)->getName();
+        } else {
+            return "";
+        }
+    } else {
+        return "_NO ORDER_";
+    }
 }
 
 uFSMTask::~uFSMTask() {
@@ -135,9 +143,9 @@ __attribute__((weak)) MT_CTSTR uFSMTask::getName() {
     return {};
 }
 
-__attribute__((weak)) void uFSMTask::createProperty(MtPropertyList& s) {
-    DDON_STUB("uFSMTask::createProperty")
-    /* stub */
+void uFSMTask::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpCore", reinterpret_cast<MtObject* *>(&mpCore), 0u, 0u);
+    this->cUnit::createProperty(s);
 }
 
 void uFSMTask::move() {

@@ -70,9 +70,8 @@ rPawnQuestTalk::~rPawnQuestTalk() {
     mTalkDataList.mLength = 0;
 }
 
-__attribute__((weak)) void rPawnQuestTalk::createProperty(MtPropertyList& s) {
-    DDON_STUB("rPawnQuestTalk::createProperty")
-    /* stub */
+void rPawnQuestTalk::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mTalkDataList", static_cast<MtObject*>(&mTalkDataList), 0u, 0u);
 }
 
 MtUI* rPawnQuestTalk::createUI(MtProperty& prop) {
@@ -140,9 +139,11 @@ void rPawnQuestTalk::cTalkData::load(MtDataReader& r) {
 rPawnQuestTalk::cTalkData::~cTalkData() {
 }
 
-__attribute__((weak)) void rPawnQuestTalk::cTalkData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rPawnQuestTalk::cTalkData::createProperty")
-    /* stub */
+void rPawnQuestTalk::cTalkData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "mMsgType", reinterpret_cast<MT_MFUNC>(&::rPawnQuestTalk::cTalkData::getMsgType), reinterpret_cast<MT_MFUNC>(&::rPawnQuestTalk::cTalkData::setMsgType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mResType", &mResType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParsonality", &mParsonality, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupSerial", &mGroupSerial, 0u, 0u);
 }
 
 MtUI* rPawnQuestTalk::cTalkData::createUI(MtProperty& prop) {

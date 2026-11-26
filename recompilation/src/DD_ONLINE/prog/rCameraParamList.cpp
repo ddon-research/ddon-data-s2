@@ -22,6 +22,10 @@ const MtDTI& rCameraParamList::getDTI() const {
     return rCameraParamList::DTI;
 }
 
+inline void* rCameraParamList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rCameraParamList::DTI)->memAlloc(sz, align, rCameraParamList::DTI.getID());
+}
+
 inline void rCameraParamList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rCameraParamList::DTI)->memFree(p_addr);
 }
@@ -34,9 +38,10 @@ __attribute__((noinline)) rCameraParamList::~rCameraParamList() {
     }
 }
 
-__attribute__((weak)) void rCameraParamList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rCameraParamList::createProperty")
-    /* stub */
+void rCameraParamList::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mParamList", static_cast<MtObject*>(&mParamList), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCameraListPath", &mCameraListPath, 0u, 0u);
 }
 
 __attribute__((weak)) void rCameraParamList::clear() {
@@ -80,12 +85,12 @@ const cCamExParam* rCameraParamList::getParam(u32 index) const {
 }
 
 void rCameraParamList::addPriority(u32 add) {
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120);
+    u32 v0_0 = mParamList.mLength;
     if (v0_0 != 0) {
-        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 136);
+        MtObject* * v0_1 = mParamList.mpArray;
         for (u32 i = 0;;) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i * 8u)) + 0)) != 0) {
-                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i * 8u)) + 0)) + 28) = add + (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i * 8u)) + 0)) + 28));
+            if (v0_1[i] != nullptr) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i]) + 28) = add + (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i]) + 28));
             }
             if ((i + 1u) < v0_0) {
                 i = i + 1u;

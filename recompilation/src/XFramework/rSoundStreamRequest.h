@@ -184,6 +184,8 @@ public:
         u32 mSourceIndex;  // offset: 0x30
         rSoundSource* mpSource;  // offset: 0x38
         rSoundStreamSourcePackage* mpStreamSourcePackage;  // offset: 0x40
+
+        friend class rSoundStreamRequest;
     public:
         static const s32 MAX_RPATH = 64;
     };
@@ -316,4 +318,12 @@ inline rSoundStreamRequest::rSoundStreamRequest() {
     mpDirectionalCurves = nullptr;
     mpSpeakers = nullptr;
     mpSpeakerSets = nullptr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rSoundStreamRequest::memAlloc(u32 size, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memAlloc(size, align, rSoundStreamRequest::DTI.mID);
 }

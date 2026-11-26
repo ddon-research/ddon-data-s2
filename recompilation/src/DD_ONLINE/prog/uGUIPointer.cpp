@@ -42,8 +42,10 @@ inline void uGUIPointer::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIPointer::~uGUIPointer() {
-    DDON_STUB("uGUIPointer::~uGUIPointer")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
 }
 
 bool uGUIPointer::loadResource() {

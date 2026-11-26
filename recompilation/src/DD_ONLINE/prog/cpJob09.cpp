@@ -410,9 +410,29 @@ __attribute__((weak)) bool cpJob09::canEndureInClimb() {
         return !mpHuman->getInputPtr()->mBtnInfo.trg.subWeapon;
 }
 
-__attribute__((weak)) bool cpJob09::canMedalChange(bool check_anime_end) const {
-    DDON_STUB("cpJob09::canMedalChange")
-    return {};
+bool cpJob09::canMedalChange(bool check_anime_end) const {
+    if (mpHuman->checkEnableMenuUIAct()) {
+        if (mpHuman->getActMgrPtr() != nullptr) {
+            if (mpHuman->getActMgrPtr()->getActionNo() == 391) {
+                return false;
+            }
+        }
+        if (check_anime_end) {
+            if (mMedalChangeInvalidTimer > 0.0f) {
+                return false;
+            } else {
+                if (mFlgMedalSwitchAnime) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void cpJob09::updateMedalType() {
@@ -657,29 +677,29 @@ void cpJob09::requestStateBurst(uShlAlchemy* pShl, const MtVector3& hit_pos) {
     f32 v0_3 = pShl->getAlchemyValue();
     if (mBurstShlAlchemyValue > v0_3) {
     } else {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 280)) != 0) {
-            unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 280);
-            for (unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 296);;) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) != 0) {
-                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) + 10956) = 0;
+        if (mShlArray.mLength != 0) {
+            u32 v0_0 = mShlArray.mLength;
+            for (MtObject* * p0_1 = mShlArray.mpArray;;) {
+                if ((*p0_1) != nullptr) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*p0_1) + 10956) = 0;
                 }
                 if ((v0_0 - 1u) != 0) {
                     v0_0 += 0xFFFFFFFFu;
-                    v0_1 += 8ul;
+                    p0_1 += 1;
                 } else {
                     break;
                 }
             }
         }
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312)) != 0) {
-            unsigned int v3_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312);
-            for (unsigned long v3_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 328);;) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 0)) != 0) {
-                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 0)) + 10956) = 0;
+        if (mCS03ShlArray.mLength != 0) {
+            u32 v3_0 = mCS03ShlArray.mLength;
+            for (MtObject* * p3_1 = mCS03ShlArray.mpArray;;) {
+                if ((*p3_1) != nullptr) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*p3_1) + 10956) = 0;
                 }
                 if ((v3_0 - 1u) != 0) {
                     v3_0 += 0xFFFFFFFFu;
-                    v3_1 += 8ul;
+                    p3_1 += 1;
                 } else {
                     break;
                 }
@@ -691,12 +711,12 @@ void cpJob09::requestStateBurst(uShlAlchemy* pShl, const MtVector3& hit_pos) {
 }
 
 bool cpJob09::isExistShlBurst() {
-    unsigned int v0_4 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 280);
+    u32 v0_4 = mShlArray.mLength;
     if (v0_4 != 0) {
-        unsigned long v0_2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 296);
+        MtObject* * v0_2 = mShlArray.mpArray;
         for (unsigned int i0_3 = 0;;) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i0_3 * 8u)) + 0)) != 0) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i0_3 * 8u)) + 0)) + 10956)) != 0) {
+            if (v0_2[i0_3] != nullptr) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_2[i0_3]) + 10956)) != 0) {
                     return true;
                 }
             }
@@ -707,12 +727,12 @@ bool cpJob09::isExistShlBurst() {
             }
         }
     }
-    unsigned int v3_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312);
+    u32 v3_1 = mCS03ShlArray.mLength;
     if (v3_1 != 0) {
-        unsigned long v3_2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 328);
+        MtObject* * v3_2 = mCS03ShlArray.mpArray;
         for (unsigned int i3_3 = 0;;) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_2 + static_cast<unsigned long>(i3_3 * 8u)) + 0)) != 0) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_2 + static_cast<unsigned long>(i3_3 * 8u)) + 0)) + 10956)) != 0) {
+            if (v3_2[i3_3] != nullptr) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v3_2[i3_3]) + 10956)) != 0) {
                     return true;
                 }
             }
@@ -727,12 +747,12 @@ bool cpJob09::isExistShlBurst() {
 }
 
 void cpJob09::clearBurstShl() {
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 280);
+    u32 v0_0 = mShlArray.mLength;
     if (v0_0 != 0) {
-        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 296);
+        MtObject* * v0_1 = mShlArray.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) != 0) {
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) + 10956) = 0;
+            if (v0_1[i0_2] != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[i0_2]) + 10956) = 0;
             }
             if ((i0_2 + 1u) < v0_0) {
                 i0_2 = i0_2 + 1u;
@@ -741,12 +761,12 @@ void cpJob09::clearBurstShl() {
             }
         }
     }
-    unsigned int v3_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312);
+    u32 v3_0 = mCS03ShlArray.mLength;
     if (v3_0 != 0) {
-        unsigned long v3_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 328);
+        MtObject* * v3_1 = mCS03ShlArray.mpArray;
         for (unsigned int i3_2 = 0;;) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1 + static_cast<unsigned long>(i3_2 * 8u)) + 0)) != 0) {
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1 + static_cast<unsigned long>(i3_2 * 8u)) + 0)) + 10956) = 0;
+            if (v3_1[i3_2] != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v3_1[i3_2]) + 10956) = 0;
             }
             if ((i3_2 + 1u) < v3_0) {
                 i3_2 = i3_2 + 1u;
@@ -924,9 +944,238 @@ bool cpJob09::checkCndEnableDelayCombo() const {
     }
 }
 
-__attribute__((weak)) bool cpJob09::checkCndEnableSecondJump() const {
-    DDON_STUB("cpJob09::checkCndEnableSecondJump")
-    return {};
+bool cpJob09::checkCndEnableSecondJump() const {
+    if (mpHuman != nullptr) {
+        if (mCountSecondJump != 0) {
+            return false;
+        } else {
+            f32 t0 = mpHuman->getJobAdjustParam(25u);
+            if (mpHuman->mGuardComponent.mpActMgr != nullptr) {
+                u32 motion_no = mpHuman->getMotionNo(0u);
+                u32 t1 = mpHuman->getActMgrPtr()->getActionNo();
+                switch (t1 - 11u) {
+                    case 0:
+                    {
+                        if ((motion_no & 0xFFFFFCFFu) != 11) {
+                            nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                            unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                            if (t2 != 0) {
+                                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                                    return false;
+                                } else {
+                                    u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                                    u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                                    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                                }
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            if (t0 > mpHuman->getMotionFrame(0u)) {
+                                return false;
+                            } else {
+                                nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                                unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                                if (t2 != 0) {
+                                    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                                        return false;
+                                    } else {
+                                        u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                                        u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                                        return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case 1:
+                    {
+                        if ((motion_no & 0xFFFFFCFFu) != 14) {
+                            nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                            unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                            if (t2 != 0) {
+                                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                                    return false;
+                                } else {
+                                    u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                                    u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                                    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                                }
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            if (t0 > mpHuman->getMotionFrame(0u)) {
+                                return false;
+                            } else {
+                                nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                                unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                                if (t2 != 0) {
+                                    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                                        return false;
+                                    } else {
+                                        u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                                        u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                                        return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case 6:
+                    {
+                        if (motion_no != 40) {
+                            nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                            unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                            if (t2 != 0) {
+                                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                                    return false;
+                                } else {
+                                    u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                                    u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                                    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                                }
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            if (t0 > mpHuman->getMotionFrame(0u)) {
+                                return false;
+                            } else {
+                                nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                                unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                                if (t2 != 0) {
+                                    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                                        return false;
+                                    } else {
+                                        u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                                        u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                                        return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case 9:
+                    {
+                        if (motion_no != 58) {
+                            nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                            unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                            if (t2 != 0) {
+                                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                                    return false;
+                                } else {
+                                    u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                                    u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                                    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                                }
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            if (t0 > mpHuman->getMotionFrame(0u)) {
+                                return false;
+                            } else {
+                                nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                                unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                                if (t2 != 0) {
+                                    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                                        return false;
+                                    } else {
+                                        u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                                        u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                                        return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case 10:
+                    {
+                        if (motion_no == 32) {
+                            if (t0 > mpHuman->getMotionFrame(0u)) {
+                                return false;
+                            } else {
+                                nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                                unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                                if (t2 != 0) {
+                                    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                                        return false;
+                                    } else {
+                                        u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                                        u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                                        return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            }
+                        } else {
+                            nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                            unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                            if (t2 != 0) {
+                                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                                    return false;
+                                } else {
+                                    u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                                    u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                                    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                                }
+                            } else {
+                                return false;
+                            }
+                        }
+                        break;
+                    }
+                    default:
+                    {
+                        nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                        unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                        if (t2 != 0) {
+                            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                                return false;
+                            } else {
+                                u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                                u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                                return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                            }
+                        } else {
+                            return false;
+                        }
+                        break;
+                    }
+                }
+            } else {
+                nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8218u, nHuman::JOB_ID_09);
+                unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+                if (t2 != 0) {
+                    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)) + 255) > 9) {
+                        return false;
+                    } else {
+                        u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 40)));
+                        u32 t4 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                        return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + (static_cast<unsigned long>(t3) * 40)) + (static_cast<unsigned long>(t4) * 4)) + 3176)) != 0;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+    } else {
+        return false;
+    }
 }
 
 bool cpJob09::checkCndEnableAirCS06() const {
@@ -1058,9 +1307,13 @@ void cpJob09::callbackWarpInStage() {
     }
 }
 
-__attribute__((weak)) bool cpJob09::isCustom09Action() const {
-    DDON_STUB("cpJob09::isCustom09Action")
-    return {};
+bool cpJob09::isCustom09Action() const {
+    if (mpHuman != nullptr) {
+        if (mpHuman->getActMgrPtr() != nullptr) {
+            return (mpHuman->getActMgrPtr()->getActionNo() - 4127u) <= 3u;
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void cpJob09::storeCS03Target(const cHitInfo* pHitInfo) {

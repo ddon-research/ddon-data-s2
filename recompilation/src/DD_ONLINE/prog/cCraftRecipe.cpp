@@ -135,9 +135,77 @@ void cCraftRecipe::clearRecipeList() {
     }
 }
 
-__attribute__((weak)) void cCraftRecipe::createRecipeList(u32 rankCap, nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE category) {
-    DDON_STUB("cCraftRecipe::createRecipeList")
-    /* stub */
+void cCraftRecipe::createRecipeList(u32 rankCap, nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE category) {
+    unsigned int i0_10 = 0;
+    u32 v1_0;
+    unsigned int i1_7;
+    u32 v2_0;
+    for (;;) {
+        if (mRecipeList[i0_10].mLength != 0) {
+            v1_0 = mRecipeList[i0_10].mLength;
+            i1_7 = 0;
+            for (;;) {
+                if (mRecipeList[i0_10].mpArray[i1_7] == nullptr) {
+                    v2_0 = v1_0;
+                } else {
+                    delete mRecipeList[i0_10].mpArray[i1_7];
+                    v2_0 = mRecipeList[i0_10].mLength;
+                }
+                if ((i1_7 + 1u) < v2_0) {
+                    v1_0 = v2_0;
+                    i1_7 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (mRecipeList[i0_10].mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRecipeList[i0_10].mpArray));
+        }
+        mRecipeList[i0_10].mpArray = nullptr;
+        mRecipeList[i0_10].mBufsiz = 0;
+        mRecipeList[i0_10].mLength = 0;
+        if ((i0_10 + 1u) != 9) {
+            i0_10 = i0_10 + 1u;
+        } else {
+            break;
+        }
+    }
+    if (category != nCraft::CRAFT_RECIPE_CATEGORY_TYPE_NONE) {
+        createRecipeListCategory(rankCap, category);
+    } else {
+        for (unsigned int i6_3 = 1; i6_3 != 28; i6_3 += 1u) {
+            createRecipeListCategory(rankCap, static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(i6_3));
+        }
+    }
+    if (mRecipeList[0].mLength != 0) {
+        mRecipeList[0].MtArray::sort(static_cast<MtObject*>(this), reinterpret_cast<bool(MtObject::*)(const MtObject*, const MtObject*, u32)>(&::cCraftRecipe::sortByCategory), 1u);
+    }
+    if (mRecipeList[1].mLength != 0) {
+        mRecipeList[1].MtArray::sort(static_cast<MtObject*>(this), reinterpret_cast<bool(MtObject::*)(const MtObject*, const MtObject*, u32)>(&::cCraftRecipe::sortByCategory), 1u);
+    }
+    if (mRecipeList[2].mLength != 0) {
+        mRecipeList[2].MtArray::sort(static_cast<MtObject*>(this), reinterpret_cast<bool(MtObject::*)(const MtObject*, const MtObject*, u32)>(&::cCraftRecipe::sortByCategory), 1u);
+    }
+    if (mRecipeList[3].mLength != 0) {
+        mRecipeList[3].MtArray::sort(static_cast<MtObject*>(this), reinterpret_cast<bool(MtObject::*)(const MtObject*, const MtObject*, u32)>(&::cCraftRecipe::sortByCategory), 1u);
+    }
+    if (mRecipeList[4].mLength != 0) {
+        mRecipeList[4].MtArray::sort(static_cast<MtObject*>(this), reinterpret_cast<bool(MtObject::*)(const MtObject*, const MtObject*, u32)>(&::cCraftRecipe::sortByCategory), 1u);
+    }
+    if (mRecipeList[5].mLength != 0) {
+        mRecipeList[5].MtArray::sort(static_cast<MtObject*>(this), reinterpret_cast<bool(MtObject::*)(const MtObject*, const MtObject*, u32)>(&::cCraftRecipe::sortByCategory), 1u);
+    }
+    if (mRecipeList[6].mLength != 0) {
+        mRecipeList[6].MtArray::sort(static_cast<MtObject*>(this), reinterpret_cast<bool(MtObject::*)(const MtObject*, const MtObject*, u32)>(&::cCraftRecipe::sortByCategory), 1u);
+    }
+    if (mRecipeList[7].mLength != 0) {
+        mRecipeList[7].MtArray::sort(static_cast<MtObject*>(this), reinterpret_cast<bool(MtObject::*)(const MtObject*, const MtObject*, u32)>(&::cCraftRecipe::sortByCategory), 1u);
+    }
+    if (mRecipeList[8].mLength != 0) {
+        mRecipeList[8].MtArray::sort(static_cast<MtObject*>(this), reinterpret_cast<bool(MtObject::*)(const MtObject*, const MtObject*, u32)>(&::cCraftRecipe::sortByCategory), 1u);
+        return;
+    }
 }
 
 void cCraftRecipe::clearUpGradeList() {
@@ -358,6 +426,10 @@ __attribute__((weak)) void cCraftRecipe::createUpGradeListCategory(nCraft::E_CRA
 inline cCraftRecipe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cCraftRecipe::MyDTI cCraftRecipe::DTI("cCraftRecipe", &::MtObject::DTI, 304ul, 0u, 0u);
+
+alignas(4) unsigned char cCraftRecipe_mCategoryTbl_bytes[36] __asm__("_ZN12cCraftRecipe12mCategoryTblE") = {0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+alignas(4) unsigned char cCraftRecipe_mEquipCategoryTbl_bytes[36] __asm__("_ZN12cCraftRecipe17mEquipCategoryTblE") = {0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00};
 
 __attribute__((weak)) MtObject* cCraftRecipe::MyDTI::newInstance() const {
     DDON_STUB("cCraftRecipe::MyDTI::newInstance")

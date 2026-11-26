@@ -30,18 +30,11 @@ inline void cZoneListenerEffect::operator delete(void* p_addr) {
 
 inline cZoneListenerEffect::cZoneListenerEffect() {
     mbHited = false;
-    mCheckPos.x = MtVector3::Zero.x;
-    mCheckPos.y = MtVector3::Zero.y;
-    mCheckPos.z = MtVector3::Zero.z;
-    mCheckPos.pad_ = 0.0f;
+    mCheckPos = MtVector3::Zero;
 }
 
-cZoneListenerEffect::~cZoneListenerEffect() {
-}
-
-__attribute__((weak)) MtVector3 cZoneListenerEffect::myPos() {
-    DDON_STUB("cZoneListenerEffect::myPos")
-    __builtin_unreachable();
+MtVector3 cZoneListenerEffect::myPos() {
+    return mCheckPos;
 }
 
 inline cZoneListenerEffect::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -62,11 +55,6 @@ inline void cZoneListenerEffectColor::operator delete(void* p_addr) {
 
 cZoneListenerEffectColor::cZoneListenerEffectColor() {
     DDON_STUB("cZoneListenerEffectColor::cZoneListenerEffectColor")
-    /* stub */
-}
-
-cZoneListenerEffectColor::~cZoneListenerEffectColor() {
-    DDON_STUB("cZoneListenerEffectColor::~cZoneListenerEffectColor")
     /* stub */
 }
 
@@ -147,9 +135,8 @@ __attribute__((weak)) void cZoneListenerEffectEFL::notified(const nZone::cLayout
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cZoneListenerEffectEFL::myPos() {
-    DDON_STUB("cZoneListenerEffectEFL::myPos")
-    __builtin_unreachable();
+MtVector3 cZoneListenerEffectEFL::myPos() {
+    return mCheckPos;
 }
 
 __attribute__((weak)) void cZoneListenerEffectEFL::resetParam() {

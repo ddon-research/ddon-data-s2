@@ -4,6 +4,7 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
@@ -35,9 +36,10 @@ uGrassEffect::~uGrassEffect() {
     mpResource = nullptr;
 }
 
-__attribute__((weak)) void uGrassEffect::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGrassEffect::createProperty")
-    /* stub */
+void uGrassEffect::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", reinterpret_cast<MT_MFUNC>(&::uGrassEffect::getResource), reinterpret_cast<MT_MFUNC>(&::uGrassEffect::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Priority", reinterpret_cast<MT_MFUNC>(&::uGrassEffect::getPriority), reinterpret_cast<MT_MFUNC>(&::uGrassEffect::setPriority), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* uGrassEffect::createUI(MtProperty& prop) {

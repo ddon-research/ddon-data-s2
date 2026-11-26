@@ -363,9 +363,40 @@ __attribute__((weak)) void sCaplinkManager::userProfileContentListGet(MT_CTSTR u
 __attribute__((weak)) void sCaplinkManager::userProfileContentListGetCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::userProfileContentModify(MT_CTSTR content_id, MT_CTSTR character_name, MT_CTSTR comment, s8 online_privacy, s8 visible) {
-    DDON_STUB("sCaplinkManager::userProfileContentModify")
-    /* stub */
+void sCaplinkManager::userProfileContentModify(MT_CTSTR content_id, MT_CTSTR character_name, MT_CTSTR comment, s8 online_privacy, s8 visible) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mUserProfileContentModifyAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (content_id != nullptr) {
+                    if (character_name != nullptr) {
+                        if (comment != nullptr) {
+                            if (mpCaplink->reqUserProfileContentModify(static_cast<nCaplink::ContextListener*>(&mUserProfileContentModifyAns), content_id, character_name, comment, online_privacy, visible)) {
+                                addListener(static_cast<nCaplink::ContextListener*>(&mUserProfileContentModifyAns), &::sCaplinkManager::userProfileContentModifyCallback);
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            mUserProfileContentModifyAns.nCaplink::ContextListener::init();
+            mUserProfileContentModifyAns.mStatus = 3;
+        }
+    } else {
+        mUserProfileContentModifyAns.nCaplink::ContextListener::init();
+        mUserProfileContentModifyAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::userProfileContentModifyCallback() {
@@ -397,9 +428,34 @@ __attribute__((weak)) void sCaplinkManager::userIgnoreListGet(s32 offset, s32 co
 __attribute__((weak)) void sCaplinkManager::userIgnoreListGetCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::userIgnoreRemove(MT_CTSTR unique_id) {
-    DDON_STUB("sCaplinkManager::userIgnoreRemove")
-    /* stub */
+void sCaplinkManager::userIgnoreRemove(MT_CTSTR unique_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mUserIgnoreRemoveAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (mpCaplink->reqUserIgnoreRemove(static_cast<nCaplink::ContextListener*>(&mUserIgnoreRemoveAns), unique_id)) {
+                    addListener(static_cast<nCaplink::ContextListener*>(&mUserIgnoreRemoveAns), &::sCaplinkManager::userIgnoreRemoveCallback);
+                }
+            }
+        } else {
+            mUserIgnoreRemoveAns.nCaplink::ContextListener::init();
+            mUserIgnoreRemoveAns.mStatus = 3;
+        }
+    } else {
+        mUserIgnoreRemoveAns.nCaplink::ContextListener::init();
+        mUserIgnoreRemoveAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::userIgnoreRemoveCallback() {
@@ -413,9 +469,36 @@ __attribute__((weak)) void sCaplinkManager::friendEntrySend(MT_CTSTR unique_id, 
 __attribute__((weak)) void sCaplinkManager::friendEntrySendCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::friendEntryCancel(MT_CTSTR unique_id) {
-    DDON_STUB("sCaplinkManager::friendEntryCancel")
-    /* stub */
+void sCaplinkManager::friendEntryCancel(MT_CTSTR unique_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mFriendEntryCancelAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (unique_id != nullptr) {
+                    if (mpCaplink->reqFriendEntryCancel(static_cast<nCaplink::ContextListener*>(&mFriendEntryCancelAns), unique_id)) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mFriendEntryCancelAns), &::sCaplinkManager::friendEntryCancelCallback);
+                    }
+                }
+            }
+        } else {
+            mFriendEntryCancelAns.nCaplink::ContextListener::init();
+            mFriendEntryCancelAns.mStatus = 3;
+        }
+    } else {
+        mFriendEntryCancelAns.nCaplink::ContextListener::init();
+        mFriendEntryCancelAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::friendEntryCancelCallback() {
@@ -437,9 +520,36 @@ __attribute__((weak)) void sCaplinkManager::friendEntrySendListGet(s32 offset, s
 __attribute__((weak)) void sCaplinkManager::friendEntrySendListGetCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::friendEntryReply(MT_CTSTR unique_id, s32 reply) {
-    DDON_STUB("sCaplinkManager::friendEntryReply")
-    /* stub */
+void sCaplinkManager::friendEntryReply(MT_CTSTR unique_id, s32 reply) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mFriendEntryReplyAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (unique_id != nullptr) {
+                    if (mpCaplink->reqFriendEntryReply(static_cast<nCaplink::ContextListener*>(&mFriendEntryReplyAns), unique_id, reply)) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mFriendEntryReplyAns), &::sCaplinkManager::friendEntryReplyCallback);
+                    }
+                }
+            }
+        } else {
+            mFriendEntryReplyAns.nCaplink::ContextListener::init();
+            mFriendEntryReplyAns.mStatus = 3;
+        }
+    } else {
+        mFriendEntryReplyAns.nCaplink::ContextListener::init();
+        mFriendEntryReplyAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::friendEntryReplyCallback() {
@@ -453,9 +563,42 @@ __attribute__((weak)) void sCaplinkManager::friendListGet(s32 offset, s32 count)
 __attribute__((weak)) void sCaplinkManager::friendListGetCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::friendAttribute(MT_CTSTR unique_id, s8 attribute) {
-    DDON_STUB("sCaplinkManager::friendAttribute")
-    /* stub */
+void sCaplinkManager::friendAttribute(MT_CTSTR unique_id, s8 attribute) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mFriendAttributeAns.mFriendTotal = 0;
+            mFriendAttributeAns.mFriendLimmit = 0;
+            mFriendAttributeAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (unique_id != nullptr) {
+                    if (mpCaplink->reqFriendAttribute(static_cast<nCaplink::ContextListener*>(&mFriendAttributeAns), unique_id, attribute)) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mFriendAttributeAns), &::sCaplinkManager::friendAttributeCallback);
+                    }
+                }
+            }
+        } else {
+            mFriendAttributeAns.mFriendTotal = 0;
+            mFriendAttributeAns.mFriendLimmit = 0;
+            mFriendAttributeAns.nCaplink::ContextListener::init();
+            mFriendAttributeAns.mStatus = 3;
+        }
+    } else {
+        mFriendAttributeAns.mFriendTotal = 0;
+        mFriendAttributeAns.mFriendLimmit = 0;
+        mFriendAttributeAns.nCaplink::ContextListener::init();
+        mFriendAttributeAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::friendAttributeCallback() {
@@ -485,9 +628,42 @@ __attribute__((weak)) void sCaplinkManager::friendTagFree(MT_CTSTR unique_id, Mt
 __attribute__((weak)) void sCaplinkManager::friendTagFreeCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::friendRelease(MT_CTSTR unique_id) {
-    DDON_STUB("sCaplinkManager::friendRelease")
-    /* stub */
+void sCaplinkManager::friendRelease(MT_CTSTR unique_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mFriendReleaseAns.nCaplink::ContextListener::init();
+            mFriendReleaseAns.mTotal = 0;
+            mFriendReleaseAns.mLimmit = 0;
+            if (mpCaplink != nullptr) {
+                if (unique_id != nullptr) {
+                    if (mpCaplink->reqFriendRelease(static_cast<nCaplink::ContextListener*>(&mFriendReleaseAns), unique_id)) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mFriendReleaseAns), &::sCaplinkManager::friendReleaseCallback);
+                    }
+                }
+            }
+        } else {
+            mFriendReleaseAns.nCaplink::ContextListener::init();
+            mFriendReleaseAns.mTotal = 0;
+            mFriendReleaseAns.mLimmit = 0;
+            mFriendReleaseAns.mStatus = 3;
+        }
+    } else {
+        mFriendReleaseAns.nCaplink::ContextListener::init();
+        mFriendReleaseAns.mTotal = 0;
+        mFriendReleaseAns.mLimmit = 0;
+        mFriendReleaseAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::friendReleaseCallback() {
@@ -533,9 +709,34 @@ __attribute__((weak)) void sCaplinkManager::contentInvite(MT_CTSTR unique_id, MT
 __attribute__((weak)) void sCaplinkManager::contentInviteCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::contentInviteTotalGet() {
-    DDON_STUB("sCaplinkManager::contentInviteTotalGet")
-    /* stub */
+void sCaplinkManager::contentInviteTotalGet() {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mContentInviteTotalGetAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (mpCaplink->reqContentInviteTotalGet(static_cast<nCaplink::ContextListener*>(&mContentInviteTotalGetAns), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12256))))) {
+                    addListener(static_cast<nCaplink::ContextListener*>(&mContentInviteTotalGetAns), &::sCaplinkManager::contentInviteTotalGetCallback);
+                }
+            }
+        } else {
+            mContentInviteTotalGetAns.nCaplink::ContextListener::init();
+            mContentInviteTotalGetAns.mStatus = 3;
+        }
+    } else {
+        mContentInviteTotalGetAns.nCaplink::ContextListener::init();
+        mContentInviteTotalGetAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::contentInviteTotalGetCallback() {
@@ -549,9 +750,38 @@ __attribute__((weak)) void sCaplinkManager::contentInviteListGet(s32 offset, s32
 __attribute__((weak)) void sCaplinkManager::contentInviteListGetCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::contentInviteRemove(MT_CTSTR unique_id, MT_CTSTR content_id) {
-    DDON_STUB("sCaplinkManager::contentInviteRemove")
-    /* stub */
+void sCaplinkManager::contentInviteRemove(MT_CTSTR unique_id, MT_CTSTR content_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mContentInviteRemoveAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (unique_id != nullptr) {
+                    if (content_id != nullptr) {
+                        if (mpCaplink->reqContentInviteRemove(static_cast<nCaplink::ContextListener*>(&mContentInviteRemoveAns), unique_id, content_id)) {
+                            addListener(static_cast<nCaplink::ContextListener*>(&mContentInviteRemoveAns), &::sCaplinkManager::contentInviteRemoveCallback);
+                        }
+                    }
+                }
+            }
+        } else {
+            mContentInviteRemoveAns.nCaplink::ContextListener::init();
+            mContentInviteRemoveAns.mStatus = 3;
+        }
+    } else {
+        mContentInviteRemoveAns.nCaplink::ContextListener::init();
+        mContentInviteRemoveAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::contentInviteRemoveCallback() {
@@ -589,9 +819,39 @@ __attribute__((weak)) void sCaplinkManager::chatListGet(s32 id_type, MT_CTSTR un
 __attribute__((weak)) void sCaplinkManager::chatListGetCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::chatLastId(s8 id_type, MT_CTSTR unique_id) {
-    DDON_STUB("sCaplinkManager::chatLastId")
-    /* stub */
+void sCaplinkManager::chatLastId(s8 id_type, MT_CTSTR unique_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mChatLastIdAns.nCaplink::ContextListener::init();
+            mChatLastIdAns.mLastChatId = 0;
+            if (mpCaplink != nullptr) {
+                if (unique_id != nullptr) {
+                    if (mpCaplink->reqChatLastId(static_cast<nCaplink::ContextListener*>(&mChatLastIdAns), id_type, unique_id)) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mChatLastIdAns), &::sCaplinkManager::chatLastIdCallback);
+                    }
+                }
+            }
+        } else {
+            mChatLastIdAns.nCaplink::ContextListener::init();
+            mChatLastIdAns.mLastChatId = 0;
+            mChatLastIdAns.mStatus = 3;
+        }
+    } else {
+        mChatLastIdAns.nCaplink::ContextListener::init();
+        mChatLastIdAns.mLastChatId = 0;
+        mChatLastIdAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::chatLastIdCallback() {
@@ -605,9 +865,36 @@ __attribute__((weak)) void sCaplinkManager::chatSend(s32 chat_type, MT_CTSTR uni
 __attribute__((weak)) void sCaplinkManager::chatSendCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::chatRead(s32 chat_type, MT_CTSTR unique_id, s32 chat_id) {
-    DDON_STUB("sCaplinkManager::chatRead")
-    /* stub */
+void sCaplinkManager::chatRead(s32 chat_type, MT_CTSTR unique_id, s32 chat_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mChatReadAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (unique_id != nullptr) {
+                    if (mpCaplink->reqChatRead(static_cast<nCaplink::ContextListener*>(&mChatReadAns), chat_type, unique_id, chat_id)) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mChatReadAns), &::sCaplinkManager::chatReadCallback);
+                    }
+                }
+            }
+        } else {
+            mChatReadAns.nCaplink::ContextListener::init();
+            mChatReadAns.mStatus = 3;
+        }
+    } else {
+        mChatReadAns.nCaplink::ContextListener::init();
+        mChatReadAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::chatReadCallback() {
@@ -621,49 +908,213 @@ __attribute__((weak)) void sCaplinkManager::chatGroupCreate(MT_CTSTR group_name,
 __attribute__((weak)) void sCaplinkManager::chatGroupCreateCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::chatGroupResign(MT_CTSTR group_id) {
-    DDON_STUB("sCaplinkManager::chatGroupResign")
-    /* stub */
+void sCaplinkManager::chatGroupResign(MT_CTSTR group_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mChatGroupResignAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (group_id != nullptr) {
+                    if (mpCaplink->reqChatGroupResign(static_cast<nCaplink::ContextListener*>(&mChatGroupResignAns), group_id)) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mChatGroupResignAns), &::sCaplinkManager::chatGroupResignCallback);
+                    }
+                }
+            }
+        } else {
+            mChatGroupResignAns.nCaplink::ContextListener::init();
+            mChatGroupResignAns.mStatus = 3;
+        }
+    } else {
+        mChatGroupResignAns.nCaplink::ContextListener::init();
+        mChatGroupResignAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::chatGroupResignCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::chatGroupRemove(s32 chat_type, MT_CTSTR group_id) {
-    DDON_STUB("sCaplinkManager::chatGroupRemove")
-    /* stub */
+void sCaplinkManager::chatGroupRemove(s32 chat_type, MT_CTSTR group_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mChatGroupRemoveAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (group_id != nullptr) {
+                    if (mpCaplink->reqChatGroupRemove(static_cast<nCaplink::ContextListener*>(&mChatGroupRemoveAns), chat_type, group_id)) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mChatGroupRemoveAns), &::sCaplinkManager::chatGroupRemoveCallback);
+                    }
+                }
+            }
+        } else {
+            mChatGroupRemoveAns.nCaplink::ContextListener::init();
+            mChatGroupRemoveAns.mStatus = 3;
+        }
+    } else {
+        mChatGroupRemoveAns.nCaplink::ContextListener::init();
+        mChatGroupRemoveAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::chatGroupRemoveCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::chatGroupMemberAdd(MT_CTSTR group_id) {
-    DDON_STUB("sCaplinkManager::chatGroupMemberAdd")
-    /* stub */
+void sCaplinkManager::chatGroupMemberAdd(MT_CTSTR group_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mChatGroupMemberAddAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (group_id != nullptr) {
+                    if (mpCaplink->reqChatGroupMemberAdd(static_cast<nCaplink::ContextListener*>(&mChatGroupMemberAddAns), group_id, static_cast<MtArray*>(&mChatMember))) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mChatGroupMemberAddAns), &::sCaplinkManager::chatGroupMemberAddCallback);
+                    }
+                }
+            }
+        } else {
+            mChatGroupMemberAddAns.nCaplink::ContextListener::init();
+            mChatGroupMemberAddAns.mStatus = 3;
+        }
+    } else {
+        mChatGroupMemberAddAns.nCaplink::ContextListener::init();
+        mChatGroupMemberAddAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::chatGroupMemberAddCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::chatGroupMemberListGet(MT_CTSTR group_id, s32 offset, s32 count) {
-    DDON_STUB("sCaplinkManager::chatGroupMemberListGet")
-    /* stub */
+void sCaplinkManager::chatGroupMemberListGet(MT_CTSTR group_id, s32 offset, s32 count) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mChatGroupMemberListGetAns.nCaplink::ChatGroupMemberListGetAns::init();
+            if (mpCaplink != nullptr) {
+                if (group_id != nullptr) {
+                    if (mpCaplink->reqChatGroupMemberListGet(static_cast<nCaplink::ContextListener*>(&mChatGroupMemberListGetAns), group_id, offset, count)) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mChatGroupMemberListGetAns), &::sCaplinkManager::chatGroupMemberListGetCallback);
+                    }
+                }
+            }
+        } else {
+            mChatGroupMemberListGetAns.nCaplink::ChatGroupMemberListGetAns::init();
+            mChatGroupMemberListGetAns.mStatus = 3;
+        }
+    } else {
+        mChatGroupMemberListGetAns.nCaplink::ChatGroupMemberListGetAns::init();
+        mChatGroupMemberListGetAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::chatGroupMemberListGetCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::chatGroupMemberReject(MT_CTSTR group_id, MT_CTSTR unique_id) {
-    DDON_STUB("sCaplinkManager::chatGroupMemberReject")
-    /* stub */
+void sCaplinkManager::chatGroupMemberReject(MT_CTSTR group_id, MT_CTSTR unique_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mChatGroupMemberRejectAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (group_id != nullptr) {
+                    if (unique_id != nullptr) {
+                        if (mpCaplink->reqChatGroupMemberReject(static_cast<nCaplink::ContextListener*>(&mChatGroupMemberRejectAns), group_id, unique_id)) {
+                            addListener(static_cast<nCaplink::ContextListener*>(&mChatGroupMemberRejectAns), &::sCaplinkManager::chatGroupMemberRejectCallback);
+                        }
+                    }
+                }
+            }
+        } else {
+            mChatGroupMemberRejectAns.nCaplink::ContextListener::init();
+            mChatGroupMemberRejectAns.mStatus = 3;
+        }
+    } else {
+        mChatGroupMemberRejectAns.nCaplink::ContextListener::init();
+        mChatGroupMemberRejectAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::chatGroupMemberRejectCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::chatGroupMemberLeave(MT_CTSTR group_id) {
-    DDON_STUB("sCaplinkManager::chatGroupMemberLeave")
-    /* stub */
+void sCaplinkManager::chatGroupMemberLeave(MT_CTSTR group_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mChatGroupMemberLeaveAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (group_id != nullptr) {
+                    if (mpCaplink->reqChatGroupMemberLeave(static_cast<nCaplink::ContextListener*>(&mChatGroupMemberLeaveAns), group_id)) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mChatGroupMemberLeaveAns), &::sCaplinkManager::chatGroupMemberLeaveCallback);
+                    }
+                }
+            }
+        } else {
+            mChatGroupMemberLeaveAns.nCaplink::ContextListener::init();
+            mChatGroupMemberLeaveAns.mStatus = 3;
+        }
+    } else {
+        mChatGroupMemberLeaveAns.nCaplink::ContextListener::init();
+        mChatGroupMemberLeaveAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::chatGroupMemberLeaveCallback() {
@@ -677,9 +1128,38 @@ __attribute__((weak)) void sCaplinkManager::chatGroupListGet(s32 offset, s32 cou
 __attribute__((weak)) void sCaplinkManager::chatGroupListGetCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::chatGroupModify(MT_CTSTR group_id, MT_CTSTR group_name, s32 group_skin_id) {
-    DDON_STUB("sCaplinkManager::chatGroupModify")
-    /* stub */
+void sCaplinkManager::chatGroupModify(MT_CTSTR group_id, MT_CTSTR group_name, s32 group_skin_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mChatGroupModifyAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (group_id != nullptr) {
+                    if (group_name != nullptr) {
+                        if (mpCaplink->reqChatGroupModify(static_cast<nCaplink::ContextListener*>(&mChatGroupModifyAns), group_id, group_name, group_skin_id)) {
+                            addListener(static_cast<nCaplink::ContextListener*>(&mChatGroupModifyAns), &::sCaplinkManager::chatGroupModifyCallback);
+                        }
+                    }
+                }
+            }
+        } else {
+            mChatGroupModifyAns.nCaplink::ContextListener::init();
+            mChatGroupModifyAns.mStatus = 3;
+        }
+    } else {
+        mChatGroupModifyAns.nCaplink::ContextListener::init();
+        mChatGroupModifyAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::chatGroupModifyCallback() {
@@ -693,9 +1173,66 @@ __attribute__((weak)) void sCaplinkManager::resourcePresetListGet(s8 resource_ty
 __attribute__((weak)) void sCaplinkManager::resourcePresetListGetCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::notify() {
-    DDON_STUB("sCaplinkManager::notify")
-    /* stub */
+void sCaplinkManager::notify() {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mNotifyAns.nCaplink::ContextListener::init();
+            mNotifyAns.mContentTotal = 0;
+            mNotifyAns.mContentUpdate = 0;
+            mNotifyAns.mResourcePresetTotal = 0;
+            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 9324) = 0;
+            mNotifyAns.mStampUpdate = 0;
+            mNotifyAns.mStampTotal = 0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9296) = 0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9288) = 0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9280) = 0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9272) = 0;
+            if (mpCaplink != nullptr) {
+                if (mpCaplink->reqNotify(static_cast<nCaplink::ContextListener*>(&mNotifyAns), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12088))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12116))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12172))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12144))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12200))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12256))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12284))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12228))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12312))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12368))))) {
+                    mIsNoDispError = true;
+                    addListener(static_cast<nCaplink::ContextListener*>(&mNotifyAns), &::sCaplinkManager::notifyCallback);
+                    mRnoMain = 17;
+                }
+            }
+        } else {
+            mNotifyAns.nCaplink::ContextListener::init();
+            mNotifyAns.mContentTotal = 0;
+            mNotifyAns.mContentUpdate = 0;
+            mNotifyAns.mResourcePresetTotal = 0;
+            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 9324) = 0;
+            mNotifyAns.mStampUpdate = 0;
+            mNotifyAns.mStampTotal = 0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9296) = 0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9288) = 0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9280) = 0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9272) = 0;
+            mNotifyAns.mStatus = 3;
+        }
+    } else {
+        mNotifyAns.nCaplink::ContextListener::init();
+        mNotifyAns.mContentTotal = 0;
+        mNotifyAns.mContentUpdate = 0;
+        mNotifyAns.mResourcePresetTotal = 0;
+        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 9324) = 0;
+        mNotifyAns.mStampUpdate = 0;
+        mNotifyAns.mStampTotal = 0;
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9296) = 0;
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9288) = 0;
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9280) = 0;
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9272) = 0;
+        mNotifyAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::notifyCallback() {
@@ -711,41 +1248,166 @@ __attribute__((weak)) void sCaplinkManager::notifyAppListGet(s32 offset, s32 cou
 __attribute__((weak)) void sCaplinkManager::notifyAppListGetCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::notifyAppRead(s32 notify_id) {
-    DDON_STUB("sCaplinkManager::notifyAppRead")
-    /* stub */
+void sCaplinkManager::notifyAppRead(s32 notify_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mNotifyAppReadAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (mpCaplink->reqNotifyAppRead(static_cast<nCaplink::ContextListener*>(&mNotifyAppReadAns), notify_id)) {
+                    addListener(static_cast<nCaplink::ContextListener*>(&mNotifyAppReadAns), &::sCaplinkManager::notifyAppReadCallback);
+                }
+            }
+        } else {
+            mNotifyAppReadAns.nCaplink::ContextListener::init();
+            mNotifyAppReadAns.mStatus = 3;
+        }
+    } else {
+        mNotifyAppReadAns.nCaplink::ContextListener::init();
+        mNotifyAppReadAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::notifyAppReadCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::notifyDeviceSetting() {
-    DDON_STUB("sCaplinkManager::notifyDeviceSetting")
-    /* stub */
+void sCaplinkManager::notifyDeviceSetting() {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mNotifyDeviceSettingAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (mpCaplink->reqNotifyDeviceSetting(static_cast<nCaplink::ContextListener*>(&mNotifyDeviceSettingAns))) {
+                    addListener(static_cast<nCaplink::ContextListener*>(&mNotifyDeviceSettingAns), &::sCaplinkManager::notifyDeviceSettingCallback);
+                }
+            }
+        } else {
+            mNotifyDeviceSettingAns.nCaplink::ContextListener::init();
+            mNotifyDeviceSettingAns.mStatus = 3;
+        }
+    } else {
+        mNotifyDeviceSettingAns.nCaplink::ContextListener::init();
+        mNotifyDeviceSettingAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::notifyDeviceSettingCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::notifyDeviceSettingModify(s8 all, s8 profile, s8 fri, s8 timeline, s8 chat, s8 game) {
-    DDON_STUB("sCaplinkManager::notifyDeviceSettingModify")
-    /* stub */
+void sCaplinkManager::notifyDeviceSettingModify(s8 all, s8 profile, s8 fri, s8 timeline, s8 chat, s8 game) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mNotifyDeviceSettingModifyAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (mpCaplink->reqNotifyDeviceSettingModify(static_cast<nCaplink::ContextListener*>(&mNotifyDeviceSettingModifyAns), all, profile, fri, timeline, chat, game)) {
+                    addListener(static_cast<nCaplink::ContextListener*>(&mNotifyDeviceSettingModifyAns), &::sCaplinkManager::notifyDeviceSettingModifyCallback);
+                }
+            }
+        } else {
+            mNotifyDeviceSettingModifyAns.nCaplink::ContextListener::init();
+            mNotifyDeviceSettingModifyAns.mStatus = 3;
+        }
+    } else {
+        mNotifyDeviceSettingModifyAns.nCaplink::ContextListener::init();
+        mNotifyDeviceSettingModifyAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::notifyDeviceSettingModifyCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::notifyTimeGet() {
-    DDON_STUB("sCaplinkManager::notifyTimeGet")
-    /* stub */
+void sCaplinkManager::notifyTimeGet() {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mNotifyTimeGetAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (mpCaplink->reqNotifyTimeGet(static_cast<nCaplink::ContextListener*>(&mNotifyTimeGetAns))) {
+                    addListener(static_cast<nCaplink::ContextListener*>(&mNotifyTimeGetAns), &::sCaplinkManager::notifyTimeGetCallback);
+                }
+            }
+        } else {
+            mNotifyTimeGetAns.nCaplink::ContextListener::init();
+            mNotifyTimeGetAns.mStatus = 3;
+        }
+    } else {
+        mNotifyTimeGetAns.nCaplink::ContextListener::init();
+        mNotifyTimeGetAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::notifyTimeGetCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::notifyTimeModify(s8 morning, s8 afternoon, s8 evening, s8 midnight) {
-    DDON_STUB("sCaplinkManager::notifyTimeModify")
-    /* stub */
+void sCaplinkManager::notifyTimeModify(s8 morning, s8 afternoon, s8 evening, s8 midnight) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            mNotifyTimeModifyAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (mpCaplink->reqNotifyTimeModify(static_cast<nCaplink::ContextListener*>(&mNotifyTimeModifyAns), morning, afternoon, midnight, evening)) {
+                    addListener(static_cast<nCaplink::ContextListener*>(&mNotifyTimeModifyAns), &::sCaplinkManager::notifyTimeModifyCallback);
+                }
+            }
+        } else {
+            mNotifyTimeModifyAns.nCaplink::ContextListener::init();
+            mNotifyTimeModifyAns.mStatus = 3;
+        }
+    } else {
+        mNotifyTimeModifyAns.nCaplink::ContextListener::init();
+        mNotifyTimeModifyAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::notifyTimeModifyCallback() {
@@ -1079,7 +1741,7 @@ __attribute__((weak)) void sCaplinkManager::deleteChatMember(MT_CTSTR unique_id)
 
 bool sCaplinkManager::isChatMember(MT_CTSTR unique_id) {
     if (unique_id != nullptr) {
-        unsigned int v0_9 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 11736);
+        u32 v0_9 = mChatMember.mLength;
         if (v0_9 == 0) {
             return false;
         } else {
@@ -1255,9 +1917,1038 @@ __attribute__((weak)) void sCaplinkManager::resetDate() {
     /* stub */
 }
 
-__attribute__((weak)) void sCaplinkManager::resetList() {
-    DDON_STUB("sCaplinkManager::resetList")
-    /* stub */
+void sCaplinkManager::resetList() {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+    }
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteCaplinkIcon();
+    mRnoProfIcon = 0;
+    for (unsigned int i0_0 = 0;;) {
+        cFriendData* t0 = mFriendData;
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&t0[i0_0]) + 140) = 0;
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&t0[i0_0]) + 132) = 0;
+        t0[i0_0].mFreeTag = 0;
+        t0[i0_0].mFlag = 0;
+        t0[i0_0].mIconIndex = 0xFF;
+        t0[i0_0].mPrivacy = -1;
+        t0[i0_0].mAttribute = -1;
+        t0[i0_0].mName[79] = 0;
+        t0[i0_0].mName[80] = 0;
+        t0[i0_0].mName[71] = 0;
+        t0[i0_0].mName[72] = 0;
+        t0[i0_0].mName[73] = 0;
+        t0[i0_0].mName[74] = 0;
+        t0[i0_0].mName[75] = 0;
+        t0[i0_0].mName[76] = 0;
+        t0[i0_0].mName[77] = 0;
+        t0[i0_0].mName[78] = 0;
+        t0[i0_0].mName[63] = 0;
+        t0[i0_0].mName[64] = 0;
+        t0[i0_0].mName[65] = 0;
+        t0[i0_0].mName[66] = 0;
+        t0[i0_0].mName[67] = 0;
+        t0[i0_0].mName[68] = 0;
+        t0[i0_0].mName[69] = 0;
+        t0[i0_0].mName[70] = 0;
+        t0[i0_0].mName[55] = 0;
+        t0[i0_0].mName[56] = 0;
+        t0[i0_0].mName[57] = 0;
+        t0[i0_0].mName[58] = 0;
+        t0[i0_0].mName[59] = 0;
+        t0[i0_0].mName[60] = 0;
+        t0[i0_0].mName[61] = 0;
+        t0[i0_0].mName[62] = 0;
+        t0[i0_0].mName[47] = 0;
+        t0[i0_0].mName[48] = 0;
+        t0[i0_0].mName[49] = 0;
+        t0[i0_0].mName[50] = 0;
+        t0[i0_0].mName[51] = 0;
+        t0[i0_0].mName[52] = 0;
+        t0[i0_0].mName[53] = 0;
+        t0[i0_0].mName[54] = 0;
+        t0[i0_0].mName[39] = 0;
+        t0[i0_0].mName[40] = 0;
+        t0[i0_0].mName[41] = 0;
+        t0[i0_0].mName[42] = 0;
+        t0[i0_0].mName[43] = 0;
+        t0[i0_0].mName[44] = 0;
+        t0[i0_0].mName[45] = 0;
+        t0[i0_0].mName[46] = 0;
+        t0[i0_0].mName[31] = 0;
+        t0[i0_0].mName[32] = 0;
+        t0[i0_0].mName[33] = 0;
+        t0[i0_0].mName[34] = 0;
+        t0[i0_0].mName[35] = 0;
+        t0[i0_0].mName[36] = 0;
+        t0[i0_0].mName[37] = 0;
+        t0[i0_0].mName[38] = 0;
+        t0[i0_0].mName[23] = 0;
+        t0[i0_0].mName[24] = 0;
+        t0[i0_0].mName[25] = 0;
+        t0[i0_0].mName[26] = 0;
+        t0[i0_0].mName[27] = 0;
+        t0[i0_0].mName[28] = 0;
+        t0[i0_0].mName[29] = 0;
+        t0[i0_0].mName[30] = 0;
+        t0[i0_0].mName[15] = 0;
+        t0[i0_0].mName[16] = 0;
+        t0[i0_0].mName[17] = 0;
+        t0[i0_0].mName[18] = 0;
+        t0[i0_0].mName[19] = 0;
+        t0[i0_0].mName[20] = 0;
+        t0[i0_0].mName[21] = 0;
+        t0[i0_0].mName[22] = 0;
+        t0[i0_0].mName[7] = 0;
+        t0[i0_0].mName[8] = 0;
+        t0[i0_0].mName[9] = 0;
+        t0[i0_0].mName[10] = 0;
+        t0[i0_0].mName[11] = 0;
+        t0[i0_0].mName[12] = 0;
+        t0[i0_0].mName[13] = 0;
+        t0[i0_0].mName[14] = 0;
+        t0[i0_0].mUniqueId[32] = 0;
+        t0[i0_0].mName[0] = 0;
+        t0[i0_0].mName[1] = 0;
+        t0[i0_0].mName[2] = 0;
+        t0[i0_0].mName[3] = 0;
+        t0[i0_0].mName[4] = 0;
+        t0[i0_0].mName[5] = 0;
+        t0[i0_0].mName[6] = 0;
+        t0[i0_0].mUniqueId[24] = 0;
+        t0[i0_0].mUniqueId[25] = 0;
+        t0[i0_0].mUniqueId[26] = 0;
+        t0[i0_0].mUniqueId[27] = 0;
+        t0[i0_0].mUniqueId[28] = 0;
+        t0[i0_0].mUniqueId[29] = 0;
+        t0[i0_0].mUniqueId[30] = 0;
+        t0[i0_0].mUniqueId[31] = 0;
+        t0[i0_0].mUniqueId[16] = 0;
+        t0[i0_0].mUniqueId[17] = 0;
+        t0[i0_0].mUniqueId[18] = 0;
+        t0[i0_0].mUniqueId[19] = 0;
+        t0[i0_0].mUniqueId[20] = 0;
+        t0[i0_0].mUniqueId[21] = 0;
+        t0[i0_0].mUniqueId[22] = 0;
+        t0[i0_0].mUniqueId[23] = 0;
+        t0[i0_0].mUniqueId[8] = 0;
+        t0[i0_0].mUniqueId[9] = 0;
+        t0[i0_0].mUniqueId[10] = 0;
+        t0[i0_0].mUniqueId[11] = 0;
+        t0[i0_0].mUniqueId[12] = 0;
+        t0[i0_0].mUniqueId[13] = 0;
+        t0[i0_0].mUniqueId[14] = 0;
+        t0[i0_0].mUniqueId[15] = 0;
+        t0[i0_0].mUniqueId[0] = 0;
+        t0[i0_0].mUniqueId[1] = 0;
+        t0[i0_0].mUniqueId[2] = 0;
+        t0[i0_0].mUniqueId[3] = 0;
+        t0[i0_0].mUniqueId[4] = 0;
+        t0[i0_0].mUniqueId[5] = 0;
+        t0[i0_0].mUniqueId[6] = 0;
+        t0[i0_0].mUniqueId[7] = 0;
+        if (i0_0 != 999) {
+            i0_0 = i0_0 + 1u;
+        } else {
+            break;
+        }
+    }
+    mFreeTag[0].mTagName[80] = 0;
+    mFreeTag[0].mTagName[72] = 0;
+    mFreeTag[0].mTagName[73] = 0;
+    mFreeTag[0].mTagName[74] = 0;
+    mFreeTag[0].mTagName[75] = 0;
+    mFreeTag[0].mTagName[76] = 0;
+    mFreeTag[0].mTagName[77] = 0;
+    mFreeTag[0].mTagName[78] = 0;
+    mFreeTag[0].mTagName[79] = 0;
+    mFreeTag[0].mTagName[64] = 0;
+    mFreeTag[0].mTagName[65] = 0;
+    mFreeTag[0].mTagName[66] = 0;
+    mFreeTag[0].mTagName[67] = 0;
+    mFreeTag[0].mTagName[68] = 0;
+    mFreeTag[0].mTagName[69] = 0;
+    mFreeTag[0].mTagName[70] = 0;
+    mFreeTag[0].mTagName[71] = 0;
+    mFreeTag[0].mTagName[56] = 0;
+    mFreeTag[0].mTagName[57] = 0;
+    mFreeTag[0].mTagName[58] = 0;
+    mFreeTag[0].mTagName[59] = 0;
+    mFreeTag[0].mTagName[60] = 0;
+    mFreeTag[0].mTagName[61] = 0;
+    mFreeTag[0].mTagName[62] = 0;
+    mFreeTag[0].mTagName[63] = 0;
+    mFreeTag[0].mTagName[48] = 0;
+    mFreeTag[0].mTagName[49] = 0;
+    mFreeTag[0].mTagName[50] = 0;
+    mFreeTag[0].mTagName[51] = 0;
+    mFreeTag[0].mTagName[52] = 0;
+    mFreeTag[0].mTagName[53] = 0;
+    mFreeTag[0].mTagName[54] = 0;
+    mFreeTag[0].mTagName[55] = 0;
+    mFreeTag[0].mTagName[40] = 0;
+    mFreeTag[0].mTagName[41] = 0;
+    mFreeTag[0].mTagName[42] = 0;
+    mFreeTag[0].mTagName[43] = 0;
+    mFreeTag[0].mTagName[44] = 0;
+    mFreeTag[0].mTagName[45] = 0;
+    mFreeTag[0].mTagName[46] = 0;
+    mFreeTag[0].mTagName[47] = 0;
+    mFreeTag[0].mTagName[32] = 0;
+    mFreeTag[0].mTagName[33] = 0;
+    mFreeTag[0].mTagName[34] = 0;
+    mFreeTag[0].mTagName[35] = 0;
+    mFreeTag[0].mTagName[36] = 0;
+    mFreeTag[0].mTagName[37] = 0;
+    mFreeTag[0].mTagName[38] = 0;
+    mFreeTag[0].mTagName[39] = 0;
+    mFreeTag[0].mTagName[24] = 0;
+    mFreeTag[0].mTagName[25] = 0;
+    mFreeTag[0].mTagName[26] = 0;
+    mFreeTag[0].mTagName[27] = 0;
+    mFreeTag[0].mTagName[28] = 0;
+    mFreeTag[0].mTagName[29] = 0;
+    mFreeTag[0].mTagName[30] = 0;
+    mFreeTag[0].mTagName[31] = 0;
+    mFreeTag[0].mTagName[16] = 0;
+    mFreeTag[0].mTagName[17] = 0;
+    mFreeTag[0].mTagName[18] = 0;
+    mFreeTag[0].mTagName[19] = 0;
+    mFreeTag[0].mTagName[20] = 0;
+    mFreeTag[0].mTagName[21] = 0;
+    mFreeTag[0].mTagName[22] = 0;
+    mFreeTag[0].mTagName[23] = 0;
+    mFreeTag[0].mTagName[8] = 0;
+    mFreeTag[0].mTagName[9] = 0;
+    mFreeTag[0].mTagName[10] = 0;
+    mFreeTag[0].mTagName[11] = 0;
+    mFreeTag[0].mTagName[12] = 0;
+    mFreeTag[0].mTagName[13] = 0;
+    mFreeTag[0].mTagName[14] = 0;
+    mFreeTag[0].mTagName[15] = 0;
+    mFreeTag[0].mTagName[0] = 0;
+    mFreeTag[0].mTagName[1] = 0;
+    mFreeTag[0].mTagName[2] = 0;
+    mFreeTag[0].mTagName[3] = 0;
+    mFreeTag[0].mTagName[4] = 0;
+    mFreeTag[0].mTagName[5] = 0;
+    mFreeTag[0].mTagName[6] = 0;
+    mFreeTag[0].mTagName[7] = 0;
+    mFreeTag[9].mTagId = 0;
+    mFreeTag[1].mTagName[80] = 0;
+    mFreeTag[1].mTagName[76] = 0;
+    mFreeTag[1].mTagName[77] = 0;
+    mFreeTag[1].mTagName[78] = 0;
+    mFreeTag[1].mTagName[79] = 0;
+    mFreeTag[1].mTagName[68] = 0;
+    mFreeTag[1].mTagName[69] = 0;
+    mFreeTag[1].mTagName[70] = 0;
+    mFreeTag[1].mTagName[71] = 0;
+    mFreeTag[1].mTagName[72] = 0;
+    mFreeTag[1].mTagName[73] = 0;
+    mFreeTag[1].mTagName[74] = 0;
+    mFreeTag[1].mTagName[75] = 0;
+    mFreeTag[1].mTagName[60] = 0;
+    mFreeTag[1].mTagName[61] = 0;
+    mFreeTag[1].mTagName[62] = 0;
+    mFreeTag[1].mTagName[63] = 0;
+    mFreeTag[1].mTagName[64] = 0;
+    mFreeTag[1].mTagName[65] = 0;
+    mFreeTag[1].mTagName[66] = 0;
+    mFreeTag[1].mTagName[67] = 0;
+    mFreeTag[1].mTagName[52] = 0;
+    mFreeTag[1].mTagName[53] = 0;
+    mFreeTag[1].mTagName[54] = 0;
+    mFreeTag[1].mTagName[55] = 0;
+    mFreeTag[1].mTagName[56] = 0;
+    mFreeTag[1].mTagName[57] = 0;
+    mFreeTag[1].mTagName[58] = 0;
+    mFreeTag[1].mTagName[59] = 0;
+    mFreeTag[1].mTagName[44] = 0;
+    mFreeTag[1].mTagName[45] = 0;
+    mFreeTag[1].mTagName[46] = 0;
+    mFreeTag[1].mTagName[47] = 0;
+    mFreeTag[1].mTagName[48] = 0;
+    mFreeTag[1].mTagName[49] = 0;
+    mFreeTag[1].mTagName[50] = 0;
+    mFreeTag[1].mTagName[51] = 0;
+    mFreeTag[1].mTagName[36] = 0;
+    mFreeTag[1].mTagName[37] = 0;
+    mFreeTag[1].mTagName[38] = 0;
+    mFreeTag[1].mTagName[39] = 0;
+    mFreeTag[1].mTagName[40] = 0;
+    mFreeTag[1].mTagName[41] = 0;
+    mFreeTag[1].mTagName[42] = 0;
+    mFreeTag[1].mTagName[43] = 0;
+    mFreeTag[1].mTagName[28] = 0;
+    mFreeTag[1].mTagName[29] = 0;
+    mFreeTag[1].mTagName[30] = 0;
+    mFreeTag[1].mTagName[31] = 0;
+    mFreeTag[1].mTagName[32] = 0;
+    mFreeTag[1].mTagName[33] = 0;
+    mFreeTag[1].mTagName[34] = 0;
+    mFreeTag[1].mTagName[35] = 0;
+    mFreeTag[1].mTagName[20] = 0;
+    mFreeTag[1].mTagName[21] = 0;
+    mFreeTag[1].mTagName[22] = 0;
+    mFreeTag[1].mTagName[23] = 0;
+    mFreeTag[1].mTagName[24] = 0;
+    mFreeTag[1].mTagName[25] = 0;
+    mFreeTag[1].mTagName[26] = 0;
+    mFreeTag[1].mTagName[27] = 0;
+    mFreeTag[1].mTagName[12] = 0;
+    mFreeTag[1].mTagName[13] = 0;
+    mFreeTag[1].mTagName[14] = 0;
+    mFreeTag[1].mTagName[15] = 0;
+    mFreeTag[1].mTagName[16] = 0;
+    mFreeTag[1].mTagName[17] = 0;
+    mFreeTag[1].mTagName[18] = 0;
+    mFreeTag[1].mTagName[19] = 0;
+    mFreeTag[1].mTagName[4] = 0;
+    mFreeTag[1].mTagName[5] = 0;
+    mFreeTag[1].mTagName[6] = 0;
+    mFreeTag[1].mTagName[7] = 0;
+    mFreeTag[1].mTagName[8] = 0;
+    mFreeTag[1].mTagName[9] = 0;
+    mFreeTag[1].mTagName[10] = 0;
+    mFreeTag[1].mTagName[11] = 0;
+    mFreeTag[0].mTagId = 0;
+    mFreeTag[1].mTagName[0] = 0;
+    mFreeTag[1].mTagName[1] = 0;
+    mFreeTag[1].mTagName[2] = 0;
+    mFreeTag[1].mTagName[3] = 0;
+    mFreeTag[2].mTagName[80] = 0;
+    mFreeTag[2].mTagName[76] = 0;
+    mFreeTag[2].mTagName[77] = 0;
+    mFreeTag[2].mTagName[78] = 0;
+    mFreeTag[2].mTagName[79] = 0;
+    mFreeTag[2].mTagName[68] = 0;
+    mFreeTag[2].mTagName[69] = 0;
+    mFreeTag[2].mTagName[70] = 0;
+    mFreeTag[2].mTagName[71] = 0;
+    mFreeTag[2].mTagName[72] = 0;
+    mFreeTag[2].mTagName[73] = 0;
+    mFreeTag[2].mTagName[74] = 0;
+    mFreeTag[2].mTagName[75] = 0;
+    mFreeTag[2].mTagName[60] = 0;
+    mFreeTag[2].mTagName[61] = 0;
+    mFreeTag[2].mTagName[62] = 0;
+    mFreeTag[2].mTagName[63] = 0;
+    mFreeTag[2].mTagName[64] = 0;
+    mFreeTag[2].mTagName[65] = 0;
+    mFreeTag[2].mTagName[66] = 0;
+    mFreeTag[2].mTagName[67] = 0;
+    mFreeTag[2].mTagName[52] = 0;
+    mFreeTag[2].mTagName[53] = 0;
+    mFreeTag[2].mTagName[54] = 0;
+    mFreeTag[2].mTagName[55] = 0;
+    mFreeTag[2].mTagName[56] = 0;
+    mFreeTag[2].mTagName[57] = 0;
+    mFreeTag[2].mTagName[58] = 0;
+    mFreeTag[2].mTagName[59] = 0;
+    mFreeTag[2].mTagName[44] = 0;
+    mFreeTag[2].mTagName[45] = 0;
+    mFreeTag[2].mTagName[46] = 0;
+    mFreeTag[2].mTagName[47] = 0;
+    mFreeTag[2].mTagName[48] = 0;
+    mFreeTag[2].mTagName[49] = 0;
+    mFreeTag[2].mTagName[50] = 0;
+    mFreeTag[2].mTagName[51] = 0;
+    mFreeTag[2].mTagName[36] = 0;
+    mFreeTag[2].mTagName[37] = 0;
+    mFreeTag[2].mTagName[38] = 0;
+    mFreeTag[2].mTagName[39] = 0;
+    mFreeTag[2].mTagName[40] = 0;
+    mFreeTag[2].mTagName[41] = 0;
+    mFreeTag[2].mTagName[42] = 0;
+    mFreeTag[2].mTagName[43] = 0;
+    mFreeTag[2].mTagName[28] = 0;
+    mFreeTag[2].mTagName[29] = 0;
+    mFreeTag[2].mTagName[30] = 0;
+    mFreeTag[2].mTagName[31] = 0;
+    mFreeTag[2].mTagName[32] = 0;
+    mFreeTag[2].mTagName[33] = 0;
+    mFreeTag[2].mTagName[34] = 0;
+    mFreeTag[2].mTagName[35] = 0;
+    mFreeTag[2].mTagName[20] = 0;
+    mFreeTag[2].mTagName[21] = 0;
+    mFreeTag[2].mTagName[22] = 0;
+    mFreeTag[2].mTagName[23] = 0;
+    mFreeTag[2].mTagName[24] = 0;
+    mFreeTag[2].mTagName[25] = 0;
+    mFreeTag[2].mTagName[26] = 0;
+    mFreeTag[2].mTagName[27] = 0;
+    mFreeTag[2].mTagName[12] = 0;
+    mFreeTag[2].mTagName[13] = 0;
+    mFreeTag[2].mTagName[14] = 0;
+    mFreeTag[2].mTagName[15] = 0;
+    mFreeTag[2].mTagName[16] = 0;
+    mFreeTag[2].mTagName[17] = 0;
+    mFreeTag[2].mTagName[18] = 0;
+    mFreeTag[2].mTagName[19] = 0;
+    mFreeTag[2].mTagName[4] = 0;
+    mFreeTag[2].mTagName[5] = 0;
+    mFreeTag[2].mTagName[6] = 0;
+    mFreeTag[2].mTagName[7] = 0;
+    mFreeTag[2].mTagName[8] = 0;
+    mFreeTag[2].mTagName[9] = 0;
+    mFreeTag[2].mTagName[10] = 0;
+    mFreeTag[2].mTagName[11] = 0;
+    mFreeTag[1].mTagId = 0;
+    mFreeTag[2].mTagName[0] = 0;
+    mFreeTag[2].mTagName[1] = 0;
+    mFreeTag[2].mTagName[2] = 0;
+    mFreeTag[2].mTagName[3] = 0;
+    mFreeTag[3].mTagName[80] = 0;
+    mFreeTag[3].mTagName[76] = 0;
+    mFreeTag[3].mTagName[77] = 0;
+    mFreeTag[3].mTagName[78] = 0;
+    mFreeTag[3].mTagName[79] = 0;
+    mFreeTag[3].mTagName[68] = 0;
+    mFreeTag[3].mTagName[69] = 0;
+    mFreeTag[3].mTagName[70] = 0;
+    mFreeTag[3].mTagName[71] = 0;
+    mFreeTag[3].mTagName[72] = 0;
+    mFreeTag[3].mTagName[73] = 0;
+    mFreeTag[3].mTagName[74] = 0;
+    mFreeTag[3].mTagName[75] = 0;
+    mFreeTag[3].mTagName[60] = 0;
+    mFreeTag[3].mTagName[61] = 0;
+    mFreeTag[3].mTagName[62] = 0;
+    mFreeTag[3].mTagName[63] = 0;
+    mFreeTag[3].mTagName[64] = 0;
+    mFreeTag[3].mTagName[65] = 0;
+    mFreeTag[3].mTagName[66] = 0;
+    mFreeTag[3].mTagName[67] = 0;
+    mFreeTag[3].mTagName[52] = 0;
+    mFreeTag[3].mTagName[53] = 0;
+    mFreeTag[3].mTagName[54] = 0;
+    mFreeTag[3].mTagName[55] = 0;
+    mFreeTag[3].mTagName[56] = 0;
+    mFreeTag[3].mTagName[57] = 0;
+    mFreeTag[3].mTagName[58] = 0;
+    mFreeTag[3].mTagName[59] = 0;
+    mFreeTag[3].mTagName[44] = 0;
+    mFreeTag[3].mTagName[45] = 0;
+    mFreeTag[3].mTagName[46] = 0;
+    mFreeTag[3].mTagName[47] = 0;
+    mFreeTag[3].mTagName[48] = 0;
+    mFreeTag[3].mTagName[49] = 0;
+    mFreeTag[3].mTagName[50] = 0;
+    mFreeTag[3].mTagName[51] = 0;
+    mFreeTag[3].mTagName[36] = 0;
+    mFreeTag[3].mTagName[37] = 0;
+    mFreeTag[3].mTagName[38] = 0;
+    mFreeTag[3].mTagName[39] = 0;
+    mFreeTag[3].mTagName[40] = 0;
+    mFreeTag[3].mTagName[41] = 0;
+    mFreeTag[3].mTagName[42] = 0;
+    mFreeTag[3].mTagName[43] = 0;
+    mFreeTag[3].mTagName[28] = 0;
+    mFreeTag[3].mTagName[29] = 0;
+    mFreeTag[3].mTagName[30] = 0;
+    mFreeTag[3].mTagName[31] = 0;
+    mFreeTag[3].mTagName[32] = 0;
+    mFreeTag[3].mTagName[33] = 0;
+    mFreeTag[3].mTagName[34] = 0;
+    mFreeTag[3].mTagName[35] = 0;
+    mFreeTag[3].mTagName[20] = 0;
+    mFreeTag[3].mTagName[21] = 0;
+    mFreeTag[3].mTagName[22] = 0;
+    mFreeTag[3].mTagName[23] = 0;
+    mFreeTag[3].mTagName[24] = 0;
+    mFreeTag[3].mTagName[25] = 0;
+    mFreeTag[3].mTagName[26] = 0;
+    mFreeTag[3].mTagName[27] = 0;
+    mFreeTag[3].mTagName[12] = 0;
+    mFreeTag[3].mTagName[13] = 0;
+    mFreeTag[3].mTagName[14] = 0;
+    mFreeTag[3].mTagName[15] = 0;
+    mFreeTag[3].mTagName[16] = 0;
+    mFreeTag[3].mTagName[17] = 0;
+    mFreeTag[3].mTagName[18] = 0;
+    mFreeTag[3].mTagName[19] = 0;
+    mFreeTag[3].mTagName[4] = 0;
+    mFreeTag[3].mTagName[5] = 0;
+    mFreeTag[3].mTagName[6] = 0;
+    mFreeTag[3].mTagName[7] = 0;
+    mFreeTag[3].mTagName[8] = 0;
+    mFreeTag[3].mTagName[9] = 0;
+    mFreeTag[3].mTagName[10] = 0;
+    mFreeTag[3].mTagName[11] = 0;
+    mFreeTag[2].mTagId = 0;
+    mFreeTag[3].mTagName[0] = 0;
+    mFreeTag[3].mTagName[1] = 0;
+    mFreeTag[3].mTagName[2] = 0;
+    mFreeTag[3].mTagName[3] = 0;
+    mFreeTag[4].mTagName[80] = 0;
+    mFreeTag[4].mTagName[76] = 0;
+    mFreeTag[4].mTagName[77] = 0;
+    mFreeTag[4].mTagName[78] = 0;
+    mFreeTag[4].mTagName[79] = 0;
+    mFreeTag[4].mTagName[68] = 0;
+    mFreeTag[4].mTagName[69] = 0;
+    mFreeTag[4].mTagName[70] = 0;
+    mFreeTag[4].mTagName[71] = 0;
+    mFreeTag[4].mTagName[72] = 0;
+    mFreeTag[4].mTagName[73] = 0;
+    mFreeTag[4].mTagName[74] = 0;
+    mFreeTag[4].mTagName[75] = 0;
+    mFreeTag[4].mTagName[60] = 0;
+    mFreeTag[4].mTagName[61] = 0;
+    mFreeTag[4].mTagName[62] = 0;
+    mFreeTag[4].mTagName[63] = 0;
+    mFreeTag[4].mTagName[64] = 0;
+    mFreeTag[4].mTagName[65] = 0;
+    mFreeTag[4].mTagName[66] = 0;
+    mFreeTag[4].mTagName[67] = 0;
+    mFreeTag[4].mTagName[52] = 0;
+    mFreeTag[4].mTagName[53] = 0;
+    mFreeTag[4].mTagName[54] = 0;
+    mFreeTag[4].mTagName[55] = 0;
+    mFreeTag[4].mTagName[56] = 0;
+    mFreeTag[4].mTagName[57] = 0;
+    mFreeTag[4].mTagName[58] = 0;
+    mFreeTag[4].mTagName[59] = 0;
+    mFreeTag[4].mTagName[44] = 0;
+    mFreeTag[4].mTagName[45] = 0;
+    mFreeTag[4].mTagName[46] = 0;
+    mFreeTag[4].mTagName[47] = 0;
+    mFreeTag[4].mTagName[48] = 0;
+    mFreeTag[4].mTagName[49] = 0;
+    mFreeTag[4].mTagName[50] = 0;
+    mFreeTag[4].mTagName[51] = 0;
+    mFreeTag[4].mTagName[36] = 0;
+    mFreeTag[4].mTagName[37] = 0;
+    mFreeTag[4].mTagName[38] = 0;
+    mFreeTag[4].mTagName[39] = 0;
+    mFreeTag[4].mTagName[40] = 0;
+    mFreeTag[4].mTagName[41] = 0;
+    mFreeTag[4].mTagName[42] = 0;
+    mFreeTag[4].mTagName[43] = 0;
+    mFreeTag[4].mTagName[28] = 0;
+    mFreeTag[4].mTagName[29] = 0;
+    mFreeTag[4].mTagName[30] = 0;
+    mFreeTag[4].mTagName[31] = 0;
+    mFreeTag[4].mTagName[32] = 0;
+    mFreeTag[4].mTagName[33] = 0;
+    mFreeTag[4].mTagName[34] = 0;
+    mFreeTag[4].mTagName[35] = 0;
+    mFreeTag[4].mTagName[20] = 0;
+    mFreeTag[4].mTagName[21] = 0;
+    mFreeTag[4].mTagName[22] = 0;
+    mFreeTag[4].mTagName[23] = 0;
+    mFreeTag[4].mTagName[24] = 0;
+    mFreeTag[4].mTagName[25] = 0;
+    mFreeTag[4].mTagName[26] = 0;
+    mFreeTag[4].mTagName[27] = 0;
+    mFreeTag[4].mTagName[12] = 0;
+    mFreeTag[4].mTagName[13] = 0;
+    mFreeTag[4].mTagName[14] = 0;
+    mFreeTag[4].mTagName[15] = 0;
+    mFreeTag[4].mTagName[16] = 0;
+    mFreeTag[4].mTagName[17] = 0;
+    mFreeTag[4].mTagName[18] = 0;
+    mFreeTag[4].mTagName[19] = 0;
+    mFreeTag[4].mTagName[4] = 0;
+    mFreeTag[4].mTagName[5] = 0;
+    mFreeTag[4].mTagName[6] = 0;
+    mFreeTag[4].mTagName[7] = 0;
+    mFreeTag[4].mTagName[8] = 0;
+    mFreeTag[4].mTagName[9] = 0;
+    mFreeTag[4].mTagName[10] = 0;
+    mFreeTag[4].mTagName[11] = 0;
+    mFreeTag[3].mTagId = 0;
+    mFreeTag[4].mTagName[0] = 0;
+    mFreeTag[4].mTagName[1] = 0;
+    mFreeTag[4].mTagName[2] = 0;
+    mFreeTag[4].mTagName[3] = 0;
+    mFreeTag[5].mTagName[80] = 0;
+    mFreeTag[5].mTagName[76] = 0;
+    mFreeTag[5].mTagName[77] = 0;
+    mFreeTag[5].mTagName[78] = 0;
+    mFreeTag[5].mTagName[79] = 0;
+    mFreeTag[5].mTagName[68] = 0;
+    mFreeTag[5].mTagName[69] = 0;
+    mFreeTag[5].mTagName[70] = 0;
+    mFreeTag[5].mTagName[71] = 0;
+    mFreeTag[5].mTagName[72] = 0;
+    mFreeTag[5].mTagName[73] = 0;
+    mFreeTag[5].mTagName[74] = 0;
+    mFreeTag[5].mTagName[75] = 0;
+    mFreeTag[5].mTagName[60] = 0;
+    mFreeTag[5].mTagName[61] = 0;
+    mFreeTag[5].mTagName[62] = 0;
+    mFreeTag[5].mTagName[63] = 0;
+    mFreeTag[5].mTagName[64] = 0;
+    mFreeTag[5].mTagName[65] = 0;
+    mFreeTag[5].mTagName[66] = 0;
+    mFreeTag[5].mTagName[67] = 0;
+    mFreeTag[5].mTagName[52] = 0;
+    mFreeTag[5].mTagName[53] = 0;
+    mFreeTag[5].mTagName[54] = 0;
+    mFreeTag[5].mTagName[55] = 0;
+    mFreeTag[5].mTagName[56] = 0;
+    mFreeTag[5].mTagName[57] = 0;
+    mFreeTag[5].mTagName[58] = 0;
+    mFreeTag[5].mTagName[59] = 0;
+    mFreeTag[5].mTagName[44] = 0;
+    mFreeTag[5].mTagName[45] = 0;
+    mFreeTag[5].mTagName[46] = 0;
+    mFreeTag[5].mTagName[47] = 0;
+    mFreeTag[5].mTagName[48] = 0;
+    mFreeTag[5].mTagName[49] = 0;
+    mFreeTag[5].mTagName[50] = 0;
+    mFreeTag[5].mTagName[51] = 0;
+    mFreeTag[5].mTagName[36] = 0;
+    mFreeTag[5].mTagName[37] = 0;
+    mFreeTag[5].mTagName[38] = 0;
+    mFreeTag[5].mTagName[39] = 0;
+    mFreeTag[5].mTagName[40] = 0;
+    mFreeTag[5].mTagName[41] = 0;
+    mFreeTag[5].mTagName[42] = 0;
+    mFreeTag[5].mTagName[43] = 0;
+    mFreeTag[5].mTagName[28] = 0;
+    mFreeTag[5].mTagName[29] = 0;
+    mFreeTag[5].mTagName[30] = 0;
+    mFreeTag[5].mTagName[31] = 0;
+    mFreeTag[5].mTagName[32] = 0;
+    mFreeTag[5].mTagName[33] = 0;
+    mFreeTag[5].mTagName[34] = 0;
+    mFreeTag[5].mTagName[35] = 0;
+    mFreeTag[5].mTagName[20] = 0;
+    mFreeTag[5].mTagName[21] = 0;
+    mFreeTag[5].mTagName[22] = 0;
+    mFreeTag[5].mTagName[23] = 0;
+    mFreeTag[5].mTagName[24] = 0;
+    mFreeTag[5].mTagName[25] = 0;
+    mFreeTag[5].mTagName[26] = 0;
+    mFreeTag[5].mTagName[27] = 0;
+    mFreeTag[5].mTagName[12] = 0;
+    mFreeTag[5].mTagName[13] = 0;
+    mFreeTag[5].mTagName[14] = 0;
+    mFreeTag[5].mTagName[15] = 0;
+    mFreeTag[5].mTagName[16] = 0;
+    mFreeTag[5].mTagName[17] = 0;
+    mFreeTag[5].mTagName[18] = 0;
+    mFreeTag[5].mTagName[19] = 0;
+    mFreeTag[5].mTagName[4] = 0;
+    mFreeTag[5].mTagName[5] = 0;
+    mFreeTag[5].mTagName[6] = 0;
+    mFreeTag[5].mTagName[7] = 0;
+    mFreeTag[5].mTagName[8] = 0;
+    mFreeTag[5].mTagName[9] = 0;
+    mFreeTag[5].mTagName[10] = 0;
+    mFreeTag[5].mTagName[11] = 0;
+    mFreeTag[4].mTagId = 0;
+    mFreeTag[5].mTagName[0] = 0;
+    mFreeTag[5].mTagName[1] = 0;
+    mFreeTag[5].mTagName[2] = 0;
+    mFreeTag[5].mTagName[3] = 0;
+    mFreeTag[6].mTagName[80] = 0;
+    mFreeTag[6].mTagName[76] = 0;
+    mFreeTag[6].mTagName[77] = 0;
+    mFreeTag[6].mTagName[78] = 0;
+    mFreeTag[6].mTagName[79] = 0;
+    mFreeTag[6].mTagName[68] = 0;
+    mFreeTag[6].mTagName[69] = 0;
+    mFreeTag[6].mTagName[70] = 0;
+    mFreeTag[6].mTagName[71] = 0;
+    mFreeTag[6].mTagName[72] = 0;
+    mFreeTag[6].mTagName[73] = 0;
+    mFreeTag[6].mTagName[74] = 0;
+    mFreeTag[6].mTagName[75] = 0;
+    mFreeTag[6].mTagName[60] = 0;
+    mFreeTag[6].mTagName[61] = 0;
+    mFreeTag[6].mTagName[62] = 0;
+    mFreeTag[6].mTagName[63] = 0;
+    mFreeTag[6].mTagName[64] = 0;
+    mFreeTag[6].mTagName[65] = 0;
+    mFreeTag[6].mTagName[66] = 0;
+    mFreeTag[6].mTagName[67] = 0;
+    mFreeTag[6].mTagName[52] = 0;
+    mFreeTag[6].mTagName[53] = 0;
+    mFreeTag[6].mTagName[54] = 0;
+    mFreeTag[6].mTagName[55] = 0;
+    mFreeTag[6].mTagName[56] = 0;
+    mFreeTag[6].mTagName[57] = 0;
+    mFreeTag[6].mTagName[58] = 0;
+    mFreeTag[6].mTagName[59] = 0;
+    mFreeTag[6].mTagName[44] = 0;
+    mFreeTag[6].mTagName[45] = 0;
+    mFreeTag[6].mTagName[46] = 0;
+    mFreeTag[6].mTagName[47] = 0;
+    mFreeTag[6].mTagName[48] = 0;
+    mFreeTag[6].mTagName[49] = 0;
+    mFreeTag[6].mTagName[50] = 0;
+    mFreeTag[6].mTagName[51] = 0;
+    mFreeTag[6].mTagName[36] = 0;
+    mFreeTag[6].mTagName[37] = 0;
+    mFreeTag[6].mTagName[38] = 0;
+    mFreeTag[6].mTagName[39] = 0;
+    mFreeTag[6].mTagName[40] = 0;
+    mFreeTag[6].mTagName[41] = 0;
+    mFreeTag[6].mTagName[42] = 0;
+    mFreeTag[6].mTagName[43] = 0;
+    mFreeTag[6].mTagName[28] = 0;
+    mFreeTag[6].mTagName[29] = 0;
+    mFreeTag[6].mTagName[30] = 0;
+    mFreeTag[6].mTagName[31] = 0;
+    mFreeTag[6].mTagName[32] = 0;
+    mFreeTag[6].mTagName[33] = 0;
+    mFreeTag[6].mTagName[34] = 0;
+    mFreeTag[6].mTagName[35] = 0;
+    mFreeTag[6].mTagName[20] = 0;
+    mFreeTag[6].mTagName[21] = 0;
+    mFreeTag[6].mTagName[22] = 0;
+    mFreeTag[6].mTagName[23] = 0;
+    mFreeTag[6].mTagName[24] = 0;
+    mFreeTag[6].mTagName[25] = 0;
+    mFreeTag[6].mTagName[26] = 0;
+    mFreeTag[6].mTagName[27] = 0;
+    mFreeTag[6].mTagName[12] = 0;
+    mFreeTag[6].mTagName[13] = 0;
+    mFreeTag[6].mTagName[14] = 0;
+    mFreeTag[6].mTagName[15] = 0;
+    mFreeTag[6].mTagName[16] = 0;
+    mFreeTag[6].mTagName[17] = 0;
+    mFreeTag[6].mTagName[18] = 0;
+    mFreeTag[6].mTagName[19] = 0;
+    mFreeTag[6].mTagName[4] = 0;
+    mFreeTag[6].mTagName[5] = 0;
+    mFreeTag[6].mTagName[6] = 0;
+    mFreeTag[6].mTagName[7] = 0;
+    mFreeTag[6].mTagName[8] = 0;
+    mFreeTag[6].mTagName[9] = 0;
+    mFreeTag[6].mTagName[10] = 0;
+    mFreeTag[6].mTagName[11] = 0;
+    mFreeTag[5].mTagId = 0;
+    mFreeTag[6].mTagName[0] = 0;
+    mFreeTag[6].mTagName[1] = 0;
+    mFreeTag[6].mTagName[2] = 0;
+    mFreeTag[6].mTagName[3] = 0;
+    mFreeTag[7].mTagName[80] = 0;
+    mFreeTag[7].mTagName[76] = 0;
+    mFreeTag[7].mTagName[77] = 0;
+    mFreeTag[7].mTagName[78] = 0;
+    mFreeTag[7].mTagName[79] = 0;
+    mFreeTag[7].mTagName[68] = 0;
+    mFreeTag[7].mTagName[69] = 0;
+    mFreeTag[7].mTagName[70] = 0;
+    mFreeTag[7].mTagName[71] = 0;
+    mFreeTag[7].mTagName[72] = 0;
+    mFreeTag[7].mTagName[73] = 0;
+    mFreeTag[7].mTagName[74] = 0;
+    mFreeTag[7].mTagName[75] = 0;
+    mFreeTag[7].mTagName[60] = 0;
+    mFreeTag[7].mTagName[61] = 0;
+    mFreeTag[7].mTagName[62] = 0;
+    mFreeTag[7].mTagName[63] = 0;
+    mFreeTag[7].mTagName[64] = 0;
+    mFreeTag[7].mTagName[65] = 0;
+    mFreeTag[7].mTagName[66] = 0;
+    mFreeTag[7].mTagName[67] = 0;
+    mFreeTag[7].mTagName[52] = 0;
+    mFreeTag[7].mTagName[53] = 0;
+    mFreeTag[7].mTagName[54] = 0;
+    mFreeTag[7].mTagName[55] = 0;
+    mFreeTag[7].mTagName[56] = 0;
+    mFreeTag[7].mTagName[57] = 0;
+    mFreeTag[7].mTagName[58] = 0;
+    mFreeTag[7].mTagName[59] = 0;
+    mFreeTag[7].mTagName[44] = 0;
+    mFreeTag[7].mTagName[45] = 0;
+    mFreeTag[7].mTagName[46] = 0;
+    mFreeTag[7].mTagName[47] = 0;
+    mFreeTag[7].mTagName[48] = 0;
+    mFreeTag[7].mTagName[49] = 0;
+    mFreeTag[7].mTagName[50] = 0;
+    mFreeTag[7].mTagName[51] = 0;
+    mFreeTag[7].mTagName[36] = 0;
+    mFreeTag[7].mTagName[37] = 0;
+    mFreeTag[7].mTagName[38] = 0;
+    mFreeTag[7].mTagName[39] = 0;
+    mFreeTag[7].mTagName[40] = 0;
+    mFreeTag[7].mTagName[41] = 0;
+    mFreeTag[7].mTagName[42] = 0;
+    mFreeTag[7].mTagName[43] = 0;
+    mFreeTag[7].mTagName[28] = 0;
+    mFreeTag[7].mTagName[29] = 0;
+    mFreeTag[7].mTagName[30] = 0;
+    mFreeTag[7].mTagName[31] = 0;
+    mFreeTag[7].mTagName[32] = 0;
+    mFreeTag[7].mTagName[33] = 0;
+    mFreeTag[7].mTagName[34] = 0;
+    mFreeTag[7].mTagName[35] = 0;
+    mFreeTag[7].mTagName[20] = 0;
+    mFreeTag[7].mTagName[21] = 0;
+    mFreeTag[7].mTagName[22] = 0;
+    mFreeTag[7].mTagName[23] = 0;
+    mFreeTag[7].mTagName[24] = 0;
+    mFreeTag[7].mTagName[25] = 0;
+    mFreeTag[7].mTagName[26] = 0;
+    mFreeTag[7].mTagName[27] = 0;
+    mFreeTag[7].mTagName[12] = 0;
+    mFreeTag[7].mTagName[13] = 0;
+    mFreeTag[7].mTagName[14] = 0;
+    mFreeTag[7].mTagName[15] = 0;
+    mFreeTag[7].mTagName[16] = 0;
+    mFreeTag[7].mTagName[17] = 0;
+    mFreeTag[7].mTagName[18] = 0;
+    mFreeTag[7].mTagName[19] = 0;
+    mFreeTag[7].mTagName[4] = 0;
+    mFreeTag[7].mTagName[5] = 0;
+    mFreeTag[7].mTagName[6] = 0;
+    mFreeTag[7].mTagName[7] = 0;
+    mFreeTag[7].mTagName[8] = 0;
+    mFreeTag[7].mTagName[9] = 0;
+    mFreeTag[7].mTagName[10] = 0;
+    mFreeTag[7].mTagName[11] = 0;
+    mFreeTag[6].mTagId = 0;
+    mFreeTag[7].mTagName[0] = 0;
+    mFreeTag[7].mTagName[1] = 0;
+    mFreeTag[7].mTagName[2] = 0;
+    mFreeTag[7].mTagName[3] = 0;
+    mFreeTag[8].mTagName[80] = 0;
+    mFreeTag[8].mTagName[76] = 0;
+    mFreeTag[8].mTagName[77] = 0;
+    mFreeTag[8].mTagName[78] = 0;
+    mFreeTag[8].mTagName[79] = 0;
+    mFreeTag[8].mTagName[68] = 0;
+    mFreeTag[8].mTagName[69] = 0;
+    mFreeTag[8].mTagName[70] = 0;
+    mFreeTag[8].mTagName[71] = 0;
+    mFreeTag[8].mTagName[72] = 0;
+    mFreeTag[8].mTagName[73] = 0;
+    mFreeTag[8].mTagName[74] = 0;
+    mFreeTag[8].mTagName[75] = 0;
+    mFreeTag[8].mTagName[60] = 0;
+    mFreeTag[8].mTagName[61] = 0;
+    mFreeTag[8].mTagName[62] = 0;
+    mFreeTag[8].mTagName[63] = 0;
+    mFreeTag[8].mTagName[64] = 0;
+    mFreeTag[8].mTagName[65] = 0;
+    mFreeTag[8].mTagName[66] = 0;
+    mFreeTag[8].mTagName[67] = 0;
+    mFreeTag[8].mTagName[52] = 0;
+    mFreeTag[8].mTagName[53] = 0;
+    mFreeTag[8].mTagName[54] = 0;
+    mFreeTag[8].mTagName[55] = 0;
+    mFreeTag[8].mTagName[56] = 0;
+    mFreeTag[8].mTagName[57] = 0;
+    mFreeTag[8].mTagName[58] = 0;
+    mFreeTag[8].mTagName[59] = 0;
+    mFreeTag[8].mTagName[44] = 0;
+    mFreeTag[8].mTagName[45] = 0;
+    mFreeTag[8].mTagName[46] = 0;
+    mFreeTag[8].mTagName[47] = 0;
+    mFreeTag[8].mTagName[48] = 0;
+    mFreeTag[8].mTagName[49] = 0;
+    mFreeTag[8].mTagName[50] = 0;
+    mFreeTag[8].mTagName[51] = 0;
+    mFreeTag[8].mTagName[36] = 0;
+    mFreeTag[8].mTagName[37] = 0;
+    mFreeTag[8].mTagName[38] = 0;
+    mFreeTag[8].mTagName[39] = 0;
+    mFreeTag[8].mTagName[40] = 0;
+    mFreeTag[8].mTagName[41] = 0;
+    mFreeTag[8].mTagName[42] = 0;
+    mFreeTag[8].mTagName[43] = 0;
+    mFreeTag[8].mTagName[28] = 0;
+    mFreeTag[8].mTagName[29] = 0;
+    mFreeTag[8].mTagName[30] = 0;
+    mFreeTag[8].mTagName[31] = 0;
+    mFreeTag[8].mTagName[32] = 0;
+    mFreeTag[8].mTagName[33] = 0;
+    mFreeTag[8].mTagName[34] = 0;
+    mFreeTag[8].mTagName[35] = 0;
+    mFreeTag[8].mTagName[20] = 0;
+    mFreeTag[8].mTagName[21] = 0;
+    mFreeTag[8].mTagName[22] = 0;
+    mFreeTag[8].mTagName[23] = 0;
+    mFreeTag[8].mTagName[24] = 0;
+    mFreeTag[8].mTagName[25] = 0;
+    mFreeTag[8].mTagName[26] = 0;
+    mFreeTag[8].mTagName[27] = 0;
+    mFreeTag[8].mTagName[12] = 0;
+    mFreeTag[8].mTagName[13] = 0;
+    mFreeTag[8].mTagName[14] = 0;
+    mFreeTag[8].mTagName[15] = 0;
+    mFreeTag[8].mTagName[16] = 0;
+    mFreeTag[8].mTagName[17] = 0;
+    mFreeTag[8].mTagName[18] = 0;
+    mFreeTag[8].mTagName[19] = 0;
+    mFreeTag[8].mTagName[4] = 0;
+    mFreeTag[8].mTagName[5] = 0;
+    mFreeTag[8].mTagName[6] = 0;
+    mFreeTag[8].mTagName[7] = 0;
+    mFreeTag[8].mTagName[8] = 0;
+    mFreeTag[8].mTagName[9] = 0;
+    mFreeTag[8].mTagName[10] = 0;
+    mFreeTag[8].mTagName[11] = 0;
+    mFreeTag[7].mTagId = 0;
+    mFreeTag[8].mTagName[0] = 0;
+    mFreeTag[8].mTagName[1] = 0;
+    mFreeTag[8].mTagName[2] = 0;
+    mFreeTag[8].mTagName[3] = 0;
+    mFreeTag[9].mTagName[80] = 0;
+    mFreeTag[9].mTagName[76] = 0;
+    mFreeTag[9].mTagName[77] = 0;
+    mFreeTag[9].mTagName[78] = 0;
+    mFreeTag[9].mTagName[79] = 0;
+    mFreeTag[9].mTagName[68] = 0;
+    mFreeTag[9].mTagName[69] = 0;
+    mFreeTag[9].mTagName[70] = 0;
+    mFreeTag[9].mTagName[71] = 0;
+    mFreeTag[9].mTagName[72] = 0;
+    mFreeTag[9].mTagName[73] = 0;
+    mFreeTag[9].mTagName[74] = 0;
+    mFreeTag[9].mTagName[75] = 0;
+    mFreeTag[9].mTagName[60] = 0;
+    mFreeTag[9].mTagName[61] = 0;
+    mFreeTag[9].mTagName[62] = 0;
+    mFreeTag[9].mTagName[63] = 0;
+    mFreeTag[9].mTagName[64] = 0;
+    mFreeTag[9].mTagName[65] = 0;
+    mFreeTag[9].mTagName[66] = 0;
+    mFreeTag[9].mTagName[67] = 0;
+    mFreeTag[9].mTagName[52] = 0;
+    mFreeTag[9].mTagName[53] = 0;
+    mFreeTag[9].mTagName[54] = 0;
+    mFreeTag[9].mTagName[55] = 0;
+    mFreeTag[9].mTagName[56] = 0;
+    mFreeTag[9].mTagName[57] = 0;
+    mFreeTag[9].mTagName[58] = 0;
+    mFreeTag[9].mTagName[59] = 0;
+    mFreeTag[9].mTagName[44] = 0;
+    mFreeTag[9].mTagName[45] = 0;
+    mFreeTag[9].mTagName[46] = 0;
+    mFreeTag[9].mTagName[47] = 0;
+    mFreeTag[9].mTagName[48] = 0;
+    mFreeTag[9].mTagName[49] = 0;
+    mFreeTag[9].mTagName[50] = 0;
+    mFreeTag[9].mTagName[51] = 0;
+    mFreeTag[9].mTagName[36] = 0;
+    mFreeTag[9].mTagName[37] = 0;
+    mFreeTag[9].mTagName[38] = 0;
+    mFreeTag[9].mTagName[39] = 0;
+    mFreeTag[9].mTagName[40] = 0;
+    mFreeTag[9].mTagName[41] = 0;
+    mFreeTag[9].mTagName[42] = 0;
+    mFreeTag[9].mTagName[43] = 0;
+    mFreeTag[9].mTagName[28] = 0;
+    mFreeTag[9].mTagName[29] = 0;
+    mFreeTag[9].mTagName[30] = 0;
+    mFreeTag[9].mTagName[31] = 0;
+    mFreeTag[9].mTagName[32] = 0;
+    mFreeTag[9].mTagName[33] = 0;
+    mFreeTag[9].mTagName[34] = 0;
+    mFreeTag[9].mTagName[35] = 0;
+    mFreeTag[9].mTagName[20] = 0;
+    mFreeTag[9].mTagName[21] = 0;
+    mFreeTag[9].mTagName[22] = 0;
+    mFreeTag[9].mTagName[23] = 0;
+    mFreeTag[9].mTagName[24] = 0;
+    mFreeTag[9].mTagName[25] = 0;
+    mFreeTag[9].mTagName[26] = 0;
+    mFreeTag[9].mTagName[27] = 0;
+    mFreeTag[9].mTagName[12] = 0;
+    mFreeTag[9].mTagName[13] = 0;
+    mFreeTag[9].mTagName[14] = 0;
+    mFreeTag[9].mTagName[15] = 0;
+    mFreeTag[9].mTagName[16] = 0;
+    mFreeTag[9].mTagName[17] = 0;
+    mFreeTag[9].mTagName[18] = 0;
+    mFreeTag[9].mTagName[19] = 0;
+    mFreeTag[9].mTagName[4] = 0;
+    mFreeTag[9].mTagName[5] = 0;
+    mFreeTag[9].mTagName[6] = 0;
+    mFreeTag[9].mTagName[7] = 0;
+    mFreeTag[9].mTagName[8] = 0;
+    mFreeTag[9].mTagName[9] = 0;
+    mFreeTag[9].mTagName[10] = 0;
+    mFreeTag[9].mTagName[11] = 0;
+    mFreeTag[8].mTagId = 0;
+    mFreeTag[9].mTagName[0] = 0;
+    mFreeTag[9].mTagName[1] = 0;
+    mFreeTag[9].mTagName[2] = 0;
+    mFreeTag[9].mTagName[3] = 0;
+    for (unsigned int i2_3 = 0;;) {
+        cFriendRecvData* t1 = mFriendRecv;
+        t1[i2_3].mIconIndex = 0xFF;
+        memset(static_cast<void*>(&t1[i2_3].mUniqueId[0]), 0, 627ul);
+        if (i2_3 != 999) {
+            i2_3 = i2_3 + 1u;
+        } else {
+            break;
+        }
+    }
+    if (mContentData.mLength != 0) {
+        u32 v4_0 = mContentData.mLength;
+        unsigned int i4_3 = 0;
+        u32 v5_0;
+        for (;;) {
+            if (mContentData.mpArray[i4_3] == nullptr) {
+                v5_0 = v4_0;
+            } else {
+                delete mContentData.mpArray[i4_3];
+                v5_0 = mContentData.mLength;
+            }
+            if ((i4_3 + 1u) < v5_0) {
+                v4_0 = v5_0;
+                i4_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mContentData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mContentData.mpArray));
+    }
+    mContentData.mpArray = nullptr;
+    mContentData.mBufsiz = 0;
+    mContentData.mLength = 0;
+    if (mGroupChatData.mLength != 0) {
+        u32 v7_0 = mGroupChatData.mLength;
+        unsigned int i7_3 = 0;
+        u32 v8_0;
+        for (;;) {
+            if (mGroupChatData.mpArray[i7_3] == nullptr) {
+                v8_0 = v7_0;
+            } else {
+                delete mGroupChatData.mpArray[i7_3];
+                v8_0 = mGroupChatData.mLength;
+            }
+            if ((i7_3 + 1u) < v8_0) {
+                v7_0 = v8_0;
+                i7_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mGroupChatData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGroupChatData.mpArray));
+    }
+    mGroupChatData.mpArray = nullptr;
+    mGroupChatData.mBufsiz = 0;
+    mGroupChatData.mLength = 0;
+    mFriendNum = 0;
+    mFreeTagNum = 0;
+    mIsDispNoneTag = true;
+    mFriendRecvNum = 0;
+    mIsDispNoneContent = true;
+    mFreeTagDisp = mFreeTagDisp | 1023u;
+    mFriendAttrDisp = 6;
+    mRnoUpdate = 0;
 }
 
 __attribute__((weak)) void sCaplinkManager::resetFriendList() {

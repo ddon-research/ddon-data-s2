@@ -93,9 +93,8 @@ u32 nTalk::cSelectMember::getPawnId() const {
     return mPawnId;
 }
 
-__attribute__((weak)) CHAR_NAME nTalk::cSelectMember::getName() const {
-    DDON_STUB("nTalk::cSelectMember::getName")
-    __builtin_unreachable();
+CHAR_NAME nTalk::cSelectMember::getName() const {
+    return mName;
 }
 
 nTalk::cSelectMember::cSelectMember(u32 slot, u32 pawnId, CHAR_NAME name) {

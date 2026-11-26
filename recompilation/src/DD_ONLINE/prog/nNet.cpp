@@ -36,6 +36,10 @@ void* CDataClientPartyListInfo::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(CDataClientPartyListInfo::DTI)->memAlloc(sz, align, CDataClientPartyListInfo::DTI.getID());
 }
 
+inline void CDataClientPartyListInfo::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(CDataClientPartyListInfo::DTI)->memFree(p_addr);
+}
+
 inline CDataClientPartyListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 CDataClientPartyListInfo::MyDTI CDataClientPartyListInfo::DTI("CDataClientPartyListInfo", &::CDataPartyListInfo::DTI, 112ul, 0u, 0u);
@@ -128,14 +132,14 @@ __attribute__((weak)) void nNet::convBoardItemInfoToParam(CEntryItemParam& param
 }
 
 const CEntryMemberData* nNet::getMemberInfo(nNet::stEntryBoardItemInfo& info, u32 characterId) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&info) + 168)) != 0) {
+    if (info.MemberList.mLength != 0) {
         u32 i = 0;
         do {
             if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(info.MemberList.getBuffer()[static_cast<int>(i)]) + 32)) == characterId) {
                 return static_cast<const CEntryMemberData*>(info.MemberList.getBuffer()[static_cast<int>(i)]);
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&info) + 168)));
+        } while (i < info.MemberList.mLength);
     }
     return nullptr;
 }

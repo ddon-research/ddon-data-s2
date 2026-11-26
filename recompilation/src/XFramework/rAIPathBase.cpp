@@ -12,6 +12,7 @@
 #include "../MT/MtGeometry3D.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "cResource.h"
@@ -39,29 +40,13 @@ rAIPathBase::rAIPathBase() {
     mpHierarchyArea = nullptr;
 }
 
-rAIPathBase::~rAIPathBase() {
-    if (mpHierarchyArea != nullptr) {
-        if (mNumberOfArea != 0) {
-            u16 v0_0 = mNumberOfArea;
-            HierarchyArea* * v0_1 = mpHierarchyArea;
-            for (unsigned int i0_3 = 0;;) {
-                if (v0_1[i0_3] != nullptr) {
-                    delete v0_1[i0_3];
-                    if ((i0_3 + 1u) >= mNumberOfArea) {
-                        break;
-                    }
-                    v0_0 = mNumberOfArea;
-                } else {
-                    if ((i0_3 + 1u) >= v0_0) {
-                        break;
-                    }
-                }
-                v0_1 = mpHierarchyArea;
-                i0_3 += 1u;
+__attribute__((noinline)) rAIPathBase::~rAIPathBase() {
+        if (mpHierarchyArea != nullptr) {
+            for (u32 i = 0; i < mNumberOfArea; i++) {
+                delete mpHierarchyArea[i];
             }
+            MtMemoryAllocator::getAllocator(rAIPathBase::DTI)->memFree(mpHierarchyArea);
         }
-        MtMemoryAllocator::getAllocator(rAIPathBase::DTI)->memFree(static_cast<void*>(mpHierarchyArea));
-    }
 }
 
 MT_CTSTR rAIPathBase::getExt() const {
@@ -76,9 +61,10 @@ bool rAIPathBase::load(MtStream& in) {
     return true;
 }
 
-__attribute__((weak)) void rAIPathBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIPathBase::createProperty")
-    /* stub */
+void rAIPathBase::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mNumberOfArea", &mNumberOfArea, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpHierarchyArea", reinterpret_cast<MT_MFUNC>(&::rAIPathBase::getArea), reinterpret_cast<MT_MFUNC>(&::rAIPathBase::setArea), 160u, reinterpret_cast<MT_MFUNC>(&::rAIPathBase::getNumberOfArea), reinterpret_cast<MT_MFUNC>(&::rAIPathBase::setNumberOfArea));
 }
 
 MtUI* rAIPathBase::createUI(MtProperty& prop) {
@@ -86,18 +72,116 @@ MtUI* rAIPathBase::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) void rAIPathBase::save(MtDataWriter* w) {
-    DDON_STUB("rAIPathBase::save")
-    /* stub */
+    u16 TotalLink;
+    u16 TotalChild;
+    TotalLink = 0;
+    TotalChild = 0;
+    w->writeU16(mNumberOfArea);
+    for (u32 i = 0; i < mNumberOfArea; ++i) {
+        w->writeU16(mpHierarchyArea[i]->mID);
+        w->writeU32(mpHierarchyArea[i]->mName.length());
+        w->writeString(mpHierarchyArea[i]->mName.ptr());
+        w->writeU32(mpHierarchyArea[i]->mAttribute);
+        w->writeU32(mpHierarchyArea[i]->mNumberOfGeometry);
+        u32 n = mpHierarchyArea[i]->mNumberOfGeometry;
+        for (u32 j = 0; j < n; ++j) {
+            MtGeometry* pGeom = mpHierarchyArea[i]->getGeometry(j);
+            if (pGeom->getDTI().getID() == MtGeomAABB::DTI.getID()) {
+                MtGeomAABB* pAABB = static_cast<MtGeomAABB*>(pGeom);
+                w->writeU8(0);
+                w->writeV3(MtFloat3(pAABB->mAABB.minpos));
+                w->writeV3(MtFloat3(pAABB->mAABB.maxpos));
+            } else if (pGeom->getDTI().getID() == MtGeomOBB::DTI.getID()) {
+                MtGeomOBB* pOBB = static_cast<MtGeomOBB*>(pGeom);
+                w->writeU8(1);
+                w->writeV3(MtFloat3(pOBB->mOBB.extent));
+                w->writeV4(MtFloat4(pOBB->mOBB.coord.m[0]));
+                w->writeV4(MtFloat4(pOBB->mOBB.coord.m[1]));
+                w->writeV4(MtFloat4(pOBB->mOBB.coord.m[2]));
+                w->writeV4(MtFloat4(pOBB->mOBB.coord.m[3]));
+            } else if (pGeom->getDTI().getID() == MtGeomSphere::DTI.getID()) {
+                MtGeomSphere* pSphere = static_cast<MtGeomSphere*>(pGeom);
+                w->writeU8(2);
+                w->writeF32(pSphere->mSphere.r);
+                w->writeV3(MtFloat3(pSphere->mSphere.pos.x, pSphere->mSphere.pos.y, pSphere->mSphere.pos.z));
+            }
+        }
+        w->writeU16(mpHierarchyArea[i]->mFirstIndex);
+        w->writeU16(mpHierarchyArea[i]->mLastIndex);
+        w->writeU16(static_cast<u16>(mpHierarchyArea[i]->mParentID));
+        w->writeU8(mpHierarchyArea[i]->mNumberOfChild);
+        for (u32 j = 0; j < mpHierarchyArea[i]->mNumberOfChild; ++j) w->writeU8(mpHierarchyArea[i]->mpChild[j]);
+        w->writeU8(mpHierarchyArea[i]->mNumberOfLink);
+        for (u32 j = 0; j < mpHierarchyArea[i]->mNumberOfLink; ++j) w->writeU8(mpHierarchyArea[i]->mpLink[j]);
+        TotalChild += mpHierarchyArea[i]->mNumberOfChild;
+        TotalLink += mpHierarchyArea[i]->mNumberOfLink;
+    }
+    w->writeU16(TotalChild);
+    w->writeU16(TotalLink);
 }
 
 __attribute__((weak)) void rAIPathBase::load(MtDataReader* r) {
-    DDON_STUB("rAIPathBase::load")
-    /* stub */
+    setNumberOfArea(r->readU16());
+    for (u32 i = 0; i < mNumberOfArea; ++i) {
+        HierarchyArea* pArea = new (16) HierarchyArea();
+        pArea->setID(r->readU16());
+        MT_CHAR c[256];
+        u32 s = r->readU32();
+        r->readString(c, s + 1);
+        pArea->setName(c);
+        pArea->setAttribute(r->readU32());
+        u32 n = r->readU32();
+        pArea->setNumberOfGeometry(n);
+        for (u32 j = 0; j < pArea->getNumberOfGeometry(); ++j) {
+            u8 gIndex = r->readU8();
+            if (gIndex == 0) {
+                MtGeomAABB* pAABB = new (16) MtGeomAABB();
+                pAABB->mAABB.minpos = r->readV3();
+                pAABB->mAABB.maxpos = r->readV3();
+                pArea->setGeometry(pAABB, j);
+            } else if (gIndex == 1) {
+                MtGeomOBB* pOBB = new (16) MtGeomOBB();
+                pOBB->mOBB.extent = r->readV3();
+                for (u32 t1 = 0; t1 < 4; ++t1) pOBB->mOBB.coord.m[t1] = r->readV4();
+                pArea->setGeometry(pOBB, j);
+            } else if (gIndex == 2) {
+                MtGeomSphere* pSphere = new (16) MtGeomSphere();
+                pSphere->mSphere.r = r->readF32();
+                MtFloat3 t1 = r->readV3();
+                pSphere->mSphere.pos.x = t1.x;
+                pSphere->mSphere.pos.y = t1.y;
+                pSphere->mSphere.pos.z = t1.z;
+                pArea->setGeometry(pSphere, j);
+            }
+        }
+        u16 first = r->readU16();
+        u16 last = r->readU16();
+        pArea->setElement(first, last);
+        pArea->setParent(r->readU16());
+        n = r->readU8();
+        pArea->setNumberOfChild(n);
+        for (u32 j = 0; j < pArea->getNumberOfChild(); ++j) pArea->setChild(r->readU8(), j);
+        n = r->readU8();
+        pArea->setNumberOfLink(n);
+        for (u32 j = 0; j < pArea->getNumberOfLink(); ++j) pArea->setLink(r->readU8(), j);
+        mpHierarchyArea[i] = pArea;
+    }
+    mNumberOfTotalAreaChild = r->readU16();
+    mNumberOfTotalAreaLink = r->readU16();
 }
 
 __attribute__((weak)) void rAIPathBase::setNumberOfArea(u32 size) {
-    DDON_STUB("rAIPathBase::setNumberOfArea")
-    /* stub */
+        if (mpHierarchyArea) {
+            for (u32 i = 0; i < mNumberOfArea; ++i) {
+                delete mpHierarchyArea[i];
+            }
+            MtMemoryAllocator::getAllocator(DTI)->memFree(mpHierarchyArea);
+        }
+        if (size) {
+            mpHierarchyArea = static_cast<HierarchyArea**>(MtMemoryAllocator::getAllocator(DTI)->memAlloc(sizeof(HierarchyArea*) * size, 16));
+            for (u32 i = 0; i < size; ++i) mpHierarchyArea[i] = nullptr;
+            mNumberOfArea = static_cast<u16>(size);
+        }
 }
 
 static auto ddon_emit_0x01b94260 __attribute__((used)) = &rAIPathBase::getNumberOfArea;
@@ -136,13 +220,27 @@ inline void rAIPathBase::HierarchyArea::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rAIPathBase::HierarchyArea::~HierarchyArea() {
-    DDON_STUB("rAIPathBase::HierarchyArea::~HierarchyArea")
-    /* stub */
+        if (mpChild) MtMemoryAllocator::getAllocator(DTI)->memFree(mpChild);
+        if (mpLink) MtMemoryAllocator::getAllocator(DTI)->memFree(mpLink);
+        if (mpGeometryList) {
+            for (u32 i = 0; i < mNumberOfGeometry; ++i) delete mpGeometryList[i];
+            MtMemoryAllocator::getAllocator(DTI)->memFree(mpGeometryList);
+        }
 }
 
-__attribute__((weak)) void rAIPathBase::HierarchyArea::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIPathBase::HierarchyArea::createProperty")
-    /* stub */
+void rAIPathBase::HierarchyArea::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mName", &mName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNumberOfGeometry", &mNumberOfGeometry, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpGeometryList", reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::getGeometry), reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::setGeometry), 160u, reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::getNumberOfGeometry), reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::setNumberOfGeometry));
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFirstIndex", &mFirstIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLastIndex", &mLastIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttribute", &mAttribute, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParentID", &mParentID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNumberOfChild", &mNumberOfChild, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "mpChild", reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::getChild), reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::setChild), 160u, reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::getNumberOfChild), reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::setNumberOfChild));
+    s << MtProperty(static_cast<MtObject*>(this), "mNumberOfLink", &mNumberOfLink, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "mpLink", reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::getLink), reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::setLink), 160u, reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::getNumberOfLink), reinterpret_cast<MT_MFUNC>(&::rAIPathBase::HierarchyArea::setNumberOfLink));
 }
 
 MtUI* rAIPathBase::HierarchyArea::createUI(MtProperty& prop) {
@@ -150,8 +248,14 @@ MtUI* rAIPathBase::HierarchyArea::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) void rAIPathBase::HierarchyArea::setNumberOfGeometry(u32 n) {
-    DDON_STUB("rAIPathBase::HierarchyArea::setNumberOfGeometry")
-    /* stub */
+        if (mpGeometryList) {
+            for (u32 i = 0; i < mNumberOfGeometry; ++i) delete mpGeometryList[i];
+            MtMemoryAllocator::getAllocator(DTI)->memFree(mpGeometryList);
+            mpGeometryList = nullptr;
+        }
+        mpGeometryList = static_cast<MtGeometry**>(MtMemoryAllocator::getAllocator(DTI)->memAlloc(sizeof(MtGeometry*) * n, 16));
+        for (u32 i = 0; i < n; ++i) mpGeometryList[i] = nullptr;
+        mNumberOfGeometry = static_cast<u8>(n);
 }
 
 static auto ddon_emit_0x01b94140 __attribute__((used)) = &rAIPathBase::HierarchyArea::getNumberOfGeometry;

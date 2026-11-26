@@ -134,7 +134,7 @@ public:
         u32 Id;  // offset: 0x50
     };
 public:
-    struct MaterialInfo : public nCollision::ScrMaterialInfo
+    struct alignas(16) MaterialInfo : public nCollision::ScrMaterialInfo
     {
     public:
         rCollision::MaterialInfo& operator=(const nCollision::ScrMaterialInfo&);

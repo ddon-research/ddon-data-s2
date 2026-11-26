@@ -72,7 +72,7 @@ namespace MtNet {
                 static void operator delete(void* p_addr, u32 align);
                 static void operator delete[](void* p_addr, u32 align);
                 explicit BlockList();
-                virtual ~BlockList();
+                virtual ~BlockList() {}
                 void clear();
                 MtNet::Utility::PS4::BlockList& operator=(const MtNet::Utility::PS4::BlockList& src);
                 s32 getNum() const;

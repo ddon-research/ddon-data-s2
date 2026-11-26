@@ -88,9 +88,29 @@ bool cPlDeadFlow::move() {
     }
 }
 
-__attribute__((weak)) void cPlDeadFlow::moveWait() {
-    DDON_STUB("cPlDeadFlow::moveWait")
-    /* stub */
+void cPlDeadFlow::moveWait() {
+    if (mpTouchPawn != nullptr) {
+        if (!mpTouchPawn->isEnable()) {
+            mpTouchPawn = nullptr;
+        }
+    }
+    if (mState != STATE_LOST) {
+        if (mState == STATE_INJURED) {
+            if (mRno == 1) {
+                sMenu::getInstance()->updateMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mPlDeadMenu));
+            }
+        } else {
+            if (mState == STATE_ALIVE) {
+                if (mRno == 1) {
+                    sMenu::getInstance()->updateMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mPawnRevive));
+                }
+            }
+        }
+    } else {
+        if (mRno == 2) {
+            sMenu::getInstance()->updateMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mPawnRevive));
+        }
+    }
 }
 
 bool cPlDeadFlow::isMovePwanReviveMenu() {

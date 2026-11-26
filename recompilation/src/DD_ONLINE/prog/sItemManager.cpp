@@ -796,14 +796,45 @@ void sItemManager::setJobEquip(nCharacterData::stEquipData& Data, u8 job) {
     Data.setEquip(static_cast<u8>(11), sItemManager::equip_tbl[jobIndex].jewelry2, static_cast<u8>(0));
 }
 
-__attribute__((weak)) bool sItemManager::isWeaponCategory(nCharacterData::EQUIP_CATEGORY category) {
-    DDON_STUB("sItemManager::isWeaponCategory")
-    return {};
+bool sItemManager::isWeaponCategory(nCharacterData::EQUIP_CATEGORY category) {
+    static const nCharacterData::EQUIP_CATEGORY mEquipCategoey[2] = {
+        static_cast<const nCharacterData::EQUIP_CATEGORY>(1),
+        static_cast<const nCharacterData::EQUIP_CATEGORY>(2),
+    };
+    u32 index = 0;
+    const nCharacterData::EQUIP_CATEGORY* p2 = mEquipCategoey;
+    do {
+        if ((*p2) == category) {
+            return true;
+        }
+        index += 1u;
+        p2 += static_cast<int>(1);
+    } while (index <= 1u);
+    return false;
 }
 
-__attribute__((weak)) bool sItemManager::isArmorCategory(nCharacterData::EQUIP_CATEGORY category) {
-    DDON_STUB("sItemManager::isArmorCategory")
-    return {};
+bool sItemManager::isArmorCategory(nCharacterData::EQUIP_CATEGORY category) {
+    static const nCharacterData::EQUIP_CATEGORY mEquipCategoey[9] = {
+        static_cast<const nCharacterData::EQUIP_CATEGORY>(3),
+        static_cast<const nCharacterData::EQUIP_CATEGORY>(4),
+        static_cast<const nCharacterData::EQUIP_CATEGORY>(5),
+        static_cast<const nCharacterData::EQUIP_CATEGORY>(6),
+        static_cast<const nCharacterData::EQUIP_CATEGORY>(7),
+        static_cast<const nCharacterData::EQUIP_CATEGORY>(8),
+        static_cast<const nCharacterData::EQUIP_CATEGORY>(9),
+        static_cast<const nCharacterData::EQUIP_CATEGORY>(10),
+        static_cast<const nCharacterData::EQUIP_CATEGORY>(11),
+    };
+    u32 index = 0;
+    const nCharacterData::EQUIP_CATEGORY* p2 = mEquipCategoey;
+    do {
+        if ((*p2) == category) {
+            return true;
+        }
+        index += 1u;
+        p2 += static_cast<int>(1);
+    } while (index <= 8u);
+    return false;
 }
 
 __attribute__((weak)) void sItemManager::setEquipToServer(void* packet, u32 type) {
@@ -919,9 +950,10 @@ void sItemManager::releaseItemNameGmd() {
     mprItemNameGmd = nullptr;
 }
 
-__attribute__((weak)) rGUIMessage* sItemManager::getItemInfoGmd() const {
-    DDON_STUB("sItemManager::getItemInfoGmd")
-    return nullptr;
+rGUIMessage* sItemManager::getItemInfoGmd() const {
+    sArchiveManager* t0 = sArchiveManager::getInstance();
+    ARC_TAGID t1 = rArchiveListArray::convTagId("item_info");
+    return static_cast<rGUIMessage*>(t0->createRes(t1, rArchiveListArray::convSearchId("RES_ID_ITEM_INFO_GMD"), 129u, false));
 }
 
 void sItemManager::releaseItemInfoGmd() {
@@ -1261,9 +1293,8 @@ sItemManager::cShop::~cShop() {
     mGoods.mLength = 0;
 }
 
-__attribute__((weak)) void sItemManager::cShop::createProperty(MtPropertyList& s) {
-    DDON_STUB("sItemManager::cShop::createProperty")
-    /* stub */
+void sItemManager::cShop::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpGoodsList", reinterpret_cast<MtObject* *>(&mpGoodsList), 0u, 0u);
 }
 
 inline void sItemManager::cShop::releaseResource() {
@@ -1999,9 +2030,9 @@ inline void sItemManager::cItemBag::cAreaMasterSuppyData::operator delete(void* 
     MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cAreaMasterSuppyData::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void sItemManager::cItemBag::cAreaMasterSuppyData::createProperty(MtPropertyList& s) {
-    DDON_STUB("sItemManager::cItemBag::cAreaMasterSuppyData::createProperty")
-    /* stub */
+void sItemManager::cItemBag::cAreaMasterSuppyData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\252\343\202\242ID", &mAreaID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\347\240\264\346\243\204", &mIsCancel, 0u, 0u);
 }
 
 inline sItemManager::cItemBag::cAreaMasterSuppyData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2024,9 +2055,13 @@ inline void sItemManager::cSortParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sItemManager::cSortParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) bool sItemManager::cSortParam::sortBySpace(const cItemParam* src, const cItemParam* dst, u32 param) {
-    DDON_STUB("sItemManager::cSortParam::sortBySpace")
-    return {};
+bool sItemManager::cSortParam::sortBySpace(const cItemParam* src, const cItemParam* dst, u32 param) {
+    if ((*src->mWstrUID.ptr()) == 0) {
+        if ((*dst->mWstrUID.ptr()) == 0) {
+            return dst->mItemParam.mKey < src->mItemParam.mKey;
+        }
+    }
+    return true;
 }
 
 __attribute__((weak)) bool sItemManager::cSortParam::sortByItemId(const cItemParam* src, const cItemParam* dst, u32 param) {
@@ -2264,9 +2299,10 @@ inline void sItemManager::cHideEquip::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sItemManager::cHideEquip::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void sItemManager::cHideEquip::createProperty(MtPropertyList& s) {
-    DDON_STUB("sItemManager::cHideEquip::createProperty")
-    /* stub */
+void sItemManager::cHideEquip::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPlType", &mPlType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEquipType", &mEquipType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsHideOff", &mIsHideOff, 0u, 0u);
 }
 
 inline sItemManager::cHideEquip::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

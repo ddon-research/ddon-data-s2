@@ -143,9 +143,52 @@ void uGUINewspaper::end() {
     this->uGUIBase::end();
 }
 
-__attribute__((weak)) void uGUINewspaper::moveInput() {
-    DDON_STUB("uGUINewspaper::moveInput")
-    /* stub */
+void uGUINewspaper::moveInput() {
+    if ((mStatus & 1u) != 0) {
+        return;
+    }
+    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+        return;
+    }
+    if (moveWarpDialog()) {
+        return;
+    }
+    if (mpGUIDialog != nullptr) {
+        if (mpGUIDialog->mResult == RESULT_EXIT) {
+            mpGUIDialog->getChoicePos(-1);
+            if (mpGUIDialog != nullptr) {
+                mpGUIDialog->kill();
+                mpGUIDialog = nullptr;
+            }
+            mControls.setCategoryFocus(0u, true);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINewspaper::updateNews);
+            mRoutine = 0;
+        }
+    } else {
+        if (!mIsMoveQuickPartyMenu) {
+            if (mpSubMenu == nullptr) {
+                if (mType != 4) {
+                    mClose.execute();
+                    mAreaScrollbar.executeCtrl();
+                    if (mType != 3) {
+                        if (mType == 2) {
+                            mRewardSummaryScrollbar.executeCtrl();
+                            mRewardDetailScrollbar.executeCtrl();
+                        } else {
+                            if (mType == 0) {
+                                mAreaQuestListScrollbar.executeCtrl();
+                            }
+                        }
+                    } else {
+                        if (mIsCreateRanking) {
+                            mRankingScrollbar.executeCtrl();
+                        }
+                    }
+                    mControls.moveInput();
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUINewspaper::moveEvent() {
@@ -1218,14 +1261,32 @@ __attribute__((weak)) void uGUINewspaper::updateReward() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUINewspaper::updateEntryQuickParty() {
-    DDON_STUB("uGUINewspaper::updateEntryQuickParty")
-    /* stub */
+void uGUINewspaper::updateEntryQuickParty() {
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
+    if (sMenu::getInstance()->mQuickMatch.moveQuickMatch() != nMenu::MENU_RET_CONTINUE) {
+        mIsMoveQuickPartyMenu = false;
+        setWindowActive(true);
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINewspaper::updateNews);
+        mRoutine = 0;
+    } else {
+        updateNews();
+    }
 }
 
-__attribute__((weak)) void uGUINewspaper::updateCancelQuickParty() {
-    DDON_STUB("uGUINewspaper::updateCancelQuickParty")
-    /* stub */
+void uGUINewspaper::updateCancelQuickParty() {
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
+    if (sMenu::getInstance()->mQuickMatchCancel.moveQuickMatchCancel() != nMenu::MENU_RET_CONTINUE) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->mQuickMatchRno != 0) {
+            mIsMoveQuickPartyMenu = false;
+            setWindowActive(true);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINewspaper::updateNews);
+            mRoutine = 0;
+        } else {
+            startQuickMatch();
+        }
+    } else {
+        updateNews();
+    }
 }
 
 __attribute__((weak)) void uGUINewspaper::updateMapCursor() {
@@ -1593,8 +1654,22 @@ void uGUINewspaper::updateRankingListHide(uGUIBase::cScrollListItemBase* pDispIt
 }
 
 __attribute__((weak)) void uGUINewspaper::clearRewardFocus() {
-    DDON_STUB("uGUINewspaper::clearRewardFocus")
-    /* stub */
+    mRewardSummaryScrollbar.setEnableKey(false);
+    mRewardDetailScrollbar.setEnableKey(false);
+    (&mRewardSummaryScrollbar.mCursor)->setPosPointerReqAuto(false, mRewardSummaryScrollbar.mpOwner->getBasePointerPriority());
+    (&mRewardDetailScrollbar.mCursor)->setPosPointerReqAuto(false, mRewardDetailScrollbar.mpOwner->getBasePointerPriority());
+    if (mRewardDetailScrollbar.mBar.mpInstance != nullptr) {
+        mRewardDetailScrollbar.mBar.mpInstance->setVisible(false);
+    }
+    if (mRewardSummaryScrollbar.mInfoArray.mLength != 0) {
+        mRewardSummaryScrollbar.mIsDecide = false;
+        mRewardSummaryScrollbar.setListFocus(false);
+        mRewardSummaryScrollbar.clearCursorFocus();
+    }
+    if (mRewardDetailScrollbar.mInfoArray.mLength == 0) {
+        return;
+    }
+    mRewardDetailScrollbar.clearCursorFocus();
 }
 
 __attribute__((weak)) void uGUINewspaper::showRewardTab() {
@@ -1617,9 +1692,38 @@ __attribute__((weak)) void uGUINewspaper::initRewardActiveControl() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUINewspaper::setRewardTabMode(s32 mode) {
-    DDON_STUB("uGUINewspaper::setRewardTabMode")
-    /* stub */
+void uGUINewspaper::setRewardTabMode(s32 mode) {
+    mRewardMode = mode;
+    if (mode != 7) {
+        if (mode == 6) {
+            mControls.disablePadControl(5u);
+            mControls.setCurrentPos(5u, 1);
+            mRewardSummaryScrollbar.setEnableKey(true);
+            mRewardDetailScrollbar.setEnableKey(false);
+            (&mRewardSummaryScrollbar.mCursor)->setPosPointerReqAuto(true, mRewardSummaryScrollbar.mpOwner->getBasePointerPriority());
+            (&mRewardDetailScrollbar.mCursor)->setPosPointerReqAuto(false, mRewardDetailScrollbar.mpOwner->getBasePointerPriority());
+            mRewardSummaryScrollbar.mCursor.mIsPosPointerReqAuto = true;
+            mRewardDetailScrollbar.mCursor.mIsPosPointerReqAuto = false;
+            mRewardSummaryScrollbar.setFocus(true);
+            if (mRewardDetailScrollbar.mInfoArray.mLength != 0) {
+                mRewardDetailScrollbar.clearCursorFocus();
+            }
+        } else {
+            if (mode == 5) {
+                mControls.enablePadControl(5u);
+                clearRewardFocus();
+            }
+        }
+    } else {
+        mControls.disablePadControl(5u);
+        mRewardSummaryScrollbar.setEnableKey(false);
+        mRewardDetailScrollbar.setEnableKey(true);
+        (&mRewardSummaryScrollbar.mCursor)->setPosPointerReqAuto(false, mRewardSummaryScrollbar.mpOwner->getBasePointerPriority());
+        (&mRewardDetailScrollbar.mCursor)->setPosPointerReqAuto(true, mRewardDetailScrollbar.mpOwner->getBasePointerPriority());
+        mRewardSummaryScrollbar.mCursor.mIsPosPointerReqAuto = false;
+        mRewardDetailScrollbar.mCursor.mIsPosPointerReqAuto = true;
+        mRewardDetailScrollbar.setFocus(true);
+    }
 }
 
 __attribute__((weak)) void uGUINewspaper::updateRewardTabCursor() {

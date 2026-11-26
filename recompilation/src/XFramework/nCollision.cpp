@@ -6,6 +6,7 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cUnit.h"
 #ifndef DDON_STUB
@@ -202,6 +203,10 @@ const MtDTI& nCollision::cScrCommonFilter::getDTI() const {
     return nCollision::cScrCommonFilter::DTI;
 }
 
+inline void* nCollision::cScrCommonFilter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nCollision::cScrCommonFilter::DTI)->memAlloc(sz, align, ::nCollision::cScrCommonFilter::DTI.mID);
+}
+
 inline void nCollision::cScrCommonFilter::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nCollision::cScrCommonFilter::DTI)->memFree(p_addr);
 }
@@ -215,14 +220,16 @@ nCollision::cScrCommonFilter::cScrCommonFilter() {
 nCollision::cScrCommonFilter::~cScrCommonFilter() {
 }
 
-__attribute__((weak)) void nCollision::cScrCommonFilter::createProperty(MtPropertyList& s) {
-    DDON_STUB("nCollision::cScrCommonFilter::createProperty")
-    /* stub */
+void nCollision::cScrCommonFilter::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mScrType", &mScrType, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "ScrGroup", reinterpret_cast<MT_MFUNC>(&::nCollision::cScrCommonFilter::getScrGroup), reinterpret_cast<MT_MFUNC>(&::nCollision::cScrCommonFilter::setScrGroupByBit), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "ScrGroup(Index)", reinterpret_cast<MT_MFUNC>(&::nCollision::cScrCommonFilter::getScrGroupIndex), reinterpret_cast<MT_MFUNC>(&::nCollision::cScrCommonFilter::setScrGroup), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
-__attribute__((weak)) void nCollision::cScrCommonFilter::createPropertySupport(MtPropertyList& s, MtObject* pOwner, MT_CTSTR TypeName, MT_CTSTR GroupName, MT_CTSTR GroupNameIndex) {
-    DDON_STUB("nCollision::cScrCommonFilter::createPropertySupport")
-    /* stub */
+void nCollision::cScrCommonFilter::createPropertySupport(MtPropertyList& s, MtObject* pOwner, MT_CTSTR TypeName, MT_CTSTR GroupName, MT_CTSTR GroupNameIndex) {
+    s << ::MtProperty(static_cast<MtObject*>(this), TypeName, &mScrType, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, GroupName, reinterpret_cast<MT_MFUNC>(&::nCollision::cScrCommonFilter::getScrGroup), reinterpret_cast<MT_MFUNC>(&::nCollision::cScrCommonFilter::setScrGroupByBit), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U8, GroupNameIndex, reinterpret_cast<MT_MFUNC>(&::nCollision::cScrCommonFilter::getScrGroupIndex), reinterpret_cast<MT_MFUNC>(&::nCollision::cScrCommonFilter::setScrGroup), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 static auto ddon_emit_0x01b85450 __attribute__((used)) = &nCollision::cScrCommonFilter::getScrGroup;
@@ -240,25 +247,25 @@ void nCollision::cScrCommonFilter::setScrGroup(u8 NewGroupIndex) {
 
 void nCollision::cScrCommonFilter::setScrGroupByBit(u32 GroupBit) {
     unsigned int i0_0 = 0;
-    unsigned char v1_0;
+    unsigned int v1_0;
     for (;;) {
         if (((static_cast<unsigned long>(GroupBit) >> static_cast<unsigned long>(i0_0 & 63u)) & 1ul) != 0) {
-            v1_0 = static_cast<unsigned char>(i0_0);
+            v1_0 = i0_0;
             break;
         } else {
             if (static_cast<unsigned char>(i0_0 + 1u) <= 31) {
                 i0_0 = i0_0 + 1u;
             } else {
-                v1_0 = static_cast<unsigned char>(i0_0 + 1u);
+                v1_0 = i0_0 + 1u;
                 break;
             }
         }
     }
-    mScrGroup = static_cast<unsigned int>(1ul << static_cast<unsigned long>(v1_0 & 63));
-    if (v1_0 == 32) {
+    mScrGroup = static_cast<unsigned int>(1ul << static_cast<unsigned long>(v1_0 & 63u));
+    if (static_cast<unsigned char>(v1_0) == 32) {
         mScrGroupIndex = 0;
     } else {
-        mScrGroupIndex = v1_0;
+        mScrGroupIndex = static_cast<unsigned char>(v1_0);
     }
 }
 
@@ -272,13 +279,16 @@ inline nCollision::cScrCommonFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 
 nCollision::cScrCommonFilter::MyDTI nCollision::cScrCommonFilter::DTI("nCollision::cScrCommonFilter", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCollision::cScrCommonFilter::MyDTI::newInstance() const {
-    DDON_STUB("nCollision::cScrCommonFilter::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCollision::cScrCommonFilter::MyDTI::newInstance() const {
+    return new (16u) ::nCollision::cScrCommonFilter;
 }
 
 const MtDTI& nCollisionUtil::cOwnerSystem::getDTI() const {
     return nCollisionUtil::cOwnerSystem::DTI;
+}
+
+inline void* nCollisionUtil::cOwnerSystem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nCollisionUtil::cOwnerSystem::DTI)->memAlloc(sz, align, ::nCollisionUtil::cOwnerSystem::DTI.mID);
 }
 
 inline void nCollisionUtil::cOwnerSystem::operator delete(void* p_addr) {
@@ -294,9 +304,8 @@ nCollisionUtil::cOwnerSystem::cOwnerSystem() {
 nCollisionUtil::cOwnerSystem::~cOwnerSystem() {
 }
 
-__attribute__((weak)) void nCollisionUtil::cOwnerSystem::createProperty(MtPropertyList& s) {
-    DDON_STUB("nCollisionUtil::cOwnerSystem::createProperty")
-    /* stub */
+void nCollisionUtil::cOwnerSystem::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "RegistOwner", &mFlgRegistedOwner, 1u, 0u);
 }
 
 __attribute__((weak)) bool nCollisionUtil::cOwnerSystem::isEnableOwner() const {
@@ -321,8 +330,7 @@ inline nCollisionUtil::cOwnerSystem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 
 nCollisionUtil::cOwnerSystem::MyDTI nCollisionUtil::cOwnerSystem::DTI("nCollisionUtil::cOwnerSystem", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCollisionUtil::cOwnerSystem::MyDTI::newInstance() const {
-    DDON_STUB("nCollisionUtil::cOwnerSystem::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCollisionUtil::cOwnerSystem::MyDTI::newInstance() const {
+    return new (16u) ::nCollisionUtil::cOwnerSystem;
 }
 

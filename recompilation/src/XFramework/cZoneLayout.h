@@ -129,6 +129,7 @@ public:
 public:
     class cDynamicBVHMaster : public MtObject
     {
+        friend class cZoneLayout;
     public:
         class MyDTI;
     public:

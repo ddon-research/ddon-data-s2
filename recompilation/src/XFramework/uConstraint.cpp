@@ -5,6 +5,8 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
 #include "cUnit.h"
@@ -21,9 +23,6 @@ const MtDTI& uConstraint::getDTI() const {
 
 inline void uConstraint::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uConstraint::DTI)->memFree(p_addr);
-}
-
-uConstraint::~uConstraint() {
 }
 
 void uConstraint::initMember() {
@@ -46,9 +45,20 @@ MtUI* uConstraint::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uConstraint::createProperty(MtPropertyList& s) {
-    DDON_STUB("uConstraint::createProperty")
-    /* stub */
+void uConstraint::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Pri", reinterpret_cast<MT_MFUNC>(&::uConstraint::getPri), reinterpret_cast<MT_MFUNC>(&::uConstraint::setPri), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpPrevCns", reinterpret_cast<MtObject* *>(&mpPrevCns), 19u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpNextCns", reinterpret_cast<MtObject* *>(&mpNextCns), 19u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpParentJnt", reinterpret_cast<MtObject* *>(&mpParentJnt), 19u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "update", static_cast<MT_MFUNC>(&::uConstraint::update), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "remove", static_cast<MT_MFUNC>(&::uConstraint::remove), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnable", &mEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlend", &mBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlendSpeed", &mBlendSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlendWeight", &mBlendWeight, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpModel", reinterpret_cast<MT_MFUNC>(&::uConstraint::getModel), reinterpret_cast<MT_MFUNC>(&::uConstraint::setModelUpdate), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 void uConstraint::setConstraintEnable(bool flg) {
@@ -299,9 +309,8 @@ void uConstraint::cConstraint::adjust(uModel::Joint* pjnt, uModel* pmod) {
     }
 }
 
-__attribute__((weak)) void uConstraint::cConstraint::createProperty(MtPropertyList& s) {
-    DDON_STUB("uConstraint::cConstraint::createProperty")
-    /* stub */
+void uConstraint::cConstraint::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpParent", reinterpret_cast<MtObject* *>(&mpParent), 2u, 0u);
 }
 
 u32 uConstraint::cConstraint::getDependentJointNum() {
@@ -324,14 +333,20 @@ uConstraint* uConstraint::cConstraint::getUConstraint() {
     return mpParent;
 }
 
-__attribute__((weak)) uModel::Constraint* uConstraint::cConstraint::getNextConstraint() {
-    DDON_STUB("uConstraint::cConstraint::getNextConstraint")
-    return nullptr;
+uModel::Constraint* uConstraint::cConstraint::getNextConstraint() {
+    if (mpParent != nullptr) {
+        return (mpParent->mpNextCns == nullptr) ? static_cast<uConstraint::cConstraint*>(nullptr) : (&mpParent->mpNextCns->mConstraint);
+    } else {
+        return nullptr;
+    }
 }
 
-__attribute__((weak)) uModel::Constraint* uConstraint::cConstraint::getPrevConstraint() {
-    DDON_STUB("uConstraint::cConstraint::getPrevConstraint")
-    return nullptr;
+uModel::Constraint* uConstraint::cConstraint::getPrevConstraint() {
+    if (mpParent != nullptr) {
+        return (mpParent->mpPrevCns == nullptr) ? static_cast<uConstraint::cConstraint*>(nullptr) : (&mpParent->mpPrevCns->mConstraint);
+    } else {
+        return nullptr;
+    }
 }
 
 inline uConstraint::cConstraint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

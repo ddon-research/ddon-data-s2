@@ -37,6 +37,7 @@ namespace nDraw { class DepthStencilState; }
 namespace nDraw { class DepthStencilView; }
 namespace nDraw { class IndexBuffer; }
 namespace nDraw { class Material; }
+namespace nDraw { class MaterialStd; }
 namespace nDraw { struct OBJECT; }
 namespace nDraw { struct OBJECT_INFO; }
 namespace nDraw { class Query; }
@@ -75,6 +76,7 @@ using uintptr = __uintptr_t;
 class cDraw : public MtObject
 {
     friend class cInstancingCulling;
+    friend class nDraw::MaterialStd;
     friend class sGpuParticle;
     friend class uBloomFilter;
     friend class uColorCorrectFilter;

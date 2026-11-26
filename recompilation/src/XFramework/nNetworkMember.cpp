@@ -14,13 +14,78 @@
 #endif
 
 nNetwork::Member::Member() {
-    DDON_STUB("nNetwork::Member::Member")
-    /* stub */
+    ::MtNetSession::clearMember(&mInfo);
+    mId = 0;
+    mTag = 0;
+    mRouteIndex = -1;
+    this->mConfiguration = 0;
+    mConfig[56] = 0;
+    mConfig[57] = 0;
+    mConfig[58] = 0;
+    mConfig[59] = 0;
+    mConfig[60] = 0;
+    mConfig[61] = 0;
+    mConfig[62] = 0;
+    mConfig[63] = 0;
+    mConfig[48] = 0;
+    mConfig[49] = 0;
+    mConfig[50] = 0;
+    mConfig[51] = 0;
+    mConfig[52] = 0;
+    mConfig[53] = 0;
+    mConfig[54] = 0;
+    mConfig[55] = 0;
+    mConfig[40] = 0;
+    mConfig[41] = 0;
+    mConfig[42] = 0;
+    mConfig[43] = 0;
+    mConfig[44] = 0;
+    mConfig[45] = 0;
+    mConfig[46] = 0;
+    mConfig[47] = 0;
+    mConfig[32] = 0;
+    mConfig[33] = 0;
+    mConfig[34] = 0;
+    mConfig[35] = 0;
+    mConfig[36] = 0;
+    mConfig[37] = 0;
+    mConfig[38] = 0;
+    mConfig[39] = 0;
+    mConfig[24] = 0;
+    mConfig[25] = 0;
+    mConfig[26] = 0;
+    mConfig[27] = 0;
+    mConfig[28] = 0;
+    mConfig[29] = 0;
+    mConfig[30] = 0;
+    mConfig[31] = 0;
+    mConfig[16] = 0;
+    mConfig[17] = 0;
+    mConfig[18] = 0;
+    mConfig[19] = 0;
+    mConfig[20] = 0;
+    mConfig[21] = 0;
+    mConfig[22] = 0;
+    mConfig[23] = 0;
+    mConfig[8] = 0;
+    mConfig[9] = 0;
+    mConfig[10] = 0;
+    mConfig[11] = 0;
+    mConfig[12] = 0;
+    mConfig[13] = 0;
+    mConfig[14] = 0;
+    mConfig[15] = 0;
+    mConfig[0] = 0;
+    mConfig[1] = 0;
+    mConfig[2] = 0;
+    mConfig[3] = 0;
+    mConfig[4] = 0;
+    mConfig[5] = 0;
+    mConfig[6] = 0;
+    mConfig[7] = 0;
 }
 
 nNetwork::Member::~Member() {
-    DDON_STUB("nNetwork::Member::~Member")
-    /* stub */
 }
 
 const MtDTI& nNetwork::Member::getDTI() const {

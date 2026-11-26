@@ -7,6 +7,7 @@
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
 #include "MtSynchronize.h"
 #ifndef DDON_STUB
@@ -35,18 +36,36 @@ MtNetObject::~MtNetObject() {
     /* stub */
 }
 
-__attribute__((weak)) void MtNetObject::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtNetObject::createProperty")
-    /* stub */
+void MtNetObject::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsThreadSafe", &mIsThreadSafe, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLockCount", &mLockCount, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFatal.mNo", &mFatal.mNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFatal.mCause", &mFatal.mCause, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFatal.mNative", &mFatal.mNative, 0u, 0u);
 }
 
 bool MtNetObject::isFatal() const {
     return mFatal.mNo != 0;
 }
 
-__attribute__((weak)) void MtNetObject::getFatal(MtNetError* err) {
-    DDON_STUB("MtNetObject::getFatal")
-    /* stub */
+void MtNetObject::getFatal(MtNetError* err) {
+    if (err == nullptr) {
+        return;
+    }
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        mLockCount = mLockCount + 1;
+    }
+    *err = mFatal;
+    if (!mIsThreadSafe) {
+        return;
+    }
+    mLockCount = mLockCount - 1;
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
+    }
 }
 
 __attribute__((weak)) void MtNetObject::clearFatal() {

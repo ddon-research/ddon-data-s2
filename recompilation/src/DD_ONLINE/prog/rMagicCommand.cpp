@@ -31,9 +31,8 @@ inline void cMagicCommand::operator delete(void* p_addr) {
 cMagicCommand::~cMagicCommand() {
 }
 
-__attribute__((weak)) void cMagicCommand::createProperty(MtPropertyList& proplist) {
-    DDON_STUB("cMagicCommand::createProperty")
-    /* stub */
+void cMagicCommand::createProperty(MtPropertyList& proplist) {
+    proplist << MtProperty(static_cast<MtObject*>(this), "mDegree", &mDegree, 0u, 0u);
 }
 
 inline bool cMagicCommand::importBinary(MtDataReader& reader) {
@@ -69,7 +68,7 @@ cMagicCommandList::~cMagicCommandList() {
 __attribute__((weak)) void cMagicCommandList::createProperty(MtPropertyList& proplist) {
 }
 
-void cMagicCommandList::clear() {
+__attribute__((weak)) void cMagicCommandList::clear() {
     if (mMagicCommandListEasy.mLength != 0) {
         u32 v0_0 = mMagicCommandListEasy.mLength;
         unsigned int i0_3 = 0;
@@ -272,9 +271,9 @@ rMagicCommandList::~rMagicCommandList() {
     mMagicCommandList.mLength = 0;
 }
 
-__attribute__((weak)) void rMagicCommandList::createProperty(MtPropertyList& proplist) {
-    DDON_STUB("rMagicCommandList::createProperty")
-    /* stub */
+void rMagicCommandList::createProperty(MtPropertyList& proplist) {
+    this->cResource::createProperty(proplist);
+    proplist << MtProperty(static_cast<MtObject*>(this), "mMagicCommandList", static_cast<MtObject*>(&mMagicCommandList), 0u, 0u);
 }
 
 __attribute__((weak)) bool rMagicCommandList::load(MtStream& in) {

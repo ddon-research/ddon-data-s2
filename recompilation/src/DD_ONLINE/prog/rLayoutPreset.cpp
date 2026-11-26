@@ -26,9 +26,10 @@ inline void* cLayoutPreset::operator new(size_t sz, u32 align) {
 cLayoutPreset::~cLayoutPreset() {
 }
 
-__attribute__((weak)) void cLayoutPreset::createProperty(MtPropertyList& s) {
-    DDON_STUB("cLayoutPreset::createProperty")
-    /* stub */
+void cLayoutPreset::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mKeyword", &mKeyword, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCtrlType", &mCtrlType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 0u, 0u);
 }
 
 MtUI* cLayoutPreset::createUI(MtProperty& prop) {

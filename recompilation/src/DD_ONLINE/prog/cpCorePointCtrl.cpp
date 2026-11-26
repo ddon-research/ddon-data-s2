@@ -120,10 +120,10 @@ __attribute__((weak)) void cpCorePointCtrl::setup() {
 }
 
 void cpCorePointCtrl::kill() {
-    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 96)) > 0) {
-        unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 96);
+    if (static_cast<int>(mActiveCorePointArray.mLength) > 0) {
+        u32 v0_0 = mActiveCorePointArray.mLength;
         s32 i = 0;
-        unsigned int v1_0;
+        u32 v1_0;
         for (;;) {
             MtObject* t0 = mActiveCorePointArray.getBuffer()[i];
             if (t0 == nullptr) {
@@ -134,7 +134,7 @@ void cpCorePointCtrl::kill() {
                 } else {
                     static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(reinterpret_cast<cEfcHandle*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8)), 1u);
                     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8) = 0;
-                    v1_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 96);
+                    v1_0 = mActiveCorePointArray.mLength;
                 }
             }
             if ((i + 1) < static_cast<int>(v1_0)) {
@@ -147,8 +147,8 @@ void cpCorePointCtrl::kill() {
     }
     uEnemy* t1 = mpEnemy;
     if (t1 != nullptr) {
-        cContextInterface::clearCorePointSlaveMsgAll(reinterpret_cast<cContextInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 8104)), reinterpret_cast<cContextCharacter*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 8112)));
-        cContextInterface::sendCorePointSlaveFlag_Off(reinterpret_cast<cContextInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 8104)), reinterpret_cast<cContextCharacter*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 8112)));
+        cContextInterface::clearCorePointSlaveMsgAll(t1->mContextInterface.mpContextInstance, t1->mContextInterface.mpContextCharacter);
+        cContextInterface::sendCorePointSlaveFlag_Off(t1->mContextInterface.mpContextInstance, t1->mContextInterface.mpContextCharacter);
     }
 }
 
@@ -164,7 +164,7 @@ void cpCorePointCtrl::updatePtr() {
             mpEnemy = nullptr;
         }
     }
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 96);
+    u32 v0_0 = mActiveCorePointArray.mLength;
     if (static_cast<int>(v0_0) > 0) {
         for (s32 i = 0;;) {
             if (mActiveCorePointArray.getBuffer()[i] != nullptr) {

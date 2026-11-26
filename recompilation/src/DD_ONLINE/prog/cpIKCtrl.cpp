@@ -36,9 +36,16 @@ inline void cIKHandle::operator delete(void* p_addr) {
 cIKHandle::~cIKHandle() {
 }
 
-__attribute__((weak)) void cIKHandle::createProperty(MtPropertyList& s) {
-    DDON_STUB("cIKHandle::createProperty")
-    /* stub */
+void cIKHandle::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mActive", &mActive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEff", &mEff, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffset", &mOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTargetModel", reinterpret_cast<MtObject* *>(&mpTargetModel), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mTargetJntNo", reinterpret_cast<MT_MFUNC>(&::cIKHandle::getTargetJoint), reinterpret_cast<MT_MFUNC>(&::cIKHandle::setTargetJointDef), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mBlend", &mBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlendSpeed", &mBlendSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResist", &mResist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBehavior", &mBehavior, 0u, 0u);
 }
 
 void cIKHandle::setIKActive(bool active) {
@@ -240,9 +247,16 @@ void cpIKCtrl::updatePtr() {
     mpModel = nullptr;
 }
 
-__attribute__((weak)) void cpIKCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpIKCtrl::createProperty")
-    /* stub */
+void cpIKCtrl::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", reinterpret_cast<MT_MFUNC>(&::cpIKCtrl::getResource), reinterpret_cast<MT_MFUNC>(&::cpIKCtrl::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "\346\233\264\346\226\260", static_cast<MT_MFUNC>(&::cpIKCtrl::init), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFBIKActive", &mFBIKActive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIKHandle", static_cast<MtObject*>(&mIKHandle[0]), 32u, 5u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCnsIK", reinterpret_cast<MtObject* *>(&mpCnsIK[0]), 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCnsIKHandle", reinterpret_cast<MtObject* *>(&mpCnsIKHandle[0]), 32u, 5u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCnsIKTarget", reinterpret_cast<MtObject* *>(&mpCnsIKTarget[0]), 32u, 5u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpFBIK", reinterpret_cast<MtObject* *>(&mpFBIK), 0u, 0u);
 }
 
 void cpIKCtrl::setResource(rIKCtrl* pRes) {
@@ -578,9 +592,9 @@ __attribute__((weak)) MtVector3 cpIKCtrl::calcUpVectorLeg(const MtMatrix& RootMa
 }
 
 __attribute__((weak)) void cpIKCtrl::updateIKBlend() {
-    uCnsDDOIK* v0_0 = mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 176)];
+    uCnsDDOIK* v0_0 = mpCnsIK[mIKHandle[0].mType];
     if (v0_0 != nullptr) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 172)) != 0) {
+        if (mIKHandle[0].mActive) {
             if (mActive) {
                 goto region_48d0dd;
             }
@@ -591,9 +605,9 @@ __attribute__((weak)) void cpIKCtrl::updateIKBlend() {
     v0_0->mBlendSpeed = 1.0f;
     v0_0->mBlend = 0.0f;
     region_48d0dd:;
-    uCnsDDOIK* v2_0 = mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 336)];
+    uCnsDDOIK* v2_0 = mpCnsIK[mIKHandle[1].mType];
     if (v2_0 != nullptr) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 332)) != 0) {
+        if (mIKHandle[1].mActive) {
             if (mActive) {
                 goto region_48d10a;
             }
@@ -604,9 +618,9 @@ __attribute__((weak)) void cpIKCtrl::updateIKBlend() {
     v2_0->mBlendSpeed = 1.0f;
     v2_0->mBlend = 0.0f;
     region_48d10a:;
-    uCnsDDOIK* v4_0 = mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 496)];
+    uCnsDDOIK* v4_0 = mpCnsIK[mIKHandle[2].mType];
     if (v4_0 != nullptr) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 492)) != 0) {
+        if (mIKHandle[2].mActive) {
             if (mActive) {
                 goto region_48d137;
             }
@@ -617,9 +631,9 @@ __attribute__((weak)) void cpIKCtrl::updateIKBlend() {
     v4_0->mBlendSpeed = 1.0f;
     v4_0->mBlend = 0.0f;
     region_48d137:;
-    uCnsDDOIK* v6_0 = mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 656)];
+    uCnsDDOIK* v6_0 = mpCnsIK[mIKHandle[3].mType];
     if (v6_0 != nullptr) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 652)) != 0) {
+        if (mIKHandle[3].mActive) {
             if (mActive) {
                 goto region_48d164;
             }
@@ -630,9 +644,9 @@ __attribute__((weak)) void cpIKCtrl::updateIKBlend() {
     v6_0->mBlendSpeed = 1.0f;
     v6_0->mBlend = 0.0f;
     region_48d164:;
-    uCnsDDOIK* v8_0 = mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 816)];
+    uCnsDDOIK* v8_0 = mpCnsIK[mIKHandle[4].mType];
     if (v8_0 != nullptr) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 812)) != 0) {
+        if (mIKHandle[4].mActive) {
             if (mActive) {
                 return;
             }

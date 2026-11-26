@@ -5,6 +5,8 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cUnit.h"
 #include "sCamera.h"
@@ -47,9 +49,6 @@ uCamera::uCamera() {
     mWorldTargetPos.pad_ = 0.0f;
 }
 
-uCamera::~uCamera() {
-}
-
 __attribute__((weak)) void uCamera::move() {
 }
 
@@ -63,9 +62,15 @@ __attribute__((weak)) void uCamera::applyWorldOffset(const MtVector3& offset, co
     /* stub */
 }
 
-__attribute__((weak)) void uCamera::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCamera::createProperty")
-    /* stub */
+void uCamera::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mCameraPos", &mCameraPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetPos", &mTargetPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCameraUp", &mCameraUp, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNearPlane", &mNearPlane, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFarPlane", &mFarPlane, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFov", &mFov, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAspect", &mAspect, 0u, 0u);
 }
 
 MtUI* uCamera::createUI(MtProperty& prop) {

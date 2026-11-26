@@ -59,9 +59,22 @@ cMethodConstantTimeName::cMethodConstantManagerBase::cMethodConstantManagerBase(
     /* stub */
 }
 
-__attribute__((weak)) void cMethodConstantTimeName::cMethodConstantManagerBase::after() {
-    DDON_STUB("cMethodConstantTimeName::cMethodConstantManagerBase::after")
-    /* stub */
+void cMethodConstantTimeName::cMethodConstantManagerBase::after() {
+    u32 v0_0 = mSyncCheck;
+    for (u32 i = 0;;) {
+        mMethodRepeat[i].mSyncCheck = v0_0 | mMethodRepeat[i].mSyncCheck;
+        if (mMethodRepeat[i].mKeepSync != 0) {
+            if (mMethodRepeat[i].mKeepSync == mMethodRepeat[i].mSyncCheck) {
+                mMethodRepeat[i].mUse = false;
+            }
+        }
+        mMethodRepeat[i].mSyncCheck = 0;
+        if (i != 31) {
+            i = i + 1u;
+        } else {
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) void cMethodConstantTimeName::cMethodConstantManagerBase::update(MtObject* pObject) {

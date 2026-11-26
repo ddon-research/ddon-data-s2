@@ -5,6 +5,8 @@
 #include "MtNetRequest.h"
 #include "MtNetDevice.h"
 #include "MtNetObject.h"
+#include "MtObject.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
 #include "MtSynchronize.h"
 #ifndef DDON_STUB
@@ -12,13 +14,46 @@
 #endif
 
 MtNetRequest::~MtNetRequest() {
-    DDON_STUB("MtNetRequest::~MtNetRequest")
-    /* stub */
+    if (mpPointer[0] != nullptr) {
+        mpPointer[0] = nullptr;
+    }
+    if (mpPointer[1] != nullptr) {
+        mpPointer[1] = nullptr;
+    }
+    if (mpPointer[2] != nullptr) {
+        mpPointer[2] = nullptr;
+    }
+    if (mpPointer[3] != nullptr) {
+        mpPointer[3] = nullptr;
+    }
+    if (mpPointer[4] != nullptr) {
+        mpPointer[4] = nullptr;
+    }
+    if (mpPointer[5] != nullptr) {
+        mpPointer[5] = nullptr;
+    }
+    if (mpPointer[6] != nullptr) {
+        mpPointer[6] = nullptr;
+    }
+    if (mpPointer[7] != nullptr) {
+        mpPointer[7] = nullptr;
+    }
 }
 
-__attribute__((weak)) void MtNetRequest::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtNetRequest::createProperty")
-    /* stub */
+void MtNetRequest::createProperty(MtPropertyList& s) {
+    this->MtNetObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSequence", &mSequence, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStatus", &mStatus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mArgumentNum", &mArgumentNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPhase", &mPhase, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartTime", &mStartTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLimitTime", &mLimitTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsAbort", &mIsAbort, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsNeedAnswer", &mIsNeedAnswer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsFinalize", &mIsFinalize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsReentrant", &mIsReentrant, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsMove", &mIsMove, 0u, 0u);
 }
 
 s32 MtNetRequest::getId() const {

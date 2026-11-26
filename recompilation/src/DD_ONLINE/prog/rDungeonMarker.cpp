@@ -113,9 +113,10 @@ __attribute__((noinline)) rDungeonMarker::~rDungeonMarker() {
     mPositionList.mLength = 0;
 }
 
-__attribute__((weak)) void rDungeonMarker::createProperty(MtPropertyList& s) {
-    DDON_STUB("rDungeonMarker::createProperty")
-    /* stub */
+void rDungeonMarker::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mWarpStageNo", &mWarpStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWarpInfoList", static_cast<MtObject*>(&mWarpInfoList), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPositionList", static_cast<MtObject*>(&mPositionList), 0u, 0u);
 }
 
 bool rDungeonMarker::load(MtStream& in) {
@@ -200,9 +201,11 @@ rDungeonMarker::cWarpInfo::~cWarpInfo() {
     mPosIndex.mLength = 0;
 }
 
-__attribute__((weak)) void rDungeonMarker::cWarpInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rDungeonMarker::cWarpInfo::createProperty")
-    /* stub */
+void rDungeonMarker::cWarpInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupNo", &mGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetStageNo", &mTargetStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetGroupNo", &mTargetGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPosIndex", static_cast<MtObject*>(&mPosIndex), 0u, 0u);
 }
 
 inline rDungeonMarker::cWarpInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -221,9 +224,8 @@ inline void rDungeonMarker::cWarpInfo::cIndex::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rDungeonMarker::cWarpInfo::cIndex::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rDungeonMarker::cWarpInfo::cIndex::createProperty(MtPropertyList& s) {
-    DDON_STUB("rDungeonMarker::cWarpInfo::cIndex::createProperty")
-    /* stub */
+void rDungeonMarker::cWarpInfo::cIndex::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 0u, 0u);
 }
 
 inline rDungeonMarker::cWarpInfo::cIndex::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -256,9 +258,8 @@ rDungeonMarker::cPosition::cPosition() {
 rDungeonMarker::cPosition::~cPosition() {
 }
 
-__attribute__((weak)) void rDungeonMarker::cPosition::createProperty(MtPropertyList& s) {
-    DDON_STUB("rDungeonMarker::cPosition::createProperty")
-    /* stub */
+void rDungeonMarker::cPosition::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
 }
 
 inline rDungeonMarker::cPosition::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

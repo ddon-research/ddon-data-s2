@@ -9,6 +9,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "nDraw.h"
 #include "nDrawIndexBuffer.h"
@@ -60,9 +61,10 @@ cDraw::cDraw() {
     /* stub */
 }
 
-__attribute__((weak)) void cDraw::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDraw::createProperty")
-    /* stub */
+void cDraw::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mTagNum", &mTagNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxTag", &mMaxTag, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBranchNum", &mBranchNum, 1u, 0u);
 }
 
 MtUI* cDraw::createUI(MtProperty& prop) {

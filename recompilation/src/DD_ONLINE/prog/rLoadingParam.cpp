@@ -67,9 +67,9 @@ MT_CTSTR rLoadingParam::getName() const {
     return "rLoadingParam";
 }
 
-__attribute__((weak)) void rLoadingParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("rLoadingParam::createProperty")
-    /* stub */
+void rLoadingParam::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mArray", static_cast<MtObject*>(&mArray), 0u, 0u);
 }
 
 bool rLoadingParam::load(MtStream& in) {
@@ -154,9 +154,9 @@ rLoadingParam::cDataList::~cDataList() {
     mList.mLength = 0;
 }
 
-__attribute__((weak)) void rLoadingParam::cDataList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rLoadingParam::cDataList::createProperty")
-    /* stub */
+void rLoadingParam::cDataList::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaNo", &mAreaNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mList", static_cast<MtObject*>(&mList), 0u, 0u);
 }
 
 bool rLoadingParam::cDataList::load(MtDataReader& r) {
@@ -172,8 +172,7 @@ inline rLoadingParam::cDataList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 rLoadingParam::cDataList::MyDTI rLoadingParam::cDataList::DTI("rLoadingParam::cDataList", &::MtObject::DTI, 48ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rLoadingParam::cDataList::MyDTI::newInstance() const {
-    DDON_STUB("rLoadingParam::cDataList::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cDataList;
 }
 
 const MtDTI& rLoadingParam::cData::getDTI() const {
@@ -191,9 +190,9 @@ inline void rLoadingParam::cData::operator delete(void* p_addr) {
 rLoadingParam::cData::~cData() {
 }
 
-__attribute__((weak)) void rLoadingParam::cData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rLoadingParam::cData::createProperty")
-    /* stub */
+void rLoadingParam::cData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mMsgIdx", &mMsgIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mImgId", &mImgId, 0u, 0u);
 }
 
 bool rLoadingParam::cData::load(MtDataReader& r) {

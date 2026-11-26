@@ -1148,32 +1148,123 @@ inline void* nCaplink::cAchievementRewardInfo::operator new(size_t sz, void* p_a
     return p_addr;
 }
 
+inline nCaplink::cAchievementRewardInfo::cAchievementRewardInfo() {
+    this->mAmount = -1;
+    this->mId[31] = 0;
+    this->mId[32] = 0;
+    this->mId[23] = 0;
+    this->mId[24] = 0;
+    this->mId[25] = 0;
+    this->mId[26] = 0;
+    this->mId[27] = 0;
+    this->mId[28] = 0;
+    this->mId[29] = 0;
+    this->mId[30] = 0;
+    this->mId[15] = 0;
+    this->mId[16] = 0;
+    this->mId[17] = 0;
+    this->mId[18] = 0;
+    this->mId[19] = 0;
+    this->mId[20] = 0;
+    this->mId[21] = 0;
+    this->mId[22] = 0;
+    this->mId[7] = 0;
+    this->mId[8] = 0;
+    this->mId[9] = 0;
+    this->mId[10] = 0;
+    this->mId[11] = 0;
+    this->mId[12] = 0;
+    this->mId[13] = 0;
+    this->mId[14] = 0;
+    this->mType[32] = 0;
+    this->mId[0] = 0;
+    this->mId[1] = 0;
+    this->mId[2] = 0;
+    this->mId[3] = 0;
+    this->mId[4] = 0;
+    this->mId[5] = 0;
+    this->mId[6] = 0;
+    this->mType[24] = 0;
+    this->mType[25] = 0;
+    this->mType[26] = 0;
+    this->mType[27] = 0;
+    this->mType[28] = 0;
+    this->mType[29] = 0;
+    this->mType[30] = 0;
+    this->mType[31] = 0;
+    this->mType[16] = 0;
+    this->mType[17] = 0;
+    this->mType[18] = 0;
+    this->mType[19] = 0;
+    this->mType[20] = 0;
+    this->mType[21] = 0;
+    this->mType[22] = 0;
+    this->mType[23] = 0;
+    this->mType[8] = 0;
+    this->mType[9] = 0;
+    this->mType[10] = 0;
+    this->mType[11] = 0;
+    this->mType[12] = 0;
+    this->mType[13] = 0;
+    this->mType[14] = 0;
+    this->mType[15] = 0;
+    this->mType[0] = 0;
+    this->mType[1] = 0;
+    this->mType[2] = 0;
+    this->mType[3] = 0;
+    this->mType[4] = 0;
+    this->mType[5] = 0;
+    this->mType[6] = 0;
+    this->mType[7] = 0;
+}
+
 inline void* nCaplink::cChatGroupInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nCaplink::cChatGroupInfo::cChatGroupInfo() {
 }
 
 inline void* nCaplink::cChatUserInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline nCaplink::cChatUserInfo::cChatUserInfo() {
+}
+
 inline void* nCaplink::cContentInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nCaplink::cContentInfo::cContentInfo() {
 }
 
 inline void* nCaplink::cContentInviteAvailableUserInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline nCaplink::cContentInviteAvailableUserInfo::cContentInviteAvailableUserInfo() {
+}
+
 inline void* nCaplink::cContentInviteUserInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nCaplink::cContentInviteUserInfo::cContentInviteUserInfo() {
 }
 
 inline void* nCaplink::cContentTagInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline nCaplink::cContentTagInfo::cContentTagInfo() {
+}
+
 inline void* nCaplink::cFreeTagInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nCaplink::cFreeTagInfo::cFreeTagInfo() {
 }
 
 inline s32 nCaplink::cFreeTagInfo::getTagId() const {
@@ -1182,6 +1273,9 @@ inline s32 nCaplink::cFreeTagInfo::getTagId() const {
 
 inline void* nCaplink::cFriendEntryInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nCaplink::cFriendEntryInfo::cFriendEntryInfo() {
 }
 
 inline void* nCaplink::cFriendInfo::operator new(size_t sz, void* p_addr) {
@@ -1196,6 +1290,9 @@ inline void* nCaplink::cNotifyAppInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline nCaplink::cNotifyAppInfo::cNotifyAppInfo() {
+}
+
 inline s32 nCaplink::cNotifyAppInfo::getNotifyId() const {
     return this->mNotifyId;
 }
@@ -1206,6 +1303,9 @@ inline s32 nCaplink::cNotifyAppInfo::getNotifyType() const {
 
 inline void* nCaplink::cResourceInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nCaplink::cResourceInfo::cResourceInfo() {
 }
 
 inline s32 nCaplink::cResourceInfo::getResourceId() const {
@@ -1224,6 +1324,9 @@ inline void* nCaplink::cTagInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline nCaplink::cTagInfo::cTagInfo() {
+}
+
 inline void* nCaplink::cUserBaseInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -1232,12 +1335,18 @@ inline void* nCaplink::cUserContentInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline nCaplink::cUserContentInfo::cUserContentInfo() {
+}
+
 inline void* nCaplink::cUserProfile::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline void* nCaplink::cWebsocketServerInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nCaplink::cWebsocketServerInfo::cWebsocketServerInfo() {
 }
 
 inline MT_CTSTR nCaplink::cWebsocketServerInfo::getHostname() const {

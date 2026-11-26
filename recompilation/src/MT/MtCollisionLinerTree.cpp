@@ -15,6 +15,10 @@ const MtDTI& MtCollisionUtil::MtLinerTree::getDTI() const {
     return MtCollisionUtil::MtLinerTree::DTI;
 }
 
+inline void* MtCollisionUtil::MtLinerTree::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtLinerTree::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtLinerTree::DTI.mID);
+}
+
 inline void MtCollisionUtil::MtLinerTree::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtLinerTree::DTI)->memFree(p_addr);
 }
@@ -90,9 +94,27 @@ __attribute__((weak)) bool MtCollisionUtil::MtLinerTree::setTreeStatus(const MtA
     return {};
 }
 
-__attribute__((weak)) void MtCollisionUtil::MtLinerTree::resetDataAll() {
-    DDON_STUB("MtCollisionUtil::MtLinerTree::resetDataAll")
-    /* stub */
+void MtCollisionUtil::MtLinerTree::resetDataAll() {
+    if (mElemNumTotal != 0) {
+        u32 v0_0 = mElemNumTotal;
+        for (u32 i = 0;;) {
+            mpTreeArray[i].mLength = 0;
+            mpTreeArray[i].mChildElemNum[4] = 0;
+            mpTreeArray[i].mChildElemNum[5] = 0;
+            mpTreeArray[i].mChildElemNum[6] = 0;
+            mpTreeArray[i].mChildElemNum[7] = 0;
+            mpTreeArray[i].mChildElemNum[0] = 0;
+            mpTreeArray[i].mChildElemNum[1] = 0;
+            mpTreeArray[i].mChildElemNum[2] = 0;
+            mpTreeArray[i].mChildElemNum[3] = 0;
+            if ((v0_0 - 1u) != 0) {
+                v0_0 += 0xFFFFFFFFu;
+                i = i + 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) u32 MtCollisionUtil::MtLinerTree::traverse(const MtAABB& aabb, MtCollisionUtil::MtLinerTree::CollisionCheckFunc& ColInfo, uintptr param) {
@@ -119,13 +141,16 @@ inline MtCollisionUtil::MtLinerTree::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 
 MtCollisionUtil::MtLinerTree::MyDTI MtCollisionUtil::MtLinerTree::DTI("MtCollisionUtil::MtLinerTree", &::MtObject::DTI, 208ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* MtCollisionUtil::MtLinerTree::MyDTI::newInstance() const {
-    DDON_STUB("MtCollisionUtil::MtLinerTree::MyDTI::newInstance")
-    return nullptr;
+MtObject* MtCollisionUtil::MtLinerTree::MyDTI::newInstance() const {
+    return new (16u) ::MtCollisionUtil::MtLinerTree;
 }
 
 const MtDTI& MtCollisionUtil::MtLinerTree::cRegistReserveInfo::getDTI() const {
     return MtCollisionUtil::MtLinerTree::cRegistReserveInfo::DTI;
+}
+
+inline void* MtCollisionUtil::MtLinerTree::cRegistReserveInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtLinerTree::cRegistReserveInfo::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtLinerTree::cRegistReserveInfo::DTI.mID);
 }
 
 inline void MtCollisionUtil::MtLinerTree::cRegistReserveInfo::operator delete(void* p_addr) {
@@ -139,8 +164,7 @@ inline MtCollisionUtil::MtLinerTree::cRegistReserveInfo::MyDTI::MyDTI(MT_CTSTR c
 
 MtCollisionUtil::MtLinerTree::cRegistReserveInfo::MyDTI MtCollisionUtil::MtLinerTree::cRegistReserveInfo::DTI("MtCollisionUtil::MtLinerTree::cRegistReserveInfo", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* MtCollisionUtil::MtLinerTree::cRegistReserveInfo::MyDTI::newInstance() const {
-    DDON_STUB("MtCollisionUtil::MtLinerTree::cRegistReserveInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* MtCollisionUtil::MtLinerTree::cRegistReserveInfo::MyDTI::newInstance() const {
+    return new (16u) ::MtCollisionUtil::MtLinerTree::cRegistReserveInfo;
 }
 

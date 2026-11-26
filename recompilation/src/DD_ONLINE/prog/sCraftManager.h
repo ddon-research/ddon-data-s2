@@ -44,11 +44,14 @@ class cCraftPlusItem;
 class cCraftRecipe;
 class cCraftSkill;
 class cItemParam;
+class cMenuCraftMenu;
 class cMenuGetCraftRecipeToServer;
 class cPawnListParam;
 class rCraftCapPass;
 class rCraftElementExp;
 class rCraftUpGradeExp;
+class uGUICraft;
+class uStageCraftPawnCtrl;
 
 // Declarations
 class sCraftManager;
@@ -73,6 +76,9 @@ using u8 = unsigned char;
 
 class sCraftManager : public cSystem
 {
+    friend class cMenuCraftMenu;
+    friend class uGUICraft;
+    friend class uStageCraftPawnCtrl;
 public:
     enum CRAFT_RESULT
     {
@@ -351,7 +357,10 @@ public:
 public:
     class cCraftPawnCtrl : public MtObject
     {
+        friend class cMenuCraftMenu;
         friend class sCraftManager;
+        friend class uGUICraft;
+        friend class uStageCraftPawnCtrl;
     public:
         enum RESULT
         {
@@ -1339,8 +1348,16 @@ inline sCraftManager::cCraftRankUp::cCraftRankUp() {
     this->mAddCraftPoint = 0;
 }
 
+inline u32 sCraftManager::cCraftRankUp::getPawnId() {
+    return this->mPawnId;
+}
+
 inline void* sCraftManager::cCraftUpGrade::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline u32 sCraftManager::cCraftUpGrade::getUpGradeItem() {
+    return this->mItemNo;
 }
 
 inline void* sCraftManager::cCraftUpGradeItemList::operator new(size_t sz, void* p_addr) {

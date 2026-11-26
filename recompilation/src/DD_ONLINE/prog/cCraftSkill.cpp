@@ -42,9 +42,9 @@ cCraftSkill::~cCraftSkill() {
     mpCostResource = nullptr;
 }
 
-__attribute__((weak)) void cCraftSkill::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCraftSkill::createProperty")
-    /* stub */
+void cCraftSkill::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpSpdResource", "resource", reinterpret_cast<MT_MFUNC>(&::cCraftSkill::getSpdResource), reinterpret_cast<MT_MFUNC>(&::cCraftSkill::setSpdResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpCostResource", "resource", reinterpret_cast<MT_MFUNC>(&::cCraftSkill::getCostResource), reinterpret_cast<MT_MFUNC>(&::cCraftSkill::setCostResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* cCraftSkill::createUI(MtProperty& prop) {

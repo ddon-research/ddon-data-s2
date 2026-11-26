@@ -7,6 +7,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "sRender.h"
 #ifndef DDON_STUB
@@ -55,9 +56,10 @@ __attribute__((weak)) void nDraw::Resource::release() {
     }
 }
 
-__attribute__((weak)) void nDraw::Resource::createProperty(MtPropertyList& s) {
-    DDON_STUB("nDraw::Resource::createProperty")
-    /* stub */
+void nDraw::Resource::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "RefCount", &mRefCount, 3u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mRefFrame", &mRefFrame, 3u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mCRC", &mCRC, 3u, 0u);
 }
 
 __attribute__((weak)) void nDraw::Resource::calcCRC(const void* pbuf, u32 bytes) {

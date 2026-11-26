@@ -19,6 +19,7 @@ class MtPropertyList;
 class MtUI;
 class cContextInstance;
 namespace nLayout { struct stLayoutID; }
+class sNpcManager;
 class uControl;
 class uControlEnemy;
 class uControlNpc;
@@ -44,6 +45,7 @@ using uintptr = __uintptr_t;
 
 class sControlManager : public cSystem
 {
+    friend class sNpcManager;
 public:
     enum
     {

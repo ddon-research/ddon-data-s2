@@ -45,9 +45,14 @@ void cpComponent::setActive(bool active) {
     mActive = active;
 }
 
-__attribute__((weak)) void cpComponent::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpComponent::createProperty")
-    /* stub */
+void cpComponent::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mActive", &mActive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mName", reinterpret_cast<MT_MFUNC>(&::cpComponent::getName), reinterpret_cast<MT_MFUNC>(&::cpComponent::setName), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpParent", reinterpret_cast<MtObject* *>(&mpParent), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpChildTop", reinterpret_cast<MtObject* *>(&mpChildTop), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpChildBottom", reinterpret_cast<MtObject* *>(&mpChildBottom), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpNext", reinterpret_cast<MtObject* *>(&mpNext), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpPrev", reinterpret_cast<MtObject* *>(&mpPrev), 0u, 0u);
 }
 
 __attribute__((weak)) cpComponent* cpComponent::find(const MtDTI& DTI, bool IsKindOf, bool from_root) {
@@ -139,9 +144,51 @@ void cpComponent::Iterator::begin(cpComponent* pBegin) {
     mIndex = 0;
 }
 
-__attribute__((weak)) void cpComponent::Iterator::next() {
-    DDON_STUB("cpComponent::Iterator::next")
-    /* stub */
+void cpComponent::Iterator::next() {
+    if (mpCurrent != nullptr) {
+        if (mpCurrent->getChildTop() == nullptr) {
+            cpComponent* v1_1;
+            if (mpCurrent->getNext() != nullptr) {
+                if (mpCurrent == mpRoot) {
+                    mEnd = true;
+                    mpCurrent = nullptr;
+                    mIndex = 0;
+                    return;
+                } else {
+                    v1_1 = mpCurrent->getNext();
+                }
+            } else {
+                for (cpComponent* v0_0 = mpCurrent;;) {
+                    cpComponent* t0 = v0_0->getParent();
+                    mpCurrent = t0;
+                    mDepth = mDepth - 1;
+                    if (mpCurrent != nullptr) {
+                        if (mpCurrent == mpRoot) {
+                            mEnd = true;
+                            mpCurrent = nullptr;
+                            return;
+                        } else {
+                            if (t0->getNext() == nullptr) {
+                                v0_0 = t0;
+                            } else {
+                                v1_1 = t0->getNext();
+                                break;
+                            }
+                        }
+                    } else {
+                        mEnd = true;
+                        mpCurrent = nullptr;
+                        return;
+                    }
+                }
+            }
+            mpCurrent = v1_1;
+        } else {
+            mpCurrent = mpCurrent->getChildTop();
+            mDepth = mDepth + 1;
+        }
+        mIndex = mIndex + 1;
+    }
 }
 
 bool cpComponent::Iterator::isEnd() {

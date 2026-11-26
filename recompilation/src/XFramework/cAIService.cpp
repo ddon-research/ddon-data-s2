@@ -5,6 +5,8 @@
 #include "cAIService.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "../MT/MtSynchronize.h"
@@ -33,9 +35,11 @@ MtUI* cAIService::createUI(MtProperty& prop) {
     return nullptr;
 }
 
-__attribute__((weak)) void cAIService::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIService::createProperty")
-    /* stub */
+void cAIService::createProperty(MtPropertyList& s) {
+    this->cAIObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mName", &mName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CSTRING, "mDTI", reinterpret_cast<MT_MFUNC>(&::cAIService::getDTIName), reinterpret_cast<MT_MFUNC>(&::cAIService::setDTIName), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 1u, 0u);
 }
 
 void cAIService::lock() {

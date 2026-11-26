@@ -29,13 +29,35 @@ uCnsGroup::uCnsGroup() {
 }
 
 uCnsGroup::~uCnsGroup() {
-    DDON_STUB("uCnsGroup::~uCnsGroup")
-    /* stub */
+    if (mGroupNum != 0) {
+        u32 v0_0 = mGroupNum;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mppGroups[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mppGroups[i0_3];
+                v1_0 = mGroupNum;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    MtMemoryAllocator::getAllocator(uCnsGroup::DTI)->memFree(static_cast<void*>(mppGroups));
+    if (mpTmpResource != nullptr) {
+        mpTmpResource->release();
+        mpTmpResource = nullptr;
+    }
 }
 
-__attribute__((weak)) void uCnsGroup::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsGroup::createProperty")
-    /* stub */
+void uCnsGroup::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", reinterpret_cast<MT_MFUNC>(&::uCnsGroup::getResource), reinterpret_cast<MT_MFUNC>(&::uCnsGroup::setResourceNextMove), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* uCnsGroup::createUI(MtProperty& prop) {
@@ -226,9 +248,12 @@ __attribute__((noinline)) uCnsGroup::cGroup::~cGroup() {
     /* stub */
 }
 
-__attribute__((weak)) void uCnsGroup::cGroup::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsGroup::cGroup::createProperty")
-    /* stub */
+void uCnsGroup::cGroup::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Update", static_cast<MT_MFUNC32>(&::uCnsGroup::cGroup::updateForProperty), 0u, 1u);
+    s << MtProperty(static_cast<MtObject*>(this), "Remove", reinterpret_cast<MT_MFUNC32>(&::uCnsGroup::cGroup::remove), 0u, 1u);
+    s << MtProperty(static_cast<MtObject*>(this), "Depend Reset", static_cast<MT_MFUNC>(&::uCnsGroup::cGroup::reset), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "NodeNum", &mNodeNum, 2051u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "Nodes", reinterpret_cast<MT_MFUNC>(&::uCnsGroup::cGroup::getNode), reinterpret_cast<MT_MFUNC>(&::uCnsGroup::cGroup::setNode), 160u, reinterpret_cast<MT_MFUNC>(&::uCnsGroup::cGroup::getNodeNum), reinterpret_cast<MT_MFUNC>(&::uCnsGroup::cGroup::setNodeNum));
 }
 
 MtUI* uCnsGroup::cGroup::createUI(MtProperty& prop) {
@@ -349,9 +374,8 @@ uCnsGroup::cNode::cNode() {
 uCnsGroup::cNode::~cNode() {
 }
 
-__attribute__((weak)) void uCnsGroup::cNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsGroup::cNode::createProperty")
-    /* stub */
+void uCnsGroup::cNode::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mJointNo", &mJointNo, 0u, 0u);
 }
 
 MtUI* uCnsGroup::cNode::createUI(MtProperty& prop) {

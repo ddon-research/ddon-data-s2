@@ -33,6 +33,7 @@ using u8 = unsigned char;
 
 class MtNetBuffer : public MtNetObject
 {
+    friend class MtNetFriendList;
 public:
     MtNetBuffer();
     virtual ~MtNetBuffer();
@@ -56,6 +57,7 @@ protected:
 
 class MtNetUniqueId : public MtNetBuffer
 {
+    friend class MtNetFriendList;
 public:
     enum
     {

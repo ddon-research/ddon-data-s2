@@ -48,8 +48,15 @@ inline void uGUIRankingBoard::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIRankingBoard::~uGUIRankingBoard() {
-    DDON_STUB("uGUIRankingBoard::~uGUIRankingBoard")
-    /* stub */
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
+    }
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 __attribute__((weak)) void uGUIRankingBoard::createProperty(MtPropertyList& s) {

@@ -50,6 +50,7 @@
 #include "uGUIPopListDialog.h"
 #include "uGUIPopNumber01.h"
 #include "uGUIShopBuy.h"
+#include "uGUIStorage.h"
 #include "uGUISystemMsg.h"
 #include "uGUIUseItemBase.h"
 #include "uGUIsMenuBase.h"
@@ -69,9 +70,11 @@ void* uGUIItem01::operator new(size_t sz, u32 align) {
     return uGUIItem01::getAllocator()->memAlloc(sz, align, uGUIItem01::DTI.getID());
 }
 
+inline void uGUIItem01::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uGUIItem01::DTI)->memFree(p_addr);
+}
+
 uGUIItem01::~uGUIItem01() {
-    DDON_STUB("uGUIItem01::~uGUIItem01")
-    /* stub */
 }
 
 __attribute__((weak)) void uGUIItem01::setup() {
@@ -129,9 +132,24 @@ __attribute__((weak)) void uGUIItem01::setGuideBtn() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIItem01::setWindowMouseOver() {
-    DDON_STUB("uGUIItem01::setWindowMouseOver")
-    /* stub */
+void uGUIItem01::setWindowMouseOver() {
+    if (mpShareUnit != nullptr) {
+        const MtDTI& t0 = mpShareUnit->getDTI();
+        MT_CTSTR v0_1 = uGUIStorage::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                cControl* t1 = mpCtrlButton;
+                t1->addMouseTouchList(getInstance(4u, false), 0, 0u, 1u);
+                return;
+            } else {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) bool uGUIItem01::isExecuteDecide() {
@@ -164,6 +182,40 @@ const MtDTI& uGUIItemBase01::getDTI() const {
 
 inline void uGUIItemBase01::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIItemBase01::DTI)->memFree(p_addr);
+}
+
+uGUIItemBase01::uGUIItemBase01(u32 initFlags) : uGUIUseItemBase(initFlags), mData() {
+    mpGUIRes = nullptr;
+    mpUnitIcon = nullptr;
+    mIsCatchMode = false;
+    mCtrlFocusOld = 0;
+    mMatrixSelPos = 0;
+    mCtrlFocus = 0;
+    mpCtrlTab = nullptr;
+    mpCtrlMatrix = nullptr;
+    mpCtrlH = nullptr;
+    mpCtrlV = nullptr;
+    mpCtrlButton = nullptr;
+    mIsDetailCreate = true;
+    mIsDetailVisibleFirst = false;
+    mIsMouseOverPermit = true;
+    mIsMouseOver = false;
+    mIsOnlineShopStart = false;
+    mItemSpaceSize.w = static_cast<s32>(static_cast<unsigned int>(MtSize::Zero.wh));
+    mItemSpaceSize.h = static_cast<s32>(MtSize::Zero.wh >> 32);
+    mRow = 0;
+    mPageTabNo = 0;
+    mStorageType = nCharacterData::ITEM_BAG_TYPE_STORAGE;
+    mServerStorageType = nItem::STORAGE_TYPE_INVALID;
+    mServerStorageTypeOld = nItem::STORAGE_TYPE_INVALID;
+    mGUIItems.mAutoDelete = true;
+    mCheckMode = false;
+    mEndType = 1;
+    mTicket = sArchiveManager::INVALID_TICKET;
+    mSwitch = 0;
+    mVAR_sw = 2;
+    mVAR_change_flow = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUIItem01"), 0u, false);
 }
 
 __attribute__((noinline)) uGUIItemBase01::~uGUIItemBase01() {
@@ -332,7 +384,7 @@ void uGUIItemBase01::checkAddMaxNum(nCharacterData::ITEM_BAG_TYPE type, nGUIItem
     u32 t4 = pBag->getItemAddMaxNum(t3);
     *pAddNum = t4;
     cItemParam* t6 = pItem->getItemParam();
-    unsigned short t7 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t6) + 12);
+    u16 t7 = t6->mItemParam.mItemNum_Guard;
     if ((*pAddNum) < t7) {
         if ((*pAddNum) != 0) {
             *pMsg = 273;
@@ -357,7 +409,7 @@ void uGUIItemBase01::checkAddMaxNum(nItem::E_STORAGE_TYPE type, nGUIItem::cItem*
     u32 t4 = pBag->getItemAddMaxNum(t3);
     *pAddNum = t4;
     cItemParam* t6 = pItem->getItemParam();
-    unsigned short t7 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t6) + 12);
+    u16 t7 = t6->mItemParam.mItemNum_Guard;
     if ((*pAddNum) < t7) {
         if ((*pAddNum) != 0) {
             *pMsg = 273;
@@ -614,8 +666,8 @@ __attribute__((weak)) u32 uGUIItemBase01::evCatch(MtObject* pCaller, MtObject* p
 
 u32 uGUIItemBase01::evThrow(MtObject* pCaller, MtObject* pData) {
     if (!static_cast<sAreaExt*>(sArea::getInstance())->isLobby()) {
-        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) != 0) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 350)) == 0) {
+        if (sArea::getInstance()->mpArea[2] != nullptr) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 350)) == 0) {
                 callbackThrowItem(static_cast<MtObject*>(this), pData);
                 mBaseF = mBaseF | 4u;
             }
@@ -635,94 +687,191 @@ __attribute__((weak)) u32 uGUIItemBase01::evSendBag(MtObject* pCaller, MtObject*
     return {};
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendsBag(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendsBag")
-    return {};
+u32 uGUIItemBase01::evSendsBag(MtObject* pCaller, MtObject* pData) {
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItemList::DTI)) {
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendsBagFromBox(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendsBagFromBox")
-    return {};
+u32 uGUIItemBase01::evSendsBagFromBox(MtObject* pCaller, MtObject* pData) {
+    mFromBagGroup = nItem::STORAGE_TYPE_GROUP_STORAGE;
+    mToBagGroup = nItem::STORAGE_TYPE_GROUP_BAG;
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItemList::DTI)) {
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendsBagFromExBox(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendsBagFromExBox")
-    return {};
+u32 uGUIItemBase01::evSendsBagFromExBox(MtObject* pCaller, MtObject* pData) {
+    mFromBagGroup = nItem::STORAGE_TYPE_STORAGE_EX1_ALL;
+    mToBagGroup = nItem::STORAGE_TYPE_GROUP_BAG;
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItemList::DTI)) {
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendNumBag(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendNumBag")
-    return {};
+u32 uGUIItemBase01::evSendNumBag(MtObject* pCaller, MtObject* pData) {
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItem::DTI)) {
+        nGUIItem::cItem* p = static_cast<nGUIItem::cItem*>(pData);
+        p->mToBagType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_GROUP_BAG, static_cast<nGUIItem::cItem*>(pData)->getResourceParam());
+        _evSend(pCaller, pData, true, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendBox(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendBox")
-    return {};
+u32 uGUIItemBase01::evSendBox(MtObject* pCaller, MtObject* pData) {
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItem::DTI)) {
+        nGUIItem::cItem* p = static_cast<nGUIItem::cItem*>(pData);
+        p->mToBagType = nItem::STORAGE_TYPE_STORAGE_ALL;
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendsBox(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendsBox")
-    return {};
+u32 uGUIItemBase01::evSendsBox(MtObject* pCaller, MtObject* pData) {
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItemList::DTI)) {
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendsBoxFromBag(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendsBoxFromBag")
-    return {};
+u32 uGUIItemBase01::evSendsBoxFromBag(MtObject* pCaller, MtObject* pData) {
+    mFromBagGroup = nItem::STORAGE_TYPE_GROUP_BAG;
+    mToBagGroup = nItem::STORAGE_TYPE_GROUP_STORAGE;
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItemList::DTI)) {
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendsBoxFromExBox(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendsBoxFromExBox")
-    return {};
+u32 uGUIItemBase01::evSendsBoxFromExBox(MtObject* pCaller, MtObject* pData) {
+    mFromBagGroup = nItem::STORAGE_TYPE_STORAGE_EX1_ALL;
+    mToBagGroup = nItem::STORAGE_TYPE_GROUP_STORAGE;
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItemList::DTI)) {
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendNumBox(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendNumBox")
-    return {};
+u32 uGUIItemBase01::evSendNumBox(MtObject* pCaller, MtObject* pData) {
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItem::DTI)) {
+        nGUIItem::cItem* p = static_cast<nGUIItem::cItem*>(pData);
+        p->mToBagType = nItem::STORAGE_TYPE_STORAGE_ALL;
+        _evSend(pCaller, pData, true, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendEx(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendEx")
-    return {};
+u32 uGUIItemBase01::evSendEx(MtObject* pCaller, MtObject* pData) {
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItem::DTI)) {
+        nGUIItem::cItem* p = static_cast<nGUIItem::cItem*>(pData);
+        p->mToBagType = nItem::STORAGE_TYPE_STORAGE_EX1_ALL;
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendsExFromBag(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendsExFromBag")
-    return {};
+u32 uGUIItemBase01::evSendsExFromBag(MtObject* pCaller, MtObject* pData) {
+    mFromBagGroup = nItem::STORAGE_TYPE_GROUP_BAG;
+    mToBagGroup = nItem::STORAGE_TYPE_STORAGE_EX1_ALL;
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItemList::DTI)) {
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendsExFromBox(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendsExFromBox")
-    return {};
+u32 uGUIItemBase01::evSendsExFromBox(MtObject* pCaller, MtObject* pData) {
+    mFromBagGroup = nItem::STORAGE_TYPE_GROUP_STORAGE;
+    mToBagGroup = nItem::STORAGE_TYPE_STORAGE_EX1_ALL;
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItemList::DTI)) {
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendNumEx(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendNumEx")
-    return {};
+u32 uGUIItemBase01::evSendNumEx(MtObject* pCaller, MtObject* pData) {
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItem::DTI)) {
+        nGUIItem::cItem* p = static_cast<nGUIItem::cItem*>(pData);
+        p->mToBagType = nItem::STORAGE_TYPE_STORAGE_EX1_ALL;
+        _evSend(pCaller, pData, true, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendBaggage(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendBaggage")
-    return {};
+u32 uGUIItemBase01::evSendBaggage(MtObject* pCaller, MtObject* pData) {
+    if (pData != nullptr) {
+        if (pData->isKindOf(nGUIItem::cItem::DTI)) {
+            if (mpShareUnit != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpShareUnit) + 3296)) != 7) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpShareUnit) + 3296)) == 5) {
+                        nGUIItem::cItem* p = static_cast<nGUIItem::cItem*>(pData);
+                        p->mToBagType = nItem::STORAGE_TYPE_BAGGAGE_FREE;
+                    } else {
+                        nGUIItem::cItem* p = static_cast<nGUIItem::cItem*>(pData);
+                        p->mToBagType = nItem::STORAGE_TYPE_BAGGAGE_RENTAL01;
+                    }
+                    _evSend(pCaller, pData, false, true);
+                    return 0;
+                }
+            }
+        }
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendsBaggageFreeFromBag(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendsBaggageFreeFromBag")
-    return {};
+u32 uGUIItemBase01::evSendsBaggageFreeFromBag(MtObject* pCaller, MtObject* pData) {
+    mFromBagGroup = nItem::STORAGE_TYPE_GROUP_BAG;
+    mToBagGroup = nItem::STORAGE_TYPE_BAGGAGE_FREE;
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItemList::DTI)) {
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendsBaggageRental00FromBag(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendsBaggageRental00FromBag")
-    return {};
+u32 uGUIItemBase01::evSendsBaggageRental00FromBag(MtObject* pCaller, MtObject* pData) {
+    mFromBagGroup = nItem::STORAGE_TYPE_GROUP_BAG;
+    mToBagGroup = nItem::STORAGE_TYPE_BAGGAGE_RENTAL01;
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItemList::DTI)) {
+        _evSend(pCaller, pData, false, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendNumBaggageFree(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendNumBaggageFree")
-    return {};
+u32 uGUIItemBase01::evSendNumBaggageFree(MtObject* pCaller, MtObject* pData) {
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItem::DTI)) {
+        nGUIItem::cItem* p = static_cast<nGUIItem::cItem*>(pData);
+        p->mToBagType = nItem::STORAGE_TYPE_BAGGAGE_FREE;
+        _evSend(pCaller, pData, true, true);
+        return 0;
+    }
+    return 1;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evSendNumBaggageRental00(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evSendNumBaggageRental00")
-    return {};
+u32 uGUIItemBase01::evSendNumBaggageRental00(MtObject* pCaller, MtObject* pData) {
+    if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItem::DTI)) {
+        nGUIItem::cItem* p = static_cast<nGUIItem::cItem*>(pData);
+        p->mToBagType = nItem::STORAGE_TYPE_BAGGAGE_RENTAL01;
+        _evSend(pCaller, pData, true, true);
+        return 0;
+    }
+    return 1;
 }
 
 __attribute__((weak)) u32 uGUIItemBase01::evSortMenu(MtObject* pCaller, MtObject* pData) {
@@ -769,9 +918,24 @@ void uGUIItemBase01::setMouseTouchCtrl(bool b) {
     mIsMouseOverPermit = b;
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::evCheckModeClear(cControl::Message* msg) {
-    DDON_STUB("uGUIItemBase01::evCheckModeClear")
-    return {};
+u32 uGUIItemBase01::evCheckModeClear(cControl::Message* msg) {
+    mCheckMode = false;
+    u32 v0_0 = mItemList.mCheckList.mLength;
+    if (v0_0 != 0) {
+        MtObject* * v0_1 = mItemList.mCheckList.mpArray;
+        for (u32 i = 0;;) {
+            if (v0_1[i] != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[i]) + 75) = 0;
+            }
+            if ((i + 1u) < v0_0) {
+                i = i + 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    mItemList.mCheckList.mLength = 0;
+    return 0;
 }
 
 __attribute__((weak)) bool uGUIItemBase01::isUpdateItemCBF() {
@@ -810,14 +974,104 @@ __attribute__((weak)) void uGUIItemBase01::execCatchFunc() {
     /* stub */
 }
 
-__attribute__((weak)) bool uGUIItemBase01::exchangeStorageCatchItem() {
-    DDON_STUB("uGUIItemBase01::exchangeStorageCatchItem")
-    return {};
+bool uGUIItemBase01::exchangeStorageCatchItem() {
+    const MtDTI& t0 = getDTI();
+    if (t0.getID() == uGUIItem01::DTI.mID) {
+        sGUI* t1 = sGUI::getInstance();
+        static_cast<sGUIExt*>(t1)->mSendItemParam.mTmpItem.mToBagType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_GROUP_BAG, static_cast<sGUIExt*>(t1)->mSendItemParam.mTmpItem.getResourceParam());
+        return true;
+    } else {
+        const MtDTI& t2 = getDTI();
+        if (t2.getID() == uGUIStorage::DTI.mID) {
+            if (mStorageType != nCharacterData::ITEM_BAG_TYPE_BAGGAGE_RENTAL01) {
+                if (mStorageType == nCharacterData::ITEM_BAG_TYPE_BAGGAGE_FREE) {
+                    sGUI* t3 = sGUI::getInstance();
+                    static_cast<sGUIExt*>(t3)->mSendItemParam.mTmpItem.mToBagType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_BAGGAGE_FREE, static_cast<sGUIExt*>(t3)->mSendItemParam.mTmpItem.getResourceParam());
+                    return true;
+                } else {
+                    if (mStorageType == nCharacterData::ITEM_BAG_TYPE_EX_STORAGE) {
+                        if (sGame::getInstance()->isChargeEffect(nGpCourse::GP_COURSE_EFFECT_STRAGE_EXTEND)) {
+                            sGUI* t5 = sGUI::getInstance();
+                            static_cast<sGUIExt*>(t5)->mSendItemParam.mTmpItem.mToBagType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_STORAGE_EX1_ALL, static_cast<sGUIExt*>(t5)->mSendItemParam.mTmpItem.getResourceParam());
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        sGUI* t6 = sGUI::getInstance();
+                        static_cast<sGUIExt*>(t6)->mSendItemParam.mTmpItem.mToBagType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_GROUP_STORAGE, static_cast<sGUIExt*>(t6)->mSendItemParam.mTmpItem.getResourceParam());
+                        return true;
+                    }
+                }
+            } else {
+                if (sGame::getInstance()->isChargeEffect(nGpCourse::GP_COURSE_EFFECT_BAGGAGE_RENTAL01)) {
+                    sGUI* t4 = sGUI::getInstance();
+                    static_cast<sGUIExt*>(t4)->mSendItemParam.mTmpItem.mToBagType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_BAGGAGE_RENTAL01, static_cast<sGUIExt*>(t4)->mSendItemParam.mTmpItem.getResourceParam());
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return true;
+        }
+    }
 }
 
-__attribute__((weak)) bool uGUIItemBase01::exchangeCatchItem(nItem::E_STORAGE_TYPE* pTargetType, nItem::E_STORAGE_TYPE* pBaseType) {
-    DDON_STUB("uGUIItemBase01::exchangeCatchItem")
-    return {};
+bool uGUIItemBase01::exchangeCatchItem(nItem::E_STORAGE_TYPE* pTargetType, nItem::E_STORAGE_TYPE* pBaseType) {
+    if (pTargetType != nullptr) {
+        if (pBaseType != nullptr) {
+            const MtDTI& t0 = getDTI();
+            if (t0.getID() == uGUIItem01::DTI.mID) {
+                sItemManager* t1 = sItemManager::getInstance();
+                nItem::E_STORAGE_TYPE t2 = t1->getItemBagGroupeType(static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getBagType());
+                *pTargetType = t1->getItemNetStorageType(t2, static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getResourceParam());
+                sItemManager* t3 = sItemManager::getInstance();
+                nItem::E_STORAGE_TYPE t4 = t3->getItemBagGroupeType(static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getBagType());
+                *pBaseType = t3->getItemNetStorageType(t4, static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getResourceParam());
+                return true;
+            } else {
+                const MtDTI& t5 = getDTI();
+                if (t5.getID() == uGUIStorage::DTI.mID) {
+                    if (mStorageType == nCharacterData::ITEM_BAG_TYPE_BAGGAGE_FREE) {
+                        *pTargetType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_BAGGAGE_FREE, static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getResourceParam());
+                        sItemManager* t6 = sItemManager::getInstance();
+                        nItem::E_STORAGE_TYPE t7 = t6->getItemBagGroupeType(static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getBagType());
+                        *pBaseType = t6->getItemNetStorageType(t7, static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getResourceParam());
+                        return true;
+                    } else {
+                        if (mStorageType == nCharacterData::ITEM_BAG_TYPE_EX_STORAGE) {
+                            *pTargetType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_STORAGE_EX1_ALL, static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getResourceParam());
+                            sItemManager* t6 = sItemManager::getInstance();
+                            nItem::E_STORAGE_TYPE t7 = t6->getItemBagGroupeType(static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getBagType());
+                            *pBaseType = t6->getItemNetStorageType(t7, static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getResourceParam());
+                            return true;
+                        } else {
+                            if (mStorageType == nCharacterData::ITEM_BAG_TYPE_BAGGAGE_RENTAL01) {
+                                *pTargetType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_BAGGAGE_RENTAL01, static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getResourceParam());
+                                sItemManager* t6 = sItemManager::getInstance();
+                                nItem::E_STORAGE_TYPE t7 = t6->getItemBagGroupeType(static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getBagType());
+                                *pBaseType = t6->getItemNetStorageType(t7, static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getResourceParam());
+                                return true;
+                            } else {
+                                *pTargetType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_GROUP_STORAGE, static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getResourceParam());
+                                sItemManager* t6 = sItemManager::getInstance();
+                                nItem::E_STORAGE_TYPE t7 = t6->getItemBagGroupeType(static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getBagType());
+                                *pBaseType = t6->getItemNetStorageType(t7, static_cast<sGUIExt*>(sGUI::getInstance())->mSendItemParam.mTmpItem.getResourceParam());
+                                return true;
+                            }
+                        }
+                    }
+                } else {
+                    return true;
+                }
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void uGUIItemBase01::createVlistCtrl() {
@@ -969,9 +1223,25 @@ __attribute__((weak)) bool uGUIItemBase01::subMenuItemsSetting(MtObject* p) {
     return {};
 }
 
-__attribute__((weak)) bool uGUIItemBase01::subMenuItemSpaceSetting(MtObject* p) {
-    DDON_STUB("uGUIItemBase01::subMenuItemSpaceSetting")
-    return {};
+bool uGUIItemBase01::subMenuItemSpaceSetting(MtObject* p) {
+    if ((p != nullptr) && p->isKindOf(uGUIPopCmd01::DTI)) {
+        if (mpShareUnit != nullptr) {
+            setExchangeCtrl(false);
+            mpShareUnit->setExchangeCtrl(false);
+            mpShareUnit->setFlowId(6u);
+            if (getDTI().getID() == uGUIItem01::DTI.mID) {
+                static_cast<uGUIPopCmd01*>(p)->_addItem(static_cast<uGUIBase*>(this), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 13u), static_cast<uGUIPopBase::DATA_FUNC>(&::uGUIItemBase01::evSortMenu), static_cast<MtObject*>(nullptr), uGUIPopBase::MODE_DEFAULT, -1);
+            } else {
+                if (getDTI().getID() == uGUIStorage::DTI.mID) {
+                    static_cast<uGUIPopCmd01*>(p)->_addItem(static_cast<uGUIBase*>(this), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 13u), static_cast<uGUIPopBase::DATA_FUNC>(&::uGUIItemBase01::evSortMenu), static_cast<MtObject*>(nullptr), uGUIPopBase::MODE_DEFAULT, -1);
+                }
+            }
+        } else {
+            static_cast<uGUIPopCmd01*>(p)->_addItem(static_cast<uGUIBase*>(this), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 13u), static_cast<uGUIPopBase::DATA_FUNC>(&::uGUIItemBase01::evSortMenu), static_cast<MtObject*>(nullptr), uGUIPopBase::MODE_DEFAULT, -1);
+        }
+        return true;
+    }
+    return false;
 }
 
 __attribute__((weak)) void uGUIItemBase01::subMenuItemStorageBagSetting(uGUIPopCmd01* pSubMenu, bool isList, MtObject* pData) {

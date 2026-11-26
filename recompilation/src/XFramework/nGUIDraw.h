@@ -20,6 +20,7 @@ class MtRect;
 class MtVector2;
 class MtVector4;
 class cDraw;
+class cGUIObjPolygon;
 namespace nDraw { class DepthStencilView; }
 namespace nDraw { class IndexBuffer; }
 namespace nDraw { class RenderTargetView; }
@@ -43,6 +44,7 @@ using u8 = unsigned char;
 namespace nGUI {
     class Draw : public ::MtObject
     {
+        friend class ::cGUIObjPolygon;
     public:
         enum TECHNIQUE_PASS
         {

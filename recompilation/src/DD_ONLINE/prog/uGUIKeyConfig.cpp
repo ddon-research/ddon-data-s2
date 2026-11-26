@@ -268,14 +268,22 @@ __attribute__((weak)) void uGUIKeyConfig::onMoveEvent() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIKeyConfig::onShow() {
-    DDON_STUB("uGUIKeyConfig::onShow")
-    /* stub */
+void uGUIKeyConfig::onShow() {
+    cGUIInstNull* const inst_null_all = getInstNullDesign();
+    if (inst_null_all == nullptr) {
+        return;
+    }
+    inst_null_all->setVisible(true);
+    inst_null_all->setExecute(true);
 }
 
-__attribute__((weak)) void uGUIKeyConfig::onHide() {
-    DDON_STUB("uGUIKeyConfig::onHide")
-    /* stub */
+void uGUIKeyConfig::onHide() {
+    cGUIInstNull* const inst_null_all = getInstNullDesign();
+    if (inst_null_all == nullptr) {
+        return;
+    }
+    inst_null_all->setVisible(false);
+    inst_null_all->setExecute(false);
 }
 
 __attribute__((weak)) void uGUIKeyConfig::onUpdateShow() {
@@ -594,6 +602,10 @@ const MtDTI& uGUIKeyConfig::cKeySettingItem::getDTI() const {
     return uGUIKeyConfig::cKeySettingItem::DTI;
 }
 
+inline void* uGUIKeyConfig::cKeySettingItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIKeyConfig::cKeySettingItem::DTI)->memAlloc(sz, align, uGUIKeyConfig::cKeySettingItem::DTI.getID());
+}
+
 inline void uGUIKeyConfig::cKeySettingItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIKeyConfig::cKeySettingItem::DTI)->memFree(p_addr);
 }
@@ -825,9 +837,8 @@ inline uGUIKeyConfig::cKeySettingItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* 
 
 uGUIKeyConfig::cKeySettingItem::MyDTI uGUIKeyConfig::cKeySettingItem::DTI("uGUIKeyConfig::cKeySettingItem", &::uGUIKeyConfig::cKeyItem::DTI, 168ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIKeyConfig::cKeySettingItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIKeyConfig::cKeySettingItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIKeyConfig::cKeySettingItem::MyDTI::newInstance() const {
+    return new (16u) uGUIKeyConfig::cKeySettingItem;
 }
 
 inline uGUIKeyConfig::cKeyItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

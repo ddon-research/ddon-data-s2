@@ -8,6 +8,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -29,9 +30,24 @@ cWind::cWind() {
 cWind::~cWind() {
 }
 
-__attribute__((weak)) void cWind::createProperty(MtPropertyList& s) {
-    DDON_STUB("cWind::createProperty")
-    /* stub */
+void cWind::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mBaseDir", &mBaseDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mWindDir", reinterpret_cast<MT_MFUNC>(&::cWind::getWindDir), reinterpret_cast<MT_MFUNC>(&::cWind::setDummyVec), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDirPitchCycle", reinterpret_cast<MT_MFUNC>(&::cWind::getDirPitchCycle), reinterpret_cast<MT_MFUNC>(&::cWind::setDirPitchCycle), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDirPitchCycleAdd", reinterpret_cast<MT_MFUNC>(&::cWind::getDirPitchCycleAdd), reinterpret_cast<MT_MFUNC>(&::cWind::setDirPitchCycleAdd), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDirPitchAmpValue", reinterpret_cast<MT_MFUNC>(&::cWind::getDirPitchAmpValue), reinterpret_cast<MT_MFUNC>(&::cWind::setDirPitchAmpValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDirPitchAmpRate", reinterpret_cast<MT_MFUNC>(&::cWind::getDirPitchAmpRate), reinterpret_cast<MT_MFUNC>(&::cWind::setDirPitchAmpRate), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_RANGEF, "mDirPitchParam", reinterpret_cast<MT_MFUNC>(&::cWind::getDirPitchParam), reinterpret_cast<MT_MFUNC>(&::cWind::setDirPitchParam), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDirYawCycle", reinterpret_cast<MT_MFUNC>(&::cWind::getDirYawCycle), reinterpret_cast<MT_MFUNC>(&::cWind::setDirYawCycle), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDirYawCycleAdd", reinterpret_cast<MT_MFUNC>(&::cWind::getDirYawCycleAdd), reinterpret_cast<MT_MFUNC>(&::cWind::setDirYawCycleAdd), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDirYawAmpValue", reinterpret_cast<MT_MFUNC>(&::cWind::getDirYawAmpValue), reinterpret_cast<MT_MFUNC>(&::cWind::setDirYawAmpValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDirYawAmpRate", reinterpret_cast<MT_MFUNC>(&::cWind::getDirYawAmpRate), reinterpret_cast<MT_MFUNC>(&::cWind::setDirYawAmpRate), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_RANGEF, "mDirYawParam", reinterpret_cast<MT_MFUNC>(&::cWind::getDirYawParam), reinterpret_cast<MT_MFUNC>(&::cWind::setDirYawParam), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mSpeedCycle", reinterpret_cast<MT_MFUNC>(&::cWind::getSpeedCycle), reinterpret_cast<MT_MFUNC>(&::cWind::setSpeedCycle), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mSpeedCycleAdd", reinterpret_cast<MT_MFUNC>(&::cWind::getSpeedCycleAdd), reinterpret_cast<MT_MFUNC>(&::cWind::setSpeedCycleAdd), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mSpeedAmpValue", reinterpret_cast<MT_MFUNC>(&::cWind::getSpeedAmpValue), reinterpret_cast<MT_MFUNC>(&::cWind::setSpeedAmpValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mSpeedAmpRate", reinterpret_cast<MT_MFUNC>(&::cWind::getSpeedAmpRate), reinterpret_cast<MT_MFUNC>(&::cWind::setSpeedAmpRate), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_RANGEF, "mSpeedParam", reinterpret_cast<MT_MFUNC>(&::cWind::getSpeedParam), reinterpret_cast<MT_MFUNC>(&::cWind::setSpeedParam), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* cWind::createUI(MtProperty& prop) {

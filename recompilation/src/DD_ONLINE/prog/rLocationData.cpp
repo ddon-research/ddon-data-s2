@@ -118,9 +118,16 @@ inline rLocationData::Data::Data() {
     mWarpPointId = 0;
 }
 
-__attribute__((weak)) void rLocationData::Data::createProperty(MtPropertyList& s) {
-    DDON_STUB("rLocationData::Data::createProperty")
-    /* stub */
+void rLocationData::Data::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRadius", &mRadius, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAngle", &mAngle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRange", &mRange, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMessageNo", &mMessageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWarpPointId", &mWarpPointId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSafeZone", &mSafeZone, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVersion", &mVersion, 0u, 0u);
 }
 
 MtUI* rLocationData::Data::createUI(MtProperty& prop) {

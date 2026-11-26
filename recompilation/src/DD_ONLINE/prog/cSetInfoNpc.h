@@ -88,3 +88,14 @@ public:
     bool mDispElseQuestTalk;  // offset: 0x77
     static MyDTI DTI;
 };
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cSetInfoNpc::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoNpc::DTI)->memAlloc(sz, align, cSetInfoNpc::DTI.getID());
+}
+
+inline void cSetInfoNpc::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cSetInfoNpc::DTI)->memFree(p_addr);
+}

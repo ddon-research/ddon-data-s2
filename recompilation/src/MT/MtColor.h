@@ -213,6 +213,8 @@ inline MtColor::MtColor(u32 _rgba) {
     rgba = _rgba;
 }
 
+inline MtColor::MtColor(const MtColor& c) { rgba = c.rgba; }
+
 inline bool MtColor::operator==(const MtColor& c) const {
     return rgba == c.rgba;
 }

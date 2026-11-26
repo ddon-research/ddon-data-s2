@@ -112,6 +112,8 @@ public:
         void setNumberOfChildResize(u32 size);
     protected:
         MtString mName;  // offset: 0x8
+
+        friend class rAIPathBase;
         u8 mNumberOfGeometry;  // offset: 0x10
         MtGeometry* * mpGeometryList;  // offset: 0x18
         u16 mID;  // offset: 0x20

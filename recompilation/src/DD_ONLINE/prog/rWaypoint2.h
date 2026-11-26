@@ -128,3 +128,13 @@ inline void* rWaypoint2::cRoute2::operator new(size_t sz, void* p_addr) {
 
 inline rWaypoint2::cRoute2::cRoute2() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtDataReader.h"
+#include "../../generated/shared/nDDOIO.h"
+
+inline bool rWaypoint2::cRoute2::load(MtDataReader& r) {
+    nDDOIO::readDataArray(r, mPointIdx, ROUTE_PARAM_NUM2);
+    nDDOIO::readDataArray(r, mWeight, ROUTE_PARAM_NUM2);
+    return true;
+}

@@ -21,6 +21,7 @@
 #include "cpBakeJoint.h"
 #include "cpCharacterEdit.h"
 #include "nDDOUtility.h"
+#include "../../XFramework/nDrawCommandCache.h"
 #include "../../XFramework/nDrawConstantTable.h"
 #include "../../XFramework/nDrawResource.h"
 #include "rCharacterEdit.h"
@@ -91,9 +92,10 @@ __attribute__((noinline)) sBakingJointOrder::~sBakingJointOrder() {
     /* stub */
 }
 
-__attribute__((weak)) void sBakingJointOrder::createProperty(MtPropertyList& s) {
-    DDON_STUB("sBakingJointOrder::createProperty")
-    /* stub */
+void sBakingJointOrder::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsEnableBakingJoint", &mIsEnableBakingJoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "maDeleteUnits", reinterpret_cast<MtObject* *>(&maDeleteUnits[0]), 32u, 320u);
 }
 
 MtUI* sBakingJointOrder::createUI(MtProperty& prop) {
@@ -230,9 +232,57 @@ __attribute__((weak)) void sBakingJointOrder::terminateThread() {
     /* stub */
 }
 
-__attribute__((weak)) void sBakingJointOrder::flushAllCache() {
-    DDON_STUB("sBakingJointOrder::flushAllCache")
-    /* stub */
+void sBakingJointOrder::flushAllCache() {
+    u32 i;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        i = 0;
+    } else {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        } else {
+            i = 0;
+        }
+    }
+    for (;;) {
+        if (mBakeModelQueue[i].mpCache[0] != nullptr) {
+            mBakeModelQueue[i].mpCache[0]->release();
+            mBakeModelQueue[i].mpCache[0] = nullptr;
+        }
+        if (mBakeModelQueue[i].mpCache[1] != nullptr) {
+            mBakeModelQueue[i].mpCache[1]->release();
+            mBakeModelQueue[i].mpCache[1] = nullptr;
+        }
+        if (mBakeModelQueue[i].mpCache[2] != nullptr) {
+            mBakeModelQueue[i].mpCache[2]->release();
+            mBakeModelQueue[i].mpCache[2] = nullptr;
+        }
+        if (mBakeModelQueue[i].mpCache[3] != nullptr) {
+            mBakeModelQueue[i].mpCache[3]->release();
+            mBakeModelQueue[i].mpCache[3] = nullptr;
+        }
+        if (mBakeModelQueue[i].mpCache[4] != nullptr) {
+            mBakeModelQueue[i].mpCache[4]->release();
+            mBakeModelQueue[i].mpCache[4] = nullptr;
+        }
+        if (mBakeModelQueue[i].mpCache[5] != nullptr) {
+            mBakeModelQueue[i].mpCache[5]->release();
+            mBakeModelQueue[i].mpCache[5] = nullptr;
+        }
+        if (i != 159) {
+            i = i + 1u;
+        } else {
+            break;
+        }
+    }
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
+    }
+    return;
+    abort();
 }
 
 sBakingJointOrder* sBakingJointOrder::mpInstance;
@@ -244,9 +294,6 @@ sBakingJointOrder::MyDTI sBakingJointOrder::DTI("sBakingJointOrder", &::cSystem:
 __attribute__((weak)) MtObject* sBakingJointOrder::MyDTI::newInstance() const {
     DDON_STUB("sBakingJointOrder::MyDTI::newInstance")
     return nullptr;
-}
-
-sBakingJointOrder::BakeJointThread::~BakeJointThread() {
 }
 
 void sBakingJointOrder::BakeJointThread::execute(void* pcontext) {

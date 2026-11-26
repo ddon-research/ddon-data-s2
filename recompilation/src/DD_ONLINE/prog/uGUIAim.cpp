@@ -132,9 +132,17 @@ void uGUIAim::onMagicBowShot() {
     mIsMagicBowShot = true;
 }
 
-__attribute__((weak)) u32 uGUIAim::setTargetMarker(nGUIAim::TARGET_MARKER_TYPE targetMarkerType, nDDOModel::LOCKON_TARGET_TYPE lockOnTargetType, const MtVector3& targetPos) {
-    DDON_STUB("uGUIAim::setTargetMarker")
-    return {};
+u32 uGUIAim::setTargetMarker(nGUIAim::TARGET_MARKER_TYPE targetMarkerType, nDDOModel::LOCKON_TARGET_TYPE lockOnTargetType, const MtVector3& targetPos) {
+    for (unsigned int i0_0 = 0; i0_0 <= 15u; i0_0 = i0_0 + 1u) {
+        if (mTargetMarkers.elems[i0_0].mpINST_current != nullptr) {
+            if (mTargetMarkers.elems[i0_0].mState == uGUIAim::cTargetMarker::STATE_NUM) {
+                return !mTargetMarkers.elems[i0_0].start(targetMarkerType, lockOnTargetType, targetPos, mTargetMarkerScales) ? 0xFFFFFFFFu : i0_0;
+            }
+        } else {
+            return !mTargetMarkers.elems[i0_0].start(targetMarkerType, lockOnTargetType, targetPos, mTargetMarkerScales) ? 0xFFFFFFFFu : i0_0;
+        }
+    }
+    return 0xFFFFFFFF;
 }
 
 __attribute__((weak)) void uGUIAim::endTargetMarker(u32 targetMarkerId) {

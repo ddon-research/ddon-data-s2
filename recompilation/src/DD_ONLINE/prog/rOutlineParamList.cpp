@@ -41,13 +41,27 @@ inline void cOutlineParam::operator delete(void* p_addr) {
 }
 
 cOutlineParam::~cOutlineParam() {
-    DDON_STUB("cOutlineParam::~cOutlineParam")
-    /* stub */
+    return;
 }
 
-__attribute__((weak)) void cOutlineParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cOutlineParam::createProperty")
-    /* stub */
+void cOutlineParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFrame", &mFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsLoop", &mIsLoop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsOWAgain", &mIsOWAgain, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndFrame", &mEndFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeatherRate", &mWeatherRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOutlineBlendType", &mOutlineBlendType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOutlineColorType", &mOutlineColorType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOutlineOColor", static_cast<MtObject*>(&mOutlineOColor), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOutlineIColor", static_cast<MtObject*>(&mOutlineIColor), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOutlineBalanceOffset", &mOutlineBalanceOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOutlineBalanceScale", &mOutlineBalanceScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOutlineBalance", &mOutlineBalance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUseShaderParam", &mIsUseShaderParam, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShaderMode", &mShaderMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShaderBlendRate", &mShaderBlendRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShaderBasePower", &mShaderBasePower, 0u, 0u);
 }
 
 inline cOutlineParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -55,8 +69,7 @@ inline cOutlineParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 cOutlineParam::MyDTI cOutlineParam::DTI("cOutlineParam", &::MtObject::DTI, 928ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cOutlineParam::MyDTI::newInstance() const {
-    DDON_STUB("cOutlineParam::MyDTI::newInstance")
-    return nullptr;
+    return new (MtMemoryAllocator::getAllocator(cOutlineParam::DTI)->memAlloc(sizeof(cOutlineParam), 16u, cOutlineParam::DTI.getID())) cOutlineParam;
 }
 
 const MtDTI& rOutlineParamList::getDTI() const {
@@ -104,9 +117,9 @@ rOutlineParamList::~rOutlineParamList() {
     mParamList.mLength = 0;
 }
 
-__attribute__((weak)) void rOutlineParamList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rOutlineParamList::createProperty")
-    /* stub */
+void rOutlineParamList::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mParamList", static_cast<MtObject*>(&mParamList), 0u, 0u);
 }
 
 __attribute__((weak)) void rOutlineParamList::clear() {

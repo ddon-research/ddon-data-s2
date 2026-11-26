@@ -512,9 +512,21 @@ void sEventManager::killSubSdl(u32 sdl) {
     }
 }
 
-__attribute__((weak)) u32 sEventManager::getEfcPvdIndex(u32 type) {
-    DDON_STUB("sEventManager::getEfcPvdIndex")
-    return {};
+u32 sEventManager::getEfcPvdIndex(u32 type) {
+    static u32 EfcIdxTbl[2] = {
+        1,
+        3,
+    };
+    u32 i = 0;
+    unsigned int* p2 = EfcIdxTbl;
+    do {
+        if ((*p2) == type) {
+            return i;
+        }
+        i += 1u;
+        p2 += static_cast<int>(1);
+    } while (i <= 1u);
+    return 0;
 }
 
 __attribute__((weak)) void sEventManager::setEventEpvEx() {
@@ -591,9 +603,8 @@ __attribute__((weak)) void sEventManager::cNpcId::operator delete(void* p_addr) 
     sEventManager::cNpcId::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) void sEventManager::cNpcId::createProperty(MtPropertyList& s) {
-    DDON_STUB("sEventManager::cNpcId::createProperty")
-    /* stub */
+void sEventManager::cNpcId::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mNpcId", &mNpcId, 0u, 0u);
 }
 
 MtUI* sEventManager::cNpcId::createUI(MtProperty& prop) {

@@ -123,6 +123,13 @@ inline void* cCamExParamTemplate::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cCamExParamTemplate::cCamExParamTemplate() {
+    this->::cCamExParam::mType = static_cast<nCameraGame::CAMERA_TYPE>(14);
+    mTemplateParamArray.setAutoDelete(true);
+    mStartInterFrame = mEndInterFrame = 0.0f;
+    mScrAdjustFlag = 0u;
+}
+
 inline void* cCamImpTemplate::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

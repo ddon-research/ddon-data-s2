@@ -14,6 +14,10 @@ const MtDTI& nNetwork::SessionListener::getDTI() const {
     return nNetwork::SessionListener::DTI;
 }
 
+inline void* nNetwork::SessionListener::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::SessionListener::DTI)->memAlloc(sz, align, ::nNetwork::SessionListener::DTI.mID);
+}
+
 __attribute__((weak)) void nNetwork::SessionListener::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nNetwork::SessionListener::DTI)->memFree(p_addr);
 }
@@ -22,8 +26,7 @@ inline nNetwork::SessionListener::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 nNetwork::SessionListener::MyDTI nNetwork::SessionListener::DTI("nNetwork::SessionListener", &::MtObject::DTI, 8ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nNetwork::SessionListener::MyDTI::newInstance() const {
-    DDON_STUB("nNetwork::SessionListener::MyDTI::newInstance")
-    return nullptr;
+MtObject* nNetwork::SessionListener::MyDTI::newInstance() const {
+    return new (16u) ::nNetwork::SessionListener;
 }
 

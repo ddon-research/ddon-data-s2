@@ -27,7 +27,9 @@ class MtProperty;
 class MtPropertyList;
 class MtString;
 class MtUI;
+class cMenuApproveInvitedClan;
 class cMenuInviteEntryBoardItem;
+class cMenuReadyCheck;
 class cNetGameServer;
 class cPRTManager;
 class cQuestTask;
@@ -63,12 +65,15 @@ using u64 = __uint64_t;
 
 class sNetwork : public cSystem
 {
+    friend class cMenuApproveInvitedClan;
     friend class cMenuInviteEntryBoardItem;
+    friend class cMenuReadyCheck;
     friend class cNetGameServer;
     friend class cPRTManager;
     friend class cQuestTask;
     friend class nNetwork::Context;
     friend class nNetwork::Session;
+    friend class nNetwork::VoiceChat;
     friend class nNetwork::nRanking::Object;
     friend class nSessionManager::cNetSessionManager;
     friend class sBazaarManager;

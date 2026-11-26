@@ -144,9 +144,76 @@ __attribute__((weak)) void uGUIGaugeEnemyBoss::updateWait() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGaugeEnemyBoss::updateDamage() {
-    DDON_STUB("uGUIGaugeEnemyBoss::updateDamage")
-    /* stub */
+void uGUIGaugeEnemyBoss::updateDamage() {
+    bool t0 = mIsInitDisp;
+    if (!t0) {
+        uCharacter* t1 = mpCharacter;
+        if (t1 != nullptr) {
+            unsigned int t2 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t1) + 16);
+            if (t1->isEnable()) {
+                if (t1->getHp(0u) != 0) {
+                    if (isEndFlowAnimation(false)) {
+                        unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
+                        unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0)) + 728);
+                        changeFlow(3u);
+                        updateDisp();
+                        cGUIInstNull* t11 = getInstNullDesign();
+                        if (t11 != nullptr) {
+                            bool t12 = mIsInitDisp;
+                            t11->setVisible(!t12);
+                        }
+                    } else {
+                        updateDisp();
+                        cGUIInstNull* t11 = getInstNullDesign();
+                        if (t11 != nullptr) {
+                            bool t12 = mIsInitDisp;
+                            t11->setVisible(!t12);
+                        }
+                    }
+                } else {
+                    unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
+                    unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0)) + 728);
+                    changeFlow(8u);
+                    updateDisp();
+                    cGUIInstNull* t11 = getInstNullDesign();
+                    if (t11 != nullptr) {
+                        bool t12 = mIsInitDisp;
+                        t11->setVisible(!t12);
+                    }
+                }
+            } else {
+                unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
+                unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0)) + 728);
+                changeFlow(8u);
+                updateDisp();
+                cGUIInstNull* t11 = getInstNullDesign();
+                if (t11 != nullptr) {
+                    bool t12 = mIsInitDisp;
+                    t11->setVisible(!t12);
+                }
+            }
+        } else {
+            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
+            unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0)) + 728);
+            changeFlow(8u);
+            updateDisp();
+            cGUIInstNull* t11 = getInstNullDesign();
+            if (t11 != nullptr) {
+                bool t12 = mIsInitDisp;
+                t11->setVisible(!t12);
+            }
+        }
+    } else {
+        unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
+        unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0)) + 728);
+        changeFlow(3u);
+        updateDisp();
+        cGUIInstNull* t11 = getInstNullDesign();
+        if (t11 != nullptr) {
+            bool t12 = mIsInitDisp;
+            t11->setVisible(!t12);
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIGaugeEnemyBoss::updateDead() {

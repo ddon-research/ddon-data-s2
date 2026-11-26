@@ -29,9 +29,18 @@ inline void rFieldAreaMarkerInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rFieldAreaMarkerInfo::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) MT_CTSTR rFieldAreaMarkerInfo::getFileResId(u32 type) {
-    DDON_STUB("rFieldAreaMarkerInfo::getFileResId")
-    return {};
+MT_CTSTR rFieldAreaMarkerInfo::getFileResId(u32 type) {
+    static const MT_CTSTR suffix[4] = {
+        "RES_ID_NPC",
+        "RES_ID_SCE",
+        "RES_ID_ECT",
+        "RES_ID_OM",
+    };
+    if (type > 3u) {
+        return "";
+    } else {
+        return suffix[type];
+    }
 }
 
 const rFieldAreaMarkerInfo::MarkerInfoArray& rFieldAreaMarkerInfo::getMarkerInfoList() const {
@@ -122,9 +131,11 @@ inline void rFieldAreaMarkerInfo::cMarkerInfo::operator delete(void* p_addr) {
 rFieldAreaMarkerInfo::cMarkerInfo::~cMarkerInfo() {
 }
 
-__attribute__((weak)) void rFieldAreaMarkerInfo::cMarkerInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rFieldAreaMarkerInfo::cMarkerInfo::createProperty")
-    /* stub */
+void rFieldAreaMarkerInfo::cMarkerInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupNo", &mGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUniqueId", &mUniqueId, 0u, 0u);
 }
 
 void rFieldAreaMarkerInfo::cMarkerInfo::load(MtDataReader& r) {

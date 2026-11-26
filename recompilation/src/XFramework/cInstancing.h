@@ -478,6 +478,17 @@ inline void* cInstancingFromMatrices::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+#include "uSwingModel.h"
+
+template <typename _T, typename _I>
+void uInstancing<_T, _I>::createProperty(MtPropertyList& s) {
+    this->::uSwingModel::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mInstance", static_cast<MtObject*>(&this->mInstance), 0u, 0u);
+}
+
 template <typename _T, typename _I>
 void uInstancing<_T, _I>::kill() {
     this->_T::kill();

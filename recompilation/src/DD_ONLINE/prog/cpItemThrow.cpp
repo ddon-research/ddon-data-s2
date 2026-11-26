@@ -123,9 +123,16 @@ MT_CTSTR cpItemThrow::getNowThrowItemUId() const {
     return mThrowItemUId;
 }
 
-__attribute__((weak)) void cpItemThrow::changeCommandItemTbl() {
-    DDON_STUB("cpItemThrow::changeCommandItemTbl")
-    /* stub */
+void cpItemThrow::changeCommandItemTbl() {
+    if (mpHuman->mpKeyCommand == nullptr) {
+        return;
+    }
+    mBackUpItemTblList.elems[0] = mpHuman->mpKeyCommand->mpCommandTbl[0];
+    mBackUpItemTblList.elems[1] = mpHuman->mpKeyCommand->mpCommandTbl[1];
+    mBackUpItemTblList.elems[2] = mpHuman->mpKeyCommand->mpCommandTbl[2];
+    mBackUpItemTblList.elems[3] = mpHuman->mpKeyCommand->mpCommandTbl[3];
+    mpHuman->mpKeyCommand->setCommandTbl(0, static_cast<nKeyCommand::stKeyCommand*>(nullptr));
+    mpHuman->mpKeyCommand->setCommandTbl(1, ItemHoldCommandJob);
 }
 
 void cpItemThrow::offItemMode() {

@@ -7,7 +7,7 @@
 #include "../../../../MT/MtDTI.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
-#include "../../../../generated/shared/nEnemyID.h"
+#include "../../nEnemyID.h"
 
 // Forward declarations
 class MtAllocator;
@@ -19,7 +19,6 @@ class MtString;
 class CDataNamedEnemyParamClient;
 class CDataTraningRoomEnemyHeader;
 namespace nEnemy { struct stRegionBreakActList; }
-namespace nEnemy { struct EM_BASIC_INFO; }
 
 namespace nEnemy {
     enum E_ENEMY_TARGET_TYPE
@@ -44,21 +43,11 @@ namespace nEnemy {
 
     // Forward declarations
     struct stRegionBreakActList;
-    struct EM_BASIC_INFO;
 
     struct stRegionBreakActList
     {
     public:
         u32 ActNo;  // offset: 0x0
-    };
-
-    struct EM_BASIC_INFO
-    {
-    public:
-        u32 id;  // offset: 0x0
-        nEnemy::EM_HANG_TYPE hangType;  // offset: 0x4
-        nEnemy::EM_CLASS_TYPE classType;  // offset: 0x8
-        u32 enemyFlag;  // offset: 0xc
     };
 
     ENEMY_ID findEnemyEnumID(u32 id);
@@ -156,10 +145,6 @@ public:
     MtString m_wstrName;  // offset: 0x10
     static MyDTI DTI;
 };
-
-namespace nEnemy {
-extern const nEnemy::EM_BASIC_INFO emBaseInfoTbl[386];
-}
 
 inline void* CDataNamedEnemyParamClient::operator new(size_t sz, void* p_addr) {
     return p_addr;

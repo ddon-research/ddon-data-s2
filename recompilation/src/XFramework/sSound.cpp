@@ -992,9 +992,55 @@ __attribute__((weak)) bool sSound::checkFlanging(const rSoundBank* pBank, u32 el
     return {};
 }
 
-__attribute__((weak)) sSound::SeVoice* sSound::getAvailableSeVoice(u8 playPriority, u8 playPrioMode) {
-    DDON_STUB("sSound::getAvailableSeVoice")
-    return nullptr;
+sSound::SeVoice* sSound::getAvailableSeVoice(u8 playPriority, u8 playPrioMode) {
+    u32 v0_0 = mSeVoiceNum;
+    if (v0_0 != 0) {
+        for (unsigned int i0_1 = 0;;) {
+            if (mSeVoice[i0_1].mStatus == VOICE_STATUS_STOP) {
+                if (mSeVoice[i0_1].mVoiceCommand == VOICE_COMMAND_INIT) {
+                    return &mSeVoice[i0_1];
+                }
+            }
+            if ((i0_1 + 1u) < v0_0) {
+                i0_1 = i0_1 + 1u;
+            } else {
+                break;
+            }
+        }
+        if (v0_0 != 0) {
+            for (unsigned int i3_1 = 0;;) {
+                if (mSeVoice[i3_1].mVoiceCommand == VOICE_COMMAND_STOP) {
+                    mSeVoice[i3_1].stop();
+                    return &mSeVoice[i3_1];
+                } else {
+                    if ((i3_1 + 1u) < v0_0) {
+                        i3_1 = i3_1 + 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    SeVoice* t0 = getLowPrioritySeVoice(static_cast<rSoundRequest*>(nullptr), 1u, -1, -1, -1, 0xFFFFFFFFFFFFFFFFul, true);
+    if (t0 != nullptr) {
+        if (t0->mPriority >= playPriority) {
+            if (t0->mPriority == playPriority) {
+                if (playPrioMode == 1) {
+                    t0->mVoiceCommand = VOICE_COMMAND_STOP;
+                    t0->stop();
+                    return t0;
+                }
+            }
+            return nullptr;
+        } else {
+            t0->mVoiceCommand = VOICE_COMMAND_STOP;
+            t0->stop();
+            return t0;
+        }
+    } else {
+        return nullptr;
+    }
 }
 
 __attribute__((weak)) bool sSound::extractPlaySeCallback(const rSoundBank::Element* pBankElement, void* p, const u32 count) {
@@ -1967,9 +2013,8 @@ void sSound::VoiceAccessor::setEffectVolumeRatio(f32 vol) {
     mpVoice->mRatioEffectVolume = vol;
 }
 
-__attribute__((weak)) MtVector3 sSound::VoiceAccessor::getPosition() const {
-    DDON_STUB("sSound::VoiceAccessor::getPosition")
-    __builtin_unreachable();
+MtVector3 sSound::VoiceAccessor::getPosition() const {
+    return mpVoice->mPosition;
 }
 
 __attribute__((weak)) s32 sSound::VoiceAccessor::getFreeArea(u32 no) const {
@@ -2622,14 +2667,12 @@ void sSound::NativeSystemPS4::finalAudio() {
     mNGS2System.final();
 }
 
-__attribute__((weak)) void sSound::NativeSystemPS4::setUpdateThreadPriority() {
-    DDON_STUB("sSound::NativeSystemPS4::setUpdateThreadPriority")
-    /* stub */
+void sSound::NativeSystemPS4::setUpdateThreadPriority() {
+    (sSound::mpInstance)->mUpdateThread.MtThread::setPriority(640);
 }
 
-__attribute__((weak)) void sSound::NativeSystemPS4::setLoadThreadPriority() {
-    DDON_STUB("sSound::NativeSystemPS4::setLoadThreadPriority")
-    /* stub */
+void sSound::NativeSystemPS4::setLoadThreadPriority() {
+    (sSound::mpInstance)->mLoadThread.MtThread::setPriority(700);
 }
 
 __attribute__((weak)) void sSound::NativeSystemPS4::updateExecute() {
@@ -2708,13 +2751,16 @@ const MtDTI& sSound::NativeSystemPS4::PS4Property::getDTI() const {
     return sSound::NativeSystemPS4::PS4Property::DTI;
 }
 
+inline void* sSound::NativeSystemPS4::PS4Property::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sSound::NativeSystemPS4::PS4Property::DTI)->memAlloc(sz, align, sSound::NativeSystemPS4::PS4Property::DTI.mID);
+}
+
 inline void sSound::NativeSystemPS4::PS4Property::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sSound::NativeSystemPS4::PS4Property::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void sSound::NativeSystemPS4::PS4Property::createProperty(MtPropertyList& s) {
-    DDON_STUB("sSound::NativeSystemPS4::PS4Property::createProperty")
-    /* stub */
+void sSound::NativeSystemPS4::PS4Property::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "Routing", reinterpret_cast<MT_MFUNC>(&::sSound::NativeSystemPS4::PS4Property::getRouting), reinterpret_cast<MT_MFUNC>(&::sSound::NativeSystemPS4::PS4Property::setRouting), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* sSound::NativeSystemPS4::PS4Property::createUI(MtProperty& prop) {
@@ -2733,9 +2779,8 @@ inline sSound::NativeSystemPS4::PS4Property::MyDTI::MyDTI(MT_CTSTR class_name, M
 
 sSound::NativeSystemPS4::PS4Property::MyDTI sSound::NativeSystemPS4::PS4Property::DTI("sSound::NativeSystemPS4::PS4Property", &::MtObject::DTI, 8ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sSound::NativeSystemPS4::PS4Property::MyDTI::newInstance() const {
-    DDON_STUB("sSound::NativeSystemPS4::PS4Property::MyDTI::newInstance")
-    return nullptr;
+MtObject* sSound::NativeSystemPS4::PS4Property::MyDTI::newInstance() const {
+    return new (16u) sSound::NativeSystemPS4::PS4Property;
 }
 
 void sSound::NativeSystemPS4::ReverbResourceWorkPS4::init() {
@@ -3021,8 +3066,6 @@ SceNgs2Handle sSound::NGS2Routing::getDstVoiceHandleWet(void* pParam) {
 }
 
 sSound::NGS2VoiceMastering::~NGS2VoiceMastering() {
-    DDON_STUB("sSound::NGS2VoiceMastering::~NGS2VoiceMastering")
-    /* stub */
 }
 
 __attribute__((weak)) bool sSound::NGS2VoiceMastering::setupVoice(const SceNgs2Handle voiceHandle) {
@@ -3070,8 +3113,6 @@ __attribute__((weak)) u32 sSound::NGS2Voice::getStateFlags() {
 }
 
 sSound::NGS2RackMastering::~NGS2RackMastering() {
-    DDON_STUB("sSound::NGS2RackMastering::~NGS2RackMastering")
-    /* stub */
 }
 
 __attribute__((weak)) bool sSound::NGS2Rack::create(const SceNgs2RackOption* pRackOption) {
@@ -3085,8 +3126,6 @@ __attribute__((weak)) bool sSound::NGS2Rack::destroy() {
 }
 
 sSound::NGS2RackSampler::~NGS2RackSampler() {
-    DDON_STUB("sSound::NGS2RackSampler::~NGS2RackSampler")
-    /* stub */
 }
 
 const rSoundRequest* sSound::SeVoiceAccessor::getRequest() const {
@@ -3094,8 +3133,6 @@ const rSoundRequest* sSound::SeVoiceAccessor::getRequest() const {
 }
 
 sSound::NGS2VoiceSampler::~NGS2VoiceSampler() {
-    DDON_STUB("sSound::NGS2VoiceSampler::~NGS2VoiceSampler")
-    /* stub */
 }
 
 void sSound::NGS2VoiceSampler::init() {
@@ -3117,18 +3154,12 @@ __attribute__((weak)) s32 sSound::NGS2VoiceSubmixer::userFxHandlerByProcessFunc(
 }
 
 sSound::NGS2VoiceReverb::~NGS2VoiceReverb() {
-    DDON_STUB("sSound::NGS2VoiceReverb::~NGS2VoiceReverb")
-    /* stub */
 }
 
 sSound::NGS2RackSubmixer::~NGS2RackSubmixer() {
-    DDON_STUB("sSound::NGS2RackSubmixer::~NGS2RackSubmixer")
-    /* stub */
 }
 
 sSound::NGS2RackReverb::~NGS2RackReverb() {
-    DDON_STUB("sSound::NGS2RackReverb::~NGS2RackReverb")
-    /* stub */
 }
 
 sSound::NGS2VoiceSubmixerEQ::~NGS2VoiceSubmixerEQ() {
@@ -3167,8 +3198,6 @@ __attribute__((weak)) s32 sSound::NGS2VoiceSubmixerSilentDetectFilter::process(f
 }
 
 sSound::NGS2RoutingNoEffect::~NGS2RoutingNoEffect() {
-    DDON_STUB("sSound::NGS2RoutingNoEffect::~NGS2RoutingNoEffect")
-    /* stub */
 }
 
 __attribute__((weak)) bool sSound::NGS2RoutingNoEffect::init(const u32 outputPort) {
@@ -3207,9 +3236,38 @@ bool sSound::NGS2RoutingReverbEQ::final() {
     return true;
 }
 
-__attribute__((weak)) void sSound::NGS2RoutingReverbEQ::update() {
-    DDON_STUB("sSound::NGS2RoutingReverbEQ::update")
-    /* stub */
+void sSound::NGS2RoutingReverbEQ::update() {
+    if (mVoiceReverb[0].mRefCount == 0) {
+        if (((&mVoiceReverb[0])->getStateFlags() & 2u) != 0) {
+            if (mVoiceReverbSilentDetectFilter[0].mSilentDetectFilter.isSilent(mVoiceReverbSilentDetectFilter[0].mSilentThreshold)) {
+                (&mVoiceReverb[0])->stop();
+            }
+        }
+    }
+    if (mVoiceReverb[1].mRefCount == 0) {
+        if (((&mVoiceReverb[1])->getStateFlags() & 2u) != 0) {
+            if (mVoiceReverbSilentDetectFilter[1].mSilentDetectFilter.isSilent(mVoiceReverbSilentDetectFilter[1].mSilentThreshold)) {
+                (&mVoiceReverb[1])->stop();
+            }
+        }
+    }
+    if (mVoiceReverb[2].mRefCount == 0) {
+        if (((&mVoiceReverb[2])->getStateFlags() & 2u) != 0) {
+            if (mVoiceReverbSilentDetectFilter[2].mSilentDetectFilter.isSilent(mVoiceReverbSilentDetectFilter[2].mSilentThreshold)) {
+                (&mVoiceReverb[2])->stop();
+            }
+        }
+    }
+    if (mVoiceReverb[3].mRefCount != 0) {
+        return;
+    }
+    if (((&mVoiceReverb[3])->getStateFlags() & 2u) == 0) {
+        return;
+    }
+    if (!mVoiceReverbSilentDetectFilter[3].mSilentDetectFilter.isSilent(mVoiceReverbSilentDetectFilter[3].mSilentThreshold)) {
+        return;
+    }
+    (&mVoiceReverb[3])->stop();
 }
 
 __attribute__((weak)) void sSound::NGS2RoutingReverbEQ::getFX(void* pParam) {
@@ -3317,8 +3375,6 @@ __attribute__((weak)) void sSound::NativeVoicePS4::updateMatrixLevels() {
 }
 
 sSound::NativeVoiceSePS4::~NativeVoiceSePS4() {
-    DDON_STUB("sSound::NativeVoiceSePS4::~NativeVoiceSePS4")
-    /* stub */
 }
 
 __attribute__((weak)) void sSound::NativeVoiceSePS4::init() {

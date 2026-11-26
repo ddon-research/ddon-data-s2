@@ -220,7 +220,7 @@ void uGUIGPShop::updateShop() {
     }
     mShopMenuCursor.uGUIBase::cReferenceUIVlCursor::update();
     mShopScrollbar.uGUIBase::cScrollList::update(getDeltaTime());
-    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2128)) != 0) {
+    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
         static_cast<sGUIExt*>(sGUI::getInstance())->reqDispCommIndicator();
     }
     if (mMode != 1) {
@@ -320,9 +320,86 @@ __attribute__((weak)) void uGUIGPShop::updateChangePage() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGPShop::initCommon() {
-    DDON_STUB("uGUIGPShop::initCommon")
-    /* stub */
+void uGUIGPShop::initCommon() {
+    cGUIInstance* t0 = getInstance(311u, false);
+    mpTitleEng = static_cast<cGUIObjMessage*>(getObjectFromId(t0, 2u));
+    mpTitleJp = static_cast<cGUIObjMessage*>(getObjectFromId(t0, 3u));
+    mGuide.setup(static_cast<uGUIBase*>(this), getInstance(388u, false), 0.0f);
+    cGUIInstance* t1 = getInstance(606u, false);
+    if ((mpNoList = static_cast<cGUIInstAnimation*>(t1)) != nullptr) {
+        t1->setVisible(false);
+        cGUIObject* t2 = getObjectFromId(static_cast<cGUIInstance*>(mpNoList), 2u);
+        if (t2 != nullptr) {
+            setObjectMessage(t2, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 52u), 0u, false);
+            cGUIInstance* t3 = getInstance(622u, false);
+            if ((mpNoListUsed = static_cast<cGUIInstAnimation*>(t3)) != nullptr) {
+                t3->setVisible(false);
+                cGUIObject* t4 = getObjectFromId(static_cast<cGUIInstance*>(mpNoListUsed), 2u);
+                if (t4 != nullptr) {
+                    setObjectMessage(t4, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 52u), 0u, false);
+                }
+                mClose.setup(static_cast<uGUIBase*>(this), getInstance(349u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUIGPShop::evCtrlStart));
+            } else {
+                cGUIObject* t4 = getObjectFromId(t3, 2u);
+                if (t4 != nullptr) {
+                    setObjectMessage(t4, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 52u), 0u, false);
+                }
+                mClose.setup(static_cast<uGUIBase*>(this), getInstance(349u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUIGPShop::evCtrlStart));
+            }
+        } else {
+            cGUIInstance* t3 = getInstance(622u, false);
+            if ((mpNoListUsed = static_cast<cGUIInstAnimation*>(t3)) != nullptr) {
+                t3->setVisible(false);
+                cGUIObject* t4 = getObjectFromId(static_cast<cGUIInstance*>(mpNoListUsed), 2u);
+                if (t4 != nullptr) {
+                    setObjectMessage(t4, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 52u), 0u, false);
+                }
+                mClose.setup(static_cast<uGUIBase*>(this), getInstance(349u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUIGPShop::evCtrlStart));
+            } else {
+                cGUIObject* t4 = getObjectFromId(t3, 2u);
+                if (t4 != nullptr) {
+                    setObjectMessage(t4, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 52u), 0u, false);
+                }
+                mClose.setup(static_cast<uGUIBase*>(this), getInstance(349u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUIGPShop::evCtrlStart));
+            }
+        }
+    } else {
+        cGUIObject* t2 = getObjectFromId(t1, 2u);
+        if (t2 != nullptr) {
+            setObjectMessage(t2, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 52u), 0u, false);
+            cGUIInstance* t3 = getInstance(622u, false);
+            if ((mpNoListUsed = static_cast<cGUIInstAnimation*>(t3)) != nullptr) {
+                t3->setVisible(false);
+                cGUIObject* t4 = getObjectFromId(static_cast<cGUIInstance*>(mpNoListUsed), 2u);
+                if (t4 != nullptr) {
+                    setObjectMessage(t4, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 52u), 0u, false);
+                }
+                mClose.setup(static_cast<uGUIBase*>(this), getInstance(349u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUIGPShop::evCtrlStart));
+            } else {
+                cGUIObject* t4 = getObjectFromId(t3, 2u);
+                if (t4 != nullptr) {
+                    setObjectMessage(t4, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 52u), 0u, false);
+                }
+                mClose.setup(static_cast<uGUIBase*>(this), getInstance(349u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUIGPShop::evCtrlStart));
+            }
+        } else {
+            cGUIInstance* t3 = getInstance(622u, false);
+            if ((mpNoListUsed = static_cast<cGUIInstAnimation*>(t3)) != nullptr) {
+                t3->setVisible(false);
+                cGUIObject* t4 = getObjectFromId(static_cast<cGUIInstance*>(mpNoListUsed), 2u);
+                if (t4 != nullptr) {
+                    setObjectMessage(t4, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 52u), 0u, false);
+                }
+                mClose.setup(static_cast<uGUIBase*>(this), getInstance(349u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUIGPShop::evCtrlStart));
+            } else {
+                cGUIObject* t4 = getObjectFromId(t3, 2u);
+                if (t4 != nullptr) {
+                    setObjectMessage(t4, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 52u), 0u, false);
+                }
+                mClose.setup(static_cast<uGUIBase*>(this), getInstance(349u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUIGPShop::evCtrlStart));
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIGPShop::initShopCommon() {
@@ -519,7 +596,7 @@ u32 uGUIGPShop::evCtrlShopMenuCancel(cControl::Message* pMsg) {
 }
 
 u32 uGUIGPShop::evCtrlShopMenuDecide(cControl::Message* pMsg) {
-    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2128)) == 0) {
+    if (mpServerRequestFunc == static_cast<uGUIBase::ServerRequestFunc>(0)) {
         s32 t0 = mShopControl.getCurrentPos(0u);
         if (t0 != 2) {
             if (t0 == 1) {
@@ -562,7 +639,7 @@ u32 uGUIGPShop::evCtrlShopMenuMouseClick(cControl::Message* pMsg) {
                         mShopControl.setCurrentPos(2u, pMsg->mouse_hit_id);
                         setInputEvent(74u);
                     } else {
-                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2128)) == 0) {
+                        if (mpServerRequestFunc == static_cast<uGUIBase::ServerRequestFunc>(0)) {
                             s32 t2 = mShopControl.getCurrentPos(0u);
                             if (t2 != 2) {
                                 if (t2 == 1) {
@@ -597,7 +674,7 @@ u32 uGUIGPShop::evCtrlShopMenuMouseClick(cControl::Message* pMsg) {
                 if (pMsg->click_vol == 0) {
                     s32 t1 = mShopControl.getCurrentPos(0u);
                     if (pMsg->click_vol == t1) {
-                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2128)) == 0) {
+                        if (mpServerRequestFunc == static_cast<uGUIBase::ServerRequestFunc>(0)) {
                             s32 t2 = mShopControl.getCurrentPos(0u);
                             if (t2 != 2) {
                                 if (t2 == 1) {
@@ -631,7 +708,7 @@ u32 uGUIGPShop::evCtrlShopMenuMouseClick(cControl::Message* pMsg) {
             }
         } else {
             mShopControl.setCurrentPos(0u, 2);
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2128)) == 0) {
+            if (mpServerRequestFunc == static_cast<uGUIBase::ServerRequestFunc>(0)) {
                 s32 t2 = mShopControl.getCurrentPos(0u);
                 if (t2 != 2) {
                     if (t2 == 1) {
@@ -1455,9 +1532,15 @@ bool uGUIGPShop::goldstoneRequestServer() {
     return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->changeCAPToGP();
 }
 
-__attribute__((weak)) bool uGUIGPShop::lineupRequestServer() {
-    DDON_STUB("uGUIGPShop::lineupRequestServer")
-    return {};
+bool uGUIGPShop::lineupRequestServer() {
+    cNetGameServer* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    s32 t1 = mShopControl.getCurrentPos(2u);
+    nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES* t2 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPShopMenuListPacket();
+    if (static_cast<unsigned int>(t1) < t2->m_Items.mLength) {
+        return t0->getGPShopLineup(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t2->m_Items.mpArray[t1]) + 8));
+    } else {
+        return t0->getGPShopLineup(0u);
+    }
 }
 
 bool uGUIGPShop::usedRequestServer() {
@@ -1748,6 +1831,13 @@ void uGUIGPShop::funcErrorGetCAPCallBackAfterBrowser(nError::ERROR_CODE Error) {
     mIsGetCAPSuccess = false;
 }
 
+inline void uGUIGPShop::updateIndicator() {
+    if (mpServerRequestFunc == static_cast<uGUIBase::ServerRequestFunc>(0)) {
+        return;
+    }
+    static_cast<sGUIExt*>(sGUI::mpInstance)->reqDispCommIndicator();
+}
+
 __attribute__((weak)) MtObject* uGUIGPShop::MyDTI::newInstance() const {
     DDON_STUB("uGUIGPShop::MyDTI::newInstance")
     return nullptr;
@@ -1791,6 +1881,10 @@ const MtDTI& uGUIGPShop::cScrollTicketDispList::getDTI() const {
     return uGUIGPShop::cScrollTicketDispList::DTI;
 }
 
+inline void* uGUIGPShop::cScrollTicketDispList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollTicketDispList::DTI)->memAlloc(sz, align, uGUIGPShop::cScrollTicketDispList::DTI.getID());
+}
+
 inline void uGUIGPShop::cScrollTicketDispList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollTicketDispList::DTI)->memFree(p_addr);
 }
@@ -1799,9 +1893,8 @@ inline uGUIGPShop::cScrollTicketDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDT
 
 uGUIGPShop::cScrollTicketDispList::MyDTI uGUIGPShop::cScrollTicketDispList::DTI("uGUIGPShop::cScrollTicketDispList", &::uGUIGPShop::cScrollStatusDispBase::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIGPShop::cScrollTicketDispList::MyDTI::newInstance() const {
-    DDON_STUB("uGUIGPShop::cScrollTicketDispList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIGPShop::cScrollTicketDispList::MyDTI::newInstance() const {
+    return new (16u) uGUIGPShop::cScrollTicketDispList;
 }
 
 inline uGUIGPShop::cScrollStatusDispBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

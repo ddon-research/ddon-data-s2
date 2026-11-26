@@ -36,6 +36,7 @@
 #include "uFog.h"
 #include "uGrassEffect.h"
 #include "uGrassWind.h"
+#include "uLight.h"
 #include "uShadow.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -66,9 +67,32 @@ __attribute__((weak)) void sScene::reset() {
     /* stub */
 }
 
-__attribute__((weak)) void sScene::createProperty(MtPropertyList& s) {
-    DDON_STUB("sScene::createProperty")
-    /* stub */
+void sScene::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseApproximateLighting", &mUseApproximateLighting, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseBruteForceLighting", &mUseBruteForceLighting, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUberWindThreshold", &mUberWindThreshold, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUnitNum", &mUnitNum, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseBVH", &mUseBVH, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShowLightTree", &mShowLightTree, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShowWindTree", &mShowWindTree, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDebugView", &mDebugView, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTestParam", &mTestParam, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTestPosition", &mTestPosition, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTestDirection", &mTestDirection, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTestColor", &mTestColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTestType", &mTestType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDummyColor", &mDummyColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTestTexture", "resource", static_cast<void*>(&mpTestTexture), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWireFrame", &mWireFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTextureInfos", static_cast<MtObject*>(&mTextureInfos[0]), 32u, mTextureInfoNum);
+    s << MtProperty(static_cast<MtObject*>(this), "mUberWindThreshold", &mUberWindThreshold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUberFog", &mIsUberFog, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUberFog2", &mIsUberFog2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCorrectBloomPassageFrame", &mCorrectBloomPassageFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCorrectBloomUseFrame", &mCorrectBloomUseFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCorrectBloomNearestDistance", &mCorrectBloomNearestDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCorrectBloomMaxThreshold", &mCorrectBloomMaxThreshold, 0u, 0u);
 }
 
 MtUI* sScene::createUI(MtProperty& prop) {
@@ -358,9 +382,43 @@ uShadow* sScene::getShadowUnit(uLight* light) {
     return static_cast<uShadow*>(v2_8);
 }
 
-__attribute__((weak)) bool sScene::attachNode(uLight* light, sScene::Node& node) {
-    DDON_STUB("sScene::attachNode")
-    return {};
+bool sScene::attachNode(uLight* light, sScene::Node& node) {
+    if (light != nullptr) {
+        if ((light->mBound & 1u) != 0) {
+            if (mpTree[0] != nullptr) {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                    cDynamicBVHCollision::Node* n = mpTree[0]->cDynamicBVHCollision::insertLeaf(light->mBoundingBox, static_cast<MtObject*>(light));
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                            abort();
+                        }
+                    }
+                    node.attr = 0;
+                    node.handle = static_cast<void*>(n);
+                    return true;
+                } else {
+                    cDynamicBVHCollision::Node* n = mpTree[0]->cDynamicBVHCollision::insertLeaf(light->mBoundingBox, static_cast<MtObject*>(light));
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                            abort();
+                        }
+                    }
+                    node.attr = 0;
+                    node.handle = static_cast<void*>(n);
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) bool sScene::attachNode(uGrassWind* wind, sScene::Node& node) {
@@ -418,6 +476,10 @@ const MtDTI& sScene::TextureInfo::getDTI() const {
     return sScene::TextureInfo::DTI;
 }
 
+inline void* sScene::TextureInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sScene::TextureInfo::DTI)->memAlloc(sz, align, sScene::TextureInfo::DTI.mID);
+}
+
 inline void sScene::TextureInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sScene::TextureInfo::DTI)->memFree(p_addr);
 }
@@ -431,8 +493,7 @@ inline sScene::TextureInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t 
 
 sScene::TextureInfo::MyDTI sScene::TextureInfo::DTI("sScene::TextureInfo", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sScene::TextureInfo::MyDTI::newInstance() const {
-    DDON_STUB("sScene::TextureInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* sScene::TextureInfo::MyDTI::newInstance() const {
+    return new (16u) sScene::TextureInfo;
 }
 

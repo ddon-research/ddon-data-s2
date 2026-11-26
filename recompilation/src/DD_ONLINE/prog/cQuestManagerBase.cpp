@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "cQuestManagerBase.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -131,9 +132,28 @@ __attribute__((weak)) cQuestTask* cQuestManagerBase::newInstanceTask(nQuest::QUE
     return nullptr;
 }
 
-__attribute__((weak)) void cQuestManagerBase::addTask(cQuestTask* pTask) {
-    DDON_STUB("cQuestManagerBase::addTask")
-    /* stub */
+void cQuestManagerBase::addTask(cQuestTask* pTask) {
+    if (pTask == nullptr) {
+        return;
+    }
+    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+    t0->loadQuestResource(pTask->getQuestId());
+    u32 t1 = mQuestTask.mLength;
+    u32 t2 = mQuestTask.mBufsiz;
+    if (t1 < t2) {
+        mQuestTask.mLength = t1 + 1u;
+        mQuestTask.mpArray[t1] = static_cast<MtObject*>(pTask);
+    } else {
+        void* t3 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t2 + 32u) * 8, 16u);
+        memset(t3, 0, static_cast<size_t>(t2 + 32u) * 8);
+        memcpy(t3, static_cast<const void*>(mQuestTask.mpArray), static_cast<size_t>(mQuestTask.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuestTask.mpArray));
+        mQuestTask.mpArray = static_cast<MtObject* *>(t3);
+        mQuestTask.mBufsiz = t2 + 32u;
+        u32 t4 = mQuestTask.mLength;
+        mQuestTask.mLength = t4 + 1u;
+        mQuestTask.mpArray[t4] = static_cast<MtObject*>(pTask);
+    }
 }
 
 void cQuestManagerBase::updateQuestTask(cQuestTask* pTask) {
@@ -210,9 +230,13 @@ __attribute__((weak)) bool cQuestManagerBase::registHelperTask(const CQuestOrder
     return {};
 }
 
-__attribute__((weak)) void cQuestManagerBase::noticeDecideDeliverItem(nQuest::SCHEDULE_ID scheduleId) {
-    DDON_STUB("cQuestManagerBase::noticeDecideDeliverItem")
-    /* stub */
+void cQuestManagerBase::noticeDecideDeliverItem(nQuest::SCHEDULE_ID scheduleId) {
+    cQuestTask* pTask = getQuestTask(scheduleId);
+    if (pTask == nullptr) {
+        return;
+    }
+    u32 npcId = sTalkManager::getInstance()->getNpcId();
+    pTask->notifyDecideDeliverItem(npcId);
 }
 
 void cQuestManagerBase::callbackReloadMasterData() {
@@ -228,9 +252,12 @@ void cQuestManagerBase::callbackReloadMasterData() {
     getQuestList();
 }
 
-__attribute__((weak)) void cQuestManagerBase::callbackClear(nQuest::SCHEDULE_ID scheduleId, bool isParty) {
-    DDON_STUB("cQuestManagerBase::callbackClear")
-    /* stub */
+void cQuestManagerBase::callbackClear(nQuest::SCHEDULE_ID scheduleId, bool isParty) {
+    cQuestTask* pTask = getQuestTask(scheduleId);
+    if (pTask == nullptr) {
+        return;
+    }
+    pTask->callbackClear();
 }
 
 __attribute__((weak)) void cQuestManagerBase::cancelWaitOrder(cQuestTask* pTask, bool& isReqCancel) {

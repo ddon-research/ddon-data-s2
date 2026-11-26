@@ -171,8 +171,7 @@ cHttpClient::MyDTI cHttpClient::DTI("cHttpClient", &::MtObject::DTI, 32968ul, 0u
 
 MT_CTSTR cHttpClient::mpDefaultUserAgent = "";
 
-__attribute__((weak)) MtObject* cHttpClient::MyDTI::newInstance() const {
-    DDON_STUB("cHttpClient::MyDTI::newInstance")
-    return nullptr;
+MtObject* cHttpClient::MyDTI::newInstance() const {
+    return new (16u) cHttpClient;
 }
 

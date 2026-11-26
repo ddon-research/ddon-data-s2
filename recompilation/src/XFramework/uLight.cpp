@@ -5,7 +5,9 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cLightVolume.h"
 #include "cResource.h"
@@ -40,9 +42,18 @@ uLight::~uLight() {
     mplightVolume = nullptr;
 }
 
-__attribute__((weak)) void uLight::createProperty(MtPropertyList& s) {
-    DDON_STUB("uLight::createProperty")
-    /* stub */
+void uLight::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup", &mGroup, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mAttr", reinterpret_cast<MT_MFUNC>(&::uLight::getAttr), reinterpret_cast<MT_MFUNC>(&::uLight::setAttr), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mPriority", reinterpret_cast<MT_MFUNC>(&::uLight::getPriority), reinterpret_cast<MT_MFUNC>(&::uLight::setPriority), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mColor", reinterpret_cast<MT_MFUNC>(&::uLight::getColor), reinterpret_cast<MT_MFUNC>(&::uLight::setColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mApproximateDisable", reinterpret_cast<MT_MFUNC>(&::uLight::getApproximateDisable), reinterpret_cast<MT_MFUNC>(&::uLight::setApproximateDisable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mMode", reinterpret_cast<s32*>(&mMode), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBalance", &mBalance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mIsPS3Disable", reinterpret_cast<MT_MFUNC>(&::uLight::getPS3DisableMode), reinterpret_cast<MT_MFUNC>(&::uLight::setPS3DisableMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mIsPS4Disable", reinterpret_cast<MT_MFUNC>(&::uLight::getPS4DisableMode), reinterpret_cast<MT_MFUNC>(&::uLight::setPS4DisableMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mIsPCDisable", reinterpret_cast<MT_MFUNC>(&::uLight::getPCDisableMode), reinterpret_cast<MT_MFUNC>(&::uLight::setPCDisableMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* uLight::createUI(MtProperty& prop) {
@@ -67,15 +78,17 @@ __attribute__((weak)) void uLight::moveAfter() {
     /* stub */
 }
 
-__attribute__((weak)) void uLight::draw(cDraw* pdraw) {
-    DDON_STUB("uLight::draw")
-    /* stub */
+void uLight::draw(cDraw* pdraw) {
+    if ((mUnitAttr & 16u) == 0) {
+        return;
+    }
+    if (mplightVolume == nullptr) {
+        return;
+    }
+    mplightVolume->draw(pdraw, this);
 }
 
-__attribute__((weak)) MtVector3 uLight::getColor() const {
-    DDON_STUB("uLight::getColor")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01b62b20 __attribute__((used)) = &uLight::getColor;
 
 void uLight::setColor(const MtVector3& v) {
     mColor.x = v.x;

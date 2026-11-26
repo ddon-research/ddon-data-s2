@@ -46,6 +46,7 @@ class rGUIMessage;
 class rItemList;
 class rShopGoods;
 class sCraftManager;
+class uGUIPick01;
 
 // Declarations
 class sItemManager;
@@ -77,7 +78,6 @@ using u8 = unsigned char;
 
 class sItemManager : public cSystem
 {
-    friend class rItemList;
     friend class sCraftManager;
 public:
     enum SortType
@@ -823,6 +823,7 @@ public:
     public:
         class cGatheringItemData : public MtObject
         {
+            friend class uGUIPick01;
         public:
             class MyDTI;
         public:

@@ -64,22 +64,21 @@ rAreaInfoStage::~rAreaInfoStage() {
     mAreaInfoStage.mLength = 0;
 }
 
-__attribute__((weak)) void rAreaInfoStage::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAreaInfoStage::createProperty")
-    /* stub */
+void rAreaInfoStage::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaInfoStage", static_cast<MtObject*>(&mAreaInfoStage), 0u, 0u);
 }
 
 bool rAreaInfoStage::save(MtStream& out) {
     MtDataWriter w(out, 4096u, 4096u);
     (&w)->writeU32(0x535241u);
     (&w)->writeU32(2u);
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) != 0) {
+    (&w)->writeU32(mAreaInfoStage.mLength);
+    if (mAreaInfoStage.mLength != 0) {
         for (unsigned int i0_3 = 0;;) {
             MtObject* t3 = mAreaInfoStage.getBuffer()[static_cast<int>(i0_3)];
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 8));
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 12));
-            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120))) {
+            if ((i0_3 + 1u) < mAreaInfoStage.mLength) {
                 i0_3 += 1u;
             } else {
                 break;
@@ -123,9 +122,9 @@ inline void rAreaInfoStage::cAreaInfoStage::operator delete(void* p_addr) {
 rAreaInfoStage::cAreaInfoStage::~cAreaInfoStage() {
 }
 
-__attribute__((weak)) void rAreaInfoStage::cAreaInfoStage::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAreaInfoStage::cAreaInfoStage::createProperty")
-    /* stub */
+void rAreaInfoStage::cAreaInfoStage::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaId", &mAreaId, 0u, 0u);
 }
 
 inline rAreaInfoStage::cAreaInfoStage::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

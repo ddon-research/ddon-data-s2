@@ -40,11 +40,13 @@ class cObjHitCache;
 class cOcdDamageInfo;
 class cpSequenceCtrl;
 class cpShlShotCtrl;
+class cpStatusChange;
 class rAttackParam;
 class rBitTable;
 class rObjCollision;
 class uDDOModel;
 class uShlBase;
+class uShlJob08CS13;
 
 // Declarations
 class cHitInfo;
@@ -167,8 +169,10 @@ public:
 class cpObjCollisionBase : public cpComponent
 {
     friend class cpShlShotCtrl;
+    friend class cpStatusChange;
     friend class uDDOModel;
     friend class uShlBase;
+    friend class uShlJob08CS13;
 public:
     class MyDTI;
     class cHitFlag;

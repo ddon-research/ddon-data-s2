@@ -49,13 +49,24 @@ inline void uGUIQuestDelivery::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIQuestDelivery::~uGUIQuestDelivery() {
-    DDON_STUB("uGUIQuestDelivery::~uGUIQuestDelivery")
-    /* stub */
+    if (mpGMDDeliveryRes != nullptr) {
+        mpGMDDeliveryRes->release();
+        mpGMDDeliveryRes = nullptr;
+    }
+    if (mpGMDQuestRes != nullptr) {
+        mpGMDQuestRes->release();
+        mpGMDQuestRes = nullptr;
+    }
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
-__attribute__((weak)) void uGUIQuestDelivery::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGUIQuestDelivery::createProperty")
-    /* stub */
+void uGUIQuestDelivery::createProperty(MtPropertyList& s) {
+    this->uGUI::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mMode", &mMode, 0u, 0u);
 }
 
 bool uGUIQuestDelivery::loadResource() {

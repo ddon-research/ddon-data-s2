@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "MtNetSession.h"
 #include "MtNetBuffer.h"
 #include "MtNetDevice.h"
@@ -53,9 +54,20 @@ void MtNetSession::clearMember(MtNetSession::Member* member) {
     member->mName[7] = 0;
 }
 
-__attribute__((weak)) void MtNetSession::copyMember(MtNetSession::Member* dst, const MtNetSession::Member* src) {
-    DDON_STUB("MtNetSession::copyMember")
-    /* stub */
+void MtNetSession::copyMember(MtNetSession::Member* dst, const MtNetSession::Member* src) {
+    if (dst == nullptr) {
+        return;
+    }
+    if (src == nullptr) {
+        return;
+    }
+    dst->mIsValid = src->mIsValid;
+    dst->mUniqueId = src->mUniqueId;
+    strncpy(&dst->mName[0], &src->mName[0], 32ul);
+    dst->mName[31] = '\0';
+    dst->mIsOmittedName = src->mIsOmittedName;
+    dst->mIsHost = src->mIsHost;
+    dst->mIsPrivate = src->mIsPrivate;
 }
 
 __attribute__((weak)) void MtNetSession::clearSearchResultList(MtNetSession::SearchResultList* result_list) {

@@ -58,9 +58,11 @@ MT_CTSTR rObjCollision::getExt() const {
     return "col";
 }
 
-__attribute__((weak)) void rObjCollision::createProperty(MtPropertyList& s) {
-    DDON_STUB("rObjCollision::createProperty")
-    /* stub */
+void rObjCollision::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCollIndex", reinterpret_cast<MtObject* *>(&mpCollIndex), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCollNode", reinterpret_cast<MtObject* *>(&mpCollNode), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpAttackParam", reinterpret_cast<MtObject* *>(&mpAttackParam), 0u, 0u);
 }
 
 __attribute__((weak)) bool rObjCollision::load(MtStream& in) {

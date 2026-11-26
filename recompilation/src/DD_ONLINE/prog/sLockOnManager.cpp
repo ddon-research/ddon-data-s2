@@ -51,8 +51,13 @@ sLockOnManager::sLockOnManager() {
 }
 
 sLockOnManager::~sLockOnManager() {
-    DDON_STUB("sLockOnManager::~sLockOnManager")
-    /* stub */
+    if (mTargetArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mTargetArray.mpArray));
+    }
+    mTargetArray.mpArray = nullptr;
+    mTargetArray.mBufsiz = 0;
+    mTargetArray.mLength = 0;
+    sLockOnManager::mpInstance = nullptr;
 }
 
 void sLockOnManager::reset() {
@@ -69,9 +74,9 @@ __attribute__((weak)) void sLockOnManager::sync() {
     /* stub */
 }
 
-__attribute__((weak)) void sLockOnManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("sLockOnManager::createProperty")
-    /* stub */
+void sLockOnManager::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetArray", static_cast<MtObject*>(&mTargetArray), 0u, 0u);
 }
 
 void sLockOnManager::add(cpLockOn::cLockOnTarget* pLockOnTarget) {

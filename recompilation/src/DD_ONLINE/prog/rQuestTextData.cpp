@@ -64,22 +64,21 @@ rQuestTextData::~rQuestTextData() {
     mArray.mLength = 0;
 }
 
-__attribute__((weak)) void rQuestTextData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rQuestTextData::createProperty")
-    /* stub */
+void rQuestTextData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mArray", static_cast<MtObject*>(&mArray), 0u, 0u);
 }
 
 bool rQuestTextData::save(MtStream& out) {
     MtDataWriter w(out, 4096u, 4096u);
     (&w)->writeU32(0x445451u);
     (&w)->writeU32(2u);
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) != 0) {
+    (&w)->writeU32(mArray.mLength);
+    if (mArray.mLength != 0) {
         for (unsigned int i0_3 = 0;;) {
             MtObject* t3 = mArray.getBuffer()[static_cast<int>(i0_3)];
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 8));
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 12));
-            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120))) {
+            if ((i0_3 + 1u) < mArray.mLength) {
                 i0_3 += 1u;
             } else {
                 break;
@@ -123,9 +122,9 @@ inline void rQuestTextData::cTextData::operator delete(void* p_addr) {
 rQuestTextData::cTextData::~cTextData() {
 }
 
-__attribute__((weak)) void rQuestTextData::cTextData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rQuestTextData::cTextData::createProperty")
-    /* stub */
+void rQuestTextData::cTextData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMsgGmdIdx", &mMsgGmdIdx, 0u, 0u);
 }
 
 void rQuestTextData::cTextData::load(MtDataReader& r) {

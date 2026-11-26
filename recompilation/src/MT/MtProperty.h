@@ -60,6 +60,8 @@ class MtVector2;
 class MtVector3;
 class MtVector4;
 class cGUIObjTextureSet;
+class sApp;
+class uCharacterEdit;
 
 // Declarations
 class MtProperty;
@@ -85,8 +87,12 @@ using u8 = unsigned char;
 
 class MtProperty
 {
+
+    friend class MtSerializer;
     friend class MtPropertyList;
     friend class cGUIObjTextureSet;
+    friend class sApp;
+    friend class uCharacterEdit;
 public:
     enum TYPE
     {
@@ -481,3 +487,246 @@ private:
     static MT_CTSTR mTypeName[75];
     static Custom* mpCustom[16];
 };
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MT_MFUNC pevent, u32 attr)
+    : mName(name), mType(TYPE_EVENT), mAttr(attr), mpOwner(pthis), mpGetter(pevent), mCount(0), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty()
+    : mName(nullptr), mType(0), mAttr(0), mpOwner(nullptr), mpAdr(nullptr), mCount(0), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtObject* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_CLASS), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtObject* * padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_CLASSREF), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, bool* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_BOOL), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, u8* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_U8), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, u16* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_U16), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, u32* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_U32), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, u64* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_U64), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, s32* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_S32), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, f32* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_F32), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtString* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_STRING), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, TYPE type, MT_CTSTR name, MT_MFUNC getter, MT_MFUNC setter, u32 attr, MT_MFUNC getcount, MT_MFUNC setcount)
+    : mName(name), mType(type), mAttr(attr), mpOwner(pthis), mpGetter(getter), mpGetCount(getcount), mpSetter(setter), mpSetCount(setcount), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::~MtProperty() {}
+
+inline u32 MtProperty::getAttr() const {
+    return mAttr;
+}
+
+inline bool MtProperty::isDynamic() const {
+    return (mAttr & ATTR_DYNAMIC) != 0;
+}
+
+inline bool MtProperty::isArray() const {
+    return (mAttr & ATTR_ARRAY) != 0;
+}
+
+inline bool MtProperty::isSerializable() const {
+    return (mAttr & ATTR_NOSERIALIZE) == 0;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, s16* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_S16), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, s8* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_S8), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtOBB* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_OBB), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtMatrix* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_MATRIX), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtVector3* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_VECTOR3), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtFloat3* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_FLOAT3), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtSphere* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_SPHERE), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtCylinder* padr, u32 attr, u32 count)
+    : mName(name), mType(TYPE_CYLINDER), mAttr(attr), mpOwner(pthis), mpAdr(padr), mCount(count), mpSetter(nullptr), mpSetCount(nullptr), mIndex(0), mpNext(nullptr), mpPrev(nullptr) {}
+
+inline MtProperty::TYPE MtProperty::getType() const {
+    return static_cast<TYPE>(mType);
+}
+
+inline MtProperty* MtProperty::getNext() const {
+    return mpNext;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, f64* padr, u32 attr, u32 count) {
+    mName = name;
+    mType = TYPE_F64;
+    mAttr = attr;
+    mpOwner = pthis;
+    mpAdr = padr;
+    mCount = count;
+    mpSetter = nullptr;
+    mpSetCount = nullptr;
+    mIndex = 0;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtColor* padr, u32 attr, u32 count) {
+    mName = name;
+    mType = TYPE_COLOR;
+    mAttr = attr;
+    mpOwner = pthis;
+    mpAdr = padr;
+    mCount = count;
+    mpSetter = nullptr;
+    mpSetCount = nullptr;
+    mIndex = 0;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtSize* padr, u32 attr, u32 count) {
+    mName = name;
+    mType = TYPE_SIZE;
+    mAttr = attr;
+    mpOwner = pthis;
+    mpAdr = padr;
+    mCount = count;
+    mpSetter = nullptr;
+    mpSetCount = nullptr;
+    mIndex = 0;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtRect* padr, u32 attr, u32 count) {
+    mName = name;
+    mType = TYPE_RECT;
+    mAttr = attr;
+    mpOwner = pthis;
+    mpAdr = padr;
+    mCount = count;
+    mpSetter = nullptr;
+    mpSetCount = nullptr;
+    mIndex = 0;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtVector2* padr, u32 attr, u32 count) {
+    mName = name;
+    mType = TYPE_VECTOR2;
+    mAttr = attr;
+    mpOwner = pthis;
+    mpAdr = padr;
+    mCount = count;
+    mpSetter = nullptr;
+    mpSetCount = nullptr;
+    mIndex = 0;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtVector4* padr, u32 attr, u32 count) {
+    mName = name;
+    mType = TYPE_VECTOR4;
+    mAttr = attr;
+    mpOwner = pthis;
+    mpAdr = padr;
+    mCount = count;
+    mpSetter = nullptr;
+    mpSetCount = nullptr;
+    mIndex = 0;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtFloat2* padr, u32 attr, u32 count) {
+    mName = name;
+    mType = TYPE_FLOAT2;
+    mAttr = attr;
+    mpOwner = pthis;
+    mpAdr = padr;
+    mCount = count;
+    mpSetter = nullptr;
+    mpSetCount = nullptr;
+    mIndex = 0;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtQuaternion* padr, u32 attr, u32 count) {
+    mName = name;
+    mType = TYPE_QUATERNION;
+    mAttr = attr;
+    mpOwner = pthis;
+    mpAdr = padr;
+    mCount = count;
+    mpSetter = nullptr;
+    mpSetCount = nullptr;
+    mIndex = 0;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtHermiteCurve* padr, u32 attr, u32 count) {
+    mName = name;
+    mType = TYPE_HERMITECURVE;
+    mAttr = attr;
+    mpOwner = pthis;
+    mpAdr = padr;
+    mCount = count;
+    mpSetter = nullptr;
+    mpSetCount = nullptr;
+    mIndex = 0;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MtAABB* padr, u32 attr, u32 count) {
+    mName = name;
+    mType = TYPE_AABB;
+    mAttr = attr;
+    mpOwner = pthis;
+    mpAdr = padr;
+    mCount = count;
+    mpSetter = nullptr;
+    mpSetCount = nullptr;
+    mIndex = 0;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+}
+
+inline MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MT_MFUNC32 pevent, u32 attr, u32 id) {
+    mName = name;
+    mType = TYPE_EVENT32;
+    mAttr = attr | ATTR_EVENT | ATTR_NOSERIALIZE;
+    mpOwner = pthis;
+    mpGetter32 = pevent;
+    mCount = id;
+    mpSetter = nullptr;
+    mpSetCount = nullptr;
+    mIndex = 0;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+}

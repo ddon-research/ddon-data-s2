@@ -25,9 +25,9 @@ inline void cStartPosArea::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cStartPosArea::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cStartPosArea::createProperty(MtPropertyList& s) {
-    DDON_STUB("cStartPosArea::createProperty")
-    /* stub */
+void cStartPosArea::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStartPosNo", &mStartPosNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaId", &mAreaId, 0u, 0u);
 }
 
 MtUI* cStartPosArea::createUI(MtProperty& prop) {

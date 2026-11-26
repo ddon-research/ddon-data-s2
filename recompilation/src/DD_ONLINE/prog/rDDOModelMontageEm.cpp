@@ -1,6 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rDDOModelMontageEm.h"
+
+#include "../../MT/MtStream.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
@@ -46,8 +48,25 @@ void rDDOModelMontageEm::clear() {
 }
 
 __attribute__((weak)) bool rDDOModelMontageEm::load(MtStream& in) {
-    DDON_STUB("rDDOModelMontageEm::load")
-    return {};
+    u32 size = in.getLength();
+    mpHeader = static_cast<HEADER*>(getAllocator()->memAlloc(size, 16u));
+    in.read(mpHeader, size);
+    if (mpHeader->magic != 0x00454d44u) {
+        return false;
+    }
+    if (mpHeader->version != DATA_VERSION) {
+        return false;
+    }
+    mpHeader->parts = reinterpret_cast<PARTS*>(reinterpret_cast<uintptr>(mpHeader->parts) + reinterpret_cast<uintptr>(mpHeader));
+    mpHeader->mindex = reinterpret_cast<MONTAGE**>(reinterpret_cast<uintptr>(mpHeader->mindex) + reinterpret_cast<uintptr>(mpHeader));
+    mpHeader->montage = reinterpret_cast<MONTAGE*>(reinterpret_cast<uintptr>(mpHeader->montage) + reinterpret_cast<uintptr>(mpHeader));
+    mpHeader->cindex = reinterpret_cast<COLOR_INFO*>(reinterpret_cast<uintptr>(mpHeader->cindex) + reinterpret_cast<uintptr>(mpHeader));
+    for (u32 i = 0; i < mpHeader->montage_max; ++i) {
+        if (mpHeader->mindex[i] != nullptr) {
+            mpHeader->mindex[i] = reinterpret_cast<MONTAGE*>(reinterpret_cast<uintptr>(mpHeader->mindex[i]) + reinterpret_cast<uintptr>(mpHeader));
+        }
+    }
+    return true;
 }
 
 MT_CTSTR rDDOModelMontageEm::getExt() const {

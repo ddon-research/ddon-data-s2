@@ -186,6 +186,7 @@ class uDDOModel : public uModel
     friend class cpOmBase;
     friend class cpPawnThink;
     friend class cpSlave;
+    friend class cpStatusChange;
     friend class sAIPawnSys;
     friend class uCharacter;
     friend class uControl;
@@ -1035,6 +1036,10 @@ inline cpShlShotCtrl* uDDOModel::getShlShotCtrlPtr() const {
 
 inline void uDDOModel::setShlShotCtrlPtr(cpShlShotCtrl* NewValue) {
     this->mGuardComponent.mpShlShotCtrl = NewValue;
+}
+
+inline cpRegionStatusCtrl* uDDOModel::getRegionStatusCtrlPtr() const {
+    return this->mGuardComponent.mpRegionStatusCtrl;
 }
 
 inline void uDDOModel::setRegionStatusCtrlPtr(cpRegionStatusCtrl* NewValue) {

@@ -7,7 +7,6 @@
 #include "../../../../MT/MtDTI.h"
 #include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
-#include "../../../../MT/MtString.h"
 #include "Pawn.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -70,6 +69,10 @@ inline MtAllocator* CDataPawnSearchParameter::getAllocator() {
     return MtMemoryAllocator::getAllocator(CDataPawnSearchParameter::DTI);
 }
 
+inline void* CDataPawnSearchParameter::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataPawnSearchParameter::DTI)->memAlloc(sz, align, CDataPawnSearchParameter::DTI.getID());
+}
+
 __attribute__((weak)) void CDataPawnSearchParameter::operator delete(void* p_addr) {
     CDataPawnSearchParameter::getAllocator()->memFree(p_addr);
 }
@@ -78,9 +81,8 @@ inline CDataPawnSearchParameter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 CDataPawnSearchParameter::MyDTI CDataPawnSearchParameter::DTI("CDataPawnSearchParameter", &::CPacketDataBase::DTI, 136ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataPawnSearchParameter::MyDTI::newInstance() const {
-    DDON_STUB("CDataPawnSearchParameter::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPawnSearchParameter::MyDTI::newInstance() const {
+    return new (16u) CDataPawnSearchParameter;
 }
 
 const MtDTI& CDataQuickMatchSearchParameter::getDTI() const {

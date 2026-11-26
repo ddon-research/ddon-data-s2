@@ -31,8 +31,6 @@ cWeatherScript::cWeatherScript() {
 }
 
 cWeatherScript::~cWeatherScript() {
-    DDON_STUB("cWeatherScript::~cWeatherScript")
-    /* stub */
 }
 
 void cWeatherScript::initScript() {

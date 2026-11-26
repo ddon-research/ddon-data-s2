@@ -40,9 +40,20 @@ __attribute__((noinline)) cZoneLayout::~cZoneLayout() {
     /* stub */
 }
 
-__attribute__((weak)) void cZoneLayout::createProperty(MtPropertyList& s) {
-    DDON_STUB("cZoneLayout::createProperty")
-    /* stub */
+void cZoneLayout::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHandle", &mIndex, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpNativeResource", "resource", static_cast<void*>(&mpNativeResource), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpContentsPool", reinterpret_cast<MtObject* *>(&mpContentsPool), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASS, "mLayoutElementArray", reinterpret_cast<MT_MFUNC>(&::cZoneLayout::getLayoutElement), static_cast<MT_MFUNC>(0), 163u, reinterpret_cast<MT_MFUNC>(&::cZoneLayout::getLayoutElementNum), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupManagerArray", static_cast<MtObject*>(&mGroupManagerArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mWorldOffset", reinterpret_cast<MT_MFUNC>(&::cZoneLayout::getWorldOffsetForPropDynamic), reinterpret_cast<MT_MFUNC>(&::cZoneLayout::setWorldOffset), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mAngle", reinterpret_cast<MT_MFUNC>(&::cZoneLayout::getAngleForUI), reinterpret_cast<MT_MFUNC>(&::cZoneLayout::setAngleForUI), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_QUATERNION, "mQuaternion", reinterpret_cast<MT_MFUNC>(&::cZoneLayout::getQuaternionForPropDynamic), reinterpret_cast<MT_MFUNC>(&::cZoneLayout::setQuaternion), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mWorldMatrix", &mWorldMatrix, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWorldInverseMatrix", &mWorldInverseMatrix, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgEnableApplyOffset", &mFlgEnableApplyOffset, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgEnableQuaternion", &mFlgEnableQuaternion, 1u, 0u);
 }
 
 __attribute__((weak)) void cZoneLayout::move() {
@@ -164,9 +175,8 @@ __attribute__((weak)) void cZoneLayout::applyWorldOffset(const MtVector3& offset
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cZoneLayout::getWorldOffsetForPropDynamic() const {
-    DDON_STUB("cZoneLayout::getWorldOffsetForPropDynamic")
-    __builtin_unreachable();
+MtVector3 cZoneLayout::getWorldOffsetForPropDynamic() const {
+    return mWorldOffset;
 }
 
 MtQuaternion cZoneLayout::getQuaternionForPropDynamic() const {
@@ -213,6 +223,10 @@ const MtDTI& cZoneLayout::cInGameGroupManager::getDTI() const {
     return cZoneLayout::cInGameGroupManager::DTI;
 }
 
+inline void* cZoneLayout::cInGameGroupManager::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cZoneLayout::cInGameGroupManager::DTI)->memAlloc(sz, align, cZoneLayout::cInGameGroupManager::DTI.mID);
+}
+
 cZoneLayout::cInGameGroupManager::cInGameGroupManager() {
     mIndex = 0x7FFFFFFF;
     mpResourceGroupManager = nullptr;
@@ -229,9 +243,13 @@ cZoneLayout::cInGameGroupManager::~cInGameGroupManager() {
     delete mpDynamicBvhMaster;
 }
 
-__attribute__((weak)) void cZoneLayout::cInGameGroupManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("cZoneLayout::cInGameGroupManager::createProperty")
-    /* stub */
+void cZoneLayout::cInGameGroupManager::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgEnable", &mFlgEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpUserOwner", &mpUserOwner, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpSystemOwner", reinterpret_cast<MtObject* *>(&mpSystemOwner), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResourceGroupManager", reinterpret_cast<MtObject* *>(&mpResourceGroupManager), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpDynamicBvhMaster", reinterpret_cast<MtObject* *>(&mpDynamicBvhMaster), 2u, 0u);
 }
 
 void cZoneLayout::cInGameGroupManager::move() {
@@ -259,9 +277,15 @@ __attribute__((weak)) void cZoneLayout::cInGameGroupManager::setLayoutEnableAll(
     /* stub */
 }
 
-__attribute__((weak)) bool cZoneLayout::cInGameGroupManager::isEnableStopShape() const {
-    DDON_STUB("cZoneLayout::cInGameGroupManager::isEnableStopShape")
-    return {};
+bool cZoneLayout::cInGameGroupManager::isEnableStopShape() const {
+    if (mpDynamicBvhMaster != nullptr) {
+        if (mpResourceGroupManager != nullptr) {
+            u32 t0 = mpDynamicBvhMaster->mDynamicBVH.getInsertLeafNum();
+            u32 t1 = mpResourceGroupManager->getGroupLayoutIndexNum();
+            return t0 >= t1;
+        }
+    }
+    return true;
 }
 
 __attribute__((weak)) void cZoneLayout::cInGameGroupManager::requestUpdateDBVT(nZone::cLayoutElement& RequestData) {
@@ -273,9 +297,8 @@ inline cZoneLayout::cInGameGroupManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI
 
 cZoneLayout::cInGameGroupManager::MyDTI cZoneLayout::cInGameGroupManager::DTI("cZoneLayout::cInGameGroupManager", &::MtObject::DTI, 56ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cZoneLayout::cInGameGroupManager::MyDTI::newInstance() const {
-    DDON_STUB("cZoneLayout::cInGameGroupManager::MyDTI::newInstance")
-    return nullptr;
+MtObject* cZoneLayout::cInGameGroupManager::MyDTI::newInstance() const {
+    return new (16u) cZoneLayout::cInGameGroupManager;
 }
 
 const MtDTI& cZoneLayout::cDynamicBVHMaster::getDTI() const {
@@ -291,9 +314,8 @@ cZoneLayout::cDynamicBVHMaster::~cDynamicBVHMaster() {
     /* stub */
 }
 
-__attribute__((weak)) void cZoneLayout::cDynamicBVHMaster::createProperty(MtPropertyList& s) {
-    DDON_STUB("cZoneLayout::cDynamicBVHMaster::createProperty")
-    /* stub */
+void cZoneLayout::cDynamicBVHMaster::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mDynamicBVH", static_cast<MtObject*>(&mDynamicBVH), 2u, 0u);
 }
 
 __attribute__((weak)) void cZoneLayout::cDynamicBVHMaster::update() {

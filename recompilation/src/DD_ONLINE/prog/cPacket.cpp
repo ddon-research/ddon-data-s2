@@ -12,19 +12,6 @@
 #define DDON_STUB(name)
 #endif
 
-CPacket::~CPacket() {
-}
-
-CPacketBase::~CPacketBase() {
-    if (m_pBuffer == nullptr) {
-        return;
-    }
-    if (mpAllocator == nullptr) {
-        return;
-    }
-    mpAllocator->memFree(static_cast<void*>(m_pBuffer));
-}
-
 const MtDTI& CPacketDataBase::getDTI() const {
     return CPacketDataBase::DTI;
 }
@@ -133,7 +120,7 @@ __attribute__((weak)) int nPacket::Read(CPacket& packet, f64& v) {
 
 __attribute__((weak)) int nPacket::Read(CPacket& packet, u16& v) {
     if (packet.m_pWriter >= (&packet.m_pReader[2])) {
-        v = static_cast<unsigned short>(static_cast<unsigned long>([](const void* p) -> unsigned short { typedef const unsigned short t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) * 256) | (static_cast<unsigned long>([](const void* p) -> unsigned short { typedef const unsigned short t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader))) >> 8));
+        v = __builtin_bswap16(static_cast<unsigned short>([](const void* p) -> unsigned short { typedef const unsigned short t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader))));
         packet.m_pReader = &packet.m_pReader[2];
         return 2;
     } else {
@@ -242,9 +229,14 @@ __attribute__((weak)) int nPacket::Write(CPacket& packet, f64 v) {
     return {};
 }
 
-__attribute__((weak)) int nPacket::Write(CPacket& packet, u16 v) {
-    DDON_STUB("nPacket::Write")
-    return {};
+int nPacket::Write(CPacket& packet, u16 v) {
+    if (packet.Capacity() > 1ul) {
+        [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(__builtin_bswap16(static_cast<unsigned short>(v)), &(*packet.m_pWriter));
+        packet.m_pWriter = &packet.m_pWriter[2];
+        return 2;
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) int nPacket::Write(CPacket& packet, MT_CTSTR t) {

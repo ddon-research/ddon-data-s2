@@ -315,9 +315,17 @@ u32 cContextPlayerInfo::getNeedExp(u32 level) {
     }
 }
 
-__attribute__((weak)) bool cContextPlayerInfo::isOcdActive(u32 OcdUID) const {
-    DDON_STUB("cContextPlayerInfo::isOcdActive")
-    return {};
+bool cContextPlayerInfo::isOcdActive(u32 OcdUID) const {
+    if (mpOwner != nullptr) {
+        if ((mpOwner->mBeFlag & 7u) == 2) {
+            if (mpOwner->getOcdCtrlPtr() != nullptr) {
+                if (mpOwner->getOcdCtrlPtr()->isRecoverEnd() && !mpOwner->getOcdCtrlPtr()->mIsCallKill) {
+                    return mpOwner->getOcdCtrlPtr()->isOcdActive(OcdUID);
+                }
+            }
+        }
+    }
+    return cContextInterface::getOcdActiveData(static_cast<const cContextInstance*>(mpOwnerContext), static_cast<const cContextCharacter*>(nullptr), OcdUID).mActiveLv != 0;
 }
 
 __attribute__((weak)) void cContextPlayerInfo::calcGoodStatus(nJobParam::cJobInfo& addJobInfo, u32 jobNo) {

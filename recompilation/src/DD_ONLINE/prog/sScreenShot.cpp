@@ -7,6 +7,7 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
@@ -660,9 +661,11 @@ __attribute__((noinline)) sScreenShot::~sScreenShot() {
     /* stub */
 }
 
-__attribute__((weak)) void sScreenShot::createProperty(MtPropertyList& s) {
-    DDON_STUB("sScreenShot::createProperty")
-    /* stub */
+void sScreenShot::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSetup", &mIsSetup, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRno", &mRno, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSShotReq", &mIsSShotReq, 1u, 0u);
 }
 
 void sScreenShot::reset() {

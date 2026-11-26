@@ -381,6 +381,10 @@ inline void* cCaptrophyContentData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cCaptrophyContentData::cCaptrophyContentData() {
+    this->mTrophy.::MtArray::mAutoDelete = true;
+}
+
 inline void* cCaptrophyData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

@@ -57,9 +57,6 @@ inline void cMenuContentsExecutor::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuContentsExecutor::DTI)->memFree(p_addr);
 }
 
-cMenuContentsExecutor::~cMenuContentsExecutor() {
-}
-
 __attribute__((weak)) void cMenuContentsExecutor::initContentsExecutor(cMenuContentsExecutor::CONTENTS_TYPE contentsType, cMenuContentsExecutor::CONTENTS_OPEN_TYPE openType, u32 contentsScheduleId) {
     DDON_STUB("cMenuContentsExecutor::initContentsExecutor")
     /* stub */
@@ -104,8 +101,6 @@ inline void cMenuCreateEntryBoardItem::operator delete(void* p_addr) {
 }
 
 cMenuCreateEntryBoardItem::~cMenuCreateEntryBoardItem() {
-    DDON_STUB("cMenuCreateEntryBoardItem::~cMenuCreateEntryBoardItem")
-    /* stub */
 }
 
 void cMenuCreateEntryBoardItem::exitMenu() {
@@ -304,8 +299,6 @@ inline void cMenuEntryBoardItemList::operator delete(void* p_addr) {
 }
 
 cMenuEntryBoardItemList::~cMenuEntryBoardItemList() {
-    DDON_STUB("cMenuEntryBoardItemList::~cMenuEntryBoardItemList")
-    /* stub */
 }
 
 void cMenuEntryBoardItemList::initEntryBoardItemList(u64 boardId, bool solo) {
@@ -413,9 +406,6 @@ inline void* cMenuEntryBoardMember::operator new(size_t sz, u32 align) {
 
 inline void cMenuEntryBoardMember::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuEntryBoardMember::DTI)->memFree(p_addr);
-}
-
-cMenuEntryBoardMember::~cMenuEntryBoardMember() {
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuEntryBoardMember::moveEntryBoardMember() {
@@ -528,9 +518,6 @@ inline void cMenuExtendEntryBoardItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuExtendEntryBoardItem::DTI)->memFree(p_addr);
 }
 
-cMenuExtendEntryBoardItem::~cMenuExtendEntryBoardItem() {
-}
-
 void cMenuExtendEntryBoardItem::initExtendEntryBoardItem() {
     initMenu();
     mMenuRno[0] = 0;
@@ -584,9 +571,6 @@ inline void cMenuGetEntryBoardItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuGetEntryBoardItem::DTI)->memFree(p_addr);
 }
 
-cMenuGetEntryBoardItem::~cMenuGetEntryBoardItem() {
-}
-
 void cMenuGetEntryBoardItem::initGetEntryBoardItem(u64 boardId, u32 entryId, nNet::stEntryBoardItemInfo* pDstInfo, bool serverIn) {
         initMenu();
         mMenuRno[0] = 0;
@@ -629,9 +613,6 @@ inline void* cMenuInviteEntryBoardItem::operator new(size_t sz, u32 align) {
 
 inline void cMenuInviteEntryBoardItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuInviteEntryBoardItem::DTI)->memFree(p_addr);
-}
-
-cMenuInviteEntryBoardItem::~cMenuInviteEntryBoardItem() {
 }
 
 void cMenuInviteEntryBoardItem::initInviteEntryBoardItem(nNet::stEntryBoardItemInfo* pDstInfo) {
@@ -754,9 +735,6 @@ inline void cMenuReadyEntryBoardItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuReadyEntryBoardItem::DTI)->memFree(p_addr);
 }
 
-cMenuReadyEntryBoardItem::~cMenuReadyEntryBoardItem() {
-}
-
 void cMenuReadyEntryBoardItem::initReadyEntryBoardItem() {
     initMenu();
     mMenuRno[0] = 0;
@@ -818,18 +796,110 @@ inline void cMenuRecreateEntryBoardItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuRecreateEntryBoardItem::DTI)->memFree(p_addr);
 }
 
-cMenuRecreateEntryBoardItem::~cMenuRecreateEntryBoardItem() {
-}
-
 void cMenuRecreateEntryBoardItem::initRecreateEntryBoardItem() {
     initMenu();
     mMenuRno[0] = 0;
     setupDialogFlow(7u);
 }
 
-__attribute__((weak)) nMenu::MENU_RET cMenuRecreateEntryBoardItem::moveRecreateEntryBoardItem() {
-    DDON_STUB("cMenuRecreateEntryBoardItem::moveRecreateEntryBoardItem")
-    return {};
+nMenu::MENU_RET cMenuRecreateEntryBoardItem::moveRecreateEntryBoardItem() {
+    moveMenu();
+    if (mMenuRno[0] != 1) {
+        if (mMenuRno[0] == 0) {
+            mMenuRno[0] = 1;
+            cMenuDialogFlow::RET t0 = moveDialogFlow();
+            switch (t0) {
+                case cMenuDialogFlow::RET_DLG_SET_DLG:
+                {
+                    cMenuDialogFlow* t1 = getDialogFlow();
+                    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 194u);
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                    t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                case cMenuDialogFlow::RET_DLG_CHOICE:
+                {
+                    if (getDialogFlow()->mChoice == 0) {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->recreateEntryBoardItem();
+                        getDialogFlow()->setComWait(395);
+                        return nMenu::MENU_RET_CONTINUE;
+                    } else {
+                        return nMenu::MENU_RET_CANCEL;
+                    }
+                    break;
+                }
+                case cMenuDialogFlow::RET_DLG_SET_RESULT:
+                {
+                    cMenuDialogFlow* t4 = getDialogFlow();
+                    t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 57u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                case cMenuDialogFlow::RET_DLG_EXIT:
+                {
+                    return nMenu::MENU_RET_EXIT;
+                }
+                case cMenuDialogFlow::RET_DLG_ERROR:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                case cMenuDialogFlow::RET_DLG_NULL:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                default:
+                {
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+            }
+        } else {
+            return nMenu::MENU_RET_CONTINUE;
+        }
+    } else {
+        cMenuDialogFlow::RET t0 = moveDialogFlow();
+        switch (t0) {
+            case cMenuDialogFlow::RET_DLG_SET_DLG:
+            {
+                cMenuDialogFlow* t1 = getDialogFlow();
+                MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 194u);
+                MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            case cMenuDialogFlow::RET_DLG_CHOICE:
+            {
+                if (getDialogFlow()->mChoice == 0) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->recreateEntryBoardItem();
+                    getDialogFlow()->setComWait(395);
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_SET_RESULT:
+            {
+                cMenuDialogFlow* t4 = getDialogFlow();
+                t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 57u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            case cMenuDialogFlow::RET_DLG_EXIT:
+            {
+                return nMenu::MENU_RET_EXIT;
+            }
+            case cMenuDialogFlow::RET_DLG_ERROR:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            case cMenuDialogFlow::RET_DLG_NULL:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            default:
+            {
+                return nMenu::MENU_RET_CONTINUE;
+            }
+        }
+    }
 }
 
 inline cMenuRecreateEntryBoardItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -852,18 +922,110 @@ inline void cMenuReleasePassEntryBoardItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuReleasePassEntryBoardItem::DTI)->memFree(p_addr);
 }
 
-cMenuReleasePassEntryBoardItem::~cMenuReleasePassEntryBoardItem() {
-}
-
 void cMenuReleasePassEntryBoardItem::initReleasePassEntryBoardItem() {
     initMenu();
     mMenuRno[0] = 0;
     setupDialogFlow(7u);
 }
 
-__attribute__((weak)) nMenu::MENU_RET cMenuReleasePassEntryBoardItem::moveReleasePassEntryBoardItem() {
-    DDON_STUB("cMenuReleasePassEntryBoardItem::moveReleasePassEntryBoardItem")
-    return {};
+nMenu::MENU_RET cMenuReleasePassEntryBoardItem::moveReleasePassEntryBoardItem() {
+    moveMenu();
+    if (mMenuRno[0] != 1) {
+        if (mMenuRno[0] == 0) {
+            mMenuRno[0] = 1;
+            cMenuDialogFlow::RET t0 = moveDialogFlow();
+            switch (t0) {
+                case cMenuDialogFlow::RET_DLG_SET_DLG:
+                {
+                    cMenuDialogFlow* t1 = getDialogFlow();
+                    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 402u);
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                    t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                case cMenuDialogFlow::RET_DLG_CHOICE:
+                {
+                    if (getDialogFlow()->mChoice == 0) {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->releaseEntryBoardItemPassword();
+                        getDialogFlow()->setComWait(404);
+                        return nMenu::MENU_RET_CONTINUE;
+                    } else {
+                        return nMenu::MENU_RET_CANCEL;
+                    }
+                    break;
+                }
+                case cMenuDialogFlow::RET_DLG_SET_RESULT:
+                {
+                    cMenuDialogFlow* t4 = getDialogFlow();
+                    t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 403u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                case cMenuDialogFlow::RET_DLG_EXIT:
+                {
+                    return nMenu::MENU_RET_EXIT;
+                }
+                case cMenuDialogFlow::RET_DLG_ERROR:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                case cMenuDialogFlow::RET_DLG_NULL:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                default:
+                {
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+            }
+        } else {
+            return nMenu::MENU_RET_CONTINUE;
+        }
+    } else {
+        cMenuDialogFlow::RET t0 = moveDialogFlow();
+        switch (t0) {
+            case cMenuDialogFlow::RET_DLG_SET_DLG:
+            {
+                cMenuDialogFlow* t1 = getDialogFlow();
+                MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 402u);
+                MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            case cMenuDialogFlow::RET_DLG_CHOICE:
+            {
+                if (getDialogFlow()->mChoice == 0) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->releaseEntryBoardItemPassword();
+                    getDialogFlow()->setComWait(404);
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_SET_RESULT:
+            {
+                cMenuDialogFlow* t4 = getDialogFlow();
+                t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 403u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            case cMenuDialogFlow::RET_DLG_EXIT:
+            {
+                return nMenu::MENU_RET_EXIT;
+            }
+            case cMenuDialogFlow::RET_DLG_ERROR:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            case cMenuDialogFlow::RET_DLG_NULL:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            default:
+            {
+                return nMenu::MENU_RET_CONTINUE;
+            }
+        }
+    }
 }
 
 void cMenuReleasePassEntryBoardItem::exitMenu() {
@@ -890,18 +1052,98 @@ inline void cMenuStartEntryBoardItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuStartEntryBoardItem::DTI)->memFree(p_addr);
 }
 
-cMenuStartEntryBoardItem::~cMenuStartEntryBoardItem() {
-}
-
 void cMenuStartEntryBoardItem::initStartEntryBoardItem() {
     initMenu();
     mMenuRno[0] = 0;
     setupDialogFlow(3u);
 }
 
-__attribute__((weak)) nMenu::MENU_RET cMenuStartEntryBoardItem::moveStartEntryBoardItem() {
-    DDON_STUB("cMenuStartEntryBoardItem::moveStartEntryBoardItem")
-    return {};
+nMenu::MENU_RET cMenuStartEntryBoardItem::moveStartEntryBoardItem() {
+    moveMenu();
+    if (mMenuRno[0] != 1) {
+        if (mMenuRno[0] == 0) {
+            mMenuRno[0] = 1;
+            cMenuDialogFlow::RET t0 = moveDialogFlow();
+            switch (t0) {
+                case cMenuDialogFlow::RET_DLG_SET_DLG:
+                {
+                    cMenuDialogFlow* t1 = getDialogFlow();
+                    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 63u);
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                    t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                case cMenuDialogFlow::RET_DLG_CHOICE:
+                {
+                    if (getDialogFlow()->mChoice == 0) {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->startEntryBoardItem();
+                        getDialogFlow()->setComWait(401);
+                        return nMenu::MENU_RET_CONTINUE;
+                    } else {
+                        return nMenu::MENU_RET_CANCEL;
+                    }
+                    break;
+                }
+                case cMenuDialogFlow::RET_DLG_SET_RESULT:
+                {
+                    return nMenu::MENU_RET_SUCCESS;
+                }
+                case cMenuDialogFlow::RET_DLG_EXIT:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                case cMenuDialogFlow::RET_DLG_NULL:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                default:
+                {
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+            }
+        } else {
+            return nMenu::MENU_RET_CONTINUE;
+        }
+    } else {
+        cMenuDialogFlow::RET t0 = moveDialogFlow();
+        switch (t0) {
+            case cMenuDialogFlow::RET_DLG_SET_DLG:
+            {
+                cMenuDialogFlow* t1 = getDialogFlow();
+                MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 63u);
+                MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            case cMenuDialogFlow::RET_DLG_CHOICE:
+            {
+                if (getDialogFlow()->mChoice == 0) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->startEntryBoardItem();
+                    getDialogFlow()->setComWait(401);
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_SET_RESULT:
+            {
+                return nMenu::MENU_RET_SUCCESS;
+            }
+            case cMenuDialogFlow::RET_DLG_EXIT:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            case cMenuDialogFlow::RET_DLG_NULL:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            default:
+            {
+                return nMenu::MENU_RET_CONTINUE;
+            }
+        }
+    }
 }
 
 inline cMenuStartEntryBoardItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "nCollisionNode.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
@@ -14,6 +15,7 @@
 #include "../MT/MtGeomCapsule.h"
 #include "../MT/MtGeomCylinder.h"
 #include "../MT/MtGeomLineSegment.h"
+#include "../MT/MtGeomLineSweptSphere.h"
 #include "../MT/MtGeomOBB.h"
 #include "../MT/MtGeomSphere.h"
 #include "../MT/MtGeomTriangle.h"
@@ -22,8 +24,10 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
+#include "cDynamicBVHCollision.h"
 #include "../generated/shared/nCollisionDefine.h"
 #include "rConvexHull.h"
 #include "uModel.h"
@@ -115,8 +119,56 @@ __attribute__((weak)) void nCollision::cCollisionNode::updateBoundingAABB() {
 }
 
 __attribute__((weak)) u32 nCollision::cCollisionNode::addGeometry(MtGeomConvex* pGeomConvex, bool FlgEnableDeepCopy) {
-    DDON_STUB("nCollision::cCollisionNode::addGeometry")
-    return {};
+    unsigned int v2_3;
+    if (mpEditDTI == nullptr) {
+        v2_3 = 0xFFFFFFFF;
+    } else {
+        nCollision::cGeometry* pNewGeometry = static_cast<nCollision::cGeometry*>(mpEditDTI->newInstance());
+        if (pNewGeometry == nullptr) {
+            v2_3 = 0xFFFFFFFF;
+        } else {
+            pNewGeometry->registGeometry(pGeomConvex, FlgEnableDeepCopy);
+            u32 v0_0 = mGeometryArray.mLength;
+            unsigned int v1_3;
+            if (v0_0 == 0) {
+                v1_3 = 0;
+            } else {
+                MtObject* * p0_1 = mGeometryArray.mpArray;
+                for (unsigned int i0_3 = 0;;) {
+                    if ((*p0_1) != nullptr) {
+                        if ((i0_3 + 1u) < v0_0) {
+                            p0_1 += 1;
+                            i0_3 += 1u;
+                        } else {
+                            v1_3 = i0_3 + 1u;
+                            break;
+                        }
+                    } else {
+                        *p0_1 = static_cast<MtObject*>(pNewGeometry);
+                        v2_3 = i0_3;
+                        return v2_3;
+                    }
+                }
+            }
+            u32 t0 = mGeometryArray.mBufsiz;
+            if (v0_0 < t0) {
+                mGeometryArray.mLength = v0_0 + 1u;
+                mGeometryArray.mpArray[v0_0] = static_cast<MtObject*>(pNewGeometry);
+            } else {
+                void* t1 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memAlloc(static_cast<size_t>(t0 + 32u) * 8, 16u);
+                ::memset(t1, 0, static_cast<size_t>(t0 + 32u) * 8);
+                ::memcpy(t1, static_cast<const void*>(mGeometryArray.mpArray), static_cast<size_t>(mGeometryArray.mLength) * 8);
+                ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mGeometryArray.mpArray));
+                mGeometryArray.mpArray = static_cast<MtObject* *>(t1);
+                mGeometryArray.mBufsiz = t0 + 32u;
+                u32 t2 = mGeometryArray.mLength;
+                mGeometryArray.mLength = t2 + 1u;
+                mGeometryArray.mpArray[t2] = static_cast<MtObject*>(pNewGeometry);
+            }
+            v2_3 = v1_3;
+        }
+    }
+    return v2_3;
 }
 
 u32 nCollision::cCollisionNode::setGeometry(MtGeomConvex* pGeomConvex, u32 RegistArrayIndex, bool FlgEnableDeepCopy) {
@@ -254,6 +306,76 @@ __attribute__((weak)) MtObject* nCollision::cCollisionNode::MyDTI::newInstance()
     return nullptr;
 }
 
+const MtDTI& nCollision::cCollisionNodeGroup::getDTI() const {
+    return nCollision::cCollisionNodeGroup::DTI;
+}
+
+void* nCollision::cCollisionNodeGroup::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nCollision::cCollisionNodeGroup::DTI)->memAlloc(sz, align, ::nCollision::cCollisionNodeGroup::DTI.mID);
+}
+
+inline void nCollision::cCollisionNodeGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cCollisionNodeGroup::DTI)->memFree(p_addr);
+}
+
+nCollision::cCollisionNodeGroup::cCollisionNodeGroup() {
+    DDON_STUB("nCollision::cCollisionNodeGroup::cCollisionNodeGroup")
+    /* stub */
+}
+
+nCollision::cCollisionNodeGroup::~cCollisionNodeGroup() {
+    DDON_STUB("nCollision::cCollisionNodeGroup::~cCollisionNodeGroup")
+    /* stub */
+}
+
+void nCollision::cCollisionNodeGroup::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mAreaAABB", &mAreaAABB, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mGroupNodeArray", static_cast<MtObject*>(&mGroupNodeArray), 0u, 0u);
+}
+
+void nCollision::cCollisionNodeGroup::clearGroup() {
+    mAreaAABB.minpos.x = ::MtVector3::Max.x;
+    mAreaAABB.minpos.y = ::MtVector3::Max.y;
+    mAreaAABB.minpos.z = ::MtVector3::Max.z;
+    mAreaAABB.minpos.pad_ = 0.0f;
+    mAreaAABB.maxpos.x = ::MtVector3::Min.x;
+    mAreaAABB.maxpos.y = ::MtVector3::Min.y;
+    mAreaAABB.maxpos.z = ::MtVector3::Min.z;
+    mAreaAABB.maxpos.pad_ = 0.0f;
+    mGroupNodeArray.mLength = 0;
+}
+
+__attribute__((weak)) bool nCollision::cCollisionNodeGroup::registNode(nCollision::cCollisionNode& node) {
+    DDON_STUB("nCollision::cCollisionNodeGroup::registNode")
+    return {};
+}
+
+const MtAABB& nCollision::cCollisionNodeGroup::getBoundingAABB() const {
+    return mAreaAABB;
+}
+
+__attribute__((weak)) nCollision::cCollisionNode& nCollision::cCollisionNodeGroup::getNode(u32 NodeIndex) const {
+    DDON_STUB("nCollision::cCollisionNodeGroup::getNode")
+    __builtin_unreachable();
+}
+
+u32 nCollision::cCollisionNodeGroup::getNodeNum() const {
+    return mGroupNodeArray.mLength;
+}
+
+void nCollision::cCollisionNodeGroup::registDynamicBVHNode(cDynamicBVHCollision::Node* pDynamicBVHNode) {
+    mpDynamicBVHNode = pDynamicBVHNode;
+}
+
+inline nCollision::cCollisionNodeGroup::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nCollision::cCollisionNodeGroup::MyDTI nCollision::cCollisionNodeGroup::DTI("nCollision::cCollisionNodeGroup", &::MtObject::DTI, 96ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nCollision::cCollisionNodeGroup::MyDTI::newInstance() const {
+    DDON_STUB("nCollision::cCollisionNodeGroup::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& nCollision::cCollisionNodeObject::getDTI() const {
     return nCollision::cCollisionNodeObject::DTI;
 }
@@ -387,9 +509,12 @@ nCollision::cGeometry::~cGeometry() {
     mFlgAllocateGeometry = false;
 }
 
-__attribute__((weak)) void nCollision::cGeometry::createProperty(MtPropertyList& s) {
-    DDON_STUB("nCollision::cGeometry::createProperty")
-    /* stub */
+void nCollision::cGeometry::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "Type", reinterpret_cast<MT_MFUNC>(&::nCollision::cGeometry::getGeometryType), reinterpret_cast<MT_MFUNC>(&::nCollision::cGeometry::registGeometryByType), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "Active", &mFlgActive, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "LocalAllocate", &mFlgAllocateGeometry, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "GeometryAABB", &mGeometryBoundingAABB, 8192u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_CLASSREF, "Geometry", reinterpret_cast<MT_MFUNC>(&::nCollision::cGeometry::getRegistGeometry), reinterpret_cast<MT_MFUNC>(&::nCollision::cGeometry::registGeometryForUI), 132u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) bool nCollision::cGeometry::load(MtDataReader& r, MtStream& in) {
@@ -597,6 +722,10 @@ const MtDTI& nCollision::cMotionSequenceSupport::getDTI() const {
     return nCollision::cMotionSequenceSupport::DTI;
 }
 
+inline void* nCollision::cMotionSequenceSupport::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nCollision::cMotionSequenceSupport::DTI)->memAlloc(sz, align, ::nCollision::cMotionSequenceSupport::DTI.mID);
+}
+
 inline void nCollision::cMotionSequenceSupport::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nCollision::cMotionSequenceSupport::DTI)->memFree(p_addr);
 }
@@ -604,18 +733,24 @@ inline void nCollision::cMotionSequenceSupport::operator delete(void* p_addr) {
 nCollision::cMotionSequenceSupport::~cMotionSequenceSupport() {
 }
 
-__attribute__((weak)) void nCollision::cMotionSequenceSupport::createProperty(MtPropertyList& s) {
-    DDON_STUB("nCollision::cMotionSequenceSupport::createProperty")
-    /* stub */
+void nCollision::cMotionSequenceSupport::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mFlgActive", &mFlgActive, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Rule", &mBitCheckRule, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "MotionListNo", &mTargetMotionListIndex, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SequencePageNo", &mTargetMotionSequencePageNo, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mTargetSequenceBit[Hex]", &mTargetSequenceBit, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mTargetSequenceBit[Bit]", &mTargetSequenceBit, 2u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mNowSequenceBit", &mNowSequenceBit, 2u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mTargetBeforeMotionNo", &mTargetBeforeMotionNo, 2u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mTargetBeforeMotionFrame", &mTargetBeforeMotionFrame, 2u, 0u);
 }
 
 inline nCollision::cMotionSequenceSupport::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nCollision::cMotionSequenceSupport::MyDTI nCollision::cMotionSequenceSupport::DTI("nCollision::cMotionSequenceSupport", &::MtObject::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCollision::cMotionSequenceSupport::MyDTI::newInstance() const {
-    DDON_STUB("nCollision::cMotionSequenceSupport::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCollision::cMotionSequenceSupport::MyDTI::newInstance() const {
+    return new (16u) ::nCollision::cMotionSequenceSupport;
 }
 
 const MtDTI& nCollision::cObjectBase::getDTI() const {
@@ -629,9 +764,8 @@ inline void nCollision::cObjectBase::operator delete(void* p_addr) {
 nCollision::cObjectBase::~cObjectBase() {
 }
 
-__attribute__((weak)) void nCollision::cObjectBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("nCollision::cObjectBase::createProperty")
-    /* stub */
+void nCollision::cObjectBase::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "Active", &mFlgActive, 0u, 0u);
 }
 
 bool nCollision::cObjectBase::load(MtDataReader& r, MtStream& in) {

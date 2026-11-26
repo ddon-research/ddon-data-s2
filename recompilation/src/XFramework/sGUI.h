@@ -19,8 +19,6 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 class cDraw;
-class cGUIClanExecutor;
-class cGUIContentsExecutor;
 class cGUIFontFilter;
 class cGUIMessageAnalyzer;
 class cGUIObjMessage;
@@ -41,10 +39,13 @@ class rGUIIconInfo;
 class rItemList;
 class uCharacterEdit;
 class uGUI;
+class uGUIBrowserBG;
 class uGUICharacterEditPopCard;
-class uGUIGameMenu;
+class uGUIGPConfirm;
+class uGUIGPShop;
 class uGUIJobSelect;
 class uGUIMap;
+class uGUIMapMini;
 class uGUIRetry;
 
 // Declarations
@@ -62,18 +63,19 @@ using u32 = unsigned int;
 
 class sGUI : public cSystem
 {
-    friend class cGUIClanExecutor;
-    friend class cGUIContentsExecutor;
     friend class cGUIMessageAnalyzer;
     friend class cGUIObjMessage;
     friend class cGUIObjPolygon;
     friend class cGUIObjTexture;
     friend class rItemList;
     friend class uCharacterEdit;
+    friend class uGUIBrowserBG;
     friend class uGUICharacterEditPopCard;
-    friend class uGUIGameMenu;
+    friend class uGUIGPConfirm;
+    friend class uGUIGPShop;
     friend class uGUIJobSelect;
     friend class uGUIMap;
+    friend class uGUIMapMini;
     friend class uGUIRetry;
 public:
     class MyDTI;
@@ -279,6 +281,13 @@ inline void* sGUI::operator new(size_t sz, void* p_addr) {
 
 inline sGUI* sGUI::getInstance() {
     return ::sGUI::mpInstance;
+}
+
+inline const nGUI::CLASS_INFO* sGUI::getObjectClassInfo(const u32 dtiId) const {
+    return getClassInfo(mpObjectClassInfo, dtiId);
+}
+inline const nGUI::CLASS_INFO* sGUI::getInstanceClassInfo(const u32 dtiId) const {
+    return getClassInfo(mpInstanceClassInfo, dtiId);
 }
 
 inline u32 sGUI::getLanguageSettingNum() const {

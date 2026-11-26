@@ -10,6 +10,7 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -21,6 +22,7 @@
 #include "nDrawResource.h"
 #include "nDrawTexture.h"
 #include "nDrawVertexBuffer.h"
+#include "rDeformWeightMap.h"
 #include "rModel.h"
 #include "sCollision.h"
 #include "sMain.h"
@@ -80,9 +82,77 @@ MtUI* uSimSoftBody::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uSimSoftBody::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSimSoftBody::createProperty")
-    /* stub */
+void uSimSoftBody::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpTargetUnit", reinterpret_cast<MtObject* *>(&mpTargetUnit), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRecalcNormal", &mRecalcNormal, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnableVTF", &mEnableVTF, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnableR2VB", &mEnableR2VB, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGrassWind", &mGrassWind, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDetailedWind", &mDetailedWind, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPseudoWind", &mPseudoWind, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindScalePoint", &mWindScalePoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindScaleDirection", &mWindScaleDirection, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindGroupMask", &mWindGroupMask, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbRayDirection0", &mSbRayDirection0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbRayStartPos0", &mSbRayStartPos0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbRayRadius0", &mSbRayRadius0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbRayPower0", &mSbRayPower0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbRayAttenuator0", &mSbRayAttenuator0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbRayDirection1", &mSbRayDirection1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbRayStartPos1", &mSbRayStartPos1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbRayRadius1", &mSbRayRadius1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbRayPower1", &mSbRayPower1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbRayAttenuator1", &mSbRayAttenuator1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColTest", &mColTest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxForce", &mMaxForce, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColMode", &mColMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlowSpPos", &mBlowSpPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlowSpRad", &mBlowSpRad, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSphereFriction", &mSphereFriction, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNCollision", &mNCollision, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNCGlobalWeight", &mNCGlobalWeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mImageSpaceCollision", &mImageSpaceCollision, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpISC", reinterpret_cast<MT_MFUNC>(&::uSimSoftBody::getUnitISC), reinterpret_cast<MT_MFUNC>(&::uSimSoftBody::setUnitISC), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mApproxScrCollision", &mApproxScrCollision, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScrCollision", &mScrCollision, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbcType", &mSbcType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSbcFilter", &mSbcFilter, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mColliderCollision", reinterpret_cast<MT_MFUNC>(&::uSimSoftBody::getColliderCollision), reinterpret_cast<MT_MFUNC>(&::uSimSoftBody::setColliderCollision), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpColliderNode", reinterpret_cast<MtObject* *>(&mpColliderNode), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColliderFilter", &mColliderFilter, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColliderType", &mColliderType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVtxColSize", &mVtxColSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAvoidZFight", &mAvoidZFight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResWeightMap", "resource", reinterpret_cast<MT_MFUNC>(&::uSimSoftBody::getDeformWeightMap), reinterpret_cast<MT_MFUNC>(&::uSimSoftBody::setDeformWeightMap), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mSoundTrace", &mSoundTrace, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDevelopDrawScale", &mDevelopDrawScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDevelopDrawOffset", &mDevelopDrawOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResSPS", "resource", reinterpret_cast<MT_MFUNC>(&::uSimSoftBody::getSPS), reinterpret_cast<MT_MFUNC>(&::uSimSoftBody::setSPS), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mSoundThreashold", &mSoundThreashold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Rebuild Skinning Data", static_cast<MT_MFUNC>(&::uSimSoftBody::evRebuildSkinningData), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Stop", static_cast<MT_MFUNC>(&::uSimSoftBody::evButtonStopSimulation), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Start", static_cast<MT_MFUNC>(&::uSimSoftBody::evButtonStartSimulation), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Simulation", &mSimON, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResetRestart", &mResetRestart, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSimCulling", &mSimCulling, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Sim TimeStep", &mTimeStep, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAlpha", &mAlpha, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxIterate", &mMaxIterate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGravity", &mGravity.x, 32u, 3u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeightOffset", &mWeightOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDbDisp", &mIsDbDisp, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSimState", &mSimState, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWorldCoeffTrans", &mWorldCoeffTrans, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWorldCoeffRot", &mWorldCoeffRot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "BaseJointNo", &mBaseJointNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLocalOnly", &mLocalOnly, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTexDepthNorm[0]", reinterpret_cast<MtObject* *>(&mpTexDepthNorm[0]), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTexDepthNorm[1]", reinterpret_cast<MtObject* *>(&mpTexDepthNorm[1]), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTexColTerrain[0]", reinterpret_cast<MtObject* *>(&mpTexColTerrain[0]), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseLOD", &mUseLOD, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUse16bit", &mUse16bit, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUse8Weight", &mUse8Weight, 0u, 0u);
+    this->cUnit::createProperty(s);
 }
 
 void uSimSoftBody::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
@@ -202,9 +272,21 @@ __attribute__((weak)) void uSimSoftBody::createApproxScrCollisionGPU(cDraw* pdra
     /* stub */
 }
 
-__attribute__((weak)) void uSimSoftBody::setTargetUnit(uModel* pTU) {
-    DDON_STUB("uSimSoftBody::setTargetUnit")
-    /* stub */
+void uSimSoftBody::setTargetUnit(uModel* pTU) {
+    if (pTU->mpModel == nullptr) {
+        return;
+    }
+    if ((pTU->mpModel->mAttr & 16u) == 0) {
+        return;
+    }
+    if (mpResWeightMap == nullptr) {
+        return;
+    }
+    if ((mpResWeightMap->mAttr & 16u) == 0) {
+        return;
+    }
+    mpTargetUnit = pTU;
+    createSimData();
 }
 
 void uSimSoftBody::restartSimulation(u32 loopNum) {
@@ -328,9 +410,8 @@ const MtVector3& uSimSoftBody::getTargetPos() const {
     return mpTargetUnit->mPos;
 }
 
-__attribute__((weak)) MtVector3 uSimSoftBody::calcTargetBaseCenterPos() {
-    DDON_STUB("uSimSoftBody::calcTargetBaseCenterPos")
-    __builtin_unreachable();
+MtVector3 uSimSoftBody::calcTargetBaseCenterPos() {
+    return mpTargetUnit->calcBaseCenterPos();
 }
 
 u32 uSimSoftBody::getTargetLODLevel(s32 dist) {
@@ -356,8 +437,8 @@ __attribute__((weak)) const MtMatrix uSimSoftBody::getTargetJointLocalMatrix(s32
 
 s32 uSimSoftBody::getTargetJointIndexFromNo(s32 no) const {
     if (no > -1) {
-        if (static_cast<int>(mpTargetUnit->mJointNum) >= static_cast<int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpTargetUnit) + 4576)) + static_cast<unsigned char>(no)) + 0))) {
-            return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpTargetUnit) + 4576)) + static_cast<unsigned char>(no)) + 0);
+        if (static_cast<int>(mpTargetUnit->mJointNum) >= static_cast<int>(mpTargetUnit->mJointTable[static_cast<unsigned char>(no)])) {
+            return mpTargetUnit->mJointTable[static_cast<unsigned char>(no)];
         }
     }
     return -1;

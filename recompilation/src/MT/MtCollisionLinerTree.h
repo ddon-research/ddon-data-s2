@@ -66,6 +66,7 @@ namespace MtCollisionUtil {
     public:
         class cGridInfo
         {
+            friend class MtCollisionUtil::MtLinerTree;
         public:
             cGridInfo();
             ~cGridInfo();
@@ -287,4 +288,8 @@ inline void* MtCollisionUtil::MtLinerTree::operator new(size_t sz, void* p_addr)
 
 inline void* MtCollisionUtil::MtLinerTree::cRegistReserveInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline MtCollisionUtil::MtLinerTree::cRegistReserveInfo::cRegistReserveInfo() {
+    this->mpTreeTargetElemArray = nullptr;
 }

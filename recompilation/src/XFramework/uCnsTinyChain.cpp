@@ -46,9 +46,37 @@ uCnsTinyChain::~uCnsTinyChain() {
     /* stub */
 }
 
-__attribute__((weak)) void uCnsTinyChain::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsTinyChain::createProperty")
-    /* stub */
+void uCnsTinyChain::createProperty(MtPropertyList& s) {
+    this->uCnsGroup::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttr", &mAttr, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGravityScaling", &mGravityScaling, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGlobalDamping", &mGlobalDamping, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGlobalTransForceCoef", &mGlobalTransForceCoef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpringScaling", &mSpringScaling, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindScaling", &mWindScaling, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReflectScaling", &mReflectScaling, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroundLevel", &mGroundLevel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Restart", static_cast<MT_MFUNC>(&::uCnsTinyChain::restart), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Warp", static_cast<MT_MFUNC>(&::uCnsTinyChain::warpChain), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Reset Param", static_cast<MT_MFUNC>(&::uCnsTinyChain::resetChainParam), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStabilizeNum", &mStabilizeNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStepTime", &mStepTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSolveStrNum", &mSolveStrNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSolveAngNum", &mSolveAngNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSolveSelColNum", &mSolveSelColNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSolveChnColNum", &mSolveChnColNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSolveMdlColNum", &mSolveMdlColNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSolveScrColNum", &mSolveScrColNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Reset Depned", static_cast<MT_MFUNC>(&::uCnsTinyChain::reset), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpModelCol", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::getModelCol), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::setModelCol), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpModelColRes", "resource", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::getModelColRes), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::setModelColRes), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpTransParent", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::getTransParent), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::setTransParent), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mTransParentMat", &mTransParentMat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTransParentBlend", &mTransParentBlend, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLocalWind", &mLocalWind, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindNum", &mWindNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindCycle", &mWindCycle[0], 32u, 5u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindAmp", &mWindAmp[0], 32u, 5u);
 }
 
 MtUI* uCnsTinyChain::createUI(MtProperty& prop) {
@@ -203,9 +231,30 @@ void uCnsTinyChain::setModelCol(uModel* pModel) {
 
 static auto ddon_emit_0x01b681d0 __attribute__((used)) = &uCnsTinyChain::getModelCol;
 
-__attribute__((weak)) void uCnsTinyChain::setTransParent(uModel* parent_model_ptr) {
-    DDON_STUB("uCnsTinyChain::setTransParent")
-    /* stub */
+void uCnsTinyChain::setTransParent(uModel* parent_model_ptr) {
+    if (parent_model_ptr == mpTransParent) {
+        return;
+    }
+    mpTransParent = parent_model_ptr;
+    if (parent_model_ptr == nullptr) {
+        return;
+    }
+    mTransParentMatOld.m[0].x = parent_model_ptr->mWmat.m[0].x;
+    mTransParentMatOld.m[0].y = parent_model_ptr->mWmat.m[0].y;
+    mTransParentMatOld.m[0].z = parent_model_ptr->mWmat.m[0].z;
+    mTransParentMatOld.m[0].w = parent_model_ptr->mWmat.m[0].w;
+    mTransParentMatOld.m[1].x = parent_model_ptr->mWmat.m[1].x;
+    mTransParentMatOld.m[1].y = parent_model_ptr->mWmat.m[1].y;
+    mTransParentMatOld.m[1].z = parent_model_ptr->mWmat.m[1].z;
+    mTransParentMatOld.m[1].w = parent_model_ptr->mWmat.m[1].w;
+    mTransParentMatOld.m[2].x = parent_model_ptr->mWmat.m[2].x;
+    mTransParentMatOld.m[2].y = parent_model_ptr->mWmat.m[2].y;
+    mTransParentMatOld.m[2].z = parent_model_ptr->mWmat.m[2].z;
+    mTransParentMatOld.m[2].w = parent_model_ptr->mWmat.m[2].w;
+    mTransParentMatOld.m[3].x = parent_model_ptr->mWmat.m[3].x;
+    mTransParentMatOld.m[3].y = parent_model_ptr->mWmat.m[3].y;
+    mTransParentMatOld.m[3].z = parent_model_ptr->mWmat.m[3].z;
+    mTransParentMatOld.m[3].w = parent_model_ptr->mWmat.m[3].w;
 }
 
 static auto ddon_emit_0x01b681f0 __attribute__((used)) = &uCnsTinyChain::getTransParent;
@@ -235,9 +284,32 @@ __attribute__((weak)) const MtOBB uCnsTinyChain::getOBB(const nChain::ColInfo& d
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void uCnsTinyChain::registCollider() {
-    DDON_STUB("uCnsTinyChain::registCollider")
-    /* stub */
+void uCnsTinyChain::registCollider() {
+    if (mGroupNum != 0) {
+        u32 v0_0 = mGroupNum;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            cChainGroup* t0 = mppChainGroups[i0_3];
+            if (!t0->mIsReady) {
+                v1_0 = v0_0;
+            } else {
+                if ((t0->mAttr & 32u) == 0) {
+                    v1_0 = v0_0;
+                } else {
+                    t0->updateColliderNode();
+                    (sCollision::mpInstance)->mCollider.sCollision::Collider::entryNode(&t0->mColNode, t0->mColType);
+                    v1_0 = mGroupNum;
+                }
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uCnsTinyChain::callBackObjectCollision(sCollision::CALLBACK_MODE Mode, sCollision::Node* pThisNode, sCollision::Node* pNode, MtContact* pContact, uintptr Param, sCollision::TriangleInfo* pTriInfo, u32 HitGeomThisID, u32 HitGeomID, bool Hited) {
@@ -265,9 +337,21 @@ inline void uCnsTinyChain::cChainGroup::operator delete(void* p_addr) {
 uCnsTinyChain::cChainGroup::~cChainGroup() {
 }
 
-__attribute__((weak)) void uCnsTinyChain::cChainGroup::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsTinyChain::cChainGroup::createProperty")
-    /* stub */
+void uCnsTinyChain::cChainGroup::createProperty(MtPropertyList& s) {
+    this->uCnsGroup::cGroup::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "AttrCollision", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainGroup::getAttrCollision), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainGroup::setAttrCollision), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "AttrForce", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainGroup::getAttrForce), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainGroup::setAttrForce), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mGravity", &mGravity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDamping", &mDamping, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTransForceCoef", &mTransForceCoef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFrictionCoef", &mFrictionCoef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReflectCoef", &mReflectCoef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpringCoef", &mSpringCoef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindCoef", &mWindCoef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLimitForce", &mLimitForce, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColAttribute", &mColAttribute, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColGroup", &mColGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColType", &mColType, 0u, 0u);
 }
 
 MtUI* uCnsTinyChain::cChainGroup::createUI(MtProperty& prop) {
@@ -429,9 +513,23 @@ uCnsTinyChain::cChainNode::cChainNode(uCnsTinyChain::cChainGroup* pChainGroup, u
 uCnsTinyChain::cChainNode::~cChainNode() {
 }
 
-__attribute__((weak)) void uCnsTinyChain::cChainNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsTinyChain::cChainNode::createProperty")
-    /* stub */
+void uCnsTinyChain::cChainNode::createProperty(MtPropertyList& s) {
+    this->uCnsGroup::cNode::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mAttach", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::getAttach), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::setAttach), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mRotMode", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::getRotMode), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::setRotMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mRefJntNo", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::getRefJointNo), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::setRefJointNo), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mMat", &mMat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mAttr", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::getAttr), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::setAttr), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mMass", &mMass, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mElasticCoef", &mElasticCoef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWindCoef", &mWindCoef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ShapeObject", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::getShapeObject), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::setShapeObject), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ShapeScroll", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::getShapeScroll), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::setShapeScroll), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mR", &mR, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mAngleMode", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::getAngleMode), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::setAngleMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mAngleLimit", reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::getAngleLimit), reinterpret_cast<MT_MFUNC>(&::uCnsTinyChain::cChainNode::setAngleLimit), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mAngleAxis", &mAngleAxis, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJointScale", &mJointScale, 1u, 0u);
 }
 
 MtUI* uCnsTinyChain::cChainNode::createUI(MtProperty& prop) {

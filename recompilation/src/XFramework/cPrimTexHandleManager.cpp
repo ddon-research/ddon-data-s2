@@ -4,6 +4,8 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cPrimObj.h"
 #ifndef DDON_STUB
@@ -35,9 +37,8 @@ MtUI* cPrimTexHandleManager::createUI(MtProperty& prop) {
     return nullptr;
 }
 
-__attribute__((weak)) void cPrimTexHandleManager::createProperty(MtPropertyList& prop_list) {
-    DDON_STUB("cPrimTexHandleManager::createProperty")
-    /* stub */
+void cPrimTexHandleManager::createProperty(MtPropertyList& prop_list) {
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mTextureMax", &mTextureMax, 3u, 0u);
 }
 
 inline cPrimTexHandleManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -4,6 +4,8 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cDraw.h"
 #include "cEffect.h"
@@ -245,9 +247,11 @@ __attribute__((weak)) void uMultiFilter::draw(cDraw* pDraw) {
     /* stub */
 }
 
-__attribute__((weak)) void uMultiFilter::createProperty(MtPropertyList& s) {
-    DDON_STUB("uMultiFilter::createProperty")
-    /* stub */
+void uMultiFilter::createProperty(MtPropertyList& s) {
+    this->uFilter::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mDrawNum", &mDrawNum, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDrawMax", &mDrawMax, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEntry", &mEntry, 3u, 0u);
 }
 
 void uMultiFilter::setDrawNum(u32 DrawNum) {

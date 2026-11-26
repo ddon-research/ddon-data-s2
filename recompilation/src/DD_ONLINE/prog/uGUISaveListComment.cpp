@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <stdio.h>
 #include "uGUISaveListComment.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -216,9 +217,23 @@ void uGUISaveListComment::updateCnacelDialog() {
     }
 }
 
-__attribute__((weak)) void uGUISaveListComment::updateInputComment() {
-    DDON_STUB("uGUISaveListComment::updateInputComment")
-    /* stub */
+void uGUISaveListComment::updateInputComment() {
+    if (mRoutine == 0) {
+        mRefTextBox.uGUIBase::cReferenceUITextBox::setFocus(true);
+        mRefTextBox.wakeupKeyboard(2, &mSaveDataHeader.comment[0]);
+        mRoutine = mRoutine + 1u;
+    } else {
+        if (mRoutine == 1) {
+            if (mRefTextBox.isEndKeyboard()) {
+                snprintf(&mSaveDataHeader.comment[0], 128ul, "%s", mRefTextBox.mMsg.ptr());
+                mRefTextBox.closeKeyboard(true);
+                mUpdateFlowNo = UPDATE_WAIT;
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUISaveListComment::updateWait);
+                mRoutine = 0;
+            }
+        }
+    }
+    mRefTextBox.uGUIBase::cReferenceUITextBox::update();
 }
 
 void uGUISaveListComment::updateExit() {

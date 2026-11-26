@@ -13,6 +13,7 @@ class MtAllocator;
 class MtDTI;
 class MtString;
 class sCaplinkManager;
+class uGUICaplinkProfile;
 
 // Declarations
 namespace nCaplink { class ContextListener; }
@@ -29,6 +30,7 @@ namespace nCaplink {
     class ContextListener : public ::MtObject
     {
         friend class ::sCaplinkManager;
+        friend class ::uGUICaplinkProfile;
     public:
         enum
         {

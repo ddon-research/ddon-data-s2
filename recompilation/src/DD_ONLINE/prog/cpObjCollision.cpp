@@ -578,15 +578,15 @@ void cpObjCollisionBase::killNode(cHitNode* pNode) {
 }
 
 void cpObjCollisionBase::killNodeAll() {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 616)) != 0) {
-        unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 616);
-        for (unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 632);;) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) != 0) {
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) + 189) = 1;
+    if (mNodeArray.mLength != 0) {
+        u32 v0_0 = mNodeArray.mLength;
+        for (MtObject* * p0_1 = mNodeArray.mpArray;;) {
+            if ((*p0_1) != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*p0_1) + 189) = 1;
             }
             if ((v0_0 - 1u) != 0) {
                 v0_0 += 0xFFFFFFFFu;
-                v0_1 += 8ul;
+                p0_1 += 1;
             } else {
                 break;
             }
@@ -606,17 +606,17 @@ __attribute__((weak)) void cpObjCollisionBase::callbackSequenceRelease(cpSequenc
 
 void cpObjCollisionBase::callbackSetMotion(u32 blend, u32 mot_no, f32 hokan, f32 frame, f32 speed, u32 attr) {
     if (blend == 0) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 616)) != 0) {
-            unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 616);
-            for (unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 632);;) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) != 0) {
-                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) + 188)) != 0) {
-                        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) + 189) = 1;
+        if (mNodeArray.mLength != 0) {
+            u32 v0_0 = mNodeArray.mLength;
+            for (MtObject* * p0_1 = mNodeArray.mpArray;;) {
+                if ((*p0_1) != nullptr) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*p0_1) + 188)) != 0) {
+                        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*p0_1) + 189) = 1;
                     }
                 }
                 if ((v0_0 - 1u) != 0) {
                     v0_0 += 0xFFFFFFFFu;
-                    v0_1 += 8ul;
+                    p0_1 += 1;
                 } else {
                     break;
                 }
@@ -787,17 +787,17 @@ __attribute__((weak)) void cpObjCollisionBase::syncCache() {
 }
 
 bool cpObjCollisionBase::isCollisionGeomActive(u32 regionNo) const {
-    u32 nodeNum = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 616);
+    u32 nodeNum = mNodeArray.mLength;
     if (nodeNum != 0) {
-        unsigned long v0_4 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 632);
+        MtObject* * v0_4 = mNodeArray.mpArray;
         u32 nodeIndex = 0;
         u32 i;
         for (;;) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * 8u)) + 0)) != 0) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * 8u)) + 0)) + 160)) != 0) {
-                    u32 geomNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * 8u)) + 0)) + 88);
+            if (v0_4[nodeIndex] != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4[nodeIndex]) + 160)) != 0) {
+                    u32 geomNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[nodeIndex]) + 88);
                     if (geomNum != 0) {
-                        unsigned long v1_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * 8u)) + 0)) + 104);
+                        unsigned long v1_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4[nodeIndex]) + 104);
                         i = 0;
                         for (;;) {
                             if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_1 + static_cast<unsigned long>(i * 8u)) + 0)) != 0) {

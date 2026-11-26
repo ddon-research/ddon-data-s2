@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -37,9 +38,14 @@ MtUI* uDynamicSbc::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uDynamicSbc::createProperty(MtPropertyList& s) {
-    DDON_STUB("uDynamicSbc::createProperty")
-    /* stub */
+void uDynamicSbc::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mSbcType", reinterpret_cast<MT_MFUNC>(&::uDynamicSbc::getSbcType), reinterpret_cast<MT_MFUNC>(&::uDynamicSbc::setSbcType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mSbcGroup", reinterpret_cast<MT_MFUNC>(&::uDynamicSbc::getSbcGroup), reinterpret_cast<MT_MFUNC>(&::uDynamicSbc::setSbcGroup), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpOwner", reinterpret_cast<MT_MFUNC>(&::uDynamicSbc::getOwnerUI), reinterpret_cast<MT_MFUNC>(&::uDynamicSbc::setOwnerUI), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpStaticData", "resource", reinterpret_cast<MT_MFUNC>(&::uDynamicSbc::getStaticData), reinterpret_cast<MT_MFUNC>(&::uDynamicSbc::setStaticData), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgMultiThread", &mFlgMultiThread, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgPartsActive", &mFlgPartsActive[0], 32u, 256u);
+    this->cUnit::createProperty(s);
 }
 
 void uDynamicSbc::setup() {

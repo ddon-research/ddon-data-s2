@@ -402,6 +402,10 @@ const MtDTI& uModel::Joint::getDTI() const {
     return uModel::Joint::DTI;
 }
 
+inline void* uModel::Joint::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uModel::Joint::DTI)->memAlloc(sz, align, uModel::Joint::DTI.mID);
+}
+
 void* uModel::Joint::operator new[](size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uModel::Joint::DTI)->memAlloc(sz, align, uModel::Joint::DTI.mID);
 }
@@ -414,13 +418,32 @@ void uModel::Joint::operator delete[](void* p_addr) {
     MtMemoryAllocator::getAllocator(uModel::Joint::DTI)->memFree(p_addr);
 }
 
+inline uModel::Joint::Joint() {
+    mPreUpdate = 0;
+    mpModel = nullptr;
+    mShaderAttributes.rgba = 0;
+}
+
 uModel::Joint::~Joint() {
     mpModel = nullptr;
 }
 
-__attribute__((weak)) void uModel::Joint::createProperty(MtPropertyList& s) {
-    DDON_STUB("uModel::Joint::createProperty")
-    /* stub */
+void uModel::Joint::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mAttr", reinterpret_cast<MT_MFUNC>(&::uModel::Joint::getAttr), reinterpret_cast<MT_MFUNC>(&::uModel::Joint::setAttr), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mParent", reinterpret_cast<MT_MFUNC>(&::uModel::Joint::getParentIndex), reinterpret_cast<MT_MFUNC>(&::uModel::Joint::setParentIndex), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mSymmetry", reinterpret_cast<MT_MFUNC>(&::uModel::Joint::getSymmetryIndex), reinterpret_cast<MT_MFUNC>(&::uModel::Joint::setSymmetryIndex), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mType", reinterpret_cast<MT_MFUNC>(&::uModel::Joint::getType), reinterpret_cast<MT_MFUNC>(&::uModel::Joint::setType), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mNo", reinterpret_cast<MT_MFUNC>(&::uModel::Joint::getNo), reinterpret_cast<MT_MFUNC>(&::uModel::Joint::setNo), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "mCalcNo", reinterpret_cast<MT_MFUNC>(&::uModel::Joint::getCalcNo), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mChildNum", reinterpret_cast<MT_MFUNC>(&::uModel::Joint::getChildNum), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mLength", &mLength, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffset", &mOffset, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShaderAttributes", &mShaderAttributes, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpConstraint", reinterpret_cast<MtObject* *>(&mpConstraint), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuat", &mQuat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScale", &mScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTrans", &mTrans, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDepth", &mDepth, 0u, 0u);
 }
 
 MtUI* uModel::Joint::createUI(MtProperty& prop) {
@@ -508,9 +531,8 @@ inline uModel::Joint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 uModel::Joint::MyDTI uModel::Joint::DTI("uModel::Joint", &::MtObject::DTI, 192ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uModel::Joint::MyDTI::newInstance() const {
-    DDON_STUB("uModel::Joint::MyDTI::newInstance")
-    return nullptr;
+MtObject* uModel::Joint::MyDTI::newInstance() const {
+    return new (16u) uModel::Joint;
 }
 
 u32 uModel::Constraint::getDependentJointNum() {

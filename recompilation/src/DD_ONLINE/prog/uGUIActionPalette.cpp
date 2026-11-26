@@ -2,7 +2,6 @@
 #include <new>
 #include "uGUIActionPalette.h"
 #include "../../MT/MtAllocator.h"
-#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
@@ -70,8 +69,11 @@ inline void uGUIActionPalette::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIActionPalette::~uGUIActionPalette() {
-    DDON_STUB("uGUIActionPalette::~uGUIActionPalette")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 bool uGUIActionPalette::loadResource() {

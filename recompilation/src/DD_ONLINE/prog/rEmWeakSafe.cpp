@@ -28,10 +28,7 @@ cEmWeakSafe::cEmWeakSafe() {
     mParentJntNo = -1;
     mKeepSphereRad = 5.0f;
     mSafeJntNo = 0;
-    mOffset.x = MtVector3::Zero.x;
-    mOffset.y = MtVector3::Zero.y;
-    mOffset.z = MtVector3::Zero.z;
-    mOffset.pad_ = 0.0f;
+    mOffset = MtVector3::Zero;
 }
 
 inline cEmWeakSafe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

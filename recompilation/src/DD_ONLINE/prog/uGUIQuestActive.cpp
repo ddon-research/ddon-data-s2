@@ -14,6 +14,7 @@
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
 #include "cGUIUtility.h"
+#include "cLightQuestManager.h"
 #include "cQuestManagerBase.h"
 #include "../../XFramework/cResource.h"
 #include "nCharacterData.h"

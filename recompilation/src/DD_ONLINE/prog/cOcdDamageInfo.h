@@ -13,6 +13,7 @@
 class MtAllocator;
 class MtDTI;
 class cHitInfoAfterCommon;
+class cpOcdCtrl;
 class uHuman;
 
 // Declarations
@@ -29,6 +30,7 @@ using u32 = unsigned int;
 
 class cOcdDamageInfo : public MtObject
 {
+    friend class cpOcdCtrl;
     friend class uHuman;
 public:
     enum ELEMENT_FINAL_TYPE

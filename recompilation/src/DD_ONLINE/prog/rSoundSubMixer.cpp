@@ -151,9 +151,14 @@ __attribute__((noinline)) rSoundSubMixer::~rSoundSubMixer() {
     mFaders.mLength = 0;
 }
 
-__attribute__((weak)) void rSoundSubMixer::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundSubMixer::createProperty")
-    /* stub */
+void rSoundSubMixer::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mActive", &mActive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEQPreset", &mEQPreset[0], 32u, 9u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReverbPreset", &mReverbPreset[0], 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCurveStyle", &mCurveStyle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFaders", static_cast<MtObject*>(&mFaders), 0u, 0u);
 }
 
 MtUI* rSoundSubMixer::createUI(MtProperty& prop) {
@@ -345,8 +350,9 @@ inline rSoundSubMixer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 rSoundSubMixer::MyDTI rSoundSubMixer::DTI("rSoundSubMixer", &::cResource::DTI, 488ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rSoundSubMixer::MyDTI::newInstance() const {
-    DDON_STUB("rSoundSubMixer::MyDTI::newInstance")
-    return nullptr;
+    // workaround
+    void* memory = MtMemoryAllocator::getAllocator(rSoundSubMixer::DTI)->memAlloc(sizeof(rSoundSubMixer), 16u, rSoundSubMixer::DTI.getID());
+    return new (memory) rSoundSubMixer;
 }
 
 const MtDTI& rSoundSubMixer::Fader::getDTI() const {
@@ -378,9 +384,18 @@ rSoundSubMixer::Fader::Fader() {
 rSoundSubMixer::Fader::~Fader() {
 }
 
-__attribute__((weak)) void rSoundSubMixer::Fader::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundSubMixer::Fader::createProperty")
-    /* stub */
+void rSoundSubMixer::Fader::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mFaderID", &mFaderID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSendID", &mSendID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVol", &mVol, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAbs", &mAbs, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCurve", &mCurve, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTransitionTime", &mTransitionTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSustainTime", &mSustainTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReleaseTime", &mReleaseTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEqNo", &mEqNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectNo", &mEffectNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSetFlag", &mSetFlag, 8192u, 0u);
 }
 
 MtUI* rSoundSubMixer::Fader::createUI(MtProperty& prop) {

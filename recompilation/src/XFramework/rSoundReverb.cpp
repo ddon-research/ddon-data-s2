@@ -7,6 +7,7 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "cResource.h"
@@ -47,9 +48,9 @@ MT_CTSTR rSoundReverb::getExt() const {
     return "revr";
 }
 
-__attribute__((weak)) void rSoundReverb::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundReverb::createProperty")
-    /* stub */
+void rSoundReverb::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mReverb", static_cast<MtObject*>(&mReverb), 0u, 0u);
+    this->cResource::createProperty(s);
 }
 
 __attribute__((weak)) bool rSoundReverb::load(MtStream& in) {
@@ -180,21 +181,36 @@ inline void rSoundReverb::cSoundReverbData::operator delete(void* p_addr) {
 rSoundReverb::cSoundReverbData::~cSoundReverbData() {
 }
 
-__attribute__((weak)) void rSoundReverb::cSoundReverbData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundReverb::cSoundReverbData::createProperty")
-    /* stub */
+void rSoundReverb::cSoundReverbData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOutputLevel", &mOutputLevel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRoom", &mReverbData.mRoom, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRoomHF", &mReverbData.mRoomHF, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDecayTime", &mReverbData.mDecayTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDecayHFRatio", &mReverbData.mDecayHFRatio, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReflections", &mReverbData.mReflections, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReflectionsDelay", &mReverbData.mReflectionsDelay, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReverb", &mReverbData.mReverb, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReverbDelay", &mReverbData.mReverbDelay, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDiffusion", &mReverbData.mDiffusion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDensity", &mReverbData.mDensity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHFReference", &mReverbData.mHFReference, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEarlyReflectionScaler", &mReverbData.mEarlyReflectionScaler, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLFreference", &mReverbData.mLFreference, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRoomLF", &mReverbData.mRoomLF, 0u, 0u);
 }
 
 MtUI* rSoundReverb::cSoundReverbData::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void rSoundReverb::cSoundReverbData::copy(sSound::ReverbParameter* p_src, u32 id, f32 outputLevel, const MtString& com) {
-    if (p_src != nullptr) {
-        mId = id;
-        mOutputLevel = outputLevel;
-        mReverbData = *p_src;
+void rSoundReverb::cSoundReverbData::copy(sSound::ReverbParameter* p_src, u32 id, f32 outputLevel, const MtString& com) {
+    if (p_src == nullptr) {
+        return;
     }
+    mId = id;
+    mOutputLevel = outputLevel;
+    mReverbData = *p_src;
 }
 
 inline rSoundReverb::cSoundReverbData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

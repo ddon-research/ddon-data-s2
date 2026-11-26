@@ -33,9 +33,31 @@ s16 rFieldAreaAdjoinList::getFieldAreaId() const {
     return mFieldAreaId;
 }
 
-__attribute__((weak)) rFieldAreaAdjoinList::cAdjoinInfo* rFieldAreaAdjoinList::getNextStageAdjoinInfo(s32 destinationStageNo, u8 priority) const {
-    DDON_STUB("rFieldAreaAdjoinList::getNextStageAdjoinInfo")
-    return nullptr;
+rFieldAreaAdjoinList::cAdjoinInfo* rFieldAreaAdjoinList::getNextStageAdjoinInfo(s32 destinationStageNo, u8 priority) const {
+    u32 v0_4 = mArrayNum;
+    cAdjoinInfo* v3_0;
+    if (v0_4 == 0) {
+        v3_0 = nullptr;
+    } else {
+        cAdjoinInfo* v0_3 = mpArray;
+        u32 i = 0;
+        for (cAdjoinInfo* p0_2 = v0_3;;) {
+            if (destinationStageNo == static_cast<int>(p0_2->mDestinationStageNo)) {
+                if (p0_2->mPriority == priority) {
+                    v3_0 = &v0_3[i];
+                    return v3_0;
+                }
+            }
+            if ((i + 1u) < v0_4) {
+                i = i + 1u;
+                p0_2 += 1;
+            } else {
+                break;
+            }
+        }
+        v3_0 = nullptr;
+    }
+    return v3_0;
 }
 
 __attribute__((weak)) u32 rFieldAreaAdjoinList::getNextStageAdjoinInfoNum(s32 destinationStageNo) const {
@@ -170,9 +192,11 @@ rFieldAreaAdjoinList::cAdjoinInfo::~cAdjoinInfo() {
     mPositions.mLength = 0;
 }
 
-__attribute__((weak)) void rFieldAreaAdjoinList::cAdjoinInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rFieldAreaAdjoinList::cAdjoinInfo::createProperty")
-    /* stub */
+void rFieldAreaAdjoinList::cAdjoinInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mDestinationStageNo", &mDestinationStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNextStageNo", &mNextStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPositions", static_cast<MtObject*>(&mPositions), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
 }
 
 inline rFieldAreaAdjoinList::cAdjoinInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -191,9 +215,10 @@ inline void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::operator delete(void* p
     MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::createProperty(MtPropertyList& s) {
-    DDON_STUB("rFieldAreaAdjoinList::cAdjoinInfo::cVector3::createProperty")
-    /* stub */
+void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlagId", &mFlagId, 0u, 0u);
 }
 
 inline rFieldAreaAdjoinList::cAdjoinInfo::cVector3::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

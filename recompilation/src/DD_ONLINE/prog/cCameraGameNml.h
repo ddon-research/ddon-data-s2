@@ -196,8 +196,16 @@ inline void* cCamExParamNml::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cCamExParamNml::cCamExParamNml() : mIsResetAngle(false), mIsResetAngleDetail(false), mIsTargetFlipX(false), mIsTargetOwner(false), mDisableLargeCorrect(false), mMoveVecRate(0.0f), mMoveVecInterRate(0.1f), mMoveVecCtrlStopFrame(0.18f), mMoveVecRateV(0.0f), mMoveVecInterRateV(0.1f), mMoveVecCtrlStopFrameV(15.0f), mMoveVecVOffset(-0.13f), mMoveVecVOffsetTwn(-0.13f), mMoveVecVOffsetDgn(-0.13f), mMoveVecVScaleUp(1.0f), mMoveVecVScaleDown(1.0f), mCtrlSpeedRateX(1.0f), mTargetMarginRateH(1.0f), mTargetMarginRateV(1.0f), mTargetOffsetH(0.0f), mTargetOffsetV(0.0f), mTargetInterRateX(1.0f), mTargetInterRateY(1.0f), mRotateXOffsetUp(0.0f), mRotateXOffsetUpY(0.0f), mRotateXOffsetDown(0.0f), mRotateXOffsetDownY(0.0f), mResetDetailAngX(0.0f), mResetDetailAngY(0.0f) {
+    this->::cCamExParam::mType = static_cast<nCameraGame::CAMERA_TYPE>(0);
+}
+
 inline void* cCamExParamNml2::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cCamExParamNml2::cCamExParamNml2() {
+    this->::cCamExParam::mType = static_cast<nCameraGame::CAMERA_TYPE>(16);
 }
 
 inline void* cCamImpNml::operator new(size_t sz, void* p_addr) {

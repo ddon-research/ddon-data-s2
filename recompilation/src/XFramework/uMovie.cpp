@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uMovie.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtColor.h"
@@ -8,6 +9,7 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -33,13 +35,38 @@ const MtDTI& uMovie::getDTI() const {
     return uMovie::DTI;
 }
 
+inline void* uMovie::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uMovie::DTI)->memAlloc(sz, align, uMovie::DTI.mID);
+}
+
 inline void uMovie::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uMovie::DTI)->memFree(p_addr);
 }
 
 uMovie::uMovie() {
-    DDON_STUB("uMovie::uMovie")
-    /* stub */
+    mDrawMode = 1;
+    mStatus = EMPTY;
+    mSoundThread = nullptr;
+    mpMovieTexture = nullptr;
+    mpNextMovie = nullptr;
+    mpMovie = nullptr;
+    mPlayer = nullptr;
+    mDrawFrame = 0xFFFFFFFF;
+    mMovieSize.w = static_cast<s32>(static_cast<unsigned int>(MtSize::Zero.wh));
+    mMovieSize.h = static_cast<s32>(MtSize::Zero.wh >> 32);
+    mIsPlayable = false;
+    mIsLoop = false;
+    mIsVideoBufferingOver = false;
+    mMovieDuration = 0;
+    mClear = true;
+    mAudioChannels = 0;
+    mAudioSampleRate = 0;
+    memset(static_cast<void*>(&mDrawIndex), 0, 338ul);
+    mVolume = 127;
+    mCategory = 1;
+    mAudioRestricted = false;
+    mPresentMode = 0;
+    memset(static_cast<void*>(&mMoviePlayTime), 0, 193ul);
 }
 
 __attribute__((noinline)) uMovie::~uMovie() {
@@ -57,9 +84,32 @@ __attribute__((weak)) void uMovie::draw(cDraw* pdraw) {
     /* stub */
 }
 
-__attribute__((weak)) void uMovie::createProperty(MtPropertyList& s) {
-    DDON_STUB("uMovie::createProperty")
-    /* stub */
+void uMovie::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mDrawIndex", &mDrawIndex, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDecodeIndex", &mDecodeIndex, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPresentMode", &mPresentMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsLoop", &mIsLoop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAudioEnable", &mAudioEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAudioRestricted", &mAudioRestricted, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsHaveAudioStream", &mIsHaveAudioStream, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mClear", &mClear, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Movie", "resource", reinterpret_cast<MT_MFUNC>(&::uMovie::getMovie), reinterpret_cast<MT_MFUNC>(&::uMovie::setMovie), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpRenderTarget", "resource", reinterpret_cast<MT_MFUNC>(&::uMovie::getRenderTarget), reinterpret_cast<MT_MFUNC>(&::uMovie::setRenderTarget), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mMovieSize.w", &mMovieSize.w, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMovieSize.h", &mMovieSize.h, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAudioChannels", &mAudioChannels, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAudioSampleRate", &mAudioSampleRate, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDrawFrame", &mDrawFrame, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMovieDuration", &mMovieDuration, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Play", static_cast<MT_MFUNC>(&::uMovie::play), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Pause", static_cast<MT_MFUNC>(&::uMovie::pause), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Stop", static_cast<MT_MFUNC>(&::uMovie::stop), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "ShutDown", static_cast<MT_MFUNC>(&::uMovie::shutdown), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Volume", reinterpret_cast<MT_MFUNC>(&::uMovie::getVolume), reinterpret_cast<MT_MFUNC>(&::uMovie::setVolume), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Category", reinterpret_cast<MT_MFUNC>(&::uMovie::getCategory), reinterpret_cast<MT_MFUNC>(&::uMovie::setCategory), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mStatus", reinterpret_cast<MT_MFUNC>(&::uMovie::getStatus), reinterpret_cast<MT_MFUNC>(&::uMovie::setStatus), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDebug", &mIsDebug, 0u, 0u);
 }
 
 MtUI* uMovie::createUI(MtProperty& prop) {
@@ -200,9 +250,8 @@ inline uMovie::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id,
 
 uMovie::MyDTI uMovie::DTI("uMovie", &::cUnit::DTI, 712ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uMovie::MyDTI::newInstance() const {
-    DDON_STUB("uMovie::MyDTI::newInstance")
-    return nullptr;
+MtObject* uMovie::MyDTI::newInstance() const {
+    return new (16u) uMovie;
 }
 
 uMovie::soundDecode::~soundDecode() {

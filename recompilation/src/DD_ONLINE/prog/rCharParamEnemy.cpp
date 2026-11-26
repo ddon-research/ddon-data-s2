@@ -47,9 +47,10 @@ MT_CTSTR rCharParamEnemy::getExt() const {
     return "cpe";
 }
 
-__attribute__((weak)) void rCharParamEnemy::createProperty(MtPropertyList& s) {
-    DDON_STUB("rCharParamEnemy::createProperty")
-    /* stub */
+void rCharParamEnemy::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgEnemyFly", &mFlgEnemyFly, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCharParamEnemy", reinterpret_cast<MtObject* *>(&mpCharParamEnemy), 0u, 0u);
 }
 
 __attribute__((weak)) bool rCharParamEnemy::load(MtStream& in) {

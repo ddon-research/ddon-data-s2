@@ -63,7 +63,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     uFade(s32 type, f32 time);
-    virtual ~uFade();
+    virtual ~uFade() {}
     virtual void move();  // vtable slot 9
     virtual void kill();  // vtable slot 16
 private:

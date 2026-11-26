@@ -22,6 +22,10 @@ inline MtAllocator* CDataEntryBoardItemSearchParameter::getAllocator() {
     return MtMemoryAllocator::getAllocator(CDataEntryBoardItemSearchParameter::DTI);
 }
 
+inline void* CDataEntryBoardItemSearchParameter::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(CDataEntryBoardItemSearchParameter::DTI)->memAlloc(sz, align, CDataEntryBoardItemSearchParameter::DTI.getID());
+}
+
 __attribute__((weak)) void CDataEntryBoardItemSearchParameter::operator delete(void* p_addr) {
     CDataEntryBoardItemSearchParameter::getAllocator()->memFree(p_addr);
 }
@@ -30,9 +34,8 @@ inline CDataEntryBoardItemSearchParameter::MyDTI::MyDTI(MT_CTSTR class_name, MtD
 
 CDataEntryBoardItemSearchParameter::MyDTI CDataEntryBoardItemSearchParameter::DTI("CDataEntryBoardItemSearchParameter", &::CPacketDataBase::DTI, 88ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataEntryBoardItemSearchParameter::MyDTI::newInstance() const {
-    DDON_STUB("CDataEntryBoardItemSearchParameter::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataEntryBoardItemSearchParameter::MyDTI::newInstance() const {
+    return new (16u) CDataEntryBoardItemSearchParameter;
 }
 
 const MtDTI& CDataEntryItem::getDTI() const {
@@ -55,9 +58,8 @@ inline CDataEntryItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 CDataEntryItem::MyDTI CDataEntryItem::DTI("CDataEntryItem", &::CPacketDataBase::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataEntryItem::MyDTI::newInstance() const {
-    DDON_STUB("CDataEntryItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataEntryItem::MyDTI::newInstance() const {
+    return new (16u) CDataEntryItem;
 }
 
 const MtDTI& CDataEntryItemParam::getDTI() const {

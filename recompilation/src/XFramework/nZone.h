@@ -11,6 +11,8 @@
 #include "../MT/MtPrimitive3D.h"
 #include "cDynamicBVHCollision.h"
 
+#include <string.h>
+
 // Forward declarations
 class MtAABB;
 class MtAllocator;
@@ -47,8 +49,10 @@ namespace nZone { class ShapeInfoCapsule; }
 namespace nZone { class ShapeInfoCone; }
 namespace nZone { class ShapeInfoCylinder; }
 namespace nZone { class ShapeInfoGlobal; }
+namespace nZone { class ShapeInfoLine; }
 namespace nZone { class ShapeInfoOBB; }
 namespace nZone { class ShapeInfoPanel; }
+namespace nZone { class ShapeInfoPoint; }
 namespace nZone { class ShapeInfoSphere; }
 namespace nZone { class cAllocaterIntermediate; }
 namespace nZone { class cContentsPool; }
@@ -421,6 +425,72 @@ namespace nZone {
 }  // namespace nZone
 
 namespace nZone {
+    class ShapeInfoLine : public nZone::ShapeInfoBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        ShapeInfoLine();
+        virtual ~ShapeInfoLine();
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        virtual bool copy(const nZone::ShapeInfoBase& copyShape);  // vtable slot 6
+        virtual void applyWorldOffset(const MtVector3& offset);  // vtable slot 7
+        virtual nZone::ShapeInfoBase::SHAPE_TYPE getShapeType() const;  // vtable slot 8
+        virtual bool isHit(const MtVector3& pos) const;  // vtable slot 9
+        virtual bool isHitLineSegment(const MtLineSegment& ls) const;  // vtable slot 10
+        virtual bool isHitConvex(const MtGeomConvex& convex) const;  // vtable slot 11
+        virtual bool isIntersectAABB(const MtAABB& aabb) const;  // vtable slot 12
+        virtual bool getClosest(const MtVector3& pos, MtContact& contact) const;  // vtable slot 13
+        virtual void loadBinary(MtDataReader& r);  // vtable slot 14
+        virtual void saveBinary(MtDataWriter& w);  // vtable slot 15
+        virtual bool isGetAABB() const;  // vtable slot 16
+        virtual MtAABB getAABB() const;  // vtable slot 17
+        virtual bool isGetBoundingSphere() const;  // vtable slot 18
+        virtual MtSphere getBoundingSphere() const;  // vtable slot 19
+        virtual MtVector3 getCenterPos() const;  // vtable slot 20
+        virtual void setCenterPos(const MtVector3& pos);  // vtable slot 21
+        virtual void movePosition(const MtVector3& AddPos);  // vtable slot 22
+        virtual void movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const;  // vtable slot 23
+        virtual void rotation(const MtMatrix& RotateMatrix);  // vtable slot 24
+        virtual void rotation(nZone::ShapeInfoBase& OutputShape, const MtMatrix& RotateMatrix) const;  // vtable slot 25
+        virtual void mulMatrix(const MtMatrix& MulMatrix);  // vtable slot 28
+        virtual void mulMatrix(nZone::ShapeInfoBase& OutputShape, const MtMatrix& MulMatrix) const;  // vtable slot 29
+        const MtLineSegment& getLineSegment() const;
+        void setLineSegment(const MtLineSegment& ls);
+        const MtLineSegment& getParam() const;
+        void setParam(const MtLineSegment& ls);
+        void* memAlloc(size_t);
+        void memFree(void*);
+        size_t memSize(void*);
+    protected:
+        MtLineSegment mLineSegment;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+        static const f32 DRAW_RANGE_CIRCLE;
+    };
+}  // namespace nZone
+
+namespace nZone {
     class ShapeInfoOBB : public nZone::ShapeInfoBase
     {
     public:
@@ -569,6 +639,69 @@ namespace nZone {
         static const u32 EDGE_VERTEX_INDEX[4][2];
         static const u32 EDGE_TRIANGLE_INDEX[4];
         static const f32 DEFAULT_RENDER_NORMAL_LENGTH;
+    };
+}  // namespace nZone
+
+namespace nZone {
+    class ShapeInfoPoint : public nZone::ShapeInfoBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        ShapeInfoPoint();
+        virtual ~ShapeInfoPoint();
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        virtual bool copy(const nZone::ShapeInfoBase& copyShape);  // vtable slot 6
+        virtual void applyWorldOffset(const MtVector3& offset);  // vtable slot 7
+        virtual nZone::ShapeInfoBase::SHAPE_TYPE getShapeType() const;  // vtable slot 8
+        virtual bool isHit(const MtVector3& pos) const;  // vtable slot 9
+        virtual bool isHitLineSegment(const MtLineSegment& ls) const;  // vtable slot 10
+        virtual bool isHitConvex(const MtGeomConvex& convex) const;  // vtable slot 11
+        virtual bool isIntersectAABB(const MtAABB& aabb) const;  // vtable slot 12
+        virtual bool getClosest(const MtVector3& pos, MtContact& contact) const;  // vtable slot 13
+        virtual void loadBinary(MtDataReader& r);  // vtable slot 14
+        virtual void saveBinary(MtDataWriter& w);  // vtable slot 15
+        virtual bool isGetAABB() const;  // vtable slot 16
+        virtual MtAABB getAABB() const;  // vtable slot 17
+        virtual MtVector3 getCenterPos() const;  // vtable slot 20
+        virtual void setCenterPos(const MtVector3& pos);  // vtable slot 21
+        virtual void movePosition(const MtVector3& AddPos);  // vtable slot 22
+        virtual void movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const;  // vtable slot 23
+        virtual void mulMatrix(const MtMatrix& MulMatrix);  // vtable slot 28
+        virtual void mulMatrix(nZone::ShapeInfoBase& OutputShape, const MtMatrix& MulMatrix) const;  // vtable slot 29
+        const MtVector3& getPos() const;
+        void setPos(const MtVector3&);
+        const MtVector3& getParam() const;
+        void setParam(const MtVector3& pos);
+        void* memAlloc(size_t);
+        void memFree(void*);
+        size_t memSize(void*);
+    protected:
+        MtVector3 mPos;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+        static const f32 AABB_SIZEADD_F32;
+        static const f32 DEBUG_DRAW_SIZE;
     };
 }  // namespace nZone
 
@@ -1136,6 +1269,14 @@ namespace nZone {
     };
 }  // namespace nZone
 
+inline MtVector3 nZone::ShapeInfoAABB::getVertex000() const {
+    return this->mAABB.minpos;
+}
+
+inline MtVector3 nZone::ShapeInfoAABB::getVertex111() const {
+    return this->mAABB.maxpos;
+}
+
 inline f32 nZone::ShapeInfoArea::getBottom() const {
     return this->mBottom;
 }
@@ -1164,7 +1305,7 @@ inline nZone::ShapeInfoBase::ShapeInfoBase() : mDecay(1.0f), mIsNativeData(false
 }
 
 inline void nZone::ShapeInfoArea::repairHeightAndBottom() {
-    if (this->mHeight < 0.0f) {
+    if (!(this->mHeight >= 0.0f)) {
         this->mBottom += this->mHeight;
         this->mHeight = -this->mHeight;
         this->mVertex[0].y = this->mBottom;
@@ -1178,11 +1319,19 @@ inline void* nZone::ShapeInfoGlobal::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void* nZone::ShapeInfoLine::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline f32 nZone::ShapeInfoOBB::getHeight() const {
     return this->mOBB.extent.y + this->mOBB.extent.y;
 }
 
 inline void* nZone::ShapeInfoPanel::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nZone::ShapeInfoPoint::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
@@ -1199,6 +1348,24 @@ inline void* nZone::cContentsPool::operator new(size_t sz, void* p_addr) {
 
 inline void* nZone::cContentsPool::cContentsList::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nZone::cContentsPool::cContentsList::cContentsList(s32 DefaultGroupID) : mGroupID(DefaultGroupID), mFlgNativeData(false) {
+    memset(mRunCounter, 0, sizeof(mRunCounter));
+}
+
+inline nZone::ShapeInfoGlobal::ShapeInfoGlobal() {
+}
+
+inline void nZone::cLayoutElement::deleteShape() {
+    if (!mFlgShallowCopyShape) {
+        if (mpShapeInfo != nullptr) {
+            delete mpShapeInfo;
+            mpShapeInfo = nullptr;
+        }
+    }
+    mpShapeInfo = nullptr;
+    mFlgShallowCopyShape = false;
 }
 
 inline u32 nZone::cContentsPool::cContentsList::getZoneContentsNum() const {

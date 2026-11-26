@@ -74,14 +74,28 @@ __attribute__((weak)) bool nNetwork::Match::tryCancel() {
     return {};
 }
 
-__attribute__((weak)) bool nNetwork::Match::tryMatch() {
-    DDON_STUB("nNetwork::Match::tryMatch")
-    return {};
+bool nNetwork::Match::tryMatch() {
+    if ((mpSession->mpDatabase->mAttribute & 1u) != 0) {
+        if (mpSession->mpDatabase->mHostIndex == mpSession->mpDatabase->mSelfIndex) {
+            if (((mpSession->mpDatabase->mAttribute & 8u) == 0) && !mMatch) {
+                mMatch = true;
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) bool nNetwork::Match::tryTerminate() {
-    DDON_STUB("nNetwork::Match::tryTerminate")
-    return {};
+bool nNetwork::Match::tryTerminate() {
+    if ((mpSession->mpDatabase->mAttribute & 1u) != 0) {
+        if (mpSession->mpDatabase->mHostIndex == mpSession->mpDatabase->mSelfIndex) {
+            if (((mpSession->mpDatabase->mAttribute & 8u) != 0) && !mTerminate) {
+                mTerminate = true;
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void nNetwork::Match::procMatch(nNetwork::RpcNetSystem_Match& call, s32 member_index) {
@@ -98,8 +112,7 @@ inline nNetwork::Match::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 nNetwork::Match::MyDTI nNetwork::Match::DTI("nNetwork::Match", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nNetwork::Match::MyDTI::newInstance() const {
-    DDON_STUB("nNetwork::Match::MyDTI::newInstance")
-    return nullptr;
+MtObject* nNetwork::Match::MyDTI::newInstance() const {
+    return new (16u) ::nNetwork::Match;
 }
 

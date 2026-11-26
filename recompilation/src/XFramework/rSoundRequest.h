@@ -216,3 +216,15 @@ inline rSoundRequest::rSoundRequest() {
     mpSpeakerSets = nullptr;
     mpElement = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rSoundRequest::memAlloc(u32 size, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memAlloc(size, align, rSoundRequest::DTI.mID);
+}
+
+inline void rSoundRequest::memFree(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(p_addr);
+}

@@ -98,6 +98,7 @@
 #include "sOmManager.h"
 #include "sPlayerManager.h"
 #include "sSetManager.h"
+#include "uArmor.h"
 #include "../../XFramework/uBaseModel.h"
 #include "uControl.h"
 #include "uControlEnemy.h"
@@ -108,6 +109,7 @@
 #include "uPlayer.h"
 #include "uShlBase.h"
 #include "../../XFramework/uSimSoftBody.h"
+#include "uWeapon.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -251,9 +253,42 @@ __attribute__((weak)) void uDDOModel::registDelegate() {
     /* stub */
 }
 
-__attribute__((weak)) void uDDOModel::createProperty(MtPropertyList& s) {
-    DDON_STUB("uDDOModel::createProperty")
-    /* stub */
+void uDDOModel::createProperty(MtPropertyList& s) {
+    this->uModel::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mComponentMgr", static_cast<MtObject*>(&mComponentMgr), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDDOModelFlag", &mDDOModelFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsMaster", &mIsMaster, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOldPos", &mOldPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVelocity", &mVelocity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAcceleration", &mAcceleration, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMoveVelocity", &mMoveVelocity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mObjStatus", &mObjStatus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mObjStatusExt", &mObjStatusExt, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCtrl", reinterpret_cast<MtObject* *>(&mpCtrl), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMayaScale", &mMayaScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mForceScale", &mForceScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "callbackPreSetMotion", &callbackPreSetMotion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "callbackSetMotion", &callbackSetMotion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpTarget", reinterpret_cast<MT_MFUNC>(&::uDDOModel::getTarget), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetPos", &mTargetPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUnitId", &this->mUnitId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "updateInput", static_cast<MtObject*>(&updateInput), 2052u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "before", static_cast<MtObject*>(&before), 2052u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "checkAction", static_cast<MtObject*>(&checkAction), 2052u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "update", static_cast<MtObject*>(&update), 2052u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "updateMotion", static_cast<MtObject*>(&updateMotion), 2052u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "callbackAfterUpdateMotion", static_cast<MtObject*>(&callbackAfterUpdateMotion), 2052u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "scrAdjust", &scrAdjust, 2052u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "after", static_cast<MtObject*>(&after), 2052u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "updatePosition", static_cast<MtObject*>(&updatePosition), 2052u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTouchType", reinterpret_cast<s32*>(&mTouchType), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTouchTarget", reinterpret_cast<MtObject* *>(&mpTouchTarget), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsNoTouch", &mIsNoTouch, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\267\343\202\247\343\203\253\345\211\212\351\231\244\343\203\223\343\203\203\343\203\210", &mShlDeleteBit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\350\207\252\345\267\261\346\255\273\344\272\241\343\203\225\343\203\251\343\202\260", &mIsSelfDead, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetUIJointNo", &mTargetUIJointNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetUIOffset", &mTargetUIOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CommandCacheReset", static_cast<MT_MFUNC>(&::uDDOModel::requestCommandCacheReset), 10u);
 }
 
 void uDDOModel::setupContextParam() {
@@ -273,9 +308,66 @@ __attribute__((weak)) void uDDOModel::setupContextPos(bool recvFlag) {
     /* stub */
 }
 
-__attribute__((weak)) void uDDOModel::setupContextTarget(bool recvFlag) {
-    DDON_STUB("uDDOModel::setupContextTarget")
-    /* stub */
+void uDDOModel::setupContextTarget(bool recvFlag) {
+    cContextInstance* t0 = mContextInterface.mpContextInstance;
+    cContextCharacter* t1 = mContextInterface.mpContextCharacter;
+    u32 uid = cContextInterface::getTargetUid(t0, t1);
+    if (uid != 0) {
+        sSetManager* t3 = sSetManager::getInstance();
+        uDDOModel* p_target = static_cast<uDDOModel*>(t3->getLayoutUnit(uid));
+        if ((mpTarget = p_target) != nullptr) {
+            u32 t5 = p_target->getUnitParam();
+            cContextInstance* t6 = mContextInterface.mpContextInstance;
+            cContextCharacter* t7 = mContextInterface.mpContextCharacter;
+            cContextInterface::setTargetUid(t6, t7, t5);
+            cContextInstance* t11 = mContextInterface.mpContextInstance;
+            cContextCharacter* t12 = mContextInterface.mpContextCharacter;
+            MtVector3 frame56(cContextInterface::getTargetPos(t11, t12));
+            f32 t13 = frame56.x;
+            mTargetPos.x = t13;
+            f32 t14 = frame56.y;
+            mTargetPos.y = t14;
+            f32 t15 = frame56.z;
+            mTargetPos.z = t15;
+            mTargetPos.pad_ = 0.0f;
+            cContextInstance* t16 = mContextInterface.mpContextInstance;
+            cContextCharacter* t17 = mContextInterface.mpContextCharacter;
+        } else {
+            cContextInstance* t8 = mContextInterface.mpContextInstance;
+            cContextCharacter* t9 = mContextInterface.mpContextCharacter;
+            cContextInterface::setTargetUid(t8, t9, 0u);
+            cContextInstance* t11 = mContextInterface.mpContextInstance;
+            cContextCharacter* t12 = mContextInterface.mpContextCharacter;
+            MtVector3 frame56(cContextInterface::getTargetPos(t11, t12));
+            f32 t13 = frame56.x;
+            mTargetPos.x = t13;
+            f32 t14 = frame56.y;
+            mTargetPos.y = t14;
+            f32 t15 = frame56.z;
+            mTargetPos.z = t15;
+            mTargetPos.pad_ = 0.0f;
+            cContextInstance* t16 = mContextInterface.mpContextInstance;
+            cContextCharacter* t17 = mContextInterface.mpContextCharacter;
+        }
+    } else {
+        mpTarget = nullptr;
+        cContextInstance* t8 = mContextInterface.mpContextInstance;
+        cContextCharacter* t9 = mContextInterface.mpContextCharacter;
+        cContextInterface::setTargetUid(t8, t9, 0u);
+        cContextInstance* t11 = mContextInterface.mpContextInstance;
+        cContextCharacter* t12 = mContextInterface.mpContextCharacter;
+        MtVector3 frame56(cContextInterface::getTargetPos(t11, t12));
+        f32 t13 = frame56.x;
+        mTargetPos.x = t13;
+        f32 t14 = frame56.y;
+        mTargetPos.y = t14;
+        f32 t15 = frame56.z;
+        mTargetPos.z = t15;
+        mTargetPos.pad_ = 0.0f;
+        cContextInstance* t16 = mContextInterface.mpContextInstance;
+        cContextCharacter* t17 = mContextInterface.mpContextCharacter;
+    }
+    cContextInterface::setTargetPos(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter, mTargetPos);
 }
 
 void uDDOModel::setupContextStateLive(bool recvFlag) {
@@ -595,9 +687,8 @@ __attribute__((weak)) void uDDOModel::callbackGuardedTest(cHitInfo* pHitInfo) {
 __attribute__((weak)) void uDDOModel::callbackAttack(cHitInfo* pHitInfo) {
 }
 
-__attribute__((weak)) MtVector3 uDDOModel::callbackReplaceHitNormal(const MtVector3& HitNormal) {
-    DDON_STUB("uDDOModel::callbackReplaceHitNormal")
-    __builtin_unreachable();
+MtVector3 uDDOModel::callbackReplaceHitNormal(const MtVector3& HitNormal) {
+    return HitNormal;
 }
 
 __attribute__((weak)) void uDDOModel::callbackAttackTest(cHitInfo* pHitInfo) {
@@ -923,9 +1014,12 @@ void uDDOModel::callbackReqOcdEndAction(u32 actNo, nAction::ACT_PRIO priority) {
     }
 }
 
-__attribute__((weak)) bool uDDOModel::isDead() const {
-    DDON_STUB("uDDOModel::isDead")
-    return {};
+bool uDDOModel::isDead() const {
+    if (getHpDamageCtrlPtr() != nullptr) {
+        return getHpDamageCtrlPtr()->isDead();
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) bool uDDOModel::isDead(u32 index) const {
@@ -1205,9 +1299,17 @@ __attribute__((weak)) void uDDOModel::checkHitStopSlow(cHitInfoAfter* pHitInfo) 
     /* stub */
 }
 
-__attribute__((weak)) void uDDOModel::attackParamReplace(cHitInfo* pHitInfo, s32 offset) const {
-    DDON_STUB("uDDOModel::attackParamReplace")
-    /* stub */
+void uDDOModel::attackParamReplace(cHitInfo* pHitInfo, s32 offset) const {
+    const cAttackParam* pAttackParam = pHitInfo->getAttackParam();
+    if (pAttackParam == nullptr) {
+        return;
+    }
+    if ((offset + pAttackParam->mIndex) > -1) {
+        const cAttackParam* pNewParam = pHitInfo->getAttackParam(static_cast<u32>(offset + pAttackParam->mIndex));
+        if (pNewParam != nullptr) {
+            pHitInfo->setAttackParam(pNewParam);
+        }
+    }
 }
 
 bool uDDOModel::checkCalcDamageCancel(cHitInfo* pHitInfo) {
@@ -1270,14 +1372,12 @@ u32 uDDOModel::getScrFilter() {
     }
 }
 
-__attribute__((weak)) cGroundAttrInfo* uDDOModel::getGroundInfoScr() {
-    DDON_STUB("uDDOModel::getGroundInfoScr")
-    return nullptr;
+cGroundAttrInfo* uDDOModel::getGroundInfoScr() {
+    return (getScrCollisionPtr() == nullptr) ? static_cast<cGroundAttrInfo*>(nullptr) : (&getScrCollisionPtr()->mGroundAttrInfoScr);
 }
 
-__attribute__((weak)) cGroundAttrInfo* uDDOModel::getGroundInfoWaterDepth() {
-    DDON_STUB("uDDOModel::getGroundInfoWaterDepth")
-    return nullptr;
+cGroundAttrInfo* uDDOModel::getGroundInfoWaterDepth() {
+    return (getScrCollisionPtr() == nullptr) ? static_cast<cGroundAttrInfo*>(nullptr) : (&getScrCollisionPtr()->mGroundAttrInfoWaterDepth);
 }
 
 bool uDDOModel::isHitLand() const {
@@ -1325,9 +1425,12 @@ void uDDOModel::setPivotPos(const MtVector3& pos) {
     mpPivotCtrl->setPivotPos(pos);
 }
 
-__attribute__((weak)) MtVector3 uDDOModel::getPivotPos() {
-    DDON_STUB("uDDOModel::getPivotPos")
-    __builtin_unreachable();
+MtVector3 uDDOModel::getPivotPos() {
+    if (mpPivotCtrl != nullptr) {
+        return mpPivotCtrl->mPivotPos;
+    } else {
+        return mPos;
+    }
 }
 
 void uDDOModel::setFinalQuat(const MtQuaternion& FinalQuat, f32 speed) {
@@ -1408,9 +1511,13 @@ const MtQuaternion& uDDOModel::getFinalQuat() {
     }
 }
 
-__attribute__((weak)) f32 uDDOModel::getFinalAngleY() {
-    DDON_STUB("uDDOModel::getFinalAngleY")
-    return {};
+f32 uDDOModel::getFinalAngleY() {
+    if (mpRotateCtrl != nullptr) {
+        return mpRotateCtrl->getFinalAngleY();
+    } else {
+        MtVector3 frame40(getAngle());
+        return frame40.y;
+    }
 }
 
 void uDDOModel::setLayoutId(const nLayout::stLayoutID& layoutID) {
@@ -1489,9 +1596,78 @@ void uDDOModel::requestOutline(u32 outlineType) {
     mpDDMrlMgr->requestOutline(static_cast<sEffectExt::OUTLINE>(outlineType));
 }
 
-__attribute__((weak)) void uDDOModel::requestCommandCacheReset() {
-    DDON_STUB("uDDOModel::requestCommandCacheReset")
-    /* stub */
+void uDDOModel::requestCommandCacheReset() {
+    mCommandCacheOffNow = true;
+    if (mpEquip != nullptr) {
+        uArmor* t0 = mpEquip->getArmor(0u);
+        if (t0 != nullptr) {
+            t0->mCommandCacheOffNow = true;
+        }
+        uArmor* t1 = mpEquip->getArmor(1u);
+        if (t1 != nullptr) {
+            t1->mCommandCacheOffNow = true;
+        }
+        uArmor* t2 = mpEquip->getArmor(2u);
+        if (t2 != nullptr) {
+            t2->mCommandCacheOffNow = true;
+        }
+        uArmor* t3 = mpEquip->getArmor(3u);
+        if (t3 != nullptr) {
+            t3->mCommandCacheOffNow = true;
+        }
+        uArmor* t4 = mpEquip->getArmor(4u);
+        if (t4 != nullptr) {
+            t4->mCommandCacheOffNow = true;
+        }
+        uArmor* t5 = mpEquip->getArmor(5u);
+        if (t5 != nullptr) {
+            t5->mCommandCacheOffNow = true;
+        }
+        uArmor* t6 = mpEquip->getArmor(6u);
+        if (t6 != nullptr) {
+            t6->mCommandCacheOffNow = true;
+        }
+        uWeapon* t7 = mpEquip->getWeapon(0u);
+        if (t7 != nullptr) {
+            t7->mCommandCacheOffNow = true;
+        }
+        uWeapon* t8 = mpEquip->getWeapon(1u);
+        if (t8 != nullptr) {
+            t8->mCommandCacheOffNow = true;
+        }
+        uWeapon* t9 = mpEquip->getWeapon(2u);
+        if (t9 != nullptr) {
+            t9->mCommandCacheOffNow = true;
+        }
+        uWeapon* t10 = mpEquip->getWeapon(3u);
+        if (t10 != nullptr) {
+            t10->mCommandCacheOffNow = true;
+        }
+        uArmor* t11 = mpEquip->getHair();
+        uArmor* v11_9 = mpEquip->getBeard();
+        uArmor* v11_10 = mpEquip->getMakeup();
+        uArmor* v13_1 = mpEquip->getUnderwear();
+        uArmor* v11_12 = mpEquip->getUnderwear2();
+        uWeapon* v11_0 = mpEquip->getLantern();
+        if (t11 != nullptr) {
+            t11->mCommandCacheOffNow = true;
+        }
+        if (v11_9 != nullptr) {
+            v11_9->mCommandCacheOffNow = true;
+        }
+        if (v11_10 != nullptr) {
+            v11_10->mCommandCacheOffNow = true;
+        }
+        if (v13_1 != nullptr) {
+            v13_1->mCommandCacheOffNow = true;
+        }
+        if (v11_12 != nullptr) {
+            v11_12->mCommandCacheOffNow = true;
+        }
+        if (v11_0 != nullptr) {
+            v11_0->mCommandCacheOffNow = true;
+        }
+    }
 }
 
 void uDDOModel::setInterpolateType(u32 interpolateType) {
@@ -1515,9 +1691,8 @@ void uDDOModel::updateInterpolatePos(const MtVector3& pos, bool forceSet) {
     getSlavePtr()->updateInterpolatePos(pos, forceSet);
 }
 
-__attribute__((weak)) const MtVector3& uDDOModel::getSafePos() {
-    DDON_STUB("uDDOModel::getSafePos")
-    __builtin_unreachable();
+const MtVector3& uDDOModel::getSafePos() {
+    return *((mpSafePos == nullptr) ? (&MtVector3::Zero) : (&mpSafePos->mPosHistory[0]));
 }
 
 bool uDDOModel::isNowSafePos() {
@@ -1727,9 +1902,12 @@ bool uDDOModel::isDamageAttrActive_Through(nObjCollision::DAMAGE_ATTR_ENUM attrE
     }
 }
 
-__attribute__((weak)) s32 uDDOModel::getActionStateNo() const {
-    DDON_STUB("uDDOModel::getActionStateNo")
-    return {};
+s32 uDDOModel::getActionStateNo() const {
+    if (getStateActionPtr() != nullptr) {
+        return getStateActionPtr()->getStateNo();
+    } else {
+        return 256;
+    }
 }
 
 cState* uDDOModel::getActionState() const {

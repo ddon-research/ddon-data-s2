@@ -288,9 +288,8 @@ inline CDataItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 CDataItemList::MyDTI CDataItemList::DTI("CDataItemList", &::CPacketDataBase::DTI, 88ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataItemList::MyDTI::newInstance() const {
-    DDON_STUB("CDataItemList::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataItemList::MyDTI::newInstance() const {
+    return new (16u) CDataItemList;
 }
 
 const MtDTI& CDataItemUIDList::getDTI() const {
@@ -337,9 +336,8 @@ inline CDataItemUpdateResult::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 
 CDataItemUpdateResult::MyDTI CDataItemUpdateResult::DTI("CDataItemUpdateResult", &::CPacketDataBase::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* CDataItemUpdateResult::MyDTI::newInstance() const {
-    DDON_STUB("CDataItemUpdateResult::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataItemUpdateResult::MyDTI::newInstance() const {
+    return new (16u) CDataItemUpdateResult;
 }
 
 const MtDTI& CDataJewelryEquipLimit::getDTI() const {

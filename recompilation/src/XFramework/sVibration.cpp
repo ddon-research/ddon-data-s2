@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
@@ -44,9 +45,29 @@ __attribute__((weak)) void sVibration::move() {
     /* stub */
 }
 
-__attribute__((weak)) void sVibration::createProperty(MtPropertyList& s) {
-    DDON_STUB("sVibration::createProperty")
-    /* stub */
+void sVibration::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mPadVibrationEnable", &mPadVibrationEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCameraVibrationEnable", &mCameraVibrationEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpVibration", "resource", reinterpret_cast<MT_MFUNC>(&::sVibration::getVibration), reinterpret_cast<MT_MFUNC>(&::sVibration::setVibration), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mVibrationId", &mVibrationId, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mPadVibrationNum", reinterpret_cast<MT_MFUNC>(&::sVibration::getPadVibrationNum), reinterpret_cast<MT_MFUNC>(&::sVibration::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mCameraVibrationNum", reinterpret_cast<MT_MFUNC>(&::sVibration::getCameraVibrationNum), reinterpret_cast<MT_MFUNC>(&::sVibration::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mDeltaTime", &mDeltaTime, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDeltaTimeScale", &mDeltaTimeScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mPadViewportNo", reinterpret_cast<MT_MFUNC>(&::sVibration::getPadViewportNo), reinterpret_cast<MT_MFUNC>(&::sVibration::setPadViewportNo), 160u, reinterpret_cast<MT_MFUNC>(&::sVibration::getPadNum), reinterpret_cast<MT_MFUNC>(&::sVibration::setDummyU32));
+    s << MtProperty(static_cast<MtObject*>(this), "mVibReqType", &mVibReqType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVibListNo", &mVibListNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVibPriority", &mVibPriority, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVibPad", &mVibPad, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVibCamera", &mVibCamera, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVibPos", &mVibPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpVibUnit", reinterpret_cast<MtObject* *>(&mpVibUnit), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVibUnitParentNo", &mVibUnitParentNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVibFinishTime", &mVibFinishTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Request", static_cast<MT_MFUNC>(&::sVibration::doRequest), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Stop", static_cast<MT_MFUNC>(&::sVibration::stopVibAll), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Finish", static_cast<MT_MFUNC>(&::sVibration::doFinish), 10u);
 }
 
 MtUI* sVibration::createUI(MtProperty& prop) {
@@ -96,14 +117,38 @@ __attribute__((weak)) void sVibration::finishVibAll(f32 Time) {
     /* stub */
 }
 
-__attribute__((weak)) void sVibration::stopVib(s32 Id) {
-    DDON_STUB("sVibration::stopVib")
-    /* stub */
+void sVibration::stopVib(s32 Id) {
+    if (Id > -1) {
+        for (unsigned int i0_0 = 0; i0_0 <= 7u; i0_0 = i0_0 + 1u) {
+            if ((mVibControl[i0_0].mEnableFlag & 255u) != 0) {
+                if (mVibControl[i0_0].mVibrationId == static_cast<unsigned int>(Id)) {
+                    if (mVibControl[i0_0].mpVibration != nullptr) {
+                        mVibControl[i0_0].mpVibration->release();
+                        mVibControl[i0_0].mpVibration = nullptr;
+                    }
+                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&mVibControl[i0_0]) + 28) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&mVibControl[i0_0]) + 28)) & 0xFF00FFFFu;
+                    return;
+                }
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void sVibration::stopVibAll() {
-    DDON_STUB("sVibration::stopVibAll")
-    /* stub */
+void sVibration::stopVibAll() {
+    for (unsigned int i0_3 = 0;;) {
+        if ((mVibControl[i0_3].mEnableFlag & 255u) != 0) {
+            if (mVibControl[i0_3].mpVibration != nullptr) {
+                mVibControl[i0_3].mpVibration->release();
+                mVibControl[i0_3].mpVibration = nullptr;
+            }
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&mVibControl[i0_3]) + 28) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&mVibControl[i0_3]) + 28)) & 0xFF00FFFFu;
+        }
+        if (i0_3 != 7) {
+            i0_3 = i0_3 + 1u;
+        } else {
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) u32 sVibration::getPadHighVibration(u32 PadNo, u32 VibValue) const {

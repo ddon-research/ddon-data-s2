@@ -106,9 +106,22 @@ s32 sMarker::getLoadFieldAreaId() const {
     return mFieldAreaId;
 }
 
-__attribute__((weak)) u32 sMarker::getDispFieldAreaNumFromStageNo(u32 stageNo) const {
-    DDON_STUB("sMarker::getDispFieldAreaNumFromStageNo")
-    return {};
+u32 sMarker::getDispFieldAreaNumFromStageNo(u32 stageNo) const {
+    if (mpFieldAreaList != nullptr) {
+        u32 fieldId = mpFieldAreaList->getFieldAreaIdFromBelongStage(static_cast<s32>(stageNo));
+        if (mpFieldAreaList != nullptr) {
+            s32 t0 = mpFieldAreaList->getStageNoFromFieldAreaId(fieldId, 0u);
+            u32 t1 = sGame::getInstance()->getArea(t0, static_cast<MtVector3*>(nullptr));
+            u32 t2 = sGame::getInstance()->getLandId(t1);
+            return mpFieldAreaList->getDispFieldAreaNum(t2, t1);
+        } else {
+            u32 t1 = sGame::getInstance()->getArea(0, static_cast<MtVector3*>(nullptr));
+            u32 t2 = sGame::getInstance()->getLandId(t1);
+            return mpFieldAreaList->getDispFieldAreaNum(t2, t1);
+        }
+    } else {
+        return 0;
+    }
 }
 
 u32 sMarker::getDispFieldAreaIdFromLandId(u32 landId) const {
@@ -119,9 +132,13 @@ u32 sMarker::getDispFieldAreaIdFromLandId(u32 landId) const {
     }
 }
 
-__attribute__((weak)) u32 sMarker::getDispLandFieldAreaId() const {
-    DDON_STUB("sMarker::getDispLandFieldAreaId")
-    return {};
+u32 sMarker::getDispLandFieldAreaId() const {
+    if (mpFieldAreaList != nullptr) {
+        u32 landId = sGame::getInstance()->getLandId();
+        return mpFieldAreaList->getDispFieldAreaId(landId, 0u, 0u);
+    } else {
+        return 0;
+    }
 }
 
 u32 sMarker::getFieldAreaIdFromBelongStage(s32 stageNo) const {
@@ -148,9 +165,32 @@ s32 sMarker::getStageNoFromFieldAreaId(u32 idx, u32 stageNo) const {
     }
 }
 
-__attribute__((weak)) s32 sMarker::getStageNoFromDispFieldAreaIdx(u32 dispStageNo, u32 idx) const {
-    DDON_STUB("sMarker::getStageNoFromDispFieldAreaIdx")
-    return {};
+s32 sMarker::getStageNoFromDispFieldAreaIdx(u32 dispStageNo, u32 idx) const {
+    if (mpFieldAreaList != nullptr) {
+        const u32 fieldId = mpFieldAreaList->getFieldAreaIdFromBelongStage(static_cast<s32>(dispStageNo));
+        if (mpFieldAreaList != nullptr) {
+            const s32 stageNo = mpFieldAreaList->getStageNoFromFieldAreaId(fieldId, 0u);
+            const u32 areaId = sGame::getInstance()->getArea(stageNo, static_cast<MtVector3*>(nullptr));
+            const u32 landId = sGame::getInstance()->getLandId(areaId);
+            const u32 dispFieldId = mpFieldAreaList->getDispFieldAreaId(landId, areaId, idx);
+            if (mpFieldAreaList != nullptr) {
+                return mpFieldAreaList->getStageNoFromFieldAreaId(dispFieldId, dispStageNo);
+            } else {
+                return 0;
+            }
+        } else {
+            const u32 areaId = sGame::getInstance()->getArea(0, static_cast<MtVector3*>(nullptr));
+            const u32 landId = sGame::getInstance()->getLandId(areaId);
+            const u32 dispFieldId = mpFieldAreaList->getDispFieldAreaId(landId, areaId, idx);
+            if (mpFieldAreaList != nullptr) {
+                return mpFieldAreaList->getStageNoFromFieldAreaId(dispFieldId, dispStageNo);
+            } else {
+                return 0;
+            }
+        }
+    } else {
+        return 0;
+    }
 }
 
 const rFieldAreaList::cFieldAreaInfo* sMarker::getFieldAreaInfo(u32 landId) const {

@@ -16,11 +16,16 @@ class MtSphere;
 class MtUI;
 class MtVector3;
 class aStage;
+class cContextPlayerInfo;
+class cDamageMsg;
 class cDraw;
 class cParticle;
+class cParticleGenerator;
+class cQuestPersonalData;
 class cSynchronization;
 class cpCatchCtrl;
 class cpEquip;
+class cpErosionSuperEnemy;
 class cpIKCtrl;
 class cpJob02;
 class cpJob06;
@@ -44,6 +49,7 @@ class uDDOModel;
 class uDynamicSbc;
 class uEditSaveLoadFlow;
 class uEffect;
+class uEffect2DExt;
 class uEffectEmitter;
 class uEffectExt;
 class uEnemy;
@@ -53,6 +59,7 @@ class uFullbodyIKHuman2;
 class uGUI;
 class uGUIBase;
 class uGUICharacterEdit;
+class uGUIPopRmcQuestInfo;
 class uGUIRankUp;
 class uGUISkill;
 class uGUISkillLvUp;
@@ -61,6 +68,7 @@ class uHuman;
 class uHumanEnemy;
 class uLight;
 class uModel;
+class uMovie;
 class uOmShell;
 class uOmSwingModel;
 class uScheduler;
@@ -68,9 +76,14 @@ class uScrollCollisionGeometry;
 class uScrollCollisionGeometryGroupModel;
 class uScrollCollisionGeometryModel;
 class uShadow;
+class uShlAlchemyTrap;
 class uShlBakuensen;
 class uShlBase;
+class uShlHitReactionConditionStick;
+class uShlHitReactionSpline;
+class uShlHitReactionStick;
 class uSimSoftBody;
+class uSky;
 class uSkyCloudModel;
 class uSoundGenerator;
 class uStageMyRoom;
@@ -95,10 +108,15 @@ using u64 = __uint64_t;
 class cUnit : public MtObject
 {
     friend class aStage;
+    friend class cContextPlayerInfo;
+    friend class cDamageMsg;
     friend class cParticle;
+    friend class cParticleGenerator;
+    friend class cQuestPersonalData;
     friend class cSynchronization;
     friend class cpCatchCtrl;
     friend class cpEquip;
+    friend class cpErosionSuperEnemy;
     friend class cpIKCtrl;
     friend class cpJob02;
     friend class cpJob06;
@@ -122,6 +140,7 @@ class cUnit : public MtObject
     friend class uDynamicSbc;
     friend class uEditSaveLoadFlow;
     friend class uEffect;
+    friend class uEffect2DExt;
     friend class uEffectEmitter;
     friend class uEffectExt;
     friend class uEnemy;
@@ -131,6 +150,7 @@ class cUnit : public MtObject
     friend class uGUI;
     friend class uGUIBase;
     friend class uGUICharacterEdit;
+    friend class uGUIPopRmcQuestInfo;
     friend class uGUIRankUp;
     friend class uGUISkill;
     friend class uGUISkillLvUp;
@@ -139,6 +159,7 @@ class cUnit : public MtObject
     friend class uHumanEnemy;
     friend class uLight;
     friend class uModel;
+    friend class uMovie;
     friend class uOmShell;
     friend class uOmSwingModel;
     friend class uScheduler;
@@ -146,9 +167,14 @@ class cUnit : public MtObject
     friend class uScrollCollisionGeometryGroupModel;
     friend class uScrollCollisionGeometryModel;
     friend class uShadow;
+    friend class uShlAlchemyTrap;
     friend class uShlBakuensen;
     friend class uShlBase;
+    friend class uShlHitReactionConditionStick;
+    friend class uShlHitReactionSpline;
+    friend class uShlHitReactionStick;
     friend class uSimSoftBody;
+    friend class uSky;
     friend class uSkyCloudModel;
     friend class uSoundGenerator;
     friend class uStageMyRoom;
@@ -432,6 +458,13 @@ inline u32 cUnit::getUnitParam() const {
 
 inline cUnit::cHardwareDispCtrl* cUnit::getHardwareDispCtrl() {
     return this->mpHardwareDispCtrl;
+}
+
+inline cUnit::cHardwareDispCtrl::cHardwareDispCtrl() {
+    this->mHard = 1;
+    this->mFlag = 0;
+    this->mOldFlag = 0;
+    this->mpOwner = nullptr;
 }
 
 inline void* cUnit::cHardwareDispCtrl::operator new(size_t sz, void* p_addr) {

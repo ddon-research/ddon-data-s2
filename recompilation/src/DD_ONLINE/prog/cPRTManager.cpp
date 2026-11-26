@@ -178,16 +178,23 @@ __attribute__((weak)) u32 cPRTManager::checkReady() {
 }
 
 cPRTManager::cPRTManager() {
-    DDON_STUB("cPRTManager::cPRTManager")
-    /* stub */
+    reset();
 }
 
 cPRTManager::~cPRTManager() {
 }
 
-__attribute__((weak)) void cPRTManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("cPRTManager::createProperty")
-    /* stub */
+void cPRTManager::createProperty(MtPropertyList& s) {
+    this->cQuestFunctionManagerBase::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mPRTStatus", &mPRTStatus, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBootPRTUniqueId", &mBootPRTUniqueId, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReadyBit", &mReadyBit, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReadyOKBit", &mReadyOKBit, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReadyStatus", &mReadyStatus, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsReady", &mIsReady, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsReadyOK", &mIsReadyOK, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFinalAnswer", &mFinalAnswer, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAdvanceFlag", &mAdvanceFlag, 1u, 0u);
 }
 
 inline cPRTManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

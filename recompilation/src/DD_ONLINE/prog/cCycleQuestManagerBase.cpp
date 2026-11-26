@@ -230,14 +230,12 @@ bool cCycleQuestManagerBase::drawResult() {
     }
 }
 
-__attribute__((weak)) s32 cCycleQuestManagerBase::getReturnStageNo() const {
-    DDON_STUB("cCycleQuestManagerBase::getReturnStageNo")
-    return {};
+s32 cCycleQuestManagerBase::getReturnStageNo() const {
+    return static_cast<s32>(sQuestManagerExt::getInstance()->getCycleContentEntryStage());
 }
 
-__attribute__((weak)) u32 cCycleQuestManagerBase::getReturnStartPosNo() const {
-    DDON_STUB("cCycleQuestManagerBase::getReturnStartPosNo")
-    return {};
+u32 cCycleQuestManagerBase::getReturnStartPosNo() const {
+    return sQuestManagerExt::getInstance()->getCycleContentEntryStartPos();
 }
 
 bool cCycleQuestManagerBase::isStartDemo() const {
@@ -374,9 +372,9 @@ __attribute__((weak)) void cCycleQuestManagerBase::setFailedQuestAnnounce(u32 co
     /* stub */
 }
 
-__attribute__((weak)) MT_CTSTR cCycleQuestManagerBase::getPlaySituationName() const {
-    DDON_STUB("cCycleQuestManagerBase::getPlaySituationName")
-    return {};
+MT_CTSTR cCycleQuestManagerBase::getPlaySituationName() const {
+    MT_CTSTR t0 = sQuestManagerExt::getInstance()->getQuestName(mPlaySituationQuestId);
+    return t0;
 }
 
 cCycleQuestSubCategoryManager* cCycleQuestManagerBase::getSubCategoryMgr(nQuest::CYCLE_CONTENTS_SUB_CATEGORY subCategory) const {
@@ -447,9 +445,33 @@ __attribute__((weak)) void cCycleQuestManagerBase::callbackCycleContentsEnable(n
     /* stub */
 }
 
-__attribute__((weak)) void cCycleQuestManagerBase::deleteTaskWithoutMainTaskAll() {
-    DDON_STUB("cCycleQuestManagerBase::deleteTaskWithoutMainTaskAll")
-    /* stub */
+void cCycleQuestManagerBase::deleteTaskWithoutMainTaskAll() {
+    const u32 taskNum = mQuestTask.mLength;
+    if (taskNum != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mQuestTask.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cQuestTask*>(mQuestTask.getBuffer()[static_cast<int>(i0_3)])->forceDelete();
+            }
+            if (taskNum != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    const u32 num = mSubCategory.mLength;
+    if (num != 0) {
+        for (unsigned int i3_3 = 0;;) {
+            if (mSubCategory.getBuffer()[static_cast<int>(i3_3)] != nullptr) {
+                static_cast<cCycleQuestSubCategoryManager*>(mSubCategory.getBuffer()[static_cast<int>(i3_3)])->deleteTaskWithoutMainTask();
+            }
+            if (num != (i3_3 + 1u)) {
+                i3_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cCycleQuestManagerBase::deleteTaskWithoutMainTask(nQuest::SCHEDULE_ID cycleContentsScheduleId) {

@@ -254,9 +254,21 @@ bool cLayoutSet::isUnitDataEmpty(u32 no) {
     }
 }
 
-__attribute__((weak)) bool cLayoutSet::isValid() const {
-    DDON_STUB("cLayoutSet::isValid")
-    return {};
+bool cLayoutSet::isValid() const {
+    if (mpRsrc != nullptr) {
+        return (mpRsrc->mState & 16u) == 0;
+    }
+    if (mUnitArray.mLength == 0) {
+        return false;
+    }
+    u32 i = 0;
+    do {
+        if (mUnitArray.mpArray[i] != nullptr) {
+            return true;
+        }
+        i += 1u;
+    } while (i < mUnitArray.mLength);
+    return false;
 }
 
 inline cLayoutSet::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

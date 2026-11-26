@@ -71,8 +71,38 @@ inline void uGUISkill::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUISkill::~uGUISkill() {
-    DDON_STUB("uGUISkill::~uGUISkill")
-    /* stub */
+    if (mpAbilityAddData != nullptr) {
+        mpAbilityAddData->release();
+        mpAbilityAddData = nullptr;
+    }
+    if (mpSeRes != nullptr) {
+        mpSeRes->release();
+        mpSeRes = nullptr;
+    }
+    if (mpGMDParameter != nullptr) {
+        mpGMDParameter->release();
+        mpGMDParameter = nullptr;
+    }
+    if (mpGMDJobInfo != nullptr) {
+        mpGMDJobInfo->release();
+        mpGMDJobInfo = nullptr;
+    }
+    if (mpGMDAbilityCategory != nullptr) {
+        mpGMDAbilityCategory->release();
+        mpGMDAbilityCategory = nullptr;
+    }
+    if (mpGMDMenuCmn != nullptr) {
+        mpGMDMenuCmn->release();
+        mpGMDMenuCmn = nullptr;
+    }
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
+    }
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
 }
 
 bool uGUISkill::loadResource() {
@@ -462,9 +492,23 @@ __attribute__((weak)) void uGUISkill::setupAbilitySetList() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUISkill::setupAbilityCmd() {
-    DDON_STUB("uGUISkill::setupAbilityCmd")
-    /* stub */
+void uGUISkill::setupAbilityCmd() {
+    uGUIPopCmd01* t0 = createPopCmd01(false);
+    if ((mpGUIPopCmd = t0) == nullptr) {
+        return;
+    }
+    t0->_addItem(static_cast<uGUIBase*>(this), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 7u), static_cast<uGUIPopBase::DATA_FUNC>(&::uGUISkill::callbackPopSel00), static_cast<MtObject*>(this), uGUIPopBase::MODE_DEFAULT, -1);
+    uGUIPopCmd01* t1 = mpGUIPopCmd;
+    t1->_addItem(static_cast<uGUIBase*>(this), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 15u), static_cast<uGUIPopBase::DATA_FUNC>(&::uGUISkill::callbackPopSel01), static_cast<MtObject*>(this), uGUIPopBase::MODE_DEFAULT, -1);
+    if (!mMouse.mIsDecide) {
+        return;
+    }
+    f32 t2 = static_cast<sGUIExt*>(sGUI::getInstance())->mMouse.mPos.y;
+    f32 t3 = static_cast<sGUIExt*>(sGUI::getInstance())->mMouse.mPos.z;
+    mpGUIPopCmd->mPosReserve.x = static_cast<sGUIExt*>(sGUI::getInstance())->mMouse.mPos.x;
+    mpGUIPopCmd->mPosReserve.y = t2;
+    mpGUIPopCmd->mPosReserve.z = t3;
+    mpGUIPopCmd->mPosReserve.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void uGUISkill::setupAbilitySearch() {
@@ -477,9 +521,36 @@ __attribute__((weak)) void uGUISkill::setupAbilityDialog() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUISkill::setupPreset() {
-    DDON_STUB("uGUISkill::setupPreset")
-    /* stub */
+void uGUISkill::setupPreset() {
+    mPresetL.mPresetNum = 10;
+    if (mpPresetCtrl != nullptr) {
+        mpPresetCtrl->resetItemNum(10, static_cast<const u32*>(nullptr), 0);
+        mpPresetCtrl->mVisibleSize = 10;
+        cGUIObjMessage* t0 = mPresetL.mpObjMsgTitle;
+        setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 43u), 0u, false);
+        mPresetL.mCursor.mPosTarget.x = mPresetL.mCursor.mPosInit.x;
+        mPresetL.mCursor.mPosTarget.y = mPresetL.mCursor.mPosInit.y;
+        mPresetL.mCursor.mPosTarget.z = mPresetL.mCursor.mPosInit.z;
+        mPresetL.mCursor.mPosTarget.w = mPresetL.mCursor.mPosInit.w;
+        if (mPresetL.mCursor.mpInstance != nullptr) {
+            mPresetL.mCursor.mpInstance->setPosition(mPresetL.mCursor.mPosInit);
+        }
+        mPresetL.mCursor.mFrmMove = 0.0f;
+        (&mPresetL.mCursor)->setPosPointerReqAuto(true);
+    } else {
+        cGUIObjMessage* t0 = mPresetL.mpObjMsgTitle;
+        setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 43u), 0u, false);
+        mPresetL.mCursor.mPosTarget.x = mPresetL.mCursor.mPosInit.x;
+        mPresetL.mCursor.mPosTarget.y = mPresetL.mCursor.mPosInit.y;
+        mPresetL.mCursor.mPosTarget.z = mPresetL.mCursor.mPosInit.z;
+        mPresetL.mCursor.mPosTarget.w = mPresetL.mCursor.mPosInit.w;
+        if (mPresetL.mCursor.mpInstance != nullptr) {
+            mPresetL.mCursor.mpInstance->setPosition(mPresetL.mCursor.mPosInit);
+        }
+        mPresetL.mCursor.mFrmMove = 0.0f;
+        (&mPresetL.mCursor)->setPosPointerReqAuto(true);
+    }
+    mPresetL.mScrollBar.setSize(static_cast<float>(mPresetL.mPresetNum * mVar.param_spacing_preset), static_cast<float>(mPresetL.mPresetNum * mVar.param_spacing_preset), static_cast<float>(mPresetL.mPresetNum * mVar.param_spacing_preset), true);
 }
 
 __attribute__((weak)) void uGUISkill::setupPresetList() {
@@ -582,8 +653,50 @@ __attribute__((weak)) void uGUISkill::setupMockUp(u32 job_id) {
 }
 
 __attribute__((weak)) void uGUISkill::adjustJobCursor(bool isImmediate) {
-    DDON_STUB("uGUISkill::adjustJobCursor")
-    /* stub */
+    if (mList.mCursor.mpInstance != nullptr) {
+        mList.mCursor.mpInstance->setVisible(false);
+        mTop.mGuide.setDispBit(0u);
+        const u32 select = mList.mListCtrl.getListPos();
+        if (select < mList.mListCtrl.mInfoArray.mLength) {
+            mList.mCursor.setCtrlPos(static_cast<s32>(select), isImmediate);
+            if (mList.mCursor.mpInstance != nullptr) {
+                mList.mCursor.mpInstance->setVisible(true);
+            }
+            mList.mListCtrl.setListPos(select, false);
+            if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
+                cListInfo* pInfo = static_cast<cListInfo*>(mList.mListCtrl.mInfoArray.getBuffer()[static_cast<int>(mList.mListCtrl.mListPos)]);
+                if (pInfo != nullptr) {
+                    if (pInfo->mIsPPRelease) {
+                        mTop.mGuide.setDispBit(128u);
+                    }
+                }
+                setupJobInfo();
+            } else {
+                setupJobInfo();
+            }
+        }
+    } else {
+        mTop.mGuide.setDispBit(0u);
+        const u32 select = mList.mListCtrl.getListPos();
+        if (select < mList.mListCtrl.mInfoArray.mLength) {
+            mList.mCursor.setCtrlPos(static_cast<s32>(select), isImmediate);
+            if (mList.mCursor.mpInstance != nullptr) {
+                mList.mCursor.mpInstance->setVisible(true);
+            }
+            mList.mListCtrl.setListPos(select, false);
+            if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
+                cListInfo* pInfo = static_cast<cListInfo*>(mList.mListCtrl.mInfoArray.getBuffer()[static_cast<int>(mList.mListCtrl.mListPos)]);
+                if (pInfo != nullptr) {
+                    if (pInfo->mIsPPRelease) {
+                        mTop.mGuide.setDispBit(128u);
+                    }
+                }
+                setupJobInfo();
+            } else {
+                setupJobInfo();
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUISkill::adjustCursorInit() {
@@ -631,9 +744,33 @@ __attribute__((weak)) void uGUISkill::createLvUp(u32 type, u32 job_id, u32 id, u
     /* stub */
 }
 
-__attribute__((weak)) void uGUISkill::initList(s32 list_pos) {
-    DDON_STUB("uGUISkill::initList")
-    /* stub */
+void uGUISkill::initList(s32 list_pos) {
+    u32 j0;
+    if (mList.mListCtrl.mpOwner != nullptr) {
+        u32 t0 = mList.mListCtrl.mpOwner->getBasePointerPriority();
+        j0 = t0;
+    } else {
+        j0 = 10;
+    }
+    mList.mListCtrl.mIsAutoDispPointer = false;
+    mList.mListCtrl.mPointerPrio = j0;
+    if (mList.mIsKeepSelect) {
+        const s32 old_pos = mList.mListCtrl.getListPos();
+        f32 t1 = mList.mListCtrl.mPosCtrl.getPos();
+        setupScrollList(old_pos);
+        mList.mListCtrl.setListPos(static_cast<u32>(old_pos), true);
+        mList.mListCtrl.setSliderPos(t1, true);
+        mList.mListCtrl.updateListItem();
+    } else {
+        setupScrollList(list_pos);
+    }
+    if (mList.mListCtrl.mInfoArray.mLength == 0) {
+        return;
+    }
+    if (mpPullDownCtrl == nullptr) {
+        return;
+    }
+    mpPullDownCtrl->setCurrentPos(1, false);
 }
 
 __attribute__((weak)) void uGUISkill::setupScrollList(s32 list_pos) {
@@ -932,14 +1069,71 @@ u32 uGUISkill::evCtrlSubMenu(cControl::Message* msg) {
     return 0;
 }
 
-__attribute__((weak)) u32 uGUISkill::evCtrlShortCut(cControl::Message* msg) {
-    DDON_STUB("uGUISkill::evCtrlShortCut")
-    return {};
+u32 uGUISkill::evCtrlShortCut(cControl::Message* msg) {
+    if (mpPullDownCtrl != nullptr) {
+        if (mpPullDownCtrl->mCurrentPos != 0) {
+            if ((mpListLRCtrl != nullptr) && (mpListLRCtrl->mCurrentPos != 0)) {
+                return 0;
+            }
+            if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
+                if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 63)) != 0) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 62)) == 0) {
+                            if (mBlankSlot != 0) {
+                                if (static_cast<int>(mCostMax) < (mCostNow + (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 56)))) {
+                                    sGUI* t0 = sGUI::getInstance();
+                                    static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(mpGMDRes, 34u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+                                    return 0;
+                                } else {
+                                    this->uGUIBase::setInputEvent(71u);
+                                    if (msg != nullptr) {
+                                        msg->changeSE = 0;
+                                    }
+                                    return 1;
+                                }
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            this->uGUIBase::setInputEvent(71u);
+                            if (msg != nullptr) {
+                                msg->changeSE = 0;
+                            }
+                            return 1;
+                        }
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 uGUISkill::evCtrlPPMode(cControl::Message* msg) {
-    DDON_STUB("uGUISkill::evCtrlPPMode")
-    return {};
+u32 uGUISkill::evCtrlPPMode(cControl::Message* msg) {
+    if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
+        if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 75)) != 0) {
+                this->uGUIBase::setInputEvent(72u);
+                if (msg != nullptr) {
+                    msg->changeSE = 4;
+                }
+                return 1;
+            }
+        }
+    }
+    if (msg != nullptr) {
+        msg->changeSE = 0;
+    }
+    return 0;
 }
 
 __attribute__((weak)) u32 uGUISkill::evCtrlAdjustCursor(cControl::Message* msg) {

@@ -83,9 +83,32 @@ __attribute__((noinline)) uEffectExt::~uEffectExt() {
     /* stub */
 }
 
-__attribute__((weak)) void uEffectExt::setup() {
-    DDON_STUB("uEffectExt::setup")
-    /* stub */
+void uEffectExt::setup() {
+    this->cUnit::setup();
+    mParentBaseModelFlag = 0;
+    if (mpParent != nullptr) {
+        const MtDTI& t0 = mpParent->getDTI();
+        MT_CTSTR v0_1 = uBaseModel::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                mParentBaseModelFlag = 1;
+                break;
+            }
+        }
+    }
+    if ((mUnitGroup & 0x100008000000000ul) == 0) {
+        sUnit::getInstance()->setUnitGroupBit(static_cast<cUnit*>(this), getUnitGroup() | (sUnitExt::GPT_EFFECT));
+    }
+    buildCorrectColorFromZone();
+    setupLightInf();
+    setCameraQuake();
+    resetEffectKind();
 }
 
 __attribute__((weak)) void uEffectExt::move() {
@@ -116,9 +139,32 @@ void uEffectExt::kill() {
     }
 }
 
-__attribute__((weak)) void uEffectExt::createProperty(MtPropertyList& s) {
-    DDON_STUB("uEffectExt::createProperty")
-    /* stub */
+void uEffectExt::createProperty(MtPropertyList& s) {
+    this->uEffect::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpParentActor", reinterpret_cast<MtObject* *>(&mpParentActor), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mHitStopMode", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getHitStopMode), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setHitStopMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mWorkRateMode", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getWorkRateMode), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setWorkRateMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mCustomWorkRateType", &mCustomWorkRateType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDeltaTimeCoefEx", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getDeltaTimeCoefEx), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setDeltaTimeCoefEx), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "CCTransparency", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getCCTransparency), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setCCTransparency), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "CorrectColorRate", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getCorrectColorRate), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setCorrectColorRate), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "CorrectColorAlpha", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getCorrectColorAlpha), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setCorrectColorAlpha), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "CorrectColor", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getCorrectColor), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setCorrectColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Follow Sun", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getFollowSunFlag), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setFollowSunFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mFollowSunDist", &mFollowSunDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Follow Moon", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getFollowMoon), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setFollowMoon), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "FineWeatherOff", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getFineWeatherOffFlag), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setFineWeatherOffFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "CloudyWeatherOff", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getCloudyWeatherOffFlag), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setCloudyWeatherOffFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "RainWeatherOff", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getRainWeatherOffFlag), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setRainWeatherOffFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Zone Check Generator", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getZoneCheckGeneratorFlag), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setZoneCheckGeneratorFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Color Update", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getColorUpdateFlag), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setColorUpdateFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Color Update Dist Cancel", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getColorUpdateDistCancelFlag), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setColorUpdateDistCancelFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mColorUpdateTime", &mColorUpdateTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mParentBaseModelFlag", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getParentBaseModelFlag), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setParentBaseModelFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mParentTransparency", reinterpret_cast<MT_MFUNC>(&::uEffectExt::getParentTransparency), reinterpret_cast<MT_MFUNC>(&::uEffectExt::setParentTransparency), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mRDCFC.mDispCtrlFlag", &mRDCFC.mDispCtrlFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRDCFC.mApplicationRate", &mRDCFC.mApplicationRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEpvPos", &mEpvPos, 0u, 0u);
 }
 
 MtUI* uEffectExt::createUI(MtProperty& prop) {
@@ -430,8 +476,68 @@ inline void uEffectExt::CORRECT_WIND_PARAM::ZONE_WIND_PARAM::operator delete[](v
     MtMemoryAllocator::getAllocator(uEffectExt::DTI)->memFree(padr);
 }
 
-__attribute__((weak)) bool uEffectExt::cRequestDispCtrlFlagCtrl::isProgressDispOff() {
-    DDON_STUB("uEffectExt::cRequestDispCtrlFlagCtrl::isProgressDispOff")
-    return {};
+bool uEffectExt::cRequestDispCtrlFlagCtrl::isProgressDispOff() {
+    if ((mDispCtrlFlag & 1u) == 0) {
+        if ((mDispCtrlFlag & 2u) != 0) {
+            if (mpOwner->mpParent != nullptr) {
+                cpOcdCtrl* pOcdCtrl = static_cast<uDDOModel*>(mpOwner->mpParent)->getOcdCtrlPtr();
+                if (pOcdCtrl != nullptr) {
+                    if (!pOcdCtrl->isOcdActive(4106u)) {
+                        if (!pOcdCtrl->isOcdActive(4107u)) {
+                            if (!pOcdCtrl->isOcdActive(4109u)) {
+                                if (((mDispCtrlFlag & 4u) != 0) && (sEnemyManager::getInstance()->mEnemyDistanceInfo.getNearestDistanceSuperErosion() > static_cast<sEffectExt*>(sEffect::getInstance())->mSuperErosionDispOffDistance)) {
+                                    return true;
+                                }
+                                if ((mDispCtrlFlag & 8u) != 0) {
+                                    bool t0 = static_cast<sEffectExt*>(sEffect::getInstance())->isDrawOnceRequestEffectTypeSuperErosionCamData(mpOwner);
+                                    return !t0;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return true;
+                            }
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        return true;
+                    }
+                } else {
+                    if (((mDispCtrlFlag & 4u) != 0) && (sEnemyManager::getInstance()->mEnemyDistanceInfo.getNearestDistanceSuperErosion() > static_cast<sEffectExt*>(sEffect::getInstance())->mSuperErosionDispOffDistance)) {
+                        return true;
+                    }
+                    if ((mDispCtrlFlag & 8u) != 0) {
+                        bool t0 = static_cast<sEffectExt*>(sEffect::getInstance())->isDrawOnceRequestEffectTypeSuperErosionCamData(mpOwner);
+                        return !t0;
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                if (((mDispCtrlFlag & 4u) != 0) && (sEnemyManager::getInstance()->mEnemyDistanceInfo.getNearestDistanceSuperErosion() > static_cast<sEffectExt*>(sEffect::getInstance())->mSuperErosionDispOffDistance)) {
+                    return true;
+                }
+                if ((mDispCtrlFlag & 8u) != 0) {
+                    bool t0 = static_cast<sEffectExt*>(sEffect::getInstance())->isDrawOnceRequestEffectTypeSuperErosionCamData(mpOwner);
+                    return !t0;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            if (((mDispCtrlFlag & 4u) != 0) && (sEnemyManager::getInstance()->mEnemyDistanceInfo.getNearestDistanceSuperErosion() > static_cast<sEffectExt*>(sEffect::getInstance())->mSuperErosionDispOffDistance)) {
+                return true;
+            }
+            if ((mDispCtrlFlag & 8u) != 0) {
+                bool t0 = static_cast<sEffectExt*>(sEffect::getInstance())->isDrawOnceRequestEffectTypeSuperErosionCamData(mpOwner);
+                return !t0;
+            } else {
+                return false;
+            }
+        }
+    } else {
+        return true;
+    }
 }
 

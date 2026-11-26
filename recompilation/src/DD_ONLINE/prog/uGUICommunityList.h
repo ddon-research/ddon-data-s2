@@ -365,7 +365,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cTabDataFriendList();
-        virtual ~cTabDataFriendList();
+        virtual ~cTabDataFriendList() {}
         virtual void init();  // vtable slot 6
         virtual nMenu::MENU_RET move();  // vtable slot 7
         virtual u32 getMakeArrayDataNum();  // vtable slot 9
@@ -407,7 +407,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cTabDataActiveList();
-        virtual ~cTabDataActiveList();
+        virtual ~cTabDataActiveList() {}
         virtual void init();  // vtable slot 6
         virtual nMenu::MENU_RET move();  // vtable slot 7
         virtual u32 getMakeArrayDataNum();  // vtable slot 9
@@ -451,7 +451,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cTabDataNearPlayerList();
-        virtual ~cTabDataNearPlayerList();
+        virtual ~cTabDataNearPlayerList() {}
         virtual void init();  // vtable slot 6
         virtual nMenu::MENU_RET move();  // vtable slot 7
         virtual u32 getMakeArrayDataNum();  // vtable slot 9
@@ -494,7 +494,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cTabDataBlackList();
-        virtual ~cTabDataBlackList();
+        virtual ~cTabDataBlackList() {}
         virtual void init();  // vtable slot 6
         virtual nMenu::MENU_RET move();  // vtable slot 7
         virtual u32 getMakeArrayDataNum();  // vtable slot 9

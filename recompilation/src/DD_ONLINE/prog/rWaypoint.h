@@ -180,3 +180,9 @@ inline bool rWaypoint::cPoint::load(MtDataReader& r) {
     nDDOIO::readData(r, mRadius);
     return true;
 }
+
+inline bool rWaypoint::cRoute::load(MtDataReader& r) {
+    nDDOIO::readDataArray(r, mPointIdx, ROUTE_PARAM_NUM);
+    nDDOIO::readDataArray(r, mWeight, ROUTE_PARAM_NUM);
+    return true;
+}

@@ -23,6 +23,7 @@ class MtAllocator;
 class MtDTI;
 struct MtNetError;
 class MtObject;
+class cNetGameServer;
 class cPartyMemberInfo;
 namespace nNet { class cProgress; }
 namespace nNet { class cResult; }
@@ -144,6 +145,7 @@ namespace nSessionManager {
 namespace nSessionManager {
     class cNetSessionManager : public ::MtObject
     {
+        friend class ::cNetGameServer;
         friend class nSessionManager::MyListener;
         friend class ::uGUINewspaper;
     public:

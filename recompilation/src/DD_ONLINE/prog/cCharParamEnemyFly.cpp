@@ -40,9 +40,14 @@ cCharParamEnemyFly::cCharParamEnemyFly() {
     mHoverLevelRange = 50;
 }
 
-__attribute__((weak)) void cCharParamEnemyFly::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCharParamEnemyFly::createProperty")
-    /* stub */
+void cCharParamEnemyFly::createProperty(MtPropertyList& s) {
+    this->cCharParamEnemy::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\233\343\203\220\343\203\252\343\203\263\343\202\260\351\200\237\345\272\246", &mHoverSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\233\343\203\220\343\203\252\343\203\263\343\202\260\351\253\230\345\272\246", &mHoverAltitude[0], 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\233\343\203\220\343\203\252\343\203\263\343\202\260\351\253\230\345\272\246\346\256\265\351\232\216\346\225\260", &mHoverLevelMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\233\343\203\220\343\203\252\343\203\263\343\202\260\345\210\260\351\201\224\345\210\244\345\256\232\345\271\205", &mHoverLevelRange, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\351\243\233\350\241\214\351\200\237\345\272\246", &mFlySpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\351\243\233\350\241\214\351\253\230\345\272\246", &mFlyAltitude, 0u, 0u);
 }
 
 MtUI* cCharParamEnemyFly::createUI(MtProperty& prop) {

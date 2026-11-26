@@ -15,6 +15,9 @@
 #include "../../MT/MtSynchronize.h"
 #include "aStage.h"
 #include "cCamInterporate.h"
+#include "cCameraGameAnim.h"
+#include "cCameraGameLock.h"
+#include "cCameraGameMot.h"
 #include "cCameraGameNml.h"
 #include "cCameraGamePhoto.h"
 #include "cCameraGameTemplate.h"
@@ -84,43 +87,80 @@ void cCamExParam::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) void cCamExParam::createPropertyCommon(MtPropertyList& s) {
-    DDON_STUB("cCamExParam::createPropertyCommon")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mType", reinterpret_cast<s32*>(&mType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mComment", &mComment, 8192u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRelVer", &mRelVer, 8192u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConditionFlag", &mConditionFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConditionPlDist", &mConditionPlDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConditionCamDist", &mConditionCamDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuakeNo", &mQuakeNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsWaitCameraEnd", &mIsWaitCameraEnd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnableFrame", &mEnableFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCantReqFrame", &mCantReqFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRequestGroup", &mRequestGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCantReqGroupBit", &mCantReqGroupBit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCangReqFrameGroup", &mCangReqFrameGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsKeepAngle", &mIsKeepAngle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mKeepAngleType", reinterpret_cast<s32*>(&mKeepAngleType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mKeepTargetPos", &mKeepTargetPos, 0u, 0u);
 }
 
 __attribute__((weak)) void cCamExParam::createPropertyCameraTarget(MtPropertyList& s) {
-    DDON_STUB("cCamExParam::createPropertyCameraTarget")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mCameraTarget", reinterpret_cast<s32*>(&mCameraTarget), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup", &mGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetJoint", &mTargetJoint, 0u, 0u);
 }
 
 __attribute__((weak)) void cCamExParam::createPropertyCoord(MtPropertyList& s) {
-    DDON_STUB("cCamExParam::createPropertyCoord")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mDistance", &mDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeight", &mHeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetX", &mOffsetX, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetZ", &mOffsetZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFov", &mFov, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRoll", &mRoll, 0u, 0u);
 }
 
 __attribute__((weak)) void cCamExParam::createPropertyInterporate(MtPropertyList& s) {
-    DDON_STUB("cCamExParam::createPropertyInterporate")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mInterCamRate", &mInterCamRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMargin", &mMargin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMarginAdjPow", &mMarginAdjPow, 0u, 0u);
 }
 
 __attribute__((weak)) void cCamExParam::createPropertyCtrl(MtPropertyList& s) {
-    DDON_STUB("cCamExParam::createPropertyCtrl")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mCtrlOption", &mCtrlOption, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAngLimitXMin", &mAngLimitXMin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAngLimitXMax", &mAngLimitXMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCtrlCurve", &mCtrlCurve, 0u, 0u);
 }
 
 __attribute__((weak)) void cCamExParam::createPropertyChangeInterporate(MtPropertyList& s) {
-    DDON_STUB("cCamExParam::createPropertyChangeInterporate")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mStartInterType", reinterpret_cast<s32*>(&mStartInterType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartFrameType", reinterpret_cast<s32*>(&mStartFrameType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartInterFrame", &mStartInterFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartInterCurve", &mStartInterCurve, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndInterType", reinterpret_cast<s32*>(&mEndInterType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndFrameType", reinterpret_cast<s32*>(&mEndFrameType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndInterFrame", &mEndInterFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndInterCurve", &mEndInterCurve, 0u, 0u);
 }
 
 __attribute__((weak)) void cCamExParam::createPropertyAdjust(MtPropertyList& s) {
-    DDON_STUB("cCamExParam::createPropertyAdjust")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mScrAdjustType", reinterpret_cast<s32*>(&mScrAdjustType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScrAdjustFlag", &mScrAdjustFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScrAdjustHeight", &mScrAdjustHeight, 0u, 0u);
 }
 
 __attribute__((weak)) void cCamExParam::createPropertyEx(MtPropertyList& s) {
-    DDON_STUB("cCamExParam::createPropertyEx")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mDofFilterFlag", &mDofFilterFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDOFFilterNearBlurLimit", &mDOFFilterNearBlurLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDOFFilterFarBlurLimit", &mDOFFilterFarBlurLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDOFFilterNear", &mDOFFilterNear, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDOFFilterFar", &mDOFFilterFar, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDOFFilterFocal", &mDOFFilterFocal, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDOFFilterGradateColor", &mDOFFilterGradateColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSysFlag", &mSysFlag, 0u, 0u);
 }
 
 cCamExParam::~cCamExParam() {
@@ -148,9 +188,20 @@ const MtDTI& cCamExParamSdr::getDTI() const {
     return cCamExParamSdr::DTI;
 }
 
-__attribute__((weak)) void cCamExParamSdr::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCamExParamSdr::createProperty")
-    /* stub */
+inline void cCamExParamSdr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(cCamExParamSdr::DTI)->memFree(p_addr);
+}
+
+void cCamExParamSdr::createProperty(MtPropertyList& s) {
+    createPropertyCommon(s);
+    createPropertyCameraTarget(s);
+    createPropertyCoord(s);
+    createPropertyInterporate(s);
+    createPropertyCtrl(s);
+    createPropertyChangeInterporate(s);
+    createPropertyAdjust(s);
+    createPropertyEx(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mSdrParamArray", static_cast<MtObject*>(&mSdrParamArray), 0u, 0u);
 }
 
 cCamExParamSdr::~cCamExParamSdr() {
@@ -171,8 +222,7 @@ inline cCamExParamSdr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 cCamExParamSdr::MyDTI cCamExParamSdr::DTI("cCamExParamSdr", &::cCamExParam::DTI, 512ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cCamExParamSdr::MyDTI::newInstance() const {
-    DDON_STUB("cCamExParamSdr::MyDTI::newInstance")
-    return nullptr;
+    return new (MtMemoryAllocator::getAllocator(cCamExParamSdr::DTI)->memAlloc(sizeof(cCamExParamSdr), 16u, cCamExParamSdr::DTI.getID())) cCamExParamSdr;
 }
 
 const MtDTI& cCamExParamSdr::cSdrParam::getDTI() const {
@@ -187,9 +237,10 @@ inline void cCamExParamSdr::cSdrParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCamExParamSdr::cSdrParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cCamExParamSdr::cSdrParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCamExParamSdr::cSdrParam::createProperty")
-    /* stub */
+void cCamExParamSdr::cSdrParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFrame", &mFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mChFlag", &mChFlag, 0u, 0u);
 }
 
 inline cCamExParamSdr::cSdrParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -198,6 +249,56 @@ cCamExParamSdr::cSdrParam::MyDTI cCamExParamSdr::cSdrParam::DTI("cCamExParamSdr:
 
 MtObject* cCamExParamSdr::cSdrParam::MyDTI::newInstance() const {
     return new (16u) cCamExParamSdr::cSdrParam;
+}
+
+const MtDTI& cCamExParamTarget::getDTI() const {
+    return cCamExParamTarget::DTI;
+}
+
+inline void cCamExParamTarget::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(cCamExParamTarget::DTI)->memFree(p_addr);
+}
+
+void cCamExParamTarget::createProperty(MtPropertyList& s) {
+    createPropertyCommon(s);
+    createPropertyCameraTarget(s);
+    createPropertyCoord(s);
+    createPropertyInterporate(s);
+    createPropertyCtrl(s);
+    createPropertyChangeInterporate(s);
+    createPropertyAdjust(s);
+    createPropertyEx(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mCameraOffset", &mCameraOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetType", reinterpret_cast<s32*>(&mTargetType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetGroup", &mTargetGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetId", &mTargetId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetJoint", &mTargetJoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetOffset", &mTargetOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetMargin", &mTargetMargin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMoveDirLookScale", &mMoveDirLookScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMoveDirLookRate", &mMoveDirLookRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOptionFlag", &mOptionFlag, 0u, 0u);
+}
+
+cCamExParamTarget::~cCamExParamTarget() {
+}
+
+__attribute__((weak)) cCamImpBase* cCamExParamTarget::createCamImpInstance(uCameraGame* pCamera) const {
+    DDON_STUB("cCamExParamTarget::createCamImpInstance")
+    return nullptr;
+}
+
+__attribute__((weak)) void cCamExParamTarget::copy(const cCamExParam* pParam) {
+    DDON_STUB("cCamExParamTarget::copy")
+    /* stub */
+}
+
+inline cCamExParamTarget::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cCamExParamTarget::MyDTI cCamExParamTarget::DTI("cCamExParamTarget", &::cCamExParam::DTI, 560ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cCamExParamTarget::MyDTI::newInstance() const {
+    return new (MtMemoryAllocator::getAllocator(cCamExParamTarget::DTI)->memAlloc(sizeof(cCamExParamTarget), 16u, cCamExParamTarget::DTI.getID())) cCamExParamTarget;
 }
 
 const MtDTI& cCamImpBase::getDTI() const {
@@ -389,6 +490,91 @@ __attribute__((weak)) MtObject* cCamImpSdr::MyDTI::newInstance() const {
     return nullptr;
 }
 
+const MtDTI& cCamImpTarget::getDTI() const {
+    return cCamImpTarget::DTI;
+}
+
+inline void cCamImpTarget::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cCamImpTarget::DTI)->memFree(p_addr);
+}
+
+cCamImpTarget::~cCamImpTarget() {
+    DDON_STUB("cCamImpTarget::~cCamImpTarget")
+    /* stub */
+}
+
+__attribute__((weak)) void cCamImpTarget::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    DDON_STUB("cCamImpTarget::applyWorldOffset")
+    /* stub */
+}
+
+__attribute__((weak)) void cCamImpTarget::initSub(MtVector3& cameraPos, MtVector3& targetPos, f32& angX, f32& angY) {
+    DDON_STUB("cCamImpTarget::initSub")
+    /* stub */
+}
+
+__attribute__((weak)) void cCamImpTarget::ctrlSub(MtVector3& idealCam, MtVector3& idealTar, f32& angX, f32& angY) {
+    DDON_STUB("cCamImpTarget::ctrlSub")
+    /* stub */
+}
+
+void cCamImpTarget::moveSub(MtVector3& idealCam, MtVector3& idealTar, f32& angX, f32& angY) {
+    mLastTargetPos.x = idealTar.x;
+    mLastTargetPos.y = idealTar.y;
+    mLastTargetPos.z = idealTar.z;
+    mLastTargetPos.pad_ = 0.0f;
+    cCamImpBase::calcTargetPos(mpC, mpParamTar->mTargetType, idealTar, mpParamTar->mTargetOffset, mpParamTar->mTargetJoint, mpParamTar->mTargetGroup, mpParamTar->mTargetId, mpParamTar->mSysFlag);
+    f32 t0 = idealTar.y;
+    f32 t1 = idealTar.z;
+    mMoveDirLookVec.x = idealTar.x - mLastTargetPos.x;
+    mMoveDirLookVec.y = t0 - mLastTargetPos.y;
+    mMoveDirLookVec.z = t1 - mLastTargetPos.z;
+    mMoveDirLookVec.pad_ = 0.0f;
+    if ((mpParamTar->mSysFlag & 128u) != 0) {
+        cCamImpBase::calcTargetPos(mpC, mpParamTar->mCameraTarget, idealCam, mpParamTar->mCameraOffset, mpParamTar->mTargetJoint, mpParamTar->mGroup, mpParamTar->mId, mpParamTar->mSysFlag);
+    } else {
+        cCamImpBase::calcTargetPos(mpC, mpParamTar->mCameraTarget, idealCam, mpParamTar->mCameraOffset, 0, mpParamTar->mGroup, mpParamTar->mId, mpParamTar->mSysFlag);
+    }
+    if (mCtrlX > 0.52359885f) {
+        mCtrlX = 0.52359885f;
+    } else {
+        if (-0.17453295f > mCtrlX) {
+            mCtrlX = -0.17453295f;
+        }
+    }
+    if (mCtrlY > 0.78539824f) {
+        mCtrlY = 0.78539824f;
+    } else {
+        if (-0.78539824f > mCtrlY) {
+            mCtrlY = -0.78539824f;
+        }
+    }
+}
+
+__attribute__((weak)) void cCamImpTarget::interporateSub(MtVector3& cameraPos, MtVector3& targetPos) {
+    DDON_STUB("cCamImpTarget::interporateSub")
+    /* stub */
+}
+
+__attribute__((weak)) void cCamImpTarget::adjustSub(MtVector3& cameraPos, MtVector3& targetPos, MtVector3& idealCam, MtVector3& idealTar) {
+}
+
+__attribute__((weak)) void cCamImpTarget::finalSub() {
+}
+
+nCameraGame::CAMERA_TYPE cCamImpTarget::getType() const {
+    return nCameraGame::TYPE_TARGET;
+}
+
+inline cCamImpTarget::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cCamImpTarget::MyDTI cCamImpTarget::DTI("cCamImpTarget", &::cCamImpBase::DTI, 448ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cCamImpTarget::MyDTI::newInstance() const {
+    DDON_STUB("cCamImpTarget::MyDTI::newInstance")
+    return nullptr;
+}
+
 __attribute__((weak)) void cCamInterPreset::initialize(const MtVector3& cameraPos, const MtVector3& targetPos, f32 roll, f32 fov, const MtVector3& playerPos, const MtHermiteCurve& curve, f32 time, cCamInterPreset::INTER_TYPE type, cCamInterPreset::FRAME_TYPE fType) {
     DDON_STUB("cCamInterPreset::initialize")
     /* stub */
@@ -415,9 +601,28 @@ __attribute__((weak)) void nCameraGame::cTemplateParam::operator delete(void* p_
     ::nCameraGame::cTemplateParam::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) void nCameraGame::cTemplateParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("nCameraGame::cTemplateParam::createProperty")
-    /* stub */
+void nCameraGame::cTemplateParam::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mChFlag", reinterpret_cast<s32*>(&mChFlag), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mFrame", &mFrame, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mTargetTypeA", reinterpret_cast<s32*>(&mTargetTypeA), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mUnitTypeA", reinterpret_cast<s32*>(&mUnitTypeA), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mTargetGroup_A", &mTargetGroup_A, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mTargetID_A", &mTargetID_A, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mOffsetA", &mOffsetA, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mTargetTypeB", reinterpret_cast<s32*>(&mTargetTypeB), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mUnitTypeB", reinterpret_cast<s32*>(&mUnitTypeB), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mTargetGroup_B", &mTargetGroup_B, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mTargetID_B", &mTargetID_B, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mOffsetB", &mOffsetB, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mAnimSpeed", &mAnimSpeed, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mAnimStartFrame", &mAnimStartFrame, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mAnimDistScale", &mAnimDistScale, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIsUseCustomInter", &mIsUseCustomInter, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mInterType", reinterpret_cast<s32*>(&mInterType), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mInterFrameType", reinterpret_cast<s32*>(&mInterFrameType), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mInterFrame", &mInterFrame, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mInterCurve", &mInterCurve, 0u, 0u);
 }
 
 __attribute__((weak)) const uCoord* nCameraGame::cTemplateParam::getTempTarget(nCameraGame::cTemplateParam::UNIT_TYPE type, u32 group, u32 id) const {
@@ -430,8 +635,7 @@ inline nCameraGame::cTemplateParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps,
 nCameraGame::cTemplateParam::MyDTI nCameraGame::cTemplateParam::DTI("nCameraGame::cTemplateParam", &::MtObject::DTI, 304ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nCameraGame::cTemplateParam::MyDTI::newInstance() const {
-    DDON_STUB("nCameraGame::cTemplateParam::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::nCameraGame::cTemplateParam;
 }
 
 const MtDTI& uCameraGame::getDTI() const {
@@ -537,14 +741,23 @@ __attribute__((weak)) void uCameraGame::applyWorldOffset(const MtVector3& offset
     /* stub */
 }
 
-__attribute__((weak)) MtMatrix uCameraGame::getViewMat() {
-    DDON_STUB("uCameraGame::getViewMat")
-    __builtin_unreachable();
+MtMatrix uCameraGame::getViewMat() {
+    MtMatrix vm;
+    vm.setLookAtRH(mCameraPos, mTargetPos, mCameraUp);
+    return vm;
 }
 
-__attribute__((weak)) MtMatrix uCameraGame::getProjMat() {
-    DDON_STUB("uCameraGame::getProjMat")
-    __builtin_unreachable();
+MtMatrix uCameraGame::getProjMat() {
+    MtMatrix pj;
+    pj.setPerspectiveFovRH(mNearPlane, mFarPlane, mFov * 0.017453294f, mAspect);
+    if (mFovType != FOV_V) {
+        f32 t0 = mAspect;
+        pj.m[0].x = pj.m[0].x / (1.0f / t0);
+        pj.m[1].y = t0 * pj.m[1].y;
+        return pj;
+    } else {
+        return pj;
+    }
 }
 
 __attribute__((weak)) bool uCameraGame::requestExCamera(const cCamExParam* pParam, const uDDOModel* pResourceOwner, const uDDOModel* pOwner, bool isForceSet) {

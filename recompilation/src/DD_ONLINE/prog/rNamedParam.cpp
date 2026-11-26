@@ -6,6 +6,7 @@
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -55,9 +56,31 @@ cNamedParam::cNamedParam() {
     this->mAilmentDamage = 100;
 }
 
-__attribute__((weak)) void cNamedParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cNamedParam::createProperty")
-    /* stub */
+void cNamedParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mID", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getID), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setID), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mType", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getType), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mHpRate", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getHpRate), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setHpRate), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mExperience", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getExperience), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setExperience), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mAttackBasePhys", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getAttackBasePhys), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setAttackBasePhys), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mAttackWepPhys", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getAttackWepPhys), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setAttackWepPhys), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mDefenceBasePhys", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getDefenceBasePhys), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setDefenceBasePhys), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mDefenceWepPhys", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getDefenceWepPhys), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setDefenceWepPhys), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mAttackBaseMagic", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getAttackBaseMagic), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setAttackBaseMagic), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mAttackWepMagic", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getAttackWepMagic), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setAttackWepMagic), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mDefenceBaseMagic", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getDefenceBaseMagic), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setDefenceBaseMagic), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mDefenceWepMagic", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getDefenceWepMagic), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setDefenceWepMagic), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mPower", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getPower), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setPower), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mGuardDefenceBase", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getGuardDefenceBase), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setGuardDefenceBase), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mGuardDefenceWep", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getGuardDefenceWep), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setGuardDefenceWep), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mShrinkEnduranceMain", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getShrinkEnduranceMain), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setShrinkEnduranceMain), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mBlowEnduranceMain", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getBlowEnduranceMain), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setBlowEnduranceMain), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mDownEnduranceMain", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getDownEnduranceMain), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setDownEnduranceMain), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mShakeEnduranceMain", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getShakeEnduranceMain), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setShakeEnduranceMain), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mHpSub", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getHpSub), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setHpSub), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mShrinkEnduranceSub", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getShrinkEnduranceSub), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setShrinkEnduranceSub), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mBlowEnduranceSub", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getBlowEnduranceSub), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setBlowEnduranceSub), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mOcdEndurance", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getOcdEndurance), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setOcdEndurance), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "mAilmentDamage", reinterpret_cast<MT_MFUNC>(&::cNamedParam::getAilmentDamage), reinterpret_cast<MT_MFUNC>(&::cNamedParam::setAilmentDamage), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 static auto ddon_emit_0x01a9dca0 __attribute__((used)) = &cNamedParam::getID;

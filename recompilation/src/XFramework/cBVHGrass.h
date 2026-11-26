@@ -123,6 +123,14 @@ private:
 
 // Included after the classes: the generic bodies below need these complete.
 #include "../MT/MtAllocator.h"
+#include "../MT/MtProperty.h"
+#include "../MT/MtPropertyList.h"
+
+template <typename _NODE_>
+void cNodeParam<_NODE_>::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mAABB", &this->mAABB, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpData", reinterpret_cast<MtObject* *>(&this->mpData), 0u, 0u);
+}
 
 template <typename _NODE_>
 cNodeParam<_NODE_>::~cNodeParam() {

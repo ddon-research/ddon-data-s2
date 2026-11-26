@@ -33,9 +33,8 @@ __attribute__((weak)) MtVector3 cGeomConvexHull::getSupportConst(const MtVector3
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 cGeomConvexHull::getSupport(const MtVector3& v) {
-    DDON_STUB("cGeomConvexHull::getSupport")
-    __builtin_unreachable();
+MtVector3 cGeomConvexHull::getSupport(const MtVector3& v) {
+    return getSupportConst(v);
 }
 
 __attribute__((weak)) void cGeomConvexHull::getBoundingAABB(MtAABB& aabb) const {
@@ -72,9 +71,9 @@ MtUI* cGeomConvexHull::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cGeomConvexHull::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGeomConvexHull::createProperty")
-    /* stub */
+void cGeomConvexHull::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Resource", "resource", reinterpret_cast<MT_MFUNC>(&::cGeomConvexHull::getResource), reinterpret_cast<MT_MFUNC>(&::cGeomConvexHull::setResource), 16u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_MATRIX, "Transform", reinterpret_cast<MT_MFUNC>(&::cGeomConvexHull::getMatrixCopy), reinterpret_cast<MT_MFUNC>(&::cGeomConvexHull::setMatrix), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 static auto ddon_emit_0x01b91790 __attribute__((used)) = &cGeomConvexHull::getResource;

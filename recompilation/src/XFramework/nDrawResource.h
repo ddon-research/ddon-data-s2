@@ -32,6 +32,8 @@ namespace nDraw {
         friend class ::cDraw;
         friend class ::sGUI;
         friend class ::sRender;
+
+        friend class Material;
     public:
         class MyDTI;
     public:

@@ -90,9 +90,20 @@ __attribute__((weak)) MtVector3 sWorldOffset::getRealPos(const MtVector3& worldP
     __builtin_unreachable();
 }
 
-__attribute__((weak)) nNetMsgData::stNetPos sWorldOffset::getRealNetPos(const MtVector3& worldPos) const {
-    DDON_STUB("sWorldOffset::getRealNetPos")
-    __builtin_unreachable();
+nNetMsgData::stNetPos sWorldOffset::getRealNetPos(const MtVector3& worldPos) const {
+    nNetMsgData::stNetPos realPos;
+    const f32 t0 = worldPos.x;
+    realPos.x = static_cast<double>(t0);
+    const f32 t1 = worldPos.y;
+    realPos.y = t1;
+    const f32 t2 = worldPos.z;
+    realPos.z = static_cast<double>(t2);
+    if (isWorldOffset()) {
+        realPos.x = static_cast<double>(t0) - static_cast<double>(mWorldAbsoluteOffset.x);
+        realPos.y = t1 - mWorldAbsoluteOffset.y;
+        realPos.z = static_cast<double>(t2) - static_cast<double>(mWorldAbsoluteOffset.z);
+    }
+    return realPos;
 }
 
 __attribute__((weak)) MtVector3 sWorldOffset::getRealOffset(s32 splitN, s32 splitM) {

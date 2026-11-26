@@ -55,9 +55,10 @@ __attribute__((noinline)) uGUIGiveAndTake::~uGUIGiveAndTake() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGiveAndTake::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGUIGiveAndTake::createProperty")
-    /* stub */
+void uGUIGiveAndTake::createProperty(MtPropertyList& s) {
+    this->uGUI::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mMode", &mMode, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSleep", &mSleep, 0u, 0u);
 }
 
 bool uGUIGiveAndTake::loadResource() {
@@ -544,8 +545,6 @@ const MtDTI& uGUIGiveAndTake::cItemList::getDTI() const {
 }
 
 uGUIGiveAndTake::cItemList::~cItemList() {
-    DDON_STUB("uGUIGiveAndTake::cItemList::~cItemList")
-    /* stub */
 }
 
 inline uGUIGiveAndTake::cItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -309,3 +309,26 @@ inline rTblMenuOption::cPulldown::cPulldown() {
     this->mSortId = 0;
     this->mPulldownId = 0;
 }
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rTblMenuOption::cCtgr::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rTblMenuOption::cCtgr::DTI)->memAlloc(sz, align, rTblMenuOption::cCtgr::DTI.getID());
+}
+
+inline rTblMenuOption::cCtgr::cCtgr() {
+    mSortId = 0;
+    mCtgrId = 0;
+    mTab.setAutoDelete(true);
+}
+
+inline void* rTblMenuOption::cCaption::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rTblMenuOption::cCaption::DTI)->memAlloc(sz, align, rTblMenuOption::cCaption::DTI.getID());
+}
+
+inline rTblMenuOption::cCaption::cCaption() {
+    mSortId = 0;
+    mCaptionId = 0;
+    mData.setAutoDelete(true);
+}

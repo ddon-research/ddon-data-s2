@@ -19,6 +19,7 @@ class cpHpDamageCtrl;
 class cpTalk;
 class uDDOModel;
 class uNpc;
+class uStageCraftPawnCtrl;
 
 // Declarations
 class uControlNpc;
@@ -41,6 +42,7 @@ class uControlNpc : public uControl
     friend class cpHpDamageCtrl;
     friend class cpTalk;
     friend class uNpc;
+    friend class uStageCraftPawnCtrl;
 public:
     enum
     {

@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
@@ -63,9 +64,49 @@ __attribute__((weak)) void uEffectEmitter::move() {
     /* stub */
 }
 
-__attribute__((weak)) void uEffectEmitter::createProperty(MtPropertyList& s) {
-    DDON_STUB("uEffectEmitter::createProperty")
-    /* stub */
+void uEffectEmitter::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mEmitFlag", &mEmitFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mControlFlag", &mControlFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Group", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getGroupFlagBit), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setGroupFlagBit), 160u, reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getFlagBitNum), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setDummyU32));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Material", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getMaterialFlagBit), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setMaterialFlagBit), 160u, reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getFlagBitNum), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setDummyU32));
+    s << MtProperty(static_cast<MtObject*>(this), "mpEffectList", "resource", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getEffectList), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setEffectList), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mEffectMoveLine", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getEffectMoveLine), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setEffectMoveLine), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mKillNo", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getKillNo), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setKillNo), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mEventMode", &mEventMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSyncUpdateMode", &mSyncUpdateMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTimerControlMode", &mTimerControlMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUGInvalidMode", &mUGInvalidMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpParent", reinterpret_cast<MtObject* *>(&mpParent), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCamera", reinterpret_cast<MtObject* *>(&mpCamera), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mParentConstType", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getParentConstType), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setParentConstType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mCameraConstType", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getCameraConstType), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setCameraConstType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mOrder", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getOrder), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setOrder), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mAxisType", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getAxisType), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setAxisType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mRelationType", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getRelationType), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setRelationType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mEndType", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getEndType), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setEndType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mLoopFrame", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getLoopFrame), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setLoopFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mLifeFrame", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getLifeFrame), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setLifeFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mWaitFrame", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getWaitFrame), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setWaitFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mChainResetFlag", &mChainResetFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectTrans", &mEffectTrans, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mEffectDrawMode", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getEffectDrawMode), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setEffectDrawMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mParentNo", &mParentNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPlaySpeed", &mPlaySpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mChildLoopFrame", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getChildLoopFrame), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setChildLoopFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mChildLifeFrame", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getChildLifeFrame), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setChildLifeFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mChildWaitFrame", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getChildWaitFrame), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setChildWaitFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mTimer", &mTimer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParticleScale", &mParticleScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParticle3DScale", &mParticle3DScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGeneratorScale", &mGeneratorScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOfs", &mOfs, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuat", &mQuat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mAngle", reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::getAngle), reinterpret_cast<MT_MFUNC>(&::uEffectEmitter::setAngle), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mDir", &mDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShowMatrix", &mShowMatrix, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShowSize", &mShowSize, 0u, 0u);
 }
 
 MtUI* uEffectEmitter::createUI(MtProperty& prop) {

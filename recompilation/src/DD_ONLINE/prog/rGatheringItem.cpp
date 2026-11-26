@@ -25,9 +25,9 @@ inline void cGatheringItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cGatheringItem::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cGatheringItem::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGatheringItem::createProperty")
-    /* stub */
+void cGatheringItem::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mItemNo", &mItemNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
 }
 
 MtUI* cGatheringItem::createUI(MtProperty& prop) {

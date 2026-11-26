@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "rPawnAI.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCRC.h"
@@ -132,9 +133,39 @@ __attribute__((weak)) void cPawnAIAction::findActInterfaceFromGroup(MtTypedArray
     /* stub */
 }
 
-__attribute__((weak)) void cPawnAIAction::findActInterfaceFromGroup(MtTypedArray<cPawnAIAction>* pDst, uCharacter* pOwner, MtTypedArray<cPawnAIAction>& src, const cAIPawnActionGroupFlag& group) {
-    DDON_STUB("cPawnAIAction::findActInterfaceFromGroup")
-    /* stub */
+void cPawnAIAction::findActInterfaceFromGroup(MtTypedArray<cPawnAIAction>* pDst, uCharacter* pOwner, MtTypedArray<cPawnAIAction>& src, const cAIPawnActionGroupFlag& group) {
+    u32 num = src.mLength;
+    MtRandom::instance.nrand();
+    if (num != 0) {
+        for (unsigned int i0_9 = 0;;) {
+            MtObject* t0 = src.getBuffer()[static_cast<int>(i0_9)];
+            if (t0 != nullptr) {
+                if (static_cast<cPawnAIAction*>(t0)->isActInterGroup(pOwner, group)) {
+                    u32 t1 = pDst->mLength;
+                    u32 t2 = pDst->mBufsiz;
+                    if (t1 < t2) {
+                        pDst->mLength = t1 + 1u;
+                        pDst->mpArray[t1] = t0;
+                    } else {
+                        void* t3 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t2 + 32u) * 8, 16u);
+                        memset(t3, 0, static_cast<size_t>(t2 + 32u) * 8);
+                        memcpy(t3, static_cast<const void*>(pDst->mpArray), static_cast<size_t>(pDst->mLength) * 8);
+                        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(pDst->mpArray));
+                        pDst->mpArray = static_cast<MtObject* *>(t3);
+                        pDst->mBufsiz = t2 + 32u;
+                        u32 t4 = pDst->mLength;
+                        pDst->mLength = t4 + 1u;
+                        pDst->mpArray[t4] = t0;
+                    }
+                }
+            }
+            if (num != (i0_9 + 1u)) {
+                i0_9 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) cPawnAIAction* cPawnAIAction::findActInterfaceFromID(MtTypedArray<rPawnAIAction>& res, u32 id) {
@@ -143,7 +174,7 @@ __attribute__((weak)) cPawnAIAction* cPawnAIAction::findActInterfaceFromID(MtTyp
 }
 
 cPawnAIAction* cPawnAIAction::findActInterfaceFromID(MtTypedArray<cPawnAIAction>& src, u32 id) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&src) + 8)) != 0) {
+    if (src.mLength != 0) {
         u32 i = 0;
         do {
             if (src.getBuffer()[static_cast<int>(i)] != nullptr) {
@@ -152,7 +183,7 @@ cPawnAIAction* cPawnAIAction::findActInterfaceFromID(MtTypedArray<cPawnAIAction>
                 }
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&src) + 8)));
+        } while (i < src.mLength);
     }
     return nullptr;
 }
@@ -244,8 +275,18 @@ u32 rPawnAIAction::getDataVersion() const {
 }
 
 __attribute__((weak)) bool rPawnAIAction::loadCore(MtDataReader& r) {
-    DDON_STUB("rPawnAIAction::loadCore")
-    return {};
+        u32 dat_num;
+        r.readU32();
+        r.readU32();
+        readDataValue(r, dat_num);
+        allocData(dat_num);
+        cPawnAIAction* p_dat = mpData;
+        for (u32 i = 0; i < dat_num; i++) {
+            if (!loadData(r, &p_dat[i])) {
+                return false;
+            }
+        }
+        return true;
 }
 
 inline rPawnAIAction::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

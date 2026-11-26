@@ -9,6 +9,7 @@
 #include "../MT/MtNetP2p.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "cRemoteCall.h"
@@ -43,18 +44,20 @@ nNetwork::Connect::Connect() {
 nNetwork::Connect::~Connect() {
 }
 
-__attribute__((weak)) void nNetwork::Connect::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::Connect::createProperty")
-    /* stub */
+void nNetwork::Connect::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpP2p", reinterpret_cast<MtObject* *>(&mpP2p), 6u, 0u);
 }
 
 MtUI* nNetwork::Connect::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nNetwork::Connect::setup(nNetwork::Session* ps) {
-    DDON_STUB("nNetwork::Connect::setup")
-    /* stub */
+void nNetwork::Connect::setup(nNetwork::Session* ps) {
+    mpSession = ps;
+    mReceiver.mpObject = static_cast<MtObject*>(this);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 72) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 64) = 73;
+    ps->mCallback.set(2, static_cast<nNetwork::ReceiverBase*>(&mReceiver), false, true);
 }
 
 __attribute__((weak)) void nNetwork::Connect::move() {

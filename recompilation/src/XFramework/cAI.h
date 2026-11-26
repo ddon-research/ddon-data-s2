@@ -538,6 +538,15 @@ inline void* cAIGraph::Node::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cAIGraph::Node::Node() {
+    this->mID = 0;
+    this->mNumberOfLink = 0;
+    this->mAutoDeleteLink = false;
+    this->mpLink = nullptr;
+    this->mpCurrent = nullptr;
+    this->mpParent = nullptr;
+}
+
 inline void* cAIGraph::Area::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

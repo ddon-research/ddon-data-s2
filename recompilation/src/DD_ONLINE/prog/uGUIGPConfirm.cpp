@@ -134,9 +134,21 @@ __attribute__((weak)) void uGUIGPConfirm::updateWait1st() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGPConfirm::updateWait() {
-    DDON_STUB("uGUIGPConfirm::updateWait")
-    /* stub */
+void uGUIGPConfirm::updateWait() {
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
+    mBrowserArea.update(getDeltaTime());
+    sBrowser::getInstance()->mIsCursorDraw = !static_cast<sGUIExt*>(sGUI::getInstance())->mMouse.isActiveMouse();
+    if (mpCtrl != nullptr) {
+        if (mpCtrl->mCurrentPos == 0) {
+            if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableBrowser()) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->hidePointer(getBasePointerPriority());
+            } else {
+                updateBrowserPointer();
+            }
+        }
+    }
+    (&mButtonOK)->update();
+    (&mButtonNG)->update();
 }
 
 __attribute__((weak)) void uGUIGPConfirm::initConfirm() {

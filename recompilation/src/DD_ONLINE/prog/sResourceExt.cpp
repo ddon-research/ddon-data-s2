@@ -31,6 +31,10 @@ inline void sResourceExt::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sResourceExt::DTI)->memFree(p_addr);
 }
 
+sResourceExt::sResourceExt(u32 ringbufsize) : sResource(ringbufsize) {
+    mIsStartCacheRegisterThread = false;
+}
+
 sResourceExt::~sResourceExt() {
 }
 

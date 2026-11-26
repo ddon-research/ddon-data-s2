@@ -5,6 +5,8 @@
 
 // Dependencies
 #include "../MT/MtDTI.h"
+
+#include "../MT/MtAllocator.h"
 #include "../MT/MtObject.h"
 
 // Forward declarations
@@ -15,6 +17,7 @@ class MtObject;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
+class sCollision;
 class uDynamicSbc;
 class uScrollCollisionGeometry;
 
@@ -101,6 +104,7 @@ namespace nCollision {
 namespace nCollision {
     class cScrCollisionMoveMatrix : public ::MtObject
     {
+        friend class ::sCollision;
         friend class ::uScrollCollisionGeometry;
     public:
         enum SCROLL_MOVE_MAT_ID
@@ -198,6 +202,7 @@ namespace nCollision {
 namespace nCollision {
     class cScrCommonFilter : public ::MtObject
     {
+        friend class ::sCollision;
         friend class ::uDynamicSbc;
         friend class ::uScrollCollisionGeometry;
     public:
@@ -327,6 +332,8 @@ namespace nCollisionUtil {
     public:
         bool initialize(MtAllocator& allocator, u32 BufferSize);
         void* allocate(u32 RequestSize);
+
+        template <typename _CLASS> inline _CLASS* allocateNewBy(u32 ClassNum);
         void adjustmentAlignment(u32 align);
     public:
         u8* pBuffer;  // offset: 0x0
@@ -334,6 +341,35 @@ namespace nCollisionUtil {
         u32 Size;  // offset: 0xc
     };
 }  // namespace nCollisionUtil
+
+inline bool nCollisionUtil::LoadBuffer::initialize(MtAllocator& allocator, u32 BufferSize) {
+    pBuffer = static_cast<u8*>(allocator.memAlloc(BufferSize, 16u));
+    if (pBuffer == nullptr) {
+        return false;
+    }
+    Size = BufferSize;
+    Position = 0;
+    return true;
+}
+inline void nCollisionUtil::LoadBuffer::adjustmentAlignment(u32 align) {
+    Position = (Position + align - 1) & ~(align - 1);
+}
+
+inline void* nCollisionUtil::LoadBuffer::allocate(u32 RequestSize) {
+    void* pret = pBuffer + Position;
+    Position += RequestSize;
+    return pret;
+}
+
+template <typename _CLASS>
+inline _CLASS* nCollisionUtil::LoadBuffer::allocateNewBy(u32 ClassNum) {
+    _CLASS* pret = reinterpret_cast<_CLASS*>(pBuffer + Position);
+    for (u32 i = 0; i < ClassNum; i++) {
+        new (static_cast<void*>(pBuffer + Position)) _CLASS;
+        Position += sizeof(_CLASS);
+    }
+    return pret;
+}
 
 namespace nCollisionUtil {
     class cOwnerSystem : public ::MtObject

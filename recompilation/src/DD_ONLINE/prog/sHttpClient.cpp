@@ -162,9 +162,9 @@ __attribute__((noinline)) sHttpClient::~sHttpClient() {
     /* stub */
 }
 
-__attribute__((weak)) void sHttpClient::createProperty(MtPropertyList& s) {
-    DDON_STUB("sHttpClient::createProperty")
-    /* stub */
+void sHttpClient::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mServerEnvironmentIndex", &mServerEnvironmentIndex, 0u, 0u);
 }
 
 MtUI* sHttpClient::createUI(MtProperty& prop) {

@@ -25,9 +25,11 @@ inline void cEnemyLocalShelTable::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEnemyLocalShelTable::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cEnemyLocalShelTable::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEnemyLocalShelTable::createProperty")
-    /* stub */
+void cEnemyLocalShelTable::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIdx", &mIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSyncFlagMax32", &mSyncFlagMax32, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDieIsNoCall", &mDieIsNoCall, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShellNo", &mShellNo, 0u, 0u);
 }
 
 inline cEnemyLocalShelTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

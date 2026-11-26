@@ -28,9 +28,6 @@ inline void cOcdHolyAbsorp::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cOcdHolyAbsorp::DTI)->memFree(p_addr);
 }
 
-cOcdHolyAbsorp::~cOcdHolyAbsorp() {
-}
-
 void cOcdHolyAbsorp::init(bool initFlag) {
     this->cOcdBase::init(initFlag);
 }

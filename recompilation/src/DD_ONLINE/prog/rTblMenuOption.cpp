@@ -67,9 +67,8 @@ MT_CTSTR rTblMenuOption::getName() const {
     return "rTblMenuOption";
 }
 
-__attribute__((weak)) void rTblMenuOption::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTblMenuOption::createProperty")
-    /* stub */
+void rTblMenuOption::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mCtgr", static_cast<MtObject*>(&mCtgr), 0u, 0u);
 }
 
 bool rTblMenuOption::load(MtStream& in) {
@@ -154,9 +153,10 @@ rTblMenuOption::cCtgr::~cCtgr() {
     mTab.mLength = 0;
 }
 
-__attribute__((weak)) void rTblMenuOption::cCtgr::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTblMenuOption::cCtgr::createProperty")
-    /* stub */
+void rTblMenuOption::cCtgr::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mSortId", &mSortId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCtgrId", &mCtgrId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTab", static_cast<MtObject*>(&mTab), 0u, 0u);
 }
 
 bool rTblMenuOption::cCtgr::load(MtDataReader& r) {
@@ -172,8 +172,7 @@ inline rTblMenuOption::cCtgr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 rTblMenuOption::cCtgr::MyDTI rTblMenuOption::cCtgr::DTI("rTblMenuOption::cCtgr", &::MtObject::DTI, 48ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rTblMenuOption::cCtgr::MyDTI::newInstance() const {
-    DDON_STUB("rTblMenuOption::cCtgr::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cCtgr;
 }
 
 const MtDTI& rTblMenuOption::cTab::getDTI() const {
@@ -191,9 +190,10 @@ inline void rTblMenuOption::cTab::operator delete(void* p_addr) {
 rTblMenuOption::cTab::~cTab() {
 }
 
-__attribute__((weak)) void rTblMenuOption::cTab::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTblMenuOption::cTab::createProperty")
-    /* stub */
+void rTblMenuOption::cTab::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mSortId", &mSortId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTabId", &mTabId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCaption", static_cast<MtObject*>(&mCaption), 0u, 0u);
 }
 
 bool rTblMenuOption::cTab::load(MtDataReader& r) {
@@ -248,9 +248,10 @@ rTblMenuOption::cCaption::~cCaption() {
     mData.mLength = 0;
 }
 
-__attribute__((weak)) void rTblMenuOption::cCaption::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTblMenuOption::cCaption::createProperty")
-    /* stub */
+void rTblMenuOption::cCaption::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mSortId", &mSortId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCaptionId", &mCaptionId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mData", static_cast<MtObject*>(&mData), 0u, 0u);
 }
 
 bool rTblMenuOption::cCaption::load(MtDataReader& r) {
@@ -266,8 +267,7 @@ inline rTblMenuOption::cCaption::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 rTblMenuOption::cCaption::MyDTI rTblMenuOption::cCaption::DTI("rTblMenuOption::cCaption", &::MtObject::DTI, 48ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rTblMenuOption::cCaption::MyDTI::newInstance() const {
-    DDON_STUB("rTblMenuOption::cCaption::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cCaption;
 }
 
 const MtDTI& rTblMenuOption::cData::getDTI() const {
@@ -310,9 +310,11 @@ rTblMenuOption::cData::~cData() {
     mPulldown.mLength = 0;
 }
 
-__attribute__((weak)) void rTblMenuOption::cData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTblMenuOption::cData::createProperty")
-    /* stub */
+void rTblMenuOption::cData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mSortId", &mSortId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDataId", &mDataId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCtrlType", &mCtrlType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPulldown", static_cast<MtObject*>(&mPulldown), 0u, 0u);
 }
 
 bool rTblMenuOption::cData::load(MtDataReader& r) {
@@ -346,9 +348,9 @@ inline void rTblMenuOption::cPulldown::operator delete(void* p_addr) {
 rTblMenuOption::cPulldown::~cPulldown() {
 }
 
-__attribute__((weak)) void rTblMenuOption::cPulldown::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTblMenuOption::cPulldown::createProperty")
-    /* stub */
+void rTblMenuOption::cPulldown::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mSortId", &mSortId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPulldownId", &mPulldownId, 0u, 0u);
 }
 
 bool rTblMenuOption::cPulldown::load(MtDataReader& r) {

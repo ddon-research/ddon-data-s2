@@ -5,6 +5,7 @@
 #include "MtMemory.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
 #include "MtSynchronize.h"
 #ifndef DDON_STUB
@@ -59,9 +60,13 @@ void* MtAllocator::memAllocTail(size_t size, u32 align, u32 user_tag, u32 user_d
 __attribute__((weak)) void MtAllocator::setDmy(u32) {
 }
 
-__attribute__((weak)) void MtAllocator::createStatisticProperty(MtPropertyList& s) {
-    DDON_STUB("MtAllocator::createStatisticProperty")
-    /* stub */
+void MtAllocator::createStatisticProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mTotalSize", &mTotalSize, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUsedSize", &mUsedSize, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxUsedSize", &mMaxUsedSize, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U64, "Total", reinterpret_cast<MT_MFUNC>(&::MtAllocator::getTotalSize), reinterpret_cast<MT_MFUNC>(&::MtAllocator::setDmy), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U64, "Used", reinterpret_cast<MT_MFUNC>(&::MtAllocator::getUsedSize), reinterpret_cast<MT_MFUNC>(&::MtAllocator::setDmy), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U64, "Avail", reinterpret_cast<MT_MFUNC>(&::MtAllocator::getAvailSize), reinterpret_cast<MT_MFUNC>(&::MtAllocator::setDmy), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 inline MtAllocator::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

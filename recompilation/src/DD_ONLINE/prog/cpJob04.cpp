@@ -233,9 +233,134 @@ void cpJob04::after() {
     this->cpJobBase::after();
 }
 
-__attribute__((weak)) void cpJob04::notifyDeleteShell(s32 work) {
-    DDON_STUB("cpJob04::notifyDeleteShell")
-    /* stub */
+void cpJob04::notifyDeleteShell(s32 work) {
+    if (work <= 8199) {
+        if (work <= 4102) {
+            if (work == 4098) {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4096, false);
+                mCircleFlgs = mCircleFlgs & 0xFFFFFFFEu;
+                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 16u;
+            }
+        } else {
+            if (work <= 4119) {
+                if (work == 4103) {
+                    mpHuman->mLimitActCtrl.setLimitedActInfo(4101, false);
+                    mCircleFlgs = mCircleFlgs & 0xFFFFFFFDu;
+                    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32u;
+                }
+            } else {
+                if (work <= 4144) {
+                    if (work != 4120) {
+                        if (work != 4125) {
+                            if (work == 4130) {
+                                mpHuman->mLimitActCtrl.setLimitedActInfo(4128, false);
+                                mCircleFlgs = mCircleFlgs & 0xFFFFFFEFu;
+                                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 8192u;
+                            }
+                        } else {
+                            mpHuman->mLimitActCtrl.setLimitedActInfo(4123, false);
+                            mCircleFlgs = mCircleFlgs & 0xFFFFFFF7u;
+                        }
+                    } else {
+                        isCheckGuard = true;
+                    }
+                } else {
+                    if (work == 4145) {
+                        mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+                        mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+                        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+                    } else {
+                        if (work == 4150) {
+                            mpHuman->mLimitActCtrl.setLimitedActInfo(4148, false);
+                            mCircleFlgs = mCircleFlgs & 0xFFFFFF7Fu;
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        if (work <= 8209) {
+            if (work != 8200) {
+                if (work == 8203) {
+                    mpHuman->mLimitActCtrl.setLimitedActInfo(8198, false);
+                    mpHuman->mLimitActCtrl.setLimitedActInfo(8203, false);
+                    mCircleFlgs = mCircleFlgs & 0xFFFFFFFBu;
+                    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 1u;
+                    if (work != 4120) {
+                        if (work == 4125) {
+                            mpHuman->mLimitActCtrl.setLimitedActInfo(4123, false);
+                            mCircleFlgs = mCircleFlgs & 0xFFFFFFF7u;
+                        } else {
+                            if (work == 4150) {
+                                mpHuman->mLimitActCtrl.setLimitedActInfo(4148, false);
+                                mCircleFlgs = mCircleFlgs & 0xFFFFFF7Fu;
+                            }
+                        }
+                    } else {
+                        isCheckGuard = true;
+                    }
+                } else {
+                    if (work == 8204) {
+                        mpHuman->mLimitActCtrl.setLimitedActInfo(8208, false);
+                        mpHuman->mLimitActCtrl.setLimitedActInfo(8204, false);
+                        mCircleFlgs = mCircleFlgs & 0xFFFFFFDFu;
+                        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32768u;
+                        if (work != 4120) {
+                            if (work == 4125) {
+                                mpHuman->mLimitActCtrl.setLimitedActInfo(4123, false);
+                                mCircleFlgs = mCircleFlgs & 0xFFFFFFF7u;
+                            } else {
+                                if (work == 4150) {
+                                    mpHuman->mLimitActCtrl.setLimitedActInfo(4148, false);
+                                    mCircleFlgs = mCircleFlgs & 0xFFFFFF7Fu;
+                                }
+                            }
+                        } else {
+                            isCheckGuard = true;
+                        }
+                    }
+                }
+            } else {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(8198, false);
+                mpHuman->mLimitActCtrl.setLimitedActInfo(8203, false);
+                mCircleFlgs = mCircleFlgs & 0xFFFFFFFBu;
+                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 1u;
+                if (work != 4120) {
+                    if (work == 4125) {
+                        mpHuman->mLimitActCtrl.setLimitedActInfo(4123, false);
+                        mCircleFlgs = mCircleFlgs & 0xFFFFFFF7u;
+                    } else {
+                        if (work == 4150) {
+                            mpHuman->mLimitActCtrl.setLimitedActInfo(4148, false);
+                            mCircleFlgs = mCircleFlgs & 0xFFFFFF7Fu;
+                        }
+                    }
+                } else {
+                    isCheckGuard = true;
+                }
+            }
+        } else {
+            if (work == 8210) {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(8208, false);
+                mpHuman->mLimitActCtrl.setLimitedActInfo(8204, false);
+                mCircleFlgs = mCircleFlgs & 0xFFFFFFDFu;
+                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32768u;
+                if (work != 4120) {
+                    if (work == 4125) {
+                        mpHuman->mLimitActCtrl.setLimitedActInfo(4123, false);
+                        mCircleFlgs = mCircleFlgs & 0xFFFFFFF7u;
+                    } else {
+                        if (work == 4150) {
+                            mpHuman->mLimitActCtrl.setLimitedActInfo(4148, false);
+                            mCircleFlgs = mCircleFlgs & 0xFFFFFF7Fu;
+                        }
+                    }
+                } else {
+                    isCheckGuard = true;
+                }
+            }
+        }
+    }
 }
 
 void cpJob04::callbackHitLand() {
@@ -317,24 +442,104 @@ __attribute__((weak)) bool cpJob04::checkShiftConditions(uBaseModel* pUit, u32 s
     return {};
 }
 
-__attribute__((weak)) void cpJob04::limitCircleAllAct(u32 act) {
-    DDON_STUB("cpJob04::limitCircleAllAct")
-    /* stub */
+void cpJob04::limitCircleAllAct(u32 act) {
+    if (act == 8201) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8198, false);
+    }
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8201, true);
+    if (act == 8211) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8208, false);
+    }
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8211, true);
+    if (act == 4099) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4096, false);
+    }
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4099, true);
+    if (act == 4104) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4101, false);
+    }
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4104, true);
+    if (act == 4131) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4128, false);
+    }
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4131, true);
+    if (act == 4146) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+    }
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4146, true);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4121, true);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4126, true);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4151, true);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8216, true);
 }
 
-__attribute__((weak)) void cpJob04::unLimitCircleAllAct() {
-    DDON_STUB("cpJob04::unLimitCircleAllAct")
-    /* stub */
+void cpJob04::unLimitCircleAllAct() {
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8201, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8211, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4099, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4104, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4131, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4146, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4121, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4126, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4151, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8216, false);
 }
 
-__attribute__((weak)) void cpJob04::limitCircleAllActAir(u32 act) {
-    DDON_STUB("cpJob04::limitCircleAllActAir")
-    /* stub */
+void cpJob04::limitCircleAllActAir(u32 act) {
+    if ((mCircleFlgs & 4u) != 0) {
+        if (act == 8202) {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(8198, false);
+        }
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8202, true);
+    }
+    if ((mCircleFlgs & 32u) != 0) {
+        if (act == 8212) {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(8208, false);
+        }
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8212, true);
+    }
+    if ((mCircleFlgs & 1u) != 0) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4100, true);
+    }
+    if ((mCircleFlgs & 2u) != 0) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4105, true);
+    }
+    if ((mCircleFlgs & 16u) != 0) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4132, true);
+    }
+    if ((mCircleFlgs & 64u) != 0) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4147, true);
+    }
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4122, true);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4127, true);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4152, true);
 }
 
-__attribute__((weak)) void cpJob04::unLimitCircleAllActAir() {
-    DDON_STUB("cpJob04::unLimitCircleAllActAir")
-    /* stub */
+void cpJob04::unLimitCircleAllActAir() {
+    if ((mCircleFlgs & 4u) != 0) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8198, false);
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8202, false);
+    }
+    if ((mCircleFlgs & 32u) != 0) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8208, false);
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8212, false);
+    }
+    if ((mCircleFlgs & 1u) != 0) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4100, false);
+    }
+    if ((mCircleFlgs & 2u) != 0) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4105, false);
+    }
+    if ((mCircleFlgs & 16u) != 0) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4132, false);
+    }
+    if ((mCircleFlgs & 64u) != 0) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4147, false);
+    }
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4122, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4127, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4152, false);
 }
 
 void cpJob04::setHealSpotTimer(u32 skillLev) {
@@ -632,14 +837,78 @@ __attribute__((weak)) void cpJob04::createCustomCircle(const cpJob04::CIRCLE_PAR
     /* stub */
 }
 
-__attribute__((weak)) void cpJob04::deleteAtherNormalCircle(const cpJob04::CIRCLE_PARAM& data) {
-    DDON_STUB("cpJob04::deleteAtherNormalCircle")
-    /* stub */
+void cpJob04::deleteAtherNormalCircle(const cpJob04::CIRCLE_PARAM& data) {
+    if (data.SkillID != 1) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8198, false);
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8203, false);
+        mCircleFlgs = mCircleFlgs & 0xFFFFFFFBu;
+        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 1u;
+        if (data.SkillID != 2) {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(8208, false);
+            mpHuman->mLimitActCtrl.setLimitedActInfo(8204, false);
+            mCircleFlgs = mCircleFlgs & 0xFFFFFFDFu;
+            mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32768u;
+        }
+    } else {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8208, false);
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8204, false);
+        mCircleFlgs = mCircleFlgs & 0xFFFFFFDFu;
+        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32768u;
+    }
 }
 
-__attribute__((weak)) void cpJob04::deleteAtherCustomCircle(const cpJob04::CIRCLE_PARAM& data) {
-    DDON_STUB("cpJob04::deleteAtherCustomCircle")
-    /* stub */
+void cpJob04::deleteAtherCustomCircle(const cpJob04::CIRCLE_PARAM& data) {
+    if (data.SkillID != 1) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4096, false);
+        mCircleFlgs = mCircleFlgs & 0xFFFFFFFEu;
+        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 16u;
+        if (data.SkillID != 2) {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(4101, false);
+            mCircleFlgs = mCircleFlgs & 0xFFFFFFFDu;
+            mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32u;
+            if (data.SkillID != 9) {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4128, false);
+                mCircleFlgs = mCircleFlgs & 0xFFFFFFEFu;
+                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 8192u;
+                if (data.SkillID != 13) {
+                    mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+                    mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+                    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+                }
+            } else {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+                mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+            }
+        } else {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(4128, false);
+            mCircleFlgs = mCircleFlgs & 0xFFFFFFEFu;
+            mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 8192u;
+            if (data.SkillID != 13) {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+                mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+            }
+        }
+    } else {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4101, false);
+        mCircleFlgs = mCircleFlgs & 0xFFFFFFFDu;
+        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32u;
+        if (data.SkillID != 9) {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(4128, false);
+            mCircleFlgs = mCircleFlgs & 0xFFFFFFEFu;
+            mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 8192u;
+            if (data.SkillID != 13) {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+                mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+            }
+        } else {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+            mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+            mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+        }
+    }
 }
 
 void cpJob04::circleEnd(u32 act) {
@@ -718,14 +987,102 @@ void cpJob04::circleEndAir(u32 act) {
     }
 }
 
-__attribute__((weak)) void cpJob04::normalCircleActionProc(u32 act) {
-    DDON_STUB("cpJob04::normalCircleActionProc")
-    /* stub */
+void cpJob04::normalCircleActionProc(u32 act) {
+    if (act == 8200) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8198, true);
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8203, true);
+        mCircleFlgs = mCircleFlgs | 4u;
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8208, false);
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8204, false);
+        mCircleFlgs = mCircleFlgs & 0xFFFFFFDFu;
+        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32768u;
+    } else {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8198, false);
+        mpHuman->mLimitActCtrl.setLimitedActInfo(8203, false);
+        mCircleFlgs = mCircleFlgs & 0xFFFFFFFBu;
+        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 1u;
+        if (act == 8210) {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(8208, true);
+            mpHuman->mLimitActCtrl.setLimitedActInfo(8204, true);
+            mCircleFlgs = mCircleFlgs | 32u;
+        } else {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(8208, false);
+            mpHuman->mLimitActCtrl.setLimitedActInfo(8204, false);
+            mCircleFlgs = mCircleFlgs & 0xFFFFFFDFu;
+            mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32768u;
+        }
+    }
 }
 
-__attribute__((weak)) void cpJob04::customCircleActionProc(u32 act) {
-    DDON_STUB("cpJob04::customCircleActionProc")
-    /* stub */
+void cpJob04::customCircleActionProc(u32 act) {
+    if (act == 4098) {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4096, true);
+        mCircleFlgs = mCircleFlgs | 1u;
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4101, false);
+        mCircleFlgs = mCircleFlgs & 0xFFFFFFFDu;
+        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32u;
+        if (act == 4130) {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(4128, true);
+            mCircleFlgs = mCircleFlgs | 16u;
+            mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+            mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+            mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+        } else {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(4128, false);
+            mCircleFlgs = mCircleFlgs & 0xFFFFFFEFu;
+            mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 8192u;
+            if (act == 4145) {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4143, true);
+                mCircleFlgs = mCircleFlgs | 64u;
+            } else {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+                mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+            }
+        }
+    } else {
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4096, false);
+        mCircleFlgs = mCircleFlgs & 0xFFFFFFFEu;
+        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 16u;
+        if (act == 4103) {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(4101, true);
+            mCircleFlgs = mCircleFlgs | 2u;
+            mpHuman->mLimitActCtrl.setLimitedActInfo(4128, false);
+            mCircleFlgs = mCircleFlgs & 0xFFFFFFEFu;
+            mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 8192u;
+            if (act == 4145) {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4143, true);
+                mCircleFlgs = mCircleFlgs | 64u;
+            } else {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+                mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+            }
+        } else {
+            mpHuman->mLimitActCtrl.setLimitedActInfo(4101, false);
+            mCircleFlgs = mCircleFlgs & 0xFFFFFFFDu;
+            mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32u;
+            if (act == 4130) {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4128, true);
+                mCircleFlgs = mCircleFlgs | 16u;
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+                mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+            } else {
+                mpHuman->mLimitActCtrl.setLimitedActInfo(4128, false);
+                mCircleFlgs = mCircleFlgs & 0xFFFFFFEFu;
+                mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 8192u;
+                if (act == 4145) {
+                    mpHuman->mLimitActCtrl.setLimitedActInfo(4143, true);
+                    mCircleFlgs = mCircleFlgs | 64u;
+                } else {
+                    mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+                    mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+                    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cpJob04::climbCircleActionProc(u32 act) {
@@ -733,34 +1090,60 @@ __attribute__((weak)) void cpJob04::climbCircleActionProc(u32 act) {
     /* stub */
 }
 
-__attribute__((weak)) void cpJob04::deleteHealingCircle() {
-    DDON_STUB("cpJob04::deleteHealingCircle")
-    /* stub */
+void cpJob04::deleteHealingCircle() {
+    if (!mpHuman->checkEnableMenuUIAct()) {
+        return;
+    }
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8198, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8203, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFFBu;
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 1u;
 }
 
-__attribute__((weak)) void cpJob04::deleteAttackCircle() {
-    DDON_STUB("cpJob04::deleteAttackCircle")
-    /* stub */
+void cpJob04::deleteAttackCircle() {
+    if (!mpHuman->checkEnableMenuUIAct()) {
+        return;
+    }
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 16u;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4096, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFFEu;
 }
 
-__attribute__((weak)) void cpJob04::deleteDefenceCircle() {
-    DDON_STUB("cpJob04::deleteDefenceCircle")
-    /* stub */
+void cpJob04::deleteDefenceCircle() {
+    if (!mpHuman->checkEnableMenuUIAct()) {
+        return;
+    }
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32u;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4101, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFFDu;
 }
 
-__attribute__((weak)) void cpJob04::deleteIronField() {
-    DDON_STUB("cpJob04::deleteIronField")
-    /* stub */
+void cpJob04::deleteIronField() {
+    if (!mpHuman->checkEnableMenuUIAct()) {
+        return;
+    }
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 8192u;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4128, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFEFu;
 }
 
-__attribute__((weak)) void cpJob04::deleteSaintCircle() {
-    DDON_STUB("cpJob04::deleteSaintCircle")
-    /* stub */
+void cpJob04::deleteSaintCircle() {
+    if (!mpHuman->checkEnableMenuUIAct()) {
+        return;
+    }
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 32768u;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8204, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8208, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFDFu;
 }
 
-__attribute__((weak)) void cpJob04::deleteSolaceCircle() {
-    DDON_STUB("cpJob04::deleteSolaceCircle")
-    /* stub */
+void cpJob04::deleteSolaceCircle() {
+    if (!mpHuman->checkEnableMenuUIAct()) {
+        return;
+    }
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x400000u;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
 }
 
 __attribute__((weak)) void cpJob04::deleteSoulFull() {
@@ -797,14 +1180,24 @@ __attribute__((weak)) bool cpJob04::cheackIsLiveGuardBit(u32 id) {
     return {};
 }
 
-__attribute__((weak)) void cpJob04::deleteGuardBit() {
-    DDON_STUB("cpJob04::deleteGuardBit")
-    /* stub */
+void cpJob04::deleteGuardBit() {
+    if (!mpHuman->checkEnableMenuUIAct()) {
+        return;
+    }
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 7936u;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4118, false);
+    isCheckGuard = false;
+    mIsReadyKillBit = true;
+    mGuardBitFlgs = 0;
 }
 
-__attribute__((weak)) void cpJob04::deleteBlastOption() {
-    DDON_STUB("cpJob04::deleteBlastOption")
-    /* stub */
+void cpJob04::deleteBlastOption() {
+    if (!mpHuman->checkEnableMenuUIAct()) {
+        return;
+    }
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x1000000u;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4148, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFF7Fu;
 }
 
 __attribute__((weak)) const uDDOModel* cpJob04::getOptionShl() {
@@ -863,9 +1256,51 @@ bool cpJob04::isCanFloating() {
     }
 }
 
-__attribute__((weak)) void cpJob04::killAllCircle() {
-    DDON_STUB("cpJob04::killAllCircle")
-    /* stub */
+void cpJob04::killAllCircle() {
+    if (!mpHuman->checkEnableMenuUIAct()) {
+        return;
+    }
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8198, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8203, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFFBu;
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x10001u;
+    mShiftFlgs = mShiftFlgs & 0xFFFFFFFBu;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8208, false);
+    mpHuman->mLimitActCtrl.setLimitedActInfo(8204, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFDFu;
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x108000u;
+    mShiftFlgs = mShiftFlgs & 0xFFFFFFDFu;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4096, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFFEu;
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x20010u;
+    mShiftFlgs = mShiftFlgs & 0xFFFFFFFEu;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4101, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFFDu;
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x40020u;
+    mShiftFlgs = mShiftFlgs & 0xFFFFFFFDu;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4128, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFEFu;
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x82000u;
+    mShiftFlgs = mShiftFlgs & 0xFFFFFFEFu;
+    mpHuman->mLimitActCtrl.setLimitedActInfo(4143, false);
+    mCircleFlgs = mCircleFlgs & 0xFFFFFFBFu;
+    mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0xC00000u;
+    mShiftFlgs = mShiftFlgs & 0xFFFFFFBFu;
+    deleteSoulFull();
+    if (mpHuman->checkEnableMenuUIAct()) {
+        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 7936u;
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4118, false);
+        isCheckGuard = false;
+        mIsReadyKillBit = true;
+        mGuardBitFlgs = 0;
+    }
+    if (mpHuman->checkEnableMenuUIAct()) {
+        mpHuman->mShlDeleteBit = mpHuman->mShlDeleteBit | 0x1000000u;
+        mpHuman->mLimitActCtrl.setLimitedActInfo(4148, false);
+        mCircleFlgs = mCircleFlgs & 0xFFFFFF7Fu;
+    }
+    mCircleFlgs = 0;
+    mShiftFlgs = 0;
 }
 
 __attribute__((weak)) void cpJob04::clearAllCircle() {

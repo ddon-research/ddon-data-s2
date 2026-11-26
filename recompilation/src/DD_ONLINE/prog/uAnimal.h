@@ -138,7 +138,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         ActBase();
-        virtual ~ActBase();
+        virtual ~ActBase() {}
         virtual void init();  // vtable slot 7
         virtual void move() {}  // vtable slot 8
         virtual void updatePtr();  // vtable slot 11
@@ -177,7 +177,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         ActFootwork();
-        virtual ~ActFootwork();
+        virtual ~ActFootwork() {}
         virtual void init();  // vtable slot 7
         virtual void move();  // vtable slot 8
     public:
@@ -211,7 +211,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         ActWalk();
-        virtual ~ActWalk();
+        virtual ~ActWalk() {}
         virtual void init();  // vtable slot 7
         virtual void move();  // vtable slot 8
     public:
@@ -246,7 +246,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         ActRun();
-        virtual ~ActRun();
+        virtual ~ActRun() {}
         virtual void init();  // vtable slot 7
         virtual void move();  // vtable slot 8
     public:
@@ -288,7 +288,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         ActTurn();
-        virtual ~ActTurn();
+        virtual ~ActTurn() {}
         virtual void init();  // vtable slot 7
         virtual void move();  // vtable slot 8
     public:
@@ -323,7 +323,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         ActCollapse();
-        virtual ~ActCollapse();
+        virtual ~ActCollapse() {}
         virtual void init();  // vtable slot 7
         virtual void move();  // vtable slot 8
     public:
@@ -357,7 +357,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         ActEscape();
-        virtual ~ActEscape();
+        virtual ~ActEscape() {}
         virtual void init();  // vtable slot 7
         virtual void move();  // vtable slot 8
     public:
@@ -393,7 +393,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         ActApproach();
-        virtual ~ActApproach();
+        virtual ~ActApproach() {}
         virtual void init();  // vtable slot 7
         virtual void move();  // vtable slot 8
     public:
@@ -428,7 +428,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         ActFlap();
-        virtual ~ActFlap();
+        virtual ~ActFlap() {}
         virtual void init();  // vtable slot 7
         virtual void move();  // vtable slot 8
     public:
@@ -525,6 +525,10 @@ inline void* uAnimal::ActFootwork::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uAnimal::ActFootwork::ActFootwork() {
+    this->mTimer = 0.0f;
+}
+
 inline void* uAnimal::ActWalk::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -537,8 +541,17 @@ inline void* uAnimal::ActTurn::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uAnimal::ActTurn::ActTurn() {
+    this->mType = 0;
+    this->mTurnAngleY = 0.0f;
+}
+
 inline void* uAnimal::ActCollapse::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uAnimal::ActCollapse::ActCollapse() {
+    this->mTimer = 0.0f;
 }
 
 inline void* uAnimal::ActEscape::operator new(size_t sz, void* p_addr) {
@@ -549,10 +562,23 @@ inline void* uAnimal::ActApproach::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uAnimal::ActApproach::ActApproach() {
+    this->mRotSpeed = 0.0f;
+    this->mTimer = 0.0f;
+}
+
 inline void* uAnimal::ActFlap::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uAnimal::ActFlap::ActFlap() {
+}
+
 inline void* uAnimal::ActSleep::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uAnimal::ActSleep::ActSleep() {
+    this->mTimer = 0.0f;
+    this->mpEfcHandle = nullptr;
 }

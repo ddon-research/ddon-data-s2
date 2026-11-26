@@ -86,12 +86,69 @@ __attribute__((weak)) MtObject* cShlLogNode::MyDTI::newInstance() const {
     return nullptr;
 }
 
+const MtDTI& cShlParamKeepLog::getDTI() const {
+    return cShlParamKeepLog::DTI;
+}
+
+inline void* cShlParamKeepLog::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cShlParamKeepLog::DTI)->memAlloc(sz, align, cShlParamKeepLog::DTI.getID());
+}
+
+MtDTI& cShlParamKeepLog::getShlDTI() const {
+    return uShlKeepOwnerLog::DTI;
+}
+
+cShlParamKeepLog::cShlParamKeepLog() {
+    mWaitObjStatus = 0;
+    mExeLogDistance = 0.0f;
+    mWaitAttrFlag = 0;
+    mExecuteAttrFlag = 0;
+    mExeLogTime = 0.0f;
+    mLogOptionFlag = 0;
+    mLogNodeNumMax = 0;
+}
+
+void cShlParamKeepLog::createProperty(MtPropertyList& s) {
+    this->cShlParamBase::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mLogOptionFlag", &mLogOptionFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLogNodeNumMax", &mLogNodeNumMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mExecuteAttrFlag", &mExecuteAttrFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mExeLogTime", &mExeLogTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mExeLogDistance", &mExeLogDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWaitAttrFlag", &mWaitAttrFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWaitObjStatus", &mWaitObjStatus, 0u, 0u);
+}
+
+void cShlParamKeepLog::copy(const cShlParamBase* pParamBase) {
+    this->cShlParamBase::copy(pParamBase);
+    const cShlParamKeepLog* pParam = static_cast<const cShlParamKeepLog*>(pParamBase);
+    mLogOptionFlag = pParam->mLogOptionFlag;
+    mLogNodeNumMax = pParam->mLogNodeNumMax;
+    mExecuteAttrFlag = pParam->mExecuteAttrFlag;
+    mExeLogTime = pParam->mExeLogTime;
+    mExeLogDistance = pParam->mExeLogDistance;
+    mWaitAttrFlag = pParam->mWaitAttrFlag;
+    mWaitObjStatus = pParam->mWaitObjStatus;
+}
+
+inline cShlParamKeepLog::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cShlParamKeepLog::MyDTI cShlParamKeepLog::DTI("cShlParamKeepLog", &::cShlParamBase::DTI, 384ul, 0u, 0u);
+
+MtObject* cShlParamKeepLog::MyDTI::newInstance() const {
+    return new (16u) cShlParamKeepLog;
+}
+
 const MtDTI& uShlKeepOwnerLog::getDTI() const {
     return uShlKeepOwnerLog::DTI;
 }
 
 inline void uShlKeepOwnerLog::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uShlKeepOwnerLog::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamKeepLog* uShlKeepOwnerLog::getShlParam() const {
+    return static_cast<const cShlParamKeepLog*>(mpShlParam2);
 }
 
 uShlKeepOwnerLog::uShlKeepOwnerLog() {
@@ -121,9 +178,10 @@ __attribute__((weak)) void uShlKeepOwnerLog::updateEfcHandle() {
     /* stub */
 }
 
-__attribute__((weak)) void uShlKeepOwnerLog::createProperty(MtPropertyList& s) {
-    DDON_STUB("uShlKeepOwnerLog::createProperty")
-    /* stub */
+void uShlKeepOwnerLog::createProperty(MtPropertyList& s) {
+    this->uDDOModel::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mKeepLogTimer", &mKeepLogTimer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mKeepLogPosLast", &mKeepLogPosLast, 0u, 0u);
 }
 
 void uShlKeepOwnerLog::draw(cDraw* pDraw) {

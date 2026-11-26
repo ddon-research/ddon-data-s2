@@ -10,6 +10,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "cDraw.h"
@@ -64,9 +65,11 @@ MtUI* sUnit::createUI(MtProperty& prop) {
     return this->cSystem::createUI(prop);
 }
 
-__attribute__((weak)) void sUnit::createProperty(MtPropertyList& s) {
-    DDON_STUB("sUnit::createProperty")
-    /* stub */
+void sUnit::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "Draw Command Cache Enable", &mbDrawCommandCacheEnableUpdate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Flush Draw Command Cache All Unit", static_cast<MT_MFUNC>(&::sUnit::forceFlushDrawCommandCache), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMoveLine", static_cast<MtObject*>(&mMoveLine[0]), 32u, (sUnit::mpInstance)->mLineNum);
 }
 
 void sUnit::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
@@ -79,9 +82,78 @@ void sUnit::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_
     }
 }
 
-__attribute__((weak)) MT_CTSTR sUnit::getLineName(MOVE_LINE n) {
-    DDON_STUB("sUnit::getLineName")
-    return {};
+MT_CTSTR sUnit::getLineName(MOVE_LINE n) {
+    static MT_CTSTR name[64] = {
+        "Line0",
+        "Line1",
+        "Line2",
+        "Line3",
+        "Line4",
+        "Line5",
+        "Line6",
+        "Line7",
+        "Line8",
+        "Line9",
+        "Line10",
+        "Line11",
+        "Line12",
+        "Line13",
+        "Line14",
+        "Line15",
+        "Line16",
+        "Line17",
+        "Line18",
+        "Line19",
+        "Line20",
+        "Line21",
+        "Line22",
+        "Line23",
+        "Line24",
+        "Line25",
+        "Line26",
+        "Line27",
+        "Line28",
+        "Line29",
+        "Line30",
+        "Line31",
+        "Line32",
+        "Line33",
+        "Line34",
+        "Line35",
+        "Line36",
+        "Line37",
+        "Line38",
+        "Line39",
+        "Line40",
+        "Line41",
+        "Line42",
+        "Line43",
+        "Line44",
+        "Line45",
+        "Line46",
+        "Line47",
+        "Line48",
+        "Line49",
+        "Line50",
+        "Line51",
+        "Line52",
+        "Line53",
+        "Line54",
+        "Line55",
+        "Line56",
+        "Line57",
+        "Line58",
+        "Line59",
+        "Line60",
+        "Line61",
+        "Line62",
+        "Line63",
+    };
+    if (n <= 63) {
+        return name[n];
+    } else {
+        return "Undefined";
+    }
 }
 
 __attribute__((weak)) void sUnit::draw(cDraw* pdraw) {
@@ -385,9 +457,78 @@ __attribute__((weak)) void sUnit::setUnitGroupDraw(u32 group, bool flag) {
     /* stub */
 }
 
-__attribute__((weak)) MT_CTSTR sUnit::getGroupName(u32 group) {
-    DDON_STUB("sUnit::getGroupName")
-    return {};
+MT_CTSTR sUnit::getGroupName(u32 group) {
+    static MT_CTSTR name[64] = {
+        "SystemFilter",
+        "SystemShadow",
+        "SystemLight",
+        "SystemFog",
+        "SystemEffect",
+        "SystemBaseModel",
+        "SystemGroup6",
+        "SystemGroup7",
+        "SystemGroup8",
+        "SystemGroup9",
+        "SystemGroup10",
+        "SystemGroup11",
+        "SystemGroup12",
+        "SystemGroup13",
+        "SystemGroup14",
+        "SystemGroup15",
+        "Group16",
+        "Group17",
+        "Group18",
+        "Group19",
+        "Group20",
+        "Group21",
+        "Group22",
+        "Group23",
+        "Group24",
+        "Group25",
+        "Group26",
+        "Group27",
+        "Group28",
+        "Group29",
+        "Group30",
+        "Group31",
+        "Group32",
+        "Group33",
+        "Group34",
+        "Group35",
+        "Group36",
+        "Group37",
+        "Group38",
+        "Group39",
+        "Group40",
+        "Group41",
+        "Group42",
+        "Group43",
+        "Group44",
+        "Group45",
+        "Group46",
+        "Group47",
+        "Group48",
+        "Group49",
+        "Group50",
+        "Group51",
+        "Group52",
+        "Group53",
+        "Group54",
+        "Group55",
+        "Group56",
+        "Group57",
+        "Group58",
+        "Group59",
+        "Group60",
+        "Group61",
+        "Group62",
+        "Group63",
+    };
+    if (group > 63u) {
+        return "undefined";
+    } else {
+        return name[group];
+    }
 }
 
 __attribute__((weak)) void sUnit::setUnitGroupBit(cUnit* punit, u64 groupbit) {
@@ -637,6 +778,10 @@ const MtDTI& sUnit::MoveLine::getDTI() const {
     return sUnit::MoveLine::DTI;
 }
 
+inline void* sUnit::MoveLine::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sUnit::MoveLine::DTI)->memAlloc(sz, align, sUnit::MoveLine::DTI.mID);
+}
+
 inline void sUnit::MoveLine::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sUnit::MoveLine::DTI)->memFree(p_addr);
 }
@@ -720,9 +865,8 @@ inline sUnit::MoveLine::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 sUnit::MoveLine::MyDTI sUnit::MoveLine::DTI("sUnit::MoveLine", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sUnit::MoveLine::MyDTI::newInstance() const {
-    DDON_STUB("sUnit::MoveLine::MyDTI::newInstance")
-    return nullptr;
+MtObject* sUnit::MoveLine::MyDTI::newInstance() const {
+    return new (16u) sUnit::MoveLine;
 }
 
 const MtDTI& sUnit::UnitGroup::getDTI() const {

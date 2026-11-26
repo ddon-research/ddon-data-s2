@@ -1367,6 +1367,7 @@ public:
 public:
     class NGS2VoiceReverb : public sSound::NGS2Voice
     {
+        friend class sSound;
     public:
         NGS2VoiceReverb();
         virtual ~NGS2VoiceReverb();
@@ -1421,6 +1422,7 @@ public:
 public:
     class NGS2VoiceSubmixerSilentDetectFilter : public sSound::NGS2VoiceSubmixer
     {
+        friend class sSound;
     public:
         NGS2VoiceSubmixerSilentDetectFilter();
         virtual ~NGS2VoiceSubmixerSilentDetectFilter();
@@ -2890,6 +2892,9 @@ inline sSound::EntryControlParam::EntryControlParam() {
 
 inline void* sSound::NativeSystemPS4::PS4Property::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline sSound::NativeSystemPS4::PS4Property::PS4Property() {
 }
 
 inline sSound::NativeVoicePS4::NativeVoicePS4() {

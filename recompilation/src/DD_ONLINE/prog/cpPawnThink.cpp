@@ -317,9 +317,8 @@ bool cpPawnThink::isPrioThinkChantCancel() const {
     return mChatCancelTimer > 0.0f;
 }
 
-__attribute__((weak)) const cGeneralPoint* cpPawnThink::getTargetGeneralPoint(u32 index) {
-    DDON_STUB("cpPawnThink::getTargetGeneralPoint")
-    return nullptr;
+const cGeneralPoint* cpPawnThink::getTargetGeneralPoint(u32 index) {
+    return mActInter.mActInterIO.getTargetGeneralPoint(index);
 }
 
 void cpPawnThink::addResActInterTable(rPawnAIAction* pRes) {

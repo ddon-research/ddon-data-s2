@@ -45,9 +45,12 @@ inline void uGUIBrowserBG::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIBrowserBG::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) MtPoint uGUIBrowserBG::getBrowserPos() {
-    DDON_STUB("uGUIBrowserBG::getBrowserPos")
-    __builtin_unreachable();
+MtPoint uGUIBrowserBG::getBrowserPos() {
+    MtPoint webpos;
+    f32 scale = cGUIUtility::getScaleForDefaultResolution(1.0f);
+    webpos.x = static_cast<int>(mPos.x - (mWebSizeW * scale));
+    webpos.y = static_cast<int>(mPos.y + (32.0f * scale));
+    return webpos;
 }
 
 __attribute__((weak)) void uGUIBrowserBG::setWebSize(f32 WebSizeW, f32 WebSizeH) {
@@ -210,9 +213,25 @@ bool uGUIBrowserBG::loadResource() {
 __attribute__((weak)) void uGUIBrowserBG::updatePtr() {
 }
 
-__attribute__((weak)) void uGUIBrowserBG::moveInput() {
-    DDON_STUB("uGUIBrowserBG::moveInput")
-    /* stub */
+void uGUIBrowserBG::moveInput() {
+    if (sBrowser::getInstance()->isBusy()) {
+        if (!static_cast<sGUIExt*>(sGUI::getInstance())->mIsStopBrowserOperate) {
+            if (!mIsKeyOff) {
+                if (mCancelMode != 1) {
+                    mClose.execute();
+                }
+                if (mBrowserArea.mpObjTex != nullptr) {
+                    if ((mBrowserArea.mpObjTex->mAttr & 1u) != 0) {
+                        if (mpCtrl != nullptr) {
+                            mpCtrl->execute();
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        setInputEvent(68u);
+    }
 }
 
 void uGUIBrowserBG::moveEvent() {
@@ -253,9 +272,24 @@ void uGUIBrowserBG::moveEvent() {
     }
 }
 
-__attribute__((weak)) void uGUIBrowserBG::updateWait() {
-    DDON_STUB("uGUIBrowserBG::updateWait")
-    /* stub */
+void uGUIBrowserBG::updateWait() {
+    if (!mIsBGDispOff) {
+        if (mCancelMode != 1) {
+            mClose.uGUIBase::cReferenceUICloseBtn::update();
+        }
+        mGuide.setVisible(mIsWindowActive);
+        mGuide.uGUIBase::cReferenceUIBtnGuide::update();
+    }
+    if (mIsKeyOff) {
+        sBrowser::getInstance()->mIsCursorDraw = false;
+        static_cast<sGUIExt*>(sGUI::getInstance())->hidePointer(getBasePointerPriority());
+    } else {
+        sBrowser::getInstance()->mIsCursorDraw = !static_cast<sGUIExt*>(sGUI::getInstance())->mMouse.isActiveMouse();
+        if (isWindowActive()) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->hidePointer(getBasePointerPriority());
+        }
+    }
+    manageBrowserTex();
 }
 
 u32 uGUIBrowserBG::evCtrlCancel(cControl::Message* pMsg) {

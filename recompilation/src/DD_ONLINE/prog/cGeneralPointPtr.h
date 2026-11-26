@@ -59,3 +59,11 @@ private:
     T* getPtr() const;
     void setPtr(T* ptr);
 };
+
+inline cGeneralPointPtr::operator const cGeneralPoint *() const {
+    return this->mpPtr;
+}
+
+inline cGeneralPoint* cGeneralPointPtr::get() {
+    return this->mpPtr;
+}

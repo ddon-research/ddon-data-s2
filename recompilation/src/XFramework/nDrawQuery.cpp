@@ -17,13 +17,15 @@ void* nDraw::OcclusionQuery::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nDraw::OcclusionQuery::DTI)->memAlloc(sz, align, ::nDraw::OcclusionQuery::DTI.mID);
 }
 
+inline void nDraw::OcclusionQuery::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::OcclusionQuery::DTI)->memFree(p_addr);
+}
+
 u32 nDraw::OcclusionQuery::get(s32* frame) {
     return 0xFFFFFFFF;
 }
 
 nDraw::OcclusionQuery::~OcclusionQuery() {
-    DDON_STUB("nDraw::OcclusionQuery::~OcclusionQuery")
-    /* stub */
 }
 
 inline nDraw::OcclusionQuery::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

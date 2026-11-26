@@ -27,6 +27,8 @@ class cArcLoaderBase;
 class cKeyCustomManager;
 class rKeyCustomParam;
 class sGUIExt;
+class uGUIBase;
+class uGUIMap;
 
 // Declarations
 class sInputManager;
@@ -46,6 +48,8 @@ using u8 = unsigned char;
 class sInputManager : public cSystem
 {
     friend class sGUIExt;
+    friend class uGUIBase;
+    friend class uGUIMap;
 public:
     class MyDTI;
     struct header;

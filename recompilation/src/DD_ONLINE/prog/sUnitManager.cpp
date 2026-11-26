@@ -65,9 +65,11 @@ __attribute__((noinline)) sUnitManager::~sUnitManager() {
     mLODDistData.mLength = 0;
 }
 
-__attribute__((weak)) void sUnitManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("sUnitManager::createProperty")
-    /* stub */
+void sUnitManager::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "UnitList", static_cast<MtObject*>(&mRefArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Add List", static_cast<MtObject*>(&mAddArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Del List", static_cast<MtObject*>(&mDelArray), 0u, 0u);
 }
 
 MtUI* sUnitManager::createUI(MtProperty& prop) {
@@ -293,7 +295,7 @@ __attribute__((weak)) void sUnitManager::releaseUnitAll() {
 }
 
 uBaseModel* sUnitManager::getLayoutUnit(u32 uid) {
-    u32 num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 32);
+    u32 num = mRefArray.mLength;
     if (num != 0) {
         MtObject* * v0_1 = mRefArray.getBuffer();
         for (unsigned int i0_2 = 0;;) {
@@ -311,17 +313,17 @@ uBaseModel* sUnitManager::getLayoutUnit(u32 uid) {
             }
         }
     }
-    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
         if (scePthreadMutexLock(&mCS.mCSection) != 0) {
             abort();
         }
     }
     MtObject* v5_3;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 64)) == 0) {
+    if (mAddArray.mLength == 0) {
         v5_3 = nullptr;
     } else {
         MtObject* * v3_2 = mAddArray.getBuffer();
-        num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 64);
+        num = mAddArray.mLength;
         for (unsigned int i3_1 = 0;;) {
             if (v3_2[static_cast<int>(i3_1)] != nullptr) {
                 if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_2[static_cast<int>(i3_1)]) + 16)) & 7u) - 1u) <= 1u) {
@@ -339,7 +341,7 @@ uBaseModel* sUnitManager::getLayoutUnit(u32 uid) {
             }
         }
     }
-    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
         if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
             abort();
         }
@@ -373,9 +375,11 @@ u32 sUnitManager::getLodDistDataKind(uBaseModel* bm) {
     return 0;
 }
 
-__attribute__((weak)) MtVector2 sUnitManager::getLosDistDataParam(u32 num) {
-    DDON_STUB("sUnitManager::getLosDistDataParam")
-    __builtin_unreachable();
+MtVector2 sUnitManager::getLosDistDataParam(u32 num) {
+    MtVector2 result;
+    result.x = 3000.0f;
+    result.y = 1000.0f;
+    return result;
 }
 
 sUnitManager::cLODDistData* sUnitManager::getLodDistData(u32 index) {
@@ -416,9 +420,9 @@ __attribute__((weak)) void sUnitManager::cLODDistData::setMed(f32 set) {
     /* stub */
 }
 
-__attribute__((weak)) void sUnitManager::cLODDistData::createProperty(MtPropertyList& s) {
-    DDON_STUB("sUnitManager::cLODDistData::createProperty")
-    /* stub */
+void sUnitManager::cLODDistData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mLow", reinterpret_cast<MT_MFUNC>(&::sUnitManager::cLODDistData::getLow), reinterpret_cast<MT_MFUNC>(&::sUnitManager::cLODDistData::setLow), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mMed", reinterpret_cast<MT_MFUNC>(&::sUnitManager::cLODDistData::getMed), reinterpret_cast<MT_MFUNC>(&::sUnitManager::cLODDistData::setMed), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 inline sUnitManager::cLODDistData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

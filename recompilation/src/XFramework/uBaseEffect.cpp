@@ -182,10 +182,7 @@ __attribute__((weak)) void uBaseEffect::setEffectList(rEffectList* pEffectList) 
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 uBaseEffect::getOfs() const {
-    DDON_STUB("uBaseEffect::getOfs")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01b65e50 __attribute__((used)) = &uBaseEffect::getOfs;
 
 void uBaseEffect::setOfs(const MtVector3& Ofs) {
     mOfs.x = Ofs.x;
@@ -194,10 +191,7 @@ void uBaseEffect::setOfs(const MtVector3& Ofs) {
     mOfs.pad_ = 0.0f;
 }
 
-__attribute__((weak)) MtVector3 uBaseEffect::getDir() const {
-    DDON_STUB("uBaseEffect::getDir")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01b65ed0 __attribute__((used)) = &uBaseEffect::getDir;
 
 __attribute__((weak)) void uBaseEffect::setDir(const MtVector3& Dir) {
     DDON_STUB("uBaseEffect::setDir")

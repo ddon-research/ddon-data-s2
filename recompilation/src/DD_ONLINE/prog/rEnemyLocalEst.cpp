@@ -26,9 +26,16 @@ inline void cEnemyLocalEstTable::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEnemyLocalEstTable::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cEnemyLocalEstTable::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEnemyLocalEstTable::createProperty")
-    /* stub */
+void cEnemyLocalEstTable::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIdx", &mIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSetUpOff", &mSetUpOff, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPlayAlways", &mPlayAlways, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStatus", &mStatus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBitNo", &mBitNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCheckBit", &mCheckBit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mControlType", &mControlType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mControlIndex", &mControlIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBitContrlCommand", &mBitContrlCommand, 0u, 0u);
 }
 
 inline cEnemyLocalEstTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

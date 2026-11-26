@@ -33,6 +33,7 @@ class cFSMTaskCtrl;
 class cOmTreeControl;
 class cPlDeadFlow;
 class cPrioThkCmdIsStageNo;
+class cPrioThkCmdIsStageType;
 class cSplitBgm;
 class cStageEpvCtrl;
 class cTalkMsgData;
@@ -53,6 +54,7 @@ class rWaypoint;
 class rZone;
 class uColorCorrectFilter;
 class uDDOModel;
+class uEnemy;
 class uGUIClock;
 class uGUICredit;
 class uGUIGaugeEnemy;
@@ -61,6 +63,7 @@ class uGUIGaugeNpc;
 class uGUIGaugeNpcBase;
 class uGUIMapMini;
 class uGUIQuickParty;
+class uHuman;
 class uLargeEnemyCamera;
 class uScheduler;
 class uSoundGenerator;
@@ -93,11 +96,14 @@ class aStage : public cArea
 {
     friend class cFSMBase;
     friend class cPrioThkCmdIsStageNo;
+    friend class cPrioThkCmdIsStageType;
     friend class cpTalk;
+    friend class uEnemy;
     friend class uGUIGaugeEnemy;
     friend class uGUIGaugeEnemyBoss;
     friend class uGUIGaugeNpc;
     friend class uGUIGaugeNpcBase;
+    friend class uHuman;
 public:
     enum MOVE_PROFILE
     {
@@ -649,6 +655,10 @@ private:
 
 inline void* aStage::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline s32 aStage::getStageNo() const {
+    return this->mTrueStageNo;
 }
 
 inline bool aStage::isExecuteMenuJump() {

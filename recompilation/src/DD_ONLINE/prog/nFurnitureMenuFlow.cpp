@@ -78,8 +78,8 @@ __attribute__((weak)) void nFurnitureMenuFlow::cFurnitureGroupListItems::release
 
 u32 nFurnitureMenuFlow::cFurnitureGroupListItems::getGroupId(u32 itemIndex) const {
     if (itemIndex < getItemNum()) {
-        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 48)) + (static_cast<unsigned long>(itemIndex) * 8)) + 0)) != 0) {
-            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 48)) + (static_cast<unsigned long>(itemIndex) * 8)) + 0)) + 8);
+        if (mItems.mpArray[itemIndex] != nullptr) {
+            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mItems.mpArray[itemIndex]) + 8);
         }
     }
     return 0xFFFFFFFF;
@@ -101,8 +101,8 @@ __attribute__((weak)) MT_CTSTR nFurnitureMenuFlow::cFurnitureGroupListItems::get
 
 bool nFurnitureMenuFlow::cFurnitureGroupListItems::isItemDisable(u32 itemIndex) const {
     if (itemIndex < getItemNum()) {
-        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 48)) + (static_cast<unsigned long>(itemIndex) * 8)) + 0)) != 0) {
-            return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 48)) + (static_cast<unsigned long>(itemIndex) * 8)) + 0)) + 16)) != 0;
+        if (mItems.mpArray[itemIndex] != nullptr) {
+            return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mItems.mpArray[itemIndex]) + 16)) != 0;
         }
     }
     return false;

@@ -67,9 +67,9 @@ rQuestMarkerInfo::~rQuestMarkerInfo() {
     mInfoList.mLength = 0;
 }
 
-__attribute__((weak)) void rQuestMarkerInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rQuestMarkerInfo::createProperty")
-    /* stub */
+void rQuestMarkerInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInfoList", static_cast<MtObject*>(&mInfoList), 0u, 0u);
 }
 
 bool rQuestMarkerInfo::load(MtStream& in) {
@@ -129,9 +129,10 @@ rQuestMarkerInfo::cInfo::cInfo() {
 rQuestMarkerInfo::cInfo::~cInfo() {
 }
 
-__attribute__((weak)) void rQuestMarkerInfo::cInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rQuestMarkerInfo::cInfo::createProperty")
-    /* stub */
+void rQuestMarkerInfo::cInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupNo", &mGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUniqueId", &mUniqueId, 0u, 0u);
 }
 
 void rQuestMarkerInfo::cInfo::load(MtDataReader& r) {

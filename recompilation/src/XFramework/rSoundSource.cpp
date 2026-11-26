@@ -6,6 +6,8 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtFile.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "../MT/MtSynchronize.h"
@@ -23,9 +25,21 @@ inline void rSoundSource::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundSource::DTI)->memFree(p_addr);
 }
 
-rSoundSource::rSoundSource() {
-    DDON_STUB("rSoundSource::rSoundSource")
-    /* stub */
+__attribute__((noinline)) rSoundSource::rSoundSource() {
+    mDTIChild = rSoundSource::DTI;
+    mAttr = 16;
+    mOpenCtr = 0;
+    mpFile = nullptr;
+    mSelfAllocation = false;
+    memset(&mTimeStamp, 0, sizeof(mTimeStamp));
+    memset(&mDescriptor, 0, sizeof(mDescriptor));
+    mFilePosition = 0;
+    mBufferLength = 0;
+    mGlobalID = 0;
+    mpBuffer = nullptr;
+    mMarkerIDToIndexTblNum = 0;
+    mpMarkerIDToIndexTbl = nullptr;
+    mpMarker = nullptr;
 }
 
 __attribute__((noinline)) rSoundSource::~rSoundSource() {
@@ -37,9 +51,16 @@ MtUI* rSoundSource::createUI(MtProperty& prop) {
     return this->cResource::createUI(prop);
 }
 
-__attribute__((weak)) void rSoundSource::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundSource::createProperty")
-    /* stub */
+void rSoundSource::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "Channels", &mDescriptor.mChannels, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SampleRate", &mDescriptor.mSampleRate, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "BitPerSample", &mDescriptor.mBits, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "BitRate", &mDescriptor.mBitRate, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Duration", &mDescriptor.mDuration, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Samples", &mDescriptor.mSamples, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Format", &mDescriptor.mFormat, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MarkerNum", &mDescriptor.mMarkerNum, 1u, 0u);
 }
 
 __attribute__((weak)) bool rSoundSource::load(MtStream& in) {

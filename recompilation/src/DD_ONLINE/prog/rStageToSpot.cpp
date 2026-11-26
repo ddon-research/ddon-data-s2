@@ -26,9 +26,10 @@ inline void cStageToSpot::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cStageToSpot::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cStageToSpot::createProperty(MtPropertyList& s) {
-    DDON_STUB("cStageToSpot::createProperty")
-    /* stub */
+void cStageToSpot::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpotId", &mSpotId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRecommendLevel", &mRecommendLevel, 0u, 0u);
 }
 
 inline cStageToSpot::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -12,8 +12,10 @@
 class MtAllocator;
 class MtCriticalSection;
 class MtDTI;
+namespace MtNet { namespace PS4Psn { class Context; } }
 class MtNetContext;
 class MtNetCore;
+class MtNetFriendList;
 class MtNetMediator;
 class MtNetRequestController;
 class MtPropertyList;
@@ -262,8 +264,10 @@ public:
 
 class MtNetObject : public MtObject
 {
+    friend class MtNet::PS4Psn::Context;
     friend class MtNetContext;
     friend class MtNetCore;
+    friend class MtNetFriendList;
     friend class MtNetMediator;
     friend class MtNetRequestController;
 public:

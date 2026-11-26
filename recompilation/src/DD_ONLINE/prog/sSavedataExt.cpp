@@ -1,5 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <sce_atomic.h>
+#include <string.h>
 #include "sSavedataExt.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
@@ -599,8 +601,189 @@ __attribute__((weak)) sSavedata::RESULT sSavedataExt::saveDataList(MT_CTSTR DirN
 }
 
 __attribute__((weak)) sSavedata::RESULT sSavedataExt::loadDataList(MT_CTSTR DirName, cStorageDataBase* pStorageData) {
-    DDON_STUB("sSavedataExt::loadDataList")
-    return {};
+    if (pStorageData != nullptr) {
+        if (DirName != nullptr) {
+            if (DirName != mSaveDataDirName.ptr()) {
+                if (mSaveDataDirName.value != nullptr) {
+                    if (sceAtomicAdd32Relaxed(&mSaveDataDirName.value->ref, -1) == 1) {
+                        (MtString::mpAllocator)->memFree(static_cast<void*>(mSaveDataDirName.value));
+                        mSaveDataDirName.value = nullptr;
+                        size_t t0 = strlen(DirName);
+                        if (static_cast<unsigned int>(t0) != 0) {
+                            void* t1 = (MtString::mpAllocator)->memAlloc(static_cast<size_t>(static_cast<unsigned int>(t0)) + 12, 16u);
+                            mSaveDataDirName.value = static_cast<MtString::STRING*>(t1);
+                            mSaveDataDirName.value->ref = 1;
+                            mSaveDataDirName.value->length = static_cast<unsigned int>(t0);
+                            strcpy(reinterpret_cast<char*>(mSaveDataDirName.value->str), DirName);
+                            setSaveDataSearchCond(DirName, 0u, 0u);
+                            mUseSearchCond = true;
+                            clearData();
+                            RESULT t2 = setDataU32(&mLoadVersion, "DATA_VERSION");
+                            if (t2 == 0) {
+                                RESULT t3 = setDataBinary(mpSaveBuff, 10240ul, "DATA_BODY");
+                                if (t3 == 0) {
+                                    RESULT t4 = setDataBinary(mpSaveUserHeaderBuff, 1024ul, "_UserHeader_");
+                                    if (t4 != 0) {
+                                        return t4;
+                                    } else {
+                                        return beginListLoad();
+                                    }
+                                } else {
+                                    return t3;
+                                }
+                            } else {
+                                return t2;
+                            }
+                        } else {
+                            mSaveDataDirName.value = nullptr;
+                            setSaveDataSearchCond(DirName, 0u, 0u);
+                            mUseSearchCond = true;
+                            clearData();
+                            RESULT t2 = setDataU32(&mLoadVersion, "DATA_VERSION");
+                            if (t2 == 0) {
+                                RESULT t3 = setDataBinary(mpSaveBuff, 10240ul, "DATA_BODY");
+                                if (t3 == 0) {
+                                    RESULT t4 = setDataBinary(mpSaveUserHeaderBuff, 1024ul, "_UserHeader_");
+                                    if (t4 != 0) {
+                                        return t4;
+                                    } else {
+                                        return beginListLoad();
+                                    }
+                                } else {
+                                    return t3;
+                                }
+                            } else {
+                                return t2;
+                            }
+                        }
+                    } else {
+                        mSaveDataDirName.value = nullptr;
+                        size_t t0 = strlen(DirName);
+                        if (static_cast<unsigned int>(t0) != 0) {
+                            void* t1 = (MtString::mpAllocator)->memAlloc(static_cast<size_t>(static_cast<unsigned int>(t0)) + 12, 16u);
+                            mSaveDataDirName.value = static_cast<MtString::STRING*>(t1);
+                            mSaveDataDirName.value->ref = 1;
+                            mSaveDataDirName.value->length = static_cast<unsigned int>(t0);
+                            strcpy(reinterpret_cast<char*>(mSaveDataDirName.value->str), DirName);
+                            setSaveDataSearchCond(DirName, 0u, 0u);
+                            mUseSearchCond = true;
+                            clearData();
+                            RESULT t2 = setDataU32(&mLoadVersion, "DATA_VERSION");
+                            if (t2 == 0) {
+                                RESULT t3 = setDataBinary(mpSaveBuff, 10240ul, "DATA_BODY");
+                                if (t3 == 0) {
+                                    RESULT t4 = setDataBinary(mpSaveUserHeaderBuff, 1024ul, "_UserHeader_");
+                                    if (t4 != 0) {
+                                        return t4;
+                                    } else {
+                                        return beginListLoad();
+                                    }
+                                } else {
+                                    return t3;
+                                }
+                            } else {
+                                return t2;
+                            }
+                        } else {
+                            mSaveDataDirName.value = nullptr;
+                            setSaveDataSearchCond(DirName, 0u, 0u);
+                            mUseSearchCond = true;
+                            clearData();
+                            RESULT t2 = setDataU32(&mLoadVersion, "DATA_VERSION");
+                            if (t2 == 0) {
+                                RESULT t3 = setDataBinary(mpSaveBuff, 10240ul, "DATA_BODY");
+                                if (t3 == 0) {
+                                    RESULT t4 = setDataBinary(mpSaveUserHeaderBuff, 1024ul, "_UserHeader_");
+                                    if (t4 != 0) {
+                                        return t4;
+                                    } else {
+                                        return beginListLoad();
+                                    }
+                                } else {
+                                    return t3;
+                                }
+                            } else {
+                                return t2;
+                            }
+                        }
+                    }
+                } else {
+                    size_t t0 = strlen(DirName);
+                    if (static_cast<unsigned int>(t0) != 0) {
+                        void* t1 = (MtString::mpAllocator)->memAlloc(static_cast<size_t>(static_cast<unsigned int>(t0)) + 12, 16u);
+                        mSaveDataDirName.value = static_cast<MtString::STRING*>(t1);
+                        mSaveDataDirName.value->ref = 1;
+                        mSaveDataDirName.value->length = static_cast<unsigned int>(t0);
+                        strcpy(reinterpret_cast<char*>(mSaveDataDirName.value->str), DirName);
+                        setSaveDataSearchCond(DirName, 0u, 0u);
+                        mUseSearchCond = true;
+                        clearData();
+                        RESULT t2 = setDataU32(&mLoadVersion, "DATA_VERSION");
+                        if (t2 == 0) {
+                            RESULT t3 = setDataBinary(mpSaveBuff, 10240ul, "DATA_BODY");
+                            if (t3 == 0) {
+                                RESULT t4 = setDataBinary(mpSaveUserHeaderBuff, 1024ul, "_UserHeader_");
+                                if (t4 != 0) {
+                                    return t4;
+                                } else {
+                                    return beginListLoad();
+                                }
+                            } else {
+                                return t3;
+                            }
+                        } else {
+                            return t2;
+                        }
+                    } else {
+                        mSaveDataDirName.value = nullptr;
+                        setSaveDataSearchCond(DirName, 0u, 0u);
+                        mUseSearchCond = true;
+                        clearData();
+                        RESULT t2 = setDataU32(&mLoadVersion, "DATA_VERSION");
+                        if (t2 == 0) {
+                            RESULT t3 = setDataBinary(mpSaveBuff, 10240ul, "DATA_BODY");
+                            if (t3 == 0) {
+                                RESULT t4 = setDataBinary(mpSaveUserHeaderBuff, 1024ul, "_UserHeader_");
+                                if (t4 != 0) {
+                                    return t4;
+                                } else {
+                                    return beginListLoad();
+                                }
+                            } else {
+                                return t3;
+                            }
+                        } else {
+                            return t2;
+                        }
+                    }
+                }
+            } else {
+                setSaveDataSearchCond(DirName, 0u, 0u);
+                mUseSearchCond = true;
+                clearData();
+                RESULT t2 = setDataU32(&mLoadVersion, "DATA_VERSION");
+                if (t2 == 0) {
+                    RESULT t3 = setDataBinary(mpSaveBuff, 10240ul, "DATA_BODY");
+                    if (t3 == 0) {
+                        RESULT t4 = setDataBinary(mpSaveUserHeaderBuff, 1024ul, "_UserHeader_");
+                        if (t4 != 0) {
+                            return t4;
+                        } else {
+                            return beginListLoad();
+                        }
+                    } else {
+                        return t3;
+                    }
+                } else {
+                    return t2;
+                }
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return 9;
+    }
 }
 
 __attribute__((weak)) void sSavedataExt::setGameTitle() {

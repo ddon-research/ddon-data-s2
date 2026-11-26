@@ -349,6 +349,13 @@ inline void* CDataMailInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline CDataMailInfo::CDataMailInfo() {
+    this->m_ullId = 0;
+    this->m_ucState = 0;
+    this->m_ucItemState = 0;
+    this->m_llSenderDate = 0;
+}
+
 inline void* CDataMailItemInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

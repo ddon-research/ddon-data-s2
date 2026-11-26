@@ -228,9 +228,20 @@ void sBrowser::setPut1Code(SNJ_BROWSER_BITMAP* dstbmp, int dstx, int dsty, int d
     *pResult = sBrowser::getInstance()->mIsSNJFontDisp;
 }
 
-__attribute__((weak)) void sBrowser::setJSCallback_jumpSetSizeByType(MtObject* pThis, sBrowser::JSCallback_jumpSetSizeByType pFunc) {
-    DDON_STUB("sBrowser::setJSCallback_jumpSetSizeByType")
-    /* stub */
+void sBrowser::setJSCallback_jumpSetSizeByType(MtObject* pThis, sBrowser::JSCallback_jumpSetSizeByType pFunc) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mpJSCallback_jumpSetSizeByType_this = pThis;
+    mJSCallback_jumpSetSizeByType = pFunc;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
+    }
 }
 
 __attribute__((weak)) void sBrowser::callJSCallback_jumpSetSizeByType(s32& Width, s32& Height, MT_CTSTR TypeName, MT_CTSTR Url) {
@@ -248,9 +259,20 @@ __attribute__((weak)) void sBrowser::callJSCallback_jumpSetPos(s32& PosX, s32& P
     /* stub */
 }
 
-__attribute__((weak)) void sBrowser::setJSCallback_jumpSetPosSize(MtObject* pThis, sBrowser::JSCallback_jumpSetPosSize pFunc) {
-    DDON_STUB("sBrowser::setJSCallback_jumpSetPosSize")
-    /* stub */
+void sBrowser::setJSCallback_jumpSetPosSize(MtObject* pThis, sBrowser::JSCallback_jumpSetPosSize pFunc) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mpJSCallback_jumpSetPosSize_this = pThis;
+    mJSCallback_jumpSetPosSize = pFunc;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
+    }
 }
 
 void sBrowser::resetJSCallback_jumpSetPosSize() {

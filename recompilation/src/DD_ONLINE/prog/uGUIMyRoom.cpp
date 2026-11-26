@@ -51,8 +51,6 @@ uGUIMyRoom::uGUIMyRoom() {
 }
 
 uGUIMyRoom::~uGUIMyRoom() {
-    DDON_STUB("uGUIMyRoom::~uGUIMyRoom")
-    /* stub */
 }
 
 __attribute__((weak)) void uGUIMyRoom::setPawnInfo(MT_CTSTR name, u32 jobId, u32 jobLevel, u32 craftLevel) {
@@ -122,6 +120,11 @@ void uGUIMyRoom::onHide() {
 __attribute__((weak)) void uGUIMyRoom::onUpdateShow() {
     DDON_STUB("uGUIMyRoom::onUpdateShow")
     /* stub */
+}
+
+inline void uGUIMyRoom::setupRefrences() {
+    mCloseButton.setup(static_cast<uGUIBase*>(this), getInstance(262u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUIMyRoom::evCtrlCancel));
+    mButtonGuide.setup(static_cast<uGUIBase*>(this), getInstance(319u, false), 0.0f);
 }
 
 __attribute__((weak)) u32 uGUIMyRoom::evCtrlDecide(cControl::Message* msg) {
@@ -312,8 +315,6 @@ uGUIMyRoomPopup::uGUIMyRoomPopup() {
 }
 
 __attribute__((noinline)) uGUIMyRoomPopup::~uGUIMyRoomPopup() {
-    DDON_STUB("uGUIMyRoomPopup::~uGUIMyRoomPopup")
-    /* stub */
 }
 
 void uGUIMyRoomPopup::setTitle(MT_CTSTR title) {
@@ -355,9 +356,26 @@ __attribute__((weak)) void uGUIMyRoomPopup::onMoveEvent() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIMyRoomPopup::onShow() {
-    DDON_STUB("uGUIMyRoomPopup::onShow")
-    /* stub */
+void uGUIMyRoomPopup::onShow() {
+    if (mpINST_Null_pop != nullptr) {
+        mpINST_Null_pop->setVisible(true);
+        if (mpINST_Null_pop != nullptr) {
+            mpINST_Null_pop->setExecute(true);
+        }
+    }
+    if (mPopupListInputEventHandler == nullptr) {
+        return;
+    }
+    s32 t0 = mControlMgr.getCurrentPos(2u);
+    if (static_cast<unsigned int>(t0) < mList.mScrollList.mInfoArray.mLength) {
+        if (mList.mScrollList.mInfoArray.getBuffer()[t0] != nullptr) {
+            mPopupListInputEventHandler->onPopupListInputEventSelect(*this, static_cast<u32>(t0), static_cast<uGUIMyRoomPopup::cList::cInfo*>(mList.mScrollList.mInfoArray.getBuffer()[t0])->getListIndex());
+        } else {
+            mPopupListInputEventHandler->onPopupListInputEventSelect(*this, static_cast<u32>(t0), 0u);
+        }
+    } else {
+        mPopupListInputEventHandler->onPopupListInputEventSelect(*this, static_cast<u32>(t0), 0u);
+    }
 }
 
 void uGUIMyRoomPopup::onHide() {
@@ -548,9 +566,78 @@ __attribute__((weak)) void uGUIMyRoomPopup::cList::cItem::setup(uGUIMyRoomPopup&
     /* stub */
 }
 
-__attribute__((weak)) bool uGUIMyRoomPopup::cList::cItem::moveEvent(uGUIMyRoomPopup& owner, uGUIMyRoomPopup::cList& list, uGUIMyRoomPopup::cList::cInfo& info, nGUIMyRoom::cPopupListInputEventHandler* popupListInputEventHandler) {
-    DDON_STUB("uGUIMyRoomPopup::cList::cItem::moveEvent")
-    return {};
+bool uGUIMyRoomPopup::cList::cItem::moveEvent(uGUIMyRoomPopup& owner, uGUIMyRoomPopup::cList& list, uGUIMyRoomPopup::cList::cInfo& info, nGUIMyRoom::cPopupListInputEventHandler* popupListInputEventHandler) {
+    if (mMode == MODE_PULLDOWN) {
+        mPulldown.moveEvent();
+        if (mPulldown.isDecide()) {
+            const u32 item_list_index = mPulldown.getIdx();
+            info.mListIndex = item_list_index;
+            if (popupListInputEventHandler != nullptr) {
+                if (list.mScrollList.mpVCtrl != nullptr) {
+                    const u32 item_index = list.mScrollList.mpVCtrl->getCurrentPos();
+                    popupListInputEventHandler->onPopupListInputEventChange(owner, item_index, item_list_index);
+                    if (mPulldown.mState == uGUIBase::cReferenceUIPullDown::STATE_NONE) {
+                        info.mBottomPos = info.mTopPos + mDefaultItemSpacing;
+                        mDefaultItemSpacing = 0.0f;
+                        if (mpINST_Null_list03 != nullptr) {
+                            mpINST_Null_list03->setPriority(mDefaultNullPriority);
+                        }
+                        list.mScrollList.setupList(list.mMaskHeight, list.mMaskHeight, false);
+                        list.mScrollList.setSliderPos(list.mScrollList.getSliderPos(), true);
+                        list.mScrollList.setListPos(true);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    popupListInputEventHandler->onPopupListInputEventChange(owner, 0u, item_list_index);
+                    if (mPulldown.mState == uGUIBase::cReferenceUIPullDown::STATE_NONE) {
+                        info.mBottomPos = info.mTopPos + mDefaultItemSpacing;
+                        mDefaultItemSpacing = 0.0f;
+                        if (mpINST_Null_list03 != nullptr) {
+                            mpINST_Null_list03->setPriority(mDefaultNullPriority);
+                        }
+                        list.mScrollList.setupList(list.mMaskHeight, list.mMaskHeight, false);
+                        list.mScrollList.setSliderPos(list.mScrollList.getSliderPos(), true);
+                        list.mScrollList.setListPos(true);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            } else {
+                if (mPulldown.mState == uGUIBase::cReferenceUIPullDown::STATE_NONE) {
+                    info.mBottomPos = info.mTopPos + mDefaultItemSpacing;
+                    mDefaultItemSpacing = 0.0f;
+                    if (mpINST_Null_list03 != nullptr) {
+                        mpINST_Null_list03->setPriority(mDefaultNullPriority);
+                    }
+                    list.mScrollList.setupList(list.mMaskHeight, list.mMaskHeight, false);
+                    list.mScrollList.setSliderPos(list.mScrollList.getSliderPos(), true);
+                    list.mScrollList.setListPos(true);
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        } else {
+            if (mPulldown.mState == uGUIBase::cReferenceUIPullDown::STATE_NONE) {
+                info.mBottomPos = info.mTopPos + mDefaultItemSpacing;
+                mDefaultItemSpacing = 0.0f;
+                if (mpINST_Null_list03 != nullptr) {
+                    mpINST_Null_list03->setPriority(mDefaultNullPriority);
+                }
+                list.mScrollList.setupList(list.mMaskHeight, list.mMaskHeight, false);
+                list.mScrollList.setSliderPos(list.mScrollList.getSliderPos(), true);
+                list.mScrollList.setListPos(true);
+                return false;
+            } else {
+                return true;
+            }
+        }
+    } else {
+        return true;
+    }
 }
 
 __attribute__((weak)) bool uGUIMyRoomPopup::cList::cItem::onDecide(uGUIMyRoomPopup& owner, uGUIMyRoomPopup::cList& list, uGUIMyRoomPopup::cList::cInfo& info, nGUIMyRoom::cPopupListInputEventHandler* popupListInputEventHandler) {

@@ -12,6 +12,7 @@
 #include "MtNetObject.h"
 #include "MtNetRequest.h"
 #include "MtObject.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
 #include "../generated/shared/_rtc.h"
 #include "../generated/shared/np_npid.h"
@@ -47,9 +48,9 @@ __attribute__((noinline)) MtNetRanking::~MtNetRanking() {
     /* stub */
 }
 
-__attribute__((weak)) void MtNetRanking::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtNetRanking::createProperty")
-    /* stub */
+void MtNetRanking::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mScoreList", static_cast<MtObject*>(&mScoreList), 4u, 0u);
+    this->MtNetObject::createProperty(s);
 }
 
 __attribute__((weak)) void MtNetRanking::addListener(MtNetRanking::Listener* listener) {

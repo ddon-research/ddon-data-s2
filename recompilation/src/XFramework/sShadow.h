@@ -656,3 +656,17 @@ inline void* sShadow::ViewConsistentResource::operator new(size_t sz, void* p_ad
 inline void* sShadow::Node::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline sShadow::Node::Node() {
+    this->mMark = false;
+    this->mpVCResource = nullptr;
+    this->mpState[7] = nullptr;
+    this->mpState[6] = nullptr;
+    this->mpState[5] = nullptr;
+    this->mpState[4] = nullptr;
+    this->mpState[3] = nullptr;
+    this->mpState[2] = nullptr;
+    this->mpState[1] = nullptr;
+    this->mpState[0] = nullptr;
+    this->mpShadow = nullptr;
+}

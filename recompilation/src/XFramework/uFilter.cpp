@@ -8,6 +8,7 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPrimitive2D.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cDraw.h"
@@ -46,9 +47,16 @@ void uBloomFilter::draw(cDraw* pdraw) {
     uBloomFilter::drawBloom(pdraw, static_cast<uFilter*>(this), mParam, 1.0f);
 }
 
-__attribute__((weak)) void uBloomFilter::createProperty(MtPropertyList& s) {
-    DDON_STUB("uBloomFilter::createProperty")
-    /* stub */
+void uBloomFilter::createProperty(MtPropertyList& s) {
+    this->uFilter::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mBloomDispersion", &mParam.mBloomDispersion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBloomThrethold", &mParam.mBloomThreshold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBloomColor", &mParam.mBloomColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConeFilter", &mParam.mConeFilter, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpRTBloom[0]", reinterpret_cast<MtObject* *>(&mParam.mpRTBloom[0]), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStencilID", &mParam.mStencilID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLegacy", &mParam.mLegacy, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCTREmulation", &uBloomFilter::mCTREmulation, 0u, 0u);
 }
 
 MtUI* uBloomFilter::createUI(MtProperty& prop) {
@@ -199,9 +207,21 @@ MtUI* uColorCorrectFilter::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uColorCorrectFilter::createProperty(MtPropertyList& s) {
-    DDON_STUB("uColorCorrectFilter::createProperty")
-    /* stub */
+void uColorCorrectFilter::createProperty(MtPropertyList& s) {
+    this->uFilter::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mCorrector", static_cast<MtObject*>(&mCorrector[0]), 32u, 16u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_HERMITECURVE, "ToneCurveRGB", reinterpret_cast<MT_MFUNC>(&::uColorCorrectFilter::getToneCurve), reinterpret_cast<MT_MFUNC>(&::uColorCorrectFilter::setToneCurve), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mGamma", &mParam.mGamma, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpToneMap", reinterpret_cast<MtObject* *>(&mParam.mpToneMap), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mToneCurveR", &mParam.mToneCurveR, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mToneCurveG", &mParam.mToneCurveG, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mToneCurveB", &mParam.mToneCurveB, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVolumeInterpolateQuality", &mParam.mVolumeInterpolateQuality, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpVolumeColorCorrect", "resource", static_cast<void*>(&mParam.mpVolumeColorCorrect), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mParam.mPos, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mStartZ", reinterpret_cast<MT_MFUNC>(&::uColorCorrectFilter::getAttenuationStartZ), reinterpret_cast<MT_MFUNC>(&::uColorCorrectFilter::setAttenuationStartZ), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mEndZ", reinterpret_cast<MT_MFUNC>(&::uColorCorrectFilter::getAttenuationEndZ), reinterpret_cast<MT_MFUNC>(&::uColorCorrectFilter::setAttenuationEndZ), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mAttenuationEnable", &mParam.mAttenuationEnable, 1u, 0u);
 }
 
 static auto ddon_emit_0x01b5eb70 __attribute__((used)) = &uColorCorrectFilter::getAttenuationStartZ;
@@ -228,9 +248,8 @@ __attribute__((weak)) void uColorCorrectFilter::setToneCurve(const MtHermiteCurv
     /* stub */
 }
 
-__attribute__((weak)) MtHermiteCurve uColorCorrectFilter::getToneCurve() {
-    DDON_STUB("uColorCorrectFilter::getToneCurve")
-    __builtin_unreachable();
+MtHermiteCurve uColorCorrectFilter::getToneCurve() {
+    return mParam.mToneCurveR;
 }
 
 inline uColorCorrectFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -254,9 +273,11 @@ MtUI* uColorCorrectFilter::Corrector::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void uColorCorrectFilter::Corrector::createProperty(MtPropertyList& s) {
-    DDON_STUB("uColorCorrectFilter::Corrector::createProperty")
-    /* stub */
+void uColorCorrectFilter::Corrector::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEnable", &mParams.mEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mParams.mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFactor", &mParams.mFactor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFactor2", &mParams.mFactor2, 0u, 0u);
 }
 
 inline uColorCorrectFilter::Corrector::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -334,9 +355,40 @@ __attribute__((noinline)) uDOFFilter::~uDOFFilter() {
 __attribute__((weak)) void uDOFFilter::move() {
 }
 
-__attribute__((weak)) void uDOFFilter::sync() {
-    DDON_STUB("uDOFFilter::sync")
-    /* stub */
+void uDOFFilter::sync() {
+    if (!(sRender::mpInstance)->mSRGBEnable) {
+        if (mbGSDOF) {
+            if (mpDiaphragm == nullptr) {
+                mpDiaphragm = static_cast<rTexture*>((sResource::mpInstance)->create(rTexture::DTI, "system\\texture\\diaphragm_MM", 1u));
+            }
+            if (mpTempAccTexture == nullptr) {
+                mpTempAccTexture = new (16u) nDraw::Texture(uDOFFilter::DTI.mName, "TempTexture", static_cast<unsigned int>((sRender::mpInstance)->mScreenSize.wh), static_cast<u32>((sRender::mpInstance)->mScreenSize.wh >> 32), 1u, 1u, nDraw::FORMAT_R16G16B16A16_FLOAT, nDraw::USAGE_RENDERTARGET, 2u, nDraw::TEXMEMORY_VRAM);
+            }
+        } else {
+            if (mpTempTexture[0] == nullptr) {
+                mpTempTexture[0] = new (16u) nDraw::Texture(uDOFFilter::DTI.mName, "TempTexture00", static_cast<u32>(static_cast<int>(static_cast<unsigned long>((sRender::mpInstance)->mScreenSize.wh) + static_cast<unsigned long>(static_cast<unsigned int>((sRender::mpInstance)->mScreenSize.wh) >> 31)) >> 1), static_cast<u32>(static_cast<int>(((sRender::mpInstance)->mScreenSize.wh >> 32) + ((sRender::mpInstance)->mScreenSize.wh >> 63)) >> 1), 1u, 1u, nDraw::FORMAT_B8G8R8A8_UNORM, nDraw::USAGE_RENDERTARGET, 2u, nDraw::TEXMEMORY_VRAM);
+            }
+            if (mpTempTexture[1] == nullptr) {
+                mpTempTexture[1] = new (16u) nDraw::Texture(uDOFFilter::DTI.mName, "TempTexture01", static_cast<u32>(static_cast<int>(static_cast<unsigned long>((sRender::mpInstance)->mScreenSize.wh) + static_cast<unsigned long>(static_cast<unsigned int>((sRender::mpInstance)->mScreenSize.wh) >> 31)) >> 1), static_cast<u32>(static_cast<int>(((sRender::mpInstance)->mScreenSize.wh >> 32) + ((sRender::mpInstance)->mScreenSize.wh >> 63)) >> 1), 1u, 1u, nDraw::FORMAT_B8G8R8A8_UNORM, nDraw::USAGE_RENDERTARGET, 2u, nDraw::TEXMEMORY_VRAM);
+            }
+        }
+    } else {
+        if (mbGSDOF) {
+            if (mpDiaphragm == nullptr) {
+                mpDiaphragm = static_cast<rTexture*>((sResource::mpInstance)->create(rTexture::DTI, "system\\texture\\diaphragm_MM", 1u));
+            }
+            if (mpTempAccTexture == nullptr) {
+                mpTempAccTexture = new (16u) nDraw::Texture(uDOFFilter::DTI.mName, "TempTexture", static_cast<unsigned int>((sRender::mpInstance)->mScreenSize.wh), static_cast<u32>((sRender::mpInstance)->mScreenSize.wh >> 32), 1u, 1u, nDraw::FORMAT_R16G16B16A16_FLOAT, nDraw::USAGE_RENDERTARGET, 2u, nDraw::TEXMEMORY_VRAM);
+            }
+        } else {
+            if (mpTempTexture[0] == nullptr) {
+                mpTempTexture[0] = new (16u) nDraw::Texture(uDOFFilter::DTI.mName, "TempTexture00", static_cast<u32>(static_cast<int>(static_cast<unsigned long>((sRender::mpInstance)->mScreenSize.wh) + static_cast<unsigned long>(static_cast<unsigned int>((sRender::mpInstance)->mScreenSize.wh) >> 31)) >> 1), static_cast<u32>(static_cast<int>(((sRender::mpInstance)->mScreenSize.wh >> 32) + ((sRender::mpInstance)->mScreenSize.wh >> 63)) >> 1), 1u, 1u, nDraw::FORMAT_B8G8R8A8_UNORM_SRGB, nDraw::USAGE_RENDERTARGET, 2u, nDraw::TEXMEMORY_VRAM);
+            }
+            if (mpTempTexture[1] == nullptr) {
+                mpTempTexture[1] = new (16u) nDraw::Texture(uDOFFilter::DTI.mName, "TempTexture01", static_cast<u32>(static_cast<int>(static_cast<unsigned long>((sRender::mpInstance)->mScreenSize.wh) + static_cast<unsigned long>(static_cast<unsigned int>((sRender::mpInstance)->mScreenSize.wh) >> 31)) >> 1), static_cast<u32>(static_cast<int>(((sRender::mpInstance)->mScreenSize.wh >> 32) + ((sRender::mpInstance)->mScreenSize.wh >> 63)) >> 1), 1u, 1u, nDraw::FORMAT_B8G8R8A8_UNORM_SRGB, nDraw::USAGE_RENDERTARGET, 2u, nDraw::TEXMEMORY_VRAM);
+            }
+        }
+    }
 }
 
 void uDOFFilter::draw(cDraw* pdraw) {
@@ -351,9 +403,28 @@ MtUI* uDOFFilter::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uDOFFilter::createProperty(MtPropertyList& s) {
-    DDON_STUB("uDOFFilter::createProperty")
-    /* stub */
+void uDOFFilter::createProperty(MtPropertyList& s) {
+    this->uFilter::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlurType", &mBlurType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlurSize", &mBlurSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGradateColor", &mGradateColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mBlurCount", reinterpret_cast<MT_MFUNC>(&::uDOFFilter::getBlurCount), reinterpret_cast<MT_MFUNC>(&::uDOFFilter::setBlurCount), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mNearBlurLimit", &mNearBlurLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFarBlurLimit", &mFarBlurLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mFocal", reinterpret_cast<MT_MFUNC>(&::uDOFFilter::getFocal), reinterpret_cast<MT_MFUNC>(&::uDOFFilter::setFocal), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mNear", reinterpret_cast<MT_MFUNC>(&::uDOFFilter::getNear), reinterpret_cast<MT_MFUNC>(&::uDOFFilter::setNear), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mFar", reinterpret_cast<MT_MFUNC>(&::uDOFFilter::getFar), reinterpret_cast<MT_MFUNC>(&::uDOFFilter::setFar), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mbGSDOF", reinterpret_cast<MT_MFUNC>(&::uDOFFilter::isGSDOF), reinterpret_cast<MT_MFUNC>(&::uDOFFilter::setGSDOF), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mAperture", &mAperture, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFocalLength", &mFocalLength, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCoCScale", &mCoCScale, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCoCBias", &mCoCBias, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLowCoCScale", &mLowCoCScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTempTexture[0]", reinterpret_cast<MtObject* *>(&mpTempTexture[0]), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTempTexture[1]", reinterpret_cast<MtObject* *>(&mpTempTexture[1]), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTempAccTexture", reinterpret_cast<MtObject* *>(&mpTempAccTexture), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpDiaphragm", "resource", static_cast<void*>(&mpDiaphragm), 0u, 0u);
 }
 
 void uDOFFilter::setGSDOF(bool enable) {
@@ -475,8 +546,10 @@ uFilter::~uFilter() {
 }
 
 __attribute__((weak)) void uFilter::createProperty(MtPropertyList& s) {
-    DDON_STUB("uFilter::createProperty")
-    /* stub */
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mPass", &mPass, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScreenLayer", &mScreenLayer, 0u, 0u);
 }
 
 MtUI* uFilter::createUI(MtProperty& prop) {
@@ -548,9 +621,39 @@ uGodRaysFilter::~uGodRaysFilter() {
     /* stub */
 }
 
-__attribute__((weak)) void uGodRaysFilter::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGodRaysFilter::createProperty")
-    /* stub */
+void uGodRaysFilter::createProperty(MtPropertyList& s) {
+    this->uFilter::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMode", reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::getMode), reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::setMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mQuality", reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::getLevel), reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::setLevel), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mCutoff", reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::isCutoff), reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::setCutoff), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mUseLDR", reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::isUseLDR), reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::setUseLDR), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mUseShadow", reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::isShadow), reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::setShadow), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mIterativeNum", reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::getIterativeNum), reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::setIterativeNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mUseGray", reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::isGray), reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::setGray), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mDecay", &mParam.mDecay, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScale", &mParam.mScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mUsePoint", reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::isUsePoint), reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::setUsePoint), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mDirection", &mParam.mDirection, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDirectionLength", &mParam.mDirectionLength, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPoint", &mParam.mPoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOcclusionSphereRadius", &mParam.mOcclusionSphereRadius, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mUseOcclusionBlurWidth", reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::isOcclusionBlurWidthEnable), reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::setOcclusionBlurWidthEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mUseOcclusionAlpha", reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::isOcclusionAlphaEnable), reinterpret_cast<MT_MFUNC>(&::uGodRaysFilter::setOcclusionAlphaEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mOcclusionBlurWidthScale", &mParam.mOcclusionBlurWidthScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOcclusionBlurWidthOffset", &mParam.mOcclusionBlurWidthOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaskWeight", &mParam.mMaskWeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaskRadius", &mParam.mMaskRadius, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mThreshold", &mParam.mThreshold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShadowThreshold", &mParam.mShadowThreshold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartZ", &mParam.mStartZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndZ", &mParam.mEndZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShadowFactor", &mParam.mShadowFactor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGamma", &mParam.mGamma, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColor", &mParam.mColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpFinal", reinterpret_cast<MtObject* *>(&mParam.mpFinal), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpOcclusionFactor", reinterpret_cast<MtObject* *>(&mParam.mpOcclusionFactor), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTempTexture", reinterpret_cast<MtObject* *>(&mParam.mpTempTexture), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpBlur", reinterpret_cast<MtObject* *>(&mParam.mpBlur[0]), 35u, 5u);
 }
 
 MtUI* uGodRaysFilter::createUI(MtProperty& prop) {
@@ -806,9 +909,29 @@ MtUI* uMotionBlurFilter::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uMotionBlurFilter::createProperty(MtPropertyList& s) {
-    DDON_STUB("uMotionBlurFilter::createProperty")
-    /* stub */
+void uMotionBlurFilter::createProperty(MtPropertyList& s) {
+    this->uFilter::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mStretchBlur", &mStretchBlur, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCameraBlur", &mCameraBlur, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMedianBlur", &mMedianBlur, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mReconstructBlur", reinterpret_cast<MT_MFUNC>(&::uMotionBlurFilter::isReconstructBlur), reinterpret_cast<MT_MFUNC>(&::uMotionBlurFilter::setReconstructBlur), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mDepthLimit", &mDepthLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFeedbackNum", &mFeedbackNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSampleLevel", reinterpret_cast<s32*>(&mSampleLevel), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResolution", reinterpret_cast<s32*>(&mResolution), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVelocityResolution", reinterpret_cast<s32*>(&mVelocityResolution), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFBLimit", &mFBLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFBScale", &mFBScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFBDepthBias", &mFBDepthBias, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOBLimit", &mOBLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSBScale", &mSBScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSBDepthBias", &mSBDepthBias, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRBScale", &mRBScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpVelocityMap", reinterpret_cast<MtObject* *>(&mpVelocityMap), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTempTexture", reinterpret_cast<MtObject* *>(&mpTempTexture), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpBlurTempTexture", reinterpret_cast<MtObject* *>(&mpBlurTempTexture), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTileMax", reinterpret_cast<MtObject* *>(&mpTileMax), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpNeighborMax", reinterpret_cast<MtObject* *>(&mpNeighborMax), 3u, 0u);
 }
 
 void uMotionBlurFilter::setReconstructBlur(bool enable) {
@@ -861,9 +984,31 @@ MtUI* uRadialBlurFilter::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uRadialBlurFilter::createProperty(MtPropertyList& s) {
-    DDON_STUB("uRadialBlurFilter::createProperty")
-    /* stub */
+void uRadialBlurFilter::createProperty(MtPropertyList& s) {
+    this->uFilter::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mBlendStateType", reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::getBlendStateType), reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::setBlendStateType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMode", reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::getMode), reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::setMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mSamples", reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::getSamples), reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::setSamples), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mBlurStart", &mParam.mBlurStart, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlurWidth", &mParam.mBlurWidth, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBrightThreshold", &mParam.mBrightThreshold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColor", &mParam.mColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCenter", &mParam.mCenter, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartW", &mParam.mStartW, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndW", &mParam.mEndW, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartH", &mParam.mStartH, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndH", &mParam.mEndH, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWPos", &mParam.mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartZ", &mParam.mStartZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndZ", &mParam.mEndZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MaskTexture", "resource", reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::getMaskTexture), reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::setMaskTexture), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_FLOAT2, "lt", reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::getMaskLT), reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::setMaskLT), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_FLOAT2, "rb", reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::getMaskRB), reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::setMaskRB), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mUseOcclusionBlurWidth", reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::isOcclusionBlurWidthEnable), reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::setOcclusionBlurWidthEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mUseOcclusionAlpha", reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::isOcclusionAlphaEnable), reinterpret_cast<MT_MFUNC>(&::uRadialBlurFilter::setOcclusionAlphaEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mOcclusionSphereRadius", &mParam.mOcclusionSphereRadius, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOcclusionBlurWidthScale", &mParam.mOcclusionBlurWidthScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOcclusionBlurWidthOffset", &mParam.mOcclusionBlurWidthOffset, 0u, 0u);
 }
 
 __attribute__((weak)) void uRadialBlurFilter::setMode(u32 m) {

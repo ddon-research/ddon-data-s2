@@ -15,7 +15,7 @@
 #include "../../XFramework/cZoneContents.h"
 #include "../../XFramework/cZoneLayout.h"
 #include "../../XFramework/cZoneListener.h"
-#include "../../generated/rLayout/nSoundZone.h"
+#include "../../generated/shared/nSoundZone.h"
 #include "../../XFramework/nZone.h"
 #include "../../XFramework/rZone.h"
 #include "../../XFramework/sZone.h"
@@ -23,6 +23,42 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+inline void* cSoundOcclusionLayoutInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundOcclusionLayoutInfo::DTI)->memAlloc(sz, align, ::cSoundOcclusionLayoutInfo::DTI.getID());
+}
+inline cSoundOcclusionLayoutInfo::cSoundOcclusionLayoutInfo() {
+    mUseType = 0;
+    mBoundingBoxIndex = 0;
+    mHollowManagerIndex = -1;
+    mContentsIndex[0] = -1;
+    mContentsIndex[1] = -1;
+}
+
+inline void* nSoundOcclusion::cBaseContents::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nSoundOcclusion::cBaseContents::DTI)->memAlloc(sz, align, ::nSoundOcclusion::cBaseContents::DTI.getID());
+}
+inline nSoundOcclusion::cBaseContents::cBaseContents() {
+    setContentsName("Base");
+    mFlgUse = true;
+    setAttribute(0x4000u, true);
+    mOption = static_cast<nSoundOcclusion::OPTION>(0);
+    mHollowId = -1;
+    mHollowPriority = 0;
+    mVolumeRate = 1.0f;
+    for (u32 i = 0; i < 4; i++) {
+        mSurroundDist[i] = 0.0f;
+    }
+}
+
+inline nSoundOcclusion::cCategory::cCategory() {
+    setCategoryName("SoundOcclusion");
+    setExtendObjectDTI(::cSoundOcclusionLayoutInfo::DTI);
+    setAttribute(0x1200u);
+    setDefaultShapeType(9u);
+    setBroadPhaseSearchMode(0u);
+    setAttribute(0x10000u, true);
+}
 
 const MtDTI& cSoundOcclusionLayoutInfo::getDTI() const {
     return cSoundOcclusionLayoutInfo::DTI;
@@ -39,9 +75,12 @@ MtUI* cSoundOcclusionLayoutInfo::createUI(MtProperty& prop) {
     return this->cSoundLayoutInfo::createUI(prop);
 }
 
-__attribute__((weak)) void cSoundOcclusionLayoutInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSoundOcclusionLayoutInfo::createProperty")
-    /* stub */
+void cSoundOcclusionLayoutInfo::createProperty(MtPropertyList& s) {
+    this->cSoundLayoutInfo::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseType", &mUseType, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBoundingBoxIndex", &mBoundingBoxIndex, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHollowManagerIndex", &mHollowManagerIndex, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mContentsIndex", &mContentsIndex[0], 33u, 2u);
 }
 
 void cSoundOcclusionLayoutInfo::setContentsIndex(nZone::cLayoutElement* pLayout) {
@@ -65,8 +104,7 @@ inline cSoundOcclusionLayoutInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 cSoundOcclusionLayoutInfo::MyDTI cSoundOcclusionLayoutInfo::DTI("cSoundOcclusionLayoutInfo", &::cSoundLayoutInfo::DTI, 40ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cSoundOcclusionLayoutInfo::MyDTI::newInstance() const {
-    DDON_STUB("cSoundOcclusionLayoutInfo::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::cSoundOcclusionLayoutInfo;
 }
 
 const MtDTI& cSoundOcclusionListener::getDTI() const {
@@ -99,18 +137,27 @@ const MtDTI& nSoundOcclusion::cBaseContents::getDTI() const {
     return nSoundOcclusion::cBaseContents::DTI;
 }
 
+inline void nSoundOcclusion::cBaseContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundOcclusion::cBaseContents::DTI)->memFree(p_addr);
+}
+
 nSoundOcclusion::cBaseContents::~cBaseContents() {
-    DDON_STUB("nSoundOcclusion::cBaseContents::~cBaseContents")
-    /* stub */
 }
 
 MtUI* nSoundOcclusion::cBaseContents::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nSoundOcclusion::cBaseContents::createProperty(MtPropertyList& s) {
-    DDON_STUB("nSoundOcclusion::cBaseContents::createProperty")
-    /* stub */
+void nSoundOcclusion::cBaseContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "HollowID", &mHollowId, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "HollowPriority", &mHollowPriority, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Option", reinterpret_cast<u32*>(&mOption), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Line [0 - 1]", &mSurroundDist[0], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Line [0 - 3]", &mSurroundDist[1], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Line [1 - 2]", &mSurroundDist[2], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Line [2 - 3]", &mSurroundDist[3], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "VolumeRate", &mVolumeRate, 0u, 0u);
 }
 
 inline nSoundOcclusion::cBaseContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -118,8 +165,7 @@ inline nSoundOcclusion::cBaseContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* 
 nSoundOcclusion::cBaseContents::MyDTI nSoundOcclusion::cBaseContents::DTI("nSoundOcclusion::cBaseContents", &::nSoundOcclusion::cCategory::DTI, 56ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nSoundOcclusion::cBaseContents::MyDTI::newInstance() const {
-    DDON_STUB("nSoundOcclusion::cBaseContents::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::nSoundOcclusion::cBaseContents;
 }
 
 const MtDTI& nSoundOcclusion::cCategory::getDTI() const {
@@ -153,18 +199,23 @@ const MtDTI& nSoundOcclusion::cFreeWorkContents::getDTI() const {
     return nSoundOcclusion::cFreeWorkContents::DTI;
 }
 
+inline void nSoundOcclusion::cFreeWorkContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundOcclusion::cFreeWorkContents::DTI)->memFree(p_addr);
+}
+
 nSoundOcclusion::cFreeWorkContents::~cFreeWorkContents() {
-    DDON_STUB("nSoundOcclusion::cFreeWorkContents::~cFreeWorkContents")
-    /* stub */
 }
 
 MtUI* nSoundOcclusion::cFreeWorkContents::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nSoundOcclusion::cFreeWorkContents::createProperty(MtPropertyList& s) {
-    DDON_STUB("nSoundOcclusion::cFreeWorkContents::createProperty")
-    /* stub */
+void nSoundOcclusion::cFreeWorkContents::createProperty(MtPropertyList& s) {
+    this->::cZoneContents::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWork0", &mFreeWork[0], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWork1", &mFreeWork[1], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWork2", &mFreeWork[2], 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWork3", &mFreeWork[3], 0u, 0u);
 }
 
 inline nSoundOcclusion::cFreeWorkContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -206,9 +257,14 @@ MtUI* uSoundOcclusion::createUI(MtProperty& prop) {
     return this->uSoundZoneBase::createUI(prop);
 }
 
-__attribute__((weak)) void uSoundOcclusion::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSoundOcclusion::createProperty")
-    /* stub */
+void uSoundOcclusion::createProperty(MtPropertyList& s) {
+    this->uSoundZoneBase::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneListener", static_cast<MtObject*>(&mZoneListener), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUseZoneSystemSpaceDivision", &mIsUseZoneSystemSpaceDivision, 0u, 0u);
+    if (mpHollowManager == nullptr) {
+        return;
+    }
+    s << MtProperty(static_cast<MtObject*>(this), "mpHollowManager", static_cast<MtObject*>(mpHollowManager), 36u, mHollowManagerNum);
 }
 
 void uSoundOcclusion::setup() {
@@ -231,9 +287,8 @@ cSoundZoneListener* uSoundOcclusion::getZoneListener() {
     return &mZoneListener;
 }
 
-__attribute__((weak)) MtVector3 uSoundOcclusion::getZoneListenerPos() {
-    DDON_STUB("uSoundOcclusion::getZoneListenerPos")
-    __builtin_unreachable();
+MtVector3 uSoundOcclusion::getZoneListenerPos() {
+    return (&mZoneListener)->myPos();
 }
 
 void uSoundOcclusion::setZoneListenerPos(const MtVector3& NewListenerPos) {
@@ -399,9 +454,10 @@ MtUI* uSoundOcclusion::cHollowManager::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void uSoundOcclusion::cHollowManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSoundOcclusion::cHollowManager::createProperty")
-    /* stub */
+void uSoundOcclusion::cHollowManager::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mHollowId", &mHollowId, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndexArrayNum", &mIndexArrayNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpIndexArray", mpIndexArray, 33u, mIndexArrayNum);
 }
 
 inline uSoundOcclusion::cHollowManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

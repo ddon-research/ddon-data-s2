@@ -5,6 +5,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cResource.h"
@@ -37,6 +38,16 @@ void* uGUIMousePointer::operator new(size_t sz, u32 align) {
 
 inline void uGUIMousePointer::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMousePointer::DTI)->memFree(p_addr);
+}
+
+uGUIMousePointer::uGUIMousePointer() : uGUIBase(0u, false) {
+    mpInstAnim = nullptr;
+    mpGUIRes = nullptr;
+    mAlpha = 1.0f;
+    mRemainingTime = 0.0f;
+    mRemainingTimeMax = 10.0f;
+    mEndType = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUIMousePointer"), 0u, false);
 }
 
 uGUIMousePointer::~uGUIMousePointer() {
@@ -102,8 +113,7 @@ inline uGUIMousePointer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 uGUIMousePointer::MyDTI uGUIMousePointer::DTI("uGUIMousePointer", &::uGUIBase::DTI, 2288ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIMousePointer::MyDTI::newInstance() const {
-    DDON_STUB("uGUIMousePointer::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIMousePointer::MyDTI::newInstance() const {
+    return new (16u) uGUIMousePointer;
 }
 

@@ -6,10 +6,12 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtNetContext.h"
 #include "../MT/MtNetCore.h"
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtNetObject.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "cSystem.h"
@@ -85,9 +87,16 @@ __attribute__((weak)) void sNetwork::move() {
     /* stub */
 }
 
-__attribute__((weak)) void sNetwork::createProperty(MtPropertyList& s) {
-    DDON_STUB("sNetwork::createProperty")
-    /* stub */
+void sNetwork::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "LogLevel", reinterpret_cast<MT_MFUNC>(&::sNetwork::getLogLevel), reinterpret_cast<MT_MFUNC>(&::sNetwork::setLogLevel), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mUnresponsiveLimit", &mUnresponsiveLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMuteListChange", &mMuteListChange, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCore", reinterpret_cast<MtObject* *>(&mpCore), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mContext", static_cast<MtObject*>(&mContext[0]), 34u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpSession", reinterpret_cast<MtObject* *>(&mpSession[0]), 34u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpRanking", reinterpret_cast<MtObject* *>(&mpRanking), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpStorage", reinterpret_cast<MtObject* *>(&mpStorage), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpVoiceChat", reinterpret_cast<MtObject* *>(&mpVoiceChat), 2u, 0u);
 }
 
 MtUI* sNetwork::createUI(MtProperty& prop) {
@@ -104,9 +113,56 @@ __attribute__((weak)) bool sNetwork::isServiceStart() const {
     return {};
 }
 
-__attribute__((weak)) s32 sNetwork::getServiceState(u32 user_index, s32 service) const {
-    DDON_STUB("sNetwork::getServiceState")
-    return {};
+s32 sNetwork::getServiceState(u32 user_index, s32 service) const {
+    s32 v5_3;
+    if (mpCore == nullptr) {
+        v5_3 = 7;
+    } else {
+        if (mpCore->isFatal()) {
+            v5_3 = 7;
+        } else {
+            s32 index;
+            if (service == 0) {
+                for (unsigned int i2_0 = 0;;) {
+                    if (mContext[i2_0].mUserIndex == user_index) {
+                        if (mContext[i2_0].mState != 0) {
+                            index = i2_0;
+                            break;
+                        }
+                    }
+                    if ((i2_0 + 1u) <= 3u) {
+                        i2_0 = i2_0 + 1u;
+                    } else {
+                        v5_3 = 0;
+                        return v5_3;
+                    }
+                }
+            } else {
+                for (unsigned int i0_0 = 0;;) {
+                    if (mContext[i0_0].mUserIndex == user_index) {
+                        if (mContext[i0_0].mService == service) {
+                            if (mContext[i0_0].mState != 0) {
+                                index = i0_0;
+                                break;
+                            }
+                        }
+                    }
+                    if ((i0_0 + 1u) <= 3u) {
+                        i0_0 = i0_0 + 1u;
+                    } else {
+                        v5_3 = 0;
+                        return v5_3;
+                    }
+                }
+            }
+            if (index <= -1) {
+                v5_3 = 0;
+            } else {
+                v5_3 = mContext[index].mState;
+            }
+        }
+    }
+    return v5_3;
 }
 
 __attribute__((weak)) void sNetwork::getServiceError(u32 user_index, MtNetError* err, s32 service) const {
@@ -123,9 +179,131 @@ void sNetwork::procError(const MtNetError* err) {
     }
 }
 
-__attribute__((weak)) void sNetwork::bootupContext(u32 user_index, s32 sign_in_level, s32 service, s32 option) {
-    DDON_STUB("sNetwork::bootupContext")
-    /* stub */
+void sNetwork::bootupContext(u32 user_index, s32 sign_in_level, s32 service, s32 option) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
+    unsigned int v3_3;
+    unsigned int v3_8;
+    if (service != 0) {
+        v3_3 = service;
+        v3_8 = option;
+    } else {
+        s32 v0_1 = mContext[0].mService;
+        s32 v0_0 = mContext[0].mOption;
+        unsigned int i0_4 = 1;
+        unsigned int v1_3;
+        for (;;) {
+            if (mContext[i0_4].mService != v0_1) {
+                v1_3 = 0;
+                break;
+            } else {
+                if (mContext[i0_4].mOption != v0_0) {
+                    v1_3 = 0;
+                    break;
+                } else {
+                    if ((i0_4 + 1u) <= 3u) {
+                        i0_4 += 1u;
+                    } else {
+                        v1_3 = v0_1;
+                        break;
+                    }
+                }
+            }
+        }
+        for (unsigned int i2_4 = 1;;) {
+            if (mContext[i2_4].mService != v0_1) {
+                v3_3 = v1_3;
+                v3_8 = 0;
+                break;
+            } else {
+                if (mContext[i2_4].mOption != v0_0) {
+                    v3_3 = v1_3;
+                    v3_8 = 0;
+                    break;
+                } else {
+                    if ((i2_4 + 1u) <= 3u) {
+                        i2_4 += 1u;
+                    } else {
+                        v3_3 = v1_3;
+                        v3_8 = v0_0;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    if (sign_in_level != 0) {
+        unsigned int i4_0 = 0;
+        unsigned int v5_0;
+        for (;;) {
+            if (mContext[i4_0].mState != 0) {
+                v5_0 = i4_0;
+                break;
+            } else {
+                if ((i4_0 + 1u) <= 3u) {
+                    i4_0 += 1u;
+                } else {
+                    v5_0 = i4_0 + 1u;
+                    break;
+                }
+            }
+        }
+        if (v5_0 == 4) {
+            mpCore->reset();
+        }
+    }
+    for (unsigned int i7_0 = 0; i7_0 <= 3u; i7_0 = i7_0 + 1u) {
+        if (mContext[i7_0].mState != 0) {
+            if (mContext[i7_0].mUserIndex == user_index) {
+                if (mContext[i7_0].mService == static_cast<int>(v3_3)) {
+                    if (mContext[i7_0].mOption == static_cast<int>(v3_8)) {
+                        mContext[i7_0].mReqLevel = sign_in_level;
+                        mContext[i7_0].bootup();
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                                return;
+                            }
+                        }
+                    } else {
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                                return;
+                            }
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+    }
+    for (unsigned int i10_0 = 0; i10_0 <= 3u; i10_0 = i10_0 + 1u) {
+        if (mContext[i10_0].mState == 0) {
+            mContext[i10_0].mUserIndex = user_index;
+            mContext[i10_0].mReqLevel = sign_in_level;
+            mContext[i10_0].mService = static_cast<s32>(v3_3);
+            mContext[i10_0].mOption = static_cast<s32>(v3_8);
+            mContext[i10_0].bootup();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                    return;
+                }
+            }
+            return;
+        }
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
 }
 
 __attribute__((weak)) void sNetwork::shutdownContext(u32 user_index, s32 service) {
@@ -148,14 +326,72 @@ __attribute__((weak)) MtNetContext* sNetwork::getContext(u32 user_index, s32 ser
     return nullptr;
 }
 
-__attribute__((weak)) s32 sNetwork::getSignInLevel(u32 user_index, s32 service) const {
-    DDON_STUB("sNetwork::getSignInLevel")
-    return {};
+s32 sNetwork::getSignInLevel(u32 user_index, s32 service) const {
+    unsigned int v3_0;
+    if (service == 0) {
+        for (unsigned int i2_0 = 0;;) {
+            if (mContext[i2_0].mState != 0) {
+                if (mContext[i2_0].mUserIndex == user_index) {
+                    v3_0 = i2_0;
+                    break;
+                }
+            }
+            if ((i2_0 + 1u) > 3u) {
+                return 0;
+            } else {
+                i2_0 = i2_0 + 1u;
+            }
+        }
+    } else {
+        for (unsigned int i0_0 = 0;;) {
+            if (mContext[i0_0].mState != 0) {
+                if (mContext[i0_0].mUserIndex == user_index) {
+                    if (mContext[i0_0].mService == service) {
+                        v3_0 = i0_0;
+                        break;
+                    }
+                }
+            }
+            if ((i0_0 + 1u) > 3u) {
+                return 0;
+            } else {
+                i0_0 = i0_0 + 1u;
+            }
+        }
+    }
+    if (mContext[v3_0].mpContext != nullptr) {
+        return mContext[v3_0].mpContext->getSignInLevel();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool sNetwork::isSignInChange(u32 user_index, s32 service) const {
-    DDON_STUB("sNetwork::isSignInChange")
-    return {};
+bool sNetwork::isSignInChange(u32 user_index, s32 service) const {
+    unsigned int v6_2;
+    if (service == 0) {
+        for (unsigned int i3_0 = 0; i3_0 <= 3u; i3_0 = i3_0 + 1u) {
+            if (mContext[i3_0].mUserIndex == user_index) {
+                if (mContext[i3_0].mState != 0) {
+                    v6_2 = i3_0;
+                    return mContext[static_cast<int>(v6_2)].mIsSignInChange;
+                }
+            }
+        }
+        v6_2 = 0xFFFFFFFF;
+    } else {
+        for (unsigned int i0_0 = 0; i0_0 <= 3u; i0_0 = i0_0 + 1u) {
+            if (mContext[i0_0].mUserIndex == user_index) {
+                if (mContext[i0_0].mService == service) {
+                    if (mContext[i0_0].mState != 0) {
+                        v6_2 = i0_0;
+                        return mContext[static_cast<int>(v6_2)].mIsSignInChange;
+                    }
+                }
+            }
+        }
+        v6_2 = 0xFFFFFFFF;
+    }
+    return mContext[static_cast<int>(v6_2)].mIsSignInChange;
 }
 
 void sNetwork::bootupSession() {
@@ -339,9 +575,8 @@ __attribute__((weak)) void sNetwork::onServiceStateChange(u32 user_index, s32 st
 __attribute__((weak)) void sNetwork::handleErrorMessage(const MtNetError& err) {
 }
 
-__attribute__((weak)) s32 sNetwork::getLogLevel() const {
-    DDON_STUB("sNetwork::getLogLevel")
-    return {};
+s32 sNetwork::getLogLevel() const {
+    return MtNetLog::mInstance.getLevel();
 }
 
 void sNetwork::setLogLevel(s32 level) {

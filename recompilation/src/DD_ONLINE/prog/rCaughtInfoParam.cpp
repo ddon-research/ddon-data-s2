@@ -44,9 +44,11 @@ cCaughtInfoParam::cCaughtInfoParam() {
     mConstOffsetAngle.pad_ = 0.0f;
 }
 
-__attribute__((weak)) void cCaughtInfoParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCaughtInfoParam::createProperty")
-    /* stub */
+void cCaughtInfoParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mCatchType", &mCatchType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCaughtActionTblNo", &mCaughtActionTblNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConstOffsetPos", &mConstOffsetPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConstOffsetAngle", &mConstOffsetAngle, 0u, 0u);
 }
 
 inline cCaughtInfoParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -85,9 +87,8 @@ u32 rCaughtInfoParam::getDataVersion() const {
     return 15;
 }
 
-__attribute__((weak)) void rCaughtInfoParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("rCaughtInfoParam::createProperty")
-    /* stub */
+void rCaughtInfoParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpData", static_cast<MtObject*>(mpData), 32u, mDataNum);
 }
 
 inline rCaughtInfoParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

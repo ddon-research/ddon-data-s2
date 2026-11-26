@@ -9,6 +9,7 @@ class CDataClanHistoryElement;
 class CDataClanJoinRequest;
 class CDataClanScoutEntryInviteInfo;
 class CDataClanSearchResult;
+class CDataCommunityCharacterBaseInfo;
 class CDataLobbyMemberInfo;
 class CDataPartyMemberMinimum;
 class CDataPawnHistory;
@@ -16,14 +17,21 @@ class MtAllocator;
 class MtDataWriter;
 class cAISvUserProcess;
 class cAIUserProcessContainer;
+class cGUIUtility;
 class cMenuLostPawnRevive;
 class cMenuSubMenu;
 namespace nCaplink { class ContextListener; }
 namespace nUserSession { class CPacket_S2C_ADD_BLACK_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_MAIL_SEND_NTC; }
 namespace nUserSession { class CPacket_S2C_SEND_TELL_MSG_RES; }
+namespace nUserSession { class CPacket_S2C_SYSTEM_MAIL_SEND_NTC; }
+class rItemList;
 class sAI;
 class sBrowser;
 class sMain;
+class sResource;
+class sSavedataExt;
+class sSceneExt;
 class uGUIBase;
 class uGUINewspaper;
 
@@ -49,20 +57,28 @@ class MtString
     friend class CDataClanJoinRequest;
     friend class CDataClanScoutEntryInviteInfo;
     friend class CDataClanSearchResult;
+    friend class CDataCommunityCharacterBaseInfo;
     friend class CDataLobbyMemberInfo;
     friend class CDataPartyMemberMinimum;
     friend class CDataPawnHistory;
     friend class cAISvUserProcess;
     friend class cAIUserProcessContainer;
+    friend class cGUIUtility;
     friend class cMenuLostPawnRevive;
     friend class cMenuSubMenu;
     friend class nCaplink::ContextListener;
     friend void nDDOIO::writeData(MtDataWriter& w, const MtString& data);
     friend class nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES;
+    friend class nUserSession::CPacket_S2C_MAIL_SEND_NTC;
     friend class nUserSession::CPacket_S2C_SEND_TELL_MSG_RES;
+    friend class nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC;
+    friend class rItemList;
     friend class sAI;
     friend class sBrowser;
     friend class sMain;
+    friend class sResource;
+    friend class sSavedataExt;
+    friend class sSceneExt;
     friend class uGUIBase;
     friend class uGUINewspaper;
 public:

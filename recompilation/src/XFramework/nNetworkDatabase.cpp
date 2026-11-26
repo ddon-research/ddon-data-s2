@@ -9,6 +9,7 @@
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "nNetworkMember.h"
 #include "nNetworkRoute.h"
@@ -43,9 +44,15 @@ MtUI* nNetwork::SessionDatabase::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nNetwork::SessionDatabase::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::SessionDatabase::createProperty")
-    /* stub */
+void nNetwork::SessionDatabase::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "SEARCH RESULT LIST", static_cast<MtObject*>(&mSearchResultListPtr), 4u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "MEMBER LIST", static_cast<MtObject*>(&mMemberList[0]), 33u, 16u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "ROUTE LIST", static_cast<MtObject*>(&mRouteList[0]), 33u, 16u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SESSION INFO", static_cast<MtObject*>(&mSessionInfoPtr), 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SESSION STATE", &mAttribute, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "BroadcastSendRate", &mSendBroadcast.mRate, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "BroadvastRecvRate", &mRecvBroadcast.mRate, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mSelfKey", &mSelfKey, 0u, 0u);
 }
 
 bool nNetwork::SessionDatabase::isValid(s32 member_index) const {

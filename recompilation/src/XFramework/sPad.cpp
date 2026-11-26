@@ -9,6 +9,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cSystem.h"
 #include "sApp.h"
@@ -72,9 +73,15 @@ void sPad::setRepeat(u32 no, u32 start_time, u32 next_time) {
     mPad[no].Repeat.Timer[3] = 0;
 }
 
-__attribute__((weak)) void sPad::createProperty(MtPropertyList& s) {
-    DDON_STUB("sPad::createProperty")
-    /* stub */
+void sPad::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mDecideButton", &mDecideButton, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCancelButton", &mCancelButton, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSysRepeadStDefault", &mSysRepeadStDefault, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSysRepeadNxDefault", &mSysRepeadNxDefault, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPad", static_cast<MtObject*>(&mPad[0]), 288u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPadSpec", static_cast<MtObject*>(&mPadSpec[0]), 288u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mActive", &mActive, 2u, 0u);
 }
 
 MtUI* sPad::createUI(MtProperty& prop) {
@@ -129,6 +136,10 @@ __attribute__((weak)) MtObject* sPad::MyDTI::newInstance() const {
 
 const MtDTI& sPad::Pad::getDTI() const {
     return sPad::Pad::DTI;
+}
+
+inline void sPad::Pad::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sPad::Pad::DTI)->memFree(p_addr);
 }
 
 sPad::Pad::~Pad() {

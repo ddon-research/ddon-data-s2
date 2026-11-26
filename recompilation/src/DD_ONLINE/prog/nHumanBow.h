@@ -18,6 +18,8 @@ class MtPropertyList;
 
 // Declarations
 namespace nHumanBow { class cBowActParam; }
+
+namespace nHumanBow { class cShootCtrlParam; }
 namespace nHumanBow { struct stNetData; }
 
 namespace nHumanBow {
@@ -297,6 +299,58 @@ namespace nHumanBow {
 }  // namespace nHumanBow
 
 namespace nHumanBow {
+    class cShootCtrlParam : public ::MtObject
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cShootCtrlParam();
+        virtual ~cShootCtrlParam() {}
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        const nHumanBow::cShootCtrlParam& operator=(const nHumanBow::cShootCtrlParam& r);
+    public:
+        f32 waitFrame;  // offset: 0x8
+        u32 chargeLv;  // offset: 0xc
+        s32 shlGroup;  // offset: 0x10
+        s32 shlNo;  // offset: 0x14
+        bool just;  // offset: 0x18
+        bool isFinish;  // offset: 0x19
+        f32 degX;  // offset: 0x1c
+        f32 degY;  // offset: 0x20
+        f32 degRndX;  // offset: 0x24
+        f32 degRndY;  // offset: 0x28
+        f32 shlWait;  // offset: 0x2c
+        f32 recoilPowX;  // offset: 0x30
+        f32 recoilPowY;  // offset: 0x34
+        f32 recoilPowRndX;  // offset: 0x38
+        f32 recoilPowRndY;  // offset: 0x3c
+        f32 recoilFrameX;  // offset: 0x40
+        f32 recoilFrameY;  // offset: 0x44
+        static MyDTI DTI;
+    };
+}  // namespace nHumanBow
+
+namespace nHumanBow {
     struct stNetData
     {
     public:
@@ -361,4 +415,28 @@ namespace nHumanBow {
 
 inline void* nHumanBow::cBowActParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void* nHumanBow::cShootCtrlParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nHumanBow::cShootCtrlParam::cShootCtrlParam() {
+    this->waitFrame = 0.0f;
+    this->chargeLv = 0;
+    this->shlGroup = -1;
+    this->shlNo = -1;
+    this->just = false;
+    this->isFinish = false;
+    this->recoilFrameY = 0.0f;
+    this->recoilPowRndY = 0.0f;
+    this->recoilFrameX = 0.0f;
+    this->recoilPowY = 0.0f;
+    this->recoilPowRndX = 0.0f;
+    this->shlWait = 0.0f;
+    this->recoilPowX = 0.0f;
+    this->degRndX = 0.0f;
+    this->degRndY = 0.0f;
+    this->degX = 0.0f;
+    this->degY = 0.0f;
 }

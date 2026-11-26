@@ -14,7 +14,28 @@ class MtDTI;
 class MtVector3;
 
 // Declarations
+namespace nShlBase { class cShlFuwaMove; }
 namespace nShlBase { class cShlStickContextInfo; }
+
+namespace nShlBase {
+    enum LIMIT_FOLLOW
+    {
+        LIMIT_FOLLOW_NONE = -1,
+        LIMIT_FOLLOW_JOB08_CS01 = 0,
+        LIMIT_FOLLOW_JOB08_CS01_SUB = 1,
+        LIMIT_FOLLOW_JOB08_CS02 = 2,
+        LIMIT_FOLLOW_JOB08_CS01_CORE = 3,
+        LIMIT_FOLLOW_JOB08_CS09 = 4,
+        LIMIT_FOLLOW_JOB08_CS02_SUB = 5,
+        LIMIT_FOLLOW_JOB08_CS09_SUB = 6,
+        LIMIT_FOLLOW_JOB10_CS_SUPPORT_HEAL = 7,
+        LIMIT_FOLLOW_JOB10_CS_SUPPORT_HEAL_CORE = 8,
+        LIMIT_FOLLOW_JOB10_CS_SUPPORT_HEAL_UNDEAD = 9,
+        LIMIT_FOLLOW_JOB10_CS_SUPPORT_CONDITION = 10,
+        LIMIT_FOLLOW_JOB10_CS_SUPPORT_CONDITION_BOOST = 11,
+        LIMIT_FOLLOW_NUM = 12,
+    };
+}  // namespace nShlBase
 
 namespace nShlBase {
     enum LIMIT_ID
@@ -190,9 +211,35 @@ namespace nShlBase {
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
+using f32 = float;
 using size_t = _Sizet;
 using u32 = unsigned int;
 using u8 = unsigned char;
+
+namespace nShlBase {
+    class cShlFuwaMove
+    {
+    public:
+        cShlFuwaMove();
+        virtual ~cShlFuwaMove();
+        void init(const MtVector3& period, const MtVector3& scale, const MtVector3& random);
+        void update(f32 deltaTime);
+        const MtVector3& getPos() const;
+        const MtVector3& getDisplace() const;
+        void applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset);
+    private:
+        f32 updateFuwa(f32& timer, f32& period, f32& scale, f32 initPeriod, f32 initScale, f32 initRandom, f32 deltaTime);
+    private:
+        MtVector3 mPos;  // offset: 0x10
+        MtVector3 mDisplace;  // offset: 0x20
+        MtVector3 mTimer;  // offset: 0x30
+        MtVector3 mPeriod;  // offset: 0x40
+        MtVector3 mScale;  // offset: 0x50
+        MtVector3 mInitPeriod;  // offset: 0x60
+        MtVector3 mInitScale;  // offset: 0x70
+        MtVector3 mInitRandom;  // offset: 0x80
+    };
+}  // namespace nShlBase
 
 namespace nShlBase {
     class cShlStickContextInfo : public ::MtObject

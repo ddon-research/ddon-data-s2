@@ -66,9 +66,11 @@ __attribute__((weak)) void uLargeEnemyCamera::move() {
     /* stub */
 }
 
-__attribute__((weak)) void uLargeEnemyCamera::createProperty(MtPropertyList& s) {
-    DDON_STUB("uLargeEnemyCamera::createProperty")
-    /* stub */
+void uLargeEnemyCamera::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsLargeCamera", &mIsLargeCamera, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartDistance", &mStartDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEndDistance", &mEndDistance, 0u, 0u);
 }
 
 inline uLargeEnemyCamera::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

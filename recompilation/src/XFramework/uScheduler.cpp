@@ -99,9 +99,21 @@ MtUI* uScheduler::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uScheduler::createProperty(MtPropertyList& s) {
-    DDON_STUB("uScheduler::createProperty")
-    /* stub */
+void uScheduler::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpScheduler", "resource", reinterpret_cast<MT_MFUNC>(&::uScheduler::getData), reinterpret_cast<MT_MFUNC>(&::uScheduler::setData), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Frame", reinterpret_cast<MT_MFUNC>(&::uScheduler::getFrame), reinterpret_cast<MT_MFUNC>(&::uScheduler::setFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "FrameF", reinterpret_cast<MT_MFUNC>(&::uScheduler::getFrameF), reinterpret_cast<MT_MFUNC>(&::uScheduler::setFrameF), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mSpeed", &mSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPause", &mPause, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLoop", &mLoop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFloorFrame", &mFloorFrame, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "isPauseToFullStop", reinterpret_cast<MT_MFUNC>(&::uScheduler::isPauseToFullStop), reinterpret_cast<MT_MFUNC>(&::uScheduler::setPauseToFullStop), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "isPauseToFullStopMoved", reinterpret_cast<MT_MFUNC>(&::uScheduler::isPauseToFullStopMoved), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMarkerNo", reinterpret_cast<MT_MFUNC>(&::uScheduler::getMarker), reinterpret_cast<MT_MFUNC>(&::uScheduler::setMarker), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mMarkerFrame", reinterpret_cast<MT_MFUNC>(&::uScheduler::getMarkerFrame), reinterpret_cast<MT_MFUNC>(&::uScheduler::setMarkerFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mMarkerAdjust", &mMarkerAdjust, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpUnitList", reinterpret_cast<MT_MFUNC>(&::uScheduler::getUnit), reinterpret_cast<MT_MFUNC>(&::uScheduler::setUnit), 177u, reinterpret_cast<MT_MFUNC>(&::uScheduler::getUnitNum), reinterpret_cast<MT_MFUNC>(&::uScheduler::setUnitNum));
 }
 
 static auto ddon_emit_0x01b63bc0 __attribute__((used)) = &uScheduler::setFrame;
@@ -267,8 +279,7 @@ inline uScheduler::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 uScheduler::MyDTI uScheduler::DTI("uScheduler", &::cUnit::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uScheduler::MyDTI::newInstance() const {
-    DDON_STUB("uScheduler::MyDTI::newInstance")
-    return nullptr;
+MtObject* uScheduler::MyDTI::newInstance() const {
+    return new (16u) uScheduler;
 }
 

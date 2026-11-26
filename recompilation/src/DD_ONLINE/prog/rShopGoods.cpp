@@ -33,9 +33,21 @@ inline void cShopGoods::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cShopGoods::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cShopGoods::createProperty(MtPropertyList& s) {
-    DDON_STUB("cShopGoods::createProperty")
-    /* stub */
+void cShopGoods::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\345\225\206\345\223\201\343\202\253\343\203\206\343\202\264\343\203\252", &mCategory, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\225\206\345\223\201ID", &mID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\344\276\241\346\240\274", &mPrice, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\235\343\202\244\343\203\263\343\203\210\347\250\256\345\210\245", &mGoldType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\350\262\251\345\243\262\347\250\256\345\210\245", &mSaleType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\277\205\350\246\201\345\245\275\346\204\237\345\272\246", &mRequiedFavorite, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\350\262\251\345\243\262\351\226\213\345\247\213\346\227\245", static_cast<MtObject*>(&mStartDate), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\350\262\251\345\243\262\347\265\202\344\272\206\346\227\245", static_cast<MtObject*>(&mEndDate), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\234\250\345\272\253\346\225\260", &mStockNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\234\200\345\244\247\345\234\250\345\272\253\346\225\260", &mMaxStockNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\234\250\345\272\253\350\243\234\345\205\205\345\215\230\344\275\215", &mReplenishRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\234\250\345\272\253\350\243\234\345\205\205\346\235\241\344\273\266", &mReplenishType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\262\343\203\274\343\203\240\345\206\205\346\227\245\346\225\260", &mInGameDays, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\347\217\276\345\256\237\343\201\256\346\227\245\344\273\230", static_cast<MtObject*>(&mRealDate), 0u, 0u);
 }
 
 inline cShopGoods::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -58,9 +70,10 @@ inline void cShopGoods::rDate::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cShopGoods::rDate::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cShopGoods::rDate::createProperty(MtPropertyList& s) {
-    DDON_STUB("cShopGoods::rDate::createProperty")
-    /* stub */
+void cShopGoods::rDate::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\345\271\264", &mYear, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\234\210", &mMonth, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\227\245", &mDay, 0u, 0u);
 }
 
 bool cShopGoods::rDate::load(MtDataReader& in) {
@@ -127,7 +140,7 @@ inline rShopGoods::rShopGoods() {
     setAttribute(16u);
 }
 
-__attribute__((weak)) const MtDTI& rShopGoods::getDataDTI() {
+const MtDTI& rShopGoods::getDataDTI() {
     return cShopGoods::DTI;
 }
 
@@ -169,162 +182,27 @@ __attribute__((weak)) bool rShopGoods::save(MtStream& out) {
 }
 
 bool rShopGoods::loadData(MtDataReader& in, cShopGoods* pData) {
-    unsigned int v1_0;
-    unsigned long v2_1;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
-        v1_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-    } else {
-        if (in.refill()) {
-            v1_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-        } else {
-            v2_1 = 0;
-            goto region_6e6bb6;
-        }
-    }
-    unsigned long t0;
-    t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
-    unsigned char t1;
-    t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0 + v1_0) + 0);
-    in.mSeekPt = v1_0 + 1u;
-    v2_1 = static_cast<unsigned long>(t1) | (t0 & 0xFFFFFFFFFFFFFF00ul);
-    region_6e6bb6:;
-    pData->mCategory = static_cast<unsigned char>(v2_1);
-    pData->mID = in.readU32();
-    pData->mPrice = in.readU64();
-    unsigned int v4_0;
-    unsigned long v5_1;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
-        v4_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-    } else {
-        if (in.refill()) {
-            v4_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-        } else {
-            v5_1 = 0;
-            goto region_6e6bfd;
-        }
-    }
-    unsigned long t2;
-    t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
-    unsigned char t3;
-    t3 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2 + v4_0) + 0);
-    in.mSeekPt = v4_0 + 1u;
-    v5_1 = static_cast<unsigned long>(t3) | (t2 & 0xFFFFFFFFFFFFFF00ul);
-    region_6e6bfd:;
-    pData->mGoldType = static_cast<unsigned char>(v5_1);
-    unsigned int v7_0;
-    unsigned long v8_1;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
-        v7_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-    } else {
-        if (in.refill()) {
-            v7_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-        } else {
-            v8_1 = 0;
-            goto region_6e6c2a;
-        }
-    }
-    unsigned long t4;
-    t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
-    unsigned char t5;
-    t5 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t4 + v7_0) + 0);
-    in.mSeekPt = v7_0 + 1u;
-    v8_1 = static_cast<unsigned long>(t5) | (t4 & 0xFFFFFFFFFFFFFF00ul);
-    region_6e6c2a:;
-    pData->mSaleType = static_cast<unsigned char>(v8_1);
-    pData->mRequiedFavorite = in.readU16();
-    pData->mStartDate.mYear = in.readU16();
-    pData->mStartDate.mMonth = in.readU8();
-    pData->mStartDate.mDay = in.readU8();
-    pData->mEndDate.mYear = in.readU16();
-    pData->mEndDate.mMonth = in.readU8();
-    pData->mEndDate.mDay = in.readU8();
-    unsigned int v10_0;
-    unsigned long v11_1;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
-        v10_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-    } else {
-        if (in.refill()) {
-            v10_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-        } else {
-            v11_1 = 0;
-            goto region_6e6d35;
-        }
-    }
-    unsigned long t6;
-    t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
-    unsigned char t7;
-    t7 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t6 + v10_0) + 0);
-    in.mSeekPt = v10_0 + 1u;
-    v11_1 = static_cast<unsigned long>(t7) | (t6 & 0xFFFFFFFFFFFFFF00ul);
-    region_6e6d35:;
-    pData->mStockNum = static_cast<unsigned char>(v11_1);
-    unsigned int v13_0;
-    unsigned long v14_1;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
-        v13_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-    } else {
-        if (in.refill()) {
-            v13_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-        } else {
-            v14_1 = 0;
-            goto region_6e6d62;
-        }
-    }
-    unsigned long t8;
-    t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
-    unsigned char t9;
-    t9 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t8 + v13_0) + 0);
-    in.mSeekPt = v13_0 + 1u;
-    v14_1 = static_cast<unsigned long>(t9) | (t8 & 0xFFFFFFFFFFFFFF00ul);
-    region_6e6d62:;
-    pData->mMaxStockNum = static_cast<unsigned char>(v14_1);
-    unsigned int v16_0;
-    unsigned long v17_1;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
-        v16_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-    } else {
-        if (in.refill()) {
-            v16_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-        } else {
-            v17_1 = 0;
-            goto region_6e6d8f;
-        }
-    }
-    unsigned long t10;
-    t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
-    unsigned char t11;
-    t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10 + v16_0) + 0);
-    in.mSeekPt = v16_0 + 1u;
-    v17_1 = static_cast<unsigned long>(t11) | (t10 & 0xFFFFFFFFFFFFFF00ul);
-    region_6e6d8f:;
-    pData->mReplenishRate = static_cast<unsigned char>(v17_1);
-    unsigned int v19_0;
-    unsigned long v20_1;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 28))) {
-        v19_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-    } else {
-        if (in.refill()) {
-            v19_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&in) + 24);
-        } else {
-            v20_1 = 0;
-            pData->mReplenishType = static_cast<unsigned char>(v20_1);
-            pData->mInGameDays = in.readU16();
-            pData->mRealDate.mYear = in.readU16();
-            pData->mRealDate.mMonth = in.readU8();
-            pData->mRealDate.mDay = in.readU8();
-            return true;
-        }
-    }
-    unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&in) + 16);
-    unsigned char t13 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t12 + v19_0) + 0);
-    in.mSeekPt = v19_0 + 1u;
-    v20_1 = static_cast<unsigned long>(t13) | (t12 & 0xFFFFFFFFFFFFFF00ul);
-    pData->mReplenishType = static_cast<unsigned char>(v20_1);
-    pData->mInGameDays = in.readU16();
-    pData->mRealDate.mYear = in.readU16();
-    pData->mRealDate.mMonth = in.readU8();
-    pData->mRealDate.mDay = in.readU8();
-    return true;
+        nDDOIO::readData(in, pData->mCategory);
+        nDDOIO::readData(in, pData->mID);
+        nDDOIO::readData(in, pData->mPrice);
+        nDDOIO::readData(in, pData->mGoldType);
+        nDDOIO::readData(in, pData->mSaleType);
+        nDDOIO::readData(in, pData->mRequiedFavorite);
+        nDDOIO::readData(in, pData->mStartDate.mYear);
+        nDDOIO::readData(in, pData->mStartDate.mMonth);
+        nDDOIO::readData(in, pData->mStartDate.mDay);
+        nDDOIO::readData(in, pData->mEndDate.mYear);
+        nDDOIO::readData(in, pData->mEndDate.mMonth);
+        nDDOIO::readData(in, pData->mEndDate.mDay);
+        nDDOIO::readData(in, pData->mStockNum);
+        nDDOIO::readData(in, pData->mMaxStockNum);
+        nDDOIO::readData(in, pData->mReplenishRate);
+        nDDOIO::readData(in, pData->mReplenishType);
+        nDDOIO::readData(in, pData->mInGameDays);
+        nDDOIO::readData(in, pData->mRealDate.mYear);
+        nDDOIO::readData(in, pData->mRealDate.mMonth);
+        nDDOIO::readData(in, pData->mRealDate.mDay);
+        return true;
 }
 
 __attribute__((weak)) bool rShopGoods::saveData(MtDataWriter& out, cShopGoods* pData) {

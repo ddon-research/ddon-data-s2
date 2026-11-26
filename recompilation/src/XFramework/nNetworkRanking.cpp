@@ -10,6 +10,7 @@
 #include "../MT/MtNetObject.h"
 #include "../MT/MtNetRanking.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cStateMachine.h"
 #include "cStateMachineBase.h"
@@ -54,9 +55,11 @@ MtUI* nNetwork::nRanking::Object::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nNetwork::nRanking::Object::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::nRanking::Object::createProperty")
-    /* stub */
+void nNetwork::nRanking::Object::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpDriver", reinterpret_cast<MtObject* *>(&mpDriver), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "init", static_cast<MT_MFUNC>(&::nNetwork::nRanking::Object::initForProperty), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "kill", static_cast<MT_MFUNC>(&::nNetwork::nRanking::Object::kill), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mState", &mState, 1u, 0u);
 }
 
 __attribute__((weak)) void nNetwork::nRanking::Object::initForProperty() {

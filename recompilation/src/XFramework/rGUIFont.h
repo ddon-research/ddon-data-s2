@@ -20,6 +20,7 @@ class MtUI;
 namespace nDraw { class Texture; }
 class rTexture;
 class sGUI;
+class sGUIExt;
 
 // Declarations
 class rGUIFont;
@@ -35,6 +36,7 @@ using u32 = unsigned int;
 class rGUIFont : public cResource
 {
     friend class sGUI;
+    friend class sGUIExt;
 public:
     enum TEXTURE_SIZE
     {

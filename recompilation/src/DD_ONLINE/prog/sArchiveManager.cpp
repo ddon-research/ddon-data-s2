@@ -482,9 +482,17 @@ void sArchiveManager::finalPack() {
     }
 }
 
-__attribute__((weak)) bool sArchiveManager::isPackOK() {
-    DDON_STUB("sArchiveManager::isPackOK")
-    return {};
+bool sArchiveManager::isPackOK() {
+    u32 pcnt = 0;
+    do {
+        if (mprPack[pcnt] != nullptr) {
+            if ((mprPack[pcnt]->::cResource::mState & 17u) != 1) {
+                return false;
+            }
+        }
+        pcnt += 1u;
+    } while (pcnt <= 63u);
+    return true;
 }
 
 inline sArchiveManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

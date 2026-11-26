@@ -56,9 +56,70 @@ __attribute__((weak)) void cStaminaCtrl::update(uHuman& owner) {
     /* stub */
 }
 
-__attribute__((weak)) void cStaminaCtrl::requestExternalUpdate(f32 stamina, nStamina::VALUE_TYPE vType, nStamina::UPDATE_TYPE uType, nStamina::CONTINUATION_TYPE cType, u32 staminaType, cStaminaCtrl::OVERRIDE_PRIO prio) {
-    DDON_STUB("cStaminaCtrl::requestExternalUpdate")
-    /* stub */
+void cStaminaCtrl::requestExternalUpdate(f32 stamina, nStamina::VALUE_TYPE vType, nStamina::UPDATE_TYPE uType, nStamina::CONTINUATION_TYPE cType, u32 staminaType, cStaminaCtrl::OVERRIDE_PRIO prio) {
+    u32 i;
+    nStamina::CONTINUATION_TYPE v0_1;
+    u32 v0_5;
+    f32 v0_8;
+    if (mpOwner != nullptr) {
+        if (mpOwner->isMaster()) {
+            if ((mpOwner->mUnitId & 1024u) == 0) {
+                if (mFocusIndex > 15u) {
+                    i = 0;
+                    v0_1 = cType;
+                    v0_5 = staminaType;
+                    v0_8 = stamina;
+                } else {
+                    mRequestFluctuationList.elems[mFocusIndex].mIsRequested = true;
+                    mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mProcParam.mStamina = stamina;
+                    mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mProcParam.mVType = vType;
+                    mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mProcParam.mUType = uType;
+                    mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mProcParam.mCType = cType;
+                    mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mProcParam.mStaminaType = staminaType;
+                    mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mPriority = prio;
+                    mFocusIndex = mFocusIndex + 1u;
+                    return;
+                }
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
+    } else {
+        if (mFocusIndex > 15u) {
+            i = 0;
+            v0_1 = cType;
+            v0_5 = staminaType;
+            v0_8 = stamina;
+        } else {
+            mRequestFluctuationList.elems[mFocusIndex].mIsRequested = true;
+            mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mProcParam.mStamina = stamina;
+            mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mProcParam.mVType = vType;
+            mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mProcParam.mUType = uType;
+            mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mProcParam.mCType = cType;
+            mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mProcParam.mStaminaType = staminaType;
+            mRequestFluctuationList.elems[(mFocusIndex <= 15u) ? mFocusIndex : 0u].mPriority = prio;
+            mFocusIndex = mFocusIndex + 1u;
+            return;
+        }
+    }
+    for (;;) {
+        if (static_cast<unsigned int>(prio) >= static_cast<unsigned int>(mRequestFluctuationList.elems[i].mPriority)) {
+            mRequestFluctuationList.elems[i].mIsRequested = true;
+            mRequestFluctuationList.elems[i].mProcParam.mStamina = v0_8;
+            mRequestFluctuationList.elems[i].mProcParam.mVType = vType;
+            mRequestFluctuationList.elems[i].mProcParam.mUType = uType;
+            mRequestFluctuationList.elems[i].mProcParam.mCType = v0_1;
+            mRequestFluctuationList.elems[i].mProcParam.mStaminaType = v0_5;
+            mRequestFluctuationList.elems[i].mPriority = prio;
+        }
+        if (i != 15) {
+            i = i + 1u;
+        } else {
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) f32 cStaminaCtrl::calcStaminaTemporarily(uHuman& owner, f32 calcStamina, nStamina::VALUE_TYPE vType, nStamina::UPDATE_TYPE uType, nStamina::CONTINUATION_TYPE cType, u32 staminaType) {

@@ -5,6 +5,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
@@ -43,9 +44,11 @@ __attribute__((noinline)) uGUITelop::~uGUITelop() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUITelop::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGUITelop::createProperty")
-    /* stub */
+void uGUITelop::createProperty(MtPropertyList& s) {
+    this->uGUI::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "MessageResource", "resource", reinterpret_cast<MT_MFUNC>(&::uGUITelop::getMessageResource), reinterpret_cast<MT_MFUNC>(&::uGUITelop::setMessageResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "MessageIndex", reinterpret_cast<MT_MFUNC>(&::uGUITelop::getMessageIndex), reinterpret_cast<MT_MFUNC>(&::uGUITelop::setMessageIndex), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mCntSkip", &mCntSkip, 0u, 0u);
 }
 
 bool uGUITelop::loadResource() {

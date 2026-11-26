@@ -62,9 +62,16 @@ __attribute__((weak)) void sCamera::draw(cDraw* pdraw, nDraw::Scene* pscene, u32
     /* stub */
 }
 
-__attribute__((weak)) void sCamera::createProperty(MtPropertyList& s) {
-    DDON_STUB("sCamera::createProperty")
-    /* stub */
+void sCamera::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mViewport", static_cast<MtObject*>(&mViewport[0]), 32u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBGColor", &mBGColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlankColor", &mBlankColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVirtualRect", &mVirtualRect, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPause", &mPause, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInstancingDissolveStartDistance", &mInstancingDissolveStartDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInstancingDissolveEndDistance", &mInstancingDissolveEndDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInstancingDissolveAlpha", &mInstancingDissolveAlpha, 0u, 0u);
 }
 
 MtUI* sCamera::createUI(MtProperty& prop) {
@@ -184,9 +191,16 @@ __attribute__((weak)) void sCamera::Viewport::updateRegion() {
     /* stub */
 }
 
-__attribute__((weak)) void sCamera::Viewport::createProperty(MtPropertyList& s) {
-    DDON_STUB("sCamera::Viewport::createProperty")
-    /* stub */
+void sCamera::Viewport::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mNo", &mNo, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVisible", &mVisible, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDisplay", &mDisplay, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMode", &mMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRegion", &mRegion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCamera", reinterpret_cast<MtObject* *>(&mpCamera), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpSceneTexture", "resource", static_cast<void*>(&mpSceneTexture), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTestCamera", reinterpret_cast<MtObject* *>(&mpTestCamera), 16u, 0u);
 }
 
 __attribute__((weak)) void sCamera::Viewport::updateFrustum() {

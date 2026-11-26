@@ -1372,6 +1372,10 @@ inline void* cQuestTask::cLeaderQuestProgress::operator new(size_t sz, void* p_a
     return p_addr;
 }
 
+inline u32 cQuestTask::cLeaderQuestProgress::getCharacterId() const {
+    return this->mCharacterId;
+}
+
 inline u32 cQuestTask::cLeaderQuestProgress::getProcessNo() const {
     return this->mProcessNo;
 }

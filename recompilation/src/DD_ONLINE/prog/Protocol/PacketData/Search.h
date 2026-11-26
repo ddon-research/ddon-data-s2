@@ -212,6 +212,14 @@ inline void* CDataPawnSearchParameter::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline CDataPawnSearchParameter::CDataPawnSearchParameter() {
+    this->m_ucCraftRankMin = 0;
+    this->m_ucCraftRankMax = 0;
+    this->m_ucSex = 0;
+    this->m_bIsFriend = false;
+    this->m_bIsClan = false;
+}
+
 inline void* CDataQuickMatchSearchParameter::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

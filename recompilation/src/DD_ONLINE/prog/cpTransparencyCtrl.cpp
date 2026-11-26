@@ -67,9 +67,12 @@ __attribute__((weak)) void cpTransparencyCtrl::setup() {
     /* stub */
 }
 
-__attribute__((weak)) void cpTransparencyCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpTransparencyCtrl::createProperty")
-    /* stub */
+void cpTransparencyCtrl::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsActive", &mIsActive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\210\235\346\234\237\345\200\244", &mStartTrp, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\234\200\347\265\202\345\200\244", &mEndTrp, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\244\211\345\214\226\351\200\237\345\272\246", &mSpeed, 0u, 0u);
 }
 
 __attribute__((weak)) void cpTransparencyCtrl::before() {

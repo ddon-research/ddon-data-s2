@@ -35,6 +35,7 @@ class cCorePointMsg;
 class cEquipData;
 class cItemParam;
 class cPlayerLoadManager;
+class cQuestSvRequestManager;
 namespace nActionManager { struct stActExParam; }
 namespace nCharacterData { struct stCharacterName; }
 namespace nCharacterData { struct stEquipData; }
@@ -42,6 +43,9 @@ namespace nNetMsgData { struct stNetPos; }
 namespace nObjCondition { struct stOcdActiveData; }
 namespace nObjCondition { struct stOcdActiveMsg; }
 class rCharacterEdit;
+class sContextManager;
+class sPlayerManager;
+class sQuestManagerExt;
 class uEnemy;
 
 // Declarations
@@ -73,6 +77,10 @@ using u8 = unsigned char;
 class cContextInstance : public cContext
 {
     friend class cContextInterface;
+    friend class cQuestSvRequestManager;
+    friend class sContextManager;
+    friend class sPlayerManager;
+    friend class sQuestManagerExt;
 public:
     enum
     {
@@ -792,12 +800,24 @@ inline void* cContextInstChar::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline u8 cContextInstChar::getActReqPrio() const {
+    return this->mActReqPrio;
+}
+
+inline u32 cContextInstChar::getActNo(u32 idx) const {
+    return this->mActNo[idx];
+}
+
 inline u32 cContextInstChar::getActFreeWork() const {
     return this->mActFreeWork;
 }
 
 inline f32 cContextInstChar::getMoveSpeed() const {
     return this->mMoveSpeed;
+}
+
+inline f32 cContextInstChar::getMoveAngle() const {
+    return this->mMoveAngle;
 }
 
 inline u16 cContextInstChar::getCommonWork() const {
@@ -808,28 +828,140 @@ inline u16 cContextInstChar::getCustomWork() const {
     return this->mCustomWork;
 }
 
+inline u32 cContextInstChar::getTargetUid() const {
+    return this->mTargetUid;
+}
+
+inline u32 cContextInstChar::getClimbEnemyUId() const {
+    return this->mClimbEnemyUId;
+}
+
 inline s32 cContextInstChar::getClimbEnemyJointNo() const {
     return this->mClimbEnemyJointNo;
+}
+
+inline u16 cContextInstChar::getClimbNodeIndex() const {
+    return this->mClimbEnemyNodeIndex;
 }
 
 inline u16 cContextInstChar::getClimbGeomIndex() const {
     return this->mClimbEnemyGeomIndex;
 }
 
+inline bool cContextInstChar::isInjured() const {
+    return this->mIsInjured;
+}
+
+inline bool cContextInstChar::isRescue() const {
+    return this->mIsRescue;
+}
+
+inline u16 cContextInstChar::getActAtkAdjustUniqueId() const {
+    return this->mActAtkAdjustUniqueId;
+}
+
+inline u32 cContextInstChar::getOcdActiveMsgNum() const {
+    return this->mOcdActiveMsgNum;
+}
+
+inline HP_DATATYPE cContextInstChar::getHpWhite() const {
+    return this->mHpWhite_pri;
+}
+
 inline u16 cContextInstChar::getUseRegionBit() const {
     return this->mUseRegionBit_pri;
+}
+
+inline bool cContextInstChar::isHpMax_calc() const {
+    return this->mIsHpMax_calc_pri;
 }
 
 inline f32 cContextInstChar::getShakeEndurance() const {
     return this->mShakeEndurance;
 }
 
+inline f32 cContextInstChar::getRageShrinkEndurance() const {
+    return this->mRageShrinkEndurance;
+}
+
 inline f32 cContextInstChar::getEnchantRate() const {
     return this->mEnchantRate;
 }
 
+inline f32 cContextInstChar::getAilmentDamage() const {
+    return this->mAilmentDamage;
+}
+
+inline u32 cContextInstChar::getStateLive() const {
+    return this->mStateLive;
+}
+
+inline bool cContextInstChar::isStateLiveChange() const {
+    return this->mIsStateLiveChange;
+}
+
 inline u32 cContextInstChar::getEnemyStatusGroupNum() const {
     return this->mEnemyStatusGroupNoNum;
+}
+
+inline u32 cContextInstChar::getEnemyStatusGroup(u32 idx) const {
+    return this->mEnemyStatusGroupNo[idx];
+}
+
+inline u32 cContextInstChar::getEnemyStatusSubGroup(u32 idx) const {
+    return this->mEnemyStatusSubGroupNo[idx];
+}
+
+inline u64 cContextInstChar::getEnemyBitCtrlCollision() const {
+    return this->mEnemyBitCtrlCollision;
+}
+
+inline u8 cContextInstChar::getEnemyCtrRegionSelectNo() const {
+    return this->mEnemyCtrlRegionSelectNo;
+}
+
+inline u64 cContextInstChar::getEnemyBitCtrParts() const {
+    return this->mEnemyBitCtrlParts;
+}
+
+inline u64 cContextInstChar::getEnemyWorkRate() const {
+    return this->mEnemyBitCtrlWorkRate;
+}
+
+inline u64 cContextInstChar::getEnemyScale() const {
+    return this->mEnemyBitCtrlScale;
+}
+
+inline u64 cContextInstChar::getEnemyBitCtrlMontage() const {
+    return this->mEnemyBitCtrlMontage;
+}
+
+inline u32 cContextInstChar::getEnemyBitCtrlSyncBit() const {
+    return this->mEnemyBitCtrlSyncBit;
+}
+
+inline bool cContextInstChar::isEnemyStatusChange() const {
+    return this->mIsEnemyStatusChange;
+}
+
+inline bool cContextInstChar::getEnemyWaitting() const {
+    return this->mIsEnemyWaitting;
+}
+
+inline bool cContextInstChar::isEnemyWaittingChange() const {
+    return this->mIsEnemyWaittingChange;
+}
+
+inline bool cContextInstChar::getEnemyStartWait() const {
+    return this->mIsEnemyStartWait;
+}
+
+inline bool cContextInstChar::isEnemyStartWaitChange() const {
+    return this->mIsEnemyStartWaitChange;
+}
+
+inline u32 cContextInstChar::getMontageFixNo() const {
+    return this->mMontageFixNo;
 }
 
 inline u32 cContextInstChar::getMontageRandom() const {
@@ -872,6 +1004,10 @@ inline void cContextInstHm::setIndex(u8 index) {
     this->mIndex = index;
 }
 
+inline u8 cContextInstHm::getOnlineStatus() const {
+    return this->mOnlineStatus;
+}
+
 inline void cContextInstHm::setOnlineStatus(u8 status) {
     this->mOnlineStatus = status;
 }
@@ -882,6 +1018,14 @@ inline f32 cContextInstHm::getLostTime() const {
 
 inline u32 cContextInstHm::getSex() const {
     return this->mSex;
+}
+
+inline rCharacterEdit* cContextInstHm::getCharacterEdit() const {
+    return this->mpCharacterEdit;
+}
+
+inline s32 cContextInstHm::getFloorGroupNo() const {
+    return this->mFloorGroupNo;
 }
 
 inline void cContextInstHm::setFloorGroupNo(const s32 no) {
@@ -900,16 +1044,32 @@ inline MT_CTSTR cContextInstHm::getClanNickName() const {
     return &this->mClanNickName[0];
 }
 
+inline u8 cContextInstHm::getHumanType() const {
+    return this->mHumanType;
+}
+
 inline void cContextInstHm::setHumanType(u8 type) {
     this->mHumanType = type;
+}
+
+inline u8 cContextInstHm::getPawnType() const {
+    return this->mPawnType;
 }
 
 inline void cContextInstHm::setPawnType(u8 type) {
     this->mPawnType = type;
 }
 
+inline u32 cContextInstHm::getCharId() const {
+    return this->mCharId;
+}
+
 inline void cContextInstHm::setCharId(u32 charId) {
     this->mCharId = charId;
+}
+
+inline u32 cContextInstHm::getPawnId() const {
+    return this->mPawnId;
 }
 
 inline void cContextInstHm::setPawnId(u32 pawnId) {
@@ -930,6 +1090,10 @@ inline s32 cContextInstHm::getEncountArea(u32 index) const {
 
 inline const cContextPlayerInfo& cContextInstHm::getContextPlayerInfoConst() const {
     return this->mPlayerInfo;
+}
+
+inline u8 cContextInstHm::getReviveStock() const {
+    return this->mReviveStock;
 }
 
 inline void cContextInstHm::setReviveStock(u8 num) {
@@ -960,6 +1124,30 @@ inline void cContextInstHm::setGroupNoFreeMarker(s32 sGroupNo, u32 idx) {
     this->mGroupNoFreeMarker[idx] = sGroupNo;
 }
 
+inline u32 cContextInstHm::getHmRandom() const {
+    return this->mHmRandom;
+}
+
+inline u8 cContextInstHm::getHmEmEditType() const {
+    return this->mHmEmEditType;
+}
+
+inline u32 cContextInstHm::getHmEmId() const {
+    return this->mHmEmId;
+}
+
+inline bool cContextInstHm::isReturnPrepare() const {
+    return this->mIsReturnPrepare;
+}
+
+inline bool cContextInstHm::isAreaChangePrepare() const {
+    return this->mIsAreaChangePrepare;
+}
+
+inline bool cContextInstHm::isReqSetLostAction() const {
+    return this->mReqSetLostAction;
+}
+
 inline s32 cContextInstHm::getOldGaugeContextType() const {
     return this->mOldGaugeContextType;
 }
@@ -968,8 +1156,32 @@ inline void cContextInstHm::setOldGaugeContextType(s32 type) {
     this->mOldGaugeContextType = type;
 }
 
+inline bool cContextInstHm::isSyncCustomSkillGroup() const {
+    return this->mIsSyncCustomSkillGroup;
+}
+
 inline f32 cContextInstHm::getElementGuardTime() const {
     return this->mElementGuardTime;
+}
+
+inline bool cContextInstHm::isAbility098() const {
+    return this->mIsAbility098;
+}
+
+inline bool cContextInstHm::isGutsDisable() const {
+    return this->mIsGutsDisable;
+}
+
+inline bool cContextInstHm::isAbility370() const {
+    return this->mIsAbility370;
+}
+
+inline f32 cContextInstHm::getElementCoverRate() const {
+    return this->mElementCoverRate;
+}
+
+inline nDDOGame::ELEMENT_TYPE cContextInstHm::getElementCoverType() const {
+    return this->mElementCoverType;
 }
 
 inline f32 cContextInstHm::getElementCoverDamageRate() const {
@@ -1051,6 +1263,10 @@ inline void cContextInstance::setUniqueId(u32 UniqueId) {
     this->mUniqueId = UniqueId;
 }
 
+inline bool cContextInstance::getMasterChangeFlag() const {
+    return this->mMasterChangeFlag;
+}
+
 inline s32 cContextInstance::getMasterIndex() const {
     return this->mMasterIndex;
 }
@@ -1065,6 +1281,14 @@ inline s32 cContextInstance::getMainEncountArea() const {
 
 inline void cContextInstance::setMainEncountArea(s32 encountArea) {
     this->mMainEncountArea = encountArea;
+}
+
+inline bool cContextInstance::getSetWaitFlag() const {
+    return this->mSetWaitFlag;
+}
+
+inline u8 cContextInstance::getCatchType() const {
+    return this->mCatchType;
 }
 
 inline void cContextInstance::setCatchType(u8 type) {

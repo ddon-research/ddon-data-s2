@@ -635,9 +635,14 @@ void uCharacterEdit::updatePartsAll() {
     mpModel->mpCharacterEdit->mUpdateAllReq = true;
 }
 
-__attribute__((weak)) s32 uCharacterEdit::getEditParameter(nCharacterEdit::EDIT_TYPE type, cEditParam* pParam) {
-    DDON_STUB("uCharacterEdit::getEditParameter")
-    return {};
+s32 uCharacterEdit::getEditParameter(nCharacterEdit::EDIT_TYPE type, cEditParam* pParam) {
+    MtProperty prop(getPropertyEditParameter(type, pParam));
+    if (prop.mType <= 12u) {
+        if (((5184ul >> static_cast<unsigned long>(prop.mType & 31u)) & 1ul) != 0) {
+            return prop.getS32();
+        }
+    }
+    return -10;
 }
 
 __attribute__((weak)) MtProperty uCharacterEdit::getPropertyEditParameter(nCharacterEdit::EDIT_TYPE type, cEditParam* pParam) {
@@ -1021,9 +1026,11 @@ u32 uCharacterEditBase::getStageListNo(u32 idx) {
     }
 }
 
-__attribute__((weak)) bool uCharacterEditBase::isStageChangeTime(u32 idx) const {
-    DDON_STUB("uCharacterEditBase::isStageChangeTime")
-    return {};
+bool uCharacterEditBase::isStageChangeTime(u32 idx) const {
+    if ((mStageList.mpArray[idx] != nullptr) && static_cast<rEditStageParam::Info*>(mStageList.mpArray[idx])->isChangeTime()) {
+        return true;
+    }
+    return false;
 }
 
 void uCharacterEditBase::setAction(u32 ActNo, bool init) {
@@ -1036,9 +1043,23 @@ void uCharacterEditBase::setAction(u32 ActNo, bool init) {
     mpModel->getActMgrPtr()->setAction(ActNo, false, init, 0u, 0u, 0u, 0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-__attribute__((weak)) void uCharacterEditBase::setFaceAnime(s32 idx, bool force) {
-    DDON_STUB("uCharacterEditBase::setFaceAnime")
-    /* stub */
+void uCharacterEditBase::setFaceAnime(s32 idx, bool force) {
+    if (mpModel == nullptr) {
+        return;
+    }
+    u32 t0 = mpModel->getMotionNo(1u);
+    bool t1 = mpModel->mMotion[1].isMotionEnd();
+    if (idx == static_cast<int>(t0)) {
+        if (!force) {
+            if (t1) {
+                mpModel->setMotionEx(1u, static_cast<u32>(idx), -1.0f, 0.0f, 1.0f, 4u);
+            }
+        } else {
+            mpModel->setMotionEx(1u, static_cast<u32>(idx), -1.0f, 0.0f, 1.0f, 4u);
+        }
+    } else {
+        mpModel->setMotionEx(1u, static_cast<u32>(idx), -1.0f, 0.0f, 1.0f, 4u);
+    }
 }
 
 bool uCharacterEditBase::isMale() {
@@ -1057,6 +1078,10 @@ inline uCharacterEditBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 uCharacterEditBase::MyDTI uCharacterEditBase::DTI("uCharacterEditBase", &::cUnit::DTI, 624ul, 0u, 1u);
 
+alignas(4) unsigned char uCharacterEditBase_ActListMale_bytes[24] __asm__("_ZN18uCharacterEditBase11ActListMaleE") = {0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00};
+
+alignas(4) unsigned char uCharacterEditBase_ActListFemale_bytes[24] __asm__("_ZN18uCharacterEditBase13ActListFemaleE") = {0x05, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00};
+
 MtObject* uCharacterEditBase::MyDTI::newInstance() const {
     return nullptr;
 }
@@ -1065,9 +1090,11 @@ const MtDTI& uCharacterEditCamera::getDTI() const {
     return uCharacterEditCamera::DTI;
 }
 
+inline void uCharacterEditCamera::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uCharacterEditCamera::DTI)->memFree(p_addr);
+}
+
 uCharacterEditCamera::~uCharacterEditCamera() {
-    DDON_STUB("uCharacterEditCamera::~uCharacterEditCamera")
-    /* stub */
 }
 
 inline uCharacterEditCamera::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1083,13 +1110,34 @@ const MtDTI& uCharacterEditCameraBase::getDTI() const {
     return uCharacterEditCameraBase::DTI;
 }
 
+inline void* uCharacterEditCameraBase::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uCharacterEditCameraBase::DTI)->memAlloc(sz, align, uCharacterEditCameraBase::DTI.getID());
+}
+
 inline void uCharacterEditCameraBase::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uCharacterEditCameraBase::DTI)->memFree(p_addr);
 }
 
 uCharacterEditCameraBase::uCharacterEditCameraBase() {
-    DDON_STUB("uCharacterEditCameraBase::uCharacterEditCameraBase")
-    /* stub */
+    mWaitFrame = 0;
+    mLength = 200.0f;
+    mRotateLS = MtVector3::Zero;
+    mRotateRS = MtVector3::Zero;
+    mCameraMode = CAMERA_MOVE_NONE;
+    mAngle = 0.0f;
+    mAngleAdd = 0.0f;
+    mpOldCameraParam = nullptr;
+    mpNowCameraParam = nullptr;
+    mpEditUnit = nullptr;
+    mpModel = nullptr;
+    mZoomSpeed = 15.0f;
+    mRotateSpeed = 3.8f;
+    mResetMaxSpeed = 0.16f;
+    mCameraRiviseSpeed = 1.0f;
+    mIsLSenableRotate = true;
+    mpCameraParam = nullptr;
+    mMode = MODE_DEFAULT;
+    mIsLock = false;
 }
 
 uCharacterEditCameraBase::~uCharacterEditCameraBase() {
@@ -1100,9 +1148,16 @@ uCharacterEditCameraBase::~uCharacterEditCameraBase() {
     mpCameraParam = nullptr;
 }
 
-__attribute__((weak)) void uCharacterEditCameraBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCharacterEditCameraBase::createProperty")
-    /* stub */
+void uCharacterEditCameraBase::createProperty(MtPropertyList& s) {
+    this->uFreeCamera::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCameraParam", "resource", static_cast<void*>(&mpCameraParam), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResetMaxSpeed", &mResetMaxSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRotateRS", &mRotateRS, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRotateLS", &mRotateLS, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLength", &mLength, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResetAngle", &mResetAngle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoomSpeed", &mZoomSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRotateSpeed", &mRotateSpeed, 0u, 0u);
 }
 
 MtUI* uCharacterEditCameraBase::createUI(MtProperty& prop) {
@@ -1114,9 +1169,30 @@ __attribute__((weak)) void uCharacterEditCameraBase::setup() {
     /* stub */
 }
 
-__attribute__((weak)) void uCharacterEditCameraBase::move() {
-    DDON_STUB("uCharacterEditCameraBase::move")
-    /* stub */
+void uCharacterEditCameraBase::move() {
+    this->uFreeCamera::move();
+    if (mWaitFrame > 0) {
+        mWaitFrame = mWaitFrame - 1;
+    } else {
+        updateCameraParam();
+        updateCameraData();
+        updateInterPos();
+        if (mIsLSenableRotate) {
+            if (mpModel != nullptr) {
+                if (mMode == MODE_DEFAULT) {
+                    MtVector3 frame56(mpModel->getAngle());
+                    mpModel->setAngle(frame56.y - mRotateLS.y);
+                    mIsLock = false;
+                } else {
+                    mIsLock = false;
+                }
+            } else {
+                mIsLock = false;
+            }
+        } else {
+            mIsLock = false;
+        }
+    }
 }
 
 void uCharacterEditCameraBase::setResetMode() {
@@ -1188,9 +1264,8 @@ inline uCharacterEditCameraBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 uCharacterEditCameraBase::MyDTI uCharacterEditCameraBase::DTI("uCharacterEditCameraBase", &::uFreeCamera::DTI, 768ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uCharacterEditCameraBase::MyDTI::newInstance() const {
-    DDON_STUB("uCharacterEditCameraBase::MyDTI::newInstance")
-    return nullptr;
+MtObject* uCharacterEditCameraBase::MyDTI::newInstance() const {
+    return new (16u) uCharacterEditCameraBase;
 }
 
 const MtDTI& uCharacterEditCameraBase::cLimit::getDTI() const {
@@ -1209,9 +1284,9 @@ __attribute__((weak)) void uCharacterEditCameraBase::cLimit::operator delete(voi
     uCharacterEditCameraBase::cLimit::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) void uCharacterEditCameraBase::cLimit::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCharacterEditCameraBase::cLimit::createProperty")
-    /* stub */
+void uCharacterEditCameraBase::cLimit::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "max", &max, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "min", &min, 0u, 0u);
 }
 
 bool uCharacterEditCameraBase::cLimit::load(MtDataReader& r) {

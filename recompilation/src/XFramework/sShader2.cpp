@@ -9,6 +9,7 @@
 #include "../MT/MtFile.h"
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -78,9 +79,19 @@ __attribute__((weak)) void sShader2::move() {
     /* stub */
 }
 
-__attribute__((weak)) void sShader2::createProperty(MtPropertyList& s) {
-    DDON_STUB("sShader2::createProperty")
-    /* stub */
+void sShader2::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "ClearShader", static_cast<MT_MFUNC>(&::sShader2::reloadShaders), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpShader", "resource", static_cast<void*>(&mpShader), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShaderNum", &mShaderNum, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCacheNum", &mCacheNum, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mDynamicShaderLoading", reinterpret_cast<MT_MFUNC>(&::sShader2::isDynamicShaderLoading), reinterpret_cast<MT_MFUNC>(&::sShader2::setDynamicShaderLoading), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mTraceHLSLCode", &mTraceHLSLCode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTracePreHLSLCode", &mTracePreHLSLCode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTracePreAssemblyCode", &mTracePreAssemblyCode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseReferenceShader", &mUseReferenceShader, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConflictSIDNum", &mConflictSIDNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDuplicatedShader", &mDuplicatedShader, 1u, 0u);
 }
 
 MtUI* sShader2::createUI(MtProperty& prop) {
@@ -105,13 +116,46 @@ MT_CTSTR sShader2::getReferenceShaderPrefix() {
 }
 
 __attribute__((weak)) SO_HANDLE sShader2::remapObjectHandle(SO_HANDLE handle) const {
-    DDON_STUB("sShader2::remapObjectHandle")
-    return {};
+    if (mObjectNum == 0) {
+        return 0;
+    }
+    u32 id = handle & 0xfffff000u;
+    if (mObjectNum <= 2) {
+        for (u32 i = 0; i < mObjectNum; ++i) {
+            if ((mObjectInfos[i].id << 12) == id) {
+                return id | i;
+            }
+        }
+        return 0;
+    }
+    u32 NowLeft = 0;
+    u32 NowRight = mObjectNum - 1;
+    bool loop = true;
+    while (loop) {
+        const u32 NowCenter = (NowLeft + NowRight) >> 1;
+        const u32 NowIndex = mpRemapObjectHandleSearchAccessTable[NowCenter];
+        const nDraw::OBJECT_INFO* pObjectInfo = &mObjectInfos[NowIndex];
+        const SO_HANDLE NowHandle = pObjectInfo->id << 12;
+        if (NowHandle == id) {
+            return id | NowIndex;
+        }
+        if (NowLeft >= NowRight) {
+            break;
+        }
+        if (NowHandle < id) {
+            NowLeft = NowCenter + 1;
+        } else {
+            if (NowCenter == 0) {
+                break;
+            }
+            NowRight = NowCenter - 1;
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) SO_HANDLE sShader2::getObjectHandle(u32 index) {
-    DDON_STUB("sShader2::getObjectHandle")
-    return {};
+SO_HANDLE sShader2::getObjectHandle(u32 index) {
+    return index | ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&mObjectInfos[index]) + 0)) * 4096u);
 }
 
 __attribute__((weak)) const nDraw::SHADER* sShader2::requestShader(SO_HANDLE technique, u32 tech_pass, const nDraw::SHADER_STATE* states, const SO_HANDLE* layouts, u32 encode_targets, SO_HANDLE dummy_technique) {
@@ -179,9 +223,61 @@ __attribute__((weak)) void sShader2::createShaderObjectKey(SO_HANDLE handle, con
     /* stub */
 }
 
-__attribute__((weak)) void sShader2::calcShaderObjectKey(SO_HANDLE handle, const nDraw::SHADER_STATE* states, u32& key_num) {
-    DDON_STUB("sShader2::calcShaderObjectKey")
-    /* stub */
+void sShader2::calcShaderObjectKey(SO_HANDLE handle, const nDraw::SHADER_STATE* states, u32& key_num) {
+    const nDraw::OBJECT_INFO* info = mObjectInfos;
+    unsigned int v1_0;
+    const u16* v1_3;
+    if ((info[handle & 4095u].function_num & 63u) == 0) {
+        v1_0 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&info[handle & 4095u]) + 0);
+        v1_3 = info[handle & 4095u].indices;
+    } else {
+        const u16* p0_3 = info[handle & 4095u].indices;
+        for (unsigned int i0_9 = 0;;) {
+            const u32 t0 = states[*p0_3].crc;
+            if (t0 > 4095u) {
+                if (((info[t0 & 4095u].id ^ info[*p0_3].id) & 0xFFFFFu) != 0) {
+                    key_num = (key_num) + 1u;
+                }
+            }
+            calcShaderObjectKey(t0, states, key_num);
+            if ((i0_9 + 1u) < info[handle & 4095u].function_num) {
+                p0_3 += 1;
+                i0_9 += 1u;
+            } else {
+                v1_0 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&info[handle & 4095u]) + 0);
+                v1_3 = &p0_3[1];
+                break;
+            }
+        }
+    }
+    if (v1_0 > 0x3FFFFFFu) {
+        unsigned int v2_0 = v1_0;
+        for (unsigned int i2_1 = 0;;) {
+            if (states[v1_3[i2_1]].crc != 0) {
+                if ((mpObjects[v1_3[i2_1]]->type & 63u) == 1) {
+                    key_num = (key_num) + 1u;
+                    if ((i2_1 + 1u) < info[handle & 4095u].object_num) {
+                        v2_0 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&info[handle & 4095u]) + 0);
+                        i2_1 = i2_1 + 1u;
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((i2_1 + 1u) < (v2_0 >> 26)) {
+                        i2_1 = i2_1 + 1u;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                if ((i2_1 + 1u) < (v2_0 >> 26)) {
+                    i2_1 = i2_1 + 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) u32 sShader2::createParam(nDraw::SHADER* pshader, nDraw::SHADER_CODE* pcode, nDraw::SHADER_PARAMINFO* pinfo, nDraw::SHADER_PARAM* params, nDraw::SHADER_TYPE shader_type) {

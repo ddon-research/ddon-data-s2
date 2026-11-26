@@ -46,9 +46,9 @@ inline void uGUICaplinkMenuBase::operator delete(void* p_addr) {
 __attribute__((noinline)) uGUICaplinkMenuBase::~uGUICaplinkMenuBase() {
 }
 
-__attribute__((weak)) void uGUICaplinkMenuBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGUICaplinkMenuBase::createProperty")
-    /* stub */
+void uGUICaplinkMenuBase::createProperty(MtPropertyList& s) {
+    this->uGUI::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mRnoSubMenu", &mRnoSubMenu, 0u, 0u);
 }
 
 void uGUICaplinkMenuBase::kill() {
@@ -357,11 +357,11 @@ bool uGUICaplinkMenuBase::isEndSubMenu() {
 u32 uGUICaplinkMenuBase::callbackCmd(MtObject* pCaller, MtObject* pVal) {
     if (pVal != nullptr) {
         const MtDTI& t0 = pVal->getDTI();
-        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uGUICaplinkMenuBase::cCmdVal::DTI) + 8);
+        MT_CTSTR v0_1 = uGUICaplinkMenuBase::cCmdVal::DTI.mName;
         for (const MtDTI* v0_0 = &t0;;) {
-            if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
-                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
                 } else {
                     break;
                 }

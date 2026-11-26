@@ -109,6 +109,11 @@ __attribute__((weak)) void cPawnQuestManager::callbackOrder(u32 errorCode) {
     /* stub */
 }
 
+cPawnQuestManager::cPawnQuestManager() : cQuestManagerBase("Pawn quest") {
+    mSwtichTalkType = -1;
+    mIsReqOrderQuest = false;
+}
+
 cPawnQuestManager::~cPawnQuestManager() {
     if (mPawnQuestInfoList.mLength != 0) {
         u32 v0_0 = mPawnQuestInfoList.mLength;
@@ -141,9 +146,8 @@ inline cPawnQuestManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t si
 
 cPawnQuestManager::MyDTI cPawnQuestManager::DTI("cPawnQuestManager", &::cQuestManagerBase::DTI, 88ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cPawnQuestManager::MyDTI::newInstance() const {
-    DDON_STUB("cPawnQuestManager::MyDTI::newInstance")
-    return nullptr;
+MtObject* cPawnQuestManager::MyDTI::newInstance() const {
+    return new (16u) cPawnQuestManager;
 }
 
 const MtDTI& cPawnQuestManager::cPawnQuestInfo::getDTI() const {

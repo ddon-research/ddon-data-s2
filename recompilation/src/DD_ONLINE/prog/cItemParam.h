@@ -15,9 +15,12 @@ class MtAllocator;
 class MtDTI;
 class MtPropertyList;
 class MtString;
+class cGUIUtility;
 namespace nCharacterData { struct stItemParam; }
+namespace nGUIItem { class cItem; }
 class sItemManager;
 class uGUIBase;
+class uGUIItemBase01;
 class uGUIPopDetail01;
 class uUIMockUp;
 
@@ -84,8 +87,11 @@ public:
 
 class cItemParam : public MtObject
 {
+    friend class cGUIUtility;
+    friend class nGUIItem::cItem;
     friend class sItemManager;
     friend class uGUIBase;
+    friend class uGUIItemBase01;
     friend class uGUIPopDetail01;
     friend class uUIMockUp;
 public:
@@ -200,4 +206,8 @@ inline void cItemParam::setItemNum(u32 ItemNum) {
 
 inline u8 cItemParam::getEquipCharType() const {
     return this->mEquipCharType;
+}
+
+inline const rItemList::rItemParam* cItemParam::getItemParamConst() const {
+    return this->mpItemResParam;
 }

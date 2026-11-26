@@ -62,9 +62,9 @@ MT_CTSTR rSoundSimpleCurve::getName() const {
     return "rSoundSimpleCurve";
 }
 
-__attribute__((weak)) void rSoundSimpleCurve::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundSimpleCurve::createProperty")
-    /* stub */
+void rSoundSimpleCurve::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mElementArray", static_cast<MtObject*>(&mElementArray), 0u, 0u);
+    this->cResource::createProperty(s);
 }
 
 MtUI* rSoundSimpleCurve::createUI(MtProperty& prop) {
@@ -125,9 +125,9 @@ inline void rSoundSimpleCurve::Element::operator delete(void* p_addr) {
 rSoundSimpleCurve::Element::~Element() {
 }
 
-__attribute__((weak)) void rSoundSimpleCurve::Element::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundSimpleCurve::Element::createProperty")
-    /* stub */
+void rSoundSimpleCurve::Element::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mX", &mX, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mY", &mY, 0u, 0u);
 }
 
 MtUI* rSoundSimpleCurve::Element::createUI(MtProperty& prop) {

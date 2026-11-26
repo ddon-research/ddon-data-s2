@@ -74,9 +74,8 @@ __attribute__((noinline)) cContextCharacter::~cContextCharacter() {
     /* stub */
 }
 
-__attribute__((weak)) void cContextCharacter::createProperty(MtPropertyList& s) {
-    DDON_STUB("cContextCharacter::createProperty")
-    /* stub */
+void cContextCharacter::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\350\241\214\345\213\225\343\203\252\343\202\257\343\202\250\343\202\271\343\203\210", &mIsReqAction, 1u, 0u);
 }
 
 MtUI* cContextCharacter::createUI(MtProperty& prop) {
@@ -119,9 +118,8 @@ __attribute__((weak)) void cContextCharacter::addDamageMsg(const cDamageMsg* pSr
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cContextCharacter::getOmReleasePos() const {
-    DDON_STUB("cContextCharacter::getOmReleasePos")
-    __builtin_unreachable();
+MtVector3 cContextCharacter::getOmReleasePos() const {
+    return sWorldOffset::getInstance()->getOffsetNetPos(mOmReleasePos);
 }
 
 __attribute__((weak)) void cContextCharacter::setOmReleasePos(const MtVector3& pos) {
@@ -129,9 +127,8 @@ __attribute__((weak)) void cContextCharacter::setOmReleasePos(const MtVector3& p
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cContextCharacter::getShlPos(u32 index) const {
-    DDON_STUB("cContextCharacter::getShlPos")
-    __builtin_unreachable();
+MtVector3 cContextCharacter::getShlPos(u32 index) const {
+    return sWorldOffset::getInstance()->getOffsetNetPos(mShlPos[index]);
 }
 
 const nNetMsgData::stNetPos& cContextCharacter::getShlRealPos(u32 index) const {
@@ -143,9 +140,8 @@ __attribute__((weak)) void cContextCharacter::setShlPos(const MtVector3& pos, u3
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cContextCharacter::getShlTarget(u32 index) const {
-    DDON_STUB("cContextCharacter::getShlTarget")
-    __builtin_unreachable();
+MtVector3 cContextCharacter::getShlTarget(u32 index) const {
+    return sWorldOffset::getInstance()->getOffsetNetPos(mShlTarget[index]);
 }
 
 const nNetMsgData::stNetPos& cContextCharacter::getShlTargetRealPos(u32 index) const {

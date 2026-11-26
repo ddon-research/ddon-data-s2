@@ -45,9 +45,9 @@ cEmWorkRateCtrl::~cEmWorkRateCtrl() {
     mpEmWorkRateTableRes = nullptr;
 }
 
-__attribute__((weak)) void cEmWorkRateCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEmWorkRateCtrl::createProperty")
-    /* stub */
+void cEmWorkRateCtrl::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\347\217\276\345\234\250\343\201\256\347\212\266\346\205\213\347\225\252\345\217\267", &mStatusNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\347\217\276\345\234\250\343\201\256\347\212\266\346\205\213\345\204\252\345\205\210\345\272\246", &mStatusPriority, 0u, 0u);
 }
 
 void cEmWorkRateCtrl::setOwner(uEnemy* pEnemy) {

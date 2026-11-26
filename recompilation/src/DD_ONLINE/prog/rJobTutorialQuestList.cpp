@@ -74,24 +74,23 @@ rJobTutorialQuestList::~rJobTutorialQuestList() {
     mJobTutorialList.mLength = 0;
 }
 
-__attribute__((weak)) void rJobTutorialQuestList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rJobTutorialQuestList::createProperty")
-    /* stub */
+void rJobTutorialQuestList::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mJobTutorialList", static_cast<MtObject*>(&mJobTutorialList), 0u, 0u);
 }
 
 bool rJobTutorialQuestList::save(MtStream& out) {
     MtDataWriter w(out, 4096u, 4096u);
     (&w)->writeU32(0x51544Au);
     (&w)->writeU16(static_cast<u16>(1));
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) == 0) {
+    (&w)->writeU32(mJobTutorialList.mLength);
+    if (mJobTutorialList.mLength == 0) {
         return true;
     }
     unsigned int i3 = 0;
     do {
         (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mJobTutorialList.getBuffer()[static_cast<int>(i3)]) + 8));
         i3 += 1u;
-    } while (i3 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)));
+    } while (i3 < mJobTutorialList.mLength);
     return true;
 }
 
@@ -125,9 +124,8 @@ inline void rJobTutorialQuestList::cQuestId::operator delete(void* p_addr) {
 rJobTutorialQuestList::cQuestId::~cQuestId() {
 }
 
-__attribute__((weak)) void rJobTutorialQuestList::cQuestId::createProperty(MtPropertyList& s) {
-    DDON_STUB("rJobTutorialQuestList::cQuestId::createProperty")
-    /* stub */
+void rJobTutorialQuestList::cQuestId::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
 }
 
 void rJobTutorialQuestList::cQuestId::load(MtDataReader& r) {

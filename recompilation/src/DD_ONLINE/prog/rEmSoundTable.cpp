@@ -27,9 +27,15 @@ inline void cEmSoundTable::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEmSoundTable::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cEmSoundTable::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEmSoundTable::createProperty")
-    /* stub */
+void cEmSoundTable::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIdx", &mIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDieIsNoCall", &mDieIsNoCall, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSoundResNo", &mSoundResNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSoundNo", &mSoundNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttachFlag", &mAttachFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRequestType", &mRequestType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBoneNo", &mBoneNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetPos", &mOffsetPos, 0u, 0u);
 }
 
 inline cEmSoundTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -26,6 +26,8 @@ class cGUIObjPolygon;
 class cGUIObjTexture;
 class rGUI;
 class rGUIMessage;
+class uGUIAreaMaster;
+class uGUICraft;
 
 // Declarations
 class uGUIPopTopSel;
@@ -41,6 +43,8 @@ using u8 = unsigned char;
 
 class uGUIPopTopSel : public uGUIPopBase
 {
+    friend class uGUIAreaMaster;
+    friend class uGUICraft;
 public:
     enum CLAN_MENU_ID
     {

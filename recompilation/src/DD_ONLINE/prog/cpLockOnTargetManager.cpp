@@ -13,6 +13,7 @@
 #include "../../generated/shared/nDDOModel.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nGUIAim.h"
+#include "../../XFramework/rSoundRequest.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
@@ -45,9 +46,12 @@ cpLockOnTargetManager::cpLockOnTargetManager() {
     /* stub */
 }
 
-__attribute__((noinline)) cpLockOnTargetManager::~cpLockOnTargetManager() {
-    DDON_STUB("cpLockOnTargetManager::~cpLockOnTargetManager")
-    /* stub */
+cpLockOnTargetManager::~cpLockOnTargetManager() {
+    if (mprSE == nullptr) {
+        return;
+    }
+    mprSE->release();
+    mprSE = nullptr;
 }
 
 __attribute__((weak)) void cpLockOnTargetManager::init(u32 maxLockOnNum, bool isSameMulti, nGUIAim::TARGET_MARKER_TYPE targetMarkerType, nDDOModel::LOCKON_TARGET_TYPE lockOnTargetType) {

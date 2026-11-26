@@ -1740,6 +1740,10 @@ const MtDTI& cPrioThkCmdConFollowArea::getDTI() const {
     return cPrioThkCmdConFollowArea::DTI;
 }
 
+inline void* cPrioThkCmdConFollowArea::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cPrioThkCmdConFollowArea::DTI)->memAlloc(sz, align, cPrioThkCmdConFollowArea::DTI.getID());
+}
+
 inline void cPrioThkCmdConFollowArea::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cPrioThkCmdConFollowArea::DTI)->memFree(p_addr);
 }
@@ -1765,9 +1769,8 @@ inline cPrioThkCmdConFollowArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 cPrioThkCmdConFollowArea::MyDTI cPrioThkCmdConFollowArea::DTI("cPrioThkCmdConFollowArea", &::cPrioThkCmd::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cPrioThkCmdConFollowArea::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdConFollowArea::MyDTI::newInstance")
-    return nullptr;
+MtObject* cPrioThkCmdConFollowArea::MyDTI::newInstance() const {
+    return new (16u) cPrioThkCmdConFollowArea;
 }
 
 const MtDTI& cPrioThkCmdConHealFountain::getDTI() const {
@@ -2678,8 +2681,7 @@ inline cPrioThkCmdIsOrder::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 cPrioThkCmdIsOrder::MyDTI cPrioThkCmdIsOrder::DTI("cPrioThkCmdIsOrder", &::cPrioThkCmdIsBase::DTI, 48ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCmdIsOrder::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdIsOrder::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cPrioThkCmdIsOrder;
 }
 
 const MtDTI& cPrioThkCmdIsOtherFlag::getDTI() const {
@@ -3001,7 +3003,7 @@ inline void cPrioThkCmdIsStageType::operator delete(void* p_addr) {
 u32 cPrioThkCmdIsStageType::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     aStage* p_stage = static_cast<sAreaExt*>(sArea::getInstance())->getCurrentStage();
     if (p_stage != nullptr) {
-        switch ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p_stage) + 48)) - 1u) {
+        switch (p_stage->mStageType - 1u) {
             case 0:
             {
                 return static_cast<u32>((static_cast<unsigned long>(mIs) ^ static_cast<unsigned long>((mStageTypeFlag >> 1) & 1u)) ^ 1ul);
@@ -3419,8 +3421,7 @@ inline cPrioThkCmdRetActInter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 cPrioThkCmdRetActInter::MyDTI cPrioThkCmdRetActInter::DTI("cPrioThkCmdRetActInter", &::cPrioThkCmd::DTI, 64ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCmdRetActInter::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdRetActInter::MyDTI::newInstance")
-    return nullptr;
+        return new (16u) cPrioThkCmdRetActInter;
 }
 
 const MtDTI& cPrioThkCmdRetActInterTarget::getDTI() const {
@@ -3610,8 +3611,22 @@ const MtDTI& cPrioThkCmdRetGoto::getDTI() const {
     return cPrioThkCmdRetGoto::DTI;
 }
 
+inline void* cPrioThkCmdRetGoto::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetGoto::DTI)->memAlloc(sz, align, cPrioThkCmdRetGoto::DTI.getID());
+}
+
 inline void cPrioThkCmdRetGoto::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cPrioThkCmdRetGoto::DTI)->memFree(p_addr);
+}
+
+inline cPrioThkCmdRetGoto::cPrioThkCmdRetGoto() {
+    mReqTargetType = 2;
+    mReqTargetRealPos.x = MtVector3::Zero.x;
+    mReqTargetRealPos.y = MtVector3::Zero.y;
+    mReqTargetRealPos.z = MtVector3::Zero.z;
+    mReqTargetRealPos.pad_ = 0.0f;
+    mReqTargetRange = 100.0f;
+    mReqMoveType = 0;
 }
 
 __attribute__((weak)) u32 cPrioThkCmdRetGoto::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3630,9 +3645,8 @@ inline cPrioThkCmdRetGoto::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 cPrioThkCmdRetGoto::MyDTI cPrioThkCmdRetGoto::DTI("cPrioThkCmdRetGoto", &::cPrioThkCmd::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cPrioThkCmdRetGoto::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdRetGoto::MyDTI::newInstance")
-    return nullptr;
+MtObject* cPrioThkCmdRetGoto::MyDTI::newInstance() const {
+    return new (16u) cPrioThkCmdRetGoto;
 }
 
 const MtDTI& cPrioThkCmdRetHealAct::getDTI() const {
@@ -3866,8 +3880,7 @@ inline cPrioThkCode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 cPrioThkCode::MyDTI cPrioThkCode::DTI("cPrioThkCode", &::cAIResource::DTI, 88ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCode::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCode::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cPrioThkCode;
 }
 
 const MtDTI& cPrioThkIO::getDTI() const {
@@ -4020,6 +4033,8 @@ MtObject* rPriorityThink::MyDTI::newInstance() const {
 template MtTypedArray<cPrioThkCmd::cTmpResult>::~MtTypedArray();
 
 template MtTypedArray<cPrioThkCmd>::~MtTypedArray();
+
+template void nDDOIO::readMtArrayEx(MtDataReader&, MtTypedArray<cPrioThkCmd>&);
 
 template cPrioThkCode* rTbl2<cPrioThkCode>::getData(unsigned int);
 

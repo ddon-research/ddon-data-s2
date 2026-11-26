@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uGUIGaugeNpc.h"
-#include "Protocol/PacketData/AreaMaster.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtColor.h"
@@ -86,8 +85,6 @@ uGUIGaugeNpc::uGUIGaugeNpc() {
 }
 
 __attribute__((noinline)) uGUIGaugeNpc::~uGUIGaugeNpc() {
-    DDON_STUB("uGUIGaugeNpc::~uGUIGaugeNpc")
-    /* stub */
 }
 
 __attribute__((weak)) void uGUIGaugeNpc::setup() {
@@ -232,9 +229,36 @@ __attribute__((weak)) void uGUIGaugeNpc::setNameColor() {
     /* stub */
 }
 
-__attribute__((weak)) bool uGUIGaugeNpc::isVisibleAreaMasterIcon(u32 npcId) {
-    DDON_STUB("uGUIGaugeNpc::isVisibleAreaMasterIcon")
-    return {};
+bool uGUIGaugeNpc::isVisibleAreaMasterIcon(u32 npcId) {
+    if (sNpcManager::getInstance()->isHaveEnableFunction(npcId, 21u)) {
+        if (mpUnit != nullptr) {
+            uControlNpc* t0 = mpUnit->getCtrlNpc();
+            if (t0 != nullptr) {
+                if (t0->isDispClassName()) {
+                    const u32 area_id = sGame::getInstance()->getArea(static_cast<MtVector3*>(nullptr));
+                    u32 v0_1 = static_cast<sGUIExt*>(sGUI::getInstance())->mAreaPointList.size();
+                    if (v0_1 == 0) {
+                        return false;
+                    } else {
+                        MtObject* * v0_2 = static_cast<sGUIExt*>(sGUI::getInstance())->mAreaPointList.getBuffer();
+                        for (unsigned int i0_3 = 0;;) {
+                            if (v0_2[static_cast<int>(i0_3)] != nullptr) {
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_3)]) + 8)) == area_id) {
+                                    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_3)]) + 28)) != 0;
+                                }
+                            }
+                            if ((i0_3 + 1u) < v0_1) {
+                                i0_3 += 1u;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) bool uGUIGaugeNpc::checkFloorGroup() const {
@@ -255,9 +279,16 @@ u32 uGUIGaugeNpc::IOcdIcon::getOcdIconParamNum() const {
     return 2;
 }
 
-__attribute__((weak)) nGUIExt::OCD_ICON_CATEGORY uGUIGaugeNpc::IOcdIcon::getOcdIconCategory(u32 paramIndex) const {
-    DDON_STUB("uGUIGaugeNpc::IOcdIcon::getOcdIconCategory")
-    return {};
+nGUIExt::OCD_ICON_CATEGORY uGUIGaugeNpc::IOcdIcon::getOcdIconCategory(u32 paramIndex) const {
+    static const nGUIExt::OCD_ICON_CATEGORY categorys[2] = {
+        static_cast<const nGUIExt::OCD_ICON_CATEGORY>(0),
+        static_cast<const nGUIExt::OCD_ICON_CATEGORY>(1),
+    };
+    if (paramIndex <= 1u) {
+        return categorys[paramIndex];
+    } else {
+        return nGUIExt::OCD_ICON_CATEGORY_NUM;
+    }
 }
 
 __attribute__((weak)) nGUIExt::OcdIconParam& uGUIGaugeNpc::IOcdIcon::refOcdIconParam(u32 paramIndex) {
@@ -413,14 +444,16 @@ void* uGUITouchTargetSelector::operator new(size_t sz, u32 align) {
     return uGUITouchTargetSelector::getAllocator()->memAlloc(sz, align, uGUITouchTargetSelector::DTI.getID());
 }
 
+inline void uGUITouchTargetSelector::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uGUITouchTargetSelector::DTI)->memFree(p_addr);
+}
+
 uGUITouchTargetSelector::uGUITouchTargetSelector() {
     DDON_STUB("uGUITouchTargetSelector::uGUITouchTargetSelector")
     /* stub */
 }
 
 uGUITouchTargetSelector::~uGUITouchTargetSelector() {
-    DDON_STUB("uGUITouchTargetSelector::~uGUITouchTargetSelector")
-    /* stub */
 }
 
 void uGUITouchTargetSelector::setup() {

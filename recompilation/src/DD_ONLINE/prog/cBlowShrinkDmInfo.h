@@ -136,6 +136,10 @@ inline void* cBlowShrinkDmInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cBlowShrinkDmInfo::cBlowShrinkDmInfo() {
+    this->::cBlowShrinkDmInfo::clear();
+}
+
 inline nObjCollision::FORCE_REACTION_TYPE cBlowShrinkDmInfo::getForceDownType() const {
     return this->mForceDownType;
 }

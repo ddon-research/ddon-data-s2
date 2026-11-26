@@ -28,9 +28,8 @@ cState::cState() {
 cState::~cState() {
 }
 
-__attribute__((weak)) void cState::createProperty(MtPropertyList& s) {
-    DDON_STUB("cState::createProperty")
-    /* stub */
+void cState::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStateNo", &mStateNo, 0u, 0u);
 }
 
 MtUI* cState::createUI(MtProperty& prop) {

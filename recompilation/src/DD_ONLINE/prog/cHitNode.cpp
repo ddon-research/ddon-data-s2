@@ -101,9 +101,13 @@ __attribute__((noinline)) cHitNode::~cHitNode() {
     mGeomArray.mLength = 0;
 }
 
-__attribute__((weak)) void cHitNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("cHitNode::createProperty")
-    /* stub */
+void cHitNode::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsActive", &mIsActive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGeomArray", static_cast<MtObject*>(&mGeomArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCollIndex", reinterpret_cast<MtObject* *>(&mpCollIndex), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCollNode", reinterpret_cast<MtObject* *>(&mpCollNode), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpAttackParam", reinterpret_cast<MtObject* *>(&mpAttackParam), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMotionSync", &mMotionSync, 0u, 0u);
 }
 
 cAttackParam* cHitNode::getAttackParamFromAttackNo(u32 no) const {

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "rSoundSourcePS4_h.h"
+#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtFile.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -20,9 +21,11 @@ const MtDTI& rSoundSourceAT9::getDTI() const {
     return rSoundSourceAT9::DTI;
 }
 
+inline void rSoundSourceAT9::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rSoundSourceAT9::DTI)->memFree(p_addr);
+}
+
 rSoundSourceAT9::~rSoundSourceAT9() {
-    DDON_STUB("rSoundSourceAT9::~rSoundSourceAT9")
-    /* stub */
 }
 
 MT_CTSTR rSoundSourceAT9::getExt() const {
@@ -60,18 +63,148 @@ const MtDTI& rSoundSourceStreamAT9::getDTI() const {
     return rSoundSourceStreamAT9::DTI;
 }
 
+inline void rSoundSourceStreamAT9::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rSoundSourceStreamAT9::DTI)->memFree(p_addr);
+}
+
 rSoundSourceStreamAT9::~rSoundSourceStreamAT9() {
-    DDON_STUB("rSoundSourceStreamAT9::~rSoundSourceStreamAT9")
-    /* stub */
 }
 
 const MtDTI* rSoundSourceStreamAT9::getDTINative() const {
     return &rSoundSourceStreamAT9::DTI;
 }
 
-__attribute__((weak)) bool rSoundSourceStreamAT9::prepareToBuffer() {
-    DDON_STUB("rSoundSourceStreamAT9::prepareToBuffer")
-    return {};
+bool rSoundSourceStreamAT9::prepareToBuffer() {
+    if (mpStreamSourcePackage != nullptr) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mpBuffer == nullptr) {
+            u32 t0 = mDescriptor.mStreamSize;
+            void* pbuf = MtMemoryAllocator::getAllocator(rSoundSource::DTI)->memAlloc(t0, 16u, rSoundSource::DTI.mID);
+            if (pbuf != nullptr) {
+                if (mpStreamSourcePackage != nullptr) {
+                    if (mpStreamSourcePackage->mOpenCtr != 0) {
+                        mpStreamSourcePackage->mGlobalID = (mPackageFileOffset < mpStreamSourcePackage->mDescriptor.mStreamSize) ? mPackageFileOffset : (mpStreamSourcePackage->mDescriptor.mStreamSize - 1u);
+                        u32 read_size = read(pbuf, mDescriptor.mStreamSize, static_cast<u32*>(nullptr));
+                        if (mDescriptor.mStreamSize == read_size) {
+                            if (mpFile != nullptr) {
+                                delete mpFile;
+                                mpFile = nullptr;
+                                mpBuffer = pbuf;
+                                mBufferLength = mDescriptor.mStreamSize;
+                            } else {
+                                mpFile = nullptr;
+                                mpBuffer = pbuf;
+                                mBufferLength = read_size;
+                            }
+                            mSelfAllocation = true;
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                            }
+                            return true;
+                        } else {
+                            MtMemoryAllocator::getAllocator(rSoundSourceStreamAT9::DTI)->memFree(pbuf);
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                            }
+                            return false;
+                        }
+                    } else {
+                        u32 read_size = read(pbuf, mDescriptor.mStreamSize, static_cast<u32*>(nullptr));
+                        if (mDescriptor.mStreamSize == read_size) {
+                            if (mpFile != nullptr) {
+                                delete mpFile;
+                                mpFile = nullptr;
+                                mpBuffer = pbuf;
+                                mBufferLength = mDescriptor.mStreamSize;
+                            } else {
+                                mpFile = nullptr;
+                                mpBuffer = pbuf;
+                                mBufferLength = read_size;
+                            }
+                            mSelfAllocation = true;
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                            }
+                            return true;
+                        } else {
+                            MtMemoryAllocator::getAllocator(rSoundSourceStreamAT9::DTI)->memFree(pbuf);
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                            }
+                            return false;
+                        }
+                    }
+                } else {
+                    if (mOpenCtr != 0) {
+                        mGlobalID = (mDescriptor.mStreamSize == 0) ? (mDescriptor.mStreamSize - 1u) : 0u;
+                        u32 read_size = read(pbuf, mDescriptor.mStreamSize, static_cast<u32*>(nullptr));
+                        if (mDescriptor.mStreamSize == read_size) {
+                            if (mpFile != nullptr) {
+                                delete mpFile;
+                                mpFile = nullptr;
+                                mpBuffer = pbuf;
+                                mBufferLength = mDescriptor.mStreamSize;
+                            } else {
+                                mpFile = nullptr;
+                                mpBuffer = pbuf;
+                                mBufferLength = read_size;
+                            }
+                            mSelfAllocation = true;
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                            }
+                            return true;
+                        } else {
+                            MtMemoryAllocator::getAllocator(rSoundSourceStreamAT9::DTI)->memFree(pbuf);
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                            }
+                            return false;
+                        }
+                    } else {
+                        u32 read_size = read(pbuf, mDescriptor.mStreamSize, static_cast<u32*>(nullptr));
+                        if (mDescriptor.mStreamSize == read_size) {
+                            if (mpFile != nullptr) {
+                                delete mpFile;
+                                mpFile = nullptr;
+                                mpBuffer = pbuf;
+                                mBufferLength = mDescriptor.mStreamSize;
+                            } else {
+                                mpFile = nullptr;
+                                mpBuffer = pbuf;
+                                mBufferLength = read_size;
+                            }
+                            mSelfAllocation = true;
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                            }
+                            return true;
+                        } else {
+                            MtMemoryAllocator::getAllocator(rSoundSourceStreamAT9::DTI)->memFree(pbuf);
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                            }
+                            return false;
+                        }
+                    }
+                }
+            } else {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+                return false;
+            }
+        } else {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+            return true;
+        }
+    } else {
+        return this->rSoundSource::prepareToBuffer();
+    }
 }
 
 bool rSoundSourceStreamAT9::open() {
@@ -123,7 +256,7 @@ __attribute__((weak)) u32 rSoundSourceStreamAT9::seek(u32 pos, u32* pid) {
     return {};
 }
 
-u32 rSoundSourceStreamAT9::read(void* pdest, u32 size, u32* pid) {
+__attribute__((weak)) u32 rSoundSourceStreamAT9::read(void* pdest, u32 size, u32* pid) {
     if (mpStreamSourcePackage != nullptr) {
         return mpStreamSourcePackage->read(pdest, size, pid, mPackageFileOffset);
     } else {

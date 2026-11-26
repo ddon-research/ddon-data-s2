@@ -28,6 +28,7 @@ using u32 = unsigned int;
 namespace cMethodConstantTimeName {
     class cMethodConstantBase : public ::MtObject
     {
+        friend class cMethodConstantTimeName::cMethodConstantManagerBase;
     public:
         class MyDTI;
     public:

@@ -341,9 +341,34 @@ __attribute__((weak)) void uCharacter::callbackRespawn(bool setupFlag) {
     /* stub */
 }
 
-__attribute__((weak)) void uCharacter::callbackReturnTerritory(bool setupFlag) {
-    DDON_STUB("uCharacter::callbackReturnTerritory")
-    /* stub */
+void uCharacter::callbackReturnTerritory(bool setupFlag) {
+    if ((this->uDDOModel::mUnitId & 1026u) == 0) {
+        return;
+    }
+    if (getStateLivePtr()->getStateNo() == 516) {
+        return;
+    }
+    getStateLivePtr()->setState(516);
+    if (setupFlag) {
+        return;
+    }
+    if (!isMaster()) {
+        return;
+    }
+    cContextInterface::setStateLive(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter, 516u);
+    if ((this->uDDOModel::mUnitId & 2u) == 0) {
+        return;
+    }
+    if (this == nullptr) {
+        return;
+    }
+    uEnemy* pEnemy = static_cast<uEnemy*>(this);
+    if (pEnemy->mpEnemyThink == nullptr) {
+        return;
+    }
+    if (!pEnemy->mIsStartWait) {
+        pEnemy->mpEnemyThink->mcThink.startMainThinkTbl();
+    }
 }
 
 void uCharacter::checkReturnTerritory(bool forceReturnTeritory) {

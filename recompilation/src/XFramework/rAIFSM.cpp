@@ -66,9 +66,11 @@ cAIFSMCluster::~cAIFSMCluster() {
     mNodeNum = 0;
 }
 
-__attribute__((weak)) void cAIFSMCluster::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIFSMCluster::createProperty")
-    /* stub */
+void cAIFSMCluster::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOwnerNodeUniqueId", &mOwnerNodeUniqueId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInitialStateId", &mInitialStateId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpNodeList", reinterpret_cast<MT_MFUNC>(&::cAIFSMCluster::getNode), reinterpret_cast<MT_MFUNC>(&::cAIFSMCluster::setNode), 160u, reinterpret_cast<MT_MFUNC>(&::cAIFSMCluster::getNodeNum), reinterpret_cast<MT_MFUNC>(&::cAIFSMCluster::setNodeNum));
 }
 
 void cAIFSMCluster::setup() {
@@ -176,6 +178,39 @@ MtObject* cAIFSMCluster::MyDTI::newInstance() const {
     return new (16u) cAIFSMCluster;
 }
 
+const MtDTI& cAIFSMLink::getDTI() const {
+    return cAIFSMLink::DTI;
+}
+
+inline void* cAIFSMLink::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIFSMLink::DTI)->memAlloc(sz, align, cAIFSMLink::DTI.mID);
+}
+
+inline void cAIFSMLink::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIFSMLink::DTI)->memFree(p_addr);
+}
+
+void cAIFSMLink::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mDestinationNodeId", &mDestinationNodeId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mExistCondition", &mExistCondition, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConditionId", &mConditionId, 0u, 0u);
+}
+
+void cAIFSMLink::copy(cAIFSMLink* pSource) {
+    mDestinationNodeId = pSource->mDestinationNodeId;
+    mExistCondition = pSource->mExistCondition;
+    mConditionId = pSource->mConditionId;
+}
+
+inline cAIFSMLink::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cAIFSMLink::MyDTI cAIFSMLink::DTI("cAIFSMLink", &::cAIResource::DTI, 24ul, 0u, 0u);
+
+MtObject* cAIFSMLink::MyDTI::newInstance() const {
+    return new (16u) cAIFSMLink;
+}
+
 const MtDTI& cAIFSMNode::getDTI() const {
     return cAIFSMNode::DTI;
 }
@@ -189,13 +224,87 @@ inline void cAIFSMNode::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) cAIFSMNode::~cAIFSMNode() {
-    DDON_STUB("cAIFSMNode::~cAIFSMNode")
-    /* stub */
+    if (mpLinkList != nullptr) {
+        if (mLinkNum != 0) {
+            u32 v0_0 = mLinkNum;
+            cAIFSMLink* * v0_1 = mpLinkList;
+            for (unsigned int i0_3 = 1;;) {
+                if (v0_1 != nullptr) {
+                    if (v0_1[i0_3 - 1u] != nullptr) {
+                        delete v0_1[i0_3 - 1u];
+                        mpLinkList[i0_3 - 1u] = nullptr;
+                        if (i0_3 >= mLinkNum) {
+                            break;
+                        }
+                        v0_0 = mLinkNum;
+                    } else {
+                        if (i0_3 >= v0_0) {
+                            break;
+                        }
+                    }
+                } else {
+                    if (i0_3 >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = mpLinkList;
+                i0_3 += 1u;
+            }
+        }
+        MtMemoryAllocator::getAllocator(cAIFSMNode::DTI)->memFree(static_cast<void*>(mpLinkList));
+    }
+    mLinkNum = 0;
+    mpLinkList = nullptr;
+    if (mpSubCluster != nullptr) {
+        delete mpSubCluster;
+    }
+    mpSubCluster = nullptr;
+    if (mpProcessList != nullptr) {
+        if (mProcessNum != 0) {
+            u32 v3_0 = mProcessNum;
+            cAIFSMNodeProcess* * v3_1 = mpProcessList;
+            for (unsigned int i3_3 = 1;;) {
+                if (v3_1 != nullptr) {
+                    if (v3_1[i3_3 - 1u] != nullptr) {
+                        delete v3_1[i3_3 - 1u];
+                        mpProcessList[i3_3 - 1u] = nullptr;
+                        if (i3_3 >= mProcessNum) {
+                            break;
+                        }
+                        v3_0 = mProcessNum;
+                    } else {
+                        if (i3_3 >= v3_0) {
+                            break;
+                        }
+                    }
+                } else {
+                    if (i3_3 >= v3_0) {
+                        break;
+                    }
+                }
+                v3_1 = mpProcessList;
+                i3_3 += 1u;
+            }
+        }
+        MtMemoryAllocator::getAllocator(cAIFSMNode::DTI)->memFree(static_cast<void*>(mpProcessList));
+    }
+    mProcessNum = 0;
+    mpProcessList = nullptr;
 }
 
-__attribute__((weak)) void cAIFSMNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIFSMNode::createProperty")
-    /* stub */
+void cAIFSMNode::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUniqueId", &mUniqueId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOwnerId", &mOwnerId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpSubCluster", reinterpret_cast<MtObject* *>(&mpSubCluster), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpLinkList", reinterpret_cast<MT_MFUNC>(&::cAIFSMNode::getLink), reinterpret_cast<MT_MFUNC>(&::cAIFSMNode::setLink), 160u, reinterpret_cast<MT_MFUNC>(&::cAIFSMNode::getLinkNum), reinterpret_cast<MT_MFUNC>(&::cAIFSMNode::setLinkNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpProcessList", reinterpret_cast<MT_MFUNC>(&::cAIFSMNode::getProcess), reinterpret_cast<MT_MFUNC>(&::cAIFSMNode::setProcess), 160u, reinterpret_cast<MT_MFUNC>(&::cAIFSMNode::getProcessNum), reinterpret_cast<MT_MFUNC>(&::cAIFSMNode::setProcessNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mUIPos", &this->mUIPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColorType", &mColorType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSetting", &mSetting, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUserAttribute", &mUserAttribute, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mExistConditionTrainsitionFromAll", &mExistConditionTrainsitionFromAll, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConditionTrainsitionFromAllId", &mConditionTrainsitionFromAllId, 0u, 0u);
 }
 
 void cAIFSMNode::setup() {
@@ -221,8 +330,49 @@ __attribute__((weak)) void cAIFSMNode::copy(cAIFSMNode* pSource) {
 }
 
 __attribute__((weak)) bool cAIFSMNode::createLinkList(u32 num) {
-    DDON_STUB("cAIFSMNode::createLinkList")
-    return {};
+    if (mpLinkList != nullptr) {
+        if (mLinkNum != 0) {
+            u32 v0_0 = mLinkNum;
+            cAIFSMLink* * v0_1 = mpLinkList;
+            for (unsigned int i0_3 = 1;;) {
+                if (v0_1 != nullptr) {
+                    if (v0_1[i0_3 - 1u] != nullptr) {
+                        delete v0_1[i0_3 - 1u];
+                        mpLinkList[i0_3 - 1u] = nullptr;
+                        if (i0_3 >= mLinkNum) {
+                            break;
+                        }
+                        v0_0 = mLinkNum;
+                    } else {
+                        if (i0_3 >= v0_0) {
+                            break;
+                        }
+                    }
+                } else {
+                    if (i0_3 >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = mpLinkList;
+                i0_3 += 1u;
+            }
+        }
+        MtMemoryAllocator::getAllocator(cAIFSMNode::DTI)->memFree(static_cast<void*>(mpLinkList));
+    }
+    mLinkNum = 0;
+    mpLinkList = nullptr;
+    if (num != 0) {
+        void* t0 = MtMemoryAllocator::getAllocator(cAIFSMNode::DTI)->memAlloc(static_cast<size_t>(num) * 8, 16u);
+        if ((mpLinkList = static_cast<cAIFSMLink* *>(t0)) != nullptr) {
+            mLinkNum = num;
+            memset(t0, 0, static_cast<size_t>(num) * 8);
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
 }
 
 static auto ddon_emit_0x01b936f0 __attribute__((used)) = &cAIFSMNode::setLinkNum;
@@ -327,19 +477,44 @@ const MtDTI& cAIFSMNodeProcess::getDTI() const {
     return cAIFSMNodeProcess::DTI;
 }
 
-cAIFSMNodeProcess::~cAIFSMNodeProcess() {
-    DDON_STUB("cAIFSMNodeProcess::~cAIFSMNodeProcess")
-    /* stub */
+inline void cAIFSMNodeProcess::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIFSMNodeProcess::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cAIFSMNodeProcess::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIFSMNodeProcess::createProperty")
-    /* stub */
+__attribute__((noinline)) cAIFSMNodeProcess::~cAIFSMNodeProcess() {
+    delete mpParameter;
+    mpParameter = nullptr;
+}
+
+void cAIFSMNodeProcess::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mContainerName", &mContainerName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCategoryName", &mCategoryName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpParameter", reinterpret_cast<MtObject* *>(&mpParameter), 0u, 0u);
 }
 
 __attribute__((weak)) void cAIFSMNodeProcess::setup() {
-    DDON_STUB("cAIFSMNodeProcess::setup")
-    /* stub */
+    cAIUserProcessContainer* pContainer = getProcessContainer();
+    if (pContainer != nullptr) {
+        mpUpdateProcess = pContainer->searchProcess("update");
+        mpStateProcess = pContainer->searchProcess("state");
+        mpExitProcess = pContainer->searchProcess("exit");
+        mpStatusChangeProcess = pContainer->searchProcess("statuschange");
+        mpExportProcess = pContainer->searchProcess("export");
+        mpImportProcess = pContainer->searchProcess("import");
+    }
+    if (mpParameter != nullptr) {
+        MtPropertyList s;
+        mpParameter->createProperty(s);
+        for (MtProperty* pp = s.begin(); pp != nullptr; pp = pp->getNext()) {
+            if (pp->getType() == MtProperty::TYPE_CLASS || pp->getType() == MtProperty::TYPE_CLASSREF) {
+                MtObject* pClass = pp->getClass();
+                if (pClass != nullptr && pClass->getDTI().getID() == nAI::EnumProp::DTI.getID()) {
+                    nAI::EnumProp* pEnum = static_cast<nAI::EnumProp*>(pClass);
+                    pEnum->open();
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cAIFSMNodeProcess::copy(cAIFSMNodeProcess* pProcess) {
@@ -352,8 +527,7 @@ inline cAIFSMNodeProcess::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t si
 cAIFSMNodeProcess::MyDTI cAIFSMNodeProcess::DTI("cAIFSMNodeProcess", &::cAIUserProcessReference::DTI, 80ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cAIFSMNodeProcess::MyDTI::newInstance() const {
-    DDON_STUB("cAIFSMNodeProcess::MyDTI::newInstance")
-    return nullptr;
+    return new (MtMemoryAllocator::getAllocator(cAIFSMNodeProcess::DTI)->memAlloc(sizeof(cAIFSMNodeProcess), 16u, cAIFSMNodeProcess::DTI.getID())) cAIFSMNodeProcess(nullptr);
 }
 
 const MtDTI& rAIFSM::getDTI() const {
@@ -364,9 +538,17 @@ inline void* rAIFSM::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rAIFSM::DTI)->memAlloc(sz, align, rAIFSM::DTI.mID);
 }
 
-rAIFSM::~rAIFSM() {
-    DDON_STUB("rAIFSM::~rAIFSM")
-    /* stub */
+inline void rAIFSM::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rAIFSM::DTI)->memFree(p_addr);
+}
+
+__attribute__((noinline)) rAIFSM::~rAIFSM() {
+        delete mpRootCluster;
+        mpRootCluster = nullptr;
+        if (mpConditionTree) {
+            mpConditionTree->release();
+            mpConditionTree = nullptr;
+        }
 }
 
 MT_CTSTR rAIFSM::getExt() const {
@@ -395,9 +577,12 @@ void rAIFSM::clear() {
     mpConditionTree = nullptr;
 }
 
-__attribute__((weak)) void rAIFSM::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIFSM::createProperty")
-    /* stub */
+void rAIFSM::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mOwnerObjectName", &mOwnerObjectName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpRootCluster", reinterpret_cast<MtObject* *>(&mpRootCluster), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpConditionTree", reinterpret_cast<MtObject* *>(&mpConditionTree), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFSMAttribute", &mFSMAttribute, 0u, 0u);
 }
 
 void rAIFSM::setup() {

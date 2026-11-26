@@ -29,9 +29,12 @@ inline void cAITargetInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAITargetInfo::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) const MtVector3& cAITargetInfo::getAITargetInfoOfsPos() const {
-    DDON_STUB("cAITargetInfo::getAITargetInfoOfsPos")
-    __builtin_unreachable();
+const MtVector3& cAITargetInfo::getAITargetInfoOfsPos() const {
+    if (mpTargetPoint.cGeneralPointPtr::operator const cGeneralPoint *() != nullptr) {
+        return mpTargetPoint.cGeneralPointPtr::operator const cGeneralPoint *()->mPos;
+    } else {
+        return *((mpTargetUnit == nullptr) ? (&MtVector3::Zero) : (&mpTargetUnit->mPos));
+    }
 }
 
 inline cAITargetInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

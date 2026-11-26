@@ -15,6 +15,7 @@
 #include "cContextInterface.h"
 #include "cContextPlayerInfo.h"
 #include "cCycleQuestManagerBase.h"
+#include "cLightQuestManager.h"
 #include "cNetGameServer.h"
 #include "cNetSessionManager.h"
 #include "cQuestTask.h"
@@ -32,6 +33,7 @@
 #include "sNetworkExt.h"
 #include "sNpcManager.h"
 #include "sQuestManagerExt.h"
+#include "uGUIQueueAnnounce.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -49,34 +51,119 @@ __attribute__((weak)) bool nQuest::isDisableOrderCondition(u32 result, nQuest::O
     return {};
 }
 
-__attribute__((weak)) bool nQuest::isPartyQuest(nQuest::QUEST_TYPE questType) {
-    DDON_STUB("nQuest::isPartyQuest")
-    return {};
+bool nQuest::isPartyQuest(nQuest::QUEST_TYPE questType) {
+    static const nQuest::QUEST_TYPE PARTY_QUEST_TABLE[5] = {
+        static_cast<const nQuest::QUEST_TYPE>(0),
+        static_cast<const nQuest::QUEST_TYPE>(1),
+        static_cast<const nQuest::QUEST_TYPE>(6),
+        static_cast<const nQuest::QUEST_TYPE>(7),
+        static_cast<const nQuest::QUEST_TYPE>(8),
+    };
+    u32 i = 0;
+    const nQuest::QUEST_TYPE* p2 = PARTY_QUEST_TABLE;
+    do {
+        if ((*p2) == questType) {
+            return true;
+        }
+        i += 1u;
+        p2 += static_cast<int>(1);
+    } while (i <= 4u);
+    return false;
 }
 
-__attribute__((weak)) bool nQuest::isSoloQuest(nQuest::QUEST_TYPE questType) {
-    DDON_STUB("nQuest::isSoloQuest")
-    return {};
+bool nQuest::isSoloQuest(nQuest::QUEST_TYPE questType) {
+    static const nQuest::QUEST_TYPE SOLO_QUEST_TABLE[4] = {
+        static_cast<const nQuest::QUEST_TYPE>(2),
+        static_cast<const nQuest::QUEST_TYPE>(3),
+        static_cast<const nQuest::QUEST_TYPE>(4),
+        static_cast<const nQuest::QUEST_TYPE>(10),
+    };
+    u32 i = 0;
+    const nQuest::QUEST_TYPE* p2 = SOLO_QUEST_TABLE;
+    do {
+        if ((*p2) == questType) {
+            return true;
+        }
+        i += 1u;
+        p2 += static_cast<int>(1);
+    } while (i <= 3u);
+    return false;
 }
 
-__attribute__((weak)) bool nQuest::isCycleContents(nQuest::QUEST_TYPE questType) {
-    DDON_STUB("nQuest::isCycleContents")
-    return {};
+bool nQuest::isCycleContents(nQuest::QUEST_TYPE questType) {
+    u32 i = 0;
+    const nQuest::QUEST_TYPE* p2 = nQuest::cycleContentTypeTbl;
+    do {
+        if ((*p2) == questType) {
+            return true;
+        }
+        i += 1u;
+        p2 += static_cast<int>(1);
+    } while (i <= 1u);
+    return false;
 }
 
-__attribute__((weak)) bool nQuest::isContents(nQuest::QUEST_TYPE questType) {
-    DDON_STUB("nQuest::isContents")
-    return {};
+bool nQuest::isContents(nQuest::QUEST_TYPE questType) {
+    static const nQuest::QUEST_TYPE CONTENTS_TABLE[3] = {
+        static_cast<const nQuest::QUEST_TYPE>(6),
+        static_cast<const nQuest::QUEST_TYPE>(7),
+        static_cast<const nQuest::QUEST_TYPE>(8),
+    };
+    u32 i = 0;
+    const nQuest::QUEST_TYPE* p2 = CONTENTS_TABLE;
+    do {
+        if ((*p2) == questType) {
+            return true;
+        }
+        i += 1u;
+        p2 += static_cast<int>(1);
+    } while (i <= 2u);
+    return false;
 }
 
-__attribute__((weak)) bool nQuest::isQuestListSet(nQuest::QUEST_TYPE questType) {
-    DDON_STUB("nQuest::isQuestListSet")
-    return {};
+bool nQuest::isQuestListSet(nQuest::QUEST_TYPE questType) {
+    static const nQuest::QUEST_TYPE QUEST_LIST_SET_TABLE[8] = {
+        static_cast<const nQuest::QUEST_TYPE>(0),
+        static_cast<const nQuest::QUEST_TYPE>(1),
+        static_cast<const nQuest::QUEST_TYPE>(3),
+        static_cast<const nQuest::QUEST_TYPE>(4),
+        static_cast<const nQuest::QUEST_TYPE>(5),
+        static_cast<const nQuest::QUEST_TYPE>(6),
+        static_cast<const nQuest::QUEST_TYPE>(7),
+        static_cast<const nQuest::QUEST_TYPE>(8),
+    };
+    u32 i = 0;
+    const nQuest::QUEST_TYPE* p2 = QUEST_LIST_SET_TABLE;
+    do {
+        if ((*p2) == questType) {
+            return true;
+        }
+        i += 1u;
+        p2 += static_cast<int>(1);
+    } while (i <= 7u);
+    return false;
 }
 
-__attribute__((weak)) u32 nQuest::getGUIQuestAnnounceTYPE(nQuest::QUEST_TYPE questType) {
-    DDON_STUB("nQuest::getGUIQuestAnnounceTYPE")
-    return {};
+u32 nQuest::getGUIQuestAnnounceTYPE(nQuest::QUEST_TYPE questType) {
+    static const uGUIQueueAnnounce::TYPE TYPE_TABLE[12] = {
+        static_cast<const uGUIQueueAnnounce::TYPE>(0),
+        static_cast<const uGUIQueueAnnounce::TYPE>(1),
+        static_cast<const uGUIQueueAnnounce::TYPE>(2),
+        static_cast<const uGUIQueueAnnounce::TYPE>(6),
+        static_cast<const uGUIQueueAnnounce::TYPE>(3),
+        static_cast<const uGUIQueueAnnounce::TYPE>(0),
+        static_cast<const uGUIQueueAnnounce::TYPE>(4),
+        static_cast<const uGUIQueueAnnounce::TYPE>(4),
+        static_cast<const uGUIQueueAnnounce::TYPE>(5),
+        static_cast<const uGUIQueueAnnounce::TYPE>(4),
+        static_cast<const uGUIQueueAnnounce::TYPE>(6),
+        static_cast<const uGUIQueueAnnounce::TYPE>(0),
+    };
+    if (static_cast<unsigned int>(questType) <= 11) {
+        return static_cast<u32>(TYPE_TABLE[questType]);
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) nQuest::QUEST_UI_DISP_TYPE nQuest::getQuestLogDispType(nQuest::QUEST_TYPE questType) {
@@ -89,14 +176,49 @@ __attribute__((weak)) nQuest::QUEST_TYPE nQuest::getQuestType(nQuest::QUEST_UI_D
     return {};
 }
 
-__attribute__((weak)) u32 nQuest::getUseOrderConditionTagNum(u32 orderConditionType) {
-    DDON_STUB("nQuest::getUseOrderConditionTagNum")
-    return {};
+u32 nQuest::getUseOrderConditionTagNum(u32 orderConditionType) {
+    static const u32 useOrderConditionTagNum[15] = {
+        0,
+        1,
+        2,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+    };
+    if (orderConditionType <= 14u) {
+        return useOrderConditionTagNum[orderConditionType];
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool nQuest::isCyclePhaseQuest(nQuest::CYCLE_CONTENTS_NOTICE_TYPE type) {
-    DDON_STUB("nQuest::isCyclePhaseQuest")
-    return {};
+bool nQuest::isCyclePhaseQuest(nQuest::CYCLE_CONTENTS_NOTICE_TYPE type) {
+    static const nQuest::CYCLE_CONTENTS_NOTICE_TYPE list[5] = {
+        static_cast<const nQuest::CYCLE_CONTENTS_NOTICE_TYPE>(1),
+        static_cast<const nQuest::CYCLE_CONTENTS_NOTICE_TYPE>(2),
+        static_cast<const nQuest::CYCLE_CONTENTS_NOTICE_TYPE>(3),
+        static_cast<const nQuest::CYCLE_CONTENTS_NOTICE_TYPE>(4),
+        static_cast<const nQuest::CYCLE_CONTENTS_NOTICE_TYPE>(5),
+    };
+    u32 i = 0;
+    const nQuest::CYCLE_CONTENTS_NOTICE_TYPE* p2 = list;
+    do {
+        if ((*p2) == type) {
+            return true;
+        }
+        i += 1u;
+        p2 += static_cast<int>(1);
+    } while (i <= 4u);
+    return false;
 }
 
 __attribute__((weak)) nQuest::CYCLE_CONTENTS_CATEGORY nQuest::getCycleContentsCategory(nQuest::CYCLE_CONTENTS_TYPE cycleContentsType) {
@@ -133,14 +255,12 @@ nQuest::SCHEDULE_ID::operator unsigned int() const {
     return mScheduleId;
 }
 
-__attribute__((weak)) bool nQuest::SCHEDULE_ID::operator==(nQuest::SCHEDULE_ID id) const {
-    DDON_STUB("nQuest::SCHEDULE_ID::operator==")
-    return {};
+bool nQuest::SCHEDULE_ID::operator==(nQuest::SCHEDULE_ID id) const {
+    return mScheduleId == id.mScheduleId;
 }
 
-__attribute__((weak)) bool nQuest::SCHEDULE_ID::operator!=(nQuest::SCHEDULE_ID id) const {
-    DDON_STUB("nQuest::SCHEDULE_ID::operator!=")
-    return {};
+bool nQuest::SCHEDULE_ID::operator!=(nQuest::SCHEDULE_ID id) const {
+    return mScheduleId != id.mScheduleId;
 }
 
 u32 nQuest::SCHEDULE_ID::toU32() const {
@@ -165,14 +285,12 @@ nQuest::QUEST_ID::operator unsigned int() const {
     return mQuestId;
 }
 
-__attribute__((weak)) bool nQuest::QUEST_ID::operator==(nQuest::QUEST_ID id) const {
-    DDON_STUB("nQuest::QUEST_ID::operator==")
-    return {};
+bool nQuest::QUEST_ID::operator==(nQuest::QUEST_ID id) const {
+    return mQuestId == id.mQuestId;
 }
 
-__attribute__((weak)) bool nQuest::QUEST_ID::operator!=(nQuest::QUEST_ID id) const {
-    DDON_STUB("nQuest::QUEST_ID::operator!=")
-    return {};
+bool nQuest::QUEST_ID::operator!=(nQuest::QUEST_ID id) const {
+    return mQuestId != id.mQuestId;
 }
 
 u32 nQuest::QUEST_ID::toU32() const {
@@ -551,9 +669,9 @@ __attribute__((weak)) void nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::op
     ::nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) void nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::createProperty")
-    /* stub */
+void nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mCharacterId", &mCharacterId, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mItemNum", &mItemNum, 0u, 0u);
 }
 
 inline nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -646,9 +764,8 @@ u32 nQuest::cQuestMarker::getQuestIdU32() const {
     return mQuestId.mQuestId;
 }
 
-__attribute__((weak)) void nQuest::cQuestMarker::setQuestId(nQuest::QUEST_ID questId) {
-    DDON_STUB("nQuest::cQuestMarker::setQuestId")
-    /* stub */
+void nQuest::cQuestMarker::setQuestId(nQuest::QUEST_ID questId) {
+    mQuestId.mQuestId = questId.mQuestId;
 }
 
 __attribute__((weak)) nQuest::SCHEDULE_ID nQuest::cQuestMarker::getScheduleId() const {
@@ -656,9 +773,8 @@ __attribute__((weak)) nQuest::SCHEDULE_ID nQuest::cQuestMarker::getScheduleId() 
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void nQuest::cQuestMarker::setScheduleId(nQuest::SCHEDULE_ID scheduleId) {
-    DDON_STUB("nQuest::cQuestMarker::setScheduleId")
-    /* stub */
+void nQuest::cQuestMarker::setScheduleId(nQuest::SCHEDULE_ID scheduleId) {
+    mScheduleId.mScheduleId = scheduleId.mScheduleId;
 }
 
 u32 nQuest::cQuestMarker::getTargetType() const {
@@ -984,14 +1100,25 @@ __attribute__((weak)) nQuest::SCHEDULE_ID nQuest::cGUINewspaperSetQuestInfo::get
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUINewspaperSetQuestInfo::getQuestName() const {
-    DDON_STUB("nQuest::cGUINewspaperSetQuestInfo::getQuestName")
-    return {};
+MT_CTSTR nQuest::cGUINewspaperSetQuestInfo::getQuestName() const {
+    if (mQuestId.mQuestId != 0) {
+        if (!::sQuestManagerExt::getInstance()->isMyOrderQuest(mScheduleId)) {
+            if (!isDiscover() && (mCompleteNum == 0)) {
+                return static_cast<sGUIExt*>(::sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->getMsgCommonMessage(), 110u);
+            }
+        }
+        return ::sQuestManagerExt::getInstance()->getQuestName(mQuestId);
+    } else {
+        return "";
+    }
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUINewspaperSetQuestInfo::getEyewitnessInfo() const {
-    DDON_STUB("nQuest::cGUINewspaperSetQuestInfo::getEyewitnessInfo")
-    return {};
+MT_CTSTR nQuest::cGUINewspaperSetQuestInfo::getEyewitnessInfo() const {
+    if (mQuestId.mQuestId != 0) {
+        return ::sQuestManagerExt::getInstance()->getQuestFindInfo(mQuestId);
+    } else {
+        return "";
+    }
 }
 
 u32 nQuest::cGUINewspaperSetQuestInfo::getSelectReward(u32 idx) const {
@@ -1054,9 +1181,12 @@ u32 nQuest::cGUINewspaperSetQuestInfo::getTargetEnemyListNum() const {
     return mTargetEnemyArray.mLength;
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUINewspaperSetQuestInfo::getTargetEnemyName(u32 idx) const {
-    DDON_STUB("nQuest::cGUINewspaperSetQuestInfo::getTargetEnemyName")
-    return {};
+MT_CTSTR nQuest::cGUINewspaperSetQuestInfo::getTargetEnemyName(u32 idx) const {
+    if (idx < mTargetEnemyArray.mLength) {
+        return static_cast<sGUIExt*>(::sGUI::getInstance())->getEnemyNameFromGroupId(static_cast<nQuest::cGUINewspaperSetQuestMonsterInfo*>(mTargetEnemyArray.mpArray[idx])->getEnemyGroupId());
+    } else {
+        return "";
+    }
 }
 
 u32 nQuest::cGUINewspaperSetQuestInfo::getTargetEnemyLv(u32 idx) const {
@@ -1141,6 +1271,10 @@ void* nQuest::cGUINewspaperRecommededQuestInfo::operator new(size_t sz, u32 alig
     return ::nQuest::cGUINewspaperRecommededQuestInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cGUINewspaperRecommededQuestInfo::DTI.getID());
 }
 
+inline void nQuest::cGUINewspaperRecommededQuestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cGUINewspaperRecommededQuestInfo::DTI)->memFree(p_addr);
+}
+
 u32 nQuest::cGUINewspaperRecommededQuestInfo::getAreaId() const {
     return mAreaId;
 }
@@ -1151,8 +1285,6 @@ nQuest::cGUINewspaperRecommededQuestInfo::cGUINewspaperRecommededQuestInfo() {
 }
 
 nQuest::cGUINewspaperRecommededQuestInfo::~cGUINewspaperRecommededQuestInfo() {
-    DDON_STUB("nQuest::cGUINewspaperRecommededQuestInfo::~cGUINewspaperRecommededQuestInfo")
-    /* stub */
 }
 
 __attribute__((weak)) void nQuest::cGUINewspaperRecommededQuestInfo::createProperty(MtPropertyList& s) {
@@ -1193,8 +1325,6 @@ nQuest::cGUINewspaperSetQuestOpenDateInfo::cGUINewspaperSetQuestOpenDateInfo() {
 }
 
 nQuest::cGUINewspaperSetQuestOpenDateInfo::~cGUINewspaperSetQuestOpenDateInfo() {
-    DDON_STUB("nQuest::cGUINewspaperSetQuestOpenDateInfo::~cGUINewspaperSetQuestOpenDateInfo")
-    /* stub */
 }
 
 __attribute__((weak)) void nQuest::cGUINewspaperSetQuestOpenDateInfo::createProperty(MtPropertyList& s) {
@@ -1912,64 +2042,98 @@ __attribute__((weak)) nQuest::SCHEDULE_ID nQuest::cGUIListData::getScheduleId() 
     __builtin_unreachable();
 }
 
-__attribute__((weak)) nQuest::QUEST_ID nQuest::cGUIListData::getQuestId() const {
-    DDON_STUB("nQuest::cGUIListData::getQuestId")
-    __builtin_unreachable();
+nQuest::QUEST_ID nQuest::cGUIListData::getQuestId() const {
+    return ::sQuestManagerExt::getInstance()->getQuestId(mScheduleId);
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getQuestIdU32() const {
-    DDON_STUB("nQuest::cGUIListData::getQuestIdU32")
-    return {};
+u32 nQuest::cGUIListData::getQuestIdU32() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getQuestIdU32();
+    } else {
+        return ::nQuest::INVALID_QUEST_ID.mQuestId;
+    }
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUIListData::getQuestName() const {
-    DDON_STUB("nQuest::cGUIListData::getQuestName")
-    return {};
+MT_CTSTR nQuest::cGUIListData::getQuestName() const {
+    sQuestManagerExt* t0 = ::sQuestManagerExt::getInstance();
+    return t0->getQuestName(t0->getQuestId(mScheduleId));
 }
 
-__attribute__((weak)) nQuest::QUEST_TYPE nQuest::cGUIListData::getQuestType() const {
-    DDON_STUB("nQuest::cGUIListData::getQuestType")
-    return {};
+nQuest::QUEST_TYPE nQuest::cGUIListData::getQuestType() const {
+    return ::sQuestManagerExt::getInstance()->getQuestType(mScheduleId);
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getBaseLevel() const {
-    DDON_STUB("nQuest::cGUIListData::getBaseLevel")
-    return {};
+u32 nQuest::cGUIListData::getBaseLevel() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getBaseLevel();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getAreaId() const {
-    DDON_STUB("nQuest::cGUIListData::getAreaId")
-    return {};
+u32 nQuest::cGUIListData::getAreaId() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getAreaId();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getRewardAreaPoint() const {
-    DDON_STUB("nQuest::cGUIListData::getRewardAreaPoint")
-    return {};
+u32 nQuest::cGUIListData::getRewardAreaPoint() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardAreaPoint();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getRewardExp() const {
-    DDON_STUB("nQuest::cGUIListData::getRewardExp")
-    return {};
+u32 nQuest::cGUIListData::getRewardExp() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardExp();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getRewardGold() const {
-    DDON_STUB("nQuest::cGUIListData::getRewardGold")
-    return {};
+u32 nQuest::cGUIListData::getRewardGold() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardGold();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getRewardRim() const {
-    DDON_STUB("nQuest::cGUIListData::getRewardRim")
-    return {};
+u32 nQuest::cGUIListData::getRewardRim() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardRim();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) const nQuest::cRewardData* nQuest::cGUIListData::getFixReward(u32 idx) const {
-    DDON_STUB("nQuest::cGUIListData::getFixReward")
-    return nullptr;
+const nQuest::cRewardData* nQuest::cGUIListData::getFixReward(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getFixReward(idx);
+    } else {
+        return nullptr;
+    }
 }
 
-__attribute__((weak)) const nQuest::cFixRewardData* nQuest::cGUIListData::getSelectReward(u32 idx) const {
-    DDON_STUB("nQuest::cGUIListData::getSelectReward")
-    return nullptr;
+const nQuest::cFixRewardData* nQuest::cGUIListData::getSelectReward(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getSelectReward(idx);
+    } else {
+        return nullptr;
+    }
 }
 
 __attribute__((weak)) const MtTime* nQuest::cGUIListData::getEndDistributionData() const {
@@ -1987,29 +2151,50 @@ __attribute__((weak)) MT_CTSTR nQuest::cGUIListData::getLeaderPurposeMsg() const
     return {};
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUIListData::getOrderNpcName() const {
-    DDON_STUB("nQuest::cGUIListData::getOrderNpcName")
-    return {};
+MT_CTSTR nQuest::cGUIListData::getOrderNpcName() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        sNpcManager* t0 = ::sNpcManager::getInstance();
+        return t0->getNpcName(pTask->getOrderNpcId());
+    } else {
+        return "";
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getClearNum() const {
-    DDON_STUB("nQuest::cGUIListData::getClearNum")
-    return {};
+u32 nQuest::cGUIListData::getClearNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getClearNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getOrderConditionNum() const {
-    DDON_STUB("nQuest::cGUIListData::getOrderConditionNum")
-    return {};
+u32 nQuest::cGUIListData::getOrderConditionNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getOrderConditionNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUIListData::getOrderConditionMsg(u32 idx) const {
-    DDON_STUB("nQuest::cGUIListData::getOrderConditionMsg")
-    return {};
+MT_CTSTR nQuest::cGUIListData::getOrderConditionMsg(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getOrderConditionMessage(idx);
+    } else {
+        return "";
+    }
 }
 
-__attribute__((weak)) nQuest::REPEAT_BONUS_TYPE nQuest::cGUIListData::getRepeatBonusType() const {
-    DDON_STUB("nQuest::cGUIListData::getRepeatBonusType")
-    return {};
+nQuest::REPEAT_BONUS_TYPE nQuest::cGUIListData::getRepeatBonusType() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRepeatBonusType();
+    } else {
+        return ::nQuest::REPEAT_BONUS_TYPE_NONE;
+    }
 }
 
 __attribute__((weak)) void nQuest::cGUIListData::setupRepeatBonusMsg(rGUIMessage* pGMD) {
@@ -2021,49 +2206,88 @@ MT_CTSTR nQuest::cGUIListData::getRepeatBonusMsg() const {
     return mRepeatBonusText.ptr();
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getOrderConditionType(u32 Idx) const {
-    DDON_STUB("nQuest::cGUIListData::getOrderConditionType")
-    return {};
+u32 nQuest::cGUIListData::getOrderConditionType(u32 Idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getOrderConditionType(Idx);
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIListData::isEnableCancel() const {
-    DDON_STUB("nQuest::cGUIListData::isEnableCancel")
-    return {};
+bool nQuest::cGUIListData::isEnableCancel() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        if (pTask->getQuestType() != ::nQuest::QUEST_TYPE_MAIN) {
+            return pTask->isEnableCancel();
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIListData::isAreaBonus() const {
-    DDON_STUB("nQuest::cGUIListData::isAreaBonus")
-    return {};
+bool nQuest::cGUIListData::isAreaBonus() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        if (pTask->getQuestType() == ::nQuest::QUEST_TYPE_LIGHT) {
+            sQuestManagerExt* t0 = ::sQuestManagerExt::getInstance();
+            return t0->isAreaBonus(pTask->getAreaId());
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getAreaBonusRate() const {
-    DDON_STUB("nQuest::cGUIListData::getAreaBonusRate")
-    return {};
+u32 nQuest::cGUIListData::getAreaBonusRate() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        if (pTask->getQuestType() == ::nQuest::QUEST_TYPE_LIGHT) {
+            sQuestManagerExt* t0 = ::sQuestManagerExt::getInstance();
+            return t0->getAreaBonusRate(pTask->getAreaId());
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getDiscoverRewardItemId() const {
-    DDON_STUB("nQuest::cGUIListData::getDiscoverRewardItemId")
-    return {};
+u32 nQuest::cGUIListData::getDiscoverRewardItemId() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverItemId();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getDiscoverBonusGold() const {
-    DDON_STUB("nQuest::cGUIListData::getDiscoverBonusGold")
-    return {};
+u32 nQuest::cGUIListData::getDiscoverBonusGold() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverRewardGold();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getDiscoverBonusRim() const {
-    DDON_STUB("nQuest::cGUIListData::getDiscoverBonusRim")
-    return {};
+u32 nQuest::cGUIListData::getDiscoverBonusRim() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverRewardRim();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getDiscoverBonusExp() const {
-    DDON_STUB("nQuest::cGUIListData::getDiscoverBonusExp")
-    return {};
+u32 nQuest::cGUIListData::getDiscoverBonusExp() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverRewardExp();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIListData::isPartyBonus() const {
-    DDON_STUB("nQuest::cGUIListData::isPartyBonus")
-    return {};
+bool nQuest::cGUIListData::isPartyBonus() const {
+    return ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId) != nullptr;
 }
 
 __attribute__((weak)) u32 nQuest::cGUIListData::getPartyBonusRate() const {
@@ -2071,54 +2295,94 @@ __attribute__((weak)) u32 nQuest::cGUIListData::getPartyBonusRate() const {
     return {};
 }
 
-__attribute__((weak)) bool nQuest::cGUIListData::hasReceived() const {
-    DDON_STUB("nQuest::cGUIListData::hasReceived")
-    return {};
+bool nQuest::cGUIListData::hasReceived() const {
+    const nQuest::cPartyBonusInfo* pInfo = ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId);
+    if (pInfo != nullptr) {
+        return pInfo->hasReceived();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIListData::isPartyBonusOrb() const {
-    DDON_STUB("nQuest::cGUIListData::isPartyBonusOrb")
-    return {};
+bool nQuest::cGUIListData::isPartyBonusOrb() const {
+    const nQuest::cPartyBonusInfo* pInfo = ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId);
+    if (pInfo != nullptr) {
+        return pInfo->mOrbNum != 0;
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getPartyBonusOrbNum() const {
-    DDON_STUB("nQuest::cGUIListData::getPartyBonusOrbNum")
-    return {};
+u32 nQuest::cGUIListData::getPartyBonusOrbNum() const {
+    const nQuest::cPartyBonusInfo* pInfo = ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId);
+    if (pInfo != nullptr) {
+        return pInfo->mOrbNum;
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getRandomRewardNum() const {
-    DDON_STUB("nQuest::cGUIListData::getRandomRewardNum")
-    return {};
+u32 nQuest::cGUIListData::getRandomRewardNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRandomRewardNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIListData::isProgressBonus() const {
-    DDON_STUB("nQuest::cGUIListData::isProgressBonus")
-    return {};
+bool nQuest::cGUIListData::isProgressBonus() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->isProgressBonus();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIListData::isClanQuest() const {
-    DDON_STUB("nQuest::cGUIListData::isClanQuest")
-    return {};
+bool nQuest::cGUIListData::isClanQuest() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->isClanQuest();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getClanPoint() const {
-    DDON_STUB("nQuest::cGUIListData::getClanPoint")
-    return {};
+u32 nQuest::cGUIListData::getClanPoint() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getCP();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIListData::getClanClearNum() const {
-    DDON_STUB("nQuest::cGUIListData::getClanClearNum")
-    return {};
+u32 nQuest::cGUIListData::getClanClearNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getClearNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u16 nQuest::cGUIListData::getClanClearMax() const {
-    DDON_STUB("nQuest::cGUIListData::getClanClearMax")
-    return {};
+u16 nQuest::cGUIListData::getClanClearMax() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getOrderLimit();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIListData::isClanClear() const {
-    DDON_STUB("nQuest::cGUIListData::isClanClear")
-    return {};
+bool nQuest::cGUIListData::isClanClear() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->isClanClear();
+    } else {
+        return false;
+    }
 }
 
 nQuest::cGUIListData::cGUIListData(nQuest::SCHEDULE_ID scheduleId) {
@@ -2157,64 +2421,103 @@ __attribute__((weak)) nQuest::QUEST_ID nQuest::cGUIInfoData::getQuestId() const 
     __builtin_unreachable();
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getQuestIdU32() const {
-    DDON_STUB("nQuest::cGUIInfoData::getQuestIdU32")
-    return {};
+u32 nQuest::cGUIInfoData::getQuestIdU32() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getQuestIdU32();
+    } else {
+        return ::nQuest::INVALID_QUEST_ID.mQuestId;
+    }
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUIInfoData::getQuestName() const {
-    DDON_STUB("nQuest::cGUIInfoData::getQuestName")
-    return {};
+MT_CTSTR nQuest::cGUIInfoData::getQuestName() const {
+    sQuestManagerExt* t0 = ::sQuestManagerExt::getInstance();
+    return t0->getQuestName(t0->getQuestId(mScheduleId));
 }
 
-__attribute__((weak)) nQuest::QUEST_TYPE nQuest::cGUIInfoData::getQuestType() const {
-    DDON_STUB("nQuest::cGUIInfoData::getQuestType")
-    return {};
+nQuest::QUEST_TYPE nQuest::cGUIInfoData::getQuestType() const {
+    return ::sQuestManagerExt::getInstance()->getQuestType(mScheduleId);
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getBaseLevel() const {
-    DDON_STUB("nQuest::cGUIInfoData::getBaseLevel")
-    return {};
+u32 nQuest::cGUIInfoData::getBaseLevel() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getBaseLevel();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getAreaId() const {
-    DDON_STUB("nQuest::cGUIInfoData::getAreaId")
-    return {};
+u32 nQuest::cGUIInfoData::getAreaId() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getAreaId();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getRewardAreaPoint() const {
-    DDON_STUB("nQuest::cGUIInfoData::getRewardAreaPoint")
-    return {};
+u32 nQuest::cGUIInfoData::getRewardAreaPoint() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardAreaPoint();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getRewardExp() const {
-    DDON_STUB("nQuest::cGUIInfoData::getRewardExp")
-    return {};
+u32 nQuest::cGUIInfoData::getRewardExp() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardExp();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getRewardGold() const {
-    DDON_STUB("nQuest::cGUIInfoData::getRewardGold")
-    return {};
+u32 nQuest::cGUIInfoData::getRewardGold() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardGold();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getRewardRim() const {
-    DDON_STUB("nQuest::cGUIInfoData::getRewardRim")
-    return {};
+u32 nQuest::cGUIInfoData::getRewardRim() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardRim();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) const nQuest::cRewardData* nQuest::cGUIInfoData::getFixReward(u32 idx) const {
-    DDON_STUB("nQuest::cGUIInfoData::getFixReward")
-    return nullptr;
+const nQuest::cRewardData* nQuest::cGUIInfoData::getFixReward(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getFixReward(idx);
+    } else {
+        return nullptr;
+    }
 }
 
-__attribute__((weak)) const nQuest::cFixRewardData* nQuest::cGUIInfoData::getSelectReward(u32 idx) const {
-    DDON_STUB("nQuest::cGUIInfoData::getSelectReward")
-    return nullptr;
+const nQuest::cFixRewardData* nQuest::cGUIInfoData::getSelectReward(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getSelectReward(idx);
+    } else {
+        return nullptr;
+    }
 }
 
-__attribute__((weak)) nQuest::REPEAT_BONUS_TYPE nQuest::cGUIInfoData::getRepeatBonusType() const {
-    DDON_STUB("nQuest::cGUIInfoData::getRepeatBonusType")
-    return {};
+nQuest::REPEAT_BONUS_TYPE nQuest::cGUIInfoData::getRepeatBonusType() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRepeatBonusType();
+    } else {
+        return ::nQuest::REPEAT_BONUS_TYPE_NONE;
+    }
 }
 
 __attribute__((weak)) MT_CTSTR nQuest::cGUIInfoData::getRepeatBonusMsg(rGUIMessage* pGMD) {
@@ -2227,59 +2530,103 @@ __attribute__((weak)) const MtTime* nQuest::cGUIInfoData::getEndDistributionData
     return nullptr;
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUIInfoData::getOrderNpcName() const {
-    DDON_STUB("nQuest::cGUIInfoData::getOrderNpcName")
-    return {};
+MT_CTSTR nQuest::cGUIInfoData::getOrderNpcName() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        sNpcManager* t0 = ::sNpcManager::getInstance();
+        return t0->getNpcName(pTask->getOrderNpcId());
+    } else {
+        return "";
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getOrderConditionNum() const {
-    DDON_STUB("nQuest::cGUIInfoData::getOrderConditionNum")
-    return {};
+u32 nQuest::cGUIInfoData::getOrderConditionNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getOrderConditionNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getOrderConditionType(u32 Idx) const {
-    DDON_STUB("nQuest::cGUIInfoData::getOrderConditionType")
-    return {};
+u32 nQuest::cGUIInfoData::getOrderConditionType(u32 Idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getOrderConditionType(Idx);
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUIInfoData::getOrderConditionMsg(u32 idx) const {
-    DDON_STUB("nQuest::cGUIInfoData::getOrderConditionMsg")
-    return {};
+MT_CTSTR nQuest::cGUIInfoData::getOrderConditionMsg(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getOrderConditionMessage(idx);
+    } else {
+        return "";
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIInfoData::isAreaBonus() const {
-    DDON_STUB("nQuest::cGUIInfoData::isAreaBonus")
-    return {};
+bool nQuest::cGUIInfoData::isAreaBonus() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        if (pTask->getQuestType() == ::nQuest::QUEST_TYPE_LIGHT) {
+            sQuestManagerExt* t0 = ::sQuestManagerExt::getInstance();
+            return t0->isAreaBonus(pTask->getAreaId());
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getAreaBonusRate() const {
-    DDON_STUB("nQuest::cGUIInfoData::getAreaBonusRate")
-    return {};
+u32 nQuest::cGUIInfoData::getAreaBonusRate() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        if (pTask->getQuestType() == ::nQuest::QUEST_TYPE_LIGHT) {
+            sQuestManagerExt* t0 = ::sQuestManagerExt::getInstance();
+            return t0->getAreaBonusRate(pTask->getAreaId());
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getDiscoverRewardItemId() const {
-    DDON_STUB("nQuest::cGUIInfoData::getDiscoverRewardItemId")
-    return {};
+u32 nQuest::cGUIInfoData::getDiscoverRewardItemId() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverItemId();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getDiscoverBonusGold() const {
-    DDON_STUB("nQuest::cGUIInfoData::getDiscoverBonusGold")
-    return {};
+u32 nQuest::cGUIInfoData::getDiscoverBonusGold() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverRewardGold();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getDiscoverBonusRim() const {
-    DDON_STUB("nQuest::cGUIInfoData::getDiscoverBonusRim")
-    return {};
+u32 nQuest::cGUIInfoData::getDiscoverBonusRim() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverRewardRim();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getDiscoverBonusExp() const {
-    DDON_STUB("nQuest::cGUIInfoData::getDiscoverBonusExp")
-    return {};
+u32 nQuest::cGUIInfoData::getDiscoverBonusExp() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverRewardExp();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIInfoData::isPartyBonus() const {
-    DDON_STUB("nQuest::cGUIInfoData::isPartyBonus")
-    return {};
+bool nQuest::cGUIInfoData::isPartyBonus() const {
+    return ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId) != nullptr;
 }
 
 __attribute__((weak)) u32 nQuest::cGUIInfoData::getPartyBonusRate() const {
@@ -2287,64 +2634,107 @@ __attribute__((weak)) u32 nQuest::cGUIInfoData::getPartyBonusRate() const {
     return {};
 }
 
-__attribute__((weak)) bool nQuest::cGUIInfoData::hasReceived() const {
-    DDON_STUB("nQuest::cGUIInfoData::hasReceived")
-    return {};
+bool nQuest::cGUIInfoData::hasReceived() const {
+    const nQuest::cPartyBonusInfo* pInfo = ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId);
+    if (pInfo != nullptr) {
+        return pInfo->hasReceived();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIInfoData::isPartyBonusOrb() const {
-    DDON_STUB("nQuest::cGUIInfoData::isPartyBonusOrb")
-    return {};
+bool nQuest::cGUIInfoData::isPartyBonusOrb() const {
+    const nQuest::cPartyBonusInfo* pInfo = ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId);
+    if (pInfo != nullptr) {
+        return pInfo->mOrbNum != 0;
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getPartyBonusOrbNum() const {
-    DDON_STUB("nQuest::cGUIInfoData::getPartyBonusOrbNum")
-    return {};
+u32 nQuest::cGUIInfoData::getPartyBonusOrbNum() const {
+    const nQuest::cPartyBonusInfo* pInfo = ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId);
+    if (pInfo != nullptr) {
+        return pInfo->mOrbNum;
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getRandomRewardNum() const {
-    DDON_STUB("nQuest::cGUIInfoData::getRandomRewardNum")
-    return {};
+u32 nQuest::cGUIInfoData::getRandomRewardNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRandomRewardNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getClearNum() const {
-    DDON_STUB("nQuest::cGUIInfoData::getClearNum")
-    return {};
+u32 nQuest::cGUIInfoData::getClearNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getClearNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIInfoData::isProgressBonus() const {
-    DDON_STUB("nQuest::cGUIInfoData::isProgressBonus")
-    return {};
+bool nQuest::cGUIInfoData::isProgressBonus() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->isProgressBonus();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIInfoData::isClanQuest() const {
-    DDON_STUB("nQuest::cGUIInfoData::isClanQuest")
-    return {};
+bool nQuest::cGUIInfoData::isClanQuest() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->isClanQuest();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getClanPoint() const {
-    DDON_STUB("nQuest::cGUIInfoData::getClanPoint")
-    return {};
+u32 nQuest::cGUIInfoData::getClanPoint() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getCP();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIInfoData::getClanClearNum() const {
-    DDON_STUB("nQuest::cGUIInfoData::getClanClearNum")
-    return {};
+u32 nQuest::cGUIInfoData::getClanClearNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getClearNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u16 nQuest::cGUIInfoData::getClanClearMax() const {
-    DDON_STUB("nQuest::cGUIInfoData::getClanClearMax")
-    return {};
+u16 nQuest::cGUIInfoData::getClanClearMax() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getOrderLimit();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIInfoData::isClanClear() const {
-    DDON_STUB("nQuest::cGUIInfoData::isClanClear")
-    return {};
+bool nQuest::cGUIInfoData::isClanClear() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->isClanClear();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) void nQuest::cGUIInfoData::resetInfoData() {
-    DDON_STUB("nQuest::cGUIInfoData::resetInfoData")
-    /* stub */
+void nQuest::cGUIInfoData::resetInfoData() {
+    mScheduleId.mScheduleId = ::nQuest::INVALID_SCHEDULE_ID.mScheduleId;
 }
 
 nQuest::cGUIInfoData::cGUIInfoData() {
@@ -2395,44 +2785,62 @@ __attribute__((weak)) nQuest::SCHEDULE_ID nQuest::cGUIBoardData::getScheduleId()
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUIBoardData::getQuestName() const {
-    DDON_STUB("nQuest::cGUIBoardData::getQuestName")
-    return {};
+MT_CTSTR nQuest::cGUIBoardData::getQuestName() const {
+    sQuestManagerExt* t0 = ::sQuestManagerExt::getInstance();
+    return t0->getQuestName(t0->getQuestId(mScheduleId));
 }
 
-__attribute__((weak)) u32 nQuest::cGUIBoardData::getBaseLevel() const {
-    DDON_STUB("nQuest::cGUIBoardData::getBaseLevel")
-    return {};
+u32 nQuest::cGUIBoardData::getBaseLevel() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getBaseLevel();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIBoardData::isEnableOrder() const {
-    DDON_STUB("nQuest::cGUIBoardData::isEnableOrder")
-    return {};
+bool nQuest::cGUIBoardData::isEnableOrder() const {
+    return ::sQuestManagerExt::getInstance()->getEnableOrder(mScheduleId, true) == ::nQuest::RET_DIS_ORDER_CONDITION_TYPE_NONE;
 }
 
-__attribute__((weak)) bool nQuest::cGUIBoardData::isOrder() const {
-    DDON_STUB("nQuest::cGUIBoardData::isOrder")
-    return {};
+bool nQuest::cGUIBoardData::isOrder() const {
+    return ::sQuestManagerExt::getInstance()->isOrderQuest(mScheduleId);
 }
 
-__attribute__((weak)) bool nQuest::cGUIBoardData::isClanClear() const {
-    DDON_STUB("nQuest::cGUIBoardData::isClanClear")
-    return {};
+bool nQuest::cGUIBoardData::isClanClear() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->isClanClear();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIBoardData::isClanQuest() const {
-    DDON_STUB("nQuest::cGUIBoardData::isClanQuest")
-    return {};
+bool nQuest::cGUIBoardData::isClanQuest() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->isClanQuest();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIBoardData::getClanPoint() const {
-    DDON_STUB("nQuest::cGUIBoardData::getClanPoint")
-    return {};
+u32 nQuest::cGUIBoardData::getClanPoint() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getCP();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIBoardData::getClanPointOrigin() const {
-    DDON_STUB("nQuest::cGUIBoardData::getClanPointOrigin")
-    return {};
+u32 nQuest::cGUIBoardData::getClanPointOrigin() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getOriginalCP();
+    } else {
+        return 0;
+    }
 }
 
 nQuest::cGUIBoardData::cGUIBoardData(nQuest::SCHEDULE_ID scheduleId) {
@@ -2475,9 +2883,9 @@ __attribute__((weak)) nQuest::SCHEDULE_ID nQuest::cGUIDeliveryData::getScheduleI
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUIDeliveryData::getQuestName() const {
-    DDON_STUB("nQuest::cGUIDeliveryData::getQuestName")
-    return {};
+MT_CTSTR nQuest::cGUIDeliveryData::getQuestName() const {
+    sQuestManagerExt* t0 = ::sQuestManagerExt::getInstance();
+    return t0->getQuestName(t0->getQuestId(mScheduleId));
 }
 
 __attribute__((weak)) bool nQuest::cGUIDeliveryData::isPreWaitDeliver() const {
@@ -2552,54 +2960,95 @@ __attribute__((weak)) nQuest::SCHEDULE_ID nQuest::cGUIAreaMasterData::getSchedul
     __builtin_unreachable();
 }
 
-__attribute__((weak)) nQuest::QUEST_ID nQuest::cGUIAreaMasterData::getQuestId() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getQuestId")
-    __builtin_unreachable();
+nQuest::QUEST_ID nQuest::cGUIAreaMasterData::getQuestId() const {
+    return ::sQuestManagerExt::getInstance()->getQuestId(mScheduleId);
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUIAreaMasterData::getQuestName() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getQuestName")
-    return {};
+MT_CTSTR nQuest::cGUIAreaMasterData::getQuestName() const {
+    if (!::sQuestManagerExt::getInstance()->isMyOrderQuest(mScheduleId) && !::sQuestManagerExt::getInstance()->isDiscoverdQuest(mScheduleId)) {
+        cQuestTask* t2 = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+        if (t2 != nullptr) {
+            if (t2->getClearNum() != 0) {
+                sQuestManagerExt* t4 = ::sQuestManagerExt::getInstance();
+                return t4->getQuestName(t4->getQuestId(mScheduleId));
+            }
+        }
+        return static_cast<sGUIExt*>(::sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->getMsgCommonMessage(), 110u);
+    }
+    sQuestManagerExt* t4 = ::sQuestManagerExt::getInstance();
+    return t4->getQuestName(t4->getQuestId(mScheduleId));
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getBaseLevel() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getBaseLevel")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getBaseLevel() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getBaseLevel();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getRewardExp() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getRewardExp")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getRewardExp() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardExp();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getRewardGold() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getRewardGold")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getRewardGold() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardGold();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getRewardRim() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getRewardRim")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getRewardRim() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardRim();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getRewardAreaPoint() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getRewardAreaPoint")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getRewardAreaPoint() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRewardAreaPoint();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) const nQuest::cRewardData* nQuest::cGUIAreaMasterData::getFixReward(u32 idx) const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getFixReward")
-    return nullptr;
+const nQuest::cRewardData* nQuest::cGUIAreaMasterData::getFixReward(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getFixReward(idx);
+    } else {
+        return nullptr;
+    }
 }
 
-__attribute__((weak)) const nQuest::cFixRewardData* nQuest::cGUIAreaMasterData::getSelectReward(u32 idx) const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getSelectReward")
-    return nullptr;
+const nQuest::cFixRewardData* nQuest::cGUIAreaMasterData::getSelectReward(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getSelectReward(idx);
+    } else {
+        return nullptr;
+    }
 }
 
-__attribute__((weak)) nQuest::REPEAT_BONUS_TYPE nQuest::cGUIAreaMasterData::getRepeatBonusType() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getRepeatBonusType")
-    return {};
+nQuest::REPEAT_BONUS_TYPE nQuest::cGUIAreaMasterData::getRepeatBonusType() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRepeatBonusType();
+    } else {
+        return ::nQuest::REPEAT_BONUS_TYPE_NONE;
+    }
 }
 
 __attribute__((weak)) MT_CTSTR nQuest::cGUIAreaMasterData::getRepeatBonusMsg(rGUIMessage* pGMD) {
@@ -2612,59 +3061,108 @@ __attribute__((weak)) const MtTime* nQuest::cGUIAreaMasterData::getEndDistributi
     return nullptr;
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getDiscoverRewardItemId() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getDiscoverRewardItemId")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getDiscoverRewardItemId() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverItemId();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getDiscoverBonusGold() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getDiscoverBonusGold")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getDiscoverBonusGold() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverRewardGold();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getDiscoverBonusRim() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getDiscoverBonusRim")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getDiscoverBonusRim() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverRewardRim();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getDiscoverBonusExp() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getDiscoverBonusExp")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getDiscoverBonusExp() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getUndiscoverRewardExp();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getEnemyNum() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getEnemyNum")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getEnemyNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getTargetEnemyGroupNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUIAreaMasterData::getEnemyName(u32 idx) const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getEnemyName")
-    return {};
+MT_CTSTR nQuest::cGUIAreaMasterData::getEnemyName(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        u32 enemyGroupId = pTask->getTargetEnemyGroupId(idx);
+        return static_cast<sGUIExt*>(::sGUI::getInstance())->getEnemyNameFromGroupId(enemyGroupId);
+    } else {
+        return "";
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getEnemyLevel(u32 idx) const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getEnemyLevel")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getEnemyLevel(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getTargetEnemyLevel(idx);
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getOrderConditionNum() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getOrderConditionNum")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getOrderConditionNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getOrderConditionNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getOrderConditionType(u32 idx) const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getOrderConditionType")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getOrderConditionType(u32 idx) const {
+    cQuestTask* t0 = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (t0 != nullptr) {
+        if (idx < t0->getOrderConditionNum()) {
+            cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+            if (pTask != nullptr) {
+                return pTask->getOrderConditionType(idx);
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cGUIAreaMasterData::getOrderConditionMsg(u32 idx) const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getOrderConditionMsg")
-    return {};
+MT_CTSTR nQuest::cGUIAreaMasterData::getOrderConditionMsg(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getOrderConditionMessage(idx);
+    } else {
+        return "";
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIAreaMasterData::isPartyBonus() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::isPartyBonus")
-    return {};
+bool nQuest::cGUIAreaMasterData::isPartyBonus() const {
+    return ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId) != nullptr;
 }
 
 __attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getPartyBonusRate() const {
@@ -2672,49 +3170,87 @@ __attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getPartyBonusRate() const 
     return {};
 }
 
-__attribute__((weak)) bool nQuest::cGUIAreaMasterData::hasReceived() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::hasReceived")
-    return {};
+bool nQuest::cGUIAreaMasterData::hasReceived() const {
+    const nQuest::cPartyBonusInfo* pInfo = ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId);
+    if (pInfo != nullptr) {
+        return pInfo->hasReceived();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIAreaMasterData::isPartyBonusOrb() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::isPartyBonusOrb")
-    return {};
+bool nQuest::cGUIAreaMasterData::isPartyBonusOrb() const {
+    const nQuest::cPartyBonusInfo* pInfo = ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId);
+    if (pInfo != nullptr) {
+        return pInfo->mOrbNum != 0;
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getPartyBonusOrbNum() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getPartyBonusOrbNum")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getPartyBonusOrbNum() const {
+    const nQuest::cPartyBonusInfo* pInfo = ::sQuestManagerExt::getInstance()->getQuestPartyBonusInfo(mScheduleId);
+    if (pInfo != nullptr) {
+        return pInfo->mOrbNum;
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getRandomRewardNum() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getRandomRewardNum")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getRandomRewardNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getRandomRewardNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getClearNum() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getClearNum")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getClearNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getClearNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool nQuest::cGUIAreaMasterData::isProgressBonus() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::isProgressBonus")
-    return {};
+bool nQuest::cGUIAreaMasterData::isProgressBonus() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->isProgressBonus();
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getDeliveryItemInfoNum() const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getDeliveryItemInfoNum")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getDeliveryItemInfoNum() const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        return pTask->getDeliveryItemInfoNum();
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getDeliveryItemId(u32 idx) const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getDeliveryItemId")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getDeliveryItemId(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        if (idx < pTask->getDeliveryItemInfoNum()) {
+            return pTask->getDeliveryItemId(idx);
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 nQuest::cGUIAreaMasterData::getDeliveryItemNum(u32 idx) const {
-    DDON_STUB("nQuest::cGUIAreaMasterData::getDeliveryItemNum")
-    return {};
+u32 nQuest::cGUIAreaMasterData::getDeliveryItemNum(u32 idx) const {
+    cQuestTask* pTask = ::sQuestManagerExt::getInstance()->getQuestTask(mScheduleId);
+    if (pTask != nullptr) {
+        if (idx < pTask->getDeliveryItemInfoNum()) {
+            return pTask->getDeliveryItemNum(idx);
+        }
+    }
+    return 0;
 }
 
 nQuest::cGUIAreaMasterData::cGUIAreaMasterData() {
@@ -2765,9 +3301,8 @@ __attribute__((weak)) nQuest::SCHEDULE_ID nQuest::cGUIActiveData::getScheduleId(
     __builtin_unreachable();
 }
 
-__attribute__((weak)) bool nQuest::cGUIActiveData::isOrder() const {
-    DDON_STUB("nQuest::cGUIActiveData::isOrder")
-    return {};
+bool nQuest::cGUIActiveData::isOrder() const {
+    return ::sQuestManagerExt::getInstance()->isOrderQuest(mScheduleId);
 }
 
 nQuest::cGUIActiveData::cGUIActiveData(nQuest::SCHEDULE_ID scheduleId) {
@@ -2841,15 +3376,18 @@ u32 nQuest::cCycleContentsSituationInfo::getOrderConditionNum() const {
 
 u32 nQuest::cCycleContentsSituationInfo::getOrderConditionType(u32 idx) const {
     if (idx < mOrderConditions.mLength) {
-        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 32)) + (static_cast<unsigned long>(idx) * 8)) + 0)) + 32);
+        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mOrderConditions.mpArray[idx]) + 32);
     } else {
         return 0;
     }
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cCycleContentsSituationInfo::getOrderConditionMsg(u32 idx) const {
-    DDON_STUB("nQuest::cCycleContentsSituationInfo::getOrderConditionMsg")
-    return {};
+MT_CTSTR nQuest::cCycleContentsSituationInfo::getOrderConditionMsg(u32 idx) const {
+    if (idx < mOrderConditions.mLength) {
+        return ::sQuestManagerExt::getInstance()->getOrderConditionText(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mOrderConditions.mpArray[idx]) + 32));
+    } else {
+        return "";
+    }
 }
 
 __attribute__((weak)) MT_CTSTR nQuest::cCycleContentsSituationInfo::getOrderConditionParamMessage(u32 idx, u32 paramIdx) const {
@@ -2955,15 +3493,18 @@ nQuest::RET_DISABLE_ORDER_CONDITION_TYPE nQuest::cEndContentsGroupQuestInfo::get
 
 u32 nQuest::cEndContentsGroupQuestInfo::getOrderConditionType(u32 idx) const {
     if (idx < mOrderConditions.mLength) {
-        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 32)) + (static_cast<unsigned long>(idx) * 8)) + 0)) + 32);
+        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mOrderConditions.mpArray[idx]) + 32);
     } else {
         return 0;
     }
 }
 
-__attribute__((weak)) MT_CTSTR nQuest::cEndContentsGroupQuestInfo::getOrderConditionMsg(u32 idx) const {
-    DDON_STUB("nQuest::cEndContentsGroupQuestInfo::getOrderConditionMsg")
-    return {};
+MT_CTSTR nQuest::cEndContentsGroupQuestInfo::getOrderConditionMsg(u32 idx) const {
+    if (idx < mOrderConditions.mLength) {
+        return ::sQuestManagerExt::getInstance()->getOrderConditionText(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mOrderConditions.mpArray[idx]) + 32));
+    } else {
+        return "";
+    }
 }
 
 __attribute__((weak)) MT_CTSTR nQuest::cEndContentsGroupQuestInfo::getOrderConditionParamMessage(u32 idx, u32 paramIdx) const {
@@ -3140,9 +3681,14 @@ nQuest::cPartyBonusInfo::cPartyBonusInfo(nQuest::QUEST_ID questId, nQuest::SCHED
 nQuest::cPartyBonusInfo::~cPartyBonusInfo() {
 }
 
-__attribute__((weak)) void nQuest::cPartyBonusInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("nQuest::cPartyBonusInfo::createProperty")
-    /* stub */
+void nQuest::cPartyBonusInfo::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mQuestId", static_cast<MtObject*>(&mQuestId), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mScheduleId", static_cast<MtObject*>(&mScheduleId), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mGoldRatio", &mGoldRatio, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mExpRatio", &mExpRatio, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mRimRatio", &mRimRatio, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mAreaPointRatio", &mAreaPointRatio, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mOrbNum", &mOrbNum, 0u, 0u);
 }
 
 inline nQuest::cPartyBonusInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -11,9 +11,23 @@
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cResource.h"
+
+#include "../../XFramework/nCollision.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+inline u32 cAbilityParam::getAllocateSize() const {
+    return sizeof(cAbilityParam) + mParamDataArray.length() * sizeof(cParamData);
+}
+
+inline u32 cAbilityData::getAllocateSize() const {
+    u32 size = sizeof(cAbilityData);
+    for (u32 i = 0; i < mParamArray.length(); i++) {
+        size += static_cast<const cAbilityParam*>(const_cast<MtTypedArray<cAbilityParam>&>(mParamArray).getBuffer()[i])->getAllocateSize();
+    }
+    return size;
+}
 
 const MtDTI& cAbilityData::getDTI() const {
     return cAbilityData::DTI;
@@ -77,18 +91,17 @@ __attribute__((noinline)) cAbilityData::~cAbilityData() {
     mParamArray.mLength = 0;
 }
 
-__attribute__((weak)) void cAbilityData::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAbilityData::createProperty")
-    /* stub */
+void cAbilityData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mParamArray", static_cast<MtObject*>(&mParamArray), 0u, 0u);
 }
 
 bool cAbilityData::save(MtDataWriter& w) {
-    w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16));
+    w.writeU32(mParamArray.mLength);
     if (mParamArray.mLength != 0) {
         unsigned int i0_11 = 0;
         unsigned int i1_3;
         for (;;) {
-            unsigned long v1_10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 32)) + (static_cast<unsigned long>(i0_11) * 8)) + 0);
+            MtObject* v1_10 = mParamArray.mpArray[i0_11];
             w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + 8)));
             w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + 12)));
             w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + 24));
@@ -116,8 +129,31 @@ bool cAbilityData::save(MtDataWriter& w) {
 }
 
 __attribute__((weak)) bool cAbilityData::load(MtDataReader& r, nCollisionUtil::LoadBuffer& buffer) {
-    DDON_STUB("cAbilityData::load")
-    return {};
+    if (mParamArray.isAutoDelete()) {
+        mParamArray.deleteAll(true);
+    } else {
+        for (u32 i = 0; i < mParamArray.length(); i++) {
+            MtObject* p = mParamArray.getBuffer()[i];
+            if (p != nullptr) {
+                p->~MtObject();
+            }
+        }
+        mParamArray.clear(true);
+    }
+    const u32 AbilityParamNum = r.readU32();
+    if (AbilityParamNum == 0) {
+        return true;
+    }
+    cAbilityParam* pAbilityArray = buffer.allocateNewBy<cAbilityParam>(AbilityParamNum);
+    mParamArray.setAutoDelete(false);
+    mParamArray.reserve(AbilityParamNum);
+    for (u32 i = 0; i < AbilityParamNum; i++) {
+        if (!pAbilityArray[i].load(r, buffer)) {
+            return false;
+        }
+        mParamArray.add(&pAbilityArray[i]);
+    }
+    return true;
 }
 
 const cAbilityParam* cAbilityData::getAbilityParam(s32 index) const {
@@ -198,14 +234,39 @@ __attribute__((noinline)) cAbilityParam::~cAbilityParam() {
     mParamDataArray.mLength = 0;
 }
 
-__attribute__((weak)) void cAbilityParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAbilityParam::createProperty")
-    /* stub */
+void cAbilityParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mParamType", &mParamType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCorrectType", &mCorrectType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParamDataArray", static_cast<MtObject*>(&mParamDataArray), 0u, 0u);
 }
 
 __attribute__((weak)) bool cAbilityParam::load(MtDataReader& r, nCollisionUtil::LoadBuffer& buffer) {
-    DDON_STUB("cAbilityParam::load")
-    return {};
+    mParamType = r.readS32();
+    mCorrectType = r.readS32();
+    const u32 DataNum = r.readU32();
+    if (mParamDataArray.isAutoDelete()) {
+        mParamDataArray.deleteAll(true);
+    } else {
+        for (u32 i = 0; i < mParamDataArray.length(); i++) {
+            MtObject* p = mParamDataArray.getBuffer()[i];
+            if (p != nullptr) {
+                p->~MtObject();
+            }
+        }
+        mParamDataArray.clear(true);
+    }
+    if (DataNum == 0) {
+        return true;
+    }
+    cParamData* pParamData = buffer.allocateNewBy<cParamData>(DataNum);
+    mParamDataArray.setAutoDelete(false);
+    mParamDataArray.reserve(DataNum);
+    for (u32 i = 0; i < DataNum; i++) {
+        pParamData[i].mLv = r.readS32();
+        pParamData[i].mParam = r.readS32();
+        mParamDataArray.add(&pParamData[i]);
+    }
+    return true;
 }
 
 bool cAbilityParam::getParam(s32 Lv, s32& param) const {
@@ -256,9 +317,9 @@ inline void cAbilityParam::cParamData::operator delete(void* p_addr) {
 cAbilityParam::cParamData::~cParamData() {
 }
 
-__attribute__((weak)) void cAbilityParam::cParamData::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAbilityParam::cParamData::createProperty")
-    /* stub */
+void cAbilityParam::cParamData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mLv", &mLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParam", &mParam, 0u, 0u);
 }
 
 inline cAbilityParam::cParamData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -350,22 +411,79 @@ __attribute__((noinline)) rAbilityList::~rAbilityList() {
     }
 }
 
-__attribute__((weak)) void rAbilityList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAbilityList::createProperty")
-    /* stub */
+void rAbilityList::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mDataList", static_cast<MtObject*>(&mDataList), 0u, 0u);
 }
 
 __attribute__((weak)) void rAbilityList::clear() {
 }
 
 __attribute__((weak)) bool rAbilityList::load(MtStream& in) {
-    DDON_STUB("rAbilityList::load")
-    return {};
+    MtDataReader r(in, 4096);
+    if (!r.isReadable()) {
+        return false;
+    }
+    const u32 InputMagic = r.readU32();
+    const u32 InputVersion = r.readU32();
+    if (InputVersion != DATA_VERSION || InputMagic != 0x306c6261) {
+        return false;
+    }
+    if (mDataList.isAutoDelete()) {
+        mDataList.deleteAll(true);
+    } else {
+        for (u32 i = 0; i < mDataList.length(); i++) {
+            MtObject* p = mDataList.getBuffer()[i];
+            if (p != nullptr) {
+                p->~MtObject();
+            }
+        }
+        mDataList.clear(true);
+    }
+    const u32 BufferNeedSize = r.readU32();
+    if (BufferNeedSize == 0) {
+        return true;
+    }
+    nCollisionUtil::LoadBuffer buffer;
+    buffer.pBuffer = static_cast<u8*>(MtMemoryAllocator::getAllocator(rAbilityList::DTI)->memAlloc(BufferNeedSize, 8, rAbilityList::DTI.getID()));
+    if (buffer.pBuffer == nullptr) {
+        return false;
+    }
+    buffer.Size = BufferNeedSize;
+    buffer.Position = 0;
+    mDataList.setAutoDelete(false);
+    const u32 AbilityDataNum = r.readU32();
+    cAbilityData* pAbilityDataTbl = buffer.allocateNewBy<cAbilityData>(AbilityDataNum);
+    for (u32 i = 0; i < AbilityDataNum; i++) {
+        if (!pAbilityDataTbl[i].load(r, buffer)) {
+            return false;
+        }
+        mDataList.add(&pAbilityDataTbl[i]);
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rAbilityList::save(MtStream& out) {
-    DDON_STUB("rAbilityList::save")
-    return {};
+    MtDataWriter w(out, 4096, 4096);
+    if (!w.isWritable()) {
+        return false;
+    }
+    w.writeU32(0x306c6261);
+    w.writeU32(DATA_VERSION);
+    u32 BufferNeedSize = 0;
+    for (u32 i = 0; i < mDataList.length(); i++) {
+        const cAbilityData* p = static_cast<const cAbilityData*>(mDataList.getBuffer()[i]);
+        if (p != nullptr) {
+            BufferNeedSize += p->getAllocateSize();
+        }
+    }
+    w.writeU32(BufferNeedSize);
+    w.writeU32(mDataList.length());
+    for (u32 i = 0; i < mDataList.length(); i++) {
+        static_cast<cAbilityData*>(mDataList.getBuffer()[i])->save(w);
+    }
+    w.flush();
+    return true;
 }
 
 MT_CTSTR rAbilityList::getExt() const {

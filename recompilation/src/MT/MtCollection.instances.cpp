@@ -31,6 +31,8 @@
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "MtProperty.h"
+#include "MtPropertyList.h"
 #include "MtString.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Party.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Pawn.h"
@@ -55,9 +57,11 @@
 #include "../DD_ONLINE/prog/cDDMaterialCtrl.h"
 #include "../DD_ONLINE/prog/cEfcHandle.h"
 #include "../DD_ONLINE/prog/cEquipData.h"
+#include "../DD_ONLINE/prog/cFSMOrderParam.h"
 #include "../DD_ONLINE/prog/cFurniture.h"
 #include "../DD_ONLINE/prog/cGUIFloorManager.h"
 #include "../DD_ONLINE/prog/cLayoutSet.h"
+#include "../DD_ONLINE/prog/cLightQuestManager.h"
 #include "../DD_ONLINE/prog/cNetGameServer.h"
 #include "../DD_ONLINE/prog/cPawnQuestManager.h"
 #include "../DD_ONLINE/prog/cPlayPointInfo.h"
@@ -176,6 +180,10 @@
 #include "../DD_ONLINE/prog/uGUIsMenuBase.h"
 #include "../DD_ONLINE/prog/uOmInstancing.h"
 #include "../XFramework/uScrollCollisionGeometry.h"
+#include "../DD_ONLINE/prog/uShlAlchemy.h"
+#include "../DD_ONLINE/prog/uShlAlchemyTrap.h"
+#include "../DD_ONLINE/prog/uShlEmMultiLock.h"
+#include "../DD_ONLINE/prog/uShlStateSurveillance.h"
 #include "../DD_ONLINE/prog/uSoundSubMixer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -550,8 +558,6 @@ template MtTypedArray<CDataQuestPhaseEvent>::~MtTypedArray();
 template MtTypedArray<CDataQuestPhaseEventParam>::~MtTypedArray();
 
 template MtTypedArray<CDataQuestPointDetailRecord>::~MtTypedArray();
-
-template MtTypedArray<CDataQuestProcessState>::~MtTypedArray();
 
 template MtTypedArray<CDataQuestProgressWork>::~MtTypedArray();
 

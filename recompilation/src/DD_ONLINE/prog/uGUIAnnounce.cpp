@@ -137,9 +137,40 @@ __attribute__((weak)) void uGUIAnnounce::updateEntryBoardDepart() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIAnnounce::updateEntryBoardReentry() {
-    DDON_STUB("uGUIAnnounce::updateEntryBoardReentry")
-    /* stub */
+void uGUIAnnounce::updateEntryBoardReentry() {
+    s32 minMember = static_cast<sNetworkExt*>(sNetwork::getInstance())->mMyBoardInfo.memberNumMin;
+    s32 joinMember = static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getGameSessionMemberNum(true);
+    nQuest::SCHEDULE_ID scid(sQuestManagerExt::getInstance()->getNowCallEntryBoardScheduleID());
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+        if (joinMember < minMember) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isEntryLeader()) {
+                if (sQuestManagerExt::getInstance()->isEnableEntryBoard()) {
+                    bool t0 = sQuestManagerExt::getInstance()->isDistributionSituation(scid);
+                    if (!t0) {
+                        mType = 0;
+                        mFrame = 0.0f;
+                        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+                    }
+                } else {
+                    mType = 0;
+                    mFrame = 0.0f;
+                    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+                }
+            } else {
+                mType = 0;
+                mFrame = 0.0f;
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+            }
+        } else {
+            mType = 0;
+            mFrame = 0.0f;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+        }
+    } else {
+        mType = 0;
+        mFrame = 0.0f;
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+    }
 }
 
 void uGUIAnnounce::updateDisableContents() {
@@ -162,9 +193,26 @@ void uGUIAnnounce::updateDisableContents() {
     }
 }
 
-__attribute__((weak)) void uGUIAnnounce::updateNoSituation() {
-    DDON_STUB("uGUIAnnounce::updateNoSituation")
-    /* stub */
+void uGUIAnnounce::updateNoSituation() {
+    nQuest::SCHEDULE_ID scid(sQuestManagerExt::getInstance()->getNowCallEntryBoardScheduleID());
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+        if (static_cast<sAreaExt*>(sArea::getInstance())->isLobby()) {
+            bool t0 = sQuestManagerExt::getInstance()->isDistributionSituation(scid);
+            if (t0) {
+                mType = 0;
+                mFrame = 0.0f;
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+            }
+        } else {
+            mType = 0;
+            mFrame = 0.0f;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+        }
+    } else {
+        mType = 0;
+        mFrame = 0.0f;
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+    }
 }
 
 void uGUIAnnounce::updateEndWait() {

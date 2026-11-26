@@ -21,11 +21,23 @@ class MtUI;
 class MtVector3;
 class MtVector4;
 class cDraw;
+class cQuakeParam;
 namespace nFsm { class cCameraCtrl; }
+class sCameraExt;
 
 // Declarations
+class cCameraInfo;
 class cCameraQuake;
+class cCameraSeqInfo;
+class cCameraSeqInfo2;
 class uCameraBase;
+
+enum CAMSEQ_TYPE
+{
+    CAMSEQ_TYPE_FCURVE = 0,
+    CAMSEQ_TYPE_LINEAR = 1,
+    CAMSEQ_TYPE_FIXED = 2,
+};
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -34,10 +46,50 @@ using _Sizet = long unsigned int;
 using __uint64_t = long unsigned int;
 using __uintptr_t = __uint64_t;
 using f32 = float;
+using s16 = short;
 using s32 = int;
 using size_t = _Sizet;
+using u16 = unsigned short;
 using u32 = unsigned int;
 using uintptr = __uintptr_t;
+
+class cCameraInfo : public MtObject
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cCameraInfo();
+    cCameraInfo(const MtVector3& cameraPos, const MtVector3& targetPos, const f32 roll, const f32 fov);
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    cCameraInfo& operator=(const cCameraInfo& info);
+    cCameraInfo& operator=(const cCameraSeqInfo& info);
+public:
+    MtVector3 mCameraPos;  // offset: 0x10
+    MtVector3 mTargetPos;  // offset: 0x20
+    f32 mRoll;  // offset: 0x30
+    f32 mFov;  // offset: 0x34
+    static MyDTI DTI;
+};
 
 class cCameraQuake : public MtObject
 {
@@ -184,9 +236,91 @@ public:
     static MyDTI DTI;
 };
 
+class cCameraSeqInfo : public cCameraInfo
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cCameraSeqInfo();
+    cCameraSeqInfo(const MtVector3& cameraPos, const MtVector3& targetPos, const f32 roll, const f32 fov, const f32 time, const CAMSEQ_TYPE type, const u16 rate, const s16 quake, const f32 nearBlurLimit, const f32 farBlurLimit, const f32 nearVal, const f32 farVal, const f32 focal, const bool motionBlur, const bool invalidAdjust, const bool invAdjCam, const bool invAdjTar);
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    cCameraSeqInfo& operator=(const cCameraSeqInfo& info);
+public:
+    f32 mTime;  // offset: 0x38
+    CAMSEQ_TYPE mType;  // offset: 0x3c
+    u16 mRate;  // offset: 0x40
+    s16 mQuake;  // offset: 0x42
+    f32 mNearBlurLimit;  // offset: 0x44
+    f32 mFarBlurLimit;  // offset: 0x48
+    f32 mNear;  // offset: 0x4c
+    f32 mFar;  // offset: 0x50
+    f32 mFocal;  // offset: 0x54
+    bool mMotionBlur;  // offset: 0x58
+    bool mInvalidAdjust;  // offset: 0x59
+    bool mInvAdjCam;  // offset: 0x5a
+    bool mInvAdjTar;  // offset: 0x5b
+    static MyDTI DTI;
+};
+
+class cCameraSeqInfo2 : public cCameraSeqInfo
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cCameraSeqInfo2();
+    cCameraSeqInfo2(const MtVector3& cameraPos, const MtVector3& targetPos, const f32 roll, const f32 fov, const f32 time, const CAMSEQ_TYPE type, const u16 rate, const s16 quake, const f32 nearBlurLimit, const f32 farBlurLimit, const f32 nearVal, const f32 farVal, const f32 focal, const bool motionBlur, const bool invalidAdjust, const bool invAdjCam, const bool invAdjTar);
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+public:
+    static MyDTI DTI;
+};
+
 class uCameraBase : public uCamera
 {
+    friend class cQuakeParam;
     friend class nFsm::cCameraCtrl;
+    friend class sCameraExt;
 public:
     enum FOV_TYPE
     {
@@ -279,7 +413,19 @@ public:
     static MyDTI DTI;
 };
 
+inline void* cCameraInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* cCameraQuake::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCameraSeqInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCameraSeqInfo2::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 

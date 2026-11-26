@@ -9,6 +9,7 @@
 
 // Forward declarations
 class MtString;
+class sCaplinkManager;
 
 // Declarations
 namespace nCaplink { class NotifyAns; }
@@ -22,6 +23,7 @@ using s8 = signed char;
 namespace nCaplink {
     class NotifyAns : public nCaplink::ContextListener
     {
+        friend class ::sCaplinkManager;
     public:
         NotifyAns();
         virtual void init();  // vtable slot 6

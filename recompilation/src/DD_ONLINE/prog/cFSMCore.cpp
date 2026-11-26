@@ -9,6 +9,7 @@
 #include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cAIFSM.h"
 #include "../../XFramework/cAIObject.h"
+#include "../../XFramework/cAIService.h"
 #include "../../XFramework/cAISvUserProcess.h"
 #include "../../XFramework/cAIUserProcess.h"
 #include "../../XFramework/cResource.h"
@@ -90,22 +91,30 @@ f32 cFSMCore::getCountState() {
 }
 
 cFSMCore::cFSMCore() {
-    DDON_STUB("cFSMCore::cFSMCore")
-    /* stub */
+    mpOwner = nullptr;
+    mIsEnable = false;
+    mCountState = 0.0f;
+    mCountFSM = 0.0f;
+    mChangeCountState = -1.0f;
+    mFSM.cAIFSM::reset();
+    mFSM.setDefaultUpdateFunc(static_cast<cAIUserProcessCallback::CALLBACK_FUNC>(&::cFSMCore::stateDefUpdate), 0u);
+    cAIService* t0 = (sAI::mpInstance)->sAI::getService(cAISvUserProcess::DTI, static_cast<MT_CTSTR>(nullptr));
+    static_cast<cAISvUserProcess*>(t0)->addContainer(static_cast<cAIUserProcessContainer*>(new (16u) cAIFSMProcessContainer("Finish", static_cast<const MtDTI*>(&cFSMCore::DTI), static_cast<cAIUserProcessCallback::CALLBACK_FUNC>(&::cFSMCore::stateUpdateFinish), static_cast<cAIUserProcessCallback::CALLBACK_FUNC>(0), static_cast<const MtDTI*>(&cAICopiableParameter::DTI), static_cast<MT_CTSTR>(nullptr))));
 }
 
 cFSMCore::~cFSMCore() {
     mFSM.cAIFSM::reset();
 }
 
-__attribute__((weak)) void cFSMCore::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMCore::createProperty")
-    /* stub */
+void cFSMCore::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mFSM", static_cast<MtObject*>(&mFSM), 0u, 0u);
+    createPropertyFSM(s);
+    this->cAIObject::createProperty(s);
 }
 
-__attribute__((weak)) void cFSMCore::createPropertyFSM(MtPropertyList& s) {
-    DDON_STUB("cFSMCore::createPropertyFSM")
-    /* stub */
+void cFSMCore::createPropertyFSM(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "CountState", reinterpret_cast<MT_MFUNC>(&::cFSMCore::getCountState), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "CountFSM", &mCountFSM, 0u, 0u);
 }
 
 inline cFSMCore::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

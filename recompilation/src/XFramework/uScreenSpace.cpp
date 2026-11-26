@@ -7,6 +7,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -64,9 +65,32 @@ MtUI* uScreenSpace::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uScreenSpace::createProperty(MtPropertyList& prop_list) {
-    DDON_STUB("uScreenSpace::createProperty")
-    /* stub */
+void uScreenSpace::createProperty(MtPropertyList& prop_list) {
+    this->cUnit::createProperty(prop_list);
+    prop_list << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mTextureSize", reinterpret_cast<MT_MFUNC>(&::uScreenSpace::getTextureSize), reinterpret_cast<MT_MFUNC>(&::uScreenSpace::setTextureSize), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mpCamera", reinterpret_cast<MtObject* *>(&mpCamera), 16u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mCameraPos", &mCameraPos, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mCameraUp", &mCameraUp, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mCameraTarget", &mCameraTarget, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mNearPlane", &mNearPlane, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mFarPlane", &mFarPlane, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mFOV", &mFOV, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mSceneDrawMode", &mSceneDrawMode, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mSceneView", &mSceneView, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mClearColor", &mClearColor, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mDepthToAlpha", &mDepthToAlpha, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mFXAA", &mFXAA, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mDistortionEnabled", reinterpret_cast<MT_MFUNC>(&::uScreenSpace::isDistortionEnabled), reinterpret_cast<MT_MFUNC>(&::uScreenSpace::setDistortionEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mpColorTarget", reinterpret_cast<MtObject* *>(&mpColorTarget), 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mpDistortionTex", reinterpret_cast<MtObject* *>(&mpDistortionTex), 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mpRenderTarget", "resource", reinterpret_cast<MT_MFUNC>(&::uScreenSpace::getRenderTarget), reinterpret_cast<MT_MFUNC>(&::uScreenSpace::setRenderTarget), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mPass", &mPass, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mLayer", &mLayer, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mDraw2D", &mDraw2D, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mAttribute", &mAttribute, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mDepth", &mDepth, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mPointTable", static_cast<MtObject*>(&mPointTable), 0u, 0u);
 }
 
 static auto ddon_emit_0x01b63d60 __attribute__((used)) = &uScreenSpace::setTextureSize;
@@ -102,9 +126,19 @@ void uScreenSpace::setRenderTarget(rRenderTargetTexture* p_rt) {
 
 static auto ddon_emit_0x01b63d80 __attribute__((used)) = &uScreenSpace::isDistortionEnabled;
 
-__attribute__((weak)) void uScreenSpace::setDistortionEnable(bool enable) {
-    DDON_STUB("uScreenSpace::setDistortionEnable")
-    /* stub */
+void uScreenSpace::setDistortionEnable(bool enable) {
+    static const u32 size[6] = {
+        128,
+        256,
+        512,
+        1024,
+        2048,
+        0,
+    };
+    if (mDistortionEnabled != enable) {
+        mDistortionEnabled = enable;
+        createDistortion(size[mTextureSize], size[mTextureSize]);
+    }
 }
 
 __attribute__((weak)) s32 uScreenSpace::createTexture(u32 sz) {

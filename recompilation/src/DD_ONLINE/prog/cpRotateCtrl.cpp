@@ -5,6 +5,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cUnit.h"
@@ -66,9 +67,15 @@ __attribute__((weak)) void cpRotateCtrl::update() {
     /* stub */
 }
 
-__attribute__((weak)) void cpRotateCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpRotateCtrl::createProperty")
-    /* stub */
+void cpRotateCtrl::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsBusy", &mIsBusy, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFinalQuat", &mFinalQuat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInterSpeed", &mInterSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDefaultInterSpeed", &mDefaultInterSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDefaultInterFrame", &mDefaultInterFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAngleDiffThreshold", &mAngleDiffThreshold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDisableReset", &mDisableReset, 0u, 0u);
 }
 
 __attribute__((weak)) void cpRotateCtrl::setFinalQuat(const MtQuaternion& FinalQuat, f32 speed) {
@@ -81,14 +88,47 @@ __attribute__((weak)) void cpRotateCtrl::setFinalQuatByFrame(const MtQuaternion&
     /* stub */
 }
 
-__attribute__((weak)) void cpRotateCtrl::setFinalAngleY(f32 AngleY, f32 speed) {
-    DDON_STUB("cpRotateCtrl::setFinalAngleY")
-    /* stub */
+void cpRotateCtrl::setFinalAngleY(f32 AngleY, f32 speed) {
+    MtQuaternion frame56(nDDOMath::calcQuaternionFromRotationY(AngleY));
+    if (mpModel == nullptr) {
+        return;
+    }
+    if (0.0f > speed) {
+        mInterSpeed = mDefaultInterSpeed;
+    } else {
+        mInterSpeed = speed;
+    }
+    mIsBusy = true;
+    mFinalQuat.x = frame56.x;
+    mFinalQuat.y = frame56.y;
+    mFinalQuat.z = frame56.z;
+    mFinalQuat.w = frame56.w;
+    mLastQuat.x = mpModel->mQuat.x;
+    mLastQuat.y = mpModel->mQuat.y;
+    mLastQuat.z = mpModel->mQuat.z;
+    mLastQuat.w = mpModel->mQuat.w;
 }
 
-__attribute__((weak)) void cpRotateCtrl::setFinalAngleYByFrame(f32 AngleY, f32 frame) {
-    DDON_STUB("cpRotateCtrl::setFinalAngleYByFrame")
-    /* stub */
+void cpRotateCtrl::setFinalAngleYByFrame(f32 AngleY, f32 frame) {
+    MtQuaternion frame56(nDDOMath::calcQuaternionFromRotationY(AngleY));
+    f32 speed = convertFrameToSpeed(frame56, frame);
+    if (mpModel == nullptr) {
+        return;
+    }
+    if (0.0f > speed) {
+        mInterSpeed = mDefaultInterSpeed;
+    } else {
+        mInterSpeed = speed;
+    }
+    mIsBusy = true;
+    mFinalQuat.x = frame56.x;
+    mFinalQuat.y = frame56.y;
+    mFinalQuat.z = frame56.z;
+    mFinalQuat.w = frame56.w;
+    mLastQuat.x = mpModel->mQuat.x;
+    mLastQuat.y = mpModel->mQuat.y;
+    mLastQuat.z = mpModel->mQuat.z;
+    mLastQuat.w = mpModel->mQuat.w;
 }
 
 __attribute__((weak)) void cpRotateCtrl::setFinalDir(const MtVector3& dir, f32 speed) {

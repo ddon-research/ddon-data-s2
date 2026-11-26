@@ -22,7 +22,6 @@ class cNetGameServer;
 class rGUIMessage;
 class rTexture;
 class rTextureJpeg;
-class uGUIPhotoAlbum;
 
 // Declarations
 class sScreenShot;
@@ -42,7 +41,6 @@ using u8 = unsigned char;
 class sScreenShot : public cSystem
 {
     friend class cNetGameServer;
-    friend class uGUIPhotoAlbum;
 public:
     enum
     {

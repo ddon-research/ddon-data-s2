@@ -55,6 +55,7 @@ class sSoundExt;
 class sSoundManager;
 class sUnit;
 class sUnitManager;
+class sWeatherManager;
 class sZone;
 class sZoneUnitCtrl;
 class uGUIMenuComm;
@@ -110,6 +111,7 @@ class cSystem : public MtObject
     friend class sSoundManager;
     friend class sUnit;
     friend class sUnitManager;
+    friend class sWeatherManager;
     friend class sZone;
     friend class sZoneUnitCtrl;
     friend class uGUIMenuComm;

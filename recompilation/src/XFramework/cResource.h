@@ -17,11 +17,13 @@ class MtStream;
 class MtString;
 class MtTime;
 class MtUI;
+class cLayoutSet;
 class rAIConditionTree;
 class rAIFSM;
 class rAIPathBase;
 class rArchive;
 class rCameraList;
+class rCameraParamList;
 class rCharacterEdit;
 class rCollisionHeightField;
 class rDeformWeightMap;
@@ -29,12 +31,13 @@ class rDynamicSbc;
 class rEffect2D;
 class rEffectAnim;
 class rEffectList;
-class rEffectProvider;
 class rEffectStrip;
 class rGUI;
 class rGUIIconInfo;
 class rGUIMessage;
 class rGeometry2;
+class rGrass;
+class rMaterial;
 class rModel;
 class rMotionList;
 class rNavigationMesh;
@@ -43,6 +46,7 @@ class rOccluder;
 class rRenderTargetTexture;
 class rScheduler;
 class rShaderPackage;
+class rShlParamList;
 class rSky;
 class rSoundAttributeSe;
 class rSoundBank;
@@ -57,11 +61,15 @@ class rTextureJpeg;
 class rVertices;
 class rVibration;
 class rWaypoint;
+class rkThinkData;
+class sArchiveManager;
 class sResource;
 class sSoundExt;
 class uCnsDDOIK;
 class uCnsIK;
 class uEffect;
+class uGUIBase;
+class uSimSoftBody;
 
 // Declarations
 class cResource;
@@ -80,11 +88,13 @@ using u64 = __uint64_t;
 
 class cResource : public MtObject
 {
+    friend class cLayoutSet;
     friend class rAIConditionTree;
     friend class rAIFSM;
     friend class rAIPathBase;
     friend class rArchive;
     friend class rCameraList;
+    friend class rCameraParamList;
     friend class rCharacterEdit;
     friend class rCollisionHeightField;
     friend class rDeformWeightMap;
@@ -92,12 +102,13 @@ class cResource : public MtObject
     friend class rEffect2D;
     friend class rEffectAnim;
     friend class rEffectList;
-    friend class rEffectProvider;
     friend class rEffectStrip;
     friend class rGUI;
     friend class rGUIIconInfo;
     friend class rGUIMessage;
     friend class rGeometry2;
+    friend class rGrass;
+    friend class rMaterial;
     friend class rModel;
     friend class rMotionList;
     friend class rNavigationMesh;
@@ -106,7 +117,10 @@ class cResource : public MtObject
     friend class rRenderTargetTexture;
     friend class rScheduler;
     friend class rShaderPackage;
+    friend class rShlParamList;
     friend class rSky;
+
+    friend class rSoundSource;
     friend class rSoundAttributeSe;
     friend class rSoundBank;
     friend class rSoundCurveSet;
@@ -127,11 +141,15 @@ class cResource : public MtObject
     friend class rVertices;
     friend class rVibration;
     friend class rWaypoint;
+    friend class rkThinkData;
+    friend class sArchiveManager;
     friend class sResource;
     friend class sSoundExt;
     friend class uCnsDDOIK;
     friend class uCnsIK;
     friend class uEffect;
+    friend class uGUIBase;
+    friend class uSimSoftBody;
 public:
     enum CONVERT_TYPE
     {

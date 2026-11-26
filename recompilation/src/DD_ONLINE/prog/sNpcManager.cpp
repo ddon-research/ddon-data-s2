@@ -31,6 +31,7 @@
 #include "nDDOUtility.h"
 #include "nHumanMsg.h"
 #include "nJobParam.h"
+#include "nNpc.h"
 #include "nQuest.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUIMessage.h"
@@ -69,6 +70,23 @@
 
 namespace nNpc {
 extern const u32 commonVoiceLoadDataNum = 36;
+}
+
+namespace nNpc {
+extern const nNpc::voiceLoadTbl voiceCateArcLoadData[12] = {
+    {0, "npvt_m_01"},
+    {1, "npvt_m_02"},
+    {2, "npvt_m_03"},
+    {3, "npvt_m_04"},
+    {4, "npvt_m_05"},
+    {5, "npvt_m_06"},
+    {6, "npvt_f_01"},
+    {7, "npvt_f_02"},
+    {8, "npvt_f_03"},
+    {9, "npvt_f_04"},
+    {10, "npvt_f_05"},
+    {11, "npvt_f_06"},
+};
 }
 
 const MtDTI& sNpcManager::getDTI() const {
@@ -122,8 +140,28 @@ sNpcManager::sNpcManager() {
 }
 
 __attribute__((noinline)) sNpcManager::~sNpcManager() {
-    DDON_STUB("sNpcManager::~sNpcManager")
-    /* stub */
+    releaseResource();
+    if (mpNpcClassNameMsg != nullptr) {
+        mpNpcClassNameMsg->release();
+        mpNpcClassNameMsg = nullptr;
+    }
+    if (mpNpcNameMsg != nullptr) {
+        mpNpcNameMsg->release();
+        mpNpcNameMsg = nullptr;
+    }
+    if (mpLedgerList != nullptr) {
+        mpLedgerList->release();
+        mpLedgerList = nullptr;
+    }
+    if (mpNpcMeetingPlace != nullptr) {
+        mpNpcMeetingPlace->release();
+        mpNpcMeetingPlace = nullptr;
+    }
+    sNpcManager::mpInstance = nullptr;
+    MtMemoryAllocator::getAllocator(sNpcManager::DTI)->memFree(static_cast<void*>(mpNoraPawnIdList));
+    mpNoraPawnIdList = nullptr;
+    mIsRegisterdNoraPawnList = false;
+    sArchiveManager::getInstance()->returnTicket(mExMotTicket);
 }
 
 void sNpcManager::createProperty(MtPropertyList& s) {
@@ -577,12 +615,12 @@ __attribute__((weak)) bool sNpcManager::isHaveFunction(u32 NpcId, u32 FunctionId
                 } else {
                     for (unsigned int i0_3 = 0;;) {
                         const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t4 = pNpcInfo->getInstitutionList();
-                        const unsigned long t6 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t4) + 24);
-                        unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t6 + (static_cast<unsigned long>(i0_3) * 8)) + 0);
-                        if (t7 != 0) {
+                        MtObject* * t6 = t4.mpArray;
+                        MtObject* t7 = t6[i0_3];
+                        if (t7 != nullptr) {
                             const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t8 = pNpcInfo->getInstitutionList();
-                            const unsigned long t10 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t8) + 24);
-                            unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10 + (static_cast<unsigned long>(i0_3) * 8)) + 0);
+                            MtObject* * t10 = t8.mpArray;
+                            MtObject* t11 = t10[i0_3];
                             unsigned int t12 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t11) + 40);
                             if (t12 == FunctionId) {
                                 return true;
@@ -1179,9 +1217,30 @@ bool sNpcManager::isExistNpc(u32 NpcId) {
     }
 }
 
-__attribute__((weak)) void sNpcManager::checkCheckCollision() {
-    DDON_STUB("sNpcManager::checkCheckCollision")
-    /* stub */
+void sNpcManager::checkCheckCollision() {
+    if (sControlManager::getInstance()->mRefArray.mLength != 0) {
+        sControlManager* v0_0 = sControlManager::getInstance();
+        for (unsigned int i0_3 = 0;;) {
+            if (v0_0->mRefArray.mpArray[static_cast<int>(i0_3)] != nullptr) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_0->mRefArray.mpArray[static_cast<int>(i0_3)]) + 104)) == 16) {
+                    uDDOModel* t0 = static_cast<uControl*>(v0_0->mRefArray.mpArray[static_cast<int>(i0_3)])->getObjModel();
+                    if (t0 != nullptr) {
+                        if (static_cast<uControl*>(v0_0->mRefArray.mpArray[static_cast<int>(i0_3)])->isMaster()) {
+                            t0->getObjCollisionPtr()->createNodeFromIndex(15u, 0, false, 0xFFFFFFFFu);
+                        } else {
+                            t0->getObjCollisionPtr()->killNode(15u, 0u);
+                        }
+                    }
+                }
+            }
+            if ((i0_3 + 1u) < sControlManager::getInstance()->mRefArray.mLength) {
+                v0_0 = sControlManager::getInstance();
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 void sNpcManager::reqChangeEquipMyRoom(uNpc* pNpc, s32 req) {
@@ -1235,9 +1294,17 @@ __attribute__((weak)) u32 sNpcManager::getCommonVoiceCategory(u32 voiceType) {
     return {};
 }
 
-__attribute__((weak)) MT_CTSTR sNpcManager::getCommonVoiceArcName(u32 voiceCategory) {
-    DDON_STUB("sNpcManager::getCommonVoiceArcName")
-    return {};
+MT_CTSTR sNpcManager::getCommonVoiceArcName(u32 voiceCategory) {
+    u32 idx = 0;
+    const nNpc::voiceLoadTbl* p1 = nNpc::voiceCateArcLoadData;
+    do {
+        if (p1->Type == voiceCategory) {
+            return nNpc::voiceCateArcLoadData[idx].Tag;
+        }
+        idx += 1u;
+        p1 += static_cast<int>(1);
+    } while (idx <= 11u);
+    return "";
 }
 
 bool sNpcManager::isInvalidCommonVoiceArc(u32 voiceCategory) {

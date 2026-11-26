@@ -69,9 +69,21 @@ __attribute__((weak)) void cpPathFinding::setup() {
     /* stub */
 }
 
-__attribute__((weak)) void cpPathFinding::move() {
-    DDON_STUB("cpPathFinding::move")
-    /* stub */
+void cpPathFinding::move() {
+    sAI* t0 = sAI::getInstance();
+    MtVector3 frame72(sWorldOffset::getInstance()->getOffsetPos(mOldOwnerRealPos));
+    MtVector3 frame88(sWorldOffset::getInstance()->getOffsetPos(mOldTargetRealPos));
+    cAISvNavPathFinding* p_nav_path = static_cast<sAIExt*>(t0)->getNavigationMeshService(frame72, frame88);
+    if (p_nav_path == nullptr) {
+        return;
+    }
+    u32 now_uid = static_cast<sAIExt*>(sAI::getInstance())->getNavigationMeshUID(p_nav_path);
+    if (mUseMeshUID == now_uid) {
+        return;
+    }
+    mForceUpdate = true;
+    mUseMeshUID = now_uid;
+    mpNavTrace->reset(false);
 }
 
 __attribute__((weak)) void cpPathFinding::kill() {

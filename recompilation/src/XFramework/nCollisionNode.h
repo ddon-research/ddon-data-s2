@@ -4,17 +4,20 @@
 #include <cstddef>
 
 // Dependencies
+#include "../MT/MtCollection.h"
 #include "../MT/MtCollisionUtil.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "cDynamicBVHCollision.h"
 #include "../generated/shared/nCollisionDefine.h"
 
 // Forward declarations
 class MtAABB;
 class MtAllocator;
+class MtArray;
 namespace MtCollisionUtil { class MtArrayEx; }
 namespace MtCollisionUtil { class MtDtiObject; }
 class MtColor;
@@ -35,6 +38,7 @@ class uModel;
 
 // Declarations
 namespace nCollision { class cCollisionNode; }
+namespace nCollision { class cCollisionNodeGroup; }
 namespace nCollision { class cCollisionNodeObject; }
 namespace nCollision { class cGeometry; }
 namespace nCollision { class cGeometryJointGroup; }
@@ -60,6 +64,53 @@ using s32 = int;
 using size_t = _Sizet;
 using u16 = unsigned short;
 using uintptr = __uintptr_t;
+
+namespace nCollision {
+    class cCollisionNodeGroup : public ::MtObject
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cCollisionNodeGroup();
+        virtual ~cCollisionNodeGroup();
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        void clearGroup();
+        bool registNode(nCollision::cCollisionNode& node);
+        const MtAABB& getBoundingAABB() const;
+        nCollision::cCollisionNode& getNode(u32 NodeIndex) const;
+        u32 getNodeNum() const;
+        void registDynamicBVHNode(cDynamicBVHCollision::Node* pDynamicBVHNode);
+        void* memAlloc(size_t);
+        void memFree(void*);
+        size_t memSize(void*);
+    protected:
+        MtAABB mAreaAABB;  // offset: 0x10
+        MtArray mGroupNodeArray;  // offset: 0x30
+        cDynamicBVHCollision::Node* mpDynamicBVHNode;  // offset: 0x50
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nCollision
 
 namespace nCollision {
     class cMotionSequenceSupport : public ::MtObject
@@ -641,6 +692,10 @@ inline void* nCollision::cCollisionNode::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void* nCollision::cCollisionNodeGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nCollision::cCollisionNodeObject::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -667,6 +722,17 @@ inline void* nCollision::cGeometryJointGroup::operator new(size_t sz, void* p_ad
 
 inline void* nCollision::cMotionSequenceSupport::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nCollision::cMotionSequenceSupport::cMotionSequenceSupport() {
+    this->mFlgActive = true;
+    this->mBitCheckRule = 2;
+    this->mTargetBeforeMotionNo = 0;
+    this->mTargetBeforeMotionFrame = 0.0f;
+    this->mTargetSequenceBit = 0;
+    this->mNowSequenceBit = 0;
+    this->mTargetMotionListIndex = 0;
+    this->mTargetMotionSequencePageNo = 0;
 }
 
 inline void* nCollision::cObjectBase::operator new(size_t sz, void* p_addr) {

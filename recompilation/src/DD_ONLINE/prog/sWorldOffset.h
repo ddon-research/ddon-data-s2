@@ -112,6 +112,14 @@ inline void* sWorldOffset::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline sWorldOffset* sWorldOffset::getInstance() {
+    return ::sWorldOffset::mpInstance;
+}
+
+inline bool sWorldOffset::isWorldOffset() const {
+    return this->mEnabelWorldOffset;
+}
+
 inline s32 sWorldOffset::getX() {
     return this->mIdX;
 }

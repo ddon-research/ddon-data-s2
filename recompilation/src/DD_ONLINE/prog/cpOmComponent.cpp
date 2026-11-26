@@ -121,9 +121,9 @@ void cpOmBase::setOwner(MtObject* pOwner) {
     mpModel = static_cast<uOmModel*>(pOwner);
 }
 
-__attribute__((weak)) void cpOmBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpOmBase::createProperty")
-    /* stub */
+void cpOmBase::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mbLinkNav", reinterpret_cast<MT_MFUNC>(&::cpOmBase::getLinkNav), reinterpret_cast<MT_MFUNC>(&::cpOmBase::setLinkNav), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mNavOBB", static_cast<MtObject*>(&mNavOBB), 0u, 0u);
 }
 
 __attribute__((weak)) void cpOmBase::setTouch(uDDOModel* pUnit) {
@@ -309,9 +309,9 @@ __attribute__((weak)) void cpOmLadder::move() {
 __attribute__((weak)) void cpOmLadder::kill() {
 }
 
-__attribute__((weak)) void cpOmLadder::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpOmLadder::createProperty")
-    /* stub */
+void cpOmLadder::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mHeight", &mHeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\206\215\350\250\255\345\256\232", static_cast<MT_MFUNC>(&::cpOmLadder::setupModelUnit), 10u);
 }
 
 __attribute__((weak)) void cpOmLadder::compMoveAfter() {

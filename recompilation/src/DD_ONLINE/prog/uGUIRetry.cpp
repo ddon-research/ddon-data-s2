@@ -235,9 +235,184 @@ void uGUIRetry::reqDecideAnim() {
 __attribute__((weak)) void uGUIRetry::updateInit() {
 }
 
-__attribute__((weak)) void uGUIRetry::updateList() {
-    DDON_STUB("uGUIRetry::updateList")
-    /* stub */
+void uGUIRetry::updateList() {
+    sGUI* t0 = sGUI::getInstance();
+    u8 t1 = static_cast<sGUIExt*>(t0)->mSCM.mRno0;
+    if (t1 == 2) {
+        u32 t2 = static_cast<sGUIExt*>(t0)->mSCM.mMode;
+        if (t2 == 2) {
+            cGUIInstAnimation* t3 = mpInstAnimWindow;
+            setInstanceVisible(static_cast<cGUIInstance*>(t3), false);
+        } else {
+            sMenu* t4 = sMenu::getInstance();
+            if (t4->mPawnRevive.isUpdateCursor()) {
+                u32 t6 = mType;
+                if (t6 == 2) {
+                    uGUIRetrySelect* t7 = mpGUISelect;
+                    if (t7 != nullptr) {
+                        cHorizontalList* t8 = t7->mpListCtrl;
+                        if (t8 != nullptr) {
+                            s32 t9 = t8->getCurrentPos();
+                            cVerticalList* t10 = mpListCtrl;
+                            if (t10 != nullptr) {
+                                t10->setCurrentPos(t9, false);
+                                uGUIRetrySelect* t12 = mpGUISelect;
+                                bool t13 = mpGUISelect->isDecide();
+                                mIsDecide = t13;
+                                cGUIInstAnimation* t21 = mpInstAnimWindow;
+                                setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                            } else {
+                                bool t13 = mpGUISelect->isDecide();
+                                mIsDecide = t13;
+                                cGUIInstAnimation* t21 = mpInstAnimWindow;
+                                setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                            }
+                        } else {
+                            cVerticalList* t10 = mpListCtrl;
+                            if (t10 != nullptr) {
+                                t10->setCurrentPos(0, false);
+                                uGUIRetrySelect* t12 = mpGUISelect;
+                                bool t13 = mpGUISelect->isDecide();
+                                mIsDecide = t13;
+                                cGUIInstAnimation* t21 = mpInstAnimWindow;
+                                setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                            } else {
+                                bool t13 = mpGUISelect->isDecide();
+                                mIsDecide = t13;
+                                cGUIInstAnimation* t21 = mpInstAnimWindow;
+                                setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                            }
+                        }
+                    } else {
+                        cVerticalList* t19 = mpListCtrl;
+                        if (t19 != nullptr) {
+                            t19->setCurrentPos(2, false);
+                            mIsDecide = true;
+                            cGUIInstAnimation* t21 = mpInstAnimWindow;
+                            setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                        } else {
+                            mIsDecide = true;
+                            cGUIInstAnimation* t21 = mpInstAnimWindow;
+                            setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                        }
+                    }
+                } else {
+                    bool t14 = mIsDecide;
+                    if (!t14) {
+                        bool t15 = mIsCancel;
+                        if (!t15) {
+                            cVerticalList* t16 = mpListCtrl;
+                            if (t16 != nullptr) {
+                                t16->execute();
+                                mCursor.uGUIBase::cReferenceUIVlCursor::update();
+                                cGUIInstAnimation* t21 = mpInstAnimWindow;
+                                setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                            } else {
+                                mCursor.uGUIBase::cReferenceUIVlCursor::update();
+                                cGUIInstAnimation* t21 = mpInstAnimWindow;
+                                setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                            }
+                        } else {
+                            mCursor.uGUIBase::cReferenceUIVlCursor::update();
+                            cGUIInstAnimation* t21 = mpInstAnimWindow;
+                            setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                        }
+                    } else {
+                        mCursor.uGUIBase::cReferenceUIVlCursor::update();
+                        cGUIInstAnimation* t21 = mpInstAnimWindow;
+                        setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                    }
+                }
+            } else {
+                cGUIInstAnimation* t21 = mpInstAnimWindow;
+                setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+            }
+        }
+    } else {
+        sMenu* t4 = sMenu::getInstance();
+        if (t4->mPawnRevive.isUpdateCursor()) {
+            u32 t6 = mType;
+            if (t6 == 2) {
+                uGUIRetrySelect* t7 = mpGUISelect;
+                if (t7 != nullptr) {
+                    cHorizontalList* t8 = t7->mpListCtrl;
+                    if (t8 != nullptr) {
+                        s32 t9 = t8->getCurrentPos();
+                        cVerticalList* t10 = mpListCtrl;
+                        if (t10 != nullptr) {
+                            t10->setCurrentPos(t9, false);
+                            uGUIRetrySelect* t12 = mpGUISelect;
+                            bool t13 = mpGUISelect->isDecide();
+                            mIsDecide = t13;
+                            cGUIInstAnimation* t21 = mpInstAnimWindow;
+                            setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                        } else {
+                            bool t13 = mpGUISelect->isDecide();
+                            mIsDecide = t13;
+                            cGUIInstAnimation* t21 = mpInstAnimWindow;
+                            setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                        }
+                    } else {
+                        cVerticalList* t10 = mpListCtrl;
+                        if (t10 != nullptr) {
+                            t10->setCurrentPos(0, false);
+                            uGUIRetrySelect* t12 = mpGUISelect;
+                            bool t13 = mpGUISelect->isDecide();
+                            mIsDecide = t13;
+                            cGUIInstAnimation* t21 = mpInstAnimWindow;
+                            setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                        } else {
+                            bool t13 = mpGUISelect->isDecide();
+                            mIsDecide = t13;
+                            cGUIInstAnimation* t21 = mpInstAnimWindow;
+                            setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                        }
+                    }
+                } else {
+                    cVerticalList* t19 = mpListCtrl;
+                    if (t19 != nullptr) {
+                        t19->setCurrentPos(2, false);
+                        mIsDecide = true;
+                        cGUIInstAnimation* t21 = mpInstAnimWindow;
+                        setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                    } else {
+                        mIsDecide = true;
+                        cGUIInstAnimation* t21 = mpInstAnimWindow;
+                        setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                    }
+                }
+            } else {
+                bool t14 = mIsDecide;
+                if (!t14) {
+                    bool t15 = mIsCancel;
+                    if (!t15) {
+                        cVerticalList* t16 = mpListCtrl;
+                        if (t16 != nullptr) {
+                            t16->execute();
+                            mCursor.uGUIBase::cReferenceUIVlCursor::update();
+                            cGUIInstAnimation* t21 = mpInstAnimWindow;
+                            setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                        } else {
+                            mCursor.uGUIBase::cReferenceUIVlCursor::update();
+                            cGUIInstAnimation* t21 = mpInstAnimWindow;
+                            setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                        }
+                    } else {
+                        mCursor.uGUIBase::cReferenceUIVlCursor::update();
+                        cGUIInstAnimation* t21 = mpInstAnimWindow;
+                        setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                    }
+                } else {
+                    mCursor.uGUIBase::cReferenceUIVlCursor::update();
+                    cGUIInstAnimation* t21 = mpInstAnimWindow;
+                    setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+                }
+            }
+        } else {
+            cGUIInstAnimation* t21 = mpInstAnimWindow;
+            setInstanceVisible(static_cast<cGUIInstance*>(t21), true);
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIRetry::updateConfirm() {

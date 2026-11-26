@@ -161,9 +161,15 @@ void uGUIGauge::kill() {
     mpGUIRes = nullptr;
 }
 
-__attribute__((weak)) void uGUIGauge::move() {
-    DDON_STUB("uGUIGauge::move")
-    /* stub */
+void uGUIGauge::move() {
+    this->uGUIBase::move();
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->mIsPhotoMode) {
+        return;
+    }
+    if (getInstNull() == nullptr) {
+        return;
+    }
+    getInstNull()->setVisible(mVisibleState);
 }
 
 __attribute__((weak)) void uGUIGauge::addGauge(s32 memberIndex) {
@@ -171,9 +177,16 @@ __attribute__((weak)) void uGUIGauge::addGauge(s32 memberIndex) {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGauge::removeGauge(s32 memberIndex) {
-    DDON_STUB("uGUIGauge::removeGauge")
-    /* stub */
+void uGUIGauge::removeGauge(s32 memberIndex) {
+    for (u32 gauge_id = 1; gauge_id <= 7u; gauge_id += 1u) {
+        if (mTblGaugeInfo[gauge_id].mEnable) {
+            if (mTblGaugeInfo[gauge_id].mMemberIndex == memberIndex) {
+                mTblGaugeInfo[gauge_id].mEnable = false;
+                mTblGaugeInfo[gauge_id].mMemberIndex = -1;
+                return;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIGauge::updateInit() {
@@ -355,9 +368,17 @@ inline void uGUIGauge::cGaugeInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIGauge::cGaugeInfo::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void uGUIGauge::cGaugeInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGUIGauge::cGaugeInfo::createProperty")
-    /* stub */
+void uGUIGauge::cGaugeInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEnable", &mEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpdate", &mUpdate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpdateEnd", &mUpdateEnd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMemberIndex", &mMemberIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLvLatest", &mLvLatest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJobLatest", &mJobLatest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHpLatest", &mHpLatest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHpMaxLatest", &mHpMaxLatest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStLatest", &mStLatest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStMaxLatest", &mStMaxLatest, 0u, 0u);
 }
 
 inline uGUIGauge::cGaugeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -373,9 +394,17 @@ u32 uGUIGauge::IOcdIcon::getOcdIconParamNum() const {
     return 3;
 }
 
-__attribute__((weak)) nGUIExt::OCD_ICON_CATEGORY uGUIGauge::IOcdIcon::getOcdIconCategory(u32 paramIndex) const {
-    DDON_STUB("uGUIGauge::IOcdIcon::getOcdIconCategory")
-    return {};
+nGUIExt::OCD_ICON_CATEGORY uGUIGauge::IOcdIcon::getOcdIconCategory(u32 paramIndex) const {
+    static const nGUIExt::OCD_ICON_CATEGORY categorys[3] = {
+        static_cast<const nGUIExt::OCD_ICON_CATEGORY>(2),
+        static_cast<const nGUIExt::OCD_ICON_CATEGORY>(0),
+        static_cast<const nGUIExt::OCD_ICON_CATEGORY>(1),
+    };
+    if (paramIndex <= 2u) {
+        return categorys[paramIndex];
+    } else {
+        return nGUIExt::OCD_ICON_CATEGORY_NUM;
+    }
 }
 
 nGUIExt::OcdIconParam& uGUIGauge::IOcdIcon::refOcdIconParam(u32 paramIndex) {

@@ -203,8 +203,23 @@ class cMenuTreasuresLot;
 class cMenuTreasuresLotAnnounce;
 class cMenuUILargeSetting;
 class cMenuUpdateCommunityList;
+class cNetGameServer;
+class cPlDeadFlow;
 namespace nMenu { struct MENU_PARTS; }
+class sInputManager;
+class uGUIAreaMaster;
+class uGUICharacterEditPopCard;
+class uGUIClanScoutEntry;
+class uGUIClanSearch;
 class uGUICommunityList;
+class uGUIEntryBoard;
+class uGUIEntryBoardInfo;
+class uGUIGameMenu;
+class uGUIMissionInfo;
+class uGUINewspaper;
+class uGUIOption;
+class uGUIPopTopSel;
+class uGUIRetry;
 
 // Declarations
 class sMenu;
@@ -218,7 +233,24 @@ using u32 = unsigned int;
 
 class sMenu : public cSystem
 {
+    friend class cMenuClanInfoDisp;
+    friend class cMenuReadyCheck;
+    friend class cNetGameServer;
+    friend class cPlDeadFlow;
+    friend class sInputManager;
+    friend class uGUIAreaMaster;
+    friend class uGUICharacterEditPopCard;
+    friend class uGUIClanScoutEntry;
+    friend class uGUIClanSearch;
     friend class uGUICommunityList;
+    friend class uGUIEntryBoard;
+    friend class uGUIEntryBoardInfo;
+    friend class uGUIGameMenu;
+    friend class uGUIMissionInfo;
+    friend class uGUINewspaper;
+    friend class uGUIOption;
+    friend class uGUIPopTopSel;
+    friend class uGUIRetry;
 public:
     class MyDTI;
 public:

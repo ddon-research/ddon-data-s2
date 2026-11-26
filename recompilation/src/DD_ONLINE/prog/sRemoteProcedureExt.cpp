@@ -4,6 +4,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtStream.h"
 #include "cContextInterface.h"
 #include "cNetMsgBase.h"
@@ -52,8 +53,12 @@ void sRemoteProcedureExt::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) void sRemoteProcedureExt::init() {
-    DDON_STUB("sRemoteProcedureExt::init")
-    /* stub */
+    this->sRemoteProcedure::init();
+    sNetwork::getInstance()->setReceiveCallback(7u, static_cast<MtObject*>(this), reinterpret_cast<sNetwork::RECEIVE_CALLBACK>(&::sRemoteProcedureExt::receiveNetwork));
+    sNetwork::getInstance()->setReceiveCallback(8u, static_cast<MtObject*>(this), reinterpret_cast<sNetwork::RECEIVE_CALLBACK>(&::sRemoteProcedureExt::receiveNetwork));
+    sNetwork::getInstance()->setReceiveCallback(9u, static_cast<MtObject*>(this), reinterpret_cast<sNetwork::RECEIVE_CALLBACK>(&::sRemoteProcedureExt::receiveNetwork));
+    sNetwork::getInstance()->setReceiveCallback(10u, static_cast<MtObject*>(this), reinterpret_cast<sNetwork::RECEIVE_CALLBACK>(&::sRemoteProcedureExt::receiveNetwork));
+    sNetwork::getInstance()->setReceiveCallback(11u, static_cast<MtObject*>(this), reinterpret_cast<sNetwork::RECEIVE_CALLBACK>(&::sRemoteProcedureExt::receiveNetwork));
 }
 
 void sRemoteProcedureExt::move() {

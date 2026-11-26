@@ -41,7 +41,7 @@ void cDamageMsg::makeInfoFromHitNode(const cHitInfo* pHitInfo) {
     if (pHitInfo != nullptr) {
         if (pHitInfo->mpAtkModel != nullptr) {
             if (pHitInfo->mpAtkModel->isEnable()) {
-                mData.mAttackerUID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpAtkModel) + 12);
+                mData.mAttackerUID = pHitInfo->mpAtkModel->mUnitParam;
                 if (pHitInfo->mpAtkNode == nullptr) {
                     mData.mAttackParamUID = sObjCollision::getInstance()->makeParamUID(0u, 0u);
                 } else {

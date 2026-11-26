@@ -49,6 +49,19 @@ inline void uGUICharacterEditPopCard::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICharacterEditPopCard::DTI)->memFree(p_addr);
 }
 
+uGUICharacterEditPopCard::uGUICharacterEditPopCard() : uGUIsMenuBase(0u, false) {
+    mpGUIRes = nullptr;
+    mpCtrlH = nullptr;
+    mpCtrlV = nullptr;
+    mProc = PR_DEFAULT;
+    mUnitType = TYPE_PLAYER;
+    mBaseF = mBaseF | 1088u;
+    mEndType = 1;
+    mBasePointerPrio = 9;
+    mPointerPrioRange = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUICharacterEditPopCard"), 0u, false);
+}
+
 __attribute__((noinline)) uGUICharacterEditPopCard::~uGUICharacterEditPopCard() {
     DDON_STUB("uGUICharacterEditPopCard::~uGUICharacterEditPopCard")
     /* stub */
@@ -88,9 +101,11 @@ __attribute__((weak)) nNet::PAWN_SHARE_RANGE uGUICharacterEditPopCard::getShareR
     return {};
 }
 
-__attribute__((weak)) void uGUICharacterEditPopCard::updateInit() {
-    DDON_STUB("uGUICharacterEditPopCard::updateInit")
-    /* stub */
+void uGUICharacterEditPopCard::updateInit() {
+    if (sMenu::getInstance()->mPawnManager.isMove()) {
+        mEndType = 1;
+    }
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICharacterEditPopCard::updateWait);
 }
 
 __attribute__((weak)) void uGUICharacterEditPopCard::updateWait() {
@@ -216,23 +231,75 @@ void uGUICharacterEditPopCard::moveEvent() {
     }
 }
 
-__attribute__((weak)) u32 uGUICharacterEditPopCard::evCtrlDecide(cControl::Message* msg) {
-    DDON_STUB("uGUICharacterEditPopCard::evCtrlDecide")
-    return {};
+u32 uGUICharacterEditPopCard::evCtrlDecide(cControl::Message* msg) {
+    if (mpCtrlV != nullptr) {
+        if (mpCtrlV->getCurrentPos() == 1) {
+            if (mpCtrlH != nullptr) {
+                if (mpCtrlH->mCurrentPos != 0) {
+                    if (sMenu::getInstance()->mPawnManager.isMove()) {
+                        setInputEvent(5u);
+                    } else {
+                        setInputEvent(67u);
+                    }
+                } else {
+                    if (sMenu::getInstance()->mPawnManager.isMove()) {
+                        setInputEvent(4u);
+                    } else {
+                        setInputEvent(66u);
+                    }
+                }
+            } else {
+                if (sMenu::getInstance()->mPawnManager.isMove()) {
+                    setInputEvent(4u);
+                } else {
+                    setInputEvent(66u);
+                }
+            }
+        } else {
+            if (mpCtrlV->getCurrentPos() == 0) {
+                setInputEvent(66u);
+            }
+        }
+    } else {
+        setInputEvent(66u);
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 uGUICharacterEditPopCard::evCtrlCancel(cControl::Message* msg) {
-    DDON_STUB("uGUICharacterEditPopCard::evCtrlCancel")
-    return {};
+u32 uGUICharacterEditPopCard::evCtrlCancel(cControl::Message* msg) {
+    if (sMenu::getInstance()->mPawnManager.isMove()) {
+        setInputEvent(5u);
+    } else {
+        setInputEvent(67u);
+    }
+    return 0;
 }
 
 inline void uGUICharacterEditPopCard::evInputDecideBottun() {
     static_cast<sGUIExt*>(sGUI::mpInstance)->requestSE(0u, 4u);
 }
 
-__attribute__((weak)) u32 uGUICharacterEditPopCard::evCtrlMouseClick(cControl::Message* msg) {
-    DDON_STUB("uGUICharacterEditPopCard::evCtrlMouseClick")
-    return {};
+u32 uGUICharacterEditPopCard::evCtrlMouseClick(cControl::Message* msg) {
+    if (msg->mouse_hit_id != 2) {
+        if (msg->mouse_hit_id == 1) {
+            if (sMenu::getInstance()->mPawnManager.isMove()) {
+                setInputEvent(4u);
+            } else {
+                setInputEvent(69u);
+            }
+        } else {
+            if (msg->mouse_hit_id == 0) {
+                setInputEvent(68u);
+            }
+        }
+    } else {
+        if (sMenu::getInstance()->mPawnManager.isMove()) {
+            setInputEvent(5u);
+        } else {
+            setInputEvent(70u);
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s32 uGUICharacterEditPopCard::getSMenuCursorY() {
@@ -244,8 +311,7 @@ inline uGUICharacterEditPopCard::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 uGUICharacterEditPopCard::MyDTI uGUICharacterEditPopCard::DTI("uGUICharacterEditPopCard", &::uGUIsMenuBase::DTI, 4784ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICharacterEditPopCard::MyDTI::newInstance() const {
-    DDON_STUB("uGUICharacterEditPopCard::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICharacterEditPopCard::MyDTI::newInstance() const {
+    return new (16u) uGUICharacterEditPopCard;
 }
 

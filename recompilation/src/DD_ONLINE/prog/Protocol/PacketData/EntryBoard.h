@@ -263,8 +263,25 @@ inline void* CDataEntryBoardItemSearchParameter::operator new(size_t sz, void* p
     return p_addr;
 }
 
+inline CDataEntryBoardItemSearchParameter::CDataEntryBoardItemSearchParameter() {
+    this->m_unRequiredItemRankMin = 0;
+    this->m_unRequiredItemRankMax = 0;
+    this->m_bRankSetting = false;
+    this->m_bIsNoPassword = false;
+    this->m_unJob = 0;
+    this->m_unRankMin = 0;
+    this->m_unRankMax = 0;
+}
+
 inline void* CDataEntryItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline CDataEntryItem::CDataEntryItem() {
+    this->m_unID = 0;
+    this->m_usBoardRequiredAvgItemRank = 0;
+    this->m_usTimeOut = 0;
+    this->m_unLeaderPartyId = 0;
 }
 
 inline void* CDataEntryItemParam::operator new(size_t sz, void* p_addr) {

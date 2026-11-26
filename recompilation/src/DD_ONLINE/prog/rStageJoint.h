@@ -27,6 +27,7 @@ class MtString;
 class MtUI;
 class MtVector3;
 class cResPathEx;
+class uStageJointCtrl;
 
 // Declarations
 class rStageJoint;
@@ -46,6 +47,7 @@ using u8 = unsigned char;
 
 class rStageJoint : public cResource
 {
+    friend class uStageJointCtrl;
 public:
     enum
     {

@@ -25,9 +25,12 @@ inline void cEvaluationTable::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEvaluationTable::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cEvaluationTable::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEvaluationTable::createProperty")
-    /* stub */
+void cEvaluationTable::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEvalutionCategory", &mEvalutionCategory, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEvalutionCategoryMax", &mEvalutionCategoryMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEvalutionCategoryDecPer", &mEvalutionCategoryDecPer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEvalutionCategoryHosei", &mEvalutionCategoryHosei, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEvalutionCategoryEizokuHosei", &mEvalutionCategoryEizokuHosei, 0u, 0u);
 }
 
 inline cEvaluationTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

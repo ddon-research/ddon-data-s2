@@ -4,6 +4,7 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "nDrawMaterial.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -19,6 +20,9 @@ void* nDraw::MaterialNull::operator new(size_t sz, u32 align) {
 
 inline void nDraw::MaterialNull::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nDraw::MaterialNull::DTI)->memFree(p_addr);
+}
+
+nDraw::MaterialNull::MaterialNull() : nDraw::Material(0x4AF70B19u) {
 }
 
 void nDraw::MaterialNull::createProperty(MtPropertyList& s) {
@@ -41,8 +45,7 @@ inline nDraw::MaterialNull::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t 
 
 nDraw::MaterialNull::MyDTI nDraw::MaterialNull::DTI("nDraw::MaterialNull", &::nDraw::Material::DTI, 208ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nDraw::MaterialNull::MyDTI::newInstance() const {
-    DDON_STUB("nDraw::MaterialNull::MyDTI::newInstance")
-    return nullptr;
+MtObject* nDraw::MaterialNull::MyDTI::newInstance() const {
+    return new (16u) ::nDraw::MaterialNull;
 }
 

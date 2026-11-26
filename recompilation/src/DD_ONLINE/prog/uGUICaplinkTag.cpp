@@ -47,8 +47,11 @@ inline void uGUICaplinkTag::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUICaplinkTag::~uGUICaplinkTag() {
-    DDON_STUB("uGUICaplinkTag::~uGUICaplinkTag")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 void uGUICaplinkTag::createProperty(MtPropertyList& s) {
@@ -139,9 +142,57 @@ void uGUICaplinkTag::moveEvent() {
     }
 }
 
-__attribute__((weak)) void uGUICaplinkTag::updateMove() {
-    DDON_STUB("uGUICaplinkTag::updateMove")
-    /* stub */
+void uGUICaplinkTag::updateMove() {
+    switch (mFlowId - 1u) {
+        case 0:
+        {
+            mMain.mListCtrl.uGUIBase::cScrollList::update(getDeltaTime());
+            mMain.mClose.uGUIBase::cReferenceUICloseBtn::update();
+            mMain.mGuide.uGUIBase::cReferenceUIBtnGuide::update();
+            break;
+        }
+        case 1:
+        {
+            updateInput();
+            break;
+        }
+        case 2:
+        {
+            if (sCaplinkManager::getInstance()->mTagModifyAns.getStatus() != 0) {
+                if (sCaplinkManager::getInstance()->mTagModifyAns.getStatus() != 3) {
+                    if (sCaplinkManager::getInstance()->mTagModifyAns.getStatus() == 2) {
+                        setFlowId(4u, false);
+                    }
+                } else {
+                    setFlowId(1u, false);
+                }
+            } else {
+                setFlowId(1u, false);
+            }
+            break;
+        }
+        case 3:
+        {
+            if (sCaplinkManager::getInstance()->isCompleteRequest()) {
+                if (sCaplinkManager::getInstance()->mListener.mLength == 0) {
+                    if (sCaplinkManager::getInstance()->mUpdateFlag == 0) {
+                        if (sCaplinkManager::getInstance()->mRnoMain == 16) {
+                            mMain.mListCtrl.resetListItem();
+                            setFlowId(1u, false);
+                        }
+                    }
+                }
+            } else {
+                mMain.mListCtrl.resetListItem();
+                setFlowId(1u, false);
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 void uGUICaplinkTag::updateExit() {

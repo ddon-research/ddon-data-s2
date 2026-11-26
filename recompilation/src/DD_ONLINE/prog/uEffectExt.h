@@ -150,6 +150,7 @@ public:
 public:
     class cRequestDispCtrlFlagCtrl
     {
+        friend class uEffectExt;
     public:
         enum EFC_DISP_CTRL
         {

@@ -11,6 +11,7 @@
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../MT/MtSynchronize.h"
+#include "cHitInfoAfter.h"
 #include "cNetGameServer.h"
 #include "cObjHitCache.h"
 #include "../../XFramework/cResource.h"
@@ -18,7 +19,7 @@
 #include "cpObjCollision.h"
 #include "../../generated/shared/nCatch.h"
 #include "nDDOUtility.h"
-#include "../../generated/shared/nEnemyID.h"
+#include "nEnemyID.h"
 #include "../../generated/shared/nHuman.h"
 #include "nObjCollision.h"
 #include "rAdjustParam.h"
@@ -214,9 +215,20 @@ u32 sObjCollision::extractParamIndex(u64 paramUID) const {
     return static_cast<unsigned int>(paramUID);
 }
 
-__attribute__((weak)) bool sObjCollision::isDamageApply(uDDOModel* pAttacker, uDDOModel* pDefender, cHitInfoAfter* pHitInfo) const {
-    DDON_STUB("sObjCollision::isDamageApply")
-    return {};
+bool sObjCollision::isDamageApply(uDDOModel* pAttacker, uDDOModel* pDefender, cHitInfoAfter* pHitInfo) const {
+    if ((pDefender != nullptr) && pDefender->isMaster()) {
+        if (!pHitInfo->mIsReceiveInfo) {
+            if (sObjCollision::getInstance()->getCalcMode(pAttacker, pDefender, nObjCollision::KIND_CALC_DMAGE) != nObjCollision::MODE_LOCAL_ACT) {
+                return false;
+            }
+        }
+        return true;
+    }
+    if (!pHitInfo->mIsReceiveInfo) {
+        if (sObjCollision::getInstance()->getCalcMode(pAttacker, pDefender, nObjCollision::KIND_CALC_DMAGE) != nObjCollision::MODE_LOCAL_ACT) {
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) nObjCollision::CALC_DAMADE_MODE sObjCollision::getCalcMode(uDDOModel* pAttacker, uDDOModel* pDefender, nObjCollision::CALC_DAMADE_KIND kind) {

@@ -102,9 +102,8 @@ void uScrollCollisionSbc::setEnableActiveLink(bool flag) {
     mFlgEnableActiveLink = flag;
 }
 
-__attribute__((weak)) bool uScrollCollisionSbc::isSbcActive() const {
-    DDON_STUB("uScrollCollisionSbc::isSbcActive")
-    return {};
+bool uScrollCollisionSbc::isSbcActive() const {
+    return (sCollision::mpInstance)->sCollision::isSbcActiveFromHandle(mSbcHandle);
 }
 
 __attribute__((weak)) bool uScrollCollisionSbc::setSbcActive(bool flag) {

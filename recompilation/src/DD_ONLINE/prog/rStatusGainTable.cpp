@@ -25,9 +25,9 @@ inline void cStatusGain::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cStatusGain::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cStatusGain::createProperty(MtPropertyList& s) {
-    DDON_STUB("cStatusGain::createProperty")
-    /* stub */
+void cStatusGain::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\345\277\205\350\246\201\343\202\252\343\203\274\343\203\226\346\225\260", &mRequiedDogma, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\344\270\212\346\230\207\345\267\256\345\210\206", &mUpStatusValue, 0u, 0u);
 }
 
 inline cStatusGain::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

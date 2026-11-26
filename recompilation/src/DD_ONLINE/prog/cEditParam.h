@@ -13,6 +13,7 @@ class MtAllocator;
 class MtDTI;
 class MtDataReader;
 class MtDataWriter;
+class MtObject;
 class MtPropertyList;
 class cStorageDataEdit;
 class cpCharacterEdit;
@@ -20,6 +21,7 @@ class uMockUpModel;
 
 // Declarations
 class cEditParam;
+class cEditUserData;
 class cEditValue;
 
 // Type aliases from DWARF
@@ -36,6 +38,7 @@ using u8 = unsigned char;
 class cEditValue : public MtObject
 {
     friend class cEditParam;
+    friend class cEditUserData;
     friend class cpCharacterEdit;
     friend class uMockUpModel;
 public:
@@ -251,7 +254,41 @@ public:
     static const u32 RELEASE_VERSION = 0;
 };
 
+class cEditUserData : public cEditParam
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+public:
+    static MyDTI DTI;
+};
+
 inline void* cEditParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cEditUserData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 

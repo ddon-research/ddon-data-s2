@@ -7,7 +7,9 @@
 #include "../MT/MtDataReader.h"
 #include "../MT/MtDataWriter.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "cResource.h"
@@ -201,9 +203,18 @@ MtUI* rGUIFont::createUI(MtProperty& prop) {
     return this->cResource::createUI(prop);
 }
 
-__attribute__((weak)) void rGUIFont::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGUIFont::createProperty")
-    /* stub */
+void rGUIFont::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "isDynamic", reinterpret_cast<MT_MFUNC>(&::rGUIFont::isDynamic), reinterpret_cast<MT_MFUNC>(&::rGUIFont::setDynamic), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "LayoutEvenIntervals", reinterpret_cast<MT_MFUNC>(&::rGUIFont::isLayoutEvenIntervals), reinterpret_cast<MT_MFUNC>(&::rGUIFont::setLayoutEvenIntervals), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Suffix", reinterpret_cast<MT_MFUNC>(&::rGUIFont::getSuffix), reinterpret_cast<MT_MFUNC>(&::rGUIFont::setSuffix), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "FontType", reinterpret_cast<MT_MFUNC>(&::rGUIFont::getFontType), reinterpret_cast<MT_MFUNC>(&::rGUIFont::setFontType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "FontSize", reinterpret_cast<MT_MFUNC>(&::rGUIFont::getFontSize), reinterpret_cast<MT_MFUNC>(&::rGUIFont::setFontSize), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "TextureNum", reinterpret_cast<MT_MFUNC>(&::rGUIFont::getTextureNum), reinterpret_cast<MT_MFUNC>(&::rGUIFont::setTextureNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "MaxAscent", reinterpret_cast<MT_MFUNC>(&::rGUIFont::getMaxAscent), reinterpret_cast<MT_MFUNC>(&::rGUIFont::setMaxAscent), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "MaxDescent", reinterpret_cast<MT_MFUNC>(&::rGUIFont::getMaxDescent), reinterpret_cast<MT_MFUNC>(&::rGUIFont::setMaxDescent), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "DynamicTextureNum", reinterpret_cast<MT_MFUNC>(&::rGUIFont::getDynamicTextureNum), reinterpret_cast<MT_MFUNC>(&::rGUIFont::setDynamicTextureNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "DynamicTextureSize", reinterpret_cast<MT_MFUNC>(&::rGUIFont::getDynamicTextureSize), reinterpret_cast<MT_MFUNC>(&::rGUIFont::setDynamicTextureSize), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MT_CTSTR rGUIFont::getExt() const {

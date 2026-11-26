@@ -25,9 +25,9 @@ inline void cPartsCtrlTable::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cPartsCtrlTable::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cPartsCtrlTable::createProperty(MtPropertyList& s) {
-    DDON_STUB("cPartsCtrlTable::createProperty")
-    /* stub */
+void cPartsCtrlTable::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPartsKeyNo", &mPartsKeyNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "PartsDisp", reinterpret_cast<MT_MFUNC>(&::cPartsCtrlTable::isPartsDisp), reinterpret_cast<MT_MFUNC>(&::cPartsCtrlTable::setPartsDisp), 160u, reinterpret_cast<MT_MFUNC>(&::cPartsCtrlTable::getPartsNum), reinterpret_cast<MT_MFUNC>(&::cPartsCtrlTable::setPartsNum));
 }
 
 bool cPartsCtrlTable::isPartsDisp(u32 no) const {

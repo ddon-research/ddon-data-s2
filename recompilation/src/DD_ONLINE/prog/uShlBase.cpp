@@ -69,6 +69,7 @@
 #include "uHuman.h"
 #include "../../XFramework/uModel.h"
 #include "uPlayer.h"
+#include "uShlStick.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -77,42 +78,195 @@ const MtDTI& cShlParamBase::getDTI() const {
     return cShlParamBase::DTI;
 }
 
-__attribute__((weak)) MtDTI& cShlParamBase::getShlDTI() const {
-    DDON_STUB("cShlParamBase::getShlDTI")
-    __builtin_unreachable();
+inline void cShlParamBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(cShlParamBase::DTI)->memFree(p_addr);
+}
+
+MtDTI& cShlParamBase::getShlDTI() const {
+    return uShlBase::DTI;
 }
 
 cShlParamBase::cShlParamBase() {
-    DDON_STUB("cShlParamBase::cShlParamBase")
-    /* stub */
+    axis = static_cast<nShlBase::SHL_AXIS>(33);
+    shlSetType = static_cast<SET_TYPE>(0);
+    groundCkHeight = 3e+02f;
+    groundOfs = 0.0f;
+    isNoUseScale = false;
+    rotSpd = MtVector3(0.0f, 0.0f, 0.0f);
+    scale = 1.0f;
+    initWaitFrame = -1.0f;
+    camResType = static_cast<CAM_RES_TYPE>(0);
+    cameraNo = -1;
+    limitID = static_cast<nShlBase::LIMIT_ID>(-1);
+    shlID = static_cast<nShlBase::SHL_ID>(0);
+    shlOption = 8192u;
+    isTimeDie = false;
+    noDamageShlID = static_cast<nShlBase::SHL_ID>(0);
+    noHitShlID = static_cast<nShlBase::SHL_ID>(0);
+    shlAbilityOption = 0u;
+    shlDeleteBit = 0u;
+    dieFrame = 1.5e+02f;
+    shlNoDie = -1;
+    findGroundHeight = 1e+02f;
+    dieFramePutTypeEx = 0.0f;
+    isBreak = false;
+    shlNoBreak = -1;
+    dmgShlNo = -1;
+    dmgShlInterval = 3e+01f;
+    damageAttr = 1u;
+    isUseHitGroup = false;
+    hitGroup = 0u;
+    isAtkFlgKibakuNoHit = false;
+    isShotWallCheck = false;
+    shotWallJnt = 0;
+    changeActToDieFrame = -1.0f;
+    seq_0 = -1;
+    at_0 = -1;
+    shared_uid_0 = -1;
+    colTimer_0 = 5e+02f;
+    seq_1 = -1;
+    at_1 = -1;
+    shared_uid_1 = -1;
+    colTimer_1 = 1e+03f;
+    seq_2 = -1;
+    at_2 = -1;
+    shared_uid_2 = -1;
+    noticeType = static_cast<nShlBase::NOTICE_SHL_ID>(0);
+    noticeTime = -1.0f;
+    maxHitCount = -1;
+    isMaxHitDie = false;
+    colCustomId = -1;
+    criticalBit = 0;
+    epvResType = static_cast<RESOURCE_TYPE>(3);
+    epvIndex = 0;
+    epvNoCheckIn = -1;
+    epvNoHit = -1;
+    epvNoFinish = -1;
+    epvNoShot = -1;
+    epvNoShl = -1;
+    epvCheckInterval = 0.0f;
+    hitMarkType = static_cast<HIT_MARK_TYPE>(0);
+    efOption = 20u;
+    padVib = -1;
+    padVibHit = -1;
+    padVibEnd = -1;
+    padVibOption = 0u;
+    seResType = static_cast<RESOURCE_TYPE>(3);
+    seHitResType = static_cast<RESOURCE_TYPE>(3);
+    seNoLoop = -1;
+    seNoLoopStop = -1;
+    seNoShot = -1;
+    seNoHit = -1;
+    seLoopJoint = 0;
+    seNoFinish = -1;
+    seNoCheckIn = -1;
+    seCheckInterval = 0.0f;
+    seOption = 0u;
+    isUseModel = false;
+    modelDrawMode = 1u;
+    groundCkUnderHeight = 3e+03f;
+    pGroupParam = nullptr;
 }
 
 cShlParamBase::~cShlParamBase() {
 }
 
-__attribute__((weak)) void cShlParamBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("cShlParamBase::createProperty")
-    /* stub */
+void cShlParamBase::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "axis", reinterpret_cast<s32*>(&axis), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "shlSetType", reinterpret_cast<s32*>(&shlSetType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "groundCkHeight", &groundCkHeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "groundCkUnderHeight", &groundCkUnderHeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "groundOfs", &groundOfs, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "initWaitFrame", &initWaitFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "camResType", reinterpret_cast<s32*>(&camResType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "cameraNo", &cameraNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "shlID", reinterpret_cast<s32*>(&shlID), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "limitID", reinterpret_cast<s32*>(&limitID), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "rotSpd", &rotSpd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isNoUseScale", &isNoUseScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "scale", &scale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "shlOption", &shlOption, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "shlAbilityOption", &shlAbilityOption, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isTimeDie", &isTimeDie, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "dieFrame", &dieFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "shlNoDie", &shlNoDie, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "shlDeleteBit", &shlDeleteBit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "noDamageShlID", reinterpret_cast<s32*>(&noDamageShlID), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "noHitShlID", reinterpret_cast<s32*>(&noHitShlID), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "dieFramePutTypeEx", &dieFramePutTypeEx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "findGroundHeight", &findGroundHeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "changeActToDieFrame", &changeActToDieFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isBreak", &isBreak, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "shlNoBreak", &shlNoBreak, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "dmgShlNo", &dmgShlNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "dmgShlInterval", &dmgShlInterval, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "damageAttr", &damageAttr, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isUseHitGroup", &isUseHitGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "hitGroup", &hitGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isAtkFlgKibakuNoHit", &isAtkFlgKibakuNoHit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isShotWallCheck", &isShotWallCheck, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "shotWallJnt", &shotWallJnt, 0u, 0u);
+    createPropertyCollision(s);
+    createPropertyEffect(s);
+    createPropertySE(s);
+    createPropertyModel(s);
 }
 
-__attribute__((weak)) void cShlParamBase::createPropertyCollision(MtPropertyList& s) {
-    DDON_STUB("cShlParamBase::createPropertyCollision")
-    /* stub */
+void cShlParamBase::createPropertyCollision(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "seq_0", &seq_0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "at_0", &at_0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "shared_uid_0", &shared_uid_0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "colTimer_0", &colTimer_0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seq_1", &seq_1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "at_1", &at_1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "shared_uid_1", &shared_uid_1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "colTimer_1", &colTimer_1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seq_2", &seq_2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "at_2", &at_2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "shared_uid_2", &shared_uid_2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "noticeType", reinterpret_cast<s32*>(&noticeType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "noticeTime", &noticeTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "maxHitCount", &maxHitCount, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isMaxHitDie", &isMaxHitDie, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "colCustomId", &colCustomId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "criticalBit", &criticalBit, 0u, 0u);
 }
 
-__attribute__((weak)) void cShlParamBase::createPropertyEffect(MtPropertyList& s) {
-    DDON_STUB("cShlParamBase::createPropertyEffect")
-    /* stub */
+void cShlParamBase::createPropertyEffect(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "epvResType", reinterpret_cast<s32*>(&epvResType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "epvIndex", &epvIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "epvNoShot", &epvNoShot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "epvNoShl", &epvNoShl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "epvNoHit", &epvNoHit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "epvNoFinish", &epvNoFinish, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "hitMarkType", reinterpret_cast<s32*>(&hitMarkType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "epvNoCheckIn", &epvNoCheckIn, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "epvCheckInterval", &epvCheckInterval, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "efOption", &efOption, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "padVib", &padVib, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "padVibHit", &padVibHit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "padVibEnd", &padVibEnd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "padVibOption", &padVibOption, 0u, 0u);
 }
 
-__attribute__((weak)) void cShlParamBase::createPropertySE(MtPropertyList& s) {
-    DDON_STUB("cShlParamBase::createPropertySE")
-    /* stub */
+void cShlParamBase::createPropertySE(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "seResType", reinterpret_cast<s32*>(&seResType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seHitResType", reinterpret_cast<s32*>(&seHitResType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seNoShot", &seNoShot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seNoHit", &seNoHit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seNoLoop", &seNoLoop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seNoLoopStop", &seNoLoopStop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seLoopJoint", &seLoopJoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seNoFinish", &seNoFinish, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seNoCheckIn", &seNoCheckIn, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seCheckInterval", &seCheckInterval, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seOption", &seOption, 0u, 0u);
 }
 
-__attribute__((weak)) void cShlParamBase::createPropertyModel(MtPropertyList& s) {
-    DDON_STUB("cShlParamBase::createPropertyModel")
-    /* stub */
+void cShlParamBase::createPropertyModel(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "isUseModel", &isUseModel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "modelResPath", &modelResPath, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "modelDrawMode", &modelDrawMode, 0u, 0u);
 }
 
 __attribute__((weak)) void cShlParamBase::copy(const cShlParamBase* pParam) {
@@ -125,8 +279,7 @@ inline cShlParamBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 cShlParamBase::MyDTI cShlParamBase::DTI("cShlParamBase", &::MtObject::DTI, 352ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cShlParamBase::MyDTI::newInstance() const {
-    DDON_STUB("cShlParamBase::MyDTI::newInstance")
-    return nullptr;
+    return new (MtMemoryAllocator::getAllocator(cShlParamBase::DTI)->memAlloc(sizeof(cShlParamBase), 16u, cShlParamBase::DTI.getID())) cShlParamBase;
 }
 
 const MtDTI& uShlBase::getDTI() const {
@@ -272,9 +425,23 @@ bool uShlBase::callbackRegistInterPolateGeom(MtVector3& oldPos, const MtVector3&
     return false;
 }
 
-__attribute__((weak)) void uShlBase::setShotCoord(const MtVector3& pos, const MtVector3& dir) {
-    DDON_STUB("uShlBase::setShotCoord")
-    /* stub */
+void uShlBase::setShotCoord(const MtVector3& pos, const MtVector3& dir) {
+    if (getShlParamBase() == nullptr) {
+        return;
+    }
+    mPos.x = pos.x;
+    mPos.y = pos.y;
+    mPos.z = pos.z;
+    mPos.pad_ = 0.0f;
+    mShlMoveDir.x = dir.x;
+    mShlMoveDir.y = dir.y;
+    mShlMoveDir.z = dir.z;
+    mShlMoveDir.pad_ = 0.0f;
+    mLookPos.x = mPos.x;
+    mLookPos.y = mPos.y;
+    mLookPos.z = mPos.z;
+    mLookPos.pad_ = 0.0f;
+    setAngle(dir, MtVector3::AxisY, MtVector3::AxisZ, getShlParamBase()->getShlAxis());
 }
 
 void uShlBase::setShotCoord(const MtVector3& pos, const MtVector3& dir, const MtMatrix& mat) {
@@ -349,9 +516,12 @@ __attribute__((weak)) MtVector3 uShlBase::getMatMainDir() const {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) bool uShlBase::isShlOption(u32 flag) const {
-    DDON_STUB("uShlBase::isShlOption")
-    return {};
+bool uShlBase::isShlOption(u32 flag) const {
+    if (getShlParamBase() != nullptr) {
+        return (flag & getShlParamBase()->shlOption) != 0;
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void uShlBase::requestKill() {

@@ -62,8 +62,14 @@ inline void uGUIPopDetail01::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIPopDetail01::~uGUIPopDetail01() {
-    DDON_STUB("uGUIPopDetail01::~uGUIPopDetail01")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpMockUp != nullptr) {
+        mpMockUp->kill();
+        mpMockUp = nullptr;
+    }
 }
 
 bool uGUIPopDetail01::loadResource() {
@@ -210,9 +216,8 @@ void uGUIPopDetail01::reqRefresh() {
     mRequestRefresh = REFRESH_MODE_FORCE;
 }
 
-__attribute__((weak)) void uGUIPopDetail01::setCompereEquipData(cEquipData& source) {
-    DDON_STUB("uGUIPopDetail01::setCompereEquipData")
-    /* stub */
+void uGUIPopDetail01::setCompereEquipData(cEquipData& source) {
+    mEquipData = source;
 }
 
 __attribute__((weak)) void uGUIPopDetail01::setContext(cContextInstHm* pContext, bool isSetupEquip) {

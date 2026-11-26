@@ -41,6 +41,18 @@ inline void uGUIEventSkip::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIEventSkip::DTI)->memFree(p_addr);
 }
 
+uGUIEventSkip::uGUIEventSkip(uGUIEventSkip::SKIP_MODE mode) : uGUIBase(1u, false) {
+    mAlpha = 0.0f;
+    mTimeFade = 0.0f;
+    mIsDisp = false;
+    mpInstSkip = nullptr;
+    mpGUIMsgGuide = nullptr;
+    mpGUIRes = nullptr;
+    mMode = mode;
+    mEndType = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUIEventSkip"), 0u, false);
+}
+
 uGUIEventSkip::~uGUIEventSkip() {
     if (mpGUIRes != nullptr) {
         mpGUIRes->release();

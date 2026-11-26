@@ -59,6 +59,8 @@ class uHuman;
 class uPlayer;
 
 // Declarations
+struct CrestElementParam;
+struct PawnFeedbackComment;
 class cGUIUtility;
 
 // Type aliases from DWARF
@@ -78,6 +80,29 @@ using s32 = int;
 using u32 = unsigned int;
 using u64 = __uint64_t;
 using u8 = unsigned char;
+
+struct CrestElementParam
+{
+public:
+    enum TYPE
+    {
+        TYPE_HIDE = 0,
+        TYPE_PLUS_NUMBER = 1,
+        TYPE_MINUS_PERCENT = 2,
+        TYPE_ABILITY = 3,
+    };
+public:
+    TYPE mType;  // offset: 0x0
+    u32 mMsgId;  // offset: 0x4
+};
+
+struct PawnFeedbackComment
+{
+public:
+    const u32* commentMsgIds;  // offset: 0x0
+    u8 commentNum;  // offset: 0x8
+    u8 commentIds[5][5];  // offset: 0x9
+};
 
 class cGUIUtility
 {

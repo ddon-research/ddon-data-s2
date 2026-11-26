@@ -20,6 +20,7 @@ class MtPropertyList;
 class MtSize;
 class MtUI;
 namespace nDraw { class DepthStencilView; }
+namespace nDraw { class MaterialStd; }
 namespace nDraw { class RenderTargetView; }
 namespace nDraw { class Texture; }
 class sRender;
@@ -131,6 +132,7 @@ namespace nDraw {
 namespace nDraw {
     class Scene : public nDraw::Resource
     {
+        friend class nDraw::MaterialStd;
         friend class ::sRender;
     public:
         class MyDTI;

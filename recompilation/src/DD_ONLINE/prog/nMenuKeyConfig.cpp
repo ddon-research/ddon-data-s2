@@ -93,34 +93,84 @@ __attribute__((weak)) void nMenuKeyConfig::KeyCustomManagers::apply(u32 category
         key_custom_manager->checkOverlap();
 }
 
-__attribute__((weak)) void nMenuKeyConfig::KeyCustomManagers::apply(u32 categoryNo, const nMenuKeyConfig::KeyCustomManagers& source) {
-    DDON_STUB("nMenuKeyConfig::KeyCustomManagers::apply")
-    /* stub */
+void nMenuKeyConfig::KeyCustomManagers::apply(u32 categoryNo, const nMenuKeyConfig::KeyCustomManagers& source) {
+    if (categoryNo <= 2u) {
+        cKeyCustomManager* const other_key_custom_manager = source.mKeyCustomManagers[categoryNo];
+        if (other_key_custom_manager != nullptr) {
+            cKeyCustomManager* const key_custom_manager = mKeyCustomManagers[categoryNo];
+            if (key_custom_manager != nullptr) {
+                if (other_key_custom_manager != key_custom_manager) {
+                    *key_custom_manager = *other_key_custom_manager;
+                    key_custom_manager->checkOverlap();
+                }
+            }
+        }
+    }
 }
 
-__attribute__((weak)) bool nMenuKeyConfig::KeyCustomManagers::isExistChange(bool isCheckName) const {
-    DDON_STUB("nMenuKeyConfig::KeyCustomManagers::isExistChange")
-    return {};
+bool nMenuKeyConfig::KeyCustomManagers::isExistChange(bool isCheckName) const {
+    u32 category_no = 0;
+    do {
+        if (mKeyCustomManagers[category_no] != nullptr) {
+            if (!::sInputManager::getInstance()->editCompare(*mKeyCustomManagers[category_no], category_no, isCheckName)) {
+                return true;
+            }
+        }
+        category_no += 1u;
+    } while (category_no <= 2u);
+    return false;
 }
 
-__attribute__((weak)) bool nMenuKeyConfig::KeyCustomManagers::isExistChange(u32 categoryNo, bool isCheckName) const {
-    DDON_STUB("nMenuKeyConfig::KeyCustomManagers::isExistChange")
-    return {};
+bool nMenuKeyConfig::KeyCustomManagers::isExistChange(u32 categoryNo, bool isCheckName) const {
+    if (categoryNo <= 2u) {
+        if (mKeyCustomManagers[categoryNo] != nullptr) {
+            return !::sInputManager::getInstance()->editCompare(*mKeyCustomManagers[categoryNo], categoryNo, isCheckName);
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) bool nMenuKeyConfig::KeyCustomManagers::isExistChange(u32 categoryNo, const nMenuKeyConfig::KeyCustomManagers* source, bool isCheckName) const {
-    DDON_STUB("nMenuKeyConfig::KeyCustomManagers::isExistChange")
-    return {};
+bool nMenuKeyConfig::KeyCustomManagers::isExistChange(u32 categoryNo, const nMenuKeyConfig::KeyCustomManagers* source, bool isCheckName) const {
+    if (source != nullptr) {
+        if (categoryNo <= 2u) {
+            if (source->mKeyCustomManagers[categoryNo] != nullptr) {
+                if (mKeyCustomManagers[categoryNo] != nullptr) {
+                    if (source->mKeyCustomManagers[categoryNo] != mKeyCustomManagers[categoryNo]) {
+                        return !mKeyCustomManagers[categoryNo]->::cKeyCustomManager::isEqual(*source->mKeyCustomManagers[categoryNo], isCheckName);
+                    }
+                }
+            }
+        }
+    } else {
+        if (categoryNo <= 2u) {
+            if (mKeyCustomManagers[categoryNo] != nullptr) {
+                return !::sInputManager::getInstance()->editCompare(*mKeyCustomManagers[categoryNo], categoryNo, isCheckName);
+            }
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) bool nMenuKeyConfig::KeyCustomManagers::isExistOverlap() const {
-    DDON_STUB("nMenuKeyConfig::KeyCustomManagers::isExistOverlap")
-    return {};
+bool nMenuKeyConfig::KeyCustomManagers::isExistOverlap() const {
+    u32 category_no = 0;
+    do {
+        if (mKeyCustomManagers[category_no] != nullptr) {
+            if (mKeyCustomManagers[category_no]->::cKeyCustomManager::isExistOverlap()) {
+                return true;
+            }
+        }
+        category_no += 1u;
+    } while (category_no <= 2u);
+    return false;
 }
 
-__attribute__((weak)) bool nMenuKeyConfig::KeyCustomManagers::isExistOverlap(u32 categoryNo) const {
-    DDON_STUB("nMenuKeyConfig::KeyCustomManagers::isExistOverlap")
-    return {};
+bool nMenuKeyConfig::KeyCustomManagers::isExistOverlap(u32 categoryNo) const {
+    if (categoryNo <= 2u) {
+        if (mKeyCustomManagers[categoryNo] != nullptr) {
+            return mKeyCustomManagers[categoryNo]->::cKeyCustomManager::isExistOverlap();
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void nMenuKeyConfig::KeyCustomManagers::setBlank(u32 categoryNo, nKeyCustom::KB_CUSTOM keyCustom) {
@@ -156,9 +206,13 @@ cKeyCustomManager* nMenuKeyConfig::KeyCustomManagers::getManager(u32 categoryNo)
     }
 }
 
-__attribute__((weak)) MT_CTSTR nMenuKeyConfig::KeyCustomManagers::getName(u32 categoryNo) const {
-    DDON_STUB("nMenuKeyConfig::KeyCustomManagers::getName")
-    return {};
+MT_CTSTR nMenuKeyConfig::KeyCustomManagers::getName(u32 categoryNo) const {
+    if (categoryNo <= 2u) {
+        if (mKeyCustomManagers[categoryNo] != nullptr) {
+            return mKeyCustomManagers[categoryNo]->mUserName.::MtString::ptr();
+        }
+    }
+    return "";
 }
 
 __attribute__((weak)) void nMenuKeyConfig::KeyCustomManagers::setName(u32 categoryNo, MT_CTSTR name) {
@@ -166,9 +220,13 @@ __attribute__((weak)) void nMenuKeyConfig::KeyCustomManagers::setName(u32 catego
     /* stub */
 }
 
-__attribute__((weak)) MT_CTSTR nMenuKeyConfig::KeyListItems::getGroupName(s32 groupId) const {
-    DDON_STUB("nMenuKeyConfig::KeyListItems::getGroupName")
-    return {};
+MT_CTSTR nMenuKeyConfig::KeyListItems::getGroupName(s32 groupId) const {
+    if (mResMsgGroup != nullptr) {
+        if (static_cast<unsigned int>(groupId) <= 3) {
+            return static_cast<sGUIExt*>(::sGUI::getInstance())->getMsgFromIdxInfo(mResMsgGroup, static_cast<u32>(groupId));
+        }
+    }
+    return "";
 }
 
 u32 nMenuKeyConfig::KeyListItems::getItemNum(u32 categoryListIndex) const {
@@ -210,9 +268,26 @@ __attribute__((weak)) nGUIKeyConfig::Key nMenuKeyConfig::KeyListItems::getKey(u3
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MT_CTSTR nMenuKeyConfig::KeyListItems::getDetail(u32 itemIndex, u32 categoryListIndex) const {
-    DDON_STUB("nMenuKeyConfig::KeyListItems::getDetail")
-    return {};
+MT_CTSTR nMenuKeyConfig::KeyListItems::getDetail(u32 itemIndex, u32 categoryListIndex) const {
+    if (mResMsgDetail != nullptr) {
+        if (mResTextTable != nullptr) {
+            const nKeyConfigTextTable::cKeyText* const key_text = mResTextTable->getSortedData(itemIndex);
+            if (key_text != nullptr) {
+                const u32 detail_msg_id = key_text->mDetailMsgId;
+                if (detail_msg_id != 0xFFFFFFFFu) {
+                    return static_cast<sGUIExt*>(::sGUI::getInstance())->getMsgFromIdxInfo(mResMsgDetail, detail_msg_id);
+                } else {
+                    return "";
+                }
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    } else {
+        return "";
+    }
 }
 
 __attribute__((weak)) nGUIKeyConfig::KEY_STATE nMenuKeyConfig::KeyListItems::getState(u32 itemIndex, u32 categoryListIndex) const {

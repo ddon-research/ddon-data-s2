@@ -338,8 +338,51 @@ __attribute__((weak)) void uGUIAreaMaster::initTop() {
 }
 
 __attribute__((weak)) void uGUIAreaMaster::decideTop() {
-    DDON_STUB("uGUIAreaMaster::decideTop")
-    /* stub */
+    if (mpGUIPopTopSel == nullptr) {
+        return;
+    }
+    mIsInit = true;
+    mIsCreateList = true;
+    if (mpGUIPopTopSel->mpListCtrl != nullptr) {
+        switch (mpGUIPopTopSel->mpListCtrl->mCurrentPos) {
+            case 0:
+            {
+                clearInfoVisible();
+                setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstAnimEmblem), false);
+                setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mpObjMsgQuestTitle), "", 0u, false);
+                setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mScrollCtrl.getInstNullScroll()), false);
+                mQuestInfo.mNowScheduleId.mScheduleId = nQuest::INVALID_SCHEDULE_ID.mScheduleId;
+                setFlowId(3u);
+                break;
+            }
+            case 1:
+            {
+                setFlowId(9u);
+                break;
+            }
+            case 2:
+            {
+                setFlowId(15u);
+                break;
+            }
+            case 3:
+            {
+                setFlowId(17u);
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    } else {
+        clearInfoVisible();
+        setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstAnimEmblem), false);
+        setObjectMessage(static_cast<cGUIObject*>(mQuestInfo.mpObjMsgQuestTitle), "", 0u, false);
+        setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mScrollCtrl.getInstNullScroll()), false);
+        mQuestInfo.mNowScheduleId.mScheduleId = nQuest::INVALID_SCHEDULE_ID.mScheduleId;
+        setFlowId(3u);
+    }
 }
 
 __attribute__((weak)) void uGUIAreaMaster::initQuest() {
@@ -352,7 +395,7 @@ __attribute__((weak)) void uGUIAreaMaster::createQuestList() {
     /* stub */
 }
 
-void uGUIAreaMaster::clearInfoVisible() {
+__attribute__((weak)) void uGUIAreaMaster::clearInfoVisible() {
     setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullImg), false);
     setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullLv), false);
     setInstanceVisible(static_cast<cGUIInstance*>(mQuestInfo.mpInstNullCondition), false);
@@ -533,6 +576,10 @@ __attribute__((weak)) void uGUIAreaMaster::adjustSpotInfoCursor() {
     /* stub */
 }
 
+inline void uGUIAreaMaster::setupQuickPartyCancel() {
+    (sMenu::mpInstance)->mQuickMatchCancel.cMenuQuickMatchCancel::initQuickMatchCancel(static_cast<uGUIBase*>(this));
+}
+
 __attribute__((weak)) void uGUIAreaMaster::updatePawnExpedition() {
     DDON_STUB("uGUIAreaMaster::updatePawnExpedition")
     /* stub */
@@ -558,9 +605,21 @@ bool uGUIAreaMaster::reqSallyInfo() {
     return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getPawnExpeditionGetSallyInfo();
 }
 
-__attribute__((weak)) bool uGUIAreaMaster::reqSally() {
-    DDON_STUB("uGUIAreaMaster::reqSally")
-    return {};
+bool uGUIAreaMaster::reqSally() {
+    mIsPawnExpeditionReqSuccess = false;
+    if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
+        if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 32)) > 1) {
+                return false;
+            } else {
+                return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reqPawnExpeditionSally(mAreaId, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 72));
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 bool uGUIAreaMaster::reqGoldSally() {
@@ -680,9 +739,26 @@ __attribute__((weak)) void uGUIAreaMaster::calcMapPos(bool in_force) {
     /* stub */
 }
 
-__attribute__((weak)) bool uGUIAreaMaster::questListSort(const uGUIAreaMaster::cSortData* pA, const uGUIAreaMaster::cSortData* pB, u32 param) {
-    DDON_STUB("uGUIAreaMaster::questListSort")
-    return {};
+bool uGUIAreaMaster::questListSort(const uGUIAreaMaster::cSortData* pA, const uGUIAreaMaster::cSortData* pB, u32 param) {
+    if (pA->mpData != nullptr) {
+        if (pB->mpData != nullptr) {
+            u32 t0 = pA->mpData->getBaseLevel();
+            if (t0 == pB->mpData->getBaseLevel()) {
+                nQuest::SCHEDULE_ID frame64(pA->mpData->getScheduleId());
+                u32 t2 = frame64.toU32();
+                nQuest::SCHEDULE_ID frame80(pB->mpData->getScheduleId());
+                u32 t4 = frame80.toU32();
+                return t4 < t2;
+            } else {
+                u32 t5 = pA->mpData->getBaseLevel();
+                return pB->mpData->getBaseLevel() < t5;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void uGUIAreaMaster::requestServer(u32 next_flow_id) {
@@ -926,8 +1002,201 @@ void uGUIAreaMaster::eventAdjustTab() {
 }
 
 __attribute__((weak)) u32 uGUIAreaMaster::evCtrlDecide(cControl::Message* msg) {
-    DDON_STUB("uGUIAreaMaster::evCtrlDecide")
-    return {};
+    if (msg != nullptr) {
+        msg->changeSE = 0;
+        switch (mFlowId - 3u) {
+            case 0:
+            {
+                msg->changeSE = 4;
+                setInputEvent(66u);
+                return 1;
+            }
+            case 2:
+            {
+                if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
+                    if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 32)) <= 1) {
+                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 92)) == 0) {
+                                if (mQuestInfo.mScrollCtrl.getCtrl() != nullptr) {
+                                    if (mQuestInfo.mScrollCtrl.getCtrl()->mItemNum == (mQuestInfo.mScrollCtrl.getCtrl()->getCurrentPos() + 1)) {
+                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 93)) == 0) {
+                                            msg->changeSE = 20;
+                                            setInputEvent(2u);
+                                            return 0;
+                                        } else {
+                                            msg->changeSE = 4;
+                                            setInputEvent(66u);
+                                            return 1;
+                                        }
+                                    } else {
+                                        return 0;
+                                    }
+                                } else {
+                                    return 0;
+                                }
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return 0;
+                }
+                break;
+            }
+            case 6:
+            {
+                msg->changeSE = 4;
+                setInputEvent(66u);
+                return 1;
+            }
+            case 7:
+            {
+                if (mMode != 4) {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isEnableQuickParty()) {
+                        if (mQuestInfo.mScrollCtrl.mListPos < mQuestInfo.mScrollCtrl.mInfoArray.mLength) {
+                            if (mQuestInfo.mScrollCtrl.mInfoArray.mpArray[static_cast<int>(mQuestInfo.mScrollCtrl.mListPos)] != nullptr) {
+                                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mQuestInfo.mScrollCtrl.mInfoArray.mpArray[static_cast<int>(mQuestInfo.mScrollCtrl.mListPos)]) + 66)) != 0) {
+                                    msg->changeSE = 4;
+                                    setInputEvent(66u);
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->reqQuickPartyDisableAnnounce();
+                        msg->changeSE = 20;
+                        setInputEvent(2u);
+                        return 0;
+                    }
+                } else {
+                    if (mQuestInfo.mScrollCtrl.mListPos < mQuestInfo.mScrollCtrl.mInfoArray.mLength) {
+                        if (mQuestInfo.mScrollCtrl.mInfoArray.mpArray[static_cast<int>(mQuestInfo.mScrollCtrl.mListPos)] != nullptr) {
+                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mQuestInfo.mScrollCtrl.mInfoArray.mpArray[static_cast<int>(mQuestInfo.mScrollCtrl.mListPos)]) + 66)) != 0) {
+                                msg->changeSE = 4;
+                                setInputEvent(66u);
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        return 0;
+                    }
+                }
+                break;
+            }
+            default:
+            {
+                return 0;
+            }
+        }
+    } else {
+        switch (mFlowId - 3u) {
+            case 0:
+            {
+                setInputEvent(66u);
+                return 1;
+            }
+            case 2:
+            {
+                if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
+                    if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 32)) <= 1) {
+                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 92)) == 0) {
+                                if (mQuestInfo.mScrollCtrl.getCtrl() != nullptr) {
+                                    if (mQuestInfo.mScrollCtrl.getCtrl()->mItemNum == (mQuestInfo.mScrollCtrl.getCtrl()->getCurrentPos() + 1)) {
+                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 93)) == 0) {
+                                            setInputEvent(2u);
+                                            return 0;
+                                        } else {
+                                            setInputEvent(66u);
+                                            return 1;
+                                        }
+                                    } else {
+                                        return 0;
+                                    }
+                                } else {
+                                    return 0;
+                                }
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return 0;
+                }
+                break;
+            }
+            case 6:
+            {
+                setInputEvent(66u);
+                return 1;
+            }
+            case 7:
+            {
+                if (mMode != 4) {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isEnableQuickParty()) {
+                        if (mQuestInfo.mScrollCtrl.mListPos < mQuestInfo.mScrollCtrl.mInfoArray.mLength) {
+                            if (mQuestInfo.mScrollCtrl.mInfoArray.mpArray[static_cast<int>(mQuestInfo.mScrollCtrl.mListPos)] != nullptr) {
+                                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mQuestInfo.mScrollCtrl.mInfoArray.mpArray[static_cast<int>(mQuestInfo.mScrollCtrl.mListPos)]) + 66)) != 0) {
+                                    setInputEvent(66u);
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->reqQuickPartyDisableAnnounce();
+                        setInputEvent(2u);
+                        return 0;
+                    }
+                } else {
+                    if (mQuestInfo.mScrollCtrl.mListPos < mQuestInfo.mScrollCtrl.mInfoArray.mLength) {
+                        if (mQuestInfo.mScrollCtrl.mInfoArray.mpArray[static_cast<int>(mQuestInfo.mScrollCtrl.mListPos)] != nullptr) {
+                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mQuestInfo.mScrollCtrl.mInfoArray.mpArray[static_cast<int>(mQuestInfo.mScrollCtrl.mListPos)]) + 66)) != 0) {
+                                setInputEvent(66u);
+                                return 1;
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        return 0;
+                    }
+                }
+                break;
+            }
+            default:
+            {
+                return 0;
+            }
+        }
+    }
 }
 
 u32 uGUIAreaMaster::evCtrlCancel(cControl::Message* msg) {
@@ -964,9 +1233,137 @@ u32 uGUIAreaMaster::evCtrlAdjustTab(cControl::Message* msg) {
     return 0;
 }
 
-__attribute__((weak)) u32 uGUIAreaMaster::evCtrlMouseClick(cControl::Message* msg) {
-    DDON_STUB("uGUIAreaMaster::evCtrlMouseClick")
-    return {};
+u32 uGUIAreaMaster::evCtrlMouseClick(cControl::Message* msg) {
+    if (msg != nullptr) {
+        if (static_cast<int>(mFlowId) <= 15) {
+            if ((mFlowId - 9u) <= 1u) {
+                if (msg->pSender != mList.mListCtrl.getCtrl()) {
+                    if (msg->pSender == mQuestInfo.mScrollCtrl.mpVCtrl) {
+                        if (mFlowId == 9) {
+                            setFlowId(10u);
+                        }
+                        if (static_cast<unsigned int>(msg->current) < mQuestInfo.mScrollCtrl.mInfoArray.mLength) {
+                            if (mQuestInfo.mScrollCtrl.mInfoArray.mpArray[msg->current] != nullptr) {
+                                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mQuestInfo.mScrollCtrl.mInfoArray.mpArray[msg->current]) + 64)) == 0) {
+                                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mQuestInfo.mScrollCtrl.mInfoArray.mpArray[msg->current]) + 66)) == 0) {
+                                        return 0;
+                                    } else {
+                                        eventAdjustCursor();
+                                        return evCtrlDecide(msg);
+                                    }
+                                } else {
+                                    if (mpInfoLRCtrl != nullptr) {
+                                        mpInfoLRCtrl->setCurrentPos(msg->click_vol, false);
+                                    }
+                                    msg->changeSE = 2;
+                                    setInputEvent(70u);
+                                    return 0;
+                                }
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    if (mFlowId != 9) {
+                        if (mList.mListCtrl.getCtrl() != nullptr) {
+                            if (mList.mListCtrl.getCtrl()->getCurrentPos() != mList.mListCtrl.getCtrl()->mOldPos) {
+                                setFlowId(9u);
+                                msg->changeSE = 2;
+                                setInputEvent(70u);
+                            }
+                        }
+                        return 0;
+                    } else {
+                        if ((mList.mListCtrl.getCtrl() != nullptr) && (mList.mListCtrl.getCtrl()->getCurrentPos() != mList.mListCtrl.getCtrl()->mOldPos)) {
+                            msg->changeSE = 2;
+                            setInputEvent(70u);
+                            return 0;
+                        }
+                        return evCtrlDecide(msg);
+                    }
+                }
+            } else {
+                if (mFlowId != 3) {
+                    if (mFlowId == 5) {
+                        if (msg->pSender != mList.mListCtrl.getCtrl()) {
+                            if (msg->pSender == mQuestInfo.mScrollCtrl.mpVCtrl) {
+                                if (static_cast<unsigned int>(msg->current) < mQuestInfo.mScrollCtrl.mInfoArray.mLength) {
+                                    if (mQuestInfo.mScrollCtrl.mInfoArray.mpArray[msg->current] != nullptr) {
+                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mQuestInfo.mScrollCtrl.mInfoArray.mpArray[msg->current]) + 64)) != 0) {
+                                            if (mpInfoLRCtrl != nullptr) {
+                                                mpInfoLRCtrl->setCurrentPos(msg->click_vol, false);
+                                            }
+                                            msg->changeSE = 2;
+                                            setInputEvent(70u);
+                                        } else {
+                                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mQuestInfo.mScrollCtrl.mInfoArray.mpArray[msg->current]) + 65)) != 0) {
+                                                eventAdjustCursor();
+                                                return evCtrlDecide(msg);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            if (mList.mListCtrl.getCtrl() != nullptr) {
+                                if (mList.mListCtrl.getCtrl()->getCurrentPos() != mList.mListCtrl.getCtrl()->mOldPos) {
+                                    setFlowId(3u);
+                                    msg->changeSE = 2;
+                                    setInputEvent(70u);
+                                }
+                            }
+                        }
+                    }
+                    return 0;
+                } else {
+                    if (msg->pSender != mList.mListCtrl.getCtrl()) {
+                        if (msg->pSender == mQuestInfo.mScrollCtrl.mpVCtrl) {
+                            setFlowId(5u);
+                            if (static_cast<unsigned int>(msg->current) < mQuestInfo.mScrollCtrl.mInfoArray.mLength) {
+                                if (mQuestInfo.mScrollCtrl.mInfoArray.mpArray[msg->current] != nullptr) {
+                                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mQuestInfo.mScrollCtrl.mInfoArray.mpArray[msg->current]) + 64)) != 0) {
+                                        if (mpInfoLRCtrl != nullptr) {
+                                            mpInfoLRCtrl->setCurrentPos(msg->click_vol, false);
+                                        }
+                                        msg->changeSE = 2;
+                                        setInputEvent(70u);
+                                    } else {
+                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mQuestInfo.mScrollCtrl.mInfoArray.mpArray[msg->current]) + 65)) != 0) {
+                                            eventAdjustCursor();
+                                            return evCtrlDecide(msg);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        return 0;
+                    } else {
+                        if ((mList.mListCtrl.getCtrl() != nullptr) && (mList.mListCtrl.getCtrl()->getCurrentPos() != mList.mListCtrl.getCtrl()->mOldPos)) {
+                            msg->changeSE = 2;
+                            setInputEvent(70u);
+                            return 0;
+                        }
+                        return evCtrlDecide(msg);
+                    }
+                }
+            }
+        } else {
+            if (mFlowId == 16) {
+                if (msg->pSender == mList.mListCtrl.mpVCtrl) {
+                    msg->changeSE = 2;
+                    setInputEvent(70u);
+                }
+            }
+            return 0;
+        }
+    } else {
+        return 0;
+    }
 }
 
 inline uGUIAreaMaster::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -987,6 +1384,10 @@ const MtDTI& uGUIAreaMaster::cListItem::getDTI() const {
     return uGUIAreaMaster::cListItem::DTI;
 }
 
+inline void* uGUIAreaMaster::cListItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIAreaMaster::cListItem::DTI)->memAlloc(sz, align, uGUIAreaMaster::cListItem::DTI.getID());
+}
+
 inline void uGUIAreaMaster::cListItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIAreaMaster::cListItem::DTI)->memFree(p_addr);
 }
@@ -995,13 +1396,16 @@ inline uGUIAreaMaster::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 uGUIAreaMaster::cListItem::MyDTI uGUIAreaMaster::cListItem::DTI("uGUIAreaMaster::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 216ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIAreaMaster::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIAreaMaster::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIAreaMaster::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIAreaMaster::cListItem;
 }
 
 const MtDTI& uGUIAreaMaster::cPawnListItem::getDTI() const {
     return uGUIAreaMaster::cPawnListItem::DTI;
+}
+
+inline void* uGUIAreaMaster::cPawnListItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIAreaMaster::cPawnListItem::DTI)->memAlloc(sz, align, uGUIAreaMaster::cPawnListItem::DTI.getID());
 }
 
 inline void uGUIAreaMaster::cPawnListItem::operator delete(void* p_addr) {
@@ -1012,9 +1416,8 @@ inline uGUIAreaMaster::cPawnListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* p
 
 uGUIAreaMaster::cPawnListItem::MyDTI uGUIAreaMaster::cPawnListItem::DTI("uGUIAreaMaster::cPawnListItem", &::uGUIBase::cScrollListItemBase::DTI, 112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIAreaMaster::cPawnListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIAreaMaster::cPawnListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIAreaMaster::cPawnListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIAreaMaster::cPawnListItem;
 }
 
 const MtDTI& uGUIAreaMaster::cPointItem::getDTI() const {
@@ -1038,6 +1441,10 @@ const MtDTI& uGUIAreaMaster::cSuppliesHeaderItem::getDTI() const {
     return uGUIAreaMaster::cSuppliesHeaderItem::DTI;
 }
 
+inline void* uGUIAreaMaster::cSuppliesHeaderItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIAreaMaster::cSuppliesHeaderItem::DTI)->memAlloc(sz, align, uGUIAreaMaster::cSuppliesHeaderItem::DTI.getID());
+}
+
 inline void uGUIAreaMaster::cSuppliesHeaderItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIAreaMaster::cSuppliesHeaderItem::DTI)->memFree(p_addr);
 }
@@ -1046,9 +1453,8 @@ inline uGUIAreaMaster::cSuppliesHeaderItem::MyDTI::MyDTI(MT_CTSTR class_name, Mt
 
 uGUIAreaMaster::cSuppliesHeaderItem::MyDTI uGUIAreaMaster::cSuppliesHeaderItem::DTI("uGUIAreaMaster::cSuppliesHeaderItem", &::uGUIBase::cScrollListItemBase::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIAreaMaster::cSuppliesHeaderItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIAreaMaster::cSuppliesHeaderItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIAreaMaster::cSuppliesHeaderItem::MyDTI::newInstance() const {
+    return new (16u) uGUIAreaMaster::cSuppliesHeaderItem;
 }
 
 const MtDTI& uGUIAreaMaster::cSuppliesItem::getDTI() const {

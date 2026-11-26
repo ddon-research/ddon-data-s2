@@ -36,8 +36,6 @@ uCnsIKTarget::uCnsIKTarget() {
 }
 
 uCnsIKTarget::~uCnsIKTarget() {
-    DDON_STUB("uCnsIKTarget::~uCnsIKTarget")
-    /* stub */
 }
 
 __attribute__((weak)) void uCnsIKTarget::setResource(cResource* pRes) {

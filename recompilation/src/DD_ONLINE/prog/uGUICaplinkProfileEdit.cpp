@@ -51,8 +51,11 @@ inline void uGUICaplinkProfileEdit::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUICaplinkProfileEdit::~uGUICaplinkProfileEdit() {
-    DDON_STUB("uGUICaplinkProfileEdit::~uGUICaplinkProfileEdit")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 void uGUICaplinkProfileEdit::createProperty(MtPropertyList& s) {
@@ -581,9 +584,95 @@ __attribute__((weak)) void uGUICaplinkProfileEdit::eventDecide() {
     /* stub */
 }
 
-__attribute__((weak)) u32 uGUICaplinkProfileEdit::evCtrlDecide(cControl::Message* msg) {
-    DDON_STUB("uGUICaplinkProfileEdit::evCtrlDecide")
-    return {};
+u32 uGUICaplinkProfileEdit::evCtrlDecide(cControl::Message* msg) {
+    setInputEvent(0u);
+    if (mpVCtrl != nullptr) {
+        if (mpVCtrl->mCurrentPos == 0) {
+            if (mpHCtrl != nullptr) {
+                if (mpHCtrl->mCurrentPos == 1) {
+                    if (mDetail.mScrollList.mListPos < mDetail.mScrollList.mInfoArray.mLength) {
+                        if (mDetail.mScrollList.mInfoArray.mpArray[static_cast<int>(mDetail.mScrollList.mListPos)] != nullptr) {
+                            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mDetail.mScrollList.mInfoArray.mpArray[static_cast<int>(mDetail.mScrollList.mListPos)]) + 48)) == 2) {
+                                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mDetail.mScrollList.mInfoArray.mpArray[static_cast<int>(mDetail.mScrollList.mListPos)]) + 8)) != 0) {
+                                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mDetail.mScrollList.mInfoArray.mpArray[static_cast<int>(mDetail.mScrollList.mListPos)]) + 8)) + 500)) != 0) {
+                                        if (msg != nullptr) {
+                                            msg->changeSE = 4;
+                                        }
+                                        setInputEvent(66u);
+                                    } else {
+                                        if (msg != nullptr) {
+                                            msg->changeSE = 20;
+                                        }
+                                        setInputEvent(2u);
+                                    }
+                                }
+                            } else {
+                                if (msg != nullptr) {
+                                    msg->changeSE = 4;
+                                }
+                                setInputEvent(66u);
+                            }
+                        }
+                    }
+                } else {
+                    if (msg != nullptr) {
+                        msg->changeSE = 4;
+                    }
+                    setInputEvent(66u);
+                }
+            } else {
+                if (msg != nullptr) {
+                    msg->changeSE = 4;
+                }
+                setInputEvent(66u);
+            }
+        } else {
+            if (msg != nullptr) {
+                msg->changeSE = 4;
+            }
+            setInputEvent(66u);
+        }
+    } else {
+        if (mpHCtrl != nullptr) {
+            if (mpHCtrl->mCurrentPos == 1) {
+                if (mDetail.mScrollList.mListPos < mDetail.mScrollList.mInfoArray.mLength) {
+                    if (mDetail.mScrollList.mInfoArray.mpArray[static_cast<int>(mDetail.mScrollList.mListPos)] != nullptr) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mDetail.mScrollList.mInfoArray.mpArray[static_cast<int>(mDetail.mScrollList.mListPos)]) + 48)) == 2) {
+                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mDetail.mScrollList.mInfoArray.mpArray[static_cast<int>(mDetail.mScrollList.mListPos)]) + 8)) != 0) {
+                                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mDetail.mScrollList.mInfoArray.mpArray[static_cast<int>(mDetail.mScrollList.mListPos)]) + 8)) + 500)) != 0) {
+                                    if (msg != nullptr) {
+                                        msg->changeSE = 4;
+                                    }
+                                    setInputEvent(66u);
+                                } else {
+                                    if (msg != nullptr) {
+                                        msg->changeSE = 20;
+                                    }
+                                    setInputEvent(2u);
+                                }
+                            }
+                        } else {
+                            if (msg != nullptr) {
+                                msg->changeSE = 4;
+                            }
+                            setInputEvent(66u);
+                        }
+                    }
+                }
+            } else {
+                if (msg != nullptr) {
+                    msg->changeSE = 4;
+                }
+                setInputEvent(66u);
+            }
+        } else {
+            if (msg != nullptr) {
+                msg->changeSE = 4;
+            }
+            setInputEvent(66u);
+        }
+    }
+    return 0;
 }
 
 u32 uGUICaplinkProfileEdit::evCtrlCancel(cControl::Message* msg) {
@@ -645,6 +734,10 @@ const MtDTI& uGUICaplinkProfileEdit::cPulldownContent::getDTI() const {
     return uGUICaplinkProfileEdit::cPulldownContent::DTI;
 }
 
+inline void* uGUICaplinkProfileEdit::cPulldownContent::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cPulldownContent::DTI)->memAlloc(sz, align, uGUICaplinkProfileEdit::cPulldownContent::DTI.getID());
+}
+
 inline void uGUICaplinkProfileEdit::cPulldownContent::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cPulldownContent::DTI)->memFree(p_addr);
 }
@@ -656,13 +749,16 @@ inline uGUICaplinkProfileEdit::cPulldownContent::MyDTI::MyDTI(MT_CTSTR class_nam
 
 uGUICaplinkProfileEdit::cPulldownContent::MyDTI uGUICaplinkProfileEdit::cPulldownContent::DTI("uGUICaplinkProfileEdit::cPulldownContent", &::uGUICaplinkProfileEdit::cContentItemBase::DTI, 1680ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICaplinkProfileEdit::cPulldownContent::MyDTI::newInstance() const {
-    DDON_STUB("uGUICaplinkProfileEdit::cPulldownContent::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICaplinkProfileEdit::cPulldownContent::MyDTI::newInstance() const {
+    return new (16u) uGUICaplinkProfileEdit::cPulldownContent;
 }
 
 const MtDTI& uGUICaplinkProfileEdit::cBtnContent::getDTI() const {
     return uGUICaplinkProfileEdit::cBtnContent::DTI;
+}
+
+inline void* uGUICaplinkProfileEdit::cBtnContent::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cBtnContent::DTI)->memAlloc(sz, align, uGUICaplinkProfileEdit::cBtnContent::DTI.getID());
 }
 
 inline void uGUICaplinkProfileEdit::cBtnContent::operator delete(void* p_addr) {
@@ -673,9 +769,8 @@ inline uGUICaplinkProfileEdit::cBtnContent::MyDTI::MyDTI(MT_CTSTR class_name, Mt
 
 uGUICaplinkProfileEdit::cBtnContent::MyDTI uGUICaplinkProfileEdit::cBtnContent::DTI("uGUICaplinkProfileEdit::cBtnContent", &::uGUICaplinkProfileEdit::cContentItemBase::DTI, 512ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICaplinkProfileEdit::cBtnContent::MyDTI::newInstance() const {
-    DDON_STUB("uGUICaplinkProfileEdit::cBtnContent::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICaplinkProfileEdit::cBtnContent::MyDTI::newInstance() const {
+    return new (16u) uGUICaplinkProfileEdit::cBtnContent;
 }
 
 const MtDTI& uGUICaplinkProfileEdit::cListInfo::getDTI() const {

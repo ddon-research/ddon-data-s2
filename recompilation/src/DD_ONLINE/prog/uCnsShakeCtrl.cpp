@@ -5,6 +5,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
 #include "cpIKCtrl.h"
@@ -33,13 +34,28 @@ inline void uCnsShakeCtrl::operator delete(void* p_addr) {
 }
 
 uCnsShakeCtrl::uCnsShakeCtrl() {
-    DDON_STUB("uCnsShakeCtrl::uCnsShakeCtrl")
-    /* stub */
+    mCycle = 0.0f;
+    mAmpTrans = 0.0f;
+    mFrame = 0.0f;
+    mAmpRot = 0.0f;
+    mAmpAxis = 0.0f;
+    mDir.pad_ = 0.0f;
+    mpChild = nullptr;
+    mJoint = 0;
+    mpShakeCtrlData = nullptr;
+    mpShakeCtrl = nullptr;
+    mAxis = MtVector3::AxisY;
+    mDir = MtVector3::AxisZ;
+    mRate = 0.0f;
+    mTimer = 0.0f;
+    mIK = 0;
+    mATrans = 0.0f;
+    mPhase = 0.0f;
+    mARot = 0.0f;
+    mAAxis = 0.0f;
 }
 
 uCnsShakeCtrl::~uCnsShakeCtrl() {
-    DDON_STUB("uCnsShakeCtrl::~uCnsShakeCtrl")
-    /* stub */
 }
 
 __attribute__((weak)) void uCnsShakeCtrl::move() {
@@ -126,8 +142,7 @@ inline uCnsShakeCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 uCnsShakeCtrl::MyDTI uCnsShakeCtrl::DTI("uCnsShakeCtrl", &::uConstraint::DTI, 288ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uCnsShakeCtrl::MyDTI::newInstance() const {
-    DDON_STUB("uCnsShakeCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* uCnsShakeCtrl::MyDTI::newInstance() const {
+    return new (16u) uCnsShakeCtrl;
 }
 

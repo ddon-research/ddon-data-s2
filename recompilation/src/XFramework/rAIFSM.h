@@ -21,12 +21,12 @@ class MtStream;
 class MtString;
 class cAICopiableParameter;
 class cAIFSM;
-class cAIFSMLink;
 class cAIUserProcess;
 class rAIConditionTree;
 
 // Declarations
 class cAIFSMCluster;
+class cAIFSMLink;
 class cAIFSMNode;
 class cAIFSMNodeProcess;
 class rAIFSM;
@@ -95,6 +95,48 @@ private:
     u32 mNodeNum;  // offset: 0x14
     cAIFSMNode* * mpNodeList;  // offset: 0x18
 public:
+    static MyDTI DTI;
+};
+
+class cAIFSMLink : public cAIResource
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cAIFSMLink();
+    virtual ~cAIFSMLink() {}
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void copy(cAIFSMLink* pSource);  // vtable slot 6
+    void setDestinationNodeId(u32);
+    u32 getDestinationNodeId();
+    bool existCondition();
+    u32 getConditionId();
+protected:
+    u32 mDestinationNodeId;  // offset: 0x8
+    bool mExistCondition;  // offset: 0xc
+    u32 mConditionId;  // offset: 0x10
+public:
+    static const u32 NO_DESTINATION_ID = 4294967295;
     static MyDTI DTI;
 };
 
@@ -355,6 +397,16 @@ inline u32 cAIFSMCluster::getNodeNum() {
     return this->mNodeNum;
 }
 
+inline void* cAIFSMLink::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cAIFSMLink::cAIFSMLink() {
+    this->mDestinationNodeId = 0;
+    this->mExistCondition = false;
+    this->mConditionId = 0;
+}
+
 inline void* cAIFSMNode::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -408,4 +460,16 @@ inline rAIFSM::rAIFSM() {
     this->mFSMAttribute = 0;
     this->mpConditionTree = nullptr;
     this->mpRootCluster = nullptr;
+}
+
+inline cAIFSMNodeProcess::cAIFSMNodeProcess(MT_CTSTR pname) {
+    mpParameter = nullptr;
+    mpUpdateProcess = nullptr;
+    mpStateProcess = nullptr;
+    mpExitProcess = nullptr;
+    mpStatusChangeProcess = nullptr;
+    mpExportProcess = nullptr;
+    mpImportProcess = nullptr;
+    mContainerName = pname;
+    mCategoryName = "cAIFSMProcessContainer";
 }

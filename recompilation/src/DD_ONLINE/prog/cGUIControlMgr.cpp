@@ -329,9 +329,17 @@ __attribute__((weak)) void cGUIControlMgr::setEventHListCommon(u32 MgrId) {
     /* stub */
 }
 
-__attribute__((weak)) void cGUIControlMgr::setCategoryFocus(u32 CategoryId, bool IsActive) {
-    DDON_STUB("cGUIControlMgr::setCategoryFocus")
-    /* stub */
+void cGUIControlMgr::setCategoryFocus(u32 CategoryId, bool IsActive) {
+    for (u32 idx = 0;;) {
+        if (mControl[idx].mCategoryId == CategoryId) {
+            mControl[idx].mIsActive = IsActive;
+        }
+        if (idx != 15) {
+            idx = idx + 1u;
+        } else {
+            break;
+        }
+    }
 }
 
 void cGUIControlMgr::offAllFocus() {
@@ -353,9 +361,20 @@ void cGUIControlMgr::offAllFocus() {
     mControl[15].mIsActive = false;
 }
 
-__attribute__((weak)) void cGUIControlMgr::setFocus(u32 MgrId, bool IsActive) {
-    DDON_STUB("cGUIControlMgr::setFocus")
-    /* stub */
+void cGUIControlMgr::setFocus(u32 MgrId, bool IsActive) {
+    if (MgrId <= 15u) {
+        mControl[MgrId].mIsActive = IsActive;
+    }
+    for (u32 idx = 0;;) {
+        if (mControl[idx].mParentMgrId == MgrId) {
+            mControl[idx].mIsActive = IsActive;
+        }
+        if (idx != 15) {
+            idx = idx + 1u;
+        } else {
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) bool cGUIControlMgr::enablePadControls(u32 MgrId) {

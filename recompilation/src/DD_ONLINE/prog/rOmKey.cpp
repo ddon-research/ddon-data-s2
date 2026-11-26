@@ -91,9 +91,10 @@ __attribute__((noinline)) rOmKey::~rOmKey() {
     mItem.mLength = 0;
 }
 
-__attribute__((weak)) void rOmKey::createProperty(MtPropertyList& s) {
-    DDON_STUB("rOmKey::createProperty")
-    /* stub */
+void rOmKey::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mOmKey", static_cast<MtObject*>(&mOmKey), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mItem", static_cast<MtObject*>(&mItem), 0u, 0u);
 }
 
 MtUI* rOmKey::createUI(MtProperty& prop) {
@@ -143,19 +144,18 @@ inline void rOmKey::cOmKey::operator delete(void* p_addr) {
 inline rOmKey::cOmKey::cOmKey() {
     mOmID = -1;
     mKeyType = 0;
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
+    mPos = MtVector3::Zero;
     mbHorizontal = false;
 }
 
 rOmKey::cOmKey::~cOmKey() {
 }
 
-__attribute__((weak)) void rOmKey::cOmKey::createProperty(MtPropertyList& s) {
-    DDON_STUB("rOmKey::cOmKey::createProperty")
-    /* stub */
+void rOmKey::cOmKey::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mOmID", &mOmID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mKeyType", &mKeyType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mbHorizontal", &mbHorizontal, 0u, 0u);
 }
 
 inline rOmKey::cOmKey::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -181,9 +181,9 @@ inline void rOmKey::cItem::operator delete(void* p_addr) {
 rOmKey::cItem::~cItem() {
 }
 
-__attribute__((weak)) void rOmKey::cItem::createProperty(MtPropertyList& s) {
-    DDON_STUB("rOmKey::cItem::createProperty")
-    /* stub */
+void rOmKey::cItem::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mItemIndex", &mItemIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColor", &mColor, 0u, 0u);
 }
 
 inline rOmKey::cItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

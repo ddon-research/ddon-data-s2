@@ -225,9 +225,17 @@ f32 cpSlave::getMoveAngle() {
     return mMoveAngle;
 }
 
-__attribute__((weak)) const MtVector3& cpSlave::getTargetPos() {
-    DDON_STUB("cpSlave::getTargetPos")
-    __builtin_unreachable();
+const MtVector3& cpSlave::getTargetPos() {
+    if (mpModel != nullptr) {
+        MtVector3 frame56(cContextInterface::getTargetPos(mpModel->mContextInterface.mpContextInstance, mpModel->mContextInterface.mpContextCharacter));
+        mTargetPos.x = frame56.x;
+        mTargetPos.y = frame56.y;
+        mTargetPos.z = frame56.z;
+        mTargetPos.pad_ = 0.0f;
+        return mTargetPos;
+    } else {
+        return MtVector3::Zero;
+    }
 }
 
 u32 cpSlave::getTargetUID() {

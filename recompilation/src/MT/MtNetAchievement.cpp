@@ -280,23 +280,14 @@ __attribute__((weak)) void MtNetAchievement::updateUser(MtNetAchievement::Trophy
 
 MtNetAchievement* MtNetAchievement::mpInstance;
 
-MtNetAchievement::cTrophyRegisterContextThread::~cTrophyRegisterContextThread() {
-}
-
 __attribute__((weak)) void MtNetAchievement::cTrophyRegisterContextThread::execute(void* pcontext) {
     DDON_STUB("MtNetAchievement::cTrophyRegisterContextThread::execute")
     /* stub */
 }
 
-MtNetAchievement::cTrophyWriteThread::~cTrophyWriteThread() {
-}
-
 __attribute__((weak)) void MtNetAchievement::cTrophyWriteThread::execute(void* pcontext) {
     DDON_STUB("MtNetAchievement::cTrophyWriteThread::execute")
     /* stub */
-}
-
-MtNetAchievement::cTrophyReadThread::~cTrophyReadThread() {
 }
 
 __attribute__((weak)) void MtNetAchievement::cTrophyReadThread::execute(void* pcontext) {

@@ -25,14 +25,19 @@ class uGUICaplinkChat;
 class uGUICaplinkFriendList;
 class uGUICaplinkMessage;
 class uGUICaplinkProfile;
+class uGUICaplinkProfileEdit;
 class uGUICaplinkTalk;
 class uGUICaplinkTopMenu;
 class uGUICharaEditPartsWrap;
 class uGUICharacterEdit;
+class uGUICharacterEditPopCard;
 class uGUIChat;
 class uGUIClanSearch;
 class uGUIContentsBoard;
+class uGUICraft;
 class uGUIDialogTextBox;
+class uGUIEntryBoard;
+class uGUIEntryBoardInfo;
 class uGUIGPConfirm;
 class uGUIGiveAndTake;
 class uGUIJobSelect;
@@ -47,6 +52,7 @@ class uGUIPopFilter;
 class uGUIQuestBoard;
 class uGUIRimWarp;
 class uGUIShopBuy;
+class uGUISkill;
 
 // Declarations
 class cControl;
@@ -70,14 +76,19 @@ class cControl : public MtObject
     friend class uGUICaplinkFriendList;
     friend class uGUICaplinkMessage;
     friend class uGUICaplinkProfile;
+    friend class uGUICaplinkProfileEdit;
     friend class uGUICaplinkTalk;
     friend class uGUICaplinkTopMenu;
     friend class uGUICharaEditPartsWrap;
     friend class uGUICharacterEdit;
+    friend class uGUICharacterEditPopCard;
     friend class uGUIChat;
     friend class uGUIClanSearch;
     friend class uGUIContentsBoard;
+    friend class uGUICraft;
     friend class uGUIDialogTextBox;
+    friend class uGUIEntryBoard;
+    friend class uGUIEntryBoardInfo;
     friend class uGUIGPConfirm;
     friend class uGUIGiveAndTake;
     friend class uGUIJobSelect;
@@ -92,6 +103,7 @@ class cControl : public MtObject
     friend class uGUIQuestBoard;
     friend class uGUIRimWarp;
     friend class uGUIShopBuy;
+    friend class uGUISkill;
 public:
     enum
     {

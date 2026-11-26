@@ -53,10 +53,12 @@ class cArcLoaderBase;
 class cCharacterData;
 class cContextInstHm;
 class cCursor;
+class cMenuClanInfoDisp;
 class cMenuDialogFlow;
 class cMenuSupport;
 class cMenuSupportList;
 class cMenuSupportMenu;
+class cNetGameServer;
 class cPawnListParam;
 namespace nCharacterData { struct stCharacterName; }
 namespace nGUIKeyConfig { struct Key; }
@@ -76,6 +78,7 @@ class uGUIGPShopDialog;
 class uGUIItemBaggageEx;
 class uGUIKeyConfig;
 class uGUIMenuAreaInfo;
+class uGUIMissionInfo;
 class uGUINewspaper;
 class uGUIPopCmd01;
 class uGUIPopFilter;
@@ -242,15 +245,27 @@ using u8 = unsigned char;
 class cMenuBase : public MtObject
 {
     friend class cMenuBlackList;
+    friend class cMenuBreakupParty;
+    friend class cMenuCancelFriend;
     friend class cMenuCharacterList;
+    friend class cMenuClanInfoDisp;
+    friend class cMenuEditFavoritePawn;
     friend class cMenuKeyConfig;
+    friend class cMenuLostPawnRevive;
     friend class cMenuPartyMemberList;
+    friend class cMenuPawnDelete;
+    friend class cMenuPawnSetPartner;
     friend class cMenuQuickMatchCancel;
     friend class cMenuQuickMatchRetry;
+    friend class cMenuServerList;
     friend class cMenuSupportList;
     friend class cMenuSupportMenu;
+    friend class cMenuUILargeSetting;
+    friend class cNetGameServer;
     friend class sMenu;
     friend class uGUICommunityList;
+    friend class uGUIMissionInfo;
+    friend class uGUIPopTopSel;
 public:
     class MyDTI;
 public:
@@ -450,7 +465,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuBazaarBuy();
-    virtual ~cMenuBazaarBuy();
+    virtual ~cMenuBazaarBuy() {}
     void initBazaarBuy();
     nMenu::MENU_RET moveBazaarBuy();
 public:
@@ -585,7 +600,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuBazaarMenu();
-    virtual ~cMenuBazaarMenu();
+    virtual ~cMenuBazaarMenu() {}
     void initBazaarMenu();
     nMenu::MENU_RET moveBazaarMenu();
 public:
@@ -631,7 +646,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuBlackList();
-    virtual ~cMenuBlackList();
+    virtual ~cMenuBlackList() {}
     void initBlackList(uGUIBase* pRefGUI);
     nMenu::MENU_RET moveBlackList();
     virtual void exitMenu();  // vtable slot 15
@@ -677,7 +692,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuBreakupParty();
-    virtual ~cMenuBreakupParty();
+    virtual ~cMenuBreakupParty() {}
     void initBreakupParty();
     nMenu::MENU_RET moveBreakupParty();
     virtual void exitMenu();  // vtable slot 15
@@ -778,7 +793,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuChangeServer();
-    virtual ~cMenuChangeServer();
+    virtual ~cMenuChangeServer() {}
     void initChangeServer(u32 serverId);
     nMenu::MENU_RET moveChangeServer();
     virtual void exitMenu();  // vtable slot 15
@@ -838,7 +853,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCharacterList();
-    virtual ~cMenuCharacterList();
+    virtual ~cMenuCharacterList() {}
     void initCharacterList(uGUIBase* pGUIRefMenu);
     nMenu::MENU_RET moveCharacterList();
     virtual void exitMenu();  // vtable slot 15
@@ -943,7 +958,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftColorFrame();
-    virtual ~cMenuCraftColorFrame();
+    virtual ~cMenuCraftColorFrame() {}
     void initCraftColorFrame();
     nMenu::MENU_RET moveCraftColorFrame(u32* slotNo);
 private:
@@ -1017,7 +1032,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftColorItem();
-    virtual ~cMenuCraftColorItem();
+    virtual ~cMenuCraftColorItem() {}
     void initCraftColorItem();
     nMenu::MENU_RET moveCraftColorItem();
 private:
@@ -1094,7 +1109,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftCreateItem();
-    virtual ~cMenuCraftCreateItem();
+    virtual ~cMenuCraftCreateItem() {}
     void initCraftCreateItem(MOVE_LINE moveLine);
     nMenu::MENU_RET moveCraftCreateItem();
 private:
@@ -1202,7 +1217,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftElementFrame();
-    virtual ~cMenuCraftElementFrame();
+    virtual ~cMenuCraftElementFrame() {}
     void initCraftElementFrame();
     nMenu::MENU_RET moveCraftElementFrame(u32* slotNo);
 private:
@@ -1285,7 +1300,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftElementItem();
-    virtual ~cMenuCraftElementItem();
+    virtual ~cMenuCraftElementItem() {}
     void initCraftElementItem(u32 type, u32 slotNo);
     nMenu::MENU_RET moveCraftElementItem();
 private:
@@ -1348,7 +1363,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftGoldStoneDialog();
-    virtual ~cMenuCraftGoldStoneDialog();
+    virtual ~cMenuCraftGoldStoneDialog() {}
     void initCraftGoldStoneDialog(u32 type, MOVE_LINE moveLine);
     nMenu::MENU_RET moveCraftGoldStoneDialog(s32* selectType);
 private:
@@ -1412,7 +1427,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftItemSelect();
-    virtual ~cMenuCraftItemSelect();
+    virtual ~cMenuCraftItemSelect() {}
     void initCraftItemSelect(u32 listType, u32 slotNo);
     nMenu::MENU_RET moveCraftItemSelect();
 private:
@@ -1545,7 +1560,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftMenu();
-    virtual ~cMenuCraftMenu();
+    virtual ~cMenuCraftMenu() {}
     void initCraftMenu();
     nMenu::MENU_RET moveCraftMenu();
     virtual void exitMenu();  // vtable slot 15
@@ -1614,7 +1629,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftMyPawnList();
-    virtual ~cMenuCraftMyPawnList();
+    virtual ~cMenuCraftMyPawnList() {}
     void initCraftMyPawnList(u32 listType);
     nMenu::MENU_RET moveCraftMyPawnList();
 private:
@@ -1683,7 +1698,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftPoint();
-    virtual ~cMenuCraftPoint();
+    virtual ~cMenuCraftPoint() {}
     void initCraftPoint();
     nMenu::MENU_RET moveCraftPoint();
 private:
@@ -1746,7 +1761,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftProcessMenu();
-    virtual ~cMenuCraftProcessMenu();
+    virtual ~cMenuCraftProcessMenu() {}
     void initCraftProcessMenu(u32 listType);
     nMenu::MENU_RET moveCraftProcessMenu(u32* slotNo);
     u32 getPrice(u32 itemId, u8 priceType);
@@ -1806,7 +1821,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftRecipeList();
-    virtual ~cMenuCraftRecipeList();
+    virtual ~cMenuCraftRecipeList() {}
     void initCraftRecipeList();
     nMenu::MENU_RET moveCraftRecipeList();
     static cMenuCraftMenu::CREATE_STATE isCreate(u32 recipeId, u32 type, bool isEffect);
@@ -1919,7 +1934,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftSupportFrame();
-    virtual ~cMenuCraftSupportFrame();
+    virtual ~cMenuCraftSupportFrame() {}
     void initCraftSupportFrame(u32 type, u32 cursorPos);
     nMenu::MENU_RET moveCraftSupportFrame(u32* slotNo);
 private:
@@ -1974,7 +1989,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftSupportList();
-    virtual ~cMenuCraftSupportList();
+    virtual ~cMenuCraftSupportList() {}
     void initCraftSupportList();
     nMenu::MENU_RET moveCraftSupportList(u32* slotNo);
 private:
@@ -2087,7 +2102,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftTask();
-    virtual ~cMenuCraftTask();
+    virtual ~cMenuCraftTask() {}
     void initCraftTask();
     nMenu::MENU_RET moveCraftTask();
     void setClassUp(bool isClassUp);
@@ -2158,7 +2173,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftUpGradeItem();
-    virtual ~cMenuCraftUpGradeItem();
+    virtual ~cMenuCraftUpGradeItem() {}
     void initCraftUpGradeItem();
     nMenu::MENU_RET moveCraftUpGradeItem();
     bool isGradeUp();
@@ -2217,7 +2232,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCraftUpGradeList();
-    virtual ~cMenuCraftUpGradeList();
+    virtual ~cMenuCraftUpGradeList() {}
     void initCraftUpGradeList();
     nMenu::MENU_RET moveCraftUpGradeList();
 private:
@@ -2266,7 +2281,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCreateGameSession();
-    virtual ~cMenuCreateGameSession();
+    virtual ~cMenuCreateGameSession() {}
     void initCreateGameSession(s32 type);
     nMenu::MENU_RET moveCreateGameSession();
 private:
@@ -2579,7 +2594,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuEntryGameSession();
-    virtual ~cMenuEntryGameSession();
+    virtual ~cMenuEntryGameSession() {}
     void initEntryGameSession(bool flag);
     nMenu::MENU_RET moveEntryGameSession();
 private:
@@ -2694,7 +2709,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuFirstOption();
-    virtual ~cMenuFirstOption();
+    virtual ~cMenuFirstOption() {}
     void initFirstOption();
     nMenu::MENU_RET moveFirstOption();
     virtual void exitMenu();  // vtable slot 15
@@ -2763,7 +2778,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuFriendList();
-    virtual ~cMenuFriendList();
+    virtual ~cMenuFriendList() {}
     virtual void exitMenu();  // vtable slot 15
     void initFriendList(uGUIBase* pRefGUI, u32 type, nCharacterData::stCharacterName* pDstName, u32* pCharacterId, CommunityCharacterBaseInfoVec* pExcludeList);
     nMenu::MENU_RET moveFriendList();
@@ -2828,7 +2843,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetAreaMasterInfo();
-    virtual ~cMenuGetAreaMasterInfo();
+    virtual ~cMenuGetAreaMasterInfo() {}
     void initGetAreaMasterInfo();
     nMenu::MENU_RET moveGetAreaMasterInfo();
 private:
@@ -2885,7 +2900,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetBlackList();
-    virtual ~cMenuGetBlackList();
+    virtual ~cMenuGetBlackList() {}
     void initGetBlackList();
     nMenu::MENU_RET moveGetBlackList();
 public:
@@ -2945,7 +2960,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetCharacterName();
-    virtual ~cMenuGetCharacterName();
+    virtual ~cMenuGetCharacterName() {}
     void initGetCharacterName(u32 type, nCharacterData::stCharacterName& dstName, u32* pCharacterId, CommunityCharacterBaseInfoVec* pExcludeList);
     nMenu::MENU_RET moveGetCharacterName();
 private:
@@ -2996,7 +3011,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetCraftRecipeToServer();
-    virtual ~cMenuGetCraftRecipeToServer();
+    virtual ~cMenuGetCraftRecipeToServer() {}
     void initGetCraftRecipeToServer(sCraftManager::RECIPE_TYPE type, nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE category);
     nMenu::MENU_RET moveGetCraftRecipeToServer();
     void setRecipeType(sCraftManager::RECIPE_TYPE type, nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE category);
@@ -3049,7 +3064,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetFriendList();
-    virtual ~cMenuGetFriendList();
+    virtual ~cMenuGetFriendList() {}
     void initGetFriendList();
     nMenu::MENU_RET moveGetFriendList();
 public:
@@ -3238,7 +3253,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetMailList();
-    virtual ~cMenuGetMailList();
+    virtual ~cMenuGetMailList() {}
     void initGetMailList(bool newMailOnly);
     nMenu::MENU_RET moveGetMailList();
 private:
@@ -3287,7 +3302,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetMatchingProfile();
-    virtual ~cMenuGetMatchingProfile();
+    virtual ~cMenuGetMatchingProfile() {}
     void initGetMatchingProfile(u32 characterId, cCharacterData::stMatchProfile* pDstProfile, u8* pJob, u32* pLv);
     nMenu::MENU_RET moveGetMatchingProfile();
     virtual void exitMenu();  // vtable slot 15
@@ -3339,7 +3354,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetOrbGainExtendParam();
-    virtual ~cMenuGetOrbGainExtendParam();
+    virtual ~cMenuGetOrbGainExtendParam() {}
     void initGetOrbGainExtendParam();
     nMenu::MENU_RET moveGetOrbGainExtendParam();
 public:
@@ -3394,7 +3409,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetPawnName();
-    virtual ~cMenuGetPawnName();
+    virtual ~cMenuGetPawnName() {}
     void initGetPawnName(u32 type, MtString& dstName);
     nMenu::MENU_RET moveGetPawnName();
 private:
@@ -3449,7 +3464,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetRecentList();
-    virtual ~cMenuGetRecentList();
+    virtual ~cMenuGetRecentList() {}
     void initGetRecentList();
     nMenu::MENU_RET moveGetRecentList();
 public:
@@ -3586,7 +3601,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuInvite();
-    virtual ~cMenuInvite();
+    virtual ~cMenuInvite() {}
     void initInvite(s32 inviteType, cPawnListParam* pParam);
     void initInvite(s32 inviteType, CDataClientPartyListInfo* pParam);
     void initInvite(s32 inviteType, u32 characterId, CHAR_NAME* pCharacterName);
@@ -3692,7 +3707,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuJoinGameSession();
-    virtual ~cMenuJoinGameSession();
+    virtual ~cMenuJoinGameSession() {}
     void initJoinGameSession(u32 joinType);
     nMenu::MENU_RET moveJoinGameSession();
 private:
@@ -3743,7 +3758,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuJoinPartyFlow();
-    virtual ~cMenuJoinPartyFlow();
+    virtual ~cMenuJoinPartyFlow() {}
     void initJoinPartyFlow();
     nMenu::MENU_RET moveJoinPartyFlow();
     virtual void exitMenu();  // vtable slot 15
@@ -4248,7 +4263,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuLeaveGroupChat();
-    virtual ~cMenuLeaveGroupChat();
+    virtual ~cMenuLeaveGroupChat() {}
     void initLeaveGroupChat();
     nMenu::MENU_RET moveLeaveGroupChat();
     virtual void exitMenu();  // vtable slot 15
@@ -4300,7 +4315,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuLeaveOnTheWay();
-    virtual ~cMenuLeaveOnTheWay();
+    virtual ~cMenuLeaveOnTheWay() {}
     void initLeaveOnTheWay();
     nMenu::MENU_RET moveLeaveOnTheWay();
     virtual void exitMenu();  // vtable slot 15
@@ -4355,7 +4370,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuLostPawnList();
-    virtual ~cMenuLostPawnList();
+    virtual ~cMenuLostPawnList() {}
     void initLostPawnList(s32 type);
     nMenu::MENU_RET moveLostPawnList();
 private:
@@ -4502,7 +4517,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuMail();
-    virtual ~cMenuMail();
+    virtual ~cMenuMail() {}
     void initMail();
     nMenu::MENU_RET moveMail();
     u32 getPageNum();
@@ -4649,7 +4664,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuMailDelete();
-    virtual ~cMenuMailDelete();
+    virtual ~cMenuMailDelete() {}
     void initMailDelete(u64 mailId, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveMailDelete();
 private:
@@ -4701,7 +4716,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuMailDeleteMulti();
-    virtual ~cMenuMailDeleteMulti();
+    virtual ~cMenuMailDeleteMulti() {}
     void initMailDeleteMulti(nNetSv::E_MAIL_TYPE type, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveMailDeleteMulti();
 private:
@@ -4780,7 +4795,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuMailDetail();
-    virtual ~cMenuMailDetail();
+    virtual ~cMenuMailDetail() {}
     void initMailDetail(CMailInfo& info, const MtVector4& setPos);
     nMenu::MENU_RET moveMailDetail();
     virtual void exitMenu();  // vtable slot 15
@@ -4836,7 +4851,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuMailGetItem();
-    virtual ~cMenuMailGetItem();
+    virtual ~cMenuMailGetItem() {}
     void initMailGetItem(u64 mailId, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveMailGetItem();
     virtual void exitMenu();  // vtable slot 15
@@ -4888,7 +4903,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuMailGetItemAll();
-    virtual ~cMenuMailGetItemAll();
+    virtual ~cMenuMailGetItemAll() {}
     void initMailGetItemAll(uGUIBase* pRefGUI);
     nMenu::MENU_RET moveMailGetItemAll();
     virtual void exitMenu();  // vtable slot 15
@@ -4950,7 +4965,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuMailToList();
-    virtual ~cMenuMailToList();
+    virtual ~cMenuMailToList() {}
     virtual void exitMenu();  // vtable slot 15
     void initMailToList(CommunityCharacterBaseInfoVec& ToList, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveMailToList();
@@ -5019,7 +5034,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuMatchingProfile();
-    virtual ~cMenuMatchingProfile();
+    virtual ~cMenuMatchingProfile() {}
     void initMatchingProfile(bool IsCardType, u32 PointerPrio);
     nMenu::MENU_RET moveMatchingProfile();
     virtual void exitMenu();  // vtable slot 15
@@ -5118,7 +5133,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuMyPawnList();
-    virtual ~cMenuMyPawnList();
+    virtual ~cMenuMyPawnList() {}
     void initMyPawnList(u32 attr, s32 cursorPos, u32 listType);
     nMenu::MENU_RET moveMyPawnList();
     bool moveMyPawnDetail();
@@ -5173,7 +5188,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuOnlineShop();
-    virtual ~cMenuOnlineShop();
+    virtual ~cMenuOnlineShop() {}
     void initMenuOnlineShop(u32 moveline);
     nMenu::MENU_RET moveMenuOnlineShop();
 private:
@@ -5247,7 +5262,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPartyList();
-    virtual ~cMenuPartyList();
+    virtual ~cMenuPartyList() {}
     void initPartyList(uGUIBase* pGUIRefMenu);
     nMenu::MENU_RET movePartyList();
     virtual void exitMenu();  // vtable slot 15
@@ -5309,7 +5324,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPartyListMemberInfo();
-    virtual ~cMenuPartyListMemberInfo();
+    virtual ~cMenuPartyListMemberInfo() {}
     void initPartyListMemberInfo(MtTypedArray<CDataPartyMember>* pInfo, u32 prio);
     nMenu::MENU_RET movePartyListMemberInfo();
 private:
@@ -5380,7 +5395,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPartyManager();
-    virtual ~cMenuPartyManager();
+    virtual ~cMenuPartyManager() {}
     void initPartyManager(PARTY_MANAGER_TAB tab, bool isShortCut);
     nMenu::MENU_RET movePartyManager();
     virtual void exitMenu();  // vtable slot 15
@@ -5454,7 +5469,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPartyMemberList();
-    virtual ~cMenuPartyMemberList();
+    virtual ~cMenuPartyMemberList() {}
     void initPartyMemberList(s32 type, uGUIBase* pRefGUIUnit, bool isShortCut);
     nMenu::MENU_RET movePartyMemberList();
     s32 getPartyMemberNum() const;
@@ -5524,7 +5539,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPartyReq();
-    virtual ~cMenuPartyReq();
+    virtual ~cMenuPartyReq() {}
     void initPartyReq(CDataClientPartyListInfo* pInfo, u32 characterId, CHAR_NAME* pCharacterName);
     nMenu::MENU_RET movePartyReq();
 private:
@@ -5572,7 +5587,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnDelete();
-    virtual ~cMenuPawnDelete();
+    virtual ~cMenuPawnDelete() {}
     void initPawnDelete(u32 pawnId);
     nMenu::MENU_RET movePawnDelete();
 private:
@@ -5636,7 +5651,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnFeedback();
-    virtual ~cMenuPawnFeedback();
+    virtual ~cMenuPawnFeedback() {}
     void initPawnFeedback(nNet::FEEDBACK_TYPE type, nNet::stFeedbackData& feedback);
     nMenu::MENU_RET movePawnFeedback();
     virtual void exitMenu();  // vtable slot 15
@@ -5691,7 +5706,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnHistory();
-    virtual ~cMenuPawnHistory();
+    virtual ~cMenuPawnHistory() {}
     void initPawnHistory(u32 pawnId, u32 prio);
     nMenu::MENU_RET movePawnHistory();
     virtual void exitMenu();  // vtable slot 15
@@ -5750,7 +5765,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnManageMenu();
-    virtual ~cMenuPawnManageMenu();
+    virtual ~cMenuPawnManageMenu() {}
     void initPawnManageMenu();
     nMenu::MENU_RET movePawnManageMenu();
     virtual void exitMenu();  // vtable slot 15
@@ -5819,7 +5834,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnManager();
-    virtual ~cMenuPawnManager();
+    virtual ~cMenuPawnManager() {}
     void initPawnManager(s32 initTab);
     nMenu::MENU_RET movePawnManager();
     u32 getTabNum();
@@ -5925,7 +5940,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnRental();
-    virtual ~cMenuPawnRental();
+    virtual ~cMenuPawnRental() {}
     void initPawnRental(u32 slotNo, cPawnListParam& param);
     nMenu::MENU_RET movePawnRental();
 private:
@@ -5984,7 +5999,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnReqList();
-    virtual ~cMenuPawnReqList();
+    virtual ~cMenuPawnReqList() {}
     void initPawnReqList(s32 type);
     nMenu::MENU_RET movePawnReqList();
 private:
@@ -6036,7 +6051,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnReqMenu();
-    virtual ~cMenuPawnReqMenu();
+    virtual ~cMenuPawnReqMenu() {}
     void initPawnReqMenu();
     nMenu::MENU_RET movePawnReqMenu();
 public:
@@ -6102,7 +6117,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnReturn();
-    virtual ~cMenuPawnReturn();
+    virtual ~cMenuPawnReturn() {}
     void initPawnReturn(u32 pawnId, u32 prio);
     nMenu::MENU_RET movePawnReturn();
     virtual void checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId);  // vtable slot 17
@@ -6190,7 +6205,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnRevive();
-    virtual ~cMenuPawnRevive();
+    virtual ~cMenuPawnRevive() {}
     void initPawnRevive(s32 type);
     nMenu::MENU_RET movePawnRevive(uHuman* pHm, s32& retReviveType);
     virtual void exitMenu();  // vtable slot 15
@@ -6343,7 +6358,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnSetPartner();
-    virtual ~cMenuPawnSetPartner();
+    virtual ~cMenuPawnSetPartner() {}
     void initPawnSetPartner(u32 pawnId);
     nMenu::MENU_RET movePawnSetPartner();
 private:
@@ -6402,7 +6417,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPawnShareRange();
-    virtual ~cMenuPawnShareRange();
+    virtual ~cMenuPawnShareRange() {}
     void initPawnShareRange(u32 pawnId, u32 prio);
     nMenu::MENU_RET movePawnShareRange();
 private:
@@ -6468,7 +6483,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuPlDeadMenu();
-    virtual ~cMenuPlDeadMenu();
+    virtual ~cMenuPlDeadMenu() {}
     void initPlDeadMenu();
     nMenu::MENU_RET movePlDeadMenu();
 protected:
@@ -6604,7 +6619,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuQuickMatchCancel();
-    virtual ~cMenuQuickMatchCancel();
+    virtual ~cMenuQuickMatchCancel() {}
     void initQuickMatchCancel(uGUIBase* pParentGUI);
     nMenu::MENU_RET moveQuickMatchCancel();
 public:
@@ -6654,7 +6669,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuQuickMatchRetry();
-    virtual ~cMenuQuickMatchRetry();
+    virtual ~cMenuQuickMatchRetry() {}
     void initQuickMatchRetry();
     nMenu::MENU_RET moveQuickMatchRetry();
 public:
@@ -6722,7 +6737,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuQuickMatchSelect();
-    virtual ~cMenuQuickMatchSelect();
+    virtual ~cMenuQuickMatchSelect() {}
     virtual void exitMenu();  // vtable slot 15
     void initQuickMatchSelect(s32 type);
     nMenu::MENU_RET moveQuickMatchSelect();
@@ -6807,7 +6822,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuReadyCheck();
-    virtual ~cMenuReadyCheck();
+    virtual ~cMenuReadyCheck() {}
     virtual void exitMenu();  // vtable slot 15
     void initReadyCheck(u32 type);
     nMenu::MENU_RET moveReadyCheck();
@@ -6875,7 +6890,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuRecentList();
-    virtual ~cMenuRecentList();
+    virtual ~cMenuRecentList() {}
     void initRecentList(uGUIBase* pRefGUI);
     nMenu::MENU_RET moveRecentList();
     virtual void exitMenu();  // vtable slot 15
@@ -7010,7 +7025,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuRentalPawnList();
-    virtual ~cMenuRentalPawnList();
+    virtual ~cMenuRentalPawnList() {}
     void initRentalPawnList(s32 listType, s32 cursorPos, s32 listAttr);
     nMenu::MENU_RET moveRentalPawnList();
     bool moveRentalPawnDetail();
@@ -7062,7 +7077,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuResetCraftPoint();
-    virtual ~cMenuResetCraftPoint();
+    virtual ~cMenuResetCraftPoint() {}
     void initResetCraftPoint(u32 PawnId);
     nMenu::MENU_RET moveResetCraftPoint();
 private:
@@ -7269,7 +7284,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuServerList();
-    virtual ~cMenuServerList();
+    virtual ~cMenuServerList() {}
     void initServerList();
     nMenu::MENU_RET moveServerList();
     virtual void exitMenu();  // vtable slot 15
@@ -7354,7 +7369,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuSetJob();
-    virtual ~cMenuSetJob();
+    virtual ~cMenuSetJob() {}
     void initSetJob(u32 attr, u32& dstJob, bool* pSetting, u32 setNum, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveSetJob();
     virtual void exitMenu();  // vtable slot 15
@@ -7447,7 +7462,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuSetLevel();
-    virtual ~cMenuSetLevel();
+    virtual ~cMenuSetLevel() {}
     void initSetLevel(u32 attr, u32* dstLevelMin, u32* dstLevelMax, bool* pSetting, u32 baseLevel, SET set, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveSetLevel();
     virtual void exitMenu();  // vtable slot 15
@@ -7541,7 +7556,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuSetLimitPreset();
-    virtual ~cMenuSetLimitPreset();
+    virtual ~cMenuSetLimitPreset() {}
     void initSetLimitPreset(u32 type, u32 attr, u32* dstLevelMin, u32* dstLevelMax, bool* pSetting);
     nMenu::MENU_RET moveSetLimitPreset();
     virtual void exitMenu();  // vtable slot 15
@@ -7615,7 +7630,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuSimplePartyReq();
-    virtual ~cMenuSimplePartyReq();
+    virtual ~cMenuSimplePartyReq() {}
     void initSimplePartyReq(cCharacterData::stSearchFilterSetting& setting, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveSimplePartyReq();
     virtual void exitMenu();  // vtable slot 15
@@ -7665,7 +7680,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuStartGameSession();
-    virtual ~cMenuStartGameSession();
+    virtual ~cMenuStartGameSession() {}
     void initStartGameSession(nNetSv::PLAY_START_TYPE type);
     nMenu::MENU_RET moveStartGameSession();
 private:
@@ -8091,7 +8106,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuTraining();
-    virtual ~cMenuTraining();
+    virtual ~cMenuTraining() {}
     void initMenuTraining(u32 moveline);
     nMenu::MENU_RET moveMenuTraining();
 public:
@@ -8152,7 +8167,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuTreasuresLot();
-    virtual ~cMenuTreasuresLot();
+    virtual ~cMenuTreasuresLot() {}
     void initTreasuresLotMenu(u32 type, u32 moveLine);
     nMenu::MENU_RET moveTreasuresLotMenu();
     virtual void updatePtr();  // vtable slot 6
@@ -8210,7 +8225,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuTreasuresLotAnnounce();
-    virtual ~cMenuTreasuresLotAnnounce();
+    virtual ~cMenuTreasuresLotAnnounce() {}
     void initTreasuresLotAnnounce(u32 moveLine, bool box);
     nMenu::MENU_RET moveTreasuresLotAnnounce();
     virtual void exitMenu();  // vtable slot 15
@@ -8263,7 +8278,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuUILargeSetting();
-    virtual ~cMenuUILargeSetting();
+    virtual ~cMenuUILargeSetting() {}
     void init();
     nMenu::MENU_RET move();
 private:
@@ -8325,7 +8340,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuUpdateCommunityList();
-    virtual ~cMenuUpdateCommunityList();
+    virtual ~cMenuUpdateCommunityList() {}
     void initUpdateCommunityList(bool isGetRecentList);
     nMenu::MENU_RET moveUpdateCommunityList();
     virtual void exitMenu();  // vtable slot 15
@@ -8397,7 +8412,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuActiveList();
-    virtual ~cMenuActiveList();
+    virtual ~cMenuActiveList() {}
     void initActiveList(uGUIBase* pRefGUI, s32 type, nCharacterData::stCharacterName* pDstName, u32* pCharacterId, CommunityCharacterBaseInfoVec* pExcludeList);
     nMenu::MENU_RET moveActiveList();
     virtual void exitMenu();  // vtable slot 15
@@ -8647,7 +8662,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuAreaMasterHistory();
-    virtual ~cMenuAreaMasterHistory();
+    virtual ~cMenuAreaMasterHistory() {}
     void initAreaMasterHistory();
     nMenu::MENU_RET moveAreaMasterHistory();
 public:
@@ -8701,7 +8716,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuAreaMasterQuestInfo();
-    virtual ~cMenuAreaMasterQuestInfo();
+    virtual ~cMenuAreaMasterQuestInfo() {}
     void initAreaMasterQuestInfo();
     nMenu::MENU_RET moveAreaMasterQuestInfo();
 public:
@@ -8812,7 +8827,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuAreaMasterSpotInfo();
-    virtual ~cMenuAreaMasterSpotInfo();
+    virtual ~cMenuAreaMasterSpotInfo() {}
     void initAreaMasterSpotInfo();
     nMenu::MENU_RET moveAreaMasterSpotInfo();
 public:
@@ -8866,7 +8881,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuAreaMasterSupplies();
-    virtual ~cMenuAreaMasterSupplies();
+    virtual ~cMenuAreaMasterSupplies() {}
     void initAreaMasterSupplies();
     nMenu::MENU_RET moveAreaMasterSupplies();
 public:
@@ -8928,7 +8943,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuBaggageMenu();
-    virtual ~cMenuBaggageMenu();
+    virtual ~cMenuBaggageMenu() {}
     void initBaggageMenu();
     nMenu::MENU_RET moveBaggageMenu();
     virtual void exitMenu();  // vtable slot 15
@@ -8949,12 +8964,26 @@ inline void* cMenuActiveList::operator new(size_t sz, void* p_addr) {
 inline cMenuActiveList::cMenuActiveList() {
 }
 
+inline u32 cMenuActiveList::getSortCount() {
+    return this->mSortListCount;
+}
+
+inline bool cMenuActiveList::getRemakeListFlag() {
+    return this->mIsRemakeList;
+}
+
 inline void* cMenuApplyFriend::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cMenuApplyFriend::cMenuApplyFriend() {
+}
+
 inline void* cMenuApproveFriend::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cMenuApproveFriend::cMenuApproveFriend() {
 }
 
 inline void* cMenuAreaMaster::operator new(size_t sz, void* p_addr) {
@@ -9010,6 +9039,10 @@ inline void cMenuBase::setMenuList(s32* pMenuList) {
 
 inline bool cMenuBase::getNowMove() {
     return this->mNowMoveFlag;
+}
+
+inline cMenuDialogFlow* cMenuBase::getDialogFlow() {
+    return this->mpDialogFlow;
 }
 
 inline void* cMenuBazaarBuy::operator new(size_t sz, void* p_addr) {
@@ -9230,8 +9263,17 @@ inline void* cMenuCustomize::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cMenuCustomize::cMenuCustomize() {
+    this->mPawnId = 0;
+    this->mSlotNo = 0;
+}
+
 inline void* cMenuDispStatus::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cMenuDispStatus::cMenuDispStatus() {
+    this->mContext.::cContext::mId = 7;
 }
 
 inline void* cMenuEditBlackList::operator new(size_t sz, void* p_addr) {
@@ -9259,6 +9301,9 @@ inline void* cMenuFavoriteFriend::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cMenuFavoriteFriend::cMenuFavoriteFriend() {
+}
+
 inline void* cMenuFirstOption::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -9271,6 +9316,14 @@ inline void* cMenuFriendList::operator new(size_t sz, void* p_addr) {
 }
 
 inline cMenuFriendList::cMenuFriendList() {
+}
+
+inline u32 cMenuFriendList::getSortCount() {
+    return this->mSortListCount;
+}
+
+inline bool cMenuFriendList::getRemakeListFlag() {
+    return this->mIsRemakeList;
 }
 
 inline void* cMenuGetAreaMasterInfo::operator new(size_t sz, void* p_addr) {
@@ -9383,6 +9436,9 @@ inline void* cMenuInviteGroupChat::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cMenuInviteGroupChat::cMenuInviteGroupChat() {
+}
+
 inline void* cMenuJoinGameSession::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -9432,6 +9488,9 @@ inline void* cMenuKickGroupChat::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cMenuKickGroupChat::cMenuKickGroupChat() {
+}
+
 inline void* cMenuLeaveGroupChat::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -9473,6 +9532,9 @@ inline u32 cMenuMail::getSortListCount() {
 
 inline void* cMenuMailCreate::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cMenuMailCreate::cMenuMailCreate() {
 }
 
 inline void* cMenuMailDelete::operator new(size_t sz, void* p_addr) {
@@ -9657,6 +9719,9 @@ inline void* cMenuPawnSearch::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cMenuPawnSearch::cMenuPawnSearch() {
+}
+
 inline void* cMenuPawnSetPartner::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -9720,8 +9785,19 @@ inline void* cMenuRecentList::operator new(size_t sz, void* p_addr) {
 inline cMenuRecentList::cMenuRecentList() {
 }
 
+inline u32 cMenuRecentList::getSortCount() {
+    return this->mSortListCount;
+}
+
+inline bool cMenuRecentList::getRemakeListFlag() {
+    return this->mIsRemakeList;
+}
+
 inline void* cMenuRemoveFriend::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cMenuRemoveFriend::cMenuRemoveFriend() {
 }
 
 inline void* cMenuRentalPawnList::operator new(size_t sz, void* p_addr) {

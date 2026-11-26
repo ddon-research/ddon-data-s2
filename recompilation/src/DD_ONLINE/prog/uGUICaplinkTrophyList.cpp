@@ -44,8 +44,11 @@ inline void uGUICaplinkTrophyList::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUICaplinkTrophyList::~uGUICaplinkTrophyList() {
-    DDON_STUB("uGUICaplinkTrophyList::~uGUICaplinkTrophyList")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 void uGUICaplinkTrophyList::createProperty(MtPropertyList& s) {

@@ -5,9 +5,9 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
-#include "../../XFramework/cUnit.h"
 #include "../../XFramework/uConstraint.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
@@ -31,13 +31,11 @@ inline void uCnsScaleFix::operator delete(void* p_addr) {
 }
 
 uCnsScaleFix::uCnsScaleFix() {
-    DDON_STUB("uCnsScaleFix::uCnsScaleFix")
-    /* stub */
+    mJoint = 0;
+    mpCnsEdit = nullptr;
 }
 
 uCnsScaleFix::~uCnsScaleFix() {
-    DDON_STUB("uCnsScaleFix::~uCnsScaleFix")
-    /* stub */
 }
 
 __attribute__((weak)) void uCnsScaleFix::setResource(cResource* pRes) {
@@ -71,9 +69,9 @@ void uCnsScaleFix::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
-__attribute__((weak)) void uCnsScaleFix::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsScaleFix::createProperty")
-    /* stub */
+void uCnsScaleFix::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mJoint", &mJoint, 0u, 0u);
 }
 
 MtUI* uCnsScaleFix::createUI(MtProperty& prop) {
@@ -97,8 +95,7 @@ inline uCnsScaleFix::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 uCnsScaleFix::MyDTI uCnsScaleFix::DTI("uCnsScaleFix", &::uConstraint::DTI, 168ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uCnsScaleFix::MyDTI::newInstance() const {
-    DDON_STUB("uCnsScaleFix::MyDTI::newInstance")
-    return nullptr;
+MtObject* uCnsScaleFix::MyDTI::newInstance() const {
+    return new (16u) uCnsScaleFix;
 }
 

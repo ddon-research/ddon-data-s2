@@ -199,3 +199,7 @@ inline sContextManager::List::List() {
     this->mpEnd = nullptr;
     this->mpTop = nullptr;
 }
+
+inline cContext* sContextManager::List::getTop() {
+    return this->mpTop;
+}

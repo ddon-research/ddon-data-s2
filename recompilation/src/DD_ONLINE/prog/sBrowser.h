@@ -34,6 +34,7 @@ class rTexture;
 class rTextureMemory;
 class sGUIExt;
 class uGUIBrowserBG;
+class uGUIGPConfirm;
 
 // Declarations
 class cBrowserRequest;
@@ -79,6 +80,7 @@ class sBrowser : public cSystem
 {
     friend class sGUIExt;
     friend class uGUIBrowserBG;
+    friend class uGUIGPConfirm;
 public:
     enum
     {

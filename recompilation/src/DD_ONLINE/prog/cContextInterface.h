@@ -48,6 +48,7 @@ class cpJob10;
 class cpOcdCtrl;
 class cpPawnThink;
 class cpSlave;
+class cpStatusChange;
 namespace nActionManager { struct stActExParam; }
 namespace nCharacterData { struct stCharacterName; }
 namespace nCharacterData { struct stEquipData; }
@@ -66,6 +67,7 @@ class sControlManager;
 class sSetManager;
 class uCharacter;
 class uControl;
+class uControlEnemy;
 class uControlNpc;
 class uDDOModel;
 class uEnemy;
@@ -116,10 +118,12 @@ class cContextInterface : public MtObject
     friend class cpOcdCtrl;
     friend class cpPawnThink;
     friend class cpSlave;
+    friend class cpStatusChange;
     friend class sControlManager;
     friend class sSetManager;
     friend class uCharacter;
     friend class uControl;
+    friend class uControlEnemy;
     friend class uControlNpc;
     friend class uDDOModel;
     friend class uEnemy;

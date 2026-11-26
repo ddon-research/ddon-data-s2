@@ -14,6 +14,7 @@ class MtDTI;
 class MtPropertyList;
 class MtString;
 class MtVector3;
+class cpActionSelect;
 class cpKeyCommand;
 class uNpc;
 
@@ -30,6 +31,7 @@ using u32 = unsigned int;
 
 class cpComponent : public MtObject
 {
+    friend class cpActionSelect;
     friend class cpKeyCommand;
     friend class uNpc;
 public:
@@ -132,6 +134,18 @@ inline cpComponent* cpComponent::getRootComponent() const {
 
 inline MtObject* cpComponent::getOwner() const {
     return this->mpOwner;
+}
+
+inline cpComponent* cpComponent::getParent() const {
+    return this->mpParent;
+}
+
+inline cpComponent* cpComponent::getChildTop() const {
+    return this->mpChildTop;
+}
+
+inline cpComponent* cpComponent::getNext() const {
+    return this->mpNext;
 }
 
 inline void cpComponent::addChild(cpComponent* pNewComp) {

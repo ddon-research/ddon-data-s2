@@ -201,9 +201,9 @@ void cpCharacterEdit::setOwner(MtObject* pOwner) {
 void cpCharacterEdit::setup() {
     this->cpComponent::setup();
     const MtDTI& t0 = mpBodyModel->getDTI();
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uDDOModel::DTI) + 8);
+    MT_CTSTR v0_1 = uDDOModel::DTI.mName;
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+        if (v0_1 == v0_0->mName) {
             uModel* t1 = mpBodyModel;
             if (t1 != nullptr) {
                 *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 8832) = 1;
@@ -214,8 +214,8 @@ void cpCharacterEdit::setup() {
             mpEventFatAdjust = static_cast<rFatAdjust*>(sArchiveManager::getInstance()->createRes("character_edit_common", "RES_ID_EVENT_FAT_ADJUST", 1u, false));
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
@@ -236,9 +236,28 @@ __attribute__((weak)) void cpCharacterEdit::updatePtr() {
     /* stub */
 }
 
-__attribute__((weak)) void cpCharacterEdit::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpCharacterEdit::createProperty")
-    /* stub */
+void cpCharacterEdit::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpBodyModel", reinterpret_cast<MtObject* *>(&mpBodyModel), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::getResource), reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpMuscleConstRes", "resource", reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::getMuscleConstRes), reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::setMuscleConstRes), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpOrgJointPresetRes", "resource", reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::getOrgJointPresetRes), reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::setOrgJointPresetRes), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpFacialEditJointPresetRes", "resource", reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::getFacialEditJointPresetRes), reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::setFacialEditJointPresetRes), 32u, reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::getFacialEditJointPresetResNum), static_cast<MT_MFUNC>(&::cpCharacterEdit::setFacialEditJointPresetResNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mpColorDef", "resource", reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::getColorDef), reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::setColorDef), 32u, reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::getColorDefNum), static_cast<MT_MFUNC>(&::cpCharacterEdit::setColorDefNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mpCnsEdit", reinterpret_cast<MtObject* *>(&mpCnsEdit[0]), 32u, 134u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSleep", &mSleep, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSleepRno", &mSleepRno, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeightScale", &mHeightScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlag", &mFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsArcReady", &mIsArcReady[0], 32u, 9u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpJobFatAdjust", "resource", reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::getJobFatAdjust), reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::setJobFatAdjust), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpCustomFatAdjust", "resource", reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::getCustomFatAdjust), reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::setCustomFatAdjust), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpEventFatAdjust", "resource", reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::getEventFatAdjust), reinterpret_cast<MT_MFUNC>(&::cpCharacterEdit::setEventFatAdjust), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mFatAdjust", &mFatAdjust, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFatAdjustTrans", &mFatAdjustTrans, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFatAdjustBlend", &mFatAdjustBlend, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "createConstraint", static_cast<MT_MFUNC>(&::cpCharacterEdit::createConstraint), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "removeConstraint", static_cast<MT_MFUNC>(&::cpCharacterEdit::removeConstraint), 10u);
 }
 
 __attribute__((weak)) void cpCharacterEdit::setResource(rCharacterEdit* pRes) {

@@ -302,9 +302,13 @@ f32 sAIPawnSys::getPawnPrmF32(MT_CTSTR tag, f32 def) {
     }
 }
 
-__attribute__((weak)) MtVector3 sAIPawnSys::getPawnPrmVec3(MT_CTSTR tag, const MtVector3& def) {
-    DDON_STUB("sAIPawnSys::getPawnPrmVec3")
-    __builtin_unreachable();
+MtVector3 sAIPawnSys::getPawnPrmVec3(MT_CTSTR tag, const MtVector3& def) {
+    rFreeF32Tbl* p_pw_info = mpAIPawnParam.mpPtr;
+    if (p_pw_info != nullptr) {
+        return p_pw_info->getTagVec3(MtCRC::getCRC(tag, 0xFFFFFFFFu), def);
+    } else {
+        return def;
+    }
 }
 
 __attribute__((weak)) MtVector4 sAIPawnSys::getPawnPrmVec4(MT_CTSTR tag, const MtVector4& def) {

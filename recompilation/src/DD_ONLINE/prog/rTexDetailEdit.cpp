@@ -59,9 +59,9 @@ rTexDetailEdit::~rTexDetailEdit() {
     mEditList.mLength = 0;
 }
 
-__attribute__((weak)) void rTexDetailEdit::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTexDetailEdit::createProperty")
-    /* stub */
+void rTexDetailEdit::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mEditList", static_cast<MtObject*>(&mEditList), 0u, 0u);
 }
 
 MtUI* rTexDetailEdit::createUI(MtProperty& prop) {
@@ -139,9 +139,10 @@ inline void* rTexDetailEdit::DetailParam::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rTexDetailEdit::DetailParam::DTI)->memAlloc(sz, align, rTexDetailEdit::DetailParam::DTI.getID());
 }
 
-__attribute__((weak)) void rTexDetailEdit::DetailParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTexDetailEdit::DetailParam::createProperty")
-    /* stub */
+void rTexDetailEdit::DetailParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mPath", reinterpret_cast<MT_MFUNC>(&::rTexDetailEdit::DetailParam::getPath), reinterpret_cast<MT_MFUNC>(&::rTexDetailEdit::DetailParam::setPath), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mForm", reinterpret_cast<MT_MFUNC>(&::rTexDetailEdit::DetailParam::getForm), reinterpret_cast<MT_MFUNC>(&::rTexDetailEdit::DetailParam::setForm), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mType", reinterpret_cast<MT_MFUNC>(&::rTexDetailEdit::DetailParam::getType), reinterpret_cast<MT_MFUNC>(&::rTexDetailEdit::DetailParam::setType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* rTexDetailEdit::DetailParam::createUI(MtProperty& prop) {
@@ -153,8 +154,7 @@ MT_CTSTR rTexDetailEdit::DetailParam::getPath() {
 }
 
 __attribute__((weak)) void rTexDetailEdit::DetailParam::setPath(const MtString& n) {
-    DDON_STUB("rTexDetailEdit::DetailParam::setPath")
-    /* stub */
+    mPath = n;
 }
 
 static auto ddon_emit_0x01ab6120 __attribute__((used)) = &rTexDetailEdit::DetailParam::getForm;

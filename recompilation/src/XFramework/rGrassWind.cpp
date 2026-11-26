@@ -35,9 +35,14 @@ __attribute__((noinline)) rGrassWind::~rGrassWind() {
         mParamSetArray.clear(true);
 }
 
-__attribute__((weak)) void rGrassWind::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGrassWind::createProperty")
-    /* stub */
+void rGrassWind::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxFrame", &mMaxFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDTI", &mDTI, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLoop", &mLoop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAutoDeath", &mAutoDeath, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParamSetArray", static_cast<MtObject*>(&mParamSetArray), 0u, 0u);
 }
 
 MtUI* rGrassWind::createUI(MtProperty& prop) {
@@ -117,9 +122,12 @@ __attribute__((noinline)) rGrassWind::cParamSet::~cParamSet() {
     }
 }
 
-__attribute__((weak)) void rGrassWind::cParamSet::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGrassWind::cParamSet::createProperty")
-    /* stub */
+void rGrassWind::cParamSet::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mName", &mName, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParamNum", &mParamNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMax", &mMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMin", &mMin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "reinterpret_cast<u32*>(mpParams)", &mpParams->mKey, 32u, mParamNum);
 }
 
 MtUI* rGrassWind::cParamSet::createUI(MtProperty& prop) {

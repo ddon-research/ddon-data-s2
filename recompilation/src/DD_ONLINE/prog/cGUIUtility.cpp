@@ -76,6 +76,98 @@
 #define DDON_STUB(name)
 #endif
 
+static const CrestElementParam CrestElementParams[89] = {
+    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
+    {static_cast<CrestElementParam::TYPE>(2), 18},
+    {static_cast<CrestElementParam::TYPE>(1), 54},
+    {static_cast<CrestElementParam::TYPE>(1), 55},
+    {static_cast<CrestElementParam::TYPE>(1), 56},
+    {static_cast<CrestElementParam::TYPE>(1), 57},
+    {static_cast<CrestElementParam::TYPE>(1), 58},
+    {static_cast<CrestElementParam::TYPE>(1), 21},
+    {static_cast<CrestElementParam::TYPE>(1), 22},
+    {static_cast<CrestElementParam::TYPE>(1), 25},
+    {static_cast<CrestElementParam::TYPE>(1), 26},
+    {static_cast<CrestElementParam::TYPE>(1), 45},
+    {static_cast<CrestElementParam::TYPE>(1), 46},
+    {static_cast<CrestElementParam::TYPE>(1), 47},
+    {static_cast<CrestElementParam::TYPE>(1), 48},
+    {static_cast<CrestElementParam::TYPE>(1), 49},
+    {static_cast<CrestElementParam::TYPE>(1), 50},
+    {static_cast<CrestElementParam::TYPE>(1), 51},
+    {static_cast<CrestElementParam::TYPE>(1), 52},
+    {static_cast<CrestElementParam::TYPE>(1), 53},
+    {static_cast<CrestElementParam::TYPE>(1), 59},
+    {static_cast<CrestElementParam::TYPE>(1), 60},
+    {static_cast<CrestElementParam::TYPE>(1), 61},
+    {static_cast<CrestElementParam::TYPE>(1), 62},
+    {static_cast<CrestElementParam::TYPE>(1), 63},
+    {static_cast<CrestElementParam::TYPE>(1), 64},
+    {static_cast<CrestElementParam::TYPE>(1), 65},
+    {static_cast<CrestElementParam::TYPE>(1), 66},
+    {static_cast<CrestElementParam::TYPE>(1), 67},
+    {static_cast<CrestElementParam::TYPE>(1), 68},
+    {static_cast<CrestElementParam::TYPE>(1), 69},
+    {static_cast<CrestElementParam::TYPE>(1), 70},
+    {static_cast<CrestElementParam::TYPE>(1), 71},
+    {static_cast<CrestElementParam::TYPE>(1), 72},
+    {static_cast<CrestElementParam::TYPE>(1), 73},
+    {static_cast<CrestElementParam::TYPE>(1), 4294967295},
+    {static_cast<CrestElementParam::TYPE>(1), 74},
+    {static_cast<CrestElementParam::TYPE>(1), 75},
+    {static_cast<CrestElementParam::TYPE>(1), 76},
+    {static_cast<CrestElementParam::TYPE>(1), 77},
+    {static_cast<CrestElementParam::TYPE>(1), 78},
+    {static_cast<CrestElementParam::TYPE>(1), 79},
+    {static_cast<CrestElementParam::TYPE>(1), 80},
+    {static_cast<CrestElementParam::TYPE>(1), 81},
+    {static_cast<CrestElementParam::TYPE>(1), 82},
+    {static_cast<CrestElementParam::TYPE>(1), 83},
+    {static_cast<CrestElementParam::TYPE>(1), 84},
+    {static_cast<CrestElementParam::TYPE>(1), 85},
+    {static_cast<CrestElementParam::TYPE>(1), 86},
+    {static_cast<CrestElementParam::TYPE>(1), 87},
+    {static_cast<CrestElementParam::TYPE>(1), 88},
+    {static_cast<CrestElementParam::TYPE>(1), 89},
+    {static_cast<CrestElementParam::TYPE>(1), 90},
+    {static_cast<CrestElementParam::TYPE>(1), 91},
+    {static_cast<CrestElementParam::TYPE>(1), 92},
+    {static_cast<CrestElementParam::TYPE>(1), 93},
+    {static_cast<CrestElementParam::TYPE>(1), 94},
+    {static_cast<CrestElementParam::TYPE>(1), 95},
+    {static_cast<CrestElementParam::TYPE>(1), 96},
+    {static_cast<CrestElementParam::TYPE>(1), 97},
+    {static_cast<CrestElementParam::TYPE>(1), 98},
+    {static_cast<CrestElementParam::TYPE>(1), 99},
+    {static_cast<CrestElementParam::TYPE>(1), 100},
+    {static_cast<CrestElementParam::TYPE>(1), 101},
+    {static_cast<CrestElementParam::TYPE>(1), 102},
+    {static_cast<CrestElementParam::TYPE>(1), 103},
+    {static_cast<CrestElementParam::TYPE>(1), 30},
+    {static_cast<CrestElementParam::TYPE>(1), 31},
+    {static_cast<CrestElementParam::TYPE>(1), 32},
+    {static_cast<CrestElementParam::TYPE>(1), 33},
+    {static_cast<CrestElementParam::TYPE>(1), 34},
+    {static_cast<CrestElementParam::TYPE>(1), 35},
+    {static_cast<CrestElementParam::TYPE>(1), 36},
+    {static_cast<CrestElementParam::TYPE>(1), 37},
+    {static_cast<CrestElementParam::TYPE>(1), 38},
+    {static_cast<CrestElementParam::TYPE>(1), 39},
+    {static_cast<CrestElementParam::TYPE>(1), 40},
+    {static_cast<CrestElementParam::TYPE>(1), 41},
+    {static_cast<CrestElementParam::TYPE>(1), 42},
+    {static_cast<CrestElementParam::TYPE>(1), 43},
+    {static_cast<CrestElementParam::TYPE>(1), 44},
+    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
+    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
+    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
+    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
+    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
+    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
+    {static_cast<CrestElementParam::TYPE>(3), 4294967295},
+    {static_cast<CrestElementParam::TYPE>(1), 215},
+};
+
 static const nGUIExt::JobParam JobParams[10] = {
     {static_cast<nHuman::JOB_ENUM>(1), 1, 1, 1, 2},
     {static_cast<nHuman::JOB_ENUM>(3), 3, 3, 7, 0},
@@ -342,9 +434,15 @@ __attribute__((weak)) cItemParam* cGUIUtility::getItemParamFromUID(MT_CTSTR uid,
     return nullptr;
 }
 
-__attribute__((weak)) u32 cGUIUtility::getCrestItemId(cItemParam* pParam, u32 index) {
-    DDON_STUB("cGUIUtility::getCrestItemId")
-    return {};
+u32 cGUIUtility::getCrestItemId(cItemParam* pParam, u32 index) {
+    if (pParam != nullptr) {
+        if (index <= 3u) {
+            if (index < pParam->getElementSlot()) {
+                return pParam->mCraftParam.getElementItemNo(index);
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) f32 cGUIUtility::getCrestIconFrame(rItemList::rItemParam* pItemParam) {
@@ -533,24 +631,79 @@ __attribute__((weak)) MT_CTSTR cGUIUtility::GetOcdName(u32 ocdId) {
     return {};
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::getPawnStatusStr(uGUIBase* pGUI, u32 status) {
-    DDON_STUB("cGUIUtility::getPawnStatusStr")
-    return {};
+MT_CTSTR cGUIUtility::getPawnStatusStr(uGUIBase* pGUI, u32 status) {
+    static const u32 pawn_status_msg_ids[7] = {
+        1,
+        2,
+        3,
+        4,
+        4,
+        0,
+        1,
+    };
+    if (pGUI != nullptr) {
+        if (status <= 6u) {
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGUI->getMsgPawnStatus(), pawn_status_msg_ids[status]);
+        }
+    }
+    return "";
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::getPawnShareRangeStr(uGUIBase* pGUI, u32 shareRange) {
-    DDON_STUB("cGUIUtility::getPawnShareRangeStr")
-    return {};
+MT_CTSTR cGUIUtility::getPawnShareRangeStr(uGUIBase* pGUI, u32 shareRange) {
+    static const u32 pawn_share_range_msg_ids[6] = {
+        0,
+        0,
+        1,
+        2,
+        3,
+        4,
+    };
+    if (pGUI != nullptr) {
+        if (shareRange != 0) {
+            if (shareRange <= 5u) {
+                return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGUI->getMsgPawnShareRange(), pawn_share_range_msg_ids[shareRange]);
+            }
+        }
+    }
+    return "";
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::getWeightRankMsg(rGUIMessage* pMsgData, u32 rank) {
-    DDON_STUB("cGUIUtility::getWeightRankMsg")
-    return {};
+MT_CTSTR cGUIUtility::getWeightRankMsg(rGUIMessage* pMsgData, u32 rank) {
+    static const u32 weight_msg[6] = {
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+    };
+    if (rank <= 5u) {
+        return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pMsgData, weight_msg[rank]);
+    } else {
+        return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pMsgData, 8u);
+    }
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::GetPawnPersonalityStr(uGUIBase* pGUI, u32 pawnPersonality) {
-    DDON_STUB("cGUIUtility::GetPawnPersonalityStr")
-    return {};
+MT_CTSTR cGUIUtility::GetPawnPersonalityStr(uGUIBase* pGUI, u32 pawnPersonality) {
+    static const u32 pawn_personality_msg_ids[9] = {
+        0,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+    };
+    if (pGUI != nullptr) {
+        if (pawnPersonality != 0) {
+            if (pawnPersonality <= 8u) {
+                return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGUI->getMsgPawnPersonality(), pawn_personality_msg_ids[pawnPersonality]);
+            }
+        }
+    }
+    return "";
 }
 
 __attribute__((weak)) MT_CTSTR cGUIUtility::getPlayPurposeMainStr(uGUIBase* pGUI, u32 index) {
@@ -558,39 +711,167 @@ __attribute__((weak)) MT_CTSTR cGUIUtility::getPlayPurposeMainStr(uGUIBase* pGUI
     return {};
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::getPlayPurposeSubStr(uGUIBase* pGUI, u32 index) {
-    DDON_STUB("cGUIUtility::getPlayPurposeSubStr")
-    return {};
+MT_CTSTR cGUIUtility::getPlayPurposeSubStr(uGUIBase* pGUI, u32 index) {
+    static const u32 mPlayPurposeSubName[13] = {
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        0,
+    };
+    if (index != 0) {
+        if (index <= 12u) {
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGUI->getMsgPlayStyleItem(), mPlayPurposeSubName[index - 1u]);
+        }
+    }
+    return "";
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::getPlayStyleStr(uGUIBase* pGUI, u32 index) {
-    DDON_STUB("cGUIUtility::getPlayStyleStr")
-    return {};
+MT_CTSTR cGUIUtility::getPlayStyleStr(uGUIBase* pGUI, u32 index) {
+    static const u32 mPlayStyleName[29] = {
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        0,
+    };
+    if (index != 0) {
+        if (index <= 28u) {
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGUI->getMsgPlayStyleItem(), mPlayStyleName[index - 1u]);
+        }
+    }
+    return "";
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::getClanMottoStr(uGUIBase* pGUI, u32 index) {
-    DDON_STUB("cGUIUtility::getClanMottoStr")
-    return {};
+MT_CTSTR cGUIUtility::getClanMottoStr(uGUIBase* pGUI, u32 index) {
+    static const u32 mClanMottoName[7] = {
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        0,
+    };
+    if (index != 0) {
+        if (index <= 6u) {
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGUI->getMsgClanProfileItem(), mClanMottoName[index - 1u]);
+        }
+    }
+    return "";
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::getClanDayStr(uGUIBase* pGUI, u32 index) {
-    DDON_STUB("cGUIUtility::getClanDayStr")
-    return {};
+MT_CTSTR cGUIUtility::getClanDayStr(uGUIBase* pGUI, u32 index) {
+    static const u32 mClanDayName[5] = {
+        10,
+        11,
+        12,
+        13,
+        0,
+    };
+    if (index != 0) {
+        if (index <= 4u) {
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGUI->getMsgClanProfileItem(), mClanDayName[index - 1u]);
+        }
+    }
+    return "";
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::getClanHourStr(uGUIBase* pGUI, u32 index) {
-    DDON_STUB("cGUIUtility::getClanHourStr")
-    return {};
+MT_CTSTR cGUIUtility::getClanHourStr(uGUIBase* pGUI, u32 index) {
+    static const u32 mClanHourName[5] = {
+        14,
+        15,
+        16,
+        17,
+        0,
+    };
+    if (index != 0) {
+        if (index <= 4u) {
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGUI->getMsgClanProfileItem(), mClanHourName[index - 1u]);
+        }
+    }
+    return "";
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::getClanFeatureStr(uGUIBase* pGUI, u32 index) {
-    DDON_STUB("cGUIUtility::getClanFeatureStr")
-    return {};
+MT_CTSTR cGUIUtility::getClanFeatureStr(uGUIBase* pGUI, u32 index) {
+    static const u32 mClanFeatureName[23] = {
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        0,
+    };
+    if (index != 0) {
+        if (index <= 22u) {
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGUI->getMsgClanProfileItem(), mClanFeatureName[index - 1u]);
+        }
+    }
+    return "";
 }
 
-__attribute__((weak)) f32 cGUIUtility::getClanRankAnimFrame(u32 Rank) {
-    DDON_STUB("cGUIUtility::getClanRankAnimFrame")
-    return {};
+f32 cGUIUtility::getClanRankAnimFrame(u32 Rank) {
+    static const f32 rank_frames[5] = {
+        0x0p+0f,
+        0x1p+0f,
+        0x1p+1f,
+        0x0p+0f,
+        0x0p+0f,
+    };
+    if (Rank <= 4u) {
+        return rank_frames[Rank];
+    } else {
+        return 0.0f;
+    }
 }
 
 __attribute__((weak)) MT_CTSTR cGUIUtility::GetChargeCourseName(u32 courseId) {
@@ -627,9 +908,31 @@ __attribute__((weak)) void cGUIUtility::GetChargeEffectFromAttribute(MtString& r
     /* stub */
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::getEquipPartsName(rGUIMessage* pGMDRes, u32 Slot) {
-    DDON_STUB("cGUIUtility::getEquipPartsName")
-    return {};
+MT_CTSTR cGUIUtility::getEquipPartsName(rGUIMessage* pGMDRes, u32 Slot) {
+    static const u32 equip_slot_gmdid_tbl[17] = {
+        142,
+        144,
+        145,
+        147,
+        148,
+        146,
+        149,
+        150,
+        213,
+        143,
+        108,
+        108,
+        151,
+        151,
+        151,
+        151,
+        151,
+    };
+    if (Slot > 16u) {
+        return "";
+    } else {
+        return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, equip_slot_gmdid_tbl[Slot]);
+    }
 }
 
 MT_CTSTR cGUIUtility::getEquipPartsNameFromCategory(rGUIMessage* pGMDRes, u32 category) {
@@ -838,37 +1141,97 @@ s32 cGUIUtility::GetJobParamNum() {
     return 10;
 }
 
-__attribute__((weak)) const nGUIExt::JobParam* cGUIUtility::GetJobParam(s32 dispIndex) {
-    DDON_STUB("cGUIUtility::GetJobParam")
+const nGUIExt::JobParam* cGUIUtility::GetJobParam(s32 dispIndex) {
+    if (dispIndex > -1) {
+        if (static_cast<unsigned int>(dispIndex) <= 9) {
+            return &JobParams[dispIndex];
+        }
+    }
     return nullptr;
 }
 
-__attribute__((weak)) const nGUIExt::JobParam* cGUIUtility::GetJobParamFromJobId(u32 jobId) {
-    DDON_STUB("cGUIUtility::GetJobParamFromJobId")
-    return nullptr;
+const nGUIExt::JobParam* cGUIUtility::GetJobParamFromJobId(u32 jobId) {
+    const nGUIExt::JobParam* p0_1 = JobParams;
+    unsigned int i0_2 = 0;
+    const nGUIExt::JobParam* v1_0;
+    for (;;) {
+        if (static_cast<unsigned int>(p0_1->mJobId) == jobId) {
+            v1_0 = p0_1;
+            break;
+        } else {
+            if ((i0_2 + 1u) <= 9u) {
+                p0_1 += 1;
+                i0_2 += 1u;
+            } else {
+                v1_0 = nullptr;
+                break;
+            }
+        }
+    }
+    return v1_0;
 }
 
 s32 cGUIUtility::GetValidJobNum() {
     return 10;
 }
 
-__attribute__((weak)) nHuman::JOB_ENUM cGUIUtility::GetValidJobId(s32 dispIndex) {
-    DDON_STUB("cGUIUtility::GetValidJobId")
-    return {};
+nHuman::JOB_ENUM cGUIUtility::GetValidJobId(s32 dispIndex) {
+    if (dispIndex > -1) {
+        if (static_cast<unsigned int>(dispIndex) <= 9) {
+            return JobParams[dispIndex].mJobId;
+        }
+    }
+    return nHuman::JOB_ID_NONE;
 }
 
-__attribute__((weak)) s32 cGUIUtility::GetValidJobIndex(nHuman::JOB_ENUM jobId) {
-    DDON_STUB("cGUIUtility::GetValidJobIndex")
-    return {};
+s32 cGUIUtility::GetValidJobIndex(nHuman::JOB_ENUM jobId) {
+    unsigned int i1 = 0;
+    const nGUIExt::JobParam* p2 = JobParams;
+    do {
+        if (p2->mJobId == jobId) {
+            return static_cast<s32>(i1);
+        }
+        i1 += 1u;
+        p2 += static_cast<int>(1);
+    } while (i1 <= 9u);
+    return -1;
 }
 
-__attribute__((weak)) MT_CTSTR cGUIUtility::GetJobInfoMsg(rGUIMessage* pGMDRes, u32 jobId) {
-    DDON_STUB("cGUIUtility::GetJobInfoMsg")
-    return {};
+MT_CTSTR cGUIUtility::GetJobInfoMsg(rGUIMessage* pGMDRes, u32 jobId) {
+    unsigned int i0_0 = 0;
+    for (const nGUIExt::JobParam* p0_1 = JobParams; i0_0 <= 9u; i0_0 = i0_0 + 1u, p0_1 += 1) {
+        if (static_cast<unsigned int>(p0_1->mJobId) == jobId) {
+            if (p0_1 != nullptr) {
+                return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, JobParams[i0_0].mJobInfoMsgId);
+            } else {
+                return "";
+            }
+        }
+    }
+    return "";
 }
 
-__attribute__((weak)) const CJobChangeInfo* cGUIUtility::GetJobChangeInfo(const JobChangeInfoVec& jobChangeList, s32 dispIndex) {
-    DDON_STUB("cGUIUtility::GetJobChangeInfo")
+const CJobChangeInfo* cGUIUtility::GetJobChangeInfo(const JobChangeInfoVec& jobChangeList, s32 dispIndex) {
+    if (dispIndex > -1) {
+        if (static_cast<unsigned int>(dispIndex) <= 9) {
+            if (jobChangeList.size() == 0) {
+                return nullptr;
+            }
+        } else {
+            return nullptr;
+        }
+    } else {
+        return nullptr;
+    }
+    u32 i = 0;
+    do {
+        if (jobChangeList.mpArray[i] != nullptr) {
+            if (static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(jobChangeList.mpArray[i]) + 8)) == static_cast<unsigned int>(JobParams[dispIndex].mJobId)) {
+                return static_cast<const CJobChangeInfo*>(jobChangeList.mpArray[i]);
+            }
+        }
+        i += 1u;
+    } while (i < jobChangeList.size());
     return nullptr;
 }
 
@@ -1061,16 +1424,25 @@ __attribute__((weak)) bool cGUIUtility::replaceNGWord(MtString& DestStr, MT_CTST
 }
 
 bool cGUIUtility::replaceNGWord(MtString& DestStr, const MtString& SrcStr) {
-    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&SrcStr) + 0)) != 0) {
-        return cGUIUtility::replaceNGWord(DestStr, SrcStr.ptr(), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&SrcStr) + 0)) + 4));
+    if (SrcStr.value != nullptr) {
+        return cGUIUtility::replaceNGWord(DestStr, SrcStr.ptr(), SrcStr.value->length);
     } else {
         return cGUIUtility::replaceNGWord(DestStr, SrcStr.ptr(), 0u);
     }
 }
 
-__attribute__((weak)) u32 cGUIUtility::getCaplinkFriendAttrMsgIndex(u32 attr) {
-    DDON_STUB("cGUIUtility::getCaplinkFriendAttrMsgIndex")
-    return {};
+u32 cGUIUtility::getCaplinkFriendAttrMsgIndex(u32 attr) {
+    static const u32 msg_index[4] = {
+        79,
+        76,
+        77,
+        78,
+    };
+    if (attr <= 3u) {
+        return msg_index[attr];
+    } else {
+        return 76;
+    }
 }
 
 __attribute__((weak)) bool cGUIUtility::copyParameterlValueSet(cGUIInstance* pDest, cGUIInstance* pOrg, s32 flag) {

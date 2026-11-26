@@ -40,8 +40,11 @@ inline void uGUICaplinkMessage::operator delete(void* p_addr) {
 }
 
 uGUICaplinkMessage::~uGUICaplinkMessage() {
-    DDON_STUB("uGUICaplinkMessage::~uGUICaplinkMessage")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 void uGUICaplinkMessage::createProperty(MtPropertyList& s) {
@@ -204,9 +207,48 @@ inline void uGUICaplinkMessage::eventCancel() {
     mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICaplinkMessage::updateExit);
 }
 
-__attribute__((weak)) u32 uGUICaplinkMessage::evCtrlDecide(cControl::Message* msg) {
-    DDON_STUB("uGUICaplinkMessage::evCtrlDecide")
-    return {};
+u32 uGUICaplinkMessage::evCtrlDecide(cControl::Message* msg) {
+    if (mData.mIsInputMode) {
+        if (mpUDCtrl != nullptr) {
+            if (mpUDCtrl->mCurrentPos == 1) {
+                if (mpButtonCtrl != nullptr) {
+                    if ((mpButtonCtrl->mCurrentPos == 0) && !sCaplinkManager::getInstance()->isEnableMessage(mMain.mTextBox.mMsg.ptr())) {
+                        sGUI* t0 = sGUI::getInstance();
+                        static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 207u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+                        if (msg != nullptr) {
+                            msg->changeSE = 20;
+                        }
+                        setInputEvent(2u);
+                        return 0;
+                    }
+                    setInputEvent(66u);
+                    return 1;
+                } else {
+                    if (sCaplinkManager::getInstance()->isEnableMessage(mMain.mTextBox.mMsg.ptr())) {
+                        setInputEvent(66u);
+                        return 1;
+                    } else {
+                        sGUI* t0 = sGUI::getInstance();
+                        static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 207u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+                        if (msg != nullptr) {
+                            msg->changeSE = 20;
+                        }
+                        setInputEvent(2u);
+                        return 0;
+                    }
+                }
+            } else {
+                setInputEvent(66u);
+                return 1;
+            }
+        } else {
+            setInputEvent(66u);
+            return 1;
+        }
+    } else {
+        setInputEvent(66u);
+        return 1;
+    }
 }
 
 u32 uGUICaplinkMessage::evCtrlCancel(cControl::Message* msg) {

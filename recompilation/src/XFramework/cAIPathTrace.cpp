@@ -9,6 +9,7 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtRandom.h"
 #include "cAI.h"
@@ -39,14 +40,12 @@ cAINavPathTrace::cAINavPathTrace() {
     /* stub */
 }
 
-cAINavPathTrace::~cAINavPathTrace() {
-    DDON_STUB("cAINavPathTrace::~cAINavPathTrace")
-    /* stub */
-}
-
-__attribute__((weak)) void cAINavPathTrace::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAINavPathTrace::createProperty")
-    /* stub */
+void cAINavPathTrace::createProperty(MtPropertyList& s) {
+    this->cAIPathTrace::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mPreStraightExamination", &mPreStraightExamination, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnableWidthRev", &mEnableWidthRev, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWidthRev", &mWidthRev, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeight", &mHeight, 0u, 0u);
 }
 
 MtUI* cAINavPathTrace::createUI(MtProperty& prop) {
@@ -307,16 +306,28 @@ const MtDTI& cAIPathTrace::TracePoint::getDTI() const {
     return cAIPathTrace::TracePoint::DTI;
 }
 
+inline void* cAIPathTrace::TracePoint::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIPathTrace::TracePoint::DTI)->memAlloc(sz, align, cAIPathTrace::TracePoint::DTI.mID);
+}
+
 inline void cAIPathTrace::TracePoint::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAIPathTrace::TracePoint::DTI)->memFree(p_addr);
+}
+
+inline cAIPathTrace::TracePoint::TracePoint() {
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+    mLinkAttribute = 0;
+    mpData = nullptr;
 }
 
 inline cAIPathTrace::TracePoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cAIPathTrace::TracePoint::MyDTI cAIPathTrace::TracePoint::DTI("cAIPathTrace::TracePoint", &::MtObject::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIPathTrace::TracePoint::MyDTI::newInstance() const {
-    DDON_STUB("cAIPathTrace::TracePoint::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIPathTrace::TracePoint::MyDTI::newInstance() const {
+    return new (16u) cAIPathTrace::TracePoint;
 }
 

@@ -20,6 +20,7 @@ class MtPropertyList;
 class MtStream;
 class MtString;
 class MtUI;
+class sSceneExt;
 
 // Declarations
 class rTexDetailEdit;
@@ -34,6 +35,7 @@ using u32 = unsigned int;
 
 class rTexDetailEdit : public cResource
 {
+    friend class sSceneExt;
 public:
     enum DETAIL_TYPE
     {
@@ -62,6 +64,7 @@ public:
 public:
     class DetailParam : public MtObject
     {
+        friend class sSceneExt;
     public:
         class MyDTI;
     public:
@@ -165,4 +168,15 @@ inline u32 rTexDetailEdit::DetailParam::getType() {
 
 inline void rTexDetailEdit::DetailParam::setType(u32 n) {
     this->mType = n;
+}
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void rTexDetailEdit::DetailParam::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rTexDetailEdit::DetailParam::DTI)->memFree(p_addr);
+}
+
+inline u32 rTexDetailEdit::DetailParam::getIgnoreLimit() const {
+    return this->mIgnoreLimit;
 }

@@ -48,8 +48,20 @@ MtUI* cGUIObj2D::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) void cGUIObj2D::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIObj2D::createProperty")
-    /* stub */
+    this->cGUIObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ControlPoint", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::getControlPoint), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setControlPoint), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "ReferencePosition", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::isReferencePosition), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setReferencePosition), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "ReferenceRotation", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::isReferenceRotation), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setReferenceRotation), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ReferenceScaleX", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::getReferenceScaleX), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setReferenceScaleX), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ReferenceScaleY", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::getReferenceScaleY), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setReferenceScaleY), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ReferenceScaleZ", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::getReferenceScaleZ), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setReferenceScaleZ), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "PosX", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::getPositionX), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setPositionX), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "PosY", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::getPositionY), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setPositionY), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "PosZ", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::getPositionZ), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setPositionZ), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "RotationX", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::getRotationX), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setRotationX), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "RotationY", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::getRotationY), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setRotationY), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "RotationZ", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::getRotationZ), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setRotationZ), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "Rotation", reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::getRotationZ), reinterpret_cast<MT_MFUNC>(&::cGUIObj2D::setRotationZ), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) void cGUIObj2D::setPosition(const MtVector4& pos) {
@@ -224,9 +236,11 @@ MtUI* cGUIObjChildAnimationRoot::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cGUIObjChildAnimationRoot::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIObjChildAnimationRoot::createProperty")
-    /* stub */
+void cGUIObjChildAnimationRoot::createProperty(MtPropertyList& s) {
+    this->cGUIObjNull::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "ChildAnimPlay", reinterpret_cast<MT_MFUNC>(&::cGUIObjChildAnimationRoot::isChildAnimationPlay), reinterpret_cast<MT_MFUNC>(&::cGUIObjChildAnimationRoot::setChildAnimationPlay), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "ChildAnimFrame", reinterpret_cast<MT_MFUNC32>(&::cGUIObjChildAnimationRoot::setChildAnimationCurrentFrameForProperty), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ChildSequenceId", reinterpret_cast<MT_MFUNC>(&::cGUIObjChildAnimationRoot::getChildSequenceId), reinterpret_cast<MT_MFUNC>(&::cGUIObjChildAnimationRoot::setChildSequenceId), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 bool cGUIObjChildAnimationRoot::isDrawableStatic() const {
@@ -283,9 +297,12 @@ static auto ddon_emit_0x01b72880 __attribute__((used)) = &cGUIObjChildAnimationR
 
 static auto ddon_emit_0x01b72870 __attribute__((used)) = &cGUIObjChildAnimationRoot::isChildAnimationPlay;
 
-__attribute__((weak)) MtAABB cGUIObjChildAnimationRoot::calcBoundingBox() const {
-    DDON_STUB("cGUIObjChildAnimationRoot::calcBoundingBox")
-    __builtin_unreachable();
+MtAABB cGUIObjChildAnimationRoot::calcBoundingBox() const {
+    if (mpChildRoot != nullptr) {
+        return mpChildRoot->getBoundingBox3D();
+    } else {
+        return MtAABB::Zero;
+    }
 }
 
 bool cGUIObjChildAnimationRoot::isChildAnimationEnd() const {
@@ -362,9 +379,12 @@ void cGUIObjChildAnimationRoot::calcMatrix(const MtMatrix& wmat) {
     mpChildRoot->msgCalcMatrix(mMat, static_cast<bool>((mAttr & 0x20000u) >> 17));
 }
 
-__attribute__((weak)) bool cGUIObjChildAnimationRoot::checkHit(const MtVector3& pt, f32 ratio, const MtRay* const pRay) const {
-    DDON_STUB("cGUIObjChildAnimationRoot::checkHit")
-    return {};
+bool cGUIObjChildAnimationRoot::checkHit(const MtVector3& pt, f32 ratio, const MtRay* const pRay) const {
+    if (mpChildRoot != nullptr) {
+        return mpChildRoot->msgCheckHit(pt, ratio, pRay) != 0xFFFFFFFFu;
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void cGUIObjChildAnimationRoot::setParentResolutionAdjust(u32 type) {
@@ -406,23 +426,28 @@ void* cGUIObjColorAdjust::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cGUIObjColorAdjust::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIObjColorAdjust::DTI)->memFree(p_addr);
+}
+
 cGUIObjColorAdjust::cGUIObjColorAdjust() {
     DDON_STUB("cGUIObjColorAdjust::cGUIObjColorAdjust")
     /* stub */
 }
 
 cGUIObjColorAdjust::~cGUIObjColorAdjust() {
-    DDON_STUB("cGUIObjColorAdjust::~cGUIObjColorAdjust")
-    /* stub */
 }
 
 MtUI* cGUIObjColorAdjust::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cGUIObjColorAdjust::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIObjColorAdjust::createProperty")
-    /* stub */
+void cGUIObjColorAdjust::createProperty(MtPropertyList& s) {
+    this->cGUIObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ColorControl", reinterpret_cast<MT_MFUNC>(&::cGUIObjColorAdjust::getColorControl), reinterpret_cast<MT_MFUNC>(&::cGUIObjColorAdjust::setColorControl), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR4, "ColorScale", reinterpret_cast<MT_MFUNC>(&::cGUIObjColorAdjust::getColorScale), reinterpret_cast<MT_MFUNC>(&::cGUIObjColorAdjust::setColorScale), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_COLOR, "AmbientColor", reinterpret_cast<MT_MFUNC>(&::cGUIObjColorAdjust::getAmbientColor), reinterpret_cast<MT_MFUNC>(&::cGUIObjColorAdjust::setAmbientColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "Saturation", reinterpret_cast<MT_MFUNC>(&::cGUIObjColorAdjust::getSaturation), reinterpret_cast<MT_MFUNC>(&::cGUIObjColorAdjust::setSaturation), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 bool cGUIObjColorAdjust::isDrawableStatic() const {
@@ -449,9 +474,10 @@ void cGUIObjColorAdjust::setAmbientColor(const MtColor& color) {
     mAmbientColor.rgba = color.rgba;
 }
 
-__attribute__((weak)) MtColor cGUIObjColorAdjust::getAmbientColor() const {
-    DDON_STUB("cGUIObjColorAdjust::getAmbientColor")
-    __builtin_unreachable();
+MtColor cGUIObjColorAdjust::getAmbientColor() const {
+    MtColor result;
+    result.rgba = mAmbientColor.rgba;
+    return result;
 }
 
 static auto ddon_emit_0x01b726c0 __attribute__((used)) = &cGUIObjColorAdjust::setSaturation;
@@ -621,9 +647,10 @@ void cGUIObjMessage::setFontSize(const MtSize& size) {
     mMsgAttr = mMsgAttr | 0x10000u;
 }
 
-__attribute__((weak)) MtSize cGUIObjMessage::getFontSize() const {
-    DDON_STUB("cGUIObjMessage::getFontSize")
-    __builtin_unreachable();
+MtSize cGUIObjMessage::getFontSize() const {
+    MtSize result;
+    result.wh = mFontSize.wh;
+    return result;
 }
 
 __attribute__((weak)) void cGUIObjMessage::setSize(const MtFloat2& size) {
@@ -640,9 +667,10 @@ void cGUIObjMessage::setColor(const MtColor& color) {
     }
 }
 
-__attribute__((weak)) MtColor cGUIObjMessage::getColor() const {
-    DDON_STUB("cGUIObjMessage::getColor")
-    __builtin_unreachable();
+MtColor cGUIObjMessage::getColor() const {
+    MtColor result;
+    result.rgba = mColor.rgba;
+    return result;
 }
 
 __attribute__((weak)) void cGUIObjMessage::setAlpha(u8 alpha) {
@@ -657,7 +685,7 @@ u8 cGUIObjMessage::getAlpha() const {
 void cGUIObjMessage::setRGB(const MtColor& rgb) {
     u32 t0 = mColor.rgba;
     const u32 t1 = rgb.rgba;
-    if (((static_cast<unsigned long>(t0) ^ static_cast<unsigned long>(t1)) & 0xFFFFFFul) == 0) {
+    if (((t0 ^ t1) & 0xFFFFFFu) == 0) {
         return;
     }
     mColor.rgba = static_cast<u32>(static_cast<unsigned long>(t0 & 0xFFFFFF00u) | static_cast<unsigned long>(static_cast<unsigned char>(t1)));
@@ -667,9 +695,10 @@ void cGUIObjMessage::setRGB(const MtColor& rgb) {
     setUpdateDraw();
 }
 
-__attribute__((weak)) MtColor cGUIObjMessage::getRGB() const {
-    DDON_STUB("cGUIObjMessage::getRGB")
-    __builtin_unreachable();
+MtColor cGUIObjMessage::getRGB() const {
+    MtColor result;
+    result.rgba = mColor.rgba;
+    return result;
 }
 
 __attribute__((weak)) void cGUIObjMessage::setSamplerState(u32 state) {
@@ -743,9 +772,22 @@ void cGUIObjMessage::setDrawChar(bool v, u32 start, u32 end) {
     }
 }
 
-__attribute__((weak)) rGUIFont* cGUIObjMessage::getFont(u32 index) const {
-    DDON_STUB("cGUIObjMessage::getFont")
-    return nullptr;
+rGUIFont* cGUIObjMessage::getFont(u32 index) const {
+    rGUI* pResource = mpResource;
+    if (pResource != nullptr) {
+        if (((sGUI::mpInstance)->mAttr & 2u) != 0) {
+            return (sGUI::mpInstance)->sGUI::getFont(index);
+        } else {
+            nGUI::FONT* pFONT = pResource->getFontFromId(index);
+            if (pFONT != nullptr) {
+                return pFONT->pFont;
+            } else {
+                return nullptr;
+            }
+        }
+    } else {
+        return (sGUI::mpInstance)->sGUI::getFont(index);
+    }
 }
 
 u32 cGUIObjMessage::getLineNum(u32 pageIndex) const {
@@ -819,9 +861,8 @@ __attribute__((weak)) MtFloat2 cGUIObjMessage::getCharPos(u32 charIndex, u32 lin
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtSizeF cGUIObjMessage::getCharSize(u32 charIndex, u32 lineIndex, u32 pageIndex, bool countIcon) const {
-    DDON_STUB("cGUIObjMessage::getCharSize")
-    __builtin_unreachable();
+MtSizeF cGUIObjMessage::getCharSize(u32 charIndex, u32 lineIndex, u32 pageIndex, bool countIcon) const {
+    return cGUIMessageAnalyzer::getCharSize(mpMTag, charIndex, lineIndex, pageIndex, countIcon);
 }
 
 __attribute__((weak)) MtAABB cGUIObjMessage::calcBoundingBox() const {
@@ -847,9 +888,11 @@ __attribute__((weak)) bool cGUIObjMessage::checkHit(const MtVector3& pt, f32 rat
     return {};
 }
 
-__attribute__((weak)) void cGUIObjMessage::invisible() {
-    DDON_STUB("cGUIObjMessage::invisible")
-    /* stub */
+void cGUIObjMessage::invisible() {
+    if ((mAttr & 32u) == 0) {
+        return;
+    }
+    clearMessage();
 }
 
 __attribute__((weak)) void cGUIObjMessage::analyzeMessage(MT_CTSTR msg, u32 length, s32 pageIndex) {
@@ -978,8 +1021,10 @@ MtUI* cGUIObjNull::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) void cGUIObjNull::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIObjNull::createProperty")
-    /* stub */
+    this->cGUIObj2D::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "SclX", reinterpret_cast<MT_MFUNC>(&::cGUIObjNull::getScaleX), reinterpret_cast<MT_MFUNC>(&::cGUIObjNull::setScaleX), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "SclY", reinterpret_cast<MT_MFUNC>(&::cGUIObjNull::getScaleY), reinterpret_cast<MT_MFUNC>(&::cGUIObjNull::setScaleY), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "SclZ", reinterpret_cast<MT_MFUNC>(&::cGUIObjNull::getScaleZ), reinterpret_cast<MT_MFUNC>(&::cGUIObjNull::setScaleZ), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 void cGUIObjNull::setScaleX(f32 v) {
@@ -1049,8 +1094,22 @@ MtUI* cGUIObjPolygon::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) void cGUIObjPolygon::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIObjPolygon::createProperty")
-    /* stub */
+    this->cGUIObj2D::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "BlendState", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getBlendState), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setBlendState), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_FLOAT2, "Size", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getSize), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setSize), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Reverse", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::isReverseClockwise), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setReverseClockwise), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Mask", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getMaskType), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setMaskType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_COLOR, "VertexColorLT", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getVertexColorLT), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setVertexColorLT), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_COLOR, "VertexColorRT", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getVertexColorRT), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setVertexColorRT), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_COLOR, "VertexColorLB", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getVertexColorLB), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setVertexColorLB), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_COLOR, "VertexColorRB", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getVertexColorRB), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setVertexColorRB), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_COLOR, "VertexColorUp", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getVertexColorUp), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setVertexColorUp), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_COLOR, "VertexColorDown", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getVertexColorDown), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setVertexColorDown), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_COLOR, "VertexColorLeft", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getVertexColorLeft), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setVertexColorLeft), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_COLOR, "VertexColorRight", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getVertexColorRight), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setVertexColorRight), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_COLOR, "VertexColor", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getVertexColor), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setVertexColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "VertexAlpha", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getVertexAlpha), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setVertexAlpha), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_COLOR, "VertexRGB", reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::getVertexRGB), reinterpret_cast<MT_MFUNC>(&::cGUIObjPolygon::setVertexRGB), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 bool cGUIObjPolygon::isDrawableStatic() const {
@@ -1069,9 +1128,10 @@ void cGUIObjPolygon::setVertexColorLT(const MtColor& color) {
     }
 }
 
-__attribute__((weak)) MtColor cGUIObjPolygon::getVertexColorLT() const {
-    DDON_STUB("cGUIObjPolygon::getVertexColorLT")
-    __builtin_unreachable();
+MtColor cGUIObjPolygon::getVertexColorLT() const {
+    MtColor result;
+    result.rgba = mColor[0].rgba;
+    return result;
 }
 
 void cGUIObjPolygon::setVertexColorRT(const MtColor& color) {
@@ -1082,9 +1142,10 @@ void cGUIObjPolygon::setVertexColorRT(const MtColor& color) {
     }
 }
 
-__attribute__((weak)) MtColor cGUIObjPolygon::getVertexColorRT() const {
-    DDON_STUB("cGUIObjPolygon::getVertexColorRT")
-    __builtin_unreachable();
+MtColor cGUIObjPolygon::getVertexColorRT() const {
+    MtColor result;
+    result.rgba = mColor[1].rgba;
+    return result;
 }
 
 void cGUIObjPolygon::setVertexColorLB(const MtColor& color) {
@@ -1095,9 +1156,10 @@ void cGUIObjPolygon::setVertexColorLB(const MtColor& color) {
     }
 }
 
-__attribute__((weak)) MtColor cGUIObjPolygon::getVertexColorLB() const {
-    DDON_STUB("cGUIObjPolygon::getVertexColorLB")
-    __builtin_unreachable();
+MtColor cGUIObjPolygon::getVertexColorLB() const {
+    MtColor result;
+    result.rgba = mColor[2].rgba;
+    return result;
 }
 
 void cGUIObjPolygon::setVertexColorRB(const MtColor& color) {
@@ -1108,9 +1170,10 @@ void cGUIObjPolygon::setVertexColorRB(const MtColor& color) {
     }
 }
 
-__attribute__((weak)) MtColor cGUIObjPolygon::getVertexColorRB() const {
-    DDON_STUB("cGUIObjPolygon::getVertexColorRB")
-    __builtin_unreachable();
+MtColor cGUIObjPolygon::getVertexColorRB() const {
+    MtColor result;
+    result.rgba = mColor[3].rgba;
+    return result;
 }
 
 void cGUIObjPolygon::setVertexColorUp(const MtColor& color) {
@@ -1123,9 +1186,10 @@ void cGUIObjPolygon::setVertexColorUp(const MtColor& color) {
     }
 }
 
-__attribute__((weak)) MtColor cGUIObjPolygon::getVertexColorUp() const {
-    DDON_STUB("cGUIObjPolygon::getVertexColorUp")
-    __builtin_unreachable();
+MtColor cGUIObjPolygon::getVertexColorUp() const {
+    MtColor result;
+    result.rgba = mColor[0].rgba;
+    return result;
 }
 
 void cGUIObjPolygon::setVertexColorDown(const MtColor& color) {
@@ -1138,9 +1202,10 @@ void cGUIObjPolygon::setVertexColorDown(const MtColor& color) {
     }
 }
 
-__attribute__((weak)) MtColor cGUIObjPolygon::getVertexColorDown() const {
-    DDON_STUB("cGUIObjPolygon::getVertexColorDown")
-    __builtin_unreachable();
+MtColor cGUIObjPolygon::getVertexColorDown() const {
+    MtColor result;
+    result.rgba = mColor[2].rgba;
+    return result;
 }
 
 void cGUIObjPolygon::setVertexColorLeft(const MtColor& color) {
@@ -1153,9 +1218,10 @@ void cGUIObjPolygon::setVertexColorLeft(const MtColor& color) {
     }
 }
 
-__attribute__((weak)) MtColor cGUIObjPolygon::getVertexColorLeft() const {
-    DDON_STUB("cGUIObjPolygon::getVertexColorLeft")
-    __builtin_unreachable();
+MtColor cGUIObjPolygon::getVertexColorLeft() const {
+    MtColor result;
+    result.rgba = mColor[0].rgba;
+    return result;
 }
 
 void cGUIObjPolygon::setVertexColorRight(const MtColor& color) {
@@ -1168,9 +1234,10 @@ void cGUIObjPolygon::setVertexColorRight(const MtColor& color) {
     }
 }
 
-__attribute__((weak)) MtColor cGUIObjPolygon::getVertexColorRight() const {
-    DDON_STUB("cGUIObjPolygon::getVertexColorRight")
-    __builtin_unreachable();
+MtColor cGUIObjPolygon::getVertexColorRight() const {
+    MtColor result;
+    result.rgba = mColor[1].rgba;
+    return result;
 }
 
 __attribute__((weak)) void cGUIObjPolygon::setVertexColor(const MtColor& color) {
@@ -1178,9 +1245,10 @@ __attribute__((weak)) void cGUIObjPolygon::setVertexColor(const MtColor& color) 
     /* stub */
 }
 
-__attribute__((weak)) MtColor cGUIObjPolygon::getVertexColor() const {
-    DDON_STUB("cGUIObjPolygon::getVertexColor")
-    __builtin_unreachable();
+MtColor cGUIObjPolygon::getVertexColor() const {
+    MtColor result;
+    result.rgba = mColor[0].rgba;
+    return result;
 }
 
 void cGUIObjPolygon::setColor(const MtColor& color, u32 index) {
@@ -1222,9 +1290,10 @@ __attribute__((weak)) void cGUIObjPolygon::setVertexRGB(const MtColor& rgb) {
     /* stub */
 }
 
-__attribute__((weak)) MtColor cGUIObjPolygon::getVertexRGB() const {
-    DDON_STUB("cGUIObjPolygon::getVertexRGB")
-    __builtin_unreachable();
+MtColor cGUIObjPolygon::getVertexRGB() const {
+    MtColor result;
+    result.rgba = mColor[0].rgba;
+    return result;
 }
 
 static auto ddon_emit_0x01b728e0 __attribute__((used)) = &cGUIObjPolygon::setBlendState;
@@ -1252,9 +1321,18 @@ __attribute__((weak)) MtAABB cGUIObjPolygon::calcBoundingBox() const {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void cGUIObjPolygon::beginDraw(nGUI::Draw& drawObj) {
-    DDON_STUB("cGUIObjPolygon::beginDraw")
-    /* stub */
+void cGUIObjPolygon::beginDraw(nGUI::Draw& drawObj) {
+    if (mMaskType <= 6u) {
+        if (((54ul >> static_cast<unsigned long>(mMaskType)) & 1ul) != 0) {
+            if ((drawObj.mAttr & 4u) == 0) {
+                drawObj.beginStencilMask(mMaskType);
+            }
+        } else {
+            if (((72ul >> static_cast<unsigned long>(mMaskType)) & 1ul) != 0) {
+                drawObj.beginAlphaMask(mMaskType);
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cGUIObjPolygon::draw(nGUI::Draw& drawObj) {
@@ -1262,9 +1340,18 @@ __attribute__((weak)) void cGUIObjPolygon::draw(nGUI::Draw& drawObj) {
     /* stub */
 }
 
-__attribute__((weak)) void cGUIObjPolygon::endDraw(nGUI::Draw& drawObj) {
-    DDON_STUB("cGUIObjPolygon::endDraw")
-    /* stub */
+void cGUIObjPolygon::endDraw(nGUI::Draw& drawObj) {
+    if (mMaskType <= 6u) {
+        if (((54ul >> static_cast<unsigned long>(mMaskType)) & 1ul) != 0) {
+            if ((drawObj.mAttr & 4u) == 0) {
+                drawObj.endStencilMask();
+            }
+        } else {
+            if (((72ul >> static_cast<unsigned long>(mMaskType)) & 1ul) != 0) {
+                drawObj.endAlphaMask();
+            }
+        }
+    }
 }
 
 __attribute__((weak)) bool cGUIObjPolygon::checkHit(const MtVector3& pt, f32 ratio, const MtRay* const pRay) const {
@@ -1424,9 +1511,10 @@ MtUI* cGUIObjScissorMask::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cGUIObjScissorMask::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIObjScissorMask::createProperty")
-    /* stub */
+void cGUIObjScissorMask::createProperty(MtPropertyList& s) {
+    this->cGUIObj2D::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Enable", reinterpret_cast<MT_MFUNC>(&::cGUIObjScissorMask::isEnableScissor), reinterpret_cast<MT_MFUNC>(&::cGUIObjScissorMask::setEnableScissor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_SIZE, "Size", reinterpret_cast<MT_MFUNC>(&::cGUIObjScissorMask::getSize), reinterpret_cast<MT_MFUNC>(&::cGUIObjScissorMask::setSize), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 bool cGUIObjScissorMask::isDrawableStatic() const {
@@ -1450,9 +1538,10 @@ void cGUIObjScissorMask::setSize(const MtSize& size) {
     mUpdateSize = 1;
 }
 
-__attribute__((weak)) MtSize cGUIObjScissorMask::getSize() const {
-    DDON_STUB("cGUIObjScissorMask::getSize")
-    __builtin_unreachable();
+MtSize cGUIObjScissorMask::getSize() const {
+    MtSize result;
+    result.wh = mSize.wh;
+    return result;
 }
 
 void cGUIObjScissorMask::calcMatrix(const MtMatrix& wmat) {
@@ -1492,23 +1581,26 @@ void* cGUIObjText::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cGUIObjText::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIObjText::DTI)->memFree(p_addr);
+}
+
 cGUIObjText::cGUIObjText() {
     DDON_STUB("cGUIObjText::cGUIObjText")
     /* stub */
 }
 
 cGUIObjText::~cGUIObjText() {
-    DDON_STUB("cGUIObjText::~cGUIObjText")
-    /* stub */
 }
 
 MtUI* cGUIObjText::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cGUIObjText::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIObjText::createProperty")
-    /* stub */
+void cGUIObjText::createProperty(MtPropertyList& s) {
+    this->cGUIObjMessage::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "TypingSpeed", reinterpret_cast<MT_MFUNC>(&::cGUIObjText::getTypingSpeed), reinterpret_cast<MT_MFUNC>(&::cGUIObjText::setTypingSpeed), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "TypingEvent", reinterpret_cast<MT_MFUNC>(&::cGUIObjText::isTypingEvent), reinterpret_cast<MT_MFUNC>(&::cGUIObjText::setTypingEvent), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 void cGUIObjText::setTypingSpeed(f32 speed) {
@@ -1596,8 +1688,11 @@ MtUI* cGUIObjTexture::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) void cGUIObjTexture::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIObjTexture::createProperty")
-    /* stub */
+    this->cGUIObjPolygon::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "SamplerState", reinterpret_cast<MT_MFUNC>(&::cGUIObjTexture::getSamplerState), reinterpret_cast<MT_MFUNC>(&::cGUIObjTexture::setSamplerState), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Tiling", reinterpret_cast<MT_MFUNC>(&::cGUIObjTexture::getTiling), reinterpret_cast<MT_MFUNC>(&::cGUIObjTexture::setTiling), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Texture", reinterpret_cast<MT_MFUNC>(&::cGUIObjTexture::getTextureId), reinterpret_cast<MT_MFUNC>(&::cGUIObjTexture::setTextureId), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_FLOAT4, "mTextureRect", reinterpret_cast<MT_MFUNC>(&::cGUIObjTexture::getTextureRect), reinterpret_cast<MT_MFUNC>(&::cGUIObjTexture::setTextureRect), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 void cGUIObjTexture::setSamplerState(u32 state) {
@@ -1698,8 +1793,6 @@ cGUIObjTextureSet::cGUIObjTextureSet() {
 }
 
 cGUIObjTextureSet::~cGUIObjTextureSet() {
-    DDON_STUB("cGUIObjTextureSet::~cGUIObjTextureSet")
-    /* stub */
 }
 
 MtUI* cGUIObjTextureSet::createUI(MtProperty& prop) {
@@ -1915,8 +2008,12 @@ MtUI* cGUIObject::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) void cGUIObject::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIObject::createProperty")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Visible", reinterpret_cast<MT_MFUNC>(&::cGUIObject::isVisible), reinterpret_cast<MT_MFUNC>(&::cGUIObject::setVisible), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Priority", reinterpret_cast<MT_MFUNC>(&::cGUIObject::getPriority), reinterpret_cast<MT_MFUNC>(&::cGUIObject::setPriority), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Loop", reinterpret_cast<MT_MFUNC>(&::cGUIObject::isLoop), reinterpret_cast<MT_MFUNC>(&::cGUIObject::setLoop), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "LoopStartFrame", reinterpret_cast<MT_MFUNC>(&::cGUIObject::getLoopStartFrame), reinterpret_cast<MT_MFUNC>(&::cGUIObject::setLoopStartFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "FixFrame", reinterpret_cast<MT_MFUNC>(&::cGUIObject::isFixFrame), reinterpret_cast<MT_MFUNC>(&::cGUIObject::setFixFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 bool cGUIObject::isDrawableStatic() const {

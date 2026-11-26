@@ -312,6 +312,10 @@ inline void cAreaHit::setAttribute(u32 attr) {
     this->mAttr = attr;
 }
 
+inline u32 cAreaHit::getDetectionInfo() {
+    return this->mDetect;
+}
+
 inline void cAreaHit::setCkRange(f32 r) {
     this->mCkRange = r;
 }

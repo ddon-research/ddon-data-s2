@@ -31,9 +31,16 @@ void cActorLight::setStageNo(s32 no) {
     mStageNo = no;
 }
 
-__attribute__((weak)) void cActorLight::createProperty(MtPropertyList& s) {
-    DDON_STUB("cActorLight::createProperty")
-    /* stub */
+void cActorLight::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "mStageNo", reinterpret_cast<MT_MFUNC>(&::cActorLight::getStageNo), reinterpret_cast<MT_MFUNC>(&::cActorLight::setStageNo), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mName", &mName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColor", &mColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBalance", &mBalance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ShadowGroup0", &mShadowAtten.x, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ShadowGroup1", &mShadowAtten.y, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStart", &mStart, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnd", &mEnd, 0u, 0u);
 }
 
 MtUI* cActorLight::createUI(MtProperty& prop) {
@@ -64,9 +71,8 @@ inline rActorLight::rActorLight() {
     setAttribute(16u);
 }
 
-__attribute__((weak)) const MtDTI& rActorLight::getDataDTI() {
-    DDON_STUB("rActorLight::getDataDTI")
-    __builtin_unreachable();
+const MtDTI& rActorLight::getDataDTI() {
+    return cActorLight::DTI;
 }
 
 MT_CTSTR rActorLight::getExt() const {

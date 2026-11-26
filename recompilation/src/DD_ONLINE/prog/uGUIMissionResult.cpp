@@ -453,6 +453,8 @@ inline uGUIMissionResult::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t si
 
 uGUIMissionResult::MyDTI uGUIMissionResult::DTI("uGUIMissionResult", &::uGUIBase::DTI, 11488ul, 0u, 0u);
 
+alignas(4) unsigned char uGUIMissionResult_mChargeEffectTable_bytes[12] __asm__("_ZN17uGUIMissionResult18mChargeEffectTableE") = {0x18, 0x00, 0x00, 0x00, 0x27, 0x00, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00};
+
 __attribute__((weak)) MtObject* uGUIMissionResult::MyDTI::newInstance() const {
     DDON_STUB("uGUIMissionResult::MyDTI::newInstance")
     return nullptr;

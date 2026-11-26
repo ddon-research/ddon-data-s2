@@ -229,7 +229,7 @@ __attribute__((weak)) bool uStageMyRoom::setMyRoomOption(const CMyRoomOption& op
 
 u32 uStageMyRoom::getMyRoomBgmListByIndex(u32 index) {
     if (index < mBgmAcquirementNoList.mLength) {
-        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2336)) + (static_cast<unsigned long>(index) * 8)) + 0)) + 8);
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mBgmAcquirementNoList.mpArray[index]) + 8);
     } else {
         return 0;
     }

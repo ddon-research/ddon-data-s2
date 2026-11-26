@@ -69,6 +69,7 @@ public:
 public:
     class VibControl
     {
+        friend class sVibration;
     public:
         enum VIB_RNO
         {

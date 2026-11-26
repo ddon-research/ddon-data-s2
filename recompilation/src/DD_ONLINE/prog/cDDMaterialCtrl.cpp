@@ -325,6 +325,10 @@ const MtDTI& cDDMaterialCtrl::cShaderDataDamage::getDTI() const {
     return cDDMaterialCtrl::cShaderDataDamage::DTI;
 }
 
+inline void* cDDMaterialCtrl::cShaderDataDamage::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDamage::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataDamage::DTI.getID());
+}
+
 inline void cDDMaterialCtrl::cShaderDataDamage::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDamage::DTI)->memFree(p_addr);
 }
@@ -390,9 +394,12 @@ void cDDMaterialCtrl::cShaderDataDamage::setCommonCB(cDDMaterialCtrl::TitleMater
     }
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataDamage::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataDamage::createProperty")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataDamage::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAlphaClipThreshold", &mAlphaClipThreshold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlendAlphaThreshold", &mBlendAlphaThreshold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlendAlphaBand", &mBlendAlphaBand, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAlbedoBlendRate", &mAlbedoBlendRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEmissionFactor", &mEmissionFactor, 0u, 0u);
 }
 
 u32 cDDMaterialCtrl::cShaderDataDamage::getMyShaderMode() {
@@ -403,9 +410,8 @@ inline cDDMaterialCtrl::cShaderDataDamage::MyDTI::MyDTI(MT_CTSTR class_name, MtD
 
 cDDMaterialCtrl::cShaderDataDamage::MyDTI cDDMaterialCtrl::cShaderDataDamage::DTI("cDDMaterialCtrl::cShaderDataDamage", &::cDDMaterialCtrl::cShaderData::DTI, 56ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataDamage::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataDamage::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataDamage::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataDamage;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderData::getDTI() const {
@@ -626,8 +632,11 @@ void cDDMaterialCtrl::cShaderDataStatusAilments::copy(cDDMaterialCtrl::cShaderDa
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataStatusAilments::createProperty")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mApplicateA", &mApplicateA, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFactorN", &mFactorN, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFactorS", &mFactorS, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUVOffset", &mUVOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUVScale", &mUVScale, 0u, 0u);
 }
 
 u32 cDDMaterialCtrl::cShaderDataStatusAilments::getAlimentsTextureId() {
@@ -674,14 +683,18 @@ static auto ddon_emit_0x01964540 __attribute__((used)) = &cDDMaterialCtrl::cShad
 
 static auto ddon_emit_0x01964550 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::setColorType;
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutline::setOColor(MtVector4& set) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataOutline::setOColor")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataOutline::setOColor(MtVector4& set) {
+    mOColor.x = set.x;
+    mOColor.y = set.y;
+    mOColor.z = set.z;
+    mOColor.w = set.w;
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutline::setIColor(MtVector4& set) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataOutline::setIColor")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataOutline::setIColor(MtVector4& set) {
+    mIColor.x = set.x;
+    mIColor.y = set.y;
+    mIColor.z = set.z;
+    mIColor.w = set.w;
 }
 
 static auto ddon_emit_0x01964580 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::setBalanceOffset;
@@ -690,9 +703,14 @@ static auto ddon_emit_0x01964590 __attribute__((used)) = &cDDMaterialCtrl::cShad
 
 static auto ddon_emit_0x019645a0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataOutline::setBalance;
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutline::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataOutline::createProperty")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataOutline::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mBlendType", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::getBlendType), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::setBlendType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mColorType", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::getColorType), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::setColorType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR4, "mOColor", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::getOColor), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::setOColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR4, "mIColor", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::getIColor), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::setIColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mBalanceOffset", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::getBalanceOffset), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::setBalanceOffset), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mBalanceScale", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::getBalanceScale), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::setBalanceScale), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mBalance", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::getBalance), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataOutline::setBalance), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 inline cDDMaterialCtrl::cShaderDataOutline::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -738,9 +756,14 @@ inline cDDMaterialCtrl::cShaderDataEmission::cShaderDataEmission() {
     mDiffuseBlendFactor = 0.0f;
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataEmission::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataEmission::createProperty")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataEmission::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEmissionColor", &mEmissionColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEmissionBlendColor", &mEmissionBlendColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEmissionBlendFactor", &mEmissionBlendFactor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEmissionIntensity", &mEmissionIntensity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDiffuseColor", &mDiffuseColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDiffuseBlendColor", &mDiffuseBlendColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDiffuseBlendFactor", &mDiffuseBlendFactor, 0u, 0u);
 }
 
 inline cDDMaterialCtrl::cShaderDataEmission::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -753,6 +776,10 @@ MtObject* cDDMaterialCtrl::cShaderDataEmission::MyDTI::newInstance() const {
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterial::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterial::DTI;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterial::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterial::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataMaterial::DTI.getID());
 }
 
 inline void cDDMaterialCtrl::cShaderDataMaterial::operator delete(void* p_addr) {
@@ -784,9 +811,8 @@ inline cDDMaterialCtrl::cShaderDataMaterial::MyDTI::MyDTI(MT_CTSTR class_name, M
 
 cDDMaterialCtrl::cShaderDataMaterial::MyDTI cDDMaterialCtrl::cShaderDataMaterial::DTI("cDDMaterialCtrl::cShaderDataMaterial", &::cDDMaterialCtrl::cShaderData::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterial::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterial::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataMaterial::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataMaterial;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataAnimation::getDTI() const {
@@ -981,6 +1007,10 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialOldData::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialOldData::DTI;
 }
 
+inline void* cDDMaterialCtrl::cShaderDataMaterialOldData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialOldData::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataMaterialOldData::DTI.getID());
+}
+
 inline void cDDMaterialCtrl::cShaderDataMaterialOldData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialOldData::DTI)->memFree(p_addr);
 }
@@ -1014,13 +1044,16 @@ inline cDDMaterialCtrl::cShaderDataMaterialOldData::MyDTI::MyDTI(MT_CTSTR class_
 
 cDDMaterialCtrl::cShaderDataMaterialOldData::MyDTI cDDMaterialCtrl::cShaderDataMaterialOldData::DTI("cDDMaterialCtrl::cShaderDataMaterialOldData", &::cDDMaterialCtrl::cShaderDataMaterial::DTI, 48ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialOldData::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialOldData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataMaterialOldData::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataMaterialOldData;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataDamageDrawOn::getDTI() const {
     return cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataDamageDrawOn::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI.getID());
 }
 
 inline void cDDMaterialCtrl::cShaderDataDamageDrawOn::operator delete(void* p_addr) {
@@ -1035,13 +1068,16 @@ inline cDDMaterialCtrl::cShaderDataDamageDrawOn::MyDTI::MyDTI(MT_CTSTR class_nam
 
 cDDMaterialCtrl::cShaderDataDamageDrawOn::MyDTI cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI("cDDMaterialCtrl::cShaderDataDamageDrawOn", &::cDDMaterialCtrl::cShaderDataDamage::DTI, 56ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataDamageDrawOn::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataDamageDrawOn::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataDamageDrawOn::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataDamageDrawOn;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataDead::getDTI() const {
     return cDDMaterialCtrl::cShaderDataDead::DTI;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataDead::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDead::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataDead::DTI.getID());
 }
 
 inline void cDDMaterialCtrl::cShaderDataDead::operator delete(void* p_addr) {
@@ -1074,13 +1110,16 @@ inline cDDMaterialCtrl::cShaderDataDead::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI
 
 cDDMaterialCtrl::cShaderDataDead::MyDTI cDDMaterialCtrl::cShaderDataDead::DTI("cDDMaterialCtrl::cShaderDataDead", &::cDDMaterialCtrl::cShaderDataDamage::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataDead::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataDead::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataDead::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataDead;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataBloodStain::getDTI() const {
     return cDDMaterialCtrl::cShaderDataBloodStain::DTI;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataBloodStain::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataBloodStain::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataBloodStain::DTI.getID());
 }
 
 inline void cDDMaterialCtrl::cShaderDataBloodStain::operator delete(void* p_addr) {
@@ -1139,13 +1178,16 @@ inline cDDMaterialCtrl::cShaderDataBloodStain::MyDTI::MyDTI(MT_CTSTR class_name,
 
 cDDMaterialCtrl::cShaderDataBloodStain::MyDTI cDDMaterialCtrl::cShaderDataBloodStain::DTI("cDDMaterialCtrl::cShaderDataBloodStain", &::cDDMaterialCtrl::cShaderDataDamage::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataBloodStain::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataBloodStain::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataBloodStain::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataBloodStain;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataHakuryuStone::getDTI() const {
     return cDDMaterialCtrl::cShaderDataHakuryuStone::DTI;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataHakuryuStone::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataHakuryuStone::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataHakuryuStone::DTI.getID());
 }
 
 inline void cDDMaterialCtrl::cShaderDataHakuryuStone::operator delete(void* p_addr) {
@@ -1176,13 +1218,16 @@ inline cDDMaterialCtrl::cShaderDataHakuryuStone::MyDTI::MyDTI(MT_CTSTR class_nam
 
 cDDMaterialCtrl::cShaderDataHakuryuStone::MyDTI cDDMaterialCtrl::cShaderDataHakuryuStone::DTI("cDDMaterialCtrl::cShaderDataHakuryuStone", &::cDDMaterialCtrl::cShaderDataBloodStain::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataHakuryuStone::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataHakuryuStone::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataHakuryuStone::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataHakuryuStone;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataFireDamage::getDTI() const {
     return cDDMaterialCtrl::cShaderDataFireDamage::DTI;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataFireDamage::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataFireDamage::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataFireDamage::DTI.getID());
 }
 
 inline void cDDMaterialCtrl::cShaderDataFireDamage::operator delete(void* p_addr) {
@@ -1220,9 +1265,8 @@ inline cDDMaterialCtrl::cShaderDataFireDamage::MyDTI::MyDTI(MT_CTSTR class_name,
 
 cDDMaterialCtrl::cShaderDataFireDamage::MyDTI cDDMaterialCtrl::cShaderDataFireDamage::DTI("cDDMaterialCtrl::cShaderDataFireDamage", &::cDDMaterialCtrl::cShaderDataDamage::DTI, 56ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataFireDamage::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataFireDamage::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataFireDamage::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataFireDamage;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataFire::getDTI() const {
@@ -1271,9 +1315,9 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataFire::update() {
     /* stub */
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataFire::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataFire::createProperty")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataFire::createProperty(MtPropertyList& s) {
+    this->cDDMaterialCtrl::cShaderDataStatusAilments::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mLoopFrame", &mLoopFrame, 0u, 0u);
 }
 
 inline cDDMaterialCtrl::cShaderDataFire::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1366,9 +1410,9 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataGeneral::update() {
     /* stub */
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataGeneral::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataGeneral::createProperty")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataGeneral::createProperty(MtPropertyList& s) {
+    this->cDDMaterialCtrl::cShaderDataStatusAilments::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mUVScrSpeed", &mUVScrSpeed, 0u, 0u);
 }
 
 inline cDDMaterialCtrl::cShaderDataGeneral::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1485,9 +1529,9 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataWetOil::update() {
     /* stub */
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataWetOil::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataWetOil::createProperty")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataWetOil::createProperty(MtPropertyList& s) {
+    this->cDDMaterialCtrl::cShaderDataStatusAilments::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mUVScrSpeed", &mUVScrSpeed, 0u, 0u);
 }
 
 inline cDDMaterialCtrl::cShaderDataWetOil::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1716,6 +1760,10 @@ const MtDTI& cDDMaterialCtrl::cShaderDataEmissionEye::getDTI() const {
     return cDDMaterialCtrl::cShaderDataEmissionEye::DTI;
 }
 
+inline void* cDDMaterialCtrl::cShaderDataEmissionEye::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataEmissionEye::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataEmissionEye::DTI.getID());
+}
+
 inline void cDDMaterialCtrl::cShaderDataEmissionEye::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataEmissionEye::DTI)->memFree(p_addr);
 }
@@ -1737,13 +1785,16 @@ inline cDDMaterialCtrl::cShaderDataEmissionEye::MyDTI::MyDTI(MT_CTSTR class_name
 
 cDDMaterialCtrl::cShaderDataEmissionEye::MyDTI cDDMaterialCtrl::cShaderDataEmissionEye::DTI("cDDMaterialCtrl::cShaderDataEmissionEye", &::cDDMaterialCtrl::cShaderDataEmission::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataEmissionEye::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataEmissionEye::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataEmissionEye::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataEmissionEye;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI.getID());
 }
 
 inline void cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::operator delete(void* p_addr) {
@@ -1845,9 +1896,8 @@ inline cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::MyDTI::MyDTI(MT_CTSTR
 
 cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::MyDTI cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI("cDDMaterialCtrl::cShaderDataMaterialToDefaultColor", &::cDDMaterialCtrl::cShaderDataMaterial::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataMaterialToDefaultColor;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialColor::getDTI() const {
@@ -1871,9 +1921,12 @@ bool cDDMaterialCtrl::cShaderDataMaterialColor::isSetCommonState(cDDMaterialCtrl
     }
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialColor::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialColor::createProperty")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataMaterialColor::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetAll", &mTargetAll, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDiffuseColor", &mDiffuseColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpecularColor", &mSpecularColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDiffuseColorRate", &mDiffuseColorRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpecularColorRate", &mSpecularColorRate, 0u, 0u);
 }
 
 inline cDDMaterialCtrl::cShaderDataMaterialColor::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1889,8 +1942,19 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialDead::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialDead::DTI;
 }
 
+inline void* cDDMaterialCtrl::cShaderDataMaterialDead::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialDead::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataMaterialDead::DTI.getID());
+}
+
 inline void cDDMaterialCtrl::cShaderDataMaterialDead::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialDead::DTI)->memFree(p_addr);
+}
+
+inline cDDMaterialCtrl::cShaderDataMaterialDead::cShaderDataMaterialDead() {
+    mSubColor.x = MtVector4::Zero.x;
+    mSubColor.y = MtVector4::Zero.y;
+    mSubColor.z = MtVector4::Zero.z;
+    mSubColor.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialDead::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
@@ -1907,9 +1971,8 @@ inline cDDMaterialCtrl::cShaderDataMaterialDead::MyDTI::MyDTI(MT_CTSTR class_nam
 
 cDDMaterialCtrl::cShaderDataMaterialDead::MyDTI cDDMaterialCtrl::cShaderDataMaterialDead::DTI("cDDMaterialCtrl::cShaderDataMaterialDead", &::cDDMaterialCtrl::cShaderDataMaterial::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialDead::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialDead::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataMaterialDead::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataMaterialDead;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantFire::getDTI() const {
@@ -2061,6 +2124,10 @@ const MtDTI& cDDMaterialCtrl::cShaderDataWaterColor::getDTI() const {
     return cDDMaterialCtrl::cShaderDataWaterColor::DTI;
 }
 
+inline void* cDDMaterialCtrl::cShaderDataWaterColor::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataWaterColor::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataWaterColor::DTI.getID());
+}
+
 inline void cDDMaterialCtrl::cShaderDataWaterColor::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataWaterColor::DTI)->memFree(p_addr);
 }
@@ -2108,9 +2175,8 @@ inline cDDMaterialCtrl::cShaderDataWaterColor::MyDTI::MyDTI(MT_CTSTR class_name,
 
 cDDMaterialCtrl::cShaderDataWaterColor::MyDTI cDDMaterialCtrl::cShaderDataWaterColor::DTI("cDDMaterialCtrl::cShaderDataWaterColor", &::cDDMaterialCtrl::cShaderData::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataWaterColor::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataWaterColor::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataWaterColor::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataWaterColor;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataConstantMaterialColor::getDTI() const {
@@ -2220,9 +2286,11 @@ static auto ddon_emit_0x01964680 __attribute__((used)) = &cDDMaterialCtrl::cShad
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdl::setSdlDataNum(u32 set) {
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdl::createProperty")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataSdl::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mTargetMaterialAll", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdl::getTargetMaterialAll), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdl::setTargetMaterialAll), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mTargetChildAll", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdl::getTargetChildAll), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdl::setTargetChildAll), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mUVTransformEnable", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdl::getUVTransformEnable), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdl::setUVTransformEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mSdlData", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdl::getSdlData), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdl::setSdlData), 160u, reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdl::getSdlDataNum), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdl::setSdlDataNum));
 }
 
 inline cDDMaterialCtrl::cShaderDataSdl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2264,30 +2332,15 @@ static auto ddon_emit_0x01964790 __attribute__((used)) = &cDDMaterialCtrl::cShad
 
 static auto ddon_emit_0x019647a0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getShininess;
 
-__attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getAlbedoColor() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::getAlbedoColor")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x019647b0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getAlbedoColor;
 
-__attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getDiffuseColor() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::getDiffuseColor")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x019647e0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getDiffuseColor;
 
-__attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getSpecularColor() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::getSpecularColor")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01964810 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getSpecularColor;
 
-__attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getEmissionColor() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::getEmissionColor")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01964850 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getEmissionColor;
 
-__attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getReflectiveColor() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::getReflectiveColor")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01964890 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getReflectiveColor;
 
 static auto ddon_emit_0x019648d0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getBAlphaClipThreshold;
 
@@ -2297,10 +2350,7 @@ static auto ddon_emit_0x019648f0 __attribute__((used)) = &cDDMaterialCtrl::cShad
 
 static auto ddon_emit_0x01964900 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getBAlbedoBlendRate;
 
-__attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getBBlendMapColor() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::getBBlendMapColor")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01964910 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getBBlendMapColor;
 
 static auto ddon_emit_0x01964950 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getEmissionFactor;
 
@@ -2376,9 +2426,33 @@ static auto ddon_emit_0x01964c80 __attribute__((used)) = &cDDMaterialCtrl::cShad
 
 static auto ddon_emit_0x01964c90 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::setVtxDispScale2;
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdlData::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::createProperty")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataSdlData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mTargetMaterialId", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getTargetMaterialId), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setTargetMaterialId), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR2, "mUVTransForm0Offset", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm0Offset), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm0Offset), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR2, "mUVTransForm1Offset", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm1Offset), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm1Offset), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR2, "mUVTransForm2Offset", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm2Offset), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm2Offset), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR2, "mUVTransForm0Scale", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm0Scale), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm0Scale), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR2, "mUVTransForm1Scale", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm1Scale), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm1Scale), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR2, "mUVTransForm2Scale", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm2Scale), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm2Scale), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDetailNormalUVScale", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getDetailNormalUVScale), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setDetailNormalUVScale), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDetailNormalPower", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getDetailNormalPower), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setDetailNormalPower), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mTransparency", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getTransparency), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setTransparency), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mShininess", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getShininess), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setShininess), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mAlbedoColor", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getAlbedoColor), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setAlbedoColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mDiffuseColor", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getDiffuseColor), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setDiffuseColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mSpecularColor", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getSpecularColor), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setSpecularColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mEmissionColor", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getEmissionColor), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setEmissionColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mReflectiveColor", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getReflectiveColor), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setReflectiveColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mBAlphaClipThreshold", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getBAlphaClipThreshold), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setBAlphaClipThreshold), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mBBlendAlphaBand", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getBBlendAlphaBand), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setBBlendAlphaBand), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mBBlendAlphaThreshold", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getBBlendAlphaThreshold), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setBBlendAlphaThreshold), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mBAlbedoBlendRate", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getBAlbedoBlendRate), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setBAlbedoBlendRate), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mBBlendMapColor", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getBBlendMapColor), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setBBlendMapColor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mBEmissionFactor", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getEmissionFactor), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setEmissionFactor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mVtxDispStart", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getVtxDispStart), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setVtxDispStart), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mVtxDispScale", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getVtxDispScale), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setVtxDispScale), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mVtxDispStart2", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getVtxDispStart2), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setVtxDispStart2), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mVtxDispScale2", reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::getVtxDispScale2), reinterpret_cast<MT_MFUNC>(&::cDDMaterialCtrl::cShaderDataSdlData::setVtxDispScale2), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 inline cDDMaterialCtrl::cShaderDataSdlData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2613,8 +2687,24 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemy::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI;
 }
 
+inline void* cDDMaterialCtrl::cShaderDataMaterialElementEnemy::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI.getID());
+}
+
 inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI)->memFree(p_addr);
+}
+
+inline cDDMaterialCtrl::cShaderDataMaterialElementEnemy::cShaderDataMaterialElementEnemy() {
+    mEmissionColor.x = MtVector3::Zero.x;
+    mEmissionColor.y = MtVector3::Zero.y;
+    mEmissionColor.z = MtVector3::Zero.z;
+    mEmissionColor.pad_ = 0.0f;
+    mStartEmissionIntensity = 10.0f;
+    mEndEmissionIntensity = 40.0f;
+    mPastFrame = 0.0f;
+    mAnimationFrame = 20.0f;
+    mInterpolateFrame = 15.0f;
 }
 
 void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
@@ -2647,9 +2737,8 @@ inline cDDMaterialCtrl::cShaderDataMaterialElementEnemy::MyDTI::MyDTI(MT_CTSTR c
 
 cDDMaterialCtrl::cShaderDataMaterialElementEnemy::MyDTI cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI("cDDMaterialCtrl::cShaderDataMaterialElementEnemy", &::cDDMaterialCtrl::cShaderDataMaterial::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialElementEnemy::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemy::MyDTI::newInstance")
-    return nullptr;
+MtObject* cDDMaterialCtrl::cShaderDataMaterialElementEnemy::MyDTI::newInstance() const {
+    return new (16u) cDDMaterialCtrl::cShaderDataMaterialElementEnemy;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::getDTI() const {

@@ -25,9 +25,9 @@ inline void cOcdIrAdj::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cOcdIrAdj::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cOcdIrAdj::createProperty(MtPropertyList& s) {
-    DDON_STUB("cOcdIrAdj::createProperty")
-    /* stub */
+void cOcdIrAdj::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\254\343\203\231\343\203\253", &mLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\251\343\203\263\343\202\257\345\200\244", &mOcdRank, 0u, 0u);
 }
 
 inline cOcdIrAdj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -50,9 +50,9 @@ inline void cOcdIrAdjPL::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cOcdIrAdjPL::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cOcdIrAdjPL::createProperty(MtPropertyList& s) {
-    DDON_STUB("cOcdIrAdjPL::createProperty")
-    /* stub */
+void cOcdIrAdjPL::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\244\343\203\206\343\203\240\343\203\251\343\203\263\343\202\257", &mItemLank, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\350\250\210\347\256\227\345\274\217\343\201\247\344\275\277\343\201\206\343\203\251\343\203\263\343\202\257", &mOcdRank, 0u, 0u);
 }
 
 inline cOcdIrAdjPL::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -65,6 +65,7 @@
 #include "uHuman.h"
 #include "uJobEquip.h"
 #include "../../XFramework/uModel.h"
+#include "uShlArrow.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -124,8 +125,47 @@ cpJob03::cpJob03() {
 }
 
 __attribute__((noinline)) cpJob03::~cpJob03() {
-    DDON_STUB("cpJob03::~cpJob03")
-    /* stub */
+    if (mpLandEfcUnit != nullptr) {
+        sUnit::getInstance()->remove(static_cast<cUnit*>(mpLandEfcUnit));
+        if (mpLandEfcUnit != nullptr) {
+            delete mpLandEfcUnit;
+            mpLandEfcUnit = nullptr;
+        }
+    }
+    if (mpLandHitEfcUnit != nullptr) {
+        sUnit::getInstance()->remove(static_cast<cUnit*>(mpLandHitEfcUnit));
+        if (mpLandHitEfcUnit != nullptr) {
+            delete mpLandHitEfcUnit;
+            mpLandHitEfcUnit = nullptr;
+        }
+    }
+    if (mpCs05EfcUnit != nullptr) {
+        sUnit::getInstance()->remove(static_cast<cUnit*>(mpCs05EfcUnit));
+        if (mpCs05EfcUnit != nullptr) {
+            delete mpCs05EfcUnit;
+            mpCs05EfcUnit = nullptr;
+        }
+    }
+    if (mpCstmSkillShlSeList.elems[0] != nullptr) {
+        mpCstmSkillShlSeList.elems[0]->cResource::release();
+        mpCstmSkillShlSeList.elems[0] = nullptr;
+    }
+    if (mpCstmSkillShlSeList.elems[1] != nullptr) {
+        mpCstmSkillShlSeList.elems[1]->cResource::release();
+        mpCstmSkillShlSeList.elems[1] = nullptr;
+    }
+    if (mpCstmSkillShlSeList.elems[2] != nullptr) {
+        mpCstmSkillShlSeList.elems[2]->cResource::release();
+        mpCstmSkillShlSeList.elems[2] = nullptr;
+    }
+    if (mpCstmSkillShlSeList.elems[3] != nullptr) {
+        mpCstmSkillShlSeList.elems[3]->cResource::release();
+        mpCstmSkillShlSeList.elems[3] = nullptr;
+    }
+    if (mpShlCommonSe != nullptr) {
+        mpShlCommonSe->release();
+        mpShlCommonSe = nullptr;
+    }
 }
 
 void cpJob03::setup() {

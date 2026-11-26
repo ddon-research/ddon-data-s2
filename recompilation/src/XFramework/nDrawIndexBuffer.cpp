@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "nDrawIndexBuffer.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
@@ -20,6 +21,17 @@ void* nDraw::IndexBuffer::operator new(size_t sz, u32 align) {
 
 inline void nDraw::IndexBuffer::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nDraw::IndexBuffer::DTI)->memFree(p_addr);
+}
+
+nDraw::IndexBuffer::IndexBuffer(u32 size, nDraw::USAGE_TYPE usage, const void* pinitvalues) : nDraw::Buffer(usage) {
+    mBufSize = size;
+    mpBuffer = nullptr;
+    void* t0 = ::MtMemory::mpAllocatorType[6]->memAlloc(size, 4u);
+    mpBuffer = t0;
+    if (pinitvalues == nullptr) {
+        return;
+    }
+    ::memcpy(t0, pinitvalues, size);
 }
 
 __attribute__((weak)) void nDraw::IndexBuffer::suspend() {

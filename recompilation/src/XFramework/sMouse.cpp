@@ -4,7 +4,9 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cSystem.h"
 #include "../generated/shared/mouse.h"
@@ -39,9 +41,11 @@ __attribute__((weak)) void sMouse::move() {
     /* stub */
 }
 
-__attribute__((weak)) void sMouse::createProperty(MtPropertyList& s) {
-    DDON_STUB("sMouse::createProperty")
-    /* stub */
+void sMouse::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mRepeatStartTime", &mRepeatStartTime, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRepeatTime", &mRepeatTime, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mActive", &mActive, 2u, 0u);
 }
 
 MtUI* sMouse::createUI(MtProperty& prop) {

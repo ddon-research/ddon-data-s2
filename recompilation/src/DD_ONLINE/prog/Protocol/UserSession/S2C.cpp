@@ -1374,9 +1374,8 @@ inline nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::MyDTI::MyDTI(MT_CTSTR c
 
 nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::MyDTI nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::DTI("CPacket_S2C_CLAN_BASE_GET_INFO_RES", &::CPacketDataBase::DTI, 304ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::getDTI() const {
@@ -2302,9 +2301,8 @@ inline nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::MyDTI::MyDTI(
 
 nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::MyDTI nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::DTI("CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES", &::CPacketDataBase::DTI, 144ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::getDTI() const {
@@ -2349,9 +2347,8 @@ inline nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::MyDTI::My
 
 nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::MyDTI nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::DTI("CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES", &::CPacketDataBase::DTI, 144ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::getDTI() const {
@@ -4426,9 +4423,8 @@ inline nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::MyDTI::MyDTI(MT_CTSTR
 
 nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::MyDTI nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::DTI("CPacket_S2C_GET_AREA_MASTER_INFO_RES", &::CPacketDataBase::DTI, 152ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::getDTI() const {
@@ -5482,6 +5478,10 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::getAllocator(
     return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::DTI);
 }
 
+inline void* nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::DTI.getID());
+}
+
 __attribute__((weak)) void nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::operator delete(void* p_addr) {
     ::nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::getAllocator()->memFree(p_addr);
 }
@@ -5508,9 +5508,8 @@ inline nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::MyDTI::MyDTI(MT_CTSTR clas
 
 nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::MyDTI nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::DTI("CPacket_S2C_GET_FRIEND_LIST_RES", &::CPacketDataBase::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_GET_GAME_SETTING_RES::getDTI() const {
@@ -7829,6 +7828,10 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::getAllocator()
     return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::DTI);
 }
 
+inline void* nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::DTI.getID());
+}
+
 __attribute__((weak)) void nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::operator delete(void* p_addr) {
     ::nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::getAllocator()->memFree(p_addr);
 }
@@ -7837,9 +7840,8 @@ inline nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::MyDTI::MyDTI(MT_CTSTR class
 
 nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::MyDTI nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::DTI("CPacket_S2C_GET_WORLD_INFO_RES", &::CPacketDataBase::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_GET_WORLD_INFO_RES;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE::getDTI() const {
@@ -9452,17 +9454,31 @@ inline MtAllocator* nUserSession::CPacket_S2C_MAIL_SEND_NTC::getAllocator() {
     return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_SEND_NTC::DTI);
 }
 
+inline void* nUserSession::CPacket_S2C_MAIL_SEND_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_SEND_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MAIL_SEND_NTC::DTI.getID());
+}
+
 __attribute__((weak)) void nUserSession::CPacket_S2C_MAIL_SEND_NTC::operator delete(void* p_addr) {
     ::nUserSession::CPacket_S2C_MAIL_SEND_NTC::getAllocator()->memFree(p_addr);
+}
+
+nUserSession::CPacket_S2C_MAIL_SEND_NTC::CPacket_S2C_MAIL_SEND_NTC() {
+    m_usError = 0;
+    m_bIsReceived = false;
+    m_MailInfo.m_llSenderDate = 0;
+    m_MailInfo.m_wstrMailText.value = nullptr;
+    m_MailInfo.m_wstrSenderName.value = nullptr;
+    m_MailInfo.m_BaseInfo.m_wstrClanName.value = nullptr;
+    m_MailInfo.m_BaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    m_MailInfo.m_BaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
 }
 
 inline nUserSession::CPacket_S2C_MAIL_SEND_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nUserSession::CPacket_S2C_MAIL_SEND_NTC::MyDTI nUserSession::CPacket_S2C_MAIL_SEND_NTC::DTI("CPacket_S2C_MAIL_SEND_NTC", &::CPacketDataBase::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_MAIL_SEND_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_MAIL_SEND_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_MAIL_SEND_NTC::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_MAIL_SEND_NTC;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_MASTER_THROW_RES::getDTI() const {
@@ -10813,9 +10829,8 @@ inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::MyDTI::MyDT
 
 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::MyDTI nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::DTI("CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES", &::CPacketDataBase::DTI, 160ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::getDTI() const {
@@ -14524,17 +14539,31 @@ inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::getAllocator
     return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::DTI);
 }
 
+inline void* nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::DTI.getID());
+}
+
 __attribute__((weak)) void nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::operator delete(void* p_addr) {
     ::nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::getAllocator()->memFree(p_addr);
+}
+
+nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::CPacket_S2C_SYSTEM_MAIL_SEND_NTC() {
+    m_usError = 0;
+    m_bIsReceived = false;
+    m_MailInfo.m_llSenderDate = 0;
+    m_MailInfo.m_wstrMailText.value = nullptr;
+    m_MailInfo.m_wstrSenderName.value = nullptr;
+    m_MailInfo.m_BaseInfo.m_wstrClanName.value = nullptr;
+    m_MailInfo.m_BaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    m_MailInfo.m_BaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
 }
 
 inline nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::MyDTI nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::DTI("CPacket_S2C_SYSTEM_MAIL_SEND_NTC", &::CPacketDataBase::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::MyDTI::newInstance() const {
+    return new (16u) ::nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC;
 }
 
 const MtDTI& nUserSession::CPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE::getDTI() const {

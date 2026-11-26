@@ -221,9 +221,9 @@ inline void rStageCustomParts::Param::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rStageCustomParts::Param::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rStageCustomParts::Param::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageCustomParts::Param::createProperty")
-    /* stub */
+void rStageCustomParts::Param::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mDelta", &mDelta, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetY", &mOffsetY, 0u, 0u);
 }
 
 bool rStageCustomParts::Param::load(MtDataReader& r) {
@@ -257,9 +257,23 @@ __attribute__((noinline)) rStageCustomParts::Info::Info() {
 rStageCustomParts::Info::~Info() {
 }
 
-__attribute__((weak)) void rStageCustomParts::Info::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageCustomParts::Info::createProperty")
-    /* stub */
+void rStageCustomParts::Info::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mModel", reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::getModelName), reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::setModelName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mScrSbc", reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::getScrSbcName), reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::setScrSbcName), 160u, reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::getScrSbcNameNum), reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::setScrSbcNameNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mEffSbc", reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::getEffSbcName), reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::setEffSbcName), 160u, reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::getEffSbcNameNum), reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::setEffSbcNameNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mLight", reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::getLightName), reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::setLightName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mNaviMesh", reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::getNaviMeshName), reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::setNaviMeshName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mEpv", reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::getEpvName), reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::setEpvName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mOccluder", reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::getOccluderName), reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Info::setOccluderName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaNo", &mAreaNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSize", &mSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetZ", &mOffsetZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEpvIndexAlways", &mEpvIndexAlways, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEpvIndexDay", &mEpvIndexDay, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEpvIndexNight", &mEpvIndexNight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColor", &mColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mComment", &mComment, 0u, 0u);
 }
 
 MtUI* rStageCustomParts::Info::createUI(MtProperty& prop) {
@@ -461,9 +475,8 @@ rStageCustomParts::Filter::Filter() {
     clear();
 }
 
-__attribute__((weak)) void rStageCustomParts::Filter::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageCustomParts::Filter::createProperty")
-    /* stub */
+void rStageCustomParts::Filter::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mFilter", reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Filter::getFilterName), reinterpret_cast<MT_MFUNC>(&::rStageCustomParts::Filter::setFilterName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* rStageCustomParts::Filter::createUI(MtProperty& prop) {

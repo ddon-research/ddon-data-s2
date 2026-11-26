@@ -44,9 +44,14 @@ __attribute__((weak)) void sPadExt::move() {
 __attribute__((weak)) void sPadExt::reset() {
 }
 
-__attribute__((weak)) void sPadExt::createProperty(MtPropertyList& s) {
-    DDON_STUB("sPadExt::createProperty")
-    /* stub */
+void sPadExt::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "GamePadId", reinterpret_cast<MT_MFUNC>(&::sPadExt::getGamePadId), reinterpret_cast<MT_MFUNC>(&::sPadExt::setGamePad), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mIsIgnore", &mIsIgnore, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIgnoreTimer", &mIgnoreTimer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDeltaTime", &mDeltaTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPadInfo", static_cast<MtObject*>(&mPadInfo[0]), 32u, 1u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsEnableReplaceDC", &mIsEnableReplaceDC, 0u, 0u);
+    this->sPad::createProperty(s);
 }
 
 void sPadExt::initRepeat() {
@@ -175,9 +180,46 @@ sPadExt::cPadInfo::cPadInfo() {
 sPadExt::cPadInfo::~cPadInfo() {
 }
 
-__attribute__((weak)) void sPadExt::cPadInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("sPadExt::cPadInfo::createProperty")
-    /* stub */
+void sPadExt::cPadInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPadId", &mPadId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPadEnableId", &mPadEnableId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsEnable", &mIsEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsVibEnable", &mIsVibEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRepTimer", &mRepTimer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAclTimer", &mAclTimer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBtn.on", &mBtn.on, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBtn.trg", &mBtn.trg, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBtn.rel", &mBtn.rel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBtn.rep", &mBtn.rep, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBtn.acl", &mBtn.acl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBtnUDRL.on", &mBtnUDRL.on, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBtnUDRL.trg", &mBtnUDRL.trg, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBtnUDRL.rel", &mBtnUDRL.rel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBtnUDRL.rep", &mBtnUDRL.rep, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBtnUDRL.acl", &mBtnUDRL.acl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAnlg[LEFT].x", &mAnlg[0].x, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAnlg[LEFT].y", &mAnlg[0].y, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAnlg[RIGHT].x", &mAnlg[1].x, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAnlg[RIGHT].y", &mAnlg[1].y, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.Lup", &mPress.Lup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.Lright", &mPress.Lright, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.Ldown", &mPress.Ldown, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.Lleft", &mPress.Lleft, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.Rup", &mPress.Rup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.Rright", &mPress.Rright, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.Rdown", &mPress.Rdown, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.Rleft", &mPress.Rleft, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.L1", &mPress.L1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.L2", &mPress.L2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.R1", &mPress.R1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.R2", &mPress.R2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.Select", &mPress.Select, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.L3", &mPress.L3, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPress.R3", &mPress.R3, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSensor.x", &mSensor.x, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSensor.y", &mSensor.y, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSensor.z", &mSensor.z, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSensor.g", &mSensor.g, 0u, 0u);
 }
 
 void sPadExt::cPadInfo::clear(bool flag) {

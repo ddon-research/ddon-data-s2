@@ -13,6 +13,10 @@ const MtDTI& cPrimObj::getDTI() const {
     return cPrimObj::DTI;
 }
 
+inline void* cPrimObj::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cPrimObj::DTI)->memAlloc(sz, align, cPrimObj::DTI.mID);
+}
+
 inline void cPrimObj::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cPrimObj::DTI)->memFree(p_addr);
 }
@@ -25,8 +29,7 @@ inline cPrimObj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 cPrimObj::MyDTI cPrimObj::DTI("cPrimObj", &::MtObject::DTI, 8ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cPrimObj::MyDTI::newInstance() const {
-    DDON_STUB("cPrimObj::MyDTI::newInstance")
-    return nullptr;
+MtObject* cPrimObj::MyDTI::newInstance() const {
+    return new (16u) cPrimObj;
 }
 

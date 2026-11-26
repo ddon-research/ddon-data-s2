@@ -91,7 +91,7 @@ __attribute__((weak)) void cpAISensor::setSensorRes(rAISensor* pRes) {
 
 void cpAISensor::move() {
     if (isActive()) {
-        u32 node_num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 136);
+        u32 node_num = mpNodes.mLength;
         if (node_num != 0) {
             MtObject* * v0_1 = mpNodes.getBuffer();
             for (unsigned int i0_2 = 0;;) {
@@ -114,7 +114,7 @@ __attribute__((weak)) void cpAISensor::searchSensor(MtTypedArray<uDDOModel>& dst
 }
 
 void cpAISensor::searchSensor(MtTypedArray<cGeneralPoint>& dst, const cAISensorGetParam& param) {
-    u32 node_num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 136);
+    u32 node_num = mpNodes.mLength;
     if (node_num != 0) {
         for (unsigned int i0_8 = 0;;) {
             if (mpNodes.getBuffer()[static_cast<int>(i0_8)] != nullptr) {

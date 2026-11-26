@@ -13,6 +13,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
 #include "cDynamicBVHCollision.h"
@@ -23,6 +24,25 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+inline void* nZone::ShapeInfoLine::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoLine::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoLine::DTI.getID());
+}
+inline nZone::ShapeInfoLine::ShapeInfoLine() {
+    mLineSegment.p0 = MtVector3(-50.0f, 0.0f, 0.0f);
+    mLineSegment.p1 = MtVector3(50.0f, 0.0f, 0.0f);
+}
+
+inline void* nZone::ShapeInfoPoint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoPoint::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoPoint::DTI.getID());
+}
+inline nZone::ShapeInfoPoint::ShapeInfoPoint() {
+    mPos = MtVector3::Zero;
+}
+
+inline void* nZone::cContentsPool::cContentsList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nZone::cContentsPool::cContentsList::DTI)->memAlloc(sz, align, ::nZone::cContentsPool::cContentsList::DTI.getID());
+}
 
 const MtDTI& nZone::ShapeInfoAABB::getDTI() const {
     return nZone::ShapeInfoAABB::DTI;
@@ -51,9 +71,23 @@ nZone::ShapeInfoAABB::ShapeInfoAABB() {
 nZone::ShapeInfoAABB::~ShapeInfoAABB() {
 }
 
-__attribute__((weak)) void nZone::ShapeInfoAABB::createProperty(MtPropertyList& s) {
-    DDON_STUB("nZone::ShapeInfoAABB::createProperty")
-    /* stub */
+void nZone::ShapeInfoAABB::createProperty(MtPropertyList& s) {
+    this->::nZone::ShapeInfoBase::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIsEnableExtendedDecay", &mIsEnableExtendedDecay, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mDecayX", &mDecay, 2u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mDecayY", &mDecayY, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mDecayZ", &mDecayZ, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "std::minpos", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::getVertex000), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::setVertex000), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "std::maxpos", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::getVertex111), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::setVertex111), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "v000", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::getVertex000), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::setVertex000), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "v100", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::getVertex100), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::setVertex100), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "v010", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::getVertex010), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::setVertex010), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "v110", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::getVertex110), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::setVertex110), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "v001", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::getVertex001), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::setVertex001), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "v101", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::getVertex101), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::setVertex101), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "v011", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::getVertex011), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::setVertex011), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "v111", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::getVertex111), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoAABB::setVertex111), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mAABB", &mAABB, 0u, 0u);
 }
 
 __attribute__((weak)) bool nZone::ShapeInfoAABB::copy(const nZone::ShapeInfoBase& copyShape) {
@@ -220,7 +254,7 @@ bool nZone::ShapeInfoAABB::isGetAABB() const {
     return true;
 }
 
-__attribute__((weak)) MtAABB nZone::ShapeInfoAABB::getAABB() const {
+MtAABB nZone::ShapeInfoAABB::getAABB() const {
     return mAABB;
 }
 
@@ -268,10 +302,7 @@ __attribute__((weak)) f32 nZone::ShapeInfoAABB::calcWeight(const MtVector3& pos)
     return {};
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex000() const {
-    DDON_STUB("nZone::ShapeInfoAABB::getVertex000")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01b88890 __attribute__((used)) = &nZone::ShapeInfoAABB::getVertex000;
 
 void nZone::ShapeInfoAABB::setVertex000(const MtVector3& v) {
     if (v.x > mAABB.maxpos.x) {
@@ -291,9 +322,15 @@ void nZone::ShapeInfoAABB::setVertex000(const MtVector3& v) {
     }
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex001() const {
-    DDON_STUB("nZone::ShapeInfoAABB::getVertex001")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoAABB::getVertex001() const {
+    MtVector3 result;
+    const f32 t0 = mAABB.minpos.y;
+    const f32 t1 = mAABB.maxpos.z;
+    result.x = mAABB.minpos.x;
+    result.y = t0;
+    result.z = t1;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void nZone::ShapeInfoAABB::setVertex001(const MtVector3& v) {
@@ -314,9 +351,15 @@ void nZone::ShapeInfoAABB::setVertex001(const MtVector3& v) {
     }
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex010() const {
-    DDON_STUB("nZone::ShapeInfoAABB::getVertex010")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoAABB::getVertex010() const {
+    MtVector3 result;
+    const f32 t0 = mAABB.maxpos.y;
+    const f32 t1 = mAABB.minpos.z;
+    result.x = mAABB.minpos.x;
+    result.y = t0;
+    result.z = t1;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void nZone::ShapeInfoAABB::setVertex010(const MtVector3& v) {
@@ -337,9 +380,15 @@ void nZone::ShapeInfoAABB::setVertex010(const MtVector3& v) {
     }
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex011() const {
-    DDON_STUB("nZone::ShapeInfoAABB::getVertex011")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoAABB::getVertex011() const {
+    MtVector3 result;
+    const f32 t0 = mAABB.maxpos.y;
+    const f32 t1 = mAABB.maxpos.z;
+    result.x = mAABB.minpos.x;
+    result.y = t0;
+    result.z = t1;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void nZone::ShapeInfoAABB::setVertex011(const MtVector3& v) {
@@ -360,9 +409,15 @@ void nZone::ShapeInfoAABB::setVertex011(const MtVector3& v) {
     }
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex100() const {
-    DDON_STUB("nZone::ShapeInfoAABB::getVertex100")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoAABB::getVertex100() const {
+    MtVector3 result;
+    const f32 t0 = mAABB.minpos.y;
+    const f32 t1 = mAABB.minpos.z;
+    result.x = mAABB.maxpos.x;
+    result.y = t0;
+    result.z = t1;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void nZone::ShapeInfoAABB::setVertex100(const MtVector3& v) {
@@ -383,9 +438,15 @@ void nZone::ShapeInfoAABB::setVertex100(const MtVector3& v) {
     }
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex101() const {
-    DDON_STUB("nZone::ShapeInfoAABB::getVertex101")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoAABB::getVertex101() const {
+    MtVector3 result;
+    const f32 t0 = mAABB.minpos.y;
+    const f32 t1 = mAABB.maxpos.z;
+    result.x = mAABB.maxpos.x;
+    result.y = t0;
+    result.z = t1;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void nZone::ShapeInfoAABB::setVertex101(const MtVector3& v) {
@@ -406,9 +467,15 @@ void nZone::ShapeInfoAABB::setVertex101(const MtVector3& v) {
     }
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex110() const {
-    DDON_STUB("nZone::ShapeInfoAABB::getVertex110")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoAABB::getVertex110() const {
+    MtVector3 result;
+    const f32 t0 = mAABB.minpos.z;
+    const f32 t1 = mAABB.maxpos.y;
+    result.x = mAABB.maxpos.x;
+    result.y = t1;
+    result.z = t0;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void nZone::ShapeInfoAABB::setVertex110(const MtVector3& v) {
@@ -429,10 +496,7 @@ void nZone::ShapeInfoAABB::setVertex110(const MtVector3& v) {
     }
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getVertex111() const {
-    DDON_STUB("nZone::ShapeInfoAABB::getVertex111")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01b88920 __attribute__((used)) = &nZone::ShapeInfoAABB::getVertex111;
 
 void nZone::ShapeInfoAABB::setVertex111(const MtVector3& v) {
     if (mAABB.minpos.x > v.x) {
@@ -457,8 +521,7 @@ inline nZone::ShapeInfoAABB::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 nZone::ShapeInfoAABB::MyDTI nZone::ShapeInfoAABB::DTI("nZone::ShapeInfoAABB", &::nZone::ShapeInfoBase::DTI, 64ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nZone::ShapeInfoAABB::MyDTI::newInstance() const {
-    DDON_STUB("nZone::ShapeInfoAABB::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::nZone::ShapeInfoAABB;
 }
 
 const MtDTI& nZone::ShapeInfoArea::getDTI() const {
@@ -492,9 +555,14 @@ __attribute__((noinline)) nZone::ShapeInfoArea::ShapeInfoArea() {
 nZone::ShapeInfoArea::~ShapeInfoArea() {
 }
 
-__attribute__((weak)) void nZone::ShapeInfoArea::createProperty(MtPropertyList& s) {
-    DDON_STUB("nZone::ShapeInfoArea::createProperty")
-    /* stub */
+void nZone::ShapeInfoArea::createProperty(MtPropertyList& s) {
+    this->::nZone::ShapeInfoBase::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "mVertex", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoArea::getVertex), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoArea::setVertex), 160u, reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoArea::getVertexNumForProperty), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoArea::setDummyU32));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_F32, "mBottom", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoArea::getBottom), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoArea::setBottom), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_F32, "mHeight", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoArea::getHeight), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoArea::setHeight), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mConcaveCrossPos", &mConcaveCrossPos, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mFlgConvex", &mFlgConvex, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mConcaveStatus", &mConcaveStatus, 1u, 0u);
 }
 
 __attribute__((weak)) bool nZone::ShapeInfoArea::copy(const nZone::ShapeInfoBase& copyShape) {
@@ -647,9 +715,8 @@ __attribute__((weak)) f32 nZone::ShapeInfoArea::calcWeight(const MtVector3& pos)
     return {};
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoArea::getVertex(u32 index) const {
-    DDON_STUB("nZone::ShapeInfoArea::getVertex")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoArea::getVertex(u32 index) const {
+    return mVertex[index];
 }
 
 void nZone::ShapeInfoArea::setVertex(const MtVector3& v, u32 index) {
@@ -674,8 +741,8 @@ void nZone::ShapeInfoArea::setBottom(f32 bottom) {
 static auto ddon_emit_0x01b87780 __attribute__((used)) = &nZone::ShapeInfoArea::getHeight;
 
 __attribute__((weak)) void nZone::ShapeInfoArea::setHeight(f32 height) {
-    DDON_STUB("nZone::ShapeInfoArea::setHeight")
-    /* stub */
+    mHeight = height > 0.0625f ? height : 0.0625f;
+    repairHeightAndBottom();
 }
 
 __attribute__((weak)) MtVector3 nZone::ShapeInfoArea::calcCenter() const {
@@ -706,13 +773,77 @@ __attribute__((weak)) bool nZone::ShapeInfoArea::distanceSqSub(const MtRay& ray,
 }
 
 __attribute__((weak)) bool nZone::ShapeInfoArea::isConvex_Private() const {
-    DDON_STUB("nZone::ShapeInfoArea::isConvex_Private")
-    return {};
+    const MtTriangle BottomTriangle[4] = {
+        MtTriangle(mVertex[1], mVertex[3], mVertex[2]),
+        MtTriangle(mVertex[0], mVertex[2], mVertex[3]),
+        MtTriangle(mVertex[1], mVertex[3], mVertex[0]),
+        MtTriangle(mVertex[0], mVertex[2], mVertex[1]),
+    };
+    for (s32 i = 0; i < 4; ++i) {
+        const u32 vid = MtCollision::getCoGIdFast(BottomTriangle[i], mVertex[i]);
+        if (vid != MtCollisionUtil::TRI_VORONOI_EDGE01) {
+            return false;
+        }
+    }
+    return true;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoArea::updateConcaveParam() {
-    DDON_STUB("nZone::ShapeInfoArea::updateConcaveParam")
-    /* stub */
+    mFlgConvex = isConvex_Private();
+    mConcaveStatus = CONCAVE_DEFAULT;
+    if (mFlgConvex) {
+        return;
+    }
+    
+    const MtLineSegment ls03(mVertex[0], mVertex[3]);
+    const MtLineSegment ls12(mVertex[1], mVertex[2]);
+    f32 toi03_12;
+    const f32 distSq03_12 = MtCollision::sqrDistance(ls03, ls12, &toi03_12, nullptr, 0.001f);
+    if (distSq03_12 < 1.1920929e-7f) {
+        mConcaveStatus = CONCAVE_CROSS_0312;
+        mConcaveCrossPos = ls03.getPos(toi03_12);
+        return;
+    }
+    
+    const MtLineSegment ls01(mVertex[0], mVertex[1]);
+    const MtLineSegment ls23(mVertex[2], mVertex[3]);
+    f32 toi01_23;
+    const f32 distSq01_23 = MtCollision::sqrDistance(ls01, ls23, &toi01_23, nullptr, 0.001f);
+    if (distSq01_23 < 1.1920929e-7f) {
+        mConcaveStatus = CONCAVE_CROSS_0123;
+        mConcaveCrossPos = ls01.getPos(toi01_23);
+        return;
+    }
+    
+    static const u32 CheckVertexIndex13[2] = {1, 3};
+    static const u32 CheckVertexIndex02[2] = {0, 2};
+    const MtTriangle BottomTriangle[VERTEX_NUM] = {
+        MtTriangle(mVertex[1], mVertex[3], mVertex[2]),
+        MtTriangle(mVertex[0], mVertex[2], mVertex[3]),
+        MtTriangle(mVertex[1], mVertex[3], mVertex[0]),
+        MtTriangle(mVertex[0], mVertex[2], mVertex[1]),
+    };
+    
+    for (u32 i = 0; i < sizeof(CheckVertexIndex13) / sizeof(*CheckVertexIndex13); ++i) {
+        const MtTriangle& CheckTriangle = BottomTriangle[CheckVertexIndex13[i]];
+        const u32 vid = MtCollision::getCoGIdFast(CheckTriangle, mVertex[CheckVertexIndex13[i]]);
+        if (vid != MtCollisionUtil::TRI_VORONOI_EDGE01) {
+            mConcaveStatus = CONCAVE_VERTEX_ROLL_INVERSE;
+            break;
+        }
+    }
+    if (mConcaveStatus != CONCAVE_VERTEX_ROLL_INVERSE) {
+        return;
+    }
+    
+    for (u32 i = 0; i < sizeof(CheckVertexIndex02) / sizeof(*CheckVertexIndex02); ++i) {
+        const MtTriangle& CheckTriangle = BottomTriangle[CheckVertexIndex02[i]];
+        const u32 vid = MtCollision::getCoGIdFast(CheckTriangle, mVertex[CheckVertexIndex02[i]]);
+        if (vid == MtCollisionUtil::TRI_VORONOI_V2) {
+            mConcaveStatus = CONCAVE_DEFAULT;
+            return;
+        }
+    }
 }
 
 __attribute__((weak)) void nZone::ShapeInfoArea::updateConcaveCrossPos() {
@@ -730,8 +861,7 @@ inline nZone::ShapeInfoArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 nZone::ShapeInfoArea::MyDTI nZone::ShapeInfoArea::DTI("nZone::ShapeInfoArea", &::nZone::ShapeInfoBase::DTI, 112ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nZone::ShapeInfoArea::MyDTI::newInstance() const {
-    DDON_STUB("nZone::ShapeInfoArea::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::nZone::ShapeInfoArea;
 }
 
 const MtDTI& nZone::ShapeInfoBase::getDTI() const {
@@ -746,8 +876,9 @@ nZone::ShapeInfoBase::~ShapeInfoBase() {
 }
 
 __attribute__((weak)) void nZone::ShapeInfoBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("nZone::ShapeInfoBase::createProperty")
-    /* stub */
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIsNativeData", &mIsNativeData, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_VECTOR3, "CenterPos", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoBase::getCenterPos), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoBase::setCenterPos), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mDecay", &mDecay, 0u, 0u);
 }
 
 bool nZone::ShapeInfoBase::copy(const nZone::ShapeInfoBase& copyShape) {
@@ -816,9 +947,8 @@ bool nZone::ShapeInfoBase::isGetAABB() const {
     return false;
 }
 
-__attribute__((weak)) MtAABB nZone::ShapeInfoBase::getAABB() const {
-    DDON_STUB("nZone::ShapeInfoBase::getAABB")
-    __builtin_unreachable();
+MtAABB nZone::ShapeInfoBase::getAABB() const {
+    return ::MtAABB::Zero;
 }
 
 bool nZone::ShapeInfoBase::isGetBoundingSphere() const {
@@ -830,9 +960,13 @@ __attribute__((weak)) MtSphere nZone::ShapeInfoBase::getBoundingSphere() const {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoBase::getCenterPos() const {
-    DDON_STUB("nZone::ShapeInfoBase::getCenterPos")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoBase::getCenterPos() const {
+    MtVector3 result;
+    result.x = 0.0f;
+    result.y = 50.0f;
+    result.z = 0.0f;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoBase::rotationAngle(const MtVector3& RotateRadian) {
@@ -886,14 +1020,17 @@ void* nZone::ShapeInfoCapsule::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCapsule::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoCapsule::DTI.mID);
 }
 
+inline void nZone::ShapeInfoCapsule::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCapsule::DTI)->memFree(p_addr);
+}
+
 nZone::ShapeInfoCapsule::ShapeInfoCapsule() {
-    DDON_STUB("nZone::ShapeInfoCapsule::ShapeInfoCapsule")
-    /* stub */
+    mCapsule.p0 = MtVector3(-50.0f, 50.0f, 0.0f);
+    mCapsule.p1 = MtVector3(50.0f, 50.0f, 0.0f);
+    mCapsule.r = 50.0f;
 }
 
 nZone::ShapeInfoCapsule::~ShapeInfoCapsule() {
-    DDON_STUB("nZone::ShapeInfoCapsule::~ShapeInfoCapsule")
-    /* stub */
 }
 
 __attribute__((weak)) void nZone::ShapeInfoCapsule::createProperty(MtPropertyList& s) {
@@ -1071,9 +1208,12 @@ __attribute__((noinline)) nZone::ShapeInfoCone::ShapeInfoCone() {
 nZone::ShapeInfoCone::~ShapeInfoCone() {
 }
 
-__attribute__((weak)) void nZone::ShapeInfoCone::createProperty(MtPropertyList& s) {
-    DDON_STUB("nZone::ShapeInfoCone::createProperty")
-    /* stub */
+void nZone::ShapeInfoCone::createProperty(MtPropertyList& s) {
+    this->::nZone::ShapeInfoBase::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_F32, "mHeight", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoCone::getHeight), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoCone::setHeight), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mTopRadius", &mTopRadius, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBottomRadius", &mBottomRadius, 0u, 0u);
 }
 
 __attribute__((weak)) bool nZone::ShapeInfoCone::copy(const nZone::ShapeInfoBase& copyShape) {
@@ -1267,9 +1407,12 @@ __attribute__((noinline)) nZone::ShapeInfoCylinder::ShapeInfoCylinder() {
 nZone::ShapeInfoCylinder::~ShapeInfoCylinder() {
 }
 
-__attribute__((weak)) void nZone::ShapeInfoCylinder::createProperty(MtPropertyList& s) {
-    DDON_STUB("nZone::ShapeInfoCylinder::createProperty")
-    /* stub */
+void nZone::ShapeInfoCylinder::createProperty(MtPropertyList& s) {
+    this->::nZone::ShapeInfoBase::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Position0", &mCylinder.p0, 2u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Position1", &mCylinder.p1, 2u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Radius", &mCylinder.r, 2u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mCylinder", &mCylinder, 0u, 0u);
 }
 
 __attribute__((weak)) bool nZone::ShapeInfoCylinder::copy(const nZone::ShapeInfoBase& copyShape) {
@@ -1413,17 +1556,18 @@ inline nZone::ShapeInfoCylinder::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 nZone::ShapeInfoCylinder::MyDTI nZone::ShapeInfoCylinder::DTI("nZone::ShapeInfoCylinder", &::nZone::ShapeInfoBase::DTI, 64ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nZone::ShapeInfoCylinder::MyDTI::newInstance() const {
-    DDON_STUB("nZone::ShapeInfoCylinder::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::nZone::ShapeInfoCylinder;
 }
 
 const MtDTI& nZone::ShapeInfoGlobal::getDTI() const {
     return nZone::ShapeInfoGlobal::DTI;
 }
 
+inline void nZone::ShapeInfoGlobal::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoGlobal::DTI)->memFree(p_addr);
+}
+
 nZone::ShapeInfoGlobal::~ShapeInfoGlobal() {
-    DDON_STUB("nZone::ShapeInfoGlobal::~ShapeInfoGlobal")
-    /* stub */
 }
 
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoGlobal::getShapeType() const {
@@ -1461,9 +1605,8 @@ bool nZone::ShapeInfoGlobal::getClosest(const MtVector3& pos, MtContact& contact
     return true;
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoGlobal::getCenterPos() const {
-    DDON_STUB("nZone::ShapeInfoGlobal::getCenterPos")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoGlobal::getCenterPos() const {
+    return ::MtVector3::Zero;
 }
 
 inline nZone::ShapeInfoGlobal::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1473,6 +1616,161 @@ nZone::ShapeInfoGlobal::MyDTI nZone::ShapeInfoGlobal::DTI("nZone::ShapeInfoGloba
 __attribute__((weak)) MtObject* nZone::ShapeInfoGlobal::MyDTI::newInstance() const {
     DDON_STUB("nZone::ShapeInfoGlobal::MyDTI::newInstance")
     return nullptr;
+}
+
+const MtDTI& nZone::ShapeInfoLine::getDTI() const {
+    return nZone::ShapeInfoLine::DTI;
+}
+
+inline void nZone::ShapeInfoLine::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoLine::DTI)->memFree(p_addr);
+}
+
+nZone::ShapeInfoLine::~ShapeInfoLine() {
+}
+
+void nZone::ShapeInfoLine::createProperty(MtPropertyList& s) {
+    this->::nZone::ShapeInfoBase::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Position0", &mLineSegment.p0, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Position1", &mLineSegment.p1, 0u, 0u);
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoLine::copy(const nZone::ShapeInfoBase& copyShape) {
+    DDON_STUB("nZone::ShapeInfoLine::copy")
+    return {};
+}
+
+__attribute__((weak)) void nZone::ShapeInfoLine::applyWorldOffset(const MtVector3& offset) {
+    DDON_STUB("nZone::ShapeInfoLine::applyWorldOffset")
+    /* stub */
+}
+
+nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoLine::getShapeType() const {
+    return SHAPE_TYPE_LINE;
+}
+
+bool nZone::ShapeInfoLine::isHit(const MtVector3& pos) const {
+    return ::MtCollision::intersect(mLineSegment, pos, 1.1920929e-7f);
+}
+
+bool nZone::ShapeInfoLine::isHitLineSegment(const MtLineSegment& ls) const {
+    return ::MtCollision::intersect(mLineSegment, ls, 1.1920929e-7f);
+}
+
+bool nZone::ShapeInfoLine::isHitConvex(const MtGeomConvex& convex) const {
+    return convex.isIntersect(mLineSegment);
+}
+
+bool nZone::ShapeInfoLine::isIntersectAABB(const MtAABB& aabb) const {
+    return ::MtCollision::intersect(aabb, mLineSegment);
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoLine::getClosest(const MtVector3& pos, MtContact& contact) const {
+    DDON_STUB("nZone::ShapeInfoLine::getClosest")
+    return {};
+}
+
+void nZone::ShapeInfoLine::loadBinary(MtDataReader& r) {
+    f32 t0 = r.readF32();
+    mDecay = t0;
+    u32 t1 = r.mSeekPt;
+    u32 t2 = r.mBufsiz;
+    if (t1 >= t2) {
+        if (r.refill()) {
+            u32 t4 = r.mSeekPt;
+            u8* t5 = r.mBuffer;
+            u8 t6 = t5[r.mSeekPt];
+            r.mSeekPt = t4 + 1u;
+            mIsNativeData = t6 == 1;
+            r.read(static_cast<void*>(&mLineSegment), 32u);
+        } else {
+            mIsNativeData = false;
+            r.read(static_cast<void*>(&mLineSegment), 32u);
+        }
+    } else {
+        u8* t5 = r.mBuffer;
+        u8 t6 = t5[r.mSeekPt];
+        r.mSeekPt = t1 + 1u;
+        mIsNativeData = t6 == 1;
+        r.read(static_cast<void*>(&mLineSegment), 32u);
+    }
+}
+
+void nZone::ShapeInfoLine::saveBinary(MtDataWriter& w) {
+    w.writeF32(mDecay);
+    bool t0 = mIsNativeData;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
+    w.mSeekPt = w.mSeekPt + 1u;
+    w.write(static_cast<const void*>(&mLineSegment), 32u);
+}
+
+bool nZone::ShapeInfoLine::isGetAABB() const {
+    return true;
+}
+
+__attribute__((weak)) MtAABB nZone::ShapeInfoLine::getAABB() const {
+    DDON_STUB("nZone::ShapeInfoLine::getAABB")
+    __builtin_unreachable();
+}
+
+bool nZone::ShapeInfoLine::isGetBoundingSphere() const {
+    return true;
+}
+
+__attribute__((weak)) MtSphere nZone::ShapeInfoLine::getBoundingSphere() const {
+    DDON_STUB("nZone::ShapeInfoLine::getBoundingSphere")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) MtVector3 nZone::ShapeInfoLine::getCenterPos() const {
+    DDON_STUB("nZone::ShapeInfoLine::getCenterPos")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) void nZone::ShapeInfoLine::setCenterPos(const MtVector3& pos) {
+    DDON_STUB("nZone::ShapeInfoLine::setCenterPos")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoLine::movePosition(const MtVector3& AddPos) {
+    DDON_STUB("nZone::ShapeInfoLine::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoLine::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
+    DDON_STUB("nZone::ShapeInfoLine::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoLine::rotation(const MtMatrix& RotateMatrix) {
+    DDON_STUB("nZone::ShapeInfoLine::rotation")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoLine::rotation(nZone::ShapeInfoBase& OutputShape, const MtMatrix& RotateMatrix) const {
+    DDON_STUB("nZone::ShapeInfoLine::rotation")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoLine::mulMatrix(const MtMatrix& MulMatrix) {
+    DDON_STUB("nZone::ShapeInfoLine::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoLine::mulMatrix(nZone::ShapeInfoBase& OutputShape, const MtMatrix& MulMatrix) const {
+    DDON_STUB("nZone::ShapeInfoLine::mulMatrix")
+    /* stub */
+}
+
+inline nZone::ShapeInfoLine::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nZone::ShapeInfoLine::MyDTI nZone::ShapeInfoLine::DTI("nZone::ShapeInfoLine", &::nZone::ShapeInfoBase::DTI, 48ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nZone::ShapeInfoLine::MyDTI::newInstance() const {
+    return new (16u) ::nZone::ShapeInfoLine;
 }
 
 const MtDTI& nZone::ShapeInfoOBB::getDTI() const {
@@ -1505,9 +1803,16 @@ __attribute__((noinline)) nZone::ShapeInfoOBB::ShapeInfoOBB() {
 nZone::ShapeInfoOBB::~ShapeInfoOBB() {
 }
 
-__attribute__((weak)) void nZone::ShapeInfoOBB::createProperty(MtPropertyList& s) {
-    DDON_STUB("nZone::ShapeInfoOBB::createProperty")
-    /* stub */
+void nZone::ShapeInfoOBB::createProperty(MtPropertyList& s) {
+    this->::nZone::ShapeInfoBase::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIsEnableExtendedDecay", &mIsEnableExtendedDecay, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mDecayX", &mDecay, 2u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mDecayY", &mDecayY, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mDecayZ", &mDecayZ, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_F32, "Height", reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoOBB::getHeight), reinterpret_cast<MT_MFUNC>(&::nZone::ShapeInfoOBB::setHeight), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mOBB.extent", &mOBB.extent, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mOBB.coord", &mOBB.coord, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mOBB", &mOBB, 2u, 0u);
 }
 
 __attribute__((weak)) bool nZone::ShapeInfoOBB::copy(const nZone::ShapeInfoBase& copyShape) {
@@ -1687,9 +1992,13 @@ __attribute__((weak)) MtSphere nZone::ShapeInfoOBB::getBoundingSphere() const {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoOBB::getCenterPos() const {
-    DDON_STUB("nZone::ShapeInfoOBB::getCenterPos")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoOBB::getCenterPos() const {
+    MtVector3 result;
+    result.x = mOBB.coord.m[3].x;
+    result.y = mOBB.coord.m[3].y;
+    result.z = mOBB.coord.m[3].z;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoOBB::setCenterPos(const MtVector3& pos) {
@@ -1744,8 +2053,7 @@ inline nZone::ShapeInfoOBB::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t 
 nZone::ShapeInfoOBB::MyDTI nZone::ShapeInfoOBB::DTI("nZone::ShapeInfoOBB", &::nZone::ShapeInfoBase::DTI, 112ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nZone::ShapeInfoOBB::MyDTI::newInstance() const {
-    DDON_STUB("nZone::ShapeInfoOBB::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::nZone::ShapeInfoOBB;
 }
 
 const MtDTI& nZone::ShapeInfoPanel::getDTI() const {
@@ -1756,19 +2064,25 @@ void* nZone::ShapeInfoPanel::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoPanel::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoPanel::DTI.mID);
 }
 
+inline void nZone::ShapeInfoPanel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoPanel::DTI)->memFree(p_addr);
+}
+
 nZone::ShapeInfoPanel::ShapeInfoPanel() {
-    DDON_STUB("nZone::ShapeInfoPanel::ShapeInfoPanel")
-    /* stub */
+    mVertex[0] = MtVector3(50.0f, 0.0f, 50.0f);
+    mVertex[1] = MtVector3(50.0f, 0.0f, -50.0f);
+    mVertex[2] = MtVector3(-50.0f, 0.0f, -50.0f);
+    mVertex[3] = MtVector3(-50.0f, 0.0f, 50.0f);
 }
 
 nZone::ShapeInfoPanel::~ShapeInfoPanel() {
-    DDON_STUB("nZone::ShapeInfoPanel::~ShapeInfoPanel")
-    /* stub */
 }
 
-__attribute__((weak)) void nZone::ShapeInfoPanel::createProperty(MtPropertyList& s) {
-    DDON_STUB("nZone::ShapeInfoPanel::createProperty")
-    /* stub */
+void nZone::ShapeInfoPanel::createProperty(MtPropertyList& s) {
+    this->::nZone::ShapeInfoBase::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Direction reversal", static_cast<MT_MFUNC>(&::nZone::ShapeInfoPanel::reversePanelDirection), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mVertex", &mVertex[0], 32u, 4u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Shift Diagonal", static_cast<MT_MFUNC>(&::nZone::ShapeInfoPanel::shiftDiagonal), 10u);
 }
 
 __attribute__((weak)) bool nZone::ShapeInfoPanel::copy(const nZone::ShapeInfoBase& copyShape) {
@@ -1961,6 +2275,143 @@ __attribute__((weak)) MtObject* nZone::ShapeInfoPanel::MyDTI::newInstance() cons
     return nullptr;
 }
 
+const MtDTI& nZone::ShapeInfoPoint::getDTI() const {
+    return nZone::ShapeInfoPoint::DTI;
+}
+
+inline void nZone::ShapeInfoPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoPoint::DTI)->memFree(p_addr);
+}
+
+nZone::ShapeInfoPoint::~ShapeInfoPoint() {
+}
+
+void nZone::ShapeInfoPoint::createProperty(MtPropertyList& s) {
+    this->::nZone::ShapeInfoBase::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoPoint::copy(const nZone::ShapeInfoBase& copyShape) {
+    DDON_STUB("nZone::ShapeInfoPoint::copy")
+    return {};
+}
+
+__attribute__((weak)) void nZone::ShapeInfoPoint::applyWorldOffset(const MtVector3& offset) {
+    DDON_STUB("nZone::ShapeInfoPoint::applyWorldOffset")
+    /* stub */
+}
+
+nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoPoint::getShapeType() const {
+    return SHAPE_TYPE_POINT;
+}
+
+bool nZone::ShapeInfoPoint::isHit(const MtVector3& pos) const {
+    return 1.1920929e-7f > ((((mPos.x - pos.x) * (mPos.x - pos.x)) + ((mPos.y - pos.y) * (mPos.y - pos.y))) + ((mPos.z - pos.z) * (mPos.z - pos.z)));
+}
+
+bool nZone::ShapeInfoPoint::isHitLineSegment(const MtLineSegment& ls) const {
+    return ::MtCollision::intersect(ls, mPos, 1.1920929e-7f);
+}
+
+bool nZone::ShapeInfoPoint::isHitConvex(const MtGeomConvex& convex) const {
+    return convex.isIntersect(mPos);
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoPoint::isIntersectAABB(const MtAABB& aabb) const {
+    DDON_STUB("nZone::ShapeInfoPoint::isIntersectAABB")
+    return {};
+}
+
+__attribute__((weak)) bool nZone::ShapeInfoPoint::getClosest(const MtVector3& pos, MtContact& contact) const {
+    DDON_STUB("nZone::ShapeInfoPoint::getClosest")
+    return {};
+}
+
+void nZone::ShapeInfoPoint::loadBinary(MtDataReader& r) {
+    f32 t0 = r.readF32();
+    mDecay = t0;
+    u32 t1 = r.mSeekPt;
+    u32 t2 = r.mBufsiz;
+    if (t1 >= t2) {
+        if (r.refill()) {
+            u32 t4 = r.mSeekPt;
+            u8* t5 = r.mBuffer;
+            u8 t6 = t5[r.mSeekPt];
+            r.mSeekPt = t4 + 1u;
+            mIsNativeData = t6 == 1;
+            r.read(static_cast<void*>(&mPos), 16u);
+        } else {
+            mIsNativeData = false;
+            r.read(static_cast<void*>(&mPos), 16u);
+        }
+    } else {
+        u8* t5 = r.mBuffer;
+        u8 t6 = t5[r.mSeekPt];
+        r.mSeekPt = t1 + 1u;
+        mIsNativeData = t6 == 1;
+        r.read(static_cast<void*>(&mPos), 16u);
+    }
+}
+
+void nZone::ShapeInfoPoint::saveBinary(MtDataWriter& w) {
+    w.writeF32(mDecay);
+    bool t0 = mIsNativeData;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
+    w.mSeekPt = w.mSeekPt + 1u;
+    w.write(static_cast<const void*>(&mPos), 16u);
+}
+
+bool nZone::ShapeInfoPoint::isGetAABB() const {
+    return true;
+}
+
+__attribute__((weak)) MtAABB nZone::ShapeInfoPoint::getAABB() const {
+    DDON_STUB("nZone::ShapeInfoPoint::getAABB")
+    __builtin_unreachable();
+}
+
+MtVector3 nZone::ShapeInfoPoint::getCenterPos() const {
+    return mPos;
+}
+
+void nZone::ShapeInfoPoint::setCenterPos(const MtVector3& pos) {
+    mPos.x = pos.x;
+    mPos.y = pos.y;
+    mPos.z = pos.z;
+    mPos.pad_ = 0.0f;
+}
+
+__attribute__((weak)) void nZone::ShapeInfoPoint::movePosition(const MtVector3& AddPos) {
+    DDON_STUB("nZone::ShapeInfoPoint::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoPoint::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
+    DDON_STUB("nZone::ShapeInfoPoint::movePosition")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoPoint::mulMatrix(const MtMatrix& MulMatrix) {
+    DDON_STUB("nZone::ShapeInfoPoint::mulMatrix")
+    /* stub */
+}
+
+__attribute__((weak)) void nZone::ShapeInfoPoint::mulMatrix(nZone::ShapeInfoBase& OutputShape, const MtMatrix& MulMatrix) const {
+    DDON_STUB("nZone::ShapeInfoPoint::mulMatrix")
+    /* stub */
+}
+
+inline nZone::ShapeInfoPoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nZone::ShapeInfoPoint::MyDTI nZone::ShapeInfoPoint::DTI("nZone::ShapeInfoPoint", &::nZone::ShapeInfoBase::DTI, 32ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nZone::ShapeInfoPoint::MyDTI::newInstance() const {
+    return new (16u) ::nZone::ShapeInfoPoint;
+}
+
 const MtDTI& nZone::ShapeInfoSphere::getDTI() const {
     return nZone::ShapeInfoSphere::DTI;
 }
@@ -1985,9 +2436,9 @@ nZone::ShapeInfoSphere::ShapeInfoSphere() {
 nZone::ShapeInfoSphere::~ShapeInfoSphere() {
 }
 
-__attribute__((weak)) void nZone::ShapeInfoSphere::createProperty(MtPropertyList& s) {
-    DDON_STUB("nZone::ShapeInfoSphere::createProperty")
-    /* stub */
+void nZone::ShapeInfoSphere::createProperty(MtPropertyList& s) {
+    this->::nZone::ShapeInfoBase::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mSphere", &mSphere, 0u, 0u);
 }
 
 __attribute__((weak)) bool nZone::ShapeInfoSphere::copy(const nZone::ShapeInfoBase& copyShape) {
@@ -2082,9 +2533,13 @@ __attribute__((weak)) MtSphere nZone::ShapeInfoSphere::getBoundingSphere() const
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoSphere::getCenterPos() const {
-    DDON_STUB("nZone::ShapeInfoSphere::getCenterPos")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoSphere::getCenterPos() const {
+    MtVector3 result;
+    result.x = mSphere.pos.x;
+    result.y = mSphere.pos.y;
+    result.z = mSphere.pos.z;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void nZone::ShapeInfoSphere::setCenterPos(const MtVector3& pos) {
@@ -2123,8 +2578,7 @@ inline nZone::ShapeInfoSphere::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 nZone::ShapeInfoSphere::MyDTI nZone::ShapeInfoSphere::DTI("nZone::ShapeInfoSphere", &::nZone::ShapeInfoBase::DTI, 32ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nZone::ShapeInfoSphere::MyDTI::newInstance() const {
-    DDON_STUB("nZone::ShapeInfoSphere::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::nZone::ShapeInfoSphere;
 }
 
 inline nZone::cAllocaterIntermediate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2156,9 +2610,9 @@ __attribute__((noinline)) nZone::cContentsPool::~cContentsPool() {
     clearContents();
 }
 
-__attribute__((weak)) void nZone::cContentsPool::createProperty(MtPropertyList& s) {
-    DDON_STUB("nZone::cContentsPool::createProperty")
-    /* stub */
+void nZone::cContentsPool::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mContentsListArray", static_cast<MtObject*>(&mContentsListArray), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mFlgNativeData", &mFlgNativeData, 0u, 0u);
 }
 
 __attribute__((weak)) const nZone::cContentsPool& nZone::cContentsPool::operator=(const nZone::cContentsPool& src) {
@@ -2167,8 +2621,19 @@ __attribute__((weak)) const nZone::cContentsPool& nZone::cContentsPool::operator
 }
 
 __attribute__((weak)) bool nZone::cContentsPool::loadBeforeAllocateAlign4(nCollisionUtil::LoadBuffer& buffer, u32 ContentsListNum) {
-    DDON_STUB("nZone::cContentsPool::loadBeforeAllocateAlign4")
-    return {};
+    clearContents();
+    mContentsListArray.reserve(ContentsListNum);
+    for (u32 i = 0; i < ContentsListNum; i++) {
+        nZone::cContentsPool::cContentsList* pNewContentsList = new (static_cast<void*>(buffer.pBuffer + buffer.Position)) nZone::cContentsPool::cContentsList(-1);
+        buffer.Position += sizeof(nZone::cContentsPool::cContentsList);
+        if (pNewContentsList == nullptr) {
+            mContentsListArray.clear(true);
+            return false;
+        }
+        mContentsListArray.add(pNewContentsList);
+    }
+    mFlgNativeData = true;
+    return true;
 }
 
 bool nZone::cContentsPool::load(MtDataReader& r) {
@@ -2177,8 +2642,12 @@ bool nZone::cContentsPool::load(MtDataReader& r) {
 }
 
 __attribute__((weak)) bool nZone::cContentsPool::save(MtDataWriter& w) {
-    DDON_STUB("nZone::cContentsPool::save")
-    return {};
+    ::MtSerializer sz(65536);
+    const bool FlgAutoDelete = mContentsListArray.mAutoDelete;
+    mContentsListArray.mAutoDelete = false;
+    const bool ret = sz.serializeBinary(w, static_cast<u16>(0), &mContentsListArray, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+    mContentsListArray.mAutoDelete = FlgAutoDelete;
+    return ret;
 }
 
 void nZone::cContentsPool::clearContents() {
@@ -2248,13 +2717,14 @@ inline void nZone::cContentsPool::cContentsList::operator delete(void* p_addr) {
 }
 
 nZone::cContentsPool::cContentsList::~cContentsList() {
-    DDON_STUB("nZone::cContentsPool::cContentsList::~cContentsList")
-    /* stub */
+    mZoneContentsArray.deleteAll(true);
 }
 
-__attribute__((weak)) void nZone::cContentsPool::cContentsList::createProperty(MtPropertyList& s) {
-    DDON_STUB("nZone::cContentsPool::cContentsList::createProperty")
-    /* stub */
+void nZone::cContentsPool::cContentsList::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mZoneContentsArray", static_cast<MtObject*>(&mZoneContentsArray), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mGroupID", &mGroupID, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, "ZoneContentsNum", reinterpret_cast<MT_MFUNC>(&::nZone::cContentsPool::cContentsList::getZoneContentsNum), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mFlgNativeData", &mFlgNativeData, 1u, 0u);
 }
 
 static auto ddon_emit_0x01b88de0 __attribute__((used)) = &nZone::cContentsPool::cContentsList::getZoneContentsNum;
@@ -2264,8 +2734,7 @@ inline nZone::cContentsPool::cContentsList::MyDTI::MyDTI(MT_CTSTR class_name, Mt
 nZone::cContentsPool::cContentsList::MyDTI nZone::cContentsPool::cContentsList::DTI("nZone::cContentsPool::cContentsList", &::MtObject::DTI, 128ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nZone::cContentsPool::cContentsList::MyDTI::newInstance() const {
-    DDON_STUB("nZone::cContentsPool::cContentsList::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) ::nZone::cContentsPool::cContentsList(-1);
 }
 
 const MtDTI& nZone::cLayoutElement::getDTI() const {
@@ -2285,18 +2754,49 @@ void nZone::cLayoutElement::operator delete[](void* p_addr) {
 }
 
 nZone::cLayoutElement::cLayoutElement() {
-    DDON_STUB("nZone::cLayoutElement::cLayoutElement")
-    /* stub */
+    mpOwner = nullptr;
+    mpShapeInfo = nullptr;
+    mPriority = 512;
+    mContentsPoolID = -1;
+    mContentsPoolGroupID = -1;
+    mpContentsPool = nullptr;
+    mIsEnable = true;
+    mIsDynamic = false;
+    mIndex = 0;
+    mLayoutGroupIndex = 0;
+    mIndexOfLayoutGroup = 0;
+    mpExtendObj = nullptr;
+    mUniqueID = 4294967295;
+    mGroupID = -1;
+    mFlgShallowCopyShape = false;
+    mpDynamicBVHNode = nullptr;
 }
 
 nZone::cLayoutElement::~cLayoutElement() {
-    DDON_STUB("nZone::cLayoutElement::~cLayoutElement")
-    /* stub */
+    deleteShape();
+    if (mpExtendObj != nullptr) {
+        delete mpExtendObj;
+        mpExtendObj = nullptr;
+    }
 }
 
-__attribute__((weak)) void nZone::cLayoutElement::createProperty(MtPropertyList& s) {
-    DDON_STUB("nZone::cLayoutElement::createProperty")
-    /* stub */
+void nZone::cLayoutElement::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpOwner", reinterpret_cast<MtObject* *>(&mpOwner), 2u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpContentsPool", reinterpret_cast<MtObject* *>(&mpContentsPool), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_S32, "mContentsPoolID", reinterpret_cast<MT_MFUNC>(&::nZone::cLayoutElement::getContentsPoolID), reinterpret_cast<MT_MFUNC>(&::nZone::cLayoutElement::setContentsPoolID), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 3u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mLayoutGroupIndex", &mLayoutGroupIndex, 3u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIndexOfLayoutGroup", &mIndexOfLayoutGroup, 3u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mUniqueID", &mUniqueID, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mGroupID", &mGroupID, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_S32, ::nZone::cLayoutElement::PROP_TITLE_CONTENTS_GROUP_ID, reinterpret_cast<MT_MFUNC>(&::nZone::cLayoutElement::getContentsPoolGroupIDForUI), reinterpret_cast<MT_MFUNC>(&::nZone::cLayoutElement::setContentsPoolGroupIDForUI), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_S32, ::nZone::cLayoutElement::PROP_TITLE_CONTENTS_GROUP_ID_DIRECT, reinterpret_cast<MT_MFUNC>(&::nZone::cLayoutElement::getContentsPoolGroupIDForUI), reinterpret_cast<MT_MFUNC>(&::nZone::cLayoutElement::setContentsPoolGroupIDForUI), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIsEnable", &mIsEnable, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIsDynamic", &mIsDynamic, 3u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpExtendObj", &mpExtendObj, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_U32, ::nZone::cLayoutElement::PROP_TITLE_SHAPE_TYPE, reinterpret_cast<MT_MFUNC>(&::nZone::cLayoutElement::getShapeTypeInterface), reinterpret_cast<MT_MFUNC>(&::nZone::cLayoutElement::setShapeTypeInterface), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_CLASSREF, "mpShapeInfo", reinterpret_cast<MT_MFUNC>(&::nZone::cLayoutElement::getShapeInfo), reinterpret_cast<MT_MFUNC>(&::nZone::cLayoutElement::setShapeInfo), 132u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << ::MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
 }
 
 void nZone::cLayoutElement::copy(nZone::cLayoutElement* pE) {
@@ -2348,109 +2848,106 @@ __attribute__((weak)) void nZone::cLayoutElement::copyFromSystem(cZoneLayout* pO
 }
 
 __attribute__((weak)) bool nZone::cLayoutElement::loadBeforeAllocateAlign16(nCollisionUtil::LoadBuffer& buffer, u32 ShapeType) {
-    DDON_STUB("nZone::cLayoutElement::loadBeforeAllocateAlign16")
-    return {};
+    deleteShape();
+    bool FlgAllocate = true;
+    switch (ShapeType) {
+    case nZone::ShapeInfoBase::SHAPE_TYPE_NONE:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoBase>(1);
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_AREA:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoArea>(1);
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_AABB:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoAABB>(1);
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_OBB:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoOBB>(1);
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_SPHERE:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoSphere>(1);
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_CAPSULE:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoCapsule>(1);
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_CYLINDER:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoCylinder>(1);
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_POINT:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoPoint>(1);
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_LINE:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoLine>(1);
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_PANEL:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoPanel>(1);
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_CONE:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoCone>(1);
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_GLOBAL:
+        mpShapeInfo = buffer.allocateNewBy<nZone::ShapeInfoGlobal>(1);
+        break;
+    default:
+        FlgAllocate = false;
+        break;
+    }
+    if (FlgAllocate && mpShapeInfo == nullptr) {
+        return false;
+    }
+    mFlgShallowCopyShape = true;
+    return true;
 }
 
 __attribute__((weak)) bool nZone::cLayoutElement::loadBinary(MtDataReader& r) {
-    DDON_STUB("nZone::cLayoutElement::loadBinary")
-    return {};
-}
-
-bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
-    w.writeS32(mPriority);
+    mPriority = r.readS32();
     if (mpShapeInfo != nullptr) {
-        mpShapeInfo->saveBinary(w);
-        w.writeS32(mContentsPoolID);
-        w.writeS32(mContentsPoolGroupID);
-        bool t0 = mIsEnable;
-        if (w.mSeekPt >= w.mBufsiz) {
-            w.flush();
+        mpShapeInfo->loadBinary(r);
+    }
+    mContentsPoolID = r.readS32();
+    mContentsPoolGroupID = r.readS32();
+    mIsEnable = r.readU8() == 1;
+    mIndex = r.readU32();
+    mLayoutGroupIndex = r.readU32();
+    mIndexOfLayoutGroup = r.readU32();
+    mUniqueID = r.readU32();
+    mGroupID = r.readS32();
+    const u8 EnableExtend = r.readU8();
+    if (EnableExtend == 1) {
+        ::MtSerializer sz(65536);
+        mpExtendObj = sz.deserializeBinary(r, static_cast<u16>(0), nullptr, ::MtSerializer::MODE_STATE);
+        if (mpExtendObj == nullptr) {
+            return false;
         }
-        w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
-        w.mSeekPt = w.mSeekPt + 1u;
-        w.writeU32(mIndex);
-        w.writeU32(mLayoutGroupIndex);
-        w.writeU32(mIndexOfLayoutGroup);
-        w.writeU32(mUniqueID);
-        w.writeS32(mGroupID);
-        if (mpExtendObj != nullptr) {
-            if (w.mSeekPt >= w.mBufsiz) {
-                w.flush();
-                w.mBuffer[w.mSeekPt] = 1;
-                w.mSeekPt = w.mSeekPt + 1u;
-                MtSerializer sz(65536);
-                bool t1 = sz.serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
-                if (!t1) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                w.mBuffer[w.mSeekPt] = 1;
-                w.mSeekPt = w.mSeekPt + 1u;
-                MtSerializer sz(65536);
-                bool t1 = sz.serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
-                if (!t1) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        } else {
-            if (w.mSeekPt >= w.mBufsiz) {
-                w.flush();
-            }
-            w.mBuffer[w.mSeekPt] = 0;
-            w.mSeekPt = w.mSeekPt + 1u;
-            return true;
-        }
-    } else {
-        w.writeS32(mContentsPoolID);
-        w.writeS32(mContentsPoolGroupID);
-        bool t0 = mIsEnable;
-        if (w.mSeekPt >= w.mBufsiz) {
-            w.flush();
-        }
-        w.mBuffer[w.mSeekPt] = static_cast<u8>(t0);
-        w.mSeekPt = w.mSeekPt + 1u;
-        w.writeU32(mIndex);
-        w.writeU32(mLayoutGroupIndex);
-        w.writeU32(mIndexOfLayoutGroup);
-        w.writeU32(mUniqueID);
-        w.writeS32(mGroupID);
-        if (mpExtendObj != nullptr) {
-            if (w.mSeekPt >= w.mBufsiz) {
-                w.flush();
-                w.mBuffer[w.mSeekPt] = 1;
-                w.mSeekPt = w.mSeekPt + 1u;
-                MtSerializer sz(65536);
-                bool t1 = sz.serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
-                if (!t1) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                w.mBuffer[w.mSeekPt] = 1;
-                w.mSeekPt = w.mSeekPt + 1u;
-                MtSerializer sz(65536);
-                bool t1 = sz.serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
-                if (!t1) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        } else {
-            if (w.mSeekPt >= w.mBufsiz) {
-                w.flush();
-            }
-            w.mBuffer[w.mSeekPt] = 0;
-            w.mSeekPt = w.mSeekPt + 1u;
-            return true;
+        if (mpExtendObj->isKindOf(::cZoneExtendObject::DTI)) {
+            static_cast< ::cZoneExtendObject*>(mpExtendObj)->registerOwner(this);
         }
     }
+    return true;
+}
+
+__attribute__((weak)) bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
+        w.writeS32(mPriority);
+        if (mpShapeInfo != nullptr) {
+            mpShapeInfo->saveBinary(w);
+        }
+        w.writeS32(mContentsPoolID);
+        w.writeS32(mContentsPoolGroupID);
+        w.writeU8(mIsEnable);
+        w.writeU32(mIndex);
+        w.writeU32(mLayoutGroupIndex);
+        w.writeU32(mIndexOfLayoutGroup);
+        w.writeU32(mUniqueID);
+        w.writeS32(mGroupID);
+        if (mpExtendObj != nullptr) {
+            w.writeU8(1);
+            MtSerializer sz(65536);
+            if (!sz.serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr))) {
+                return false;
+            }
+        } else {
+            w.writeU8(0);
+        }
+        return true;
 }
 
 static auto ddon_emit_0x01b88e60 __attribute__((used)) = &nZone::cLayoutElement::getShapeInfo;

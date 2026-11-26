@@ -219,6 +219,8 @@ inline void* CDataAchievementFurnitureReward::operator new(size_t sz, void* p_ad
 inline CDataAchievementFurnitureReward::CDataAchievementFurnitureReward() {
     this->m_unRewardId = 0;
     this->m_unSortId = 0;
+    this->m_bIsRecieved = false;
+    this->m_unFurnitureItemId = 0;
 }
 
 inline void* CDataAchievementIdentifier::operator new(size_t sz, void* p_addr) {
@@ -235,6 +237,9 @@ inline void* CDataAchievementProgress::operator new(size_t sz, void* p_addr) {
 }
 
 inline CDataAchievementProgress::CDataAchievementProgress() {
+    this->m_llCompleteDate = 0;
+    this->m_unCurrentNum = 0;
+    this->m_unSeqence = 0;
 }
 
 inline void* CDataAchievementRewardProgress::operator new(size_t sz, void* p_addr) {

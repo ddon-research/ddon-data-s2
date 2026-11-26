@@ -13,6 +13,8 @@ class MtDTI;
 class MtObject;
 class cAction;
 class cHumanActBase;
+class cNetGameServer;
+class cPlActWpnBow;
 class cpOmBase;
 namespace nSessionManager { class cNetSessionManager; }
 class uCharacter;
@@ -36,6 +38,8 @@ class cpActionRequest : public cpComponent
 {
     friend class cAction;
     friend class cHumanActBase;
+    friend class cNetGameServer;
+    friend class cPlActWpnBow;
     friend class cpOmBase;
     friend class nSessionManager::cNetSessionManager;
     friend class uCharacter;

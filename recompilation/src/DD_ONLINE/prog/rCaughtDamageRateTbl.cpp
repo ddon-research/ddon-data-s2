@@ -25,9 +25,8 @@ inline void cCaughtDamageRate::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCaughtDamageRate::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cCaughtDamageRate::createProperty(MtPropertyList& proplist) {
-    DDON_STUB("cCaughtDamageRate::createProperty")
-    /* stub */
+void cCaughtDamageRate::createProperty(MtPropertyList& proplist) {
+    proplist << MtProperty(static_cast<MtObject*>(this), "mDamageRate", &mDamageRate, 0u, 0u);
 }
 
 inline cCaughtDamageRate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

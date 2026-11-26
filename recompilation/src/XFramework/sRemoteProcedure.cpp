@@ -7,6 +7,7 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtStlAllocator.h"
 #include "../MT/MtStlCustom.h"
@@ -69,9 +70,8 @@ void sRemoteProcedure::reset() {
     init();
 }
 
-__attribute__((weak)) void sRemoteProcedure::createPropertyProcedures(MtPropertyList& s) {
-    DDON_STUB("sRemoteProcedure::createPropertyProcedures")
-    /* stub */
+void sRemoteProcedure::createPropertyProcedures(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "cRemoteProcedure", reinterpret_cast<MT_MFUNC>(&::sRemoteProcedure::getElement), reinterpret_cast<MT_MFUNC>(&::sRemoteProcedure::setElement), 160u, reinterpret_cast<MT_MFUNC>(&::sRemoteProcedure::getElementNum), reinterpret_cast<MT_MFUNC>(&::sRemoteProcedure::setElementNum));
 }
 
 __attribute__((weak)) void sRemoteProcedure::createPropertyTrace(MtPropertyList& s) {

@@ -206,7 +206,7 @@ public:
     f32 r;  // offset: 0x20
 };
 
-class MtCone
+class alignas(16) MtCone
 {
 public:
     MtCone();
@@ -538,7 +538,7 @@ public:
     MtVector3 dir;  // offset: 0x10
 };
 
-class MtRayY
+class alignas(8) MtRayY
 {
 public:
     MtRayY();
@@ -572,7 +572,7 @@ public:
     f32 dir;  // offset: 0xc
 };
 
-class MtRect3D
+class alignas(16) MtRect3D
 {
 public:
     void initialize(const MtVector3& _normal, const MtVector3& _center, const MtVector2& _size);
@@ -725,7 +725,7 @@ public:
     f32 r;  // offset: 0xc
 };
 
-class MtTorus
+class alignas(16) MtTorus
 {
 public:
     MtTorus();
@@ -849,6 +849,82 @@ protected:
     bool infinite;  // offset: 0x60
 };
 
+inline MtCapsule& MtCapsule::operator=(const MtCapsule& capsule) {
+    this->p0 = capsule.p0;
+    this->p1 = capsule.p1;
+    this->r = capsule.r;
+    return *this;
+}
+
+inline MtOBB& MtOBB::operator=(const MtOBB& obb) {
+    this->extent = obb.extent;
+    this->coord = obb.coord;
+    return *this;
+}
+
+inline MtRay& MtRay::operator=(const MtRay& ray) {
+    this->from = ray.from;
+    this->dir = ray.dir;
+    return *this;
+}
+
+inline MtRay::MtRay(const MtRay& r) {
+    this->from = r.from;
+    this->dir = r.dir;
+}
+
+inline MtRayY& MtRayY::operator=(const MtRayY& ray) {
+    this->from = ray.from;
+    this->dir = ray.dir;
+    return *this;
+}
+
+inline MtRayY::MtRayY(const MtRayY& r) {
+    this->from = r.from;
+    this->dir = r.dir;
+}
+
+inline MtLine& MtLine::operator=(const MtLine& _line) {
+    this->from = _line.from;
+    this->dir = _line.dir;
+    return *this;
+}
+
+inline MtLine::MtLine(const MtLine& l) {
+    this->from = l.from;
+    this->dir = l.dir;
+}
+
+inline MtLineSegment& MtLineSegment::operator=(const MtLineSegment& _ls) {
+    this->p0 = _ls.p0;
+    this->p1 = _ls.p1;
+    return *this;
+}
+
+inline MtLineSegment::MtLineSegment(const MtLineSegment& ls) {
+    this->p0 = ls.p0;
+    this->p1 = ls.p1;
+}
+
+inline const MtPlane& MtPlane::operator=(const MtPlane& plane) {
+    this->normal = plane.normal;
+    this->dist = plane.dist;
+    return *this;
+}
+
+inline MtTriangle& MtTriangle::operator=(const MtTriangle& tri) {
+    this->p0 = tri.p0;
+    this->p1 = tri.p1;
+    this->p2 = tri.p2;
+    return *this;
+}
+
+inline MtCylinder::MtCylinder(const MtCylinder& c) {
+    this->p0 = c.p0;
+    this->p1 = c.p1;
+    this->r = c.r;
+}
+
 inline MtAABB::MtAABB() {
 }
 
@@ -885,6 +961,13 @@ inline MtFrustum::MtFrustum() {
 inline MtLineSegment::MtLineSegment() {
 }
 
+inline MtLineSegment::MtLineSegment(const MtVector3& start, const MtVector3& end)
+    : p0(start), p1(end) {}
+
+inline MtVector3 MtLineSegment::getPos(const f32 t) const {
+    return p0 + (p1 - p0).normalizeFast() * t;
+}
+
 inline MtLineSegment4::MtLineSegment4() {
 }
 
@@ -908,3 +991,6 @@ inline MtTorus::MtTorus() {
 
 inline MtTriangle::MtTriangle() {
 }
+
+inline MtTriangle::MtTriangle(const MtVector3& ip0, const MtVector3& ip1, const MtVector3& ip2)
+    : p0(ip0), p1(ip1), p2(ip2) {}

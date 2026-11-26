@@ -27,6 +27,7 @@ namespace nCharacterData { struct stCharacterName; }
 namespace nMenu { struct MENU_PARTS; }
 namespace nNet { struct stClanEmblem; }
 class uGUIBase;
+class uGUIClanScoutEntry;
 class uGUIPopFilter;
 
 // Declarations
@@ -330,7 +331,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCancelClanScoutEntry();
-    virtual ~cMenuCancelClanScoutEntry();
+    virtual ~cMenuCancelClanScoutEntry() {}
     void initCancelClanScoutEntry();
     nMenu::MENU_RET moveCancelClanScoutEntry();
     virtual void exitMenu();  // vtable slot 15
@@ -375,7 +376,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuCancelInviteClan();
-    virtual ~cMenuCancelInviteClan();
+    virtual ~cMenuCancelInviteClan() {}
     void initCancelInviteClan(u32 inviteId);
     nMenu::MENU_RET moveCancelInviteClan();
     virtual void exitMenu();  // vtable slot 15
@@ -426,7 +427,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanApplyList();
-    virtual ~cMenuClanApplyList();
+    virtual ~cMenuClanApplyList() {}
     void initClanApplyList(uGUIBase* pRefGUI);
     nMenu::MENU_RET moveClanApplyList();
 public:
@@ -502,7 +503,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanApplyManager();
-    virtual ~cMenuClanApplyManager();
+    virtual ~cMenuClanApplyManager() {}
     void initClanApplyManager(s32 initTab, MODE mode);
     nMenu::MENU_RET moveClanApplyManager();
     virtual void exitMenu();  // vtable slot 15
@@ -764,7 +765,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanDirectInvitedList();
-    virtual ~cMenuClanDirectInvitedList();
+    virtual ~cMenuClanDirectInvitedList() {}
     void initClanDirectInvitedList(uGUIBase* pRefGUI);
     nMenu::MENU_RET moveClanDirectInvitedList();
 public:
@@ -862,7 +863,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanHistory();
-    virtual ~cMenuClanHistory();
+    virtual ~cMenuClanHistory() {}
     virtual void exitMenu();  // vtable slot 15
     void initClanHistory(uGUIBase* refGUI);
     nMenu::MENU_RET moveClanHistory();
@@ -914,7 +915,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanInfoDisp();
-    virtual ~cMenuClanInfoDisp();
+    virtual ~cMenuClanInfoDisp() {}
     void initClanInfoDisp(CClanParam& dstParam, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveClanInfoDisp();
     CClanParam* getClanParam();
@@ -990,7 +991,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanInfoManager();
-    virtual ~cMenuClanInfoManager();
+    virtual ~cMenuClanInfoManager() {}
     void initClanInfoManager(CClanParam& clanParam, s32 initTab, MODE mode, u32 prio);
     nMenu::MENU_RET moveClanInfoManager();
     virtual void exitMenu();  // vtable slot 15
@@ -1043,7 +1044,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanInviteList();
-    virtual ~cMenuClanInviteList();
+    virtual ~cMenuClanInviteList() {}
     void initClanInviteList(uGUIBase* pRefGUI);
     nMenu::MENU_RET moveClanInviteList();
     virtual void exitMenu();  // vtable slot 15
@@ -1094,7 +1095,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanInvitedList();
-    virtual ~cMenuClanInvitedList();
+    virtual ~cMenuClanInvitedList() {}
     void initClanInvitedList(uGUIBase* pRefGUI);
     nMenu::MENU_RET moveClanInvitedList();
 public:
@@ -1144,7 +1145,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanJoinReqList();
-    virtual ~cMenuClanJoinReqList();
+    virtual ~cMenuClanJoinReqList() {}
     void initClanJoinReqList(u32 clanId, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveClanJoinReqList();
 private:
@@ -1205,7 +1206,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanList();
-    virtual ~cMenuClanList();
+    virtual ~cMenuClanList() {}
     void initClanList();
     nMenu::MENU_RET moveClanList();
     virtual void exitMenu();  // vtable slot 15
@@ -1268,7 +1269,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanMemberList();
-    virtual ~cMenuClanMemberList();
+    virtual ~cMenuClanMemberList() {}
     virtual void exitMenu();  // vtable slot 15
     void initClanMemberList(u32 clanId, u32 type, nCharacterData::stCharacterName* pDstName, u32* pCharacterId, CommunityCharacterBaseInfoVec* pExcludeList);
     nMenu::MENU_RET moveClanMemberList();
@@ -1292,6 +1293,7 @@ public:
 
 class cMenuClanScoutEntry : public cMenuBase
 {
+    friend class uGUIClanScoutEntry;
 public:
     enum
     {
@@ -1404,7 +1406,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuClanScoutEntryList();
-    virtual ~cMenuClanScoutEntryList();
+    virtual ~cMenuClanScoutEntryList() {}
     void initClanScoutEntryList();
     nMenu::MENU_RET moveClanScoutEntryList();
     virtual void exitMenu();  // vtable slot 15
@@ -1652,7 +1654,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuEditClanComment();
-    virtual ~cMenuEditClanComment();
+    virtual ~cMenuEditClanComment() {}
     void initEditClanComment(MtString& dstComment, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveEditClanComment();
 private:
@@ -1705,7 +1707,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuEditClanDay();
-    virtual ~cMenuEditClanDay();
+    virtual ~cMenuEditClanDay() {}
     void initEditClanDay(u32* pDay, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveEditClanDay();
     u32 getClanDayIndex(u32 cursor);
@@ -1765,7 +1767,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuEditClanEmblem();
-    virtual ~cMenuEditClanEmblem();
+    virtual ~cMenuEditClanEmblem() {}
     void initEditClanEmblem(nNet::stClanEmblem* pEmblem, uGUIBase* pParentGUI);
     nMenu::MENU_RET moveEditClanEmblem();
     virtual void exitMenu();  // vtable slot 15
@@ -1822,7 +1824,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuEditClanEntryComment();
-    virtual ~cMenuEditClanEntryComment();
+    virtual ~cMenuEditClanEntryComment() {}
     void initEditClanEntryComment(MtString& dstComment, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveEditClanEntryComment();
 private:
@@ -1875,7 +1877,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuEditClanFeature();
-    virtual ~cMenuEditClanFeature();
+    virtual ~cMenuEditClanFeature() {}
     void initEditClanFeature(u32* pFeature, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveEditClanFeature();
     u32 getClanFeatureIndex(u32 cursor);
@@ -1930,7 +1932,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuEditClanHour();
-    virtual ~cMenuEditClanHour();
+    virtual ~cMenuEditClanHour() {}
     void initEditClanHour(u32* pHour, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveEditClanHour();
     u32 getClanHourIndex(u32 cursor);
@@ -1987,7 +1989,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuEditClanMessage();
-    virtual ~cMenuEditClanMessage();
+    virtual ~cMenuEditClanMessage() {}
     void initEditClanMessage(MT_CHAR* pClanMessage, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveEditClanMessage();
 private:
@@ -2040,7 +2042,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuEditClanMotto();
-    virtual ~cMenuEditClanMotto();
+    virtual ~cMenuEditClanMotto() {}
     void initEditClanMotto(u32* pMotto, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveEditClanMotto();
     u32 getClanMottoIndex(u32 cursor);
@@ -2090,7 +2092,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetClanBaseInfo();
-    virtual ~cMenuGetClanBaseInfo();
+    virtual ~cMenuGetClanBaseInfo() {}
     void initGetClanBaseInfo();
     nMenu::MENU_RET moveGetClanBaseInfo();
 public:
@@ -2135,7 +2137,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetClanDetail();
-    virtual ~cMenuGetClanDetail();
+    virtual ~cMenuGetClanDetail() {}
     void initGetClanDetail(u32 clanId, CClanParam& dstParam);
     nMenu::MENU_RET moveGetClanDetail();
 private:
@@ -2184,7 +2186,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetMyClan();
-    virtual ~cMenuGetMyClan();
+    virtual ~cMenuGetMyClan() {}
     void initGetMyClan();
     nMenu::MENU_RET moveGetMyClan();
 public:
@@ -2229,7 +2231,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuGetMyScoutEntry();
-    virtual ~cMenuGetMyScoutEntry();
+    virtual ~cMenuGetMyScoutEntry() {}
     void initGetMyScoutEntry();
     nMenu::MENU_RET moveGetMyScoutEntry();
 public:
@@ -2322,7 +2324,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuQuitClan();
-    virtual ~cMenuQuitClan();
+    virtual ~cMenuQuitClan() {}
     void initQuitClan();
     nMenu::MENU_RET moveQuitClan();
 public:
@@ -2383,7 +2385,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuSetClanName();
-    virtual ~cMenuSetClanName();
+    virtual ~cMenuSetClanName() {}
     void initSetClanName(s32 setType, MtString& dstClanName, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveSetClanName();
     virtual void checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId);  // vtable slot 17
@@ -2452,7 +2454,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cMenuSetClanNickName();
-    virtual ~cMenuSetClanNickName();
+    virtual ~cMenuSetClanNickName() {}
     void initSetClanNickName(s32 setType, MtString& dstClanNickName, uGUIBase* pRefGUI);
     nMenu::MENU_RET moveSetClanNickName();
     virtual void checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId);  // vtable slot 17

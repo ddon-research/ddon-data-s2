@@ -50,6 +50,27 @@ inline void uGUILoading::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUILoading::DTI)->memFree(p_addr);
 }
 
+uGUILoading::uGUILoading() : uGUIBase(0u, false) {
+    mAreaNo = 0;
+    mStageNo = 0;
+    mEnable = false;
+    mIsUseLoadingInfoSdl = false;
+    mpObjTexRefBack = nullptr;
+    mpObjMsgText = nullptr;
+    mpInstMsg = nullptr;
+    mpLoadingParam = nullptr;
+    mpGUIRes = nullptr;
+    mLoadingId = -1;
+    mMsgIdx = 0;
+    mImgId = 0;
+    mArcTicket = sArchiveManager::INVALID_TICKET;
+    mpLoadingMsg = nullptr;
+    mpTexImg = nullptr;
+    mPos2InstMsgInit = MtVector2::Zero;
+    mEndType = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUILoading"), 0u, false);
+}
+
 __attribute__((noinline)) uGUILoading::~uGUILoading() {
     DDON_STUB("uGUILoading::~uGUILoading")
     /* stub */
@@ -140,8 +161,7 @@ inline uGUILoading::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 
 uGUILoading::MyDTI uGUILoading::DTI("uGUILoading", &::uGUIBase::DTI, 2352ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUILoading::MyDTI::newInstance() const {
-    DDON_STUB("uGUILoading::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUILoading::MyDTI::newInstance() const {
+    return new (16u) uGUILoading;
 }
 

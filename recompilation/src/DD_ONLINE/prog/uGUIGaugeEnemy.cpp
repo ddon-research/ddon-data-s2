@@ -326,9 +326,16 @@ u32 uGUIGaugeEnemy::IOcdIcon::getOcdIconParamNum() const {
     return 2;
 }
 
-__attribute__((weak)) nGUIExt::OCD_ICON_CATEGORY uGUIGaugeEnemy::IOcdIcon::getOcdIconCategory(u32 paramIndex) const {
-    DDON_STUB("uGUIGaugeEnemy::IOcdIcon::getOcdIconCategory")
-    return {};
+nGUIExt::OCD_ICON_CATEGORY uGUIGaugeEnemy::IOcdIcon::getOcdIconCategory(u32 paramIndex) const {
+    static const nGUIExt::OCD_ICON_CATEGORY categorys[2] = {
+        static_cast<const nGUIExt::OCD_ICON_CATEGORY>(0),
+        static_cast<const nGUIExt::OCD_ICON_CATEGORY>(1),
+    };
+    if (paramIndex <= 1u) {
+        return categorys[paramIndex];
+    } else {
+        return nGUIExt::OCD_ICON_CATEGORY_NUM;
+    }
 }
 
 __attribute__((weak)) nGUIExt::OcdIconParam& uGUIGaugeEnemy::IOcdIcon::refOcdIconParam(u32 paramIndex) {
@@ -340,9 +347,13 @@ bool uGUIGaugeEnemy::IOcdIcon::isOcdActive(u32 ocdId) const {
     return mCharacter.isAbnormalConditionActive(ocdId);
 }
 
-__attribute__((weak)) bool uGUIGaugeEnemy::IOcdIcon::isOcdAccumulating(u32 ocdId) const {
-    DDON_STUB("uGUIGaugeEnemy::IOcdIcon::isOcdAccumulating")
-    return {};
+bool uGUIGaugeEnemy::IOcdIcon::isOcdAccumulating(u32 ocdId) const {
+    if (mCharacter.getOcdCtrlPtr() != nullptr) {
+        if (mCharacter.getOcdCtrlPtr()->getOcdAccumulation(ocdId) > 0.0f) {
+            return true;
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void uGUIGaugeEnemy::IOcdIcon::setOcdIcon(u32 iconIndex, u32 ocdId, nGUIExt::OCD_ICON_ANIM iconAnim, f32 animFrame) {

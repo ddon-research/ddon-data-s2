@@ -4,6 +4,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
 #include "cGUIUtility.h"
@@ -36,6 +37,19 @@ void* uGUIShakeStick::operator new(size_t sz, u32 align) {
 
 inline void uGUIShakeStick::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIShakeStick::DTI)->memFree(p_addr);
+}
+
+uGUIShakeStick::uGUIShakeStick() : uGUIBase(0u, false) {
+    mpINST_Null_charges = nullptr;
+    mActPltType = 0;
+    mCurrent = 0.0f;
+    mpInstAnim_lever = nullptr;
+    mpInstAnim_gauge = nullptr;
+    mpOBJ_fix_gauge_f_gauge = nullptr;
+    mpGUIRes = nullptr;
+    mBaseF = mBaseF | 32u;
+    mEndType = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUIShakeStick"), 0u, false);
 }
 
 uGUIShakeStick::~uGUIShakeStick() {
@@ -100,8 +114,7 @@ inline uGUIShakeStick::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 uGUIShakeStick::MyDTI uGUIShakeStick::DTI("uGUIShakeStick", &::uGUIBase::DTI, 2640ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIShakeStick::MyDTI::newInstance() const {
-    DDON_STUB("uGUIShakeStick::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIShakeStick::MyDTI::newInstance() const {
+    return new (16u) uGUIShakeStick;
 }
 

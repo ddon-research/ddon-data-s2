@@ -4,20 +4,24 @@
 #include <cstddef>
 
 // Dependencies
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtObject.h"
 #include "uShlStick.h"
 
 // Forward declarations
 class MtAllocator;
 class MtDTI;
 class MtObject;
+class MtPropertyList;
 class cEfcHandle;
 class cHitInfo;
-class cShlParamAlchemy;
-class cShlParamAlchemyCS03;
+class cShlParamBase;
 class cpJob09;
 
 // Declarations
+class cShlParamAlchemy;
+class cShlParamAlchemyCS03;
 class uShlAlchemy;
 class uShlAlchemyCS03;
 
@@ -29,6 +33,132 @@ using f32 = float;
 using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
+
+class cShlParamAlchemy : public cShlParamStick
+{
+public:
+    enum ALCHEMY_TYPE
+    {
+        AT_NORMAL = 0,
+        AT_DAMAGE = 1,
+    };
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual MtDTI& getShlDTI() const;  // vtable slot 6
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void createPropertySE(MtPropertyList& s);  // vtable slot 9
+    cShlParamAlchemy();
+    virtual ~cShlParamAlchemy();
+    virtual void copy(const cShlParamBase* pParamBase);  // vtable slot 11
+public:
+    f32 mReduceAlchemyValueTime;  // offset: 0x164
+    f32 mSubAlchemyValueOnce;  // offset: 0x168
+    f32 mSubAlchemyValueTime;  // offset: 0x16c
+    f32 mAlchemyEvaRate;  // offset: 0x170
+    f32 mAlchemyEvaMin;  // offset: 0x174
+    u32 mAlchemyType;  // offset: 0x178
+    f32 mChipScale[4];  // offset: 0x17c
+    s32 mMaxValueRequestSe;  // offset: 0x18c
+    s32 mMaxValueLoopSe;  // offset: 0x190
+    s32 mMaxValueLoopStopSe;  // offset: 0x194
+    s32 mMaxPartsDownSe;  // offset: 0x198
+    s32 mCheckedCollsiionIndexForCS13;  // offset: 0x19c
+    static MyDTI DTI;
+};
+
+class cShlParamAlchemyCS03 : public cShlParamAlchemy
+{
+public:
+    class MyDTI;
+    class cDamageAlchemyValueInfo;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    class cDamageAlchemyValueInfo : public MtObject
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cDamageAlchemyValueInfo();
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        void copy(cShlParamAlchemyCS03::cDamageAlchemyValueInfo* pData);
+    public:
+        f32 mMinRate;  // offset: 0x8
+        f32 mMaxRate;  // offset: 0xc
+        f32 mAlchemyValue;  // offset: 0x10
+        static MyDTI DTI;
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual MtDTI& getShlDTI() const;  // vtable slot 6
+    cShlParamAlchemyCS03();
+    virtual ~cShlParamAlchemyCS03();
+    virtual void copy(const cShlParamBase* pParamBase);  // vtable slot 11
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+public:
+    MtTypedArray<cDamageAlchemyValueInfo> mArrDamageAlchemyInfo;  // offset: 0x1a0
+    f32 mDamageAlchemyMaxTimer;  // offset: 0x1c0
+    f32 mSlaveDispOffTimer;  // offset: 0x1c4
+    static MyDTI DTI;
+};
 
 class uShlAlchemy : public uShlStick
 {
@@ -162,6 +292,48 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+inline void* cShlParamAlchemy::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cShlParamAlchemy::cShlParamAlchemy() {
+    this->mReduceAlchemyValueTime = 300.0f;
+    this->mSubAlchemyValueOnce = 1.0f;
+    this->mSubAlchemyValueTime = 1.0f;
+    this->mAlchemyEvaRate = 0.6f;
+    this->mAlchemyType = 0;
+    this->mChipScale[0] = 1.0f;
+    this->mChipScale[1] = 1.25f;
+    this->mChipScale[2] = 1.5f;
+    this->mChipScale[3] = 1.75f;
+    this->mCheckedCollsiionIndexForCS13 = -1;
+    this->mMaxValueLoopStopSe = -1;
+    this->mMaxPartsDownSe = -1;
+    this->mMaxValueRequestSe = -1;
+    this->mMaxValueLoopSe = -1;
+    this->mAlchemyEvaMin = 100.0f;
+}
+
+inline void* cShlParamAlchemyCS03::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cShlParamAlchemyCS03::cShlParamAlchemyCS03() {
+    this->mDamageAlchemyMaxTimer = 900.0f;
+    this->mSlaveDispOffTimer = 150.0f;
+    this->mArrDamageAlchemyInfo.::MtArray::mAutoDelete = true;
+}
+
+inline void* cShlParamAlchemyCS03::cDamageAlchemyValueInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cShlParamAlchemyCS03::cDamageAlchemyValueInfo::cDamageAlchemyValueInfo() {
+    this->mMinRate = 0.0f;
+    this->mMaxRate = -1.0f;
+    this->mAlchemyValue = 100.0f;
+}
 
 inline void* uShlAlchemy::operator new(size_t sz, void* p_addr) {
     return p_addr;

@@ -149,3 +149,10 @@ inline void* cQuakeParam::operator new(size_t sz, void* p_addr) {
 inline void* rCameraQuakeList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cQuakeParam::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cQuakeParam::DTI)->memFree(p_addr);
+}

@@ -38,13 +38,12 @@ inline void cZoneCategoryUnitCtrl::operator delete(void* p_addr) {
 }
 
 cZoneCategoryUnitCtrl::~cZoneCategoryUnitCtrl() {
-    DDON_STUB("cZoneCategoryUnitCtrl::~cZoneCategoryUnitCtrl")
-    /* stub */
 }
 
-__attribute__((weak)) void cZoneCategoryUnitCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cZoneCategoryUnitCtrl::createProperty")
-    /* stub */
+void cZoneCategoryUnitCtrl::createProperty(MtPropertyList& s) {
+    this->cZoneContents::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneLinkType", &mZoneLinkType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInDoors", &mInDoors, 0u, 0u);
 }
 
 inline cZoneCategoryUnitCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -70,9 +69,6 @@ inline void cZoneCategoryUnitCtrlBase::operator delete(void* p_addr) {
 inline cZoneCategoryUnitCtrlBase::cZoneCategoryUnitCtrlBase() {
     setAttribute(32768u, true);
     setAttribute(0x10000u, true);
-}
-
-cZoneCategoryUnitCtrlBase::~cZoneCategoryUnitCtrlBase() {
 }
 
 inline cZoneCategoryUnitCtrlBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -147,9 +143,15 @@ __attribute__((weak)) bool cZoneUnitCtrl::isOmContentsArrayCheck(const cZoneUnit
     return {};
 }
 
-__attribute__((weak)) void cZoneUnitCtrl::createPropertyForScrlModel(MtPropertyList& s) {
-    DDON_STUB("cZoneUnitCtrl::createPropertyForScrlModel")
-    /* stub */
+void cZoneUnitCtrl::createPropertyForScrlModel(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneLocalGp[0]", reinterpret_cast<s8*>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 9))), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneLocalGp[1]", reinterpret_cast<s8*>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 11))), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneLocalGp[2]", reinterpret_cast<s8*>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 13))), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneLocalGp[3]", reinterpret_cast<s8*>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 15))), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneLocalGp[4]", reinterpret_cast<s8*>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 17))), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneLocalGp[5]", reinterpret_cast<s8*>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 19))), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneLocalGp[6]", reinterpret_cast<s8*>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 21))), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneLocalGp[7]", reinterpret_cast<s8*>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 23))), 0u, 0u);
 }
 
 inline cZoneUnitCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

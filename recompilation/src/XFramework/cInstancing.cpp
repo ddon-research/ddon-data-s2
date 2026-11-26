@@ -48,8 +48,12 @@ cInstancingCulling::~cInstancingCulling() {
 }
 
 __attribute__((weak)) void cInstancingCulling::createProperty(MtPropertyList& s) {
-    DDON_STUB("cInstancingCulling::createProperty")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mUseBillboard", &mUseBillboard, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUVSwitchEnable", &mUVSwitchEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBillboardSize", &mBillboardSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLodBillboardDistance", &mLodBillboardDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBillboardPattern", &mBillboardPattern, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpBillboardTexture", "resource", static_cast<void*>(&mpBillboardTexture), 0u, 0u);
 }
 
 MtUI* cInstancingCulling::createUI(MtProperty& prop) {
@@ -135,9 +139,13 @@ __attribute__((weak)) void cInstancingDynamic::release() {
     /* stub */
 }
 
-__attribute__((weak)) void cInstancingDynamic::createProperty(MtPropertyList& s) {
-    DDON_STUB("cInstancingDynamic::createProperty")
-    /* stub */
+void cInstancingDynamic::createProperty(MtPropertyList& s) {
+    this->cInstancingCulling::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseLodFade", &mUseLodFade, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseFastCulling", &mUseFastCulling, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPartsLevel", &mPartsLevel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mClusterSize", &mClusterSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDebug", &mDebug, 0u, 0u);
 }
 
 __attribute__((weak)) bool cInstancingDynamic::setupInstancing(const MtOBB& obb, const MtMatrix& world_matrix, const MtMatrix& quant_matrix) {
@@ -180,9 +188,13 @@ __attribute__((weak)) u32 cInstancingDynamic::getInstancingSize(cDraw* pdraw) {
     return {};
 }
 
-__attribute__((weak)) MtVector4 cInstancingDynamic::getInstanceColor(u32 index, f32 fade) {
-    DDON_STUB("cInstancingDynamic::getInstanceColor")
-    __builtin_unreachable();
+MtVector4 cInstancingDynamic::getInstanceColor(u32 index, f32 fade) {
+    MtVector4 result;
+    result.x = 0.0f;
+    result.y = 0.0f;
+    result.z = 0.0f;
+    result.w = fade;
+    return result;
 }
 
 inline cInstancingDynamic::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -259,9 +271,25 @@ u32 cInstancingFromMatrices::getInstanceNum() {
     return mInstanceNum;
 }
 
-__attribute__((weak)) MtMatrix cInstancingFromMatrices::getInstanceMatrix(u32 index) {
-    DDON_STUB("cInstancingFromMatrices::getInstanceMatrix")
-    __builtin_unreachable();
+MtMatrix cInstancingFromMatrices::getInstanceMatrix(u32 index) {
+    MtMatrix mat;
+    mat.m[0].x = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[0][0];
+    mat.m[0].y = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[1][0];
+    mat.m[0].z = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[2][0];
+    mat.m[0].w = 0.0f;
+    mat.m[1].x = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[0][1];
+    mat.m[1].y = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[1][1];
+    mat.m[1].z = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[2][1];
+    mat.m[1].w = 0.0f;
+    mat.m[2].x = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[0][2];
+    mat.m[2].y = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[1][2];
+    mat.m[2].z = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[2][2];
+    mat.m[2].w = 0.0f;
+    mat.m[3].x = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[0][3];
+    mat.m[3].y = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[1][3];
+    mat.m[3].z = mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)].m[2][3];
+    mat.m[3].w = 1.0f;
+    return mat;
 }
 
 MtFloat3x4& cInstancingFromMatrices::getInstanceMatrix3x4(u32 index) {

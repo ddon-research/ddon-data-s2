@@ -15,6 +15,7 @@
 #include "cParticle.h"
 #include "cParticleManager.h"
 #include "cPrimTexHandle.h"
+#include "cUnit.h"
 #include "nPrim.h"
 #include "rEffectList.h"
 #include "rEffectStrip.h"
@@ -992,9 +993,36 @@ __attribute__((weak)) u32 cParticleGenerator::moveParticlePosCollisionBounce(cPa
     return {};
 }
 
-__attribute__((weak)) void cParticleGenerator::setCollEffect(rEffectList* pEffectList, u32 GroupFlag, u32 MaterialFlag, const MtVector3& Dir, const MtVector3& Pos, u32 Order, u32 AxisType) {
-    DDON_STUB("cParticleGenerator::setCollEffect")
-    /* stub */
+void cParticleGenerator::setCollEffect(rEffectList* pEffectList, u32 GroupFlag, u32 MaterialFlag, const MtVector3& Dir, const MtVector3& Pos, u32 Order, u32 AxisType) {
+    if (!mpOwner->isCreateChildUnit()) {
+        return;
+    }
+    uEffect* pEffect = mpOwner->openEffect();
+    if (pEffect == nullptr) {
+        return;
+    }
+    sUnit* t0 = sUnit::mpInstance;
+    t0->addBottom(static_cast<MOVE_LINE>(t0->getNextMoveLineId(mpOwner->mMoveLine)), static_cast<cUnit*>(pEffect), static_cast<const cUnit*>(mpOwner));
+    uEffect* t1 = mpOwner;
+    pEffect->mDeltaTimeCoef = t1->mDeltaTimeCoef;
+    pEffect->mScale.x = t1->mScale.x;
+    pEffect->mScale.y = t1->mScale.y;
+    pEffect->mScale.z = t1->mScale.z;
+    pEffect->mScale.pad_ = 0.0f;
+    pEffect->mParticleScale = t1->mParticleScale;
+    unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 312);
+    pEffect->mKillNo = (t2 & 0xFFFF00000000ul) >> 32;
+    pEffect->setParticleVolume(mpOwner->mParticleVolume);
+    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEffect) + 312);
+    unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpOwner) + 320);
+    unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEffect) + 320);
+    pEffect->mFilterVolume = t4;
+    unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpOwner) + 320);
+    pEffect->mLifeFrameVolume = mpOwner->mLifeFrameVolume;
+    pEffect->mStatus = ((mpOwner->mStatus & 128u) == 0) ? (pEffect->mStatus & 0xFFFFFF7Fu) : (pEffect->mStatus | 128u);
+    pEffect->setParam(pEffectList, GroupFlag, MaterialFlag, Dir, Pos, Order, AxisType);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEffect) + 16) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpOwner) + 16)) & 0x3FF0000u) | ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEffect) + 16)) & 0xFC00FFFFu);
+    pEffect->setChildUnitLevel(mpOwner);
 }
 
 __attribute__((weak)) bool cParticleGenerator::correctParticlePosCollision(MtVector3& Pos, MtVector3& Ofs, MtVector3& Dir, bool DirFlag) {

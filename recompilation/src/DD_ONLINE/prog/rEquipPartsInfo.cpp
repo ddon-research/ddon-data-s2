@@ -5,6 +5,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtStream.h"
 #include "../../XFramework/cResource.h"
 #include "cpEquip.h"
 #ifndef DDON_STUB
@@ -42,9 +43,18 @@ void rEquipPartsInfo::clear() {
     mpHeader = nullptr;
 }
 
-__attribute__((weak)) bool rEquipPartsInfo::load(MtStream& in) {
-    DDON_STUB("rEquipPartsInfo::load")
-    return {};
+bool rEquipPartsInfo::load(MtStream& in) {
+    u32 size = in.getLength();
+    void* t0 = MtMemoryAllocator::getAllocator(rEquipPartsInfo::DTI)->memAlloc(size, 16u);
+    mpHeader = static_cast<HEADER*>(t0);
+    in.read(t0, size);
+    if (mpHeader->magic == 0x495045) {
+        if (mpHeader->version == 1) {
+            mpHeader->parts = reinterpret_cast<s16*>(reinterpret_cast<char*>(mpHeader) + reinterpret_cast<long>(mpHeader->parts));
+            return true;
+        }
+    }
+    return false;
 }
 
 MT_CTSTR rEquipPartsInfo::getExt() const {

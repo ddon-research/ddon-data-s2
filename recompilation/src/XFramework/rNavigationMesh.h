@@ -25,6 +25,7 @@ class MtString;
 class MtUI;
 class MtVector3;
 class cAIQuadTree;
+class cAISvNavPathFinding;
 
 // Declarations
 class rNavigationMesh;
@@ -71,6 +72,7 @@ public:
 public:
     class nodeData : public MtObject
     {
+        friend class cAISvNavPathFinding;
     public:
         class MyDTI;
         struct PolygonArea;
@@ -143,6 +145,8 @@ public:
         u32 getCAttribute(u32);
     protected:
         s32 mIndex;  // offset: 0x8
+
+    friend class rNavigationMesh;
         u32* mpAttribute;  // offset: 0x10
         u32 mNumberOfAttribute;  // offset: 0x18
         MtVector3 mDir;  // offset: 0x20
@@ -316,4 +320,8 @@ inline u32 rNavigationMesh::nodeData::getNumberOfAttribute() {
 
 inline void* rNavigationMesh::nodeInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline rNavigationMesh::nodeInfo::nodeInfo() {
+    this->mNodeOffset = 0;
 }

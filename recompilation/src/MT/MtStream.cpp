@@ -271,9 +271,48 @@ u32 MtMemoryStream::readAsync(void* ptr, u32 bytes) {
     }
 }
 
-__attribute__((weak)) u32 MtMemoryStream::write(const void* ptr, u32 bytes) {
-    DDON_STUB("MtMemoryStream::write")
-    return {};
+u32 MtMemoryStream::write(const void* ptr, u32 bytes) {
+    u32 v3_10;
+    if (!isWritable()) {
+        v3_10 = 0;
+    } else {
+        u32 v2_0;
+        u32 v2_3;
+        if ((mMode & 4u) != 0) {
+            u32 v0_0 = mSeekPt;
+            u32 v0_1 = bytes + mSeekPt;
+            for (u32 v0_3 = mLength;;) {
+                if (v0_3 >= v0_1) {
+                    v2_0 = v0_0;
+                    v2_3 = v0_3;
+                    break;
+                } else {
+                    void* t0 = mpAllocator->memAlloc(v0_3 * 2u, 16u);
+                    if (t0 != nullptr) {
+                        memcpy(t0, static_cast<const void*>(mBuffer), mSeekPt);
+                        mLength = v0_3 * 2u;
+                        mpAllocator->memFree(static_cast<void*>(mBuffer));
+                        mBuffer = static_cast<u8*>(t0);
+                    }
+                }
+                v0_0 = mSeekPt;
+                v0_1 = bytes + mSeekPt;
+                v0_3 = mLength;
+            }
+        } else {
+            v2_0 = mSeekPt;
+            v2_3 = mLength;
+        }
+        if (v2_3 < (bytes + v2_0)) {
+            mBufferOverflow = 1;
+            v3_10 = 0;
+        } else {
+            memcpy(static_cast<void*>(&mBuffer[v2_0]), ptr, bytes);
+            mSeekPt = bytes + mSeekPt;
+            v3_10 = bytes;
+        }
+    }
+    return v3_10;
 }
 
 void MtMemoryStream::setLength(u32 length) {
@@ -400,8 +439,7 @@ inline MtStream::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 MtStream::MyDTI MtStream::DTI("MtStream", &::MtObject::DTI, 8ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* MtStream::MyDTI::newInstance() const {
-    DDON_STUB("MtStream::MyDTI::newInstance")
-    return nullptr;
+MtObject* MtStream::MyDTI::newInstance() const {
+    return new (16u) MtStream;
 }
 

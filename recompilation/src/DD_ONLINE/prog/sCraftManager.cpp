@@ -200,14 +200,163 @@ __attribute__((weak)) sCraftManager::cCraftRecipeControl* sCraftManager::getCraf
     return nullptr;
 }
 
-__attribute__((weak)) u32 sCraftManager::getPawnSkillLv(u32 pawnId, u32 skill) {
-    DDON_STUB("sCraftManager::getPawnSkillLv")
-    return {};
+u32 sCraftManager::getPawnSkillLv(u32 pawnId, u32 skill) {
+    cNetGameServer* v0_3 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    u32 v0_4 = v0_3->mMyPawnList.mLength;
+    MtObject* v4_1;
+    if (v0_4 != 0) {
+        MtObject* * v0_2 = v0_3->mMyPawnList.mpArray;
+        for (unsigned int i0_0 = 0;;) {
+            MtObject* v1_1 = v0_2[static_cast<int>(i0_0)];
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == pawnId) {
+                if (v1_1 != nullptr) {
+                    v4_1 = v1_1;
+                    if (v4_1 != nullptr) {
+                        if (skill <= 9u) {
+                            if (skill < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_1) + 80))) {
+                                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v4_1) + 96)) + (static_cast<unsigned long>(skill) * 8)) + 0)) != 0) {
+                                    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v4_1) + 96)) + (static_cast<unsigned long>(skill) * 8)) + 0)) + 12)) + 1u;
+                                }
+                            }
+                        }
+                    }
+                    return 0;
+                } else {
+                    break;
+                }
+                break;
+            } else {
+                if ((i0_0 + 1u) < v0_4) {
+                    i0_0 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    u32 v3_3 = v0_3->mRentedPawnList.mLength;
+    unsigned int i3_1;
+    MtObject* * v3_2;
+    if (v3_3 == 0) {
+        return 0;
+    } else {
+        v3_2 = v0_3->mRentedPawnList.mpArray;
+        i3_1 = 0;
+    }
+    for (;;) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_2[static_cast<int>(i3_1)]) + 8)) != pawnId) {
+            if ((i3_1 + 1u) >= v3_3) {
+                return 0;
+            } else {
+                i3_1 += 1u;
+            }
+        } else {
+            v4_1 = v3_2[static_cast<int>(i3_1)];
+            break;
+        }
+    }
+    if (v4_1 != nullptr) {
+        if (skill <= 9u) {
+            if (skill < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_1) + 80))) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v4_1) + 96)) + (static_cast<unsigned long>(skill) * 8)) + 0)) != 0) {
+                    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v4_1) + 96)) + (static_cast<unsigned long>(skill) * 8)) + 0)) + 12)) + 1u;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 sCraftManager::getMyPawnTotalSkillLv(u32 PawnId) {
-    DDON_STUB("sCraftManager::getMyPawnTotalSkillLv")
-    return {};
+u32 sCraftManager::getMyPawnTotalSkillLv(u32 PawnId) {
+    u32 v0_3 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mLength;
+    unsigned int v9_0;
+    if (v0_3 == 0) {
+        v9_0 = 0;
+    } else {
+        MtObject* * v0_2 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mpArray;
+        unsigned int i0_0 = 0;
+        unsigned int v4_0;
+        unsigned int v5_2;
+        unsigned int v6_0;
+        unsigned int v6_2;
+        unsigned int v7_0;
+        unsigned int v7_2;
+        unsigned int v8_0;
+        unsigned int v8_1;
+        for (;;) {
+            MtObject* v3_1 = v0_2[static_cast<int>(i0_0)];
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_1) + 8)) == PawnId) {
+                if (v3_1 == nullptr) {
+                    v9_0 = 0;
+                } else {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_1) + 80)) == 0) {
+                        v8_0 = 0;
+                        v8_1 = 0;
+                    } else {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 96)) + 0)) == 0) {
+                            v4_0 = 0;
+                        } else {
+                            v4_0 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 96)) + 0)) + 12)) + 1u;
+                        }
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_1) + 80)) <= 1u) {
+                            v8_0 = v4_0;
+                            v8_1 = 0;
+                        } else {
+                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 96)) + 8)) == 0) {
+                                v5_2 = 0;
+                            } else {
+                                v5_2 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 96)) + 8)) + 12)) + 1u;
+                            }
+                            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_1) + 80)) <= 2u) {
+                                v8_0 = v4_0 + v5_2;
+                                v8_1 = 0;
+                            } else {
+                                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 96)) + 16)) == 0) {
+                                    v6_0 = v4_0 + v5_2;
+                                    v6_2 = 0;
+                                } else {
+                                    v6_0 = v4_0 + v5_2;
+                                    v6_2 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 96)) + 16)) + 12)) + 1u;
+                                }
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_1) + 80)) > 3u) {
+                                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 96)) + 24)) == 0) {
+                                        v7_0 = 0;
+                                    } else {
+                                        v7_0 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 96)) + 24)) + 12)) + 1u;
+                                    }
+                                    v7_2 = v6_0 + v6_2;
+                                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_1) + 80)) <= 4u) {
+                                        v8_0 = v7_0 + v7_2;
+                                        v8_1 = 0;
+                                    } else {
+                                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 96)) + 32)) == 0) {
+                                            v8_0 = v7_0 + v7_2;
+                                            v8_1 = 0;
+                                        } else {
+                                            v8_0 = v7_0 + v7_2;
+                                            v8_1 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v3_1) + 96)) + 32)) + 12)) + 1u;
+                                        }
+                                    }
+                                } else {
+                                    v8_0 = v6_0 + v6_2;
+                                    v8_1 = 0;
+                                }
+                            }
+                        }
+                    }
+                    v9_0 = v8_0 + v8_1;
+                }
+                break;
+            }
+            if ((i0_0 + 1u) < v0_3) {
+                i0_0 += 1u;
+            } else {
+                v9_0 = 0;
+                break;
+            }
+        }
+    }
+    return v9_0;
 }
 
 __attribute__((weak)) MT_CTSTR sCraftManager::getPawnName(u32 pawnId) {
@@ -271,9 +420,12 @@ s32 sCraftManager::getMyPawnNum() {
     return static_cast<s32>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mLength);
 }
 
-__attribute__((weak)) u8 sCraftManager::getMyPawnState(u32 index) {
-    DDON_STUB("sCraftManager::getMyPawnState")
-    return {};
+u8 sCraftManager::getMyPawnState(u32 index) {
+    if (index < static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mLength) {
+        return static_cast<cPawnListParam*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.getBuffer()[static_cast<int>(index)])->getState();
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) CDataCraftProgress* sCraftManager::getMyPawnCraftTaskInfo(u32 pawnId) {
@@ -286,23 +438,48 @@ __attribute__((weak)) u32 sCraftManager::getMyPawnRankAll() {
     return {};
 }
 
-__attribute__((weak)) u32 sCraftManager::getMyPawnId(u32 index) {
-    DDON_STUB("sCraftManager::getMyPawnId")
-    return {};
+u32 sCraftManager::getMyPawnId(u32 index) {
+    if (index < static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mLength) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mpArray[static_cast<int>(index)]) + 8);
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool sCraftManager::isMyPawn(u32 pawnId) {
-    DDON_STUB("sCraftManager::isMyPawn")
-    return {};
+bool sCraftManager::isMyPawn(u32 pawnId) {
+    u32 v0_4 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mLength;
+    int v2_0;
+    if (v0_4 == 0) {
+        v2_0 = 0;
+    } else {
+        MtObject* * v0_3 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[static_cast<int>(i0_2)]) + 8)) == pawnId) {
+                v2_0 = (static_cast<int>(i0_2) & -256) | 1;
+                return static_cast<bool>(static_cast<unsigned char>(v2_0));
+            } else {
+                if ((i0_2 + 1u) < v0_4) {
+                    i0_2 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        v2_0 = 0;
+    }
+    return static_cast<bool>(static_cast<unsigned char>(v2_0));
 }
 
 s32 sCraftManager::getRentalPawnNum() {
     return static_cast<s32>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mRentedPawnList.mLength);
 }
 
-__attribute__((weak)) u32 sCraftManager::getRentalPawnId(u32 index) {
-    DDON_STUB("sCraftManager::getRentalPawnId")
-    return {};
+u32 sCraftManager::getRentalPawnId(u32 index) {
+    if (index < static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mRentedPawnList.mLength) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mRentedPawnList.mpArray[static_cast<int>(index)]) + 8);
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) bool sCraftManager::isSupportSelectPawnId(u32 pawnId) {
@@ -572,9 +749,89 @@ __attribute__((weak)) sCraftManager::RECIPE_REQ_STATE sCraftManager::reqCraftRec
     return {};
 }
 
-__attribute__((weak)) nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE sCraftManager::convRecipeCategory(u32 itemId) {
-    DDON_STUB("sCraftManager::convRecipeCategory")
-    return {};
+nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE sCraftManager::convRecipeCategory(u32 itemId) {
+    static const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE wep_category[14] = {
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(0),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(1),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(2),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(10),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(5),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(6),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(7),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(3),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(11),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(9),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(0),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(4),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(8),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(12),
+    };
+    static const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE equip_category[12] = {
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(0),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(0),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(0),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(13),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(14),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(17),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(15),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(16),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(18),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(19),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(20),
+        static_cast<const nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(21),
+    };
+    rItemList::rItemParam* pItemParam = sItemManager::getInstance()->getItemParam(itemId);
+    if (pItemParam != nullptr) {
+        switch (static_cast<unsigned int>(pItemParam->mCategory - 1)) {
+            case 0:
+            {
+                return nCraft::CRAFT_RECIPE_CATEGORY_TYPE_USE;
+            }
+            case 1:
+            {
+                return nCraft::CRAFT_RECIPE_CATEGORY_TYPE_MATERIAL;
+            }
+            case 2:
+            {
+                if (!pItemParam->isCostume()) {
+                    if (pItemParam->getEquipCategory() <= 11u) {
+                        if (pItemParam->getEquipCategory() <= 2u) {
+                            if (pItemParam->getWepCategory() <= 13u) {
+                                return wep_category[pItemParam->getWepCategory()];
+                            } else {
+                                return nCraft::CRAFT_RECIPE_CATEGORY_TYPE_NONE;
+                            }
+                        } else {
+                            return equip_category[pItemParam->getEquipCategory()];
+                        }
+                    } else {
+                        return nCraft::CRAFT_RECIPE_CATEGORY_TYPE_NONE;
+                    }
+                } else {
+                    return nCraft::CRAFT_RECIPE_CATEGORY_TYPE_COSTUME;
+                }
+                break;
+            }
+            case 4:
+            {
+                return nCraft::CRAFT_RECIPE_CATEGORY_TYPE_JOB;
+            }
+            case 5:
+            {
+                return nCraft::CRAFT_RECIPE_CATEGORY_TYPE_FURNITURE;
+            }
+            case 6:
+            {
+                return nCraft::CRAFT_RECIPE_CATEGORY_TYPE_FURNITURE;
+            }
+            default:
+            {
+                return nCraft::CRAFT_RECIPE_CATEGORY_TYPE_NONE;
+            }
+        }
+    } else {
+        return nCraft::CRAFT_RECIPE_CATEGORY_TYPE_NONE;
+    }
 }
 
 __attribute__((weak)) void sCraftManager::noticeRecipeUpData(void* packet) {
@@ -1010,9 +1267,9 @@ void sCraftManager::setCategoryCraftPlusMaterial(MtTypedArray<CDataCommonU32>& l
     u32 i = 0;
     if (list.size() != 0) {
         do {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + 24)) + (static_cast<unsigned long>(i) * 8)) + 0)) != 0) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + 24)) + (static_cast<unsigned long>(i) * 8)) + 0)) + 8)) <= 12u) {
-                    mMasterPlusCategory[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + 24)) + (static_cast<unsigned long>(i) * 8)) + 0)) + 8)] = 1;
+            if (list.mpArray[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(list.mpArray[i]) + 8)) <= 12u) {
+                    mMasterPlusCategory[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(list.mpArray[i]) + 8)] = 1;
                 }
             }
             i += 1u;
@@ -1024,8 +1281,8 @@ void sCraftManager::setSupportNumList(MtTypedArray<CDataCommonU32>& list) {
     u32 i = 0;
     if (list.size() != 0) {
         do {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + 24)) + (static_cast<unsigned long>(i) * 8)) + 0)) != 0) {
-                mMasterSupportNumData[i] = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + 24)) + (static_cast<unsigned long>(i) * 8)) + 0)) + 8);
+            if (list.mpArray[i] != nullptr) {
+                mMasterSupportNumData[i] = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(list.mpArray[i]) + 8);
             }
             i += 1u;
         } while (i < list.size());
@@ -1037,6 +1294,8 @@ inline sCraftManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 sCraftManager::MyDTI sCraftManager::DTI("sCraftManager", &::cSystem::DTI, 6992ul, 0u, 0u);
 
 sCraftManager* sCraftManager::mpInstance;
+
+alignas(4) unsigned char sCraftManager_mEquipCategoryTbl_bytes[40] __asm__("_ZN13sCraftManager17mEquipCategoryTblE") = {0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00};
 
 __attribute__((weak)) MtObject* sCraftManager::MyDTI::newInstance() const {
     DDON_STUB("sCraftManager::MyDTI::newInstance")
@@ -1464,9 +1723,12 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::isParty() {
     return {};
 }
 
-__attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::isCreateMaterial(u32 type) {
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::isCreateMaterial")
-    return {};
+bool sCraftManager::cCraftPawnCtrl::isCreateMaterial(u32 type) {
+    if (type != 0) {
+        return isCreateMaterialSub(sCraftManager::getInstance()->mCraftRecipeUpGrade.getRecipeList(mRecipeId), mCreateCount, false);
+    } else {
+        return isCreateMaterialSub(sCraftManager::getInstance()->mCraftRecipe.getRecipeList(mRecipeId), mCreateCount, false);
+    }
 }
 
 __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::isCreateMaterialSub(rCraftRecipe::cCraftRecipe* pRecipe, u8 createCount, bool isListUp) {
@@ -1474,9 +1736,13 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::isCreateMaterialSub(rC
     return {};
 }
 
-__attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::createCraftMaterialList(u32 type) {
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::createCraftMaterialList")
-    return {};
+bool sCraftManager::cCraftPawnCtrl::createCraftMaterialList(u32 type) {
+    rCraftRecipe::cCraftRecipe* pRecipe = ((type == 1) ? (&sCraftManager::getInstance()->mCraftRecipeUpGrade) : (&sCraftManager::getInstance()->mCraftRecipe))->cCraftRecipe::getRecipeList(mRecipeId);
+    if (pRecipe != nullptr) {
+        return isCreateMaterialSub(pRecipe, mCreateCount, true);
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::createSupportPawnList() {
@@ -1630,9 +1896,19 @@ u32 sCraftManager::cCraftPawnCtrl::getCraftProgressListItemNum(u32 index) {
     return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetCraftProductPacket()->m_CraftProduct.m_unItemNum;
 }
 
-__attribute__((weak)) void sCraftManager::cCraftPawnCtrl::startUpGradeCallBack(void* param) {
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::startUpGradeCallBack")
-    /* stub */
+void sCraftManager::cCraftPawnCtrl::startUpGradeCallBack(void* param) {
+    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + 136)) > -1) {
+        mCraftReqResult = CRAFT_REQ_RESULT_SUCCESS;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->requestAward(4);
+        rItemList::rItemParam* pParam = sItemManager::getInstance()->getItemParam(sCraftManager::getInstance()->mCraftUpGrade.getUpGradeItem());
+        if (pParam != nullptr) {
+            if (pParam->mGrade > 3) {
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->requestAward(7);
+            }
+        }
+    } else {
+        mCraftReqResult = CRAFT_REQ_RESULT_ERROR;
+    }
 }
 
 __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::startUpGradeReq() {

@@ -60,7 +60,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     uCamera();
-    virtual ~uCamera();
+    virtual ~uCamera() {}
     virtual void move();  // vtable slot 9
     virtual void moveAfter();  // vtable slot 10
     virtual void applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset);  // vtable slot 15

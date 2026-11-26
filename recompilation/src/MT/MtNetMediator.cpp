@@ -106,9 +106,31 @@ __attribute__((weak)) void MtNetMediator::setPsnUsrInfo(SceUserServiceUserId use
     /* stub */
 }
 
-__attribute__((weak)) SceNpState MtNetMediator::getPsnUsrNpState(SceUserServiceUserId user_id) {
-    DDON_STUB("MtNetMediator::getPsnUsrNpState")
-    return {};
+SceNpState MtNetMediator::getPsnUsrNpState(SceUserServiceUserId user_id) {
+    if (scePthreadMutexLock(&mCS.mCSection) == 0) {
+        int i0_0 = 0;
+        int v2_0;
+        for (;;) {
+            if (mPsnUsrInfoTbl[i0_0].mIsValid) {
+                if (mPsnUsrInfoTbl[i0_0].mSceUserId == user_id) {
+                    v2_0 = i0_0;
+                    break;
+                }
+            }
+            if ((i0_0 + 1) <= 4) {
+                i0_0 = i0_0 + 1;
+            } else {
+                clearPsnUsrInfo(mPsnUsrInfoTbl[4]);
+                v2_0 = 4;
+                break;
+            }
+        }
+        SceNpState t0 = mPsnUsrInfoTbl[v2_0].mNpState;
+        if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+            return t0;
+        }
+    }
+    abort();
 }
 
 __attribute__((weak)) bool MtNetMediator::isPsnUsrTask(SceUserServiceUserId user_id) {
@@ -116,14 +138,56 @@ __attribute__((weak)) bool MtNetMediator::isPsnUsrTask(SceUserServiceUserId user
     return {};
 }
 
-__attribute__((weak)) SceNpAuthorizationCode& MtNetMediator::getNpAuthCode(SceUserServiceUserId user_id) {
-    DDON_STUB("MtNetMediator::getNpAuthCode")
-    __builtin_unreachable();
+SceNpAuthorizationCode& MtNetMediator::getNpAuthCode(SceUserServiceUserId user_id) {
+    if (scePthreadMutexLock(&mCS.mCSection) == 0) {
+        int i0_3 = 0;
+        int v2_3;
+        for (;;) {
+            if (mPsnUsrInfoTbl[i0_3].mIsValid) {
+                if (mPsnUsrInfoTbl[i0_3].mSceUserId == user_id) {
+                    v2_3 = i0_3;
+                    break;
+                }
+            }
+            if ((i0_3 + 1) <= 4) {
+                i0_3 = i0_3 + 1;
+            } else {
+                clearPsnUsrInfo(mPsnUsrInfoTbl[4]);
+                v2_3 = 4;
+                break;
+            }
+        }
+        if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+            return mPsnUsrInfoTbl[v2_3].mNpAuthCode;
+        }
+    }
+    abort();
 }
 
-__attribute__((weak)) s32& MtNetMediator::getNpAuthIssuer(SceUserServiceUserId user_id) {
-    DDON_STUB("MtNetMediator::getNpAuthIssuer")
-    __builtin_unreachable();
+s32& MtNetMediator::getNpAuthIssuer(SceUserServiceUserId user_id) {
+    if (scePthreadMutexLock(&mCS.mCSection) == 0) {
+        int i0_3 = 0;
+        int v2_3;
+        for (;;) {
+            if (mPsnUsrInfoTbl[i0_3].mIsValid) {
+                if (mPsnUsrInfoTbl[i0_3].mSceUserId == user_id) {
+                    v2_3 = i0_3;
+                    break;
+                }
+            }
+            if ((i0_3 + 1) <= 4) {
+                i0_3 = i0_3 + 1;
+            } else {
+                clearPsnUsrInfo(mPsnUsrInfoTbl[4]);
+                v2_3 = 4;
+                break;
+            }
+        }
+        if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+            return mPsnUsrInfoTbl[v2_3].mNpAuthIssuer;
+        }
+    }
+    abort();
 }
 
 __attribute__((weak)) void MtNetMediator::setChatRestriction(SceUserServiceUserId user_id, bool is_restict) {
@@ -216,9 +280,30 @@ __attribute__((weak)) bool MtNetMediator::isInviteAccept(SceUserServiceUserId us
     return {};
 }
 
-__attribute__((weak)) const MtNetCom::IInnerStringPS4::MessageParam& MtNetMediator::getInnerMessageParam(SceUserServiceUserId user_id) {
-    DDON_STUB("MtNetMediator::getInnerMessageParam")
-    __builtin_unreachable();
+const MtNetCom::IInnerStringPS4::MessageParam& MtNetMediator::getInnerMessageParam(SceUserServiceUserId user_id) {
+    if (scePthreadMutexLock(&mCS.mCSection) == 0) {
+        int i0_3 = 0;
+        int v2_3;
+        for (;;) {
+            if (mPsnUsrInfoTbl[i0_3].mIsValid) {
+                if (mPsnUsrInfoTbl[i0_3].mSceUserId == user_id) {
+                    v2_3 = i0_3;
+                    break;
+                }
+            }
+            if ((i0_3 + 1) <= 4) {
+                i0_3 = i0_3 + 1;
+            } else {
+                clearPsnUsrInfo(mPsnUsrInfoTbl[4]);
+                v2_3 = 4;
+                break;
+            }
+        }
+        if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+            return mPsnUsrInfoTbl[v2_3].mInnerMessageParam;
+        }
+    }
+    abort();
 }
 
 __attribute__((weak)) s32 MtNetMediator::createNpScoreContextId(SceUserServiceUserId user_id, SceNpServiceLabel label) {
@@ -288,9 +373,29 @@ __attribute__((weak)) bool MtNetMediator::isSceUserId(s32 xf_user_no) {
     return {};
 }
 
-__attribute__((weak)) SceUserServiceUserId MtNetMediator::getSceUserId(s32 xf_user_no) {
-    DDON_STUB("MtNetMediator::getSceUserId")
-    return {};
+SceUserServiceUserId MtNetMediator::getSceUserId(s32 xf_user_no) {
+    if (scePthreadMutexLock(&mCS.mCSection) == 0) {
+        s32 i = 0;
+        SceUserServiceUserId v2_3;
+        for (;;) {
+            if (mPsnUsrInfoTbl[i].mIsValid) {
+                if (mPsnUsrInfoTbl[i].mXfUserNo == xf_user_no) {
+                    v2_3 = mPsnUsrInfoTbl[i].mSceUserId;
+                    break;
+                }
+            }
+            if ((i + 1) <= 4) {
+                i = i + 1;
+            } else {
+                v2_3 = -1;
+                break;
+            }
+        }
+        if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+            return v2_3;
+        }
+    }
+    abort();
 }
 
 __attribute__((weak)) void MtNetMediator::clearPsnUsrInfo(MtNetMediator::PsnUsrInfo& usr_info) {

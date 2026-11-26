@@ -26,13 +26,13 @@ inline void cEffectCorrectParam::operator delete(void* p_addr) {
 }
 
 cEffectCorrectParam::cEffectCorrectParam() {
-    mTime = 0u;
-    mEfcColorParam.Color = MtColor::White;
+    mTime = 0;
+    mEfcColorParam.Color.rgba = MtColor::White.rgba;
     mEfcColorParam.ColorBlend = 0.0f;
     mEfcColorParam.Intensity = 1.0f;
     mEfcColorParam.IntensityBlend = 0.0f;
     mEfcColorParam.EnvMapPowerScale = 1.0f;
-    mEfcColorParam.ShadowColor = MtColor::White;
+    mEfcColorParam.ShadowColor.rgba = MtColor::White.rgba;
     mEfcColorParam.ShadowColorBlend = 0.0f;
     mEfcColorParam.ShadowIntensity = 1.0f;
     mEfcColorParam.ShadowIntensityBlend = 0.0f;

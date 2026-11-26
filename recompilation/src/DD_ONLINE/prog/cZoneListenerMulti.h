@@ -29,6 +29,7 @@ class cZoneCategoryUnitCtrl;
 namespace nZone { class ShapeInfoBase; }
 namespace nZone { class cLayoutElement; }
 class rZone;
+class sWeatherManager;
 
 // Declarations
 class cZoneContactInfo;
@@ -181,7 +182,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cZoneMultiListener();
-    virtual ~cZoneMultiListener();
+    virtual ~cZoneMultiListener() {}
     void setMyPos(const MtVector3& pos);
     void setMyLine(const MtLineSegment&);
     void moveMultiListener(cZoneMultiStack* pStack);
@@ -346,6 +347,7 @@ public:
 
 class cZoneListenerMulti : public cZoneMultiListener
 {
+    friend class sWeatherManager;
 public:
     class MyDTI;
 public:

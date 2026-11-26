@@ -39,9 +39,15 @@ cJumpParam::cJumpParam() {
 cJumpParam::~cJumpParam() {
 }
 
-__attribute__((weak)) void cJumpParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cJumpParam::createProperty")
-    /* stub */
+void cJumpParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mSpeedY", &mSpeedY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpeedZ", &mSpeedZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGravity", &mGravity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAddMoveSpeedXZ", &mAddMoveSpeedXZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDampingZ", &mDampingZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsAwakening", &mIsAwakening, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAwakeJumpAdd", &mAwakeJumpAdd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mComment", &mComment, 256u, 0u);
 }
 
 inline cJumpParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

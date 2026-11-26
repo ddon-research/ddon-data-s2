@@ -4,6 +4,9 @@
 #include <cstddef>
 
 // Forward declarations
+class AHShapeCone;
+class AHShapeCylinder;
+class AHShapeSphere;
 class MtAABB;
 class MtCollision;
 namespace MtCollisionUtil { class MtLinerTree; }
@@ -15,6 +18,7 @@ class MtGeomCylinder;
 class MtGeomLine;
 class MtGeomLineSegment;
 class MtGeomOBB;
+class MtGeomRay;
 class MtGeomSphere;
 class MtGeomTriangle;
 struct MtHalf2;
@@ -22,17 +26,19 @@ struct MtInt3;
 class MtMatrix33;
 class MtTriangle;
 class cAIGrid;
+class cAIPathTrace;
 class cAISvPathFinding;
 class cAnimalData;
 class cAreaHit;
 class cBVHCollision;
-class cCatchInfo;
-class cCaughtInfo;
+class cCamImpTarget;
+class cCamInterporateAng3Time;
+class cCameraInfo;
 class cCaughtInfoParam;
 class cCharacterEditCameraParam;
 class cCharacterEditMuscle;
 class cChildRegionStatus;
-class cChildRegionStatusParam;
+class cCollGeom;
 class cCommonSkyFogData;
 class cContextInterface;
 class cDDMaterialCtrl;
@@ -43,7 +49,6 @@ class cDayNightColorFogParam;
 class cEmEffectTable;
 class cEmScaleTable;
 class cEmSoundTable;
-class cEmWeakSafe;
 class cErosionRegionScaleChange;
 class cFSMUnit;
 class cFacialEditJointPreset;
@@ -54,35 +59,39 @@ class cGroundAttrInfo;
 class cGroupParam;
 class cHitInfoAfter;
 class cHitInfoAfterLocal;
-class cJointEx2;
-class cJointInfo;
 class cJumpParamCtrl;
 class cMenuEntryBoardItemList;
-class cMyRoomActParam;
 class cPRTManager;
+class cParticleGenerator;
+class cPawnActInterWarp;
 class cPlActWpnBow;
+class cPrioThkCmdRetGoto;
 class cQuakeParam;
+class cSetInfoCoord;
 class cSetInfoOmBadStatus;
 class cSetInfoOmDoor;
 class cSetInfoOmNav;
 class cSetInfoOmOneWay;
 class cShlLogNode;
+class cShlParamFollowMove;
+class cShlParamGeneTarget;
+class cShlParamGenerator;
+class cShlParamRenmadanCtrl;
+class cShlParamSpline;
 class cShotReqInfo;
 class cSoundTriggerLayoutInfo;
 class cStageMap;
 class cStartPos;
-class cTargetCursorOffset;
 namespace cThinkMgrName { class cThinkMgrTargetData; }
 class cWeaponOffset;
 class cWeatherFogInfo;
 class cWeatherParam;
-class cZoneContactInfo;
-class cZoneListenerEffect;
 class cZoneListenerLight;
 class cpCatchCtrl;
 class cpCheckWallCliff;
 class cpHeadCtrl;
 class cpHugeble;
+class cpHumanWarpCtrl;
 class cpJob02;
 class cpJob06;
 class cpJob09;
@@ -91,20 +100,28 @@ class cpShakeCtrl;
 class cpShlShotCtrl;
 class cpSlave;
 class cpWallMaria;
+namespace nCollision { class cCollisionNodeGroup; }
 namespace nMarker { class cMarkerInfo; }
+namespace nShlBase { class cShlFuwaMove; }
 namespace nShlBase { class cShlStickContextInfo; }
 namespace nShlStick { class cStickObjectCtrl; }
+namespace nZone { class ShapeInfoAABB; }
 namespace nZone { class ShapeInfoArea; }
+namespace nZone { class ShapeInfoBase; }
 namespace nZone { class ShapeInfoGlobal; }
+namespace nZone { class ShapeInfoOBB; }
 namespace nZone { class ShapeInfoPanel; }
+namespace nZone { class ShapeInfoPoint; }
+namespace nZone { class ShapeInfoSphere; }
 class rDeformWeightMap;
 class rDungeonMarker;
 class rFieldAreaMarkerInfo;
+class rFullbodyIKHuman2;
 class rGeometry2;
 class rLocationData;
 class rMapSpotData;
 class rNavigationMesh;
-class rOmKey;
+class rOccluder;
 class rPlantTree;
 class rQuestMarkerInfo;
 class rStageConnect;
@@ -118,26 +135,44 @@ class sGUIExt;
 class sGame;
 class sOmManager;
 class sSoundManager;
+class sWeatherManager;
 class uAnimal;
 class uBaseEffect;
 class uBloomFilter;
 class uCamera;
 class uCharacter;
+class uCnsBowUpper;
 class uCnsIK;
+class uCnsShakeCtrl;
+class uCnsTurnUpper;
 class uCorePointSearch;
 class uCustomSimSoftBody;
+class uDDOModel;
 class uEfCam;
 class uEffect;
 class uFreeCamera;
 class uGUIAim;
+class uGUIBase;
+class uGUIBoughtBox;
+class uGUICraft;
+class uGUIPopCmd01;
+class uGUISkill;
 class uGrassWindDirection;
 class uHuman;
 class uLight;
+class uMotionCamera;
 class uOmModel;
+class uShlArrowInc;
 class uShlBase;
+class uShlFollowMove;
+class uShlGeneAlongGround;
+class uShlGenerator;
+class uShlHoming;
+class uShlMeteo;
+class uShlRenmadanCtrl;
+class uShlSpeed;
 class uSimSoftBody;
 class uSky;
-class uSoundGenerator;
 class uSoundSequenceSe;
 
 // Declarations
@@ -515,6 +550,9 @@ public:
 
 class alignas(16) MtVector3
 {
+    friend class AHShapeCone;
+    friend class AHShapeCylinder;
+    friend class AHShapeSphere;
     friend class MtAABB;
     friend class MtCollision;
     friend class MtCollisionUtil::MtLinerTree;
@@ -524,21 +562,24 @@ class alignas(16) MtVector3
     friend class MtGeomLine;
     friend class MtGeomLineSegment;
     friend class MtGeomOBB;
+    friend class MtGeomRay;
     friend class MtGeomSphere;
     friend class MtGeomTriangle;
     friend class MtTriangle;
     friend class cAIGrid;
+    friend class cAIPathTrace;
     friend class cAISvPathFinding;
     friend class cAnimalData;
     friend class cAreaHit;
     friend class cBVHCollision;
-    friend class cCatchInfo;
-    friend class cCaughtInfo;
+    friend class cCamImpTarget;
+    friend class cCamInterporateAng3Time;
+    friend class cCameraInfo;
     friend class cCaughtInfoParam;
     friend class cCharacterEditCameraParam;
     friend class cCharacterEditMuscle;
     friend class cChildRegionStatus;
-    friend class cChildRegionStatusParam;
+    friend class cCollGeom;
     friend class cCommonSkyFogData;
     friend class cContextInterface;
     friend class cDDMaterialCtrl;
@@ -549,7 +590,6 @@ class alignas(16) MtVector3
     friend class cEmEffectTable;
     friend class cEmScaleTable;
     friend class cEmSoundTable;
-    friend class cEmWeakSafe;
     friend class cErosionRegionScaleChange;
     friend class cFSMUnit;
     friend class cFacialEditJointPreset;
@@ -560,35 +600,39 @@ class alignas(16) MtVector3
     friend class cGroupParam;
     friend class cHitInfoAfter;
     friend class cHitInfoAfterLocal;
-    friend class cJointEx2;
-    friend class cJointInfo;
     friend class cJumpParamCtrl;
     friend class cMenuEntryBoardItemList;
-    friend class cMyRoomActParam;
     friend class cPRTManager;
+    friend class cParticleGenerator;
+    friend class cPawnActInterWarp;
     friend class cPlActWpnBow;
+    friend class cPrioThkCmdRetGoto;
     friend class cQuakeParam;
+    friend class cSetInfoCoord;
     friend class cSetInfoOmBadStatus;
     friend class cSetInfoOmDoor;
     friend class cSetInfoOmNav;
     friend class cSetInfoOmOneWay;
     friend class cShlLogNode;
+    friend class cShlParamFollowMove;
+    friend class cShlParamGeneTarget;
+    friend class cShlParamGenerator;
+    friend class cShlParamRenmadanCtrl;
+    friend class cShlParamSpline;
     friend class cShotReqInfo;
     friend class cSoundTriggerLayoutInfo;
     friend class cStageMap;
     friend class cStartPos;
-    friend class cTargetCursorOffset;
     friend class cThinkMgrName::cThinkMgrTargetData;
     friend class cWeaponOffset;
     friend class cWeatherFogInfo;
     friend class cWeatherParam;
-    friend class cZoneContactInfo;
-    friend class cZoneListenerEffect;
     friend class cZoneListenerLight;
     friend class cpCatchCtrl;
     friend class cpCheckWallCliff;
     friend class cpHeadCtrl;
     friend class cpHugeble;
+    friend class cpHumanWarpCtrl;
     friend class cpJob02;
     friend class cpJob06;
     friend class cpJob09;
@@ -597,20 +641,28 @@ class alignas(16) MtVector3
     friend class cpShlShotCtrl;
     friend class cpSlave;
     friend class cpWallMaria;
+    friend class nCollision::cCollisionNodeGroup;
     friend class nMarker::cMarkerInfo;
+    friend class nShlBase::cShlFuwaMove;
     friend class nShlBase::cShlStickContextInfo;
     friend class nShlStick::cStickObjectCtrl;
+    friend class nZone::ShapeInfoAABB;
     friend class nZone::ShapeInfoArea;
+    friend class nZone::ShapeInfoBase;
     friend class nZone::ShapeInfoGlobal;
+    friend class nZone::ShapeInfoOBB;
     friend class nZone::ShapeInfoPanel;
+    friend class nZone::ShapeInfoPoint;
+    friend class nZone::ShapeInfoSphere;
     friend class rDeformWeightMap;
     friend class rDungeonMarker;
     friend class rFieldAreaMarkerInfo;
+    friend class rFullbodyIKHuman2;
     friend class rGeometry2;
     friend class rLocationData;
     friend class rMapSpotData;
     friend class rNavigationMesh;
-    friend class rOmKey;
+    friend class rOccluder;
     friend class rPlantTree;
     friend class rQuestMarkerInfo;
     friend class rStageConnect;
@@ -624,26 +676,44 @@ class alignas(16) MtVector3
     friend class sGame;
     friend class sOmManager;
     friend class sSoundManager;
+    friend class sWeatherManager;
     friend class uAnimal;
     friend class uBaseEffect;
     friend class uBloomFilter;
     friend class uCamera;
     friend class uCharacter;
+    friend class uCnsBowUpper;
     friend class uCnsIK;
+    friend class uCnsShakeCtrl;
+    friend class uCnsTurnUpper;
     friend class uCorePointSearch;
     friend class uCustomSimSoftBody;
+    friend class uDDOModel;
     friend class uEfCam;
     friend class uEffect;
     friend class uFreeCamera;
     friend class uGUIAim;
+    friend class uGUIBase;
+    friend class uGUIBoughtBox;
+    friend class uGUICraft;
+    friend class uGUIPopCmd01;
+    friend class uGUISkill;
     friend class uGrassWindDirection;
     friend class uHuman;
     friend class uLight;
+    friend class uMotionCamera;
     friend class uOmModel;
+    friend class uShlArrowInc;
     friend class uShlBase;
+    friend class uShlFollowMove;
+    friend class uShlGeneAlongGround;
+    friend class uShlGenerator;
+    friend class uShlHoming;
+    friend class uShlMeteo;
+    friend class uShlRenmadanCtrl;
+    friend class uShlSpeed;
     friend class uSimSoftBody;
     friend class uSky;
-    friend class uSoundGenerator;
     friend class uSoundSequenceSe;
 public:
     MtVector3();
@@ -974,6 +1044,41 @@ inline s32 MtMath::absi(s32 i) {
 inline MtMatrix::MtMatrix() {
 }
 
+inline MtMatrix::MtMatrix(const MtMatrix& s) {
+    this->m[0] = s.m[0];
+    this->m[1] = s.m[1];
+    this->m[2] = s.m[2];
+    this->m[3] = s.m[3];
+}
+
+inline MtMatrix::MtMatrix(const MtFloat3x3& v) {
+    this->m[0] = MtVector4(v.m[0][0], v.m[0][1], v.m[0][2], 0.0f);
+    this->m[1] = MtVector4(v.m[1][0], v.m[1][1], v.m[1][2], 0.0f);
+    this->m[2] = MtVector4(v.m[2][0], v.m[2][1], v.m[2][2], 0.0f);
+    this->m[3] = MtVector4(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+inline MtMatrix::MtMatrix(const MtFloat4x3& v) {
+    this->m[0] = MtVector4(v.m[0][0], v.m[0][1], v.m[0][2], 0.0f);
+    this->m[1] = MtVector4(v.m[1][0], v.m[1][1], v.m[1][2], 0.0f);
+    this->m[2] = MtVector4(v.m[2][0], v.m[2][1], v.m[2][2], 0.0f);
+    this->m[3] = MtVector4(v.m[3][0], v.m[3][1], v.m[3][2], 1.0f);
+}
+
+inline MtMatrix::MtMatrix(const MtFloat3x4& v) {
+    this->m[0] = MtVector4(v.m[0][0], v.m[0][1], v.m[0][2], v.m[0][3]);
+    this->m[1] = MtVector4(v.m[1][0], v.m[1][1], v.m[1][2], v.m[1][3]);
+    this->m[2] = MtVector4(v.m[2][0], v.m[2][1], v.m[2][2], v.m[2][3]);
+    this->m[3] = MtVector4(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+inline MtMatrix::MtMatrix(const MtFloat4x4& v) {
+    this->m[0] = MtVector4(v.m[0][0], v.m[0][1], v.m[0][2], v.m[0][3]);
+    this->m[1] = MtVector4(v.m[1][0], v.m[1][1], v.m[1][2], v.m[1][3]);
+    this->m[2] = MtVector4(v.m[2][0], v.m[2][1], v.m[2][2], v.m[2][3]);
+    this->m[3] = MtVector4(v.m[3][0], v.m[3][1], v.m[3][2], v.m[3][3]);
+}
+
 inline MtQuaternion::MtQuaternion() {
 }
 
@@ -982,6 +1087,14 @@ inline MtQuaternion::MtQuaternion(const MtQuaternion& v) {
     this->y = v.y;
     this->z = v.z;
     this->w = v.w;
+}
+
+inline const MtQuaternion& MtQuaternion::operator=(const MtQuaternion& v) {
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
+    this->w = v.w;
+    return *this;
 }
 
 inline MtVector2::MtVector2() {
@@ -1084,6 +1197,18 @@ inline MtVector3 MtVector3::operator+(f32 s) const {
 
 inline MtVector3 MtVector3::operator-(const MtVector3& s) const {
     return MtVector3(this->x - s.x, this->y - s.y, this->z - s.z);
+}
+
+inline f32 MtVector3::innerProduct(const MtVector3& s) const {
+    return (x * s.x + y * s.y) + z * s.z;
+}
+
+inline f32 MtVector3::lengthSq() const {
+    return innerProduct(*this);
+}
+
+inline const MtVector3 MtVector3::normalizeFast() const {
+    return *this * (1.0f / __builtin_sqrtf(lengthSq()));
 }
 
 inline MtVector3 MtVector3::operator-(f32 s) const {

@@ -26,9 +26,14 @@ class rSoundStreamRequest;
 class uSoundSequenceSe;
 
 // Declarations
+class cSoundGeneratorLayoutInfo;
 class cSoundGeneratorListener;
+namespace nSoundGenerator { class cBaseContents; }
 namespace nSoundGenerator { class cCategory; }
+namespace nSoundGenerator { class cFreeWorkContents; }
+namespace nSoundGenerator { class cSeContents; }
 namespace nSoundGenerator { class cSeqSeContents; }
+namespace nSoundGenerator { class cStreamContents; }
 class uSoundGenerator;
 
 // Type aliases from DWARF
@@ -39,6 +44,43 @@ using f32 = float;
 using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
+
+class cSoundGeneratorLayoutInfo : public cSoundLayoutInfo
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cSoundGeneratorLayoutInfo();
+    virtual ~cSoundGeneratorLayoutInfo();
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual void setContentsIndex(nZone::cLayoutElement* pLayout);  // vtable slot 7
+    virtual s32 getContentsIndex(u32 index);  // vtable slot 8
+protected:
+    s32 mContentsIndex[5];  // offset: 0x14
+public:
+    static MyDTI DTI;
+};
 
 class cSoundGeneratorListener : public cSoundZoneListener
 {
@@ -108,6 +150,89 @@ namespace nSoundGenerator {
 }  // namespace nSoundGenerator
 
 namespace nSoundGenerator {
+    class cFreeWorkContents : public nSoundGenerator::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cFreeWorkContents();
+        virtual ~cFreeWorkContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        virtual void createPropertyForUI(MtPropertyList& s);  // vtable slot 6
+        s32 getFreeWork(u32 index) const;
+        void setFreeWork(s32, u32);
+    public:
+        s32 mFreeWork[4];  // offset: 0x1c
+        static MyDTI DTI;
+        static const u32 FREE_WORK_NUM = 4;
+    };
+}  // namespace nSoundGenerator
+
+namespace nSoundGenerator {
+    class cSeContents : public nSoundGenerator::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cSeContents();
+        virtual ~cSeContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        virtual void createPropertyForUI(MtPropertyList& s);  // vtable slot 6
+        u32 getRequestNo() const;
+        void setRequestNo(u32);
+        rSoundRequest* getRequestResource() const;
+        void setRequestResource(rSoundRequest*);
+    private:
+        u32 mRequestNo;  // offset: 0x1c
+        rSoundRequest* mpRequest;  // offset: 0x20
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundGenerator
+
+namespace nSoundGenerator {
     class cSeqSeContents : public nSoundGenerator::cCategory
     {
     public:
@@ -142,6 +267,49 @@ namespace nSoundGenerator {
         void setSequenceSeResource(rSoundSequenceSe*);
     private:
         rSoundSequenceSe* mpSequenceSe;  // offset: 0x20
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundGenerator
+
+namespace nSoundGenerator {
+    class cStreamContents : public nSoundGenerator::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cStreamContents();
+        virtual ~cStreamContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        virtual void createPropertyForUI(MtPropertyList& s);  // vtable slot 6
+        u32 getStreamRequestNo() const;
+        void setStreamRequestNo(u32);
+        rSoundStreamRequest* getStreamRequestResource() const;
+        void setStreamRequestResource(rSoundStreamRequest*);
+    private:
+        u32 mStreamRequestNo;  // offset: 0x1c
+        rSoundStreamRequest* mpStreamRequest;  // offset: 0x20
     public:
         static MyDTI DTI;
     };
@@ -321,6 +489,58 @@ public:
     static const s32 OCC_MOVE_LINE_ALL = -1;
 };
 
+namespace nSoundGenerator {
+    class cBaseContents : public nSoundGenerator::cCategory
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cBaseContents();
+        virtual ~cBaseContents();
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        virtual void createPropertyForUI(MtPropertyList& s);  // vtable slot 6
+        f32 getStopDistance() const;
+        void setStopDistance(f32);
+    private:
+        f32 mStopDist;  // offset: 0x1c
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nSoundGenerator
+
+inline void* cSoundGeneratorLayoutInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cSoundGeneratorLayoutInfo::cSoundGeneratorLayoutInfo() {
+    this->mContentsIndex[4] = -1;
+    this->mContentsIndex[2] = -1;
+    this->mContentsIndex[3] = -1;
+    this->mContentsIndex[0] = -1;
+    this->mContentsIndex[1] = -1;
+}
+
 inline void* cSoundGeneratorListener::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -328,11 +548,27 @@ inline void* cSoundGeneratorListener::operator new(size_t sz, void* p_addr) {
 inline cSoundGeneratorListener::cSoundGeneratorListener() {
 }
 
+inline void* nSoundGenerator::cBaseContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nSoundGenerator::cCategory::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void* nSoundGenerator::cFreeWorkContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSoundGenerator::cSeContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nSoundGenerator::cSeqSeContents::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nSoundGenerator::cStreamContents::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 

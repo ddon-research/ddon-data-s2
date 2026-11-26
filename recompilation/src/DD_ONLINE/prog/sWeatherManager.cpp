@@ -1,5 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_pthread.h>
+#include <stdlib.h>
 #include "sWeatherManager.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCRC.h"
@@ -58,6 +60,7 @@
 #include "uSkyCloud.h"
 #include "uSkyExt.h"
 #include "uSkyFog.h"
+#include "uSoundTrigger.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -182,30 +185,15 @@ static auto ddon_emit_0x01acffc0 __attribute__((used)) = &cCustomWeatherParam::g
 
 static auto ddon_emit_0x01acffd0 __attribute__((used)) = &cCustomWeatherParam::getCustomShadowGroup1;
 
-__attribute__((weak)) MtVector3 cCustomWeatherParam::getCustomShadowDir() const {
-    DDON_STUB("cCustomWeatherParam::getCustomShadowDir")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01acffe0 __attribute__((used)) = &cCustomWeatherParam::getCustomShadowDir;
 
-__attribute__((weak)) MtVector3 cCustomWeatherParam::getCustomSunDir() const {
-    DDON_STUB("cCustomWeatherParam::getCustomSunDir")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01ad0010 __attribute__((used)) = &cCustomWeatherParam::getCustomSunDir;
 
-__attribute__((weak)) MtVector3 cCustomWeatherParam::getCustomHemiLightColor() const {
-    DDON_STUB("cCustomWeatherParam::getCustomHemiLightColor")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01ad0040 __attribute__((used)) = &cCustomWeatherParam::getCustomHemiLightColor;
 
-__attribute__((weak)) MtVector3 cCustomWeatherParam::getCustomHemiLightRevColor() const {
-    DDON_STUB("cCustomWeatherParam::getCustomHemiLightRevColor")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01ad0070 __attribute__((used)) = &cCustomWeatherParam::getCustomHemiLightRevColor;
 
-__attribute__((weak)) MtVector3 cCustomWeatherParam::getCustomGrassWindDir() const {
-    DDON_STUB("cCustomWeatherParam::getCustomGrassWindDir")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01ad00a0 __attribute__((used)) = &cCustomWeatherParam::getCustomGrassWindDir;
 
 static auto ddon_emit_0x01ad00e0 __attribute__((used)) = &cCustomWeatherParam::getCustomGrassFadeBeginDistance;
 
@@ -217,10 +205,7 @@ static auto ddon_emit_0x01ad0110 __attribute__((used)) = &cCustomWeatherParam::g
 
 static auto ddon_emit_0x01ad0120 __attribute__((used)) = &cCustomWeatherParam::getCustomFogExponentDensity;
 
-__attribute__((weak)) MtVector3 cCustomWeatherParam::getCustomFogColor() const {
-    DDON_STUB("cCustomWeatherParam::getCustomFogColor")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01ad0130 __attribute__((used)) = &cCustomWeatherParam::getCustomFogColor;
 
 __attribute__((weak)) void cCustomWeatherParam::createProperty(MtPropertyList& s) {
     DDON_STUB("cCustomWeatherParam::createProperty")
@@ -262,9 +247,10 @@ __attribute__((noinline)) sWeatherManager::~sWeatherManager() {
     /* stub */
 }
 
-__attribute__((weak)) void sWeatherManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("sWeatherManager::createProperty")
-    /* stub */
+void sWeatherManager::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mEventWeather", static_cast<MtObject*>(&mEventWeather), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeatherChangeFrame", &mWeatherChangeFrame, 0u, 0u);
 }
 
 void sWeatherManager::reset() {
@@ -275,9 +261,29 @@ void sWeatherManager::reset() {
     clearWeatherStageUnit();
 }
 
-__attribute__((weak)) void sWeatherManager::move() {
-    DDON_STUB("sWeatherManager::move")
-    /* stub */
+void sWeatherManager::move() {
+    updatePtr();
+    updateCustomWeather();
+    updateWeatherTime();
+    MtVector3 frame56(calcDummySkySunDirection());
+    mSunDirection.x = frame56.x;
+    mSunDirection.y = frame56.y;
+    mSunDirection.z = frame56.z;
+    mSunDirection.pad_ = 0.0f;
+    updateSkyParam();
+    updateWeatherScript();
+    updateLightParam();
+    updateWeatherParamBlend();
+    if (0.5f > mDayNightBlendRate) {
+        static_cast<sEffectExt*>(sEffect::getInstance())->mTimeFilter = 1;
+    } else {
+        static_cast<sEffectExt*>(sEffect::getInstance())->mTimeFilter = 2;
+    }
+    updateZoneIndoor();
+    updateOption();
+    if (mWeatherSetupRno <= 2u) {
+        mWeatherSetupRno = mWeatherSetupRno + 1u;
+    }
 }
 
 void sWeatherManager::setSyncGame(bool sync) {
@@ -1180,14 +1186,21 @@ __attribute__((weak)) void sWeatherManager::releaseLightZoneRes() {
     /* stub */
 }
 
-__attribute__((weak)) u32 sWeatherManager::addLightZoneRes(rZone* pZone, const MtVector3& pos) {
-    DDON_STUB("sWeatherManager::addLightZoneRes")
-    return {};
+u32 sWeatherManager::addLightZoneRes(rZone* pZone, const MtVector3& pos) {
+    return mLightAndFogZoneMultiListener.mStack.addZone(pZone, pos);
 }
 
-__attribute__((weak)) void sWeatherManager::eraseLightZoneRes(u32 handle) {
-    DDON_STUB("sWeatherManager::eraseLightZoneRes")
-    /* stub */
+void sWeatherManager::eraseLightZoneRes(u32 handle) {
+    mLightAndFogZoneMultiListener.mStack.releaseZone(handle);
+}
+
+inline void sWeatherManager::initLightZoneRes() {
+    mLightAndFogZoneMultiListener.mStack.releaseZoneAll();
+    mLightAndFogZoneMultiListener.mStack.addZone(mpLightAndFogZone.mpPtr, MtVector3::Zero);
+}
+
+inline void sWeatherManager::eraseLightZoneRes() {
+    mLightAndFogZoneMultiListener.mStack.releaseZoneAll();
 }
 
 __attribute__((weak)) void sWeatherManager::updateLightParam() {
@@ -1231,9 +1244,15 @@ __attribute__((weak)) cCommonSkyFogData sWeatherManager::getIndoorSkyColorFogDat
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 sWeatherManager::getSkyAmbientColor(f32 height, f32 scale) {
-    DDON_STUB("sWeatherManager::getSkyAmbientColor")
-    __builtin_unreachable();
+MtVector3 sWeatherManager::getSkyAmbientColor(f32 height, f32 scale) {
+    MtVector3 result;
+    f32 t0 = mSunAmbientColorCloud.y;
+    f32 t1 = mSunAmbientColorCloud.z;
+    result.x = mSunAmbientColorCloud.x * scale;
+    result.y = t0 * scale;
+    result.z = t1 * scale;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 inline void sWeatherManager::updateWaterLRate() {
@@ -1250,6 +1269,12 @@ __attribute__((weak)) void sWeatherManager::updateEffectColorParam() {
     /* stub */
 }
 
+inline void sWeatherManager::eraseZoneIndoor() {
+    mZoneIndoorListenerScr.mStack.releaseZoneAll();
+    mZoneIndoorListenerEfc.mStack.releaseZoneAll();
+    mZoneIndoorListenerSnd.mStack.releaseZoneAll();
+}
+
 __attribute__((weak)) cZoneIndoorHandle sWeatherManager::addZoneIndoorRes(rZone* pComZone, rZone* pScrZone, rZone* pEfcZone, const MtVector3& pos) {
     DDON_STUB("sWeatherManager::addZoneIndoorRes")
     __builtin_unreachable();
@@ -1260,12 +1285,22 @@ __attribute__((weak)) cZoneIndoorHandle sWeatherManager::addZoneIndoorRes(rZone*
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void sWeatherManager::eraseZoneIndoorRes(cZoneIndoorHandle& handle) {
-    DDON_STUB("sWeatherManager::eraseZoneIndoorRes")
-    /* stub */
+void sWeatherManager::eraseZoneIndoorRes(cZoneIndoorHandle& handle) {
+    mZoneIndoorListenerScr.mStack.releaseZone(handle.mHandles.elems[0]);
+    mZoneIndoorListenerEfc.mStack.releaseZone(handle.mHandles.elems[1]);
+    mZoneIndoorListenerSnd.mStack.releaseZone(handle.mHandles.elems[2]);
+    mZoneIndoorListenerScr.mStack.releaseZone(handle.mHandles.elems[3]);
+    mZoneIndoorListenerEfc.mStack.releaseZone(handle.mHandles.elems[4]);
+    handle.clear();
 }
 
 __attribute__((weak)) void sWeatherManager::releaseZoneIndoorRes() {
+}
+
+inline void sWeatherManager::initZoneIndoorRes() {
+    mZoneIndoorListenerScr.mStack.releaseZoneAll();
+    mZoneIndoorListenerEfc.mStack.releaseZoneAll();
+    mZoneIndoorListenerSnd.mStack.releaseZoneAll();
 }
 
 __attribute__((weak)) void sWeatherManager::updateZoneIndoor() {
@@ -1334,14 +1369,66 @@ void sWeatherManager::callbackZoneIndoorNotifiedScr(const nZone::cLayoutElement&
     }
 }
 
-__attribute__((weak)) void sWeatherManager::callbackZoneIndoorNotifiedEfc(const nZone::cLayoutElement& e) {
-    DDON_STUB("sWeatherManager::callbackZoneIndoorNotifiedEfc")
-    /* stub */
+void sWeatherManager::callbackZoneIndoorNotifiedEfc(const nZone::cLayoutElement& e) {
+    u32 hit_contents_num = e.getContentsNum();
+    if (hit_contents_num != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            cZoneContents* t0 = e.getContents(i0_3);
+            if (t0 != nullptr) {
+                if (t0->isUse()) {
+                    const MtDTI& t1 = t0->getDTI();
+                    if (t1.getID() == cZoneIndoorWeatherEffectOff::DTI.mID) {
+                        mZoneIndoorEfcWeatherOff = true;
+                    } else {
+                        if (t1.getID() == cZoneIndoorScrlEfcOff::DTI.mID) {
+                            mZoneIndoorEfcEpvOff = true;
+                        }
+                    }
+                }
+            }
+            if (hit_contents_num != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void sWeatherManager::callbackZoneIndoorNotifiedSnd(const nZone::cLayoutElement& e) {
-    DDON_STUB("sWeatherManager::callbackZoneIndoorNotifiedSnd")
-    /* stub */
+void sWeatherManager::callbackZoneIndoorNotifiedSnd(const nZone::cLayoutElement& e) {
+    u32 hit_contents_num = e.getContentsNum();
+    if (hit_contents_num != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            cZoneContents* t0 = e.getContents(i0_3);
+            if (t0 != nullptr) {
+                if (t0->isUse()) {
+                    const MtDTI& t1 = t0->getDTI();
+                    if (t1.getID() == nSoundTrigger::cFreeWorkContents::DTI.mID) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 28)) == 1) {
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
+                                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                                    abort();
+                                    return;
+                                }
+                            }
+                            mZoneIndoorSoundReqNo = static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 32));
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
+                                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                    abort();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if ((i0_3 + 1u) < hit_contents_num) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) bool sWeatherManager::callbackZoneIndoorAnalyzeScr(cZoneContents& contents) {

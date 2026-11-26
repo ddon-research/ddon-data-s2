@@ -50,9 +50,8 @@ u32 cOmParam::getOmFlag() const {
     return mUseComponent;
 }
 
-__attribute__((weak)) bool cOmParam::isOmStatus(u32 flag) const {
-    DDON_STUB("cOmParam::isOmStatus")
-    return {};
+bool cOmParam::isOmStatus(u32 flag) const {
+    return (flag & mDetailBehavior) != 0;
 }
 
 bool cOmParam::isReqSeFlag(u32 flag) const {
@@ -91,7 +90,7 @@ inline rOmParam::rOmParam() {
     setAttribute(16u);
 }
 
-__attribute__((weak)) const MtDTI& rOmParam::getDataDTI() {
+const MtDTI& rOmParam::getDataDTI() {
     return cOmParam::DTI;
 }
 

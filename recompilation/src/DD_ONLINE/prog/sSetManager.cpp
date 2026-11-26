@@ -108,9 +108,10 @@ __attribute__((noinline)) sSetManager::~sSetManager() {
     /* stub */
 }
 
-__attribute__((weak)) void sSetManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("sSetManager::createProperty")
-    /* stub */
+void sSetManager::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSetup", &mIsSetup, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\210\206\345\211\262\347\204\241\345\212\271\343\203\246\343\203\213\343\203\203\343\203\210\343\201\257SBC\347\204\241\343\201\217\343\201\246\343\202\202\343\202\273\343\203\203\343\203\210\343\201\213", &mIsSetPersistentEvenIfNoSbc, 0u, 0u);
 }
 
 MtUI* sSetManager::createUI(MtProperty& prop) {
@@ -148,24 +149,24 @@ bool sSetManager::setKilledMgrData(sSetManager::ManageDataArrayCur& ar, const nL
         if (setNo > -1) {
             if (pGp != nullptr) {
                 const u32 t0 = layoutID.mLayoutID;
-                if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
                     if (scePthreadMutexLock(&mCS.mCSection) != 0) {
                         abort();
                     }
                 }
                 if ((ar.elems[(t0 <= 0x7FFFFu) ? (t0 >> 10) : 0u].mGroupData & 511u) == 511) {
                     u32 stageSeq = static_cast<sAreaExt*>(sArea::getInstance())->convertStageIndex(static_cast<s32>(layoutID.mLayoutID & 1023u));
-                    unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&ar.elems[(t0 <= 0x7FFFFu) ? (t0 >> 10) : 0u]) + 8);
+                    u32 t1 = ar.elems[(t0 <= 0x7FFFFu) ? (t0 >> 10) : 0u].mGroupData;
                     ar.elems[(t0 <= 0x7FFFFu) ? (t0 >> 10) : 0u].mGroupData = (t1 & 0xFFFFFE00u) | (stageSeq & 511u);
-                    ar.elems[(t0 <= 0x7FFFFu) ? (t0 >> 10) : 0u].mGroupData = static_cast<u32>(static_cast<unsigned long>(((t1 & 0xFFFFFE00u) | (stageSeq & 511u)) & 0xFFFC01FFu) | static_cast<unsigned long>((layoutID.mLayoutID >> 1) & 0x3FE00u));
-                    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+                    ar.elems[(t0 <= 0x7FFFFu) ? (t0 >> 10) : 0u].mGroupData = (((t1 & 0xFFFFFE00u) | (stageSeq & 511u)) & 0xFFFC01FFu) | ((layoutID.mLayoutID >> 1) & 0x3FE00u);
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
                         if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
                             abort();
                         }
                     }
                     return true;
                 } else {
-                    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
                         if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
                             abort();
                         }
@@ -228,14 +229,27 @@ __attribute__((weak)) void sSetManager::releaseSplitPartsSet(rLayout::TYPE lotTy
     /* stub */
 }
 
-__attribute__((weak)) bool sSetManager::isKilledEnemy(u32 group, u32 id) const {
-    DDON_STUB("sSetManager::isKilledEnemy")
-    return {};
+bool sSetManager::isKilledEnemy(u32 group, u32 id) const {
+    u32 t0 = nLayout::createUniqueID(nLayout::U_ENEMY, group, id, 0u, sGame::getInstance()->getStageNo());
+    return sContextManager::getInstance()->isDeadEnemy(t0);
 }
 
-__attribute__((weak)) bool sSetManager::isKilledEnemyGroup(u32 group) {
-    DDON_STUB("sSetManager::isKilledEnemyGroup")
-    return {};
+bool sSetManager::isKilledEnemyGroup(u32 group) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 936)) != 0) {
+        unsigned int i0 = 0;
+        do {
+            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 952)) + static_cast<unsigned long>(static_cast<int>(i0) * 8)) + 0)) + 44)) & 511u) == group) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 952)) + static_cast<unsigned long>(static_cast<int>(i0) * 8)) + 0)) != 0) {
+                    if ((mEmGroupDataCur.elems[(group <= 511u) ? group : 0u].mGroupData & 511u) != 511) {
+                        return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 952)) + static_cast<unsigned long>(static_cast<int>(i0) * 8)) + 0)) + 788)) != 0;
+                    }
+                }
+                return false;
+            }
+            i0 += 1u;
+        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 936)));
+    }
+    return false;
 }
 
 __attribute__((weak)) void sSetManager::notifyEmKilled(nLayout::stLayoutID layoutID, s32 setNo, uControl* pObj, u32 enemyId) {
@@ -428,13 +442,13 @@ __attribute__((weak)) void sSetManager::addRequestCreateContextInfo(u32 Id, u32 
 }
 
 void sSetManager::sendRequestCreateContext() {
-    u32 id = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 8);
-    u32 uniqueId = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 12);
-    s32 stageNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 16);
-    s32 encountArea = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 20);
-    cNetGameServer* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
-    if (t0->reqGetSetContext(id, uniqueId, stageNo, encountArea, static_cast<sAreaExt*>(sArea::getInstance())->isLobby())) {
-        sContextManager::getInstance()->createContextInstance(id, uniqueId, stageNo, encountArea);
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 8);
+    unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 12);
+    unsigned int t2 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 16);
+    unsigned int t3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 20);
+    cNetGameServer* t4 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (t4->reqGetSetContext(t0, t1, static_cast<s32>(t2), static_cast<s32>(t3), static_cast<sAreaExt*>(sArea::getInstance())->isLobby())) {
+        sContextManager::getInstance()->createContextInstance(t0, t1, static_cast<s32>(t2), static_cast<s32>(t3));
     }
     if (mRequestCreateContextInfo.mLength != 0) {
         u32 v0_0 = mRequestCreateContextInfo.mLength;
@@ -483,9 +497,26 @@ __attribute__((weak)) void sSetManager::setOmSetList(CDataStageLayoutID SLID, co
     /* stub */
 }
 
-__attribute__((weak)) void sSetManager::setIsDieStageBossFlag(CDataStageLayoutID SLID) {
-    DDON_STUB("sSetManager::setIsDieStageBossFlag")
-    /* stub */
+void sSetManager::setIsDieStageBossFlag(CDataStageLayoutID SLID) {
+    unsigned int v0_5 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 936);
+    if (v0_5 != 0) {
+        u32 group = SLID.m_unGroupID;
+        unsigned long v0_2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 952);
+        for (unsigned int i0_3 = 0;;) {
+            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(static_cast<int>(i0_3) * 8)) + 0)) + 44)) & 511u) != group) {
+                if ((i0_3 + 1u) < v0_5) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(static_cast<int>(i0_3) * 8)) + 0)) != 0) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(static_cast<int>(i0_3) * 8)) + 0)) + 300) = 1;
+                }
+                return;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sSetManager::setGatheringItemList(CDataStageLayoutID SLID, const u32 posId, const GatheringItemElementVec& list, bool isUseItemBreak) {
@@ -523,14 +554,56 @@ __attribute__((weak)) void sSetManager::requestGatherAgain(CDataStageLayoutID SL
     /* stub */
 }
 
-__attribute__((weak)) void sSetManager::requestSubGroupSetList(u32 groupId, u32 subGroupId) {
-    DDON_STUB("sSetManager::requestSubGroupSetList")
-    /* stub */
+void sSetManager::requestSubGroupSetList(u32 groupId, u32 subGroupId) {
+    if (groupId <= 511u) {
+        if ((subGroupId - 1u) <= 29u) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 936)) != 0) {
+                unsigned int v0_4 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 896);
+                if (v0_4 != 0) {
+                    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 912);
+                    for (unsigned int i0_2 = 0;;) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_2) * 8)) + 0)) != 0) {
+                            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_2) * 8)) + 0)) + 96)) >> 10) == groupId) {
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_2) * 8)) + 0)) + 124) = static_cast<unsigned int>(static_cast<unsigned long>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_2) * 8)) + 0)) + 124)) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(subGroupId) & 31)));
+                            }
+                        }
+                        if ((i0_2 + 1u) < v0_4) {
+                            i0_2 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void sSetManager::appearEnemySubGroup(CDataStageLayoutID SLID, u32 subGroupId) {
-    DDON_STUB("sSetManager::appearEnemySubGroup")
-    /* stub */
+void sSetManager::appearEnemySubGroup(CDataStageLayoutID SLID, u32 subGroupId) {
+    u32 t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->convertIdToStageNo(SLID.m_unStageID);
+    if (sGame::getInstance()->mStageNo == static_cast<int>(t0)) {
+        if (subGroupId != 0) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 936)) != 0) {
+                unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 896);
+                if (v0_0 != 0) {
+                    u32 group = SLID.m_unGroupID;
+                    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 912);
+                    for (unsigned int i0_5 = 0;;) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_5) * 8)) + 0)) != 0) {
+                            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_5) * 8)) + 0)) + 96)) >> 10) == group) {
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_5) * 8)) + 0)) + 128) = static_cast<unsigned int>(static_cast<unsigned long>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_5) * 8)) + 0)) + 128)) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(subGroupId + 255u) & 31)));
+                            }
+                        }
+                        if ((i0_5 + 1u) < v0_0) {
+                            i0_5 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sSetManager::destroyEnemySetList(CDataStageLayoutID SLID) {

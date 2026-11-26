@@ -30,9 +30,16 @@ inline void cEmEffectTable::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEmEffectTable::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cEmEffectTable::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEmEffectTable::createProperty")
-    /* stub */
+void cEmEffectTable::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIdx", &mIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDieNoCall", &mDieNoCall, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectSyncBitNo", &mEffectSyncBitNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectResNo", &mEffectResNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectEndType", &mEffectEndType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectIndexNo", &mEffectIndexNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectElementNo", &mEffectElementNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBoneNo", &mBoneNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetPos", &mOffsetPos, 0u, 0u);
 }
 
 inline cEmEffectTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -59,9 +66,8 @@ inline rEmEffectTable::rEmEffectTable() {
     setAttribute(16u);
 }
 
-__attribute__((weak)) const MtDTI& rEmEffectTable::getDataDTI() {
-    DDON_STUB("rEmEffectTable::getDataDTI")
-    __builtin_unreachable();
+const MtDTI& rEmEffectTable::getDataDTI() {
+    return cEmEffectTable::DTI;
 }
 
 MT_CTSTR rEmEffectTable::getExt() const {

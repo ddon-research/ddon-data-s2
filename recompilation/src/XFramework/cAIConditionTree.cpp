@@ -22,6 +22,10 @@ const MtDTI& cAIConditionTree::getDTI() const {
     return cAIConditionTree::DTI;
 }
 
+inline void cAIConditionTree::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIConditionTree::DTI)->memFree(p_addr);
+}
+
 cAIConditionTree::cAIConditionTree() {
     DDON_STUB("cAIConditionTree::cAIConditionTree")
     /* stub */
@@ -131,6 +135,10 @@ __attribute__((weak)) MtObject* cAIConditionTree::MyDTI::newInstance() const {
 
 const MtDTI& cAIConditionTree::TreeInfo::getDTI() const {
     return cAIConditionTree::TreeInfo::DTI;
+}
+
+inline void cAIConditionTree::TreeInfo::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIConditionTree::TreeInfo::DTI)->memFree(p_addr);
 }
 
 inline cAIConditionTree::TreeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

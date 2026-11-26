@@ -131,9 +131,8 @@ void uGUIPopCmd01::addItemSystemMenu(u32 msgId, uGUIPopBase::MODE mode, s32 errM
     _addItem2(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[1], msgId), mode, errMsg);
 }
 
-__attribute__((weak)) MtSize uGUIPopCmd01::getWindowSize() {
-    DDON_STUB("uGUIPopCmd01::getWindowSize")
-    __builtin_unreachable();
+MtSize uGUIPopCmd01::getWindowSize() {
+    return mWindow.getWindowSize();
 }
 
 s32 uGUIPopCmd01::getSMenuCursorY() {
@@ -144,9 +143,45 @@ s32 uGUIPopCmd01::getSMenuCursorY() {
     }
 }
 
-__attribute__((weak)) void uGUIPopCmd01::updateInit() {
-    DDON_STUB("uGUIPopCmd01::updateInit")
-    /* stub */
+void uGUIPopCmd01::updateInit() {
+    executeWindow(false);
+    if (mPosInit) {
+        if (mPosReserve.x == MtVector3::Zero.x) {
+            if (mPosReserve.y == MtVector3::Zero.y) {
+                if (mPosReserve.z == MtVector3::Zero.z) {
+                    if (!static_cast<sGUIExt*>(sGUI::getInstance())->isEnablePosPopCmd()) {
+                        if (mPosSetWaitTimer > 0) {
+                            mPosSetWaitTimer = mPosSetWaitTimer - 1;
+                        } else {
+                            MtVector3 frame56(static_cast<sGUIExt*>(sGUI::getInstance())->getPointerPosPopCmd());
+                            mPosPointer.x = frame56.x;
+                            mPosPointer.y = frame56.y;
+                            mPosPointer.z = frame56.z;
+                            mPosPointer.pad_ = 0.0f;
+                            mPosInit = false;
+                            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCmd01::updateWait);
+                        }
+                    } else {
+                        MtVector3 frame56(static_cast<sGUIExt*>(sGUI::getInstance())->getPointerPosPopCmd());
+                        mPosPointer.x = frame56.x;
+                        mPosPointer.y = frame56.y;
+                        mPosPointer.z = frame56.z;
+                        mPosPointer.pad_ = 0.0f;
+                        mPosInit = false;
+                        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCmd01::updateWait);
+                    }
+                } else {
+                    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCmd01::updateWait);
+                }
+            } else {
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCmd01::updateWait);
+            }
+        } else {
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCmd01::updateWait);
+        }
+    } else {
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCmd01::updateWait);
+    }
 }
 
 void uGUIPopCmd01::updateWait() {

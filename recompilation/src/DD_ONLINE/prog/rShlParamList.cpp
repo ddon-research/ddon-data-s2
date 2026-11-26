@@ -29,13 +29,19 @@ inline void cShlGroupParam::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) cShlGroupParam::~cShlGroupParam() {
-    DDON_STUB("cShlGroupParam::~cShlGroupParam")
-    /* stub */
+    mShlList.deleteAll(true);
 }
 
-__attribute__((weak)) void cShlGroupParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cShlGroupParam::createProperty")
-    /* stub */
+void cShlGroupParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "name", &name, 8192u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Num", reinterpret_cast<MT_MFUNC>(&::cShlGroupParam::getParamNum), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "epvPath", &epvPath[0], 32u, 2u);
+    s << MtProperty(static_cast<MtObject*>(this), "sePath", &sePath[0], 32u, 2u);
+    s << MtProperty(static_cast<MtObject*>(this), "colPath", &colPath, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ddoVersion", &ddoVersion, 8192u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "seOption", &seOption, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isNoArc", &isNoArc, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShlList", static_cast<MtObject*>(&mShlList), 0u, 0u);
 }
 
 const cShlParamBase* cShlGroupParam::getParam(u32 index) const {
@@ -60,18 +66,23 @@ const MtDTI& rShlParamList::getDTI() const {
     return rShlParamList::DTI;
 }
 
+inline void* rShlParamList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rShlParamList::DTI)->memAlloc(sz, align, rShlParamList::DTI.getID());
+}
+
 inline void rShlParamList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rShlParamList::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rShlParamList::~rShlParamList() {
-    DDON_STUB("rShlParamList::~rShlParamList")
-    /* stub */
+    mParamList.deleteAll(true);
 }
 
-__attribute__((weak)) void rShlParamList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rShlParamList::createProperty")
-    /* stub */
+void rShlParamList::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mParamList", static_cast<MtObject*>(&mParamList), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCmnEpvPath", &mCmnEpvPath, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCmnSePath", &mCmnSePath, 0u, 0u);
 }
 
 __attribute__((weak)) void rShlParamList::clear() {
@@ -138,8 +149,7 @@ inline rShlParamList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 rShlParamList::MyDTI rShlParamList::DTI("rShlParamList", &::cResource::DTI, 160ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rShlParamList::MyDTI::newInstance() const {
-    DDON_STUB("rShlParamList::MyDTI::newInstance")
-    return nullptr;
+MtObject* rShlParamList::MyDTI::newInstance() const {
+    return new (16u) rShlParamList;
 }
 

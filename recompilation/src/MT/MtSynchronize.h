@@ -3,9 +3,14 @@
 #include <cstdint>
 #include <cstddef>
 
+#include <_pthread.h>
+#include <stdlib.h>
+
 // Forward declarations
+namespace MtNet { namespace PS4Psn { class Context; } }
 class MtNetContext;
 class MtNetCore;
+class MtNetFriendList;
 class MtNetMediator;
 class MtNetObject;
 class MtNetRequestController;
@@ -15,6 +20,7 @@ struct _SceKernelSema;
 class aStage;
 class cAIService;
 namespace cAcquirement { class cSkillDataBase; }
+namespace cEvaluationName { class cEvaluation; }
 class cNetGameServer;
 class cSoundLimitter;
 class cZoneMultiStack;
@@ -60,6 +66,7 @@ class sSoundExt;
 class sSoundManager;
 class sUnit;
 class sUnitManager;
+class sWeatherManager;
 class sZone;
 class sZoneUnitCtrl;
 class uGUIMenuComm;
@@ -82,8 +89,10 @@ using u32 = unsigned int;
 
 class MtCriticalSection
 {
+    friend class MtNet::PS4Psn::Context;
     friend class MtNetContext;
     friend class MtNetCore;
+    friend class MtNetFriendList;
     friend class MtNetMediator;
     friend class MtNetObject;
     friend class MtNetRequestController;
@@ -91,6 +100,7 @@ class MtCriticalSection
     friend class aStage;
     friend class cAIService;
     friend class cAcquirement::cSkillDataBase;
+    friend class cEvaluationName::cEvaluation;
     friend class cNetGameServer;
     friend class cSoundLimitter;
     friend class cZoneMultiStack;
@@ -135,6 +145,7 @@ class MtCriticalSection
     friend class sSoundManager;
     friend class sUnit;
     friend class sUnitManager;
+    friend class sWeatherManager;
     friend class sZone;
     friend class sZoneUnitCtrl;
     friend class uGUIMenuComm;
@@ -181,3 +192,15 @@ namespace nWin32Detour {
         SceKernelEventFlag mEventFlag;  // offset: 0x0
     };
 }  // namespace nWin32Detour
+
+inline void MtCriticalSection::lock() {
+    if (scePthreadMutexLock(&mCSection) != 0) {
+        abort();
+    }
+}
+
+inline void MtCriticalSection::unlock() {
+    if (scePthreadMutexUnlock(&mCSection) != 0) {
+        abort();
+    }
+}

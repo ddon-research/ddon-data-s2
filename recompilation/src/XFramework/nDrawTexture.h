@@ -140,6 +140,8 @@ class MtRect;
 class MtSize;
 class MtUI;
 namespace nDraw { struct MAPPED_TEXTURE; }
+class rRenderTargetTexture;
+
 namespace sce { namespace Gnm { class DataFormat; } }
 namespace sce { namespace Gnm { class DepthRenderTarget; } }
 namespace sce { namespace Gnm { class RenderTarget; } }
@@ -358,6 +360,8 @@ namespace nDraw {
 namespace nDraw {
     class Texture : public nDraw::Buffer
     {
+
+    friend class ::rRenderTargetTexture;
     public:
         class MyDTI;
     public:

@@ -4,6 +4,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
@@ -38,6 +39,26 @@ void* uGUIGainInfo::operator new(size_t sz, u32 align) {
 
 inline void uGUIGainInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIGainInfo::DTI)->memFree(p_addr);
+}
+
+uGUIGainInfo::uGUIGainInfo() : uGUIBase(0u, false) {
+    mData1 = 0;
+    mWait = 0.0f;
+    mType = 0;
+    mData0 = 0;
+    mpObjMsgText1 = nullptr;
+    mpObjMsgText0 = nullptr;
+    mpInstAnimText1 = nullptr;
+    mpInstAnimText0 = nullptr;
+    mpInstNullBonus = nullptr;
+    mpInstNullAll = nullptr;
+    mpGUIRes = nullptr;
+    mWaitMax = 2.0f;
+    mNullBonusPosY = 0.0f;
+    mIsSleep = false;
+    mBaseF = mBaseF | 32u;
+    mEndType = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUIGainInfo"), 0u, false);
 }
 
 uGUIGainInfo::~uGUIGainInfo() {
@@ -97,9 +118,31 @@ __attribute__((weak)) void uGUIGainInfo::setSleep(bool bSleep) {
 __attribute__((weak)) void uGUIGainInfo::updateSleep() {
 }
 
-__attribute__((weak)) void uGUIGainInfo::updateInit() {
-    DDON_STUB("uGUIGainInfo::updateInit")
-    /* stub */
+void uGUIGainInfo::updateInit() {
+    static const u32 type_table[8] = {
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+    };
+    static const u32 se_table[8] = {
+        203,
+        201,
+        202,
+        204,
+        205,
+        207,
+        206,
+        1,
+    };
+    if (mType <= 7u) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(type_table[mType], se_table[mType]);
+    }
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGainInfo::updateIn);
 }
 
 void uGUIGainInfo::updateIn() {
@@ -125,8 +168,7 @@ inline uGUIGainInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 uGUIGainInfo::MyDTI uGUIGainInfo::DTI("uGUIGainInfo", &::uGUIBase::DTI, 2336ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIGainInfo::MyDTI::newInstance() const {
-    DDON_STUB("uGUIGainInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIGainInfo::MyDTI::newInstance() const {
+    return new (16u) uGUIGainInfo;
 }
 

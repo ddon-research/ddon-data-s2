@@ -123,9 +123,160 @@ __attribute__((weak)) void cMenuApproveInvitedClan::initApproveInvitedClan(u32 t
     /* stub */
 }
 
-__attribute__((weak)) nMenu::MENU_RET cMenuApproveInvitedClan::moveApproveInvitedClan() {
-    DDON_STUB("cMenuApproveInvitedClan::moveApproveInvitedClan")
-    return {};
+nMenu::MENU_RET cMenuApproveInvitedClan::moveApproveInvitedClan() {
+    moveMenu();
+    if (mMenuRno[0] != 1) {
+        if (mMenuRno[0] == 0) {
+            mMenuRno[0] = 1;
+            cMenuDialogFlow::RET t0 = moveDialogFlow();
+            switch (t0) {
+                case cMenuDialogFlow::RET_DLG_SET_DLG:
+                {
+                    if (mType != 0) {
+                        cMenuDialogFlow* t1 = getDialogFlow();
+                        MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 93u);
+                        MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                        t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                        getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                        return nMenu::MENU_RET_CONTINUE;
+                    } else {
+                        cMenuDialogFlow* t1 = getDialogFlow();
+                        MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 91u);
+                        MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                        t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                        getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                        return nMenu::MENU_RET_CONTINUE;
+                    }
+                    break;
+                }
+                case cMenuDialogFlow::RET_DLG_CHOICE:
+                {
+                    if (getDialogFlow()->mChoice == 0) {
+                        if (mType != 0) {
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->denyInvitedClan(mInvitedId);
+                            getDialogFlow()->setComWait(304);
+                            return nMenu::MENU_RET_CONTINUE;
+                        } else {
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->allowInvitedClan(mInvitedId);
+                            getDialogFlow()->setComWait(304);
+                            return nMenu::MENU_RET_CONTINUE;
+                        }
+                    } else {
+                        return nMenu::MENU_RET_CANCEL;
+                    }
+                    break;
+                }
+                case cMenuDialogFlow::RET_DLG_SET_RESULT:
+                {
+                    if (mType == 0) {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->mIsApplyClan = true;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->mIsClanScoutEntry = false;
+                        cMenuDialogFlow* t4 = getDialogFlow();
+                        t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 77u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                        getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                        return nMenu::MENU_RET_CONTINUE;
+                    } else {
+                        cMenuDialogFlow* t4 = getDialogFlow();
+                        t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 94u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                        getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                        return nMenu::MENU_RET_CONTINUE;
+                    }
+                    break;
+                }
+                case cMenuDialogFlow::RET_DLG_EXIT:
+                {
+                    return nMenu::MENU_RET_EXIT;
+                }
+                case cMenuDialogFlow::RET_DLG_ERROR:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                case cMenuDialogFlow::RET_DLG_NULL:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                default:
+                {
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+            }
+        } else {
+            return nMenu::MENU_RET_CONTINUE;
+        }
+    } else {
+        cMenuDialogFlow::RET t0 = moveDialogFlow();
+        switch (t0) {
+            case cMenuDialogFlow::RET_DLG_SET_DLG:
+            {
+                if (mType != 0) {
+                    cMenuDialogFlow* t1 = getDialogFlow();
+                    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 93u);
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                    t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    cMenuDialogFlow* t1 = getDialogFlow();
+                    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 91u);
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                    t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_CHOICE:
+            {
+                if (getDialogFlow()->mChoice == 0) {
+                    if (mType != 0) {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->denyInvitedClan(mInvitedId);
+                        getDialogFlow()->setComWait(304);
+                        return nMenu::MENU_RET_CONTINUE;
+                    } else {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->allowInvitedClan(mInvitedId);
+                        getDialogFlow()->setComWait(304);
+                        return nMenu::MENU_RET_CONTINUE;
+                    }
+                } else {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_SET_RESULT:
+            {
+                if (mType == 0) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->mIsApplyClan = true;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->mIsClanScoutEntry = false;
+                    cMenuDialogFlow* t4 = getDialogFlow();
+                    t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 77u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    cMenuDialogFlow* t4 = getDialogFlow();
+                    t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 94u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_EXIT:
+            {
+                return nMenu::MENU_RET_EXIT;
+            }
+            case cMenuDialogFlow::RET_DLG_ERROR:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            case cMenuDialogFlow::RET_DLG_NULL:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            default:
+            {
+                return nMenu::MENU_RET_CONTINUE;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cMenuApproveInvitedClan::exitMenu() {
@@ -159,9 +310,96 @@ void cMenuCancelApplyClan::initCancelApplyClan(u32 reqId) {
     setupDialogFlow(3u);
 }
 
-__attribute__((weak)) nMenu::MENU_RET cMenuCancelApplyClan::moveCancelApplyClan() {
-    DDON_STUB("cMenuCancelApplyClan::moveCancelApplyClan")
-    return {};
+nMenu::MENU_RET cMenuCancelApplyClan::moveCancelApplyClan() {
+    moveMenu();
+    if (mMenuRno[0] != 1) {
+        if (mMenuRno[0] == 0) {
+            mMenuRno[0] = 1;
+            cMenuDialogFlow::RET t0 = moveDialogFlow();
+            switch (t0) {
+                case cMenuDialogFlow::RET_DLG_SET_DLG:
+                {
+                    cMenuDialogFlow* t1 = getDialogFlow();
+                    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 78u);
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                    t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                case cMenuDialogFlow::RET_DLG_CHOICE:
+                {
+                    if (getDialogFlow()->mChoice == 0) {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->cancelJoinClan();
+                        getDialogFlow()->setComWait(285);
+                        return nMenu::MENU_RET_CONTINUE;
+                    } else {
+                        return nMenu::MENU_RET_CANCEL;
+                    }
+                    break;
+                }
+                case cMenuDialogFlow::RET_DLG_SET_RESULT:
+                {
+                    cMenuDialogFlow* t4 = getDialogFlow();
+                    t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 79u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                case cMenuDialogFlow::RET_DLG_EXIT:
+                {
+                    return nMenu::MENU_RET_EXIT;
+                }
+                case cMenuDialogFlow::RET_DLG_NULL:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                default:
+                {
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+            }
+        } else {
+            return nMenu::MENU_RET_CONTINUE;
+        }
+    } else {
+        cMenuDialogFlow::RET t0 = moveDialogFlow();
+        switch (t0) {
+            case cMenuDialogFlow::RET_DLG_SET_DLG:
+            {
+                cMenuDialogFlow* t1 = getDialogFlow();
+                MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 78u);
+                MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            case cMenuDialogFlow::RET_DLG_CHOICE:
+            {
+                if (getDialogFlow()->mChoice == 0) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->cancelJoinClan();
+                    getDialogFlow()->setComWait(285);
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_SET_RESULT:
+            {
+                cMenuDialogFlow* t4 = getDialogFlow();
+                t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 79u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            case cMenuDialogFlow::RET_DLG_EXIT:
+            {
+                return nMenu::MENU_RET_EXIT;
+            }
+            case cMenuDialogFlow::RET_DLG_NULL:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            default:
+            {
+                return nMenu::MENU_RET_CONTINUE;
+            }
+        }
+    }
 }
 
 void cMenuCancelApplyClan::exitMenu() {
@@ -186,9 +424,6 @@ inline void* cMenuCancelClanScoutEntry::operator new(size_t sz, u32 align) {
 
 inline void cMenuCancelClanScoutEntry::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuCancelClanScoutEntry::DTI)->memFree(p_addr);
-}
-
-cMenuCancelClanScoutEntry::~cMenuCancelClanScoutEntry() {
 }
 
 void cMenuCancelClanScoutEntry::initCancelClanScoutEntry() {
@@ -310,9 +545,6 @@ inline void cMenuCancelInviteClan::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuCancelInviteClan::DTI)->memFree(p_addr);
 }
 
-cMenuCancelInviteClan::~cMenuCancelInviteClan() {
-}
-
 void cMenuCancelInviteClan::initCancelInviteClan(u32 inviteId) {
     initMenu();
     mMenuRno[0] = 0;
@@ -320,9 +552,104 @@ void cMenuCancelInviteClan::initCancelInviteClan(u32 inviteId) {
     setupDialogFlow(7u);
 }
 
-__attribute__((weak)) nMenu::MENU_RET cMenuCancelInviteClan::moveCancelInviteClan() {
-    DDON_STUB("cMenuCancelInviteClan::moveCancelInviteClan")
-    return {};
+nMenu::MENU_RET cMenuCancelInviteClan::moveCancelInviteClan() {
+    moveMenu();
+    if (mMenuRno[0] != 1) {
+        if (mMenuRno[0] == 0) {
+            mMenuRno[0] = 1;
+            cMenuDialogFlow::RET t0 = moveDialogFlow();
+            switch (t0) {
+                case cMenuDialogFlow::RET_DLG_SET_DLG:
+                {
+                    cMenuDialogFlow* t1 = getDialogFlow();
+                    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 89u);
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                    t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                case cMenuDialogFlow::RET_DLG_CHOICE:
+                {
+                    if (getDialogFlow()->mChoice == 0) {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->cancelInviteClan(mInviteId);
+                        getDialogFlow()->setComWait(302);
+                        return nMenu::MENU_RET_CONTINUE;
+                    } else {
+                        return nMenu::MENU_RET_CANCEL;
+                    }
+                    break;
+                }
+                case cMenuDialogFlow::RET_DLG_SET_RESULT:
+                {
+                    cMenuDialogFlow* t4 = getDialogFlow();
+                    t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 90u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                case cMenuDialogFlow::RET_DLG_EXIT:
+                {
+                    return nMenu::MENU_RET_EXIT;
+                }
+                case cMenuDialogFlow::RET_DLG_ERROR:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                case cMenuDialogFlow::RET_DLG_NULL:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                default:
+                {
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+            }
+        } else {
+            return nMenu::MENU_RET_CONTINUE;
+        }
+    } else {
+        cMenuDialogFlow::RET t0 = moveDialogFlow();
+        switch (t0) {
+            case cMenuDialogFlow::RET_DLG_SET_DLG:
+            {
+                cMenuDialogFlow* t1 = getDialogFlow();
+                MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 89u);
+                MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            case cMenuDialogFlow::RET_DLG_CHOICE:
+            {
+                if (getDialogFlow()->mChoice == 0) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->cancelInviteClan(mInviteId);
+                    getDialogFlow()->setComWait(302);
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_SET_RESULT:
+            {
+                cMenuDialogFlow* t4 = getDialogFlow();
+                t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 90u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            case cMenuDialogFlow::RET_DLG_EXIT:
+            {
+                return nMenu::MENU_RET_EXIT;
+            }
+            case cMenuDialogFlow::RET_DLG_ERROR:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            case cMenuDialogFlow::RET_DLG_NULL:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            default:
+            {
+                return nMenu::MENU_RET_CONTINUE;
+            }
+        }
+    }
 }
 
 void cMenuCancelInviteClan::exitMenu() {
@@ -349,9 +676,6 @@ inline void cMenuClanApplyList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanApplyList::DTI)->memFree(p_addr);
 }
 
-cMenuClanApplyList::~cMenuClanApplyList() {
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuClanApplyList::moveClanApplyList() {
     DDON_STUB("cMenuClanApplyList::moveClanApplyList")
     return {};
@@ -375,9 +699,6 @@ inline void* cMenuClanApplyManager::operator new(size_t sz, u32 align) {
 
 inline void cMenuClanApplyManager::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanApplyManager::DTI)->memFree(p_addr);
-}
-
-cMenuClanApplyManager::~cMenuClanApplyManager() {
 }
 
 __attribute__((weak)) void cMenuClanApplyManager::initClanApplyManager(s32 initTab, cMenuClanApplyManager::MODE mode) {
@@ -418,9 +739,78 @@ __attribute__((weak)) void cMenuClanApproveDirectInvite::initClanApproveDirectIn
     /* stub */
 }
 
-__attribute__((weak)) nMenu::MENU_RET cMenuClanApproveDirectInvite::moveClanApproveDirectInvite() {
-    DDON_STUB("cMenuClanApproveDirectInvite::moveClanApproveDirectInvite")
-    return {};
+nMenu::MENU_RET cMenuClanApproveDirectInvite::moveClanApproveDirectInvite() {
+    moveMenu();
+    if (mMenuRno[0] == 0) {
+        cMenuDialogFlow::RET t0 = moveDialogFlow();
+        switch (t0) {
+            case cMenuDialogFlow::RET_DLG_SET_DLG:
+            {
+                if (mType != 0) {
+                    cMenuDialogFlow* t1 = getDialogFlow();
+                    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 93u);
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                    t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    cMenuDialogFlow* t1 = getDialogFlow();
+                    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 91u);
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                    t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_CHOICE:
+            {
+                if (getDialogFlow()->mChoice == 0) {
+                    if (mType != 0) {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->removeClanDirectInvitedInfo(mClanId);
+                        getDialogFlow()->pushFlow();
+                        return nMenu::MENU_RET_CONTINUE;
+                    } else {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->allowInviteClanDirect(mClanId);
+                        getDialogFlow()->setComWait(307);
+                        return nMenu::MENU_RET_CONTINUE;
+                    }
+                } else {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_SET_RESULT:
+            {
+                if (mType != 0) {
+                    cMenuDialogFlow* t4 = getDialogFlow();
+                    t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 94u), 1, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    cMenuDialogFlow* t4 = getDialogFlow();
+                    t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 92u), 1, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    getDialogFlow()->setMsgAnalyzerWork(0u, mClanName.ptr());
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_EXIT:
+            {
+                return nMenu::MENU_RET_EXIT;
+            }
+            case cMenuDialogFlow::RET_DLG_NULL:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            default:
+            {
+                return nMenu::MENU_RET_CONTINUE;
+            }
+        }
+    } else {
+        return nMenu::MENU_RET_CONTINUE;
+    }
 }
 
 __attribute__((weak)) void cMenuClanApproveDirectInvite::exitMenu() {
@@ -549,9 +939,6 @@ inline void cMenuClanDirectInvitedList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanDirectInvitedList::DTI)->memFree(p_addr);
 }
 
-cMenuClanDirectInvitedList::~cMenuClanDirectInvitedList() {
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuClanDirectInvitedList::moveClanDirectInvitedList() {
     DDON_STUB("cMenuClanDirectInvitedList::moveClanDirectInvitedList")
     return {};
@@ -611,11 +998,8 @@ inline void cMenuClanHistory::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanHistory::DTI)->memFree(p_addr);
 }
 
-cMenuClanHistory::~cMenuClanHistory() {
-}
-
 void cMenuClanHistory::exitMenu() {
-    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanGetHistoryPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanHistoryList();
     this->cMenuBase::exitMenu();
 }
 
@@ -644,12 +1028,100 @@ inline void cMenuClanInfoDisp::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanInfoDisp::DTI)->memFree(p_addr);
 }
 
-cMenuClanInfoDisp::~cMenuClanInfoDisp() {
-}
-
-__attribute__((weak)) nMenu::MENU_RET cMenuClanInfoDisp::moveClanInfoDisp() {
-    DDON_STUB("cMenuClanInfoDisp::moveClanInfoDisp")
-    return {};
+nMenu::MENU_RET cMenuClanInfoDisp::moveClanInfoDisp() {
+    moveMenu();
+    mBusyFlag = true;
+    switch (mMenuRno[0]) {
+        case 0:
+        {
+            mMenuRno[0] = 1;
+            if (mpClanParam == (&static_cast<sNetworkExt*>(sNetwork::getInstance())->mpGameServer->mMyClanParam)) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isClanUpdate()) {
+                    mMenuRno[0] = 2;
+                    sMenu* t0 = sMenu::getInstance();
+                    t0->mMenuGetMyClan.initMenu();
+                    t0->mMenuGetMyClan.mMenuRno[0] = 0;
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    mMenuRno[0] = 3;
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+            } else {
+                mMenuRno[0] = 3;
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            break;
+        }
+        case 1:
+        {
+            if (mpClanParam == (&static_cast<sNetworkExt*>(sNetwork::getInstance())->mpGameServer->mMyClanParam)) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isClanUpdate()) {
+                    mMenuRno[0] = 2;
+                    sMenu* t0 = sMenu::getInstance();
+                    t0->mMenuGetMyClan.initMenu();
+                    t0->mMenuGetMyClan.mMenuRno[0] = 0;
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    mMenuRno[0] = 3;
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+            } else {
+                mMenuRno[0] = 3;
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            break;
+        }
+        case 2:
+        {
+            sMenu* t1 = sMenu::getInstance();
+            t1->mMenuGetMyClan.moveMenu();
+            if (t1->mMenuGetMyClan.mMenuRno[0] != 2) {
+                if (t1->mMenuGetMyClan.mMenuRno[0] == 1) {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[288] != sNetworkExt::NET_STAT_SUCCESS) {
+                        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[288] == sNetworkExt::NET_STAT_ERROR) {
+                            t1->mMenuGetMyClan.mMenuRno[0] = 2;
+                            return nMenu::MENU_RET_CONTINUE;
+                        } else {
+                            return nMenu::MENU_RET_CONTINUE;
+                        }
+                    } else {
+                        mMenuRno[0] = 3;
+                        return nMenu::MENU_RET_CONTINUE;
+                    }
+                } else {
+                    if (t1->mMenuGetMyClan.mMenuRno[0] == 0) {
+                        t1->mMenuGetMyClan.mMenuRno[0] = 1;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getMyClan();
+                        return nMenu::MENU_RET_CONTINUE;
+                    } else {
+                        return nMenu::MENU_RET_CONTINUE;
+                    }
+                }
+            } else {
+                if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog()) {
+                    mMenuRno[0] = 3;
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+            }
+            break;
+        }
+        case 3:
+        {
+            if (!isCancel(5u)) {
+                mBusyFlag = false;
+                return nMenu::MENU_RET_CONTINUE;
+            } else {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            break;
+        }
+        default:
+        {
+            return nMenu::MENU_RET_CONTINUE;
+        }
+    }
 }
 
 inline cMenuClanInfoDisp::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -670,9 +1142,6 @@ inline void* cMenuClanInfoManager::operator new(size_t sz, u32 align) {
 
 inline void cMenuClanInfoManager::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanInfoManager::DTI)->memFree(p_addr);
-}
-
-cMenuClanInfoManager::~cMenuClanInfoManager() {
 }
 
 __attribute__((weak)) void cMenuClanInfoManager::initClanInfoManager(CClanParam& clanParam, s32 initTab, cMenuClanInfoManager::MODE mode, u32 prio) {
@@ -709,16 +1178,13 @@ inline void cMenuClanInviteList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanInviteList::DTI)->memFree(p_addr);
 }
 
-cMenuClanInviteList::~cMenuClanInviteList() {
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuClanInviteList::moveClanInviteList() {
     DDON_STUB("cMenuClanInviteList::moveClanInviteList")
     return {};
 }
 
 void cMenuClanInviteList::exitMenu() {
-    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanInviteListPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanInviteList();
     this->cMenuBase::exitMenu();
 }
 
@@ -740,9 +1206,6 @@ inline void* cMenuClanInvitedList::operator new(size_t sz, u32 align) {
 
 inline void cMenuClanInvitedList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanInvitedList::DTI)->memFree(p_addr);
-}
-
-cMenuClanInvitedList::~cMenuClanInvitedList() {
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuClanInvitedList::moveClanInvitedList() {
@@ -770,9 +1233,6 @@ inline void cMenuClanJoinReqList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanJoinReqList::DTI)->memFree(p_addr);
 }
 
-cMenuClanJoinReqList::~cMenuClanJoinReqList() {
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuClanJoinReqList::moveClanJoinReqList() {
     DDON_STUB("cMenuClanJoinReqList::moveClanJoinReqList")
     return {};
@@ -798,9 +1258,6 @@ inline void cMenuClanList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanList::DTI)->memFree(p_addr);
 }
 
-cMenuClanList::~cMenuClanList() {
-}
-
 void cMenuClanList::initClanList() {
     initMenu();
     mMenuRno[0] = 0;
@@ -822,7 +1279,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanList::moveClanList() {
 }
 
 void cMenuClanList::exitMenu() {
-    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanSearchListPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanSearchResultList();
     this->cMenuBase::exitMenu();
 }
 
@@ -846,11 +1303,8 @@ inline void cMenuClanMemberList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanMemberList::DTI)->memFree(p_addr);
 }
 
-cMenuClanMemberList::~cMenuClanMemberList() {
-}
-
 void cMenuClanMemberList::exitMenu() {
-    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanMemberListPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanMemberInfoList();
     this->cMenuBase::exitMenu();
 }
 
@@ -903,13 +1357,26 @@ inline void* cMenuClanScoutEntry::operator new(size_t sz, u32 align) {
 }
 
 cMenuClanScoutEntry::~cMenuClanScoutEntry() {
-    DDON_STUB("cMenuClanScoutEntry::~cMenuClanScoutEntry")
-    /* stub */
 }
 
-__attribute__((weak)) void cMenuClanScoutEntry::initClanScoutEntry() {
-    DDON_STUB("cMenuClanScoutEntry::initClanScoutEntry")
-    /* stub */
+void cMenuClanScoutEntry::initClanScoutEntry() {
+    static const s32 menuList[9] = {
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9,
+    };
+    initMenu();
+    mMenuRno[0] = 0;
+    nNet::resetClanScoutEntryParam(mEntryParam);
+    setupSupportMenu(10u, false, true);
+    createMenuListTbl(menuList, 9u);
+    mpGUIMenu = registerGUI(uGUIClanScoutEntry::DTI, cMenuBase::DEFAULT_GUI_LINE, cMenuBase::DEFAULT_GUI_GROUP);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuClanScoutEntry::moveClanScoutEntry() {
@@ -937,13 +1404,10 @@ inline void cMenuClanScoutEntryList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuClanScoutEntryList::DTI)->memFree(p_addr);
 }
 
-cMenuClanScoutEntryList::~cMenuClanScoutEntryList() {
-}
-
 void cMenuClanScoutEntryList::initClanScoutEntryList() {
     initMenu();
     mMenuRno[0] = 0;
-    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanScoutEntryListPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanScoutEntryList();
     setupSupportList(256u, 10u, 0u);
     mpGUIMenu = registerGUI(uGUIClanScout::DTI, cMenuBase::DEFAULT_GUI_LINE, cMenuBase::DEFAULT_GUI_GROUP);
 }
@@ -954,7 +1418,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanScoutEntryList::moveClanScoutEntr
 }
 
 void cMenuClanScoutEntryList::exitMenu() {
-    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanScoutEntryListPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanScoutEntryList();
     this->cMenuBase::exitMenu();
 }
 
@@ -1009,8 +1473,6 @@ inline void cMenuCreateClan::operator delete(void* p_addr) {
 }
 
 cMenuCreateClan::~cMenuCreateClan() {
-    DDON_STUB("cMenuCreateClan::~cMenuCreateClan")
-    /* stub */
 }
 
 void cMenuCreateClan::initCreateClan() {
@@ -1047,8 +1509,6 @@ inline void cMenuEditClan::operator delete(void* p_addr) {
 }
 
 cMenuEditClan::~cMenuEditClan() {
-    DDON_STUB("cMenuEditClan::~cMenuEditClan")
-    /* stub */
 }
 
 __attribute__((weak)) void cMenuEditClan::initEditClan(s32 editType, CClanParam& dstParam, uGUIBase* pRefGUI) {
@@ -1105,9 +1565,6 @@ inline void cMenuEditClanComment::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuEditClanComment::DTI)->memFree(p_addr);
 }
 
-cMenuEditClanComment::~cMenuEditClanComment() {
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuEditClanComment::moveEditClanComment() {
     DDON_STUB("cMenuEditClanComment::moveEditClanComment")
     return {};
@@ -1131,9 +1588,6 @@ inline void* cMenuEditClanDay::operator new(size_t sz, u32 align) {
 
 inline void cMenuEditClanDay::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuEditClanDay::DTI)->memFree(p_addr);
-}
-
-cMenuEditClanDay::~cMenuEditClanDay() {
 }
 
 void cMenuEditClanDay::initEditClanDay(u32* pDay, uGUIBase* pRefGUI) {
@@ -1175,9 +1629,6 @@ inline void cMenuEditClanEmblem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuEditClanEmblem::DTI)->memFree(p_addr);
 }
 
-cMenuEditClanEmblem::~cMenuEditClanEmblem() {
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuEditClanEmblem::moveEditClanEmblem() {
     DDON_STUB("cMenuEditClanEmblem::moveEditClanEmblem")
     return {};
@@ -1210,9 +1661,6 @@ inline void cMenuEditClanEntryComment::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuEditClanEntryComment::DTI)->memFree(p_addr);
 }
 
-cMenuEditClanEntryComment::~cMenuEditClanEntryComment() {
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuEditClanEntryComment::moveEditClanEntryComment() {
     DDON_STUB("cMenuEditClanEntryComment::moveEditClanEntryComment")
     return {};
@@ -1236,9 +1684,6 @@ inline void* cMenuEditClanFeature::operator new(size_t sz, u32 align) {
 
 inline void cMenuEditClanFeature::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuEditClanFeature::DTI)->memFree(p_addr);
-}
-
-cMenuEditClanFeature::~cMenuEditClanFeature() {
 }
 
 void cMenuEditClanFeature::initEditClanFeature(u32* pFeature, uGUIBase* pRefGUI) {
@@ -1280,9 +1725,6 @@ inline void cMenuEditClanHour::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuEditClanHour::DTI)->memFree(p_addr);
 }
 
-cMenuEditClanHour::~cMenuEditClanHour() {
-}
-
 void cMenuEditClanHour::initEditClanHour(u32* pHour, uGUIBase* pRefGUI) {
     initMenu();
     mMenuRno[0] = 0;
@@ -1320,9 +1762,6 @@ inline void* cMenuEditClanMessage::operator new(size_t sz, u32 align) {
 
 inline void cMenuEditClanMessage::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuEditClanMessage::DTI)->memFree(p_addr);
-}
-
-cMenuEditClanMessage::~cMenuEditClanMessage() {
 }
 
 nMenu::MENU_RET cMenuEditClanMessage::moveEditClanMessage() {
@@ -1419,9 +1858,6 @@ inline void cMenuEditClanMotto::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuEditClanMotto::DTI)->memFree(p_addr);
 }
 
-cMenuEditClanMotto::~cMenuEditClanMotto() {
-}
-
 void cMenuEditClanMotto::initEditClanMotto(u32* pMotto, uGUIBase* pRefGUI) {
     initMenu();
     mMenuRno[0] = 0;
@@ -1459,9 +1895,6 @@ inline void* cMenuGetClanBaseInfo::operator new(size_t sz, u32 align) {
 
 inline void cMenuGetClanBaseInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuGetClanBaseInfo::DTI)->memFree(p_addr);
-}
-
-cMenuGetClanBaseInfo::~cMenuGetClanBaseInfo() {
 }
 
 void cMenuGetClanBaseInfo::initGetClanBaseInfo() {
@@ -1517,9 +1950,6 @@ inline void cMenuGetClanDetail::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuGetClanDetail::DTI)->memFree(p_addr);
 }
 
-cMenuGetClanDetail::~cMenuGetClanDetail() {
-}
-
 __attribute__((weak)) void cMenuGetClanDetail::initGetClanDetail(u32 clanId, CClanParam& dstParam) {
     DDON_STUB("cMenuGetClanDetail::initGetClanDetail")
     /* stub */
@@ -1548,9 +1978,6 @@ inline void* cMenuGetMyClan::operator new(size_t sz, u32 align) {
 
 inline void cMenuGetMyClan::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuGetMyClan::DTI)->memFree(p_addr);
-}
-
-cMenuGetMyClan::~cMenuGetMyClan() {
 }
 
 void cMenuGetMyClan::initGetMyClan() {
@@ -1604,9 +2031,6 @@ inline void* cMenuGetMyScoutEntry::operator new(size_t sz, u32 align) {
 
 inline void cMenuGetMyScoutEntry::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuGetMyScoutEntry::DTI)->memFree(p_addr);
-}
-
-cMenuGetMyScoutEntry::~cMenuGetMyScoutEntry() {
 }
 
 void cMenuGetMyScoutEntry::initGetMyScoutEntry() {
@@ -1696,18 +2120,110 @@ inline void cMenuQuitClan::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuQuitClan::DTI)->memFree(p_addr);
 }
 
-cMenuQuitClan::~cMenuQuitClan() {
-}
-
 void cMenuQuitClan::initQuitClan() {
     initMenu();
     mMenuRno[0] = 0;
     setupDialogFlow(7u);
 }
 
-__attribute__((weak)) nMenu::MENU_RET cMenuQuitClan::moveQuitClan() {
-    DDON_STUB("cMenuQuitClan::moveQuitClan")
-    return {};
+nMenu::MENU_RET cMenuQuitClan::moveQuitClan() {
+    moveMenu();
+    if (mMenuRno[0] != 1) {
+        if (mMenuRno[0] == 0) {
+            mMenuRno[0] = 1;
+            cMenuDialogFlow::RET t0 = moveDialogFlow();
+            switch (t0) {
+                case cMenuDialogFlow::RET_DLG_SET_DLG:
+                {
+                    cMenuDialogFlow* t1 = getDialogFlow();
+                    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 84u);
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                    t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                case cMenuDialogFlow::RET_DLG_CHOICE:
+                {
+                    if (getDialogFlow()->mChoice == 0) {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->quitClan();
+                        getDialogFlow()->setComWait(290);
+                        return nMenu::MENU_RET_CONTINUE;
+                    } else {
+                        return nMenu::MENU_RET_CANCEL;
+                    }
+                    break;
+                }
+                case cMenuDialogFlow::RET_DLG_SET_RESULT:
+                {
+                    cMenuDialogFlow* t4 = getDialogFlow();
+                    t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 85u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+                case cMenuDialogFlow::RET_DLG_EXIT:
+                {
+                    return nMenu::MENU_RET_EXIT;
+                }
+                case cMenuDialogFlow::RET_DLG_ERROR:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                case cMenuDialogFlow::RET_DLG_NULL:
+                {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                default:
+                {
+                    return nMenu::MENU_RET_CONTINUE;
+                }
+            }
+        } else {
+            return nMenu::MENU_RET_CONTINUE;
+        }
+    } else {
+        cMenuDialogFlow::RET t0 = moveDialogFlow();
+        switch (t0) {
+            case cMenuDialogFlow::RET_DLG_SET_DLG:
+            {
+                cMenuDialogFlow* t1 = getDialogFlow();
+                MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 84u);
+                MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+                t1->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t2, 1, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            case cMenuDialogFlow::RET_DLG_CHOICE:
+            {
+                if (getDialogFlow()->mChoice == 0) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->quitClan();
+                    getDialogFlow()->setComWait(290);
+                    return nMenu::MENU_RET_CONTINUE;
+                } else {
+                    return nMenu::MENU_RET_CANCEL;
+                }
+                break;
+            }
+            case cMenuDialogFlow::RET_DLG_SET_RESULT:
+            {
+                cMenuDialogFlow* t4 = getDialogFlow();
+                t4->setDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 85u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                return nMenu::MENU_RET_CONTINUE;
+            }
+            case cMenuDialogFlow::RET_DLG_EXIT:
+            {
+                return nMenu::MENU_RET_EXIT;
+            }
+            case cMenuDialogFlow::RET_DLG_ERROR:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            case cMenuDialogFlow::RET_DLG_NULL:
+            {
+                return nMenu::MENU_RET_CANCEL;
+            }
+            default:
+            {
+                return nMenu::MENU_RET_CONTINUE;
+            }
+        }
+    }
 }
 
 inline cMenuQuitClan::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1728,9 +2244,6 @@ inline void* cMenuSetClanName::operator new(size_t sz, u32 align) {
 
 inline void cMenuSetClanName::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuSetClanName::DTI)->memFree(p_addr);
-}
-
-cMenuSetClanName::~cMenuSetClanName() {
 }
 
 __attribute__((weak)) void cMenuSetClanName::initSetClanName(s32 setType, MtString& dstClanName, uGUIBase* pRefGUI) {
@@ -1771,9 +2284,6 @@ inline void* cMenuSetClanNickName::operator new(size_t sz, u32 align) {
 
 inline void cMenuSetClanNickName::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cMenuSetClanNickName::DTI)->memFree(p_addr);
-}
-
-cMenuSetClanNickName::~cMenuSetClanNickName() {
 }
 
 __attribute__((weak)) void cMenuSetClanNickName::initSetClanNickName(s32 setType, MtString& dstClanNickName, uGUIBase* pRefGUI) {

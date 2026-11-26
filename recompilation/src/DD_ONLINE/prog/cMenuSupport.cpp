@@ -11,6 +11,7 @@
 #include "cNetGameServer.h"
 #include "../../XFramework/cUnit.h"
 #include "nGUIExt.h"
+#include "nMenu.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sMenu.h"
@@ -625,9 +626,13 @@ s32 cMenuSupportMenu::getIndexFromMenuId(s32 menuId) {
     return 0;
 }
 
-__attribute__((weak)) const nMenu::MENU_PARTS& cMenuSupportMenu::getMenuParts(s32 index) {
-    DDON_STUB("cMenuSupportMenu::getMenuParts")
-    __builtin_unreachable();
+const nMenu::MENU_PARTS& cMenuSupportMenu::getMenuParts(s32 index) {
+    if (static_cast<unsigned int>(index) < mMenuNum) {
+        if (mpMenuParts != nullptr) {
+            return mpMenuParts[index];
+        }
+    }
+    return sMenu::mDefMenuParts;
 }
 
 __attribute__((weak)) s32 cMenuSupportMenu::getMenuId(s32 index) {

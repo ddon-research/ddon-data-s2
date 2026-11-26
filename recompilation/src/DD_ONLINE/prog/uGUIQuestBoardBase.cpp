@@ -36,8 +36,15 @@ inline void uGUIQuestBoardBase::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIQuestBoardBase::~uGUIQuestBoardBase() {
-    DDON_STUB("uGUIQuestBoardBase::~uGUIQuestBoardBase")
-    /* stub */
+    if (mpGMDQuest != nullptr) {
+        mpGMDQuest->release();
+        mpGMDQuest = nullptr;
+    }
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 void uGUIQuestBoardBase::createProperty(MtPropertyList& s) {

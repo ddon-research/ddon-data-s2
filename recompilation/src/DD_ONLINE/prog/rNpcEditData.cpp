@@ -30,12 +30,9 @@ MT_CTSTR rNpcEditData::getExt() const {
     return "ned";
 }
 
-rNpcEditData::~rNpcEditData() {
-}
-
-__attribute__((weak)) void rNpcEditData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rNpcEditData::createProperty")
-    /* stub */
+void rNpcEditData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEquip", &this->mEquip[0], 32u, 16u);
+    s << MtProperty(static_cast<MtObject*>(this), "mItem", &mItem, 0u, 0u);
 }
 
 bool rNpcEditData::load(MtStream& in) {

@@ -1340,3 +1340,18 @@ inline void cSetInfoOmWall::operator delete(void* p_addr) {
 inline void cSetInfoOmWarp::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cSetInfoOmWarp::DTI)->memFree(p_addr);
 }
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cSetInfoOmDoor::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmDoor::DTI)->memAlloc(sz, align, cSetInfoOmDoor::DTI.getID());
+}
+
+inline void* cSetInfoOmWarp::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmWarp::DTI)->memAlloc(sz, align, cSetInfoOmWarp::DTI.getID());
+}
+
+inline void* cSetInfoOmWall::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmWall::DTI)->memAlloc(sz, align, cSetInfoOmWall::DTI.getID());
+}

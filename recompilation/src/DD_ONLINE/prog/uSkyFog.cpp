@@ -127,9 +127,16 @@ __attribute__((weak)) void cDayNightColorFogParam::lerp(const cDayNightColorFogP
     /* stub */
 }
 
-__attribute__((weak)) void cDayNightColorFogParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDayNightColorFogParam::createProperty")
-    /* stub */
+void cDayNightColorFogParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mHeightStart", &mHeightStart, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeightEnd", &mHeightEnd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeightDensity", &mHeightDensity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeightColor", &mHeightColor, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDensity", &mDensity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStart", &mStart, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnd", &mEnd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDiffuseBlendFactor", &mDiffuseBlendFactor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColor", &mColor, 2048u, 0u);
 }
 
 inline cDayNightColorFogParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

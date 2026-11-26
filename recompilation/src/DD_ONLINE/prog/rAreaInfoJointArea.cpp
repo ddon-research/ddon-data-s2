@@ -64,22 +64,21 @@ rAreaInfoJointArea::~rAreaInfoJointArea() {
     mAreaInfoJointArea.mLength = 0;
 }
 
-__attribute__((weak)) void rAreaInfoJointArea::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAreaInfoJointArea::createProperty")
-    /* stub */
+void rAreaInfoJointArea::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaInfoJointArea", static_cast<MtObject*>(&mAreaInfoJointArea), 0u, 0u);
 }
 
 bool rAreaInfoJointArea::save(MtStream& out) {
     MtDataWriter w(out, 4096u, 4096u);
     (&w)->writeU32(0x4A5241u);
     (&w)->writeU32(2u);
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) != 0) {
+    (&w)->writeU32(mAreaInfoJointArea.mLength);
+    if (mAreaInfoJointArea.mLength != 0) {
         for (unsigned int i0_3 = 0;;) {
             MtObject* t3 = mAreaInfoJointArea.getBuffer()[static_cast<int>(i0_3)];
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 12));
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 8));
-            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120))) {
+            if ((i0_3 + 1u) < mAreaInfoJointArea.mLength) {
                 i0_3 += 1u;
             } else {
                 break;
@@ -123,9 +122,9 @@ inline void rAreaInfoJointArea::cAreaInfoJointArea::operator delete(void* p_addr
 rAreaInfoJointArea::cAreaInfoJointArea::~cAreaInfoJointArea() {
 }
 
-__attribute__((weak)) void rAreaInfoJointArea::cAreaInfoJointArea::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAreaInfoJointArea::cAreaInfoJointArea::createProperty")
-    /* stub */
+void rAreaInfoJointArea::cAreaInfoJointArea::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaId", &mAreaId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMAJAId", &mMAJAId, 0u, 0u);
 }
 
 inline rAreaInfoJointArea::cAreaInfoJointArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

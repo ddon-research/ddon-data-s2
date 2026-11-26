@@ -6,6 +6,7 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cZoneCategoryLight.h"
 #include "../../XFramework/cZoneContents.h"
 #include "../../XFramework/cZoneListener.h"
 #include "../../XFramework/nZone.h"
@@ -62,9 +63,8 @@ s32 cZoneListenerLight::getHitZoneID(u32 type) const {
     }
 }
 
-__attribute__((weak)) MtVector3 cZoneListenerLight::myPos() {
-    DDON_STUB("cZoneListenerLight::myPos")
-    __builtin_unreachable();
+MtVector3 cZoneListenerLight::myPos() {
+    return mCheckPos;
 }
 
 inline cZoneListenerLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

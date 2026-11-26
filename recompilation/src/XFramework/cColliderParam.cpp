@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "nCollision.h"
 #ifndef DDON_STUB
@@ -29,9 +30,11 @@ MtUI* cColliderGeometryParam::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cColliderGeometryParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cColliderGeometryParam::createProperty")
-    /* stub */
+void cColliderGeometryParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "ver", reinterpret_cast<MT_MFUNC>(&::cColliderGeometryParam::getVersion), reinterpret_cast<MT_MFUNC>(&::cColliderGeometryParam::setDummyU16), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Attribute", &mAttribute, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttribute", &mAttribute, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Attribute", &mAttribute, 2u, 0u);
 }
 
 static auto ddon_emit_0x01bd70d0 __attribute__((used)) = &cColliderGeometryParam::getVersion;
@@ -78,9 +81,26 @@ cColliderNodeParam::~cColliderNodeParam() {
     mpUserDataPtr = nullptr;
 }
 
-__attribute__((weak)) void cColliderNodeParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cColliderNodeParam::createProperty")
-    /* stub */
+void cColliderNodeParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U16, "ver", reinterpret_cast<MT_MFUNC>(&::cColliderNodeParam::getVersion), reinterpret_cast<MT_MFUNC>(&::cColliderNodeParam::setDummyU16), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "ColliderType", &mColliderType, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColliderType", &mColliderType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgUseActive", &mFlgUseActive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgUsePassive", &mFlgUsePassive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mActiveUseFunctionID", &mActiveUseFunctionID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgUsePush", &mFlgUsePush, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Attribute", &mAttribute, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup", &mGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttribute", &mAttribute, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpUserDataPtr", &mpUserDataPtr, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgAutoDeleteUserDataPtr", &mFlgAutoDeleteUserDataPtr, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ColliderType", &mColliderType, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ColliderActive", &mFlgUseActive, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ColliderPassive", &mFlgUsePassive, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ColliderPush", &mFlgUsePush, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Group    ", &mGroup, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Attribute", &mAttribute, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ActiveFunc", &mActiveUseFunctionID, 2u, 0u);
 }
 
 static auto ddon_emit_0x01bd70a0 __attribute__((used)) = &cColliderNodeParam::getVersion;

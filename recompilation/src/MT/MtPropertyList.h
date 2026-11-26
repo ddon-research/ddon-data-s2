@@ -8,6 +8,10 @@
 #include "MtObject.h"
 #include "MtProperty.h"
 
+#include "MtSynchronize.h"
+#include "MtMemoryAllocator.h"
+#include "MtAllocator.h"
+
 // Forward declarations
 class MtAllocator;
 class MtCriticalSection;
@@ -117,4 +121,30 @@ private:
 
 inline void* MtPropertyList::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline MtPropertyList::poolChain* MtPropertyList::allocateChain(u16 allocateSize) {
+    poolChain* pc = static_cast<poolChain*>(MtMemoryAllocator::getAllocator(MtPropertyList::DTI)->memAlloc(sizeof(poolChain) + sizeof(MtProperty) * allocateSize, 16u));
+    pc->pPool = reinterpret_cast<MtProperty*>(pc + 1);
+    pc->poolPt = 0;
+    pc->poolSize = allocateSize;
+    pc->pNext = nullptr;
+    pc->pPrev = nullptr;
+    return pc;
+}
+
+inline void MtPropertyList::add(const MtProperty& prop) {
+    MtProperty* p = newElement();
+    *p = prop;
+    p->mpPrev = nullptr;
+    p->mpNext = nullptr;
+    if (mpElement != nullptr) {
+        mpElement->mpNext = p;
+        p->mpPrev = mpElement;
+    }
+    mpElement = p;
+}
+
+inline void MtPropertyList::operator<<(const MtProperty& prop) {
+    add(prop);
 }

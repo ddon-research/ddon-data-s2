@@ -134,7 +134,7 @@ public:
         static void operator delete[](void* p_addr, u32 align);
         uEvHeadTarget();
         uEvHeadTarget(u32 type, u32 group, u32 id);
-        virtual ~uEvHeadTarget();
+        virtual ~uEvHeadTarget() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual void setup();  // vtable slot 6
         virtual void move();  // vtable slot 9
@@ -230,7 +230,7 @@ public:
         static void operator delete[](void* p_addr, u32 align);
         u32 getMotionNo() const;
         cParamSetMotion();
-        virtual ~cParamSetMotion();
+        virtual ~cParamSetMotion() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     public:
@@ -293,7 +293,7 @@ public:
         static void operator delete[](void* p_addr, u32 align);
         u32 getActionNo() const;
         cParamSetAction();
-        virtual ~cParamSetAction();
+        virtual ~cParamSetAction() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     public:
@@ -336,7 +336,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetNeck();
-        virtual ~cParamSetNeck();
+        virtual ~cParamSetNeck() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     public:
@@ -493,7 +493,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetMotionGoto();
-        virtual ~cParamSetMotionGoto();
+        virtual ~cParamSetMotionGoto() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     public:
@@ -542,7 +542,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetEffect();
-        virtual ~cParamSetEffect();
+        virtual ~cParamSetEffect() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     public:
@@ -582,7 +582,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetEyeBall();
-        virtual ~cParamSetEyeBall();
+        virtual ~cParamSetEyeBall() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     public:
@@ -624,7 +624,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetEmDie();
-        virtual ~cParamSetEmDie();
+        virtual ~cParamSetEmDie() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     public:
@@ -843,7 +843,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetDispWeapon();
-        virtual ~cParamSetDispWeapon();
+        virtual ~cParamSetDispWeapon() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     public:
         bool mIsDispWepMain;  // offset: 0x8
@@ -877,7 +877,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetShadowCast();
-        virtual ~cParamSetShadowCast();
+        virtual ~cParamSetShadowCast() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     public:
         bool mIsShadowCast;  // offset: 0x8
@@ -944,7 +944,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetCallSe();
-        virtual ~cParamSetCallSe();
+        virtual ~cParamSetCallSe() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     public:
         u32 mSeId;  // offset: 0x8
@@ -979,7 +979,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetHakuryuStoneLevel();
-        virtual ~cParamSetHakuryuStoneLevel();
+        virtual ~cParamSetHakuryuStoneLevel() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     public:
@@ -1019,7 +1019,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetParts();
-        virtual ~cParamSetParts();
+        virtual ~cParamSetParts() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     public:
@@ -1054,7 +1054,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetVibUnit();
-        virtual ~cParamSetVibUnit();
+        virtual ~cParamSetVibUnit() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     public:
         u32 mVib;  // offset: 0x8
@@ -1094,7 +1094,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetEmMontage();
-        virtual ~cParamSetEmMontage();
+        virtual ~cParamSetEmMontage() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
         virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
     public:
@@ -1130,7 +1130,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetHeadCtrl();
-        virtual ~cParamSetHeadCtrl();
+        virtual ~cParamSetHeadCtrl() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     public:
         s16 mHeadCtrl;  // offset: 0x8
@@ -1163,7 +1163,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetEyeClose();
-        virtual ~cParamSetEyeClose();
+        virtual ~cParamSetEyeClose() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     public:
         bool mEyeClose;  // offset: 0x8
@@ -1196,7 +1196,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetDispMiniMap();
-        virtual ~cParamSetDispMiniMap();
+        virtual ~cParamSetDispMiniMap() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     public:
         bool mIsDispMiniMap;  // offset: 0x8
@@ -1229,7 +1229,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetIK();
-        virtual ~cParamSetIK();
+        virtual ~cParamSetIK() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     public:
         bool mActive;  // offset: 0x8
@@ -1262,7 +1262,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cParamSetEnemyHP();
-        virtual ~cParamSetEnemyHP();
+        virtual ~cParamSetEnemyHP() {}
         virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     public:
         f32 mHPParcentage;  // offset: 0x8

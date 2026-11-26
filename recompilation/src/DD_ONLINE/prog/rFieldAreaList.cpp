@@ -111,7 +111,7 @@ const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfoFromStageN
         unsigned int i0_5 = 0;
         unsigned int i1_0;
         for (;;) {
-            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + 16);
+            const u32 stageNum = v0_4[i0_5].mStageNoList.mLength;
             if (stageNum != 0) {
                 MtObject* * v1_3 = v0_4[i0_5].mStageNoList.getBuffer();
                 i1_0 = 0;
@@ -196,7 +196,7 @@ u32 rFieldAreaList::getFieldAreaIdFromBelongStage(s32 stageNo) const {
         unsigned int i1_0;
         unsigned int i3_0;
         for (;;) {
-            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + 16);
+            const u32 stageNum = v0_4[i0_5].mStageNoList.mLength;
             if (stageNum != 0) {
                 MtObject* * v1_2 = v0_4[i0_5].mStageNoList.getBuffer();
                 i1_0 = 0;
@@ -212,7 +212,7 @@ u32 rFieldAreaList::getFieldAreaIdFromBelongStage(s32 stageNo) const {
                     }
                 }
             }
-            const u32 belongStageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + 48);
+            const u32 belongStageNum = v0_4[i0_5].mBelongStageNoList.mLength;
             if (belongStageNum != 0) {
                 MtObject* * v3_2 = v0_4[i0_5].mBelongStageNoList.getBuffer();
                 i3_0 = 0;
@@ -245,7 +245,7 @@ u32 rFieldAreaList::getFieldAreaIdFromStageList(s32 stageNo) const {
         unsigned int i0_5 = 0;
         unsigned int i1_0;
         for (;;) {
-            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + 16);
+            const u32 stageNum = v0_4[i0_5].mStageNoList.mLength;
             if (stageNum != 0) {
                 MtObject* * v1_2 = v0_4[i0_5].mStageNoList.getBuffer();
                 i1_0 = 0;
@@ -433,9 +433,14 @@ __attribute__((noinline)) rFieldAreaList::cFieldAreaInfo::~cFieldAreaInfo() {
     mBelongStageNoList.mLength = 0;
 }
 
-__attribute__((weak)) void rFieldAreaList::cFieldAreaInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rFieldAreaList::cFieldAreaInfo::createProperty")
-    /* stub */
+void rFieldAreaList::cFieldAreaInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mVersionId", &mVersionId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFieldAreaId", &mFieldAreaId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGmdIdx", &mGmdIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLandId", &mLandId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaId", &mAreaId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNoList", static_cast<MtObject*>(&mStageNoList), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBelongStageNoList", static_cast<MtObject*>(&mBelongStageNoList), 0u, 0u);
 }
 
 MtUI* rFieldAreaList::cFieldAreaInfo::createUI(MtProperty& prop) {
@@ -463,9 +468,8 @@ inline void rFieldAreaList::cFieldAreaInfo::cStageNo::operator delete(void* p_ad
     MtMemoryAllocator::getAllocator(rFieldAreaList::cFieldAreaInfo::cStageNo::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rFieldAreaList::cFieldAreaInfo::cStageNo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rFieldAreaList::cFieldAreaInfo::cStageNo::createProperty")
-    /* stub */
+void rFieldAreaList::cFieldAreaInfo::cStageNo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
 }
 
 void rFieldAreaList::cFieldAreaInfo::cStageNo::load(MtDataReader& r) {

@@ -99,9 +99,32 @@ void cpSoftBody::updatePtr() {
     mpOwnerDDOModel = nullptr;
 }
 
-__attribute__((weak)) void cpSoftBody::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpSoftBody::createProperty")
-    /* stub */
+void cpSoftBody::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsActive", &mIsActive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsStop", &mIsStop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsCollisionActive", &mIsCollisionActive, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCollisionGroup", &mCollisionGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUpdateFrame", &mIsUpdateFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxIterate", &mMaxIterate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsGrassWind", &mIsGrassWind, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColliderType", &mColliderType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsScrCollision", &mIsScrCollision, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsObjCollision", &mIsObjCollision, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsResetRestart", &mIsResetRestart, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsNCollision", &mIsNCollision, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNCGlobalWeight", &mNCGlobalWeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsISCollision", &mIsISCollision, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsApproxScrCollision", &mIsApproxScrCollision, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSimCulling", &mIsSimCulling, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUse8Weight", &mIsUse8Weight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpSimSoftBody", reinterpret_cast<MT_MFUNC>(&::cpSoftBody::getSimSoftBody), reinterpret_cast<MT_MFUNC>(&::cpSoftBody::setSimSoftBody), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mWorldCoeffTrans", &mWorldCoeffTrans, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWorldCoeffRot", &mWorldCoeffRot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBaseJointNo", &mBaseJointNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mprDeformWeightMap", "resource", reinterpret_cast<MT_MFUNC>(&::cpSoftBody::getSoftBodyResource), reinterpret_cast<MT_MFUNC>(&::cpSoftBody::setSoftBodyResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Release", static_cast<MT_MFUNC>(&::cpSoftBody::release), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Reset Simulation", static_cast<MT_MFUNC32>(&::cpSoftBody::restartSimulation), 0u, 10u);
 }
 
 __attribute__((weak)) void cpSoftBody::update() {

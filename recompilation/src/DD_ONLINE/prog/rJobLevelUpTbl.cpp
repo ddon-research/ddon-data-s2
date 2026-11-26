@@ -25,9 +25,12 @@ inline void cIncreaseParam2::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cIncreaseParam2::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cIncreaseParam2::createProperty(MtPropertyList& s) {
-    DDON_STUB("cIncreaseParam2::createProperty")
-    /* stub */
+void cIncreaseParam2::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mLv", &mLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAtk", &mAtk, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDef", &mDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMAtk", &mMAtk, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMDef", &mMDef, 0u, 0u);
 }
 
 inline cIncreaseParam2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

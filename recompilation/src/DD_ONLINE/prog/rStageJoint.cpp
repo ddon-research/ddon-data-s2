@@ -227,9 +227,22 @@ const MtDTI& rStageJoint::Info::getDTI() const {
 rStageJoint::Info::~Info() {
 }
 
-__attribute__((weak)) void rStageJoint::Info::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageJoint::Info::createProperty")
-    /* stub */
+void rStageJoint::Info::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mModel", reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::getModelName), reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::setModelName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mScrSbc", reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::getScrSbcName), reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::setScrSbcName), 160u, reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::getScrSbcNameNum), reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::setScrSbcNameNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mEffSbc", reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::getEffSbcName), reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::setEffSbcName), 160u, reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::getEffSbcNameNum), reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::setEffSbcNameNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mLight", reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::getLightName), reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::setLightName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mNaviMesh", reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::getNaviMeshName), reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::setNaviMeshName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mPlantTree", reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::getPlantTreeName), reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::setPlantTreeName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mJoint", &mJoint[0], 32u, 16u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColor", &mColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mEpv", reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::getEpvName), reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::setEpvName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mEpvIndexAlways", &mEpvIndexAlways, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEpvIndexDay", &mEpvIndexDay, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEpvIndexNight", &mEpvIndexNight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mSndInfo", reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::getSndInfoName), reinterpret_cast<MT_MFUNC>(&::rStageJoint::Info::setSndInfoName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mVersion", &mVersion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mComment", &mComment, 0u, 0u);
 }
 
 MtUI* rStageJoint::Info::createUI(MtProperty& prop) {

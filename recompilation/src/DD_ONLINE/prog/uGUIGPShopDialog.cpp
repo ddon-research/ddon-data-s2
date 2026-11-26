@@ -142,9 +142,13 @@ void uGUIGPShopDialog::updateWait() {
     mClose.uGUIBase::cReferenceUICloseBtn::update();
 }
 
-__attribute__((weak)) void uGUIGPShopDialog::updateLimit() {
-    DDON_STUB("uGUIGPShopDialog::updateLimit")
-    /* stub */
+void uGUIGPShopDialog::updateLimit() {
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
+    MtVector2 frame64(getObjectScreenPos(static_cast<cGUIObject*>(mpLimitExplainCursorObj), mPos));
+    u32 t1 = getBasePointerPriority();
+    sGUI* t2 = sGUI::getInstance();
+    static_cast<sGUIExt*>(t2)->setPointerPosReq(static_cast<uGUIBase*>(this), frame64, t1, static_cast<sGUIExt*>(t2)->getPrioGrpFromIssueIdx(mPrioIssueIdx), static_cast<const MtVector2*>(nullptr));
+    mLimitScrollbar.uGUIBase::cScrollList::update(getDeltaTime());
 }
 
 void uGUIGPShopDialog::updateHistory() {
@@ -152,9 +156,12 @@ void uGUIGPShopDialog::updateHistory() {
     mHistoryScrollbar.uGUIBase::cScrollList::update(getDeltaTime());
 }
 
-__attribute__((weak)) void uGUIGPShopDialog::updateGoldStone() {
-    DDON_STUB("uGUIGPShopDialog::updateGoldStone")
-    /* stub */
+void uGUIGPShopDialog::updateGoldStone() {
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
+    MtVector2 frame64(getObjectScreenPos(static_cast<cGUIObject*>(mpGSBuyButtonCursorObj), mPos));
+    u32 t1 = getBasePointerPriority();
+    sGUI* t2 = sGUI::getInstance();
+    static_cast<sGUIExt*>(t2)->setPointerPosReq(static_cast<uGUIBase*>(this), frame64, t1, static_cast<sGUIExt*>(t2)->getPrioGrpFromIssueIdx(mPrioIssueIdx), static_cast<const MtVector2*>(nullptr));
 }
 
 __attribute__((weak)) void uGUIGPShopDialog::updateEventCode() {

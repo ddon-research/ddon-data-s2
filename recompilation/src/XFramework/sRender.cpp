@@ -10,8 +10,10 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPerformance.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "../MT/MtThread.h"
@@ -102,9 +104,74 @@ MtUI* sRender::createUI(MtProperty& prop) {
     return this->cSystem::createUI(prop);
 }
 
-__attribute__((weak)) void sRender::createProperty(MtPropertyList& s) {
-    DDON_STUB("sRender::createProperty")
-    /* stub */
+void sRender::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "RenderFps", reinterpret_cast<MT_MFUNC>(&::sRender::getRenderFps), reinterpret_cast<MT_MFUNC>(&::sRender::setRenderFps), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "PresentInterval", reinterpret_cast<MT_MFUNC>(&::sRender::getPresentInterval), reinterpret_cast<MT_MFUNC>(&::sRender::setPresentInterval), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "PresentThreshold", reinterpret_cast<MT_MFUNC>(&::sRender::getPresentThreshold), reinterpret_cast<MT_MFUNC>(&::sRender::setPresentThreshold), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mPresentRect", &mPresentRect, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ScaleMode", reinterpret_cast<MT_MFUNC>(&::sRender::getScaleMode), reinterpret_cast<MT_MFUNC>(&::sRender::setScaleMode), 384u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "Gamma", reinterpret_cast<MT_MFUNC>(&::sRender::getDACGamma), reinterpret_cast<MT_MFUNC>(&::sRender::setDACGamma), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mSRGBEnable", &mSRGBEnable, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDisplaySize", &mDisplaySize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBackBufferSize", &mBackBufferSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFrameSkip", &mFrameSkip, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScreenSize", &mScreenSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "HDREmphasis", reinterpret_cast<MT_MFUNC>(&::sRender::getHDREmphasis), reinterpret_cast<MT_MFUNC>(&::sRender::setHDREmphasis), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "HalfLambertBlendCoeff", reinterpret_cast<MT_MFUNC>(&::sRender::getHalfLambertBlendCoeff), reinterpret_cast<MT_MFUNC>(&::sRender::setHalfLambertBlendCoeff), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "SceneAttribute", reinterpret_cast<MT_MFUNC>(&::sRender::getSceneAttribute), reinterpret_cast<MT_MFUNC>(&::sRender::setSceneAttribute), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mDeferredLightingHybridLighting", &mDeferredLightingHybridLighting, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDeferredLightingForcedForwardRendering", &mDeferredLightingForcedForwardRendering, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "DeferredLightingNormalType", reinterpret_cast<MT_MFUNC>(&::sRender::getDeferredLightingNormalEncodeType), reinterpret_cast<MT_MFUNC>(&::sRender::setDeferredLightingNormalEncodeType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "DeferredLightingTransparentType", reinterpret_cast<MT_MFUNC>(&::sRender::getDeferredLightingTransparentType), reinterpret_cast<MT_MFUNC>(&::sRender::setDeferredLightingTransparentType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mDeferredLightingDiffuseLuminanceThreshold", &mDeferredLightingDiffuseLuminanceThreshold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDeferredLightingFadeOutLighting", &mDeferredLightingFadeOutLighting, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "DeferredLightingFadeOutLightinDistance", reinterpret_cast<MT_MFUNC>(&::sRender::getDeferredLightingFadeOutLightingDistance), reinterpret_cast<MT_MFUNC>(&::sRender::setDeferredLightingFadeOutLightingDistance), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mDeferredLightingLodThreshold", &mDeferredLightingLodThreshold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTangentRendering", &mTangentRendering, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDraw", static_cast<MtObject*>(&mDraw), 2050u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDrawBufferPt", &mDrawBufferPt, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDrawBufferSize", &mDrawBufferSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTempVertexBufPt", &mTempVertexBufPt, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTempVertexBufSize", &mTempVertexBufSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTempIndexBufPt", &mTempIndexBufPt, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTempIndexBufSize", &mTempIndexBufSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDynamicTrans", &mDynamicTrans, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParallelTrans", &mParallelTrans, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParallelRendering", &mParallelRendering, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDisableRendering", &mDisableRendering, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConnectDrawCall", &mConnectDrawCall, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParallelExecuteNum", &mParallelExecuteNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPersRate", &mPersRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSkinningBorder", &mSkinningBorder, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSkinningBorderEx", &mSkinningBorderEx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFeatureLevel", reinterpret_cast<s32*>(&mFeatureLevel), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMipLODBias", &mMipLODBias, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpPrimaryScene", reinterpret_cast<MtObject* *>(&mpPrimaryScene), 2055u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpFrameCacheBuffer", reinterpret_cast<MtObject* *>(&mpFrameCacheBuffer), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Begin Cache", static_cast<MT_MFUNC>(&::sRender::beginFrameCache), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "End Cache", static_cast<MT_MFUNC>(&::sRender::endFrameCache), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "AmbientOcclusion", &mIsDrawFilterArray[0], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Bloom", &mIsDrawFilterArray[1], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Blur", &mIsDrawFilterArray[2], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Bokeh", &mIsDrawFilterArray[3], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ChromaticAberration", &mIsDrawFilterArray[4], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ColorCorrect", &mIsDrawFilterArray[5], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CrossFade", &mIsDrawFilterArray[6], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "DOF", &mIsDrawFilterArray[7], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EdgeAntiAliasing", &mIsDrawFilterArray[8], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "FishEye", &mIsDrawFilterArray[9], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "GodRays", &mIsDrawFilterArray[10], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "HAZE", &mIsDrawFilterArray[11], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ImagePlane", &mIsDrawFilterArray[12], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MotionBlur", &mIsDrawFilterArray[13], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Outline", &mIsDrawFilterArray[14], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "RadialBlur", &mIsDrawFilterArray[15], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "TangentBlur", &mIsDrawFilterArray[16], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "TVNoise", &mIsDrawFilterArray[17], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ToneMapControl", &mIsDrawFilterArray[18], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "VolumeNoise", &mIsDrawFilterArray[19], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ColorFog", &mIsDrawFogArray[0], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "LightScatteringFog", &mIsDrawFogArray[1], 2u, 0u);
 }
 
 __attribute__((weak)) void sRender::createMenu(MtPropertyList& s) {
@@ -663,9 +730,28 @@ bool sRender::beginScreenShot() {
     }
 }
 
-__attribute__((weak)) bool sRender::setScreenShotTrigger() {
-    DDON_STUB("sRender::setScreenShotTrigger")
-    return {};
+bool sRender::setScreenShotTrigger() {
+    const s32 trigger = __atomic_fetch_add(&(sRender::mSSTrigger), 1, __ATOMIC_SEQ_CST);
+    if (trigger != 0) {
+        __atomic_fetch_add(&(sRender::mSSTrigger), -1, __ATOMIC_SEQ_CST);
+        return false;
+    } else {
+        nDraw::Texture* t0 = mpScreenShotTexture;
+        if (t0 != nullptr) {
+            t0->release();
+            mpScreenShotTexture = nullptr;
+            u32 w = mScreenSize.w;
+            u32 h = mScreenSize.h;
+            mpScreenShotTexture = new (16u) nDraw::Texture(w, h, 1u, 1u, nDraw::FORMAT_B8G8R8A8_UNORM_SRGB, nDraw::USAGE_RENDERTARGET, 16u, static_cast<nDraw::Texture*>(nullptr), 0u, static_cast<void*>(nullptr), nDraw::TEXMEMORY_VRAM);
+        } else {
+            u32 w = mScreenSize.w;
+            u32 h = mScreenSize.h;
+            mpScreenShotTexture = new (16u) nDraw::Texture(w, h, 1u, 1u, nDraw::FORMAT_B8G8R8A8_UNORM_SRGB, nDraw::USAGE_RENDERTARGET, 16u, static_cast<nDraw::Texture*>(nullptr), 0u, static_cast<void*>(nullptr), nDraw::TEXMEMORY_VRAM);
+        }
+        mSSState = SS_WAITING;
+        mSSResult = SCREENSHOT_PROCESSING;
+        return true;
+    }
 }
 
 sRender::SCREENSHOT_RESULT sRender::screenShotResult() {
@@ -751,9 +837,6 @@ s32 sRender::mSSTrigger;
 __attribute__((weak)) MtObject* sRender::MyDTI::newInstance() const {
     DDON_STUB("sRender::MyDTI::newInstance")
     return nullptr;
-}
-
-sRender::PhotoExportThread::~PhotoExportThread() {
 }
 
 __attribute__((weak)) void sRender::PhotoExportThread::execute(void* pcontext) {

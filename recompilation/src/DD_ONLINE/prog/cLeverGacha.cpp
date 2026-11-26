@@ -49,9 +49,9 @@ cLeverGacha::cLeverGacha() {
     mOldAngleType = 0;
 }
 
-__attribute__((weak)) void cLeverGacha::createProperty(MtPropertyList& proplist) {
-    DDON_STUB("cLeverGacha::createProperty")
-    /* stub */
+void cLeverGacha::createProperty(MtPropertyList& proplist) {
+    proplist << MtProperty(static_cast<MtObject*>(this), "mCnt", &mCnt, 0u, 0u);
+    proplist << MtProperty(static_cast<MtObject*>(this), "mCntMax", &mCntMax, 0u, 0u);
 }
 
 void cLeverGacha::initLeverGacha(s32 count) {

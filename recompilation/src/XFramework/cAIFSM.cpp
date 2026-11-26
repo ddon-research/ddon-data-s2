@@ -43,9 +43,12 @@ MtUI* cAIFSM::createUI(MtProperty& prop) {
     return nullptr;
 }
 
-__attribute__((weak)) void cAIFSM::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIFSM::createProperty")
-    /* stub */
+void cAIFSM::createProperty(MtPropertyList& s) {
+    this->cAIObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mStatus", &mStatus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mCoreList", reinterpret_cast<MT_MFUNC>(&::cAIFSM::getCore), reinterpret_cast<MT_MFUNC>(&::cAIFSM::setCore), 160u, reinterpret_cast<MT_MFUNC>(&::cAIFSM::getCoreNum), reinterpret_cast<MT_MFUNC>(&::cAIFSM::setCoreNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mIFree", &mIFree[0], 32u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFFree", &mFFree[0], 32u, 8u);
 }
 
 __attribute__((weak)) bool cAIFSM::createCore(u32 num) {
@@ -181,8 +184,12 @@ void cAIFSM::Core::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) void cAIFSM::Core::createCoreProperty(MtPropertyList& s, bool withViewer) {
-    DDON_STUB("cAIFSM::Core::createCoreProperty")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", static_cast<void*>(&mpResource), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mStatus", reinterpret_cast<MT_MFUNC>(&::cAIFSM::Core::getStatus), reinterpret_cast<MT_MFUNC>(&::cAIFSM::Core::setStatus), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mAttribute", &mAttribute, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIFree", &mIFree[0], 32u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFFree", &mFFree[0], 32u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mClusterWorkList", reinterpret_cast<MT_MFUNC>(&::cAIFSM::Core::getClusterWork), reinterpret_cast<MT_MFUNC>(&::cAIFSM::Core::setClusterWork), 160u, reinterpret_cast<MT_MFUNC>(&::cAIFSM::Core::getClusterWorkNum), reinterpret_cast<MT_MFUNC>(&::cAIFSM::Core::setClusterWorkNum));
 }
 
 MtUI* cAIFSM::Core::createUI(MtProperty& prop) {
@@ -328,9 +335,10 @@ cAIFSM::Core::ClusterWork::~ClusterWork() {
     mTransitionOnceStateNum = 0;
 }
 
-__attribute__((weak)) void cAIFSM::Core::ClusterWork::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIFSM::Core::ClusterWork::createProperty")
-    /* stub */
+void cAIFSM::Core::ClusterWork::createProperty(MtPropertyList& s) {
+    this->cAIObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mTransitionOnceStateList", mTransitionOnceStateList, 33u, mTransitionOnceStateListLength);
+    s << MtProperty(static_cast<MtObject*>(this), "mTransitionOnceStateNum", &mTransitionOnceStateNum, 1u, 0u);
 }
 
 MtUI* cAIFSM::Core::ClusterWork::createUI(MtProperty& prop) {
@@ -437,11 +445,6 @@ inline void cAIFSM::Core::ClearTransitionFromAllOnceParam::operator delete(void*
     MtMemoryAllocator::getAllocator(cAIFSM::Core::ClearTransitionFromAllOnceParam::DTI)->memFree(p_addr);
 }
 
-cAIFSM::Core::ClearTransitionFromAllOnceParam::~ClearTransitionFromAllOnceParam() {
-    DDON_STUB("cAIFSM::Core::ClearTransitionFromAllOnceParam::~ClearTransitionFromAllOnceParam")
-    /* stub */
-}
-
 void cAIFSM::Core::ClearTransitionFromAllOnceParam::copy(cAICopiableParameter* pParam) {
     mType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 8);
     mStateID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 12);
@@ -451,9 +454,10 @@ MtUI* cAIFSM::Core::ClearTransitionFromAllOnceParam::createUI(MtProperty& prop) 
     return this->cAIResource::createUI(prop);
 }
 
-__attribute__((weak)) void cAIFSM::Core::ClearTransitionFromAllOnceParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIFSM::Core::ClearTransitionFromAllOnceParam::createProperty")
-    /* stub */
+void cAIFSM::Core::ClearTransitionFromAllOnceParam::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStateID", &mStateID, 1u, 0u);
 }
 
 inline cAIFSM::Core::ClearTransitionFromAllOnceParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -509,9 +513,11 @@ __attribute__((noinline)) cAIFSMData::~cAIFSMData() {
     mStreamData = nullptr;
 }
 
-__attribute__((weak)) void cAIFSMData::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIFSMData::createProperty")
-    /* stub */
+void cAIFSMData::createProperty(MtPropertyList& s) {
+    this->cAIObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIFree", &mIFree[0], 32u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFFree", &mFFree[0], 32u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpCore", reinterpret_cast<MT_MFUNC>(&::cAIFSMData::getCore), reinterpret_cast<MT_MFUNC>(&::cAIFSMData::setCore), 160u, reinterpret_cast<MT_MFUNC>(&::cAIFSMData::getCoreNum), reinterpret_cast<MT_MFUNC>(&::cAIFSMData::setCoreNum));
 }
 
 cAIFSMData::Core* cAIFSMData::getCore(u32 index) const {
@@ -578,6 +584,10 @@ const MtDTI& cAIFSMData::Core::getDTI() const {
     return cAIFSMData::Core::DTI;
 }
 
+inline void* cAIFSMData::Core::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memAlloc(sz, align, cAIFSMData::Core::DTI.mID);
+}
+
 inline void cAIFSMData::Core::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memFree(p_addr);
 }
@@ -633,9 +643,12 @@ __attribute__((noinline)) cAIFSMData::Core::~Core() {
     mpClusterLog = nullptr;
 }
 
-__attribute__((weak)) void cAIFSMData::Core::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIFSMData::Core::createProperty")
-    /* stub */
+void cAIFSMData::Core::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mResourceId", &mResourceId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIFree", &mIFree[0], 32u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFFree", &mFFree[0], 32u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpCluster", reinterpret_cast<MT_MFUNC>(&::cAIFSMData::Core::getCluster), reinterpret_cast<MT_MFUNC>(&::cAIFSMData::Core::setCluster), 160u, reinterpret_cast<MT_MFUNC>(&::cAIFSMData::Core::getClusterNum), reinterpret_cast<MT_MFUNC>(&::cAIFSMData::Core::setClusterNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpClusterLog", reinterpret_cast<MT_MFUNC>(&::cAIFSMData::Core::getClusterLog), reinterpret_cast<MT_MFUNC>(&::cAIFSMData::Core::setClusterLog), 160u, reinterpret_cast<MT_MFUNC>(&::cAIFSMData::Core::getClusterLogNum), reinterpret_cast<MT_MFUNC>(&::cAIFSMData::Core::setClusterLogNum));
 }
 
 static auto ddon_emit_0x01b6a880 __attribute__((used)) = &cAIFSMData::Core::getClusterNum;
@@ -755,22 +768,26 @@ inline cAIFSMData::Core::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 cAIFSMData::Core::MyDTI cAIFSMData::Core::DTI("cAIFSMData::Core", &::MtObject::DTI, 112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIFSMData::Core::MyDTI::newInstance() const {
-    DDON_STUB("cAIFSMData::Core::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIFSMData::Core::MyDTI::newInstance() const {
+    return new (16u) cAIFSMData::Core;
 }
 
 const MtDTI& cAIFSMData::Cluster::getDTI() const {
     return cAIFSMData::Cluster::DTI;
 }
 
+inline void* cAIFSMData::Cluster::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIFSMData::Cluster::DTI)->memAlloc(sz, align, cAIFSMData::Cluster::DTI.mID);
+}
+
 inline void cAIFSMData::Cluster::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAIFSMData::Cluster::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cAIFSMData::Cluster::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIFSMData::Cluster::createProperty")
-    /* stub */
+void cAIFSMData::Cluster::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNextId", &mNextId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStatus", &mStatus, 0u, 0u);
 }
 
 MtUI* cAIFSMData::Cluster::createUI(MtProperty& prop) {
@@ -781,13 +798,16 @@ inline cAIFSMData::Cluster::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t 
 
 cAIFSMData::Cluster::MyDTI cAIFSMData::Cluster::DTI("cAIFSMData::Cluster", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIFSMData::Cluster::MyDTI::newInstance() const {
-    DDON_STUB("cAIFSMData::Cluster::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIFSMData::Cluster::MyDTI::newInstance() const {
+    return new (16u) cAIFSMData::Cluster;
 }
 
 const MtDTI& cAIFSMData::ClusterLog::getDTI() const {
     return cAIFSMData::ClusterLog::DTI;
+}
+
+inline void* cAIFSMData::ClusterLog::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIFSMData::ClusterLog::DTI)->memAlloc(sz, align, cAIFSMData::ClusterLog::DTI.mID);
 }
 
 inline void cAIFSMData::ClusterLog::operator delete(void* p_addr) {
@@ -802,9 +822,9 @@ cAIFSMData::ClusterLog::~ClusterLog() {
     mTransitionOnceStateList = nullptr;
 }
 
-__attribute__((weak)) void cAIFSMData::ClusterLog::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIFSMData::ClusterLog::createProperty")
-    /* stub */
+void cAIFSMData::ClusterLog::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mClusterId", &mClusterId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mTransitionOnceStateList", reinterpret_cast<MT_MFUNC>(&::cAIFSMData::ClusterLog::getTransitionOnceState), reinterpret_cast<MT_MFUNC>(&::cAIFSMData::ClusterLog::setTransitionOnceState), 160u, reinterpret_cast<MT_MFUNC>(&::cAIFSMData::ClusterLog::getTransitionOnceStateNum), reinterpret_cast<MT_MFUNC>(&::cAIFSMData::ClusterLog::setTransitionOnceStateNum));
 }
 
 u32 cAIFSMData::ClusterLog::getTransitionOnceState(u32 index) {
@@ -848,9 +868,8 @@ inline cAIFSMData::ClusterLog::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 cAIFSMData::ClusterLog::MyDTI cAIFSMData::ClusterLog::DTI("cAIFSMData::ClusterLog", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIFSMData::ClusterLog::MyDTI::newInstance() const {
-    DDON_STUB("cAIFSMData::ClusterLog::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIFSMData::ClusterLog::MyDTI::newInstance() const {
+    return new (16u) cAIFSMData::ClusterLog;
 }
 
 const MtDTI& cAIFSMProcessContainer::getDTI() const {
@@ -859,6 +878,10 @@ const MtDTI& cAIFSMProcessContainer::getDTI() const {
 
 void* cAIFSMProcessContainer::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAIFSMProcessContainer::DTI)->memAlloc(sz, align, cAIFSMProcessContainer::DTI.mID);
+}
+
+inline void cAIFSMProcessContainer::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIFSMProcessContainer::DTI)->memFree(p_addr);
 }
 
 cAIFSMProcessContainer::~cAIFSMProcessContainer() {

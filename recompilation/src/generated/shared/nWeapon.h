@@ -4,6 +4,18 @@
 #include <cstddef>
 
 namespace nWeapon {
+    enum ARROW_TYPE
+    {
+        ARROW_TYPE_NORMAL = 0,
+        ARROW_TYPE_POISON = 1,
+        ARROW_TYPE_OIL = 2,
+        ARROW_TYPE_SLEEP = 3,
+        ARROW_TYPE_SILENT = 4,
+        ARROW_TYPE_SLOW = 5,
+    };
+}  // namespace nWeapon
+
+namespace nWeapon {
     enum MODEL_TYPE
     {
         MODEL_TYPE_PRIMARY = 0,

@@ -57,9 +57,12 @@ cStageMap::~cStageMap() {
     mParamList.mLength = 0;
 }
 
-__attribute__((weak)) void cStageMap::createProperty(MtPropertyList& s) {
-    DDON_STUB("cStageMap::createProperty")
-    /* stub */
+void cStageMap::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPartsNum", &mPartsNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetY", &mOffsetY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStageFlag", &mStageFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParamList", static_cast<MtObject*>(&mParamList), 0u, 0u);
 }
 
 inline cStageMap::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -87,9 +90,11 @@ inline cStageMap::cParam::cParam() {
     mConnectPos.pad_ = 0.0f;
 }
 
-__attribute__((weak)) void cStageMap::cParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cStageMap::cParam::createProperty")
-    /* stub */
+void cStageMap::cParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaNo", &mAreaNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSize", &mSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mModelName", &mModelName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConnectPos", &mConnectPos, 0u, 0u);
 }
 
 __attribute__((weak)) bool cStageMap::cParam::load(MtDataReader& r) {

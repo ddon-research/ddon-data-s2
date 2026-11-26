@@ -25,9 +25,11 @@ inline void cNpcIsUseJobParamEx::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cNpcIsUseJobParamEx::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cNpcIsUseJobParamEx::createProperty(MtPropertyList& s) {
-    DDON_STUB("cNpcIsUseJobParamEx::createProperty")
-    /* stub */
+void cNpcIsUseJobParamEx::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupNo", &mGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUnitNo", &mUnitNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
 }
 
 inline cNpcIsUseJobParamEx::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -31,6 +31,10 @@ inline void rEffectProvider::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rEffectProvider::DTI)->memFree(p_addr);
 }
 
+inline rEffectProvider::rEffectProvider() {
+    setAttribute(18u);
+}
+
 rEffectProvider::~rEffectProvider() {
 }
 
@@ -235,8 +239,101 @@ __attribute__((weak)) bool rEffectProvider::load(MtStream& in) {
 }
 
 __attribute__((weak)) bool rEffectProvider::save(MtStream& out) {
-    DDON_STUB("rEffectProvider::save")
-    return {};
+    MtDataWriter w(out, 0x1000u, 0x1000u);
+    nDDOIO::writeData(w, 0x767065u);
+    nDDOIO::writeData(w, EP_VERSION);
+    rEffectProvider::INFO_EFFECT* pInfoEffect = &mInfo.mEffectInfo;
+    nDDOIO::writeData(w, pInfoEffect->getEffectIndexNum());
+    for (u32 idx = 0; idx < pInfoEffect->getEffectIndexNum(); idx++) {
+        rEffectProvider::EffectIndex* pIndex = pInfoEffect->getEffectIndex(idx);
+        if (pIndex == nullptr) continue;
+        nDDOIO::writeData(w, pIndex->getEffectElementNum());
+        for (u32 elm = 0; elm < pIndex->getEffectElementNum(); elm++) {
+            rEffectProvider::EffectElement* pElement = pIndex->getEffectElement(elm);
+            if (pElement == nullptr) continue;
+            nDDOIO::writeData(w, pElement->getEffectReleaseVer());
+            for (u32 i = 0; i < EFC_LIST_MAX; i++) {
+                rEffectList* pResource = pElement->getEffectList(i);
+                nDDOIO::writeData(w, pResource == nullptr ? "" : pResource->getPath());
+            }
+            for (u32 i = 0; i < EFC_2D_MAX; i++) {
+                rEffect2D* pResource = pElement->getEffect2D(i);
+                nDDOIO::writeData(w, pResource == nullptr ? "" : pResource->getPath());
+            }
+            nDDOIO::writeData(w, pElement->getResourceType());
+            nDDOIO::writeData(w, pElement->getEffectType());
+            rEffectProvider::EffectParam* pParam = pElement->getEffectParam();
+            nDDOIO::writeData(w, pParam->getSetType());
+            nDDOIO::writeData(w, pParam->getEndType());
+            nDDOIO::writeData(w, pParam->getGroupFlag());
+            nDDOIO::writeData(w, pParam->getMaterialFlag());
+            nDDOIO::writeData(w, pParam->getPosition().x);
+            nDDOIO::writeData(w, pParam->getPosition().y);
+            nDDOIO::writeData(w, pParam->getPosition().z);
+            nDDOIO::writeData(w, pParam->getCamOfs().x);
+            nDDOIO::writeData(w, pParam->getCamOfs().y);
+            nDDOIO::writeData(w, pParam->getCamOfs().z);
+            nDDOIO::writeData(w, pParam->getDirection().x);
+            nDDOIO::writeData(w, pParam->getDirection().y);
+            nDDOIO::writeData(w, pParam->getDirection().z);
+            nDDOIO::writeData(w, pParam->getDirectionAmp().x);
+            nDDOIO::writeData(w, pParam->getDirectionAmp().y);
+            nDDOIO::writeData(w, pParam->getDirectionAmp().z);
+            nDDOIO::writeData(w, pParam->getAxisType());
+            nDDOIO::writeData(w, pParam->getOrder());
+            nDDOIO::writeData(w, pParam->getParentNo());
+            nDDOIO::writeData(w, pParam->getJointNo());
+            nDDOIO::writeData(w, pParam->getPosType());
+            nDDOIO::writeData(w, pParam->getRotType());
+            nDDOIO::writeData(w, pParam->getDefaultColor());
+            nDDOIO::writeData(w, pParam->getDefaultColorRate());
+            nDDOIO::writeData(w, pParam->getDefaultColorMode());
+            nDDOIO::writeData(w, pParam->getAlphaScale());
+            nDDOIO::writeData(w, pParam->getLightPriority());
+            nDDOIO::writeData(w, pParam->getScale());
+            nDDOIO::writeData(w, pParam->getScaleAmp());
+            nDDOIO::writeData(w, pParam->getDeltaTimeCoef());
+            nDDOIO::writeData(w, static_cast<u32>(pParam->getIncidenceAngleEnable()));
+            nDDOIO::writeData(w, static_cast<u32>(pParam->getLandSetEnable()));
+            nDDOIO::writeData(w, static_cast<u32>(pParam->getLandDirEnable()));
+            nDDOIO::writeData(w, static_cast<u32>(pParam->getOMMaterialEnable()));
+            nDDOIO::writeData(w, pParam->getZoneCorrectType());
+            nDDOIO::writeData(w, pParam->getLoopFrame());
+            nDDOIO::writeData(w, pParam->getE2DType());
+            nDDOIO::writeData(w, pParam->getLandLength());
+            nDDOIO::writeData(w, pParam->getCustomFlag());
+            nDDOIO::writeData(w, pParam->getParentRelationFlag());
+            nDDOIO::writeData(w, pParam->getAdhesionDivideMax());
+            nDDOIO::writeData(w, pParam->WeatherOnBit());
+            nDDOIO::writeData(w, pParam->getZoneOnBit());
+            nDDOIO::writeData(w, pParam->getQuakeType());
+            nDDOIO::writeData(w, pParam->getCreateCost());
+            nDDOIO::writeData(w, pParam->getFinishFadeOutFrame());
+        }
+    }
+    nDDOIO::writeData(w, pInfoEffect->getMotSyncListNum());
+    for (u32 i = 0; i < pInfoEffect->getMotSyncListNum(); i++) {
+        rEffectProvider::EffectMotSyncParam* pParam = pInfoEffect->getMotSyncList(i);
+        if (pParam == nullptr) continue;
+        nDDOIO::writeData(w, pParam->getMotionNo());
+        nDDOIO::writeData(w, pParam->getBlendIndex());
+        nDDOIO::writeData(w, pParam->getStartFrame());
+        nDDOIO::writeData(w, pParam->getEndFrame());
+        nDDOIO::writeData(w, pParam->getInterval());
+        nDDOIO::writeData(w, static_cast<u32>(pParam->getLeaveFlag()));
+        nDDOIO::writeData(w, static_cast<u32>(pParam->getSetOnceFlag()));
+        nDDOIO::writeData(w, pParam->getEfcIndexNo());
+        nDDOIO::writeData(w, pParam->getEfcElementNo());
+    }
+    nDDOIO::writeData(w, pInfoEffect->getEventListNum());
+    for (u32 i = 0; i < pInfoEffect->getEventListNum(); i++) {
+        rEffectProvider::EffectEventParam* pParam = pInfoEffect->getEventList(i);
+        if (pParam == nullptr) continue;
+        nDDOIO::writeData(w, pParam->getEventWorkNo());
+        nDDOIO::writeData(w, pParam->getEfcIndexNo());
+        nDDOIO::writeData(w, pParam->getEfcElementNo());
+    }
+    return true;
 }
 
 void rEffectProvider::clear() {
@@ -323,12 +420,19 @@ rEffectProvider::EffectElement* rEffectProvider::INFO_EFFECT::getEffectElement(s
     return nullptr;
 }
 
-__attribute__((weak)) rEffectProvider::EffectParam* rEffectProvider::INFO_EFFECT::getEffectParam(s32 IndexNo, s32 ElementNo) const {
-        rEffectProvider::EffectElement* pEffectElement = getEffectElement(IndexNo, ElementNo);
-        if (pEffectElement == nullptr) {
-            return nullptr;
+rEffectProvider::EffectParam* rEffectProvider::INFO_EFFECT::getEffectParam(s32 IndexNo, s32 ElementNo) const {
+    if ((IndexNo | ElementNo) > -1) {
+        if (IndexNo < static_cast<int>(mEffectIndexNum)) {
+            if ((&mpEffectIndex[IndexNo]) != nullptr) {
+                if (ElementNo > -1) {
+                    if (ElementNo < static_cast<int>(mpEffectIndex[IndexNo].mEffectElementNum)) {
+                        return ((&mpEffectIndex[IndexNo].mpEffectElement[ElementNo]) == nullptr) ? static_cast<rEffectProvider::EffectParam*>(nullptr) : (&mpEffectIndex[IndexNo].mpEffectElement[ElementNo].mEffectParam);
+                    }
+                }
+            }
         }
-        return pEffectElement->getEffectParam();
+    }
+    return nullptr;
 }
 
 inline rEffectProvider::INFO_EFFECT::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -455,8 +559,7 @@ inline rEffectProvider::EffectElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* 
 rEffectProvider::EffectElement::MyDTI rEffectProvider::EffectElement::DTI("rEffectProvider::EffectElement", &::MtObject::DTI, 304ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rEffectProvider::EffectElement::MyDTI::newInstance() const {
-    DDON_STUB("rEffectProvider::EffectElement::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rEffectProvider::EffectElement;
 }
 
 const MtDTI& rEffectProvider::EffectParam::getDTI() const {
@@ -475,8 +578,7 @@ inline rEffectProvider::EffectParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 rEffectProvider::EffectParam::MyDTI rEffectProvider::EffectParam::DTI("rEffectProvider::EffectParam", &::MtObject::DTI, 208ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rEffectProvider::EffectParam::MyDTI::newInstance() const {
-    DDON_STUB("rEffectProvider::EffectParam::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rEffectProvider::EffectParam;
 }
 
 const MtDTI& rEffectProvider::EffectMotSyncParam::getDTI() const {

@@ -273,9 +273,22 @@ __attribute__((weak)) void cpEquip::compMoveAfter() {
     /* stub */
 }
 
-__attribute__((weak)) void cpEquip::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpEquip::createProperty")
-    /* stub */
+void cpEquip::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mArmor", static_cast<MtObject*>(&mArmor[0]), 32u, 7u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeapon", static_cast<MtObject*>(&mWeapon[0]), 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHair", static_cast<MtObject*>(&mHair), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBeard", static_cast<MtObject*>(&mBeard), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMakeup", static_cast<MtObject*>(&mMakeup), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUnderwear", static_cast<MtObject*>(&mUnderwear), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUnderwear2", static_cast<MtObject*>(&mUnderwear2), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLantern", static_cast<MtObject*>(&mLantern), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNpcItem", static_cast<MtObject*>(&mNpcItem), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpWeaponResTable", "resource", static_cast<void*>(&mpWeaponResTable), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpPartsInfo", "resource", static_cast<void*>(&mpPartsInfo), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpEquipPresetRes", "resource", reinterpret_cast<MT_MFUNC>(&::cpEquip::getEquipPreset), reinterpret_cast<MT_MFUNC>(&::cpEquip::setEquipPreset), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mFlag", &mFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpdate", &mUpdate, 0u, 0u);
 }
 
 void cpEquip::callbackSetMotion(u32 src, u32 mot_no, f32 hokan, f32 frame, f32 speed, u32 attr) {
@@ -286,25 +299,25 @@ void cpEquip::callbackSetMotion(u32 src, u32 mot_no, f32 hokan, f32 frame, f32 s
             return;
         } else {
             const MtDTI& t0 = mpOwner->getDTI();
-            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uDDOModel::DTI) + 8);
+            MT_CTSTR v0_1 = uDDOModel::DTI.mName;
             const MtDTI* v0_0 = &t0;
             const MtDTI* v1_0;
             for (;;) {
-                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
-                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
                     } else {
                         return;
                     }
                 } else {
                     if (mWeapon[0].mpModel != nullptr) {
                         const MtDTI& t1 = mWeapon[0].mpModel->getDTI();
-                        unsigned long v1_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uWeapon::DTI) + 8);
+                        MT_CTSTR v1_1 = uWeapon::DTI.mName;
                         v1_0 = &t1;
                         for (;;) {
-                            if (v1_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + 8))) {
-                                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + 32)) != 0) {
-                                    v1_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + 32));
+                            if (v1_1 != v1_0->mName) {
+                                if (v1_0->mpParent != nullptr) {
+                                    v1_0 = v1_0->mpParent;
                                 } else {
                                     goto loop_479d39_end;
                                 }
@@ -322,11 +335,11 @@ void cpEquip::callbackSetMotion(u32 src, u32 mot_no, f32 hokan, f32 frame, f32 s
             loop_479d39_end:;
             if (mWeapon[1].mpModel != nullptr) {
                 const MtDTI& t2 = mWeapon[1].mpModel->getDTI();
-                unsigned long v3_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uWeapon::DTI) + 8);
+                MT_CTSTR v3_1 = uWeapon::DTI.mName;
                 for (const MtDTI* v3_0 = &t2;;) {
-                    if (v3_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + 8))) {
-                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + 32)) != 0) {
-                            v3_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + 32));
+                    if (v3_1 != v3_0->mName) {
+                        if (v3_0->mpParent != nullptr) {
+                            v3_0 = v3_0->mpParent;
                         } else {
                             break;
                         }
@@ -340,11 +353,11 @@ void cpEquip::callbackSetMotion(u32 src, u32 mot_no, f32 hokan, f32 frame, f32 s
             }
             if (mWeapon[2].mpModel != nullptr) {
                 const MtDTI& t3 = mWeapon[2].mpModel->getDTI();
-                unsigned long v5_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uWeapon::DTI) + 8);
+                MT_CTSTR v5_1 = uWeapon::DTI.mName;
                 for (const MtDTI* v5_0 = &t3;;) {
-                    if (v5_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + 8))) {
-                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + 32)) != 0) {
-                            v5_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + 32));
+                    if (v5_1 != v5_0->mName) {
+                        if (v5_0->mpParent != nullptr) {
+                            v5_0 = v5_0->mpParent;
                         } else {
                             break;
                         }
@@ -358,11 +371,11 @@ void cpEquip::callbackSetMotion(u32 src, u32 mot_no, f32 hokan, f32 frame, f32 s
             }
             if (mWeapon[3].mpModel != nullptr) {
                 const MtDTI& t4 = mWeapon[3].mpModel->getDTI();
-                unsigned long v7_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uWeapon::DTI) + 8);
+                MT_CTSTR v7_1 = uWeapon::DTI.mName;
                 for (const MtDTI* v7_0 = &t4;;) {
-                    if (v7_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + 8))) {
-                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + 32)) != 0) {
-                            v7_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + 32));
+                    if (v7_1 != v7_0->mName) {
+                        if (v7_0->mpParent != nullptr) {
+                            v7_0 = v7_0->mpParent;
                         } else {
                             break;
                         }

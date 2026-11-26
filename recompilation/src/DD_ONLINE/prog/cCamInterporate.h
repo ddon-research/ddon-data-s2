@@ -25,6 +25,7 @@ class cCamInterporateAng;
 class cCamInterporateAng3Time;
 class cCamInterporateRange;
 class cCamInterporateRangeAng;
+class cCamInterporateRangeF32;
 class cCamInterporateVec3;
 template <typename Type> class cCamInterporate;
 template <typename Type> class cCamInterporateTime;
@@ -143,7 +144,7 @@ protected:
     f32 mSpring;  // offset: 0x10
     f32 mDamping;  // offset: 0x14
 public:
-    static cCamInterporate<f32>::MyDTI DTI;
+    static MyDTI DTI;
 };
 
 template <typename Type>
@@ -330,6 +331,38 @@ public:
     static MyDTI DTI;
 };
 
+class cCamInterporateRangeF32 : public cCamInterporateF32
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cCamInterporateRangeF32();
+    virtual ~cCamInterporateRangeF32() {}
+    f32 interporateRange(f32 targetPos, f32 radius, f32 rate);
+public:
+    static MyDTI DTI;
+};
+
 class cCamInterporateVec3 : public cCamInterporate<MtVector3>
 {
 public:
@@ -447,12 +480,22 @@ inline void* cCamInterporateRange::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cCamInterporateRange::cCamInterporateRange() {
+}
+
 inline void* cCamInterporateRangeAng::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cCamInterporateRangeF32::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline void* cCamInterporateVec3::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cCamInterporateVec3::cCamInterporateVec3() {
 }
 
 template <typename Type>

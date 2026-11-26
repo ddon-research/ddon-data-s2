@@ -59,9 +59,9 @@ inline void cBlowSaveEmLvParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cBlowSaveEmLvParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cBlowSaveEmLvParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cBlowSaveEmLvParam::createProperty")
-    /* stub */
+void cBlowSaveEmLvParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Lv", &mKeyLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\270\233\347\256\227\345\200\244", &mSaveRate, 0u, 0u);
 }
 
 inline cBlowSaveEmLvParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -84,9 +84,9 @@ inline void cCalcDamageAtdmAdj::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCalcDamageAtdmAdj::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cCalcDamageAtdmAdj::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCalcDamageAtdmAdj::createProperty")
-    /* stub */
+void cCalcDamageAtdmAdj::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\351\230\262\346\257\224", &mAtdmRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mDamageAdj, 0u, 0u);
 }
 
 inline cCalcDamageAtdmAdj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -109,9 +109,9 @@ inline void cCalcDamageAtdmAdjRate::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCalcDamageAtdmAdjRate::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cCalcDamageAtdmAdjRate::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCalcDamageAtdmAdjRate::createProperty")
-    /* stub */
+void cCalcDamageAtdmAdjRate::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\346\255\246\345\231\250\346\224\273\346\222\203\351\230\262\345\276\241\345\212\233", &mKeyValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\351\230\262\346\257\224\343\201\270\343\201\256\350\243\234\346\255\243", &mAtdmAdjRate, 0u, 0u);
 }
 
 inline cCalcDamageAtdmAdjRate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -134,9 +134,14 @@ inline void cCalcDamageLvAdj::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCalcDamageLvAdj::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cCalcDamageLvAdj::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCalcDamageLvAdj::createProperty")
-    /* stub */
+void cCalcDamageLvAdj::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\254\343\203\231\343\203\253\345\267\256", &mLvDiff, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mLvAdj[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\201\256\343\201\221\343\201\236\343\202\212\350\243\234\346\255\243", &mLvAdj[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\201\266\343\201\243\351\243\233\343\201\263\350\243\234\346\255\243", &mLvAdj[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\347\212\266\346\205\213\347\225\260\345\270\270\350\243\234\346\255\243", &mLvAdj[3], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\202\246\343\203\263\345\200\244\350\243\234\346\255\243", &mLvAdj[4], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\271\343\202\277\343\203\237\343\203\212\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mLvAdj[5], 0u, 0u);
 }
 
 inline cCalcDamageLvAdj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -159,9 +164,11 @@ inline void cDamageSaveEmLvParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDamageSaveEmLvParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cDamageSaveEmLvParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDamageSaveEmLvParam::createProperty")
-    /* stub */
+void cDamageSaveEmLvParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Lv", &mKeyLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\270\233\347\256\227\345\200\244\344\277\202\346\225\260A", &mSaveParamA, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\270\233\347\256\227\345\200\244\344\277\202\346\225\260B", &mSaveParamB, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\270\233\347\256\227\345\200\244\344\277\202\346\225\260C", &mSaveParamC, 0u, 0u);
 }
 
 inline cDamageSaveEmLvParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -184,9 +191,8 @@ inline void cDamageSpecialAdj::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDamageSpecialAdj::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cDamageSpecialAdj::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDamageSpecialAdj::createProperty")
-    /* stub */
+void cDamageSpecialAdj::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\343\201\270\343\201\256\345\211\262\345\220\210", &mDamageRate, 0u, 0u);
 }
 
 inline cDamageSpecialAdj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -209,9 +215,23 @@ inline void cDmJobAdjParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDmJobAdjParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cDmJobAdjParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDmJobAdjParam::createProperty")
-    /* stub */
+void cDmJobAdjParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\270\343\203\247\343\203\226\343\202\277\343\202\244\343\203\227", &mJobType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\257\343\202\267\343\203\247\343\203\263\345\200\215\347\216\207\350\243\234\346\255\243", &mActionRateAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mDamageAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\271\343\202\277\343\203\237\343\203\212\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mStaminaDamageAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\263\343\203\201\343\203\243\343\203\263\343\203\210\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mEnchantDamageAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\347\226\262\345\212\264\345\200\244\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mTiredDamageAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\201\343\203\243\343\203\263\343\202\271\346\224\273\345\212\233\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mChanceDamageAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\203\223\343\203\252\343\203\206\343\202\243\345\220\271\343\201\215\351\243\233\343\201\260\343\201\227\345\212\233\350\243\234\346\255\243", &mAbilityBlowAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\344\272\272\351\226\223\346\225\265\347\212\266\346\205\213\347\225\260\345\270\270\345\212\240\347\256\227\350\243\234\346\255\243", &mHumanEmOcdAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\351\230\262\346\257\224\347\211\251\347\220\206\346\234\200\345\244\247\345\200\244", &mAtDmRateMaxPhys, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\351\230\262\346\257\224\351\255\224\346\263\225\346\234\200\345\244\247\345\200\244", &mAtDmRateMaxMagic, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\233\236\345\276\251\350\250\210\347\256\227\350\243\234\346\255\243A", &mHealBaseMagicAdjAdd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\233\236\345\276\251\350\250\210\347\256\227\350\243\234\346\255\243B", &mHealBaseMagicAdjMulti, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\233\236\345\276\251\350\250\210\347\256\227\350\243\234\346\255\243C", &mHealWepMagicAdjAdd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\233\236\345\276\251\350\250\210\347\256\227\350\243\234\346\255\243D", &mHealWepMagicAdjMulti, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\220\271\343\201\215\351\243\233\343\201\260\343\201\227\345\200\244\343\201\270\346\270\233\347\256\227\345\200\244\344\277\202\346\225\260", &mShrinkBlowSaveAdj, 0u, 0u);
 }
 
 inline cDmJobAdjParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -234,9 +254,11 @@ inline void cDmJobPawnAdjParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDmJobPawnAdjParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cDmJobPawnAdjParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDmJobPawnAdjParam::createProperty")
-    /* stub */
+void cDmJobPawnAdjParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\270\343\203\247\343\203\226\343\202\277\343\202\244\343\203\227", &mJobType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\347\264\240\344\275\223\346\224\273\346\222\203\343\201\253\345\257\276\343\201\231\343\202\213\350\243\234\346\255\243", &mBaseAttackAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\347\264\240\344\275\223\351\255\224\346\263\225\346\224\273\346\222\203\343\201\253\345\257\276\343\201\231\343\202\213\350\243\234\346\255\243", &mBaseMagicAttackAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\201\256\343\201\221\343\201\236\343\202\212\343\201\266\343\201\243\351\243\233\343\201\263\346\224\273\346\222\203\343\201\253\345\257\276\343\201\231\343\202\213\350\243\234\346\255\243", &mBaseBlowShrinkAdj, 0u, 0u);
 }
 
 inline cDmJobPawnAdjParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -259,9 +281,10 @@ inline void cDmLvPawnAdjParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cDmLvPawnAdjParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cDmLvPawnAdjParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDmLvPawnAdjParam::createProperty")
-    /* stub */
+void cDmLvPawnAdjParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Lv", &mKeyLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "LV\344\270\213\351\247\204(\347\264\240\344\275\223)", &mLvAdjRateBase, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "LV\344\270\213\351\247\204(Wep)", &mLvAdjRateWep, 0u, 0u);
 }
 
 inline cDmLvPawnAdjParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -284,9 +307,9 @@ inline void cErosionShakeConvert::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cErosionShakeConvert::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cErosionShakeConvert::createProperty(MtPropertyList& s) {
-    DDON_STUB("cErosionShakeConvert::createProperty")
-    /* stub */
+void cErosionShakeConvert::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\346\222\203\346\217\272\343\201\225\343\201\266\343\202\212\343\203\254\343\203\274\343\203\210", &mKeyShakesRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\263\343\202\242\343\203\235\343\202\244\343\203\263\343\203\210\343\201\256\345\212\240\347\256\227\346\231\202\351\226\223(Frame)", &mAddCoreTime, 0u, 0u);
 }
 
 inline cErosionShakeConvert::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -309,9 +332,13 @@ inline void cShrinkBlowValue::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cShrinkBlowValue::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cShrinkBlowValue::createProperty(MtPropertyList& s) {
-    DDON_STUB("cShrinkBlowValue::createProperty")
-    /* stub */
+void cShrinkBlowValue::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\277\343\202\244\343\203\227", &mDamageType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\250\201\345\212\233\350\250\255\345\256\232", &mLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "XZ\350\273\270\346\226\271\345\220\221\351\200\237\345\272\246", &mSpeedXZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "XZ\350\273\270\346\226\271\345\220\221\346\270\233\351\200\237", &mAccelerateXZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Y\350\273\270\346\226\271\345\220\221\351\200\237\345\272\246", &mSpeedY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Y\350\273\270\346\226\271\345\220\221\346\270\233\351\200\237", &mGravityY, 0u, 0u);
 }
 
 inline cShrinkBlowValue::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

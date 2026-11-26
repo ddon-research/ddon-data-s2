@@ -6,6 +6,7 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
 #include "nDrawShader.h"
@@ -87,9 +88,15 @@ const nDraw::SHADER* rShaderPackage::getShader(u32 id) const {
     return nullptr;
 }
 
-__attribute__((weak)) void rShaderPackage::createProperty(MtPropertyList& s) {
-    DDON_STUB("rShaderPackage::createProperty")
-    /* stub */
+void rShaderPackage::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "ShaderNum", &mHeader.shader_num, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "VertexShaderNum", &mHeader.vs_num, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "PixelShaderNum", &mHeader.ps_num, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "GeometryShaderNum", &mHeader.gs_num, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "InputLayoutNum", &mHeader.ia_num, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ShaderTableNum", &mHeader.table_num, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "BodySize", &mHeader.body_size, 1u, 0u);
 }
 
 __attribute__((noinline)) rShaderPackage::~rShaderPackage() {

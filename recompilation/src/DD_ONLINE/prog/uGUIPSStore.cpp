@@ -51,8 +51,18 @@ inline void uGUIPSStore::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIPSStore::~uGUIPSStore() {
-    DDON_STUB("uGUIPSStore::~uGUIPSStore")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
+    }
+    if (mpGUIDialog != nullptr) {
+        mpGUIDialog->kill();
+        mpGUIDialog = nullptr;
+    }
 }
 
 bool uGUIPSStore::loadResource() {

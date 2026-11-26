@@ -47,142 +47,84 @@ rGUIMessage::~rGUIMessage() {
     this->rGUIMessage::clear();
 }
 
-bool rGUIMessage::load(MtStream& in) {
-    clear();
-    MtDataReader r(in, 4096u);
-    bool b6_13;
-    if (r.MtDataReader::readU32() != 0x444D47) {
-        b6_13 = false;
-        return b6_13;
-    }
-    u32 t5 = r.MtDataReader::readU32();
-    mVersion = t5;
-    if (mVersion != 0x10302) {
-        b6_13 = false;
-        return b6_13;
-    }
-    u32 t7 = r.MtDataReader::readU32();
-    mLanguageId = t7;
-    u64 t9 = r.MtDataReader::readU64();
-    mUpdateTime = static_cast<t64>(t9);
-    u32 t11 = r.MtDataReader::readU32();
-    mIndexNum = t11;
-    u32 t13 = r.MtDataReader::readU32();
-    mMessageNum = t13;
-    u32 t15 = r.MtDataReader::readU32();
-    mIndexNameBufferSize = t15;
-    u32 t17 = r.MtDataReader::readU32();
-    mBufferSize = t17;
-    u32 length = r.MtDataReader::readU32();
-    u32 t20 = mIndexNum;
-    u32 t21 = mMessageNum;
-    u32 t22 = mBufferSize;
-    u32 t23 = mIndexNameBufferSize;
-    unsigned long t24 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
-    const u32 PackageNameSize = length + 1u;
-    const u32 spill4208 = (((t20 * 32u) + (t21 * 8u)) + length) + 1u;
-    INDEX* pIndexBuffer = static_cast<INDEX*>(memAlloc((((((t20 * 32u) + (t21 * 8u)) + t22) + t23) + length) + 1u));
-    u8* pBuffer = reinterpret_cast<u8*>(pIndexBuffer);
-    u32 t26 = mIndexNameBufferSize;
-    mPackageName = reinterpret_cast<MT_CTSTR>(&pBuffer[(t20 * 32u) + (t21 * 8u)]);
-    const u32 t27 = PackageNameSize;
-    r.MtDataReader::read(static_cast<void*>(&pBuffer[(t20 * 32u) + (t21 * 8u)]), t27);
-    u32 t29 = mIndexNum;
-    mpIndex = pIndexBuffer;
-    if (t29 != 0) {
-        r.MtDataReader::read(static_cast<void*>(pIndexBuffer), t29 * 32u);
-        r.MtDataReader::read(static_cast<void*>(&mpHashTable[0]), 2048u);
+__attribute__((weak)) bool rGUIMessage::load(MtStream& in) {
+        clear();
+        MtDataReader r(in, 4096u);
+        if (r.readU32() != 0x444D47) {
+            return false;
+        }
+        mVersion = r.readU32();
+        if (mVersion != 0x10302) {
+            return false;
+        }
+        mLanguageId = r.readU32();
+        mUpdateTime = r.readU64();
+        mIndexNum = r.readU32();
+        mMessageNum = r.readU32();
+        mIndexNameBufferSize = r.readU32();
+        mBufferSize = r.readU32();
+        u32 length = r.readU32();
+        const u32 PackageNameSize = length + 1;
+        const u32 IndexSize = sizeof(INDEX) * mIndexNum;
+        const u32 MessageTblSize = sizeof(MT_STR) * mMessageNum;
+        const u32 TotalAllocSize = IndexSize + MessageTblSize + PackageNameSize + mIndexNameBufferSize + mBufferSize;
+        u8* pBuffer = static_cast<u8*>(memAlloc(TotalAllocSize));
+        u32 NowPos = 0;
+        INDEX* pIndexBuffer = reinterpret_cast<INDEX*>(pBuffer);
+        NowPos += IndexSize;
+        MT_STR* pMessageTable = reinterpret_cast<MT_STR*>(pBuffer + NowPos);
+        NowPos += MessageTblSize;
+        MT_STR pPackageName = reinterpret_cast<MT_STR>(pBuffer + NowPos);
+        NowPos += PackageNameSize;
+        MT_STR pIndexName = reinterpret_cast<MT_STR>(pBuffer + NowPos);
+        NowPos += mIndexNameBufferSize;
+        MT_STR pBufferTop = reinterpret_cast<MT_STR>(pBuffer + NowPos);
+        mPackageName = pPackageName;
+        r.read(pPackageName, PackageNameSize);
+        mpIndex = pIndexBuffer;
+        if (mIndexNum != 0) {
+            r.read(pIndexBuffer, sizeof(INDEX) * mIndexNum);
+            r.read(mpHashTable, sizeof(mpHashTable));
+        }
         if (mIndexNameBufferSize != 0) {
-            mIndexNameBuffer = reinterpret_cast<MT_CTSTR>(&pBuffer[spill4208]);
-            r.MtDataReader::read(static_cast<void*>(&pBuffer[spill4208]), mIndexNameBufferSize);
+            mIndexNameBuffer = pIndexName;
+            r.read(pIndexName, mIndexNameBufferSize);
         } else {
             mIndexNameBuffer = nullptr;
         }
-    } else {
-        u32 t32 = mIndexNameBufferSize;
-        if (t32 != 0) {
-            mIndexNameBuffer = reinterpret_cast<MT_CTSTR>(&pBuffer[spill4208]);
-            r.MtDataReader::read(static_cast<void*>(&pBuffer[spill4208]), t32);
-        } else {
-            mIndexNameBuffer = nullptr;
-        }
-    }
-    mBufferTop = reinterpret_cast<MT_STR>(&pBuffer[((((t20 * 32u) + (t21 * 8u)) + t26) + length) + 1u]);
-    u32 t35 = mBufferSize;
-    r.MtDataReader::read(static_cast<void*>(&pBuffer[((((t20 * 32u) + (t21 * 8u)) + t26) + length) + 1u]), t35);
-    u32 v0_5 = mIndexNum;
-    const u32 IndexSize = t20 * 32u;
-    char* v5_9;
-    char* v5_12;
-    if (v0_5 == 0) {
-        v5_9 = reinterpret_cast<char*>(&pBuffer[t20 * 32u]);
-        v5_12 = reinterpret_cast<char*>(&pBuffer[((((t20 * 32u) + (t21 * 8u)) + t26) + length) + 1u]);
-    } else {
-        INDEX* pIndex = mpIndex;
-        MT_CTSTR v0_2 = mIndexNameBuffer;
-        INDEX* p0_1 = pIndex;
-        unsigned int i0_3 = 0;
-        char* v0_9 = reinterpret_cast<char*>(&pBuffer[t20 * 32u]);
-        char* v0_12 = reinterpret_cast<char*>(&pBuffer[((((t20 * 32u) + (t21 * 8u)) + t26) + length) + 1u]);
-        for (;;) {
-            unsigned long t36 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(p0_1) + 16);
-            p0_1->pName = &v0_2[t36];
-            unsigned long t37 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(p0_1) + 24);
-            if (t37 != 0) {
-                INDEX* t38 = mpIndex;
-                if (t37 != 0xFFFFFFFFFFFFFFFFul) {
-                    p0_1->pLink = &t38[t37];
+        mBufferTop = pBufferTop;
+        r.read(pBufferTop, mBufferSize);
+        if (mIndexNum != 0) {
+            for (u32 i = 0; i < mIndexNum; i++) {
+                INDEX* pIndex = &mpIndex[i];
+                pIndex->pName = mIndexNameBuffer + pIndex->offset;
+                if (pIndex->linkOffst != 0) {
+                    INDEX* pTop = mpIndex;
+                    if (pIndex->linkOffst != static_cast<size_t>(-1)) {
+                        pTop += pIndex->linkOffst;
+                    }
+                    pIndex->pLink = pTop;
                 } else {
-                    p0_1->pLink = t38;
-                }
-            } else {
-                p0_1->pLink = nullptr;
-            }
-            if ((i0_3 + 1u) < v0_5) {
-                p0_1 += 1;
-                i0_3 += 1u;
-            } else {
-                break;
-            }
-        }
-        for (unsigned int i3_0 = 0;;) {
-            if (mpHashTable[i3_0].offset != 0) {
-                INDEX* t40 = mpIndex;
-                if (mpHashTable[i3_0].offset != 0xFFFFFFFFFFFFFFFFul) {
-                    mpHashTable[i3_0].pIndex = &t40[mpHashTable[i3_0].offset];
-                } else {
-                    mpHashTable[i3_0].pIndex = t40;
+                    pIndex->pLink = nullptr;
                 }
             }
-            if ((i3_0 + 1u) != 256) {
-                i3_0 = i3_0 + 1u;
-            } else {
-                v5_9 = v0_9;
-                v5_12 = v0_12;
-                break;
+            for (u32 i = 0; i < 256; i++) {
+                if (mpHashTable[i].offset != 0) {
+                    INDEX* pTop = mpIndex;
+                    if (mpHashTable[i].offset != static_cast<size_t>(-1)) {
+                        pTop += mpHashTable[i].offset;
+                    }
+                    mpHashTable[i].pIndex = pTop;
+                }
             }
         }
-    }
-    mpMessage = reinterpret_cast<MT_STR*>(v5_9);
-    u32 v6_10 = mMessageNum;
-    if (v6_10 == 0) {
-        b6_13 = true;
-    } else {
+        mpMessage = pMessageTable;
         MT_STR str = mBufferTop;
-        unsigned int i6_3 = 0;
-        MT_STR* pMessage = reinterpret_cast<MT_STR*>(&pBuffer[IndexSize]);
-        b6_13 = true;
-        for (;;) {
-            pMessage[i6_3] = str;
-            str = &str[static_cast<unsigned int>(strlen(str) + 1ul)];
-            if ((i6_3 + 1u) < v6_10) {
-                i6_3 = i6_3 + 1u;
-            } else {
-                break;
-            }
+        for (u32 i = 0; i < mMessageNum; i++) {
+            pMessageTable[i] = str;
+            str += static_cast<u32>(strlen(str) + 1);
         }
-    }
-    return b6_13;
+        return true;
 }
 
 bool rGUIMessage::save(MtStream& out) {

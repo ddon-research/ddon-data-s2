@@ -217,13 +217,13 @@ bool uStagePartsCtrl::isSbc(const s32 x, const s32 z) const {
         if (mpStageResource != nullptr) {
             if (static_cast<unsigned int>(z) < mpStageResource->getAreaNum()) {
                 if (mpStageResource->getAreaNo(z) > -1) {
-                    unsigned int v0_1 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 136);
+                    u32 v0_1 = mPartsDataAry.mLength;
                     if (v0_1 != 0) {
-                        unsigned long v0_2 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 152);
+                        MtObject* * v0_2 = mPartsDataAry.mpArray;
                         for (u32 i = 0;;) {
-                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i * 8u)) + 0)) != 0) {
-                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i * 8u)) + 0)) + 512)) == static_cast<unsigned int>(z)) {
-                                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i * 8u)) + 0)) + 529)) != 0) {
+                            if (v0_2[i] != nullptr) {
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[i]) + 512)) == static_cast<unsigned int>(z)) {
+                                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_2[i]) + 529)) != 0) {
                                         return true;
                                     }
                                 }
@@ -298,14 +298,38 @@ u32 uStagePartsCtrl::getPartsNum() const {
     }
 }
 
-__attribute__((weak)) MT_CTSTR uStagePartsCtrl::getMdlSdlPath(s32 areaNo) const {
-    DDON_STUB("uStagePartsCtrl::getMdlSdlPath")
-    return {};
+MT_CTSTR uStagePartsCtrl::getMdlSdlPath(s32 areaNo) const {
+    if (mpStageResource != nullptr) {
+        rStageCustomParts::Info* pinfo = mpStageResource->getAreaInfo(areaNo);
+        return (pinfo == nullptr) ? static_cast<char*>(nullptr) : (&pinfo->mModel[0]);
+    } else {
+        return nullptr;
+    }
 }
 
-__attribute__((weak)) cSplitBgm* uStagePartsCtrl::getSplitBgmInfo(const MtVector3& targetPos) const {
-    DDON_STUB("uStagePartsCtrl::getSplitBgmInfo")
-    return nullptr;
+cSplitBgm* uStagePartsCtrl::getSplitBgmInfo(const MtVector3& targetPos) const {
+    s32 posX = 0;
+    s32 posZ = 0;
+    if (calcPartsArea(targetPos, posX, posZ)) {
+        rStageCustom* t1 = mpStageResource;
+        if (t1 != nullptr) {
+            s32 t2 = posZ;
+            if (static_cast<unsigned int>(t2) < t1->getAreaNum()) {
+                rStageCustom* t4 = mpStageResource;
+                s32 t5 = t4->getAreaNo(t2);
+                sSound* t7 = sSound::getInstance();
+                return static_cast<sSoundExt*>(t7)->getSplitAreaBgmInfo(static_cast<signed char>(t5));
+            } else {
+                sSound* t7 = sSound::getInstance();
+                return static_cast<sSoundExt*>(t7)->getSplitAreaBgmInfo(static_cast<s8>(-1));
+            }
+        } else {
+            sSound* t7 = sSound::getInstance();
+            return static_cast<sSoundExt*>(t7)->getSplitAreaBgmInfo(static_cast<s8>(-1));
+        }
+    } else {
+        return nullptr;
+    }
 }
 
 uSoundOcclusion* uStagePartsCtrl::getSoundOcclusion() const {
@@ -330,7 +354,7 @@ uSoundOcclusion* uStagePartsCtrl::getSoundOcclusion() const {
 }
 
 s32 uStagePartsCtrl::getPartsIndexNo(cAISvNavPathFinding* pNavPath) {
-    s32 num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 136);
+    s32 num = mPartsDataAry.mLength;
     s32 i = 0;
     if (num > 0) {
         do {
@@ -422,6 +446,18 @@ __attribute__((weak)) void uStagePartsCtrl::updateXZ() {
 __attribute__((weak)) void uStagePartsCtrl::uStageCustomCtrlSetup() {
     DDON_STUB("uStagePartsCtrl::uStageCustomCtrlSetup")
     /* stub */
+}
+
+inline void uStagePartsCtrl::uStageCustomCtrlKill() {
+    if (mpOccluder == nullptr) {
+        return;
+    }
+    static_cast<sOccluderEx*>(sOccluder::mpInstance)->partsFinal();
+    if (mpOccluder == nullptr) {
+        return;
+    }
+    mpOccluder->release();
+    mpOccluder = nullptr;
 }
 
 __attribute__((weak)) void uStagePartsCtrl::uStageCustomCtrlSetBlockArcLoad(s32 stageNo, const MtVector3& plPos) {

@@ -26,6 +26,8 @@ class cGUIObjMessage;
 class cGUIObjPolygon;
 class rGUI;
 class uGUIBase;
+class uGUIItemBase01;
+class uGUISkill;
 
 // Declarations
 class uGUIPopCmd01;
@@ -40,6 +42,8 @@ using u32 = unsigned int;
 
 class uGUIPopCmd01 : public uGUIPopBase
 {
+    friend class uGUIItemBase01;
+    friend class uGUISkill;
 public:
     enum EXEC_MODE
     {

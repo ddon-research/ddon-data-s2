@@ -16,9 +16,11 @@ nIMEPS4::CandidateDispInfo::CandidateDispInfo() {
 nIMEPS4::CandidateDispInfo::~CandidateDispInfo() {
 }
 
-__attribute__((weak)) nIMEPS4::CandidateDispInfo& nIMEPS4::CandidateDispInfo::operator=(const nIMEPS4::CandidateDispInfo& other) {
-    DDON_STUB("nIMEPS4::CandidateDispInfo::operator=")
-    __builtin_unreachable();
+nIMEPS4::CandidateDispInfo& nIMEPS4::CandidateDispInfo::operator=(const nIMEPS4::CandidateDispInfo& other) {
+    mListNum = other.getListNum();
+    mListSelectIndex = other.getListSelectIndex();
+    ::memcpy(static_cast<void*>(&mDispList[0][0]), static_cast<const void*>(&other.mDispList[0][0]), 1120ul);
+    return *this;
 }
 
 void nIMEPS4::CandidateDispInfo::clear() {

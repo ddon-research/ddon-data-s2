@@ -202,9 +202,10 @@ nFsm::cCameraCtrl::cCameraCtrl() {
     mStartPosNo = 0;
 }
 
-__attribute__((weak)) void nFsm::cCameraCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("nFsm::cCameraCtrl::createProperty")
-    /* stub */
+void nFsm::cCameraCtrl::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(reinterpret_cast<MtObject*>(&(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0))), "mCamId", &mCamId, 0u, 0u);
+    s << ::MtProperty(reinterpret_cast<MtObject*>(&(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0))), "mRno0", &mRno0, 1u, 0u);
+    s << ::MtProperty(reinterpret_cast<MtObject*>(&(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0))), "mRno1", &mRno1, 1u, 0u);
 }
 
 MtUI* nFsm::cCameraCtrl::createUI(MtProperty& prop) {

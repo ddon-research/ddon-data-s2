@@ -22,6 +22,7 @@ class MtDataWriter;
 class MtPropertyList;
 class MtString;
 class cKeyCustomParam;
+namespace nMenuKeyConfig { class KeyCustomManagers; }
 class rKeyCustomParam;
 class sInputManager;
 
@@ -261,6 +262,7 @@ public:
 
 class cKeyCustomManager : public MtObject
 {
+    friend class nMenuKeyConfig::KeyCustomManagers;
     friend class sInputManager;
 public:
     class MyDTI;

@@ -25,9 +25,16 @@ inline void cJobMasterCtrl::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cJobMasterCtrl::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cJobMasterCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cJobMasterCtrl::createProperty")
-    /* stub */
+void cJobMasterCtrl::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mJobId", &mJobId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartJobLevel", &mStartJobLevel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFirstTalkGrpSerial", &mFirstTalkGrpSerial, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTraningTalkGrpSerial", &mTraningTalkGrpSerial, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFirstOrderTalkGrpSerial", &mFirstOrderTalkGrpSerial, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJobTutorialQuestId", &mJobTutorialQuestId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJobMasterTutorialQuestId", &mJobMasterTutorialQuestId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaId", &mAreaId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaRank", &mAreaRank, 0u, 0u);
 }
 
 inline cJobMasterCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

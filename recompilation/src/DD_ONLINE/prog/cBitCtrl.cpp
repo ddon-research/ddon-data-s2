@@ -43,9 +43,9 @@ cBitCtrl::~cBitCtrl() {
     mpBitTableRes = nullptr;
 }
 
-__attribute__((weak)) void cBitCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cBitCtrl::createProperty")
-    /* stub */
+void cBitCtrl::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpBitTableRes", "resource", reinterpret_cast<MT_MFUNC>(&::cBitCtrl::getResource), reinterpret_cast<MT_MFUNC>(&::cBitCtrl::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mCurrentBitData", &mCurrentBitData, 0u, 0u);
 }
 
 BitData cBitCtrl::changeBitDataMaskOr(BitData mask) {

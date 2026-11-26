@@ -51,6 +51,7 @@ namespace nPS4 { class BufferObject; }
 namespace nPS4 { class GeometryShaderObject; }
 namespace nPS4 { class PixelShaderObject; }
 namespace nPS4 { class VertexShaderObject; }
+class rMaterial;
 class rModel;
 class rShader2;
 class rShaderCache;
@@ -83,6 +84,7 @@ using u64 = __uint64_t;
 
 class sShader2 : public cSystem
 {
+    friend class rMaterial;
     friend class rModel;
 public:
     enum PACK_MODE
@@ -490,4 +492,12 @@ inline void* sShader2::operator new(size_t sz, void* p_addr) {
 
 inline bool sShader2::isDynamicShaderLoading() {
     return this->mDynamicShaderLoading;
+}
+
+inline sShader2* sShader2::getInstance() {
+    return ::sShader2::mpInstance;
+}
+
+inline bool sShader2::isSRGBEnable() {
+    return this->mSRGBEnable;
 }

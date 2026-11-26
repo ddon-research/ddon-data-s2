@@ -19,13 +19,43 @@
 #endif
 
 MtProperty::MtProperty(MtObject* pobj, MT_CTSTR name, MT_CTSTR custom, void* padr, u32 attr, u32 count) {
-    DDON_STUB("MtProperty::MtProperty")
-    /* stub */
+    mName = name;
+    mType = TYPE_CUSTOM;
+    mAttr = attr;
+    mpOwner = pobj;
+    mpAdr = padr;
+    mCount = count;
+    mIndex = 0;
+    mpSetCount = nullptr;
+    mpSetter = nullptr;
+    mpPrev = nullptr;
+    mpNext = nullptr;
+    for (u32 i = 0; i < MAX_CUSTOM; ++i) {
+        if (mpCustom[i] != nullptr && strcmp(mpCustom[i]->getName(), custom) == 0) {
+            mType = TYPE_CUSTOM + i;
+            break;
+        }
+    }
 }
 
 MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MT_CTSTR custom, MT_MFUNC getter, MT_MFUNC setter, u32 attr, MT_MFUNC getcount, MT_MFUNC setcount) {
-    DDON_STUB("MtProperty::MtProperty")
-    /* stub */
+    mName = name;
+    mType = TYPE_CUSTOM;
+    mAttr = attr | ATTR_DYNAMIC;
+    mpOwner = pthis;
+    mpGetter = getter;
+    mpGetCount = getcount;
+    mpSetter = setter;
+    mpSetCount = setcount;
+    mIndex = 0;
+    mpPrev = nullptr;
+    mpNext = nullptr;
+    for (u32 i = 0; i < MAX_CUSTOM; ++i) {
+        if (mpCustom[i] != nullptr && strcmp(mpCustom[i]->getName(), custom) == 0) {
+            mType = TYPE_CUSTOM + i;
+            break;
+        }
+    }
 }
 
 MtProperty::TYPE MtProperty::getType(MT_CTSTR name) {
@@ -38,8 +68,89 @@ MtProperty::TYPE MtProperty::getType(MT_CTSTR name) {
 }
 
 __attribute__((weak)) u32 MtProperty::getBytes() const {
-    DDON_STUB("MtProperty::getBytes")
-    return {};
+    switch (mType) {
+    case TYPE_CLASS:
+    case TYPE_CLASSREF:
+    case TYPE_U64:
+    case TYPE_S64:
+    case TYPE_F64:
+    case TYPE_STRING:
+    case TYPE_POINT:
+    case TYPE_SIZE:
+    case TYPE_CSTRING:
+    case TYPE_TIME:
+    case TYPE_FLOAT2:
+    case TYPE_EASECURVE:
+    case TYPE_RANGE:
+    case TYPE_RANGEF:
+    case TYPE_OSCILLATOR:
+    case TYPE_VARIABLE:
+    case TYPE_VECTOR2:
+    case TYPE_POINTF:
+    case TYPE_SIZEF:
+    case TYPE_CUSTOM:
+        return 8u;
+    case TYPE_BOOL:
+    case TYPE_U8:
+    case TYPE_S8:
+        return 1u;
+    case TYPE_U16:
+    case TYPE_S16:
+        return 2u;
+    case TYPE_U32:
+    case TYPE_S32:
+    case TYPE_F32:
+    case TYPE_COLOR:
+    case TYPE_RANGEU16:
+    case TYPE_PLANE_XZ:
+        return 4u;
+    case TYPE_FLOAT3:
+        return 12u;
+    case TYPE_RECT:
+    case TYPE_VECTOR3:
+    case TYPE_VECTOR4:
+    case TYPE_QUATERNION:
+    case TYPE_FLOAT4:
+    case TYPE_PLANE:
+    case TYPE_SPHERE:
+    case TYPE_RAY_Y:
+    case TYPE_RECTF:
+        return 16u;
+    case TYPE_MATRIX:
+    case TYPE_FLOAT4x4:
+    case TYPE_HERMITECURVE:
+        return 64u;
+    case TYPE_PROPERTY:
+        return 112u;
+    case TYPE_FLOAT3x3:
+        return 36u;
+    case TYPE_FLOAT4x3:
+    case TYPE_CAPSULE:
+    case TYPE_CYLINDER:
+    case TYPE_TRIANGLE:
+    case TYPE_FLOAT3x4:
+    case TYPE_MATRIX33:
+    case TYPE_RECT3D_XZ:
+        return 48u;
+    case TYPE_LINE:
+    case TYPE_LINESEGMENT:
+    case TYPE_RAY:
+    case TYPE_AABB:
+    case TYPE_CONE:
+    case TYPE_TORUS:
+    case TYPE_ELLIPSOID:
+    case TYPE_RECT3D:
+        return 32u;
+    case TYPE_OBB:
+        return 80u;
+    case TYPE_LINESEGMENT4:
+    case TYPE_AABB4:
+        return 96u;
+    case TYPE_RECT3D_COLLISION:
+        return 160u;
+    default:
+        return 0u;
+    }
 }
 
 MT_CTSTR MtProperty::getTypeName() const {
@@ -50,29 +161,27 @@ MT_CTSTR MtProperty::getTypeName() const {
     }
 }
 
-__attribute__((weak)) u32 MtProperty::getCount() const {
-    DDON_STUB("MtProperty::getCount")
-    return {};
+u32 MtProperty::getCount() const {
+    if (isDynamic()) {
+        if (mpGetCount != nullptr) {
+            typedef u32 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetCount);
+            return (mpOwner->*pfunc)();
+        }
+        return 0;
+    }
+    return mCount;
 }
 
-void MtProperty::setCount(u32 count) {
-    if ((mAttr & 128u) != 0) {
-        (mpOwner->*mpSetCount)();
-    } else {
-        if ((mType - 24u) <= 50u) {
-            if (((0x4000000000011ul >> static_cast<unsigned long>((mType - 24u) & 63u)) & 1ul) == 0) {
-                if (this->mCount >= count) {
-                    this->mCount = count;
-                }
-            } else {
-                this->mCount = count;
-            }
+__attribute__((weak)) void MtProperty::setCount(u32 count) {
+        if (mAttr & 128) {
+            (mpOwner->*reinterpret_cast<void (MtObject::*)(u32)>(mpSetCount))(count);
         } else {
-            if (this->mCount >= count) {
-                this->mCount = count;
+            bool isProhibitSetCount = !(mType == 24 || mType == 28 || mType == 74);
+            if (!isProhibitSetCount || mCount >= count) {
+                mCount = count;
             }
         }
-    }
 }
 
 __attribute__((weak)) void MtProperty::copy(const MtProperty& prop) {
@@ -81,148 +190,726 @@ __attribute__((weak)) void MtProperty::copy(const MtProperty& prop) {
 }
 
 __attribute__((weak)) void MtProperty::setInteger(s32 v) {
-    DDON_STUB("MtProperty::setInteger")
-    /* stub */
+    switch (mType) {
+    case TYPE_BOOL:
+        setBool(v != 0);
+        break;
+    case TYPE_U8:
+        setU8(v);
+        break;
+    case TYPE_U16:
+        setU16(v);
+        break;
+    case TYPE_U32:
+        setU32(v);
+        break;
+    case TYPE_U64:
+        setU64(v);
+        break;
+    case TYPE_S8:
+        setS8(v);
+        break;
+    case TYPE_S16:
+        setS16(v);
+        break;
+    case TYPE_S32:
+        setS32(v);
+        break;
+    case TYPE_S64:
+        setS64(v);
+        break;
+    case TYPE_F32:
+        setF32(v);
+        break;
+    case TYPE_F64:
+        setF64(v);
+        break;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setFloat(f32 v) {
-    DDON_STUB("MtProperty::setFloat")
-    /* stub */
+    if (mType == TYPE_F64) {
+        setF64(v);
+    } else if (mType == TYPE_F32) {
+        setF32(v);
+    }
 }
 
 __attribute__((weak)) void MtProperty::setClass(MtObject* pobj) {
-    DDON_STUB("MtProperty::setClass")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(MtObject*, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(pobj, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(MtObject*);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(pobj);
+        }
+    } else {
+        static_cast<MtObject**>(mpAdr)[mIndex] = pobj;
+    }
 }
 
-__attribute__((weak)) void MtProperty::setBool(bool value) {
-    DDON_STUB("MtProperty::setBool")
-    /* stub */
+void MtProperty::setBool(bool value) {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(bool, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(bool);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<bool*>(mpAdr)[mIndex] = value;
+    }
 }
 
-__attribute__((weak)) void MtProperty::setS8(s8 value) {
-    DDON_STUB("MtProperty::setS8")
-    /* stub */
+void MtProperty::setS8(s8 value) {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(s8, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(s8);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<s8*>(mpAdr)[mIndex] = value;
+    }
 }
 
-__attribute__((weak)) void MtProperty::setS16(s16 value) {
-    DDON_STUB("MtProperty::setS16")
-    /* stub */
+void MtProperty::setS16(s16 value) {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(s16, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(s16);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<s16*>(mpAdr)[mIndex] = value;
+    }
 }
 
-__attribute__((weak)) void MtProperty::setS32(s32 value) {
-    DDON_STUB("MtProperty::setS32")
-    /* stub */
+void MtProperty::setS32(s32 value) {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(s32, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(s32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<s32*>(mpAdr)[mIndex] = value;
+    }
 }
 
-__attribute__((weak)) void MtProperty::setS64(s64 value) {
-    DDON_STUB("MtProperty::setS64")
-    /* stub */
+void MtProperty::setS64(s64 value) {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(s64, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(s64);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<s64*>(mpAdr)[mIndex] = value;
+    }
 }
 
-__attribute__((weak)) void MtProperty::setU8(u8 value) {
-    DDON_STUB("MtProperty::setU8")
-    /* stub */
+void MtProperty::setU8(u8 value) {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(u8, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(u8);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<u8*>(mpAdr)[mIndex] = value;
+    }
 }
 
-__attribute__((weak)) void MtProperty::setU16(u16 value) {
-    DDON_STUB("MtProperty::setU16")
-    /* stub */
+void MtProperty::setU16(u16 value) {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(u16, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(u16);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<u16*>(mpAdr)[mIndex] = value;
+    }
 }
 
-__attribute__((weak)) void MtProperty::setU32(u32 value) {
-    DDON_STUB("MtProperty::setU32")
-    /* stub */
+void MtProperty::setU32(u32 value) {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(u32, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<u32*>(mpAdr)[mIndex] = value;
+    }
 }
 
-__attribute__((weak)) void MtProperty::setU64(u64 value) {
-    DDON_STUB("MtProperty::setU64")
-    /* stub */
+void MtProperty::setU64(u64 value) {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(u64, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(u64);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<u64*>(mpAdr)[mIndex] = value;
+    }
 }
 
-__attribute__((weak)) void MtProperty::setF32(f32 value) {
-    DDON_STUB("MtProperty::setF32")
-    /* stub */
+void MtProperty::setF32(f32 value) {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(f32, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(f32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<f32*>(mpAdr)[mIndex] = value;
+    }
 }
 
-__attribute__((weak)) void MtProperty::setF64(f64 value) {
-    DDON_STUB("MtProperty::setF64")
-    /* stub */
+void MtProperty::setF64(f64 value) {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(f64, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(f64);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<f64*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setString(const MtString& value) {
-    DDON_STUB("MtProperty::setString")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtString&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtString&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtString*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setCString(const MtString& value) {
-    DDON_STUB("MtProperty::setCString")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(MT_CTSTR, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value.ptr(), mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(MT_CTSTR);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value.ptr());
+        }
+    } else {
+        strcpy(static_cast<MT_CHAR*>(mpAdr) + mIndex, value.ptr());
+    }
 }
 
 __attribute__((weak)) void MtProperty::setColor(const MtColor& value) {
-    DDON_STUB("MtProperty::setColor")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtColor&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtColor&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtColor*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setPoint(const MtPoint& value) {
-    DDON_STUB("MtProperty::setPoint")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtPoint&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtPoint&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtPoint*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setSize(const MtSize& value) {
-    DDON_STUB("MtProperty::setSize")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtSize&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtSize&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtSize*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setRect(const MtRect& value) {
-    DDON_STUB("MtProperty::setRect")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtRect&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtRect&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtRect*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setPointF(const MtPointF& value) {
-    DDON_STUB("MtProperty::setPointF")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtPointF&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtPointF&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtPointF*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setSizeF(const MtSizeF& value) {
-    DDON_STUB("MtProperty::setSizeF")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtSizeF&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtSizeF&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtSizeF*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setRectF(const MtRectF& value) {
-    DDON_STUB("MtProperty::setRectF")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtRectF&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtRectF&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtRectF*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setVector(const MtVector4& value) {
-    DDON_STUB("MtProperty::setVector")
-    /* stub */
+    switch (mType) {
+    case TYPE_COLOR:
+    {
+        MtColor v;
+        v.r = value.x > 1.0f ? 255u : static_cast<u32>(static_cast<s32>(value.x * 255.0f));
+        v.g = value.y > 1.0f ? 255u : static_cast<u32>(static_cast<s32>(value.y * 255.0f));
+        v.b = value.z > 1.0f ? 255u : static_cast<u32>(static_cast<s32>(value.z * 255.0f));
+        v.a = value.w > 1.0f ? 255u : static_cast<u32>(static_cast<s32>(value.w * 255.0f));
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtColor&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtColor&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            static_cast<MtColor*>(mpAdr)[mIndex] = v;
+        }
+        break;
+    }
+    case TYPE_VECTOR3:
+    {
+        MtVector3 v;
+        v.x = value.x;
+        v.y = value.y;
+        v.z = value.z;
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtVector3&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtVector3&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            static_cast<MtVector3*>(mpAdr)[mIndex] = v;
+        }
+        break;
+    }
+    case TYPE_VECTOR4:
+    {
+        MtVector4 v;
+        v.x = value.x;
+        v.y = value.y;
+        v.z = value.z;
+        v.w = value.w;
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtVector4&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtVector4&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            static_cast<MtVector4*>(mpAdr)[mIndex] = v;
+        }
+        break;
+    }
+    case TYPE_FLOAT2:
+    {
+        MtFloat2 v;
+        v.x = value.x;
+        v.y = value.y;
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtFloat2&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtFloat2&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            static_cast<MtFloat2*>(mpAdr)[mIndex] = v;
+        }
+        break;
+    }
+    case TYPE_VECTOR2:
+    {
+        MtVector2 v;
+        v.x = value.x;
+        v.y = value.y;
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtVector2&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtVector2&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            static_cast<MtVector2*>(mpAdr)[mIndex] = v;
+        }
+        break;
+    }
+    case TYPE_FLOAT3:
+    {
+        MtFloat3 v;
+        v.x = value.x;
+        v.y = value.y;
+        v.z = value.z;
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtFloat3&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtFloat3&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            static_cast<MtFloat3*>(mpAdr)[mIndex] = v;
+        }
+        break;
+    }
+    case TYPE_FLOAT4:
+    {
+        MtFloat4 v;
+        v.x = value.x;
+        v.y = value.y;
+        v.z = value.z;
+        v.w = value.w;
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtFloat4&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtFloat4&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            static_cast<MtFloat4*>(mpAdr)[mIndex] = v;
+        }
+        break;
+    }
+    case TYPE_EASECURVE:
+    {
+        MtEaseCurve v;
+        v.p1 = value.x;
+        v.p2 = value.y;
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtEaseCurve&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtEaseCurve&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            static_cast<MtEaseCurve*>(mpAdr)[mIndex] = v;
+        }
+        break;
+    }
+    case TYPE_SPHERE:
+    {
+        MtSphere v;
+        v.pos.x = value.x;
+        v.pos.y = value.y;
+        v.pos.z = value.z;
+        v.r = value.w;
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtSphere&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtSphere&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            memcpy(static_cast<MtSphere*>(mpAdr) + mIndex, &v, sizeof(v));
+        }
+        break;
+    }
+    case TYPE_RANGE:
+    {
+        MtRange v;
+        s32 a = static_cast<s32>(value.x);
+        s32 b = static_cast<s32>(value.y);
+        v.s = a < b ? a : b;
+        v.r = a < b ? b - a : a - b;
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtRange&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtRange&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            memcpy(static_cast<MtRange*>(mpAdr) + mIndex, &v, sizeof(v));
+        }
+        break;
+    }
+    case TYPE_RANGEF:
+    {
+        MtRangeF v;
+        v.s = value.y > value.x ? value.x : value.y;
+        v.r = value.y > value.x ? value.y - value.x : value.x - value.y;
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtRangeF&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtRangeF&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            memcpy(static_cast<MtRangeF*>(mpAdr) + mIndex, &v, sizeof(v));
+        }
+        break;
+    }
+    case TYPE_RANGEU16:
+    {
+        MtRangeU16 v;
+        u32 a = static_cast<u16>(static_cast<s32>(value.x));
+        u32 b = static_cast<u16>(static_cast<s32>(value.y));
+        v.s = a < b ? a : b;
+        v.r = a < b ? b - a : a - b;
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef void (MtObject::*MT_SETTER)(const MtRangeU16&, u32);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v, mIndex);
+            } else {
+                typedef void (MtObject::*MT_SETTER)(const MtRangeU16&);
+                MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+                (mpOwner->*pfunc)(v);
+            }
+        } else {
+            memcpy(static_cast<MtRangeU16*>(mpAdr) + mIndex, &v, sizeof(v));
+        }
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setVector4(const MtVector4& value) {
-    DDON_STUB("MtProperty::setVector4")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtVector4&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtVector4&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtVector4*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setVector3(const MtVector3& value) {
-    DDON_STUB("MtProperty::setVector3")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtVector3&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtVector3&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtVector3*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setFloat2(const MtFloat2& value) {
-    DDON_STUB("MtProperty::setFloat2")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtFloat2&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtFloat2&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtFloat2*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setFloat3(const MtFloat3& value) {
-    DDON_STUB("MtProperty::setFloat3")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtFloat3&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtFloat3&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtFloat3*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setFloat4(const MtFloat4& value) {
-    DDON_STUB("MtProperty::setFloat4")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtFloat4&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtFloat4&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtFloat4*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setMatrix(const MtMatrix& value) {
@@ -231,453 +918,1875 @@ __attribute__((weak)) void MtProperty::setMatrix(const MtMatrix& value) {
 }
 
 __attribute__((weak)) void MtProperty::setQuaternion(const MtQuaternion& value) {
-    DDON_STUB("MtProperty::setQuaternion")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtQuaternion&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtQuaternion&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtQuaternion*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setEaseCurve(const MtEaseCurve& value) {
-    DDON_STUB("MtProperty::setEaseCurve")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtEaseCurve&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtEaseCurve&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtEaseCurve*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setHermiteCurve(const MtHermiteCurve& value) {
-    DDON_STUB("MtProperty::setHermiteCurve")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtHermiteCurve&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtHermiteCurve&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtHermiteCurve*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setTime(const MtTime& value) {
-    DDON_STUB("MtProperty::setTime")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtTime&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtTime&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtTime*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setLine(const MtLine& value) {
-    DDON_STUB("MtProperty::setLine")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtLine&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtLine&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtLine*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setLineSegment(const MtLineSegment& value) {
-    DDON_STUB("MtProperty::setLineSegment")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtLineSegment&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtLineSegment&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtLineSegment*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setLineSegment4(const MtLineSegment4& value) {
-    DDON_STUB("MtProperty::setLineSegment4")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtLineSegment4&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtLineSegment4&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtLineSegment4*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setRay(const MtRay& value) {
-    DDON_STUB("MtProperty::setRay")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtRay&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtRay&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtRay*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setPlane(const MtPlane& value) {
-    DDON_STUB("MtProperty::setPlane")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtPlane&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtPlane&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtPlane*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setSphere(const MtSphere& value) {
-    DDON_STUB("MtProperty::setSphere")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtSphere&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtSphere&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        MtSphere& s = static_cast<MtSphere*>(mpAdr)[mIndex];
+        s.pos.x = value.pos.x;
+        s.pos.y = value.pos.y;
+        s.pos.z = value.pos.z;
+        s.r = value.r;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setCapsule(const MtCapsule& value) {
-    DDON_STUB("MtProperty::setCapsule")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtCapsule&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtCapsule&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtCapsule*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setAABB(const MtAABB& value) {
-    DDON_STUB("MtProperty::setAABB")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtAABB&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtAABB&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtAABB*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setOBB(const MtOBB& value) {
-    DDON_STUB("MtProperty::setOBB")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtOBB&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtOBB&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtOBB*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setAABB4(const MtAABB4& value) {
-    DDON_STUB("MtProperty::setAABB4")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtAABB4&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtAABB4&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtAABB4*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setCylinder(const MtCylinder& value) {
-    DDON_STUB("MtProperty::setCylinder")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtCylinder&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtCylinder&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtCylinder*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setTriangle(const MtTriangle& value) {
-    DDON_STUB("MtProperty::setTriangle")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtTriangle&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtTriangle&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtTriangle*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setCone(const MtCone& value) {
-    DDON_STUB("MtProperty::setCone")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtCone&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtCone&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtCone*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setTorus(const MtTorus& value) {
-    DDON_STUB("MtProperty::setTorus")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtTorus&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtTorus&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtTorus*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setEllipsoid(const MtEllipsoid& value) {
-    DDON_STUB("MtProperty::setEllipsoid")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtEllipsoid&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtEllipsoid&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtEllipsoid*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setRange(const MtRange& value) {
-    DDON_STUB("MtProperty::setRange")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtRange&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtRange&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtRange*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setRangeF(const MtRangeF& value) {
-    DDON_STUB("MtProperty::setRangeF")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtRangeF&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtRangeF&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtRangeF*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setRangeU16(const MtRangeU16& value) {
-    DDON_STUB("MtProperty::setRangeU16")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtRangeU16&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtRangeU16&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtRangeU16*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setProperty(const MtProperty& value) {
-    DDON_STUB("MtProperty::setProperty")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtProperty&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtProperty&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else if (mType == TYPE_PROPERTY) {
+        static_cast<MtProperty*>(mpAdr)[mIndex] = value;
+    } else {
+        MtPropertyList& s = *static_cast<MtPropertyList*>(mpAdr);
+        if (mIndex < s.length()) {
+            *s[mIndex] = value;
+        } else {
+            s << value;
+        }
+    }
 }
 
 __attribute__((weak)) void MtProperty::setOscillator(const MtOscillator& value) {
-    DDON_STUB("MtProperty::setOscillator")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtOscillator&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtOscillator&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtOscillator*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setVariable(const MtVariable& value) {
-    DDON_STUB("MtProperty::setVariable")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtVariable&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtVariable&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtVariable*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setRect3D_XZ(const MtRect3D_XZ& value) {
-    DDON_STUB("MtProperty::setRect3D_XZ")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtRect3D_XZ&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtRect3D_XZ&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtRect3D_XZ*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setRect3D(const MtRect3D& value) {
-    DDON_STUB("MtProperty::setRect3D")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtRect3D&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtRect3D&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtRect3D*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setRect3DC(const MtCollisionUtil::MtRect3DC& value) {
-    DDON_STUB("MtProperty::setRect3DC")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtCollisionUtil::MtRect3DC&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtCollisionUtil::MtRect3DC&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtCollisionUtil::MtRect3DC*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setPlaneXZ(const MtPlaneXZ& value) {
-    DDON_STUB("MtProperty::setPlaneXZ")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtPlaneXZ&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtPlaneXZ&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtPlaneXZ*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) void MtProperty::setRayY(const MtRayY& value) {
-    DDON_STUB("MtProperty::setRayY")
-    /* stub */
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef void (MtObject::*MT_SETTER)(const MtRayY&, u32);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value, mIndex);
+        } else {
+            typedef void (MtObject::*MT_SETTER)(const MtRayY&);
+            MT_SETTER pfunc = reinterpret_cast<MT_SETTER>(mpSetter);
+            (mpOwner->*pfunc)(value);
+        }
+    } else {
+        static_cast<MtRayY*>(mpAdr)[mIndex] = value;
+    }
 }
 
 __attribute__((weak)) s32 MtProperty::getInteger() const {
-    DDON_STUB("MtProperty::getInteger")
-    return {};
+    switch (mType) {
+    case TYPE_BOOL:
+        return getBool();
+    case TYPE_U8:
+        return getU8();
+    case TYPE_U16:
+        return getU16();
+    case TYPE_U32:
+        return getU32();
+    case TYPE_U64:
+        return getU64();
+    case TYPE_S8:
+        return getS8();
+    case TYPE_S16:
+        return getS16();
+    case TYPE_S32:
+        return getS32();
+    case TYPE_S64:
+        return getS64();
+    case TYPE_F32:
+        return getF32();
+    case TYPE_F64:
+        return getF64();
+    default:
+        return 0;
+    }
 }
 
 __attribute__((weak)) f32 MtProperty::getFloat() const {
-    DDON_STUB("MtProperty::getFloat")
-    return {};
+    switch (mType) {
+    case TYPE_F32:
+        return getF32();
+    case TYPE_F64:
+        return getF64();
+    default:
+        return 0.0f;
+    }
 }
 
 __attribute__((weak)) MtObject* MtProperty::getClass() const {
-    DDON_STUB("MtProperty::getClass")
-    return nullptr;
+    if (isDynamic()) {
+        if (isArray()) {
+            if (getCount() == 0) {
+                return nullptr;
+            }
+            typedef MtObject* (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef MtObject* (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        if (isArray()) {
+            if (mpAdr == nullptr) {
+                return nullptr;
+            }
+            if (mType == TYPE_CLASS) {
+                if (mCount == 0) {
+                    return nullptr;
+                }
+                u32 size = static_cast<MtObject*>(mpAdr)->getDTI().getSize();
+                return reinterpret_cast<MtObject*>(static_cast<u8*>(mpAdr) + size * mIndex);
+            } else {
+                return static_cast<MtObject**>(mpAdr)[mIndex];
+            }
+        } else {
+            if (mType == TYPE_CLASS) {
+                return static_cast<MtObject*>(mpAdr);
+            } else {
+                if (mpAdr == nullptr) {
+                    return nullptr;
+                }
+                return *static_cast<MtObject**>(mpAdr);
+            }
+        }
+    }
 }
 
-__attribute__((weak)) bool MtProperty::getBool() const {
-    DDON_STUB("MtProperty::getBool")
-    return {};
+bool MtProperty::getBool() const {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef bool (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef bool (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        return static_cast<bool*>(mpAdr)[mIndex];
+    }
 }
 
-__attribute__((weak)) s8 MtProperty::getS8() const {
-    DDON_STUB("MtProperty::getS8")
-    return {};
+s8 MtProperty::getS8() const {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef s8 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef s8 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        return static_cast<s8*>(mpAdr)[mIndex];
+    }
 }
 
-__attribute__((weak)) s16 MtProperty::getS16() const {
-    DDON_STUB("MtProperty::getS16")
-    return {};
+s16 MtProperty::getS16() const {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef s16 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef s16 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        return static_cast<s16*>(mpAdr)[mIndex];
+    }
 }
 
-__attribute__((weak)) s32 MtProperty::getS32() const {
-    DDON_STUB("MtProperty::getS32")
-    return {};
+s32 MtProperty::getS32() const {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef s32 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef s32 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        return static_cast<s32*>(mpAdr)[mIndex];
+    }
 }
 
-__attribute__((weak)) s64 MtProperty::getS64() const {
-    DDON_STUB("MtProperty::getS64")
-    return {};
+s64 MtProperty::getS64() const {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef s64 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef s64 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        return static_cast<s64*>(mpAdr)[mIndex];
+    }
 }
 
-__attribute__((weak)) u8 MtProperty::getU8() const {
-    DDON_STUB("MtProperty::getU8")
-    return {};
+u8 MtProperty::getU8() const {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef u8 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef u8 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        return static_cast<u8*>(mpAdr)[mIndex];
+    }
 }
 
-__attribute__((weak)) u16 MtProperty::getU16() const {
-    DDON_STUB("MtProperty::getU16")
-    return {};
+u16 MtProperty::getU16() const {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef u16 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef u16 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        return static_cast<u16*>(mpAdr)[mIndex];
+    }
 }
 
-__attribute__((weak)) u32 MtProperty::getU32() const {
-    DDON_STUB("MtProperty::getU32")
-    return {};
+u32 MtProperty::getU32() const {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef u32 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef u32 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        return static_cast<u32*>(mpAdr)[mIndex];
+    }
 }
 
-__attribute__((weak)) u64 MtProperty::getU64() const {
-    DDON_STUB("MtProperty::getU64")
-    return {};
+u64 MtProperty::getU64() const {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef u64 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef u64 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        return static_cast<u64*>(mpAdr)[mIndex];
+    }
 }
 
 __attribute__((weak)) f32 MtProperty::getF32() const {
-    DDON_STUB("MtProperty::getF32")
-    return {};
+    if (isDynamic()) {
+        if (isArray()) {
+            if (getCount() == 0) {
+                return 0.0f;
+            }
+            typedef f32 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef f32 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        return static_cast<f32*>(mpAdr)[mIndex];
+    }
 }
 
-__attribute__((weak)) f64 MtProperty::getF64() const {
-    DDON_STUB("MtProperty::getF64")
-    return {};
+f64 MtProperty::getF64() const {
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef f64 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef f64 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        return static_cast<f64*>(mpAdr)[mIndex];
+    }
 }
 
 __attribute__((weak)) MT_CTSTR MtProperty::getString() const {
-    DDON_STUB("MtProperty::getString")
-    return {};
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef MT_CTSTR (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef MT_CTSTR (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    if (mpAdr == nullptr) {
+        return "";
+    }
+    if (mType == TYPE_STRING) {
+        return static_cast<MtString*>(mpAdr)[mIndex].ptr();
+    }
+    MT_CTSTR str = static_cast<MT_CTSTR*>(mpAdr)[mIndex];
+    if (str == nullptr) {
+        return "";
+    }
+    return str;
 }
 
 __attribute__((weak)) const MtColor MtProperty::getColor() const {
-    DDON_STUB("MtProperty::getColor")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtColor (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtColor (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtColor*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtPoint MtProperty::getPoint() const {
-    DDON_STUB("MtProperty::getPoint")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtPoint (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtPoint (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        MtPoint v;
+        const MtPoint& p = static_cast<MtPoint*>(mpAdr)[mIndex];
+        v.xy = p.xy;
+        return v;
+    }
 }
 
 __attribute__((weak)) const MtSize MtProperty::getSize() const {
-    DDON_STUB("MtProperty::getSize")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtSize (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtSize (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtSize*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtRect MtProperty::getRect() const {
-    DDON_STUB("MtProperty::getRect")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtRect (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtRect (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtRect*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtPointF MtProperty::getPointF() const {
-    DDON_STUB("MtProperty::getPointF")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtPointF (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtPointF (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtPointF*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtSizeF MtProperty::getSizeF() const {
-    DDON_STUB("MtProperty::getSizeF")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtSizeF (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtSizeF (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    } else {
+        MtSizeF v;
+        const MtSizeF& p = static_cast<MtSizeF*>(mpAdr)[mIndex];
+        v.w = p.w;
+        v.h = p.h;
+        return v;
+    }
 }
 
 __attribute__((weak)) const MtRectF MtProperty::getRectF() const {
-    DDON_STUB("MtProperty::getRectF")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtRectF (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtRectF (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtRectF*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtVector4 MtProperty::getVector() const {
-    DDON_STUB("MtProperty::getVector")
-    __builtin_unreachable();
+    MtVector4 ret;
+    switch (mType) {
+    case TYPE_COLOR:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtColor (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtColor v = (mpOwner->*pfunc)(mIndex);
+                ret.x = static_cast<f32>(v.r) * (1.0f / 255.0f);
+                ret.y = static_cast<f32>(v.g) * (1.0f / 255.0f);
+                ret.z = static_cast<f32>(v.b) * (1.0f / 255.0f);
+                ret.w = static_cast<f32>(v.a) * (1.0f / 255.0f);
+            } else {
+                typedef MtColor (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtColor v = (mpOwner->*pfunc)();
+                ret.x = static_cast<f32>(v.r) * (1.0f / 255.0f);
+                ret.y = static_cast<f32>(v.g) * (1.0f / 255.0f);
+                ret.z = static_cast<f32>(v.b) * (1.0f / 255.0f);
+                ret.w = static_cast<f32>(v.a) * (1.0f / 255.0f);
+            }
+        } else {
+            const MtColor& v = static_cast<MtColor*>(mpAdr)[mIndex];
+            ret.x = static_cast<f32>(v.r) * (1.0f / 255.0f);
+            ret.y = static_cast<f32>(v.g) * (1.0f / 255.0f);
+            ret.z = static_cast<f32>(v.b) * (1.0f / 255.0f);
+            ret.w = static_cast<f32>(v.a) * (1.0f / 255.0f);
+        }
+        break;
+    case TYPE_VECTOR3:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtVector3 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtVector3 v = (mpOwner->*pfunc)(mIndex);
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = v.z;
+                ret.w = 0.0f;
+            } else {
+                typedef MtVector3 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtVector3 v = (mpOwner->*pfunc)();
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = v.z;
+                ret.w = 0.0f;
+            }
+        } else {
+            const MtVector3& v = static_cast<MtVector3*>(mpAdr)[mIndex];
+            ret.x = v.x;
+            ret.y = v.y;
+            ret.z = v.z;
+            ret.w = 0.0f;
+        }
+        break;
+    case TYPE_VECTOR4:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtVector4 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtVector4 v = (mpOwner->*pfunc)(mIndex);
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = v.z;
+                ret.w = v.w;
+            } else {
+                typedef MtVector4 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtVector4 v = (mpOwner->*pfunc)();
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = v.z;
+                ret.w = v.w;
+            }
+        } else {
+            const MtVector4& v = static_cast<MtVector4*>(mpAdr)[mIndex];
+            ret.x = v.x;
+            ret.y = v.y;
+            ret.z = v.z;
+            ret.w = v.w;
+        }
+        break;
+    case TYPE_FLOAT2:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtFloat2 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtFloat2 v = (mpOwner->*pfunc)(mIndex);
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            } else {
+                typedef MtFloat2 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtFloat2 v = (mpOwner->*pfunc)();
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            }
+        } else {
+            const MtFloat2& v = static_cast<MtFloat2*>(mpAdr)[mIndex];
+            ret.x = v.x;
+            ret.y = v.y;
+            ret.z = 0.0f;
+            ret.w = 0.0f;
+        }
+        break;
+    case TYPE_VECTOR2:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtVector2 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtVector2 v = (mpOwner->*pfunc)(mIndex);
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            } else {
+                typedef MtVector2 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtVector2 v = (mpOwner->*pfunc)();
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            }
+        } else {
+            const MtVector2& v = static_cast<MtVector2*>(mpAdr)[mIndex];
+            ret.x = v.x;
+            ret.y = v.y;
+            ret.z = 0.0f;
+            ret.w = 0.0f;
+        }
+        break;
+    case TYPE_FLOAT3:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtFloat3 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtFloat3 v = (mpOwner->*pfunc)(mIndex);
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = v.z;
+                ret.w = 0.0f;
+            } else {
+                typedef MtFloat3 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtFloat3 v = (mpOwner->*pfunc)();
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = v.z;
+                ret.w = 0.0f;
+            }
+        } else {
+            const MtFloat3& v = static_cast<MtFloat3*>(mpAdr)[mIndex];
+            ret.x = v.x;
+            ret.y = v.y;
+            ret.z = v.z;
+            ret.w = 0.0f;
+        }
+        break;
+    case TYPE_FLOAT4:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtFloat4 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtFloat4 v = (mpOwner->*pfunc)(mIndex);
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = v.z;
+                ret.w = v.w;
+            } else {
+                typedef MtFloat4 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtFloat4 v = (mpOwner->*pfunc)();
+                ret.x = v.x;
+                ret.y = v.y;
+                ret.z = v.z;
+                ret.w = v.w;
+            }
+        } else {
+            const MtFloat4& v = static_cast<MtFloat4*>(mpAdr)[mIndex];
+            ret.x = v.x;
+            ret.y = v.y;
+            ret.z = v.z;
+            ret.w = v.w;
+        }
+        break;
+    case TYPE_EASECURVE:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtEaseCurve (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtEaseCurve v = (mpOwner->*pfunc)(mIndex);
+                ret.x = v.p1;
+                ret.y = v.p2;
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            } else {
+                typedef MtEaseCurve (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtEaseCurve v = (mpOwner->*pfunc)();
+                ret.x = v.p1;
+                ret.y = v.p2;
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            }
+        } else {
+            const MtEaseCurve& v = static_cast<MtEaseCurve*>(mpAdr)[mIndex];
+            ret.x = v.p1;
+            ret.y = v.p2;
+            ret.z = 0.0f;
+            ret.w = 0.0f;
+        }
+        break;
+    case TYPE_SPHERE:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtSphere (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtSphere v = (mpOwner->*pfunc)(mIndex);
+                ret.x = v.pos.x;
+                ret.y = v.pos.y;
+                ret.z = v.pos.z;
+                ret.w = v.r;
+            } else {
+                typedef MtSphere (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtSphere v = (mpOwner->*pfunc)();
+                ret.x = v.pos.x;
+                ret.y = v.pos.y;
+                ret.z = v.pos.z;
+                ret.w = v.r;
+            }
+        } else {
+            const MtSphere& v = static_cast<MtSphere*>(mpAdr)[mIndex];
+            ret.x = v.pos.x;
+            ret.y = v.pos.y;
+            ret.z = v.pos.z;
+            ret.w = v.r;
+        }
+        break;
+    case TYPE_RANGE:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtRange (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtRange v = (mpOwner->*pfunc)(mIndex);
+                ret.x = static_cast<f32>(v.s);
+                ret.y = static_cast<f32>(static_cast<s32>(v.s + v.r));
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            } else {
+                typedef MtRange (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtRange v = (mpOwner->*pfunc)();
+                ret.x = static_cast<f32>(v.s);
+                ret.y = static_cast<f32>(static_cast<s32>(v.s + v.r));
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            }
+        } else {
+            const MtRange& v = static_cast<MtRange*>(mpAdr)[mIndex];
+            ret.x = static_cast<f32>(v.s);
+            ret.y = static_cast<f32>(static_cast<s32>(v.s + v.r));
+            ret.z = 0.0f;
+            ret.w = 0.0f;
+        }
+        break;
+    case TYPE_RANGEF:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtRangeF (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtRangeF v = (mpOwner->*pfunc)(mIndex);
+                ret.x = v.s;
+                ret.y = v.s + v.r;
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            } else {
+                typedef MtRangeF (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtRangeF v = (mpOwner->*pfunc)();
+                ret.x = v.s;
+                ret.y = v.s + v.r;
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            }
+        } else {
+            const MtRangeF& v = static_cast<MtRangeF*>(mpAdr)[mIndex];
+            ret.x = v.s;
+            ret.y = v.s + v.r;
+            ret.z = 0.0f;
+            ret.w = 0.0f;
+        }
+        break;
+    case TYPE_RANGEU16:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef MtRangeU16 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtRangeU16 v = (mpOwner->*pfunc)(mIndex);
+                ret.x = static_cast<f32>(v.s);
+                ret.y = static_cast<f32>(v.s + v.r);
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            } else {
+                typedef MtRangeU16 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtRangeU16 v = (mpOwner->*pfunc)();
+                ret.x = static_cast<f32>(v.s);
+                ret.y = static_cast<f32>(v.s + v.r);
+                ret.z = 0.0f;
+                ret.w = 0.0f;
+            }
+        } else {
+            const MtRangeU16& v = static_cast<MtRangeU16*>(mpAdr)[mIndex];
+            ret.x = static_cast<f32>(v.s);
+            ret.y = static_cast<f32>(v.s + v.r);
+            ret.z = 0.0f;
+            ret.w = 0.0f;
+        }
+        break;
+    default:
+        ret.x = 0.0f;
+        ret.y = 0.0f;
+        ret.z = 0.0f;
+        ret.w = 0.0f;
+        break;
+    }
+    return ret;
 }
 
 __attribute__((weak)) const MtVector4 MtProperty::getVector4() const {
-    DDON_STUB("MtProperty::getVector4")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtVector4 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtVector4 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtVector4*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtVector3 MtProperty::getVector3() const {
-    DDON_STUB("MtProperty::getVector3")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtVector3 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtVector3 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtVector3*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtFloat2 MtProperty::getFloat2() const {
-    DDON_STUB("MtProperty::getFloat2")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtFloat2 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtFloat2 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtFloat2*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtFloat3 MtProperty::getFloat3() const {
-    DDON_STUB("MtProperty::getFloat3")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtFloat3 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtFloat3 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtFloat3*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtFloat4 MtProperty::getFloat4() const {
-    DDON_STUB("MtProperty::getFloat4")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtFloat4 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtFloat4 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtFloat4*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtMatrix MtProperty::getMatrix() const {
-    DDON_STUB("MtProperty::getMatrix")
-    __builtin_unreachable();
+    switch (mType) {
+    case TYPE_MATRIX:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef const MtMatrix (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                return (mpOwner->*pfunc)(mIndex);
+            } else {
+                typedef const MtMatrix (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                return (mpOwner->*pfunc)();
+            }
+        }
+        return static_cast<MtMatrix*>(mpAdr)[mIndex];
+    case TYPE_FLOAT3x3:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef const MtFloat3x3 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                return MtMatrix((mpOwner->*pfunc)(mIndex));
+            } else {
+                typedef const MtFloat3x3 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                return MtMatrix((mpOwner->*pfunc)());
+            }
+        }
+        return MtMatrix(static_cast<MtFloat3x3*>(mpAdr)[mIndex]);
+    case TYPE_FLOAT4x3:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef const MtFloat4x3 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                return MtMatrix((mpOwner->*pfunc)(mIndex));
+            } else {
+                typedef const MtFloat4x3 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                return MtMatrix((mpOwner->*pfunc)());
+            }
+        }
+        return MtMatrix(static_cast<MtFloat4x3*>(mpAdr)[mIndex]);
+    case TYPE_FLOAT4x4:
+    case TYPE_HERMITECURVE:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef const MtFloat4x4 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                return MtMatrix((mpOwner->*pfunc)(mIndex));
+            } else {
+                typedef const MtFloat4x4 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                return MtMatrix((mpOwner->*pfunc)());
+            }
+        }
+        return MtMatrix(static_cast<MtFloat4x4*>(mpAdr)[mIndex]);
+    case TYPE_FLOAT3x4:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef const MtFloat3x4 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                return MtMatrix((mpOwner->*pfunc)(mIndex));
+            } else {
+                typedef const MtFloat3x4 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                return MtMatrix((mpOwner->*pfunc)());
+            }
+        }
+        return MtMatrix(static_cast<MtFloat3x4*>(mpAdr)[mIndex]);
+    case TYPE_MATRIX33:
+        if (isDynamic()) {
+            if (isArray()) {
+                typedef const MtFloat3x4 (MtObject::*MT_GETTER)(u32);
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtFloat3x4 t1 = (mpOwner->*pfunc)(mIndex);
+                MtMatrix t2;
+                t2.m[0] = MtVector4(t1.m[0][0], t1.m[0][1], 0.0f, 0.0f);
+                t2.m[1] = MtVector4(t1.m[1][0], t1.m[1][1], 0.0f, 0.0f);
+                t2.m[2] = MtVector4(0.0f, 0.0f, 1.0f, 0.0f);
+                t2.m[3] = MtVector4(t1.m[2][0], t1.m[2][1], 0.0f, 1.0f);
+                return t2;
+            } else {
+                typedef const MtFloat3x4 (MtObject::*MT_GETTER)();
+                MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+                const MtFloat3x4 t1 = (mpOwner->*pfunc)();
+                MtMatrix t2;
+                t2.m[0] = MtVector4(t1.m[0][0], t1.m[0][1], 0.0f, 0.0f);
+                t2.m[1] = MtVector4(t1.m[1][0], t1.m[1][1], 0.0f, 0.0f);
+                t2.m[2] = MtVector4(0.0f, 0.0f, 1.0f, 0.0f);
+                t2.m[3] = MtVector4(t1.m[2][0], t1.m[2][1], 0.0f, 1.0f);
+                return t2;
+            }
+        }
+        {
+            const MtFloat3x4& t1 = static_cast<MtFloat3x4*>(mpAdr)[mIndex];
+            MtMatrix t2;
+            t2.m[0] = MtVector4(t1.m[0][0], t1.m[0][1], 0.0f, 0.0f);
+            t2.m[1] = MtVector4(t1.m[1][0], t1.m[1][1], 0.0f, 0.0f);
+            t2.m[2] = MtVector4(0.0f, 0.0f, 1.0f, 0.0f);
+            t2.m[3] = MtVector4(t1.m[2][0], t1.m[2][1], 0.0f, 1.0f);
+            return t2;
+        }
+    default:
+        return MtMatrix::Identity;
+    }
 }
 
 __attribute__((weak)) const MtQuaternion MtProperty::getQuaternion() const {
-    DDON_STUB("MtProperty::getQuaternion")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtQuaternion (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtQuaternion (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtQuaternion*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtEaseCurve MtProperty::getEaseCurve() const {
-    DDON_STUB("MtProperty::getEaseCurve")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtEaseCurve (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtEaseCurve (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtEaseCurve*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtHermiteCurve MtProperty::getHermiteCurve() const {
-    DDON_STUB("MtProperty::getHermiteCurve")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtHermiteCurve (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtHermiteCurve (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtHermiteCurve*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtTime MtProperty::getTime() const {
-    DDON_STUB("MtProperty::getTime")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtTime (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtTime (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtTime*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtLine MtProperty::getLine() const {
-    DDON_STUB("MtProperty::getLine")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtLine (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtLine (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtLine*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtLineSegment MtProperty::getLineSegment() const {
-    DDON_STUB("MtProperty::getLineSegment")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtLineSegment (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtLineSegment (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtLineSegment*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtLineSegment4 MtProperty::getLineSegment4() const {
-    DDON_STUB("MtProperty::getLineSegment4")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtLineSegment4 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtLineSegment4 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtLineSegment4*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtRay MtProperty::getRay() const {
-    DDON_STUB("MtProperty::getRay")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtRay (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtRay (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtRay*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtPlane MtProperty::getPlane() const {
-    DDON_STUB("MtProperty::getPlane")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtPlane (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtPlane (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtPlane*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtSphere MtProperty::getSphere() const {
-    DDON_STUB("MtProperty::getSphere")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtSphere (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtSphere (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtSphere*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtCapsule MtProperty::getCapsule() const {
-    DDON_STUB("MtProperty::getCapsule")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtCapsule (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtCapsule (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtCapsule*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtAABB MtProperty::getAABB() const {
-    DDON_STUB("MtProperty::getAABB")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtAABB (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtAABB (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtAABB*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtOBB MtProperty::getOBB() const {
-    DDON_STUB("MtProperty::getOBB")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtOBB (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtOBB (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtOBB*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtAABB4 MtProperty::getAABB4() const {
-    DDON_STUB("MtProperty::getAABB4")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtAABB4 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtAABB4 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtAABB4*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtCylinder MtProperty::getCylinder() const {
-    DDON_STUB("MtProperty::getCylinder")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtCylinder (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtCylinder (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtCylinder*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtTriangle MtProperty::getTriangle() const {
-    DDON_STUB("MtProperty::getTriangle")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtTriangle (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtTriangle (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtTriangle*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtCone MtProperty::getCone() const {
-    DDON_STUB("MtProperty::getCone")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtCone (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtCone (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtCone*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtTorus MtProperty::getTorus() const {
-    DDON_STUB("MtProperty::getTorus")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtTorus (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtTorus (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtTorus*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtEllipsoid MtProperty::getEllipsoid() const {
-    DDON_STUB("MtProperty::getEllipsoid")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtEllipsoid (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtEllipsoid (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtEllipsoid*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtRange MtProperty::getRange() const {
-    DDON_STUB("MtProperty::getRange")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtRange (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtRange (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtRange*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtRangeF MtProperty::getRangeF() const {
-    DDON_STUB("MtProperty::getRangeF")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtRangeF (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtRangeF (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtRangeF*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtRangeU16 MtProperty::getRangeU16() const {
-    DDON_STUB("MtProperty::getRangeU16")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtRangeU16 (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtRangeU16 (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtRangeU16*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtProperty MtProperty::getProperty() const {
-    DDON_STUB("MtProperty::getProperty")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtProperty (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtProperty (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    if (mType == TYPE_PROPERTY) {
+        return static_cast<MtProperty*>(mpAdr)[mIndex];
+    }
+    MtPropertyList& s = *static_cast<MtPropertyList*>(mpAdr);
+    return *s[mIndex];
 }
 
 __attribute__((weak)) const MtOscillator MtProperty::getOscillator() const {
-    DDON_STUB("MtProperty::getOscillator")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtOscillator (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtOscillator (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtOscillator*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtVariable MtProperty::getVariable() const {
-    DDON_STUB("MtProperty::getVariable")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtVariable (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtVariable (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtVariable*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtRect3D_XZ MtProperty::getRect3D_XZ() const {
-    DDON_STUB("MtProperty::getRect3D_XZ")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtRect3D_XZ (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtRect3D_XZ (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtRect3D_XZ*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtRect3D MtProperty::getRect3D() const {
-    DDON_STUB("MtProperty::getRect3D")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtRect3D (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtRect3D (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtRect3D*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtCollisionUtil::MtRect3DC MtProperty::getRect3DC() const {
-    DDON_STUB("MtProperty::getRect3DC")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtCollisionUtil::MtRect3DC (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtCollisionUtil::MtRect3DC (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtCollisionUtil::MtRect3DC*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtPlaneXZ MtProperty::getPlaneXZ() const {
-    DDON_STUB("MtProperty::getPlaneXZ")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtPlaneXZ (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtPlaneXZ (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtPlaneXZ*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) const MtRayY MtProperty::getRayY() const {
-    DDON_STUB("MtProperty::getRayY")
-    __builtin_unreachable();
+    if (isDynamic()) {
+        if (isArray()) {
+            typedef const MtRayY (MtObject::*MT_GETTER)(u32);
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)(mIndex);
+        } else {
+            typedef const MtRayY (MtObject::*MT_GETTER)();
+            MT_GETTER pfunc = reinterpret_cast<MT_GETTER>(mpGetter);
+            return (mpOwner->*pfunc)();
+        }
+    }
+    return static_cast<MtRayY*>(mpAdr)[mIndex];
 }
 
 __attribute__((weak)) void MtProperty::callEvent() const {
-    DDON_STUB("MtProperty::callEvent")
-    /* stub */
+    if (mType == TYPE_EVENT64) {
+        (mpOwner->*mpGetter64)(mCount64);
+    } else if (mType == TYPE_EVENT32) {
+        (mpOwner->*mpGetter32)(mCount);
+    } else if (mType == TYPE_EVENT) {
+        (mpOwner->*mpGetter)();
+    }
 }
 
 void MtProperty::registCustom(MtProperty::Custom* pcustom) {
@@ -706,7 +2815,9 @@ MtProperty::Custom* MtProperty::getCustom(MT_CTSTR name) {
 }
 
 __attribute__((weak)) MtProperty::Custom* MtProperty::getCustom(MtProperty::TYPE type) {
-    DDON_STUB("MtProperty::getCustom")
+    if (type >= TYPE_CUSTOM) {
+        return mpCustom[type - TYPE_CUSTOM];
+    }
     return nullptr;
 }
 

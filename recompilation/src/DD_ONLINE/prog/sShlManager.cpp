@@ -26,6 +26,7 @@
 #include "uControl.h"
 #include "uDDOModel.h"
 #include "uShlBase.h"
+#include "uShlFollowMove.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -55,9 +56,9 @@ sShlManager::~sShlManager() {
     sShlManager::mpInstance = nullptr;
 }
 
-__attribute__((weak)) void sShlManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("sShlManager::createProperty")
-    /* stub */
+void sShlManager::createProperty(MtPropertyList& s) {
+    this->sUnitManager::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mShlShotCnt", &mShlShotCnt[0], 32u, 8u);
 }
 
 MtUI* sShlManager::createUI(MtProperty& prop) {

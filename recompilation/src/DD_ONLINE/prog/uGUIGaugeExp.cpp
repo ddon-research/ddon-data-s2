@@ -48,6 +48,24 @@ inline void uGUIGaugeExp::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIGaugeExp::DTI)->memFree(p_addr);
 }
 
+uGUIGaugeExp::uGUIGaugeExp() : uGUIBase(0u, false) {
+    mpGUIRes = nullptr;
+    mGaugeType = 0;
+    mIsLevelMax = false;
+    mpOBJ_msg_fix_gauge_m_p = nullptr;
+    mpOBJ_msg_fix_gauge_m_xp = nullptr;
+    mpOBJ_msg_fix_gauge_m_num02 = nullptr;
+    mpOBJ_msg_fix_gauge_m_num01 = nullptr;
+    mpOBJ_msg_fix_gauge_m_lv = nullptr;
+    mpOBJ_msg_fix_gauge_f_exp = nullptr;
+    mpINST_msg_fix_gauge = nullptr;
+    mpINST_PL_gauge00 = nullptr;
+    mpInstNull = nullptr;
+    mBaseF = mBaseF | 32u;
+    mEndType = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUIGaugeExp"), 0u, false);
+}
+
 uGUIGaugeExp::~uGUIGaugeExp() {
     if (mpGUIRes == nullptr) {
         return;
@@ -204,9 +222,8 @@ inline uGUIGaugeExp::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 uGUIGaugeExp::MyDTI uGUIGaugeExp::DTI("uGUIGaugeExp", &::uGUIBase::DTI, 2368ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIGaugeExp::MyDTI::newInstance() const {
-    DDON_STUB("uGUIGaugeExp::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIGaugeExp::MyDTI::newInstance() const {
+    return new (16u) uGUIGaugeExp;
 }
 
 const MtDTI& uGUIGaugeExp::cGaugeInfo::getDTI() const {
@@ -221,9 +238,10 @@ inline void uGUIGaugeExp::cGaugeInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIGaugeExp::cGaugeInfo::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void uGUIGaugeExp::cGaugeInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGUIGaugeExp::cGaugeInfo::createProperty")
-    /* stub */
+void uGUIGaugeExp::cGaugeInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mExpLatest", &mExpLatest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLvLatest", &mLvLatest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJobIdLatest", &mJobIdLatest, 0u, 0u);
 }
 
 inline uGUIGaugeExp::cGaugeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

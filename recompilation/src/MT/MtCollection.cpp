@@ -7,6 +7,7 @@
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
 #include "MtString.h"
 #include "../DD_ONLINE/prog/cAreaReleaseManager.h"
@@ -15,9 +16,11 @@
 #include "../DD_ONLINE/prog/cCycleQuestManagerBase.h"
 #include "../DD_ONLINE/prog/cCycleQuestSubCategoryManager.h"
 #include "../DD_ONLINE/prog/cDDMaterialCtrl.h"
+#include "../DD_ONLINE/prog/cFSMOrderParam.h"
 #include "../DD_ONLINE/prog/cFurniture.h"
 #include "../DD_ONLINE/prog/cGUIFloorManager.h"
 #include "../DD_ONLINE/prog/cLayoutSet.h"
+#include "../DD_ONLINE/prog/cLightQuestManager.h"
 #include "../DD_ONLINE/prog/cPawnQuestManager.h"
 #include "../DD_ONLINE/prog/cPlayPointInfo.h"
 #include "../DD_ONLINE/prog/cQuestPhaseEvent.h"
@@ -132,6 +135,10 @@
 #include "../DD_ONLINE/prog/uGUISystemMsg.h"
 #include "../DD_ONLINE/prog/uGUIsMenuBase.h"
 #include "../XFramework/uScrollCollisionGeometry.h"
+#include "../DD_ONLINE/prog/uShlAlchemy.h"
+#include "../DD_ONLINE/prog/uShlAlchemyTrap.h"
+#include "../DD_ONLINE/prog/uShlEmMultiLock.h"
+#include "../DD_ONLINE/prog/uShlStateSurveillance.h"
 #include "../DD_ONLINE/prog/uSoundSubMixer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -149,9 +156,10 @@ __attribute__((weak)) void MtArray::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void MtArray::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtArray::createProperty")
-    /* stub */
+void MtArray::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAutoDelete", &mAutoDelete, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLength", &mLength, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpArray", reinterpret_cast<MT_MFUNC>(&::MtArray::getClass), reinterpret_cast<MT_MFUNC>(&::MtArray::setClass), 160u, reinterpret_cast<MT_MFUNC>(&::MtArray::length), reinterpret_cast<MT_MFUNC>(&::MtArray::setCount));
 }
 
 __attribute__((noinline)) MtArray::~MtArray() {
@@ -195,83 +203,28 @@ static auto ddon_emit_0x01be71d0 __attribute__((used)) = &MtArray::setAutoDelete
 
 static auto ddon_emit_0x01be71c0 __attribute__((used)) = &MtArray::isAutoDelete;
 
-void MtArray::resize(u32 siz) {
-    if (mBufsiz < siz) {
-        void* t0 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(siz) * 8, 16u);
-        memset(t0, 0, static_cast<size_t>(siz) * 8);
-        memcpy(t0, static_cast<const void*>(mpArray), static_cast<size_t>(mLength) * 8);
-        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mpArray));
-        mpArray = static_cast<MtObject* *>(t0);
-        mBufsiz = siz;
-    }
-    if (mLength < siz) {
-        for (u32 i = mLength;;) {
-            mpArray[i] = nullptr;
-            if (siz != (i + 1u)) {
-                i = i + 1u;
-            } else {
-                break;
-            }
+__attribute__((weak)) void MtArray::resize(u32 siz) {
+        if (mBufsiz < siz) {
+            extendBuffer(siz);
         }
-        mLength = siz;
-    } else {
-        if (siz < mLength) {
-            u32 v2_3 = mLength;
-            u32 v3_0;
-            u32 v3_1;
-            u32 v3_2;
-            u32 v4_0;
-            for (;;) {
+        if (mLength < siz) {
+            for (u32 i = mLength; i < siz; i++) {
+                mpArray[i] = nullptr;
+            }
+            mLength = siz;
+        } else {
+            while (siz < mLength) {
+                u32 index = mLength - 1;
                 if (mAutoDelete) {
-                    if (mpArray[v2_3 - 1u] != nullptr) {
-                        delete mpArray[v2_3 - 1u];
-                        if (v2_3 >= mLength) {
-                            v4_0 = mLength;
-                            goto region_19aeaf6;
-                        } else {
-                            v3_0 = mLength;
-                            v3_1 = v2_3;
-                            v3_2 = mLength;
-                        }
-                    } else {
-                        if (v2_3 >= v2_3) {
-                            v4_0 = v2_3;
-                            goto region_19aeaf6;
-                        } else {
-                            v3_0 = v2_3;
-                            v3_1 = v2_3;
-                            v3_2 = v2_3;
-                        }
-                    }
-                } else {
-                    if (v2_3 >= v2_3) {
-                        v4_0 = v2_3;
-                        goto region_19aeaf6;
-                    } else {
-                        v3_0 = v2_3;
-                        v3_1 = v2_3;
-                        v3_2 = v2_3;
-                    }
+                    delete mpArray[index];
                 }
-                for (;;) {
-                    mpArray[v3_1 - 1u] = mpArray[v3_1];
-                    if (v3_2 != (v3_1 + 1u)) {
-                        v3_1 = v3_1 + 1u;
-                    } else {
-                        v4_0 = v3_0;
-                        break;
-                    }
+                u32 length = mLength;
+                while (++index < length) {
+                    mpArray[index - 1] = mpArray[index];
                 }
-                region_19aeaf6:;
-                mLength = v4_0 - 1u;
-                if (siz < (v4_0 - 1u)) {
-                    v2_3 = v4_0 - 1u;
-                } else {
-                    break;
-                }
+                mLength = length - 1;
             }
         }
-    }
 }
 
 __attribute__((weak)) void MtArray::insert(MtObject* pobj, u32 index) {
@@ -297,8 +250,10 @@ __attribute__((weak)) s32 MtArray::find(bool(*pfunc)(const MtObject*, u32), cons
 }
 
 __attribute__((weak)) void MtArray::setCount(u32 c) {
-    DDON_STUB("MtArray::setCount")
-    /* stub */
+    if (mAutoDelete) {
+        deleteAll(true);
+    }
+    resize(c);
 }
 
 void MtArray::setClass(MtObject* pobj, u32 i) {
@@ -320,8 +275,7 @@ inline MtArray::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 MtArray::MyDTI MtArray::DTI("MtArray", &::MtObject::DTI, 32ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* MtArray::MyDTI::newInstance() const {
-    DDON_STUB("MtArray::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) MtArray;
 }
 
 const MtDTI& MtMap::getDTI() const {
@@ -426,6 +380,10 @@ const MtDTI& MtTree::getDTI() const {
     return MtTree::DTI;
 }
 
+inline void* MtTree::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(MtTree::DTI)->memAlloc(sz, align, MtTree::DTI.mID);
+}
+
 MtTree::MtTree() {
     mpRoot = nullptr;
     mFlgAutoDelete = true;
@@ -446,18 +404,16 @@ MtUI* MtTree::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void MtTree::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtTree::createProperty")
-    /* stub */
+void MtTree::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpRoot", reinterpret_cast<MtObject* *>(&mpRoot), 0u, 0u);
 }
 
 inline MtTree::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 MtTree::MyDTI MtTree::DTI("MtTree", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* MtTree::MyDTI::newInstance() const {
-    DDON_STUB("MtTree::MyDTI::newInstance")
-    return nullptr;
+MtObject* MtTree::MyDTI::newInstance() const {
+    return new (16u) MtTree;
 }
 
 const MtDTI& MtTree::Node::getDTI() const {
@@ -491,9 +447,12 @@ MtUI* MtTree::Node::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void MtTree::Node::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtTree::Node::createProperty")
-    /* stub */
+void MtTree::Node::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpObject", &mpObject, 4u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpParent", reinterpret_cast<MtObject* *>(&mpParent), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpChild", reinterpret_cast<MtObject* *>(&mpChild), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpBack", reinterpret_cast<MtObject* *>(&mpBack), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpNext", reinterpret_cast<MtObject* *>(&mpNext), 0u, 0u);
 }
 
 inline MtTree::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

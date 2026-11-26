@@ -67,9 +67,15 @@ AreaHitShape::~AreaHitShape() {
     }
 }
 
-__attribute__((weak)) void AreaHitShape::createProperty(MtPropertyList& s) {
-    DDON_STUB("AreaHitShape::createProperty")
-    /* stub */
+void AreaHitShape::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Name", &mName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CheckAngle", &mCheckAngle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CheckRange", &mCheckRange, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CheckToward", &mCheckToward, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "AngleFlag", &mAngleFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "TowardFlag", &mTowardFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpZone", reinterpret_cast<MT_MFUNC>(&::AreaHitShape::getZone), reinterpret_cast<MT_MFUNC>(&::AreaHitShape::setZone), 132u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneBoundingBox", &mZoneBoundingBox, 0u, 0u);
 }
 
 MtUI* AreaHitShape::createUI(MtProperty& prop) {
@@ -235,9 +241,22 @@ __attribute__((weak)) bool AreaHitShape::calcIntersectionLine2Line2D(const MtVec
     return {};
 }
 
-__attribute__((weak)) void AreaHitShape::setZone(ZShape* p) {
-    DDON_STUB("AreaHitShape::setZone")
-    /* stub */
+void AreaHitShape::setZone(ZShape* p) {
+    if (mpZone != p) {
+        if (mIsDeleteZone) {
+            if (mpZone != nullptr) {
+                delete mpZone;
+                mpZone = nullptr;
+            }
+        } else {
+            mIsDeleteZone = false;
+            mpZone = nullptr;
+        }
+        mpZone = p;
+        if (mpZone != nullptr) {
+            mZoneBoundingBox = mpZone->getAABB();
+        }
+    }
 }
 
 ZShape* AreaHitShape::getZone() const {

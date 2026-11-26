@@ -7,6 +7,7 @@
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cRemoteCall.h"
 #include "nNetworkCallback.h"
@@ -37,9 +38,10 @@ nNetwork::SessionDriver::SessionDriver() {
 nNetwork::SessionDriver::~SessionDriver() {
 }
 
-__attribute__((weak)) void nNetwork::SessionDriver::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::SessionDriver::createProperty")
-    /* stub */
+void nNetwork::SessionDriver::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mState", &mState, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mCanHost", &mCanHost, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpDriver", reinterpret_cast<MtObject* *>(&mpDriver), 6u, 0u);
 }
 
 MtUI* nNetwork::SessionDriver::createUI(MtProperty& prop) {
@@ -177,14 +179,26 @@ void nNetwork::SessionDriver::onAnsCreateFail(u32 req_seq, MtNetError* err) {
     mpParent->onCreateComplete(false, err);
 }
 
-__attribute__((weak)) void nNetwork::SessionDriver::onAnsSearchSucceed(u32 req_seq) {
-    DDON_STUB("nNetwork::SessionDriver::onAnsSearchSucceed")
-    /* stub */
+void nNetwork::SessionDriver::onAnsSearchSucceed(u32 req_seq) {
+    if (mState == 4) {
+        if ((mpParent->mpDatabase->mAttribute & 1u) != 0) {
+            mState = 2;
+        } else {
+            mState = 1;
+        }
+    }
+    mpParent->onSearchComplete(true, static_cast<MtNetError*>(nullptr));
 }
 
-__attribute__((weak)) void nNetwork::SessionDriver::onAnsSearchFail(u32 req_seq, MtNetError* err) {
-    DDON_STUB("nNetwork::SessionDriver::onAnsSearchFail")
-    /* stub */
+void nNetwork::SessionDriver::onAnsSearchFail(u32 req_seq, MtNetError* err) {
+    if (mState == 4) {
+        if ((mpParent->mpDatabase->mAttribute & 1u) != 0) {
+            mState = 2;
+        } else {
+            mState = 1;
+        }
+    }
+    mpParent->onSearchComplete(false, err);
 }
 
 void nNetwork::SessionDriver::onAnsJoinSucceed(u32 req_seq, s32 index, MtNetSession::Member* member, MtNetSessionInfo* info) {

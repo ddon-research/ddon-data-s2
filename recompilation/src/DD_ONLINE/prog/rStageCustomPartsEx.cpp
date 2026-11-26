@@ -342,9 +342,11 @@ inline void* rStageCustomPartsEx::Pattern::operator new(size_t sz, u32 align) {
 rStageCustomPartsEx::Pattern::~Pattern() {
 }
 
-__attribute__((weak)) void rStageCustomPartsEx::Pattern::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageCustomPartsEx::Pattern::createProperty")
-    /* stub */
+void rStageCustomPartsEx::Pattern::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mColorFogNo", &mColorFogNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHemiSphLightNo", &mHemiSphLightNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInfiLightNo", &mInfiLightNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mComment", &mComment, 0u, 0u);
 }
 
 inline rStageCustomPartsEx::Pattern::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -362,9 +364,10 @@ const MtDTI& rStageCustomPartsEx::ColorFog::getDTI() const {
 rStageCustomPartsEx::ColorFog::~ColorFog() {
 }
 
-__attribute__((weak)) void rStageCustomPartsEx::ColorFog::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageCustomPartsEx::ColorFog::createProperty")
-    /* stub */
+void rStageCustomPartsEx::ColorFog::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mBase", static_cast<MtObject*>(&mBase), 4u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNight", static_cast<MtObject*>(&mNight), 4u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mComment", &mComment, 0u, 0u);
 }
 
 bool rStageCustomPartsEx::ColorFog::load(MtDataReader& r) {
@@ -474,9 +477,12 @@ inline rStageCustomPartsEx::HemiSphLight::HemiSphLight() {
 rStageCustomPartsEx::HemiSphLight::~HemiSphLight() {
 }
 
-__attribute__((weak)) void rStageCustomPartsEx::HemiSphLight::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageCustomPartsEx::HemiSphLight::createProperty")
-    /* stub */
+void rStageCustomPartsEx::HemiSphLight::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mLightColor", &mLightColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRevColor", &mRevColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNightColor", &mNightColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNightRevColor", &mNightRevColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mComment", &mComment, 0u, 0u);
 }
 
 inline rStageCustomPartsEx::HemiSphLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -509,9 +515,10 @@ inline rStageCustomPartsEx::InfiLight::InfiLight() {
 rStageCustomPartsEx::InfiLight::~InfiLight() {
 }
 
-__attribute__((weak)) void rStageCustomPartsEx::InfiLight::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageCustomPartsEx::InfiLight::createProperty")
-    /* stub */
+void rStageCustomPartsEx::InfiLight::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mLightColor", &mLightColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNightColor", &mNightColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mComment", &mComment, 0u, 0u);
 }
 
 inline rStageCustomPartsEx::InfiLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -538,9 +545,11 @@ __attribute__((noinline)) rStageCustomPartsEx::AreaParam::~AreaParam() {
     clear();
 }
 
-__attribute__((weak)) void rStageCustomPartsEx::AreaParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageCustomPartsEx::AreaParam::createProperty")
-    /* stub */
+void rStageCustomPartsEx::AreaParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mUseAllFilter", &mUseAllFilter, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFilterNo", &mFilterNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPatternNo", &mPatternNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaHitShapeList", static_cast<MtObject*>(&mAreaHitShapeList), 0u, 0u);
 }
 
 inline rStageCustomPartsEx::AreaParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -567,9 +576,10 @@ __attribute__((noinline)) rStageCustomPartsEx::InfoEx::~InfoEx() {
     clear();
 }
 
-__attribute__((weak)) void rStageCustomPartsEx::InfoEx::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageCustomPartsEx::InfoEx::createProperty")
-    /* stub */
+void rStageCustomPartsEx::InfoEx::createProperty(MtPropertyList& s) {
+    this->rStageCustomParts::Info::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mAddVersion", &mAddVersion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaParamList", static_cast<MtObject*>(&mAreaParamList), 0u, 0u);
 }
 
 __attribute__((weak)) rStageCustomPartsEx::AreaParam* rStageCustomPartsEx::InfoEx::getAreaParam(const MtVector3& pos, s32 filterNo) {
@@ -596,9 +606,10 @@ inline void* rStageCustomPartsEx::FilterEx::operator new(size_t sz, u32 align) {
 rStageCustomPartsEx::FilterEx::~FilterEx() {
 }
 
-__attribute__((weak)) void rStageCustomPartsEx::FilterEx::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageCustomPartsEx::FilterEx::createProperty")
-    /* stub */
+void rStageCustomPartsEx::FilterEx::createProperty(MtPropertyList& s) {
+    this->rStageCustomParts::Filter::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mAddVersion", &mAddVersion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mComment", &mComment, 0u, 0u);
 }
 
 inline rStageCustomPartsEx::FilterEx::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

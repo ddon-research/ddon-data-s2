@@ -5,9 +5,9 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
-#include "../../XFramework/cUnit.h"
 #include "cpHeadCtrl.h"
 #include "../../XFramework/uConstraint.h"
 #include "../../XFramework/uModel.h"
@@ -32,13 +32,19 @@ inline void uCnsHeadCtrl::operator delete(void* p_addr) {
 }
 
 uCnsHeadCtrl::uCnsHeadCtrl() {
-    DDON_STUB("uCnsHeadCtrl::uCnsHeadCtrl")
-    /* stub */
+    mJoint = 0;
+    mpHeadCtrl = nullptr;
+    mRightLimit = -3.141593f;
+    mLeftLimit = 3.141593f;
+    mUpperLimit = -3.141593f;
+    mLowerLimit = 3.141593f;
+    mLocal = false;
+    mAngleBlend = 1.0f;
+    mPitchBlend = 1.0f;
+    mLocalAxis = 0;
 }
 
 uCnsHeadCtrl::~uCnsHeadCtrl() {
-    DDON_STUB("uCnsHeadCtrl::~uCnsHeadCtrl")
-    /* stub */
 }
 
 __attribute__((weak)) void uCnsHeadCtrl::setResource(cResource* pRes) {
@@ -72,9 +78,14 @@ void uCnsHeadCtrl::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
-__attribute__((weak)) void uCnsHeadCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsHeadCtrl::createProperty")
-    /* stub */
+void uCnsHeadCtrl::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mJoint", &mJoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLocalAxis", &mLocalAxis, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRightLimit", &mRightLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLeftLimit", &mLeftLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpperLimit", &mUpperLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLowerLimit", &mLowerLimit, 0u, 0u);
 }
 
 MtUI* uCnsHeadCtrl::createUI(MtProperty& prop) {
@@ -98,8 +109,7 @@ inline uCnsHeadCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 uCnsHeadCtrl::MyDTI uCnsHeadCtrl::DTI("uCnsHeadCtrl", &::uConstraint::DTI, 192ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uCnsHeadCtrl::MyDTI::newInstance() const {
-    DDON_STUB("uCnsHeadCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* uCnsHeadCtrl::MyDTI::newInstance() const {
+    return new (16u) uCnsHeadCtrl;
 }
 

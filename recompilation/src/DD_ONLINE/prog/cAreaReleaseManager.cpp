@@ -38,14 +38,14 @@ inline void cAreaReleaseManager::operator delete(void* p_addr) {
 }
 
 bool cAreaReleaseManager::isAreaRelease(u16 id) const {
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 24)) != 0) {
+    if (mAreaReleaseInfo.mLength != 0) {
         u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 40)) + static_cast<unsigned long>(i * 8u)) + 0)) + 8)) == id) {
+            if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mAreaReleaseInfo.mpArray[i]) + 8)) == id) {
                 return true;
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 24)));
+        } while (i < mAreaReleaseInfo.mLength);
     }
     return false;
 }
@@ -61,7 +61,7 @@ __attribute__((weak)) void cAreaReleaseManager::setAreaReleaseByRankUp(u16 id) {
 }
 
 u16 cAreaReleaseManager::getAreaReleaseByRankUp(u32 index) const {
-    return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 72)) + (static_cast<unsigned long>(index) * 8)) + 0)) + 8);
+    return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mAreaReleaseInfoByRankUp.mpArray[index]) + 8);
 }
 
 __attribute__((weak)) bool cAreaReleaseManager::reqGetAreaReleaseInfo() {

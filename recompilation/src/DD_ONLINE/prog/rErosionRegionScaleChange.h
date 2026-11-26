@@ -30,6 +30,7 @@ using u32 = unsigned int;
 
 class cErosionRegionScaleChange : public MtObject
 {
+    friend class rErosionRegionScaleChange;
 public:
     enum
     {

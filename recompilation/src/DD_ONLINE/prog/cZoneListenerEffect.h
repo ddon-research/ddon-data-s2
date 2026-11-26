@@ -58,7 +58,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cZoneListenerEffect();
-    virtual ~cZoneListenerEffect();
+    virtual ~cZoneListenerEffect() {}
     virtual MtVector3 myPos();  // vtable slot 7
     bool isHit();
     void setCheckPos(const MtVector3&);
@@ -96,7 +96,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cZoneListenerEffectColor();
-    virtual ~cZoneListenerEffectColor();
+    virtual ~cZoneListenerEffectColor() {}
     virtual void notified(const nZone::cLayoutElement& e);  // vtable slot 6
     const MtColor& getColor() const;
     f32 getColorBlend() const;

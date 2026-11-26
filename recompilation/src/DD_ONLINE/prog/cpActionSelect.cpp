@@ -3,6 +3,7 @@
 #include "cpActionSelect.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
+#include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cDelegate.h"
@@ -146,9 +147,19 @@ f32 cpActionSelect::getAngleY() {
     return mpModel->getFinalAngleY();
 }
 
-__attribute__((weak)) f32 cpActionSelect::getAngleYActBegin(u32 actNo) {
-    DDON_STUB("cpActionSelect::getAngleYActBegin")
-    return {};
+f32 cpActionSelect::getAngleYActBegin(u32 actNo) {
+    if (mpKeyCommand != nullptr) {
+        if (mpKeyCommand->isActive()) {
+            return mpKeyCommand->getAngleYActBegin(actNo);
+        }
+    }
+    if (mpEnemy != nullptr) {
+        if (mpEnemy->mActive) {
+            MtVector3 frame40(mpModel->getAngle());
+            return frame40.y;
+        }
+    }
+    return mpModel->getFinalAngleY();
 }
 
 f32 cpActionSelect::getMoveSpeed() {

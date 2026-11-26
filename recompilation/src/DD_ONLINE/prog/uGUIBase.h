@@ -71,6 +71,7 @@ class cMenuBase;
 class cMenuCancelClanScoutEntry;
 class cMenuLeaveGroupChat;
 class cMenuOnlineShop;
+class cMenuReadyCheck;
 class cResource;
 class cpOmBase;
 namespace nGUI { struct FLOW; }
@@ -98,7 +99,9 @@ class uGUIBoxGachaInfo;
 class uGUIBrowserBG;
 class uGUICaplinkFriendList;
 class uGUICaplinkMenuBase;
+class uGUICaplinkMessage;
 class uGUICaplinkProfile;
+class uGUICaplinkProfileEdit;
 class uGUICaplinkTalk;
 class uGUICaplinkTrophyReceive;
 class uGUICharaEditPartsWrap;
@@ -107,9 +110,11 @@ class uGUICharacterEditPopCard;
 class uGUIChargesHUD;
 class uGUIChat;
 class uGUIClanScout;
+class uGUIClanScoutEntry;
 class uGUIClanSearch;
 class uGUICommunityList;
 class uGUIContentsBoard;
+class uGUICraft;
 class uGUIGPShop;
 class uGUIGameMenu;
 class uGUIGaugeEnemy;
@@ -124,6 +129,7 @@ class uGUIMenuAreaInfo;
 class uGUIMenuComm;
 class uGUIMenuTutorial;
 class uGUIMyRoom;
+class uGUIMyRoomPopup;
 class uGUINewspaper;
 class uGUINpcWindow;
 class uGUIOption;
@@ -132,6 +138,7 @@ class uGUIPhotoAlbum;
 class uGUIPhotoUpload;
 class uGUIPopCmd01;
 class uGUIPopNumber01;
+class uGUIPopTopSel;
 class uGUIQuestBoard;
 class uGUIQuestDelivery;
 class uGUIQuestInfo;
@@ -142,11 +149,13 @@ class uGUISaveListComment;
 class uGUIShopBuy;
 class uGUIShopTitle;
 class uGUISkill;
+class uGUIStorage;
 class uGUISystemMsg;
 class uGUIUseItemBase;
 class uUIMockUp;
 
 // Declarations
+struct GuideTypeParam;
 class uGUIBase;
 
 // Type aliases from DWARF
@@ -170,6 +179,14 @@ using t64 = time_t;
 using u16 = unsigned short;
 using u8 = unsigned char;
 
+struct GuideTypeParam
+{
+public:
+    nKeyCustom::KB_CUSTOM kbCustom;  // offset: 0x0
+    u32 msgId;  // offset: 0x4
+    nGUIExt::ICONTAGKB wayType;  // offset: 0x8
+};
+
 class uGUIBase : public uGUI
 {
     friend class aStage;
@@ -178,6 +195,7 @@ class uGUIBase : public uGUI
     friend class cMenuCancelClanScoutEntry;
     friend class cMenuLeaveGroupChat;
     friend class cMenuOnlineShop;
+    friend class cMenuReadyCheck;
     friend class cpOmBase;
     friend class sGUIExt;
     friend class sTalkManager;
@@ -190,16 +208,20 @@ class uGUIBase : public uGUI
     friend class uGUIBrowserBG;
     friend class uGUICaplinkFriendList;
     friend class uGUICaplinkMenuBase;
+    friend class uGUICaplinkMessage;
     friend class uGUICaplinkProfile;
     friend class uGUICaplinkTalk;
     friend class uGUICaplinkTrophyReceive;
     friend class uGUICharaEditPartsWrap;
     friend class uGUICharacterEdit;
+    friend class uGUICharacterEditPopCard;
     friend class uGUIChat;
     friend class uGUIClanScout;
+    friend class uGUIClanScoutEntry;
     friend class uGUIClanSearch;
     friend class uGUICommunityList;
     friend class uGUIContentsBoard;
+    friend class uGUICraft;
     friend class uGUIGPShop;
     friend class uGUIGaugeEnemy;
     friend class uGUIItem01;
@@ -218,6 +240,7 @@ class uGUIBase : public uGUI
     friend class uGUISaveListComment;
     friend class uGUIShopBuy;
     friend class uGUISkill;
+    friend class uGUIStorage;
     friend class uGUISystemMsg;
     friend class uGUIUseItemBase;
 public:
@@ -705,7 +728,7 @@ public:
         friend class uGUIBase;
     public:
         InputTextKeyboardHook();
-        virtual ~InputTextKeyboardHook();
+        virtual ~InputTextKeyboardHook() {}
         void init(uGUIBase* owner);
         virtual bool onKeyEvent(const nInputTextKeyboardHook::Keycode& keycode);  // vtable slot 2
     private:
@@ -846,6 +869,7 @@ public:
     class cVerticalList : public cControl
     {
         friend class uGUIMenuComm;
+        friend class uGUISkill;
     public:
         class MyDTI;
     public:
@@ -1536,6 +1560,7 @@ public:
         friend class uGUIBrowserBG;
         friend class uGUICaplinkProfile;
         friend class uGUICaplinkTalk;
+        friend class uGUICraft;
         friend class uGUIGPShop;
         friend class uGUIGameMenu;
         friend class uGUINewspaper;
@@ -1545,6 +1570,7 @@ public:
         friend class uGUIQuestInfo;
         friend class uGUIQuestList;
         friend class uGUIRankingBoard;
+        friend class uGUISkill;
     public:
         class MyDTI;
     public:
@@ -1634,6 +1660,7 @@ public:
     {
         friend class cGUIPageList;
         friend class uGUIBase;
+        friend class uGUISkill;
     public:
         enum TYPE
         {
@@ -1996,6 +2023,10 @@ public:
     class cReferenceUITextBox : public uGUIBase::cReferenceUIBase
     {
         friend class uGUIBase;
+        friend class uGUICaplinkMessage;
+        friend class uGUICharaEditPartsWrap;
+        friend class uGUIChat;
+        friend class uGUISaveListComment;
     public:
         enum STATE
         {
@@ -2435,6 +2466,7 @@ public:
     class cReferenceUIButton : public uGUIBase::cReferenceUIBase
     {
         friend class uGUICaplinkTalk;
+        friend class uGUICraft;
     public:
         class MyDTI;
     public:
@@ -2867,6 +2899,7 @@ public:
 public:
     class cReferenceUISelector : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUIPopTopSel;
     public:
         enum
         {
@@ -4023,6 +4056,7 @@ public:
 public:
     class cReferenceUICheckList : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUIClanScoutEntry;
     public:
         enum
         {
@@ -4185,6 +4219,7 @@ public:
 public:
     class cReferenceUICheckListForClan : public uGUIBase::cReferenceUICheckList
     {
+        friend class uGUIClanScoutEntry;
     public:
         enum FORM
         {
@@ -4974,8 +5009,10 @@ public:
     class cScrollCtrl
     {
         friend class uGUICaplinkProfile;
+        friend class uGUINewspaper;
         friend class uGUIQuestInfo;
         friend class uGUIQuestList;
+        friend class uGUISkill;
     public:
         cScrollCtrl();
         virtual ~cScrollCtrl() {}
@@ -5012,9 +5049,12 @@ public:
 public:
     class cScrollList : public uGUIBase::cScrollCtrl
     {
+        friend class uGUIAreaMaster;
         friend class uGUIBase;
         friend class uGUIBoxGachaInfo;
         friend class uGUICaplinkProfile;
+        friend class uGUICaplinkProfileEdit;
+        friend class uGUICaplinkTrophyReceive;
         friend class uGUICommunityList;
         friend class uGUIContentsBoard;
         friend class uGUIInfo;
@@ -5022,11 +5062,13 @@ public:
         friend class uGUIMenuComm;
         friend class uGUIMenuTutorial;
         friend class uGUIMyRoom;
+        friend class uGUIMyRoomPopup;
         friend class uGUINewspaper;
         friend class uGUIQuestBoard;
         friend class uGUIQuestDelivery;
         friend class uGUIQuestInfo;
         friend class uGUIRankingBoard;
+        friend class uGUISkill;
         friend class uGUISystemMsg;
     public:
         using SetupFunc = void(uGUIBase::*)(uGUIBase::cScrollListItemBase*, uGUIBase::cScrollListInfoBase*, u32);
@@ -5176,6 +5218,7 @@ public:
         friend class uGUICharacterEditPopCard;
         friend class uGUIKeyConfig;
         friend class uGUIMenuComm;
+        friend class uGUIMyRoomPopup;
         friend class uGUIPhotoUpload;
         friend class uGUISkill;
     public:
@@ -5549,7 +5592,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cReferenceUIPullDownSkill();
-        virtual ~cReferenceUIPullDownSkill();
+        virtual ~cReferenceUIPullDownSkill() {}
         void addMessage(MT_CTSTR str, MT_CTSTR num);
         void setMessage(u32 idx, MT_CTSTR str, MT_CTSTR num);
         void changeTitleText(MT_CTSTR title, MT_CTSTR num);
@@ -6133,8 +6176,16 @@ inline u32 uGUIBase::getBasePointerPriority() {
     return this->mBasePointerPrio;
 }
 
+inline cGUIInstNull* uGUIBase::getInstNull() {
+    return this->mpInstNullBase;
+}
+
 inline void uGUIBase::setInstNullDesign(cGUIInstNull* pInstNull) {
     this->mpInstNullDesign = pInstNull;
+}
+
+inline cGUIInstNull* uGUIBase::getInstNullDesign() {
+    return this->mpInstNullDesign;
 }
 
 inline void uGUIBase::setInstWindow(cGUIInstAnimation* pInst) {
@@ -6159,6 +6210,12 @@ inline u32 uGUIBase::getInputEvent() {
 
 inline void* uGUIBase::cReferenceUIBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIBase::cReferenceUIBase::cReferenceUIBase() {
+    this->mAttr = 0;
+    this->mIsRegister = false;
+    this->mpObjMouseOver = nullptr;
 }
 
 inline void* uGUIBase::cSupportInstAnim::operator new(size_t sz, void* p_addr) {
@@ -6227,6 +6284,14 @@ inline void* uGUIBase::cReferenceUIPullDown::operator new(size_t sz, void* p_add
     return p_addr;
 }
 
+inline s32 uGUIBase::cReferenceUIPullDown::getIdx() const {
+    return this->mCursorIdx;
+}
+
+inline bool uGUIBase::cReferenceUIPullDown::isDecide() {
+    return this->mDecide;
+}
+
 inline void uGUIBase::cReferenceUIPullDown::evCancel() {
     this->mCancel = true;
     this->mState = static_cast<uGUIBase::cReferenceUIPullDown::STATE>(4);
@@ -6252,6 +6317,10 @@ inline void* uGUIBase::cReferenceUIVlCursor::operator new(size_t sz, void* p_add
     return p_addr;
 }
 
+inline u32 uGUIBase::cScrollList::getListPos() const {
+    return this->mListPos;
+}
+
 inline uGUIBase::cVerticalList* uGUIBase::cScrollList::getCtrl() {
     return this->mpVCtrl;
 }
@@ -6273,6 +6342,10 @@ inline bool uGUIBase::cReferenceUIScrollBar::isDrag() {
 }
 
 inline uGUIBase::cCalcMovePos::~cCalcMovePos() {
+}
+
+inline f32 uGUIBase::cCalcMovePos::getPos() const {
+    return this->mPos.x;
 }
 
 inline void* uGUIBase::cVerticalList::operator new(size_t sz, void* p_addr) {
@@ -6371,12 +6444,30 @@ inline void* uGUIBase::cReferenceUISlider::operator new(size_t sz, void* p_addr)
     return p_addr;
 }
 
+inline uGUIBase::cReferenceUISlider::cReferenceUISlider() {
+    this->mpOBJ_fix_selector_fix_cursor = nullptr;
+    this->mpOBJ_fix_selector_cursor_l0 = nullptr;
+    this->mpOBJ_fix_selector_cursor_r0 = nullptr;
+    this->mpOBJ_fix_selector_selctor_bar = nullptr;
+}
+
 inline void* uGUIBase::cReferenceUIDropIcon::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUIBase::cReferenceUIDropIcon::cReferenceUIDropIcon() {
+    this->mpObjMsg = nullptr;
+}
+
 inline void* uGUIBase::cReferenceUICursor::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIBase::cReferenceUICursor::cReferenceUICursor() : mpObjs() {
+    this->mType = static_cast<uGUIBase::cReferenceUICursor::TYPE>(0);
+    this->mVisibleUnderLine = true;
+    this->mWidth = 0.0f;
+    this->mRightMinus = false;
 }
 
 inline void* uGUIBase::cReferenceUISelector::operator new(size_t sz, void* p_addr) {
@@ -6426,8 +6517,15 @@ inline void* uGUIBase::cReferenceUIIconCraftLv::operator new(size_t sz, void* p_
     return p_addr;
 }
 
+inline uGUIBase::cReferenceUIIconCraftLv::cReferenceUIIconCraftLv() {
+    this->mpObjIcon = nullptr;
+}
+
 inline void* uGUIBase::cReferenceUIIconStorage::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIBase::cReferenceUIIconStorage::cReferenceUIIconStorage() {
 }
 
 inline void* uGUIBase::cReferenceUIIconShake::operator new(size_t sz, void* p_addr) {
@@ -6454,6 +6552,9 @@ inline void* uGUIBase::cReferenceUIIconClanTitle::operator new(size_t sz, void* 
     return p_addr;
 }
 
+inline uGUIBase::cReferenceUIIconClanTitle::cReferenceUIIconClanTitle() {
+}
+
 inline void* uGUIBase::cReferenceUIGammaBoard::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -6468,6 +6569,10 @@ inline void* uGUIBase::cReferenceUIButton2::operator new(size_t sz, void* p_addr
 
 inline void* uGUIBase::cReferenceUIToggleBtn::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline bool uGUIBase::cReferenceUIToggleBtn::isSwitch() {
+    return this->mSwitch;
 }
 
 inline void* uGUIBase::cReferenceUIPullDownSkill::operator new(size_t sz, void* p_addr) {
@@ -6496,6 +6601,10 @@ inline void* uGUIBase::cReferenceUICheckList::operator new(size_t sz, void* p_ad
 
 inline void* uGUIBase::cReferenceUICheckListForClan::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline u32 uGUIBase::cReferenceUICheckListForClan::getPage() {
+    return this->mPage;
 }
 
 inline void* uGUIBase::cReferenceUIClanEmblem::operator new(size_t sz, void* p_addr) {
@@ -6560,6 +6669,24 @@ inline bool uGUIBase::cReferenceUIRadioButton::cObject::isSelect() {
 
 inline void* uGUIBase::cReferenceUINumPager::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIBase::cReferenceUINumPager::cReferenceUINumPager() {
+    this->mColorType = 0;
+    this->mbLimitCtrl = false;
+    this->mNum = 0;
+    this->mMax = 0;
+    this->mpOBJ_mouseover_right = nullptr;
+    this->mpOBJ_mouseover_left = nullptr;
+    this->mpOBJ_right = nullptr;
+    this->mpOBJ_left = nullptr;
+    this->mpOBJ_message = nullptr;
+    this->mIsLoop = true;
+    this->mTotal = 0;
+    this->mDispNumOnPage = 0;
+    this->mIsRankView = false;
+    this->mpOwnerCtrl = nullptr;
+    this->mpPagerCtrl = nullptr;
 }
 
 inline void* uGUIBase::cReferenceUIIconButton::operator new(size_t sz, void* p_addr) {

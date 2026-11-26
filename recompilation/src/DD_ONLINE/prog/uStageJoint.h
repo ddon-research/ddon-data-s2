@@ -321,10 +321,6 @@ inline s32 uStageJointCtrl::getPlayerCurrentAreaNo() const {
     return this->mPlayerCurrentAreaNo;
 }
 
-inline rStageJoint* uStageJointCtrl::getJointArea() const {
-    return this->mpJointArea;
-}
-
 inline f32 uStageJointCtrl::getSplitStartPosX() const {
     return this->mSplitData.mStartPosX;
 }

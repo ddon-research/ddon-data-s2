@@ -1437,6 +1437,10 @@ inline u32 sQuestManagerExt::getNowCallCycleContentsScheduleId() {
     return this->mNowCallCycleContentsScheduleId;
 }
 
+inline u32 sQuestManagerExt::getNowCallEntryBoardScheduleID() {
+    return this->mNowCallEntryBoardScheduleID;
+}
+
 inline void sQuestManagerExt::setNowCallEntryBoardQuestID(u32 id) {
     this->mNowCallEntryBoardQuestID = id;
 }
@@ -1478,6 +1482,10 @@ inline sQuestManagerExt::cManagerInfo::cManagerInfo() {
 
 inline void* sQuestManagerExt::cTouchOmInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline bool sQuestManagerExt::cTouchOmInfo::isQuestSet() const {
+    return this->mQuestSeq != 0;
 }
 
 inline void* sQuestManagerExt::cFunctionInfo::operator new(size_t sz, void* p_addr) {

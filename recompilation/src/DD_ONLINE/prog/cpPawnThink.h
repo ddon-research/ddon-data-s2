@@ -61,6 +61,7 @@ class rkThinkData;
 class uCharacter;
 class uDDOModel;
 class uHuman;
+class uHumanEnemy;
 
 // Declarations
 class cpPawnThink;
@@ -93,6 +94,7 @@ using u8 = unsigned char;
 class cpPawnThink : public cpComponent
 {
     friend class cPawnActInterActEnchant;
+    friend class uHumanEnemy;
 public:
     enum
     {

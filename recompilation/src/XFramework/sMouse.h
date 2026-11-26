@@ -151,15 +151,3 @@ protected:
 inline void* sMouse::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
-
-inline s32 sMouse::getAxisX(sMouse::TYPE type) const {
-    return this->mState[type].ax;
-}
-
-inline s32 sMouse::getAxisY(sMouse::TYPE type) const {
-    return this->mState[type].ay;
-}
-
-inline s32 sMouse::getAxisZ(sMouse::TYPE type) const {
-    return this->mState[type].az;
-}

@@ -49,9 +49,15 @@ cShotReqInfo::cShotReqInfo() {
     mIsLockOnTarget = false;
 }
 
-__attribute__((weak)) void cShotReqInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("cShotReqInfo::createProperty")
-    /* stub */
+void cShotReqInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mShotGroup", &mShotGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShotIndex", &mShotIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\345\257\276\350\261\241", &mSetTarget, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJointNo", &mJointNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\263\343\203\263\343\202\271\343\203\210\343\201\231\343\202\213", &mIsConst, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetPos", &mOffsetPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffsetDir", &mOffsetDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\255\343\203\203\343\202\257\343\202\252\343\203\263\343\201\231\343\202\213", &mIsLockOnTarget, 0u, 0u);
 }
 
 inline cShotReqInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

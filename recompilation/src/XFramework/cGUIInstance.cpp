@@ -9,6 +9,7 @@
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cDraw.h"
 #include "cGUIObject.h"
@@ -36,17 +37,16 @@ cGUIInstAnimControl::cGUIInstAnimControl() {
 }
 
 cGUIInstAnimControl::~cGUIInstAnimControl() {
-    DDON_STUB("cGUIInstAnimControl::~cGUIInstAnimControl")
-    /* stub */
 }
 
 MtUI* cGUIInstAnimControl::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cGUIInstAnimControl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIInstAnimControl::createProperty")
-    /* stub */
+void cGUIInstAnimControl::createProperty(MtPropertyList& s) {
+    this->cGUIInstAnimation::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Variable", reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimVariable::getVariableId), reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimVariable::setVariableId), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "UseSequence", reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimControl::isUseSequence), reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimControl::setUseSequence), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) void cGUIInstAnimControl::init() {
@@ -130,17 +130,15 @@ cGUIInstAnimVariable::cGUIInstAnimVariable() {
 }
 
 cGUIInstAnimVariable::~cGUIInstAnimVariable() {
-    DDON_STUB("cGUIInstAnimVariable::~cGUIInstAnimVariable")
-    /* stub */
 }
 
 MtUI* cGUIInstAnimVariable::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cGUIInstAnimVariable::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIInstAnimVariable::createProperty")
-    /* stub */
+void cGUIInstAnimVariable::createProperty(MtPropertyList& s) {
+    this->cGUIInstAnimation::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Variable", reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimVariable::getVariableId), reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimVariable::setVariableId), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) void cGUIInstAnimVariable::init() {
@@ -200,13 +198,18 @@ MtUI* cGUIInstAnimation::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) void cGUIInstAnimation::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIInstAnimation::createProperty")
-    /* stub */
+    this->cGUIInstNull::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ResourceId", reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::getResourceId), reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::setResourceId), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "AnimationId", reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::getAnimationId), reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::setAnimationId), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "SequenceId", reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::getSequenceId), reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::setSequenceId), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "Speed", reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::getSpeed), reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::setSpeed), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Mask", reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::getMaskType), reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::setMaskType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Foundation", reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::isFoundation), reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::setFoundation), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Billboard", reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::getBillboard), reinterpret_cast<MT_MFUNC>(&::cGUIInstAnimation::setBillboard), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
-__attribute__((weak)) void cGUIInstAnimation::createEventProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIInstAnimation::createEventProperty")
-    /* stub */
+void cGUIInstAnimation::createEventProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Frame Reset", static_cast<MT_MFUNC>(&::cGUIInstAnimation::resetCurrentFrame), 10u);
 }
 
 void cGUIInstAnimation::init() {
@@ -625,14 +628,16 @@ void* cGUIInstNull::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cGUIInstNull::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cGUIInstNull::DTI)->memFree(p_addr);
+}
+
 cGUIInstNull::cGUIInstNull() {
     DDON_STUB("cGUIInstNull::cGUIInstNull")
     /* stub */
 }
 
 cGUIInstNull::~cGUIInstNull() {
-    DDON_STUB("cGUIInstNull::~cGUIInstNull")
-    /* stub */
 }
 
 MtUI* cGUIInstNull::createUI(MtProperty& prop) {
@@ -841,9 +846,10 @@ void cGUIInstNull::setAmbientColor(const MtColor& color) {
     mAmbientColor.rgba = color.rgba;
 }
 
-__attribute__((weak)) MtColor cGUIInstNull::getAmbientColor() const {
-    DDON_STUB("cGUIInstNull::getAmbientColor")
-    __builtin_unreachable();
+MtColor cGUIInstNull::getAmbientColor() const {
+    MtColor result;
+    result.rgba = mAmbientColor.rgba;
+    return result;
 }
 
 static auto ddon_emit_0x01b71810 __attribute__((used)) = &cGUIInstNull::setSaturation;
@@ -998,9 +1004,10 @@ MtUI* cGUIInstScissorMask::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cGUIInstScissorMask::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIInstScissorMask::createProperty")
-    /* stub */
+void cGUIInstScissorMask::createProperty(MtPropertyList& s) {
+    this->cGUIInstNull::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Enable", reinterpret_cast<MT_MFUNC>(&::cGUIInstScissorMask::isEnableScissor), reinterpret_cast<MT_MFUNC>(&::cGUIInstScissorMask::setEnableScissor), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_SIZE, "Size", reinterpret_cast<MT_MFUNC>(&::cGUIInstScissorMask::getSize), reinterpret_cast<MT_MFUNC>(&::cGUIInstScissorMask::setSize), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 void cGUIInstScissorMask::setEnableScissor(bool v) {
@@ -1020,9 +1027,10 @@ void cGUIInstScissorMask::setSize(const MtSize& size) {
     mUpdateSize = 1;
 }
 
-__attribute__((weak)) MtSize cGUIInstScissorMask::getSize() const {
-    DDON_STUB("cGUIInstScissorMask::getSize")
-    __builtin_unreachable();
+MtSize cGUIInstScissorMask::getSize() const {
+    MtSize result;
+    result.wh = mSize.wh;
+    return result;
 }
 
 __attribute__((weak)) void cGUIInstScissorMask::calcMatrix(const MtMatrix& wmat) {
@@ -1082,9 +1090,12 @@ MtUI* cGUIInstance::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cGUIInstance::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIInstance::createProperty")
-    /* stub */
+void cGUIInstance::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Visible", reinterpret_cast<MT_MFUNC>(&::cGUIInstance::isVisible), reinterpret_cast<MT_MFUNC>(&::cGUIInstance::setVisible), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Play", reinterpret_cast<MT_MFUNC>(&::cGUIInstance::isPlay), reinterpret_cast<MT_MFUNC>(&::cGUIInstance::setPlay), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Mouse Reaction", reinterpret_cast<MT_MFUNC>(&::cGUIInstance::isMouseReaction), reinterpret_cast<MT_MFUNC>(&::cGUIInstance::setMouseReaction), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Priority", reinterpret_cast<MT_MFUNC>(&::cGUIInstance::getPriority), reinterpret_cast<MT_MFUNC>(&::cGUIInstance::setPriority), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) void cGUIInstance::createEditProperty(MtPropertyList& s) {

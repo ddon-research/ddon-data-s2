@@ -52,9 +52,14 @@ __attribute__((weak)) cQuestTaskParam& cQuestTaskParam::setSetQuestDetail(const 
     __builtin_unreachable();
 }
 
-__attribute__((weak)) cQuestTaskParam& cQuestTaskParam::setLightQuestDetail(const CLightQuestDetail& detail) {
-    DDON_STUB("cQuestTaskParam::setLightQuestDetail")
-    __builtin_unreachable();
+cQuestTaskParam& cQuestTaskParam::setLightQuestDetail(const CLightQuestDetail& detail) {
+    mAreaId = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&detail) + 8);
+    mAreaPoint = detail.m_unBaseAreaPoint;
+    mClearNum = *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(&detail) + 24);
+    mOrderLimit = *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(&detail) + 20);
+    mGetCP = detail.m_unGetCP;
+    mBoardType = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&detail) + 28);
+    return *this;
 }
 
 __attribute__((weak)) cQuestTaskParam& cQuestTaskParam::setQuestLogDetail(const u32& clearNum) {
@@ -88,24 +93,24 @@ cQuestTaskParam& cQuestTaskParam::setTutorialGuide(bool isTutorialGuide) {
     return *this;
 }
 
-__attribute__((weak)) cQuestTaskParam& cQuestTaskParam::setRandomRewardNum(u32 num) {
-    DDON_STUB("cQuestTaskParam::setRandomRewardNum")
-    __builtin_unreachable();
+cQuestTaskParam& cQuestTaskParam::setRandomRewardNum(u32 num) {
+    mRandomRewardNum = static_cast<unsigned char>(num);
+    return *this;
 }
 
-__attribute__((weak)) cQuestTaskParam& cQuestTaskParam::setChargeRewardNum(u32 num) {
-    DDON_STUB("cQuestTaskParam::setChargeRewardNum")
-    __builtin_unreachable();
+cQuestTaskParam& cQuestTaskParam::setChargeRewardNum(u32 num) {
+    mChargeRewardNum = static_cast<unsigned char>(num);
+    return *this;
 }
 
-__attribute__((weak)) cQuestTaskParam& cQuestTaskParam::setProgressBonusNum(u32 num) {
-    DDON_STUB("cQuestTaskParam::setProgressBonusNum")
-    __builtin_unreachable();
+cQuestTaskParam& cQuestTaskParam::setProgressBonusNum(u32 num) {
+    mProgressBonusNum = static_cast<unsigned char>(num);
+    return *this;
 }
 
-__attribute__((weak)) cQuestTaskParam& cQuestTaskParam::setAreaId(u32 areaId) {
-    DDON_STUB("cQuestTaskParam::setAreaId")
-    __builtin_unreachable();
+cQuestTaskParam& cQuestTaskParam::setAreaId(u32 areaId) {
+    mAreaId = static_cast<unsigned char>(areaId);
+    return *this;
 }
 
 void cQuestTaskParam::resetParam() {
@@ -192,14 +197,14 @@ __attribute__((weak)) void cQuestTaskParam::setKeyItemPoint(u32 idx, u32 pt) {
 }
 
 u32 cQuestTaskParam::getKeyItemPoint(u32 idx) const {
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 304)) != 0) {
+    if (mKeyItemPoint.mLength != 0) {
         u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 320)) + static_cast<unsigned long>(i * 8u)) + 0)) + 8)) == idx) {
-                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 320)) + static_cast<unsigned long>(i * 8u)) + 0)) + 12);
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mKeyItemPoint.mpArray[i]) + 8)) == idx) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mKeyItemPoint.mpArray[i]) + 12);
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 304)));
+        } while (i < mKeyItemPoint.mLength);
     }
     return 0;
 }
@@ -223,14 +228,14 @@ bool cQuestTaskParam::hasRandom(u32 idx) const {
 }
 
 s32 cQuestTaskParam::getRandom(u32 idx) const {
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 336)) != 0) {
+    if (mRandomValue.mLength != 0) {
         u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 352)) + static_cast<unsigned long>(i * 8u)) + 0)) + 8)) == idx) {
-                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 352)) + static_cast<unsigned long>(i * 8u)) + 0)) + 12));
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mRandomValue.mpArray[i]) + 8)) == idx) {
+                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mRandomValue.mpArray[i]) + 12));
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 336)));
+        } while (i < mRandomValue.mLength);
     }
     return 0;
 }
@@ -308,20 +313,20 @@ __attribute__((weak)) void cQuestTaskParam::setTimer(u32 idx, s32 sec) {
 }
 
 s32 cQuestTaskParam::getTimer(u32 idx) const {
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 368)) != 0) {
+    if (mTimer.mLength != 0) {
         u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 384)) + static_cast<unsigned long>(i * 8u)) + 0)) + 8)) == idx) {
-                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 384)) + static_cast<unsigned long>(i * 8u)) + 0)) + 12));
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mTimer.mpArray[i]) + 8)) == idx) {
+                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mTimer.mpArray[i]) + 12));
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 368)));
+        } while (i < mTimer.mLength);
     }
     return -1;
 }
 
 void cQuestTaskParam::endTimer(u32 idx) {
-    const u32 timerNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 368);
+    const u32 timerNum = mTimer.mLength;
     if (timerNum != 0) {
         MtObject* * v0_1 = mTimer.getBuffer();
         for (unsigned int i0_2 = 0;;) {

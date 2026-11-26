@@ -25,6 +25,7 @@ class MtSize;
 class MtUI;
 class MtVector3;
 class cParticleManager;
+class cStageEpvCtrl;
 class cWind;
 class cpErosionSuperEnemy;
 namespace nDraw { class Material; }
@@ -32,7 +33,6 @@ class rTexture;
 class uBaseEffect;
 class uEffect;
 class uEffect2D;
-class uEffect2DExt;
 class uMultiFilter;
 class uSimpleEffect;
 
@@ -55,11 +55,11 @@ using uintptr = __uintptr_t;
 class sEffect : public cSystem
 {
     friend class cParticleManager;
+    friend class cStageEpvCtrl;
     friend class cpErosionSuperEnemy;
     friend class uBaseEffect;
     friend class uEffect;
     friend class uEffect2D;
-    friend class uEffect2DExt;
 public:
     class MyDTI;
     class MultiFilterControl;
@@ -325,6 +325,14 @@ inline sEffect* sEffect::getInstance() {
 
 inline u32 sEffect::getEventRandomSeed() const {
     return this->mEventRandomSeed;
+}
+
+inline MtVector3 sEffect::getForceVec() const {
+    return this->mForceVec;
+}
+
+inline MtVector3 sEffect::getForceDir() const {
+    return this->mForceDir;
 }
 
 inline f32 sEffect::getForcePower() const {

@@ -7,6 +7,7 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "cResource.h"
@@ -229,9 +230,12 @@ MT_CTSTR rArchive::getExt() const {
     return "arc";
 }
 
-__attribute__((weak)) void rArchive::createProperty(MtPropertyList& s) {
-    DDON_STUB("rArchive::createProperty")
-    /* stub */
+void rArchive::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ResourceNum", reinterpret_cast<MT_MFUNC>(&::rArchive::getResourceNum), reinterpret_cast<MT_MFUNC>(&::rArchive::setResourceNum), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "TotalSize", reinterpret_cast<MT_MFUNC>(&::rArchive::getResourceTotalSize), reinterpret_cast<MT_MFUNC>(&::rArchive::setResourceTotalSize), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mElapsedTime", &mElapsedTime, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "Resources", reinterpret_cast<MT_MFUNC>(&::rArchive::getResource), reinterpret_cast<MT_MFUNC>(&::rArchive::setResource), 163u, reinterpret_cast<MT_MFUNC>(&::rArchive::getResourceNum), reinterpret_cast<MT_MFUNC>(&::rArchive::setResourceNum));
 }
 
 MtUI* rArchive::createUI(MtProperty& prop) {

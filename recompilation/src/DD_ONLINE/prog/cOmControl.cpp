@@ -362,9 +362,8 @@ void cOmControl::setActiveAllSbcParts(bool act) {
     }
 }
 
-__attribute__((weak)) const cOmParam* cOmControl::getOmParam() const {
-    DDON_STUB("cOmControl::getOmParam")
-    return nullptr;
+const cOmParam* cOmControl::getOmParam() const {
+    return sOmManager::getInstance()->findOmParam(mOmID);
 }
 
 u32 cOmControl::getCtrlState() {

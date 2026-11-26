@@ -2,6 +2,7 @@
 #include <new>
 #include <_pthread.h>
 #include <stdlib.h>
+#include <string.h>
 #include "sContextManager.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -163,9 +164,31 @@ __attribute__((weak)) bool sContextManager::removeContext(cContext* pContext) {
     return {};
 }
 
-__attribute__((weak)) cContextInstHm* sContextManager::searchContext(u32 unitUniqId) {
-    DDON_STUB("sContextManager::searchContext")
-    return nullptr;
+cContextInstHm* sContextManager::searchContext(u32 unitUniqId) {
+    cContext* v2_8;
+    if (mList[2].getTop() == nullptr) {
+        v2_8 = nullptr;
+    } else {
+        for (cContext* v0_3 = mList[2].getTop();;) {
+            if (v0_3->mId != 2) {
+                v2_8 = nullptr;
+                return static_cast<cContextInstHm*>(v2_8);
+            } else {
+                if (unitUniqId != cContextInterface::getUniqueId(static_cast<const cContextInstance*>(v0_3), static_cast<const cContextCharacter*>(nullptr))) {
+                    if (v0_3->mpNext != nullptr) {
+                        v0_3 = v0_3->mpNext;
+                    } else {
+                        break;
+                    }
+                } else {
+                    v2_8 = v0_3;
+                    return static_cast<cContextInstHm*>(v2_8);
+                }
+            }
+        }
+        v2_8 = nullptr;
+    }
+    return static_cast<cContextInstHm*>(v2_8);
 }
 
 __attribute__((weak)) cContextInstHm* sContextManager::searchContextFromCharId(u32 charId, u32 pawnId, MtArray* pArray) {
@@ -177,9 +200,64 @@ cContextInstHm* sContextManager::getContextMyPlayer() {
     return mpContextPlayer;
 }
 
-__attribute__((weak)) cContextInstHm* sContextManager::getMyPawnPartyContextSequential(u32& cur, u32 pawnType) {
-    DDON_STUB("sContextManager::getMyPawnPartyContextSequential")
-    return nullptr;
+cContextInstHm* sContextManager::getMyPawnPartyContextSequential(u32& cur, u32 pawnType) {
+    cContextInstHm* v5_8;
+    if ((cur) > 7u) {
+        v5_8 = nullptr;
+    } else {
+        cContextInstHm* v3_3;
+        if (pawnType == 0) {
+            for (u32 v2_0 = cur;;) {
+                cContextInstHm* t5 = mpContextPartyPlayerList[v2_0];
+                if (t5 != nullptr) {
+                    if ((t5->mIsValid & 1) != 0) {
+                        if (cContextInterface::isPawn(t5)) {
+                            if (cContextInterface::isPawnOwner(t5)) {
+                                v3_3 = t5;
+                                break;
+                            }
+                        }
+                    }
+                }
+                u32 t8 = cur;
+                cur = t8 + 1u;
+                if ((cur) <= 7u) {
+                    v2_0 = t8 + 1u;
+                } else {
+                    v5_8 = nullptr;
+                    return v5_8;
+                }
+            }
+        } else {
+            for (u32 v0_0 = cur;;) {
+                cContextInstHm* t0 = mpContextPartyPlayerList[v0_0];
+                if (t0 != nullptr) {
+                    if ((t0->mIsValid & 1) != 0) {
+                        if (cContextInterface::isPawn(t0)) {
+                            if (cContextInterface::isPawnOwner(t0)) {
+                                if (cContextInterface::getPawnType(t0) == pawnType) {
+                                    v3_3 = t0;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                u32 t4 = cur;
+                cur = t4 + 1u;
+                if ((cur) <= 7u) {
+                    v0_0 = t4 + 1u;
+                } else {
+                    v5_8 = nullptr;
+                    return v5_8;
+                }
+            }
+        }
+        u32 t9 = cur;
+        cur = t9 + 1u;
+        v5_8 = v3_3;
+    }
+    return v5_8;
 }
 
 __attribute__((weak)) cContextInstHm* sContextManager::getMyPawnContext(u32 pawnId, u32 pawnType) {
@@ -192,9 +270,31 @@ __attribute__((weak)) void sContextManager::updateContextInstanceCore(sContextMa
     /* stub */
 }
 
-__attribute__((weak)) bool sContextManager::isMemberContext(const cContextInstHm* pContext) {
-    DDON_STUB("sContextManager::isMemberContext")
-    return {};
+bool sContextManager::isMemberContext(const cContextInstHm* pContext) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    cContextInstHm* p0_0 = mpContextPlayer;
+    for (unsigned int i0_1 = 0; i0_1 <= 99u; p0_0 += 1, i0_1 += 1u) {
+        if ((p0_0->mIsValid & 1) != 0) {
+            if (pContext == p0_0) {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return true;
+            }
+        }
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void sContextManager::entryContextPlayer(u32 characterId, u32 pawnId) {
@@ -455,9 +555,28 @@ __attribute__((weak)) cContextInstance* sContextManager::searchContextInstance(n
     return nullptr;
 }
 
-__attribute__((weak)) cContextInstNpc* sContextManager::searchContextNpc(u32 UniqueId) {
-    DDON_STUB("sContextManager::searchContextNpc")
-    return nullptr;
+cContextInstNpc* sContextManager::searchContextNpc(u32 UniqueId) {
+    cContext* v0_2 = mList[10].getTop();
+    cContext* v1_0;
+    for (;;) {
+        if (v0_2 == nullptr) {
+            v1_0 = nullptr;
+            break;
+        } else {
+            if (v0_2->mId != 10) {
+                v1_0 = nullptr;
+                break;
+            } else {
+                if (UniqueId == cContextInterface::getUniqueId(static_cast<const cContextInstance*>(v0_2), static_cast<const cContextCharacter*>(nullptr))) {
+                    v1_0 = v0_2;
+                    break;
+                } else {
+                    v0_2 = v0_2->mpNext;
+                }
+            }
+        }
+    }
+    return static_cast<cContextInstNpc*>(v1_0);
 }
 
 __attribute__((weak)) cContextInstOm* sContextManager::searchContextOm(u32 UniqueId) {
@@ -480,9 +599,92 @@ __attribute__((weak)) bool sContextManager::isDeadEnemy(u32 uniqueId) {
     return {};
 }
 
-__attribute__((weak)) void sContextManager::getContextEnemytList(u32 stageNo, u32 groupNo, MtArray& list) {
-    DDON_STUB("sContextManager::getContextEnemytList")
-    /* stub */
+void sContextManager::getContextEnemytList(u32 stageNo, u32 groupNo, MtArray& list) {
+    s32 stageId = static_cast<sAreaExt*>(sArea::getInstance())->convertStageId(static_cast<s32>(stageNo));
+    cContext* v0_3;
+    if (stageId > 0) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        if (list.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(list.mpArray));
+        }
+        list.mpArray = nullptr;
+        list.mLength = 0;
+        list.mBufsiz = 0;
+        v0_3 = mList[9].getTop();
+    } else {
+        return;
+    }
+    for (;;) {
+        if (v0_3 == nullptr) {
+            break;
+        } else {
+            if (v0_3->mId == 9) {
+                u32 t0 = cContextInterface::getUniqueId(static_cast<const cContextInstance*>(v0_3), static_cast<const cContextCharacter*>(nullptr));
+                if (stageId == static_cast<int>(nLayout::getUniqueIDStageId(t0))) {
+                    if (groupNo == nLayout::getUniqueIDLayoutGroup(t0)) {
+                        u32 t1 = list.mLength;
+                        u32 t2 = list.mBufsiz;
+                        if (t1 < t2) {
+                            list.mLength = t1 + 1u;
+                            list.mpArray[t1] = static_cast<MtObject*>(v0_3);
+                        } else {
+                            void* t3 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t2 + 32u) * 8, 16u);
+                            memset(t3, 0, static_cast<size_t>(t2 + 32u) * 8);
+                            memcpy(t3, static_cast<const void*>(list.mpArray), static_cast<size_t>(list.mLength) * 8);
+                            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(list.mpArray));
+                            list.mpArray = static_cast<MtObject* *>(t3);
+                            list.mBufsiz = t2 + 32u;
+                            u32 t4 = list.mLength;
+                            list.mLength = t4 + 1u;
+                            list.mpArray[t4] = static_cast<MtObject*>(v0_3);
+                        }
+                    }
+                }
+            }
+        }
+        v0_3 = v0_3->mpNext;
+    }
+    for (cContext* v3_3 = mList[12].getTop();;) {
+        if (v3_3 == nullptr) {
+            break;
+        } else {
+            if (v3_3->mId == 12) {
+                u32 t5 = cContextInterface::getUniqueId(static_cast<const cContextInstance*>(v3_3), static_cast<const cContextCharacter*>(nullptr));
+                if (stageId == static_cast<int>(nLayout::getUniqueIDStageId(t5))) {
+                    if (groupNo == nLayout::getUniqueIDLayoutGroup(t5)) {
+                        u32 t6 = list.mLength;
+                        u32 t7 = list.mBufsiz;
+                        if (t6 < t7) {
+                            list.mLength = t6 + 1u;
+                            list.mpArray[t6] = static_cast<MtObject*>(v3_3);
+                        } else {
+                            void* t8 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t7 + 32u) * 8, 16u);
+                            memset(t8, 0, static_cast<size_t>(t7 + 32u) * 8);
+                            memcpy(t8, static_cast<const void*>(list.mpArray), static_cast<size_t>(list.mLength) * 8);
+                            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(list.mpArray));
+                            list.mpArray = static_cast<MtObject* *>(t8);
+                            list.mBufsiz = t7 + 32u;
+                            u32 t9 = list.mLength;
+                            list.mLength = t9 + 1u;
+                            list.mpArray[t9] = static_cast<MtObject*>(v3_3);
+                        }
+                    }
+                }
+            }
+        }
+        v3_3 = v3_3->mpNext;
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
 }
 
 __attribute__((weak)) bool sContextManager::removeContextEnemytList(u32 stageNo, u32 groupNo, MtArray& list) {
@@ -490,9 +692,48 @@ __attribute__((weak)) bool sContextManager::removeContextEnemytList(u32 stageNo,
     return {};
 }
 
-__attribute__((weak)) cContextInstance* sContextManager::getContextEnemyAlive(nLayout::stLayoutID layoutID, u32 setNo) {
-    DDON_STUB("sContextManager::getContextEnemyAlive")
-    return nullptr;
+cContextInstance* sContextManager::getContextEnemyAlive(nLayout::stLayoutID layoutID, u32 setNo) {
+    s32 stageId = static_cast<sAreaExt*>(sArea::getInstance())->convertStageId(static_cast<s32>(layoutID.mLayoutID & 1023u));
+    cContext* v0_3;
+    if (stageId > 0) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+        v0_3 = mList[9].getTop();
+    } else {
+        return nullptr;
+    }
+    cContext* v2_11;
+    for (;;) {
+        if (v0_3 == nullptr) {
+            v2_11 = nullptr;
+            break;
+        } else {
+            if (v0_3->mId == 9) {
+                u32 t0 = cContextInterface::getUniqueId(static_cast<const cContextInstance*>(v0_3), static_cast<const cContextCharacter*>(nullptr));
+                if (stageId == static_cast<int>(nLayout::getUniqueIDStageId(t0))) {
+                    u32 t1 = nLayout::getUniqueIDLayoutGroup(t0);
+                    if ((layoutID.mLayoutID >> 10) == t1) {
+                        if (setNo == nLayout::getUniqueIDLayoutID(t0)) {
+                            if (cContextInterface::getHp(static_cast<const cContextInstance*>(v0_3), static_cast<const cContextCharacter*>(nullptr), 0u) != 0) {
+                                v2_11 = v0_3;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        v0_3 = v0_3->mpNext;
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return static_cast<cContextInstance*>(v2_11);
 }
 
 inline sContextManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -6,6 +6,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../XFramework/cParticle2D.h"
@@ -63,9 +64,11 @@ uEffect2DExt::~uEffect2DExt() {
     mCorrectColorParam.mZoneParamNum = 0;
 }
 
-__attribute__((weak)) void uEffect2DExt::setup() {
-    DDON_STUB("uEffect2DExt::setup")
-    /* stub */
+void uEffect2DExt::setup() {
+    this->uEffect2D::setup();
+    if ((mUnitGroup & 0x100008000000000ul) == 0) {
+        sUnit::getInstance()->setUnitGroupBit(static_cast<cUnit*>(this), getUnitGroup() | (sUnitExt::GPT_EFFECT));
+    }
 }
 
 void uEffect2DExt::move() {
@@ -99,9 +102,36 @@ void uEffect2DExt::move() {
 __attribute__((weak)) void uEffect2DExt::sync() {
 }
 
-__attribute__((weak)) void uEffect2DExt::moveAfter() {
-    DDON_STUB("uEffect2DExt::moveAfter")
-    /* stub */
+void uEffect2DExt::moveAfter() {
+    if (mZoneUpdateFlag) {
+        buildCorrectColorFromZone();
+        mZoneUpdateFlag = false;
+    } else {
+        if (mColorUpdate) {
+            if (mCorrectColorParam.mpZoneParam != nullptr) {
+                f32 t0 = mColorUpdateTimer;
+                if (sWeatherManager::getInstance()->getEffectColorUpdateTime() > t0) {
+                    mColorUpdateTimer = sMain::getInstance()->mDeltaTime + mColorUpdateTimer;
+                } else {
+                    if (static_cast<sEffectExt*>(sEffect::getInstance())->updateColorUpdateCount()) {
+                        mColorUpdateTimer = 0.0f;
+                        u32 v0_10 = mCorrectColorParam.mZoneParamNum;
+                        if (v0_10 != 0) {
+                            for (unsigned int i0_3 = 0;;) {
+                                updateCorrectColorParam(i0_3);
+                                if (v0_10 != (i0_3 + 1u)) {
+                                    i0_3 += 1u;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->uEffect2D::moveAfter();
 }
 
 void uEffect2DExt::draw(cDraw* pDraw) {
@@ -111,9 +141,16 @@ void uEffect2DExt::draw(cDraw* pDraw) {
     this->uEffect2D::draw(pDraw);
 }
 
-__attribute__((weak)) void uEffect2DExt::createProperty(MtPropertyList& s) {
-    DDON_STUB("uEffect2DExt::createProperty")
-    /* stub */
+void uEffect2DExt::createProperty(MtPropertyList& s) {
+    this->uEffect2D::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpParentActor", reinterpret_cast<MtObject* *>(&mpParentActor), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHitStopMode", &mHitStopMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWorkRateMode", &mWorkRateMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCustomWorkRateType", &mCustomWorkRateType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDeltaTimeCoefEx", reinterpret_cast<MT_MFUNC>(&::uEffect2DExt::getDeltaTimeCoefEx), reinterpret_cast<MT_MFUNC>(&::uEffect2DExt::setDeltaTimeCoefEx), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Color Update", reinterpret_cast<MT_MFUNC>(&::uEffect2DExt::getColorUpdateFlag), reinterpret_cast<MT_MFUNC>(&::uEffect2DExt::setColorUpdateFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mColorUpdateTimer", &mColorUpdateTimer, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColorUpdateTime", &mColorUpdateTime, 0u, 0u);
 }
 
 MtUI* uEffect2DExt::createUI(MtProperty& prop) {

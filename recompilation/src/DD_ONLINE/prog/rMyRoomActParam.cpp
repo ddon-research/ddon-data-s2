@@ -33,10 +33,7 @@ inline void cMyRoomActParam::operator delete(void* p_addr) {
 
 cMyRoomActParam::cMyRoomActParam() {
     mWaypoint = 0;
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
+    mPos = MtVector3::Zero;
     mAngleY = 0.0f;
     mNpcMotNo = 0;
     mStartIdx = 0;
@@ -55,9 +52,25 @@ cMyRoomActParam::cMyRoomActParam() {
     mIsSingle = false;
 }
 
-__attribute__((weak)) void cMyRoomActParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cMyRoomActParam::createProperty")
-    /* stub */
+void cMyRoomActParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Waypoint", &mWaypoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Pos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "AngleY", &mAngleY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NpcMotNo", &mNpcMotNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "StartIdx", &mStartIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NeedOM", &mNeedOM, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NeedOM2", &mNeedOM2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NeedOM3", &mNeedOM3, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NeedOM4", &mNeedOM4, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NeedOM5", &mNeedOM5, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Message", &mMessage, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Condition", &mCondition, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "LinkActNo", &mLinkActNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "LinkActLv", &mLinkActLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ChangeEquip", &mChangeEquip, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "IsGriffin", &mIsGriffin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "IsNotAvoid", &mIsNotAvoid, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "IsSingle", &mIsSingle, 0u, 0u);
 }
 
 inline cMyRoomActParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

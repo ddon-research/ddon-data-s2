@@ -382,9 +382,23 @@ cWeaponResTable* cPlayerLoadManager::getWeaponArcTagEx(u16 wepId, u32 sex) {
     }
 }
 
-__attribute__((weak)) bool cPlayerLoadManager::isLoadFinish() {
-    DDON_STUB("cPlayerLoadManager::isLoadFinish")
-    return {};
+bool cPlayerLoadManager::isLoadFinish() {
+    u32 i = 0;
+    bool b2_0;
+    for (;;) {
+        if (mArcTicket[i].mNum != 0) {
+            if (!mArcTicket[i].loadReqTag()) {
+                return false;
+            }
+        }
+        if ((i + 1u) <= 45u) {
+            i += 1u;
+        } else {
+            b2_0 = true;
+            break;
+        }
+    }
+    return b2_0;
 }
 
 __attribute__((weak)) void cPlayerLoadManager::returnTicket() {

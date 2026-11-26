@@ -7,6 +7,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "cContext.h"
 #include "cContextInstance.h"
 #include "cContextInterface.h"
 #include "cpLayout.h"
@@ -34,9 +35,28 @@ void uControlEnemy::createProperty(MtPropertyList& s) {
     this->uControl::createProperty(s);
 }
 
-__attribute__((weak)) void uControlEnemy::move() {
-    DDON_STUB("uControlEnemy::move")
-    /* stub */
+void uControlEnemy::move() {
+    this->uControl::move();
+    if (mpModel != nullptr) {
+        return;
+    }
+    const cGroupParam* pGrp = mLayout.getGroupParam();
+    if (pGrp == nullptr) {
+        return;
+    }
+    if (static_cast<unsigned short>(pGrp->getInvalidFlag()) != 0) {
+        sControlManager::getInstance()->releaseUnit(static_cast<uControl*>(this));
+    }
+    if (pGrp->isWaitRepop(static_cast<u32>(mLayout.getSetNo()))) {
+        sControlManager::getInstance()->releaseUnit(static_cast<uControl*>(this));
+        mIsSelfDeleteContextInst = true;
+        sContextManager::getInstance()->removeContext(static_cast<cContext*>(getContextInst()));
+    }
+    if ((mUnitId - 337u) <= 19u) {
+        if (cContextInterface::getSetWaitFlag(mContextInterface.mpContextInstance)) {
+            cContextInterface::setSetWaitFlag(mContextInterface.mpContextInstance, false);
+        }
+    }
 }
 
 void uControlEnemy::updatePtr() {

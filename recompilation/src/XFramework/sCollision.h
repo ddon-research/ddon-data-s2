@@ -74,6 +74,7 @@ namespace nCollision { class cObjectBase; }
 namespace nCollision { class cScrCommonFilter; }
 class rCollision;
 class rCollisionHeightField;
+class uCnsTinyChain;
 class uDynamicSbc;
 class uScrollCollisionGeometry;
 class uScrollCollisionSbc;
@@ -102,6 +103,7 @@ using uintptr = __uintptr_t;
 class sCollision : public cSystem
 {
     friend class cOmControl;
+    friend class uCnsTinyChain;
     friend class uScrollCollisionGeometry;
     friend class uScrollCollisionSbc;
 public:
@@ -1856,6 +1858,7 @@ public:
     public:
         class Parts : public MtObject
         {
+            friend class sCollision;
         public:
             class MyDTI;
         public:
@@ -2463,6 +2466,7 @@ public:
 public:
     class TraverseInfo
     {
+        friend class sCollision;
     public:
         TraverseInfo();
         ~TraverseInfo();
@@ -3990,12 +3994,26 @@ inline void* sCollision::SbcObject::cRegisterInfo::operator new(size_t sz, void*
     return p_addr;
 }
 
+inline sCollision::SbcObject::cRegisterInfo::cRegisterInfo() {
+    this->mFlgEnable = false;
+    this->mpDBVTNode = nullptr;
+    this->mpRegistGeometry = nullptr;
+    this->mDBVTType = static_cast<sCollision::SbcObject::DBVT_TYPE>(-1);
+    this->mUnregisterGroupIndex = 0;
+}
+
 inline void* sCollision::cSbcSkinMesh::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline void* sCollision::cSbcSkinMesh::cRegisterInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline sCollision::cSbcSkinMesh::cRegisterInfo::cRegisterInfo() {
+    this->mFlgEnable = false;
+    this->mpDBVTNode = nullptr;
+    this->mpRegisterUnit = nullptr;
 }
 
 inline void* sCollision::cSbcHeightField::operator new(size_t sz, void* p_addr) {
@@ -4039,8 +4057,18 @@ inline void* sCollision::SbcInfoBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline sCollision::SbcInfoBase::SbcInfoBase() {
+}
+
 inline void* sCollision::ColliderPassiveNodeInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline sCollision::ColliderPassiveNodeInfo::ColliderPassiveNodeInfo() {
+    this->mNodeListIndex = 0xFFFFFFFF;
+    this->mpNode = nullptr;
+    this->mFlgFrameUpdate = true;
+    this->mpDBVTNode = nullptr;
 }
 
 inline void* sCollision::ColliderActiveNodeInfo::operator new(size_t sz, void* p_addr) {
@@ -4049,6 +4077,19 @@ inline void* sCollision::ColliderActiveNodeInfo::operator new(size_t sz, void* p
 
 inline void* sCollision::ActiveNodeInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline sCollision::ActiveNodeInfo::ActiveNodeInfo() {
+    this->mCallbackParam = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 64) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 56) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 48) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 40) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 32) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 24) = 0;
+    this->mpCallbackOwner = nullptr;
+    this->mpActiveNode = nullptr;
+    this->mContactFunctionType = 1;
 }
 
 inline void* sCollision::NodeList::operator new(size_t sz, void* p_addr) {

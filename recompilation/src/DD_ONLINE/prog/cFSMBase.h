@@ -244,3 +244,9 @@ inline cFSMBase::cParamCallMessage::cParamCallMessage() {
 inline void* cFSMBase::cParamCallMessageFortDef_Common::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline cFSMBase::cParamCallMessageFortDef_Common::cParamCallMessageFortDef_Common() {
+    this->mMsgNo1 = 0;
+    this->mMsgNo2 = 0;
+    this->::cFSMBase::cParamCallMessage::mIsUseSerial = true;
+}

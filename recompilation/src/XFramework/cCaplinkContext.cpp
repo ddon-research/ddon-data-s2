@@ -14,6 +14,10 @@ const MtDTI& nCaplink::ContextListener::getDTI() const {
     return nCaplink::ContextListener::DTI;
 }
 
+inline void* nCaplink::ContextListener::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nCaplink::ContextListener::DTI)->memAlloc(sz, align, ::nCaplink::ContextListener::DTI.mID);
+}
+
 __attribute__((weak)) void nCaplink::ContextListener::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nCaplink::ContextListener::DTI)->memFree(p_addr);
 }
@@ -47,8 +51,7 @@ inline nCaplink::ContextListener::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 nCaplink::ContextListener::MyDTI nCaplink::ContextListener::DTI("ContextListener", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::ContextListener::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::ContextListener::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::ContextListener::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::ContextListener;
 }
 

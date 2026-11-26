@@ -14,6 +14,7 @@ class MtObject;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
+class uGUI;
 
 // Declarations
 class cGUIVarFloat;
@@ -31,6 +32,9 @@ using u32 = unsigned int;
 
 class cGUIVariable : public MtObject
 {
+    friend class cGUIVarFloat;
+    friend class cGUIVarInt;
+    friend class uGUI;
 public:
     class MyDTI;
 public:

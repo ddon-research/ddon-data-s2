@@ -1,5 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_pthread.h>
+#include <stdlib.h>
 #include "cEvaluation.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
@@ -66,9 +68,64 @@ __attribute__((weak)) void cEvaluationName::cEvaluation::deleteCategory(uDDOMode
     /* stub */
 }
 
-__attribute__((weak)) void cEvaluationName::cEvaluation::deleteCategory(u32 category) {
-    DDON_STUB("cEvaluationName::cEvaluation::deleteCategory")
-    /* stub */
+void cEvaluationName::cEvaluation::deleteCategory(u32 category) {
+    if (category > 17u) {
+        return;
+    } else {
+        if (::scePthreadMutexLock(&mCS.mCSection) == 0) {
+            bool* v0_1 = &mEvaList[0].mEvaPointList[0].mEnable;
+            unsigned int i0_2 = 0;
+            cEvaluationName::cEvaluationPoint* p1_0;
+            unsigned int i1_1;
+            bool* v4_0;
+            unsigned int i4_2;
+            for (;;) {
+                p1_0 = &mEvaList[i0_2].mEvaPointList[0];
+                i1_1 = 0;
+                for (;;) {
+                    if (p1_0->mEnable) {
+                        if (p1_0->mCategory == category) {
+                            p1_0->mCategory = 0;
+                            p1_0->mAddValue = 0.0f;
+                            p1_0->mDecValue = 0.0f;
+                            p1_0->mEnable = false;
+                        }
+                    }
+                    if (i1_1 != 31) {
+                        p1_0 += 1;
+                        i1_1 = i1_1 + 1u;
+                    } else {
+                        break;
+                    }
+                }
+                v4_0 = v0_1;
+                i4_2 = 0;
+                for (;;) {
+                    if (*v4_0) {
+                        break;
+                    } else {
+                        if ((i4_2 + 1u) <= 31u) {
+                            v4_0 += 24;
+                            i4_2 += 1u;
+                        } else {
+                            mEvaList[i0_2].mNeverAddValue = 0.0f;
+                            break;
+                        }
+                    }
+                }
+                if ((i0_2 + 1u) != 16) {
+                    v0_1 += 808;
+                    i0_2 = i0_2 + 1u;
+                } else {
+                    break;
+                }
+            }
+            if (::scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+                return;
+            }
+        }
+    }
+    ::abort();
 }
 
 void cEvaluationName::cEvaluation::deleteCategoryAll(uDDOModel* pObjModel) {
@@ -102,9 +159,62 @@ __attribute__((weak)) bool cEvaluationName::cEvaluation::addEvaluationLimitHeigh
     return {};
 }
 
-__attribute__((weak)) void cEvaluationName::cEvaluation::updatePtr() {
-    DDON_STUB("cEvaluationName::cEvaluation::updatePtr")
-    /* stub */
+void cEvaluationName::cEvaluation::updatePtr() {
+    if (mpMyObj != nullptr) {
+        if (!mpMyObj->isEnable()) {
+            mpMyObj = nullptr;
+        }
+    }
+    u32 i = 0;
+    unsigned int i1_0;
+    cEvaluationName::cEvaluationPoint* p1_1;
+    for (;;) {
+        if (mEvaList[i].mpObject != nullptr) {
+            if (mEvaList[i].mpObject->isEnable()) {
+                goto region_1dfa41;
+            } else {
+                mEvaList[i].mpObject = nullptr;
+                mEvaList[i].mEnable = true;
+                mEvaList[i].mpObject = nullptr;
+                mEvaList[i].mNeverAddValue = 0.0f;
+                mEvaList[i].mIsSessionLost = true;
+                mEvaList[i].mSessionStateUpdateTimer = 0.0f;
+                i1_0 = 0;
+                p1_1 = &mEvaList[i].mEvaPointList[0];
+            }
+        } else {
+            mEvaList[i].mEnable = true;
+            mEvaList[i].mpObject = nullptr;
+            mEvaList[i].mNeverAddValue = 0.0f;
+            mEvaList[i].mIsSessionLost = true;
+            mEvaList[i].mSessionStateUpdateTimer = 0.0f;
+            i1_0 = 0;
+            p1_1 = &mEvaList[i].mEvaPointList[0];
+        }
+        for (;;) {
+            p1_1->mCategory = 0;
+            p1_1->mAddValue = 0.0f;
+            p1_1->mDecValue = 0.0f;
+            p1_1->mEnable = false;
+            if (i1_0 != 31) {
+                i1_0 = i1_0 + 1u;
+                p1_1 += 1;
+            } else {
+                break;
+            }
+        }
+        region_1dfa41:;
+        if ((i + 1u) != 16) {
+            i = i + 1u;
+        } else {
+            break;
+        }
+    }
+    if (mpEvaTopObj != nullptr) {
+        if (!mpEvaTopObj->isEnable()) {
+            mpEvaTopObj = nullptr;
+        }
+    }
 }
 
 __attribute__((weak)) void cEvaluationName::cEvaluation::calcAllEvaValue() {
@@ -112,9 +222,26 @@ __attribute__((weak)) void cEvaluationName::cEvaluation::calcAllEvaValue() {
     /* stub */
 }
 
-__attribute__((weak)) void cEvaluationName::cEvaluation::perNeverEvaValue(MtObject* pSrcObject, f32 perData) {
-    DDON_STUB("cEvaluationName::cEvaluation::perNeverEvaValue")
-    /* stub */
+void cEvaluationName::cEvaluation::perNeverEvaValue(MtObject* pSrcObject, f32 perData) {
+    if (::scePthreadMutexLock(&mCS.mCSection) == 0) {
+        for (u32 i = 0;;) {
+            if (pSrcObject == mEvaList[i].mpObject) {
+                mEvaList[i].mNeverAddValue = mEvaList[i].mNeverAddValue * perData;
+                if (0.0f >= mEvaList[i].mNeverAddValue) {
+                    mEvaList[i].mNeverAddValue = 0.0f;
+                }
+            }
+            if (i != 15) {
+                i = i + 1u;
+            } else {
+                break;
+            }
+        }
+        if (::scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+            return;
+        }
+    }
+    ::abort();
 }
 
 __attribute__((weak)) void cEvaluationName::cEvaluation::setResource(rEvaluationTable* pRes) {
@@ -122,9 +249,36 @@ __attribute__((weak)) void cEvaluationName::cEvaluation::setResource(rEvaluation
     /* stub */
 }
 
-__attribute__((weak)) cEvaluationName::cEvaluation::EVALUATION_RESULT cEvaluationName::cEvaluation::getCategoryData(u32 categorys) {
-    DDON_STUB("cEvaluationName::cEvaluation::getCategoryData")
-    __builtin_unreachable();
+cEvaluationName::cEvaluation::EVALUATION_RESULT cEvaluationName::cEvaluation::getCategoryData(u32 categorys) {
+    cEvaluationName::cEvaluation::EVALUATION_RESULT resultdata;
+    resultdata.mEvalutionCategoryEizokuHosei = 0.0f;
+    resultdata.mEvalutionCategoryDecPer = 0.0f;
+    resultdata.mEvalutionCategoryHosei = 0.0f;
+    resultdata.mEvalutionCategory = 0;
+    resultdata.mEvalutionCategoryMax = 0;
+    if (mpEvaluationTableRes != nullptr) {
+        if (mpEvaluationTableRes->getDataNum() != 0) {
+            for (unsigned int i0_3 = 0;;) {
+                cEvaluationTable* t0 = mpEvaluationTableRes->getData(i0_3);
+                if (t0 != nullptr) {
+                    if (t0->mEvalutionCategory == categorys) {
+                        resultdata.mEvalutionCategory = categorys;
+                        resultdata.mEvalutionCategoryMax = t0->mEvalutionCategoryMax;
+                        resultdata.mEvalutionCategoryDecPer = t0->mEvalutionCategoryDecPer;
+                        resultdata.mEvalutionCategoryHosei = t0->mEvalutionCategoryHosei;
+                        resultdata.mEvalutionCategoryEizokuHosei = t0->mEvalutionCategoryEizokuHosei;
+                        return resultdata;
+                    }
+                }
+                if ((i0_3 + 1u) < mpEvaluationTableRes->getDataNum()) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return resultdata;
 }
 
 __attribute__((weak)) f32 cEvaluationName::cEvaluation::getCategoryMax(rEvaluationTable* pRes, u32 categorys) {

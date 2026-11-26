@@ -15,6 +15,7 @@
 #include "Protocol/UserSession/S2C.h"
 #include "cControl.h"
 #include "../../XFramework/cGUIInstance.h"
+#include "cGUIObjTextureRef.h"
 #include "../../XFramework/cGUIObject.h"
 #include "cGUIUtility.h"
 #include "cNetGameServer.h"
@@ -58,8 +59,22 @@ inline void uGUIBoxGachaInfo::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIBoxGachaInfo::~uGUIBoxGachaInfo() {
-    DDON_STUB("uGUIBoxGachaInfo::~uGUIBoxGachaInfo")
-    /* stub */
+    if (mpDetail != nullptr) {
+        mpDetail->kill();
+        mpDetail = nullptr;
+    }
+    if (mpGPShop != nullptr) {
+        mpGPShop->kill();
+        mpGPShop = nullptr;
+    }
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearBoxGachaListPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearBoxGachaBuyPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearBoxGachaResetPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearBoxGachaDrawInfoPacket();
 }
 
 bool uGUIBoxGachaInfo::loadResource() {
@@ -264,9 +279,110 @@ __attribute__((weak)) void uGUIBoxGachaInfo::moveEvent() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBoxGachaInfo::init() {
-    DDON_STUB("uGUIBoxGachaInfo::init")
-    /* stub */
+void uGUIBoxGachaInfo::init() {
+    cGUIObjMessage* t0 = mSummary.mpObjImgMsg;
+    setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 39u), 0u, false);
+    if (mSummary.mpObjImgMsg != nullptr) {
+        mSummary.mpObjImgMsg->setVisible(false);
+    }
+    u32 v0_0 = mList.mListCtrl.mItemArray.mLength;
+    u32 v0_3 = mList.mListCtrl.mItemArray.mBufsiz;
+    unsigned int i0_10 = 19968;
+    u32 v1_0;
+    u32 v1_3;
+    for (;;) {
+        if (v0_0 < v0_3) {
+            mList.mListCtrl.mItemArray.mLength = v0_0 + 1u;
+            mList.mListCtrl.mItemArray.mpArray[v0_0] = reinterpret_cast<MtObject*>(reinterpret_cast<char*>(this) + i0_10);
+            v1_0 = v0_0 + 1u;
+            v1_3 = v0_3;
+        } else {
+            void* t1 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(v0_3 + 32u) * 8, 16u);
+            memset(t1, 0, static_cast<size_t>(v0_3 + 32u) * 8);
+            memcpy(t1, static_cast<const void*>(mList.mListCtrl.mItemArray.mpArray), static_cast<size_t>(mList.mListCtrl.mItemArray.mLength) * 8);
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mList.mListCtrl.mItemArray.mpArray));
+            mList.mListCtrl.mItemArray.mpArray = static_cast<MtObject* *>(t1);
+            mList.mListCtrl.mItemArray.mBufsiz = v0_3 + 32u;
+            u32 t2 = mList.mListCtrl.mItemArray.mLength;
+            mList.mListCtrl.mItemArray.mLength = t2 + 1u;
+            mList.mListCtrl.mItemArray.mpArray[t2] = reinterpret_cast<MtObject*>(reinterpret_cast<char*>(this) + i0_10);
+            v1_0 = t2 + 1u;
+            v1_3 = v0_3 + 32u;
+        }
+        if ((i0_10 + 560u) != 31168) {
+            v0_0 = v1_0;
+            v0_3 = v1_3;
+            i0_10 = i0_10 + 560u;
+        } else {
+            break;
+        }
+    }
+    u32 v3_0 = mResult.mListCtrl.mItemArray.mLength;
+    u32 v3_3 = mResult.mListCtrl.mItemArray.mBufsiz;
+    unsigned int i3_10 = 32352;
+    u32 v4_0;
+    u32 v4_3;
+    for (;;) {
+        if (v3_0 < v3_3) {
+            mResult.mListCtrl.mItemArray.mLength = v3_0 + 1u;
+            mResult.mListCtrl.mItemArray.mpArray[v3_0] = reinterpret_cast<MtObject*>(reinterpret_cast<char*>(this) + i3_10);
+            v4_0 = v3_0 + 1u;
+            v4_3 = v3_3;
+        } else {
+            void* t3 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(v3_3 + 32u) * 8, 16u);
+            memset(t3, 0, static_cast<size_t>(v3_3 + 32u) * 8);
+            memcpy(t3, static_cast<const void*>(mResult.mListCtrl.mItemArray.mpArray), static_cast<size_t>(mResult.mListCtrl.mItemArray.mLength) * 8);
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mResult.mListCtrl.mItemArray.mpArray));
+            mResult.mListCtrl.mItemArray.mpArray = static_cast<MtObject* *>(t3);
+            mResult.mListCtrl.mItemArray.mBufsiz = v3_3 + 32u;
+            u32 t4 = mResult.mListCtrl.mItemArray.mLength;
+            mResult.mListCtrl.mItemArray.mLength = t4 + 1u;
+            mResult.mListCtrl.mItemArray.mpArray[t4] = reinterpret_cast<MtObject*>(reinterpret_cast<char*>(this) + i3_10);
+            v4_0 = t4 + 1u;
+            v4_3 = v3_3 + 32u;
+        }
+        if ((i3_10 + 560u) != 43552) {
+            v3_0 = v4_0;
+            v3_3 = v4_3;
+            i3_10 = i3_10 + 560u;
+        } else {
+            break;
+        }
+    }
+    u32 v6_0 = mLotList.mListCtrl.mItemArray.mLength;
+    u32 v6_3 = mLotList.mListCtrl.mItemArray.mBufsiz;
+    unsigned int i6_10 = 3496;
+    u32 v7_0;
+    u32 v7_3;
+    for (;;) {
+        if (v6_0 < v6_3) {
+            mLotList.mListCtrl.mItemArray.mLength = v6_0 + 1u;
+            mLotList.mListCtrl.mItemArray.mpArray[v6_0] = reinterpret_cast<MtObject*>(reinterpret_cast<char*>(this) + i6_10);
+            v7_0 = v6_0 + 1u;
+            v7_3 = v6_3;
+        } else {
+            void* t5 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(v6_3 + 32u) * 8, 16u);
+            memset(t5, 0, static_cast<size_t>(v6_3 + 32u) * 8);
+            memcpy(t5, static_cast<const void*>(mLotList.mListCtrl.mItemArray.mpArray), static_cast<size_t>(mLotList.mListCtrl.mItemArray.mLength) * 8);
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mLotList.mListCtrl.mItemArray.mpArray));
+            mLotList.mListCtrl.mItemArray.mpArray = static_cast<MtObject* *>(t5);
+            mLotList.mListCtrl.mItemArray.mBufsiz = v6_3 + 32u;
+            u32 t6 = mLotList.mListCtrl.mItemArray.mLength;
+            mLotList.mListCtrl.mItemArray.mLength = t6 + 1u;
+            mLotList.mListCtrl.mItemArray.mpArray[t6] = reinterpret_cast<MtObject*>(reinterpret_cast<char*>(this) + i6_10);
+            v7_0 = t6 + 1u;
+            v7_3 = v6_3 + 32u;
+        }
+        if ((i6_10 + 736u) != 14536) {
+            v6_0 = v7_0;
+            v6_3 = v7_3;
+            i6_10 = i6_10 + 736u;
+        } else {
+            break;
+        }
+    }
+    createLotList();
+    adjustTabCursor(false);
 }
 
 __attribute__((weak)) void uGUIBoxGachaInfo::createList() {
@@ -405,9 +521,59 @@ void uGUIBoxGachaInfo::updateJpegLoader() {
     }
 }
 
-__attribute__((weak)) void uGUIBoxGachaInfo::listLotUpdate(uGUIBoxGachaInfo::cLotList* pLot, uGUIBoxGachaInfo::cLotInfo* pInfo) {
-    DDON_STUB("uGUIBoxGachaInfo::listLotUpdate")
-    /* stub */
+void uGUIBoxGachaInfo::listLotUpdate(uGUIBoxGachaInfo::cLotList* pLot, uGUIBoxGachaInfo::cLotInfo* pInfo) {
+    if (pLot == nullptr) {
+        return;
+    }
+    if (pInfo == nullptr) {
+        return;
+    }
+    if ((pLot->mpInstNullLotlist->mAttr & 1u) == 0) {
+        return;
+    }
+    pLot->mRefJpegDL.update(getDeltaTime());
+    if (pLot->mRefJpegDL.isReplaceTex()) {
+        if (pLot->mRefJpegDL.isHaveTicket()) {
+            if (pLot->mRefJpegDL.isFail()) {
+                if (pLot->mpObjTexRefIcon != nullptr) {
+                    pLot->mpObjTexRefIcon->setVisible(false);
+                }
+                if (pLot->mpInstImgLoadAnm != nullptr) {
+                    pLot->mpInstImgLoadAnm->setVisible(false);
+                }
+            } else {
+                if (pLot->mpInstImgLoadAnm != nullptr) {
+                    pLot->mpInstImgLoadAnm->setVisible(true);
+                }
+                if (pLot->mpObjTexRefIcon != nullptr) {
+                    pLot->mpObjTexRefIcon->setVisible(false);
+                }
+            }
+        } else {
+            if (pLot->mpObjTexRefIcon != nullptr) {
+                pLot->mpObjTexRefIcon->setVisible(true);
+            }
+            if (pLot->mpInstImgLoadAnm != nullptr) {
+                pLot->mpInstImgLoadAnm->setVisible(false);
+            }
+        }
+    } else {
+        if (pLot->mRefJpegDL.isFail()) {
+            if (pLot->mpObjTexRefIcon != nullptr) {
+                pLot->mpObjTexRefIcon->setVisible(false);
+            }
+            if (pLot->mpInstImgLoadAnm != nullptr) {
+                pLot->mpInstImgLoadAnm->setVisible(false);
+            }
+        } else {
+            if (pLot->mpInstImgLoadAnm != nullptr) {
+                pLot->mpInstImgLoadAnm->setVisible(true);
+            }
+            if (pLot->mpObjTexRefIcon != nullptr) {
+                pLot->mpObjTexRefIcon->setVisible(false);
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIBoxGachaInfo::evDecide() {

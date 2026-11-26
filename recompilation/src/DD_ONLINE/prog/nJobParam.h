@@ -330,6 +330,28 @@ inline void* nJobParam::cHumanBaseInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline nJobParam::cHumanBaseInfo::cHumanBaseInfo() {
+    this->mHP_pri = 0.0f;
+    this->mMaxHP_pri = 0.0f;
+    this->::nJobParam::cHumanBaseInfo::setFinalMaxHP(100.0f);
+    this->mLostLv_pri = 0;
+    this->mFinalMaxStamina_pri = 0.0f;
+    this->mLostPower_pri = 0;
+    this->mStamina_pri = 0.0f;
+    this->mMaxStamina_pri = 0.0f;
+    this->mAbilityCapacity_pri = 10;
+    this->mAbilityCapaLv_pri = 0;
+    this->mLogInHpWhite_pri = 0.0f;
+    this->mGainMAtk_pri = 0;
+    this->mGainMDef_pri = 0;
+    this->mGainAtk_pri = 0;
+    this->mGainDef_pri = 0;
+    this->mGainHp_pri = 0.0f;
+    this->mGainStamina_pri = 0.0f;
+    this->mLostNum_pri = 0;
+    this->mMaxLostNum_pri = 0;
+}
+
 inline f32 nJobParam::cHumanBaseInfo::getHP() const {
     return this->mHP_pri;
 }

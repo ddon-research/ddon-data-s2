@@ -23,11 +23,18 @@ class MtTime;
 class MtUI;
 class MtVector3;
 class cContextInstHm;
+class cCycleQuestSubCategoryManager;
+class cEndContentsManager;
 class cQuestTask;
 namespace nMarker { class cMarkerInfo; }
 class rGUIMessage;
+class sQuestManagerExt;
+class sTalkManager;
+class uGUIAreaMaster;
+class uGUIQuestList;
 
 // Declarations
+namespace nQuest { struct stValues; }
 namespace nQuest { class SCHEDULE_ID; }
 namespace nQuest { class QUEST_ID; }
 namespace nQuest { class cQuestInfoBase; }
@@ -574,6 +581,13 @@ namespace nQuest {
 
     class SCHEDULE_ID : public ::MtObject
     {
+        friend class ::cCycleQuestSubCategoryManager;
+        friend class nQuest::cGUIInfoData;
+        friend class nQuest::cQuestMarker;
+        friend class ::sQuestManagerExt;
+        friend class ::sTalkManager;
+        friend class ::uGUIAreaMaster;
+        friend class ::uGUIQuestList;
     public:
         operator unsigned int() const;
         bool operator==(nQuest::SCHEDULE_ID id) const;
@@ -593,7 +607,12 @@ namespace nQuest {
 
     class QUEST_ID : public ::MtObject
     {
+        friend class ::cEndContentsManager;
+        friend class nQuest::cGUIInfoData;
+        friend class nQuest::cGUIListData;
+        friend class nQuest::cGUINewspaperSetQuestInfo;
         friend class nQuest::cQuestMarker;
+        friend class ::sQuestManagerExt;
     public:
         operator unsigned int() const;
         bool operator==(nQuest::QUEST_ID id) const;
@@ -2435,6 +2454,9 @@ namespace nQuest {
 
     class cPartyBonusInfo : public nQuest::cQuestInfoBase
     {
+        friend class nQuest::cGUIAreaMasterData;
+        friend class nQuest::cGUIInfoData;
+        friend class nQuest::cGUIListData;
     public:
         class MyDTI;
     public:
@@ -2548,6 +2570,15 @@ namespace nQuest {
     bool isDispPartyQuest(SCHEDULE_ID ScheduleId);
     bool isDispActiveQuest(SCHEDULE_ID ScheduleId);
 
+}  // namespace nQuest
+
+namespace nQuest {
+    struct stValues
+    {
+    public:
+        nQuest::ORDER_CONDITION_TYPE type;  // offset: 0x0
+        nQuest::RET_DISABLE_ORDER_CONDITION_TYPE result;  // offset: 0x4
+    };
 }  // namespace nQuest
 
 namespace nQuest {

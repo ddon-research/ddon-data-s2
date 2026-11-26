@@ -62,9 +62,9 @@ void cpEffectProvider::updatePtr() {
     this->cpComponent::updatePtr();
 }
 
-__attribute__((weak)) void cpEffectProvider::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpEffectProvider::createProperty")
-    /* stub */
+void cpEffectProvider::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mprResource", "resource", static_cast<void*>(&mprResource[0]), 32u, 16u);
 }
 
 __attribute__((weak)) void cpEffectProvider::setResource(rEffectProvider* pRes, cpEffectProvider::EPV_TYPE Type) {

@@ -59,9 +59,14 @@ s32 uGUIClanSearch::getSMenuCursorX() {
     return mControlMgr.getCurrentPos(3u);
 }
 
-__attribute__((weak)) s32 uGUIClanSearch::getSMenuCursorY() {
-    DDON_STUB("uGUIClanSearch::getSMenuCursorY")
-    return {};
+s32 uGUIClanSearch::getSMenuCursorY() {
+    s32 y = sMenu::getInstance()->mMenuClanList.getIndexFromMenuId(4);
+    const s32 pos_layout = mControlMgr.getCurrentPos(1u);
+    if (pos_layout != 0) {
+        return y;
+    } else {
+        return mControlMgr.getCurrentPos(2u);
+    }
 }
 
 void uGUIClanSearch::initFlow() {
@@ -93,9 +98,23 @@ void uGUIClanSearch::setupObjects() {
     setObjectMessage(t1, t0, 0u, false);
 }
 
-__attribute__((weak)) void uGUIClanSearch::setupRefrenceUIs() {
-    DDON_STUB("uGUIClanSearch::setupRefrenceUIs")
-    /* stub */
+void uGUIClanSearch::setupRefrenceUIs() {
+    mCloseButton.setup(static_cast<uGUIBase*>(this), getInstance(8u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUIClanSearch::evCtrlCancel));
+    cGUIInstance* t0 = getInstance(103u, false);
+    MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 8u);
+    mButton.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), t0, t1, -1.0f);
+    mNumPager.setup(static_cast<uGUIBase*>(this), getInstance(120u, false), 0, 1, static_cast<u8>(0));
+    mNumPager.addMouseWheelTouchListInstScissorMask(147u);
+    cGUIInstance* t2 = getInstance(109u, false);
+    if (t2 == nullptr) {
+        return;
+    }
+    mDispClans.elems[0].setup(0, this, static_cast<cGUIInstNull*>(t2), ManageDuplicate(t2, t2->getParent()));
+    mDispClans.elems[1].setup(1, this, static_cast<cGUIInstNull*>(t2), ManageDuplicate(t2, t2->getParent()));
+    mDispClans.elems[2].setup(2, this, static_cast<cGUIInstNull*>(t2), ManageDuplicate(t2, t2->getParent()));
+    mDispClans.elems[3].setup(3, this, static_cast<cGUIInstNull*>(t2), ManageDuplicate(t2, t2->getParent()));
+    t2->setVisible(false);
+    t2->setExecute(false);
 }
 
 __attribute__((weak)) void uGUIClanSearch::setupControls() {
@@ -296,12 +315,8 @@ inline void uGUIClanSearch::cGUIPageListSearchClan::operator delete(void* p_addr
     MtMemoryAllocator::getAllocator(uGUIClanSearch::cGUIPageListSearchClan::DTI)->memFree(p_addr);
 }
 
-uGUIClanSearch::cGUIPageListSearchClan::~cGUIPageListSearchClan() {
-}
-
-__attribute__((weak)) s32 uGUIClanSearch::cGUIPageListSearchClan::getItemNum() const {
-    DDON_STUB("uGUIClanSearch::cGUIPageListSearchClan::getItemNum")
-    return {};
+s32 uGUIClanSearch::cGUIPageListSearchClan::getItemNum() const {
+    return static_cast<s32>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanSearchListPacket()->m_ClanList.size());
 }
 
 s32 uGUIClanSearch::cGUIPageListSearchClan::getPageItemNum() const {

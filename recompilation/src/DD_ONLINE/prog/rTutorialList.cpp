@@ -64,17 +64,16 @@ rTutorialList::~rTutorialList() {
     mArray.mLength = 0;
 }
 
-__attribute__((weak)) void rTutorialList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTutorialList::createProperty")
-    /* stub */
+void rTutorialList::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mArray", static_cast<MtObject*>(&mArray), 0u, 0u);
 }
 
 bool rTutorialList::save(MtStream& out) {
     MtDataWriter w(out, 4096u, 4096u);
     (&w)->writeU32(0x544C54u);
     (&w)->writeU32(5u);
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) != 0) {
+    (&w)->writeU32(mArray.mLength);
+    if (mArray.mLength != 0) {
         for (unsigned int i0_3 = 0;;) {
             MtObject* t3 = mArray.getBuffer()[static_cast<int>(i0_3)];
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 8));
@@ -82,7 +81,7 @@ bool rTutorialList::save(MtStream& out) {
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 16));
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 20));
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 24));
-            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120))) {
+            if ((i0_3 + 1u) < mArray.mLength) {
                 i0_3 += 1u;
             } else {
                 break;
@@ -126,9 +125,12 @@ inline void rTutorialList::cTutorialNode::operator delete(void* p_addr) {
 rTutorialList::cTutorialNode::~cTutorialNode() {
 }
 
-__attribute__((weak)) void rTutorialList::cTutorialNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTutorialList::cTutorialNode::createProperty")
-    /* stub */
+void rTutorialList::cTutorialNode::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSortNo", &mSortNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTitleGmdIdx", &mTitleGmdIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCategory", &mCategory, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOpenQuestId", &mOpenQuestId, 0u, 0u);
 }
 
 inline rTutorialList::cTutorialNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -26,6 +26,7 @@ class MtAllocator;
 class MtDTI;
 class MtObject;
 class MtString;
+class cNetLoginServer;
 class cSeedLoginSvConnection;
 class sGame;
 
@@ -366,6 +367,7 @@ namespace nLoginSession {
 namespace nLoginSession {
     class CPacket_L2C_GET_CHARACTER_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cNetLoginServer;
     public:
         class MyDTI;
     public:
@@ -627,6 +629,7 @@ namespace nLoginSession {
 namespace nLoginSession {
     class CPacket_L2C_GP_COURSE_GET_INFO_RES : public ::CPacketDataBase
     {
+        friend class ::cSeedLoginSvConnection;
         friend class ::sGame;
     public:
         class MyDTI;
@@ -1113,6 +1116,13 @@ inline nLoginSession::CPacket_L2C_LOGOUT_RES::CPacket_L2C_LOGOUT_RES() {
 
 inline void* nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::CPacket_L2C_NEXT_CONNECT_SERVER_NTC() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_ucCounter = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nLoginSession::CPacket_L2C_PING_RES::operator new(size_t sz, void* p_addr) {

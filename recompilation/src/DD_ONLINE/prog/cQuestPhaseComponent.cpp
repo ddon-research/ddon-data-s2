@@ -90,9 +90,15 @@ void cQuestPhaseCpDivide::setDivideCharacterId(u32 characterId, u32 index) {
     }
 }
 
-__attribute__((weak)) bool cQuestPhaseCpDivide::isReturnPlayer() const {
-    DDON_STUB("cQuestPhaseCpDivide::isReturnPlayer")
-    return {};
+bool cQuestPhaseCpDivide::isReturnPlayer() const {
+    for (u32 i = 0; i <= 7u; i += 1u) {
+        if (mReturnPlayer[i].mCharacterId != 0) {
+            if (!mReturnPlayer[i].mHasChanged) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 bool cQuestPhaseCpDivide::isReturnPlayer(u32 characterId) const {
@@ -112,9 +118,23 @@ void cQuestPhaseCpDivide::setReturnCharacterId(u32 characterId, u32 index) {
     }
 }
 
-__attribute__((weak)) bool cQuestPhaseCpDivide::isNoReturnPlayer() const {
-    DDON_STUB("cQuestPhaseCpDivide::isNoReturnPlayer")
-    return {};
+bool cQuestPhaseCpDivide::isNoReturnPlayer() const {
+    u32 i = 0;
+    bool b2_0;
+    for (;;) {
+        if (mReturnPlayer[i].mCharacterId != 0) {
+            if (mReturnPlayer[i].mHasChanged) {
+                return false;
+            }
+        }
+        if ((i + 1u) <= 7u) {
+            i += 1u;
+        } else {
+            b2_0 = true;
+            break;
+        }
+    }
+    return b2_0;
 }
 
 void cQuestPhaseCpDivide::returnPlayer(u32 characterId) {
@@ -127,9 +147,15 @@ void cQuestPhaseCpDivide::returnPlayer(u32 characterId) {
     }
 }
 
-__attribute__((weak)) bool cQuestPhaseCpDivide::isDividePlayer() const {
-    DDON_STUB("cQuestPhaseCpDivide::isDividePlayer")
-    return {};
+bool cQuestPhaseCpDivide::isDividePlayer() const {
+    for (u32 i = 0; i <= 7u; i += 1u) {
+        if (mDividePlayer[i].mCharacterId != 0) {
+            if (!mDividePlayer[i].mHasChanged) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void cQuestPhaseCpDivide::dividePlayer(u32 characterId) {
@@ -173,9 +199,15 @@ void cQuestPhaseCpDivide::dividePlayer(u32 characterId) {
     mHasRequestedCharacterId[7] = 0;
 }
 
-__attribute__((weak)) bool cQuestPhaseCpDivide::hasSucceededDivide() const {
-    DDON_STUB("cQuestPhaseCpDivide::hasSucceededDivide")
-    return {};
+bool cQuestPhaseCpDivide::hasSucceededDivide() const {
+    for (u32 i = 0; i <= 7u; i += 1u) {
+        if (mDividePlayer[i].mCharacterId != 0) {
+            if (mDividePlayer[i].mHasChanged) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 bool cQuestPhaseCpDivide::existsDividePlayer() const {

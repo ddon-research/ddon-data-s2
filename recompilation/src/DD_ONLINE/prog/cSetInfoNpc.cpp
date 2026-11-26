@@ -54,9 +54,23 @@ __attribute__((noinline)) cSetInfoNpc::cSetInfoNpc() {
 cSetInfoNpc::~cSetInfoNpc() {
 }
 
-__attribute__((weak)) void cSetInfoNpc::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoNpc::createProperty")
-    /* stub */
+void cSetInfoNpc::createProperty(MtPropertyList& s) {
+    this->cSetInfoCharacter::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mNpcId", &mNpcId, 0u, 0u);
+    mFsmResource.cFSMRelate::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsCommunicate", &mIsCommunicate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mClothType", &mClothType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDefNPCMotCategory", &mDefNPCMotCategory, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDefNPCMotNo", &mDefNPCMotNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mThinkIndex", &mThinkIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJobLv", &mJobLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLantern", &mLantern, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDisableScrAdj", &mDisableScrAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDisableLedgerFinger", &mDisableLedgerFinger, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsForceListTalk", &mIsForceListTalk, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsAttand", &mIsAttand, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDisableTouchAction", &mDisableTouchAction, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDispElseQuestTalk", &mDispElseQuestTalk, 0u, 0u);
 }
 
 __attribute__((weak)) bool cSetInfoNpc::load(MtDataReader& r) {
@@ -169,8 +183,22 @@ __attribute__((weak)) bool cSetInfoNpc::load(MtDataReader& r) {
 }
 
 __attribute__((weak)) bool cSetInfoNpc::save(MtDataWriter& w) {
-    DDON_STUB("cSetInfoNpc::save")
-    return {};
+    nDDOIO::writeData(w, mNpcId);
+    nDDOIO::writeData(w, mFsmResource.getName());
+    nDDOIO::writeData(w, mIsCommunicate);
+    nDDOIO::writeData(w, mClothType);
+    w.writeS8(mDefNPCMotCategory);
+    w.writeS8(mDefNPCMotNo);
+    nDDOIO::writeData(w, mThinkIndex);
+    nDDOIO::writeData(w, mJobLv);
+    nDDOIO::writeData(w, mLantern);
+    nDDOIO::writeData(w, mDisableScrAdj);
+    nDDOIO::writeData(w, mDisableLedgerFinger);
+    nDDOIO::writeData(w, mIsForceListTalk);
+    nDDOIO::writeData(w, mIsAttand);
+    nDDOIO::writeData(w, mDisableTouchAction);
+    nDDOIO::writeData(w, mDispElseQuestTalk);
+    return this->cSetInfoCharacter::save(w);
 }
 
 __attribute__((weak)) bool cSetInfoNpc::applyInfo(cUnit* pu) const {
@@ -188,7 +216,6 @@ inline cSetInfoNpc::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 cSetInfoNpc::MyDTI cSetInfoNpc::DTI("cSetInfoNpc", &::cSetInfoCharacter::DTI, 120ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cSetInfoNpc::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoNpc::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cSetInfoNpc;
 }
 

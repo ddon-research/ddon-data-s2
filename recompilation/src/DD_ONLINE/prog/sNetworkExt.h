@@ -38,8 +38,14 @@ class MtTime;
 class MtUI;
 struct SceNpId;
 class cCharacterData;
+class cMenuApproveInvitedClan;
+class cMenuClanInfoDisp;
+class cMenuFriendList;
 class cMenuGroupChatMemberList;
 class cMenuInviteEntryBoardItem;
+class cMenuPawnDelete;
+class cMenuPawnSetPartner;
+class cMenuReadyCheck;
 class cMenuReadyEntryBoardItem;
 class cMenuRecentList;
 class cNetGameServer;
@@ -85,8 +91,14 @@ using u8 = unsigned char;
 
 class sNetworkExt : public sNetwork
 {
+    friend class cMenuApproveInvitedClan;
+    friend class cMenuClanInfoDisp;
+    friend class cMenuFriendList;
     friend class cMenuGroupChatMemberList;
     friend class cMenuInviteEntryBoardItem;
+    friend class cMenuPawnDelete;
+    friend class cMenuPawnSetPartner;
+    friend class cMenuReadyCheck;
     friend class cMenuReadyEntryBoardItem;
     friend class cMenuRecentList;
     friend class cNetGameServer;
@@ -626,6 +638,10 @@ inline s32 sNetworkExt::getSlot() {
 
 inline u32 sNetworkExt::getMyPawnMaxNum() {
     return this->mMyPawnMaxNum;
+}
+
+inline bool sNetworkExt::isClanUpdate() {
+    return this->mIsClanUpdate;
 }
 
 inline u32 sNetworkExt::getClanMemberMax() {

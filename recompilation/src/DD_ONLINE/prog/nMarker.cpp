@@ -149,9 +149,8 @@ inline void nMarker::cMarkerInfo::cVector3::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cVector3::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) nMarker::cMarkerInfo::cVector3::operator MtVector3() {
-    DDON_STUB("nMarker::cMarkerInfo::cVector3::operator MtVector3")
-    __builtin_unreachable();
+nMarker::cMarkerInfo::cVector3::operator MtVector3() {
+    return mRealPos;
 }
 
 inline nMarker::cMarkerInfo::cVector3::cVector3() {
@@ -249,19 +248,66 @@ nMarker::cWarpMarkerInfo& nMarker::cWarpMarkerInfo::setTargetFloorGroupNo(s32 fl
     return *this;
 }
 
-__attribute__((weak)) nMarker::cWarpMarkerInfo& nMarker::cWarpMarkerInfo::clearPosList() {
-    DDON_STUB("nMarker::cWarpMarkerInfo::clearPosList")
-    __builtin_unreachable();
+nMarker::cWarpMarkerInfo& nMarker::cWarpMarkerInfo::clearPosList() {
+    if (mPosList.mLength != 0) {
+        u32 v0_0 = mPosList.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mPosList.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mPosList.mpArray[i0_3];
+                v1_0 = mPosList.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mPosList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mPosList.mpArray));
+    }
+    mPosList.mpArray = nullptr;
+    mPosList.mBufsiz = 0;
+    mPosList.mLength = 0;
+    return *this;
 }
 
 nMarker::cWarpMarkerInfo::cWarpMarkerInfo() {
-    DDON_STUB("nMarker::cWarpMarkerInfo::cWarpMarkerInfo")
-    /* stub */
+    mTargetFloorGroupNo = -1;
+    mIsAdjoin = true;
 }
 
 nMarker::cWarpMarkerInfo::~cWarpMarkerInfo() {
-    DDON_STUB("nMarker::cWarpMarkerInfo::~cWarpMarkerInfo")
-    /* stub */
+    if (mTargetPos.mLength != 0) {
+        u32 v0_0 = mTargetPos.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mTargetPos.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mTargetPos.mpArray[i0_3];
+                v1_0 = mTargetPos.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mTargetPos.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mTargetPos.mpArray));
+    }
+    mTargetPos.mpArray = nullptr;
+    mTargetPos.mBufsiz = 0;
+    mTargetPos.mLength = 0;
 }
 
 __attribute__((weak)) void nMarker::cWarpMarkerInfo::createProperty(MtPropertyList& s) {
@@ -271,9 +317,8 @@ inline nMarker::cWarpMarkerInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 nMarker::cWarpMarkerInfo::MyDTI nMarker::cWarpMarkerInfo::DTI("nMarker::cWarpMarkerInfo", &::nMarker::cMarkerInfo::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nMarker::cWarpMarkerInfo::MyDTI::newInstance() const {
-    DDON_STUB("nMarker::cWarpMarkerInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nMarker::cWarpMarkerInfo::MyDTI::newInstance() const {
+    return new (16u) ::nMarker::cWarpMarkerInfo;
 }
 
 const MtDTI& nMarker::cWarpMarkerInfoStage::getDTI() const {
@@ -310,19 +355,65 @@ __attribute__((weak)) nMarker::cWarpMarkerInfoStage& nMarker::cWarpMarkerInfoSta
     __builtin_unreachable();
 }
 
-__attribute__((weak)) nMarker::cWarpMarkerInfoStage& nMarker::cWarpMarkerInfoStage::clearPosList() {
-    DDON_STUB("nMarker::cWarpMarkerInfoStage::clearPosList")
-    __builtin_unreachable();
+nMarker::cWarpMarkerInfoStage& nMarker::cWarpMarkerInfoStage::clearPosList() {
+    if (mPosList.mLength != 0) {
+        u32 v0_0 = mPosList.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mPosList.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mPosList.mpArray[i0_3];
+                v1_0 = mPosList.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mPosList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mPosList.mpArray));
+    }
+    mPosList.mpArray = nullptr;
+    mPosList.mBufsiz = 0;
+    mPosList.mLength = 0;
+    return *this;
 }
 
 nMarker::cWarpMarkerInfoStage::cWarpMarkerInfoStage() {
-    DDON_STUB("nMarker::cWarpMarkerInfoStage::cWarpMarkerInfoStage")
-    /* stub */
+    mTargetStageNo = 0;
 }
 
 nMarker::cWarpMarkerInfoStage::~cWarpMarkerInfoStage() {
-    DDON_STUB("nMarker::cWarpMarkerInfoStage::~cWarpMarkerInfoStage")
-    /* stub */
+    if (mTargetInfoList.mLength != 0) {
+        u32 v0_0 = mTargetInfoList.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mTargetInfoList.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mTargetInfoList.mpArray[i0_3];
+                v1_0 = mTargetInfoList.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mTargetInfoList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mTargetInfoList.mpArray));
+    }
+    mTargetInfoList.mpArray = nullptr;
+    mTargetInfoList.mBufsiz = 0;
+    mTargetInfoList.mLength = 0;
 }
 
 __attribute__((weak)) void nMarker::cWarpMarkerInfoStage::createProperty(MtPropertyList& s) {
@@ -332,9 +423,8 @@ inline nMarker::cWarpMarkerInfoStage::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* p
 
 nMarker::cWarpMarkerInfoStage::MyDTI nMarker::cWarpMarkerInfoStage::DTI("nMarker::cWarpMarkerInfoStage", &::nMarker::cMarkerInfo::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nMarker::cWarpMarkerInfoStage::MyDTI::newInstance() const {
-    DDON_STUB("nMarker::cWarpMarkerInfoStage::MyDTI::newInstance")
-    return nullptr;
+MtObject* nMarker::cWarpMarkerInfoStage::MyDTI::newInstance() const {
+    return new (16u) ::nMarker::cWarpMarkerInfoStage;
 }
 
 const MtDTI& nMarker::cWarpMarkerInfoStage::cTargetInfo::getDTI() const {

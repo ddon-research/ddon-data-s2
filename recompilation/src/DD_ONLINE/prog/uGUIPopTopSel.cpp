@@ -194,9 +194,29 @@ void uGUIPopTopSel::setExamIcon(bool isVisible) {
     setInstanceVisible(static_cast<cGUIInstance*>(mpInstAnimExamIcon), isVisible);
 }
 
-__attribute__((weak)) void uGUIPopTopSel::setBazaarIcon(u32 index, u8 type) {
-    DDON_STUB("uGUIPopTopSel::setBazaarIcon")
-    /* stub */
+void uGUIPopTopSel::setBazaarIcon(u32 index, u8 type) {
+    static const u8 iconType[3] = {
+        0,
+        1,
+        2,
+    };
+    if (index == 1) {
+        mBazaarIcon01 = type;
+        if (mpObjTexBazaarIcon01 != nullptr) {
+            mpObjTexBazaarIcon01->setCurrentFrame(static_cast<float>(iconType[type]), true);
+        }
+    } else {
+        if (index == 0) {
+            mBazaarIcon00 = type;
+            if (mpObjTexBazaarIcon00 != nullptr) {
+                mpObjTexBazaarIcon00->setCurrentFrame(static_cast<float>(iconType[type]), true);
+            }
+        }
+    }
+}
+
+inline void uGUIPopTopSel::clearSelector() {
+    mSelector.mMsgList.clearStr();
 }
 
 void uGUIPopTopSel::playEntryFlashAnm() {
@@ -234,9 +254,83 @@ void uGUIPopTopSel::moveInput() {
     }
 }
 
-__attribute__((weak)) void uGUIPopTopSel::moveEvent() {
-    DDON_STUB("uGUIPopTopSel::moveEvent")
-    /* stub */
+void uGUIPopTopSel::moveEvent() {
+    if (static_cast<int>(getInputEvent()) <= 65) {
+        if (getInputEvent() != 2) {
+            if (getInputEvent() != 4) {
+                if (getInputEvent() == 5) {
+                    mSelectResult = 2;
+                    if ((mMode & 0xFFFFFFFEu) != 10) {
+                        end();
+                    }
+                }
+            } else {
+                adjustCursor();
+                eventDecide();
+            }
+        } else {
+            adjustCursor();
+            eventNotSelect();
+        }
+    } else {
+        switch (getInputEvent() - 66u) {
+            case 0:
+            {
+                adjustCursor();
+                eventDecide();
+                break;
+            }
+            case 1:
+            {
+                mSelectResult = 2;
+                if ((mMode & 0xFFFFFFFEu) != 10) {
+                    end();
+                }
+                break;
+            }
+            case 2:
+            {
+                mSelectResult = 3;
+                break;
+            }
+            case 3:
+            {
+                mSelectResult = 4;
+                break;
+            }
+            case 4:
+            {
+                adjustCursor();
+                break;
+            }
+            case 5:
+            {
+                if (mpSelectorCtrl != nullptr) {
+                    s32 t0 = mpSelectorCtrl->getCurrentPos();
+                    setupStatus(static_cast<u32>(t0));
+                    mSelector.setIndex(static_cast<u32>(t0));
+                }
+                break;
+            }
+            case 6:
+            {
+                if ((mMode - 12u) <= 5u) {
+                    if (sMenu::getInstance()->mMenuEntryBoardItem.mpGUIMenu == nullptr) {
+                        if (sMenu::getInstance()->mMenuEntryBoardItem.mpRefGUI != nullptr) {
+                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sMenu::getInstance()->mMenuEntryBoardItem.mpRefGUI) + 2786) = 1;
+                        }
+                    } else {
+                        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sMenu::getInstance()->mMenuEntryBoardItem.mpGUIMenu) + 2786) = 1;
+                    }
+                }
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIPopTopSel::updateInit() {

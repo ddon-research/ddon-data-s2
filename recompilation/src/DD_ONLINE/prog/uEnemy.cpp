@@ -95,7 +95,7 @@
 #include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nEnemy.h"
-#include "../../generated/shared/nEnemyID.h"
+#include "nEnemyID.h"
 #include "../../generated/shared/nErosionEnemy.h"
 #include "../../generated/shared/nErosionEnemyBase.h"
 #include "nLayout.h"
@@ -144,6 +144,7 @@
 #include "uHuman.h"
 #include "../../XFramework/uModel.h"
 #include "uPlayer.h"
+#include "uShlEnchant.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -300,9 +301,10 @@ __attribute__((weak)) void uEnemy::updateHeadCtrl() {
     /* stub */
 }
 
-__attribute__((weak)) void uEnemy::createProperty(MtPropertyList& s) {
-    DDON_STUB("uEnemy::createProperty")
-    /* stub */
+void uEnemy::createProperty(MtPropertyList& s) {
+    this->uDDOModel::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\277\343\203\274\343\202\262\343\203\203\343\203\210\343\202\277\343\202\244\343\203\227", &mTargetType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UI\343\201\214\345\244\247\343\201\215\343\201\204\343\201\213", &mIsBigUI, 0u, 0u);
 }
 
 __attribute__((weak)) void uEnemy::setupBeforeContext(bool initSet) {
@@ -590,14 +592,44 @@ __attribute__((weak)) bool uEnemy::callbackShake(cHitInfoAfter* pHitInfo) {
     return {};
 }
 
-__attribute__((weak)) void uEnemy::callbackQuake(cHitInfoAfter* pHitInfo) {
-    DDON_STUB("uEnemy::callbackQuake")
-    /* stub */
+void uEnemy::callbackQuake(cHitInfoAfter* pHitInfo) {
+    getActionRequestPtr()->mDamageAction = 8260;
+    getActionRequestPtr()->mDamageActionReq = 8260;
+    mForceDmgActTimer = 30.0f;
+    if (getHpDamageCtrlPtr() != nullptr) {
+        if (mpCharParamEnemy != nullptr) {
+            if (mpCharParamEnemy->getCharParamEnemy() != nullptr) {
+                if ((mpCharParamEnemy->getCharParamEnemy()->mDamageBounisFlag & 2u) != 0) {
+                    getHpDamageCtrlPtr()->cancelShrinkBounusInfo(pHitInfo, nObjCollision::RESULT_BONOUS_PRIORITY_OTHER_DAMAGE);
+                }
+            }
+        }
+    }
+    if (mpEnemyThink == nullptr) {
+        return;
+    }
+    mpEnemyThink->mcThink.startMainThinkTbl();
 }
 
-__attribute__((weak)) void uEnemy::callbackStorm(cHitInfoAfter* pHitInfo) {
-    DDON_STUB("uEnemy::callbackStorm")
-    /* stub */
+void uEnemy::callbackStorm(cHitInfoAfter* pHitInfo) {
+    u32 ActNo = decideDamageReaction(pHitInfo, 8259u, 8259u, 8259u, 8259u, nObjCollision::REACTION_STORM, 0u);
+    getActionRequestPtr()->mDamageAction = ActNo;
+    getActionRequestPtr()->mDamageActionReq = ActNo;
+    mForceDmgActTimer = 30.0f;
+    cpHpDamageCtrl* pHpDamageCtrl = getHpDamageCtrlPtr();
+    if (pHpDamageCtrl != nullptr) {
+        if (mpCharParamEnemy != nullptr) {
+            if (mpCharParamEnemy->getCharParamEnemy() != nullptr) {
+                if ((mpCharParamEnemy->getCharParamEnemy()->mDamageBounisFlag & 2u) != 0) {
+                    pHpDamageCtrl->cancelShrinkBounusInfo(pHitInfo, nObjCollision::RESULT_BONOUS_PRIORITY_OTHER_DAMAGE);
+                }
+            }
+        }
+    }
+    if (mpEnemyThink == nullptr) {
+        return;
+    }
+    mpEnemyThink->mcThink.startMainThinkTbl();
 }
 
 __attribute__((weak)) bool uEnemy::isEnableStorm(cHitInfoAfter* pHitInfo) {
@@ -898,8 +930,8 @@ void uEnemy::setHugebleDeath() {
 }
 
 void uEnemy::moveInsuranceWarp() {
-    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) != 0) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 672)) != 0) {
+    if (sArea::getInstance()->mpArea[2] != nullptr) {
+        if (static_cast<aStage*>(sArea::getInstance()->mpArea[2])->mEventBusy) {
             return;
         }
     }
@@ -1354,7 +1386,7 @@ __attribute__((weak)) u32 uEnemy::decideDamageReaction(cHitInfoAfter* pHitInfo, 
 
 bool uEnemy::callbackMotRateCheck(uModel::Motion* pMotion) {
     if (mpEnemyThink != nullptr) {
-        unsigned int v0_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpEnemyThink) + 5064);
+        u32 v0_1 = mpEnemyThink->mRage.mLength;
         if (v0_1 == 0) {
             return false;
         } else {

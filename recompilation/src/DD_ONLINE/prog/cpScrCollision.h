@@ -84,6 +84,7 @@ public:
 
 class cpScrCollision : public cpComponent
 {
+    friend class uDDOModel;
     friend class uEnemy;
 public:
     enum

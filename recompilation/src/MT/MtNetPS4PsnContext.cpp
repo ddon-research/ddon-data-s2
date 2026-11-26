@@ -1,5 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_pthread.h>
+#include <stdlib.h>
 #include "MtNetPS4PsnContext.h"
 #include "MtNetBuffer.h"
 #include "MtNetContext.h"
@@ -9,7 +11,10 @@
 #include "MtNetObject.h"
 #include "MtNetRequest.h"
 #include "MtNetUtilityPS4.h"
+#include "MtObject.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
+#include "MtSynchronize.h"
 #include "MtTime.h"
 #include "../generated/shared/np_common.h"
 #include "../generated/shared/np_npid.h"
@@ -22,9 +27,10 @@ MtNet::PS4Psn::Context::~Context() {
     /* stub */
 }
 
-__attribute__((weak)) void MtNet::PS4Psn::Context::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtNet::PS4Psn::Context::createProperty")
-    /* stub */
+void MtNet::PS4Psn::Context::createProperty(MtPropertyList& s) {
+    this->::MtNetObject::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIsStartSucceed", &mIsStartSucceed, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mCountry", &mCountry, 0u, 0u);
 }
 
 __attribute__((weak)) void MtNet::PS4Psn::Context::move() {
@@ -32,14 +38,27 @@ __attribute__((weak)) void MtNet::PS4Psn::Context::move() {
     /* stub */
 }
 
-__attribute__((weak)) void MtNet::PS4Psn::Context::getUniqueId(MtNetUniqueId* uniq_id) {
-    DDON_STUB("MtNet::PS4Psn::Context::getUniqueId")
-    /* stub */
+void MtNet::PS4Psn::Context::getUniqueId(MtNetUniqueId* uniq_id) {
+    if (uniq_id == nullptr) {
+        return;
+    }
+    if (::scePthreadMutexLock(&mCS.mCSection) != 0) {
+        ::abort();
+    }
+    *uniq_id = mUniqueId;
+    if (::scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        ::abort();
+    }
 }
 
-__attribute__((weak)) s32 MtNet::PS4Psn::Context::getSignInLevel() const {
-    DDON_STUB("MtNet::PS4Psn::Context::getSignInLevel")
-    return {};
+s32 MtNet::PS4Psn::Context::getSignInLevel() const {
+    if ((::MtNetMediator::mpInstance)->::MtNetMediator::isSceUserId(mXfUserNo)) {
+        SceUserServiceUserId sce_user_id = (::MtNetMediator::mpInstance)->::MtNetMediator::getSceUserId(mXfUserNo);
+        SceNpState np_state = (::MtNetMediator::mpInstance)->::MtNetMediator::getPsnUsrNpState(sce_user_id);
+        return (np_state == ::SCE_NP_STATE_SIGNED_IN) ? 2 : 1;
+    } else {
+        return 0;
+    }
 }
 
 bool MtNet::PS4Psn::Context::isAllowedMultiplay() const {

@@ -29,9 +29,10 @@ const MtDTI& cWepCateResTbl::getDTI() const {
 cWepCateResTbl::~cWepCateResTbl() {
 }
 
-__attribute__((weak)) void cWepCateResTbl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cWepCateResTbl::createProperty")
-    /* stub */
+void cWepCateResTbl::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mCategory", &mCategory, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mComment", &mComment, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mArcTag", &mArcTag, 1u, 0u);
 }
 
 u64 cWepCateResTbl::getEffcResId() {

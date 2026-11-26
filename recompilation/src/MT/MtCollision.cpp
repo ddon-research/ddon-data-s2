@@ -438,8 +438,92 @@ __attribute__((weak)) f32 MtCollision::sqrDistance(const MtLineSegment& ls, cons
 }
 
 __attribute__((weak)) f32 MtCollision::sqrDistance(const MtLineSegment& ls0, const MtLineSegment& ls1, f32* pLS0_t, f32* pLine1_t, f32 FlatCheckEpsilon) {
-    DDON_STUB("MtCollision::sqrDistance")
-    return {};
+    const MtVector3 dir0 = ls0.p1 - ls0.p0;
+    const MtVector3 dir1 = ls1.p1 - ls1.p0;
+    const MtVector3 dir0N = dir0.normalizeFast();
+    const MtVector3 dir1N = dir1.normalizeFast();
+    const f32 ls0_len = dir0.innerProduct(dir0N);
+    const f32 ls1_len = dir1.innerProduct(dir1N);
+    const f32 ip = dir0N.innerProduct(dir1N);
+    const f32 ip2 = ip * ip;
+    f32 s;
+    f32 t;
+    f32 distSq;
+    
+    if (FlatCheckEpsilon >= 1.0f - ip2) {
+        const bool reverse = ip < 0.0f;
+        MtLineSegment ls_tmp;
+        ls_tmp.p0 = reverse ? ls1.p1 : ls1.p0;
+        ls_tmp.p1 = reverse ? ls1.p0 : ls1.p1;
+        const f32 l00 = ls0.p0.innerProduct(dir0N);
+        const f32 l01 = ls0.p1.innerProduct(dir0N);
+        const f32 l10 = ls_tmp.p0.innerProduct(dir0N);
+        const f32 l11 = ls_tmp.p1.innerProduct(dir0N);
+    
+        if (l10 <= l00 && l00 <= l11) {
+            s = 0.0f;
+            distSq = sqrDistance(ls_tmp, ls0.p0, t);
+        } else if (l10 <= l01 && l01 <= l11) {
+            s = ls0_len;
+            distSq = sqrDistance(ls_tmp, ls0.p1, t);
+        } else if (l00 <= l10 && l10 <= l01) {
+            t = 0.0f;
+            distSq = sqrDistance(ls0, ls_tmp.p0, s);
+        } else if (l11 < l00) {
+            s = 0.0f;
+            t = ls1_len;
+            distSq = (ls0.p0 - ls_tmp.p1).lengthSq();
+        } else {
+            s = ls0_len;
+            t = 0.0f;
+            distSq = (ls0.p1 - ls_tmp.p0).lengthSq();
+        }
+        if (reverse) {
+            t = ls1_len - t;
+        }
+    } else {
+        const MtVector3 pq = ls0.p0 - ls1.p0;
+        const MtVector3 qp = ls1.p0 - ls0.p0;
+        const f32 pqVq = pq.innerProduct(dir1N);
+        const f32 qpVp = qp.innerProduct(dir0N);
+        const f32 d = 1.0f / (1.0f - ip2);
+        s = (qpVp + ip * pqVq) * d;
+    
+        if (s > ls0_len || s < 0.0f) {
+            const MtVector3& Ps = s > ls0_len ? ls0.p1 : ls0.p0;
+            s = s > ls0_len ? ls0_len : 0.0f;
+            const f32 t_tmp = (Ps - ls1.p0).innerProduct(dir1) / dir1.lengthSq();
+            if (t_tmp > 1.0f) {
+                t = ls1_len;
+                distSq = sqrDistance(ls0, ls1.p1, s);
+            } else if (t_tmp < 0.0f) {
+                t = 0.0f;
+                distSq = sqrDistance(ls0, ls1.p0, s);
+            } else {
+                distSq = sqrDistance(ls1, Ps, t);
+            }
+        } else {
+            t = (pqVq + ip * qpVp) * d;
+            if (t > ls1_len) {
+                t = ls1_len;
+                distSq = sqrDistance(ls0, ls1.p1, s);
+            } else if (t < 0.0f) {
+                t = 0.0f;
+                distSq = sqrDistance(ls0, ls1.p0, s);
+            } else {
+                const MtVector3 Ps = ls0.p0 + dir0N * s;
+                const MtVector3 Qt = ls1.p0 + dir1N * t;
+                distSq = (Ps - Qt).lengthSq();
+            }
+        }
+    }
+    if (pLS0_t) {
+        *pLS0_t = s;
+    }
+    if (pLine1_t) {
+        *pLine1_t = t;
+    }
+    return distSq;
 }
 
 __attribute__((weak)) f32 MtCollision::sqrDistance(const MtLineSegment& ls, const MtVector3& pos, MtVector3& NearestVec, MtVector3& NearestPt, f32& NearestLen) {

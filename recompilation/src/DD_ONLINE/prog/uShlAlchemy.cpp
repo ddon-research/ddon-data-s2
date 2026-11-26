@@ -8,6 +8,8 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
+#include "../../MT/MtProperty.h"
+#include "../../MT/MtPropertyList.h"
 #include "cContextPlayerInfo.h"
 #include "cEfcHandle.h"
 #include "cHitNode.h"
@@ -35,6 +37,132 @@
 #define DDON_STUB(name)
 #endif
 
+const MtDTI& cShlParamAlchemy::getDTI() const {
+    return cShlParamAlchemy::DTI;
+}
+
+inline void* cShlParamAlchemy::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cShlParamAlchemy::DTI)->memAlloc(sz, align, cShlParamAlchemy::DTI.getID());
+}
+
+inline void cShlParamAlchemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(cShlParamAlchemy::DTI)->memFree(p_addr);
+}
+
+MtDTI& cShlParamAlchemy::getShlDTI() const {
+    return uShlAlchemy::DTI;
+}
+
+__attribute__((weak)) void cShlParamAlchemy::createProperty(MtPropertyList& s) {
+    this->cShlParamStick::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mReduceAlchemyValueTime", &mReduceAlchemyValueTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSubAlchemyValueOnce", &mSubAlchemyValueOnce, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSubAlchemyValueTime", &mSubAlchemyValueTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAlchemyEvaRate", &mAlchemyEvaRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAlchemyType", &mAlchemyType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mChipScale", &mChipScale[0], 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCheckedCollsiionIndexForCS13", &mCheckedCollsiionIndexForCS13, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAlchemyEvaMin", &mAlchemyEvaMin, 0u, 0u);
+}
+
+void cShlParamAlchemy::createPropertySE(MtPropertyList& s) {
+    this->cShlParamBase::createPropertySE(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxValueRequestSe", &mMaxValueRequestSe, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxValueLoopSe", &mMaxValueLoopSe, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxValueLoopStopSe", &mMaxValueLoopStopSe, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxPartsDownSe", &mMaxPartsDownSe, 0u, 0u);
+}
+
+cShlParamAlchemy::~cShlParamAlchemy() {
+}
+
+__attribute__((weak)) void cShlParamAlchemy::copy(const cShlParamBase* pParamBase) {
+    DDON_STUB("cShlParamAlchemy::copy")
+    /* stub */
+}
+
+inline cShlParamAlchemy::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cShlParamAlchemy::MyDTI cShlParamAlchemy::DTI("cShlParamAlchemy", &::cShlParamStick::DTI, 416ul, 0u, 0u);
+
+MtObject* cShlParamAlchemy::MyDTI::newInstance() const {
+    return new (16u) cShlParamAlchemy;
+}
+
+const MtDTI& cShlParamAlchemyCS03::getDTI() const {
+    return cShlParamAlchemyCS03::DTI;
+}
+
+inline void* cShlParamAlchemyCS03::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cShlParamAlchemyCS03::DTI)->memAlloc(sz, align, cShlParamAlchemyCS03::DTI.getID());
+}
+
+inline void cShlParamAlchemyCS03::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cShlParamAlchemyCS03::DTI)->memFree(p_addr);
+}
+
+MtDTI& cShlParamAlchemyCS03::getShlDTI() const {
+    return uShlAlchemyCS03::DTI;
+}
+
+__attribute__((noinline)) cShlParamAlchemyCS03::~cShlParamAlchemyCS03() {
+    for (u32 i = 0; i < mArrDamageAlchemyInfo.mLength; i++) {
+        delete mArrDamageAlchemyInfo.mpArray[i];
+    }
+    if (mArrDamageAlchemyInfo.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mArrDamageAlchemyInfo.mpArray));
+    }
+    mArrDamageAlchemyInfo.mpArray = nullptr;
+    mArrDamageAlchemyInfo.mBufsiz = 0;
+    mArrDamageAlchemyInfo.mLength = 0;
+}
+
+__attribute__((weak)) void cShlParamAlchemyCS03::copy(const cShlParamBase* pParamBase) {
+    DDON_STUB("cShlParamAlchemyCS03::copy")
+    /* stub */
+}
+
+void cShlParamAlchemyCS03::createProperty(MtPropertyList& s) {
+    this->cShlParamAlchemy::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mDamageAlchemyMaxTimer", &mDamageAlchemyMaxTimer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSlaveDispOffTimer", &mSlaveDispOffTimer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mArrDamageAlchemyInfo", static_cast<MtObject*>(&mArrDamageAlchemyInfo), 0u, 0u);
+}
+
+inline cShlParamAlchemyCS03::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cShlParamAlchemyCS03::MyDTI cShlParamAlchemyCS03::DTI("cShlParamAlchemyCS03", &::cShlParamAlchemy::DTI, 464ul, 0u, 0u);
+
+MtObject* cShlParamAlchemyCS03::MyDTI::newInstance() const {
+    return new (16u) cShlParamAlchemyCS03;
+}
+
+const MtDTI& cShlParamAlchemyCS03::cDamageAlchemyValueInfo::getDTI() const {
+    return cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI;
+}
+
+inline void* cShlParamAlchemyCS03::cDamageAlchemyValueInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI)->memAlloc(sz, align, cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI.getID());
+}
+
+inline void cShlParamAlchemyCS03::cDamageAlchemyValueInfo::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI)->memFree(p_addr);
+}
+
+void cShlParamAlchemyCS03::cDamageAlchemyValueInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mMinRate", &mMinRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxRate", &mMaxRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAlchemyValue", &mAlchemyValue, 0u, 0u);
+}
+
+inline cShlParamAlchemyCS03::cDamageAlchemyValueInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cShlParamAlchemyCS03::cDamageAlchemyValueInfo::MyDTI cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI("cShlParamAlchemyCS03::cDamageAlchemyValueInfo", &::MtObject::DTI, 24ul, 0u, 0u);
+
+MtObject* cShlParamAlchemyCS03::cDamageAlchemyValueInfo::MyDTI::newInstance() const {
+    return new (16u) cShlParamAlchemyCS03::cDamageAlchemyValueInfo;
+}
+
 const MtDTI& uShlAlchemy::getDTI() const {
     return uShlAlchemy::DTI;
 }
@@ -47,9 +175,8 @@ inline void uShlAlchemy::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uShlAlchemy::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) const cShlParamAlchemy* uShlAlchemy::getShlParam() const {
-    DDON_STUB("uShlAlchemy::getShlParam")
-    return nullptr;
+const cShlParamAlchemy* uShlAlchemy::getShlParam() const {
+    return static_cast<const cShlParamAlchemy*>(getShlParamBase());
 }
 
 uShlAlchemy::~uShlAlchemy() {
@@ -82,9 +209,18 @@ void uShlAlchemy::updateEfcHandle() {
     mpAlchemyMaxEfcHandle = nullptr;
 }
 
-__attribute__((weak)) void uShlAlchemy::kill() {
-    DDON_STUB("uShlAlchemy::kill")
-    /* stub */
+void uShlAlchemy::kill() {
+    if (mpAlchemyMaxEfcHandle != nullptr) {
+        static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(mpAlchemyMaxEfcHandle, 4u);
+        mpAlchemyMaxEfcHandle = nullptr;
+    }
+    if (mMaxLvGrow) {
+        if (getShlParamBase() != nullptr) {
+            requestSE(static_cast<s32>(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(getShlParamBase()) + 404)), static_cast<uCoord*>(this));
+            mFlgMaxGrowLoopSeRequest = false;
+        }
+    }
+    this->uShlBase::kill();
 }
 
 __attribute__((weak)) void uShlAlchemy::addAlchemyValue(f32 value, bool flg_add_value) {
@@ -189,4 +325,6 @@ __attribute__((weak)) MtObject* uShlAlchemyCS03::MyDTI::newInstance() const {
     DDON_STUB("uShlAlchemyCS03::MyDTI::newInstance")
     return nullptr;
 }
+
+template MtTypedArray<cShlParamAlchemyCS03::cDamageAlchemyValueInfo>::~MtTypedArray();
 

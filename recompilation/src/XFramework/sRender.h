@@ -39,6 +39,7 @@ namespace nDraw { class DepthStencilState; }
 namespace nDraw { class DepthStencilView; }
 namespace nDraw { class IndexBuffer; }
 namespace nDraw { struct InputLayouts; }
+namespace nDraw { class MaterialStd; }
 namespace nDraw { class RasterizerState; }
 namespace nDraw { class RenderTargetView; }
 namespace nDraw { class Resource; }
@@ -52,10 +53,13 @@ namespace nPS4 { class VertexShaderObject; }
 struct pthread;
 class rModel;
 class sApp;
+class sGUI;
 class sGUIExt;
 class sShader2;
 namespace sce { namespace Gnm { class ClipControl; } }
 namespace sce { namespace Gnmx { class LightweightGfxContext; } }
+class uDOFFilter;
+class uFog;
 class uGUIOption;
 class uGUIPhoto;
 class uMotionBlurFilter;
@@ -101,13 +105,19 @@ class sRender : public cSystem
     friend class cDraw;
     friend class cStorageData;
     friend class cUnit;
+    friend class nDraw::MaterialStd;
     friend class nDraw::Resource;
 
     friend class nDraw::Texture;
+    friend class rRenderTargetTexture;
+
     friend class rModel;
     friend class sApp;
+    friend class sGUI;
     friend class sGUIExt;
     friend class sShader2;
+    friend class uDOFFilter;
+    friend class uFog;
     friend class uGUIOption;
     friend class uGUIPhoto;
     friend class uMotionBlurFilter;
@@ -358,7 +368,7 @@ public:
     {
     public:
         PhotoExportThread(void* pcontext);
-        virtual ~PhotoExportThread();
+        virtual ~PhotoExportThread() {}
         virtual void execute(void* pcontext);  // vtable slot 6
     };
 public:

@@ -517,8 +517,23 @@ inline void* uGUIRimWarp::cHeaderItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUIRimWarp::cHeaderItem::cHeaderItem() {
+    this->mpObjMsg = nullptr;
+    this->::uGUIBase::cScrollListItemBase::mItemType = 0;
+}
+
 inline void* uGUIRimWarp::cListItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIRimWarp::cListItem::cListItem() {
+    this->mpObjMsgRimVal = nullptr;
+    this->mpObjMsgRim = nullptr;
+    this->mpObjMsgArea = nullptr;
+    this->mpObjMsgPlace = nullptr;
+    this->mpInstAnimIcon = nullptr;
+    this->mpInstAnim = nullptr;
+    this->::uGUIBase::cScrollListItemBase::mItemType = 1;
 }
 
 inline uGUIRimWarp::stDialogItem::stDialogItem() {

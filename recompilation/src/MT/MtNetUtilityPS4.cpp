@@ -33,9 +33,6 @@ inline MtNet::Utility::PS4::BlockList::BlockList() {
     ::memset(static_cast<void*>(&mValidNum), 0, 3604ul);
 }
 
-MtNet::Utility::PS4::BlockList::~BlockList() {
-}
-
 inline MtNet::Utility::PS4::BlockList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 MtNet::Utility::PS4::BlockList::MyDTI MtNet::Utility::PS4::BlockList::DTI("BlockList", &::MtNetObject::DTI, 3640ul, 0u, 0u);

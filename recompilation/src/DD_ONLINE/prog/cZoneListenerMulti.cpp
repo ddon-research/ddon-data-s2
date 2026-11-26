@@ -41,17 +41,15 @@ inline void cZoneContactInfo::operator delete(void* p_addr) {
 }
 
 inline cZoneContactInfo::cZoneContactInfo() {
-    mOffset.x = MtVector3::Zero.x;
-    mOffset.y = MtVector3::Zero.y;
-    mOffset.z = MtVector3::Zero.z;
-    mOffset.pad_ = 0.0f;
+    mOffset = MtVector3::Zero;
     mHandle = -1;
     mGroupId = -1;
 }
 
-__attribute__((weak)) void cZoneContactInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("cZoneContactInfo::createProperty")
-    /* stub */
+void cZoneContactInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mHandle", &mHandle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupId", &mGroupId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffset", &mOffset, 0u, 0u);
 }
 
 inline cZoneContactInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -71,16 +69,15 @@ inline void cZoneContactInfoList::operator delete(void* p_addr) {
 }
 
 cZoneContactInfoList::~cZoneContactInfoList() {
-    DDON_STUB("cZoneContactInfoList::~cZoneContactInfoList")
-    /* stub */
+    initList();
 }
 
-__attribute__((weak)) void cZoneContactInfoList::createProperty(MtPropertyList& s) {
-    DDON_STUB("cZoneContactInfoList::createProperty")
-    /* stub */
+void cZoneContactInfoList::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mContactPairListStart", static_cast<MtObject*>(&mContactPairListStart), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mContactPairListEnd", static_cast<MtObject*>(&mContactPairListEnd), 0u, 0u);
 }
 
-void cZoneContactInfoList::initList() {
+__attribute__((weak)) void cZoneContactInfoList::initList() {
     if (mContactPairListStart.mLength != 0) {
         u32 v0_0 = mContactPairListStart.mLength;
         unsigned int i0_3 = 0;
@@ -160,9 +157,9 @@ inline void cZoneContactPairInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cZoneContactPairInfo::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cZoneContactPairInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("cZoneContactPairInfo::createProperty")
-    /* stub */
+void cZoneContactPairInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mBasic", static_cast<MtObject*>(&mBasic), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mObject", static_cast<MtObject*>(&mObject), 0u, 0u);
 }
 
 inline cZoneContactPairInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -209,9 +206,6 @@ cZoneMultiListener::cZoneMultiListener() {
     /* stub */
 }
 
-cZoneMultiListener::~cZoneMultiListener() {
-}
-
 __attribute__((weak)) void cZoneMultiListener::moveMultiListener(cZoneMultiStack* pStack) {
     DDON_STUB("cZoneMultiListener::moveMultiListener")
     /* stub */
@@ -222,9 +216,8 @@ __attribute__((weak)) void cZoneMultiListener::notified(const nZone::cLayoutElem
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cZoneMultiListener::myPos() {
-    DDON_STUB("cZoneMultiListener::myPos")
-    __builtin_unreachable();
+MtVector3 cZoneMultiListener::myPos() {
+    return mCheckPos;
 }
 
 __attribute__((weak)) MtLineSegment cZoneMultiListener::myLineSegment() {

@@ -32,6 +32,8 @@
 #include "uHuman.h"
 #include "../../XFramework/uModel.h"
 #include "uShlBase.h"
+#include "uShlHoming.h"
+#include "uShlSpeed.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -218,8 +220,7 @@ cpShlShotCtrl::cShlShotReqInfo::cShlShotReqInfo() {
 }
 
 cpShlShotCtrl::cShlShotReqInfo::~cShlShotReqInfo() {
-    DDON_STUB("cpShlShotCtrl::cShlShotReqInfo::~cShlShotReqInfo")
-    /* stub */
+    return;
 }
 
 __attribute__((weak)) void cpShlShotCtrl::cShlShotReqInfo::createProperty(MtPropertyList& s) {

@@ -10,7 +10,7 @@
 #include "../../XFramework/cResource.h"
 #include "nCastUtility.h"
 #include "../../generated/shared/nEnemy.h"
-#include "../../generated/shared/nEnemyID.h"
+#include "nEnemyID.h"
 #include "rAdjustParam.h"
 #include "rEmBaseInfoSv.h"
 #include "rEnemyGroup.h"

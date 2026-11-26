@@ -9,6 +9,7 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSpline.h"
 #include "../MT/MtStream.h"
@@ -147,9 +148,13 @@ void rEffectStrip::clear() {
     mAttr = 22;
 }
 
-__attribute__((weak)) void rEffectStrip::createProperty(MtPropertyList& s) {
-    DDON_STUB("rEffectStrip::createProperty")
-    /* stub */
+void rEffectStrip::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mParamBuffSize", &mParamBuffSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPartsNum", &mPartsNum, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJointNum", &mJointNum, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTotalVertexNum", &mTotalVertexNum, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTotalIndexNum", &mTotalIndexNum, 3u, 0u);
 }
 
 MtUI* rEffectStrip::createUI(MtProperty& prop) {

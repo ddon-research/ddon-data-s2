@@ -47,13 +47,60 @@ __attribute__((weak)) void rEmoteGroup::clear() {
 }
 
 __attribute__((weak)) bool rEmoteGroup::load(MtStream& in) {
-    DDON_STUB("rEmoteGroup::load")
-    return {};
+    MtDataReader r(in, 4096);
+    if (r.readU32() != 0x676570) {
+        return false;
+    }
+    if (r.readU32() != DATA_VERSION) {
+        return false;
+    }
+    const u32 nInfoNum = r.readU32();
+    const u32 nSizeBinary = r.readU32();
+    void* pBinaryInfo = MtMemoryAllocator::getAllocator(rEmoteGroup::DTI)->memAlloc(nSizeBinary, 16);
+    u8* pBinaryCursor = static_cast<u8*>(pBinaryInfo) + nInfoNum * sizeof(InfoBinary);
+    pBinaryCursor = reinterpret_cast<u8*>((reinterpret_cast<size_t>(pBinaryCursor) + 15) & ~15ul);
+    for (u32 i = 0; i < nInfoNum; ++i) {
+        InfoBinary* pBinary = new (&static_cast<InfoBinary*>(pBinaryInfo)[i]) InfoBinary;
+        const u32 nMotDataNum = r.readU32();
+        void* pMotData = pBinaryCursor;
+        pBinaryCursor += nMotDataNum * sizeof(InfoBinary::MotDataBinary);
+        pBinaryCursor = reinterpret_cast<u8*>((reinterpret_cast<size_t>(pBinaryCursor) + 15) & ~15ul);
+        for (u32 e = 0; e < nMotDataNum; ++e) {
+            InfoBinary::MotDataBinary* pBinary = new (&static_cast<InfoBinary::MotDataBinary*>(pMotData)[e]) InfoBinary::MotDataBinary;
+            pBinary->mEmo = r.readS16();
+        }
+        pBinary->mpMotList = static_cast<InfoBinary::MotDataBinary*>(pMotData);
+        pBinary->mMotListNum = nMotDataNum;
+    }
+    mpArray = static_cast<InfoBinary*>(pBinaryInfo);
+    mArrayNum = nInfoNum;
+    return true;
 }
 
 __attribute__((weak)) bool rEmoteGroup::save(MtStream& out) {
-    DDON_STUB("rEmoteGroup::save")
-    return {};
+    MtDataWriter w(out, 4096, 4096);
+    w.writeU32(0x676570);
+    w.writeU32(DATA_VERSION);
+    const u32 nInfoNum = rEmoteGroup::getInfoNum();
+    w.writeU32(nInfoNum);
+    u32 nSizeBinary = nInfoNum * sizeof(InfoBinary);
+    nSizeBinary = (nSizeBinary + 15) & ~15;
+    for (u32 i = 0; i < nInfoNum; ++i) {
+        InfoBinary* pBinary = rEmoteGroup::getInfo(i);
+        nSizeBinary += pBinary->getMotListNum() * sizeof(InfoBinary::MotDataBinary);
+        nSizeBinary = (nSizeBinary + 15) & ~15;
+    }
+    w.writeU32(nSizeBinary);
+    for (u32 i = 0; i < nInfoNum; ++i) {
+        InfoBinary* pBinary = rEmoteGroup::getInfo(i);
+        const u32 nInfoNum = pBinary->getMotListNum();
+        w.writeU32(nInfoNum);
+        for (u32 e = 0; e < nInfoNum; ++e) {
+            InfoBinary::MotDataBinary* pParts = pBinary->getMotList(e);
+            w.writeS16(pParts->mEmo);
+        }
+    }
+    return true;
 }
 
 MT_CTSTR rEmoteGroup::getExt() const {
@@ -93,8 +140,11 @@ inline void rEmoteGroup::InfoBinary::operator delete(void* p_addr) {
 }
 
 rEmoteGroup::InfoBinary::~InfoBinary() {
-    DDON_STUB("rEmoteGroup::InfoBinary::~InfoBinary")
-    /* stub */
+    for (u32 i = 0; i < mMotListNum; ++i) {
+        mpMotList[i].~MotDataBinary();
+    }
+    mpMotList = nullptr;
+    mMotListNum = 0;
 }
 
 s16 rEmoteGroup::InfoBinary::getEmotionNo(u32 idx) {

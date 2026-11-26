@@ -147,6 +147,10 @@ inline void* uFSMTask::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cFSMCore* uFSMTask::getFSMCore() const {
+    return this->mpCore;
+}
+
 inline uFSMTask::uFSMTask() {
     this->mType = 0;
     this->mpCore = nullptr;

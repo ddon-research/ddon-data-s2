@@ -1456,6 +1456,93 @@ MtObject* cEditParam::MyDTI::newInstance() const {
     return new (16u) cEditParam;
 }
 
+const MtDTI& cEditUserData::getDTI() const {
+    return cEditUserData::DTI;
+}
+
+inline void* cEditUserData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cEditUserData::DTI)->memAlloc(sz, align, cEditUserData::DTI.getID());
+}
+
+inline void cEditUserData::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cEditUserData::DTI)->memFree(p_addr);
+}
+
+void cEditUserData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Sex", &mBodyType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Hair", &mHair, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Beard", &mBeard, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MakeUp", &mMakeup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Scar", &mScar, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Wrinkle", &mWrinkle.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Eye", &mEyePresetNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Eyebrow", &mEyebrowTexNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Nose", &mNosePresetNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Mouth", &mMouthPresetNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "HeadWidth", &mSokutoubu.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Forehead", &mHitai.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EarPosition", &mMimijyouge.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EyeShade", &mMabisasijyouge.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "PupilSize", &mHitomiookisa.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EyeSize", &mMeookisa.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EyeRotation", &mMekaiten.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EyeGap", &mKannkaku.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EyebrowOffsetY", &mEyebrowUVOffsetY.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EyebrowOffsetX", &mEyebrowUVOffsetX.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EyebrowRotation", &mMayukaiten.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MidForehead", &mMikentakasa.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MidForeheadWidth", &mMikenhaba.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NosePosition", &mHanajyouge.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NoseWidth", &mHanahaba.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NoseTall", &mHanatakasa.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NoseRotation", &mHanakakudo.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CheekPosition", &mHohobonejyouge.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CheekVolume", &mHohoboneryou.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EarSize", &mMimiookisa.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EarRotation", &mMimimuki.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EarElf", &mElfmimi.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "JawPosition", &mHanakuchijyouge.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "JawPosition2", &mAgozengo.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MouthWidth", &mKuchihaba.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MouthThickness", &mKuchiatsusa.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CheekFat", &mHohoniku.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ChinHeight", &mAgosakijyouge.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ChinWidth", &mAgosakihaba.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "JawbonePosition", &mErahonejyouge.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "JawboneWidth", &mErahonehaba.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Height", &mHeight.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "HeadSize", &mHeadSize.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NeckPosition", &mNeckOffset.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Neck", &mNeckScale.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ShoulderWidth", &mUpperBodyScaleX.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Belly", &mBellySize.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Breast", &mTeatScale.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "HandSize", &mTekubiSize.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "WaistPosition", &mKoshiOffset.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "HipSize", &mKoshiSize.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "FootSize", &mAnkleOffset.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Fat", &mFat.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Muscle", &mMuscle.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MotionFilter", &mMotionFilter.mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SkinColor", &mColorSkin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "HairColor", &mColorHair, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "BeardColor", &mColorBeard, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EyebrowColor", &mColorEyebrow, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "RightEyeColor", &mColorREye, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "LeftEyeColor", &mColorLEye, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MakeupColor", &mColorMakeup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Voice", &mVoice, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "VoicePitch", &mVoicePitch, 0u, 0u);
+}
+
+inline cEditUserData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cEditUserData::MyDTI cEditUserData::DTI("cEditUserData", &::cEditParam::DTI, 2128ul, 0u, 0u);
+
+MtObject* cEditUserData::MyDTI::newInstance() const {
+    return new (16u) cEditUserData;
+}
+
 const MtDTI& cEditValue::getDTI() const {
     return cEditValue::DTI;
 }
@@ -1468,9 +1555,11 @@ inline void cEditValue::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEditValue::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cEditValue::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEditValue::createProperty")
-    /* stub */
+void cEditValue::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", &mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMin", &mMin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMax", &mMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDiv", &mDiv, 0u, 0u);
 }
 
 void cEditValue::mergeOnSlider() {

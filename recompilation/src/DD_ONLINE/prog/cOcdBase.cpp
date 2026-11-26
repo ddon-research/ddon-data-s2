@@ -59,9 +59,11 @@ cOcdBase::cOcdBase() {
 cOcdBase::~cOcdBase() {
 }
 
-__attribute__((weak)) void cOcdBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("cOcdBase::createProperty")
-    /* stub */
+void cOcdBase::createProperty(MtPropertyList& s) {
+    mStatusParam.cOcdStatusParam::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mImmuneMode", reinterpret_cast<s32*>(&mImmuneMode), 0u, 0u);
+    mImmuneParam.cOcdImmuneParam::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\277\343\202\244\343\203\236\343\203\274\346\233\264\346\226\260\351\200\237\345\272\246", &mActiveTimerRate, 0u, 0u);
 }
 
 void cOcdBase::setup() {
@@ -165,7 +167,7 @@ void cOcdBase::update() {
 bool cOcdBase::isEnableInit() const {
     if (mStatusParam.isEffective()) {
         if (mpModel != nullptr) {
-            if (((static_cast<unsigned long>(mNonInitOST) & static_cast<unsigned long>(mpModel->mObjStatus)) == 0) && ((static_cast<unsigned long>(mNonInitOST) & static_cast<unsigned long>(mpModel->mObjStatusOld)) == 0)) {
+            if (((mNonInitOST & mpModel->mObjStatus) == 0) && ((mNonInitOST & mpModel->mObjStatusOld) == 0)) {
                 return !mOcdActiveCache.mIsActive;
             }
             return false;
@@ -458,8 +460,9 @@ inline void cOcdImmuneParam::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) void cOcdImmuneParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cOcdImmuneParam::createProperty")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mImmuneRate", &mImmuneRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mImmuneLv", &mImmuneLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mImmuneLvMax", &mImmuneLvMax, 0u, 0u);
 }
 
 inline cOcdImmuneParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -493,8 +496,21 @@ void cOcdStatusParam::resetActiveTime() {
 }
 
 __attribute__((weak)) void cOcdStatusParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cOcdStatusParam::createProperty")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mIsEffective", &mIsEffective, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mEndurance", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::getEndurance), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::setEndurance), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mEnduranceMax", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::getEnduranceMax), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::setEnduranceMax), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mAccumulationValue", &mAccumulationValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsTimeRecover", &mIsTimeRecover, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mActiveTime", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::getActiveTime), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::setActiveTime), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mActiveTimeMax", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::getActiveTimeMax), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::setActiveTimeMax), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mCureWaitTime", &mCureWaitTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCureWaitTimeMax", &mCureWaitTimeMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mCureValue", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::getCureValue), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::setCureValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mFreeParam0", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::getFreeParam0), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::setFreeParam0), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mFreeParam1", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::getFreeParam1), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParam::setFreeParam1), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mIsMultiApply", &mIsMultiApply, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsMultiNumLimit", &mIsMultiNumLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMultiApplyNum", &mMultiApplyNum, 0u, 0u);
 }
 
 f32 cOcdStatusParam::getEndurance() const {

@@ -82,7 +82,7 @@ __attribute__((weak)) u32 cAIRouteInfo::getRouteInfoTiming(MtVector3* pDstOfsPos
 }
 
 const cAIRouteInfoParts* cAIRouteInfo::searchTargetRoteInfo(u32 routeInfoID, u32 startNodeIdx) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) != 0) {
+    if (mPartsInfo.mLength != 0) {
         u32 i = 0;
         do {
             if (mPartsInfo.getBuffer()[static_cast<int>(i)] != nullptr) {
@@ -93,7 +93,7 @@ const cAIRouteInfoParts* cAIRouteInfo::searchTargetRoteInfo(u32 routeInfoID, u32
                 }
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)));
+        } while (i < mPartsInfo.mLength);
     }
     return nullptr;
 }

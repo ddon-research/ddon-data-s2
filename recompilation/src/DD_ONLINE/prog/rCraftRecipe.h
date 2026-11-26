@@ -171,6 +171,10 @@ inline void* rCraftRecipe::cCraftRecipe::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline u32 rCraftRecipe::cCraftRecipe::getItemId() const {
+    return this->mItemId;
+}
+
 inline u32 rCraftRecipe::cCraftRecipe::getCreateTime() const {
     return this->mCreateTime;
 }

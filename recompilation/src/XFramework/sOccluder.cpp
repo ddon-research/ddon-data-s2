@@ -7,6 +7,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -34,9 +35,13 @@ sOccluder::~sOccluder() {
     mpOccluder = nullptr;
 }
 
-__attribute__((weak)) void sOccluder::createProperty(MtPropertyList& s) {
-    DDON_STUB("sOccluder::createProperty")
-    /* stub */
+void sOccluder::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mUseOccluder", &mUseOccluder, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDrawMode", &mDrawMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpOccluder", "resource", static_cast<void*>(&mpOccluder), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDiv", &mDiv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInfoCount", &mInfoCount, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDebug", &mDebug, 0u, 0u);
 }
 
 MtUI* sOccluder::createUI(MtProperty& prop) {

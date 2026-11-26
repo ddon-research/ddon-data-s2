@@ -65,9 +65,11 @@ cGUIFloorManager::cGUIFloorManager() {
 cGUIFloorManager::~cGUIFloorManager() {
 }
 
-__attribute__((weak)) void cGUIFloorManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIFloorManager::createProperty")
-    /* stub */
+void cGUIFloorManager::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mFloorId", &mFloorId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParamArray", static_cast<MtObject*>(&mParamArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHitGroupNo", &mHitGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsWarpDungeon", &mIsWarpDungeon, 0u, 0u);
 }
 
 __attribute__((weak)) void cGUIFloorManager::release() {
@@ -186,9 +188,8 @@ cGUIFloorManager::cParam::~cParam() {
     mpRes = nullptr;
 }
 
-__attribute__((weak)) void cGUIFloorManager::cParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cGUIFloorManager::cParam::createProperty")
-    /* stub */
+void cGUIFloorManager::cParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", reinterpret_cast<MT_MFUNC>(&::cGUIFloorManager::cParam::getResource), reinterpret_cast<MT_MFUNC>(&::cGUIFloorManager::cParam::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* cGUIFloorManager::cParam::createUI(MtProperty& prop) {

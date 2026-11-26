@@ -55,6 +55,7 @@ using u8 = unsigned char;
 
 class cNetLoginServer : public MtObject
 {
+    friend class cSeedLoginSvConnection;
 public:
     enum
     {
@@ -458,6 +459,10 @@ inline u32 cNetLoginServer::getDecideCharacterId() {
     return this->mDecideCharacterId;
 }
 
+inline nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES* cNetLoginServer::getGetCharacterListPacket() {
+    return this->mpConnection->mpGetCharacterListPacket;
+}
+
 inline void* cNetLoginServer::cCtrlFlow::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -479,4 +484,8 @@ inline void* cSeedLoginSvConnection::operator new(size_t sz, void* p_addr) {
 
 inline bool cSeedLoginSvConnection::isLoginSuccess() const {
     return this->mGuardData.mIsLoginSuccess;
+}
+
+inline cNetLoginServer* cSeedLoginSvConnection::getManager() {
+    return this->mpManager;
 }

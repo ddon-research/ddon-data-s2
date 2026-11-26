@@ -1118,8 +1118,35 @@ inline void* uGUIAreaMaster::cListItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUIAreaMaster::cListItem::cListItem() {
+    this->::uGUIBase::cScrollListItemBase::mItemType = 0;
+    this->mpObjMsgBought = nullptr;
+    this->mpObjMsgPriceUnit = nullptr;
+    this->mpObjMsgPrice = nullptr;
+    this->mpObjMsgIRVal = nullptr;
+    this->mpObjMsgIR = nullptr;
+    this->mpObjMsgSpotLvVal = nullptr;
+    this->mpObjMsgSpotLv = nullptr;
+    this->mpObjMsgSpotTitle = nullptr;
+    this->mpObjMsgQuestLvVal = nullptr;
+    this->mpObjMsgQuestLv = nullptr;
+    this->mpObjMsgQuestTitle = nullptr;
+    this->mpInstAnimDoor = nullptr;
+    this->mpInstAnimSpotIcon = nullptr;
+    this->mpInstAnimSpot = nullptr;
+    this->mpInstAnimPrice = nullptr;
+    this->mpInstAnimQuest = nullptr;
+}
+
 inline void* uGUIAreaMaster::cPawnListItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIAreaMaster::cPawnListItem::cPawnListItem() {
+    this->mpObjMsgNum = nullptr;
+    this->mpObjMsgName = nullptr;
+    this->mpInstAnimHotIcon = nullptr;
+    this->::uGUIBase::cScrollListItemBase::mItemType = 1;
 }
 
 inline void* uGUIAreaMaster::cPointItem::operator new(size_t sz, void* p_addr) {
@@ -1128,6 +1155,12 @@ inline void* uGUIAreaMaster::cPointItem::operator new(size_t sz, void* p_addr) {
 
 inline void* uGUIAreaMaster::cSuppliesHeaderItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIAreaMaster::cSuppliesHeaderItem::cSuppliesHeaderItem() {
+    this->mpObjMsg = nullptr;
+    this->mpInstAnim = nullptr;
+    this->::uGUIBase::cScrollListItemBase::mItemType = 3;
 }
 
 inline void* uGUIAreaMaster::cSuppliesItem::operator new(size_t sz, void* p_addr) {

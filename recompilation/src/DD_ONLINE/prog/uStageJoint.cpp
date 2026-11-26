@@ -167,7 +167,7 @@ bool uStageJointCtrl::isSetup() {
     if (!mIsSetup) {
         return false;
     }
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 104)) == 0) {
+    if (mJointMdlAry.mLength == 0) {
         return false;
     }
     u32 idx = 0;
@@ -182,7 +182,7 @@ bool uStageJointCtrl::isSetup() {
             }
         }
         idx += 1u;
-    } while (idx < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 104)));
+    } while (idx < mJointMdlAry.mLength);
     return true;
 }
 
@@ -197,7 +197,7 @@ __attribute__((weak)) bool uStageJointCtrl::isSbc(s32 x, s32 z) {
 }
 
 bool uStageJointCtrl::isSbc(s32 areaNo) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 104)) != 0) {
+    if (mJointMdlAry.mLength != 0) {
         u32 i = 0;
         do {
             if (mJointMdlAry.getBuffer()[static_cast<int>(i)] != nullptr) {
@@ -210,19 +210,40 @@ bool uStageJointCtrl::isSbc(s32 areaNo) {
                 }
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 104)));
+        } while (i < mJointMdlAry.mLength);
     }
     return false;
 }
 
-__attribute__((weak)) cSplitBgm* uStageJointCtrl::getSplitBgmInfo() {
-    DDON_STUB("uStageJointCtrl::getSplitBgmInfo")
-    return nullptr;
+cSplitBgm* uStageJointCtrl::getSplitBgmInfo() {
+    if (mpJointArea != nullptr) {
+        s8 areaNo = mpJointArea->mParam.getAreaData(static_cast<u32>(mNowZ), static_cast<u32>(mNowX));
+        return static_cast<sSoundExt*>(sSound::getInstance())->getSplitAreaBgmInfo(areaNo);
+    } else {
+        return nullptr;
+    }
 }
 
-__attribute__((weak)) cSplitBgm* uStageJointCtrl::getSplitBgmInfo(const MtVector3& targetPos) {
-    DDON_STUB("uStageJointCtrl::getSplitBgmInfo")
-    return nullptr;
+cSplitBgm* uStageJointCtrl::getSplitBgmInfo(const MtVector3& targetPos) {
+    if (mpJointArea != nullptr) {
+        MtVector3 frame56(sWorldOffset::getInstance()->getRealPos(targetPos));
+        if (mpJointArea != nullptr) {
+            if (mpJointArea->mParam.mStartX > frame56.x) {
+                return nullptr;
+            } else {
+                if (mpJointArea->mParam.mStartZ > frame56.z) {
+                    return nullptr;
+                } else {
+                    s8 areaNo = mpJointArea->mParam.getAreaData(static_cast<u32>(static_cast<int>((frame56.z - mpJointArea->mParam.mStartZ) / mpJointArea->mParam.mDeltaZ)), static_cast<u32>(static_cast<int>((frame56.x - mpJointArea->mParam.mStartX) / mpJointArea->mParam.mDeltaX)));
+                    return static_cast<sSoundExt*>(sSound::getInstance())->getSplitAreaBgmInfo(areaNo);
+                }
+            }
+        } else {
+            return nullptr;
+        }
+    } else {
+        return nullptr;
+    }
 }
 
 __attribute__((weak)) void uStageJointCtrl::setBlockArcLoad(s32 stageNo, MtVector3& plPos) {
@@ -235,9 +256,20 @@ __attribute__((weak)) bool uStageJointCtrl::isBlockArcLoadOk() {
     return {};
 }
 
-__attribute__((weak)) s32 uStageJointCtrl::getInsideAreaNo(MtVector3& realPos) {
-    DDON_STUB("uStageJointCtrl::getInsideAreaNo")
-    return {};
+s32 uStageJointCtrl::getInsideAreaNo(MtVector3& realPos) {
+    if (mpJointArea != nullptr) {
+        if (mpJointArea->mParam.mStartX > realPos.x) {
+            return -1;
+        } else {
+            if (mpJointArea->mParam.mStartZ > realPos.z) {
+                return -1;
+            } else {
+                return mpJointArea->mParam.getAreaData(static_cast<u32>(static_cast<int>((realPos.z - mpJointArea->mParam.mStartZ) / mpJointArea->mParam.mDeltaZ)), static_cast<u32>(static_cast<int>((realPos.x - mpJointArea->mParam.mStartX) / mpJointArea->mParam.mDeltaX)));
+            }
+        }
+    } else {
+        return -1;
+    }
 }
 
 __attribute__((weak)) uSoundOcclusion* uStageJointCtrl::getSoundOcclusion() {

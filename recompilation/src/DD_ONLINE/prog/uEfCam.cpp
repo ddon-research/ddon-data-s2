@@ -75,9 +75,11 @@ void uEfCam::draw(cDraw* pDraw) {
     this->uEffect::draw(pDraw);
 }
 
-__attribute__((weak)) void uEfCam::createProperty(MtPropertyList& s) {
-    DDON_STUB("uEfCam::createProperty")
-    /* stub */
+void uEfCam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mRepeatFlag", &mRepeatFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mYAngleFlag", &mYAngleFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCamOfs", &mCamOfs, 0u, 0u);
+    this->uEffectExt::createProperty(s);
 }
 
 MtUI* uEfCam::createUI(MtProperty& prop) {

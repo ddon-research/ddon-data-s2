@@ -14,6 +14,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
 #include "cUnit.h"
@@ -53,9 +54,26 @@ __attribute__((noinline)) uScrollCollisionGeometry::~uScrollCollisionGeometry() 
     /* stub */
 }
 
-__attribute__((weak)) void uScrollCollisionGeometry::createProperty(MtPropertyList& s) {
-    DDON_STUB("uScrollCollisionGeometry::createProperty")
-    /* stub */
+void uScrollCollisionGeometry::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgEnableOwner", &mFlgEnableOwner, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpOwner", &mpOwner, 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpPlusData", &mpPlusData, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgAlwayUpdate", &mFlgAlwayUpdate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgUpdateOnce", &mFlgUpdateOnce, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgStopSet", &mFlgStopSet, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgStopSetControl", &mFlgStopSetControl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColliderGeometryArray", static_cast<MtObject*>(&mColliderGeometryArray), 0u, 0u);
+    mScrFilter.createPropertySupport(s, static_cast<MtObject*>(this), "ScrollType", "ScrollGroup", "ScrollGroupIndex");
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ScrollType(Bit)", reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::getScrType), reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::setScrType), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "MatrixReset", static_cast<MT_MFUNC>(&::uScrollCollisionGeometry::resetScrMoveMatrix), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mFlgAutoSync", reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::isEnableAutoSync), reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::setEnableAutoSync), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgAutoSyncEnableMove", &mFlgAutoSyncEnableMove, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgReserveMatrixSet", &mFlgReserveMatrixSet, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgReserveResetSet", &mFlgReserveResetSet, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReserveMatrix", &mReserveMatrix, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_MATRIX, "MoveMatrix", reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::getMatrixForUI), reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::setScrMoveMatrixForUI), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mScrMatrix", static_cast<MtObject*>(&mScrMatrix), 0u, 0u);
 }
 
 void uScrollCollisionGeometry::setup() {
@@ -154,9 +172,8 @@ void uScrollCollisionGeometry::resetScrMoveMatrix() {
     mScrMatrix.setMatrixForGame(static_cast<const MtMatrix*>(nullptr), true, true);
 }
 
-__attribute__((weak)) void uScrollCollisionGeometry::setScrFilter(const nCollision::cScrCommonFilter& ScrFilter) {
-    DDON_STUB("uScrollCollisionGeometry::setScrFilter")
-    /* stub */
+void uScrollCollisionGeometry::setScrFilter(const nCollision::cScrCommonFilter& ScrFilter) {
+    mScrFilter = ScrFilter;
 }
 
 u32 uScrollCollisionGeometry::getScrType() {
@@ -353,9 +370,23 @@ uScrollCollisionGeometry::cGeometryInfo::~cGeometryInfo() {
     mpGeomConvex = nullptr;
 }
 
-__attribute__((weak)) void uScrollCollisionGeometry::cGeometryInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("uScrollCollisionGeometry::cGeometryInfo::createProperty")
-    /* stub */
+void uScrollCollisionGeometry::cGeometryInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpOwner", reinterpret_cast<MtObject* *>(&mpOwner), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mElementIndex", &mElementIndex, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Type", reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::cGeometryInfo::getGeomConvexType), reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::cGeometryInfo::setGeomConvexType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Active", reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::cGeometryInfo::isActive), reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::cGeometryInfo::setActive), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "Geometry", reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::cGeometryInfo::getGeomConvex), reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometry::cGeometryInfo::setGeomConvex), 132u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Attribute", &mGeomMaterialInfo.attribute, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UserAttr0", &mGeomMaterialInfo.attr[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UserAttr1", &mGeomMaterialInfo.attr[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UserAttr2", &mGeomMaterialInfo.attr[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UserAttr3", &mGeomMaterialInfo.attr[3], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Attribute(List)", &mGeomMaterialInfo.attribute, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UserAttr0(List)", &mGeomMaterialInfo.attr[0], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UserAttr1(List)", &mGeomMaterialInfo.attr[1], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UserAttr2(List)", &mGeomMaterialInfo.attr[2], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UserAttr3(List)", &mGeomMaterialInfo.attr[3], 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpOwner", reinterpret_cast<MtObject* *>(&mpOwner), 0u, 0u);
 }
 
 __attribute__((weak)) void uScrollCollisionGeometry::cGeometryInfo::setGeomConvexType(u32 GeometryType) {

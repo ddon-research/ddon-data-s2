@@ -13,7 +13,6 @@
 #include "cHitInfoAfter.h"
 #include "cParentRegionStatus.h"
 #include "../../XFramework/cResource.h"
-#include "../../XFramework/cUnit.h"
 #include "cpCorePointCtrl.h"
 #include "cpEffectProvider.h"
 #include "cpEffectStatusManager.h"
@@ -224,9 +223,15 @@ __attribute__((weak)) void cpErosionEnemy::callbackDamageAfter_apply(cHitInfoAft
     /* stub */
 }
 
-__attribute__((weak)) bool cpErosionEnemy::isEnableErosionRegenerate() const {
-    DDON_STUB("cpErosionEnemy::isEnableErosionRegenerate")
-    return {};
+bool cpErosionEnemy::isEnableErosionRegenerate() const {
+    if (mpEnemy->getThinkMode() == 1) {
+        if (!mpEnemy->isReturnTerritoryFlag()) {
+            if (!isErosionCancelStatus(false)) {
+                return mErosionTimerState == nErosionEnemy::EROSION_TIMER_STATE_ACTIVE;
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) bool cpErosionEnemy::isErosionRegionActive(nRegionStatus::P_REGION_CATEGORY category) const {
@@ -379,15 +384,32 @@ __attribute__((weak)) void cpErosionSuperEnemy::setup() {
     /* stub */
 }
 
-__attribute__((weak)) void cpErosionSuperEnemy::updatePtr() {
-        this->cpErosionEnemy::updatePtr();
-        for (u32 i = 0; i < 4; ++i) {
-            if (mTentacleInfoArray.elems[i].mpEnemy != nullptr) {
-                if (!mTentacleInfoArray.elems[i].mpEnemy->isEnable()) {
-                    mTentacleInfoArray.elems[i].mpEnemy = nullptr;
-                }
-            }
+void cpErosionSuperEnemy::updatePtr() {
+    this->cpErosionEnemyBase::updatePtr();
+    mErosionRegionArray.elems[0].updatePtr();
+    mErosionRegionArray.elems[1].updatePtr();
+    mErosionRegionArray.elems[2].updatePtr();
+    mErosionRegionArray.elems[3].updatePtr();
+    if (mTentacleInfoArray.elems[0].mpEnemy != nullptr) {
+        if ((mTentacleInfoArray.elems[0].mpEnemy->mBeFlag - 1u) > 1u) {
+            mTentacleInfoArray.elems[0].mpEnemy = nullptr;
         }
+    }
+    if (mTentacleInfoArray.elems[1].mpEnemy != nullptr) {
+        if ((mTentacleInfoArray.elems[1].mpEnemy->mBeFlag - 1u) > 1u) {
+            mTentacleInfoArray.elems[1].mpEnemy = nullptr;
+        }
+    }
+    if (mTentacleInfoArray.elems[2].mpEnemy != nullptr) {
+        if ((mTentacleInfoArray.elems[2].mpEnemy->mBeFlag - 1u) > 1u) {
+            mTentacleInfoArray.elems[2].mpEnemy = nullptr;
+        }
+    }
+    if (mTentacleInfoArray.elems[3].mpEnemy != nullptr) {
+        if ((mTentacleInfoArray.elems[3].mpEnemy->mBeFlag - 1u) > 1u) {
+            mTentacleInfoArray.elems[3].mpEnemy = nullptr;
+        }
+    }
 }
 
 __attribute__((weak)) void cpErosionSuperEnemy::updateEfcHandle() {
@@ -427,9 +449,20 @@ __attribute__((weak)) bool cpErosionSuperEnemy::isTentacleActive(s32 coretype) {
     return {};
 }
 
-__attribute__((weak)) void cpErosionSuperEnemy::makeDamageDefenceInfo(cHitInfoAfter& info) {
-    DDON_STUB("cpErosionSuperEnemy::makeDamageDefenceInfo")
-    /* stub */
+void cpErosionSuperEnemy::makeDamageDefenceInfo(cHitInfoAfter& info) {
+    if (mTentacleInfoArray.elems[0].mTentacleState == 1) {
+        info.mHpDamageInfo.addDamageDefenceAdj(nObjCollision::HP_DAMAGE_DEFENCE_ADJ_STATUS, mTentacleInfoArray.elems[0].mErosionSuperInfo.getAdjustDamageRate());
+    }
+    if (mTentacleInfoArray.elems[1].mTentacleState == 1) {
+        info.mHpDamageInfo.addDamageDefenceAdj(nObjCollision::HP_DAMAGE_DEFENCE_ADJ_STATUS, mTentacleInfoArray.elems[1].mErosionSuperInfo.getAdjustDamageRate());
+    }
+    if (mTentacleInfoArray.elems[2].mTentacleState == 1) {
+        info.mHpDamageInfo.addDamageDefenceAdj(nObjCollision::HP_DAMAGE_DEFENCE_ADJ_STATUS, mTentacleInfoArray.elems[2].mErosionSuperInfo.getAdjustDamageRate());
+    }
+    if (mTentacleInfoArray.elems[3].mTentacleState != 1) {
+        return;
+    }
+    info.mHpDamageInfo.addDamageDefenceAdj(nObjCollision::HP_DAMAGE_DEFENCE_ADJ_STATUS, mTentacleInfoArray.elems[3].mErosionSuperInfo.getAdjustDamageRate());
 }
 
 void cpErosionSuperEnemy::callbackGetUpFromChanceDown() {

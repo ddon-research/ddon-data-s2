@@ -8,6 +8,8 @@
 #include "MtObject.h"
 
 // Forward declarations
+class AHShapePolygon;
+class CDataEntryMemberData;
 class MtAllocator;
 namespace MtCollisionUtil { class MtArrayEx; }
 class MtDTI;
@@ -17,6 +19,7 @@ class MtPropertyList;
 class MtString;
 class MtUI;
 class SCE_AH_LIST;
+class aStage;
 class cAINavPathTrace;
 class cAIPathTrace;
 class cAIRouteInfo;
@@ -25,6 +28,7 @@ class cAbilityData;
 class cAbilityParam;
 class cAreaMasterSpotDetailData;
 class cAreaReleaseManager;
+class cCaptrophyContentData;
 class cCaptrophyRelationData;
 class cContextCharacter;
 class cContextInstChar;
@@ -37,15 +41,21 @@ class cDynamicBVHCollision;
 class cEffectCycleCtrl;
 class cEndContentsManager;
 class cEnemyGroup;
+class cFSMOrderParamCallEvent;
+class cFSMOrderParamSetEnemy;
 class cFSMTaskCtrl;
 class cFSMUnit;
 class cFurniture;
+class cGUIExtNetMgr;
 class cGUIFloorManager;
+class cGUIUtility;
 class cGroupParam;
 class cHitNode;
+class cKeyCustomManager;
 class cLayoutSet;
 class cLayoutSetEnemy;
 class cLayoutSetNpc;
+class cLightQuestManager;
 class cMagicCommandList;
 class cMenuBase;
 class cMenuBlackList;
@@ -57,12 +67,17 @@ class cMenuFriendList;
 class cMenuGetItemBaggageListToServer;
 class cMenuGetItemListToServer;
 class cMenuGroupChatMemberList;
+class cMenuLostPawnRevive;
 class cMenuMail;
 class cMenuPartyList;
+class cMenuPawnDelete;
 class cMenuPawnHistory;
 class cMenuPawnPoint;
 class cMenuPawnSearch;
+class cMenuPawnSetPartner;
+class cMenuRecentList;
 class cMenuSearchFilter;
+class cMenuServerList;
 class cMenuSimplePartyReq;
 class cModelList;
 class cNetGameServer;
@@ -89,9 +104,23 @@ class cQuestTask;
 class cQuestTaskParam;
 class cQuestUnitGroup;
 class cQuestUnitManager;
+class cScenarioArg_BootFSM;
 class cServerUIClientControl;
 class cShlGroupParam;
+class cShlParamAlchemyCS03;
+class cShlParamArrowRainCtrl;
+class cShlParamCompList;
+class cShlParamCompSelector;
+class cShlParamDividedCalled;
+class cShlParamGeneErosionTentacle;
+class cShlParamGeneTarget;
+class cShlParamGenerator;
+class cShlParamMeteoCtrl;
+class cShlParamRenmadanCtrl;
+class cShlParamSpline;
+class cShlParamStateSurveillance;
 class cStageCtrl;
+class cStageEpvCtrl;
 class cStageMap;
 class cStaminaDecList;
 class cTalkMsgData;
@@ -104,6 +133,7 @@ class cZoneIndoorLight;
 class cZoneLayout;
 class cZoneMultiStack;
 class cpAIPawnEmChecker;
+class cpAISensor;
 class cpCorePointCtrl;
 class cpDDMrlMgr;
 class cpEffectStatusManager;
@@ -141,14 +171,17 @@ namespace nCaplink { class UserProfileContentListGetAns; }
 namespace nCaplink { class UserSearchAns; }
 namespace nCaplink { class WebsocketServerListGetAns; }
 namespace nCollision { class cCollisionNode; }
+namespace nCollision { class cCollisionNodeGroup; }
 namespace nCollision { class cCollisionNodeObject; }
 namespace nFurnitureMenuFlow { class cFurnitureGroupListItems; }
 namespace nFurnitureMenuFlow { class cFurnitureListItems; }
 namespace nGUIItem { class cItemList; }
 namespace nHumanBow { class cBowActParam; }
 namespace nMarker { class cMarkerInfo; }
+namespace nMarker { class cWarpMarkerInfo; }
 namespace nMarker { class cWarpMarkerInfoStage; }
 namespace nMenuKeyConfig { class KeyListItems; }
+namespace nNet { struct stEntryBoardItemInfo; }
 namespace nQuest { class cCycleContentsBorderRewardInfo; }
 namespace nQuest { class cCycleContentsInfo; }
 namespace nQuest { class cCycleContentsRankingRewardInfo; }
@@ -229,6 +262,7 @@ class sBrowser;
 class sCameraExt;
 class sCaplinkManager;
 class sCollision;
+class sContextManager;
 class sControlManager;
 class sCraftManager;
 class sEffectExt;
@@ -256,26 +290,38 @@ class sUnit;
 class sUnitManager;
 class sZone;
 class uCharacterEdit;
+class uCharacterEditBase;
 class uDDOModel;
+class uEnemy;
 class uGUI;
+class uGUIAreaMaster;
 class uGUIBase;
 class uGUIBaseExt;
+class uGUIBoxGachaInfo;
 class uGUICaplinkMenuBase;
+class uGUICaplinkProfileEdit;
+class uGUICaplinkTag;
 class uGUICaplinkTalk;
 class uGUICaplinkTopMenu;
+class uGUICaplinkTrophyReceive;
 class uGUICharaEditPartsWrap;
 class uGUICharacterEdit;
 class uGUIClanScout;
 class uGUIClanSearch;
 class uGUICommunityList;
 class uGUIContentsBoard;
+class uGUICraft;
 class uGUIEntryBoard;
+class uGUIGPShop;
 class uGUIGiveAndTake;
 class uGUIInfo;
+class uGUIItemBase01;
 class uGUIMap;
 class uGUIMapMini;
 class uGUIMissionResult;
 class uGUIMouseOverCursor;
+class uGUIMyRoomPopup;
+class uGUINewspaper;
 class uGUINpcWindow;
 class uGUIPopCmd01;
 class uGUIPopFilter;
@@ -283,15 +329,22 @@ class uGUIPopListDialog;
 class uGUIQuestBoard;
 class uGUIQuestDelivery;
 class uGUIRankingBoard;
+class uGUIServerUIBase;
 class uGUIShopBuy;
+class uGUISkill;
 class uGUISystemMsg;
 class uGeometry2;
 class uGeometry2Group;
 class uGeometry2GroupCollider;
 class uScrollCollisionGeometry;
+class uShlComponentCtrl;
+class uShlEmMultiLock;
 class uShlKeepOwnerLog;
+class uShlRenmadanCtrl;
+class uShlStateSurveillance;
 class uSoundSubMixer;
 class uSoundZoneBase;
+class uStageCraftPawnCtrl;
 class uStageFieldCtrl;
 class uStageJointCtrl;
 class uStageJointMdl;
@@ -307,6 +360,7 @@ class MtTree;
 template <typename T> class MtTypedArray;
 
 // Type aliases from DWARF
+using CEntryMemberData = CDataEntryMemberData;
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
@@ -316,10 +370,19 @@ using size_t = _Sizet;
 using u32 = unsigned int;
 using u64 = __uint64_t;
 
+// Functions the classes below befriend, declared first
+namespace nNet { const CEntryMemberData* getMemberInfo(stEntryBoardItemInfo& info, u32 characterId); }
+
 class MtArray : public MtObject
 {
+
+    friend class cShlParamAlchemyTrap;
+    friend class cShlParamCompSelectorJob10Cs08;
+    friend class cShlParamComponentCtrl;
+    friend class AHShapePolygon;
     friend class MtCollisionUtil::MtArrayEx;
     friend class SCE_AH_LIST;
+    friend class aStage;
     friend class cAINavPathTrace;
 
     friend class rSoundRequest;
@@ -331,6 +394,7 @@ class MtArray : public MtObject
     friend class cAbilityParam;
     friend class cAreaMasterSpotDetailData;
     friend class cAreaReleaseManager;
+    friend class cCaptrophyContentData;
     friend class cCaptrophyRelationData;
     friend class cContextCharacter;
     friend class cContextInstChar;
@@ -343,15 +407,21 @@ class MtArray : public MtObject
     friend class cEffectCycleCtrl;
     friend class cEndContentsManager;
     friend class cEnemyGroup;
+    friend class cFSMOrderParamCallEvent;
+    friend class cFSMOrderParamSetEnemy;
     friend class cFSMTaskCtrl;
     friend class cFSMUnit;
     friend class cFurniture;
+    friend class cGUIExtNetMgr;
     friend class cGUIFloorManager;
+    friend class cGUIUtility;
     friend class cGroupParam;
     friend class cHitNode;
+    friend class cKeyCustomManager;
     friend class cLayoutSet;
     friend class cLayoutSetEnemy;
     friend class cLayoutSetNpc;
+    friend class cLightQuestManager;
     friend class cMagicCommandList;
     friend class cMenuBase;
     friend class cMenuBlackList;
@@ -363,12 +433,17 @@ class MtArray : public MtObject
     friend class cMenuGetItemBaggageListToServer;
     friend class cMenuGetItemListToServer;
     friend class cMenuGroupChatMemberList;
+    friend class cMenuLostPawnRevive;
     friend class cMenuMail;
     friend class cMenuPartyList;
+    friend class cMenuPawnDelete;
     friend class cMenuPawnHistory;
     friend class cMenuPawnPoint;
     friend class cMenuPawnSearch;
+    friend class cMenuPawnSetPartner;
+    friend class cMenuRecentList;
     friend class cMenuSearchFilter;
+    friend class cMenuServerList;
     friend class cMenuSimplePartyReq;
     friend class cModelList;
     friend class cNetGameServer;
@@ -395,9 +470,23 @@ class MtArray : public MtObject
     friend class cQuestTaskParam;
     friend class cQuestUnitGroup;
     friend class cQuestUnitManager;
+    friend class cScenarioArg_BootFSM;
     friend class cServerUIClientControl;
     friend class cShlGroupParam;
+    friend class cShlParamAlchemyCS03;
+    friend class cShlParamArrowRainCtrl;
+    friend class cShlParamCompList;
+    friend class cShlParamCompSelector;
+    friend class cShlParamDividedCalled;
+    friend class cShlParamGeneErosionTentacle;
+    friend class cShlParamGeneTarget;
+    friend class cShlParamGenerator;
+    friend class cShlParamMeteoCtrl;
+    friend class cShlParamRenmadanCtrl;
+    friend class cShlParamSpline;
+    friend class cShlParamStateSurveillance;
     friend class cStageCtrl;
+    friend class cStageEpvCtrl;
     friend class cStageMap;
     friend class cStaminaDecList;
     friend class cTalkMsgData;
@@ -410,6 +499,7 @@ class MtArray : public MtObject
     friend class cZoneLayout;
     friend class cZoneMultiStack;
     friend class cpAIPawnEmChecker;
+    friend class cpAISensor;
     friend class cpCorePointCtrl;
     friend class cpDDMrlMgr;
     friend class cpEffectStatusManager;
@@ -447,14 +537,17 @@ class MtArray : public MtObject
     friend class nCaplink::UserSearchAns;
     friend class nCaplink::WebsocketServerListGetAns;
     friend class nCollision::cCollisionNode;
+    friend class nCollision::cCollisionNodeGroup;
     friend class nCollision::cCollisionNodeObject;
     friend class nFurnitureMenuFlow::cFurnitureGroupListItems;
     friend class nFurnitureMenuFlow::cFurnitureListItems;
     friend class nGUIItem::cItemList;
     friend class nHumanBow::cBowActParam;
     friend class nMarker::cMarkerInfo;
+    friend class nMarker::cWarpMarkerInfo;
     friend class nMarker::cWarpMarkerInfoStage;
     friend class nMenuKeyConfig::KeyListItems;
+    friend const CEntryMemberData* nNet::getMemberInfo(nNet::stEntryBoardItemInfo& info, u32 characterId);
     friend class nQuest::cCycleContentsBorderRewardInfo;
     friend class nQuest::cCycleContentsInfo;
     friend class nQuest::cCycleContentsRankingRewardInfo;
@@ -533,6 +626,7 @@ class MtArray : public MtObject
     friend class sCameraExt;
     friend class sCaplinkManager;
     friend class sCollision;
+    friend class sContextManager;
     friend class sControlManager;
     friend class sCraftManager;
     friend class sEffectExt;
@@ -560,26 +654,38 @@ class MtArray : public MtObject
     friend class sUnitManager;
     friend class sZone;
     friend class uCharacterEdit;
+    friend class uCharacterEditBase;
     friend class uDDOModel;
+    friend class uEnemy;
     friend class uGUI;
+    friend class uGUIAreaMaster;
     friend class uGUIBase;
     friend class uGUIBaseExt;
+    friend class uGUIBoxGachaInfo;
     friend class uGUICaplinkMenuBase;
+    friend class uGUICaplinkProfileEdit;
+    friend class uGUICaplinkTag;
     friend class uGUICaplinkTalk;
     friend class uGUICaplinkTopMenu;
+    friend class uGUICaplinkTrophyReceive;
     friend class uGUICharaEditPartsWrap;
     friend class uGUICharacterEdit;
     friend class uGUIClanScout;
     friend class uGUIClanSearch;
     friend class uGUICommunityList;
     friend class uGUIContentsBoard;
+    friend class uGUICraft;
     friend class uGUIEntryBoard;
+    friend class uGUIGPShop;
     friend class uGUIGiveAndTake;
     friend class uGUIInfo;
+    friend class uGUIItemBase01;
     friend class uGUIMap;
     friend class uGUIMapMini;
     friend class uGUIMissionResult;
     friend class uGUIMouseOverCursor;
+    friend class uGUIMyRoomPopup;
+    friend class uGUINewspaper;
     friend class uGUINpcWindow;
     friend class uGUIPopCmd01;
     friend class uGUIPopFilter;
@@ -587,15 +693,22 @@ class MtArray : public MtObject
     friend class uGUIQuestBoard;
     friend class uGUIQuestDelivery;
     friend class uGUIRankingBoard;
+    friend class uGUIServerUIBase;
     friend class uGUIShopBuy;
+    friend class uGUISkill;
     friend class uGUISystemMsg;
     friend class uGeometry2;
     friend class uGeometry2Group;
     friend class uGeometry2GroupCollider;
     friend class uScrollCollisionGeometry;
+    friend class uShlComponentCtrl;
+    friend class uShlEmMultiLock;
     friend class uShlKeepOwnerLog;
+    friend class uShlRenmadanCtrl;
+    friend class uShlStateSurveillance;
     friend class uSoundSubMixer;
     friend class uSoundZoneBase;
+    friend class uStageCraftPawnCtrl;
     friend class uStageFieldCtrl;
     friend class uStageJointCtrl;
     friend class uStageJointMdl;

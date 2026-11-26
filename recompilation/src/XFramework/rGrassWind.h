@@ -107,6 +107,7 @@ public:
 public:
     class cParams
     {
+        friend class rGrassWind;
     public:
         cParams();
         cParams(u16, u16);

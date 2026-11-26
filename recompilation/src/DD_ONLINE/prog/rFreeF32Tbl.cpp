@@ -63,14 +63,16 @@ f32 rFreeF32Tbl::getTagF32(u32 tag, f32 def) {
     return getIndexF32(t0, def);
 }
 
-__attribute__((weak)) MtVector3 rFreeF32Tbl::getTagVec3(u32 tag, const MtVector3& def) {
-    DDON_STUB("rFreeF32Tbl::getTagVec3")
-    __builtin_unreachable();
+MtVector3 rFreeF32Tbl::getTagVec3(u32 tag, const MtVector3& def) {
+    u32 idx = getTagIndex(tag);
+    unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
+    return getIndexVec3(idx, def);
 }
 
-__attribute__((weak)) MtVector4 rFreeF32Tbl::getTagVec4(u32 tag, const MtVector4& def) {
-    DDON_STUB("rFreeF32Tbl::getTagVec4")
-    __builtin_unreachable();
+MtVector4 rFreeF32Tbl::getTagVec4(u32 tag, const MtVector4& def) {
+    u32 idx = getTagIndex(tag);
+    unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
+    return getIndexVec4(idx, def);
 }
 
 u32 rFreeF32Tbl::getTagIndex(u32 tag) {

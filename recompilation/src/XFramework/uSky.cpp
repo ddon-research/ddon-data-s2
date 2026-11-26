@@ -6,6 +6,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtRandom.h"
@@ -44,17 +45,116 @@ uSky::uSky(u32 depth_map_width, u32 depth_map_height) {
 }
 
 __attribute__((noinline)) uSky::~uSky() {
-    DDON_STUB("uSky::~uSky")
-    /* stub */
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
+    }
+    if (mpRayleighDepthMap != nullptr) {
+        mpRayleighDepthMap->release();
+        mpRayleighDepthMap = nullptr;
+    }
+    if (mpMieDepthMap != nullptr) {
+        mpMieDepthMap->release();
+        mpMieDepthMap = nullptr;
+    }
+    if (mpRayleighScatterMap != nullptr) {
+        mpRayleighScatterMap->release();
+        mpRayleighScatterMap = nullptr;
+    }
+    if (mpMieScatterMap != nullptr) {
+        mpMieScatterMap->release();
+        mpMieScatterMap = nullptr;
+    }
+    if (mpCloudScatterMap != nullptr) {
+        mpCloudScatterMap->release();
+        mpCloudScatterMap = nullptr;
+    }
+    if (mpCloudScatterTempMap != nullptr) {
+        mpCloudScatterTempMap->release();
+        mpCloudScatterTempMap = nullptr;
+    }
+    if (mpVertex != nullptr) {
+        mpVertex->release();
+        mpVertex = nullptr;
+    }
+    if (mpIndex != nullptr) {
+        mpIndex->release();
+        mpIndex = nullptr;
+    }
+    if (mpFogUnit != nullptr) {
+        if ((mpFogUnit->mBeFlag - 1u) <= 1u) {
+            mpFogUnit->kill();
+        }
+    }
+    if (mpStarVertexBuffer != nullptr) {
+        mpStarVertexBuffer->release();
+        mpStarVertexBuffer = nullptr;
+    }
+    if (mpStarIndexBuffer != nullptr) {
+        mpStarIndexBuffer->release();
+        mpStarIndexBuffer = nullptr;
+    }
+    if (mpStarTexture != nullptr) {
+        mpStarTexture->release();
+        mpStarTexture = nullptr;
+    }
+    if (mpStarCatalog != nullptr) {
+        mpStarCatalog->release();
+        mpStarCatalog = nullptr;
+    }
+    if (mpStarrySkyColorTexture != nullptr) {
+        mpStarrySkyColorTexture->release();
+        mpStarrySkyColorTexture = nullptr;
+    }
 }
 
 MtUI* uSky::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uSky::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSky::createProperty")
-    /* stub */
+void uSky::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mTime", &mTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "mHour", reinterpret_cast<MT_MFUNC>(&::uSky::getHour), reinterpret_cast<MT_MFUNC>(&::uSky::setHour), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "mMinute", reinterpret_cast<MT_MFUNC>(&::uSky::getMinute), reinterpret_cast<MT_MFUNC>(&::uSky::setMinute), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "mSecond", reinterpret_cast<MT_MFUNC>(&::uSky::getSecond), reinterpret_cast<MT_MFUNC>(&::uSky::setSecond), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mNorthAxis", &mNorthAxis, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMieScattering", &mMieScattering, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEccentricity", &mEccentricity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMieDensity", &mMieDensity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", reinterpret_cast<MT_MFUNC>(&::uSky::getResource), reinterpret_cast<MT_MFUNC>(&::uSky::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mSubScenePriority", &mSubScenePriority, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeightOffset", &mHeightOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCloudiness", &mCloudiness, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCloudHeight", &mCloudHeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCloudThickness", &mCloudThickness, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCloudScattering", &mCloudScattering, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCloudEccentricity", &mCloudEccentricity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPreComputeLoopCount", &mPreComputeLoopCount, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLoopCount", &mLoopCount, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mDivX", reinterpret_cast<MT_MFUNC>(&::uSky::getDivX), reinterpret_cast<MT_MFUNC>(&::uSky::setDivX), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mDivY", reinterpret_cast<MT_MFUNC>(&::uSky::getDivY), reinterpret_cast<MT_MFUNC>(&::uSky::setDivY), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mCorrectHorizon", &mCorrectHorizon, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpRayleighDepthMap", reinterpret_cast<MtObject* *>(&mpRayleighDepthMap), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpMieDepthMap", reinterpret_cast<MtObject* *>(&mpMieDepthMap), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpRayleighScatterMap", reinterpret_cast<MtObject* *>(&mpRayleighScatterMap), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpMieScatterMap", reinterpret_cast<MtObject* *>(&mpMieScatterMap), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCloudScatterMap", reinterpret_cast<MtObject* *>(&mpCloudScatterMap), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "UseFog", reinterpret_cast<MT_MFUNC>(&::uSky::getUseFog), reinterpret_cast<MT_MFUNC>(&::uSky::setUseFog), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "FogUnitLine", reinterpret_cast<MT_MFUNC>(&::uSky::getFogUnitLine), reinterpret_cast<MT_MFUNC>(&::uSky::setFogUnitLine), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mFogSunColorScale", &mFogSunColorScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFogRayleighScale", &mFogRayleighScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFogMieScale", &mFogMieScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mStarNum", reinterpret_cast<MT_MFUNC>(&::uSky::getStarNum), reinterpret_cast<MT_MFUNC>(&::uSky::setStarNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpStarTexture", "resource", static_cast<void*>(&mpStarTexture), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mStarRandomSeed", reinterpret_cast<MT_MFUNC>(&::uSky::getStarRandomSeed), reinterpret_cast<MT_MFUNC>(&::uSky::setStarRandomSeed), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpStarCatalog", "resource", reinterpret_cast<MT_MFUNC>(&::uSky::getStarCatalog), reinterpret_cast<MT_MFUNC>(&::uSky::setStarCatalog), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mStarIntensity", &mStarIntensity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStarSize", &mStarSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStarrySkyIntensity", &mStarrySkyIntensity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTwinkleAmplitude", &mTwinkleAmplitude, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpStarrySkyColorTexture", reinterpret_cast<MtObject* *>(&mpStarrySkyColorTexture), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMoonEnable", &mMoonEnable, 0u, 0u);
 }
 
 void uSky::setup() {
@@ -217,9 +317,12 @@ __attribute__((weak)) MtVector3 uSky::getMoonScatteredColor(f32 h) const {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 uSky::getBaseSunColor() const {
-    DDON_STUB("uSky::getBaseSunColor")
-    __builtin_unreachable();
+MtVector3 uSky::getBaseSunColor() const {
+    if (mpResource != nullptr) {
+        return mpResource->mSunColor;
+    } else {
+        return MtVector3::Zero;
+    }
 }
 
 __attribute__((weak)) void uSky::createBuffer() {
@@ -331,9 +434,13 @@ __attribute__((weak)) void uSky::drawMoon(cDraw* pdraw) {
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 uSky::getSunDirforMoon() {
-    DDON_STUB("uSky::getSunDirforMoon")
-    __builtin_unreachable();
+MtVector3 uSky::getSunDirforMoon() {
+    MtVector3 result;
+    result.x = 1.0f;
+    result.y = 0.0f;
+    result.z = 0.0f;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 u32 uSky::getDivX() const {

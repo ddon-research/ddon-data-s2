@@ -70,9 +70,11 @@ __attribute__((noinline)) rSoundSequenceSe::~rSoundSequenceSe() {
     }
 }
 
-__attribute__((weak)) void rSoundSequenceSe::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundSequenceSe::createProperty")
-    /* stub */
+void rSoundSequenceSe::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "SE Resource", "resource", reinterpret_cast<MT_MFUNC>(&::rSoundSequenceSe::getSoundRequest), reinterpret_cast<MT_MFUNC>(&::rSoundSequenceSe::setSoundRequest), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mPauseStatus", &mPauseStatus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSeqSe", static_cast<MtObject*>(&mSeqSe), 0u, 0u);
+    this->cResource::createProperty(s);
 }
 
 MtUI* rSoundSequenceSe::createUI(MtProperty& prop) {
@@ -170,9 +172,9 @@ rSoundSequenceSe::SequenceSe::~SequenceSe() {
     mCommand.mLength = 0;
 }
 
-__attribute__((weak)) void rSoundSequenceSe::SequenceSe::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundSequenceSe::SequenceSe::createProperty")
-    /* stub */
+void rSoundSequenceSe::SequenceSe::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "RequestNo", &mRequestNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Command", static_cast<MtObject*>(&mCommand), 0u, 0u);
 }
 
 MtUI* rSoundSequenceSe::SequenceSe::createUI(MtProperty& prop) {
@@ -207,9 +209,10 @@ inline void rSoundSequenceSe::SequenceSe::Command::operator delete(void* p_addr)
 rSoundSequenceSe::SequenceSe::Command::~Command() {
 }
 
-__attribute__((weak)) void rSoundSequenceSe::SequenceSe::Command::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundSequenceSe::SequenceSe::Command::createProperty")
-    /* stub */
+void rSoundSequenceSe::SequenceSe::Command::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mCommand", &mCommand, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mValue1", &mValue[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mValue2", &mValue[1], 0u, 0u);
 }
 
 MtUI* rSoundSequenceSe::SequenceSe::Command::createUI(MtProperty& prop) {
@@ -221,8 +224,7 @@ inline rSoundSequenceSe::SequenceSe::Command::MyDTI::MyDTI(MT_CTSTR class_name, 
 rSoundSequenceSe::SequenceSe::Command::MyDTI rSoundSequenceSe::SequenceSe::Command::DTI("rSoundSequenceSe::SequenceSe::Command", &::MtObject::DTI, 24ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rSoundSequenceSe::SequenceSe::Command::MyDTI::newInstance() const {
-    DDON_STUB("rSoundSequenceSe::SequenceSe::Command::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rSoundSequenceSe::SequenceSe::Command;
 }
 
 template MtTypedArray<rSoundSequenceSe::SequenceSe::Command>::~MtTypedArray();

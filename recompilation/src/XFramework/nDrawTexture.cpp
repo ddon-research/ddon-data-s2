@@ -96,7 +96,22 @@ inline void nDraw::Texture::operator delete(void* p_addr) {
 nDraw::Texture::Texture(u32 w, u32 h, u32 miplevels, u32 arraysize, nDraw::FORMAT_TYPE fmt, nDraw::USAGE_TYPE usage, u32 misc_flags, nDraw::Texture* psharedtex, u32 share_offset, void* pinitvalues, nDraw::TEXMEMORY_TYPE memtype)
     : nDraw::Buffer(usage)
 {
-    init((arraysize > 1) ? nDraw::TT_2DARRAY : nDraw::TT_2D, w, h, 1, miplevels, arraysize, fmt, misc_flags, nullptr, nullptr);
+    u32 type;
+    if ((misc_flags & 0xf00u) != 0) {
+        type = 8u | (arraysize > 1 ? 1u : 0u);
+    } else if ((misc_flags & 8u) != 0) {
+        type = nDraw::TT_CUBE;
+    } else {
+        type = (arraysize > 1) ? nDraw::TT_2DARRAY : nDraw::TT_2D;
+    }
+    init(type, w, h, 1, miplevels, arraysize, fmt, misc_flags, nullptr, nullptr);
+    create(psharedtex, share_offset, pinitvalues);
+}
+
+nDraw::Texture::Texture(u32 w, u32 h, u32 d, u32 miplevels, u32 arraysize, nDraw::FORMAT_TYPE fmt, nDraw::USAGE_TYPE usage, u32 misc_flags, nDraw::Texture* psharedtex, u32 share_offset, void* pinitvalues)
+    : nDraw::Buffer(usage)
+{
+    init(nDraw::TT_3D, w, h, d, miplevels, arraysize, fmt, misc_flags, nullptr, nullptr);
     create(psharedtex, share_offset, pinitvalues);
 }
 
@@ -351,12 +366,12 @@ __attribute__((weak)) MtSize nDraw::Texture::calcBufferSize(u32 w, u32 h, u32 le
     return sz;
 }
 
-u32 nDraw::Texture::calcMipLevelCount(u32 size) {
-    unsigned int i1 = 0xFFFFFFFF;
-    do {
-        i1 += 1u;
-    } while (size >= static_cast<unsigned int>(1ul << static_cast<unsigned long>(static_cast<unsigned char>(i1 + 256u) & 31)));
-    return i1;
+__attribute__((weak)) u32 nDraw::Texture::calcMipLevelCount(u32 size) {
+        u32 n = 0;
+        while ((1u << n) <= size) {
+            n++;
+        }
+        return n;
 }
 
 __attribute__((weak)) sce::Gnm::DataFormat nDraw::Texture::getGPUFormatType(const nDraw::FORMAT_TYPE fmt) {

@@ -240,6 +240,14 @@ inline void* uGUICaplinkTrophyTop::cListItem::operator new(size_t sz, void* p_ad
     return p_addr;
 }
 
+inline uGUICaplinkTrophyTop::cListItem::cListItem() {
+    this->mpObjMsgNum = nullptr;
+    this->mpObjMsgComment = nullptr;
+    this->mpObjMsgTitle = nullptr;
+    this->mpInstAnimLoading = nullptr;
+    this->mpInstAnimStamp = nullptr;
+}
+
 inline void* uGUICaplinkTrophyTop::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

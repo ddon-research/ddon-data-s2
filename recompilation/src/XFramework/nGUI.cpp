@@ -7,6 +7,7 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
 #include "sCamera.h"
@@ -52,9 +53,10 @@ inline void nGUI::WrapPoint::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nGUI::WrapPoint::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void nGUI::WrapPoint::createProperty(MtPropertyList& s) {
-    DDON_STUB("nGUI::WrapPoint::createProperty")
-    /* stub */
+void nGUI::WrapPoint::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "Unicode", &mUnicode, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Start a new line after continued wrap points", &mStartNewLineAfterContdWrapPts, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Valid", &mIsValid, 0u, 0u);
 }
 
 inline nGUI::WrapPoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

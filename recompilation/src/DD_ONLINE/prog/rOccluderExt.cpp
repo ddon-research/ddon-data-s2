@@ -63,9 +63,9 @@ MT_CTSTR rOccluderEx::getExt() const {
     return "oce";
 }
 
-__attribute__((weak)) void rOccluderEx::createProperty(MtPropertyList& s) {
-    DDON_STUB("rOccluderEx::createProperty")
-    /* stub */
+void rOccluderEx::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaList", static_cast<MtObject*>(&mAreaList), 0u, 0u);
 }
 
 MtUI* rOccluderEx::createUI(MtProperty& prop) {

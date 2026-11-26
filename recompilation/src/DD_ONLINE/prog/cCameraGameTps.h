@@ -188,8 +188,16 @@ inline void* cCamExParamTps::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cCamExParamTps::cCamExParamTps() : mIsResetAngle(false), mIsResetAngleDetail(false), mEnableLargeCorrect(false), mResetDetailAngX(0.0f), mResetDetailAngY(0.0f), ctrlSpeed(1.0f), isUseLimit(false), limitDeg(45.0f), isFollowAngle(false), isNoHeightCorrect(false) {
+    this->::cCamExParam::mType = static_cast<nCameraGame::CAMERA_TYPE>(1);
+}
+
 inline void* cCamExParamTps2::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cCamExParamTps2::cCamExParamTps2() {
+    this->::cCamExParam::mType = static_cast<nCameraGame::CAMERA_TYPE>(17);
 }
 
 inline void* cCamImpTps::operator new(size_t sz, void* p_addr) {

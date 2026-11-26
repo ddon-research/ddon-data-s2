@@ -10,7 +10,7 @@
 #include "cEvaluation.h"
 #include "nDDOUtility.h"
 #include "../../generated/shared/nEnemy.h"
-#include "../../generated/shared/nEnemyID.h"
+#include "nEnemyID.h"
 #include "../../generated/shared/nErosionEnemyBase.h"
 #include "nObjCollision.h"
 #include "nRegionStatus.h"
@@ -85,6 +85,7 @@ using u32 = unsigned int;
 
 class uEnemy : public uCharacter
 {
+    friend class uCharacter;
 public:
     enum
     {

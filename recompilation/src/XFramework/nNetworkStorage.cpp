@@ -7,6 +7,7 @@
 #include "../MT/MtNetObject.h"
 #include "../MT/MtNetStorage2.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -34,9 +35,14 @@ __attribute__((noinline)) nNetwork::Storage::~Storage() {
     /* stub */
 }
 
-__attribute__((weak)) void nNetwork::Storage::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::Storage::createProperty")
-    /* stub */
+void nNetwork::Storage::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mState", &mState, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mUserIndex", &mUserIndex, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mService", &mService, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mOption", &mOption, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "close", static_cast<MT_MFUNC>(&::nNetwork::Storage::close), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "abort", static_cast<MT_MFUNC>(&::nNetwork::Storage::abort), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpStorage", reinterpret_cast<MtObject* *>(&mpStorage), 2u, 0u);
 }
 
 MtUI* nNetwork::Storage::createUI(MtProperty& prop) {
@@ -62,9 +68,29 @@ void nNetwork::Storage::abort() {
     mpStorage->abortRequest(mReqSeq);
 }
 
-__attribute__((weak)) bool nNetwork::Storage::autoFinal(MtNetContext* pcon) {
-    DDON_STUB("nNetwork::Storage::autoFinal")
-    return {};
+bool nNetwork::Storage::autoFinal(MtNetContext* pcon) {
+    u32 i;
+    if (pcon == mpContext) {
+        mClose = true;
+        return false;
+    } else {
+        i = 0;
+    }
+    bool b2_0;
+    for (;;) {
+        if (mCloser[i].mpStorage != nullptr) {
+            if (pcon == mCloser[i].mpContext) {
+                return false;
+            }
+        }
+        if ((i + 1u) <= 7u) {
+            i += 1u;
+        } else {
+            b2_0 = true;
+            break;
+        }
+    }
+    return b2_0;
 }
 
 __attribute__((weak)) void nNetwork::Storage::removeDriver() {

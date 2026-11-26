@@ -45,6 +45,8 @@ DdonInnerTrial trial(const DdonInnerKey& key, int (*attempt)(void* context), voi
 // A clean trial's rerun, `rerun(context)`; the verdicts its trial sent back
 // last no longer than it does.
 int rerun(int (*rerun)(void* context), void* context);
+// Whether the next trials are a rerun's, with verdicts left to replay.
+bool replays();
 // Whether this process is a trial's child.
 bool in_child();
 // In a trial's child: ends its answer as a wall with `text` (a trap, a

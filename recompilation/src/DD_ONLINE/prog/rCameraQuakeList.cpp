@@ -15,6 +15,7 @@
 #include "../../XFramework/sCamera.h"
 #include "sCameraExt.h"
 #include "uCameraBase.h"
+#include "uCameraGame.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -61,29 +62,56 @@ MtUI* cQuakeParam::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cQuakeParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cQuakeParam::createProperty")
-    /* stub */
+void cQuakeParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mName", &mName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeadTime", &mHeadTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMainTime", &mMainTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTailTime", &mTailTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMagnitude", &mMagnitude, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRadius", &mRadius, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpread", &mSpread, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDamping", &mDamping, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPeriod", &mPeriod, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRoll", &mRoll, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBalance", &mBalance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mbAsync", &mbAsync, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCamera1QuakeTime", &mCamera1QuakeTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTarget1QuakeTime", &mTarget1QuakeTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRoll1QuakeTime", &mRoll1QuakeTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRandDrop", &mRandDrop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeadCurve", &mHeadCurve, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTailCurve", &mTailCurve, 0u, 0u);
 }
 
-__attribute__((weak)) void cQuakeParam::createPropertyTool(MtPropertyList& s) {
-    DDON_STUB("cQuakeParam::createPropertyTool")
-    /* stub */
+void cQuakeParam::createPropertyTool(MtPropertyList& s) {
+    createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "Start", reinterpret_cast<MT_MFUNC32>(&::cQuakeParam::QuakeStart), 0u, 15u);
+    s << MtProperty(static_cast<MtObject*>(this), "Cancel", reinterpret_cast<MT_MFUNC32>(&::cQuakeParam::QuakeCancel), 0u, 15u);
 }
 
-__attribute__((weak)) void cQuakeParam::QuakeStart(uintptr task) const {
-    DDON_STUB("cQuakeParam::QuakeStart")
-    /* stub */
+void cQuakeParam::QuakeStart(uintptr task) const {
+    uCameraGame* t0 = static_cast<sCameraExt*>(sCamera::getInstance())->getGameCamera();
+    if (t0 == nullptr) {
+        return;
+    }
+    t0->mQuake.set(task, mHeadTime, mMainTime, mTailTime, mMagnitude, mPos, mRadius, mSpread, mDamping, mPeriod, mCamera1QuakeTime, mTarget1QuakeTime, mRoll1QuakeTime, mRandDrop, static_cast<cCameraQuake::EASE_TYPE>(mHeadCurve), static_cast<cCameraQuake::EASE_TYPE>(mTailCurve), mRoll, mBalance, mbAsync);
 }
 
-__attribute__((weak)) void cQuakeParam::QuakeStartPos(uintptr task, const MtVector3& pos) const {
-    DDON_STUB("cQuakeParam::QuakeStartPos")
-    /* stub */
+void cQuakeParam::QuakeStartPos(uintptr task, const MtVector3& pos) const {
+    uCameraGame* pCam = static_cast<sCameraExt*>(sCamera::getInstance())->getGameCamera();
+    if (pCam == nullptr) {
+        return;
+    }
+    pCam->mQuake.set(task, mHeadTime, mMainTime, mTailTime, mMagnitude, pos, mRadius, mSpread, mDamping, mPeriod, mCamera1QuakeTime, mTarget1QuakeTime, mRoll1QuakeTime, mRandDrop, static_cast<cCameraQuake::EASE_TYPE>(mHeadCurve), static_cast<cCameraQuake::EASE_TYPE>(mTailCurve), mRoll, mBalance, mbAsync);
 }
 
-__attribute__((weak)) void cQuakeParam::QuakeCancel(uintptr task) const {
-    DDON_STUB("cQuakeParam::QuakeCancel")
-    /* stub */
+void cQuakeParam::QuakeCancel(uintptr task) const {
+    uCameraGame* pCam = static_cast<sCameraExt*>(sCamera::getInstance())->getGameCamera();
+    if (pCam == nullptr) {
+        return;
+    }
+    pCam->mQuake.del(task, false);
 }
 
 inline cQuakeParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -139,9 +167,9 @@ rCameraQuakeList::~rCameraQuakeList() {
     mQuakeList.mLength = 0;
 }
 
-__attribute__((weak)) void rCameraQuakeList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rCameraQuakeList::createProperty")
-    /* stub */
+void rCameraQuakeList::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuakeList", static_cast<MtObject*>(&mQuakeList), 0u, 0u);
 }
 
 __attribute__((weak)) void rCameraQuakeList::clear() {

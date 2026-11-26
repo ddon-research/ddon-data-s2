@@ -18,6 +18,7 @@ class MtObject;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
+namespace nNetwork { class Connect; }
 namespace nNetwork { class Session; }
 
 // Declarations
@@ -133,7 +134,7 @@ namespace nNetwork {
             static void operator delete(void* p_addr, u32 align);
             static void operator delete[](void* p_addr, u32 align);
             Queue();
-            virtual ~Queue();
+            virtual ~Queue() {}
             virtual void createProperty(MtPropertyList& s);  // vtable slot 4
             void move();
         public:
@@ -213,6 +214,7 @@ namespace nNetwork {
     class ReceiverBase
     {
         friend class nNetwork::Callback;
+        friend class nNetwork::Connect;
     public:
         ReceiverBase();
         virtual ~ReceiverBase() {}
@@ -246,6 +248,12 @@ inline void* nNetwork::Callback::operator new(size_t sz, void* p_addr) {
 
 inline void* nNetwork::Callback::Entry::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nNetwork::Callback::Entry::Entry() {
+    this->mpReceiver = nullptr;
+    this->mBuffering = false;
+    this->mRoute = false;
 }
 
 inline void* nNetwork::Callback::Queue::operator new(size_t sz, void* p_addr) {

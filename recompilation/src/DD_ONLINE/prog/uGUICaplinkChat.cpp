@@ -50,13 +50,16 @@ void* uGUICaplinkChat::operator new(size_t sz, u32 align) {
 }
 
 uGUICaplinkChat::~uGUICaplinkChat() {
-    DDON_STUB("uGUICaplinkChat::~uGUICaplinkChat")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
-__attribute__((weak)) void uGUICaplinkChat::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGUICaplinkChat::createProperty")
-    /* stub */
+void uGUICaplinkChat::createProperty(MtPropertyList& s) {
+    this->uGUICaplinkMenuBase::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlowId", &mFlowId, 0u, 0u);
 }
 
 bool uGUICaplinkChat::loadResource() {
@@ -341,6 +344,10 @@ const MtDTI& uGUICaplinkChat::cDateItem::getDTI() const {
     return uGUICaplinkChat::cDateItem::DTI;
 }
 
+inline void* uGUICaplinkChat::cDateItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUICaplinkChat::cDateItem::DTI)->memAlloc(sz, align, uGUICaplinkChat::cDateItem::DTI.getID());
+}
+
 inline void uGUICaplinkChat::cDateItem::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUICaplinkChat::cDateItem::DTI)->memFree(p_addr);
 }
@@ -349,13 +356,16 @@ inline uGUICaplinkChat::cDateItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 
 uGUICaplinkChat::cDateItem::MyDTI uGUICaplinkChat::cDateItem::DTI("uGUICaplinkChat::cDateItem", &::uGUIBase::cScrollListItemBase::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICaplinkChat::cDateItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUICaplinkChat::cDateItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICaplinkChat::cDateItem::MyDTI::newInstance() const {
+    return new (16u) uGUICaplinkChat::cDateItem;
 }
 
 const MtDTI& uGUICaplinkChat::cSystemItem::getDTI() const {
     return uGUICaplinkChat::cSystemItem::DTI;
+}
+
+inline void* uGUICaplinkChat::cSystemItem::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUICaplinkChat::cSystemItem::DTI)->memAlloc(sz, align, uGUICaplinkChat::cSystemItem::DTI.getID());
 }
 
 inline void uGUICaplinkChat::cSystemItem::operator delete(void* p_addr) {
@@ -366,9 +376,8 @@ inline uGUICaplinkChat::cSystemItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 
 uGUICaplinkChat::cSystemItem::MyDTI uGUICaplinkChat::cSystemItem::DTI("uGUICaplinkChat::cSystemItem", &::uGUIBase::cScrollListItemBase::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICaplinkChat::cSystemItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUICaplinkChat::cSystemItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICaplinkChat::cSystemItem::MyDTI::newInstance() const {
+    return new (16u) uGUICaplinkChat::cSystemItem;
 }
 
 const MtDTI& uGUICaplinkChat::cMessageItem::getDTI() const {

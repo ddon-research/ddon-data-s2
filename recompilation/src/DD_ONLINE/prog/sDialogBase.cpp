@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "sDialogBase.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
@@ -74,14 +75,28 @@ __attribute__((weak)) u32 sDialogBase::request(nDialog::MSG_NO msgNo, nDialog::D
     return {};
 }
 
-__attribute__((weak)) void sDialogBase::setFreeMessage(u32 handle, MT_CTSTR str) {
-    DDON_STUB("sDialogBase::setFreeMessage")
-    /* stub */
+void sDialogBase::setFreeMessage(u32 handle, MT_CTSTR str) {
+    for (int i0_0 = 0; i0_0 <= 7; i0_0 = i0_0 + 1) {
+        if (mInfo[i0_0].state != nDialog::STATE_NONE) {
+            if (mInfo[i0_0].handle == handle) {
+                strncpy(&mInfo[i0_0].str[0], str, 255ul);
+                return;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void sDialogBase::closeDialog(u32 handle) {
-    DDON_STUB("sDialogBase::closeDialog")
-    /* stub */
+void sDialogBase::closeDialog(u32 handle) {
+    for (int i0_0 = 0; i0_0 <= 7; i0_0 = i0_0 + 1) {
+        if (mInfo[i0_0].state != nDialog::STATE_NONE) {
+            if (mInfo[i0_0].handle == handle) {
+                if (mInfo[i0_0].function == nDialog::FUNC_REQ) {
+                    mInfo[i0_0].function = nDialog::FUNC_END;
+                }
+                return;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sDialogBase::callbackNativeMsgDialog(s32 buttonType, void* data) {
@@ -163,6 +178,8 @@ inline sDialogBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 sDialogBase::MyDTI sDialogBase::DTI("sDialogBase", &::cSystem::DTI, 2960ul, 0u, 0u);
 
 sDialogBase* sDialogBase::mpInstance;
+
+alignas(4) unsigned char sDialogBase_convReturnMsgNoTbl_bytes[56] __asm__("_ZN11sDialogBase18convReturnMsgNoTblE") = {0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x12, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 __attribute__((weak)) MtObject* sDialogBase::MyDTI::newInstance() const {
     DDON_STUB("sDialogBase::MyDTI::newInstance")

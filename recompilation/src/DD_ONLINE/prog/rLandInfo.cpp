@@ -64,14 +64,23 @@ rLandInfo::~rLandInfo() {
     mLandInfo.mLength = 0;
 }
 
-__attribute__((weak)) void rLandInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rLandInfo::createProperty")
-    /* stub */
+void rLandInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mLandInfo", static_cast<MtObject*>(&mLandInfo), 0u, 0u);
 }
 
 __attribute__((weak)) bool rLandInfo::save(MtStream& out) {
-    DDON_STUB("rLandInfo::save")
-    return {};
+    MtDataWriter w(out, 0x1000u, 0x1000u);
+    w.writeU32(0x49414cu);
+    w.writeU32(2u);
+    w.writeU32(mLandInfo.mLength);
+    for (u32 t1 = 0; t1 < mLandInfo.mLength; ++t1) {
+        w.writeU32(mLandInfo[t1]->mLandId);
+        w.writeU32(mLandInfo[t1]->mAreaArray.mLength);
+        for (u32 t2 = 0; t2 < mLandInfo[t1]->mAreaArray.mLength; ++t2) {
+            w.writeU32(mLandInfo[t1]->mAreaArray[t2]->mAreaId);
+        }
+        }
+    return true;
 }
 
 bool rLandInfo::load(MtStream& in) {
@@ -133,9 +142,9 @@ rLandInfo::cLandInfo::~cLandInfo() {
     mAreaArray.mLength = 0;
 }
 
-__attribute__((weak)) void rLandInfo::cLandInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rLandInfo::cLandInfo::createProperty")
-    /* stub */
+void rLandInfo::cLandInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mLandId", &mLandId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaArray", static_cast<MtObject*>(&mAreaArray), 0u, 0u);
 }
 
 inline rLandInfo::cLandInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -161,9 +170,8 @@ inline void rLandInfo::cLandInfo::cLandAreaInfo::operator delete(void* p_addr) {
 rLandInfo::cLandInfo::cLandAreaInfo::~cLandAreaInfo() {
 }
 
-__attribute__((weak)) void rLandInfo::cLandInfo::cLandAreaInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rLandInfo::cLandInfo::cLandAreaInfo::createProperty")
-    /* stub */
+void rLandInfo::cLandInfo::cLandAreaInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaId", &mAreaId, 0u, 0u);
 }
 
 inline rLandInfo::cLandInfo::cLandAreaInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

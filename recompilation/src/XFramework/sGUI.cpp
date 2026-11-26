@@ -8,6 +8,8 @@
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtPrimitive2D.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
@@ -75,9 +77,28 @@ MtUI* sGUI::createUI(MtProperty& prop) {
     return this->cSystem::createUI(prop);
 }
 
-__attribute__((weak)) void sGUI::createProperty(MtPropertyList& s) {
-    DDON_STUB("sGUI::createProperty")
-    /* stub */
+void sGUI::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsEnableGUIPlacementNew", &mIsEnableGUIPlacementNew, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Language", reinterpret_cast<MT_MFUNC>(&::sGUI::getLanguageId), reinterpret_cast<MT_MFUNC>(&::sGUI::setLanguageIdForProperty), 160u, reinterpret_cast<MT_MFUNC>(&::sGUI::getLanguageSettingNum), reinterpret_cast<MT_MFUNC>(&::sGUI::setLanguageSettingNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mWrapPointList", static_cast<MtObject*>(&mWrapPointList), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "FontSlot", "resource", reinterpret_cast<MT_MFUNC>(&::sGUI::getFont), reinterpret_cast<MT_MFUNC>(&::sGUI::setFont), 32u, reinterpret_cast<MT_MFUNC>(&::sGUI::getFontCount), reinterpret_cast<MT_MFUNC>(&::sGUI::setFontCount));
+    s << MtProperty(static_cast<MtObject*>(this), "IconFont", "resource", reinterpret_cast<MT_MFUNC>(&::sGUI::getIconFont), reinterpret_cast<MT_MFUNC>(&::sGUI::setIconFont), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "UseSystemFont", reinterpret_cast<MT_MFUNC>(&::sGUI::isUseSystemFont), reinterpret_cast<MT_MFUNC>(&::sGUI::setUseSystemFont), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "RubyFont", "resource", reinterpret_cast<MT_MFUNC>(&::sGUI::getRubyFont), reinterpret_cast<MT_MFUNC>(&::sGUI::setRubyFont), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "RubyLineSpace", reinterpret_cast<MT_MFUNC>(&::sGUI::getRubyLineSpace), reinterpret_cast<MT_MFUNC>(&::sGUI::setRubyLineSpace), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "RubyRatio", reinterpret_cast<MT_MFUNC>(&::sGUI::getRubyRatio), reinterpret_cast<MT_MFUNC>(&::sGUI::setRubyRatio), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "EnableRubySpace", &mEnableRubySpace, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpFontFilterResource", "resource", static_cast<void*>(&mpFontFilterResource), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "UseIconFontFilter", reinterpret_cast<MT_MFUNC>(&::sGUI::isUseIconFontFilter), reinterpret_cast<MT_MFUNC>(&::sGUI::setUseIconFontFilter), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "TempMTagOffset", reinterpret_cast<MT_MFUNC>(&::sGUI::getTempMTagOffset), reinterpret_cast<MT_MFUNC>(&::sGUI::setTempMTagOffset), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "TempMTagBufferCount", reinterpret_cast<MT_MFUNC>(&::sGUI::getTempMTagBufferCount), reinterpret_cast<MT_MFUNC>(&::sGUI::setTempMTagBufferCount), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "UseTempMTagCount", reinterpret_cast<MT_MFUNC>(&::sGUI::getUseTempMTagCount), reinterpret_cast<MT_MFUNC>(&::sGUI::setUseTempMTagCount), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Compaction", static_cast<MT_MFUNC>(&::sGUI::requestBufferCompaction), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "VBSize", &mVertexBufferSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "VBBlankSize", &mVertexBufferBlankSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "IBSize", &mIndexBufferSize, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "IBBlankSize", &mIndexBufferBlankSize, 3u, 0u);
 }
 
 __attribute__((weak)) void sGUI::createMenu(MtPropertyList& s) {
@@ -91,33 +112,39 @@ u32 sGUI::getPlatform() const {
 }
 
 __attribute__((weak)) void sGUI::getPlatformFilePath(MT_STR outPath, MT_CTSTR inPath) {
-    DDON_STUB("sGUI::getPlatformFilePath")
-    /* stub */
-}
-
-const nGUI::PROP_SETTER* sGUI::getPropSetter(const nGUI::CLASS_INFO* pInfo, MT_CTSTR name) const {
-    u32 v0_8 = pInfo->setterNum;
-    const nGUI::PROP_SETTER* v2_0;
-    if (v0_8 == 0) {
-        v2_0 = nullptr;
-    } else {
-        const nGUI::PROP_SETTER* p0_2 = pInfo->pPropSetter;
-        for (unsigned int i0_7 = 0;;) {
-            if (strcmp(p0_2->name, name) != 0) {
-                if ((i0_7 + 1u) < v0_8) {
-                    p0_2 += 1;
-                    i0_7 += 1u;
-                } else {
+    static MT_CTSTR platformName[7] = { "", "win", "ps3", "360", "wii", "one", "ps4" };
+    MT_CHAR cmd[1024];
+    strcpy(cmd, inPath);
+    if (outPath != inPath) {
+        strcpy(outPath, inPath);
+    }
+    MT_CHAR tokenChar[5] = "\\_-.";
+    MT_STR token = strtok(cmd, tokenChar);
+    while (token != nullptr) {
+        if (static_cast<u32>(strlen(token)) == 3) {
+            for (u32 i = 1; i < 7; ++i) {
+                if (strcmp(token, platformName[i]) == 0) {
+                    uintptr pos = token - cmd;
+                    MT_CTSTR name = platformName[6];
+                    for (u32 j = 0; j < 3; ++j) {
+                        outPath[pos + j] = name[j];
+                    }
                     break;
                 }
-            } else {
-                v2_0 = p0_2;
-                return v2_0;
             }
         }
-        v2_0 = nullptr;
+        token = strtok(nullptr, tokenChar);
     }
-    return v2_0;
+}
+
+__attribute__((weak)) const nGUI::PROP_SETTER* sGUI::getPropSetter(const nGUI::CLASS_INFO* pInfo, MT_CTSTR name) const {
+        const nGUI::PROP_SETTER* pSetter = pInfo->pPropSetter;
+        for (u32 i = 0; i < pInfo->setterNum; i++, pSetter++) {
+            if (strcmp(pSetter->name, name) == 0) {
+                return pSetter;
+            }
+        }
+        return nullptr;
 }
 
 __attribute__((weak)) void sGUI::setUseSystemFont(bool v) {
@@ -129,9 +156,28 @@ bool sGUI::isUseSystemFont() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 32)) & 2) >> 1);
 }
 
-__attribute__((weak)) void sGUI::createAlphaMap() {
-    DDON_STUB("sGUI::createAlphaMap")
-    /* stub */
+void sGUI::createAlphaMap() {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    if (mpAlphaMap != nullptr) {
+        mpAlphaMap->addRef();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    } else {
+        u64 t0 = (sRender::mpInstance)->mScreenSize.wh;
+        mpAlphaMap = new (16u) nDraw::Texture(static_cast<unsigned int>(t0), static_cast<u32>(t0 >> 32), 1u, 1u, nDraw::FORMAT_B8G8R8A8_UNORM, nDraw::USAGE_RENDERTARGET, 2u, static_cast<nDraw::Texture*>(nullptr), 0u, static_cast<void*>(nullptr), nDraw::TEXMEMORY_VRAM);
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
 }
 
 void sGUI::releaseAlphaMap() {
@@ -170,8 +216,30 @@ static auto ddon_emit_0x01b9fc40 __attribute__((used)) = &sGUI::getLanguageId;
 static auto ddon_emit_0x01b9fc50 __attribute__((used)) = &sGUI::setLanguageIdForProperty;
 
 __attribute__((weak)) void sGUI::getLanguageFilePath(MT_STR outPath, MT_CTSTR inPath, nGUI::LANGUAGE_SETTING setting) {
-    DDON_STUB("sGUI::getLanguageFilePath")
-    /* stub */
+    MT_CHAR cmd[1024];
+    strcpy(cmd, inPath);
+    if (outPath != inPath) {
+        strcpy(outPath, inPath);
+    }
+    MT_CHAR tokenChar[15] = "\\_-.0123456789";
+    MT_STR token = strtok(cmd, tokenChar);
+    while (token != nullptr) {
+        if (static_cast<u32>(strlen(token)) == 3) {
+            for (u32 i = 0; i < nGUI::LANGUAGE_NUM; ++i) {
+                if (strcmp(token, nGUI::Language::getLanguageShortName(static_cast<nGUI::LANGUAGE>(i))) == 0) {
+                    MT_CTSTR lan = nGUI::Language::getLanguageShortName(mLanguageId[setting]);
+                    if (lan != nullptr) {
+                        uintptr pos = token - cmd;
+                        for (u32 j = 0; j < 3; ++j) {
+                            outPath[pos + j] = lan[j];
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        token = strtok(nullptr, tokenChar);
+    }
 }
 
 __attribute__((weak)) void sGUI::setFontCount(s32 slot) {
@@ -433,9 +501,20 @@ void sGUI::memFree(void* p_addr) {
     sGUI::getAllocator()->memFree(p_addr);
 }
 
-__attribute__((weak)) void sGUI::buildClassInfo(const MtDTI* pDti, nGUI::CLASS_INFO* pInfo, u32& index) {
-    DDON_STUB("sGUI::buildClassInfo")
-    /* stub */
+void sGUI::buildClassInfo(const MtDTI* pDti, nGUI::CLASS_INFO* pInfo, u32& index) {
+    for (MtDTI* v0_3 = pDti->mpChild;;) {
+        if (v0_3 == nullptr) {
+            break;
+        } else {
+            if ((v0_3->mAttr & 1u) == 0) {
+                u32 t0 = index;
+                index = t0 + 1u;
+                createClassInfo(v0_3, pInfo[t0]);
+            }
+        }
+        buildClassInfo(v0_3, pInfo, index);
+        v0_3 = v0_3->mpNext;
+    }
 }
 
 __attribute__((weak)) u32 sGUI::getClassNum(const MtDTI* pDti) {
@@ -448,28 +527,14 @@ __attribute__((weak)) void sGUI::createClassInfo(const MtDTI* pDti, nGUI::CLASS_
     /* stub */
 }
 
-const nGUI::CLASS_INFO* sGUI::getClassInfo(const nGUI::CLASS_INFO* pInfo, const u32 dtiId) const {
-    const nGUI::CLASS_INFO* v2_0;
-    if (pInfo->dtiId == 0) {
-        v2_0 = nullptr;
-    } else {
-        u32 v0_0 = pInfo->dtiId;
-        for (const nGUI::CLASS_INFO* p0_1 = pInfo;;) {
-            if (dtiId != v0_0) {
-                if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p0_1) + 16)) != 0) {
-                    v0_0 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p0_1) + 16);
-                    p0_1 += 1;
-                } else {
-                    break;
-                }
-            } else {
-                v2_0 = p0_1;
-                return v2_0;
+__attribute__((weak)) const nGUI::CLASS_INFO* sGUI::getClassInfo(const nGUI::CLASS_INFO* pInfo, const u32 dtiId) const {
+        while (pInfo->dtiId != 0) {
+            if (pInfo->dtiId == dtiId) {
+                return pInfo;
             }
+            pInfo++;
         }
-        v2_0 = nullptr;
-    }
-    return v2_0;
+        return nullptr;
 }
 
 __attribute__((weak)) nGUI::WrapPoint* sGUI::getWrapPointByUnicode(u32 unicode) const {

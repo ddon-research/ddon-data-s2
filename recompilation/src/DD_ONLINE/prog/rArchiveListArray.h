@@ -6,6 +6,9 @@
 // Dependencies
 #include "../../MT/MtDTI.h"
 #include "../../XFramework/cResource.h"
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
 #include "rArchiveListTag.h"
 
 // Forward declarations
@@ -96,4 +99,16 @@ public:
 
 inline void* rArchiveListArray::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void rArchiveListArray::freeMem() {
+    if (mpHeader != nullptr) {
+        MtMemoryAllocator::getAllocator(rArchiveListArray::DTI)->memFree(mpHeader);
+        mpHeader = nullptr;
+    }
+}
+
+inline void rArchiveListArray::allocMem(u32 size) {
+    freeMem();
+    mpHeader = static_cast<stHeader*>(MtMemoryAllocator::getAllocator(rArchiveListArray::DTI)->memAlloc(size, 16));
 }

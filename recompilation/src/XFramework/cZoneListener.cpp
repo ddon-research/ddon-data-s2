@@ -7,6 +7,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cZoneLayout.h"
 #ifndef DDON_STUB
@@ -36,14 +37,20 @@ cZoneListener::cZoneListener() {
 cZoneListener::~cZoneListener() {
 }
 
-__attribute__((weak)) void cZoneListener::createProperty(MtPropertyList& s) {
-    DDON_STUB("cZoneListener::createProperty")
-    /* stub */
+void cZoneListener::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpZoneLayout", reinterpret_cast<MtObject* *>(&mpZoneLayout), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetZoneLayoutIndex", &mTargetZoneLayoutIndex, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetShapeType", &mTargetShapeType, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpGroupManager", reinterpret_cast<MtObject* *>(&mpGroupManager), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPriorityRuleType", &mPriorityRuleType, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetShapeType", &mTargetShapeType, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Call notified", &mFlgCallNotifiedFunction, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Call Contents Callback", &mFlgCallContentsCallbackFunction, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Call Single On Contents Group", &mFlgCallbackSingleCallContentsGroup, 3u, 0u);
 }
 
-__attribute__((weak)) MtVector3 cZoneListener::myPos() {
-    DDON_STUB("cZoneListener::myPos")
-    __builtin_unreachable();
+MtVector3 cZoneListener::myPos() {
+    return MtVector3::Zero;
 }
 
 __attribute__((weak)) MtLineSegment cZoneListener::myLineSegment() {
@@ -55,9 +62,8 @@ MtGeomConvex* cZoneListener::myConvex() {
     return nullptr;
 }
 
-__attribute__((weak)) const MtVector3& cZoneListener::getZoneLayoutWorldOffset() const {
-    DDON_STUB("cZoneListener::getZoneLayoutWorldOffset")
-    __builtin_unreachable();
+const MtVector3& cZoneListener::getZoneLayoutWorldOffset() const {
+    return *((mpZoneLayout == nullptr) ? (&MtVector3::Zero) : (&mpZoneLayout->mWorldOffset));
 }
 
 bool cZoneListener::isRotateZoneLayout() const {
@@ -68,14 +74,12 @@ bool cZoneListener::isRotateZoneLayout() const {
     }
 }
 
-__attribute__((weak)) const MtMatrix& cZoneListener::getZoneLayoutWorldMatrix() const {
-    DDON_STUB("cZoneListener::getZoneLayoutWorldMatrix")
-    __builtin_unreachable();
+const MtMatrix& cZoneListener::getZoneLayoutWorldMatrix() const {
+    return *((mpZoneLayout == nullptr) ? (&MtMatrix::Identity) : (&mpZoneLayout->mWorldMatrix));
 }
 
-__attribute__((weak)) const MtMatrix& cZoneListener::getZoneLayoutWorldInverseMatrix() const {
-    DDON_STUB("cZoneListener::getZoneLayoutWorldInverseMatrix")
-    __builtin_unreachable();
+const MtMatrix& cZoneListener::getZoneLayoutWorldInverseMatrix() const {
+    return *((mpZoneLayout == nullptr) ? (&MtMatrix::Identity) : (&mpZoneLayout->mWorldInverseMatrix));
 }
 
 __attribute__((weak)) void cZoneListener::registerTargetZoneLayout(cZoneLayout& TargetZoneLayout, u32 TargetZoneLayoutIndex, u32 TargetZoneLayoutHandle) {

@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "MtNetStorage2.h"
 #include "MtNetBuffer.h"
 #include "MtNetObject.h"
@@ -61,8 +62,13 @@ __attribute__((weak)) void MtNetStorage2::Listener::onAnsReadSucceed(u32 req_seq
 __attribute__((weak)) void MtNetStorage2::Listener::onAnsReadFail(u32 req_seq, MtNetError* net_err) {
 }
 
-__attribute__((weak)) MtNetStorageInfo& MtNetStorageInfo::operator=(const MtNetStorageInfo& info) {
-    DDON_STUB("MtNetStorageInfo::operator=")
-    __builtin_unreachable();
+MtNetStorageInfo& MtNetStorageInfo::operator=(const MtNetStorageInfo& info) {
+    memcpy(static_cast<void*>(&mFileName[0]), static_cast<const void*>(&info.mFileName[0]), 256ul);
+    if (info.mUniqueId.isValid()) {
+        mUniqueId = info.mUniqueId;
+    }
+    mLastModified.mTime = info.mLastModified.mTime;
+    mSlotNo = info.mSlotNo;
+    return *this;
 }
 

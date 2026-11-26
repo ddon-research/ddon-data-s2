@@ -10,6 +10,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
 #include "nDrawIndexBuffer.h"
@@ -68,9 +69,174 @@ bool rModel::loadEnd() {
     return true;
 }
 
+inline u32 sResource::getRModelDataReaderBufferSizeByte() const {
+    return this->mRModelDataReaderBufferSizeKB << 10;
+}
+
+inline MtSphere& MtSphere::operator=(const MtSphere& s) {
+    __builtin_memcpy(this, &s, sizeof(MtSphere));
+    return *this;
+}
+
+inline const MtVector3& MtVector3::operator=(const MtVector4& v) {
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
+    this->pad_ = 0.0f;
+    return *this;
+}
+
 __attribute__((weak)) bool rModel::load(MtStream& in) {
-    DDON_STUB("rModel::load")
-    return {};
+    u32 t1 = sResource::getInstance()->getRModelDataReaderBufferSizeByte();
+    u32 t2 = in.getLength();
+    MtDataReader r(in, t2 < t1 ? t2 : t1);
+    MODEL_HDR hdr;
+    r.read(&hdr, sizeof(MODEL_HDR));
+    if (hdr.magic != 0x444f4du || hdr.version != DATA_VERSION) {
+        return false;
+    }
+    const u32 boundary_num = r.readU32();
+    u32 AllocSize = static_cast<u32>(
+        sizeof(MtMatrix) * hdr.jnt_num +
+        sizeof(MtMatrix) * hdr.jnt_num +
+        sizeof(BOUNDARY_INFO) * boundary_num +
+        sizeof(PARTS_INFO) * hdr.parts_num +
+        sizeof(PRIMITIVE_INFO) * hdr.primitive_num +
+        sizeof(JOINT_INFO) * hdr.jnt_num +
+        sizeof(MATERIAL_NAME) * hdr.material_num);
+    u8* t3 = static_cast<u8*>(MtMemoryAllocator::getAllocator(rModel::DTI)->memAlloc(AllocSize, 16u));
+    if (t3 == nullptr) {
+        return false;
+    }
+    u32 t4 = 0;
+    void* t5 = t3 + t4;
+    t4 += static_cast<u32>(sizeof(MtMatrix) * hdr.jnt_num);
+    mLmat = static_cast<MtMatrix*>(t5);
+    t5 = t3 + t4;
+    t4 += static_cast<u32>(sizeof(MtMatrix) * hdr.jnt_num);
+    mImat = static_cast<MtMatrix*>(t5);
+    t5 = t3 + t4;
+    t4 += static_cast<u32>(sizeof(BOUNDARY_INFO)) * boundary_num;
+    mBoundaryInfo = static_cast<BOUNDARY_INFO*>(t5);
+    t5 = t3 + t4;
+    t4 += static_cast<u32>(sizeof(PARTS_INFO) * hdr.parts_num);
+    mPartsInfo = static_cast<PARTS_INFO*>(t5);
+    t5 = t3 + t4;
+    t4 += static_cast<u32>(sizeof(PRIMITIVE_INFO) * hdr.primitive_num);
+    mPrimitiveInfo = static_cast<PRIMITIVE_INFO*>(t5);
+    t5 = t3 + t4;
+    t4 += static_cast<u32>(sizeof(JOINT_INFO) * hdr.jnt_num);
+    mJointInfo = static_cast<JOINT_INFO*>(t5);
+    t5 = t3 + t4;
+    mMaterialName = static_cast<MATERIAL_NAME*>(t5);
+    mJointNum = hdr.jnt_num;
+    mPrimitiveNum = hdr.primitive_num;
+    mMaterialNum = hdr.material_num;
+    mPolygonNum = hdr.polygon_num;
+    mVertexNum = hdr.vertex_num;
+    mVertexBufsize = hdr.vertexbuf_size;
+    mIndexNum = hdr.index_num;
+    mPartsNum = hdr.parts_num;
+    mBoundingSphere = hdr.bounding_sphere;
+    mBoundingBox = hdr.bounding_box;
+    mModelInfo = hdr.modelinfo;
+    const f32& t7 = mBoundingBox.minpos.y < mBoundingBox.minpos.x ? mBoundingBox.minpos.y : mBoundingBox.minpos.x;
+    const f32& t8 = mBoundingBox.minpos.z < t7 ? mBoundingBox.minpos.z : t7;
+    f32 minv = t8;
+    const f32& t9 = mBoundingBox.maxpos.x < mBoundingBox.maxpos.y ? mBoundingBox.maxpos.y : mBoundingBox.maxpos.x;
+    const f32& t10 = t9 < mBoundingBox.maxpos.z ? mBoundingBox.maxpos.z : t9;
+    f32 maxv = t10;
+    if (hdr.jnt_num != 0) {
+        mQuantPosScale = maxv - minv;
+        mQuantPosOffset = mBoundingBox.minpos;
+        r.skip(static_cast<u32>(hdr.joint_info) - r.getPosition());
+        r.read(mJointInfo, hdr.jnt_num * sizeof(JOINT_INFO));
+        r.read(mLmat, hdr.jnt_num * sizeof(MtMatrix));
+        r.read(mImat, hdr.jnt_num * sizeof(MtMatrix));
+        r.read(mJointTable, sizeof(mJointTable));
+    } else {
+        mQuantPosScale = 1.0f;
+        mQuantPosOffset = MtVector4::Zero;
+    }
+    if (hdr.parts_num != 0) {
+        r.skip(static_cast<u32>(hdr.parts_info) - r.getPosition());
+        r.read(mPartsInfo, hdr.parts_num * sizeof(PARTS_INFO));
+    }
+    r.skip(static_cast<u32>(hdr.material_info) - r.getPosition());
+    r.read(mMaterialName, hdr.material_num * sizeof(MATERIAL_NAME));
+    r.skip(static_cast<u32>(hdr.primitive_info) - r.getPosition());
+    r.read(mPrimitiveInfo, mPrimitiveNum * sizeof(PRIMITIVE_INFO));
+    u32 id = 1;
+    for (u32 i = 0; i < mPrimitiveNum; ++i) {
+        PRIMITIVE_INFO* pi = &mPrimitiveInfo[i];
+        pi->connect_id = id;
+        if (i + 1 < mPrimitiveNum) {
+            PRIMITIVE_INFO* pni = &mPrimitiveInfo[i + 1];
+            if (pi->inputlayout != pni->inputlayout ||
+                pi->vertex_base != pni->vertex_base ||
+                pi->material_no != pni->material_no ||
+                pi->vertex_stride != pni->vertex_stride ||
+                pi->topology != pni->topology) {
+                ++id;
+            }
+        }
+    }
+    r.read(mBoundaryInfo, boundary_num * sizeof(BOUNDARY_INFO));
+    BOUNDARY_INFO* pb = mBoundaryInfo;
+    for (u32 i = 0; i < mPrimitiveNum; ++i) {
+        PRIMITIVE_INFO* pp = &mPrimitiveInfo[i];
+        pp->inputlayout = sShader2::getInstance()->remapObjectHandle(pp->inputlayout);
+        pp->boundary = pb;
+        pb += pp->boundary_num;
+    }
+    nDraw::USAGE_TYPE vertex_usage = nDraw::USAGE_DEFAULT;
+    if (mVertexBufsize != 0) {
+        r.skip(static_cast<u32>(hdr.vertex_data) - r.getPosition());
+        mpVertexBuffer = new (16u) nDraw::VertexBuffer(hdr.vertexbuf_size, vertex_usage, nullptr);
+        void* pvbuf = mpVertexBuffer->map(nDraw::MAP_WRITE_DISCARD);
+        void* tmp = MtMemory::getAllocator(MtMemoryAllocator::TEMPORARY)->memAlloc(mVertexBufsize, 16u);
+        r.read(tmp, mVertexBufsize);
+        memcpy(pvbuf, tmp, mVertexBufsize);
+        mpVertexBuffer->unmap();
+        MtMemory::getAllocator(MtMemoryAllocator::TEMPORARY)->memFree(tmp);
+    }
+    nDraw::USAGE_TYPE index_usage = nDraw::USAGE_DEFAULT;
+    r.skip(static_cast<u32>(hdr.index_data) - r.getPosition());
+    mpIndexBuffer = new (16u) nDraw::IndexBuffer(hdr.index_num * sizeof(u16), index_usage, nullptr);
+    void* pibuf = mpIndexBuffer->map(nDraw::MAP_WRITE_DISCARD);
+    {
+        void* tmp = MtMemory::getAllocator(MtMemoryAllocator::TEMPORARY)->memAlloc(mIndexNum * sizeof(u16), 16u);
+        r.read(tmp, mIndexNum * sizeof(u16));
+        memcpy(pibuf, tmp, mIndexNum * sizeof(u16));
+        mpIndexBuffer->unmap();
+        MtMemory::getAllocator(MtMemoryAllocator::TEMPORARY)->memFree(tmp);
+    }
+    r.skip(static_cast<u32>(hdr.rcn_data) - r.getPosition());
+    mRCNInfo.triangle_num = r.readU32();
+    if (mRCNInfo.triangle_num != 0) {
+        mRCNInfo.width = r.readU16();
+        mRCNInfo.height = r.readU16();
+        u32 t6 = hdr.primitive_num * sizeof(u32);
+        mRCNInfo.map_vertex_base = static_cast<u32*>(MtMemoryAllocator::getAllocator(rModel::DTI)->memAlloc(t6, 16u));
+        for (u32 i = 0; i < hdr.primitive_num; ++i) {
+            mRCNInfo.map_vertex_base[i] = r.readU32();
+        }
+        {
+            u32 data_size = r.readU32();
+            void* data = MtMemory::getAllocator(MtMemoryAllocator::TEMPORARY)->memAlloc(data_size, 16u);
+            r.read(data, data_size);
+            mRCNInfo.triangle = new (16u) nDraw::VertexBuffer(data_size, nDraw::USAGE_DEFAULT, data);
+            MtMemory::getAllocator(MtMemoryAllocator::TEMPORARY)->memFree(data);
+        }
+        {
+            u32 data_size = r.readU32();
+            void* data = MtMemory::getAllocator(MtMemoryAllocator::TEMPORARY)->memAlloc(data_size, 16u);
+            r.read(data, data_size);
+            mRCNInfo.vertex_to_index = new (16u) nDraw::VertexBuffer(data_size, nDraw::USAGE_DEFAULT, data);
+            MtMemory::getAllocator(MtMemoryAllocator::TEMPORARY)->memFree(data);
+        }
+    }
+    return true;
 }
 
 bool rModel::save(MtStream& out) {
@@ -81,40 +247,31 @@ MtUI* rModel::createUI(MtProperty& prop) {
     return this->cResource::createUI(prop);
 }
 
-__attribute__((weak)) void rModel::createProperty(MtPropertyList& s) {
-    DDON_STUB("rModel::createProperty")
-    /* stub */
+void rModel::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mJointNum", &mJointNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPrimitiveNum", &mPrimitiveNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPolygonNum", &mPolygonNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVertexNum", &mVertexNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndexNum", &mIndexNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaterialNum", &mMaterialNum, 1u, 0u);
 }
 
 __attribute__((weak)) void rModel::clear() {
-    if ((sRender::mpInstance) != nullptr) {
+        if (sRender::mpInstance == nullptr) {
+            return;
+        }
         if (mpMaterials != nullptr) {
-            if (mMaterialNum != 0) {
-                u32 v0_0 = mMaterialNum;
-                nDraw::Material* * v0_1 = mpMaterials;
-                unsigned int i0_3 = 0;
-                u32 v1_0;
-                for (;;) {
-                    if (v0_1[i0_3] != nullptr) {
-                        v0_1[i0_3]->release();
-                        mpMaterials[i0_3] = nullptr;
-                        if ((i0_3 + 1u) >= mMaterialNum) {
-                            v1_0 = mMaterialNum;
-                            break;
-                        }
-                        v0_0 = mMaterialNum;
-                    } else {
-                        if ((i0_3 + 1u) >= v0_0) {
-                            v1_0 = v0_0;
-                            break;
-                        }
-                    }
-                    v0_1 = mpMaterials;
-                    i0_3 += 1u;
+            for (u32 i = 0; i < mMaterialNum; i++) {
+                if (mpMaterials[i] != nullptr) {
+                    mpMaterials[i]->release();
+                    mpMaterials[i] = nullptr;
                 }
-                if (v1_0 > 4u) {
-                    nDraw::Material* * t0 = mpMaterials;
-                    MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(static_cast<void*>(t0));
+            }
+            if (mMaterialNum > 4) {
+                {
+                    void* p = mpMaterials;
+                    MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(p);
                 }
             }
             mpMaterials = nullptr;
@@ -131,23 +288,35 @@ __attribute__((weak)) void rModel::clear() {
             mpMaterial->release();
             mpMaterial = nullptr;
         }
-        const u32 t1 = getDTI().mID;
-        MtMatrix* t2 = mLmat;
-        u32 t3 = rModel::DTI.mID;
-        MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(static_cast<void*>(t2));
-        if (t1 != t3) {
-            MtMatrix* t4 = mImat;
-            MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(static_cast<void*>(t4));
-            JOINT_INFO* t5 = mJointInfo;
-            MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(static_cast<void*>(t5));
-            PRIMITIVE_INFO* t6 = mPrimitiveInfo;
-            MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(static_cast<void*>(t6));
-            PARTS_INFO* t7 = mPartsInfo;
-            MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(static_cast<void*>(t7));
-            BOUNDARY_INFO* t8 = mBoundaryInfo;
-            MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(static_cast<void*>(t8));
-            MATERIAL_NAME* t9 = mMaterialName;
-            MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(static_cast<void*>(t9));
+        u32 id = getDTI().mID;
+        void* pLmat = mLmat;
+        u32 modelId = rModel::DTI.mID;
+        MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(pLmat);
+        if (id != modelId) {
+            {
+                void* p = mImat;
+                MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(p);
+            }
+            {
+                void* p = mJointInfo;
+                MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(p);
+            }
+            {
+                void* p = mPrimitiveInfo;
+                MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(p);
+            }
+            {
+                void* p = mPartsInfo;
+                MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(p);
+            }
+            {
+                void* p = mBoundaryInfo;
+                MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(p);
+            }
+            {
+                void* p = mMaterialName;
+                MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(p);
+            }
         }
         mLmat = nullptr;
         mImat = nullptr;
@@ -169,10 +338,11 @@ __attribute__((weak)) void rModel::clear() {
             mRCNInfo.vertex_to_index->release();
             mRCNInfo.vertex_to_index = nullptr;
         }
-        u32* t10 = mRCNInfo.map_vertex_base;
-        MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(static_cast<void*>(t10));
+        {
+            void* p = mRCNInfo.map_vertex_base;
+            MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(p);
+        }
         mRCNInfo.map_vertex_base = nullptr;
-    }
 }
 
 MT_CTSTR rModel::getExt() const {

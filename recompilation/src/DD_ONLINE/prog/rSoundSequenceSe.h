@@ -227,3 +227,13 @@ inline u32 rSoundSequenceSe::SequenceSe::getDataNum() {
 inline void* rSoundSequenceSe::SequenceSe::Command::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline void* rSoundSequenceSe::SequenceSe::Command::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundSequenceSe::SequenceSe::Command::DTI)->memAlloc(sz, align, rSoundSequenceSe::SequenceSe::Command::DTI.getID());
+}
+
+inline rSoundSequenceSe::SequenceSe::Command::Command() {
+    mCommand = COMMOND_NULL;
+    mValue[0] = 0.0f;
+    mValue[1] = 0.0f;
+}

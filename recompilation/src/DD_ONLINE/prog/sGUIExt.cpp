@@ -190,6 +190,7 @@
 #include "uGUIQuestDelivery.h"
 #include "uGUIQuestInfo.h"
 #include "uGUIQueueAnnounce.h"
+#include "uGUIQueueAnnounceLvUp.h"
 #include "uGUIRankingBoard.h"
 #include "uGUIShakeEnemy.h"
 #include "uGUIShakeStick.h"
@@ -263,9 +264,55 @@ __attribute__((noinline)) sGUIExt::~sGUIExt() {
     /* stub */
 }
 
-__attribute__((weak)) sGUIExt::stGatheringData* sGUIExt::getGatheringData(MtObject* pWho) {
-    DDON_STUB("sGUIExt::getGatheringData")
-    return nullptr;
+sGUIExt::stGatheringData* sGUIExt::getGatheringData(MtObject* pWho) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    int i0_0 = 0;
+    int i2_1;
+    stGatheringData* v3_7;
+    for (;;) {
+        if (mGatheringDataArray.elems[i0_0].mUse) {
+            if (pWho == mGatheringDataArray.elems[i0_0].mpWho) {
+                v3_7 = &mGatheringDataArray.elems[i0_0];
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return v3_7;
+            }
+        }
+        if ((i0_0 + 1) <= 3) {
+            i0_0 = i0_0 + 1;
+        } else {
+            i2_1 = 0;
+            break;
+        }
+    }
+    for (;;) {
+        if (mGatheringDataArray.elems[i2_1].mUse) {
+            if ((i2_1 + 1) <= 3) {
+                i2_1 = i2_1 + 1;
+            } else {
+                v3_7 = nullptr;
+                break;
+            }
+        } else {
+            mGatheringDataArray.elems[i2_1].mUse = true;
+            mGatheringDataArray.elems[i2_1].mpWho = pWho;
+            v3_7 = &mGatheringDataArray.elems[i2_1];
+            break;
+        }
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return v3_7;
 }
 
 void sGUIExt::releaseGatheringData(MtObject* pWho) {
@@ -778,9 +825,20 @@ void sGUIExt::createProperty(MtPropertyList& s) {
     this->sGUI::createProperty(s);
 }
 
-__attribute__((weak)) bool sGUIExt::callbackInvalidCharacter(cGUIMessageAnalyzer* pAnalyzer, rGUIFont* pFont, u32 code) {
-    DDON_STUB("sGUIExt::callbackInvalidCharacter")
-    return {};
+bool sGUIExt::callbackInvalidCharacter(cGUIMessageAnalyzer* pAnalyzer, rGUIFont* pFont, u32 code) {
+    const rGUIFont::CHAR* const font_char = pFont->searchChar(9633u);
+    if ((pFont->mAttr & 1u) != 0) {
+        if ((font_char != nullptr) && ((font_char->isValid & 1u) != 0)) {
+            pAnalyzer->analyzeMessage(nUnicode::ALTERNATE_UTF8, 3u);
+            return true;
+        }
+    } else {
+        if (font_char != nullptr) {
+            pAnalyzer->analyzeMessage(nUnicode::ALTERNATE_UTF8, 3u);
+            return true;
+        }
+    }
+    return false;
 }
 
 void sGUIExt::setupIconFont(u8 uType) {
@@ -1052,9 +1110,43 @@ MT_CTSTR sGUIExt::getJobName(u32 job_id) {
     }
 }
 
-__attribute__((weak)) MT_CTSTR sGUIExt::getWeaponCtgrName(u32 uWeaponCtgr) {
-    DDON_STUB("sGUIExt::getWeaponCtgrName")
-    return {};
+MT_CTSTR sGUIExt::getWeaponCtgrName(u32 uWeaponCtgr) {
+    static const u32 tblMsgIdx[15] = {
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        0,
+        10,
+        11,
+        12,
+        0,
+    };
+    if (uWeaponCtgr <= 14u) {
+        rGUIMessage* t0 = mpMsgWeaponCtgrName;
+        if (t0 != nullptr) {
+            if (tblMsgIdx[uWeaponCtgr] < t0->mIndexNum) {
+                const rGUIMessage::INDEX* t1 = t0->getIndex(tblMsgIdx[uWeaponCtgr]);
+                if (t1 != nullptr) {
+                    return t0->getMessage(t1->index);
+                } else {
+                    return "";
+                }
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    } else {
+        return "";
+    }
 }
 
 MT_CTSTR sGUIExt::getAchievementName(u32 achievement_id) {
@@ -1142,11 +1234,11 @@ u32 sGUIExt::getCharacterEditMode() {
         v2_8 = nGUIExt::CHARA_EDIT_NONE;
     } else {
         const MtDTI& t0 = v0_3->getDTI();
-        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uCharacterEdit::DTI) + 8);
+        MT_CTSTR v0_1 = uCharacterEdit::DTI.mName;
         for (const MtDTI* v0_0 = &t0;;) {
-            if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
-                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
                 } else {
                     break;
                 }
@@ -1661,7 +1753,7 @@ u32 sGUIExt::requestGetAbilityParam(u32 job_id, bool isForceUpdate) {
             if (!isForceUpdate && (((static_cast<unsigned long>(mNetMgr.mData.ReceiveAbilityParam) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) != 0)) {
                 return 0;
             }
-            if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
                 if (scePthreadMutexLock(&mCS.mCSection) != 0) {
                     abort();
                 }
@@ -1669,7 +1761,7 @@ u32 sGUIExt::requestGetAbilityParam(u32 job_id, bool isForceUpdate) {
             mNetMgr.mReqData[2].Bit = static_cast<unsigned int>(static_cast<unsigned long>(mNetMgr.mReqData[2].Bit) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & 31)));
             mNetMgr.mReqData[2].IsRequest = true;
             mNetMgr.mIsComplete = false;
-            if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
                 if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
                     abort();
                 }
@@ -1682,7 +1774,7 @@ u32 sGUIExt::requestGetAbilityParam(u32 job_id, bool isForceUpdate) {
         if (!isForceUpdate && (((static_cast<unsigned long>(mNetMgr.mData.ReceiveAbilityParam) >> static_cast<unsigned long>(job_id & 31u)) & 1ul) != 0)) {
             return 0;
         }
-        if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             if (scePthreadMutexLock(&mCS.mCSection) != 0) {
                 abort();
             }
@@ -1690,7 +1782,7 @@ u32 sGUIExt::requestGetAbilityParam(u32 job_id, bool isForceUpdate) {
         mNetMgr.mReqData[2].Bit = mNetMgr.mReqData[2].Bit | 2048u;
         mNetMgr.mReqData[2].IsRequest = true;
         mNetMgr.mIsComplete = false;
-        if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
                 abort();
             }
@@ -2614,9 +2706,86 @@ u32 sGUIExt::getEmotionResIdxFromEmotionIdx(u32 uCtgr, u32 uEmotionIdx) {
     return v2_0;
 }
 
-__attribute__((weak)) u32 sGUIExt::getEmotionId(u32 uIdx) {
-    DDON_STUB("sGUIExt::getEmotionId")
-    return {};
+u32 sGUIExt::getEmotionId(u32 uIdx) {
+    static const u32 tblEmotId[72] = {
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249,
+        250,
+        251,
+        252,
+        253,
+        254,
+        352,
+        256,
+        257,
+        258,
+        259,
+        260,
+        261,
+        262,
+        263,
+        264,
+        265,
+        266,
+        267,
+        268,
+        269,
+        270,
+        271,
+        274,
+        273,
+        349,
+        285,
+        275,
+        276,
+        277,
+        278,
+        279,
+        280,
+        281,
+        283,
+        284,
+        302,
+        286,
+        288,
+        290,
+        291,
+        298,
+        353,
+        303,
+        305,
+        307,
+        309,
+        311,
+        313,
+        315,
+        317,
+        319,
+        321,
+        323,
+        325,
+        327,
+        329,
+        331,
+        333,
+        335,
+        337,
+        339,
+        341,
+        343,
+        345,
+    };
+    if (uIdx <= 71u) {
+        return tblEmotId[uIdx];
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) u32 sGUIExt::getEmotionIdFromMenuIndex(u32 uCtgr, u32 uIndex) {
@@ -4117,18 +4286,17 @@ s32 sGUIExt::getSystemMsgChoicePos(s32 sPage) {
 }
 
 void sGUIExt::exitSystemMsg() {
-    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
         if (scePthreadMutexLock(&mCS.mCSection) != 0) {
             abort();
         }
     }
     if (mpGUISystemMsg != nullptr) {
-        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpGUISystemMsg) + 8816)) != 0) {
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpGUISystemMsg) + 2048) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpGUISystemMsg) + 8816);
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpGUISystemMsg) + 2056) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpGUISystemMsg) + 8824);
+        if (mpGUISystemMsg->mpExitFunc != static_cast<void(uGUIBase::*)()>(0)) {
+            mpGUISystemMsg->mpCurrentFunc = mpGUISystemMsg->mpExitFunc;
         }
     }
-    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) == 0) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
     if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
@@ -4388,9 +4556,16 @@ __attribute__((weak)) MtVector3 sGUIExt::getPointerPosPopCmd() {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector2 sGUIExt::getPointerRequestPosPrev() {
-    DDON_STUB("sGUIExt::getPointerRequestPosPrev")
-    __builtin_unreachable();
+MtVector2 sGUIExt::getPointerRequestPosPrev() {
+    MtVector2 result;
+    if (mpGUIPointer != nullptr) {
+        result.x = mpGUIPointer->mRequestPosPrev.x;
+        result.y = mpGUIPointer->mRequestPosPrev.y;
+    } else {
+        result.x = 0.0f;
+        result.y = 0.0f;
+    }
+    return result;
 }
 
 void sGUIExt::setPopReqSetting(uGUIPopCmd01* pGUI) {
@@ -4934,7 +5109,7 @@ u32 sGUIExt::getMapModeMini() {
 }
 
 void sGUIExt::setMapMapType(u32 uType, u32 uTargetStage) {
-    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
         if (scePthreadMutexLock(&mCS.mCSection) != 0) {
             abort();
         }
@@ -4951,14 +5126,14 @@ void sGUIExt::setMapMapType(u32 uType, u32 uTargetStage) {
     if (sMarker::getInstance() != nullptr) {
         u32 fieldId = sMarker::getInstance()->getFieldAreaIdFromBelongStage(static_cast<s32>(uTargetStage));
         mMap.mTargetStage = static_cast<u32>(sMarker::getInstance()->getStageNoFromFieldAreaId(fieldId, uTargetStage));
-        if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
                 abort();
             }
         }
     } else {
         mMap.mTargetStage = uTargetStage;
-        if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
                 abort();
             }
@@ -5173,9 +5348,24 @@ void sGUIExt::addBrowserGuide(sGUIExt::BROWSER_GUIDE GuideType) {
     mpGUIBrowserBG->addGuide(GuideType);
 }
 
-__attribute__((weak)) void sGUIExt::setBrowserActive(bool IsActive) {
-    DDON_STUB("sGUIExt::setBrowserActive")
-    /* stub */
+void sGUIExt::setBrowserActive(bool IsActive) {
+    if (mpGUIBrowserBG != nullptr) {
+        if (!mIsBrowserNoBG) {
+            if ((mpGUIBrowserBG->mBaseF & 128u) != 0) {
+                sBrowser::getInstance()->mIsInputEnable = IsActive;
+            } else {
+                if (IsActive) {
+                    mpGUIBrowserBG->reactive();
+                } else {
+                    mpGUIBrowserBG->setNoActive();
+                }
+            }
+        } else {
+            sBrowser::getInstance()->mIsInputEnable = IsActive;
+        }
+    } else {
+        sBrowser::getInstance()->mIsInputEnable = IsActive;
+    }
 }
 
 __attribute__((weak)) void sGUIExt::endBrowser() {
@@ -5304,9 +5494,37 @@ __attribute__((weak)) bool sGUIExt::initEventBanner() {
     return {};
 }
 
-__attribute__((weak)) void sGUIExt::wakeupEventBanner() {
-    DDON_STUB("sGUIExt::wakeupEventBanner")
-    /* stub */
+void sGUIExt::wakeupEventBanner() {
+    if (!mIsEventBannerInit) {
+        initEventBanner();
+    }
+    if (mpGUIBrowserBG != nullptr) {
+        mpGUIBrowserBG->setGUIMove(true);
+        if (mpGUIBrowserBG != nullptr) {
+            if (!mIsBrowserNoBG) {
+                if ((mpGUIBrowserBG->mBaseF & 128u) != 0) {
+                    sBrowser::getInstance()->mIsInputEnable = true;
+                } else {
+                    mpGUIBrowserBG->reactive();
+                }
+            } else {
+                sBrowser::getInstance()->mIsInputEnable = true;
+            }
+        } else {
+            sBrowser::getInstance()->mIsInputEnable = true;
+        }
+        mpGUIBrowserBG->setBGDispOffMode(true);
+        mpGUIBrowserBG->clearGuide();
+        mpGUIBrowserBG->mIsKeyOff = true;
+        if (mpGUIBrowserBG != nullptr) {
+            mpGUIBrowserBG->setWindowActive(false);
+            mpGUIBrowserBG->mIsKeyOff = true;
+            mpGUIBrowserBG->replacePriority(10u);
+        }
+    }
+    mIsBrowserExec = false;
+    mIsActiveEventBanner = false;
+    sBrowser::getInstance()->mIsInputEnable = false;
 }
 
 __attribute__((weak)) void sGUIExt::sleepEventBanner() {
@@ -5340,6 +5558,27 @@ void sGUIExt::setActiveEventBanner(bool IsActive) {
             t0->mFunctionButton = t0->mFunctionButton & 0xFFFFFFFBu;
         }
         t0->mIsInputEnable = IsActive;
+    }
+}
+
+inline void sGUIExt::mgrBrowser() {
+    if (!mIsBrowserExec) {
+        return;
+    }
+    if (!mIsBrowserNoBG) {
+        if (mpGUIBrowserBG != nullptr) {
+            if ((mpGUIBrowserBG->mBaseF & 128u) != 0) {
+                mIsBrowserExec = false;
+            }
+        } else {
+            if (!(sBrowser::mpInstance)->sBrowser::isBusy()) {
+                mIsBrowserExec = false;
+            }
+        }
+    } else {
+        if (!(sBrowser::mpInstance)->sBrowser::isBusy()) {
+            mIsBrowserExec = false;
+        }
     }
 }
 
@@ -5388,9 +5627,12 @@ __attribute__((weak)) void sGUIExt::moveOnlineStatusAFK() {
     /* stub */
 }
 
-__attribute__((weak)) void sGUIExt::setServerOption() {
-    DDON_STUB("sGUIExt::setServerOption")
-    /* stub */
+void sGUIExt::setServerOption() {
+    mServerOption.mIsDispHeadArmorPl = sGame::getInstance()->mCharData.mCharData.mOption.mIsDispHeadArmorPl;
+    mServerOption.mIsDispHeadArmorPawn = sGame::getInstance()->mCharData.mCharData.mOption.mIsDispHeadArmorPawn;
+    mServerOption.mIsDispLanternPl = sGame::getInstance()->mCharData.mCharData.mOption.mIsDispLanternPl;
+    mServerOption.mIsDispLanternPawn = sGame::getInstance()->mCharData.mCharData.mOption.mIsDispLanternPawn;
+    mServerOption.mIsClanNtc = sGame::getInstance()->mCharData.isClanNtc();
 }
 
 __attribute__((weak)) void sGUIExt::moveServerOption() {
@@ -5854,16 +6096,57 @@ const MtDTI& sGUIExt::cMousePointer::getDTI() const {
     return sGUIExt::cMousePointer::DTI;
 }
 
+inline void* sGUIExt::cMousePointer::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sGUIExt::cMousePointer::DTI)->memAlloc(sz, align, sGUIExt::cMousePointer::DTI.getID());
+}
+
 inline void sGUIExt::cMousePointer::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sGUIExt::cMousePointer::DTI)->memFree(p_addr);
+}
+
+inline sGUIExt::cMousePointer::cMousePointer() {
+    mTimeDblClick = 0.0f;
+    mpGUIMOC = nullptr;
+    mpGUI = nullptr;
+    mTimeDisable = 300.0f;
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+    mPosOld.x = mPos.x;
+    mPosOld.y = mPos.y;
+    mPosOld.z = mPos.z;
+    mPosOld.pad_ = 0.0f;
+    mPosDrag.x = mPosOld.x;
+    mPosDrag.y = mPosOld.y;
+    mPosDrag.z = mPosOld.z;
+    mMsgDragRev = 0;
+    mMove.y = 0.0f;
+    mMsg = 0;
+    mPosDrag.pad_ = 0.0f;
+    mMove.x = 0.0f;
+    mIsMouseMode = false;
+    mIsActiveMouse = false;
+    mAnmTypeReq = 0;
+    mAnmTypeReqPrio = 0;
 }
 
 sGUIExt::cMousePointer::~cMousePointer() {
 }
 
-__attribute__((weak)) void sGUIExt::cMousePointer::createProperty(MtPropertyList& s) {
-    DDON_STUB("sGUIExt::cMousePointer::createProperty")
-    /* stub */
+void sGUIExt::cMousePointer::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPosOld", &mPosOld, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPosDrag", &mPosDrag, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMove", &mMove, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMsg", &mMsg, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMsgDragRev", &mMsgDragRev, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTimeDisable", &mTimeDisable, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTimeDblClick", &mTimeDblClick, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAnmTypeReq", &mAnmTypeReq, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAnmTypeReqPrio", &mAnmTypeReqPrio, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsMouseMode", &mIsMouseMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsActiveMouse", &mIsActiveMouse, 0u, 0u);
 }
 
 __attribute__((weak)) void sGUIExt::cMousePointer::move() {
@@ -5897,9 +6180,8 @@ inline sGUIExt::cMousePointer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 sGUIExt::cMousePointer::MyDTI sGUIExt::cMousePointer::DTI("sGUIExt::cMousePointer", &::MtObject::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sGUIExt::cMousePointer::MyDTI::newInstance() const {
-    DDON_STUB("sGUIExt::cMousePointer::MyDTI::newInstance")
-    return nullptr;
+MtObject* sGUIExt::cMousePointer::MyDTI::newInstance() const {
+    return new (16u) sGUIExt::cMousePointer;
 }
 
 const MtDTI& sGUIExt::cPrioHandle::getDTI() const {
@@ -5917,9 +6199,9 @@ inline void sGUIExt::cPrioHandle::operator delete(void* p_addr) {
 sGUIExt::cPrioHandle::~cPrioHandle() {
 }
 
-__attribute__((weak)) void sGUIExt::cPrioHandle::createProperty(MtPropertyList& s) {
-    DDON_STUB("sGUIExt::cPrioHandle::createProperty")
-    /* stub */
+void sGUIExt::cPrioHandle::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPrio", &mPrio, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDistCam", &mDistCam, 0u, 0u);
 }
 
 inline sGUIExt::cPrioHandle::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -6133,13 +6415,63 @@ sGUIExt::cMap::cMap() {
 }
 
 sGUIExt::cMap::~cMap() {
-    DDON_STUB("sGUIExt::cMap::~cMap")
-    /* stub */
+    deleteMapGrid();
+    if (mpMSData != nullptr) {
+        mpMSData->release();
+        mpMSData = nullptr;
+    }
+    if (mpFloorManager == nullptr) {
+        return;
+    }
+    delete mpFloorManager;
+    mpFloorManager = nullptr;
 }
 
-__attribute__((weak)) void sGUIExt::cMap::createProperty(MtPropertyList& s) {
-    DDON_STUB("sGUIExt::cMap::createProperty")
-    /* stub */
+void sGUIExt::cMap::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mMapGrid", static_cast<MtObject*>(&mMapGrid), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMarkerSaveArray", static_cast<MtObject*>(&mMarkerSaveArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPosCenter", &mPosCenter, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPosFocus", &mPosFocus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos2Center", &mPos2Center, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos2CenterOfs", &mPos2CenterOfs, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos2LoadCenter", &mPos2LoadCenter, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos2CenterMenuOfs", &mPos2CenterMenuOfs, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos2CenterMenuOfsReq", &mPos2CenterMenuOfsReq, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos2CenterLimit", &mPos2CenterLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos2CenterStay", &mPos2CenterStay, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMapLimit", &mMapLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMapWndwSize", &mMapWndwSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMapWndwPos", &mMapWndwPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSizeS", &mSizeS, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSizeL", &mSizeL, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSizeMenu", &mSizeMenu, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReducedScale", &mReducedScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDistLimit", &mDistLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRateDistLimit", &mRateDistLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMapType", &mMapType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReloadDist", &mReloadDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsReloadForce", &mIsReloadForce, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGridType", &mGridType, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetStage", &mTargetStage, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetStageOld", &mTargetStageOld, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mModeMini", &mModeMini, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTypeIconFilter", &mTypeIconFilter, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFloorIdOld", &mFloorIdOld, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSdlIdQstFocus", &mSdlIdQstFocus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSdlIdQstFocusAreaMaster", &mSdlIdQstFocusAreaMaster, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpType", &mSpType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVisibleMask", &mVisibleMask, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAlpha", &mAlpha, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsTexReleaseWait", &mIsTexReleaseWait, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsWorldOfsUpd", &mIsWorldOfsUpd, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsWorldOfs", &mIsWorldOfs, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsCtrlMap", &mIsCtrlMap, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsReqSendFreeMarker", &mIsReqSendFreeMarker, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSendReservFreeMarker", &mIsSendReservFreeMarker[0], 32u, 3u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsKeepPosFocus", &mIsKeepPosFocus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsPosFocus", &mIsPosFocus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpFloorManager", reinterpret_cast<MtObject* *>(&mpFloorManager), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "isFieldMap", reinterpret_cast<MT_MFUNC>(&::sGUIExt::cMap::isFieldMap), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) void sGUIExt::cMap::move() {
@@ -6147,9 +6479,82 @@ __attribute__((weak)) void sGUIExt::cMap::move() {
     /* stub */
 }
 
-__attribute__((weak)) void sGUIExt::cMap::updateQuestMarkerList() {
-    DDON_STUB("sGUIExt::cMap::updateQuestMarkerList")
-    /* stub */
+void sGUIExt::cMap::updateQuestMarkerList() {
+    if (mMapType == 3) {
+        if (!sMarker::getInstance()->isLoadFieldAreaResource(static_cast<s32>(mTargetStage))) {
+            sMarker::getInstance()->changeFieldAreaResourceFromStageNo(static_cast<s32>(mTargetStage));
+        }
+    } else {
+        if (mMapType == 0) {
+            if (!static_cast<sAreaExt*>(sArea::getInstance())->isField()) {
+                if ((mMapType - 1u) <= 1u) {
+                    u32 t0 = sMarker::getInstance()->getDispFieldAreaIdFromLandId(static_cast<u32>(mMapLandType));
+                    if (t0 != 0) {
+                        if (t0 != static_cast<unsigned int>(sMarker::getInstance()->getLoadFieldAreaId())) {
+                            sMarker::getInstance()->changeFieldAreaResource(static_cast<s32>(t0));
+                        }
+                    }
+                } else {
+                    if (mMapType == 3) {
+                        if (static_cast<sGUIExt*>(sGUI::getInstance())->getStageMap() != nullptr) {
+                            if (static_cast<sGUIExt*>(sGUI::getInstance())->getStageMap()->isField(static_cast<sGUIExt*>(sGUI::getInstance())->mMap.getTargetStage())) {
+                                u32 t0 = sMarker::getInstance()->getDispFieldAreaIdFromLandId(static_cast<u32>(mMapLandType));
+                                if (t0 != 0) {
+                                    if (t0 != static_cast<unsigned int>(sMarker::getInstance()->getLoadFieldAreaId())) {
+                                        sMarker::getInstance()->changeFieldAreaResource(static_cast<s32>(t0));
+                                    }
+                                }
+                            } else {
+                                u32 t1 = sMarker::getInstance()->getDispLandFieldAreaId();
+                                if (t1 != 0) {
+                                    if (t1 != static_cast<unsigned int>(sMarker::getInstance()->getLoadFieldAreaId())) {
+                                        sMarker::getInstance()->changeFieldAreaResource(static_cast<s32>(t1));
+                                    }
+                                }
+                            }
+                        } else {
+                            u32 t1 = sMarker::getInstance()->getDispLandFieldAreaId();
+                            if (t1 != 0) {
+                                if (t1 != static_cast<unsigned int>(sMarker::getInstance()->getLoadFieldAreaId())) {
+                                    sMarker::getInstance()->changeFieldAreaResource(static_cast<s32>(t1));
+                                }
+                            }
+                        }
+                    } else {
+                        u32 t1 = sMarker::getInstance()->getDispLandFieldAreaId();
+                        if (t1 != 0) {
+                            if (t1 != static_cast<unsigned int>(sMarker::getInstance()->getLoadFieldAreaId())) {
+                                sMarker::getInstance()->changeFieldAreaResource(static_cast<s32>(t1));
+                            }
+                        }
+                    }
+                }
+            } else {
+                u32 t0 = sMarker::getInstance()->getDispFieldAreaIdFromLandId(static_cast<u32>(mMapLandType));
+                if (t0 != 0) {
+                    if (t0 != static_cast<unsigned int>(sMarker::getInstance()->getLoadFieldAreaId())) {
+                        sMarker::getInstance()->changeFieldAreaResource(static_cast<s32>(t0));
+                    }
+                }
+            }
+        } else {
+            if ((mMapType - 1u) <= 1u) {
+                u32 t0 = sMarker::getInstance()->getDispFieldAreaIdFromLandId(static_cast<u32>(mMapLandType));
+                if (t0 != 0) {
+                    if (t0 != static_cast<unsigned int>(sMarker::getInstance()->getLoadFieldAreaId())) {
+                        sMarker::getInstance()->changeFieldAreaResource(static_cast<s32>(t0));
+                    }
+                }
+            } else {
+                u32 t1 = sMarker::getInstance()->getDispLandFieldAreaId();
+                if (t1 != 0) {
+                    if (t1 != static_cast<unsigned int>(sMarker::getInstance()->getLoadFieldAreaId())) {
+                        sMarker::getInstance()->changeFieldAreaResource(static_cast<s32>(t1));
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sGUIExt::cMap::updateMapDispPosition() {
@@ -6222,9 +6627,29 @@ sGUIExt::cMap::cMapGrid* sGUIExt::cMap::getGrid(u32 uIdx) {
     return nullptr;
 }
 
-__attribute__((weak)) bool sGUIExt::cMap::isFieldMap() {
-    DDON_STUB("sGUIExt::cMap::isFieldMap")
-    return {};
+bool sGUIExt::cMap::isFieldMap() {
+    if (mMapType == 0) {
+        if (!static_cast<sAreaExt*>(sArea::getInstance())->isField()) {
+            if ((mMapType - 1u) > 1u) {
+                if (mMapType == 3) {
+                    if (static_cast<sGUIExt*>(sGUI::getInstance())->getStageMap() != nullptr) {
+                        return static_cast<sGUIExt*>(sGUI::getInstance())->getStageMap()->isField(static_cast<sGUIExt*>(sGUI::getInstance())->mMap.getTargetStage());
+                    }
+                }
+                return false;
+            }
+        }
+    } else {
+        if ((mMapType - 1u) > 1u) {
+            if (mMapType == 3) {
+                if (static_cast<sGUIExt*>(sGUI::getInstance())->getStageMap() != nullptr) {
+                    return static_cast<sGUIExt*>(sGUI::getInstance())->getStageMap()->isField(static_cast<sGUIExt*>(sGUI::getInstance())->mMap.getTargetStage());
+                }
+            }
+            return false;
+        }
+    }
+    return true;
 }
 
 bool sGUIExt::cMap::isFieldMapOnCurrent() {
@@ -6235,9 +6660,49 @@ bool sGUIExt::cMap::isFieldMapOnCurrent() {
     }
 }
 
-__attribute__((weak)) s32 sGUIExt::cMap::getStageNoDisplayedMap() {
-    DDON_STUB("sGUIExt::cMap::getStageNoDisplayedMap")
-    return {};
+s32 sGUIExt::cMap::getStageNoDisplayedMap() {
+    sGUI* t0 = sGUI::getInstance();
+    if ((static_cast<sGUIExt*>(t0)->mMap.mMapType == 0) && static_cast<sAreaExt*>(sArea::getInstance())->isField()) {
+        const rFieldAreaList::cFieldAreaInfo* pFieldAreaInfo = sMarker::getInstance()->getFieldAreaInfo(static_cast<u32>(mMapLandType));
+        if (pFieldAreaInfo != nullptr) {
+            if (pFieldAreaInfo->mStageNoList.mLength != 0) {
+                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*pFieldAreaInfo->mStageNoList.mpArray) + 8));
+            }
+        }
+        return 0;
+    }
+    if ((static_cast<sGUIExt*>(t0)->mMap.mMapType - 1u) > 1u) {
+        if (static_cast<sGUIExt*>(t0)->mMap.mMapType == 3) {
+            if (static_cast<sGUIExt*>(sGUI::getInstance())->getStageMap() != nullptr) {
+                if (static_cast<sGUIExt*>(sGUI::getInstance())->getStageMap()->isField(static_cast<sGUIExt*>(sGUI::getInstance())->mMap.getTargetStage())) {
+                    const rFieldAreaList::cFieldAreaInfo* pFieldAreaInfo = sMarker::getInstance()->getFieldAreaInfo(static_cast<u32>(mMapLandType));
+                    if (pFieldAreaInfo != nullptr) {
+                        if (pFieldAreaInfo->mStageNoList.mLength != 0) {
+                            return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*pFieldAreaInfo->mStageNoList.mpArray) + 8));
+                        }
+                    }
+                    return 0;
+                }
+            }
+        }
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->mMap.getTargetStage() == 0) {
+            if (sArea::getInstance()->mpArea[2] != nullptr) {
+                return static_cast<aStage*>(sArea::getInstance()->mpArea[2])->getStageNo();
+            } else {
+                return 0;
+            }
+        } else {
+            return static_cast<s32>(static_cast<sGUIExt*>(sGUI::getInstance())->mMap.getTargetStage());
+        }
+    } else {
+        const rFieldAreaList::cFieldAreaInfo* pFieldAreaInfo = sMarker::getInstance()->getFieldAreaInfo(static_cast<u32>(mMapLandType));
+        if (pFieldAreaInfo != nullptr) {
+            if (pFieldAreaInfo->mStageNoList.mLength != 0) {
+                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*pFieldAreaInfo->mStageNoList.mpArray) + 8));
+            }
+        }
+        return 0;
+    }
 }
 
 void sGUIExt::cMap::reqSendReservFreeMarkerAll() {
@@ -6266,9 +6731,23 @@ __attribute__((weak)) s32 sGUIExt::cMap::getFloorIdFromPos(const MtVector3& vPos
     return {};
 }
 
-__attribute__((weak)) s32 sGUIExt::cMap::getFloorIdTgtstg(s32 floorId) {
-    DDON_STUB("sGUIExt::cMap::getFloorIdTgtstg")
-    return {};
+s32 sGUIExt::cMap::getFloorIdTgtstg(s32 floorId) {
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->mMap.mMapType == 3) {
+        u32 target = static_cast<sGUIExt*>(sGUI::getInstance())->mMap.getTargetStage();
+        u32 fieldId = sMarker::getInstance()->getFieldAreaIdFromStageList(static_cast<s32>(target));
+        u32 stageNo = sMarker::getInstance()->getStageNoFromFieldAreaId(fieldId, 0u);
+        if (stageNo == 418) {
+            return 1;
+        } else {
+            if (stageNo == 410) {
+                return 0;
+            } else {
+                return floorId;
+            }
+        }
+    } else {
+        return floorId;
+    }
 }
 
 __attribute__((weak)) s32 sGUIExt::cMap::getQuestMarkerIndexFromSdlId(u32 sdlId) {
@@ -6294,9 +6773,8 @@ bool sGUIExt::cMap::isLoadingFloor() {
     return this->mRno0 <= 2;
 }
 
-__attribute__((weak)) MtVector3 sGUIExt::cMap::getPosPLFreeMarker(u32 idx) {
-    DDON_STUB("sGUIExt::cMap::getPosPLFreeMarker")
-    __builtin_unreachable();
+MtVector3 sGUIExt::cMap::getPosPLFreeMarker(u32 idx) {
+    return mPosPLFreeMarker[(idx <= 2u) ? idx : 0u];
 }
 
 void sGUIExt::cMap::setPosPLFreeMarker(const MtVector3& vPos, u32 idx) {
@@ -6364,10 +6842,10 @@ bool sGUIExt::cMap::addMarkerSave(sGUIExt::cMap::cMarkerSave* addMarker) {
 
 void sGUIExt::cMap::actionMarkerSaveByIndex(u32 Idx) {
     if (Idx < mMarkerSaveArray.mLength) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 64)) + (static_cast<unsigned long>(Idx) * 8)) + 0)) + 52)) == 0) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 64)) + (static_cast<unsigned long>(Idx) * 8)) + 0)) + 52) = 1;
-            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 64)) + (static_cast<unsigned long>(Idx) * 8)) + 0)) + 64)) > 0) {
-                static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 64)) + (static_cast<unsigned long>(Idx) * 8)) + 0)) + 64));
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mMarkerSaveArray.mpArray[Idx]) + 52)) == 0) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mMarkerSaveArray.mpArray[Idx]) + 52) = 1;
+            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mMarkerSaveArray.mpArray[Idx]) + 64)) > 0) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mMarkerSaveArray.mpArray[Idx]) + 64));
             }
         }
     }
@@ -6572,9 +7050,16 @@ __attribute__((weak)) void sGUIExt::cSCM::move() {
     /* stub */
 }
 
-__attribute__((weak)) void sGUIExt::cSCM::createProperty(MtPropertyList& s) {
-    DDON_STUB("sGUIExt::cSCM::createProperty")
-    /* stub */
+void sGUIExt::cSCM::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mRno0", &this->mRno0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRno1", &this->mRno1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRno2", &this->mRno2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRno3", &this->mRno3, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMode", &mMode, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSCMCurrentPage", &mSCMCurrentPage, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSCMOldPage", &mSCMOldPage, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSCCCurrentPage", &mSCCCurrentPage, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSCCOldPage", &mSCCOldPage, 1u, 0u);
 }
 
 __attribute__((weak)) void sGUIExt::cSCM::setDefault(cCharacterData::SCM::stScmPltArrayList& dataScm, cCharacterData::SCM::stSccPltArrayList& dataScc) {
@@ -6582,14 +7067,36 @@ __attribute__((weak)) void sGUIExt::cSCM::setDefault(cCharacterData::SCM::stScmP
     /* stub */
 }
 
-__attribute__((weak)) nKeyCustom::KB_CUSTOM sGUIExt::cSCM::getSCMPadBtnType(u32 uId) {
-    DDON_STUB("sGUIExt::cSCM::getSCMPadBtnType")
-    return {};
+nKeyCustom::KB_CUSTOM sGUIExt::cSCM::getSCMPadBtnType(u32 uId) {
+    static const nKeyCustom::KB_CUSTOM tblBtn[4] = {
+        static_cast<const nKeyCustom::KB_CUSTOM>(110),
+        static_cast<const nKeyCustom::KB_CUSTOM>(111),
+        static_cast<const nKeyCustom::KB_CUSTOM>(112),
+        static_cast<const nKeyCustom::KB_CUSTOM>(113),
+    };
+    if (uId <= 3u) {
+        return tblBtn[uId];
+    } else {
+        return nKeyCustom::KEY_CUSTOM_NOTHING;
+    }
 }
 
-__attribute__((weak)) nKeyCustom::KB_CUSTOM sGUIExt::cSCM::getSCCPadBtnType(u32 uId) {
-    DDON_STUB("sGUIExt::cSCM::getSCCPadBtnType")
-    return {};
+nKeyCustom::KB_CUSTOM sGUIExt::cSCM::getSCCPadBtnType(u32 uId) {
+    static const nKeyCustom::KB_CUSTOM tblBtn[8] = {
+        static_cast<const nKeyCustom::KB_CUSTOM>(120),
+        static_cast<const nKeyCustom::KB_CUSTOM>(122),
+        static_cast<const nKeyCustom::KB_CUSTOM>(123),
+        static_cast<const nKeyCustom::KB_CUSTOM>(121),
+        static_cast<const nKeyCustom::KB_CUSTOM>(116),
+        static_cast<const nKeyCustom::KB_CUSTOM>(118),
+        static_cast<const nKeyCustom::KB_CUSTOM>(119),
+        static_cast<const nKeyCustom::KB_CUSTOM>(117),
+    };
+    if (uId <= 7u) {
+        return tblBtn[uId];
+    } else {
+        return nKeyCustom::KEY_CUSTOM_NOTHING;
+    }
 }
 
 __attribute__((weak)) bool sGUIExt::cSCM::isSCMDataEnable(u8 uType, u32 uMsgId, u32 uU32Data, f32 fF32Data) {
@@ -6616,9 +7123,22 @@ __attribute__((weak)) void sGUIExt::cSCM::execSaveToServer() {
     /* stub */
 }
 
-__attribute__((weak)) nKeyCustom::KB_CUSTOM sGUIExt::cSCM::getSCCKB(u32 uIdx) {
-    DDON_STUB("sGUIExt::cSCM::getSCCKB")
-    return {};
+nKeyCustom::KB_CUSTOM sGUIExt::cSCM::getSCCKB(u32 uIdx) {
+    static const nKeyCustom::KB_CUSTOM tblTrgChkKb[8] = {
+        static_cast<const nKeyCustom::KB_CUSTOM>(72),
+        static_cast<const nKeyCustom::KB_CUSTOM>(74),
+        static_cast<const nKeyCustom::KB_CUSTOM>(75),
+        static_cast<const nKeyCustom::KB_CUSTOM>(73),
+        static_cast<const nKeyCustom::KB_CUSTOM>(68),
+        static_cast<const nKeyCustom::KB_CUSTOM>(70),
+        static_cast<const nKeyCustom::KB_CUSTOM>(71),
+        static_cast<const nKeyCustom::KB_CUSTOM>(69),
+    };
+    if (uIdx <= 7u) {
+        return tblTrgChkKb[uIdx];
+    } else {
+        return nKeyCustom::KEY_CUSTOM_NOTHING;
+    }
 }
 
 __attribute__((weak)) void sGUIExt::cSCM::execSCMPlt(u32 uPageIdx, u32 uBtnIdx, u32 uMode, bool bKB) {

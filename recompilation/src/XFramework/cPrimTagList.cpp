@@ -4,6 +4,8 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cPrimObj.h"
 #include "nPrim.h"
@@ -41,9 +43,8 @@ MtUI* cPrimTagList::createUI(MtProperty& prop) {
     return nullptr;
 }
 
-__attribute__((weak)) void cPrimTagList::createProperty(MtPropertyList& prop_list) {
-    DDON_STUB("cPrimTagList::createProperty")
-    /* stub */
+void cPrimTagList::createProperty(MtPropertyList& prop_list) {
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mTagSize", &mTagSize, 3u, 0u);
 }
 
 s32 cPrimTagList::push() {
@@ -88,8 +89,7 @@ inline cPrimTagList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 cPrimTagList::MyDTI cPrimTagList::DTI("cPrimTagList", &::cPrimObj::DTI, 208ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cPrimTagList::MyDTI::newInstance() const {
-    DDON_STUB("cPrimTagList::MyDTI::newInstance")
-    return nullptr;
+MtObject* cPrimTagList::MyDTI::newInstance() const {
+    return new (16u) cPrimTagList;
 }
 

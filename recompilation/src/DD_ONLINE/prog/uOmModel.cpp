@@ -129,9 +129,12 @@ void uOmModel::kill() {
     this->uDDOModel::kill();
 }
 
-__attribute__((weak)) void uOmModel::createProperty(MtPropertyList& s) {
-    DDON_STUB("uOmModel::createProperty")
-    /* stub */
+void uOmModel::createProperty(MtPropertyList& s) {
+    this->uDDOModel::createProperty(s);
+    if (mOmComp.mpOmControl == nullptr) {
+        return;
+    }
+    s << MtProperty(static_cast<MtObject*>(this), "getOmCtrl()->mLot.mUniqueId", &mOmComp.mpOmControl->mLot.mUniqueId, 0u, 0u);
 }
 
 MtUI* uOmModel::createUI(MtProperty& prop) {

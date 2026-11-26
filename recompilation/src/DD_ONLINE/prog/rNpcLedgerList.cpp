@@ -71,9 +71,8 @@ __attribute__((noinline)) rNpcLedgerList::~rNpcLedgerList() {
     }
 }
 
-__attribute__((weak)) void rNpcLedgerList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rNpcLedgerList::createProperty")
-    /* stub */
+void rNpcLedgerList::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mArray", static_cast<MtObject*>(&mArray), 0u, 0u);
 }
 
 bool rNpcLedgerList::save(MtStream& out) {
@@ -210,9 +209,17 @@ rNpcLedgerList::cItem::~cItem() {
     mInstitutionList.mLength = 0;
 }
 
-__attribute__((weak)) void rNpcLedgerList::cItem::createProperty(MtPropertyList& s) {
-    DDON_STUB("rNpcLedgerList::cItem::createProperty")
-    /* stub */
+void rNpcLedgerList::cItem::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mNpcId", &mNpcId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSex", &mSex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNameId", &mNameId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mClassNameId", &mClassNameId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJobId", &mJobId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFinger", &mFinger, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVoiceType", &mVoiceType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUnitType", &mUnitType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUnitTypeParam", &mUnitTypeParam, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInstitutionList", static_cast<MtObject*>(&mInstitutionList), 0u, 0u);
 }
 
 __attribute__((weak)) bool rNpcLedgerList::cItem::load(MtDataReader& r) {
@@ -287,9 +294,10 @@ rNpcLedgerList::cItem::cInstitution::~cInstitution() {
     mInstitutionOpenList.mLength = 0;
 }
 
-__attribute__((weak)) void rNpcLedgerList::cItem::cInstitution::createProperty(MtPropertyList& s) {
-    DDON_STUB("rNpcLedgerList::cItem::cInstitution::createProperty")
-    /* stub */
+void rNpcLedgerList::cItem::cInstitution::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mInstitutionId", &mInstitutionId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInstitutionParam", &mInstitutionParam, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInstitutionOpenList", static_cast<MtObject*>(&mInstitutionOpenList), 0u, 0u);
 }
 
 inline rNpcLedgerList::cItem::cInstitution::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -308,9 +316,9 @@ inline void rNpcLedgerList::cItem::cInstitutionOpenData::operator delete(void* p
     MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::cInstitutionOpenData::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rNpcLedgerList::cItem::cInstitutionOpenData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rNpcLedgerList::cItem::cInstitutionOpenData::createProperty")
-    /* stub */
+void rNpcLedgerList::cItem::cInstitutionOpenData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlagNo", &mFlagNo, 0u, 0u);
 }
 
 inline rNpcLedgerList::cItem::cInstitutionOpenData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

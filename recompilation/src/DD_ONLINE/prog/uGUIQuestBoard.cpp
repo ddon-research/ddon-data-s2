@@ -209,9 +209,37 @@ inline void uGUIQuestBoard::adjustTab() {
     }
 }
 
-__attribute__((weak)) void uGUIQuestBoard::setupInfo() {
-    DDON_STUB("uGUIQuestBoard::setupInfo")
-    /* stub */
+void uGUIQuestBoard::setupInfo() {
+    if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
+        if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
+            unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 8);
+            if (t0 != 0) {
+                setSequenceId(reinterpret_cast<cGUIInstAnimation*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 104)), 5u, true);
+                setSequenceId(reinterpret_cast<cGUIInstAnimation*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 96)), 5u, true);
+            }
+            setInstanceVisible(static_cast<cGUIInstance*>(mMain.mpInstAnimWindowFrame), false);
+            if (mpGUIQuestInfo != nullptr) {
+                if (mpGUIQuestInfo->isCleared()) {
+                    setupDetail();
+                }
+                mpGUIQuestInfo->setFocus(true);
+            }
+        } else {
+            if (mpGUIQuestInfo != nullptr) {
+                if (mpGUIQuestInfo->isCleared()) {
+                    setupDetail();
+                }
+                mpGUIQuestInfo->setFocus(true);
+            }
+        }
+    } else {
+        if (mpGUIQuestInfo != nullptr) {
+            if (mpGUIQuestInfo->isCleared()) {
+                setupDetail();
+            }
+            mpGUIQuestInfo->setFocus(true);
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIQuestBoard::initGpComplete() {
@@ -295,9 +323,25 @@ void uGUIQuestBoard::eventGpCompleteNotSelect() {
     }
 }
 
-__attribute__((weak)) u32 uGUIQuestBoard::evCtrlDecide(cControl::Message* msg) {
-    DDON_STUB("uGUIQuestBoard::evCtrlDecide")
-    return {};
+u32 uGUIQuestBoard::evCtrlDecide(cControl::Message* msg) {
+    if (mFlowId == 2) {
+        if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
+            if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)) != 0) {
+                    if (msg != nullptr) {
+                        msg->changeSE = 4;
+                    }
+                    setInputEvent(66u);
+                    return 1;
+                }
+            }
+        }
+    }
+    if (msg != nullptr) {
+        msg->changeSE = 20;
+    }
+    setInputEvent(2u);
+    return 0;
 }
 
 u32 uGUIQuestBoard::evCtrlCancel(cControl::Message* msg) {

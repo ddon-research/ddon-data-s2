@@ -41,9 +41,6 @@ cpWallMaria::cpWallMaria() {
     /* stub */
 }
 
-cpWallMaria::~cpWallMaria() {
-}
-
 void cpWallMaria::setup() {
     this->cpComponent::setup();
     mSphereSafe.r = 5.0f;

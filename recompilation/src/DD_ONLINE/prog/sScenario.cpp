@@ -44,9 +44,9 @@ inline void* SCE_AH_LIST::operator new(size_t sz, u32 align) {
 SCE_AH_LIST::~SCE_AH_LIST() {
 }
 
-__attribute__((weak)) void SCE_AH_LIST::createProperty(MtPropertyList& s) {
-    DDON_STUB("SCE_AH_LIST::createProperty")
-    /* stub */
+void SCE_AH_LIST::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mArray", static_cast<MtObject*>(&mArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFileName", &mFileName, 1u, 0u);
 }
 
 MtUI* SCE_AH_LIST::createUI(MtProperty& prop) {
@@ -95,14 +95,47 @@ sScenario::~sScenario() {
     sScenario::mpInstance = nullptr;
 }
 
-__attribute__((weak)) void sScenario::init() {
-    DDON_STUB("sScenario::init")
-    /* stub */
+void sScenario::init() {
+    for (u32 i = 0;;) {
+        if (mArray[i].mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray[i].mpArray));
+        }
+        mArray[i].mpArray = nullptr;
+        mArray[i].mLength = 0;
+        mArray[i].mBufsiz = 0;
+        if (i != 8) {
+            i = i + 1u;
+        } else {
+            break;
+        }
+    }
+    mpGUISystemMsg = nullptr;
+    mAccessList[3] = nullptr;
+    mAccessList[2] = nullptr;
+    mAccessList[1] = nullptr;
+    mAccessList[0] = nullptr;
 }
 
-__attribute__((weak)) void sScenario::reset() {
-    DDON_STUB("sScenario::reset")
-    /* stub */
+void sScenario::reset() {
+    final();
+    for (unsigned int i0_3 = 0;;) {
+        if (mArray[i0_3].mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray[i0_3].mpArray));
+        }
+        mArray[i0_3].mpArray = nullptr;
+        mArray[i0_3].mLength = 0;
+        mArray[i0_3].mBufsiz = 0;
+        if (i0_3 != 8) {
+            i0_3 = i0_3 + 1u;
+        } else {
+            break;
+        }
+    }
+    mpGUISystemMsg = nullptr;
+    mAccessList[3] = nullptr;
+    mAccessList[2] = nullptr;
+    mAccessList[1] = nullptr;
+    mAccessList[0] = nullptr;
 }
 
 __attribute__((weak)) void sScenario::move() {

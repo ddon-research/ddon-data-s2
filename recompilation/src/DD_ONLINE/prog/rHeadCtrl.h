@@ -130,6 +130,21 @@ inline void* rHeadCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline rHeadCtrl::rHeadCtrl() {
+    this->mBaseJntNo = -1;
+    this->mBaseAngleSpeed = 20.0f;
+    this->mBaseAngleLimit.x = 150.0f;
+    this->mBaseAngleLimit.y = 150.0f;
+    this->mPitchSpeed = 5.0f;
+    this->mBasePitchLimit.x = 60.0f;
+    this->mBasePitchLimit.y = 0.0f;
+    this->mSafeRange.x = 50.0f;
+    this->mSafeRange.y = 0.0f;
+    this->mMotionSync = 0;
+    this->mSeqPage = 2;
+    this->mSeqNo = 18;
+}
+
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
@@ -160,19 +175,4 @@ inline void* cHeadCtrl::operator new[](size_t sz, u32 align) {
 
 inline void* rHeadCtrl::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rHeadCtrl::DTI)->memAlloc(sz, align, rHeadCtrl::DTI.getID());
-}
-
-inline rHeadCtrl::rHeadCtrl() {
-    mBaseJntNo = -1;
-    mBaseAngleSpeed = 20.0f;
-    mBaseAngleLimit.x = 150.0f;
-    mBaseAngleLimit.y = 150.0f;
-    mPitchSpeed = 5.0f;
-    mBasePitchLimit.x = 60.0f;
-    mBasePitchLimit.y = 0.0f;
-    mSafeRange.x = 50.0f;
-    mSafeRange.y = 0.0f;
-    mMotionSync = 0u;
-    mSeqPage = 2u;
-    mSeqNo = 18u;
 }

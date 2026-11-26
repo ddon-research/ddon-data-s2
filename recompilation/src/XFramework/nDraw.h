@@ -4,6 +4,7 @@
 #include <cstddef>
 
 // Declarations
+namespace nDraw { struct OBJECT_INFO; }
 namespace nDraw { struct SHADER_STATE; }
 
 namespace nDraw {
@@ -144,8 +145,20 @@ namespace nDraw {
 // Type aliases from DWARF
 using __uint64_t = long unsigned int;
 using __uintptr_t = __uint64_t;
+using u16 = unsigned short;
 using u32 = unsigned int;
 using uintptr = __uintptr_t;
+
+namespace nDraw {
+    struct OBJECT_INFO
+    {
+    public:
+        u32 id : 20;  // offset: 0x0
+        u32 function_num : 6;  // offset: 0x0
+        u32 object_num : 6;  // offset: 0x0
+        const u16* indices;  // offset: 0x8
+    };
+}  // namespace nDraw
 
 namespace nDraw {
     struct SHADER_STATE

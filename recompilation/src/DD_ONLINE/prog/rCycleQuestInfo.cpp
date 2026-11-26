@@ -64,9 +64,8 @@ rCycleQuestInfo::~rCycleQuestInfo() {
     mCycleQuestInfo.mLength = 0;
 }
 
-__attribute__((weak)) void rCycleQuestInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rCycleQuestInfo::createProperty")
-    /* stub */
+void rCycleQuestInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mCycleQuestInfo", static_cast<MtObject*>(&mCycleQuestInfo), 0u, 0u);
 }
 
 bool rCycleQuestInfo::save(MtStream& out) {
@@ -140,9 +139,16 @@ rCycleQuestInfo::cCycleQuestInfo::~cCycleQuestInfo() {
     mSituationInfo.mLength = 0;
 }
 
-__attribute__((weak)) void rCycleQuestInfo::cCycleQuestInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rCycleQuestInfo::cCycleQuestInfo::createProperty")
-    /* stub */
+void rCycleQuestInfo::cCycleQuestInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mCycleNo", &mCycleNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCycleSubNo", &mCycleSubNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mContentNameIdx", &mContentNameIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mContentInfoIdx", &mContentInfoIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGatherInfoIdx", &mGatherInfoIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSituationInfo", static_cast<MtObject*>(&mSituationInfo), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGatherNpcId", &mGatherNpcId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGatherStageNo", &mGatherStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGatherStartPos", &mGatherStartPos, 0u, 0u);
 }
 
 __attribute__((weak)) bool rCycleQuestInfo::cCycleQuestInfo::save(MtDataWriter& w) {
@@ -151,15 +157,15 @@ __attribute__((weak)) bool rCycleQuestInfo::cCycleQuestInfo::save(MtDataWriter& 
     w.writeU32(mContentNameIdx);
     w.writeU32(mContentInfoIdx);
     w.writeU32(mGatherInfoIdx);
-    w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 40));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 40)) != 0) {
+    w.writeU32(mSituationInfo.mLength);
+    if (mSituationInfo.mLength != 0) {
         for (unsigned int i0_3 = 0;;) {
             MtObject* t0 = mSituationInfo.getBuffer()[static_cast<int>(i0_3)];
             w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 8));
             w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12));
             w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 16));
             w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 20));
-            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 40))) {
+            if ((i0_3 + 1u) < mSituationInfo.mLength) {
                 i0_3 += 1u;
             } else {
                 break;
@@ -195,9 +201,11 @@ inline void rCycleQuestInfo::cCycleQuestSituationInfo::operator delete(void* p_a
 rCycleQuestInfo::cCycleQuestSituationInfo::~cCycleQuestSituationInfo() {
 }
 
-__attribute__((weak)) void rCycleQuestInfo::cCycleQuestSituationInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rCycleQuestInfo::cCycleQuestSituationInfo::createProperty")
-    /* stub */
+void rCycleQuestInfo::cCycleQuestSituationInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mSituationNo", &mSituationNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSituationNameIdx", &mSituationNameIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSituationStateIdx", &mSituationStateIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSituationDetailIdx", &mSituationDetailIdx, 0u, 0u);
 }
 
 inline rCycleQuestInfo::cCycleQuestSituationInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -6,6 +6,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "cDelegate.h"
 #include "../../XFramework/cUnit.h"
@@ -32,9 +33,8 @@ cComponentManager::~cComponentManager() {
     deleteComponent();
 }
 
-__attribute__((weak)) void cComponentManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("cComponentManager::createProperty")
-    /* stub */
+void cComponentManager::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASS, "Components", reinterpret_cast<MT_MFUNC>(&::cComponentManager::getComponent), reinterpret_cast<MT_MFUNC>(&::cComponentManager::setComponent), 160u, reinterpret_cast<MT_MFUNC>(&::cComponentManager::getComponentNum), reinterpret_cast<MT_MFUNC>(&::cComponentManager::setComponentNum));
 }
 
 void cComponentManager::setOwner(MtObject* pOwner) {

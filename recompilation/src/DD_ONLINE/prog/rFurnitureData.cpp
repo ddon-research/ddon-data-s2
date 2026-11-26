@@ -45,9 +45,10 @@ cFurnitureData::cFurnitureData() {
 cFurnitureData::~cFurnitureData() {
 }
 
-__attribute__((weak)) void cFurnitureData::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFurnitureData::createProperty")
-    /* stub */
+void cFurnitureData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mOmId", &mOmId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAngle", &mAngle, 0u, 0u);
 }
 
 inline cFurnitureData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

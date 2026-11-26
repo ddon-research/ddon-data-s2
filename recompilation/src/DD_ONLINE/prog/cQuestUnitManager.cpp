@@ -169,9 +169,10 @@ cQuestUnitManager::~cQuestUnitManager() {
     release();
 }
 
-__attribute__((weak)) void cQuestUnitManager::createProperty(MtPropertyList& s) {
-    DDON_STUB("cQuestUnitManager::createProperty")
-    /* stub */
+void cQuestUnitManager::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpQuestList", "resource", static_cast<void*>(&mpQuestList), 0u, 0u);
 }
 
 __attribute__((weak)) void cQuestUnitManager::init(u32 questId, s32 stageNo, rQuestList* pRes) {

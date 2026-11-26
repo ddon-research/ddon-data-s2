@@ -55,9 +55,10 @@ cStageCtrl::~cStageCtrl() {
     mAreaArray.mLength = 0;
 }
 
-__attribute__((weak)) void cStageCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cStageCtrl::createProperty")
-    /* stub */
+void cStageCtrl::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaArray", static_cast<MtObject*>(&mAreaArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPartsDungeonNo", &mPartsDungeonNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsInit", &mIsInit, 0u, 0u);
 }
 
 void cStageCtrl::clear() {
@@ -124,9 +125,10 @@ inline void cStageCtrl::Area::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cStageCtrl::Area::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cStageCtrl::Area::createProperty(MtPropertyList& s) {
-    DDON_STUB("cStageCtrl::Area::createProperty")
-    /* stub */
+void cStageCtrl::Area::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaNo", &mAreaNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDepth", &mDepth, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupNo", &mGroupNo, 0u, 0u);
 }
 
 inline cStageCtrl::Area::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

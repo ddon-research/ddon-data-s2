@@ -26,9 +26,16 @@ inline void cStatusCheck::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cStatusCheck::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cStatusCheck::createProperty(MtPropertyList& s) {
-    DDON_STUB("cStatusCheck::createProperty")
-    /* stub */
+void cStatusCheck::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup", &mGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTypeReverse", &mTypeReverse, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSystemParam[0]", &mSystemParam[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSystemParam[1]", &mSystemParam[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSystemParam[2]", &mSystemParam[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResultOver", &mResultOver, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResultAdd", &mResultAdd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResult", &mResult, 0u, 0u);
 }
 
 inline cStatusCheck::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

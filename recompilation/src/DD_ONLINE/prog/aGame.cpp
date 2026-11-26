@@ -106,9 +106,8 @@ __attribute__((weak)) void aGame::final() {
     /* stub */
 }
 
-__attribute__((weak)) const MtDTI& aGame::getParentType() {
-    DDON_STUB("aGame::getParentType")
-    __builtin_unreachable();
+const MtDTI& aGame::getParentType() {
+    return aBase::DTI;
 }
 
 inline aGame::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

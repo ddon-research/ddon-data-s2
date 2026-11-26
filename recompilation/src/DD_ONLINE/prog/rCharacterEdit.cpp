@@ -49,9 +49,9 @@ MT_CTSTR rCharacterEdit::getExt() const {
     return "edt";
 }
 
-__attribute__((weak)) void rCharacterEdit::createProperty(MtPropertyList& s) {
-    DDON_STUB("rCharacterEdit::createProperty")
-    /* stub */
+void rCharacterEdit::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpEditParam", reinterpret_cast<MtObject* *>(&mpEditParam), 4u, 0u);
 }
 
 bool rCharacterEdit::load(MtStream& in) {

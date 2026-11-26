@@ -26,6 +26,7 @@
 #include "cGUIExtNetMgr.h"
 #include "cGUIUtility.h"
 #include "cHumanAction.h"
+#include "cLightQuestManager.h"
 #include "cNetGameServer.h"
 #include "cNetSessionManager.h"
 #include "cPRTManager.h"
@@ -116,40 +117,40 @@ inline s32 cQuestPersonalData::getRequestDeliverProcessNo(uControl* pCtrl) const
 }
 
 __attribute__((weak)) bool cQuestPersonalData::isFlag(u32 flagNo) const {
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 112)) != 0) {
+    if (mQuestFlag.mLength != 0) {
         unsigned int i2 = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 128)) + static_cast<unsigned long>(i2 * 8u)) + 0)) + 8)) == flagNo) {
-                return (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 128)) + static_cast<unsigned long>(i2 * 8u)) + 0)) != 0;
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mQuestFlag.mpArray[i2]) + 8)) == flagNo) {
+                return mQuestFlag.mpArray[i2] != nullptr;
             }
             i2 += 1u;
-        } while (i2 < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 112)));
+        } while (i2 < mQuestFlag.mLength);
     }
     return false;
 }
 
 __attribute__((weak)) bool cQuestPersonalData::isFlagFsm(u32 flagNo) const {
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 144)) != 0) {
+    if (mQuestFlagFsm.mLength != 0) {
         unsigned int i2 = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 160)) + static_cast<unsigned long>(i2 * 8u)) + 0)) + 8)) == flagNo) {
-                return (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 160)) + static_cast<unsigned long>(i2 * 8u)) + 0)) != 0;
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mQuestFlagFsm.mpArray[i2]) + 8)) == flagNo) {
+                return mQuestFlagFsm.mpArray[i2] != nullptr;
             }
             i2 += 1u;
-        } while (i2 < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 144)));
+        } while (i2 < mQuestFlagFsm.mLength);
     }
     return false;
 }
 
 __attribute__((weak)) bool cQuestPersonalData::isLayoutFlag(u32 flagNo) const {
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 176)) != 0) {
+    if (mQuestLayoutFlag.mLength != 0) {
         unsigned int i2 = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 192)) + static_cast<unsigned long>(i2 * 8u)) + 0)) + 8)) == flagNo) {
-                return (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 192)) + static_cast<unsigned long>(i2 * 8u)) + 0)) != 0;
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mQuestLayoutFlag.mpArray[i2]) + 8)) == flagNo) {
+                return mQuestLayoutFlag.mpArray[i2] != nullptr;
             }
             i2 += 1u;
-        } while (i2 < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 176)));
+        } while (i2 < mQuestLayoutFlag.mLength);
     }
     return false;
 }
@@ -238,8 +239,65 @@ __attribute__((weak)) void cQuestPersonalData::addTalkData(u32 npcId, u32 groupS
 }
 
 __attribute__((weak)) cQuestTask::cQuestProcess* cQuestPersonalData::getDeliverProcess(uControl* pCtrl) const {
-    DDON_STUB("cQuestPersonalData::getDeliverProcess")
-    return nullptr;
+    MtObject* v5_0;
+    if (pCtrl == nullptr) {
+        v5_0 = nullptr;
+    } else {
+        const u32 processNum = mProcessList.mLength;
+        if (processNum != 0) {
+            for (unsigned int i0_3 = 0;;) {
+                const nQuest::cDeliverTargetInfo* t0 = static_cast<cQuestTask::cQuestProcess*>(mProcessList.mpArray[i0_3])->getDeliverTargetInfo();
+                if (t0 != nullptr) {
+                    u32 t1 = t0->getStageNo();
+                    if ((pCtrl->mLayout.mLayoutId.mLayoutID & 1023u) == t1) {
+                        if (t0->isQuestSet()) {
+                            if ((pCtrl->mUnitParam & 7u) == 7) {
+                                u32 t2 = t0->getGroupNo();
+                                if ((pCtrl->mLayout.mLayoutId.mLayoutID >> 10) == t2) {
+                                    u32 t3 = t0->getSetNo();
+                                    if (pCtrl->mLayout.mSetNo == static_cast<int>(t3)) {
+                                        v5_0 = mProcessList.mpArray[i0_3];
+                                        return static_cast<cQuestTask::cQuestProcess*>(v5_0);
+                                    }
+                                }
+                            }
+                        } else {
+                            u32 t4 = t0->getNpcId();
+                            if (t4 == static_cast<unsigned int>(pCtrl->getNpcId())) {
+                                v5_0 = mProcessList.mpArray[i0_3];
+                                return static_cast<cQuestTask::cQuestProcess*>(v5_0);
+                            }
+                        }
+                    }
+                }
+                if ((i0_3 + 1u) < processNum) {
+                    i0_3 = i0_3 + 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        const u32 npcId = pCtrl->getNpcId();
+        if (processNum == 0) {
+            v5_0 = nullptr;
+        } else {
+            MtObject* * v3_1 = mProcessList.mpArray;
+            for (unsigned int i3_3 = 0;;) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_1[i3_3]) + 176)) != npcId) {
+                    if ((i3_3 + 1u) < processNum) {
+                        i3_3 = i3_3 + 1u;
+                    } else {
+                        break;
+                    }
+                } else {
+                    v5_0 = v3_1[i3_3];
+                    return static_cast<cQuestTask::cQuestProcess*>(v5_0);
+                }
+            }
+            v5_0 = nullptr;
+        }
+    }
+    return static_cast<cQuestTask::cQuestProcess*>(v5_0);
 }
 
 __attribute__((weak)) void cQuestPersonalData::onFlag(u32 flagNo, cQuestPersonalData::QuestFlagArray& flags) {
@@ -419,9 +477,9 @@ u32 cQuestTask::getOrderConditionType(u32 Idx) const {
     return static_cast<const cQuestTaskParam&>(mTaskParam).getOrderConditionType(Idx);
 }
 
-__attribute__((weak)) MT_CTSTR cQuestTask::getOrderConditionMessage(u32 idx) const {
-    DDON_STUB("cQuestTask::getOrderConditionMessage")
-    return {};
+MT_CTSTR cQuestTask::getOrderConditionMessage(u32 idx) const {
+    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+    return t0->getOrderConditionText(mTaskParam.getOrderConditionType(idx));
 }
 
 MT_CTSTR cQuestTask::getOrderConditionParamMessage(u32 idx, u32 paramIdx) const {
@@ -820,19 +878,19 @@ __attribute__((weak)) nQuest::QUEST_TYPE cQuestTask::getQuestType() const {
 
 void cQuestTask::overwriteEnemyDieNumForLight(u32 emDieNum) {
     if (mpMyData != nullptr) {
-        unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpMyData) + 16);
+        u32 v0_0 = mpMyData->mProcessList.mLength;
         if (v0_0 != 0) {
-            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpMyData) + 32);
+            MtObject* * v0_1 = mpMyData->mProcessList.mpArray;
             for (unsigned int i0_2 = 0;;) {
-                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) + 182)) != 0) {
+                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_1[i0_2]) + 182)) != 0) {
                     if ((i0_2 + 1u) < v0_0) {
                         i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) != 0) {
-                        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) + 172) = emDieNum;
+                    if (v0_1[i0_2] != nullptr) {
+                        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 172) = emDieNum;
                     }
                     return;
                 }
@@ -896,8 +954,108 @@ void cQuestTask::addProcessState(const CQuestProcessState* pProcess) {
 }
 
 __attribute__((weak)) void cQuestTask::addProcessState(const CQuestProcessState* pProcess, bool isOverWrite) {
-    DDON_STUB("cQuestTask::addProcessState")
-    /* stub */
+    if (!mTaskParam.checkTaskState(0u)) {
+        cQuestPersonalData* t1 = mpLeaderData;
+        if (t1 != nullptr) {
+            if (!!isOverWrite) {
+                if (mpMyData != nullptr) {
+                    delete mpMyData;
+                    mpMyData = nullptr;
+                    cQuestPersonalData* t2 = mpLeaderData;
+                    mpMyData = t2;
+                    mpLeaderData = nullptr;
+                    t2->mPersonalDataType = PERSONAL_DATA_TYPE_MYSELF;
+                    cQuestPersonalData* pPersonalData = mpMyData;
+                    if (pPersonalData != nullptr) {
+                        if (pProcess != nullptr) {
+                            if (pPersonalData->getQuestTask()->mTaskParam.checkTaskState(8u)) {
+                                cQuestTask* t3 = pPersonalData->getQuestTask();
+                                if (static_cast<unsigned int>(t3->mWaitOrderProcessNo) == static_cast<unsigned int>(pProcess->m_usProcessNo)) {
+                                    t3->mTaskParam.offTaskState(cQuestTaskParam::TASK_STATE_WAIT_ORDER);
+                                    t3->mWaitOrderProcessNo = 0;
+                                    sQuestManagerExt::getInstance()->removeWaitOrder(t3->mScheduleId);
+                                }
+                                pPersonalData->addProcessForHelper(pProcess);
+                            } else {
+                                pPersonalData->addProcessForHelper(pProcess);
+                            }
+                        }
+                    }
+                } else {
+                    mpMyData = t1;
+                    mpLeaderData = nullptr;
+                    t1->mPersonalDataType = PERSONAL_DATA_TYPE_MYSELF;
+                    cQuestPersonalData* pPersonalData = mpMyData;
+                    if (pPersonalData != nullptr) {
+                        if (pProcess != nullptr) {
+                            if (pPersonalData->getQuestTask()->mTaskParam.checkTaskState(8u)) {
+                                cQuestTask* t3 = pPersonalData->getQuestTask();
+                                if (static_cast<unsigned int>(t3->mWaitOrderProcessNo) == static_cast<unsigned int>(pProcess->m_usProcessNo)) {
+                                    t3->mTaskParam.offTaskState(cQuestTaskParam::TASK_STATE_WAIT_ORDER);
+                                    t3->mWaitOrderProcessNo = 0;
+                                    sQuestManagerExt::getInstance()->removeWaitOrder(t3->mScheduleId);
+                                }
+                                pPersonalData->addProcessForHelper(pProcess);
+                            } else {
+                                pPersonalData->addProcessForHelper(pProcess);
+                            }
+                        }
+                    }
+                }
+            } else {
+                cQuestPersonalData* pPersonalData = mpMyData;
+                if (pPersonalData != nullptr) {
+                    if (pProcess != nullptr) {
+                        if (pPersonalData->getQuestTask()->mTaskParam.checkTaskState(8u)) {
+                            cQuestTask* t3 = pPersonalData->getQuestTask();
+                            if (static_cast<unsigned int>(t3->mWaitOrderProcessNo) == static_cast<unsigned int>(pProcess->m_usProcessNo)) {
+                                t3->mTaskParam.offTaskState(cQuestTaskParam::TASK_STATE_WAIT_ORDER);
+                                t3->mWaitOrderProcessNo = 0;
+                                sQuestManagerExt::getInstance()->removeWaitOrder(t3->mScheduleId);
+                            }
+                            pPersonalData->addProcessForHelper(pProcess);
+                        } else {
+                            pPersonalData->addProcessForHelper(pProcess);
+                        }
+                    }
+                }
+            }
+        } else {
+            cQuestPersonalData* pPersonalData = mpMyData;
+            if (pPersonalData != nullptr) {
+                if (pProcess != nullptr) {
+                    if (pPersonalData->getQuestTask()->mTaskParam.checkTaskState(8u)) {
+                        cQuestTask* t3 = pPersonalData->getQuestTask();
+                        if (static_cast<unsigned int>(t3->mWaitOrderProcessNo) == static_cast<unsigned int>(pProcess->m_usProcessNo)) {
+                            t3->mTaskParam.offTaskState(cQuestTaskParam::TASK_STATE_WAIT_ORDER);
+                            t3->mWaitOrderProcessNo = 0;
+                            sQuestManagerExt::getInstance()->removeWaitOrder(t3->mScheduleId);
+                        }
+                        pPersonalData->addProcessForHelper(pProcess);
+                    } else {
+                        pPersonalData->addProcessForHelper(pProcess);
+                    }
+                }
+            }
+        }
+    } else {
+        cQuestPersonalData* pPersonalData = mpMyData;
+        if (pPersonalData != nullptr) {
+            if (pProcess != nullptr) {
+                if (pPersonalData->getQuestTask()->mTaskParam.checkTaskState(8u)) {
+                    cQuestTask* t3 = pPersonalData->getQuestTask();
+                    if (static_cast<unsigned int>(t3->mWaitOrderProcessNo) == static_cast<unsigned int>(pProcess->m_usProcessNo)) {
+                        t3->mTaskParam.offTaskState(cQuestTaskParam::TASK_STATE_WAIT_ORDER);
+                        t3->mWaitOrderProcessNo = 0;
+                        sQuestManagerExt::getInstance()->removeWaitOrder(t3->mScheduleId);
+                    }
+                    pPersonalData->addProcessForHelper(pProcess);
+                } else {
+                    pPersonalData->addProcessForHelper(pProcess);
+                }
+            }
+        }
+    }
 }
 
 void cQuestTask::addProcessStateForParty(const CQuestProcessState* pProcess) {
@@ -1074,9 +1232,10 @@ void cQuestTask::onWaitOrder() {
     mTaskParam.onTaskState(cQuestTaskParam::TASK_STATE_WAIT_ORDER);
 }
 
-__attribute__((weak)) void cQuestTask::offWaitOrder() {
-    DDON_STUB("cQuestTask::offWaitOrder")
-    /* stub */
+void cQuestTask::offWaitOrder() {
+    mTaskParam.offTaskState(cQuestTaskParam::TASK_STATE_WAIT_ORDER);
+    mWaitOrderProcessNo = 0;
+    sQuestManagerExt::getInstance()->removeWaitOrder(mScheduleId);
 }
 
 __attribute__((weak)) bool cQuestTask::isFlag(u32 flagNo) const {
@@ -1085,23 +1244,23 @@ __attribute__((weak)) bool cQuestTask::isFlag(u32 flagNo) const {
 }
 
 bool cQuestTask::isMyFlag(u32 flagNo) const {
-    unsigned int v0_0;
-    unsigned long v0_1;
+    u32 v0_0;
+    MtObject* * v0_1;
     unsigned int i0_2;
     if (mpMyData != nullptr) {
-        v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpMyData) + 112);
+        v0_0 = mpMyData->mQuestFlag.mLength;
         if (v0_0 == 0) {
             return false;
         } else {
-            v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpMyData) + 128);
+            v0_1 = mpMyData->mQuestFlag.mpArray;
             i0_2 = 0;
         }
     } else {
         return false;
     }
     for (;;) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) + 8)) == flagNo) {
-            return (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) != 0;
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == flagNo) {
+            return v0_1[i0_2] != nullptr;
         } else {
             if ((i0_2 + 1u) < v0_0) {
                 i0_2 = i0_2 + 1u;
@@ -1283,7 +1442,7 @@ __attribute__((weak)) void cQuestTask::buyHint() {
     /* stub */
 }
 
-bool cQuestTask::playsEvent() const {
+__attribute__((weak)) bool cQuestTask::playsEvent() const {
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 704)) & 32) >> 5);
 }
 
@@ -1302,9 +1461,40 @@ __attribute__((weak)) void cQuestTask::setIsDistEnable(bool isEnable) {
     /* stub */
 }
 
-__attribute__((weak)) bool cQuestTask::createTargetEnemyInfo() {
-    DDON_STUB("cQuestTask::createTargetEnemyInfo")
-    return {};
+bool cQuestTask::createTargetEnemyInfo() {
+    cQuestPersonalData* v0_8 = mpMyData;
+    if (v0_8 != nullptr) {
+        u32 v0_9 = v0_8->mProcessList.mLength;
+        if (v0_9 != 0) {
+            for (unsigned int i0_3 = 0;;) {
+                if (v0_8->mProcessList.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                    static_cast<cQuestTask::cQuestProcess*>(v0_8->mProcessList.getBuffer()[static_cast<int>(i0_3)])->createTargetEnemyInfo();
+                }
+                if (v0_9 != (i0_3 + 1u)) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    cQuestPersonalData* v3_10 = mpLeaderData;
+    if (v3_10 != nullptr) {
+        u32 v3_9 = v3_10->mProcessList.mLength;
+        if (v3_9 != 0) {
+            for (unsigned int i3_3 = 0;;) {
+                if (v3_10->mProcessList.getBuffer()[static_cast<int>(i3_3)] != nullptr) {
+                    static_cast<cQuestTask::cQuestProcess*>(v3_10->mProcessList.getBuffer()[static_cast<int>(i3_3)])->createTargetEnemyInfo();
+                }
+                if (v3_9 != (i3_3 + 1u)) {
+                    i3_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return true;
 }
 
 bool cQuestTask::progresses() const {
@@ -1615,9 +1805,9 @@ cQuestTask::cLayoutFlagInfo::~cLayoutFlagInfo() {
     mSetInfoList.mLength = 0;
 }
 
-__attribute__((weak)) void cQuestTask::cLayoutFlagInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("cQuestTask::cLayoutFlagInfo::createProperty")
-    /* stub */
+void cQuestTask::cLayoutFlagInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mFlagNo", &mFlagNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSetInfoList", static_cast<MtObject*>(&mSetInfoList), 0u, 0u);
 }
 
 inline cQuestTask::cLayoutFlagInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1643,9 +1833,9 @@ inline void cQuestTask::cLayoutFlagInfo::cSetInfo::operator delete(void* p_addr)
 cQuestTask::cLayoutFlagInfo::cSetInfo::~cSetInfo() {
 }
 
-__attribute__((weak)) void cQuestTask::cLayoutFlagInfo::cSetInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("cQuestTask::cLayoutFlagInfo::cSetInfo::createProperty")
-    /* stub */
+void cQuestTask::cLayoutFlagInfo::cSetInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupId", &mGroupId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
 }
 
 inline cQuestTask::cLayoutFlagInfo::cSetInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1671,9 +1861,10 @@ inline void cQuestTask::cEnemyGroupInfo::operator delete(void* p_addr) {
 cQuestTask::cEnemyGroupInfo::~cEnemyGroupInfo() {
 }
 
-__attribute__((weak)) void cQuestTask::cEnemyGroupInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("cQuestTask::cEnemyGroupInfo::createProperty")
-    /* stub */
+void cQuestTask::cEnemyGroupInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEnemyGroupId", &mEnemyGroupId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnemyLevel", &mEnemyLevel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsPartyRecommanded", &mIsPartyRecommanded, 0u, 0u);
 }
 
 inline cQuestTask::cEnemyGroupInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1746,7 +1937,7 @@ inline void cQuestTask::cQuestProcess::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cQuestTask::cQuestProcess::DTI)->memFree(p_addr);
 }
 
-const nQuest::cDeliverTargetInfo* cQuestTask::cQuestProcess::getDeliverTargetInfo() const {
+__attribute__((weak)) const nQuest::cDeliverTargetInfo* cQuestTask::cQuestProcess::getDeliverTargetInfo() const {
     return mpDeliverTargetInfo;
 }
 
@@ -1785,9 +1976,9 @@ __attribute__((weak)) void cQuestTask::cQuestProcess::move() {
     /* stub */
 }
 
-__attribute__((weak)) cQuestTask::cQuestProcess& cQuestTask::cQuestProcess::updateProcessState(const CQuestProcessState* pProcess) {
-    DDON_STUB("cQuestTask::cQuestProcess::updateProcessState")
-    __builtin_unreachable();
+cQuestTask::cQuestProcess& cQuestTask::cQuestProcess::updateProcessState(const CQuestProcessState* pProcess) {
+    setupProcessState(pProcess);
+    return *this;
 }
 
 __attribute__((weak)) cQuestTask::cQuestProcess& cQuestTask::cQuestProcess::setupProcessState(const CQuestProcessState* pProcess) {
@@ -1919,7 +2110,7 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkTalkNpc(s32 stageNo, 
 }
 
 bool cQuestTask::cQuestProcess::checkDieEnemy(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
-    if (static_cast<sAreaExt*>(sArea::getInstance())->isStage() && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 176)) != static_cast<unsigned int>(stageNo))) {
+    if (static_cast<sAreaExt*>(sArea::getInstance())->isStage() && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) != static_cast<unsigned int>(stageNo))) {
         return false;
     }
     if (setNo > -1) {
@@ -1944,9 +2135,29 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkDeliverItem(s32 itemI
     return {};
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkEmDieLight(s32 enemyId, s32 enemyLv, s32 enemyNum, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkEmDieLight")
-    return {};
+bool cQuestTask::cQuestProcess::checkEmDieLight(s32 enemyId, s32 enemyLv, s32 enemyNum, s32 param04) {
+    nQuest::QUEST_TYPE t0 = getQuestTask()->getQuestType();
+    if (t0 == nQuest::QUEST_TYPE_PAWN) {
+        cQuestManagerBase* t1 = sQuestManagerExt::getInstance()->getQuestManager(nQuest::QUEST_TYPE_PAWN);
+        cPawnQuestManager::cPawnQuestInfo* t3 = static_cast<cPawnQuestManager*>(t1)->getPawnQuestInfo(getQuestTask()->getScheduleId());
+        if (t3 != nullptr) {
+            t3->setEnemyInfo(static_cast<u32>(enemyId), static_cast<u32>(enemyLv), static_cast<u32>(enemyNum));
+        }
+        return mDieEmNum >= static_cast<unsigned int>(enemyNum);
+    } else {
+        if (t0 == nQuest::QUEST_TYPE_LIGHT) {
+            cQuestManagerBase* t6 = sQuestManagerExt::getInstance()->getQuestManager(nQuest::QUEST_TYPE_LIGHT);
+            cLightQuestManager::cLightQuestInfo* t8 = static_cast<cLightQuestManager*>(t6)->getLightQuestInfo(getQuestTask()->getScheduleId());
+            if (t8 != nullptr) {
+                t8->mEnemyGroupId = static_cast<u32>(enemyId);
+                t8->mEnemyLevel = static_cast<u32>(enemyLv);
+                t8->mNum = static_cast<u32>(enemyNum);
+            }
+            return mDieEmNum >= static_cast<unsigned int>(enemyNum);
+        } else {
+            return mDieEmNum >= static_cast<unsigned int>(enemyNum);
+        }
+    }
 }
 
 bool cQuestTask::cQuestProcess::checkQstFlagOn(s32 questId, s32 flagNo, s32 param03, s32 param04) {
@@ -2030,16 +2241,138 @@ bool cQuestTask::cQuestProcess::checkStageNo(s32 stageNo, s32 param02, s32 param
     return false;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkEventEnd(s32 stageNo, s32 eventNo, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkEventEnd")
-    return {};
+bool cQuestTask::cQuestProcess::checkEventEnd(s32 stageNo, s32 eventNo, s32 param03, s32 param04) {
+    bool b3_0;
+    if ((static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) && !getQuestTask()->isSoloQuest()) {
+        b3_0 = false;
+        return b3_0;
+    }
+    u32 v0_0;
+    unsigned int i0_3;
+    sEventManager* v0_11;
+    u32 v2_0;
+    if (static_cast<sAreaExt*>(sArea::getInstance())->isStage()) {
+        if (sArea::getInstance()->mpArea[2]->cArea::isInit()) {
+            s32 t0 = sEventManager::getInstance()->mLastPlayEventNo;
+            if (t0 == sEventManager::getInstance()->getEventID(stageNo, eventNo)) {
+                if (nQuest::isContents(getQuestTask()->getQuestType())) {
+                    if (getQuestTask()->getQuestType() != nQuest::QUEST_TYPE_END_CONTENTS) {
+                        sQuestManagerExt* t1 = sQuestManagerExt::getInstance();
+                        if (static_cast<cCycleQuestManagerBase*>(t1->getQuestManager(getQuestTask()->getQuestType()))->getRno0() == 2) {
+                            b3_0 = false;
+                            return b3_0;
+                        } else {
+                            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) == static_cast<unsigned int>(stageNo)) {
+                                if (sEventManager::getInstance()->mEventPlay) {
+                                    b3_0 = false;
+                                    return b3_0;
+                                } else {
+                                    if (!getQuestTask()->playsEvent()) {
+                                        if ((((stageNo == 101) && (eventNo == 0)) == false) && !nQuest::isContents(getQuestTask()->getQuestType())) {
+                                            b3_0 = false;
+                                            return b3_0;
+                                        }
+                                    }
+                                    v0_11 = sEventManager::getInstance();
+                                    if (v0_11->mFsmNpcList.mLength == 0) {
+                                        v2_0 = v0_11->mFsmNpcList.mLength;
+                                        goto region_1ae335;
+                                    } else {
+                                        v0_0 = v0_11->mFsmNpcList.mLength;
+                                        i0_3 = 0;
+                                    }
+                                }
+                            } else {
+                                b3_0 = false;
+                                return b3_0;
+                            }
+                        }
+                    } else {
+                        if (sEventManager::getInstance()->mEventPlay) {
+                            b3_0 = false;
+                            return b3_0;
+                        } else {
+                            if (!getQuestTask()->playsEvent()) {
+                                if ((((stageNo == 101) && (eventNo == 0)) == false) && !nQuest::isContents(getQuestTask()->getQuestType())) {
+                                    b3_0 = false;
+                                    return b3_0;
+                                }
+                            }
+                            v0_11 = sEventManager::getInstance();
+                            if (v0_11->mFsmNpcList.mLength == 0) {
+                                v2_0 = v0_11->mFsmNpcList.mLength;
+                                goto region_1ae335;
+                            } else {
+                                v0_0 = v0_11->mFsmNpcList.mLength;
+                                i0_3 = 0;
+                            }
+                        }
+                    }
+                } else {
+                    if (sEventManager::getInstance()->mEventPlay) {
+                        b3_0 = false;
+                        return b3_0;
+                    } else {
+                        if (!getQuestTask()->playsEvent()) {
+                            if ((((stageNo == 101) && (eventNo == 0)) == false) && !nQuest::isContents(getQuestTask()->getQuestType())) {
+                                b3_0 = false;
+                                return b3_0;
+                            }
+                        }
+                        v0_11 = sEventManager::getInstance();
+                        if (v0_11->mFsmNpcList.mLength == 0) {
+                            v2_0 = v0_11->mFsmNpcList.mLength;
+                            goto region_1ae335;
+                        } else {
+                            v0_0 = v0_11->mFsmNpcList.mLength;
+                            i0_3 = 0;
+                        }
+                    }
+                }
+            } else {
+                b3_0 = false;
+                return b3_0;
+            }
+        } else {
+            b3_0 = false;
+            return b3_0;
+        }
+    } else {
+        b3_0 = false;
+        return b3_0;
+    }
+    u32 v1_0;
+    for (;;) {
+        if (v0_11->mFsmNpcList.mpArray[i0_3] == nullptr) {
+            v1_0 = v0_0;
+        } else {
+            delete v0_11->mFsmNpcList.mpArray[i0_3];
+            v1_0 = v0_11->mFsmNpcList.mLength;
+        }
+        if ((i0_3 + 1u) < v1_0) {
+            v0_0 = v1_0;
+            i0_3 += 1u;
+        } else {
+            v2_0 = v1_0;
+            break;
+        }
+    }
+    region_1ae335:;
+    if (v0_11->mFsmNpcList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(v0_11->mFsmNpcList.mpArray));
+    }
+    v0_11->mFsmNpcList.mpArray = nullptr;
+    v0_11->mFsmNpcList.mBufsiz = 0;
+    v0_11->mFsmNpcList.mLength = 0;
+    b3_0 = true;
+    return b3_0;
 }
 
 bool cQuestTask::cQuestProcess::checkPrt(s32 stageNo, s32 x, s32 y, s32 z) {
     if (mPrtUniqueId == 0) {
         mPrtUniqueId = nLayout::createUniqueIDQuestProcess(getQuestTask()->getQuestIdU32(), mCurrentBlockNo, stageNo, *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 182));
     }
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 21740)) == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
         if (sQuestManagerExt::getInstance()->getPRTMgr()->getAdvanceFlag() && (sQuestManagerExt::getInstance()->getPRTMgr()->mAdvancePRTOMType != 1)) {
             cPRTManager* t0 = sQuestManagerExt::getInstance()->getPRTMgr();
             const u32 advancePrtUniqueId = nLayout::createUniqueIDQuestProcess(t0->mAdvancePRT.questNo, t0->mAdvancePRT.blockNo, t0->mAdvancePRT.stageNo, t0->mAdvancePRT.processNo);
@@ -2117,9 +2450,15 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkWarlevel(s32 warLevel
     return {};
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkTalkNpcWithoutMarker(s32 stageNo, s32 npcId, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkTalkNpcWithoutMarker")
-    return {};
+bool cQuestTask::cQuestProcess::checkTalkNpcWithoutMarker(s32 stageNo, s32 npcId, s32 param03, s32 param04) {
+    if ((sGame::mpInstance)->mStageNo == stageNo) {
+        if (npcId == sTalkManager::getInstance()->getNpcId()) {
+            sTalkManager* t1 = sTalkManager::getInstance();
+            bool t2 = t1->isQuestTalkExited(getQuestTask()->getScheduleId());
+            return t2;
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::checkHaveMoney(s32 gold, s32 type, s32 param03, s32 param04) {
@@ -2623,7 +2962,7 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkTutorialTalkNpc(s32 s
 }
 
 bool cQuestTask::cQuestProcess::checkIsLogin(s32 param01, s32 param02, s32 param03, s32 param04) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 21740)) == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
         return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(getQuestTask()) + 704)) & 8) >> 3);
     } else {
         return false;
@@ -2645,14 +2984,14 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsKilledTargetEnemySe
 
 bool cQuestTask::cQuestProcess::checkIsKilledTargetEmSetGrpNoMarker(s32 flagNo, s32 param02, s32 param03, s32 param04) {
     unsigned int i0_3;
-    unsigned int v0_11;
+    u32 v0_11;
     unsigned long v2_3;
     if (nQuest::isContents(getQuestTask()->getQuestType())) {
         if (sQuestManagerExt::getInstance()->isCycleContentsTimerZero()) {
             v2_3 = 0;
             return static_cast<bool>(static_cast<unsigned char>(v2_3));
         } else {
-            v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+            v0_11 = mTargetEnemyInfo.mLength;
             if (v0_11 == 0) {
                 v2_3 = 0;
                 return static_cast<bool>(static_cast<unsigned char>(v2_3));
@@ -2661,7 +3000,7 @@ bool cQuestTask::cQuestProcess::checkIsKilledTargetEmSetGrpNoMarker(s32 flagNo, 
             }
         }
     } else {
-        v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+        v0_11 = mTargetEnemyInfo.mLength;
         if (v0_11 == 0) {
             v2_3 = 0;
             return static_cast<bool>(static_cast<unsigned char>(v2_3));
@@ -2702,9 +3041,15 @@ bool cQuestTask::cQuestProcess::checkOmEndText(s32 stageNo, s32 groupNo, s32 set
     }
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkQuestOmEndText(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkQuestOmEndText")
-    return {};
+bool cQuestTask::cQuestProcess::checkQuestOmEndText(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
+    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+    u32 t1 = t0->getQuestSeq(getQuestTask()->getQuestId());
+    if (t0->isEndTextOm(static_cast<u32>(stageNo), static_cast<u32>(groupNo), setNo, t1)) {
+        unsigned char t2 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(getQuestTask()) + 666);
+        return static_cast<bool>(static_cast<unsigned long>(t2 & 4) >> 2);
+    } else {
+        return false;
+    }
 }
 
 bool cQuestTask::cQuestProcess::checkOpenAreaMaster(s32 areaId, s32 param02, s32 param03, s32 param04) {
@@ -2714,9 +3059,26 @@ bool cQuestTask::cQuestProcess::checkOpenAreaMaster(s32 areaId, s32 param02, s32
     return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(getQuestTask()) + 666)) & 16) >> 4);
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkHaveItemAllBag(s32 itemId, s32 itemNum, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkHaveItemAllBag")
-    return {};
+bool cQuestTask::cQuestProcess::checkHaveItemAllBag(s32 itemId, s32 itemNum, s32 param03, s32 param04) {
+    updateDeliverItemInfo(static_cast<u32>(itemId), static_cast<u32>(itemNum));
+    if (getQuestTask()->getQuestType() == nQuest::QUEST_TYPE_LIGHT) {
+        cQuestManagerBase* t0 = sQuestManagerExt::getInstance()->getQuestManager(nQuest::QUEST_TYPE_LIGHT);
+        cLightQuestManager::cLightQuestInfo* pInfo = static_cast<cLightQuestManager*>(t0)->getLightQuestInfo(getQuestTask()->getScheduleId());
+        if (pInfo != nullptr) {
+            pInfo->mItemId = static_cast<u32>(itemId);
+            pInfo->mNum = static_cast<u32>(itemNum);
+            getQuestTask()->getTaskParam().onTaskState(cQuestTaskParam::TASK_STATE_PRE_WAIT_DELIVER);
+            u32 totalHaveNum = sItemManager::getInstance()->getItemNumAllBag(sItemManager::STORAGE_FILLTER_TYPE_DELIVER, static_cast<u32>(itemId));
+            return totalHaveNum >= static_cast<unsigned int>(itemNum);
+        } else {
+            getQuestTask()->getTaskParam().onTaskState(cQuestTaskParam::TASK_STATE_PRE_WAIT_DELIVER);
+            u32 totalHaveNum = sItemManager::getInstance()->getItemNumAllBag(sItemManager::STORAGE_FILLTER_TYPE_DELIVER, static_cast<u32>(itemId));
+            return totalHaveNum >= static_cast<unsigned int>(itemNum);
+        }
+    } else {
+        u32 totalHaveNum = sItemManager::getInstance()->getItemNumAllBag(sItemManager::STORAGE_FILLTER_TYPE_DELIVER, static_cast<u32>(itemId));
+        return totalHaveNum >= static_cast<unsigned int>(itemNum);
+    }
 }
 
 bool cQuestTask::cQuestProcess::checkOpenNewspaper(s32 param01, s32 param02, s32 param03, s32 param04) {
@@ -2749,9 +3111,23 @@ bool cQuestTask::cQuestProcess::checkIsExistSecondPawn(s32 param01, s32 param02,
     return false;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOrderJobTutorialQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsOrderJobTutorialQuest")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsOrderJobTutorialQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
+    sQuestManagerExt::getInstance()->csLock();
+    u32 t0 = sQuestManagerExt::getInstance()->getJobTutorialQuestOrderNum();
+    if (t0 == 1) {
+        sQuestManagerExt::getInstance()->csUnlock();
+        sQuestManagerExt* t2 = sQuestManagerExt::getInstance();
+        bool t3 = t2->isOrderJobTutorialQuest(getQuestTask()->getQuestId());
+        return t3;
+    } else {
+        if (t0 == 0) {
+            sQuestManagerExt::getInstance()->csUnlock();
+            return true;
+        } else {
+            sQuestManagerExt::getInstance()->csUnlock();
+            return false;
+        }
+    }
 }
 
 bool cQuestTask::cQuestProcess::checkIsOpenWarehouse(s32 param01, s32 param02, s32 param03, s32 param04) {
@@ -2976,14 +3352,14 @@ bool cQuestTask::cQuestProcess::checkCraft(s32 param01, s32 param02, s32 param03
 
 bool cQuestTask::cQuestProcess::checkIsKilledTargetEnemySetGroupGmMain(s32 flagNo, s32 param02, s32 param03, s32 param04) {
     unsigned int i0_3;
-    unsigned int v0_11;
+    u32 v0_11;
     unsigned long v2_3;
     if (nQuest::isContents(getQuestTask()->getQuestType())) {
         if (sQuestManagerExt::getInstance()->isCycleContentsTimerZero()) {
             v2_3 = 0;
             return static_cast<bool>(static_cast<unsigned char>(v2_3));
         } else {
-            v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+            v0_11 = mTargetEnemyInfo.mLength;
             if (v0_11 == 0) {
                 v2_3 = 0;
                 return static_cast<bool>(static_cast<unsigned char>(v2_3));
@@ -2992,7 +3368,7 @@ bool cQuestTask::cQuestProcess::checkIsKilledTargetEnemySetGroupGmMain(s32 flagN
             }
         }
     } else {
-        v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+        v0_11 = mTargetEnemyInfo.mLength;
         if (v0_11 == 0) {
             v2_3 = 0;
             return static_cast<bool>(static_cast<unsigned char>(v2_3));
@@ -3023,14 +3399,14 @@ bool cQuestTask::cQuestProcess::checkIsKilledTargetEnemySetGroupGmMain(s32 flagN
 
 bool cQuestTask::cQuestProcess::checkIsKilledTargetEnemySetGroupGmSub(s32 flagNo, s32 param02, s32 param03, s32 param04) {
     unsigned int i0_3;
-    unsigned int v0_11;
+    u32 v0_11;
     unsigned long v2_3;
     if (nQuest::isContents(getQuestTask()->getQuestType())) {
         if (sQuestManagerExt::getInstance()->isCycleContentsTimerZero()) {
             v2_3 = 0;
             return static_cast<bool>(static_cast<unsigned char>(v2_3));
         } else {
-            v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+            v0_11 = mTargetEnemyInfo.mLength;
             if (v0_11 == 0) {
                 v2_3 = 0;
                 return static_cast<bool>(static_cast<unsigned char>(v2_3));
@@ -3039,7 +3415,7 @@ bool cQuestTask::cQuestProcess::checkIsKilledTargetEnemySetGroupGmSub(s32 flagNo
             }
         }
     } else {
-        v0_11 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+        v0_11 = mTargetEnemyInfo.mLength;
         if (v0_11 == 0) {
             v2_3 = 0;
             return static_cast<bool>(static_cast<unsigned char>(v2_3));
@@ -3108,7 +3484,7 @@ bool cQuestTask::cQuestProcess::checkDevidePlayer(s32 param01, s32 param02, s32 
 }
 
 bool cQuestTask::cQuestProcess::checkNowPhase(s32 phaseId, s32 param02, s32 param03, s32 param04) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 21740)) == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
         cQuestPhaseManager* pPhaseMgr = sQuestManagerExt::getInstance()->getQuestPhaseMgr();
         if (pPhaseMgr != nullptr) {
             if (phaseId > -1) {
@@ -3184,9 +3560,24 @@ bool cQuestTask::cQuestProcess::checkIsOmBrokenLayout(s32 stageNo, s32 groupNo, 
     }
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOmBrokenQuest(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsOmBrokenQuest")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsOmBrokenQuest(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
+    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+    u32 qSeq = t0->getQuestSeq(getQuestTask()->getQuestId());
+    if (qSeq != 0) {
+        u32 uId = nLayout::createUniqueIDQuestSetSeq(qSeq, stageNo, static_cast<u32>(groupNo), static_cast<u32>(setNo));
+        if (uId != 0) {
+            return sOmManager::getInstance()->isDoneGimmick(uId);
+        } else {
+            return false;
+        }
+    } else {
+        u32 t1 = nLayout::createUniqueID(nLayout::U_OM, static_cast<u32>(groupNo), static_cast<u32>(setNo), stageNo);
+        if (t1 != 0) {
+            return sOmManager::getInstance()->isDoneGimmick(t1);
+        } else {
+            return false;
+        }
+    }
 }
 
 bool cQuestTask::cQuestProcess::checkIsHoldingPeriodCycleContents(s32 param01, s32 param02, s32 param03, s32 param04) {
@@ -3299,18 +3690,42 @@ bool cQuestTask::cQuestProcess::checkIsOmBrokenLayoutNoMarker(s32 stageNo, s32 g
     }
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOmBrokenQuestNoMarker(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsOmBrokenQuestNoMarker")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsOmBrokenQuestNoMarker(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
+    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+    u32 t1 = t0->getQuestSeq(getQuestTask()->getQuestId());
+    if (t1 != 0) {
+        u32 t2 = nLayout::createUniqueIDQuestSetSeq(t1, stageNo, static_cast<u32>(groupNo), static_cast<u32>(setNo));
+        if (t2 != 0) {
+            return sOmManager::getInstance()->isDoneGimmick(t2);
+        } else {
+            return false;
+        }
+    } else {
+        u32 t3 = nLayout::createUniqueID(nLayout::U_OM, static_cast<u32>(groupNo), static_cast<u32>(setNo), stageNo);
+        if (t3 != 0) {
+            return sOmManager::getInstance()->isDoneGimmick(t3);
+        } else {
+            return false;
+        }
+    }
 }
 
 bool cQuestTask::cQuestProcess::checkKeyItemPointEq(s32 idx, s32 num, s32 param03, s32 param04) {
     return num == static_cast<int>(getQuestTask()->getTaskParam().getKeyItemPoint(static_cast<u32>(idx)));
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsEmotion(s32 actNo, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsEmotion")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsEmotion(s32 actNo, s32 param02, s32 param03, s32 param04) {
+    static const u32 ACT_NO[1] = {
+        352,
+    };
+    uPlayer* pPl = sPlayerManager::getInstance()->getMyPlayer();
+    if (pPl != nullptr) {
+        const unsigned int t0 = ACT_NO[actNo];
+        u32 t1 = nHumanActUtility::getActionNo(*pPl);
+        return t0 == t1;
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsEquipColor(s32 color, s32 param02, s32 param03, s32 param04) {
@@ -3328,9 +3743,10 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsTakePicturesNpc(s32
     return {};
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkSayMessage(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkSayMessage")
-    return {};
+bool cQuestTask::cQuestProcess::checkSayMessage(s32 param01, s32 param02, s32 param03, s32 param04) {
+    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+    t0->addCheckSayMessage(getQuestTask()->getQuestId(), static_cast<u32>(param01));
+    return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(getQuestTask()) + 706)) & 1);
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsTakePicturesWithoutPawn(s32 stageNo, s32 x, s32 y, s32 z) {
@@ -3418,7 +3834,7 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::resultEventExec(s32 stageN
     if (pParam != nullptr) {
         if (pParam->mType != 1) {
             if (static_cast<sAreaExt*>(sArea::getInstance())->isStage()) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 176)) == static_cast<unsigned int>(stageNo)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) == static_cast<unsigned int>(stageNo)) {
                     if (jumpStageNo > 0) {
                         sEventManager::getInstance()->requestEvent(stageNo, eventNo, jumpStageNo, jumpStartPosNo);
                     } else {
@@ -3606,9 +4022,24 @@ bool cQuestTask::cQuestProcess::resultPlayEndingForFirstSeason(s32 param01, s32 
     return true;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::resultAddCyclePurpose(s32 announceNo, s32 type, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::resultAddCyclePurpose")
-    return {};
+bool cQuestTask::cQuestProcess::resultAddCyclePurpose(s32 announceNo, s32 type, s32 param03, s32 param04) {
+    static s32 announceTypeTbl[4] = {
+        3,
+        -1,
+        7,
+        5,
+    };
+    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+    cCycleQuestManagerBase* pMgr = static_cast<cCycleQuestManagerBase*>(t0->getQuestManager(getQuestTask()->getQuestType()));
+    if (pMgr != nullptr) {
+        pMgr->addCyclePurposeNo(static_cast<u32>(announceNo));
+        if (type != 1) {
+            sQuestManagerExt::getInstance()->callQuestAnnounce(getQuestTask(), announceTypeTbl[type], announceNo, false, 1);
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool cQuestTask::cQuestProcess::resultRemoveCyclePurpose(s32 announceNo, s32 param02, s32 param03, s32 param04) {
@@ -3673,9 +4104,10 @@ bool cQuestTask::cQuestProcess::resultResetCheckPoint(s32 param01, s32 param02, 
     return true;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::resultResetDiePlayerReturnPos(s32 stageNo, s32 startPos, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::resultResetDiePlayerReturnPos")
-    return {};
+bool cQuestTask::cQuestProcess::resultResetDiePlayerReturnPos(s32 stageNo, s32 startPos, s32 param03, s32 param04) {
+    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+    t0->resetBarricade(getQuestTask()->getScheduleId());
+    return true;
 }
 
 bool cQuestTask::cQuestProcess::resultSetBarricade(s32 param01, s32 param02, s32 param03, s32 param04) {
@@ -3733,9 +4165,22 @@ bool cQuestTask::cQuestProcess::resultReturnAnnounce(s32 param01, s32 param02, s
     return true;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::resultAddEndContentsPurpose(s32 announceNo, s32 type, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::resultAddEndContentsPurpose")
-    return {};
+bool cQuestTask::cQuestProcess::resultAddEndContentsPurpose(s32 announceNo, s32 type, s32 param03, s32 param04) {
+    static s32 announceTypeTbl[4] = {
+        3,
+        -1,
+        7,
+        5,
+    };
+    if (sQuestManagerExt::getInstance()->getQuestManager(nQuest::QUEST_TYPE_END_CONTENTS) != nullptr) {
+        static_cast<cEndContentsManager*>(sQuestManagerExt::getInstance()->getQuestManager(nQuest::QUEST_TYPE_END_CONTENTS))->addEndContentsPurposeNo(static_cast<u32>(announceNo));
+        if (type != 1) {
+            sQuestManagerExt::getInstance()->callQuestAnnounce(getQuestTask(), announceTypeTbl[type], announceNo, false, 1);
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool cQuestTask::cQuestProcess::resultRemoveEndContentsPurpose(s32 announceNo, s32 param02, s32 param03, s32 param04) {
@@ -3815,9 +4260,16 @@ bool cQuestTask::cQuestProcess::resultStartMissionAnnounce(s32 param01, s32 para
     return true;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::resultStageAnnounce(s32 type, s32 num, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::resultStageAnnounce")
-    return {};
+bool cQuestTask::cQuestProcess::resultStageAnnounce(s32 type, s32 num, s32 param03, s32 param04) {
+    static s32 announceTypeTbl[2] = {
+        9,
+        10,
+    };
+    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+    cQuestTask* t1 = getQuestTask();
+    int t2 = announceTypeTbl[type];
+    t0->callQuestAnnounce(t1, t2, t1->getPurposeForParty(), false, num);
+    return true;
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::resultReleaseAnnounce(s32 id, s32 param02, s32 param03, s32 param04) {
@@ -3901,9 +4353,18 @@ bool cQuestTask::cQuestProcess::resultExeEventAfterStageJumpContinue(s32 stageNo
     return true;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::resultPlayMessage(s32 groupNo, s32 waitTime, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::resultPlayMessage")
-    return {};
+bool cQuestTask::cQuestProcess::resultPlayMessage(s32 groupNo, s32 waitTime, s32 param03, s32 param04) {
+    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+    cTalkMsgData* pMsgData = t0->getQuestMessageData(getQuestTask()->getQuestId());
+    if (pMsgData != nullptr) {
+        sTalkManager* t1 = sTalkManager::getInstance();
+        u32 t2 = getQuestTask()->getQuestIdU32();
+        u32 t3 = pMsgData->getDispTime();
+        t1->callQuestEventMsg(1u, t2, static_cast<u32>(groupNo), static_cast<float>(t3), static_cast<float>(waitTime));
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool cQuestTask::cQuestProcess::resultStopMessage(s32 param01, s32 param02, s32 param03, s32 param04) {

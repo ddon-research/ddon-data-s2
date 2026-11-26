@@ -45,9 +45,12 @@ MtUI* rGeometry2::createUI(MtProperty& prop) {
     return this->cResource::createUI(prop);
 }
 
-__attribute__((weak)) void rGeometry2::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGeometry2::createProperty")
-    /* stub */
+void rGeometry2::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mMagic", &mMagic, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVersion", &mVersion, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpGeometry", reinterpret_cast<MtObject* *>(&mpGeometry), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpParentResource", "resource", static_cast<void*>(&mpParentResource), 3u, 0u);
 }
 
 void rGeometry2::clear() {
@@ -128,6 +131,17 @@ inline void rGeometry2::cGeometryArray::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rGeometry2::cGeometryArray::DTI)->memFree(p_addr);
 }
 
+rGeometry2::cGeometryArray::cGeometryArray(const MtDTI* pEditGeometryDTI) : nCollision::cCollisionNode(pEditGeometryDTI) {
+    mFlgEnableSequence = false;
+    mMotionListIndex = 0;
+    mSequenceIndex = 0;
+    mTargetSequenceBitIndex = 0;
+    mpAttachModel = nullptr;
+    mpAddonObject = nullptr;
+    mBeforeSequenceMotionNo = 0xFFFF;
+    mBeforeSequenceFrameIndex = 0;
+}
+
 rGeometry2::cGeometryArray::~cGeometryArray() {
     if (mpAddonObject == nullptr) {
         return;
@@ -140,9 +154,17 @@ MtUI* rGeometry2::cGeometryArray::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void rGeometry2::cGeometryArray::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGeometry2::cGeometryArray::createProperty")
-    /* stub */
+void rGeometry2::cGeometryArray::createProperty(MtPropertyList& s) {
+    this->nCollision::cCollisionNode::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpAddonObject", &mpAddonObject, 4u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgEnableSequence", &mFlgEnableSequence, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMotionListIndex", &mMotionListIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSequenceIndex", &mSequenceIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetSequenceBitIndex", &mTargetSequenceBitIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UseSequence", &mFlgEnableSequence, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Index(Motion)", &mMotionListIndex, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Index(Sequence)", &mSequenceIndex, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Bit(Sequence)", &mTargetSequenceBitIndex, 2u, 0u);
 }
 
 __attribute__((weak)) bool rGeometry2::cGeometryArray::load(MtDataReader& r, MtStream& in) {

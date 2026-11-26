@@ -1,10 +1,12 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUITutorialAnnounce.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
@@ -95,6 +97,21 @@ __attribute__((weak)) void uGUITutorialAnnounce::setLineFrame(f32 frame) {
     mpObj_line_top13->setCurrentFrame(frame, true);
 }
 
+uGUITutorialAnnounce::uGUITutorialAnnounce() : uGUIBase(0u, false) {
+    memset(static_cast<void*>(&mpGUIRes), 0, 140ul);
+    mDispObjMsgEntry = false;
+    mDispObjMsg = false;
+    mDispObjMsgPt = false;
+    mAnnounceType = sGUIExt::ANNOUNCE_TYPE_NONE;
+    mDispObjIcon = false;
+    mDispObjIconPt = false;
+    mDispObjIconEntry = false;
+    mDispObjIconMatching = false;
+    mBaseF = mBaseF | 16u;
+    mEndType = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUITutorialAnnounce"), 0u, false);
+}
+
 uGUITutorialAnnounce::~uGUITutorialAnnounce() {
     if (mpGUIRes == nullptr) {
         return;
@@ -146,8 +163,7 @@ inline uGUITutorialAnnounce::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 
 uGUITutorialAnnounce::MyDTI uGUITutorialAnnounce::DTI("uGUITutorialAnnounce", &::uGUIBase::DTI, 2560ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUITutorialAnnounce::MyDTI::newInstance() const {
-    DDON_STUB("uGUITutorialAnnounce::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUITutorialAnnounce::MyDTI::newInstance() const {
+    return new (16u) uGUITutorialAnnounce;
 }
 

@@ -25,9 +25,15 @@ inline void cSoundOptData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cSoundOptData::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cSoundOptData::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSoundOptData::createProperty")
-    /* stub */
+void cSoundOptData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\345\244\247\351\240\205\347\233\256", &mCategory, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mItem", &mItem, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\201\343\203\243\343\203\263\343\203\215\343\203\2531", &mChannel[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\201\343\203\243\343\203\263\343\203\215\343\203\2532", &mChannel[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\201\343\203\243\343\203\263\343\203\215\343\203\2533", &mChannel[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\201\343\203\243\343\203\263\343\203\215\343\203\2534", &mChannel[3], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\201\343\203\243\343\203\263\343\203\215\343\203\2535", &mChannel[4], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\201\343\203\243\343\203\263\343\203\215\343\203\2536", &mChannel[5], 0u, 0u);
 }
 
 s32 cSoundOptData::getChannel(u32 index) {

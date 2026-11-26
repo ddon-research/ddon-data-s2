@@ -203,13 +203,25 @@ namespace nNetwork {
         bool shift();
         bool seek(u32 index, T& header, u32& data_size);
         bool peek(u32 index, void* data_ptr, u32& data_size);
+        bool peek(u32 index, MtStream& stream);
+        bool overwrite(u32 index, T& header);
     private:
-        void* mBlockList[32];  // offset: 0x40
+        void* mBlockList[MAX_BLOCK];  // offset: 0x40
     };
 }  // namespace nNetwork
 
 inline void* nNetwork::BlockBuffer::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nNetwork::BlockBuffer::BlockBuffer() {
+    this->mTail = 0;
+    this->mBlockTail = 0;
+    this->mHead = 0;
+    this->mBlockMax = 0;
+    this->mBlockHead = 0;
+    this->mBlockList = nullptr;
+    this->mpPool = nullptr;
 }
 
 inline void* nNetwork::BlockPool::operator new(size_t sz, void* p_addr) {

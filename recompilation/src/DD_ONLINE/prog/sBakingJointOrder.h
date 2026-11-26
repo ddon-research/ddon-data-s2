@@ -131,7 +131,7 @@ public:
     {
     public:
         BakeJointThread(sBakingJointOrder* p);
-        virtual ~BakeJointThread();
+        virtual ~BakeJointThread() {}
         virtual void execute(void* pcontext);  // vtable slot 6
     private:
         sBakingJointOrder* mpBJSystem;  // offset: 0x70

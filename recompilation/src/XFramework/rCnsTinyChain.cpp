@@ -20,13 +20,14 @@ inline void rCnsTinyChain::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(p_addr);
 }
 
-__attribute__((noinline)) rCnsTinyChain::~rCnsTinyChain() {
+rCnsTinyChain::~rCnsTinyChain() {
     if (mpChainGroup != nullptr) {
-        MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(mpChainGroup);
+        MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(static_cast<void*>(mpChainGroup));
     }
-    if (mpChainNode != nullptr) {
-        MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(mpChainNode);
+    if (mpChainNode == nullptr) {
+        return;
     }
+    MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(static_cast<void*>(mpChainNode));
 }
 
 MT_CTSTR rCnsTinyChain::getExt() const {

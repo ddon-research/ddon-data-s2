@@ -4,6 +4,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cResource.h"
@@ -34,6 +35,19 @@ void* uGUIRankUp::operator new(size_t sz, u32 align) {
 
 inline void uGUIRankUp::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIRankUp::DTI)->memFree(p_addr);
+}
+
+uGUIRankUp::uGUIRankUp() : uGUIBase(0u, false) {
+    mEndType = 0;
+    mFlowId = 0;
+    mpSeRes = nullptr;
+    mpGUIRes = nullptr;
+    mRank = 0;
+    mDispFrame = 0.0f;
+    mpObjMsgNum = nullptr;
+    mpInstAnim = nullptr;
+    mpInstNull = nullptr;
+    setArcTag(rArchiveListArray::convTagId("uGUIRankUp"), 0u, false);
 }
 
 uGUIRankUp::~uGUIRankUp() {
@@ -117,8 +131,7 @@ inline uGUIRankUp::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 uGUIRankUp::MyDTI uGUIRankUp::DTI("uGUIRankUp", &::uGUIBase::DTI, 2304ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIRankUp::MyDTI::newInstance() const {
-    DDON_STUB("uGUIRankUp::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIRankUp::MyDTI::newInstance() const {
+    return new (16u) uGUIRankUp;
 }
 

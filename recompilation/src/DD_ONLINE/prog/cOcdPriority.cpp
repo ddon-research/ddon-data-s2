@@ -119,9 +119,13 @@ cOcdPriorityParam::cOcdPriorityParam() {
     mIsAnnihilateGoodOcd[7] = false;
 }
 
-__attribute__((weak)) void cOcdPriorityParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cOcdPriorityParam::createProperty")
-    /* stub */
+void cOcdPriorityParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "\347\225\260\345\270\270\345\220\215\347\247\260", &mOcdUID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\351\207\215\343\201\255\346\216\233\343\201\221\346\234\211\347\204\241", &mIsMultiApply, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\351\207\215\343\201\255\346\216\233\343\201\221\345\233\236\346\225\260\345\210\266\351\231\220\346\234\211\343\202\212", &mIsMultiNumLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\351\207\215\343\201\255\346\216\233\343\201\221\345\217\257\350\203\275\345\233\236\346\225\260", &mMultiApplyNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\257\343\203\251\343\202\271\345\204\252\345\205\210", &mOcdClass, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\251\343\203\263\343\202\257\345\204\252\345\205\210", &mOcdLank, 0u, 0u);
 }
 
 bool cOcdPriorityParam::isAnnihilateOcd(u32 OcdUID) const {

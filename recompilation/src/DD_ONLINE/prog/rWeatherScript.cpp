@@ -41,9 +41,17 @@ inline void cWSCEpv::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cWSCEpv::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cWSCEpv::setupCmd(cWeatherScriptIO& io) const {
-    DDON_STUB("cWSCEpv::setupCmd")
-    /* stub */
+void cWSCEpv::setupCmd(cWeatherScriptIO& io) const {
+    cWSCParam* p_param = io.getWSCParam(static_cast<const void*>(this));
+    if (p_param == nullptr) {
+        return;
+    }
+    cResource* p_res = sArchiveManager::getInstance()->createRes(mResource.getResId(), 1u, false);
+    p_param->mpRes.cResPtrBase::setPtr(p_param->mpRes.mpPtr, p_res);
+    if (p_res == nullptr) {
+        return;
+    }
+    p_res->release();
 }
 
 __attribute__((weak)) bool cWSCEpv::updateCmd(cWeatherScriptIO& io) const {
@@ -105,9 +113,18 @@ inline void cWSCSound::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cWSCSound::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cWSCSound::setupCmd(cWeatherScriptIO& io) const {
-    DDON_STUB("cWSCSound::setupCmd")
-    /* stub */
+void cWSCSound::setupCmd(cWeatherScriptIO& io) const {
+    cWSCParam* p_param = io.getWSCParam(static_cast<const void*>(this));
+    if (p_param == nullptr) {
+        return;
+    }
+    cResource* p_res = sArchiveManager::getInstance()->createRes(mResource.getResId(), 1u, false);
+    p_param->mpRes.cResPtrBase::setPtr(p_param->mpRes.mpPtr, p_res);
+    if (p_res != nullptr) {
+        p_res->release();
+    }
+    p_param->mFree.elems[0] = 0;
+    p_param->mFreeF32 = 0.0f;
 }
 
 __attribute__((weak)) bool cWSCSound::updateCmd(cWeatherScriptIO& io) const {
@@ -147,9 +164,17 @@ inline void cWSCSoundRnd::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cWSCSoundRnd::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cWSCSoundRnd::setupCmd(cWeatherScriptIO& io) const {
-    DDON_STUB("cWSCSoundRnd::setupCmd")
-    /* stub */
+void cWSCSoundRnd::setupCmd(cWeatherScriptIO& io) const {
+    cWSCParam* p_param = io.getWSCParam(static_cast<const void*>(this));
+    if (p_param == nullptr) {
+        return;
+    }
+    cResource* p_res = sArchiveManager::getInstance()->createRes(mResource.getResId(), 1u, false);
+    p_param->mpRes.cResPtrBase::setPtr(p_param->mpRes.mpPtr, p_res);
+    if (p_res == nullptr) {
+        return;
+    }
+    p_res->release();
 }
 
 __attribute__((weak)) bool cWSCSoundRnd::updateCmd(cWeatherScriptIO& io) const {
@@ -315,8 +340,6 @@ cWeatherScriptCmds::cWeatherScriptCmds() {
 }
 
 cWeatherScriptCmds::~cWeatherScriptCmds() {
-    DDON_STUB("cWeatherScriptCmds::~cWeatherScriptCmds")
-    /* stub */
 }
 
 void cWeatherScriptCmds::load(MtDataReader& r) {
@@ -354,7 +377,7 @@ cWeatherScriptIO::~cWeatherScriptIO() {
 }
 
 void cWeatherScriptIO::updatePtr() {
-    u32 num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+    u32 num = mWSCParams.mLength;
     if (num != 0) {
         for (unsigned int i0_3 = 0;;) {
             MtObject* t0 = mWSCParams.getBuffer()[static_cast<int>(i0_3)];
@@ -435,4 +458,6 @@ MtObject* cWeatherScriptIO::MyDTI::newInstance() const {
 }
 
 template MtTypedArray<cWeatherScriptCmd>::~MtTypedArray();
+
+template void nDDOIO::readMtArrayEx(MtDataReader&, MtTypedArray<cWeatherScriptCmd>&);
 

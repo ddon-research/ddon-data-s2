@@ -101,9 +101,8 @@ inline void rMapSpotStageList::Data::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rMapSpotStageList::Data::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rMapSpotStageList::Data::createProperty(MtPropertyList& s) {
-    DDON_STUB("rMapSpotStageList::Data::createProperty")
-    /* stub */
+void rMapSpotStageList::Data::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
 }
 
 MtUI* rMapSpotStageList::Data::createUI(MtProperty& prop) {

@@ -70,8 +70,46 @@ inline void uGUIOption::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIOption::~uGUIOption() {
-    DDON_STUB("uGUIOption::~uGUIOption")
-    /* stub */
+    cNetGameServer* v0_3 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (v0_3 != nullptr) {
+        if (sGame::getInstance() != nullptr) {
+            if (sGame::getInstance()->mCharData.mCharData.mOption.mOnlineStatus != mReqOnlineStatusOld) {
+                nCharacter::E_ONLINE_STATUS v0_2;
+                if (sGame::getInstance()->mCharData.mCharData.mOption.mOnlineStatus > 3) {
+                    v0_2 = nCharacter::ONLINE_STATUS_ONLINE;
+                } else {
+                    v0_2 = uGUIOption::onlineStatusTblId[sGame::getInstance()->mCharData.mCharData.mOption.mOnlineStatus];
+                }
+                v0_3->setOnlineStatus(v0_2, true);
+            }
+        }
+    }
+    if (sSavedata::getInstance() != nullptr) {
+        if ((sGame::mpInstance) != nullptr) {
+            updateReflectionData(&static_cast<sSavedataExt*>(sSavedata::getInstance())->getStorageData().mOptionSys, &(sGame::mpInstance)->mCharData.mCharData.mOption);
+        }
+    }
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpTblMORes != nullptr) {
+        mpTblMORes->release();
+        mpTblMORes = nullptr;
+    }
+    if (mpGUIMsg != nullptr) {
+        mpGUIMsg->release();
+        mpGUIMsg = nullptr;
+    }
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
+    }
+    if (mpGUISubWindow != nullptr) {
+        mpGUISubWindow->kill();
+        mpGUISubWindow = nullptr;
+    }
+    static_cast<sGUIExt*>(sGUI::getInstance())->mSpecialUIF = static_cast<sGUIExt*>(sGUI::getInstance())->mSpecialUIF & 0xFFFFFFFBu;
 }
 
 void uGUIOption::createProperty(MtPropertyList& s) {
@@ -211,14 +249,18 @@ void uGUIOption::updateWaitCalibration() {
     mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateWaitData);
 }
 
-__attribute__((weak)) void uGUIOption::updateWaitKeyConfig() {
-    DDON_STUB("uGUIOption::updateWaitKeyConfig")
-    /* stub */
+void uGUIOption::updateWaitKeyConfig() {
+    if (sMenu::getInstance()->mMenuKeyConfig.move() != nMenu::MENU_RET_EXIT) {
+        return;
+    }
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateWaitData);
 }
 
-__attribute__((weak)) void uGUIOption::updateWaitKeyJobLink() {
-    DDON_STUB("uGUIOption::updateWaitKeyJobLink")
-    /* stub */
+void uGUIOption::updateWaitKeyJobLink() {
+    if (sMenu::getInstance()->mMenuKeyJobLink.move() != nMenu::MENU_RET_EXIT) {
+        return;
+    }
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateWaitData);
 }
 
 __attribute__((weak)) void uGUIOption::setIdxPulldown(u32 pulldownId) {
@@ -1043,7 +1085,7 @@ __attribute__((weak)) u32 uGUIOption::getDataType(u32 uCtgr, u32 uTab, u32 uCapt
     return {};
 }
 
-void uGUIOption::updateReflectionData(const cStorageData::stOptionDataSystem* pOptionSys, const cCharacterData::stOptionData* pOptionChr) {
+__attribute__((weak)) void uGUIOption::updateReflectionData(const cStorageData::stOptionDataSystem* pOptionSys, const cCharacterData::stOptionData* pOptionChr) {
     if (sRender::getInstance() == nullptr) {
         return;
     }
@@ -1119,6 +1161,14 @@ __attribute__((weak)) void uGUIOption::updateDisp() {
     DDON_STUB("uGUIOption::updateDisp")
     /* stub */
 }
+
+alignas(4) unsigned char uGUIOption_onlineStatusTblId_bytes[16] __asm__("_ZN10uGUIOption17onlineStatusTblIdE") = {0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00};
+
+alignas(4) unsigned char uGUIOption_shareRangeTblId_bytes[20] __asm__("_ZN10uGUIOption15shareRangeTblIdE") = {0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00};
+
+alignas(4) unsigned char uGUIOption_lightHardwareModeTbl_bytes[8] __asm__("_ZN10uGUIOption20lightHardwareModeTblE") = {0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+alignas(4) unsigned char uGUIOption_othersEfcTypeTbl_bytes[16] __asm__("_ZN10uGUIOption16othersEfcTypeTblE") = {0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00};
 
 __attribute__((weak)) MtObject* uGUIOption::MyDTI::newInstance() const {
     DDON_STUB("uGUIOption::MyDTI::newInstance")

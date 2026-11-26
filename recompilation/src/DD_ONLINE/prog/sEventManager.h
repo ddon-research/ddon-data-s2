@@ -23,7 +23,6 @@ class cContextInstHm;
 class cEfcHandle;
 class cEventParam;
 class cQuestTask;
-namespace nFsm { class cCameraCtrl; }
 namespace nStage { struct stEventParam; }
 class rCameraParamList;
 class rEffectProvider;
@@ -31,7 +30,6 @@ class rEventParam;
 class rSoundRequest;
 class rSoundStreamRequest;
 class rVibration;
-class uCameraGame;
 class uControl;
 class uCoord;
 class uDDOModel;
@@ -56,8 +54,6 @@ using u32 = unsigned int;
 class sEventManager : public cSystem
 {
     friend class cQuestTask;
-    friend class nFsm::cCameraCtrl;
-    friend class uCameraGame;
 public:
     enum SYNC_FLAG
     {

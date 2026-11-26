@@ -1,11 +1,13 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUIPopEventTop.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "cControl.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
@@ -39,6 +41,16 @@ void* uGUIPopEventTop::operator new(size_t sz, u32 align) {
 
 inline void uGUIPopEventTop::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPopEventTop::DTI)->memFree(p_addr);
+}
+
+uGUIPopEventTop::uGUIPopEventTop() : uGUIsMenuBase(2u, false) {
+    mEndType = 0;
+    memset(static_cast<void*>(&mDataInst), 0, 740ul);
+    mbSetupInfo = false;
+    mpHCtrl = nullptr;
+    mpVCtrl = nullptr;
+    mpButtonCtrl = nullptr;
+    setArcTag(rArchiveListArray::convTagId("uGUIPopEventTop"), 0u, false);
 }
 
 uGUIPopEventTop::~uGUIPopEventTop() {
@@ -113,8 +125,7 @@ inline uGUIPopEventTop::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 uGUIPopEventTop::MyDTI uGUIPopEventTop::DTI("uGUIPopEventTop", &::uGUIsMenuBase::DTI, 3168ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIPopEventTop::MyDTI::newInstance() const {
-    DDON_STUB("uGUIPopEventTop::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIPopEventTop::MyDTI::newInstance() const {
+    return new (16u) uGUIPopEventTop;
 }
 

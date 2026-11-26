@@ -189,6 +189,7 @@ class cEditParam;
 class cItemParam;
 class cMenuBlackList;
 class cMenuCancelClanScoutEntry;
+class cMenuClanInfoDisp;
 class cMenuExtendEntryBoardItem;
 class cMenuFriendList;
 class cMenuGetClanBaseInfo;
@@ -196,12 +197,17 @@ class cMenuGetCraftRecipeToServer;
 class cMenuGetMyClan;
 class cMenuGetMyScoutEntry;
 class cMenuLeaveGroupChat;
+class cMenuLostPawnRevive;
 class cMenuMail;
 class cMenuPartyList;
+class cMenuPawnDelete;
 class cMenuPawnHistory;
 class cMenuPawnSearch;
+class cMenuPawnSetPartner;
 class cMenuQuickMatchRetry;
+class cMenuReadyCheck;
 class cMenuReadyEntryBoardItem;
+class cMenuRecentList;
 class cMenuSimplePartyReq;
 class cQuestSvRequestManager;
 class cQuestTask;
@@ -493,9 +499,11 @@ class sNetworkExt;
 class sNpcManager;
 class sQuestManagerExt;
 class uCharacterEdit;
+class uGUICraft;
 class uGUIEntryBoardInfo;
 class uGUILoginBonus;
 class uGUIRimWarp;
+class uStageCraftPawnCtrl;
 class uStageRevivalPawn;
 
 // Declarations
@@ -2483,9 +2491,11 @@ protected:
 
 class cNetGameServer : public MtObject
 {
+    friend class cContextInterface;
     friend class cItemParam;
     friend class cMenuBlackList;
     friend class cMenuCancelClanScoutEntry;
+    friend class cMenuClanInfoDisp;
     friend class cMenuExtendEntryBoardItem;
     friend class cMenuFriendList;
     friend class cMenuGetClanBaseInfo;
@@ -2493,12 +2503,17 @@ class cNetGameServer : public MtObject
     friend class cMenuGetMyClan;
     friend class cMenuGetMyScoutEntry;
     friend class cMenuLeaveGroupChat;
+    friend class cMenuLostPawnRevive;
     friend class cMenuMail;
     friend class cMenuPartyList;
+    friend class cMenuPawnDelete;
     friend class cMenuPawnHistory;
     friend class cMenuPawnSearch;
+    friend class cMenuPawnSetPartner;
     friend class cMenuQuickMatchRetry;
+    friend class cMenuReadyCheck;
     friend class cMenuReadyEntryBoardItem;
+    friend class cMenuRecentList;
     friend class cMenuSimplePartyReq;
     friend class cQuestSvRequestManager;
     friend class cQuestTask;
@@ -2511,9 +2526,11 @@ class cNetGameServer : public MtObject
     friend class sNpcManager;
     friend class sQuestManagerExt;
     friend class uCharacterEdit;
+    friend class uGUICraft;
     friend class uGUIEntryBoardInfo;
     friend class uGUILoginBonus;
     friend class uGUIRimWarp;
+    friend class uStageCraftPawnCtrl;
     friend class uStageRevivalPawn;
 public:
     enum SEARCH_TYPE
@@ -5316,6 +5333,26 @@ inline COrbGainExtendParam& cNetGameServer::getPawnOrbGainExtendParam() {
 
 inline CClanParam& cNetGameServer::getClanParamRef() {
     return this->mClanParam;
+}
+
+inline void cNetGameServer::clearClanSearchResultList() {
+    this->::cNetGameServer::clearClanSearchListPacket();
+}
+
+inline void cNetGameServer::clearClanMemberInfoList() {
+    this->::cNetGameServer::clearClanMemberListPacket();
+}
+
+inline void cNetGameServer::clearClanScoutEntryList() {
+    this->::cNetGameServer::clearClanScoutEntryListPacket();
+}
+
+inline void cNetGameServer::clearClanInviteList() {
+    this->::cNetGameServer::clearClanInviteListPacket();
+}
+
+inline void cNetGameServer::clearClanHistoryList() {
+    this->::cNetGameServer::clearClanGetHistoryPacket();
 }
 
 inline void cNetGameServer::setMyTotalClanPoint(u32 totalPoint) {

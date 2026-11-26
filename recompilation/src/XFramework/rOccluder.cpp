@@ -6,6 +6,7 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "cResource.h"
@@ -36,9 +37,10 @@ __attribute__((noinline)) rOccluder::~rOccluder() {
         }
 }
 
-__attribute__((weak)) void rOccluder::createProperty(MtPropertyList& s) {
-    DDON_STUB("rOccluder::createProperty")
-    /* stub */
+void rOccluder::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mOccluderCount", &mOccluderCount, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpOccluder", static_cast<MtObject*>(mpOccluder), 33u, mOccluderCount);
 }
 
 MtUI* rOccluder::createUI(MtProperty& prop) {
@@ -107,6 +109,10 @@ const MtDTI& rOccluder::cQuad::getDTI() const {
     return rOccluder::cQuad::DTI;
 }
 
+inline void* rOccluder::cQuad::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rOccluder::cQuad::DTI)->memAlloc(sz, align, rOccluder::cQuad::DTI.mID);
+}
+
 inline void rOccluder::cQuad::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rOccluder::cQuad::DTI)->memFree(p_addr);
 }
@@ -114,9 +120,13 @@ inline void rOccluder::cQuad::operator delete(void* p_addr) {
 rOccluder::cQuad::~cQuad() {
 }
 
-__attribute__((weak)) void rOccluder::cQuad::createProperty(MtPropertyList& s) {
-    DDON_STUB("rOccluder::cQuad::createProperty")
-    /* stub */
+void rOccluder::cQuad::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mQuad[0]", &mQuad[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuad[1]", &mQuad[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuad[2]", &mQuad[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuad[3]", &mQuad[3], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "fitting", static_cast<MT_MFUNC>(&::rOccluder::cQuad::fitting), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "mActive", &mActive, 0u, 0u);
 }
 
 MtUI* rOccluder::cQuad::createUI(MtProperty& prop) {
@@ -135,9 +145,8 @@ inline rOccluder::cQuad::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 rOccluder::cQuad::MyDTI rOccluder::cQuad::DTI("rOccluder::cQuad", &::MtObject::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rOccluder::cQuad::MyDTI::newInstance() const {
-    DDON_STUB("rOccluder::cQuad::MyDTI::newInstance")
-    return nullptr;
+MtObject* rOccluder::cQuad::MyDTI::newInstance() const {
+    return new (16u) rOccluder::cQuad;
 }
 
 inline rOccluder::cQuad::cQuad() {

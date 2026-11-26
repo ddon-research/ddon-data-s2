@@ -57,7 +57,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cAICopiableParameter();
-    virtual ~cAICopiableParameter();
+    virtual ~cAICopiableParameter() {}
     virtual void copy(cAICopiableParameter* pParam);  // vtable slot 6
 public:
     static const u32 MD_ST_ACTIVE = 1;

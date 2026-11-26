@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
@@ -39,9 +40,17 @@ uGeometry3::~uGeometry3() {
     mpColliderNode = nullptr;
 }
 
-__attribute__((weak)) void uGeometry3::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGeometry3::createProperty")
-    /* stub */
+void uGeometry3::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASS, "AttachModel", reinterpret_cast<MT_MFUNC>(&::uGeometry3::getAttachModel), reinterpret_cast<MT_MFUNC>(&::uGeometry3::registAttachModel), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpRGeometry", "resource", reinterpret_cast<MT_MFUNC>(&::uGeometry3::getResourceForUI), reinterpret_cast<MT_MFUNC>(&::uGeometry3::setResourceForUI), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mGeometryGroup", static_cast<MtObject*>(&mGeometryGroup), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpColliderNode", reinterpret_cast<MtObject* *>(&mpColliderNode), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgUseGroupID", &mFlgUseGroupID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUserPtrUseMode", &mUserPtrUseMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mUseGroupID", reinterpret_cast<MT_MFUNC>(&::uGeometry3::getUseGroupID), reinterpret_cast<MT_MFUNC>(&::uGeometry3::setUseGroupID), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mUseGroupIndex", reinterpret_cast<MT_MFUNC>(&::uGeometry3::getUseGroupIndex), reinterpret_cast<MT_MFUNC>(&::uGeometry3::setUseGroupIndex), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "RestoreGeometry", static_cast<MT_MFUNC>(&::uGeometry3::restoreGeometryFromResource), 10u);
 }
 
 __attribute__((weak)) void uGeometry3::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {

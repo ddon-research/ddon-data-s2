@@ -5,6 +5,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "cDelegate.h"
@@ -37,8 +38,6 @@ uCnsEdit::uCnsEdit() {
 }
 
 uCnsEdit::~uCnsEdit() {
-    DDON_STUB("uCnsEdit::~uCnsEdit")
-    /* stub */
 }
 
 __attribute__((weak)) void uCnsEdit::setResource(cResource* pRes) {
@@ -72,9 +71,19 @@ void uCnsEdit::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
-__attribute__((weak)) void uCnsEdit::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsEdit::createProperty")
-    /* stub */
+void uCnsEdit::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mTransFlag", &mTransFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJoint", &mJoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOrgScl", &mOrgScl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOrgQuat", &mOrgQuat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOrgTrans", &mOrgTrans, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPresetScl", &mPresetScl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPresetQuat", &mPresetQuat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPresetTrans", &mPresetTrans, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScl", &mScl, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuat", &mQuat, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTrans", &mTrans, 0u, 0u);
 }
 
 MtUI* uCnsEdit::createUI(MtProperty& prop) {

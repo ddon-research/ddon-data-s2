@@ -5,8 +5,10 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtNetDevice.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -20,9 +22,18 @@ inline void nNetwork::SearchFilterListPtr::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nNetwork::SearchFilterListPtr::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void nNetwork::SearchFilterListPtr::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::SearchFilterListPtr::createProperty")
-    /* stub */
+void nNetwork::SearchFilterListPtr::createProperty(MtPropertyList& s) {
+    if (mpList == nullptr) {
+        return;
+    }
+    s << ::MtProperty(static_cast<MtObject*>(this), "Trace", static_cast<MT_MFUNC>(&::nNetwork::SearchFilterListPtr::trace), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Attribute", &mpList->mAttribute, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "GameType", &mpList->mGameType, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "GameMode", &mpList->mGameMode, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "ProcIndex", &mpList->mProcedureIndex, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "NumUsers", &mpList->mNumUsers, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Num", &mpList->mNum, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mList", static_cast<MtObject*>(&mList[0]), 32u, 8u);
 }
 
 MtUI* nNetwork::SearchFilterListPtr::createUI(MtProperty& prop) {
@@ -76,9 +87,16 @@ inline void nNetwork::SearchKeyListPtr::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nNetwork::SearchKeyListPtr::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void nNetwork::SearchKeyListPtr::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::SearchKeyListPtr::createProperty")
-    /* stub */
+void nNetwork::SearchKeyListPtr::createProperty(MtPropertyList& s) {
+    if (mpSearchKeyList == nullptr) {
+        return;
+    }
+    s << ::MtProperty(static_cast<MtObject*>(this), "Trace", static_cast<MT_MFUNC>(&::nNetwork::SearchKeyListPtr::trace), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Attribute", &mpSearchKeyList->mAttribute, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "GameType", &mpSearchKeyList->mGameType, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "GameMode", &mpSearchKeyList->mGameMode, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Num", &mpSearchKeyList->mNum, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mList", static_cast<MtObject*>(&mList[0]), 32u, 8u);
 }
 
 MtUI* nNetwork::SearchKeyListPtr::createUI(MtProperty& prop) {
@@ -110,9 +128,12 @@ inline void nNetwork::SearchKeyPtr::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nNetwork::SearchKeyPtr::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void nNetwork::SearchKeyPtr::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::SearchKeyPtr::createProperty")
-    /* stub */
+void nNetwork::SearchKeyPtr::createProperty(MtPropertyList& s) {
+    if (mpKey == nullptr) {
+        return;
+    }
+    s << ::MtProperty(static_cast<MtObject*>(this), "Type", &mpKey->mType, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Value", &mpKey->mInt32, 0u, 0u);
 }
 
 inline nNetwork::SearchKeyPtr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -188,18 +209,24 @@ MtUI* nNetwork::SearchResultPtr::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nNetwork::SessionBinaryPtr::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::SessionBinaryPtr::createProperty")
-    /* stub */
+void nNetwork::SessionBinaryPtr::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpBinary->mBuffer", &mpBinary->mBuffer[0], 32u, 256u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpBinary->mDataLength", &mpBinary->mDataLength, 0u, 0u);
 }
 
 MtUI* nNetwork::SessionBinaryPtr::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nNetwork::SessionInfoPtr::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::SessionInfoPtr::createProperty")
-    /* stub */
+void nNetwork::SessionInfoPtr::createProperty(MtPropertyList& s) {
+    if (mpSessionInfo == nullptr) {
+        return;
+    }
+    s << ::MtProperty(static_cast<MtObject*>(this), "SEARCH KEY LIST", static_cast<MtObject*>(&mList), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "NONCE", &mpSessionInfo->mGeneral.mNonce, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "IP", &mpSessionInfo->mGeneral.mAddress.mIpAddress.mData[0], 32u, 4u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "PORT", &mpSessionInfo->mGeneral.mAddress.mPort.mData, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBinary", static_cast<MtObject*>(&mBinary), 0u, 0u);
 }
 
 MtUI* nNetwork::SessionInfoPtr::createUI(MtProperty& prop) {

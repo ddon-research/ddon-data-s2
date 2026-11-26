@@ -4,6 +4,8 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cPlatformUtilCommon.h"
 #include "cSystem.h"
@@ -28,9 +30,14 @@ __attribute__((weak)) void sPlatformUtil::move() {
     /* stub */
 }
 
-__attribute__((weak)) void sPlatformUtil::createProperty(MtPropertyList& s) {
-    DDON_STUB("sPlatformUtil::createProperty")
-    /* stub */
+void sPlatformUtil::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpSystemService", reinterpret_cast<MtObject* *>(&mpSystemService), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpRemotePlay", reinterpret_cast<MtObject* *>(&mpRemotePlay), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpGameLiveStream", reinterpret_cast<MtObject* *>(&mpGameLiveStream), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpScreenshot", reinterpret_cast<MtObject* *>(&mpScreenshot), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpVideoRecorder", reinterpret_cast<MtObject* *>(&mpVideoRecorder), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpSharePlay", reinterpret_cast<MtObject* *>(&mpSharePlay), 0u, 0u);
 }
 
 MtUI* sPlatformUtil::createUI(MtProperty& prop) {

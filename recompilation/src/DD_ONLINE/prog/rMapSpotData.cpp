@@ -122,9 +122,12 @@ inline rMapSpotData::Data::Data() {
     mFloorCheck = true;
 }
 
-__attribute__((weak)) void rMapSpotData::Data::createProperty(MtPropertyList& s) {
-    DDON_STUB("rMapSpotData::Data::createProperty")
-    /* stub */
+void rMapSpotData::Data::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMessId", &mMessId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFloorNo", &mFloorNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupNo", &mGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFloorCheck", &mFloorCheck, 0u, 0u);
 }
 
 MtUI* rMapSpotData::Data::createUI(MtProperty& prop) {

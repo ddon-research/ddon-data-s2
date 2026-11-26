@@ -28,6 +28,7 @@ class MtVector3;
 class cContextInstance;
 class cContextInterface;
 class cDamageMsg;
+class cMenuDispStatus;
 namespace nHuman { struct stShellRequestInfo; }
 namespace nHuman { struct stShellRequestMsg; }
 namespace nHumanBow { struct stNetData; }
@@ -61,6 +62,7 @@ using u8 = unsigned char;
 
 class cContext : public MtObject
 {
+    friend class cMenuDispStatus;
     friend class sContextManager;
 public:
     class MyDTI;
@@ -670,6 +672,10 @@ inline void cContextCharacter::setBodySize(u32 size) {
     this->mBodySize = size;
 }
 
+inline bool cContextCharacter::isServerDamage() const {
+    return this->mIsServerDamaged;
+}
+
 inline void cContextCharacter::setIsServerDamage() {
     this->mIsServerDamaged = true;
 }
@@ -680,6 +686,10 @@ inline void cContextCharacter::clrIsServerDamage() {
 
 inline u32 cContextCharacter::getServerDamageMsgNum() const {
     return this->mServerDamageMsgArray.::MtArray::mLength;
+}
+
+inline bool cContextCharacter::isSlaveDamage() const {
+    return this->mIsSlaveDamaged;
 }
 
 inline void cContextCharacter::setIsSlaveDamage() {
@@ -694,6 +704,10 @@ inline u32 cContextCharacter::getDamageMsgNum() const {
     return this->mDamageMsgArray.::MtArray::mLength;
 }
 
+inline bool cContextCharacter::isCatchHit() const {
+    return this->mIsCatchHit;
+}
+
 inline void cContextCharacter::setIsCatchHit() {
     this->mIsCatchHit = true;
 }
@@ -702,12 +716,24 @@ inline void cContextCharacter::clrIsCatchHit() {
     this->mIsCatchHit = false;
 }
 
+inline bool cContextCharacter::isCaughtResult() const {
+    return this->mIsCaughtResult;
+}
+
 inline void cContextCharacter::setIsCaughtResult() {
     this->mIsCaughtResult = true;
 }
 
 inline void cContextCharacter::clrIsCaughtResult() {
     this->mIsCaughtResult = false;
+}
+
+inline bool cContextCharacter::getIsOmReleasePut() const {
+    return this->mIsOmReleasePut;
+}
+
+inline bool cContextCharacter::getIsOmReleaseThrow() const {
+    return this->mIsOmReleaseThrow;
 }
 
 inline const nNetMsgData::stNetPos& cContextCharacter::getOmReleaseRealPos() const {
@@ -720,6 +746,10 @@ inline f32 cContextCharacter::getOmReleaseAngle() const {
 
 inline void cContextCharacter::setOmReleaseAngle(const f32 angle) {
     this->mOmReleaseAngle = angle;
+}
+
+inline bool cContextCharacter::isIsInstantDead() const {
+    return this->mIsInstantDead;
 }
 
 inline u32 cContextCharacter::getShlDelte() const {
@@ -778,12 +808,20 @@ inline bool cContextCharacter::isShlReqSlave(u32 index) const {
     return this->mIsShlReqSlave[index];
 }
 
+inline bool cContextCharacter::isShotReqNoAct() const {
+    return this->mIsShotReqNoAct;
+}
+
 inline void cContextCharacter::setShlLockOnId(u8 id, u32 index) {
     this->mShlLockOnId[index] = id;
 }
 
 inline void cContextCharacter::setShlShotReceiveNum(u8 num) {
     this->mShlShotReceiveNum = num;
+}
+
+inline bool cContextCharacter::isStickCreateControl() const {
+    return this->mIsStickCreateControl;
 }
 
 inline u32 cContextCharacter::getStickShlUniqueId() const {
@@ -794,8 +832,32 @@ inline u32 cContextCharacter::getStickUniqueId() const {
     return this->mStickUniqueId;
 }
 
+inline u8 cContextCharacter::getStickJointNo() const {
+    return this->mStickJointNo;
+}
+
+inline u8 cContextCharacter::getStickShlGroup() const {
+    return this->mStickShlGroup;
+}
+
+inline u8 cContextCharacter::getStickShlIndex() const {
+    return this->mStickShlIndex;
+}
+
+inline bool cContextCharacter::isShlKillSync() const {
+    return this->mIsShlKillSync;
+}
+
+inline bool cContextCharacter::isShlSlaveKill() const {
+    return this->mIsShlSlaveKill;
+}
+
 inline void cContextCharacter::setSlaveKillSyncSts(u8 bit) {
     this->mShlSlaveKillSyncSts = bit;
+}
+
+inline u8 cContextCharacter::getSlaveKillSyncSts() const {
+    return this->mShlSlaveKillSyncSts;
 }
 
 inline const MtVector3& cContextCharacter::getBowNetAimPos() const {

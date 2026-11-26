@@ -771,6 +771,12 @@ inline void* MtCollisionUtil::MtDataBuffer::operator new(size_t sz, void* p_addr
     return p_addr;
 }
 
+inline MtCollisionUtil::MtDataBuffer::MtDataBuffer() {
+    this->mpData = nullptr;
+    this->mSize = 0;
+    this->mMax = 0;
+}
+
 inline MtCollisionUtil::MtStack::MtStack() {
 }
 
@@ -798,8 +804,21 @@ inline void* MtCollisionUtil::MtListElement::operator new(size_t sz, void* p_add
     return p_addr;
 }
 
+inline MtCollisionUtil::MtListElement::MtListElement() {
+    this->mpBack = nullptr;
+    this->mpNext = nullptr;
+    this->mpObject = nullptr;
+    this->mFlgAutoDelete = true;
+}
+
 inline void* MtCollisionUtil::MtList::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline MtCollisionUtil::MtList::MtList() {
+    this->mFlgAutoDelete = false;
+    this->mpTail = nullptr;
+    this->mpRoot = nullptr;
 }
 
 inline void* MtCollisionUtil::MtTreeDTI::operator new(size_t sz, void* p_addr) {

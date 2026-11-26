@@ -45,8 +45,85 @@ inline void uGUIPopFilter::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIPopFilter::~uGUIPopFilter() {
-    DDON_STUB("uGUIPopFilter::~uGUIPopFilter")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mCheckBox.mLength != 0) {
+        u32 v0_0 = mCheckBox.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mCheckBox.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mCheckBox.mpArray[i0_3];
+                v1_0 = mCheckBox.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mCheckBox.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mCheckBox.mpArray));
+    }
+    mCheckBox.mpArray = nullptr;
+    mCheckBox.mBufsiz = 0;
+    mCheckBox.mLength = 0;
+    if (mNumBox.mLength != 0) {
+        u32 v3_0 = mNumBox.mLength;
+        unsigned int i3_3 = 0;
+        u32 v4_0;
+        for (;;) {
+            if (mNumBox.mpArray[i3_3] == nullptr) {
+                v4_0 = v3_0;
+            } else {
+                delete mNumBox.mpArray[i3_3];
+                v4_0 = mNumBox.mLength;
+            }
+            if ((i3_3 + 1u) < v4_0) {
+                v3_0 = v4_0;
+                i3_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mNumBox.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNumBox.mpArray));
+    }
+    mNumBox.mpArray = nullptr;
+    mNumBox.mBufsiz = 0;
+    mNumBox.mLength = 0;
+    if (mPullDown.mLength != 0) {
+        u32 v6_0 = mPullDown.mLength;
+        unsigned int i6_3 = 0;
+        u32 v7_0;
+        for (;;) {
+            if (mPullDown.mpArray[i6_3] == nullptr) {
+                v7_0 = v6_0;
+            } else {
+                delete mPullDown.mpArray[i6_3];
+                v7_0 = mPullDown.mLength;
+            }
+            if ((i6_3 + 1u) < v7_0) {
+                v6_0 = v7_0;
+                i6_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mPullDown.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPullDown.mpArray));
+    }
+    mPullDown.mpArray = nullptr;
+    mPullDown.mBufsiz = 0;
+    mPullDown.mLength = 0;
 }
 
 bool uGUIPopFilter::loadResource() {
@@ -143,9 +220,9 @@ __attribute__((weak)) bool uGUIPopFilter::addJobIcon(s32 def, s32 strid, bool al
 
 bool uGUIPopFilter::addReferenceMaxMin(s32 defmax, s32 defmin, s32 max, s32 min, s32 titleid, s32 strmaxid, s32 strminid, uGUIPopFilter::TITLE_PRE style) {
     if (addReference(REF_NUMBOX, defmin, titleid, style, strminid, max, min, ATTR_MIN)) {
-        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2592);
+        u32 t0 = mData.mLength;
         if (addReference(REF_NUMBOX, defmax, -1, style, strmaxid, max, min, ATTR_MAX)) {
-            unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2592);
+            u32 t1 = mData.mLength;
             *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(t1 - 1u)]) + 56) = t0 - 1u;
             *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(t0 - 1u)]) + 56) = t1 - 1u;
             return true;
@@ -182,7 +259,7 @@ bool uGUIPopFilter::addNumBox(s32 def, s32 max, s32 min, MT_CTSTR name, MT_CTSTR
 
 bool uGUIPopFilter::addPullDown(s32 def, MT_CTSTR title, s32 listsize, uGUIPopFilter::TITLE_PRE style) {
     if (addReference(REF_PULLDOWN, def, title, style, 0, 0, "", ATTR_NONE)) {
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2592)) - 1u)]) + 120) = static_cast<unsigned int>(listsize);
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(mData.mLength - 1u)]) + 120) = static_cast<unsigned int>(listsize);
         return true;
     } else {
         return false;
@@ -279,7 +356,7 @@ void uGUIPopFilter::moveInput() {
         } else {
             mList.mListCtrl.setEnableKey(true);
         }
-        u32 num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2656);
+        u32 num = mNumBox.mLength;
         if (num != 0) {
             for (unsigned int i0_3 = 0;;) {
                 static_cast<uGUIBase::cReferenceUINumBox*>(mNumBox.getBuffer()[static_cast<int>(i0_3)])->moveInput();
@@ -289,7 +366,7 @@ void uGUIPopFilter::moveInput() {
                     break;
                 }
             }
-            unsigned int v2_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2656);
+            u32 v2_0 = mNumBox.mLength;
             if (v2_0 != 0) {
                 MtObject* * v2_1 = mNumBox.getBuffer();
                 for (unsigned int i2_2 = 0;;) {
@@ -306,9 +383,9 @@ void uGUIPopFilter::moveInput() {
             }
         }
         mIsPullDownWakeup = false;
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2688)) != 0) {
+        if (mPullDown.mLength != 0) {
             unsigned int i4_3 = 0;
-            num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2688);
+            num = mPullDown.mLength;
             for (;;) {
                 static_cast<uGUIBase::cReferenceUIPullDown*>(mPullDown.getBuffer()[static_cast<int>(i4_3)])->execute();
                 if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mPullDown.getBuffer()[static_cast<int>(i4_3)]) + 1440)) == 0) {

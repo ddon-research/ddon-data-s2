@@ -32,9 +32,10 @@ cFSMRelate::cFSMRelate() {
 cFSMRelate::~cFSMRelate() {
 }
 
-__attribute__((weak)) void cFSMRelate::createProperty(MtPropertyList& s) {
-    DDON_STUB("cFSMRelate::createProperty")
-    /* stub */
+void cFSMRelate::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mFSMName", &mFSMName, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFSMType", &mFSMType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "FSMResource", "resource", reinterpret_cast<MT_MFUNC>(&::cFSMRelate::getFSMResource), reinterpret_cast<MT_MFUNC>(&::cFSMRelate::setFSMResource), 2u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* cFSMRelate::createUI(MtProperty& prop) {

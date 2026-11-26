@@ -606,6 +606,42 @@ public:
     static const u32 FINDCORE_CAPSULE_ITERATION;
 };
 
+#include "MtPrimitive3D.h"
+
+inline u32 MtCollision::getCoGIdFast(const MtTriangle& tri, const MtVector3& pos) {
+    const MtVector3 t1 = tri.p2 - tri.p0;
+    const MtVector3 t2 = tri.p1 - tri.p0;
+    const MtVector3 t3 = pos - tri.p0;
+    const f32 t4 = t1.innerProduct(t1);
+    const f32 t5 = t1.innerProduct(t2);
+    const f32 t6 = t2.innerProduct(t2);
+    const f32 t7 = t3.innerProduct(t1);
+    const f32 t8 = t3.innerProduct(t2);
+    const f32 t9 = t4 * t6 - t5 * t5;
+    const f32 t10 = t7 * t6 - t8 * t5;
+    const f32 t11 = t8 * t4 - t7 * t5;
+
+    if (t9 >= t11 + t10) {
+        return (t11 < 0.0f ? MtCollisionUtil::TRI_VORONOI_EDGE20 : MtCollisionUtil::TRI_VORONOI_INTERNAL)
+             | (t10 < 0.0f ? MtCollisionUtil::TRI_VORONOI_EDGE01 : MtCollisionUtil::TRI_VORONOI_INTERNAL);
+    }
+    if (t11 < 0.0f) {
+        return MtCollisionUtil::TRI_VORONOI_V2;
+    }
+    return t10 < 0.0f ? MtCollisionUtil::TRI_VORONOI_V1 : MtCollisionUtil::TRI_VORONOI_EDGE12;
+}
+
+inline f32 MtCollision::sqrDistance(const MtLineSegment& ls, const MtVector3& pos, f32& LS_t) {
+    const MtVector3 t1 = ls.p1 - ls.p0;
+    const MtVector3 t2 = pos - ls.p0;
+    const MtVector3 t3 = t1.normalizeFast();
+    const f32 t4 = t1.innerProduct(t3);
+    const f32 t5 = t2.innerProduct(t3);
+    LS_t = t5 < t4 ? t5 : t4;
+    LS_t = LS_t > 0.0f ? LS_t : 0.0f;
+    return (t2 - t3 * LS_t).lengthSq();
+}
+
 struct MtContact
 {
 public:

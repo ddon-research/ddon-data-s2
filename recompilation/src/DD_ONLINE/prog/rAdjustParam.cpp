@@ -25,9 +25,8 @@ inline void cAdjustParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAdjustParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cAdjustParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAdjustParam::createProperty")
-    /* stub */
+void cAdjustParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mParam", &mParam, 0u, 0u);
 }
 
 inline cAdjustParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

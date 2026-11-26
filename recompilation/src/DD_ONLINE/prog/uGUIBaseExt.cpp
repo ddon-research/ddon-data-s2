@@ -290,9 +290,11 @@ const MtDTI& uGUIBaseExtHud::getDTI() const {
     return uGUIBaseExtHud::DTI;
 }
 
+inline void uGUIBaseExtHud::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uGUIBaseExtHud::DTI)->memFree(p_addr);
+}
+
 uGUIBaseExtHud::~uGUIBaseExtHud() {
-    DDON_STUB("uGUIBaseExtHud::~uGUIBaseExtHud")
-    /* stub */
 }
 
 __attribute__((weak)) void uGUIBaseExtHud::onSetupAfterLoad() {
@@ -317,9 +319,16 @@ __attribute__((weak)) bool uGUIBaseExtHud::isDrawable() const {
     return {};
 }
 
-__attribute__((weak)) void uGUIBaseExtHud::setupAfterLoad() {
-    DDON_STUB("uGUIBaseExtHud::setupAfterLoad")
-    /* stub */
+void uGUIBaseExtHud::setupAfterLoad() {
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(7u), true);
+    setPlay(true);
+    onSetupAfterLoad();
+    cGUIInstNull* t0 = getInstNull();
+    if (t0 != nullptr) {
+        t0->setVisible(false);
+        t0->setExecute(false);
+    }
+    mIsDrawable = false;
 }
 
 inline uGUIBaseExtHud::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -334,9 +343,11 @@ const MtDTI& uGUIBaseExtWindow::getDTI() const {
     return uGUIBaseExtWindow::DTI;
 }
 
+inline void uGUIBaseExtWindow::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(uGUIBaseExtWindow::DTI)->memFree(p_addr);
+}
+
 uGUIBaseExtWindow::~uGUIBaseExtWindow() {
-    DDON_STUB("uGUIBaseExtWindow::~uGUIBaseExtWindow")
-    /* stub */
 }
 
 inline uGUIBaseExtWindow::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

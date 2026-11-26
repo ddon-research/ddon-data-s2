@@ -39,6 +39,7 @@ class uGUIBase;
 class uGUIGiveAndTake;
 class uGUILoginBonus;
 class uGUIPopCraftDetail;
+class uGUIStorage;
 class uUIMockUp;
 
 // Declarations
@@ -57,6 +58,7 @@ class uGUIPopDetail01 : public uGUIPopBase
 {
     friend class uGUIGiveAndTake;
     friend class uGUILoginBonus;
+    friend class uGUIStorage;
 public:
     enum REFRESH_MODE
     {

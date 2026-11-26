@@ -633,8 +633,24 @@ inline void* uGUIKeyConfig::cKeySettingItem::operator new(size_t sz, void* p_add
     return p_addr;
 }
 
+inline uGUIKeyConfig::cKeySettingItem::cKeySettingItem() {
+    this->mpINST_Null_tip = nullptr;
+    this->mpOBJ_msg_fix_keycategory_m_keycategory = nullptr;
+    this->mpOBJ_msg_fix_keycategory_f_base = nullptr;
+    this->mpOBJ_msg_fix_keycategory_f_base_frame = nullptr;
+    this->mpOBJ_msg_fix_key_icon_f_basecolor = nullptr;
+    this->mpOBJ_msg_fix_key_icon_m_key = nullptr;
+    this->mpINST_msg_fix_key_icon = nullptr;
+    this->mpOBJ_msg_key_detail_m_key_detail = nullptr;
+    this->mpOBJ_msg_number_m_number = nullptr;
+    this->mpINST_Null_keylist = nullptr;
+}
+
 inline void* uGUIKeyConfig::cKeyItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIKeyConfig::cKeyItem::cKeyItem() {
 }
 
 inline void* uGUIKeyConfig::cKeyInfo::operator new(size_t sz, void* p_addr) {

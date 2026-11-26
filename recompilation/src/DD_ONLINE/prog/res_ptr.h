@@ -5,6 +5,9 @@
 
 // Forward declarations
 class cResource;
+class cWSCEpv;
+class cWSCSound;
+class cWSCSoundRnd;
 
 // Declarations
 class cResPtrBase;
@@ -16,6 +19,9 @@ using MT_CTSTR = const MT_CHAR*;
 
 class cResPtrBase
 {
+    friend class cWSCEpv;
+    friend class cWSCSound;
+    friend class cWSCSoundRnd;
 public:
     cResPtrBase();
     ~cResPtrBase();

@@ -63,9 +63,21 @@ MtUI* uSkyCloudModel::createUI(MtProperty& prop) {
     return this->uBaseModel::createUI(prop);
 }
 
-__attribute__((weak)) void uSkyCloudModel::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSkyCloudModel::createProperty")
-    /* stub */
+void uSkyCloudModel::createProperty(MtPropertyList& s) {
+    this->uBaseModel::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mDayOnly", &mDayOnly, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSunColorHeight", &mSunColorHeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSunColorScale", &mSunColorScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSaturationScale", &mSaturationScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIntensityScale", &mIntensityScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAmbColorHeight", &mAmbColorHeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAmbColorScale", &mAmbColorScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSunDir", &mSunDir, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSunColor", &mSunColor, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAmbColor", &mAmbColor, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFogMulRate", &mFogMulRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFogAddRate", &mFogAddRate, 0u, 0u);
 }
 
 __attribute__((weak)) void uSkyCloudModel::move() {

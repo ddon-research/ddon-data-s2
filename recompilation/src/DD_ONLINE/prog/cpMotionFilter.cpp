@@ -137,9 +137,13 @@ void cpMotionFilter::setOwner(MtObject* pOwner) {
     mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
-__attribute__((weak)) void cpMotionFilter::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpMotionFilter::createProperty")
-    /* stub */
+void cpMotionFilter::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", reinterpret_cast<MT_MFUNC>(&::cpMotionFilter::getResource), reinterpret_cast<MT_MFUNC>(&::cpMotionFilter::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mManWomanRate", &mManWomanRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mManWoman", &mManWoman, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSleep", &mSleep, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpMotFilter", reinterpret_cast<MtObject* *>(&mpMotFilter[0]), 32u, 10u);
 }
 
 void cpMotionFilter::init() {

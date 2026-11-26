@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -66,9 +67,74 @@ __attribute__((weak)) void uEffect::draw(cDraw* pDraw) {
     /* stub */
 }
 
-__attribute__((weak)) void uEffect::createProperty(MtPropertyList& s) {
-    DDON_STUB("uEffect::createProperty")
-    /* stub */
+void uEffect::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 1024u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mAngle", reinterpret_cast<MT_MFUNC>(&::uCoord::getAngle), reinterpret_cast<MT_MFUNC>(&::uCoord::setAngleZXY), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mScale", &mScale, 1024u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuat", &mQuat, 1024u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mOrder", reinterpret_cast<MT_MFUNC>(&::uCoord::getOrder), reinterpret_cast<MT_MFUNC>(&::uCoord::setOrder), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mParentNo", &mParentNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpParent", reinterpret_cast<MT_MFUNC>(&::uCoord::getParent), reinterpret_cast<MT_MFUNC>(&::uEffect::setEffectParent), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "SleepMode", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getSleepMode), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setSleepMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "SchedulerMode", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getSchedulerMode), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setSchedulerMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "EventMode", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getEventMode), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setEventMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "TimerControlMode", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getTimerControlMode), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setTimerControlMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "UGInvalidMode", reinterpret_cast<MT_MFUNC>(&::uEffect::getUGInvalidMode), reinterpret_cast<MT_MFUNC>(&::uEffect::setUGInvalidMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "ConstUpdateMode", reinterpret_cast<MT_MFUNC>(&::uEffect::getConstUpdateMode), reinterpret_cast<MT_MFUNC>(&::uEffect::setConstUpdateMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "SeStopMode", reinterpret_cast<MT_MFUNC>(&::uEffect::getSeStopMode), reinterpret_cast<MT_MFUNC>(&::uEffect::setSeStopMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "TextureOmitMode", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getTextureOmitMode), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setTextureOmitMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "VBInvalidMode", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getVBInvalidMode), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setVBInvalidMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "NoFogMode", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getNoFogMode), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setNoFogMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "ParentSymmetryMode", reinterpret_cast<MT_MFUNC>(&::uEffect::getParentSymmetryMode), reinterpret_cast<MT_MFUNC>(&::uEffect::setParentSymmetryMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "JointFixMode", reinterpret_cast<MT_MFUNC>(&::uEffect::getJointFixMode), reinterpret_cast<MT_MFUNC>(&::uEffect::setJointFixMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "RestartFlag", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getRestartFlag), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setRestartFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "ChainResetFlag", reinterpret_cast<MT_MFUNC>(&::uEffect::getChainResetFlag), reinterpret_cast<MT_MFUNC>(&::uEffect::setChainResetFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "JointUpdateFlag", reinterpret_cast<MT_MFUNC>(&::uEffect::getJointUpdateFlag), reinterpret_cast<MT_MFUNC>(&::uEffect::setJointUpdateFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDeltaTimeCoef", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getDeltaTimeCoef), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setDeltaTimeCoef), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mDeltaTimeRate", &mDeltaTimeRate, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTimeInterpolationRate", &mTimeInterpolationRate, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBaseFps", &mBaseFps, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mAxisType", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getAxisType), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setAxisType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mRelationType", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getRelationType), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setRelationType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mEndType", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getEndType), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setEndType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mTimer", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getTimer), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setTimer), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mParticleScale", reinterpret_cast<MT_MFUNC>(&::uEffect::getParticleScale), reinterpret_cast<MT_MFUNC>(&::uEffect::setParticleScale), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mParticle3DScale", reinterpret_cast<MT_MFUNC>(&::uEffect::getParticle3DScale), reinterpret_cast<MT_MFUNC>(&::uEffect::setParticle3DScale), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mLoopFrame", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getLoopFrame), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setLoopFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mLifeFrame", reinterpret_cast<MT_MFUNC>(&::uEffect::getLifeFrame), reinterpret_cast<MT_MFUNC>(&::uEffect::setLifeFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mWaitFrame", reinterpret_cast<MT_MFUNC>(&::uEffect::getWaitFrame), reinterpret_cast<MT_MFUNC>(&::uEffect::setWaitFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mChildLoopFrame", reinterpret_cast<MT_MFUNC>(&::uEffect::getChildLoopFrame), reinterpret_cast<MT_MFUNC>(&::uEffect::setChildLoopFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mChildLifeFrame", reinterpret_cast<MT_MFUNC>(&::uEffect::getChildLifeFrame), reinterpret_cast<MT_MFUNC>(&::uEffect::setChildLifeFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mChildWaitFrame", reinterpret_cast<MT_MFUNC>(&::uEffect::getChildWaitFrame), reinterpret_cast<MT_MFUNC>(&::uEffect::setChildWaitFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mOfs", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getOfs), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setOfs), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mDir", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getDir), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setDir), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mKillNo", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getKillNo), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setKillNo), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mExclusionTrait", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getExclusionTrait), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setExclusionTrait), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mParticleVolume", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getParticleVolume), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setParticleVolume), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mFilterVolume", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getFilterVolume), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setFilterVolume), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mLifeFrameVolume", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getLifeFrameVolume), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setLifeFrameVolume), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mCullingGroup", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getCullingGroup), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setCullingGroup), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mLightPriority", reinterpret_cast<MT_MFUNC>(&::uEffect::getLightPriority), reinterpret_cast<MT_MFUNC>(&::uEffect::setLightPriority), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mGravityCoef", &mGravityCoef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mWaitFrameCoef", reinterpret_cast<MT_MFUNC>(&::uEffect::getWaitFrameCoef), reinterpret_cast<MT_MFUNC>(&::uEffect::setWaitFrameCoef), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mBoundaryType", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getBoundaryType), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setBoundaryType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mTransparency", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getTransparency), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setTransparency), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mDrawDepthBias", &mDrawDepthBias, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Group", reinterpret_cast<MT_MFUNC>(&::uEffect::getGroupFlagBit), reinterpret_cast<MT_MFUNC>(&::uEffect::setGroupFlagBit), 162u, reinterpret_cast<MT_MFUNC>(&::uEffect::getFlagBitNum), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setDummyU32));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Material", reinterpret_cast<MT_MFUNC>(&::uEffect::getMaterialFlagBit), reinterpret_cast<MT_MFUNC>(&::uEffect::setMaterialFlagBit), 162u, reinterpret_cast<MT_MFUNC>(&::uEffect::getFlagBitNum), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setDummyU32));
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupFlag", &mGroupFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaterialFlag", &mMaterialFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpEffectList", "resource", reinterpret_cast<MT_MFUNC>(&::uBaseEffect::getEffectList), reinterpret_cast<MT_MFUNC>(&::uEffect::setEffectList), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Finish", static_cast<MT_MFUNC>(&::uEffect::doFinish), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Restart", static_cast<MT_MFUNC>(&::uEffect::doRestart), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Clear", static_cast<MT_MFUNC>(&::uEffect::doClear), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "KeepHoldOff", static_cast<MT_MFUNC>(&::uEffect::doKeepHoldOff), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mGeneratorNum", reinterpret_cast<MT_MFUNC>(&::uEffect::getGeneratorNum), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mGeneratorMoveNum", reinterpret_cast<MT_MFUNC>(&::uEffect::getGeneratorMoveNum), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mJointNum", reinterpret_cast<MT_MFUNC>(&::uEffect::getJointNum), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mJointMoveNum", reinterpret_cast<MT_MFUNC>(&::uEffect::getJointMoveNum), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mGeneratorBuffSize", reinterpret_cast<MT_MFUNC>(&::uEffect::getGeneratorBuffSize), reinterpret_cast<MT_MFUNC>(&::uBaseEffect::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* uEffect::createUI(MtProperty& prop) {
@@ -200,10 +266,7 @@ static auto ddon_emit_0x01b659b0 __attribute__((used)) = &uEffect::getParticleSc
 
 static auto ddon_emit_0x01b659a0 __attribute__((used)) = &uEffect::setParticleScale;
 
-__attribute__((weak)) MtVector3 uEffect::getParticle3DScale() const {
-    DDON_STUB("uEffect::getParticle3DScale")
-    __builtin_unreachable();
-}
+static auto ddon_emit_0x01b65cd0 __attribute__((used)) = &uEffect::getParticle3DScale;
 
 void uEffect::setParticle3DScale(const MtVector3& Particle3DScale) {
     mParticle3DScale.x = Particle3DScale.x;
@@ -391,9 +454,8 @@ __attribute__((weak)) MtVector4 uEffect::correctFilterColor(cParticleGenerator* 
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 uEffect::correctLightColor(cParticleGenerator* pGenerator, const MtVector3& Pos, const MtVector3& OrgColor) {
-    DDON_STUB("uEffect::correctLightColor")
-    __builtin_unreachable();
+MtVector3 uEffect::correctLightColor(cParticleGenerator* pGenerator, const MtVector3& Pos, const MtVector3& OrgColor) {
+    return OrgColor;
 }
 
 u32 uEffect::getSynchroFilterDrawView() const {

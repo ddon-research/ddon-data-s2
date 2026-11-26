@@ -85,9 +85,19 @@ MtUI* uGUI::createUI(MtProperty& prop) {
     return this->uCoord::createUI(prop);
 }
 
-__attribute__((weak)) void uGUI::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGUI::createProperty")
-    /* stub */
+void uGUI::createProperty(MtPropertyList& s) {
+    this->uCoord::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", reinterpret_cast<MT_MFUNC>(&::uGUI::getResource), reinterpret_cast<MT_MFUNC>(&::uGUI::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "VirtualScreen", reinterpret_cast<MT_MFUNC>(&::uGUI::isVirtualScreen), reinterpret_cast<MT_MFUNC>(&::uGUI::setVirtualScreen), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "UseViewInstance", reinterpret_cast<MT_MFUNC>(&::uGUI::isUseViewInstance), reinterpret_cast<MT_MFUNC>(&::uGUI::setUseViewInstance), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Manual3DPriority", reinterpret_cast<MT_MFUNC>(&::uGUI::isManual3DPriority), reinterpret_cast<MT_MFUNC>(&::uGUI::setManual3DPriority), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Play", reinterpret_cast<MT_MFUNC>(&::uGUI::isPlay), reinterpret_cast<MT_MFUNC>(&::uGUI::setPlay), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Wait", reinterpret_cast<MT_MFUNC>(&::uGUI::isWait), reinterpret_cast<MT_MFUNC>(&::uGUI::setWait), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Variable", static_cast<MtObject*>(&mVariableArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Priority", reinterpret_cast<MT_MFUNC>(&::uGUI::getPriority), reinterpret_cast<MT_MFUNC>(&::uGUI::setPriority), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "ScreenLayer", reinterpret_cast<MT_MFUNC>(&::uGUI::getScreenLayer), reinterpret_cast<MT_MFUNC>(&::uGUI::setScreenLayer), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "DrawStencil", reinterpret_cast<MT_MFUNC>(&::uGUI::isDrawStencil), reinterpret_cast<MT_MFUNC>(&::uGUI::setDrawStencil), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "StencilRef", reinterpret_cast<MT_MFUNC>(&::uGUI::getStencilRef), reinterpret_cast<MT_MFUNC>(&::uGUI::setStencilRef), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) MT_CTSTR uGUI::getName() {
@@ -271,8 +281,47 @@ nGUI::FLOW* uGUI::getFlow(const u32 id) const {
     return nullptr;
 }
 
-__attribute__((weak)) cGUIVariable* uGUI::createVariable(const MtDTI& dti) {
-    DDON_STUB("uGUI::createVariable")
+cGUIVariable* uGUI::createVariable(const MtDTI& dti) {
+    MT_CTSTR v0_0 = cGUIVariable::DTI.mName;
+    if (v0_0 != dti.mName) {
+        for (const MtDTI* v0_1 = &dti;;) {
+            if (v0_1->mpParent == nullptr) {
+                return nullptr;
+            } else {
+                if (v0_0 != v0_1->mpParent->mName) {
+                    v0_1 = v0_1->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if ((dti.mAttr & 1u) == 0) {
+        MtObject* t0 = dti.newInstance();
+        if (t0 != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 12) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 12)) | 1;
+            u32 t1 = mVariableId;
+            mVariableId = t1 + 1u;
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 8) = t1;
+            u32 t2 = mVariableArray.mLength;
+            u32 t3 = mVariableArray.mBufsiz;
+            if (t2 < t3) {
+                mVariableArray.mLength = t2 + 1u;
+                mVariableArray.mpArray[t2] = t0;
+            } else {
+                void* t4 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t3 + 32u) * 8, 16u);
+                memset(t4, 0, static_cast<size_t>(t3 + 32u) * 8);
+                memcpy(t4, static_cast<const void*>(mVariableArray.mpArray), static_cast<size_t>(mVariableArray.mLength) * 8);
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mVariableArray.mpArray));
+                mVariableArray.mpArray = static_cast<MtObject* *>(t4);
+                mVariableArray.mBufsiz = t3 + 32u;
+                u32 t5 = mVariableArray.mLength;
+                mVariableArray.mLength = t5 + 1u;
+                mVariableArray.mpArray[t5] = t0;
+            }
+            return static_cast<cGUIVariable*>(t0);
+        }
+    }
     return nullptr;
 }
 
@@ -289,13 +338,37 @@ __attribute__((weak)) void uGUI::updateResolutionAdjustScale(const MtSize& defau
     /* stub */
 }
 
-__attribute__((weak)) cGUIInstance* uGUI::getInstance(const u32 id, bool isAssert) const {
-    DDON_STUB("uGUI::getInstance")
-    return nullptr;
+cGUIInstance* uGUI::getInstance(const u32 id, bool isAssert) const {
+    if (mpInstanceRoot != nullptr) {
+        return mpInstanceRoot->getInstanceFromId(id);
+    } else {
+        return nullptr;
+    }
 }
 
-__attribute__((weak)) cGUIInstance* uGUI::getInstanceFromName(MT_CTSTR name) const {
-    DDON_STUB("uGUI::getInstanceFromName")
+cGUIInstance* uGUI::getInstanceFromName(MT_CTSTR name) const {
+    if (mpResource != nullptr) {
+        u32 v0_8 = mpResource->mpHeader->instanceNum;
+        if (v0_8 != 0) {
+            unsigned int i0_3 = 0;
+            for (nGUI::INSTANCE* pInstance = mpResource->mpHeader->pInstance;;) {
+                if (strcmp(pInstance->pName, name) == 0) {
+                    if (mpInstanceRoot != nullptr) {
+                        return mpInstanceRoot->getInstanceFromId(pInstance->id);
+                    } else {
+                        return nullptr;
+                    }
+                } else {
+                    if ((i0_3 + 1u) < v0_8) {
+                        i0_3 += 1u;
+                        pInstance += 1;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
     return nullptr;
 }
 
@@ -423,14 +496,104 @@ bool uGUI::moveFlowEnd(const nGUI::FLOW* pFlow) {
     }
 }
 
-__attribute__((weak)) void uGUI::initInstance(cGUIInstance* pInstance) {
-    DDON_STUB("uGUI::initInstance")
-    /* stub */
+void uGUI::initInstance(cGUIInstance* pInstance) {
+    if (pInstance != mpInstanceRoot) {
+        if ((pInstance->mAttr & 0x400000u) == 0) {
+            pInstance->setExecute(false);
+        }
+        pInstance->init();
+    }
+    for (cGUIInstance* pChild = pInstance->mpChild;;) {
+        if (pChild == nullptr) {
+            break;
+        } else {
+            initInstance(pChild);
+            pChild = pChild->mpNext;
+        }
+    }
+    mAttr = mAttr | 4096u;
 }
 
-__attribute__((weak)) bool uGUI::moveFlowProcess(const nGUI::FLOW* pFlow) {
-    DDON_STUB("uGUI::moveFlowProcess")
-    return {};
+bool uGUI::moveFlowProcess(const nGUI::FLOW* pFlow) {
+    nGUI::PROCESS_WORK* t0 = mpProcessWork;
+    const unsigned int t1 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pFlow) + 24);
+    nGUI::FLOW_PROCESS* pProcess = t0[t1].pFlow;
+    u32 t2 = mAttr;
+    mAttr = t2 & 0xFFFFDFFFu;
+    nGUI::PROCESS_WORK* pProcessWork;
+    if (((t2 >> 8) & 2u) != 0) {
+        doAnimation(&t0[t1], false);
+        pProcessWork = &t0[t1];
+    } else {
+        mAttr = t2 | 8192u;
+        u32 t3 = pProcess->actionNum;
+        if (t3 != 0) {
+            nGUI::ACTION* pAction = pProcess->actionAdrs;
+            unsigned int i0_3 = 0;
+            for (nGUI::ACTION* p0_9 = pAction;;) {
+                doAction(p0_9);
+                if ((i0_3 + 1u) < pProcess->actionNum) {
+                    i0_3 += 1u;
+                    p0_9 += 1;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (mpResource->mpHeader->instExeParamNum != 0) {
+            nGUI::PARAM_WORK* pParamWork = mpInstExeParam;
+            for (unsigned int i2_9 = 0;;) {
+                const u32 t4 = pFlow->id;
+                float t5 = -1.0f;
+                nGUI::playProperty(static_cast<float>(t4), t5, pParamWork, true);
+                if ((i2_9 + 1u) < mpResource->mpHeader->instExeParamNum) {
+                    pParamWork += 1;
+                    i2_9 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (pProcess->endConditionType != 3) {
+            pProcessWork = &t0[t1];
+        } else {
+            u32 v4_0 = mVariableArray.mLength;
+            if (v4_0 == 0) {
+                pProcessWork = &t0[t1];
+            } else {
+                u32 v4_1 = pProcess->endConditionParam;
+                MtObject* * v4_2 = mVariableArray.mpArray;
+                pProcessWork = &t0[t1];
+                for (unsigned int i4_4 = 0;;) {
+                    cGUIVariable* pVariable = static_cast<cGUIVariable*>(v4_2[i4_4]);
+                    u32 t6 = pVariable->mId;
+                    if (t6 != v4_1) {
+                        if ((i4_4 + 1u) < v4_0) {
+                            i4_4 = i4_4 + 1u;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if (pVariable != nullptr) {
+                            s32 t7 = pVariable->getS32();
+                            mProcessVariable = t7;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        doAnimation(pProcessWork, true);
+        unsigned char t8 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 833);
+        mAttr = mAttr | 512u;
+    }
+    if (doEndCondition(pProcessWork)) {
+        nGUI::FLOW* t10 = pProcess->nextAdrs;
+        bool t11 = setPlayingFlow(t10, true);
+        return t11;
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void uGUI::doAction(const nGUI::ACTION* pAction) {

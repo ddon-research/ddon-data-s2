@@ -10,6 +10,7 @@
 #include "../MT/MtNetObject.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "nNetworkRanking.h"
 #include "nNetworkSessionDriver.h"
@@ -35,9 +36,22 @@ nNetwork::Context::Context() {
 nNetwork::Context::~Context() {
 }
 
-__attribute__((weak)) void nNetwork::Context::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::Context::createProperty")
-    /* stub */
+void nNetwork::Context::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "Bootup", static_cast<MT_MFUNC>(&::nNetwork::Context::bootup), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Shutdown", static_cast<MT_MFUNC>(&::nNetwork::Context::shutdown), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mState", &mState, 3u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mService", &mService, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mOption", &mOption, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mUserIndex", &mUserIndex, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mReqLevel", &mReqLevel, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mServiceError.mNo", &mServiceError.mNo, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mServiceError.mCause", &mServiceError.mCause, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mServiceError.mNative", &mServiceError.mNative, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIsFriendListChange", &mIsFriendListChange, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIsSignInChange", &mIsSignInChange, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mInviteState", &mInviteState, 3u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpContext", reinterpret_cast<MtObject* *>(&mpContext), 3u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpFriendList", reinterpret_cast<MtObject* *>(&mpFriendList), 3u, 0u);
 }
 
 MtUI* nNetwork::Context::createUI(MtProperty& prop) {

@@ -56,9 +56,11 @@ __attribute__((weak)) MT_CTSTR cArea::getShaderSegment() {
     return {};
 }
 
-__attribute__((weak)) void cArea::createProperty(MtPropertyList& s) {
-    DDON_STUB("cArea::createProperty")
-    /* stub */
+void cArea::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mInit", &mInit, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRno", &this->mRno, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaPt", &mAreaPt, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpShaderArchive", "resource", static_cast<void*>(&mpShaderArchive), 2u, 0u);
 }
 
 MtUI* cArea::createUI(MtProperty& prop) {

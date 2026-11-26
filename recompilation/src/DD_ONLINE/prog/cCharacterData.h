@@ -42,10 +42,12 @@ namespace nJobParam { class cJobInfo; }
 namespace nNet { struct stClanEmblem; }
 namespace nSessionManager { class cNetSessionManager; }
 class sCameraExt;
+class sChat;
 class sGUIExt;
 class sGame;
 class sNetworkExt;
 class uGUIEngageInfo;
+class uGUIMapMini;
 class uGUIOption;
 
 // Declarations
@@ -75,10 +77,12 @@ class cCharacterData : public MtObject
     friend class cpJob02;
     friend class nSessionManager::cNetSessionManager;
     friend class sCameraExt;
+    friend class sChat;
     friend class sGUIExt;
     friend class sGame;
     friend class sNetworkExt;
     friend class uGUIEngageInfo;
+    friend class uGUIMapMini;
     friend class uGUIOption;
 public:
     enum
@@ -1058,6 +1062,10 @@ inline void cCharacterData::setSex(u8 sex) {
 
 inline CHAR_NAME& cCharacterData::getName() {
     return this->mCharData.mCharacterEdit.mName;
+}
+
+inline bool cCharacterData::isClanNtc() {
+    return this->mCharData.mOption.mIsClanNtc;
 }
 
 inline const nJobParam::cHumanBaseInfo& cCharacterData::getBaseInfo() const {

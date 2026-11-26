@@ -428,6 +428,10 @@ inline void* cErosionSuperInfoRes::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline f32 cErosionSuperInfoRes::getAdjustDamageRate() const {
+    return this->mAdjustDamageRate;
+}
+
 inline void* rErosionInfoRes::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

@@ -18,9 +18,14 @@ const MtDTI& cCamInterAll::getDTI() const {
     return cCamInterAll::DTI;
 }
 
-__attribute__((weak)) void cCamInterAll::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCamInterAll::createProperty")
-    /* stub */
+void cCamInterAll::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsEnd", &mIsEnd, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInterFrameNow", &mInterFrameNow, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInterFrame", &mInterFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInterC", static_cast<MtObject*>(&mInterC), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInterT", static_cast<MtObject*>(&mInterT), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInterU", static_cast<MtObject*>(&mInterU), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInterF", &mInterF, 0u, 0u);
 }
 
 __attribute__((weak)) void cCamInterAll::initializeAll(const MtVector3& eye, const MtVector3& look, const MtVector3& up, f32 fov, f32 frame, f32 startSpring) {
@@ -80,9 +85,13 @@ const MtDTI& cCamInterporateAng3Time::getDTI() const {
     return cCamInterporateAng3Time::DTI;
 }
 
-__attribute__((weak)) MtVector3 cCamInterporateAng3Time::calcDisplace(const MtVector3& now, const MtVector3& end) {
-    DDON_STUB("cCamInterporateAng3Time::calcDisplace")
-    __builtin_unreachable();
+MtVector3 cCamInterporateAng3Time::calcDisplace(const MtVector3& now, const MtVector3& end) {
+    MtVector3 result;
+    result.pad_ = 0.0f;
+    result.x = nDDOMath::getRadianDifference(now.x, end.x);
+    result.y = nDDOMath::getRadianDifference(now.y, end.y);
+    result.z = nDDOMath::getRadianDifference(now.z, end.z);
+    return result;
 }
 
 __attribute__((weak)) MtVector3 cCamInterporateAng3Time::calcAccel(const MtVector3& displace, const MtVector3& velocity) {
@@ -118,6 +127,10 @@ inline MtAllocator* cCamInterporateRange::getAllocator() {
     return MtMemoryAllocator::getAllocator(cCamInterporateRange::DTI);
 }
 
+inline void* cCamInterporateRange::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCamInterporateRange::DTI)->memAlloc(sz, align, cCamInterporateRange::DTI.getID());
+}
+
 __attribute__((weak)) void cCamInterporateRange::operator delete(void* p_addr) {
     cCamInterporateRange::getAllocator()->memFree(p_addr);
 }
@@ -127,9 +140,8 @@ __attribute__((weak)) const MtVector3& cCamInterporateRange::interporateTransfor
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtObject* cCamInterporateRange::MyDTI::newInstance() const {
-    DDON_STUB("cCamInterporateRange::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCamInterporateRange::MyDTI::newInstance() const {
+    return new (16u) cCamInterporateRange;
 }
 
 const MtDTI& cCamInterporateRangeAng::getDTI() const {
@@ -158,12 +170,25 @@ __attribute__((weak)) MtObject* cCamInterporateRangeAng::MyDTI::newInstance() co
     return nullptr;
 }
 
+const MtDTI& cCamInterporateRangeF32::getDTI() const {
+    return cCamInterporateRangeF32::DTI;
+}
+
+__attribute__((weak)) MtObject* cCamInterporateRangeF32::MyDTI::newInstance() const {
+    DDON_STUB("cCamInterporateRangeF32::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& cCamInterporateVec3::getDTI() const {
     return cCamInterporateVec3::DTI;
 }
 
 inline MtAllocator* cCamInterporateVec3::getAllocator() {
     return MtMemoryAllocator::getAllocator(cCamInterporateVec3::DTI);
+}
+
+inline void* cCamInterporateVec3::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCamInterporateVec3::DTI)->memAlloc(sz, align, cCamInterporateVec3::DTI.getID());
 }
 
 __attribute__((weak)) void cCamInterporateVec3::operator delete(void* p_addr) {
@@ -175,9 +200,8 @@ __attribute__((weak)) const MtVector3& cCamInterporateVec3::interporateRot(const
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtObject* cCamInterporateVec3::MyDTI::newInstance() const {
-    DDON_STUB("cCamInterporateVec3::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCamInterporateVec3::MyDTI::newInstance() const {
+    return new (16u) cCamInterporateVec3;
 }
 
 template const MtDTI& cCamInterporateTime<MtVector3>::getDTI() const;

@@ -24,7 +24,11 @@ const MtDTI& cSetInfoCoord::getDTI() const {
     return cSetInfoCoord::DTI;
 }
 
-__attribute__((noinline)) cSetInfoCoord::cSetInfoCoord() {
+inline void* cSetInfoCoord::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoCoord::DTI)->memAlloc(sz, align, cSetInfoCoord::DTI.getID());
+}
+
+cSetInfoCoord::cSetInfoCoord() {
         this->mPosition.x = 0.0f;
         this->mPosition.y = 0.0f;
         this->mPosition.z = 0.0f;
@@ -43,9 +47,16 @@ __attribute__((noinline)) cSetInfoCoord::cSetInfoCoord() {
 cSetInfoCoord::~cSetInfoCoord() {
 }
 
-__attribute__((weak)) void cSetInfoCoord::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoCoord::createProperty")
-    /* stub */
+void cSetInfoCoord::createProperty(MtPropertyList& s) {
+    this->cSetInfo::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mName", reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::getcSetName), reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::setcSetName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "mUnitID", reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::getUnitID), reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::setUnitID), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mPosition", reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::getPositionForProperty), reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::setPositionForProperty), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mAngle", reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::getAngleForProperty), reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::setAngleForProperty), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mScale", reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::getScaleForProperty), reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::setScaleForProperty), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaHitNo", &mAreaHitNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVersion", &mVersion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_MATRIX, "Matrix", reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::getMatrix), reinterpret_cast<MT_MFUNC>(&::cSetInfoCoord::setMatrix), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) bool cSetInfoCoord::load(MtDataReader& r) {
@@ -73,8 +84,16 @@ __attribute__((weak)) bool cSetInfoCoord::load(MtDataReader& r) {
 }
 
 __attribute__((weak)) bool cSetInfoCoord::save(MtDataWriter& w) {
-    DDON_STUB("cSetInfoCoord::save")
-    return {};
+    nDDOIO::writeData(w, mName);
+    nDDOIO::writeData(w, mUnitID);
+    MtVector3 pos(mPosition.x, mPosition.y, mPosition.z);
+    MtVector3 angle(mAngle.x, mAngle.y, mAngle.z);
+    MtVector3 scale(mScale.x, mScale.y, mScale.z);
+    nDDOIO::writeData(w, pos);
+    nDDOIO::writeData(w, angle);
+    nDDOIO::writeData(w, scale);
+    nDDOIO::writeData(w, mAreaHitNo);
+    return true;
 }
 
 __attribute__((weak)) void cSetInfoCoord::createToolProperty(MtPropertyList& s) {
@@ -99,8 +118,7 @@ MT_CTSTR cSetInfoCoord::getcSetName() const {
 }
 
 __attribute__((weak)) void cSetInfoCoord::setcSetName(const MtString& name) {
-    DDON_STUB("cSetInfoCoord::setcSetName")
-    /* stub */
+    mName = name;
 }
 
 static auto ddon_emit_0x01a60bf0 __attribute__((used)) = &cSetInfoCoord::getUnitID;
@@ -131,9 +149,13 @@ __attribute__((weak)) void cSetInfoCoord::setMatrix(MtMatrix& mat) {
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 cSetInfoCoord::getPositionForProperty() const {
-    DDON_STUB("cSetInfoCoord::getPositionForProperty")
-    __builtin_unreachable();
+MtVector3 cSetInfoCoord::getPositionForProperty() const {
+    MtVector3 result;
+    result.x = mPosition.x;
+    result.y = mPosition.y;
+    result.z = mPosition.z;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void cSetInfoCoord::setPositionForProperty(const MtVector3& pos) {
@@ -142,9 +164,13 @@ void cSetInfoCoord::setPositionForProperty(const MtVector3& pos) {
     mPosition.z = pos.z;
 }
 
-__attribute__((weak)) MtVector3 cSetInfoCoord::getAngleForProperty() const {
-    DDON_STUB("cSetInfoCoord::getAngleForProperty")
-    __builtin_unreachable();
+MtVector3 cSetInfoCoord::getAngleForProperty() const {
+    MtVector3 result;
+    result.x = mAngle.x;
+    result.y = mAngle.y;
+    result.z = mAngle.z;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void cSetInfoCoord::setAngleForProperty(const MtVector3& angle) {
@@ -153,9 +179,13 @@ void cSetInfoCoord::setAngleForProperty(const MtVector3& angle) {
     mAngle.z = angle.z;
 }
 
-__attribute__((weak)) MtVector3 cSetInfoCoord::getScaleForProperty() const {
-    DDON_STUB("cSetInfoCoord::getScaleForProperty")
-    __builtin_unreachable();
+MtVector3 cSetInfoCoord::getScaleForProperty() const {
+    MtVector3 result;
+    result.x = mScale.x;
+    result.y = mScale.y;
+    result.z = mScale.z;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void cSetInfoCoord::setScaleForProperty(const MtVector3& scale) {
@@ -168,8 +198,7 @@ inline cSetInfoCoord::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 cSetInfoCoord::MyDTI cSetInfoCoord::DTI("cSetInfoCoord", &::cSetInfo::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoCoord::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoCoord::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoCoord::MyDTI::newInstance() const {
+    return new (16u) cSetInfoCoord;
 }
 

@@ -31,6 +31,7 @@ namespace nNetwork { class BlockPool; }
 namespace nNetwork { class Callback; }
 namespace nNetwork { class Connect; }
 namespace nNetwork { class Match; }
+namespace nNetwork { class ProtocolStandard; }
 namespace nNetwork { class Route; }
 namespace nNetwork { class RpcNetSystem_Leave; }
 namespace nNetwork { class SessionDatabase; }
@@ -38,6 +39,7 @@ namespace nNetwork { class SessionDriver; }
 namespace nNetwork { class SessionListener; }
 namespace nNetwork { class TagChecker; }
 namespace nNetwork { class Transport; }
+namespace nNetwork { class VoiceChat; }
 class sNetwork;
 
 // Declarations
@@ -56,8 +58,11 @@ namespace nNetwork {
     class Session : public ::MtObject
     {
         friend class nNetwork::Connect;
+        friend class nNetwork::Match;
+        friend class nNetwork::ProtocolStandard;
         friend class nNetwork::SessionDriver;
         friend class nNetwork::TagChecker;
+        friend class nNetwork::VoiceChat;
         friend class ::sNetwork;
     public:
         enum

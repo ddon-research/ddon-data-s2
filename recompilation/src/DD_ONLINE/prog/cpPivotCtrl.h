@@ -27,6 +27,7 @@ using u32 = unsigned int;
 
 class cpPivotCtrl : public cpComponent
 {
+    friend class uDDOModel;
 public:
     class MyDTI;
 public:

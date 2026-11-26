@@ -1,14 +1,19 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_pthread.h>
+#include <stdlib.h>
 #include <string.h>
 #include "MtNetBuffer.h"
+#include "MtAllocator.h"
 #include "MtCharset.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtNetDevice.h"
 #include "MtNetObject.h"
 #include "MtObject.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
+#include "MtSynchronize.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -22,9 +27,10 @@ MtNetBuffer::MtNetBuffer() {
 MtNetBuffer::~MtNetBuffer() {
 }
 
-__attribute__((weak)) void MtNetBuffer::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtNetBuffer::createProperty")
-    /* stub */
+void MtNetBuffer::createProperty(MtPropertyList& s) {
+    this->MtNetObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mBufferSize", &mBufferSize, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDataLength", &mDataLength, 1u, 0u);
 }
 
 void MtNetBuffer::create(u8* data_buf, u32 data_buf_size) {
@@ -163,14 +169,98 @@ __attribute__((weak)) void MtNetFriendList::clear() {
     /* stub */
 }
 
-__attribute__((weak)) MtNetFriendList& MtNetFriendList::operator=(const MtNetFriendList& src_list) {
-    DDON_STUB("MtNetFriendList::operator=")
-    __builtin_unreachable();
+MtNetFriendList& MtNetFriendList::operator=(const MtNetFriendList& src_list) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        mLockCount = mLockCount + 1;
+    }
+    mUserIndex = src_list.mUserIndex;
+    mValidNum = src_list.mValidNum;
+    for (s32 i = 0;;) {
+        if (static_cast<unsigned char>(src_list.mUniqueId[i].mData[0] + 255) <= 20) {
+            if (mUniqueId[i].mpBuffer != nullptr) {
+                if (src_list.mUniqueId[i].mpBuffer != nullptr) {
+                    if ((src_list.mUniqueId[i].mDataLength - 1u) >= mUniqueId[i].mBufferSize) {
+                    } else {
+                        memcpy(static_cast<void*>(mUniqueId[i].mpBuffer), static_cast<const void*>(src_list.mUniqueId[i].mpBuffer), src_list.mUniqueId[i].mDataLength);
+                        mUniqueId[i].mDataLength = src_list.mUniqueId[i].mDataLength;
+                    }
+                }
+            }
+        } else {
+            mUniqueId[i].clear();
+        }
+        if (i != 1999) {
+            i = i + 1;
+        } else {
+            break;
+        }
+    }
+    if (mIsThreadSafe) {
+        mLockCount = mLockCount - 1;
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return *this;
 }
 
-__attribute__((weak)) s32 MtNetFriendList::getUniqueIdList(MtNetUniqueId* uniq_id_list, s32 uniq_id_max_num) {
-    DDON_STUB("MtNetFriendList::getUniqueIdList")
-    return {};
+s32 MtNetFriendList::getUniqueIdList(MtNetUniqueId* uniq_id_list, s32 uniq_id_max_num) {
+    unsigned int v1_8;
+    if (uniq_id_list != nullptr) {
+        if (uniq_id_max_num > 0) {
+            if (mIsThreadSafe) {
+                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+                mLockCount = mLockCount + 1;
+            }
+            if (mValidNum <= 0) {
+                v1_8 = 0;
+            } else {
+                s32 i = 1;
+                MtNetUniqueId* p0_3 = &mUniqueId[0];
+                for (MtNetUniqueId* p0_9 = uniq_id_list;;) {
+                    if (static_cast<unsigned char>(p0_3->mData[0] + 255) <= 20) {
+                        if (p0_9->mpBuffer != nullptr) {
+                            if (p0_3->mpBuffer != nullptr) {
+                                if ((p0_3->mDataLength - 1u) < p0_9->mBufferSize) {
+                                    memcpy(static_cast<void*>(p0_9->mpBuffer), static_cast<const void*>(p0_3->mpBuffer), p0_3->mDataLength);
+                                    p0_9->mDataLength = p0_3->mDataLength;
+                                }
+                            }
+                        }
+                    }
+                    if (i >= uniq_id_max_num) {
+                        v1_8 = i;
+                        break;
+                    } else {
+                        if (i < mValidNum) {
+                            i += 1;
+                            p0_3 += 1;
+                            p0_9 += 1;
+                        } else {
+                            v1_8 = i;
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
+    if (mIsThreadSafe) {
+        mLockCount = mLockCount - 1;
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return static_cast<s32>(v1_8);
 }
 
 __attribute__((weak)) void MtNetFriendList::add(MtNetUniqueId* uniq_id) {
@@ -187,19 +277,23 @@ const MtDTI& MtNetUniqueId::getDTI() const {
     return MtNetUniqueId::DTI;
 }
 
+inline void MtNetUniqueId::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(MtNetUniqueId::DTI)->memFree(p_addr);
+}
+
 MtNetUniqueId::MtNetUniqueId() {
     DDON_STUB("MtNetUniqueId::MtNetUniqueId")
     /* stub */
 }
 
 MtNetUniqueId::~MtNetUniqueId() {
-    DDON_STUB("MtNetUniqueId::~MtNetUniqueId")
-    /* stub */
 }
 
-__attribute__((weak)) void MtNetUniqueId::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtNetUniqueId::createProperty")
-    /* stub */
+void MtNetUniqueId::createProperty(MtPropertyList& s) {
+    this->MtNetObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mBufferSize", &mBufferSize, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDataLength", &mDataLength, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mData", &mData[0], 32u, 64u);
 }
 
 MtUI* MtNetUniqueId::createUI(MtProperty& prop) {
@@ -238,9 +332,18 @@ __attribute__((weak)) void MtNetUniqueId::exportTo(MT_STR str, u32 size) const {
     /* stub */
 }
 
-__attribute__((weak)) MtNetUniqueId& MtNetUniqueId::operator=(const MtNetUniqueId& uniq_id) {
-    DDON_STUB("MtNetUniqueId::operator=")
-    __builtin_unreachable();
+MtNetUniqueId& MtNetUniqueId::operator=(const MtNetUniqueId& uniq_id) {
+    if (static_cast<unsigned char>(uniq_id.mData[0] + 255) <= 20) {
+        if (mpBuffer != nullptr) {
+            if (uniq_id.mpBuffer != nullptr) {
+                if ((uniq_id.mDataLength - 1u) < mBufferSize) {
+                    memcpy(static_cast<void*>(mpBuffer), static_cast<const void*>(uniq_id.mpBuffer), uniq_id.mDataLength);
+                    mDataLength = uniq_id.mDataLength;
+                }
+            }
+        }
+    }
+    return *this;
 }
 
 __attribute__((weak)) bool MtNetUniqueId::equals(const MtNetUniqueId* uniq_id) const {

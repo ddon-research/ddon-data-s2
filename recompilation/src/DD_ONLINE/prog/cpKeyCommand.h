@@ -23,6 +23,7 @@ class MtQuaternion;
 class MtVector3;
 class cGeneralPointPtr;
 class cpInput;
+class cpItemThrow;
 class cpJob10;
 namespace nKeyCommand { struct stGenericParam; }
 namespace nKeyCommand { struct stKeyCommand; }
@@ -45,6 +46,7 @@ using u8 = unsigned char;
 
 class cpKeyCommand : public cpThinkBase
 {
+    friend class cpItemThrow;
     friend class cpJob10;
     friend class uHuman;
 public:

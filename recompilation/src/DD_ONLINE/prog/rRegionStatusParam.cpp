@@ -107,10 +107,7 @@ cChildRegionStatusParam::cChildRegionStatusParam() {
     mCorePointType = 0;
     mCorePointID = -1;
     mCoreJointNo = -1;
-    mCoreJointOffset.x = MtVector3::Zero.x;
-    mCoreJointOffset.y = MtVector3::Zero.y;
-    mCoreJointOffset.z = MtVector3::Zero.z;
-    mCoreJointOffset.pad_ = 0.0f;
+    mCoreJointOffset = MtVector3::Zero;
     mCoreEpvIndex = -1;
     mCoreEpvElementNo = -1;
     mAttackReactionType[0] = 1;

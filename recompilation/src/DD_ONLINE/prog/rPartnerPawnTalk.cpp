@@ -48,13 +48,62 @@ __attribute__((weak)) void rPartnerPawnTalk::clear() {
 }
 
 __attribute__((weak)) bool rPartnerPawnTalk::load(MtStream& in) {
-    DDON_STUB("rPartnerPawnTalk::load")
-    return {};
+    MtDataReader r(in, 4096);
+    if (r.readU32() != 0x747070) {
+        return false;
+    }
+    if (r.readU32() != DATA_VERSION) {
+        return false;
+    }
+    const u32 nInfoNum = r.readU32();
+    const u32 nSizeBinary = r.readU32();
+    void* pBinaryInfo = MtMemoryAllocator::getAllocator(rPartnerPawnTalk::DTI)->memAlloc(nSizeBinary, 16);
+    u8* pBinaryCursor = static_cast<u8*>(pBinaryInfo) + nInfoNum * sizeof(InfoBinary);
+    pBinaryCursor = reinterpret_cast<u8*>((reinterpret_cast<size_t>(pBinaryCursor) + 15) & ~15ul);
+    for (u32 i = 0; i < nInfoNum; ++i) {
+        InfoBinary* pBinary = new (&static_cast<InfoBinary*>(pBinaryInfo)[i]) InfoBinary;
+        const u32 nTalkDataNum = r.readU32();
+        void* pTalkData = pBinaryCursor;
+        pBinaryCursor += nTalkDataNum * sizeof(InfoBinary::TalkDataBinary);
+        pBinaryCursor = reinterpret_cast<u8*>((reinterpret_cast<size_t>(pBinaryCursor) + 15) & ~15ul);
+        for (u32 e = 0; e < nTalkDataNum; ++e) {
+            InfoBinary::TalkDataBinary* pBinary = new (&static_cast<InfoBinary::TalkDataBinary*>(pTalkData)[e]) InfoBinary::TalkDataBinary;
+            pBinary->mTalk = r.readU16();
+            pBinary->mType = r.readU16();
+        }
+        pBinary->mpTalkList = static_cast<InfoBinary::TalkDataBinary*>(pTalkData);
+        pBinary->mTalkListNum = nTalkDataNum;
+    }
+    mpArray = static_cast<InfoBinary*>(pBinaryInfo);
+    mArrayNum = nInfoNum;
+    return true;
 }
 
 __attribute__((weak)) bool rPartnerPawnTalk::save(MtStream& out) {
-    DDON_STUB("rPartnerPawnTalk::save")
-    return {};
+    MtDataWriter w(out, 4096, 4096);
+    w.writeU32(0x747070);
+    w.writeU32(DATA_VERSION);
+    const u32 nInfoNum = rPartnerPawnTalk::getInfoNum();
+    w.writeU32(nInfoNum);
+    u32 nSizeBinary = nInfoNum * sizeof(InfoBinary);
+    nSizeBinary = (nSizeBinary + 15) & ~15;
+    for (u32 i = 0; i < nInfoNum; ++i) {
+        InfoBinary* pBinary = rPartnerPawnTalk::getInfo(i);
+        nSizeBinary += pBinary->getTalkListNum() * sizeof(InfoBinary::TalkDataBinary);
+        nSizeBinary = (nSizeBinary + 15) & ~15;
+    }
+    w.writeU32(nSizeBinary);
+    for (u32 i = 0; i < nInfoNum; ++i) {
+        InfoBinary* pBinary = rPartnerPawnTalk::getInfo(i);
+        const u32 nInfoNum = pBinary->getTalkListNum();
+        w.writeU32(nInfoNum);
+        for (u32 e = 0; e < nInfoNum; ++e) {
+            InfoBinary::TalkDataBinary* pParts = pBinary->getTalkList(e);
+            w.writeU16(pParts->mTalk);
+            w.writeU16(pParts->mType);
+        }
+    }
+    return true;
 }
 
 MT_CTSTR rPartnerPawnTalk::getExt() const {
@@ -94,8 +143,11 @@ inline void rPartnerPawnTalk::InfoBinary::operator delete(void* p_addr) {
 }
 
 rPartnerPawnTalk::InfoBinary::~InfoBinary() {
-    DDON_STUB("rPartnerPawnTalk::InfoBinary::~InfoBinary")
-    /* stub */
+    for (u32 i = 0; i < mTalkListNum; ++i) {
+        mpTalkList[i].~TalkDataBinary();
+    }
+    mpTalkList = nullptr;
+    mTalkListNum = 0;
 }
 
 __attribute__((weak)) u16 rPartnerPawnTalk::InfoBinary::getMessage(u16 type) {

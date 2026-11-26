@@ -26,6 +26,8 @@ using u32 = unsigned int;
 
 class cZoneExtendObject : public nZone::cAllocaterIntermediate
 {
+
+    friend class nZone::cLayoutElement;
 public:
     class MyDTI;
 public:
@@ -64,6 +66,10 @@ public:
 
 inline void* cZoneExtendObject::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void cZoneExtendObject::registerOwner(nZone::cLayoutElement* pOwner) {
+    this->mpOwner = pOwner;
 }
 
 inline nZone::cLayoutElement* cZoneExtendObject::getOwner() {

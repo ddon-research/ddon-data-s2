@@ -34,9 +34,8 @@ u32 cQuestSvReqCycleContentsPlayEnd::getComId() const {
     return 199;
 }
 
-__attribute__((weak)) bool cQuestSvReqCycleContentsPlayEnd::serverRequest() const {
-    DDON_STUB("cQuestSvReqCycleContentsPlayEnd::serverRequest")
-    return {};
+bool cQuestSvReqCycleContentsPlayEnd::serverRequest() const {
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->cycleContentsPlayEnd();
 }
 
 inline cQuestSvReqCycleContentsPlayEnd::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -63,9 +62,12 @@ u32 cQuestSvReqGetPartyQuestProgressInfo::getComId() const {
     return 160;
 }
 
-__attribute__((weak)) bool cQuestSvReqGetPartyQuestProgressInfo::serverRequest() const {
-    DDON_STUB("cQuestSvReqGetPartyQuestProgressInfo::serverRequest")
-    return {};
+bool cQuestSvReqGetPartyQuestProgressInfo::serverRequest() const {
+    if (sQuestManagerExt::getInstance()->isJoinLeader()) {
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getPartyQuestProgressInfo();
+    } else {
+        return false;
+    }
 }
 
 inline cQuestSvReqGetPartyQuestProgressInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -74,6 +76,34 @@ cQuestSvReqGetPartyQuestProgressInfo::MyDTI cQuestSvReqGetPartyQuestProgressInfo
 
 MtObject* cQuestSvReqGetPartyQuestProgressInfo::MyDTI::newInstance() const {
     return new (16u) cQuestSvReqGetPartyQuestProgressInfo;
+}
+
+const MtDTI& cQuestSvReqGpCompleteLightQuestList::getDTI() const {
+    return cQuestSvReqGpCompleteLightQuestList::DTI;
+}
+
+inline void* cQuestSvReqGpCompleteLightQuestList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cQuestSvReqGpCompleteLightQuestList::DTI)->memAlloc(sz, align, cQuestSvReqGpCompleteLightQuestList::DTI.getID());
+}
+
+inline void cQuestSvReqGpCompleteLightQuestList::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cQuestSvReqGpCompleteLightQuestList::DTI)->memFree(p_addr);
+}
+
+u32 cQuestSvReqGpCompleteLightQuestList::getComId() const {
+    return 144;
+}
+
+bool cQuestSvReqGpCompleteLightQuestList::serverRequest() const {
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reqBoardQuestAllComplete(mBoardId);
+}
+
+inline cQuestSvReqGpCompleteLightQuestList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cQuestSvReqGpCompleteLightQuestList::MyDTI cQuestSvReqGpCompleteLightQuestList::DTI("cQuestSvReqGpCompleteLightQuestList", &::cQuestSvRequest::DTI, 48ul, 0u, 0u);
+
+MtObject* cQuestSvReqGpCompleteLightQuestList::MyDTI::newInstance() const {
+    return new (16u) cQuestSvReqGpCompleteLightQuestList;
 }
 
 const MtDTI& cQuestSvReqQuestCancel::getDTI() const {
@@ -93,9 +123,9 @@ __attribute__((weak)) bool cQuestSvReqQuestCancel::serverRequest() const {
     return {};
 }
 
-__attribute__((weak)) bool cQuestSvReqQuestCancel::isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const {
-    DDON_STUB("cQuestSvReqQuestCancel::isScheduleIdSame")
-    return {};
+bool cQuestSvReqQuestCancel::isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const {
+    bool t0 = scheduleId.nQuest::SCHEDULE_ID::operator==(mScheduleId);
+    return t0;
 }
 
 void cQuestSvReqQuestCancel::resetParam() {
@@ -144,9 +174,9 @@ __attribute__((weak)) bool cQuestSvReqQuestCompleteFlagClear::serverRequest() co
     return {};
 }
 
-__attribute__((weak)) bool cQuestSvReqQuestCompleteFlagClear::isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const {
-    DDON_STUB("cQuestSvReqQuestCompleteFlagClear::isScheduleIdSame")
-    return {};
+bool cQuestSvReqQuestCompleteFlagClear::isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const {
+    bool t0 = scheduleId.nQuest::SCHEDULE_ID::operator==(mScheduleId);
+    return t0;
 }
 
 inline cQuestSvReqQuestCompleteFlagClear::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -175,9 +205,9 @@ __attribute__((weak)) bool cQuestSvReqQuestOrder::serverRequest() const {
     return {};
 }
 
-__attribute__((weak)) bool cQuestSvReqQuestOrder::isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const {
-    DDON_STUB("cQuestSvReqQuestOrder::isScheduleIdSame")
-    return {};
+bool cQuestSvReqQuestOrder::isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const {
+    bool t0 = scheduleId.nQuest::SCHEDULE_ID::operator==(mScheduleId);
+    return t0;
 }
 
 inline cQuestSvReqQuestOrder::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -206,9 +236,9 @@ __attribute__((weak)) bool cQuestSvReqQuestProgress::serverRequest() const {
     return {};
 }
 
-__attribute__((weak)) bool cQuestSvReqQuestProgress::isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const {
-    DDON_STUB("cQuestSvReqQuestProgress::isScheduleIdSame")
-    return {};
+bool cQuestSvReqQuestProgress::isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const {
+    bool t0 = scheduleId.nQuest::SCHEDULE_ID::operator==(mScheduleId);
+    return t0;
 }
 
 void cQuestSvReqQuestProgress::resetParam() {
@@ -256,9 +286,8 @@ u32 cQuestSvReqStartQuestTime::getComId() const {
     return 196;
 }
 
-__attribute__((weak)) bool cQuestSvReqStartQuestTime::serverRequest() const {
-    DDON_STUB("cQuestSvReqStartQuestTime::serverRequest")
-    return {};
+bool cQuestSvReqStartQuestTime::serverRequest() const {
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->startQuestTime();
 }
 
 inline cQuestSvReqStartQuestTime::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -278,9 +307,9 @@ const MtObject* cQuestSvRequest::getFromClass() const {
     return mpFromClass;
 }
 
-__attribute__((weak)) cQuestSvRequest& cQuestSvRequest::setCallbackFunc(cQuestSvRequest::PCallbackFunc pCallbackFunc) {
-    DDON_STUB("cQuestSvRequest::setCallbackFunc")
-    __builtin_unreachable();
+cQuestSvRequest& cQuestSvRequest::setCallbackFunc(cQuestSvRequest::PCallbackFunc pCallbackFunc) {
+    mpCallbackFunc = pCallbackFunc;
+    return *this;
 }
 
 bool cQuestSvRequest::isDelete() const {

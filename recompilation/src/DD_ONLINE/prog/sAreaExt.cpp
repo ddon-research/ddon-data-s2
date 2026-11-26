@@ -74,9 +74,9 @@ __attribute__((weak)) aStage* sAreaExt::getCurrentStage() const {
     return nullptr;
 }
 
-__attribute__((weak)) void sAreaExt::createMenu(MtPropertyList& s) {
-    DDON_STUB("sAreaExt::createMenu")
-    /* stub */
+void sAreaExt::createMenu(MtPropertyList& s) {
+    addMenuDDO(s, &mAreaInfo[0]);
+    s << MtProperty(static_cast<MtObject*>(this), "Reload", static_cast<MT_MFUNC>(&::sAreaExt::reloadViaMenu), 10u);
 }
 
 void sAreaExt::loadResource() {
@@ -243,9 +243,12 @@ u32 sAreaExt::getStageMsgId(s32 stgNo) const {
     }
 }
 
-__attribute__((weak)) s32 sAreaExt::convertStageId(s32 stgNo) const {
-    DDON_STUB("sAreaExt::convertStageId")
-    return {};
+s32 sAreaExt::convertStageId(s32 stgNo) const {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer() != nullptr) {
+        return static_cast<s32>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->convertStageNoToId(static_cast<u32>(stgNo)));
+    } else {
+        return 0;
+    }
 }
 
 s32 sAreaExt::convertStageIndex(s32 stgNo) const {

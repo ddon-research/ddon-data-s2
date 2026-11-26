@@ -2,11 +2,13 @@
 #include <new>
 #include <_pthread.h>
 #include <stdlib.h>
+#include <string.h>
 #include "sChat.h"
 #include "Protocol/PacketData/Community.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
@@ -65,9 +67,10 @@ MtUI* sChat::createUI(MtProperty& prop) {
     return this->cSystem::createUI(prop);
 }
 
-__attribute__((weak)) void sChat::createProperty(MtPropertyList& s) {
-    DDON_STUB("sChat::createProperty")
-    /* stub */
+void sChat::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mChatArea", &mChatArea, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpeakerDispType", &mSpeakerDispType, 0u, 0u);
 }
 
 __attribute__((weak)) void sChat::move() {
@@ -116,9 +119,35 @@ __attribute__((weak)) void sChat::sendPawnMessage(s32 pawnIndex, u32 msgNo) {
     /* stub */
 }
 
-__attribute__((weak)) bool sChat::sendClanNtcMessage(MT_CTSTR message) {
-    DDON_STUB("sChat::sendClanNtcMessage")
-    return {};
+bool sChat::sendClanNtcMessage(MT_CTSTR message) {
+    if (sGame::getInstance()->mCharData.mCharData.mOption.mIsClanNtc) {
+        bool t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->isBelongClan();
+        if (message != nullptr) {
+            if (!!t0) {
+                if ((*message) != '\0') {
+                    size_t t1 = strlen(message);
+                    mOutputTextLength = static_cast<unsigned int>(t1);
+                    if (mOutputTextLength != 0) {
+                        sChat* t2 = sChat::getInstance();
+                        memcpy(static_cast<void*>(&t2->mOutputText_utf8[0]), static_cast<const void*>(message), static_cast<size_t>((static_cast<unsigned int>(t1) <= 6143) ? static_cast<unsigned int>(t1) : 6143u));
+                        t2->mOutputText_utf8[(static_cast<unsigned int>(t1) <= 6143) ? static_cast<unsigned int>(t1) : 6143u] = 0;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->sendChatClanNtc(&mOutputText_utf8[0]);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) bool sChat::analyzeMessage(MT_CHAR* dstMsg, MT_CTSTR srcMsg, u32 size, s32 memberIndex, s32 type) {

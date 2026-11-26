@@ -148,9 +148,40 @@ __attribute__((weak)) void uGUIEntryBoardInfo::updateTime(bool time_update) {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIEntryBoardInfo::updateItemRank() {
-    DDON_STUB("uGUIEntryBoardInfo::updateItemRank")
-    /* stub */
+void uGUIEntryBoardInfo::updateItemRank() {
+    nNet::stEntryBoardItemInfo* pBoard = sMenu::getInstance()->mMenuEntryBoardItem.getBoardInfo();
+    if (pBoard == nullptr) {
+        return;
+    }
+    u16 t0 = pBoard->itemRankMin;
+    mDataObj.msg_info_m_ir->setVisible(t0 != 0);
+    mDataObj.msg_info_m_ir01->setVisible(t0 != 0);
+    mDataObj.msg_info_m_txt02->setVisible(t0 != 0);
+    mDataObj.msg_info_m_txt03->setVisible(t0 != 0);
+    if (t0 == 0) {
+        return;
+    }
+    cContextInstHm* pContext = sContextManager::getInstance()->getContextMyPlayer();
+    if (pContext != nullptr) {
+        u32 t1 = cContextInterface::getContextEquipConst(pContext).getItemRankAverage();
+        cGUIObjMessage* t2 = mDataObj.msg_info_m_txt02;
+        MT_CTSTR t3 = getGMDMsgValNum(58u, 0u, static_cast<s32>(t1), -1, -1);
+        MtColor* t4 = &MtColor::Red;
+        setObjectMessage(static_cast<cGUIObject*>(t2), t3, 0u, false);
+        setMessageColor(static_cast<cGUIObject*>(t2), *((t1 < t0) ? t4 : (&MtColor::White)));
+        cGUIObjMessage* t5 = mDataObj.msg_info_m_txt03;
+        setObjectMessage(static_cast<cGUIObject*>(t5), getGMDMsgValNum(58u, 0u, t0, -1, -1), 0u, false);
+        setMessageColor(static_cast<cGUIObject*>(t5), sGUIExt::FONT_COLOR_DEFAULT);
+    } else {
+        cGUIObjMessage* t2 = mDataObj.msg_info_m_txt02;
+        MT_CTSTR t3 = getGMDMsgValNum(58u, 0u, 0, -1, -1);
+        MtColor* t4 = &MtColor::Red;
+        setObjectMessage(static_cast<cGUIObject*>(t2), t3, 0u, false);
+        setMessageColor(static_cast<cGUIObject*>(t2), *((t0 <= 0) ? (&MtColor::White) : t4));
+        cGUIObjMessage* t5 = mDataObj.msg_info_m_txt03;
+        setObjectMessage(static_cast<cGUIObject*>(t5), getGMDMsgValNum(58u, 0u, t0, -1, -1), 0u, false);
+        setMessageColor(static_cast<cGUIObject*>(t5), sGUIExt::FONT_COLOR_DEFAULT);
+    }
 }
 
 __attribute__((weak)) void uGUIEntryBoardInfo::changeDispList(u8 index, uGUIEntryBoardInfo::DISP_STATE state) {
@@ -171,10 +202,10 @@ __attribute__((weak)) void uGUIEntryBoardInfo::moveEvent() {
 u32 uGUIEntryBoardInfo::evCtrlClick(cControl::Message* msg) {
     if (mProc == PR_SELECT) {
         if (mpVCtrl != nullptr) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mDataArray.getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpVCtrl) + 3096))]) + 1052)) != (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 21536))) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mDataArray.getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpVCtrl) + 3096))]) + 1056)) != 0) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sQuestManagerExt::getInstance()) + 916)) == 4) {
-                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sQuestManagerExt::getInstance()) + 912)) == 0) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos]) + 1052)) != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos]) + 1056)) != 0) {
+                    if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
+                        if (!sQuestManagerExt::getInstance()->mEntrySolo) {
                             setInputEvent(66u);
                         }
                     } else {
@@ -183,8 +214,8 @@ u32 uGUIEntryBoardInfo::evCtrlClick(cControl::Message* msg) {
                 }
             }
         } else {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sQuestManagerExt::getInstance()) + 916)) == 4) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sQuestManagerExt::getInstance()) + 912)) == 0) {
+            if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
+                if (!sQuestManagerExt::getInstance()->mEntrySolo) {
                     setInputEvent(66u);
                 }
             } else {
@@ -208,8 +239,8 @@ u32 uGUIEntryBoardInfo::evCtrlClick(cControl::Message* msg) {
 u32 uGUIEntryBoardInfo::evCtrlDecide(cControl::Message* msg) {
     if (mProc == PR_SELECT) {
         if (mpVCtrl != nullptr) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mDataArray.getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpVCtrl) + 3096))]) + 1052)) != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mDataArray.getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpVCtrl) + 3096))]) + 1056)) != 0) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos]) + 1052)) != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos]) + 1056)) != 0) {
                     if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
                         if (!sQuestManagerExt::getInstance()->mEntrySolo) {
                             setInputEvent(66u);

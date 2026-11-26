@@ -28,10 +28,7 @@ inline void cTargetCursorOffset::operator delete(void* p_addr) {
 cTargetCursorOffset::cTargetCursorOffset() {
     mId = 0;
     mJointNo = -1;
-    mOffsetFromJoint.x = MtVector3::Zero.x;
-    mOffsetFromJoint.y = MtVector3::Zero.y;
-    mOffsetFromJoint.z = MtVector3::Zero.z;
-    mOffsetFromJoint.pad_ = 0.0f;
+    mOffsetFromJoint = MtVector3::Zero;
 }
 
 inline cTargetCursorOffset::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -17,6 +17,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "cDynamicBVHCollision.h"
@@ -57,9 +58,9 @@ MtUI* sZone::createUI(MtProperty& prop) {
     return this->cSystem::createUI(prop);
 }
 
-__attribute__((weak)) void sZone::createProperty(MtPropertyList& s) {
-    DDON_STUB("sZone::createProperty")
-    /* stub */
+void sZone::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mZoneLayoutArray", static_cast<MtObject*>(&mZoneLayoutArray), 0u, 0u);
 }
 
 void sZone::reset() {

@@ -422,6 +422,10 @@ inline u32 uGUIQuestInfo::getQuestInfoResult() {
     return this->mQuestInfoResult;
 }
 
+inline bool uGUIQuestInfo::isCleared() {
+    return this->mIsCleared;
+}
+
 inline uGUIQuestInfo::stVariable::stVariable() {
 }
 

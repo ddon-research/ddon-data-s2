@@ -9,7 +9,9 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "cBlendState.h"
@@ -78,9 +80,39 @@ __attribute__((weak)) void sPrimitive::termPrimitiveSys() {
     /* stub */
 }
 
-__attribute__((weak)) void sPrimitive::createProperty(MtPropertyList& prop_list) {
-    DDON_STUB("sPrimitive::createProperty")
-    /* stub */
+void sPrimitive::createProperty(MtPropertyList& prop_list) {
+    this->cSystem::createProperty(prop_list);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mOcclusionVTF", &mOcclusionVTF, 3u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mDrawPrimitive", &mDrawPrimitive, 2u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mDepthDiv", &mDepthDiv, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mIntensityScale", &mIntensityScale, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mSceneClampType", &mSceneClampType, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mSceneClampRange", &mSceneClampRange, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mPrimModelLtNum", &mPrimModelLtNum, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mPrimAlphaClip", &mPrimAlphaClip, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mDepthCmpLimit", &mDepthCmpLimit, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mPrimStencilFunc", reinterpret_cast<s32*>(&mPrimStencilFunc), 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mPrimStencilRef", &mPrimStencilRef, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mScreenPassLayer", &mScreenPassLayer, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mVolumeScale", &mVolumeScale, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mVolumeEnable", &mVolumeEnable, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mParallaxScale", &mParallaxScale, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mParallaxMinLoop", &mParallaxMinLoop, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mParallaxMaxLoop", &mParallaxMaxLoop, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mParallaxFadeStart", &mParallaxFadeStart, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mParallaxFadeEnd", &mParallaxFadeEnd, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mParallaxEnable", &mParallaxEnable, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mNearStart", &mNearStart, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mNearEnd", &mNearEnd, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mFarStart", &mFarStart, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mFarEnd", &mFarEnd, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mRefractZThreshold", &mRefractZThreshold, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mRefractZBlur", &mRefractZBlur, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mReductionDist", &mReductionDist, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mAutoReduction", &mAutoReduction, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mScreenLayout", &mScreenLayout, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mVirtualScrW", &mVirtualScrW, 0u, 0u);
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mVirtualScrH", &mVirtualScrH, 0u, 0u);
 }
 
 MtUI* sPrimitive::createUI(MtProperty& prop) {

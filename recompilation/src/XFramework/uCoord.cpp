@@ -5,6 +5,8 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cUnit.h"
 #ifndef DDON_STUB
@@ -31,9 +33,16 @@ bool uCoord::getBoundary(MtSphere* pdst) {
     return false;
 }
 
-__attribute__((weak)) void uCoord::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCoord::createProperty")
-    /* stub */
+void uCoord::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 1024u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "mAngle", reinterpret_cast<MT_MFUNC>(&::uCoord::getAngle), reinterpret_cast<MT_MFUNC>(&::uCoord::setAngleZXY), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mScale", &mScale, 1024u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuat", &mQuat, 1024u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mParentFlags", reinterpret_cast<MT_MFUNC>(&::uCoord::getParentFlags), reinterpret_cast<MT_MFUNC>(&::uCoord::setParentFlags), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mOrder", reinterpret_cast<MT_MFUNC>(&::uCoord::getOrder), reinterpret_cast<MT_MFUNC>(&::uCoord::setOrder), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mParentNo", &mParentNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpParent", reinterpret_cast<MtObject* *>(&mpParent), 16u, 0u);
 }
 
 MtUI* uCoord::createUI(MtProperty& prop) {

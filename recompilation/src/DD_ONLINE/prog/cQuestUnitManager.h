@@ -128,7 +128,6 @@ inline cQuestUnitGroup::cQuestUnitGroup() {
     this->mpGroup = nullptr;
     this->mQuestId = 0;
     this->mCtrlListOm.::MtArray::mAutoDelete = false;
-    this->mCtrlListNpc.::MtArray::mAutoDelete = false;
 }
 
 inline void* cQuestUnitManager::operator new(size_t sz, void* p_addr) {

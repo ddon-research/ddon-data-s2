@@ -46,9 +46,8 @@ rMsgSet::~rMsgSet() {
     deleteAllocateMemory();
 }
 
-__attribute__((weak)) void rMsgSet::createProperty(MtPropertyList& s) {
-    DDON_STUB("rMsgSet::createProperty")
-    /* stub */
+void rMsgSet::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mArray", static_cast<MtObject*>(&mArray), 0u, 0u);
 }
 
 __attribute__((weak)) bool rMsgSet::load(MtStream& in) {
@@ -255,9 +254,13 @@ rMsgSet::cMsgGroup::~cMsgGroup() {
     mMsgData.mLength = 0;
 }
 
-__attribute__((weak)) void rMsgSet::cMsgGroup::createProperty(MtPropertyList& s) {
-    DDON_STUB("rMsgSet::cMsgGroup::createProperty")
-    /* stub */
+void rMsgSet::cMsgGroup::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupSerial", &mGroupSerial, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNpcId", &mNpcId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupNameSerial", &mGroupNameSerial, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupType", &mGroupType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNameDispOff", &mNameDispOff, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMsgData", static_cast<MtObject*>(&mMsgData), 0u, 0u);
 }
 
 __attribute__((weak)) bool rMsgSet::cMsgGroup::load(MtDataReader& r, rMsgSet::cMsgData* PreAllocMsgDataArray, u32& PreAllocMsgDataUseCount, const u32 PreAllocMsgDataMaxCount) {
@@ -339,9 +342,16 @@ inline void rMsgSet::cMsgData::operator delete(void* p_addr) {
 rMsgSet::cMsgData::~cMsgData() {
 }
 
-__attribute__((weak)) void rMsgSet::cMsgData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rMsgSet::cMsgData::createProperty")
-    /* stub */
+void rMsgSet::cMsgData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mMsgSerial", &mMsgSerial, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGmdIndex", &mGmdIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMsgType", &mMsgType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJumpGroupSerial", &mJumpGroupSerial, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDispType", &mDispType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDispTime", &mDispTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSetMotion", &mSetMotion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVoiceReqNo", &mVoiceReqNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTalkFaceType", &mTalkFaceType, 0u, 0u);
 }
 
 bool rMsgSet::cMsgData::load(MtDataReader& r) {

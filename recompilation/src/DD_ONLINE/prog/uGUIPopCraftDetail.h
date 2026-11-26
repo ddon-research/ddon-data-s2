@@ -27,6 +27,7 @@ class cGUIObjTexture;
 class cItemParam;
 class rGUI;
 class rGUIMessage;
+class uGUICraft;
 
 // Declarations
 class uGUIPopCraftDetail;
@@ -40,6 +41,7 @@ using u32 = unsigned int;
 
 class uGUIPopCraftDetail : public uGUIBase
 {
+    friend class uGUICraft;
 public:
     class MyDTI;
     struct stTop;
@@ -252,6 +254,10 @@ public:
 
 inline void* uGUIPopCraftDetail::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline bool uGUIPopCraftDetail::isEnoughGold() {
+    return this->mIsEnoughGold;
 }
 
 inline uGUIPopCraftDetail::stSell::stSell() {

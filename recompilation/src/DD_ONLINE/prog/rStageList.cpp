@@ -183,9 +183,12 @@ inline void rStageList::Info::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rStageList::Info::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rStageList::Info::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageList::Info::createProperty")
-    /* stub */
+void rStageList::Info::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRecommendLevel", &mRecommendLevel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMessageId", &mMessageId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVersion", &mVersion, 0u, 0u);
 }
 
 MtUI* rStageList::Info::createUI(MtProperty& prop) {

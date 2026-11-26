@@ -6,6 +6,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
 #include "../MT/MtStream.h"
@@ -28,9 +29,11 @@ rGeometry3::~rGeometry3() {
     /* stub */
 }
 
-__attribute__((weak)) void rGeometry3::createProperty(MtPropertyList& s) {
-    DDON_STUB("rGeometry3::createProperty")
-    /* stub */
+void rGeometry3::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupArray", static_cast<MtObject*>(&mGroupArray), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "UniqueIDTable", reinterpret_cast<MT_MFUNC>(&::rGeometry3::getGroupUniqueIDForIO), reinterpret_cast<MT_MFUNC>(&::rGeometry3::setGroupUniqueIDForIO), 161u, reinterpret_cast<MT_MFUNC>(&::rGeometry3::getGroupUniqueIDNumForIO), reinterpret_cast<MT_MFUNC>(&::rGeometry3::setGroupUniqueIDNumForIO));
+    s << MtProperty(static_cast<MtObject*>(this), "mFlgEnableMotionSequence", &mFlgEnableMotionSequence, 1u, 0u);
 }
 
 void rGeometry3::clear() {

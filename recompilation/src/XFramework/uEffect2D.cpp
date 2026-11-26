@@ -6,6 +6,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -43,8 +44,51 @@ uEffect2D::uEffect2D() {
 }
 
 __attribute__((noinline)) uEffect2D::~uEffect2D() {
-    DDON_STUB("uEffect2D::~uEffect2D")
-    /* stub */
+    if (mGenerator != nullptr) {
+        MtMemoryAllocator::getAllocator(uEffect2D::DTI)->memFree(static_cast<void*>(mGenerator));
+        mGenerator = nullptr;
+    }
+    mGeneratorNum = 0;
+    mGeneratorMoveNum = 0;
+    mDrawBuffSize = 0;
+    mKillNo = 0;
+    mCreateFlag = 0;
+    if (mpEffect2D != nullptr) {
+        mpEffect2D->release();
+        mpEffect2D = nullptr;
+    }
+    if (mpTempTexture[0] != nullptr) {
+        mpTempTexture[0]->release();
+        mpTempTexture[0] = nullptr;
+    }
+    if (mpTempTexture[1] != nullptr) {
+        mpTempTexture[1]->release();
+        mpTempTexture[1] = nullptr;
+    }
+    if (mpTempTexture[2] != nullptr) {
+        mpTempTexture[2]->release();
+        mpTempTexture[2] = nullptr;
+    }
+    if (mpTempTexture[3] != nullptr) {
+        mpTempTexture[3]->release();
+        mpTempTexture[3] = nullptr;
+    }
+    if (mpDepthStencil[0] != nullptr) {
+        mpDepthStencil[0]->release();
+        mpDepthStencil[0] = nullptr;
+    }
+    if (mpDepthStencil[1] != nullptr) {
+        mpDepthStencil[1]->release();
+        mpDepthStencil[1] = nullptr;
+    }
+    if (mpDepthStencil[2] != nullptr) {
+        mpDepthStencil[2]->release();
+        mpDepthStencil[2] = nullptr;
+    }
+    if (mpDepthStencil[3] != nullptr) {
+        mpDepthStencil[3]->release();
+        mpDepthStencil[3] = nullptr;
+    }
 }
 
 __attribute__((weak)) void uEffect2D::setup() {
@@ -76,9 +120,46 @@ void uEffect2D::draw(cDraw* pDraw) {
     }
 }
 
-__attribute__((weak)) void uEffect2D::createProperty(MtPropertyList& s) {
-    DDON_STUB("uEffect2D::createProperty")
-    /* stub */
+void uEffect2D::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 1024u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParentNo", &mParentNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpParent", reinterpret_cast<MT_MFUNC>(&::uCoord::getParent), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setEffectParent), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mScreenPos", &mScreenPos, 1024u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "SleepMode", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getSleepMode), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setSleepMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "SchedulerMode", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getSchedulerMode), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setSchedulerMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "EventMode", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getEventMode), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setEventMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "TimerControlMode", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getTimerControlMode), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setTimerControlMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "WorldPosMode", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getWorldPosMode), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setWorldPosMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "RestartFlag", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getRestartFlag), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setRestartFlag), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDeltaTimeCoef", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getDeltaTimeCoef), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setDeltaTimeCoef), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mBaseFps", &mBaseFps, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTimeInterpolationRate", &mTimeInterpolationRate, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mEndType", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getEndType), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setEndType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mTimer", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getTimer), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setTimer), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mLoopFrame", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getLoopFrame), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setLoopFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mLifeFrame", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getLifeFrame), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setLifeFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mWaitFrame", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getWaitFrame), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setWaitFrame), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mKillNo", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getKillNo), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setKillNo), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mSizeAdjustType", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getSizeAdjustType), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setSizeAdjustType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mEffectScale", &mEffectScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDrawPriority", &mDrawPriority, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAlphaRate", &mAlphaRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Group", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getGroupFlagBit), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setGroupFlagBit), 162u, reinterpret_cast<MT_MFUNC>(&::uEffect2D::getFlagBitNum), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setDummyU32));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Material", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getMaterialFlagBit), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setMaterialFlagBit), 162u, reinterpret_cast<MT_MFUNC>(&::uEffect2D::getFlagBitNum), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setDummyU32));
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupFlag", &mGroupFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaterialFlag", &mMaterialFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpEffect2D", "resource", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getEffect2D), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setEffect2D), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Finish", static_cast<MT_MFUNC>(&::uEffect2D::doFinish), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Restart", static_cast<MT_MFUNC>(&::uEffect2D::doRestart), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "Clear", static_cast<MT_MFUNC>(&::uEffect2D::doClear), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "KeepHoldOff", static_cast<MT_MFUNC>(&::uEffect2D::doKeepHoldOff), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mGeneratorNum", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getGeneratorNum), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mGeneratorMoveNum", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getGeneratorMoveNum), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mGeneratorBuffSize", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getGeneratorBuffSize), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mRTBaseMapColor", &mRTBaseMapColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRTNormalMapColor", &mRTNormalMapColor, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mRTMaskMapAlpha", reinterpret_cast<MT_MFUNC>(&::uEffect2D::getRTMaskMapAlpha), reinterpret_cast<MT_MFUNC>(&::uEffect2D::setRTMaskMapAlpha), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* uEffect2D::createUI(MtProperty& prop) {

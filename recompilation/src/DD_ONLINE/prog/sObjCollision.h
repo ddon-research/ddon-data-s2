@@ -11,7 +11,7 @@
 #include "../../XFramework/cSystem.h"
 #include "../../generated/shared/nCatch.h"
 #include "nDDOUtility.h"
-#include "../../generated/shared/nEnemyID.h"
+#include "nEnemyID.h"
 #include "../../generated/shared/nHuman.h"
 #include "nObjCollision.h"
 

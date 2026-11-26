@@ -86,8 +86,7 @@ nNetMsg::cNetMsgBase::cNetMsgBase() {
 }
 
 nNetMsg::cNetMsgBase::~cNetMsgBase() {
-    DDON_STUB("nNetMsg::cNetMsgBase::~cNetMsgBase")
-    /* stub */
+    mpStream = nullptr;
 }
 
 __attribute__((weak)) nNetMsg::cNetMsgBase* nNetMsg::cNetMsgBase::createNetMsg(u32 msgId, nNetBase::cNetBase* pNetMsg) {

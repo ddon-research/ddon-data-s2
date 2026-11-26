@@ -4,6 +4,8 @@
 #include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cPrimObj.h"
 #ifndef DDON_STUB
@@ -37,17 +39,15 @@ MtUI* cPrimBufferManager::createUI(MtProperty& prop) {
     return nullptr;
 }
 
-__attribute__((weak)) void cPrimBufferManager::createProperty(MtPropertyList& prop_list) {
-    DDON_STUB("cPrimBufferManager::createProperty")
-    /* stub */
+void cPrimBufferManager::createProperty(MtPropertyList& prop_list) {
+    prop_list << MtProperty(static_cast<MtObject*>(this), "mTotalSize", &mTotalSize, 3u, 0u);
 }
 
 inline cPrimBufferManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cPrimBufferManager::MyDTI cPrimBufferManager::DTI("cPrimBufferManager", &::cPrimObj::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cPrimBufferManager::MyDTI::newInstance() const {
-    DDON_STUB("cPrimBufferManager::MyDTI::newInstance")
-    return nullptr;
+MtObject* cPrimBufferManager::MyDTI::newInstance() const {
+    return new (16u) cPrimBufferManager;
 }
 

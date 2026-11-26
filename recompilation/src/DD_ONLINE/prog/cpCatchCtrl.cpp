@@ -67,10 +67,7 @@ inline cCatchInfo::cCatchInfo() {
     mReleaseType = 0;
     mCatchUid = 0;
     mJointNo = 0xFF;
-    mHitPos.x = MtVector3::Zero.x;
-    mHitPos.y = MtVector3::Zero.y;
-    mHitPos.z = MtVector3::Zero.z;
-    mHitPos.pad_ = 0.0f;
+    mHitPos = MtVector3::Zero;
 }
 
 cCatchInfo::~cCatchInfo() {
@@ -101,10 +98,7 @@ inline cCaughtInfo::cCaughtInfo() {
     mEscapeType = 0;
     mCatchUid = 0;
     mJointNo = 0xFF;
-    mHitPos.x = MtVector3::Zero.x;
-    mHitPos.y = MtVector3::Zero.y;
-    mHitPos.z = MtVector3::Zero.z;
-    mHitPos.pad_ = 0.0f;
+    mHitPos = MtVector3::Zero;
 }
 
 cCaughtInfo::~cCaughtInfo() {
@@ -175,9 +169,25 @@ void cpCatchCtrl::updatePtr() {
     mpModel = nullptr;
 }
 
-__attribute__((weak)) void cpCatchCtrl::setupContextCatchCtrl(bool recvFlag) {
-    DDON_STUB("cpCatchCtrl::setupContextCatchCtrl")
-    /* stub */
+void cpCatchCtrl::setupContextCatchCtrl(bool recvFlag) {
+    uDDOModel* t0 = mpModel;
+    u8 catchType = cContextInterface::getCatchType(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter);
+    mCatchType = catchType & 127;
+    u8 t1 = cContextInterface::getCatchType(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter);
+    if (static_cast<signed char>(catchType) > -1) {
+        mCatchInfo.mCatchType = t1 & 127;
+        mCatchInfo.mCatchUid = cContextInterface::getCatchTargetUID(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter);
+        mCatchInfo.mJointNo = cContextInterface::getCatchJointNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter);
+        MtVector3 frame72(cContextInterface::getCatchHitPos(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter));
+        mCatchInfo.mHitPos.x = frame72.x;
+        mCatchInfo.mHitPos.y = frame72.y;
+        mCatchInfo.mHitPos.z = frame72.z;
+        mCatchInfo.mHitPos.pad_ = 0.0f;
+    } else {
+        mCaughtInfo.mCatchType = t1 & 127;
+        mCaughtInfo.mCatchUid = cContextInterface::getCatchTargetUID(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter);
+        mCaughtInfo.mJointNo = cContextInterface::getCatchJointNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter);
+    }
 }
 
 __attribute__((weak)) void cpCatchCtrl::callbackCatchHit(cHitInfo* pHitInfo) {
@@ -276,7 +286,7 @@ __attribute__((weak)) void cpCatchCtrl::setCancel() {
     /* stub */
 }
 
-void cpCatchCtrl::forceCancel() {
+__attribute__((weak)) void cpCatchCtrl::forceCancel() {
     if (mCatchInfo.mCatchType == 0) {
         return;
     }
@@ -414,14 +424,63 @@ __attribute__((weak)) void cpCatchCtrl::putOm() {
     /* stub */
 }
 
-__attribute__((weak)) void cpCatchCtrl::setThrowOm() {
-    DDON_STUB("cpCatchCtrl::setThrowOm")
-    /* stub */
+void cpCatchCtrl::setThrowOm() {
+    if ((mpModel->mUnitId & 256u) == 0) {
+        return;
+    }
+    uBaseModel* t0 = sSetManager::getInstance()->getLayoutUnit(mCaughtInfo.getCatchUid());
+    mpModel->getCatchCtrlPtr()->releaseConstrain();
+    uDDOModel* t2 = mpModel;
+    MtVector3 frame72(cContextInterface::getOmReleasePos(t2->mContextInterface.mpContextInstance, t2->mContextInterface.mpContextCharacter));
+    t2->mPos.x = frame72.x;
+    t2->mPos.y = frame72.y;
+    t2->mPos.z = frame72.z;
+    t2->mPos.pad_ = 0.0f;
+    uDDOModel* t3 = mpModel;
+    f32 t4 = cContextInterface::getOmReleaseAngle(t2->mContextInterface.mpContextInstance, t2->mContextInterface.mpContextCharacter);
+    MtVector3 frame88(nDDOMath::calcVelocityXZ(1.0f, t4));
+    t3->mVelocity.x = frame88.x;
+    t3->mVelocity.y = frame88.y;
+    t3->mVelocity.z = frame88.z;
+    t3->mVelocity.pad_ = 0.0f;
+    uDDOModel* t5 = mpModel;
+    MtQuaternion frame104(cContextInterface::getOmReleaseQuat(t2->mContextInterface.mpContextInstance, t2->mContextInterface.mpContextCharacter));
+    t5->mQuat.x = frame104.x;
+    t5->mQuat.y = frame104.y;
+    t5->mQuat.z = frame104.z;
+    t5->mQuat.w = frame104.w;
+    cpActionManager* pc_act = mpModel->getActMgrPtr();
+    pc_act->setAction(3u, false, 0u, 0u, 0u, 0u, 0.0f, 0.0f, 0.0f, 0.0f);
+    if (t0 == nullptr) {
+        return;
+    }
+    if (t0->isEnable()) {
+        static_cast<uDDOModel*>(t0)->getCatchCtrlPtr()->forceCancel();
+    }
 }
 
-__attribute__((weak)) void cpCatchCtrl::setPutOm() {
-    DDON_STUB("cpCatchCtrl::setPutOm")
-    /* stub */
+void cpCatchCtrl::setPutOm() {
+    if ((mpModel->mUnitId & 256u) == 0) {
+        return;
+    }
+    uBaseModel* t0 = sSetManager::getInstance()->getLayoutUnit(mCaughtInfo.getCatchUid());
+    mpModel->getCatchCtrlPtr()->releaseConstrain();
+    uDDOModel* t2 = mpModel;
+    MtVector3 frame72(cContextInterface::getOmReleasePos(t2->mContextInterface.mpContextInstance, t2->mContextInterface.mpContextCharacter));
+    t2->mPos.x = frame72.x;
+    t2->mPos.y = frame72.y;
+    t2->mPos.z = frame72.z;
+    t2->mPos.pad_ = 0.0f;
+    uDDOModel* t3 = mpModel;
+    t3->setAngle(cContextInterface::getOmReleaseAngle(t2->mContextInterface.mpContextInstance, t2->mContextInterface.mpContextCharacter));
+    cpActionManager* pc_act = mpModel->getActMgrPtr();
+    pc_act->setAction(4u, false, 0u, 0u, 0u, 0u, 0.0f, 0.0f, 0.0f, 0.0f);
+    if (t0 == nullptr) {
+        return;
+    }
+    if (t0->isEnable()) {
+        static_cast<uDDOModel*>(t0)->getCatchCtrlPtr()->forceCancel();
+    }
 }
 
 __attribute__((weak)) u32 cpCatchCtrl::callbackGetCatchAction() {

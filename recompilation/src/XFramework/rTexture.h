@@ -21,6 +21,7 @@ class rGUIFont;
 
 // Declarations
 class rTexture;
+class rTextureMemory;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -35,6 +36,10 @@ class rTexture : public cResource
 {
     friend class rEffectList;
     friend class rGUIFont;
+
+    friend class rRenderTargetTexture;
+
+    friend class rMaterial;
 public:
     class MyDTI;
     struct SHFACTOR;
@@ -130,6 +135,38 @@ protected:
     static const u32 DATA_VERSION = 157;
 };
 
+class rTextureMemory : public rTexture
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    rTextureMemory();
+    rTextureMemory(nDraw::Texture* ptex);
+    virtual ~rTextureMemory();
+public:
+    static MyDTI DTI;
+};
+
 inline void* rTexture::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -144,4 +181,14 @@ inline f32 rTexture::getInvHeight() const {
 
 inline nDraw::Texture* rTexture::getHandle() const {
     return this->mpTexture;
+}
+
+#include "sShader2.h"
+
+inline u32 rTexture::getDataVersion() {
+    return (sShader2::getInstance()->isSRGBEnable() ? 0x2000u : 0xa000u) | DATA_VERSION;
+}
+
+inline void* rTextureMemory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }

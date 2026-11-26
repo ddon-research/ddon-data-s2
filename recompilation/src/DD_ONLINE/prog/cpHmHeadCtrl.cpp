@@ -44,9 +44,6 @@ inline void cpHmHeadCtrl::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cpHmHeadCtrl::DTI)->memFree(p_addr);
 }
 
-cpHmHeadCtrl::~cpHmHeadCtrl() {
-}
-
 void cpHmHeadCtrl::setOwner(MtObject* pOwner) {
     mpOwner = pOwner;
     const MtDTI& t0 = pOwner->getDTI();

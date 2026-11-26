@@ -7,6 +7,7 @@
 #include "../MT/MtNetBuffer.h"
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtRandom.h"
 #include "../MT/MtStream.h"
@@ -43,9 +44,17 @@ inline void nNetwork::Transport::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nNetwork::Transport::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void nNetwork::Transport::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::Transport::createProperty")
-    /* stub */
+void nNetwork::Transport::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mFastTransfer", &mFastTransfer, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBandwidthMin", &mBandwidthMin, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBandwidthMax", &mBandwidthMax, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBandwidthStart", &mBandwidthStart, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBandwidthTarget", &mBandwidthTarget, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIntervalMin", &mIntervalMin, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mIntervalMax", &mIntervalMax, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBroadcastSendSequence", &mBroadcastSendSequence, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mForwardQueue", static_cast<MtObject*>(&mForwardQueue[0]), 32u, 8u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpProtocol", reinterpret_cast<MtObject* *>(&mpProtocol[0]), 32u, 4u);
 }
 
 MtUI* nNetwork::Transport::createUI(MtProperty& prop) {
@@ -179,9 +188,12 @@ inline void nNetwork::Transport::ForwardQueue::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nNetwork::Transport::ForwardQueue::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void nNetwork::Transport::ForwardQueue::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::Transport::ForwardQueue::createProperty")
-    /* stub */
+void nNetwork::Transport::ForwardQueue::createProperty(MtPropertyList& s) {
+    this->::nNetwork::BlockQueue::createProperty(s);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mRouteIndex", &mRouteIndex, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mRouteKey", &mRouteKey, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mInterval", &mInterval, 0u, 0u);
 }
 
 inline nNetwork::Transport::ForwardQueue::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

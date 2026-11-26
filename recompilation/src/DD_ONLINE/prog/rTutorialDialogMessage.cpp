@@ -66,9 +66,10 @@ rTutorialDialogMessage::~rTutorialDialogMessage() {
     mPageInfo.mLength = 0;
 }
 
-__attribute__((weak)) void rTutorialDialogMessage::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTutorialDialogMessage::createProperty")
-    /* stub */
+void rTutorialDialogMessage::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mTitleGmdIdx", &mTitleGmdIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCategoryGmdIdx", &mCategoryGmdIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPageInfo", static_cast<MtObject*>(&mPageInfo), 0u, 0u);
 }
 
 bool rTutorialDialogMessage::save(MtStream& out) {
@@ -77,13 +78,13 @@ bool rTutorialDialogMessage::save(MtStream& out) {
     (&w)->writeU32(2u);
     (&w)->writeU32(mTitleGmdIdx);
     (&w)->writeU32(mCategoryGmdIdx);
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 128));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 128)) != 0) {
+    (&w)->writeU32(mPageInfo.mLength);
+    if (mPageInfo.mLength != 0) {
         for (unsigned int i0_3 = 0;;) {
             MtObject* t5 = mPageInfo.getBuffer()[static_cast<int>(i0_3)];
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t5) + 8));
             (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t5) + 12));
-            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 128))) {
+            if ((i0_3 + 1u) < mPageInfo.mLength) {
                 i0_3 += 1u;
             } else {
                 break;
@@ -129,9 +130,9 @@ inline void rTutorialDialogMessage::cDialogPage::operator delete(void* p_addr) {
 rTutorialDialogMessage::cDialogPage::~cDialogPage() {
 }
 
-__attribute__((weak)) void rTutorialDialogMessage::cDialogPage::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTutorialDialogMessage::cDialogPage::createProperty")
-    /* stub */
+void rTutorialDialogMessage::cDialogPage::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mTextGmdIdx", &mTextGmdIdx, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mImageId", &mImageId, 0u, 0u);
 }
 
 inline rTutorialDialogMessage::cDialogPage::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

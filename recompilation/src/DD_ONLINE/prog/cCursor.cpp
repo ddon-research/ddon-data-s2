@@ -39,9 +39,15 @@ cCursor::cCursor() {
 cCursor::~cCursor() {
 }
 
-__attribute__((weak)) void cCursor::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCursor::createProperty")
-    /* stub */
+void cCursor::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsStop", &mIsStop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsLoop", &mIsLoop, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsTrg", &mIsTrg, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsArrowOnly", &mIsArrowOnly, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxX", &mMaxX, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMinX", &mMinX, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxY", &mMaxY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMinY", &mMinY, 0u, 0u);
 }
 
 void cCursor::setupX(s32 min, s32 max, bool loop, bool trg, bool arrowOnly, bool clamp) {

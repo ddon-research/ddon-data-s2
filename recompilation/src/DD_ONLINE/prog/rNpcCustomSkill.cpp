@@ -25,9 +25,17 @@ inline void cNpcCustomSkill::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cNpcCustomSkill::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cNpcCustomSkill::createProperty(MtPropertyList& s) {
-    DDON_STUB("cNpcCustomSkill::createProperty")
-    /* stub */
+void cNpcCustomSkill::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "ThinkId", &mThinkId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CustomSkill1", &mCustomSkill1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Lv1", &mCustomSkillLv1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CustomSkill2", &mCustomSkill2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Lv2", &mCustomSkillLv2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CustomSkill3", &mCustomSkill3, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Lv3", &mCustomSkillLv3, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "CustomSkill4", &mCustomSkill4, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Lv4", &mCustomSkillLv4, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NormalSkill", &mNormalSkillBit, 0u, 0u);
 }
 
 inline cNpcCustomSkill::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -5,6 +5,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cGUIObject.h"
 #include "../../XFramework/cResource.h"
@@ -29,6 +30,16 @@ inline MtAllocator* uGUIIndicator::getAllocator() {
 
 void* uGUIIndicator::operator new(size_t sz, u32 align) {
     return uGUIIndicator::getAllocator()->memAlloc(sz, align, uGUIIndicator::DTI.getID());
+}
+
+uGUIIndicator::uGUIIndicator() : uGUIBase(0u, false) {
+    mType = 0;
+    mpColAdjust = nullptr;
+    mpObjMsg = nullptr;
+    mpGUIRes = nullptr;
+    mBaseF = mBaseF | 32u;
+    mEndType = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUIIndicator"), 0u, false);
 }
 
 uGUIIndicator::~uGUIIndicator() {
@@ -82,8 +93,7 @@ inline uGUIIndicator::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 uGUIIndicator::MyDTI uGUIIndicator::DTI("uGUIIndicator", &::uGUIBase::DTI, 2288ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIIndicator::MyDTI::newInstance() const {
-    DDON_STUB("uGUIIndicator::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIIndicator::MyDTI::newInstance() const {
+    return new (16u) uGUIIndicator;
 }
 

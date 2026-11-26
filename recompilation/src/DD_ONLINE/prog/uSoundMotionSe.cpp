@@ -142,9 +142,17 @@ __attribute__((noinline)) uSoundMotionSe::~uSoundMotionSe() {
     }
 }
 
-__attribute__((weak)) void uSoundMotionSe::createProperty(MtPropertyList& s) {
-    DDON_STUB("uSoundMotionSe::createProperty")
-    /* stub */
+void uSoundMotionSe::createProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTarModel", reinterpret_cast<MtObject* *>(&mpTarModel), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "MotionSe", "resource", reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::getMotionSe), reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::setMotionSe), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Req", "resource", reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::getRequest), reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::setRequest), 32u, reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::getRequestNum), static_cast<MT_MFUNC>(&::uSoundMotionSe::setRequestNum));
+    s << MtProperty(static_cast<MtObject*>(this), "Stream", "resource", reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::getStreamRequest), reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::setStreamRequest), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "AttributeSe", "resource", reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::getAttributeSe), reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::setAttributeSe), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "AttributeReq", "resource", reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::getAttributeRequest), reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::setAttributeRequest), 32u, reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::getAttributeRequestNum), reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::setDummyU32));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "MotSeSeqPageNo", reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::getMotSeSeqPageNo), reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::setMotSeSeqPageNo), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "MotSeSeqStartIndex", reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::getMotSeSeqStartIndex), reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::setMotSeSeqStartIndex), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "MotSeSeqNum", reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::getMotSeSeqNum), reinterpret_cast<MT_MFUNC>(&::uSoundMotionSe::setMotSeSeqNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* uSoundMotionSe::createUI(MtProperty& prop) {
@@ -496,6 +504,8 @@ __attribute__((weak)) u32 uSoundMotionSe::getReqId(rSoundMotionSe::cSoundMotionS
     DDON_STUB("uSoundMotionSe::getReqId")
     return {};
 }
+
+alignas(4) unsigned char uSoundMotionSe_mMotSpdTbl_bytes[120] __asm__("_ZN14uSoundMotionSe10mMotSpdTblE") = {0xcd, 0xcc, 0x4c, 0x3e, 0x00, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0xcd, 0xcc, 0x4c, 0x3e, 0x00, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0xcd, 0xcc, 0x4c, 0x3e, 0x00, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0xcd, 0xcc, 0x4c, 0x3e, 0x00, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0xcd, 0xcc, 0x4c, 0x3e, 0x00, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0xcd, 0xcc, 0x4c, 0x3e, 0x00, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0xcd, 0xcc, 0x4c, 0x3e, 0x00, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0xcd, 0xcc, 0x4c, 0x3e, 0x00, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0xcd, 0xcc, 0x4c, 0x3e, 0x00, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0xcd, 0xcc, 0x4c, 0x3e, 0x00, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x80, 0x3f};
 
 inline uSoundMotionSe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 

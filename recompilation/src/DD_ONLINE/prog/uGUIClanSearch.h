@@ -172,7 +172,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cGUIPageListSearchClan();
-        virtual ~cGUIPageListSearchClan();
+        virtual ~cGUIPageListSearchClan() {}
         virtual s32 getItemNum() const;  // vtable slot 7
         virtual s32 getPageItemNum() const;  // vtable slot 8
         virtual f32 getCursorPosY(s32 dispItemIndex) const;  // vtable slot 9

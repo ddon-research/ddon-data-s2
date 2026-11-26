@@ -69,8 +69,27 @@ cSetInfoOm::~cSetInfoOm() {
 }
 
 __attribute__((weak)) void cSetInfoOm::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOm::createProperty")
-    /* stub */
+    this->cSetInfoCoord::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mDisableEffect", &mDisableEffect, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDisableOnlyEffect", &mDisableOnlyEffect, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOpenFlag", &mOpenFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnableSyncLight", &mEnableSyncLight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnableZone", &mEnableZone, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mInitMtnNo", &mInitMtnNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaMasterNo", &mAreaMasterNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaReleaseNo", &mAreaReleaseNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaReleaseON", &mAreaReleaseON, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaReleaseOFF", &mAreaReleaseOFF, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWarpPointId", &mWarpPointId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mKeyNo", &mKeyNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsBreakLink", &mIsBreakLink, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsBreakQuest", &mIsBreakQuest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBreakKind", &mBreakKind, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBreakGroup", &mBreakGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBreakID", &mBreakID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestFlag", &mQuestFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsNoSbc", &mIsNoSbc, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsMyQuest", &mIsMyQuest, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOm::createToolProperty(MtPropertyList& s) {
@@ -81,114 +100,114 @@ MtUI* cSetInfoOm::createUI(MtProperty& prop) {
 }
 
 __attribute__((weak)) bool cSetInfoOm::load(MtDataReader& r) {
-    unsigned int v0_1;
+    u32 v0_1;
     bool v1_0;
-    unsigned int v1_1;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
-        v0_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+    u32 v1_1;
+    if (r.mSeekPt < r.mBufsiz) {
+        v0_1 = r.mSeekPt;
     } else {
         if (r.refill()) {
-            v0_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v0_1 = r.mSeekPt;
         } else {
             v1_0 = false;
-            v1_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v1_1 = r.mSeekPt;
             goto region_56118a;
         }
     }
-    unsigned long t0;
-    t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
-    unsigned char t1;
-    t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0 + v0_1) + 0);
+    u8* t0;
+    t0 = r.mBuffer;
+    u8 t1;
+    t1 = t0[v0_1];
     r.mSeekPt = v0_1 + 1u;
     v1_0 = t1 != 0;
     v1_1 = v0_1 + 1u;
     region_56118a:;
     mDisableEffect = v1_0;
-    unsigned int v2_1;
+    u32 v2_1;
     bool v3_0;
-    unsigned int v3_1;
-    if (v1_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+    u32 v3_1;
+    if (v1_1 < r.mBufsiz) {
         v2_1 = v1_1;
     } else {
         if (r.refill()) {
-            v2_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v2_1 = r.mSeekPt;
         } else {
             v3_0 = false;
-            v3_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v3_1 = r.mSeekPt;
             goto region_5611b8;
         }
     }
-    unsigned long t2;
-    t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
-    unsigned char t3;
-    t3 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2 + v2_1) + 0);
+    u8* t2;
+    t2 = r.mBuffer;
+    u8 t3;
+    t3 = t2[v2_1];
     r.mSeekPt = v2_1 + 1u;
     v3_0 = t3 != 0;
     v3_1 = v2_1 + 1u;
     region_5611b8:;
     mDisableOnlyEffect = v3_0;
-    unsigned int v4_1;
+    u32 v4_1;
     bool v5_0;
-    unsigned int v5_1;
-    if (v3_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+    u32 v5_1;
+    if (v3_1 < r.mBufsiz) {
         v4_1 = v3_1;
     } else {
         if (r.refill()) {
-            v4_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v4_1 = r.mSeekPt;
         } else {
             v5_0 = false;
-            v5_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v5_1 = r.mSeekPt;
             goto region_5611e6;
         }
     }
-    unsigned long t4;
-    t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
-    unsigned char t5;
-    t5 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t4 + v4_1) + 0);
+    u8* t4;
+    t4 = r.mBuffer;
+    u8 t5;
+    t5 = t4[v4_1];
     r.mSeekPt = v4_1 + 1u;
     v5_0 = t5 != 0;
     v5_1 = v4_1 + 1u;
     region_5611e6:;
     mOpenFlag = v5_0;
-    unsigned int v6_1;
+    u32 v6_1;
     bool v7_0;
-    unsigned int v7_1;
-    if (v5_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+    u32 v7_1;
+    if (v5_1 < r.mBufsiz) {
         v6_1 = v5_1;
     } else {
         if (r.refill()) {
-            v6_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v6_1 = r.mSeekPt;
         } else {
             v7_0 = false;
-            v7_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v7_1 = r.mSeekPt;
             goto region_561214;
         }
     }
-    unsigned long t6;
-    t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
-    unsigned char t7;
-    t7 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t6 + v6_1) + 0);
+    u8* t6;
+    t6 = r.mBuffer;
+    u8 t7;
+    t7 = t6[v6_1];
     r.mSeekPt = v6_1 + 1u;
     v7_0 = t7 != 0;
     v7_1 = v6_1 + 1u;
     region_561214:;
     mEnableSyncLight = v7_0;
-    unsigned int v9_1;
+    u32 v9_1;
     bool v10_0;
-    if (v7_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+    if (v7_1 < r.mBufsiz) {
         v9_1 = v7_1;
     } else {
         if (r.refill()) {
-            v9_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v9_1 = r.mSeekPt;
         } else {
             v10_0 = false;
             goto region_561242;
         }
     }
-    unsigned long t8;
-    t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
-    unsigned char t9;
-    t9 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t8 + v9_1) + 0);
+    u8* t8;
+    t8 = r.mBuffer;
+    u8 t9;
+    t9 = t8[v9_1];
     r.mSeekPt = v9_1 + 1u;
     v10_0 = t9 != 0;
     region_561242:;
@@ -196,90 +215,90 @@ __attribute__((weak)) bool cSetInfoOm::load(MtDataReader& r) {
     mInitMtnNo = r.readU32();
     mAreaMasterNo = r.readU32();
     mAreaReleaseNo = r.readU16();
-    unsigned int v11_1;
+    u32 v11_1;
     bool v12_0;
-    unsigned int v12_1;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
-        v11_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+    u32 v12_1;
+    if (r.mSeekPt < r.mBufsiz) {
+        v11_1 = r.mSeekPt;
     } else {
         if (r.refill()) {
-            v11_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v11_1 = r.mSeekPt;
         } else {
             v12_0 = false;
-            v12_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v12_1 = r.mSeekPt;
             goto region_56129b;
         }
     }
-    unsigned long t10;
-    t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
-    unsigned char t11;
-    t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10 + v11_1) + 0);
+    u8* t10;
+    t10 = r.mBuffer;
+    u8 t11;
+    t11 = t10[v11_1];
     r.mSeekPt = v11_1 + 1u;
     v12_0 = t11 != 0;
     v12_1 = v11_1 + 1u;
     region_56129b:;
     mAreaReleaseON = v12_0;
-    unsigned int v14_1;
+    u32 v14_1;
     bool v15_0;
-    if (v12_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+    if (v12_1 < r.mBufsiz) {
         v14_1 = v12_1;
     } else {
         if (r.refill()) {
-            v14_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v14_1 = r.mSeekPt;
         } else {
             v15_0 = false;
             goto region_5612c9;
         }
     }
-    unsigned long t12;
-    t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
-    unsigned char t13;
-    t13 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t12 + v14_1) + 0);
+    u8* t12;
+    t12 = r.mBuffer;
+    u8 t13;
+    t13 = t12[v14_1];
     r.mSeekPt = v14_1 + 1u;
     v15_0 = t13 != 0;
     region_5612c9:;
     mAreaReleaseOFF = v15_0;
     mWarpPointId = r.readU32();
     mKeyNo = r.readU32();
-    unsigned int v16_1;
+    u32 v16_1;
     bool v17_0;
-    unsigned int v17_1;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
-        v16_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+    u32 v17_1;
+    if (r.mSeekPt < r.mBufsiz) {
+        v16_1 = r.mSeekPt;
     } else {
         if (r.refill()) {
-            v16_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v16_1 = r.mSeekPt;
         } else {
             v17_0 = false;
-            v17_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v17_1 = r.mSeekPt;
             goto region_561314;
         }
     }
-    unsigned long t14;
-    t14 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
-    unsigned char t15;
-    t15 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t14 + v16_1) + 0);
+    u8* t14;
+    t14 = r.mBuffer;
+    u8 t15;
+    t15 = t14[v16_1];
     r.mSeekPt = v16_1 + 1u;
     v17_0 = t15 != 0;
     v17_1 = v16_1 + 1u;
     region_561314:;
     mIsBreakLink = v17_0;
-    unsigned int v19_1;
+    u32 v19_1;
     bool v20_0;
-    if (v17_1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+    if (v17_1 < r.mBufsiz) {
         v19_1 = v17_1;
     } else {
         if (r.refill()) {
-            v19_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v19_1 = r.mSeekPt;
         } else {
             v20_0 = false;
             goto region_561342;
         }
     }
-    unsigned long t16;
-    t16 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
-    unsigned char t17;
-    t17 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t16 + v19_1) + 0);
+    u8* t16;
+    t16 = r.mBuffer;
+    u8 t17;
+    t17 = t16[v19_1];
     r.mSeekPt = v19_1 + 1u;
     v20_0 = t17 != 0;
     region_561342:;
@@ -288,49 +307,68 @@ __attribute__((weak)) bool cSetInfoOm::load(MtDataReader& r) {
     mBreakGroup = r.readU16();
     mBreakID = r.readU16();
     mQuestFlag = r.readU32();
-    unsigned int v21_1;
+    u32 v21_1;
     bool v22_0;
-    unsigned int v22_1;
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
-        v21_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+    u32 v22_1;
+    if (r.mSeekPt < r.mBufsiz) {
+        v21_1 = r.mSeekPt;
     } else {
         if (r.refill()) {
-            v21_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v21_1 = r.mSeekPt;
         } else {
             v22_0 = false;
-            v22_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v22_1 = r.mSeekPt;
             goto region_5613aa;
         }
     }
-    unsigned long t18;
-    t18 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16);
-    unsigned char t19;
-    t19 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t18 + v21_1) + 0);
+    u8* t18;
+    t18 = r.mBuffer;
+    u8 t19;
+    t19 = t18[v21_1];
     r.mSeekPt = v21_1 + 1u;
     v22_0 = t19 != 0;
     v22_1 = v21_1 + 1u;
     region_5613aa:;
     mIsNoSbc = v22_0;
-    unsigned int v24_1;
-    if (v22_1 >= (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 28))) {
+    u32 v24_1;
+    if (v22_1 >= r.mBufsiz) {
         if (!r.refill()) {
             mIsMyQuest = false;
             return this->cSetInfoCoord::load(r);
         } else {
-            v24_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&r) + 24);
+            v24_1 = r.mSeekPt;
         }
     } else {
         v24_1 = v22_1;
     }
-    unsigned char t20 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&r) + 16)) + v24_1) + 0);
+    u8 t20 = r.mBuffer[v24_1];
     r.mSeekPt = v24_1 + 1u;
     mIsMyQuest = t20 != 0;
     return this->cSetInfoCoord::load(r);
 }
 
 __attribute__((weak)) bool cSetInfoOm::save(MtDataWriter& w) {
-    DDON_STUB("cSetInfoOm::save")
-    return {};
+    nDDOIO::writeData(w, mDisableEffect);
+    nDDOIO::writeData(w, mDisableOnlyEffect);
+    nDDOIO::writeData(w, mOpenFlag);
+    nDDOIO::writeData(w, mEnableSyncLight);
+    nDDOIO::writeData(w, mEnableZone);
+    nDDOIO::writeData(w, mInitMtnNo);
+    nDDOIO::writeData(w, mAreaMasterNo);
+    nDDOIO::writeData(w, mAreaReleaseNo);
+    nDDOIO::writeData(w, mAreaReleaseON);
+    nDDOIO::writeData(w, mAreaReleaseOFF);
+    nDDOIO::writeData(w, mWarpPointId);
+    nDDOIO::writeData(w, mKeyNo);
+    nDDOIO::writeData(w, mIsBreakLink);
+    nDDOIO::writeData(w, mIsBreakQuest);
+    nDDOIO::writeData(w, mBreakKind);
+    nDDOIO::writeData(w, mBreakGroup);
+    nDDOIO::writeData(w, mBreakID);
+    nDDOIO::writeData(w, mQuestFlag);
+    nDDOIO::writeData(w, mIsNoSbc);
+    nDDOIO::writeData(w, mIsMyQuest);
+    return this->cSetInfoCoord::save(w);
 }
 
 bool cSetInfoOm::applyInfo(cUnit* pu) const {
@@ -410,9 +448,12 @@ const MtDTI& cSetInfoOmBadStatus::getDTI() const {
 __attribute__((noinline)) cSetInfoOmBadStatus::~cSetInfoOmBadStatus() {
 }
 
-__attribute__((weak)) void cSetInfoOmBadStatus::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmBadStatus::createProperty")
-    /* stub */
+void cSetInfoOmBadStatus::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mBadRadius", &mBadRadius, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBadHeight", &mBadHeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBadPos", &mBadPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBreakHitNum", &mBreakHitNum, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmBadStatus::createToolProperty(MtPropertyList& s) {
@@ -529,9 +570,9 @@ inline void* cSetInfoOmBlock::operator new(size_t sz, u32 align) {
 __attribute__((noinline)) cSetInfoOmBlock::~cSetInfoOmBlock() {
 }
 
-__attribute__((weak)) void cSetInfoOmBlock::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmBlock::createProperty")
-    /* stub */
+void cSetInfoOmBlock::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestID", &mQuestID, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmBlock::createToolProperty(MtPropertyList& s) {
@@ -622,20 +663,24 @@ const MtDTI& cSetInfoOmBoard::getDTI() const {
     return cSetInfoOmBoard::DTI;
 }
 
+inline void* cSetInfoOmBoard::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmBoard::DTI)->memAlloc(sz, align, cSetInfoOmBoard::DTI.getID());
+}
+
 void* cSetInfoOmBoard::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-__attribute__((noinline)) cSetInfoOmBoard::cSetInfoOmBoard() {
-        mBoardID = 0;
+cSetInfoOmBoard::cSetInfoOmBoard() {
+    mBoardID = 0;
 }
 
 __attribute__((noinline)) cSetInfoOmBoard::~cSetInfoOmBoard() {
 }
 
-__attribute__((weak)) void cSetInfoOmBoard::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmBoard::createProperty")
-    /* stub */
+void cSetInfoOmBoard::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mBoardID", &mBoardID, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmBoard::createToolProperty(MtPropertyList& s) {
@@ -722,37 +767,48 @@ inline cSetInfoOmBoard::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 cSetInfoOmBoard::MyDTI cSetInfoOmBoard::DTI("cSetInfoOmBoard", &::cSetInfoOm::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmBoard::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmBoard::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmBoard::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmBoard;
 }
 
 const MtDTI& cSetInfoOmBowlOfLife::getDTI() const {
     return cSetInfoOmBowlOfLife::DTI;
 }
 
+inline void* cSetInfoOmBowlOfLife::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmBowlOfLife::DTI)->memAlloc(sz, align, cSetInfoOmBowlOfLife::DTI.getID());
+}
+
 void* cSetInfoOmBowlOfLife::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-__attribute__((noinline)) cSetInfoOmBowlOfLife::cSetInfoOmBowlOfLife() {
-        mbWaitBowlOfLife = true;
-        mbFullBowlOfLife = false;
-        mbSetEM = false;
-        mbInvisible = false;
-        mIsQuest = false;
-        mQuestId = 0;
-        mKind = 0;
-        mGroup = 0;
-        mID = 0;
+cSetInfoOmBowlOfLife::cSetInfoOmBowlOfLife() {
+    mbWaitBowlOfLife = true;
+    mbFullBowlOfLife = false;
+    mbSetEM = false;
+    mbInvisible = false;
+    mIsQuest = false;
+    mID = 0;
+    mQuestId = 0;
+    mKind = 0;
+    mGroup = 0;
 }
 
 __attribute__((noinline)) cSetInfoOmBowlOfLife::~cSetInfoOmBowlOfLife() {
 }
 
-__attribute__((weak)) void cSetInfoOmBowlOfLife::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmBowlOfLife::createProperty")
-    /* stub */
+void cSetInfoOmBowlOfLife::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mbWaitBowlOfLife", &mbWaitBowlOfLife, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mbFullBowlOfLife", &mbFullBowlOfLife, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mbSetEM", &mbSetEM, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mbInvisible", &mbInvisible, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsQuest", &mIsQuest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mKind", &mKind, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup", &mGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmBowlOfLife::createToolProperty(MtPropertyList& s) {
@@ -1261,9 +1317,8 @@ inline cSetInfoOmBowlOfLife::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 
 cSetInfoOmBowlOfLife::MyDTI cSetInfoOmBowlOfLife::DTI("cSetInfoOmBowlOfLife", &::cSetInfoOm::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmBowlOfLife::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmBowlOfLife::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmBowlOfLife::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmBowlOfLife;
 }
 
 const MtDTI& cSetInfoOmBreakTarget::getDTI() const {
@@ -1277,9 +1332,9 @@ inline void* cSetInfoOmBreakTarget::operator new(size_t sz, u32 align) {
 __attribute__((noinline)) cSetInfoOmBreakTarget::~cSetInfoOmBreakTarget() {
 }
 
-__attribute__((weak)) void cSetInfoOmBreakTarget::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmBreakTarget::createProperty")
-    /* stub */
+void cSetInfoOmBreakTarget::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mBreakHitNum", &mBreakHitNum, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmBreakTarget::createToolProperty(MtPropertyList& s) {
@@ -1370,6 +1425,10 @@ const MtDTI& cSetInfoOmCtrl::getDTI() const {
     return cSetInfoOmCtrl::DTI;
 }
 
+inline void* cSetInfoOmCtrl::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmCtrl::DTI)->memAlloc(sz, align, cSetInfoOmCtrl::DTI.getID());
+}
+
 void* cSetInfoOmCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -1378,20 +1437,25 @@ inline void cSetInfoOmCtrl::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cSetInfoOmCtrl::DTI)->memFree(p_addr);
 }
 
-__attribute__((noinline)) cSetInfoOmCtrl::cSetInfoOmCtrl() {
-        mKeyItemNo = 0;
-        mIsQuest = false;
-        mQuestId = 0;
-        mAddGroupNo = -1;
-        mAddSubGroupNo = -1;
+cSetInfoOmCtrl::cSetInfoOmCtrl() {
+    mKeyItemNo = 0;
+    mIsQuest = false;
+    mQuestId = 0;
+    mAddGroupNo = -1;
+    mAddSubGroupNo = -1;
 }
 
 cSetInfoOmCtrl::~cSetInfoOmCtrl() {
 }
 
-__attribute__((weak)) void cSetInfoOmCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmCtrl::createProperty")
-    /* stub */
+void cSetInfoOmCtrl::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mKeyItemNo", &mKeyItemNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsQuest", &mIsQuest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLinkParam", static_cast<MtObject*>(&mLinkParam[0]), 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAddGroupNo", &mAddGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAddSubGroupNo", &mAddSubGroupNo, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmCtrl::createToolProperty(MtPropertyList& s) {
@@ -1424,8 +1488,21 @@ __attribute__((weak)) bool cSetInfoOmCtrl::load(MtDataReader& r) {
 }
 
 __attribute__((weak)) bool cSetInfoOmCtrl::save(MtDataWriter& w) {
-    DDON_STUB("cSetInfoOmCtrl::save")
-    return {};
+    nDDOIO::writeData(w, mKeyItemNo);
+    nDDOIO::writeData(w, mIsQuest);
+    nDDOIO::writeData(w, mQuestId);
+    for (u32 i = 0; i < 4; i++) {
+        nDDOIO::writeData(w, mLinkParam[i].mKind);
+        nDDOIO::writeData(w, mLinkParam[i].mGroup);
+        nDDOIO::writeData(w, mLinkParam[i].mID);
+        nDDOIO::writeData(w, mLinkParam[i].mTransition);
+        nDDOIO::writeData(w, mLinkParam[i].mState);
+        nDDOIO::writeData(w, mLinkParam[i].mCamEvNo);
+        nDDOIO::writeData(w, mLinkParam[i].mrFSMCam);
+    }
+    nDDOIO::writeData(w, mAddGroupNo);
+    nDDOIO::writeData(w, mAddSubGroupNo);
+    return this->cSetInfoOm::save(w);
 }
 
 bool cSetInfoOmCtrl::applyInfo(cUnit* pu) const {
@@ -1526,9 +1603,8 @@ inline cSetInfoOmCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 cSetInfoOmCtrl::MyDTI cSetInfoOmCtrl::DTI("cSetInfoOmCtrl", &::cSetInfoOm::DTI, 296ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmCtrl::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmCtrl::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmCtrl;
 }
 
 const MtDTI& cSetInfoOmCtrl::cLinkParam::getDTI() const {
@@ -1543,9 +1619,13 @@ inline void cSetInfoOmCtrl::cLinkParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cSetInfoOmCtrl::cLinkParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cSetInfoOmCtrl::cLinkParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmCtrl::cLinkParam::createProperty")
-    /* stub */
+void cSetInfoOmCtrl::cLinkParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mKind", &mKind, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup", &mGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTransition", &mTransition, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mState", &mState, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCamEvNo", &mCamEvNo, 0u, 0u);
 }
 
 inline cSetInfoOmCtrl::cLinkParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1577,9 +1657,16 @@ __attribute__((noinline)) cSetInfoOmDoor::cSetInfoOmDoor() {
 __attribute__((noinline)) cSetInfoOmDoor::~cSetInfoOmDoor() {
 }
 
-__attribute__((weak)) void cSetInfoOmDoor::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmDoor::createProperty")
-    /* stub */
+void cSetInfoOmDoor::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mbPRT", &mbPRT, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPRTPos", &mPRTPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPRTScale", &mPRTScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTextType", &mTextType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTextQuestNo", &mTextQuestNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTextNo", &mTextNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestID", &mQuestID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestFlag", &mQuestFlag, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmDoor::createToolProperty(MtPropertyList& s) {
@@ -1602,8 +1689,15 @@ bool cSetInfoOmDoor::load(MtDataReader& r) {
 }
 
 __attribute__((weak)) bool cSetInfoOmDoor::save(MtDataWriter& w) {
-    DDON_STUB("cSetInfoOmDoor::save")
-    return {};
+    nDDOIO::writeData(w, mbPRT);
+    nDDOIO::writeData(w, mPRTPos);
+    nDDOIO::writeData(w, mPRTScale);
+    nDDOIO::writeData(w, mTextType);
+    nDDOIO::writeData(w, mTextQuestNo);
+    nDDOIO::writeData(w, mTextNo);
+    nDDOIO::writeData(w, mQuestID);
+    nDDOIO::writeData(w, mQuestFlag);
+    return this->cSetInfoOm::save(w);
 }
 
 bool cSetInfoOmDoor::applyInfo(cUnit* pu) const {
@@ -1660,9 +1754,9 @@ bool cSetInfoOmDoor::applyParam(cOmControl::InputLot& param) const {
 void cSetInfoOmDoor::copy(cSetInfo* p) {
     this->cSetInfoOm::copy(p);
     const MtDTI& t0 = p->getDTI();
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cSetInfoOmDoor::DTI) + 8);
+    MT_CTSTR v0_1 = cSetInfoOmDoor::DTI.mName;
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+        if (v0_1 == v0_0->mName) {
             cSetInfoOmDoor* pSic = static_cast<cSetInfoOmDoor*>(p);
             mbPRT = pSic->mbPRT;
             mPRTPos.x = pSic->mPRTPos.x;
@@ -1677,8 +1771,8 @@ void cSetInfoOmDoor::copy(cSetInfo* p) {
             mQuestFlag = pSic->mQuestFlag;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
@@ -1691,28 +1785,31 @@ inline cSetInfoOmDoor::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 cSetInfoOmDoor::MyDTI cSetInfoOmDoor::DTI("cSetInfoOmDoor", &::cSetInfoOm::DTI, 160ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cSetInfoOmDoor::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmDoor::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cSetInfoOmDoor;
 }
 
 const MtDTI& cSetInfoOmElfSW::getDTI() const {
     return cSetInfoOmElfSW::DTI;
 }
 
+inline void* cSetInfoOmElfSW::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmElfSW::DTI)->memAlloc(sz, align, cSetInfoOmElfSW::DTI.getID());
+}
+
 void* cSetInfoOmElfSW::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-__attribute__((noinline)) cSetInfoOmElfSW::cSetInfoOmElfSW() {
-        mPLCount = 1;
+cSetInfoOmElfSW::cSetInfoOmElfSW() {
+    mPLCount = 1;
 }
 
 __attribute__((noinline)) cSetInfoOmElfSW::~cSetInfoOmElfSW() {
 }
 
-__attribute__((weak)) void cSetInfoOmElfSW::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmElfSW::createProperty")
-    /* stub */
+void cSetInfoOmElfSW::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mPLCount", &mPLCount, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmElfSW::createToolProperty(MtPropertyList& s) {
@@ -1795,9 +1892,8 @@ inline cSetInfoOmElfSW::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 cSetInfoOmElfSW::MyDTI cSetInfoOmElfSW::DTI("cSetInfoOmElfSW", &::cSetInfoOm::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmElfSW::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmElfSW::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmElfSW::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmElfSW;
 }
 
 const MtDTI& cSetInfoOmEx::getDTI() const {
@@ -1811,9 +1907,9 @@ inline void* cSetInfoOmEx::operator new(size_t sz, u32 align) {
 __attribute__((noinline)) cSetInfoOmEx::~cSetInfoOmEx() {
 }
 
-__attribute__((weak)) void cSetInfoOmEx::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmEx::createProperty")
-    /* stub */
+void cSetInfoOmEx::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestID", &mQuestID, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmEx::createToolProperty(MtPropertyList& s) {
@@ -1908,20 +2004,24 @@ const MtDTI& cSetInfoOmFall::getDTI() const {
     return cSetInfoOmFall::DTI;
 }
 
+inline void* cSetInfoOmFall::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmFall::DTI)->memAlloc(sz, align, cSetInfoOmFall::DTI.getID());
+}
+
 void* cSetInfoOmFall::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-__attribute__((noinline)) cSetInfoOmFall::cSetInfoOmFall() {
-        mFallHeight = 800.0f;
+cSetInfoOmFall::cSetInfoOmFall() {
+    mFallHeight = 800.0f;
 }
 
 __attribute__((noinline)) cSetInfoOmFall::~cSetInfoOmFall() {
 }
 
-__attribute__((weak)) void cSetInfoOmFall::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmFall::createProperty")
-    /* stub */
+void cSetInfoOmFall::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallHeight", &mFallHeight, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmFall::createToolProperty(MtPropertyList& s) {
@@ -2004,13 +2104,16 @@ inline cSetInfoOmFall::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 cSetInfoOmFall::MyDTI cSetInfoOmFall::DTI("cSetInfoOmFall", &::cSetInfoOm::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmFall::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmFall::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmFall::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmFall;
 }
 
 const MtDTI& cSetInfoOmGather::getDTI() const {
     return cSetInfoOmGather::DTI;
+}
+
+inline void* cSetInfoOmGather::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmGather::DTI)->memAlloc(sz, align, cSetInfoOmGather::DTI.getID());
 }
 
 void* cSetInfoOmGather::operator new(size_t sz, void* p_addr) {
@@ -2028,8 +2131,11 @@ __attribute__((noinline)) cSetInfoOmGather::~cSetInfoOmGather() {
 }
 
 __attribute__((weak)) void cSetInfoOmGather::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmGather::createProperty")
-    /* stub */
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mItemListID", &mItemListID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGatheringType", &mGatheringType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsGatherEnemy", &mIsGatherEnemy, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnemyGroupNo", &mEnemyGroupNo, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmGather::createToolProperty(MtPropertyList& s) {
@@ -2150,13 +2256,16 @@ inline cSetInfoOmGather::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 cSetInfoOmGather::MyDTI cSetInfoOmGather::DTI("cSetInfoOmGather", &::cSetInfoOm::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmGather::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmGather::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmGather::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmGather;
 }
 
 const MtDTI& cSetInfoOmHakuryuu::getDTI() const {
     return cSetInfoOmHakuryuu::DTI;
+}
+
+inline void* cSetInfoOmHakuryuu::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmHakuryuu::DTI)->memAlloc(sz, align, cSetInfoOmHakuryuu::DTI.getID());
 }
 
 void* cSetInfoOmHakuryuu::operator new(size_t sz, void* p_addr) {
@@ -2164,16 +2273,15 @@ void* cSetInfoOmHakuryuu::operator new(size_t sz, void* p_addr) {
 }
 
 cSetInfoOmHakuryuu::cSetInfoOmHakuryuu() {
-    DDON_STUB("cSetInfoOmHakuryuu::cSetInfoOmHakuryuu")
-    /* stub */
+    mStoneLevel = 0;
 }
 
 __attribute__((noinline)) cSetInfoOmHakuryuu::~cSetInfoOmHakuryuu() {
 }
 
-__attribute__((weak)) void cSetInfoOmHakuryuu::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmHakuryuu::createProperty")
-    /* stub */
+void cSetInfoOmHakuryuu::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mStoneLevel", &mStoneLevel, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmHakuryuu::createToolProperty(MtPropertyList& s) {
@@ -2256,29 +2364,32 @@ inline cSetInfoOmHakuryuu::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 cSetInfoOmHakuryuu::MyDTI cSetInfoOmHakuryuu::DTI("cSetInfoOmHakuryuu", &::cSetInfoOm::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmHakuryuu::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmHakuryuu::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmHakuryuu::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmHakuryuu;
 }
 
 const MtDTI& cSetInfoOmHeal::getDTI() const {
     return cSetInfoOmHeal::DTI;
 }
 
+inline void* cSetInfoOmHeal::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmHeal::DTI)->memAlloc(sz, align, cSetInfoOmHeal::DTI.getID());
+}
+
 void* cSetInfoOmHeal::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-__attribute__((noinline)) cSetInfoOmHeal::cSetInfoOmHeal() {
-        mHealType = 0;
+cSetInfoOmHeal::cSetInfoOmHeal() {
+    mHealType = 0;
 }
 
 __attribute__((noinline)) cSetInfoOmHeal::~cSetInfoOmHeal() {
 }
 
-__attribute__((weak)) void cSetInfoOmHeal::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmHeal::createProperty")
-    /* stub */
+void cSetInfoOmHeal::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mHealType", &mHealType, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmHeal::createToolProperty(MtPropertyList& s) {
@@ -2365,29 +2476,32 @@ inline cSetInfoOmHeal::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 cSetInfoOmHeal::MyDTI cSetInfoOmHeal::DTI("cSetInfoOmHeal", &::cSetInfoOm::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmHeal::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmHeal::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmHeal::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmHeal;
 }
 
 const MtDTI& cSetInfoOmLadder::getDTI() const {
     return cSetInfoOmLadder::DTI;
 }
 
+inline void* cSetInfoOmLadder::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmLadder::DTI)->memAlloc(sz, align, cSetInfoOmLadder::DTI.getID());
+}
+
 void* cSetInfoOmLadder::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-__attribute__((noinline)) cSetInfoOmLadder::cSetInfoOmLadder() {
-        mHeight = 5;
+cSetInfoOmLadder::cSetInfoOmLadder() {
+    mHeight = 5;
 }
 
 __attribute__((noinline)) cSetInfoOmLadder::~cSetInfoOmLadder() {
 }
 
-__attribute__((weak)) void cSetInfoOmLadder::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmLadder::createProperty")
-    /* stub */
+void cSetInfoOmLadder::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mHeight", &mHeight, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmLadder::createToolProperty(MtPropertyList& s) {
@@ -2474,30 +2588,34 @@ inline cSetInfoOmLadder::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 cSetInfoOmLadder::MyDTI cSetInfoOmLadder::DTI("cSetInfoOmLadder", &::cSetInfoOm::DTI, 120ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmLadder::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmLadder::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmLadder::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmLadder;
 }
 
 const MtDTI& cSetInfoOmLever::getDTI() const {
     return cSetInfoOmLever::DTI;
 }
 
+inline void* cSetInfoOmLever::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmLever::DTI)->memAlloc(sz, align, cSetInfoOmLever::DTI.getID());
+}
+
 void* cSetInfoOmLever::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-__attribute__((noinline)) cSetInfoOmLever::cSetInfoOmLever() {
-        mbReqLever = false;
-        mCamEvNo = -1;
+cSetInfoOmLever::cSetInfoOmLever() {
+    mbReqLever = false;
+    mCamEvNo = -1;
 }
 
 __attribute__((noinline)) cSetInfoOmLever::~cSetInfoOmLever() {
 }
 
-__attribute__((weak)) void cSetInfoOmLever::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmLever::createProperty")
-    /* stub */
+void cSetInfoOmLever::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mbReqLever", &mbReqLever, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCamEvNo", &mCamEvNo, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmLever::createToolProperty(MtPropertyList& s) {
@@ -2593,9 +2711,8 @@ inline cSetInfoOmLever::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 cSetInfoOmLever::MyDTI cSetInfoOmLever::DTI("cSetInfoOmLever", &::cSetInfoOm::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmLever::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmLever::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmLever::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmLever;
 }
 
 const MtDTI& cSetInfoOmNav::getDTI() const {
@@ -2615,9 +2732,9 @@ __attribute__((noinline)) cSetInfoOmNav::cSetInfoOmNav() {
 __attribute__((noinline)) cSetInfoOmNav::~cSetInfoOmNav() {
 }
 
-__attribute__((weak)) void cSetInfoOmNav::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmNav::createProperty")
-    /* stub */
+void cSetInfoOmNav::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mNavOBBExtent", &mNavOBBExtent, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmNav::createToolProperty(MtPropertyList& s) {
@@ -2727,9 +2844,19 @@ inline void* cSetInfoOmOldDoor::operator new(size_t sz, u32 align) {
 __attribute__((noinline)) cSetInfoOmOldDoor::~cSetInfoOmOldDoor() {
 }
 
-__attribute__((weak)) void cSetInfoOmOldDoor::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmOldDoor::createProperty")
-    /* stub */
+void cSetInfoOmOldDoor::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsQuest", &mIsQuest, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mKind[0]", &mKind[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup[0]", &mGroup[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mID[0]", &mID[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mKind[1]", &mKind[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup[1]", &mGroup[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mID[1]", &mID[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mKind[2]", &mKind[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup[2]", &mGroup[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mID[2]", &mID[2], 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmOldDoor::createToolProperty(MtPropertyList& s) {
@@ -2879,8 +3006,12 @@ bool cSetInfoOmOneWay::load(MtDataReader& r) {
 }
 
 __attribute__((weak)) bool cSetInfoOmOneWay::save(MtDataWriter& w) {
-    DDON_STUB("cSetInfoOmOneWay::save")
-    return {};
+    nDDOIO::writeData(w, mWarpPos[0]);
+    nDDOIO::writeData(w, mWarpPos[1]);
+    nDDOIO::writeData(w, mWarpPos[2]);
+    nDDOIO::writeData(w, mWarpPos[3]);
+    nDDOIO::writeData(w, mQuestID);
+    return this->cSetInfoOm::save(w);
 }
 
 bool cSetInfoOmOneWay::applyInfo(cUnit* pu) const {
@@ -2950,11 +3081,11 @@ bool cSetInfoOmOneWay::applyParam(cOmControl::InputLot& param) const {
 void cSetInfoOmOneWay::copy(cSetInfo* p) {
     this->cSetInfoOm::copy(p);
     const MtDTI& t0 = p->getDTI();
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cSetInfoOmEx::DTI) + 8);
+    MT_CTSTR v0_1 = cSetInfoOmEx::DTI.mName;
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+        if (v0_1 != v0_0->mName) {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
@@ -2964,9 +3095,9 @@ void cSetInfoOmOneWay::copy(cSetInfo* p) {
         }
     }
     const MtDTI& t1 = p->getDTI();
-    unsigned long v2_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cSetInfoOmOneWay::DTI) + 8);
+    MT_CTSTR v2_1 = cSetInfoOmOneWay::DTI.mName;
     for (const MtDTI* v2_0 = &t1;;) {
-        if (v2_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + 8))) {
+        if (v2_1 == v2_0->mName) {
             cSetInfoOmOneWay* pSic = static_cast<cSetInfoOmOneWay*>(p);
             mWarpPos[0].x = pSic->mWarpPos[0].x;
             mWarpPos[0].y = pSic->mWarpPos[0].y;
@@ -2986,8 +3117,8 @@ void cSetInfoOmOneWay::copy(cSetInfo* p) {
             mWarpPos[3].pad_ = 0.0f;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + 32)) != 0) {
-                v2_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + 32));
+            if (v2_0->mpParent != nullptr) {
+                v2_0 = v2_0->mpParent;
             } else {
                 break;
             }
@@ -3007,21 +3138,30 @@ const MtDTI& cSetInfoOmRange::getDTI() const {
     return cSetInfoOmRange::DTI;
 }
 
+inline void* cSetInfoOmRange::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmRange::DTI)->memAlloc(sz, align, cSetInfoOmRange::DTI.getID());
+}
+
 void* cSetInfoOmRange::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 cSetInfoOmRange::cSetInfoOmRange() {
-    DDON_STUB("cSetInfoOmRange::cSetInfoOmRange")
-    /* stub */
+    mRange = 400.0f;
+    mGrp = 0;
+    mIsAll = true;
+    mIsOneTime = true;
 }
 
 __attribute__((noinline)) cSetInfoOmRange::~cSetInfoOmRange() {
 }
 
-__attribute__((weak)) void cSetInfoOmRange::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmRange::createProperty")
-    /* stub */
+void cSetInfoOmRange::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mRange", &mRange, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGrp", &mGrp, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsAll", &mIsAll, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsOneTime", &mIsOneTime, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmRange::createToolProperty(MtPropertyList& s) {
@@ -3139,31 +3279,36 @@ inline cSetInfoOmRange::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 cSetInfoOmRange::MyDTI cSetInfoOmRange::DTI("cSetInfoOmRange", &::cSetInfoOm::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmRange::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmRange::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmRange::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmRange;
 }
 
 const MtDTI& cSetInfoOmText::getDTI() const {
     return cSetInfoOmText::DTI;
 }
 
+inline void* cSetInfoOmText::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmText::DTI)->memAlloc(sz, align, cSetInfoOmText::DTI.getID());
+}
+
 void* cSetInfoOmText::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-__attribute__((noinline)) cSetInfoOmText::cSetInfoOmText() {
-        mTextNo = 0;
-        mTextQuestNo = 0;
-        mTextType = 0;
+cSetInfoOmText::cSetInfoOmText() {
+    mTextNo = 0;
+    mTextQuestNo = 0;
+    mTextType = 0;
 }
 
 __attribute__((noinline)) cSetInfoOmText::~cSetInfoOmText() {
 }
 
-__attribute__((weak)) void cSetInfoOmText::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmText::createProperty")
-    /* stub */
+void cSetInfoOmText::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mTextNo", &mTextNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTextQuestNo", &mTextQuestNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTextType", &mTextType, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmText::createToolProperty(MtPropertyList& s) {
@@ -3258,20 +3403,23 @@ inline cSetInfoOmText::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 cSetInfoOmText::MyDTI cSetInfoOmText::DTI("cSetInfoOmText", &::cSetInfoOm::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmText::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmText::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmText::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmText;
 }
 
 const MtDTI& cSetInfoOmTreasureBox::getDTI() const {
     return cSetInfoOmTreasureBox::DTI;
 }
 
+inline void* cSetInfoOmTreasureBox::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cSetInfoOmTreasureBox::DTI)->memAlloc(sz, align, cSetInfoOmTreasureBox::DTI.getID());
+}
+
 void* cSetInfoOmTreasureBox::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-__attribute__((noinline)) cSetInfoOmTreasureBox::cSetInfoOmTreasureBox() {
+cSetInfoOmTreasureBox::cSetInfoOmTreasureBox() {
 }
 
 __attribute__((noinline)) cSetInfoOmTreasureBox::~cSetInfoOmTreasureBox() {
@@ -3388,17 +3536,17 @@ bool cSetInfoOmTreasureBox::applyParam(cOmControl::InputLot& param) const {
 void cSetInfoOmTreasureBox::copy(cSetInfo* p) {
     this->cSetInfoOm::copy(p);
     const MtDTI& t0 = p->getDTI();
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cSetInfoOmGather::DTI) + 8);
+    MT_CTSTR v0_1 = cSetInfoOmGather::DTI.mName;
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+        if (v0_1 == v0_0->mName) {
             mItemListID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 112);
             mGatheringType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 116);
             mIsGatherEnemy = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + 120));
             mEnemyGroupNo = static_cast<s16>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + 122));
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
@@ -3410,9 +3558,8 @@ inline cSetInfoOmTreasureBox::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 
 cSetInfoOmTreasureBox::MyDTI cSetInfoOmTreasureBox::DTI("cSetInfoOmTreasureBox", &::cSetInfoOmGather::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cSetInfoOmTreasureBox::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmTreasureBox::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSetInfoOmTreasureBox::MyDTI::newInstance() const {
+    return new (16u) cSetInfoOmTreasureBox;
 }
 
 const MtDTI& cSetInfoOmWall::getDTI() const {
@@ -3440,9 +3587,10 @@ __attribute__((noinline)) cSetInfoOmWall::cSetInfoOmWall() {
 __attribute__((noinline)) cSetInfoOmWall::~cSetInfoOmWall() {
 }
 
-__attribute__((weak)) void cSetInfoOmWall::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmWall::createProperty")
-    /* stub */
+void cSetInfoOmWall::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mWallType", &mWallType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNavOBB", &mNavOBB, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmWall::createToolProperty(MtPropertyList& s) {
@@ -3464,8 +3612,10 @@ __attribute__((weak)) bool cSetInfoOmWall::load(MtDataReader& r) {
 }
 
 __attribute__((weak)) bool cSetInfoOmWall::save(MtDataWriter& w) {
-    DDON_STUB("cSetInfoOmWall::save")
-    return {};
+    nDDOIO::writeData(w, mWallType);
+    nDDOIO::writeData(w, mNavOBB.coord);
+    nDDOIO::writeData(w, mNavOBB.extent);
+    return this->cSetInfoOm::save(w);
 }
 
 bool cSetInfoOmWall::applyInfo(cUnit* pu) const {
@@ -3521,8 +3671,7 @@ inline cSetInfoOmWall::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 cSetInfoOmWall::MyDTI cSetInfoOmWall::DTI("cSetInfoOmWall", &::cSetInfoOm::DTI, 208ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cSetInfoOmWall::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmWall::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cSetInfoOmWall;
 }
 
 const MtDTI& cSetInfoOmWarp::getDTI() const {
@@ -3549,9 +3698,16 @@ __attribute__((noinline)) cSetInfoOmWarp::cSetInfoOmWarp() {
 __attribute__((noinline)) cSetInfoOmWarp::~cSetInfoOmWarp() {
 }
 
-__attribute__((weak)) void cSetInfoOmWarp::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoOmWarp::createProperty")
-    /* stub */
+void cSetInfoOmWarp::createProperty(MtPropertyList& s) {
+    this->cSetInfoOm::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mStageNo", reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::getStageNo), reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::setStageNo), 160u, reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::getDataNum), reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::setDataNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mStartPosNo", reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::getStartPosNo), reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::setStartPosNo), 160u, reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::getDataNum), reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::setDataNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mQuestNo", reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::getQuestNo), reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::setQuestNo), 160u, reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::getDataNum), reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::setDataNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mFlagNo", reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::getFlagNo), reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::setFlagNo), 160u, reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::getDataNum), reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::setDataNum));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mSpotId", reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::getSpotId), reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::setSpotId), 160u, reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::getDataNum), reinterpret_cast<MT_MFUNC>(&::cSetInfoOmWarp::setDataNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mTextType", &mTextType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTextQuestNo", &mTextQuestNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTextNo", &mTextNo, 0u, 0u);
 }
 
 __attribute__((weak)) void cSetInfoOmWarp::createToolProperty(MtPropertyList& s) {
@@ -3732,7 +3888,6 @@ inline cSetInfoOmWarp::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 cSetInfoOmWarp::MyDTI cSetInfoOmWarp::DTI("cSetInfoOmWarp", &::cSetInfoOm::DTI, 184ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cSetInfoOmWarp::MyDTI::newInstance() const {
-    DDON_STUB("cSetInfoOmWarp::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cSetInfoOmWarp;
 }
 

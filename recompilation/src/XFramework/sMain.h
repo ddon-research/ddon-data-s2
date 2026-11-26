@@ -22,6 +22,7 @@ class MtSemaphore;
 class MtStream;
 class MtUI;
 struct _SceKernelEventFlag;
+class cAITask;
 class cDDMaterialCtrl;
 class cNetGameServer;
 class cSeedServerConnection;
@@ -33,6 +34,7 @@ class cpJob06;
 class cpSlave;
 namespace nFsm { class cCameraCtrl; }
 struct pthread;
+class sAI;
 class sApp;
 class sCollision;
 class sContextManager;
@@ -45,11 +47,14 @@ class sObjCollision;
 class sOmManager;
 class sPadExt;
 class sVibration;
+class uAnimal;
 class uCameraBase;
 class uControl;
+class uEffect2DExt;
 class uEffectExt;
 class uGUI;
 class uGUIChat;
+class uGUIQueueAnnounceLvUp;
 class uGUITelop;
 class uGrassEffect;
 class uGrassWindDirection;
@@ -89,6 +94,7 @@ namespace nFsm { f32 getDeltaSec(); }
 
 class sMain : public cSystem
 {
+    friend class cAITask;
     friend class cDDMaterialCtrl;
     friend class cNetGameServer;
     friend class cSeedServerConnection;
@@ -100,6 +106,7 @@ class sMain : public cSystem
     friend class cpSlave;
     friend class nFsm::cCameraCtrl;
     friend f32 nFsm::getDeltaSec();
+    friend class sAI;
     friend class sApp;
     friend class sCollision;
     friend class sContextManager;
@@ -112,11 +119,14 @@ class sMain : public cSystem
     friend class sOmManager;
     friend class sPadExt;
     friend class sVibration;
+    friend class uAnimal;
     friend class uCameraBase;
     friend class uControl;
+    friend class uEffect2DExt;
     friend class uEffectExt;
     friend class uGUI;
     friend class uGUIChat;
+    friend class uGUIQueueAnnounceLvUp;
     friend class uGUITelop;
     friend class uGrassEffect;
     friend class uGrassWindDirection;

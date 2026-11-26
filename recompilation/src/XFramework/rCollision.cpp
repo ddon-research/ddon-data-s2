@@ -146,8 +146,133 @@ __attribute__((weak)) u32 rCollision::traverseTriangleSpaceDivisionOnce(u32 Part
 }
 
 __attribute__((weak)) bool rCollision::loadCore(MtDataReader& r, bool FlgEndianChange) {
-    DDON_STUB("rCollision::loadCore")
-    return {};
+    clear();
+    Header LoadHeaderInfo;
+    r.read(&LoadHeaderInfo, sizeof(LoadHeaderInfo));
+    if (LoadHeaderInfo.Id[0] != 'S' || LoadHeaderInfo.Id[1] != 'B' || LoadHeaderInfo.Id[2] != 'C') {
+        return false;
+    }
+    const u32 SubVersion = LoadHeaderInfo.Version % 100;
+    const u32 MainVersion = LoadHeaderInfo.Version - SubVersion;
+    if (MainVersion != 2011120600) {
+        return false;
+    }
+    u32 BroadPhaseInsideBufferSize;
+    r.read(&BroadPhaseInsideBufferSize, sizeof(BroadPhaseInsideBufferSize));
+    nCollisionUtil::LoadBuffer buffer;
+    if (!bulkAllocateMemoryAll(LoadHeaderInfo, BroadPhaseInsideBufferSize, buffer)) {
+        return false;
+    }
+    u32 i;
+    u32 j;
+    mpPartsInfo = static_cast<PartsInfo*>(buffer.allocate(sizeof(PartsInfo) * LoadHeaderInfo.PartsInfoNum));
+    r.read(mpPartsInfo, sizeof(PartsInfo) * LoadHeaderInfo.PartsInfoNum);
+    for (i = 0; i < LoadHeaderInfo.PartsInfoNum; i++) {
+        mpPartsInfo[i].pGridRegistInfo = nullptr;
+        mpPartsInfo[i].pGrid = nullptr;
+        mpPartsInfo[i].pBvh = nullptr;
+    }
+    mHeader.PartsInfoNum = LoadHeaderInfo.PartsInfoNum;
+    {
+        bool FlgTriangleLoadResult = true;
+        for (i = 0; i < LoadHeaderInfo.PartsInfoNum; i++) {
+            switch (LoadHeaderInfo.SpaceDivisionTypeTriangle) {
+            case 0:
+            case 1: {
+                mpPartsInfo[i].pBvh = buffer.allocateNewBy<cBVHCollision>(1);
+                if (!mpPartsInfo[i].pBvh->load(r, &buffer)) {
+                    FlgTriangleLoadResult = false;
+                }
+                break;
+            }
+            case 2: {
+                mpPartsInfo[i].pGrid = buffer.allocateNewBy<cGridCollision>(1);
+                mpPartsInfo[i].pGridRegistInfo = buffer.allocateNewBy<cGridCollisionRegistInfo>(mpPartsInfo[i].LeafNum);
+                const u32 LeafNum = mpPartsInfo[i].LeafNum;
+                for (j = 0; j < LeafNum; j++) {
+                    mpPartsInfo[i].pGridRegistInfo[j].load(r);
+                }
+                break;
+            }
+            }
+            if (!FlgTriangleLoadResult) {
+                break;
+            }
+        }
+        if (!FlgTriangleLoadResult) {
+            clear();
+            return false;
+        }
+    }
+    {
+        bool FlgPartsLoadResult = true;
+        switch (LoadHeaderInfo.SpaceDivisionTypeParts) {
+        case 0:
+        case 1: {
+            mpBvh = buffer.allocateNewBy<cBVHCollision>(1);
+            FlgPartsLoadResult = mpBvh->load(r, &buffer);
+            break;
+        }
+        case 2: {
+            mpGrid = buffer.allocateNewBy<cGridCollision>(1);
+            mpGridRegistInfo = buffer.allocateNewBy<cGridCollisionRegistInfo>(LoadHeaderInfo.PartsInfoNum);
+            const u32 PartsNum = LoadHeaderInfo.PartsInfoNum;
+            for (j = 0; j < PartsNum; j++) {
+                mpGridRegistInfo[j].load(r);
+            }
+            break;
+        }
+        }
+        if (!FlgPartsLoadResult) {
+            clear();
+            return false;
+        }
+    }
+    mpTriangle = static_cast<Triangle*>(buffer.allocate(sizeof(Triangle) * LoadHeaderInfo.TotalTriangleNum));
+    r.read(mpTriangle, sizeof(Triangle) * LoadHeaderInfo.TotalTriangleNum);
+    mHeader.TotalTriangleNum = LoadHeaderInfo.TotalTriangleNum;
+    mpVertex = static_cast<Vertex*>(buffer.allocate(sizeof(Vertex) * LoadHeaderInfo.TotalVertexNum));
+    r.read(mpVertex, sizeof(Vertex) * LoadHeaderInfo.TotalVertexNum);
+    mHeader.TotalVertexNum = LoadHeaderInfo.TotalVertexNum;
+    mpMaterialInfo = static_cast<MaterialInfo*>(buffer.allocate(sizeof(MaterialInfo) * LoadHeaderInfo.MaterialInfoNum));
+    r.read(mpMaterialInfo, sizeof(MaterialInfo) * LoadHeaderInfo.MaterialInfoNum);
+    mHeader.MaterialInfoNum = LoadHeaderInfo.MaterialInfoNum;
+    mpLeaf = static_cast<Leaf*>(buffer.allocate(sizeof(Leaf) * LoadHeaderInfo.TotalLeafNum));
+    r.read(mpLeaf, sizeof(Leaf) * LoadHeaderInfo.TotalLeafNum);
+    mHeader.TotalLeafNum = LoadHeaderInfo.TotalLeafNum;
+    {
+        bool FlgTriangleLoadResult = true;
+        for (i = 0; i < LoadHeaderInfo.PartsInfoNum; i++) {
+            switch (LoadHeaderInfo.SpaceDivisionTypeTriangle) {
+            case 2:
+                if (!mpPartsInfo[i].pGrid->load(r, &buffer)) {
+                    FlgTriangleLoadResult = false;
+                }
+                break;
+            }
+            if (!FlgTriangleLoadResult) {
+                break;
+            }
+        }
+        if (!FlgTriangleLoadResult) {
+            clear();
+            return false;
+        }
+    }
+    {
+        bool FlgPartsLoadResult = true;
+        switch (LoadHeaderInfo.SpaceDivisionTypeParts) {
+        case 2:
+            FlgPartsLoadResult = mpGrid->load(r, &buffer);
+            break;
+        }
+        if (!FlgPartsLoadResult) {
+            clear();
+            return false;
+        }
+    }
+    mHeader = LoadHeaderInfo;
+    return true;
 }
 
 __attribute__((weak)) void rCollision::releasePartsBroadPhaseData() {
@@ -196,8 +321,63 @@ __attribute__((weak)) void rCollision::releasePartsBroadPhaseData() {
 }
 
 __attribute__((weak)) bool rCollision::bulkAllocateMemoryAll(const rCollision::Header& LoadHeaderInfo, u32 BroadPhaseInsideWorkSize, nCollisionUtil::LoadBuffer& AllocateResult) {
-    DDON_STUB("rCollision::bulkAllocateMemoryAll")
-    return {};
+    if (mHeader.PartsInfoNum != 0) {
+        return false;
+    }
+    if (mHeader.MaterialInfoNum != 0) {
+        return false;
+    }
+    if (mHeader.TotalLeafNum != 0) {
+        return false;
+    }
+    if (mHeader.TotalTriangleNum != 0) {
+        return false;
+    }
+    if (mHeader.TotalVertexNum != 0) {
+        return false;
+    }
+    if (mpBvh != nullptr) {
+        delete mpBvh;
+        mpBvh = nullptr;
+    }
+    if (mpGrid != nullptr) {
+        delete mpGrid;
+        mpGrid = nullptr;
+    }
+    u32 AllocateSize = sizeof(PartsInfo) * LoadHeaderInfo.PartsInfoNum;
+    AllocateSize += sizeof(MaterialInfo) * LoadHeaderInfo.MaterialInfoNum;
+    AllocateSize += sizeof(Triangle) * LoadHeaderInfo.TotalTriangleNum;
+    AllocateSize += sizeof(Vertex) * LoadHeaderInfo.TotalVertexNum;
+    switch (LoadHeaderInfo.SpaceDivisionTypeTriangle) {
+    case 0:
+    case 1:
+        AllocateSize += sizeof(cBVHCollision) * LoadHeaderInfo.PartsInfoNum;
+        break;
+    case 2:
+        AllocateSize += sizeof(cGridCollision) * LoadHeaderInfo.PartsInfoNum;
+        AllocateSize += sizeof(cGridCollisionRegistInfo) * LoadHeaderInfo.TotalLeafNum;
+        break;
+    }
+    switch (LoadHeaderInfo.SpaceDivisionTypeParts) {
+    case 0:
+    case 1:
+        AllocateSize += sizeof(cBVHCollision);
+        break;
+    case 2:
+        AllocateSize += sizeof(cGridCollision) + sizeof(cGridCollisionRegistInfo) * LoadHeaderInfo.PartsInfoNum;
+        break;
+    }
+    AllocateSize += BroadPhaseInsideWorkSize;
+    AllocateSize += sizeof(Leaf) * LoadHeaderInfo.TotalLeafNum;
+    u8* pAllocateData = static_cast<u8*>(MtMemoryAllocator::getAllocator(rCollision::DTI)->memAlloc(AllocateSize, 16u));
+    if (pAllocateData == nullptr) {
+        return false;
+    }
+    memset(pAllocateData, 0, AllocateSize);
+    AllocateResult.pBuffer = pAllocateData;
+    AllocateResult.Position = 0;
+    AllocateResult.Size = AllocateSize;
+    return true;
 }
 
 inline rCollision::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

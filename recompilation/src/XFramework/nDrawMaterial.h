@@ -30,6 +30,7 @@ class cDraw;
 namespace nDraw { class BlendState; }
 namespace nDraw { class ConstantTable; }
 namespace nDraw { class DepthStencilState; }
+namespace nDraw { class MaterialStd; }
 namespace nDraw { class MaterialStdDM; }
 namespace nDraw { class MaterialStdEst; }
 namespace nDraw { class MaterialStdPN; }
@@ -386,6 +387,7 @@ namespace nDraw {
     class Material : public nDraw::Resource
     {
         friend class ::cDDMaterialCtrl;
+        friend class nDraw::MaterialStd;
         friend class nDraw::MaterialStdDM;
         friend class nDraw::MaterialStdEst;
         friend class nDraw::MaterialStdPN;

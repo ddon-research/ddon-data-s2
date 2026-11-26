@@ -11,6 +11,40 @@
 #include "../MT/MtPropertyList.h"
 #include "cAIObject.h"
 #include "cAITask.h"
+
+inline cAITreeBase::Node::Node() {
+    mpObjectList = nullptr;
+    mNumberOfObject = 0;
+}
+
+inline void* cAITreeBase::Node::operator new[](size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
+}
+
+inline void cAITreeBase::Node::operator delete[](void* p_addr) {
+    MtMemoryAllocator::getAllocator(DTI)->memFree(p_addr);
+}
+
+inline void cAIQuadTree::deleteTempRegion() {
+    if (mpTempRegion) {
+        MtMemoryAllocator::getAllocator(cAIQuadTree::DTI)->memFree(mpTempRegion);
+        mpTempRegion = nullptr;
+    }
+}
+
+inline void cAITreeBase::Node::ObjectList::operator delete[](void* padr) {
+    MtMemoryAllocator::getAllocator(cAITreeBase::DTI)->memFree(padr);
+}
+
+inline void cAITreeBase::Node::removeAll() {
+    if (mpObjectList) {
+        for (u32 t1 = 0; t1 < mNumberOfObject; ++t1) {
+            mpObjectList[t1].mpObj = nullptr;
+        }
+        delete[] mpObjectList;
+        mNumberOfObject = 0;
+    }
+}
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -33,9 +67,9 @@ __attribute__((noinline)) cAIAStar::~cAIAStar() {
     /* stub */
 }
 
-__attribute__((weak)) void cAIAStar::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIAStar::createProperty")
-    /* stub */
+void cAIAStar::createProperty(MtPropertyList& s) {
+    this->cAITask::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mSecurityCost", &mSecurityCost, 0u, 0u);
 }
 
 MtUI* cAIAStar::createUI(MtProperty& prop) {
@@ -281,13 +315,16 @@ inline cAIGraph::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 cAIGraph::MyDTI cAIGraph::DTI("cAIGraph", &::cAITask::DTI, 208ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIGraph::MyDTI::newInstance() const {
-    DDON_STUB("cAIGraph::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIGraph::MyDTI::newInstance() const {
+    return new (16u) cAIGraph;
 }
 
 const MtDTI& cAIGraph::Node::getDTI() const {
     return cAIGraph::Node::DTI;
+}
+
+inline void* cAIGraph::Node::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIGraph::Node::DTI)->memAlloc(sz, align, cAIGraph::Node::DTI.mID);
 }
 
 inline void cAIGraph::Node::operator delete(void* p_addr) {
@@ -311,18 +348,17 @@ cAIGraph::Node::~Node() {
     } while (e != nullptr);
 }
 
-__attribute__((weak)) void cAIGraph::Node::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIGraph::Node::createProperty")
-    /* stub */
+void cAIGraph::Node::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNumberOfLink", &mNumberOfLink, 1u, 0u);
 }
 
 inline cAIGraph::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cAIGraph::Node::MyDTI cAIGraph::Node::DTI("cAIGraph::Node", &::MtObject::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAIGraph::Node::MyDTI::newInstance() const {
-    DDON_STUB("cAIGraph::Node::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIGraph::Node::MyDTI::newInstance() const {
+    return new (16u) cAIGraph::Node;
 }
 
 const MtDTI& cAIGraph::Area::getDTI() const {
@@ -359,14 +395,15 @@ inline void cAIQuadTree::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAIQuadTree::DTI)->memFree(p_addr);
 }
 
-cAIQuadTree::cAIQuadTree() {
-    DDON_STUB("cAIQuadTree::cAIQuadTree")
-    /* stub */
+__attribute__((noinline)) cAIQuadTree::cAIQuadTree() {
+        mPos = MtVector3::Zero;
+        mXZ = MtVector3::Zero;
+        mMultiple = false;
+        mpTempRegion = nullptr;
 }
 
 __attribute__((noinline)) cAIQuadTree::~cAIQuadTree() {
-    DDON_STUB("cAIQuadTree::~cAIQuadTree")
-    /* stub */
+    deleteTempRegion();
 }
 
 __attribute__((weak)) void cAIQuadTree::createNode(const MtAABB& aabb, u32 nest, bool multiple) {
@@ -375,8 +412,16 @@ __attribute__((weak)) void cAIQuadTree::createNode(const MtAABB& aabb, u32 nest,
 }
 
 __attribute__((weak)) void cAIQuadTree::createNode(const MtAABB& aabb, u32 nest, u32 num, bool multiple) {
-    DDON_STUB("cAIQuadTree::createNode")
-    /* stub */
+    mpNode = new (16) Node[num];
+    mNumberOfNode = num;
+    mNest = static_cast<u8>(nest);
+    mAxisPartition = 1;
+    for (u32 i = 0; i < nest - 1; ++i) {
+        mAxisPartition *= 2;
+    }
+    mPos = aabb.minpos;
+    mXZ = aabb.maxpos - aabb.minpos;
+    mMultiple = multiple;
 }
 
 __attribute__((weak)) cAITreeBase::Node* cAIQuadTree::getNode(const MtVector3& pos, u32 nest) {
@@ -385,8 +430,10 @@ __attribute__((weak)) cAITreeBase::Node* cAIQuadTree::getNode(const MtVector3& p
 }
 
 __attribute__((weak)) MtAABB cAIQuadTree::getRegion() {
-    DDON_STUB("cAIQuadTree::getRegion")
-    __builtin_unreachable();
+        MtAABB aabb;
+        aabb.minpos = mPos;
+        aabb.maxpos = mPos + mXZ;
+        return aabb;
 }
 
 inline cAIQuadTree::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -407,8 +454,7 @@ inline void* cAITreeBase::operator new(size_t sz, u32 align) {
 }
 
 cAITreeBase::~cAITreeBase() {
-    DDON_STUB("cAITreeBase::~cAITreeBase")
-    /* stub */
+    if (mpNode) delete[] mpNode;
 }
 
 inline cAITreeBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -428,8 +474,7 @@ inline void cAITreeBase::Node::operator delete(void* p_addr) {
 }
 
 cAITreeBase::Node::~Node() {
-    DDON_STUB("cAITreeBase::Node::~Node")
-    /* stub */
+    removeAll();
 }
 
 inline cAITreeBase::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

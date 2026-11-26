@@ -889,6 +889,19 @@ inline void* CDataItemList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline CDataItemList::CDataItemList() {
+    this->m_ucStorageType = 0;
+    this->m_usSlotNo = 0;
+    this->m_ucColor = 0;
+    this->m_unEquipPoint = 0;
+    this->m_unEquipCharacterID = 0;
+    this->m_unEquipPawnID = 0;
+    this->m_unItemID = 0;
+    this->m_unItemNum = 0;
+    this->m_ucPlusValue = 0;
+    this->m_bBind = false;
+}
+
 inline void* CDataItemUIDList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -899,6 +912,10 @@ inline CDataItemUIDList::CDataItemUIDList() {
 
 inline void* CDataItemUpdateResult::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline CDataItemUpdateResult::CDataItemUpdateResult() {
+    this->m_nUpdateItemNum = 0;
 }
 
 inline void* CDataJewelryEquipLimit::operator new(size_t sz, void* p_addr) {

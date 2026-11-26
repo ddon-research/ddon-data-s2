@@ -23,6 +23,7 @@ class MtVector3;
 class cDraw;
 class cGUIClanExecutor;
 class cGUIContentsExecutor;
+class cParticleGenerator;
 class cUnit;
 class sRender;
 class sScene;
@@ -124,6 +125,7 @@ class sUnit : public cSystem
 {
     friend class cGUIClanExecutor;
     friend class cGUIContentsExecutor;
+    friend class cParticleGenerator;
     friend class sRender;
     friend class sScene;
     friend class sUnitExt;
@@ -395,6 +397,18 @@ inline sUnit* sUnit::getInstance() {
 
 inline void* sUnit::MoveLine::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline sUnit::MoveLine::MoveLine() {
+    this->mpBottom = nullptr;
+    this->mpTop = nullptr;
+    this->mDeltaTime = 1.0f;
+    this->mParallel = 1;
+    this->mPause = 0;
+    this->mDraw = 1;
+    this->mLineType = 127;
+    this->mPhase = 0;
+    this->mIsInParallel = 0;
 }
 
 inline bool sUnit::MoveLine::isParallel() {

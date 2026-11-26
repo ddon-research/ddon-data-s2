@@ -39,9 +39,13 @@ cCollNode::~cCollNode() {
     mpCollGeom = nullptr;
 }
 
-__attribute__((weak)) void cCollNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCollNode::createProperty")
-    /* stub */
+void cCollNode::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpCollGeom", reinterpret_cast<MtObject* *>(&mpCollGeom), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttr", &mAttr, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColNodeFlag", &mColNodeFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHitCollisionFlag", &mHitCollisionFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNodeID", &mNodeID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 1u, 0u);
 }
 
 inline cCollNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

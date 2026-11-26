@@ -6,6 +6,8 @@
 // Dependencies
 #include "../MT/MtCollisionMath.h"
 #include "../MT/MtDTI.h"
+
+#include "../MT/MtMemory.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
 
@@ -420,4 +422,12 @@ inline cBVHCollision::NodeBinaryCommon::NodeBinaryCommon() {
 
 inline void* cBVHCollision::cWorkBuildOnlineFast::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void cBVHCollision::NodeBinaryBasic::operator delete(void* padr) {
+    MtMemory::mpAllocatorType[12]->memFree(padr);
+}
+
+inline void cBVHCollision::NodeBinaryBasic::operator delete[](void* padr) {
+    MtMemory::mpAllocatorType[12]->memFree(padr);
 }

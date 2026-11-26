@@ -60,6 +60,7 @@ namespace nGUI { struct PROCESS_WORK; }
 namespace nGUI { struct SWITCH_CONDITION; }
 class rGUI;
 class uGUIBase;
+class uGUIJobSelect;
 
 // Declarations
 class uGUI;
@@ -82,6 +83,7 @@ class uGUI : public uCoord
     friend class cGUIInstAnimation;
     friend class cGUIInstRoot;
     friend class uGUIBase;
+    friend class uGUIJobSelect;
 public:
     class MyDTI;
     struct DuplicateBuffer;

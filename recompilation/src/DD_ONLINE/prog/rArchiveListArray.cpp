@@ -6,6 +6,8 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+
+#include "../../MT/MtStream.h"
 #include "../../XFramework/cResource.h"
 #include "rArchiveListTag.h"
 #ifndef DDON_STUB
@@ -43,8 +45,33 @@ MT_CTSTR rArchiveListArray::getExt() const {
 }
 
 __attribute__((weak)) bool rArchiveListArray::load(MtStream& in) {
-    DDON_STUB("rArchiveListArray::load")
-    return {};
+    u32 len = in.getLength();
+    allocMem(len);
+    stHeader* p_header = mpHeader;
+    if (p_header == nullptr) {
+        return false;
+    }
+    if (len < HEADER_SIZE) {
+        return false;
+    }
+    in.read(p_header, HEADER_SIZE);
+    if (p_header->Version != DATA_VERSION) {
+        freeMem();
+        return false;
+    }
+    in.read(p_header->Tag, len - HEADER_SIZE);
+    u32 tag_num = p_header->TagNum;
+    for (u32 tag_idx = 0; tag_idx < tag_num; ++tag_idx) {
+        cArchiveListTag& tag = p_header->Tag[tag_idx];
+        tag.mpNodeArray = reinterpret_cast<cArchiveListNode*>(reinterpret_cast<u8*>(p_header) + reinterpret_cast<size_t>(tag.mpNodeArray));
+        tag.mpArcPath = reinterpret_cast<MT_CHAR*>(p_header) + reinterpret_cast<size_t>(tag.mpArcPath);
+        u32 node_num = tag.mNodeNum;
+        for (u32 node_idx = 0; node_idx < node_num; ++node_idx) {
+            cArchiveListNode& node = tag.mpNodeArray[node_idx];
+            node.mpDbgResData = nullptr;
+        }
+    }
+    return true;
 }
 
 __attribute__((weak)) cArchiveListTag* rArchiveListArray::searchListTag(u32 tagId) {

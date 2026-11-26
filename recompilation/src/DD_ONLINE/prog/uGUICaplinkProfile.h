@@ -275,6 +275,13 @@ public:
     static MyDTI DTI;
 };
 
+inline cCaplinkProfIconLoader::cCaplinkProfIconLoader() {
+    this->mpObjTex = nullptr;
+    this->mIconIndex = 255;
+    this->mId = 0;
+    this->mIsUpdate = false;
+}
+
 inline void* uGUICaplinkProfile::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "sRender.h"
 #ifndef DDON_STUB
@@ -68,9 +69,23 @@ MT_CTSTR cUnit::getName() {
     return getDTI().mName;
 }
 
-__attribute__((weak)) void cUnit::createProperty(MtPropertyList& s) {
-    DDON_STUB("cUnit::createProperty")
-    /* stub */
+void cUnit::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Move", reinterpret_cast<MT_MFUNC>(&::cUnit::isMove), reinterpret_cast<MT_MFUNC>(&::cUnit::setMove), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Draw", reinterpret_cast<MT_MFUNC>(&::cUnit::getTrans), reinterpret_cast<MT_MFUNC>(&::cUnit::setDraw), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Fix", reinterpret_cast<MT_MFUNC>(&::cUnit::isFix), reinterpret_cast<MT_MFUNC>(&::cUnit::setFix), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mDrawMode", reinterpret_cast<MT_MFUNC>(&::cUnit::getDrawMode), reinterpret_cast<MT_MFUNC>(&::cUnit::setDrawMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mDrawView", reinterpret_cast<MT_MFUNC>(&::cUnit::getDrawView), reinterpret_cast<MT_MFUNC>(&::cUnit::setDrawView), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "Name", reinterpret_cast<MT_MFUNC>(&::cUnit::getName), reinterpret_cast<MT_MFUNC>(&::cUnit::setName), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMoveLine", reinterpret_cast<MT_MFUNC>(&::cUnit::getMoveLine), reinterpret_cast<MT_MFUNC>(&::cUnit::setMoveLine), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mBeFlag", reinterpret_cast<MT_MFUNC>(&::cUnit::getBeFlag), reinterpret_cast<MT_MFUNC>(&::cUnit::setBeFlag), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mRno", &this->mRno, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUnitParam", &mUnitParam, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDeltaTime", &mDeltaTime, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUnitGroup", &mUnitGroup, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Trans", reinterpret_cast<MT_MFUNC>(&::cUnit::getTrans), reinterpret_cast<MT_MFUNC>(&::cUnit::setDraw), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mTransMode", reinterpret_cast<MT_MFUNC>(&::cUnit::getDrawMode), reinterpret_cast<MT_MFUNC>(&::cUnit::setDrawMode), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mTransView", reinterpret_cast<MT_MFUNC>(&::cUnit::getDrawView), reinterpret_cast<MT_MFUNC>(&::cUnit::setDrawView), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASS, "mpHardwareDispCtrl", reinterpret_cast<MT_MFUNC>(&::cUnit::getHardwareDispCtrl), reinterpret_cast<MT_MFUNC>(&::cUnit::setHardwareDispCtrl), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 void cUnit::kill() {
@@ -176,9 +191,8 @@ inline void cUnit::cHardwareDispCtrl::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cUnit::cHardwareDispCtrl::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cUnit::cHardwareDispCtrl::createProperty(MtPropertyList& s) {
-    DDON_STUB("cUnit::cHardwareDispCtrl::createProperty")
-    /* stub */
+void cUnit::cHardwareDispCtrl::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mFlag", &mFlag, 0u, 0u);
 }
 
 void cUnit::cHardwareDispCtrl::init() {
@@ -205,8 +219,7 @@ inline cUnit::cHardwareDispCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 cUnit::cHardwareDispCtrl::MyDTI cUnit::cHardwareDispCtrl::DTI("cUnit::cHardwareDispCtrl", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cUnit::cHardwareDispCtrl::MyDTI::newInstance() const {
-    DDON_STUB("cUnit::cHardwareDispCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* cUnit::cHardwareDispCtrl::MyDTI::newInstance() const {
+    return new (16u) cUnit::cHardwareDispCtrl;
 }
 

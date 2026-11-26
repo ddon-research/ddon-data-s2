@@ -31,16 +31,16 @@ cJointInfo::cJointInfo() {
     mJntNo = 255;
     mAttr = 0;
     mRadius = 0.0f;
-    mOfsPos.x = MtVector3::Zero.x;
-    mOfsPos.y = MtVector3::Zero.y;
-    mOfsPos.z = MtVector3::Zero.z;
-    mOfsPos.pad_ = 0.0f;
+    mOfsPos = MtVector3::Zero;
     mJointInfoID = 0;
 }
 
-__attribute__((weak)) void cJointInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("cJointInfo::createProperty")
-    /* stub */
+void cJointInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mJntNo", &mJntNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttr", &mAttr, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRadius", &mRadius, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOfsPos", &mOfsPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJointInfoID", &mJointInfoID, 0u, 0u);
 }
 
 inline cJointInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

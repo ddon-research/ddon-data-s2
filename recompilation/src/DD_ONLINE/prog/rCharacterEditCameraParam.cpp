@@ -60,9 +60,11 @@ cCharacterEditCameraParam::cCameraParam::cCameraParam() {
     mGlobalOffset.pad_ = 0.0f;
 }
 
-__attribute__((weak)) void cCharacterEditCameraParam::cCameraParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCharacterEditCameraParam::cCameraParam::createProperty")
-    /* stub */
+void cCharacterEditCameraParam::cCameraParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAttachJoint", &mAttachJoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCameraOffset", &mCameraOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetOffset", &mTargetOffset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGlobalOffset", &mGlobalOffset, 0u, 0u);
 }
 
 inline cCharacterEditCameraParam::cCameraParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

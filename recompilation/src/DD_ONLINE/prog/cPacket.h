@@ -154,3 +154,29 @@ inline void* CPacketDataBase::operator new(size_t sz, void* p_addr) {
 
 inline CPacketDataBase::CPacketDataBase() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemory.h"
+
+inline CPacket::CPacket() {
+    // unproven
+}
+
+__attribute__((used)) inline CPacket::~CPacket() {
+    // unproven
+}
+
+inline CPacketBase::CPacketBase() {
+    m_pStart = m_pEnd = m_pReader = m_pWriter = nullptr;
+    mpAllocator = MtMemory::getAllocator(7);
+    m_pStart = m_pBuffer = static_cast<unsigned char*>(mpAllocator->memAlloc(BuffSize, 16));
+    m_pEnd = m_pStart + BuffSize;
+    m_pReader = m_pWriter = m_pStart;
+}
+
+__attribute__((used)) inline CPacketBase::~CPacketBase() {
+    if (m_pBuffer == nullptr) return;
+    if (mpAllocator == nullptr) return;
+    mpAllocator->memFree(static_cast<void*>(m_pBuffer));
+}

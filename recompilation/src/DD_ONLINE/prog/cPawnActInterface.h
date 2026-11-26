@@ -31,6 +31,7 @@ class cAITargetInfoArray;
 class cGeneralPoint;
 class cGeneralPointPtr;
 class cPawnEnableArea;
+class cpPawnThink;
 struct stMoveAngleRet;
 class uBaseModel;
 class uCharacter;
@@ -2706,6 +2707,7 @@ public:
 
 class cPawnActInterface : public cAIObject
 {
+    friend class cpPawnThink;
 public:
     enum CTRL_FLAG
     {

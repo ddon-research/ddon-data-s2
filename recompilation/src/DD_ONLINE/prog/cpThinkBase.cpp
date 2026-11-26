@@ -49,9 +49,8 @@ f32 cpThinkBase::getMoveLvLX() {
     return 0.0f;
 }
 
-__attribute__((weak)) const MtVector3& cpThinkBase::getTargetPos() {
-    DDON_STUB("cpThinkBase::getTargetPos")
-    __builtin_unreachable();
+const MtVector3& cpThinkBase::getTargetPos() {
+    return MtVector3::Zero;
 }
 
 u32 cpThinkBase::getTargetUID() {

@@ -255,15 +255,21 @@ class MtAllocator;
 class MtDTI;
 class MtObject;
 class MtString;
+class cEndContentsManager;
+class cGUIExtNetMgr;
 class cGatherItemList;
 class cMenuCharacterList;
 class cMenuClanList;
 class cMenuEntryBoardItemList;
+class cMenuServerList;
 class cNetGameServer;
+namespace nSessionManager { class cNetSessionManager; }
 class sCraftManager;
+class sNetworkExt;
 class sQuestManagerExt;
 class uGUIClanScout;
 class uGUIClanSearch;
+class uGUIGPShop;
 
 // Declarations
 namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES; }
@@ -2116,6 +2122,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES : public ::CPacketDataBase
     {
+        friend class ::cNetGameServer;
     public:
         class MyDTI;
     public:
@@ -2322,6 +2329,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES : public ::CPacketDataBase
     {
+        friend class ::cNetGameServer;
     public:
         class MyDTI;
     public:
@@ -3060,6 +3068,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_CLAN_BASE_GET_INFO_RES : public ::CPacketDataBase
     {
+        friend class ::sNetworkExt;
     public:
         class MyDTI;
     public:
@@ -9595,6 +9604,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_END_CONTENTS_GROUP_RES : public ::CPacketDataBase
     {
+        friend class ::cEndContentsManager;
     public:
         class MyDTI;
     public:
@@ -10289,6 +10299,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_JOB_CHANGE_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cGUIExtNetMgr;
     public:
         class MyDTI;
     public:
@@ -10386,6 +10397,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cGUIExtNetMgr;
     public:
         class MyDTI;
     public:
@@ -10430,6 +10442,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cGUIExtNetMgr;
     public:
         class MyDTI;
     public:
@@ -10474,6 +10487,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_LEARNED_SKILL_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cGUIExtNetMgr;
     public:
         class MyDTI;
     public:
@@ -11191,6 +11205,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::sQuestManagerExt;
     public:
         class MyDTI;
     public:
@@ -11604,6 +11619,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cGUIExtNetMgr;
     public:
         class MyDTI;
     public:
@@ -11650,6 +11666,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cGUIExtNetMgr;
     public:
         class MyDTI;
     public:
@@ -11696,6 +11713,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cGUIExtNetMgr;
     public:
         class MyDTI;
     public:
@@ -11834,6 +11852,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cGUIExtNetMgr;
     public:
         class MyDTI;
     public:
@@ -12061,6 +12080,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_PRESET_ABILITY_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cGUIExtNetMgr;
     public:
         class MyDTI;
     public:
@@ -13028,6 +13048,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_SERVER_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cMenuServerList;
     public:
         class MyDTI;
     public:
@@ -13072,6 +13093,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_SET_ABILITY_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::cGUIExtNetMgr;
     public:
         class MyDTI;
     public:
@@ -14500,6 +14522,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES : public ::CPacketDataBase
     {
+        friend class ::uGUIGPShop;
     public:
         class MyDTI;
     public:
@@ -17430,6 +17453,7 @@ namespace nUserSession {
     class CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC : public ::CPacketDataBase
     {
         friend class ::cNetGameServer;
+        friend class nSessionManager::cNetSessionManager;
         friend class ::sQuestManagerExt;
     public:
         class MyDTI;
@@ -20428,6 +20452,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_QUEST_PROGRESS_RES : public ::CPacketDataBase
     {
+        friend class ::cNetGameServer;
     public:
         class MyDTI;
     public:
@@ -26098,6 +26123,10 @@ inline nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES::CPacket_S2C_CHA
     this->m_bIsReceived = false;
 }
 
+inline u32 nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES::PawnID() const {
+    return this->m_unPawnID;
+}
+
 inline MtTypedArray<CDataEquipJobItem>& nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES::EquipJobItemList() {
     return this->m_EquipJobItemList;
 }
@@ -26251,6 +26280,12 @@ inline nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::CPacket_S2C_CHECK
 
 inline void* nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::CPacket_S2C_CLAN_BASE_GET_INFO_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
 }
 
 inline s32 nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::Result() const {
@@ -26640,6 +26675,13 @@ inline void* nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::operato
     return p_addr;
 }
 
+inline nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unClanPoint = 0;
+    this->m_bIsReceived = false;
+}
+
 inline s32 nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::Result() const {
     return this->m_nResult;
 }
@@ -26654,6 +26696,13 @@ inline const CClanShopInfo& nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LI
 
 inline void* nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unClanPoint = 0;
+    this->m_bIsReceived = false;
 }
 
 inline s32 nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::Result() const {
@@ -27291,6 +27340,8 @@ inline nUserSession::CPacket_S2C_EXCHANGE_OM_INSTANT_KEY_VALUE_RES::CPacket_S2C_
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_unStageId = 0;
+    this->m_bIsReceived = false;
+    this->m_ulValueOld = 0;
 }
 
 inline void* nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::operator new(size_t sz, void* p_addr) {
@@ -27548,6 +27599,20 @@ inline nUserSession::CPacket_S2C_GET_AREA_INFO_LIST_RES::CPacket_S2C_GET_AREA_IN
 
 inline void* nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::CPacket_S2C_GET_AREA_MASTER_INFO_RES() {
+    this->m_usError = 0;
+    this->m_unToNextPoint = 0;
+    this->m_unWeekPoint = 0;
+    this->m_unLastWeekPoint = 0;
+    this->m_unRank = 0;
+    this->m_unPoint = 0;
+    this->m_nResult = 0;
+    this->m_unAreaId = 0;
+    this->m_bCanReciveSupply = false;
+    this->m_bCanRankUp = false;
+    this->m_bIsReceived = false;
 }
 
 inline u32 nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::AreaId() const {
@@ -28000,6 +28065,12 @@ inline nUserSession::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_RES::CPacket_S2C_GET_
 
 inline void* nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::CPacket_S2C_GET_FRIEND_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
 }
 
 inline MtTypedArray<CDataFriendInfo>& nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::FriendInfoList() {
@@ -29041,6 +29112,13 @@ inline nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES::CPacket_S2C_GET_WARP_P
 
 inline void* nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::CPacket_S2C_GET_WORLD_INFO_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unWorldID = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE::operator new(size_t sz, void* p_addr) {
@@ -30254,6 +30332,10 @@ inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES::op
 inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
+    this->m_bIsHotSpot = false;
+    this->m_ucSallyType = 0;
+    this->m_ucSallyCount = 0;
+    this->m_bIsReceived = false;
 }
 
 inline s32 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES::Result() const {
@@ -30262,6 +30344,13 @@ inline s32 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES::Resu
 
 inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_ucSallyCount = 0;
+    this->m_bIsReceived = false;
 }
 
 inline s32 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::Result() const {

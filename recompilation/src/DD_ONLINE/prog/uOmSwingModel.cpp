@@ -11,6 +11,7 @@
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSwing.h"
 #include "../../XFramework/cUnit.h"
+#include "cpEffectProvider.h"
 #include "../../XFramework/rModel.h"
 #include "rOmParam.h"
 #include "../../XFramework/rTexture.h"
@@ -49,8 +50,11 @@ uOmSwingModel::uOmSwingModel() {
 }
 
 uOmSwingModel::~uOmSwingModel() {
-    DDON_STUB("uOmSwingModel::~uOmSwingModel")
-    /* stub */
+    if (mpcPrv == nullptr) {
+        return;
+    }
+    delete mpcPrv;
+    mpcPrv = nullptr;
 }
 
 __attribute__((weak)) void uOmSwingModel::setup() {

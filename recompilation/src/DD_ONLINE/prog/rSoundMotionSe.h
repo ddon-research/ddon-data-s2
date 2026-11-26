@@ -5,6 +5,9 @@
 
 // Dependencies
 #include "../../MT/MtCollection.h"
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtObject.h"
@@ -192,4 +195,32 @@ inline void* rSoundMotionSe::cSoundMotionSeData::operator new(size_t sz, void* p
 
 inline rSoundMotionSe::cSoundMotionSeData::MOTION_SE_DATA* rSoundMotionSe::cSoundMotionSeData::getData() {
     return &this->mData;
+}
+
+inline MtAllocator* rSoundMotionSe::cSoundMotionSeData::getAllocator() {
+    return MtMemoryAllocator::getAllocator(DTI);
+}
+
+inline void* rSoundMotionSe::cSoundMotionSeData::operator new(size_t sz, u32 align) {
+    return getAllocator()->memAlloc(sz, align, DTI.getID());
+}
+
+inline rSoundMotionSe::cSoundMotionSeData::cSoundMotionSeData() {
+    mData.mUniqueID = -1;
+    mData.mRequestType = 0;
+    mData.mSeReqNo_1 = 0;
+    mData.mSeReqNo_2 = -1;
+    mData.mSeReqNo_3 = -1;
+    mData.mSeJointID = -1;
+    mData.mSeJointAttachFlag = true;
+    mData.mOffset = MtVector3::Zero;
+    mData.mUpMarginY = 10.0f;
+    mData.mDownMarginY = -10.0f;
+    mData.mAttributeSeFlag = false;
+    mData.mFreeArea[MOTION_SPD_FREE_NO] = 0;
+    mData.mFreeArea[HUMAN_TYPE_FREE_NO] = 0;
+}
+
+inline MtAllocator* rSoundMotionSe::getAllocator() {
+    return MtMemoryAllocator::getAllocator(DTI);
 }

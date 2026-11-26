@@ -49,9 +49,13 @@ cSetInfoEnemy::cSetInfoEnemy() {
 cSetInfoEnemy::~cSetInfoEnemy() {
 }
 
-__attribute__((weak)) void cSetInfoEnemy::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSetInfoEnemy::createProperty")
-    /* stub */
+void cSetInfoEnemy::createProperty(MtPropertyList& s) {
+    this->cSetInfoCharacter::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mGroup", &mGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEmReactNo", &mEmReactNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPresetKind", &mPresetKind, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSubGroupNo", &mSubGroupNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReturnPoint2nd", &mReturnPoint2nd, 0u, 0u);
 }
 
 bool cSetInfoEnemy::load(MtDataReader& r) {
@@ -108,9 +112,9 @@ __attribute__((weak)) bool cSetInfoEnemy::applyInfo(cUnit* pu) const {
 void cSetInfoEnemy::copy(cSetInfo* p) {
     this->cSetInfoCharacter::copy(p);
     const MtDTI& t0 = p->getDTI();
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cSetInfoEnemy::DTI) + 8);
+    MT_CTSTR v0_1 = cSetInfoEnemy::DTI.mName;
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+        if (v0_1 == v0_0->mName) {
             cSetInfoEnemy* pSie = static_cast<cSetInfoEnemy*>(p);
             mPresetKind = pSie->mPresetKind;
             mGroup = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 72);
@@ -119,8 +123,8 @@ void cSetInfoEnemy::copy(cSetInfo* p) {
             mReturnPoint2nd = pSie->mReturnPoint2nd;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }

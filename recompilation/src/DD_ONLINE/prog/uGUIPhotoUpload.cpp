@@ -54,8 +54,15 @@ inline void uGUIPhotoUpload::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIPhotoUpload::~uGUIPhotoUpload() {
-    DDON_STUB("uGUIPhotoUpload::~uGUIPhotoUpload")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
+    }
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearScreenShotCategory();
 }
 
 bool uGUIPhotoUpload::loadResource() {

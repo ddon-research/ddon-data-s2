@@ -219,8 +219,14 @@ inline void* MtPerformance::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline MtPerformance::MtPerformance() {
+}
+
 inline void* MtPerformanceCounter::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline MtPerformanceCounter::MtPerformanceCounter() {
 }
 
 inline void* MtPerformanceTimer::operator new(size_t sz, void* p_addr) {

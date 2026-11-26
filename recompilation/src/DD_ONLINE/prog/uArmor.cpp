@@ -87,9 +87,10 @@ void uArmor::setup() {
     }
 }
 
-__attribute__((weak)) void uArmor::createProperty(MtPropertyList& s) {
-    DDON_STUB("uArmor::createProperty")
-    /* stub */
+void uArmor::createProperty(MtPropertyList& s) {
+    this->uDDOModel::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpOwner", reinterpret_cast<MtObject* *>(&mpOwner), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpSimSoftBody", reinterpret_cast<MtObject* *>(&mpSimSoftBody), 0u, 0u);
 }
 
 __attribute__((weak)) void uArmor::move() {
@@ -137,9 +138,73 @@ __attribute__((weak)) void uArmor::createComponent() {
     /* stub */
 }
 
-__attribute__((weak)) void uArmor::callbackUpdateMatrix() {
-    DDON_STUB("uArmor::callbackUpdateMatrix")
-    /* stub */
+void uArmor::callbackUpdateMatrix() {
+    updateLocalMatrix();
+    updateWorldMatrix();
+    uModel* v0_8 = mpOwner;
+    if (v0_8 != nullptr) {
+        u32 v0_6 = v0_8->mJointNum;
+        if (v0_6 != 0) {
+            u32 v0_7 = mJointNum;
+            if (v0_7 != 0) {
+                Joint* p0_4 = mJoint;
+                for (unsigned int i0_5 = 0;;) {
+                    if (p0_4 != nullptr) {
+                        const u8 t0 = v0_8->mJointTable[p0_4->mNo];
+                        if (t0 != 0xFF) {
+                            Joint* t1 = v0_8->mJoint;
+                            if ((&t1[t0]) != nullptr) {
+                                if (((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(p0_4) + 160)) >> 8) & 255u) != 255) {
+                                    if (((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(p0_4) + 160)) >> 8) & 255u) < v0_6) {
+                                        p0_4->mWmat.m[0].x = t1[t0].mWmat.m[0].x;
+                                        p0_4->mWmat.m[0].y = t1[t0].mWmat.m[0].y;
+                                        p0_4->mWmat.m[0].z = t1[t0].mWmat.m[0].z;
+                                        p0_4->mWmat.m[0].w = t1[t0].mWmat.m[0].w;
+                                        p0_4->mWmat.m[1].x = t1[t0].mWmat.m[1].x;
+                                        p0_4->mWmat.m[1].y = t1[t0].mWmat.m[1].y;
+                                        p0_4->mWmat.m[1].z = t1[t0].mWmat.m[1].z;
+                                        p0_4->mWmat.m[1].w = t1[t0].mWmat.m[1].w;
+                                        p0_4->mWmat.m[2].x = t1[t0].mWmat.m[2].x;
+                                        p0_4->mWmat.m[2].y = t1[t0].mWmat.m[2].y;
+                                        p0_4->mWmat.m[2].z = t1[t0].mWmat.m[2].z;
+                                        p0_4->mWmat.m[2].w = t1[t0].mWmat.m[2].w;
+                                        p0_4->mWmat.m[3].x = t1[t0].mWmat.m[3].x;
+                                        p0_4->mWmat.m[3].y = t1[t0].mWmat.m[3].y;
+                                        p0_4->mWmat.m[3].z = t1[t0].mWmat.m[3].z;
+                                        p0_4->mWmat.m[3].w = t1[t0].mWmat.m[3].w;
+                                    }
+                                } else {
+                                    p0_4->mWmat.m[0].x = t1[t0].mWmat.m[0].x;
+                                    p0_4->mWmat.m[0].y = t1[t0].mWmat.m[0].y;
+                                    p0_4->mWmat.m[0].z = t1[t0].mWmat.m[0].z;
+                                    p0_4->mWmat.m[0].w = t1[t0].mWmat.m[0].w;
+                                    p0_4->mWmat.m[1].x = t1[t0].mWmat.m[1].x;
+                                    p0_4->mWmat.m[1].y = t1[t0].mWmat.m[1].y;
+                                    p0_4->mWmat.m[1].z = t1[t0].mWmat.m[1].z;
+                                    p0_4->mWmat.m[1].w = t1[t0].mWmat.m[1].w;
+                                    p0_4->mWmat.m[2].x = t1[t0].mWmat.m[2].x;
+                                    p0_4->mWmat.m[2].y = t1[t0].mWmat.m[2].y;
+                                    p0_4->mWmat.m[2].z = t1[t0].mWmat.m[2].z;
+                                    p0_4->mWmat.m[2].w = t1[t0].mWmat.m[2].w;
+                                    p0_4->mWmat.m[3].x = t1[t0].mWmat.m[3].x;
+                                    p0_4->mWmat.m[3].y = t1[t0].mWmat.m[3].y;
+                                    p0_4->mWmat.m[3].z = t1[t0].mWmat.m[3].z;
+                                    p0_4->mWmat.m[3].w = t1[t0].mWmat.m[3].w;
+                                }
+                            }
+                        }
+                    }
+                    if ((i0_5 + 1u) < v0_7) {
+                        p0_4 += 1;
+                        i0_5 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    updateBoundary();
 }
 
 __attribute__((weak)) uArmor* uArmor::createArmorModel(cWeaponResTable* pWepResData, uModel* pParent, u8 partsPatern, s8 colorPatern) {

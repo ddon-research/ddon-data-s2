@@ -54,8 +54,15 @@ inline void uGUIPhotoAlbum::operator delete(void* p_addr) {
 }
 
 uGUIPhotoAlbum::~uGUIPhotoAlbum() {
-    DDON_STUB("uGUIPhotoAlbum::~uGUIPhotoAlbum")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
+    if (mpGMDRes == nullptr) {
+        return;
+    }
+    mpGMDRes->release();
+    mpGMDRes = nullptr;
 }
 
 bool uGUIPhotoAlbum::loadResource() {

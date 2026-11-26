@@ -26,7 +26,7 @@ struct SceSaveDataFingerprint;
 struct SceSaveDataIcon;
 struct SceSaveDataTitleId;
 struct _SceKernelSema;
-class cGUIUtility;
+class sSavedataExt;
 class uGUIOption;
 
 // Declarations
@@ -62,7 +62,7 @@ using u8 = unsigned char;
 
 class sSavedata : public cSystem
 {
-    friend class cGUIUtility;
+    friend class sSavedataExt;
     friend class uGUIOption;
 public:
     enum

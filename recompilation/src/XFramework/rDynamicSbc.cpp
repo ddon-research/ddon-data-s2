@@ -85,8 +85,72 @@ bool rDynamicSbc::save(MtStream& out) {
 }
 
 __attribute__((weak)) void rDynamicSbc::clear() {
-    DDON_STUB("rDynamicSbc::clear")
-    /* stub */
+    mVertexNum = 0;
+    mTriangleNum = 0;
+    mJointNum = 0;
+    mMaterialNum = 0;
+    if (mpVertexJointInfo != nullptr) {
+        MtMemory::mpAllocatorType[12]->memFree(static_cast<void*>(mpVertexJointInfo));
+        mpVertexJointInfo = nullptr;
+    }
+    if (mpTriList != nullptr) {
+        MtMemory::mpAllocatorType[12]->memFree(static_cast<void*>(mpTriList));
+        mpTriList = nullptr;
+    }
+    MtVector4* t0 = mpVertexPos;
+    if (t0 != nullptr) {
+        MtMemoryAllocator::getAllocator(rDynamicSbc::DTI)->memFree(static_cast<void*>(t0));
+        mpVertexPos = nullptr;
+    }
+    MtVector4* t1 = mpVertexWeight;
+    if (t1 != nullptr) {
+        MtMemoryAllocator::getAllocator(rDynamicSbc::DTI)->memFree(static_cast<void*>(t1));
+        mpVertexWeight = nullptr;
+    }
+    if (mpJointInfo != nullptr) {
+        MtMemory::mpAllocatorType[12]->memFree(static_cast<void*>(mpJointInfo));
+        mpJointInfo = nullptr;
+    }
+    if (mpMaterialInfo != nullptr) {
+        MtMemory::mpAllocatorType[4]->memFree(static_cast<void*>(mpMaterialInfo));
+        mpMaterialInfo = nullptr;
+    }
+    PartsInfo* v8_4;
+    if (mPartsNum == 0) {
+        v8_4 = mpPartsList;
+    } else {
+        u32 v6_0 = mPartsNum;
+        unsigned int i6_3 = 0;
+        PartsInfo* v6_4 = mpPartsList;
+        u32 v7_0;
+        PartsInfo* v7_3;
+        for (;;) {
+            u32* t2 = v6_4[i6_3].pTriangleIndex;
+            if (t2 == nullptr) {
+                v7_0 = v6_0;
+                v7_3 = v6_4;
+            } else {
+                MtMemoryAllocator::getAllocator(rDynamicSbc::DTI)->memFree(static_cast<void*>(t2));
+                PartsInfo* t3 = mpPartsList;
+                t3[i6_3].pTriangleIndex = nullptr;
+                v7_0 = mPartsNum;
+                v7_3 = t3;
+            }
+            if ((i6_3 + 1u) < v7_0) {
+                v6_0 = v7_0;
+                i6_3 += 1u;
+                v6_4 = v7_3;
+            } else {
+                v8_4 = v7_3;
+                break;
+            }
+        }
+    }
+    mPartsNum = 0;
+    if (v8_4 != nullptr) {
+        MtMemory::mpAllocatorType[12]->memFree(static_cast<void*>(v8_4));
+        mpPartsList = nullptr;
+    }
 }
 
 inline rDynamicSbc::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

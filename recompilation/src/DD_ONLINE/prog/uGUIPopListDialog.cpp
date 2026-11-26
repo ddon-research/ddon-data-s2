@@ -44,8 +44,10 @@ inline void uGUIPopListDialog::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIPopListDialog::~uGUIPopListDialog() {
-    DDON_STUB("uGUIPopListDialog::~uGUIPopListDialog")
-    /* stub */
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
+    }
 }
 
 void uGUIPopListDialog::createProperty(MtPropertyList& s) {

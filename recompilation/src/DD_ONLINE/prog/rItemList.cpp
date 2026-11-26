@@ -1,5 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <sce_atomic.h>
+#include <string.h>
 #include "rItemList.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -141,9 +143,9 @@ bool rItemList::save(MtStream& out) {
     return true;
 }
 
-__attribute__((weak)) void rItemList::createProperty(MtPropertyList& s) {
-    DDON_STUB("rItemList::createProperty")
-    /* stub */
+void rItemList::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpItemList", reinterpret_cast<MtObject* *>(&mpItemList), 0u, 0u);
 }
 
 MT_CTSTR rItemList::getExt() const {
@@ -214,14 +216,14 @@ rItemList::rItemParam* rItemList::getItemListByArcTagNo(u32 arcTagNo) const {
     } else {
         for (unsigned int i0_2 = 0;;) {
             if ((&mpItemList[i0_2]) != nullptr) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&mpItemList[i0_2]) + 72)) != 0) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&mpItemList[i0_2]) + 72)) + 8)) == arcTagNo) {
+                if (mpItemList[i0_2].mpWeaponParam != nullptr) {
+                    if (mpItemList[i0_2].mpWeaponParam->mModelTagId == arcTagNo) {
                         v2_0 = &mpItemList[i0_2];
                         break;
                     }
                 } else {
-                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&mpItemList[i0_2]) + 80)) != 0) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&mpItemList[i0_2]) + 80)) + 8)) == arcTagNo) {
+                    if (mpItemList[i0_2].mpProtectorParam != nullptr) {
+                        if (mpItemList[i0_2].mpProtectorParam->mModelTagId == arcTagNo) {
                             v2_0 = &mpItemList[i0_2];
                             break;
                         }
@@ -408,9 +410,52 @@ MT_CTSTR rItemList::rItemParam::getItemName() const {
     return nullptr;
 }
 
-__attribute__((weak)) void rItemList::rItemParam::getItemInfo(MtString& retStr) const {
-    DDON_STUB("rItemList::rItemParam::getItemInfo")
-    /* stub */
+void rItemList::rItemParam::getItemInfo(MtString& retStr) const {
+    if ((sGUI::mpInstance) == nullptr) {
+        return;
+    }
+    if (sItemManager::getInstance() == nullptr) {
+        return;
+    }
+    if (mCategory == 3) {
+        return;
+    }
+    rGUIMessage* prRes = sItemManager::getInstance()->getItemInfoGmd();
+    if (prRes == nullptr) {
+        return;
+    }
+    if (prRes->isUsage()) {
+        MT_CTSTR t0 = prRes->getMessage(mNameId);
+        if (t0 != retStr.ptr()) {
+            if (retStr.value != nullptr) {
+                if (sceAtomicAdd32Relaxed(&retStr.value->ref, -1) == 1) {
+                    (MtString::mpAllocator)->memFree(static_cast<void*>(retStr.value));
+                }
+                retStr.value = nullptr;
+            }
+            if (t0 != nullptr) {
+                size_t t1 = strlen(t0);
+                if (static_cast<unsigned int>(t1) != 0) {
+                    void* t2 = (MtString::mpAllocator)->memAlloc(static_cast<size_t>(static_cast<unsigned int>(t1)) + 12, 16u);
+                    retStr.value = static_cast<MtString::STRING*>(t2);
+                    retStr.value->ref = 1;
+                    retStr.value->length = static_cast<unsigned int>(t1);
+                    strcpy(reinterpret_cast<char*>(retStr.value->str), t0);
+                    prRes->release();
+                } else {
+                    retStr.value = nullptr;
+                    prRes->release();
+                }
+            } else {
+                retStr.value = nullptr;
+                prRes->release();
+            }
+        } else {
+            prRes->release();
+        }
+    } else {
+        prRes->release();
+    }
 }
 
 __attribute__((weak)) u32 rItemList::rItemParam::getStackMax(nCharacterData::ITEM_BAG_TYPE bagType) const {
@@ -457,14 +502,22 @@ __attribute__((weak)) bool rItemList::rItemParam::isCanEquip(u32 slotType) {
     return {};
 }
 
-__attribute__((weak)) bool rItemList::rItemParam::isWeapon() const {
-    DDON_STUB("rItemList::rItemParam::isWeapon")
-    return {};
+bool rItemList::rItemParam::isWeapon() const {
+    if (mCategory == 3) {
+        if ((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 16)) <= 12) {
+            return sItemManager::getInstance()->isWeaponCategory(static_cast<nCharacterData::EQUIP_CATEGORY>(((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 16)) == 12) ? static_cast<unsigned char>(4) : (*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 16))));
+        }
+    }
+    return sItemManager::getInstance()->isWeaponCategory(nCharacterData::EQUIP_CATEGORY_END);
 }
 
-__attribute__((weak)) bool rItemList::rItemParam::isArmor() const {
-    DDON_STUB("rItemList::rItemParam::isArmor")
-    return {};
+bool rItemList::rItemParam::isArmor() const {
+    if (mCategory == 3) {
+        if ((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 16)) <= 12) {
+            return sItemManager::getInstance()->isArmorCategory(static_cast<nCharacterData::EQUIP_CATEGORY>(((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 16)) == 12) ? static_cast<unsigned char>(4) : (*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 16))));
+        }
+    }
+    return sItemManager::getInstance()->isArmorCategory(nCharacterData::EQUIP_CATEGORY_END);
 }
 
 bool rItemList::rItemParam::isCostume() const {
@@ -474,9 +527,19 @@ bool rItemList::rItemParam::isCostume() const {
     return false;
 }
 
-__attribute__((weak)) u8 rItemList::rItemParam::getPhysicalType() const {
-    DDON_STUB("rItemList::rItemParam::getPhysicalType")
-    return {};
+u8 rItemList::rItemParam::getPhysicalType() const {
+    static const u8 type[4] = {
+        3,
+        0,
+        1,
+        2,
+    };
+    if (mpWeaponParam != nullptr) {
+        if (mpWeaponParam->mPhysicalType <= 3) {
+            return type[mpWeaponParam->mPhysicalType];
+        }
+    }
+    return 3;
 }
 
 u8 rItemList::rItemParam::getElementType() const {
@@ -716,7 +779,7 @@ rItemList::rParam* rItemList::rItemParam::getItemParam(rItemList::rParam::PARAM_
         } else {
             rParam* p0_0 = v0_3;
             for (unsigned int i0_2 = 0;;) {
-                if (static_cast<unsigned int>(kind) != static_cast<unsigned int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p0_0) + 8)))) {
+                if (static_cast<unsigned int>(kind) != static_cast<unsigned int>(p0_0->mKindType)) {
                     if ((i0_2 + 1u) < v0_4) {
                         p0_0 += 1;
                         i0_2 = i0_2 + 1u;
@@ -797,9 +860,9 @@ inline void rItemList::rVsEnemyParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rItemList::rVsEnemyParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rItemList::rVsEnemyParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("rItemList::rVsEnemyParam::createProperty")
-    /* stub */
+void rItemList::rVsEnemyParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mKindType", &mKindType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParam", &mParam, 0u, 0u);
 }
 
 MtUI* rItemList::rVsEnemyParam::createUI(MtProperty& prop) {
@@ -1005,9 +1068,137 @@ inline void rItemList::rItemParamXml::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rItemList::rItemParamXml::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rItemList::rItemParamXml::createProperty(MtPropertyList& s) {
-    DDON_STUB("rItemList::rItemParamXml::createProperty")
-    /* stub */
+void rItemList::rItemParamXml::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mItemId", &mItemId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNameId", &mNameId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStackMax", &mStackMax, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIconNo", &mIconNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIconColNo", &mIconColNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCategory", reinterpret_cast<s32*>(&mCategory), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaterialCategory", reinterpret_cast<s32*>(&mMaterialCategory), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPrice", &mPrice, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSell", &mIsSell, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsBazaar", &mIsBazaar, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRank", &mRank, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGrade", &mGrade, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSortNo", &mSortNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNameSortNo", &mNameSortNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseType", reinterpret_cast<s32*>(&mUseType), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttackStatus", &mAttackStatus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUnUseLobby", &mIsUnUseLobby, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWepCategory", reinterpret_cast<s32*>(&mWepCategory), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEquip", &mEquip, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPhysicalType", &mPhysicalType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mElementType", &mElementType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsJob01", &mIsJob01, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsJob02", &mIsJob02, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsJob03", &mIsJob03, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsJob04", &mIsJob04, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsJob05", &mIsJob05, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsJob06", &mIsJob06, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsJob07", &mIsJob07, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsJob08", &mIsJob08, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsJob09", &mIsJob09, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsJob10", &mIsJob10, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUseLv", &mIsUseLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeight", &mWeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUseNpc", &mIsUseNpc, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEleSlot", &mEleSlot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColorNo", &mColorNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSex", &mSex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mModelTagId", &mModelTagId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mModelParts", &mModelParts, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttack", &mAttack, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMagicAttack", &mMagicAttack, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPowerRev", &mPowerRev, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShieldStagger", &mShieldStagger, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShieldStamina", &mShieldStamina, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTShieldStorage", &mTShieldStorage, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mArrowNum", &mArrowNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm00", &mVsEm00, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm01", &mVsEm01, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm02", &mVsEm02, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm03", &mVsEm03, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm04", &mVsEm04, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm05", &mVsEm05, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm06", &mVsEm06, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm07", &mVsEm07, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm08", &mVsEm08, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm09", &mVsEm09, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm0a", &mVsEm0a, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm0b", &mVsEm0b, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm0c", &mVsEm0c, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm0d", &mVsEm0d, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm0e", &mVsEm0e, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEm0f", &mVsEm0f, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPoisonSav", &mPoisonSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSlowSav", &mSlowSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOilSav", &mOilSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlindSav", &mBlindSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSleepSav", &mSleepSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWaterSav", &mWaterSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSealSav", &mSealSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSoftBodySav", &mSoftBodySav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStoneSav", &mStoneSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGoldSav", &mGoldSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpredSav", &mSpredSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFreezeSav", &mFreezeSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShockSav", &mShockSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCrossSav", &mCrossSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStanSav", &mStanSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallFireSav", &mFallFireSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallIceSav", &mFallIceSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallThunderSav", &mFallThunderSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallSaintSav", &mFallSaintSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallBlindSav", &mFallBlindSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallAttackSav", &mFallAttackSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallDefSav", &mFallDefSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallMagicSav", &mFallMagicSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallMagicDefSav", &mFallMagicDefSav, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mChance", &mChance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDefense", &mDefense, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMagicDefense", &mMagicDefense, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDurability", &mDurability, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpirit", &mSpirit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxHpRev", &mMaxHpRev, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxStRev", &mMaxStRev, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFireEleDef", &mFireEleDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIceEleDef", &mIceEleDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mThunderEleDef", &mThunderEleDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSaintEleDef", &mSaintEleDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDarkEleDef", &mDarkEleDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPoisonDef", &mPoisonDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSlowDef", &mSlowDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOilDef", &mOilDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBlindDef", &mBlindDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSleepDef", &mSleepDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWaterDef", &mWaterDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSealDef", &mSealDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSoftBodyDef", &mSoftBodyDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStoneDef", &mStoneDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGoldDef", &mGoldDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpredDef", &mSpredDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFreezeDef", &mFreezeDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShockDef", &mShockDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCrossDef", &mCrossDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStanDef", &mStanDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCurseDef", &mCurseDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallFireDef", &mFallFireDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallIceDef", &mFallIceDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallThunderDef", &mFallThunderDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallSaintDef", &mFallSaintDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallBlindDef", &mFallBlindDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallAttackDef", &mFallAttackDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallDefenceDef", &mFallDefenceDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallMagicAttackDef", &mFallMagicAttackDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFallMagicDefenceDef", &mFallMagicDefenceDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mErosionDef", &mErosionDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mItemSealDef", &mItemSealDef, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEquipSubCategory", &mEquipSubCategory, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParamNum", &mParamNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mItemParamList", static_cast<MtObject*>(&mItemParamList), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEmNum", &mVsEmNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVsEmList", static_cast<MtObject*>(&mVsEmList), 0u, 0u);
 }
 
 MtUI* rItemList::rItemParamXml::createUI(MtProperty& prop) {
@@ -1044,9 +1235,23 @@ rItemList::rProtectorParam::~rProtectorParam() {
     mEquipParamS8Num = 0;
 }
 
-__attribute__((weak)) void rItemList::rProtectorParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("rItemList::rProtectorParam::createProperty")
-    /* stub */
+void rItemList::rProtectorParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mModelTagId", &mModelTagId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPowerRev", &mPowerRev, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mChance", &mChance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDefense", &mDefense, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMagicDefense", &mMagicDefense, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDurability", &mDurability, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttack", &mAttack, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMagicAttack", &mMagicAttack, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeight", &mWeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxHpRev", &mMaxHpRev, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMaxStRev", &mMaxStRev, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mColorNo", &mColorNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSex", &mSex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mModelParts", &mModelParts, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEleSlot", &mEleSlot, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEquipParamS8Num", &mEquipParamS8Num, 0u, 0u);
 }
 
 MtUI* rItemList::rProtectorParam::createUI(MtProperty& prop) {

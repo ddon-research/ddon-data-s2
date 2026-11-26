@@ -160,6 +160,7 @@ public:
 public:
     class cList
     {
+        friend class uGUIMyRoomPopup;
     public:
         class cInfo;
         class cItem;
@@ -168,6 +169,7 @@ public:
     public:
         class cInfo : public uGUIBase::cScrollListInfoBase
         {
+            friend class uGUIMyRoomPopup;
         public:
             class MyDTI;
         public:
@@ -593,6 +595,10 @@ inline void* uGUIMyRoomPopup::operator new(size_t sz, void* p_addr) {
 
 inline void* uGUIMyRoomPopup::cList::cInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline u32 uGUIMyRoomPopup::cList::cInfo::getListIndex() const {
+    return this->mListIndex;
 }
 
 inline void* uGUIMyRoomPopup::cList::cItem::operator new(size_t sz, void* p_addr) {

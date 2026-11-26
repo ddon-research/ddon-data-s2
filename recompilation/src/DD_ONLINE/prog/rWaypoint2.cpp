@@ -60,9 +60,9 @@ rWaypoint2::~rWaypoint2() {
     mRouteList2.mLength = 0;
 }
 
-__attribute__((weak)) void rWaypoint2::createProperty(MtPropertyList& s) {
-    DDON_STUB("rWaypoint2::createProperty")
-    /* stub */
+void rWaypoint2::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPointList", static_cast<MtObject*>(&mPointList), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRouteList2", static_cast<MtObject*>(&mRouteList2), 0u, 0u);
 }
 
 bool rWaypoint2::load(MtStream& in) {
@@ -122,9 +122,9 @@ inline void rWaypoint2::cRoute2::operator delete(void* p_addr) {
 rWaypoint2::cRoute2::~cRoute2() {
 }
 
-__attribute__((weak)) void rWaypoint2::cRoute2::createProperty(MtPropertyList& s) {
-    DDON_STUB("rWaypoint2::cRoute2::createProperty")
-    /* stub */
+void rWaypoint2::cRoute2::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPointIdx", &mPointIdx[0], 32u, 8u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeight", &mWeight[0], 32u, 8u);
 }
 
 MtUI* rWaypoint2::cRoute2::createUI(MtProperty& prop) {

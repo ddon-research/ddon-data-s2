@@ -828,6 +828,14 @@ inline void cGroupParam::setGroup(u32 group) {
     this->mDataCommon = (group & 511u) | (this->mDataCommon & 0xFFFFFE00u);
 }
 
+inline MtVector3 cGroupParam::getMarkerPos() const {
+    return this->mMarkerPos;
+}
+
+inline u32 cGroupParam::getLayer() const {
+    return this->mLayer;
+}
+
 inline bool cGroupParam::getIsLoadLotRes() const {
     return this->mIsLoadLotRes;
 }

@@ -163,6 +163,13 @@ inline void* rTblMenuComm::cDataList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline rTblMenuComm::cDataList::cDataList() {
+    this->mCtgrId = 0;
+    this->mList.::MtArray::mpArray = nullptr;
+    this->mList.::MtArray::mLength = 0;
+    this->mList.::MtArray::mBufsiz = 0;
+}
+
 inline void* rTblMenuComm::cData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

@@ -58,9 +58,6 @@ uFade::uFade(s32 type, f32 time) {
     }
 }
 
-uFade::~uFade() {
-}
-
 __attribute__((weak)) void uFade::move() {
     DDON_STUB("uFade::move")
     /* stub */

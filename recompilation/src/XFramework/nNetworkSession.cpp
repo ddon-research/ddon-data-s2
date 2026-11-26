@@ -9,6 +9,7 @@
 #include "../MT/MtNetObject.h"
 #include "../MT/MtNetSession.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtRandom.h"
 #include "../MT/MtStream.h"
@@ -17,6 +18,7 @@
 #include "nNetworkConnect.h"
 #include "nNetworkDatabase.h"
 #include "nNetworkMatch.h"
+#include "nNetworkProtocol.h"
 #include "nNetworkRoute.h"
 #include "nNetworkSessionDriver.h"
 #include "nNetworkTagChecker.h"
@@ -57,9 +59,15 @@ nNetwork::Session::~Session() {
     mpMatch = nullptr;
 }
 
-__attribute__((weak)) void nNetwork::Session::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::Session::createProperty")
-    /* stub */
+void nNetwork::Session::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mAttr", &mAttr, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mUserIndex", &mUserIndex, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mService", &mService, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mDriver", static_cast<MtObject*>(&mDriver), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpDatabase", reinterpret_cast<MtObject* *>(&mpDatabase), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpConnect", reinterpret_cast<MtObject* *>(&mpConnect), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mpTransport", reinterpret_cast<MtObject* *>(&mpTransport), 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mCallback", static_cast<MtObject*>(&mCallback), 0u, 0u);
 }
 
 MtUI* nNetwork::Session::createUI(MtProperty& prop) {

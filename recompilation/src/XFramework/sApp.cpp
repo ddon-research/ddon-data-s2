@@ -185,9 +185,38 @@ inline void sApp::Item::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sApp::Item::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void sApp::Item::createProperty(MtPropertyList& s) {
-    DDON_STUB("sApp::Item::createProperty")
-    /* stub */
+void sApp::Item::createProperty(MtPropertyList& s) {
+    switch (static_cast<unsigned int>(mType - 1)) {
+        case 0:
+        {
+            s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, mProp.mName, reinterpret_cast<MT_MFUNC>(&::sApp::Item::getInt), reinterpret_cast<MT_MFUNC>(&::sApp::Item::setInt), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+            break;
+        }
+        case 1:
+        {
+            s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, mProp.mName, reinterpret_cast<MT_MFUNC>(&::sApp::Item::getInt), reinterpret_cast<MT_MFUNC>(&::sApp::Item::setInt), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+            break;
+        }
+        case 2:
+        {
+            s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, mProp.mName, reinterpret_cast<MT_MFUNC>(&::sApp::Item::getFloat), reinterpret_cast<MT_MFUNC>(&::sApp::Item::setFloat), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+            break;
+        }
+        case 3:
+        {
+            s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, mProp.mName, reinterpret_cast<MT_MFUNC>(&::sApp::Item::getInt), reinterpret_cast<MT_MFUNC>(&::sApp::Item::setInt), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+            break;
+        }
+        case 4:
+        {
+            s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, mProp.mName, reinterpret_cast<MT_MFUNC>(&::sApp::Item::getBool), reinterpret_cast<MT_MFUNC>(&::sApp::Item::setBool), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) void sApp::Item::createMenu(MtPropertyList& s) {

@@ -6,8 +6,10 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtRandom.h"
 #include "cDraw.h"
@@ -40,8 +42,48 @@ uShadow::uShadow() {
 }
 
 __attribute__((noinline)) uShadow::~uShadow() {
-    DDON_STUB("uShadow::~uShadow")
-    /* stub */
+    (sScene::mpInstance)->sScene::detach(static_cast<cUnit*>(this));
+    if (mpDepthMap != nullptr) {
+        mpDepthMap->release();
+        mpDepthMap = nullptr;
+    }
+    if (mpTempMap != nullptr) {
+        mpTempMap->release();
+        mpTempMap = nullptr;
+    }
+    if (mpDepthTempMap != nullptr) {
+        mpDepthTempMap->release();
+        mpDepthTempMap = nullptr;
+    }
+    if (mpDepthStencil != nullptr) {
+        mpDepthStencil->release();
+        mpDepthStencil = nullptr;
+    }
+    if (mpDepthMapCache != nullptr) {
+        mpDepthMapCache->release();
+        mpDepthMapCache = nullptr;
+    }
+    if (mpDepthStencilCache != nullptr) {
+        mpDepthStencilCache->release();
+        mpDepthStencilCache = nullptr;
+    }
+    releaseShadowMapSub();
+    if (mpRasterizerState[0] != nullptr) {
+        mpRasterizerState[0]->release();
+        mpRasterizerState[0] = nullptr;
+    }
+    if (mpRasterizerState[1] != nullptr) {
+        mpRasterizerState[1]->release();
+        mpRasterizerState[1] = nullptr;
+    }
+    if (mpRasterizerState[2] != nullptr) {
+        mpRasterizerState[2]->release();
+        mpRasterizerState[2] = nullptr;
+    }
+    if (mCacheID != 0) {
+        (sShadow::mpInstance)->sShadow::freeShadowCacheID(mCacheID);
+        mCacheID = 0;
+    }
 }
 
 void uShadow::setup() {
@@ -409,9 +451,46 @@ __attribute__((weak)) void uShadow::reflectSystemValueUpdateShadowViewDistance()
     /* stub */
 }
 
-__attribute__((weak)) void uShadow::createCommonProperty(MtPropertyList& s) {
-    DDON_STUB("uShadow::createCommonProperty")
-    /* stub */
+void uShadow::createCommonProperty(MtPropertyList& s) {
+    this->cUnit::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mShadowGroup", &mShadowGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mShadowMapType", reinterpret_cast<MT_MFUNC>(&::uShadow::getShadowMapType), reinterpret_cast<MT_MFUNC>(&::uShadow::setShadowMapType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mMapSize", reinterpret_cast<MT_MFUNC>(&::uShadow::getMapSize), reinterpret_cast<MT_MFUNC>(&::uShadow::setMapSize), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "MapSize(True)", reinterpret_cast<MT_MFUNC>(&::uShadow::getMapSizeTrue), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mShadowViewDistance", &mShadowViewDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShadowDepthBias", &mShadowDepthBias, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mShadowSlopeScaledDepthBias", reinterpret_cast<MT_MFUNC>(&::uShadow::getShadowSlopeScaledDepthBias), reinterpret_cast<MT_MFUNC>(&::uShadow::setShadowSlopeScaledDepthBias), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mShadowDistanceScaledDepthBias", &mShadowDistanceScaledDepthBias, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mShadowSlopeDepthBias", reinterpret_cast<MT_MFUNC>(&::uShadow::getShadowDistanceScaledDepthBias), reinterpret_cast<MT_MFUNC>(&::uShadow::setShadowDistanceScaledDepthBias), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mAlphaThreshold", &mAlphaThreshold, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBackforwardViewDistance", &mBackforwardViewDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mStandBy", reinterpret_cast<MT_MFUNC>(&::uShadow::getStandBy), reinterpret_cast<MT_MFUNC>(&::uShadow::setStandBy), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mMappedToLight", reinterpret_cast<MT_MFUNC>(&::uShadow::isMappedToLight), reinterpret_cast<MT_MFUNC>(&::uShadow::setMappedToLight), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    if (mShadowType <= 1u) {
+        s << MtProperty(static_cast<MtObject*>(this), "mDeferredShadow", &mDeferredShadow, 0u, 0u);
+    }
+    if ((mShadowType - 3u) <= 1u) {
+        s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "ShadowMapCacheEnable", reinterpret_cast<MT_MFUNC>(&::uShadow::getShadowMapCacheEnable), reinterpret_cast<MT_MFUNC>(&::uShadow::setShadowMapCacheEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    }
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mManagedType", reinterpret_cast<MT_MFUNC>(&::uShadow::getManagedType), reinterpret_cast<MT_MFUNC>(&::uShadow::setManagedType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mPriorityBias", &mPriorityBias, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDrawEnable", &mDrawEnable, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShadowAttn", &mShadowAttn, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mVSMBlurType", reinterpret_cast<MT_MFUNC>(&::uShadow::getVSMBlurType), reinterpret_cast<MT_MFUNC>(&::uShadow::setVSMBlurType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "mDispersion", reinterpret_cast<MT_MFUNC>(&::uShadow::getDispersion), reinterpret_cast<MT_MFUNC>(&::uShadow::setDispersion), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mVarianceEpsilon", &mVarianceEpsilon, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPmaxPower", &mPmaxPower, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mPCFType", reinterpret_cast<MT_MFUNC>(&::uShadow::getPCFType), reinterpret_cast<MT_MFUNC>(&::uShadow::setPCFType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mBorderGradation", &mBorderGradation, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpDepthMap", reinterpret_cast<MtObject* *>(&mpDepthMap), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTempMap", reinterpret_cast<MtObject* *>(&mpTempMap), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpDepthTempMap", reinterpret_cast<MtObject* *>(&mpDepthTempMap), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpDepthStencil", reinterpret_cast<MtObject* *>(&mpDepthStencil), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpDepthMapCache", reinterpret_cast<MtObject* *>(&mpDepthMapCache), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpDepthStencilCache", reinterpret_cast<MtObject* *>(&mpDepthStencilCache), 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mIsPS3Disable", reinterpret_cast<MT_MFUNC>(&::uShadow::getPS3DisableMode), reinterpret_cast<MT_MFUNC>(&::uShadow::setPS3DisableMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mIsPS4Disable", reinterpret_cast<MT_MFUNC>(&::uShadow::getPS4DisableMode), reinterpret_cast<MT_MFUNC>(&::uShadow::setPS4DisableMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mIsPCDisable", reinterpret_cast<MT_MFUNC>(&::uShadow::getPCDisableMode), reinterpret_cast<MT_MFUNC>(&::uShadow::setPCDisableMode), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) void uShadow::setFrustum(cDraw* pdraw, const MtMatrix& view, const MtMatrix& proj, f32 f) {

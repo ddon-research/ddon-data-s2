@@ -80,9 +80,8 @@ rTutorialQuestGroup::~rTutorialQuestGroup() {
     mGroups.mLength = 0;
 }
 
-__attribute__((weak)) void rTutorialQuestGroup::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTutorialQuestGroup::createProperty")
-    /* stub */
+void rTutorialQuestGroup::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mGroups", static_cast<MtObject*>(&mGroups), 0u, 0u);
 }
 
 __attribute__((weak)) bool rTutorialQuestGroup::save(MtStream& out) {
@@ -164,14 +163,18 @@ rTutorialQuestGroup::cGroup::~cGroup() {
     mQuestIds.mLength = 0;
 }
 
-__attribute__((weak)) void rTutorialQuestGroup::cGroup::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTutorialQuestGroup::cGroup::createProperty")
-    /* stub */
+void rTutorialQuestGroup::cGroup::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mGroupId", &mGroupId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestIds", static_cast<MtObject*>(&mQuestIds), 0u, 0u);
 }
 
 __attribute__((weak)) void rTutorialQuestGroup::cGroup::save(MtDataWriter& w) {
-    DDON_STUB("rTutorialQuestGroup::cGroup::save")
-    /* stub */
+    u32 t2 = mGroupId;
+    w.writeU32(t2);
+    w.writeU32(mQuestIds.mLength);
+    for (u32 t1 = 0; t1 < mQuestIds.mLength; ++t1) {
+        static_cast<cQuestId*>(mQuestIds.mpArray[t1])->save(w);
+        }
 }
 
 void rTutorialQuestGroup::cGroup::load(MtDataReader& r) {
@@ -198,9 +201,8 @@ inline void rTutorialQuestGroup::cGroup::cQuestId::operator delete(void* p_addr)
 rTutorialQuestGroup::cGroup::cQuestId::~cQuestId() {
 }
 
-__attribute__((weak)) void rTutorialQuestGroup::cGroup::cQuestId::createProperty(MtPropertyList& s) {
-    DDON_STUB("rTutorialQuestGroup::cGroup::cQuestId::createProperty")
-    /* stub */
+void rTutorialQuestGroup::cGroup::cQuestId::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
 }
 
 void rTutorialQuestGroup::cGroup::cQuestId::save(MtDataWriter& w) {

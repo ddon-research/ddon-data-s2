@@ -53,7 +53,7 @@ public:
     u32 getDataVersion() const;
     virtual MT_CTSTR getExt() const;  // vtable slot 7
     rNpcEditData();
-    virtual ~rNpcEditData();
+    virtual ~rNpcEditData() {}
     virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     virtual bool load(MtStream& in);  // vtable slot 11
     virtual bool save(MtStream& out);  // vtable slot 12

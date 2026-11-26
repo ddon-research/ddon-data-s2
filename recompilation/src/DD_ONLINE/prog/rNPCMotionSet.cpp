@@ -74,13 +74,106 @@ __attribute__((weak)) void rNPCMotionSet::clear() {
 }
 
 __attribute__((weak)) bool rNPCMotionSet::load(MtStream& in) {
-    DDON_STUB("rNPCMotionSet::load")
-    return {};
+    MtDataReader r(in, 4096);
+    if (r.readU32() != 0x736d6e) {
+        return false;
+    }
+    if (r.readU32() != DATA_VERSION) {
+        return false;
+    }
+    for (u32 type = 0; type < 8; ++type) {
+        const u32 nInfoNum = r.readU32();
+        const u32 nSizeBinary = r.readU32();
+        void* pBinaryInfo = MtMemoryAllocator::getAllocator(rNPCMotionSet::DTI)->memAlloc(nSizeBinary, 16);
+        u8* pBinaryCursor = static_cast<u8*>(pBinaryInfo) + nInfoNum * sizeof(InfoBinary);
+        pBinaryCursor = reinterpret_cast<u8*>((reinterpret_cast<size_t>(pBinaryCursor) + 15) & ~15ul);
+        for (u32 i = 0; i < nInfoNum; ++i) {
+            InfoBinary* pBinary = new (&static_cast<InfoBinary*>(pBinaryInfo)[i]) InfoBinary;
+            pBinary->mTransOff = r.readU8() == 1;
+            pBinary->mRandomOn = r.readU8() == 1;
+            pBinary->mTalkMot = r.readS16();
+            pBinary->mHeadCtrl = r.readS16();
+            pBinary->mTurnType = r.readU8();
+            const u32 nMotDataNum = r.readU32();
+            void* pMotData = pBinaryCursor;
+            for (u32 e = 0; e < nMotDataNum; ++e) {
+                InfoBinary::MotDataBinary* pBinary = new (&static_cast<InfoBinary::MotDataBinary*>(pMotData)[e]) InfoBinary::MotDataBinary;
+                pBinary->mBankNo = r.readU8();
+                pBinary->mMotionNo = r.readS16();
+                pBinary->mWait = r.readS16();
+                pBinary->mRandWait = r.readS16();
+                pBinary->mStartFrame = r.readS16();
+                pBinary->mProbability = r.readU8();
+                pBinary->mNext = r.readS8();
+                pBinary->mFrame = r.readS8();
+                pBinary->mDispItem = r.readU8() != 0;
+                pBinary->mPlayMusic = r.readU8() != 0;
+                pBinary->mDisableCancel = r.readU8() != 0;
+            }
+            pBinaryCursor += nMotDataNum * sizeof(InfoBinary::MotDataBinary);
+            pBinaryCursor = reinterpret_cast<u8*>((reinterpret_cast<size_t>(pBinaryCursor) + 15) & ~15ul);
+            pBinary->mpMotList = static_cast<InfoBinary::MotDataBinary*>(pMotData);
+            pBinary->mMotListNum = nMotDataNum;
+        }
+        mpArray[type] = static_cast<InfoBinary*>(pBinaryInfo);
+        mArrayNum[type] = nInfoNum;
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rNPCMotionSet::save(MtStream& out) {
-    DDON_STUB("rNPCMotionSet::save")
-    return {};
+    MtDataWriter w(out, 4096, 4096);
+    w.writeU32(0x736d6e);
+    w.writeU32(DATA_VERSION);
+    for (u32 type = 0; type < 8; ++type) {
+        const u32 nInfoNum = rNPCMotionSet::getInfoNum(type);
+        w.writeU32(nInfoNum);
+        u32 nSizeBinary = nInfoNum * sizeof(InfoBinary);
+        nSizeBinary = (nSizeBinary + 15) & ~15;
+        for (u32 i = 0; i < nInfoNum; ++i) {
+            InfoBinary* pBinary = rNPCMotionSet::getInfo(type, i);
+            nSizeBinary += pBinary->getMotListNum() * sizeof(InfoBinary::MotDataBinary);
+            nSizeBinary = (nSizeBinary + 15) & ~15;
+        }
+        w.writeU32(nSizeBinary);
+        for (u32 i = 0; i < nInfoNum; ++i) {
+            InfoBinary* pBinary = rNPCMotionSet::getInfo(type, i);
+            w.writeU8(pBinary->mTransOff);
+            w.writeU8(pBinary->mRandomOn);
+            w.writeS16(pBinary->mTalkMot);
+            w.writeS16(pBinary->mHeadCtrl);
+            w.writeU8(pBinary->mTurnType);
+            const u32 nInfoNum = pBinary->getMotListNum();
+            w.writeU32(nInfoNum);
+            for (u32 e = 0; e < nInfoNum; ++e) {
+                InfoBinary::MotDataBinary* pParts = pBinary->getMotList(e);
+                w.writeU8(pParts->mBankNo);
+                w.writeS16(pParts->mMotionNo);
+                w.writeS16(pParts->mWait);
+                w.writeS16(pParts->mRandWait);
+                w.writeS16(pParts->mStartFrame);
+                w.writeU8(pParts->mProbability);
+                w.writeS8(pParts->mNext);
+                w.writeS8(pParts->mFrame);
+                if (pParts->mDispItem) {
+                    w.writeU8(1);
+                } else {
+                    w.writeU8(0);
+                }
+                if (pParts->mPlayMusic) {
+                    w.writeU8(1);
+                } else {
+                    w.writeU8(0);
+                }
+                if (pParts->mDisableCancel) {
+                    w.writeU8(1);
+                } else {
+                    w.writeU8(0);
+                }
+            }
+        }
+    }
+    return true;
 }
 
 MT_CTSTR rNPCMotionSet::getExt() const {
@@ -125,8 +218,11 @@ inline void rNPCMotionSet::InfoBinary::operator delete(void* p_addr) {
 }
 
 rNPCMotionSet::InfoBinary::~InfoBinary() {
-    DDON_STUB("rNPCMotionSet::InfoBinary::~InfoBinary")
-    /* stub */
+    for (u32 i = 0; i < mMotListNum; ++i) {
+        mpMotList[i].~MotDataBinary();
+    }
+    mpMotList = nullptr;
+    mMotListNum = 0;
 }
 
 __attribute__((weak)) u32 rNPCMotionSet::InfoBinary::getMotionNo(u32 idx) {

@@ -50,7 +50,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     rConstraint();
-    virtual ~rConstraint();
+    virtual ~rConstraint() {}
     virtual void createProperty(MtPropertyList& s);  // vtable slot 4
     virtual void copyUnitProperty(uConstraint* pSrcUnit);  // vtable slot 16
 public:

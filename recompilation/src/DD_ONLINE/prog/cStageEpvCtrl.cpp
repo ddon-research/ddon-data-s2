@@ -45,9 +45,43 @@ __attribute__((weak)) void cStageEpvCtrl::updatePtr() {
     /* stub */
 }
 
-__attribute__((weak)) void cStageEpvCtrl::deleteEffect() {
-    DDON_STUB("cStageEpvCtrl::deleteEffect")
-    /* stub */
+void cStageEpvCtrl::deleteEffect() {
+    u32 i = 0;
+    u32 v1_0;
+    unsigned int i1_9;
+    u32 v2_0;
+    for (;;) {
+        static_cast<sEffectExt*>(sEffect::mpInstance)->endEffect(&mStageEfcHandle[i], 2u);
+        if (mStageEfcHandle[i].mLength != 0) {
+            v1_0 = mStageEfcHandle[i].mLength;
+            i1_9 = 0;
+            for (;;) {
+                if (mStageEfcHandle[i].mpArray[i1_9] == nullptr) {
+                    v2_0 = v1_0;
+                } else {
+                    delete mStageEfcHandle[i].mpArray[i1_9];
+                    v2_0 = mStageEfcHandle[i].mLength;
+                }
+                if ((i1_9 + 1u) < v2_0) {
+                    v1_0 = v2_0;
+                    i1_9 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (mStageEfcHandle[i].mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mStageEfcHandle[i].mpArray));
+        }
+        mStageEfcHandle[i].mpArray = nullptr;
+        mStageEfcHandle[i].mBufsiz = 0;
+        mStageEfcHandle[i].mLength = 0;
+        if ((i + 1u) != 4) {
+            i = i + 1u;
+        } else {
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) void cStageEpvCtrl::releaseEpvCtrl() {

@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cArea.h"
 #include "cSystem.h"
@@ -50,9 +51,9 @@ __attribute__((weak)) void sArea::jump(const MtDTI& dti) {
     /* stub */
 }
 
-__attribute__((weak)) void sArea::createMenu(MtPropertyList& s) {
-    DDON_STUB("sArea::createMenu")
-    /* stub */
+void sArea::createMenu(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Reload", static_cast<MT_MFUNC>(&::sArea::reload), 10u);
+    addMenu(s, &mAreaInfo[0]);
 }
 
 __attribute__((weak)) sArea::AreaInfo* sArea::getAreaInfo(const MtDTI& dti) {
@@ -69,9 +70,10 @@ static auto ddon_emit_0x01b9e7b0 __attribute__((used)) = &sArea::setArea;
 __attribute__((weak)) void sArea::setAreaNum(u32) {
 }
 
-__attribute__((weak)) void sArea::createProperty(MtPropertyList& s) {
-    DDON_STUB("sArea::createProperty")
-    /* stub */
+void sArea::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpArea", reinterpret_cast<MT_MFUNC>(&::sArea::getArea), reinterpret_cast<MT_MFUNC>(&::sArea::setArea), 160u, reinterpret_cast<MT_MFUNC>(&::sArea::getAreaNum), reinterpret_cast<MT_MFUNC>(&::sArea::setAreaNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaPt", &mAreaPt, 1u, 0u);
 }
 
 __attribute__((weak)) void sArea::createAreaInfo(const MtDTI& dti) {

@@ -43,13 +43,13 @@ void cQuestPhaseEvent::callPhaseEventCancel(cQuestPhaseState* pState, cQuestPhas
 }
 
 bool cQuestPhaseEvent::phaseEventDicideDividePlayer(cQuestPhaseState* pState, const cQuestPhaseEvent::ParamArray& paramList) {
-    unsigned int v0_0 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&paramList) + 8);
+    u32 v0_0 = paramList.mLength;
     if (v0_0 != 0) {
-        unsigned long v0_1 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&paramList) + 24);
+        MtObject* * v0_1 = paramList.mpArray;
         for (unsigned int i0_2 = 0;;) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) + 8)) == 1) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) + 12)) == 0) {
-                    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) + 16);
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 1) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 12)) == 0) {
+                    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 16);
                     cQuestPhaseState::setDivideSuccess(pState, t0, false);
                     if (t0 != 0) {
                         cQuestPhaseState::setWarpPlayerId(pState, t0);

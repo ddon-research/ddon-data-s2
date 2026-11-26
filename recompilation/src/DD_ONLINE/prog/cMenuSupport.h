@@ -12,10 +12,26 @@
 class MtAllocator;
 class MtDTI;
 class MtObject;
+class cMenuApproveInvitedClan;
 class cMenuBase;
+class cMenuBreakupParty;
+class cMenuCancelApplyClan;
+class cMenuCancelFriend;
+class cMenuCancelInviteClan;
 class cMenuCharacterList;
+class cMenuClanApproveDirectInvite;
+class cMenuEditFavoritePawn;
+class cMenuLostPawnRevive;
+class cMenuPawnDelete;
+class cMenuPawnSetPartner;
 class cMenuQuickMatchCancel;
 class cMenuQuickMatchRetry;
+class cMenuQuitClan;
+class cMenuRecreateEntryBoardItem;
+class cMenuReleasePassEntryBoardItem;
+class cMenuStartEntryBoardItem;
+class cMenuUILargeSetting;
+class cNetGameServer;
 namespace nMenu { struct MENU_PARTS; }
 class rSoundRequest;
 class uGUISystemMsg;
@@ -135,6 +151,21 @@ public:
 
 class cMenuDialogFlow : public cMenuSupport
 {
+    friend class cMenuApproveInvitedClan;
+    friend class cMenuBreakupParty;
+    friend class cMenuCancelApplyClan;
+    friend class cMenuCancelFriend;
+    friend class cMenuCancelInviteClan;
+    friend class cMenuClanApproveDirectInvite;
+    friend class cMenuEditFavoritePawn;
+    friend class cMenuLostPawnRevive;
+    friend class cMenuPawnDelete;
+    friend class cMenuPawnSetPartner;
+    friend class cMenuQuitClan;
+    friend class cMenuRecreateEntryBoardItem;
+    friend class cMenuReleasePassEntryBoardItem;
+    friend class cMenuStartEntryBoardItem;
+    friend class cMenuUILargeSetting;
 public:
     enum RET
     {
@@ -229,6 +260,7 @@ public:
 class cMenuSupportList : public cMenuSupportMenu
 {
     friend class cMenuCharacterList;
+    friend class cNetGameServer;
 public:
     enum ADD_TYPE
     {
@@ -314,6 +346,10 @@ public:
 
 inline void* cMenuDialogFlow::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline s32 cMenuDialogFlow::getDialogId() {
+    return this->mDialogId;
 }
 
 inline s32 cMenuDialogFlow::getChoicePos() {

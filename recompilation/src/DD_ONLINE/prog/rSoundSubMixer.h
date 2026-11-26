@@ -300,6 +300,10 @@ inline bool rSoundSubMixer::getActive() {
     return this->mActive;
 }
 
+inline void rSoundSubMixer::setPriority(s8 priority) {
+    this->mPriority = priority;
+}
+
 inline void* rSoundSubMixer::Fader::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

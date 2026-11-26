@@ -6,6 +6,9 @@
 // Dependencies
 #include "cCaplinkContext.h"
 
+// Forward declarations
+class sCaplinkManager;
+
 // Declarations
 namespace nCaplink { class FriendReleaseAns; }
 
@@ -15,6 +18,7 @@ using s32 = int;
 namespace nCaplink {
     class FriendReleaseAns : public nCaplink::ContextListener
     {
+        friend class ::sCaplinkManager;
     public:
         FriendReleaseAns();
         virtual void init();  // vtable slot 6

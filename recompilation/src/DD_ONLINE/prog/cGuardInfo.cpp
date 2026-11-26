@@ -28,8 +28,29 @@ inline void cGuardInfo::operator delete(void* p_addr) {
 }
 
 cGuardInfo::cGuardInfo() {
-    DDON_STUB("cGuardInfo::cGuardInfo")
-    /* stub */
+    mIsJustGuardSuccess = false;
+    mpBlowShrinkInfo = new (16u) cBlowShrinkDmInfo;
+    mGuardDefenceBase = 0.0f;
+    mGuardDefenceWep = 0.0f;
+    mPawnAdjGuardDefenceBase = 0.0f;
+    mSaminaDamageAdj[2] = 0.0f;
+    mSaminaDamageAdj[3] = 0.0f;
+    mSaminaDamageAdj[0] = 0.0f;
+    mSaminaDamageAdj[1] = 0.0f;
+    mGuardDefenceAdj[2] = 0.0f;
+    mGuardDefenceAdj[3] = 0.0f;
+    mGuardDefenceAdj[0] = 0.0f;
+    mGuardDefenceAdj[1] = 0.0f;
+    mGuardAttackAdj[2] = 0.0f;
+    mGuardAttackAdj[3] = 0.0f;
+    mGuardAttackAdj[0] = 0.0f;
+    mGuardAttackAdj[1] = 0.0f;
+    mPawnAdjStaminaDamage = 1.0f;
+    mStaminaDamage = 1.0f;
+    mGuardDefenceResultType = 0;
+    mGuardAttack = 0.0f;
+    mGuardDefence = 0.0f;
+    mIsSuccessNoReaction = false;
 }
 
 cGuardInfo::~cGuardInfo() {
@@ -44,8 +65,7 @@ inline cGuardInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 cGuardInfo::MyDTI cGuardInfo::DTI("cGuardInfo", &::MtObject::DTI, 104ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cGuardInfo::MyDTI::newInstance() const {
-    DDON_STUB("cGuardInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cGuardInfo::MyDTI::newInstance() const {
+    return new (16u) cGuardInfo;
 }
 

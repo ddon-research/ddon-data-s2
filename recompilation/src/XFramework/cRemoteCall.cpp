@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
 #include "nNetworkCoder.h"
@@ -29,9 +30,8 @@ cRemoteCall::~cRemoteCall() {
     /* stub */
 }
 
-__attribute__((weak)) void cRemoteCall::createProperty(MtPropertyList& s) {
-    DDON_STUB("cRemoteCall::createProperty")
-    /* stub */
+void cRemoteCall::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAttribute", &mAttribute, 1u, 0u);
 }
 
 MtUI* cRemoteCall::createUI(MtProperty& prop) {

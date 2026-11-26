@@ -105,9 +105,59 @@ __attribute__((weak)) void uGUIMapMini::moveInput() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIMapMini::moveEvent() {
-    DDON_STUB("uGUIMapMini::moveEvent")
-    /* stub */
+void uGUIMapMini::moveEvent() {
+    switch (getInputEvent() - 66u) {
+        case 0:
+        {
+            evSetFreeMarker();
+            break;
+        }
+        case 1:
+        {
+            evChangeFreeMarker();
+            break;
+        }
+        case 2:
+        {
+            evDirectLink();
+            break;
+        }
+        case 3:
+        {
+            if (sGame::getInstance()->mCharData.mCharData.mOption.mIsMiniMapAutoScale) {
+                if (mScaleLock) {
+                    mScaleLock = false;
+                } else {
+                    mScaleLock = true;
+                }
+            } else {
+                if (static_cast<sGUIExt*>(sGUI::getInstance())->getMapModeMini() == 1) {
+                    static_cast<sGUIExt*>(sGUI::getInstance())->setMapModeMini(0u);
+                    clearUpdFrm();
+                } else {
+                    static_cast<sGUIExt*>(sGUI::getInstance())->setMapModeMini(1u);
+                    clearUpdFrm();
+                }
+                mSkipUpdateDisp = true;
+            }
+            break;
+        }
+        case 5:
+        {
+            bool t0 = static_cast<sGUIExt*>(sGUI::getInstance())->mMap.isStayPlPos();
+            static_cast<sGUIExt*>(sGUI::getInstance())->mMap.mIsStayPlPos = !t0;
+            if (t0 == true) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 16u);
+            } else {
+                static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 15u);
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 u32 uGUIMapMini::evCtrlSizeMove(cControl::Message* msg) {

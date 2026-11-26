@@ -27,9 +27,17 @@ inline void cCatchInfoParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCatchInfoParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cCatchInfoParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCatchInfoParam::createProperty")
-    /* stub */
+void cCatchInfoParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mCatchType", &mCatchType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCatchActionTblNo", &mCatchActionTblNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\263\343\203\263\343\202\271\343\203\210\343\201\231\343\202\213", &mIsConst, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\216\264\343\201\276\343\202\214\345\201\264\343\201\256\343\202\271\343\202\257\343\203\255\343\203\274\343\203\253\345\275\223\343\201\237\343\202\212\343\202\222\346\212\234\343\201\213\343\201\252\343\201\204", &mRevAdjust, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\263\343\203\263\343\202\271\343\203\210\346\231\202\343\202\271\343\202\261\343\203\274\343\203\253\350\250\210\347\256\227OFF", &mConstScaleOff, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mConstJointNo", &mConstJointNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\346\216\264\343\201\277\343\203\253\343\203\274\343\203\227\346\231\202\351\226\223", &mLoopTimer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\254\343\203\220\343\202\254\343\203\201\343\203\243\347\202\271\346\225\260", &mLeverGachaPoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\271\343\203\254\343\203\274\343\203\226\345\201\264\343\201\247\350\267\235\351\233\242\343\203\201\343\202\247\343\203\203\343\202\257\343\201\231\343\202\213", &mIsCheckSlaveDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "\343\202\271\343\203\254\343\203\274\343\203\226\345\201\264\343\201\247\343\201\256\343\203\201\343\202\247\343\203\203\343\202\257\350\267\235\351\233\242", &mCheckSlaveDist, 0u, 0u);
 }
 
 inline cCatchInfoParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

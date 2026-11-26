@@ -4,6 +4,7 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "rArchiveListArray.h"
 #include "../../XFramework/rGUI.h"
@@ -28,6 +29,13 @@ void* uGUIQuickParty::operator new(size_t sz, u32 align) {
 
 inline void uGUIQuickParty::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIQuickParty::DTI)->memFree(p_addr);
+}
+
+uGUIQuickParty::uGUIQuickParty() : uGUIBase(0u, false) {
+    mpGUIRes = nullptr;
+    mBaseF = mBaseF | 32u;
+    mEndType = 0;
+    setArcTag(rArchiveListArray::convTagId("uGUIQuickParty"), 0u, false);
 }
 
 uGUIQuickParty::~uGUIQuickParty() {
@@ -76,8 +84,7 @@ inline uGUIQuickParty::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 uGUIQuickParty::MyDTI uGUIQuickParty::DTI("uGUIQuickParty", &::uGUIBase::DTI, 2256ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIQuickParty::MyDTI::newInstance() const {
-    DDON_STUB("uGUIQuickParty::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIQuickParty::MyDTI::newInstance() const {
+    return new (16u) uGUIQuickParty;
 }
 

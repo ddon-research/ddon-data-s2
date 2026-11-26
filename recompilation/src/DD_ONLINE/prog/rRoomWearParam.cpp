@@ -28,9 +28,23 @@ inline void cRoomWearParam::operator delete(void* p_addr) {
 cRoomWearParam::~cRoomWearParam() {
 }
 
-__attribute__((weak)) void cRoomWearParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cRoomWearParam::createProperty")
-    /* stub */
+void cRoomWearParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mItem", &mItem, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAH_M", &mAH_M, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAB_M", &mAB_M, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWB_M", &mWB_M, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAA_M", &mAA_M, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAL_M", &mAL_M, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWL_M", &mWL_M, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAC_M", &mAC_M, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAH_W", &mAH_W, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAB_W", &mAB_W, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWB_W", &mWB_W, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAA_W", &mAA_W, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAL_W", &mAL_W, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWL_W", &mWL_W, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAC_W", &mAC_W, 0u, 0u);
 }
 
 u16 cRoomWearParam::getAH(u32 sex) {

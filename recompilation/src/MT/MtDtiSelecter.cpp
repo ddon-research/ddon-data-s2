@@ -5,6 +5,7 @@
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -30,9 +31,10 @@ MtUI* MtDtiSelecter::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void MtDtiSelecter::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtDtiSelecter::createProperty")
-    /* stub */
+void MtDtiSelecter::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "DtiDropDownList", reinterpret_cast<MT_MFUNC>(&::MtDtiSelecter::getSelectDtiID), reinterpret_cast<MT_MFUNC>(&::MtDtiSelecter::setSelectDtiID), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "EditDtiName", reinterpret_cast<MT_MFUNC>(&::MtDtiSelecter::getSelectDtiName), reinterpret_cast<MT_MFUNC>(&::MtDtiSelecter::setSelectDtiName), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "EditDtiID", reinterpret_cast<MT_MFUNC>(&::MtDtiSelecter::getSelectDtiID), reinterpret_cast<MT_MFUNC>(&::MtDtiSelecter::setSelectDtiID), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MT_CTSTR MtDtiSelecter::getSelectDtiName() const {

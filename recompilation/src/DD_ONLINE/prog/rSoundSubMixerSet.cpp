@@ -55,9 +55,9 @@ MT_CTSTR rSoundSubMixerSet::getExt() const {
     return "sms";
 }
 
-__attribute__((weak)) void rSoundSubMixerSet::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundSubMixerSet::createProperty")
-    /* stub */
+void rSoundSubMixerSet::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mSubMixerLists", static_cast<MtObject*>(&mSubMixerLists), 0u, 0u);
 }
 
 rSoundSubMixerSet::BasicSubMixers* rSoundSubMixerSet::getBasicSubMixers(u32 index) const {
@@ -97,18 +97,55 @@ inline void rSoundSubMixerSet::BasicSubMixers::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundSubMixerSet::BasicSubMixers::DTI)->memFree(p_addr);
 }
 
-__attribute__((noinline)) rSoundSubMixerSet::BasicSubMixers::~BasicSubMixers() {
-    DDON_STUB("rSoundSubMixerSet::BasicSubMixers::~BasicSubMixers")
-    /* stub */
+rSoundSubMixerSet::BasicSubMixers::~BasicSubMixers() {
+    if (mpResource0 != nullptr) {
+        mpResource0->release();
+        mpResource0 = nullptr;
+    }
+    if (mpResource1 != nullptr) {
+        mpResource1->release();
+        mpResource1 = nullptr;
+    }
+    if (mpResource2 != nullptr) {
+        mpResource2->release();
+        mpResource2 = nullptr;
+    }
+    if (mpResource3 != nullptr) {
+        mpResource3->release();
+        mpResource3 = nullptr;
+    }
+    if (mpResource4 != nullptr) {
+        mpResource4->release();
+        mpResource4 = nullptr;
+    }
+    if (mpResource5 != nullptr) {
+        mpResource5->release();
+        mpResource5 = nullptr;
+    }
+    if (mpResource6 != nullptr) {
+        mpResource6->release();
+        mpResource6 = nullptr;
+    }
+    if (mpResource7 != nullptr) {
+        mpResource7->release();
+        mpResource7 = nullptr;
+    }
 }
 
 MtUI* rSoundSubMixerSet::BasicSubMixers::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void rSoundSubMixerSet::BasicSubMixers::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundSubMixerSet::BasicSubMixers::createProperty")
-    /* stub */
+void rSoundSubMixerSet::BasicSubMixers::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource0", "resource", reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::getResource0), reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::setResource0), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource1", "resource", reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::getResource1), reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::setResource1), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource2", "resource", reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::getResource2), reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::setResource2), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource3", "resource", reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::getResource3), reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::setResource3), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource4", "resource", reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::getResource4), reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::setResource4), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource5", "resource", reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::getResource5), reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::setResource5), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource6", "resource", reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::getResource6), reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::setResource6), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource7", "resource", reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::getResource7), reinterpret_cast<MT_MFUNC>(&::rSoundSubMixerSet::BasicSubMixers::setResource7), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 rSoundSubMixer* rSoundSubMixerSet::BasicSubMixers::getResource0() const {

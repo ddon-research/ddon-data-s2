@@ -161,6 +161,20 @@ void cpDDMrlMgr::setCommonStateMrlCtrl() {
     }
 }
 
+inline void cpDDMrlMgr::setDDShadingState() {
+    if (mpOwner == nullptr) {
+        return;
+    }
+    mpDDMrlCtrl.setCommonState();
+    unsigned int i3 = 0;
+    do {
+        if (mpDDMrlCtrlEquip[i3] != nullptr) {
+            mpDDMrlCtrlEquip[i3]->cDDMaterialCtrl::setCommonState();
+        }
+        i3 += 1u;
+    } while (i3 != 16);
+}
+
 __attribute__((weak)) void cpDDMrlMgr::getTargetModelArray(MtTypedArray<uDDOModel>* pTargetArray, bool isAddThis) {
     DDON_STUB("cpDDMrlMgr::getTargetModelArray")
     /* stub */
@@ -452,9 +466,16 @@ void cpDDMrlMgr::initDDMaterialCtrl() {
     mbDirtyOutline = false;
 }
 
-__attribute__((weak)) void cpDDMrlMgr::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpDDMrlMgr::createProperty")
-    /* stub */
+void cpDDMrlMgr::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpDDMaterialCtrl", reinterpret_cast<MT_MFUNC>(&::cpDDMrlMgr::getDDMrlCtrl), reinterpret_cast<MT_MFUNC>(&::cpDDMrlMgr::setDDMrlCtrl), 160u, reinterpret_cast<MT_MFUNC>(&::cpDDMrlMgr::getDDMrlCtrlNum), reinterpret_cast<MT_MFUNC>(&::cpDDMrlMgr::setDDMrlCtrlNum));
+    s << MtProperty(static_cast<MtObject*>(this), "SetToDefaultFrame", static_cast<MT_MFUNC32>(&::cpDDMrlMgr::setToDefaultFrame), 0u, 20u);
+    s << MtProperty(static_cast<MtObject*>(this), "RequestMaterialMode", static_cast<MT_MFUNC32>(&::cpDDMrlMgr::requestMaterialMode), 0u, 12u);
+    s << MtProperty(static_cast<MtObject*>(this), "RequestHakuryuStonePhase0", static_cast<MT_MFUNC32>(&::cpDDMrlMgr::requestHakuryuStonePhase), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "RequestHakuryuStonePhase1", static_cast<MT_MFUNC32>(&::cpDDMrlMgr::requestHakuryuStonePhase), 0u, 1u);
+    s << MtProperty(static_cast<MtObject*>(this), "RequestHakuryuStonePhase2", static_cast<MT_MFUNC32>(&::cpDDMrlMgr::requestHakuryuStonePhase), 0u, 2u);
+    s << MtProperty(static_cast<MtObject*>(this), "RequestHakuryuStonePhase3", static_cast<MT_MFUNC32>(&::cpDDMrlMgr::requestHakuryuStonePhase), 0u, 3u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mSdlOutlineRequestNo", reinterpret_cast<MT_MFUNC>(&::cpDDMrlMgr::getOutlineTypeSdl), reinterpret_cast<MT_MFUNC>(&::cpDDMrlMgr::setOutlineTypeSdl), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) void cpDDMrlMgr::setDDMrlCtrl(cDDMaterialCtrl* ptr, u32 set) {

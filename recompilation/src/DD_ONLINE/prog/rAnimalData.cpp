@@ -44,9 +44,9 @@ cAnimalData::cAnimalData() {
 cAnimalData::~cAnimalData() {
 }
 
-__attribute__((weak)) void cAnimalData::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAnimalData::createProperty")
-    /* stub */
+void cAnimalData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAngle", &mAngle, 0u, 0u);
 }
 
 inline cAnimalData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

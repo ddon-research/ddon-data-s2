@@ -9,7 +9,9 @@
 #include "MtGeometry3D.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtPrimitive3D.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -73,9 +75,11 @@ void MtGeomOBB::save(MtDataWriter& fout) {
     fout.writeF32(mOBB.extent.pad_);
 }
 
-__attribute__((weak)) void MtGeomOBB::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtGeomOBB::createProperty")
-    /* stub */
+void MtGeomOBB::createProperty(MtPropertyList& s) {
+    this->MtGeomConvex::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mOBB.extent", &mOBB.extent, 8192u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOBB.coord", &mOBB.coord, 8192u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOBB", &mOBB, 0u, 0u);
 }
 
 void MtGeomOBB::getBoundingAABB(MtAABB& aabb) const {
@@ -205,14 +209,17 @@ bool MtGeomOBB::getClosestXZ(const MtOBB& obb, MtContact* pContact) const {
     return false;
 }
 
-__attribute__((weak)) MtVector3 MtGeomOBB::getSupportConst(const MtVector3& v) const {
-    DDON_STUB("MtGeomOBB::getSupportConst")
-    __builtin_unreachable();
+MtVector3 MtGeomOBB::getSupportConst(const MtVector3& v) const {
+    return mOBB.getSupport(v);
 }
 
-__attribute__((weak)) MtVector3 MtGeomOBB::getInternalPos() const {
-    DDON_STUB("MtGeomOBB::getInternalPos")
-    __builtin_unreachable();
+MtVector3 MtGeomOBB::getInternalPos() const {
+    MtVector3 result;
+    result.x = mOBB.coord.m[3].x;
+    result.y = mOBB.coord.m[3].y;
+    result.z = mOBB.coord.m[3].z;
+    result.pad_ = 0.0f;
+    return result;
 }
 
 __attribute__((weak)) void MtGeomOBB::addPos(const MtVector3& pos) {

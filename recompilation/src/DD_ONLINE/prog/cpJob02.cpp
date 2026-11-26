@@ -49,6 +49,7 @@
 #include "sCameraExt.h"
 #include "../../XFramework/sCollision.h"
 #include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
 #include "sGame.h"
 #include "sLockOnManager.h"
 #include "../../XFramework/sMain.h"
@@ -458,9 +459,36 @@ __attribute__((weak)) void cpJob02::updateLockOnMode() {
     /* stub */
 }
 
-__attribute__((weak)) bool cpJob02::isCheckLockOnModeActPal() const {
-    DDON_STUB("cpJob02::isCheckLockOnModeActPal")
-    return {};
+bool cpJob02::isCheckLockOnModeActPal() const {
+    uHuman* t0 = mpHuman;
+    if (t0->isMaster()) {
+        if ((t0->uDDOModel::mUnitId & 8u) != 0) {
+            if (static_cast<sAreaExt*>(sArea::getInstance())->isLobby()) {
+                return false;
+            } else {
+                u32 ActNo = mpHuman->getActMgrPtr()->getActionNo();
+                if (static_cast<int>(ActNo) <= 8210) {
+                    if ((ActNo - 29u) > 1u) {
+                        if (ActNo != 195) {
+                            return ((!static_cast<sGUIExt*>(sGUI::getInstance())->mIsEnableMenuUI && ((mpHuman->mObjStatus & 41012ul) == 0)) || mIsLockOnMode) && !mIsLockOnMode;
+                        }
+                    }
+                    return ((((mpHuman->mObjStatus & 41012ul) == 0) && ((static_cast<unsigned long>(static_cast<sGUIExt*>(sGUI::getInstance())->mIsEnableMenuUI) | 1) == 0)) || mIsLockOnMode) && !mIsLockOnMode;
+                } else {
+                    if ((ActNo - 8211u) <= 6u) {
+                        if (((79ul >> static_cast<unsigned long>((ActNo - 8211u) & 31u)) & 1ul) != 0) {
+                            return ((((mpHuman->mObjStatus & 41012ul) == 0) && ((static_cast<unsigned long>(static_cast<sGUIExt*>(sGUI::getInstance())->mIsEnableMenuUI) | 1) == 0)) || mIsLockOnMode) && !mIsLockOnMode;
+                        }
+                    }
+                    return ((!static_cast<sGUIExt*>(sGUI::getInstance())->mIsEnableMenuUI && ((mpHuman->mObjStatus & 41012ul) == 0)) || mIsLockOnMode) && !mIsLockOnMode;
+                }
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) const cpLockOn::cLockOnTarget* cpJob02::getLockonTarget(f32 range, f32 angle) {

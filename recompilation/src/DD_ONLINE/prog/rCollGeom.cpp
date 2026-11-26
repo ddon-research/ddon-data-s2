@@ -27,9 +27,24 @@ inline void cCollGeom::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCollGeom::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cCollGeom::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCollGeom::createProperty")
-    /* stub */
+void cCollGeom::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIsUseData", &mIsUseData, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShape", &mShape, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRadius", &mRadius, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mExtent", &mExtent, 2048u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJnt0", &mJnt0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mJnt1", &mJnt1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffset0", &mOffset0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOffset1", &mOffset1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOption", &mOption, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mScaleOption", &mScaleOption, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRegionNo", &mRegionNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLayer", &mLayer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRangeCheckBaseJnt", &mRangeCheckBaseJnt, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAngle0", &mAngle0, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAngle1", &mAngle1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 1u, 0u);
 }
 
 inline cCollGeom::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

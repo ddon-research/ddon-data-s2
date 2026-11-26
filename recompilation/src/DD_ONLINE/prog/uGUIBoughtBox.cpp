@@ -10,7 +10,7 @@
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "cControl.h"
-#include "cGUIUtility.h"
+#include "../../XFramework/cGUIInstance.h"
 #include "cItemParam.h"
 #include "cNetGameServer.h"
 #include "nDDOUtility.h"
@@ -23,10 +23,10 @@
 #include "sItemManager.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
-#include "../../XFramework/uCoord.h"
 #include "uGUIBase.h"
 #include "uGUIItem01.h"
 #include "uGUIPopCmd01.h"
+#include "uGUIPopDetail01.h"
 #include "uGUIUseItemBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -66,9 +66,24 @@ __attribute__((weak)) void uGUIBoughtBox::setup() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBoughtBox::move() {
-    DDON_STUB("uGUIBoughtBox::move")
-    /* stub */
+void uGUIBoughtBox::move() {
+    this->uGUIItemBase01::move();
+    uGUIPopDetail01* t1 = mpDetail;
+    if (t1 == nullptr) {
+        return;
+    }
+    bool t2 = mIsSetDetailPos;
+    if (!t2) {
+        return;
+    }
+    cGUIInstNull* t3 = mData.mpINST_Null_detail01;
+    MtVector2 frame48(uGUIBase::getInstanceScreenPos(static_cast<cGUIInstance*>(t3), MtVector3::Zero));
+    f32 t4 = frame48.x;
+    f32 t5 = frame48.y;
+    t1->mPos.x = t4;
+    t1->mPos.y = t5;
+    t1->mPos.z = 0.0f;
+    t1->mPos.pad_ = 0.0f;
 }
 
 void uGUIBoughtBox::updateDetail() {

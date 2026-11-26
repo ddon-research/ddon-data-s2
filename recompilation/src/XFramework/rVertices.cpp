@@ -9,6 +9,7 @@
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "cResource.h"
@@ -134,9 +135,10 @@ void rVertices::clear() {
     mAttr = 22;
 }
 
-__attribute__((weak)) void rVertices::createProperty(MtPropertyList& s) {
-    DDON_STUB("rVertices::createProperty")
-    /* stub */
+void rVertices::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mResourceSize", reinterpret_cast<MT_MFUNC>(&::rVertices::getResourceSize), reinterpret_cast<MT_MFUNC>(&::rVertices::setDummyU32), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mVertexNum", reinterpret_cast<MT_MFUNC>(&::rVertices::getVertexNum), reinterpret_cast<MT_MFUNC>(&::rVertices::setDummyU32), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* rVertices::createUI(MtProperty& prop) {

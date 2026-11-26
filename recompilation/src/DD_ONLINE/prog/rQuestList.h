@@ -243,3 +243,10 @@ inline cQuestStage::cQuestStage() {
 inline void* rQuestList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cQuestSet::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cQuestSet::DTI)->memFree(p_addr);
+}

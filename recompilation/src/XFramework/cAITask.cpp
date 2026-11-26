@@ -6,6 +6,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPerformance.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cAIObject.h"
 #include "nAITaskPerformance.h"
@@ -23,23 +24,43 @@ inline void cAITask::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAITask::DTI)->memFree(p_addr);
 }
 
-cAITask::cAITask() {
-    DDON_STUB("cAITask::cAITask")
-    /* stub */
+__attribute__((noinline)) cAITask::cAITask() {
+        mBackgroundJobType = BG_JOB_LOOP;
+        mQuitTaskLoop = false;
+        mEnablePerformanceManage = false;
+        mTaskStatus = TASK_ST_IDLE;
+        mpCurrentJobPrimitive = nullptr;
+        mIsBackgroundTask = false;
+        mpBackgroundNextTask = nullptr;
+        mpBackgroundPrevTask = nullptr;
+        mTaskAllowTime = 3.402823466e+38f;
+        mPerformanceIndicator = 1.0f;
+        mOverloadManageType = 0;
+        mpDoneCallback = nullptr;
+        mpDoneCallbackOwner = nullptr;
+        mLODLevel = -1;
+        mpPerformanceInfo = nullptr;
 }
 
-cAITask::~cAITask() {
-    DDON_STUB("cAITask::~cAITask")
-    /* stub */
+__attribute__((noinline)) cAITask::~cAITask() {
+    if (sAI::getInstance() != nullptr) {
+        sAI::getInstance()->removeBackgroundTask(this);
+    }
 }
 
 MtUI* cAITask::createUI(MtProperty& prop) {
     return nullptr;
 }
 
-__attribute__((weak)) void cAITask::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAITask::createProperty")
-    /* stub */
+void cAITask::createProperty(MtPropertyList& s) {
+    this->cAIObject::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mTaskStatus", &mTaskStatus, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnablePerformanceManage", &mEnablePerformanceManage, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOverloadManageType", &mOverloadManageType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPerformanceIndicator", &mPerformanceIndicator, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLODLevel", &mLODLevel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTaskAllowTime", &mTaskAllowTime, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpPerformanceInfo", reinterpret_cast<MtObject* *>(&mpPerformanceInfo), 1u, 0u);
 }
 
 __attribute__((weak)) bool cAITask::moveTask() {
@@ -64,9 +85,17 @@ __attribute__((weak)) void cAITask::moveTaskBackground() {
     /* stub */
 }
 
-__attribute__((weak)) void cAITask::moveJobOnDelayJob(u32 param) {
-    DDON_STUB("cAITask::moveJobOnDelayJob")
-    /* stub */
+void cAITask::moveJobOnDelayJob(u32 param) {
+    if (mpCurrentJobPrimitive != nullptr) {
+        if (mpCurrentJobPrimitive->mpOwner != nullptr) {
+            if (mpCurrentJobPrimitive->mJobFunc != static_cast<cAITaskJobPrim::JOB_FUNC>(0)) {
+                (mpCurrentJobPrimitive->mpOwner->*mpCurrentJobPrimitive->mJobFunc)();
+            }
+        }
+    }
+    if (!mQuitTaskLoop) {
+        (sMain::mpInstance)->sMain::addDelayJob(static_cast<MtObject*>(this), static_cast<MT_MFUNC32>(&::cAITask::moveJobOnDelayJob), param);
+    }
 }
 
 inline cAITask::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -88,9 +117,6 @@ void* cAITaskJobPrim::operator new(size_t sz, u32 align) {
 
 __attribute__((weak)) void cAITaskJobPrim::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cAITaskJobPrim::DTI)->memFree(p_addr);
-}
-
-cAITaskJobPrim::~cAITaskJobPrim() {
 }
 
 inline cAITaskJobPrim::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

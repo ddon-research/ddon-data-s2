@@ -8,6 +8,7 @@
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "Protocol/PacketData/Quest.h"
+#include "Protocol/UserSession/S2C.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
 #include "cNetGameServer.h"
@@ -244,14 +245,16 @@ u32 cEndContentsManager::getQuestManagerType() const {
     return 8;
 }
 
-__attribute__((weak)) void cEndContentsManager::setPlayStartQuestId(nQuest::QUEST_ID questId) {
-    DDON_STUB("cEndContentsManager::setPlayStartQuestId")
-    /* stub */
+void cEndContentsManager::setPlayStartQuestId(nQuest::QUEST_ID questId) {
+    mPlayStartQuestId.mQuestId = questId.mQuestId;
 }
 
-__attribute__((weak)) s32 cEndContentsManager::getEndContentsListIndex() const {
-    DDON_STUB("cEndContentsManager::getEndContentsListIndex")
-    return {};
+s32 cEndContentsManager::getEndContentsListIndex() const {
+    if (mContentsListIndex >= static_cast<int>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getEndContentsGroupPacket()->m_EndContentsGroup.m_TimeGainQuestList.mLength)) {
+        return -1;
+    } else {
+        return mContentsListIndex;
+    }
 }
 
 __attribute__((weak)) void cEndContentsManager::addDistEndContents(const CTimeGainQuestList* pQuestList) {

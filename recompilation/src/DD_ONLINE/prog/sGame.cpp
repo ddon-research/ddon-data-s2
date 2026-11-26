@@ -256,9 +256,20 @@ __attribute__((noinline)) sGame::~sGame() {
     /* stub */
 }
 
-__attribute__((weak)) void sGame::createProperty(MtPropertyList& s) {
-    DDON_STUB("sGame::createProperty")
-    /* stub */
+void sGame::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpNetRpc", reinterpret_cast<MtObject* *>(&mpNetRpc), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "mReqStageNo", reinterpret_cast<MT_MFUNC>(&::sGame::getReqStageNoPrivate), reinterpret_cast<MT_MFUNC>(&::sGame::setReqStageNoPrivate), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "mReqStartPosNo", reinterpret_cast<MT_MFUNC>(&::sGame::getReqStartPosNoPrivate), reinterpret_cast<MT_MFUNC>(&::sGame::setReqStartPosNoPrivate), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNoOld", &mStageNoOld, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartPosNo", &mStartPosNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFadeType", &mFadeType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsReqJumpStageFromLobby", &mIsReqJumpStageFromLobby, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsReqChangeServer", &mIsReqChangeServer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStageCtrl", static_cast<MtObject*>(&mStageCtrl), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "NextStage", reinterpret_cast<MT_MFUNC>(&::sGame::getNextStage), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "\343\203\227\343\203\254\343\202\244\343\203\244\343\203\274\343\202\222\345\213\225\343\201\221\343\201\252\343\201\217\343\201\231\343\202\213", &mDisableActionPlayer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsParty", &mIsParty[0], 32u, 8u);
 }
 
 MtUI* sGame::createUI(MtProperty& prop) {
@@ -434,9 +445,12 @@ f32 sGame::getBaseParam(u32 index) const {
     }
 }
 
-__attribute__((weak)) const cAbilityData* sGame::getAbilityData(nAbility::ABILITY_ID id) const {
-    DDON_STUB("sGame::getAbilityData")
-    return nullptr;
+const cAbilityData* sGame::getAbilityData(nAbility::ABILITY_ID id) const {
+    if (mpAblityList != nullptr) {
+        return mpAblityList->getData(static_cast<s32>(id));
+    } else {
+        return nullptr;
+    }
 }
 
 cPlayerExpTable* sGame::getPlayerExpTable(u32 level) const {
@@ -518,9 +532,38 @@ bool sGame::isMySelfCharacterId(u32 characterId) {
     return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId == characterId;
 }
 
-__attribute__((weak)) bool sGame::isPawn(s32 memberIndex) {
-    DDON_STUB("sGame::isPawn")
-    return {};
+bool sGame::isPawn(s32 memberIndex) {
+    u32 v0_0;
+    MtObject* * v0_1;
+    int i0_2;
+    if (memberIndex > -1) {
+        v0_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mPartyMemberInfoVec.mLength;
+        if (static_cast<int>(v0_0) <= 0) {
+            return false;
+        } else {
+            v0_1 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mPartyMemberInfoVec.mpArray;
+            i0_2 = 0;
+        }
+    } else {
+        return false;
+    }
+    for (;;) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 116)) == static_cast<unsigned char>(memberIndex)) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[i0_2]) + 120)) <= 3) {
+                    return static_cast<bool>((12ul >> static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[i0_2]) + 120)) & 15)) & 1ul);
+                }
+            }
+            return false;
+        } else {
+            if ((i0_2 + 1) < static_cast<int>(v0_0)) {
+                i0_2 = i0_2 + 1;
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 s32 sGame::getSelfMemberIndex() {
@@ -596,11 +639,11 @@ void sGame::resetChargeFlagAll() {
         }
     }
     for (unsigned int i2_0 = 0;;) {
-        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 13504)) != 0) {
-            if (i2_0 >= (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13512))) {
+        if (mChargeEffectUID.mpRefChargeEffectUID != nullptr) {
+            if (i2_0 >= mChargeEffectUID.mNum) {
                 break;
             } else {
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 13504)) + i2_0) + 0) = 0;
+                mChargeEffectUID.mpRefChargeEffectUID[i2_0] = 0;
                 i2_0 += 1u;
             }
         } else {
@@ -673,14 +716,14 @@ __attribute__((weak)) void sGame::setChargeCourse(u32 courseId, bool flag, u64 e
 }
 
 sGame::chargeCourseParam* sGame::getChargeCourse(u32 courseId) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)) != 0) {
+    if (mChargeCourseParam.mLength != 0) {
         u32 i = 0;
         do {
             if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(i)]) + 8)) == courseId) {
                 return static_cast<chargeCourseParam*>(mChargeCourseParam.getBuffer()[static_cast<int>(i)]);
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)));
+        } while (i < mChargeCourseParam.mLength);
     }
     return nullptr;
 }
@@ -694,7 +737,7 @@ sGame::chargeCourseParam* sGame::getChargeCourseIndex(u32 index) {
 }
 
 u64 sGame::getChargeCourseEndTime(u32 courseId) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)) != 0) {
+    if (mChargeCourseParam.mLength != 0) {
         unsigned int i1 = 0;
         do {
             if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(i1)]) + 8)) == courseId) {
@@ -705,13 +748,13 @@ u64 sGame::getChargeCourseEndTime(u32 courseId) {
                 }
             }
             i1 += 1u;
-        } while (i1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)));
+        } while (i1 < mChargeCourseParam.mLength);
     }
     return 0;
 }
 
 bool sGame::isChargeCourseEnable(u32 courseId) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)) != 0) {
+    if (mChargeCourseParam.mLength != 0) {
         unsigned int i0 = 0;
         do {
             if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(i0)]) + 8)) == courseId) {
@@ -722,13 +765,13 @@ bool sGame::isChargeCourseEnable(u32 courseId) {
                 }
             }
             i0 += 1u;
-        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)));
+        } while (i0 < mChargeCourseParam.mLength);
     }
     return false;
 }
 
 bool sGame::isChargeCourseEnableIndex(u32 index) {
-    if (index < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472))) {
+    if (index < mChargeCourseParam.mLength) {
         if (mChargeCourseParam.getBuffer()[static_cast<int>(index)] != nullptr) {
             return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(index)]) + 12)) != 0;
         }
@@ -787,14 +830,54 @@ __attribute__((weak)) u32 sGame::getChargeEffectParam0(nGpCourse::E_GP_COURSE_EF
     return {};
 }
 
-__attribute__((weak)) const CGPCourseInfo* sGame::getChargeInfo(u32 CourseId) {
-    DDON_STUB("sGame::getChargeInfo")
+const CGPCourseInfo* sGame::getChargeInfo(u32 CourseId) {
+    if (mPacketGPCourseInfo.m_CourseInfo.mLength != 0) {
+        u32 idx = 0;
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mPacketGPCourseInfo.m_CourseInfo.mpArray[idx]) + 8)) == CourseId) {
+                return static_cast<const CGPCourseInfo*>(mPacketGPCourseInfo.m_CourseInfo.mpArray[idx]);
+            }
+            idx += 1u;
+        } while (idx < mPacketGPCourseInfo.m_CourseInfo.mLength);
+    }
     return nullptr;
 }
 
-__attribute__((weak)) void sGame::setChargeEffectFlagContext(u32 charId, u32 chargeUID, bool flag) {
-    DDON_STUB("sGame::setChargeEffectFlagContext")
-    /* stub */
+void sGame::setChargeEffectFlagContext(u32 charId, u32 chargeUID, bool flag) {
+    cContextInstHm* v1_10;
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId == charId) {
+        v1_10 = sContextManager::getInstance()->getContextMyPlayer();
+    } else {
+        for (unsigned int i0_3 = 0;;) {
+            cContextInstHm* t0 = sContextManager::getInstance()->getContextPartyPlayerIndex(i0_3, true);
+            if (cContextInterface::getHumanType(t0) == 0) {
+                if (charId == cContextInterface::getPlCharacterId(t0)) {
+                    v1_10 = t0;
+                    break;
+                }
+            }
+            if ((i0_3 + 1u) <= 7u) {
+                i0_3 += 1u;
+            } else {
+                return;
+            }
+        }
+    }
+    if (v1_10 != nullptr) {
+        cContextInterface::getContextPlayerInfo(v1_10)->setChargeEffectUID(chargeUID, flag);
+        for (unsigned int i2_3 = 0; i2_3 != 8; i2_3 += 1u) {
+            cContextInstHm* t1 = sContextManager::getInstance()->getContextPartyPlayerIndex(i2_3, true);
+            if (cContextInterface::isPawn(t1)) {
+                u32 t2 = cContextInterface::getPawnOwnerCharacterId(t1);
+                if (t2 == cContextInterface::getPlCharacterId(v1_10)) {
+                    cContextPlayerInfo* t3 = cContextInterface::getContextPlayerInfo(t1);
+                    if (t3 != nullptr) {
+                        t3->setChargeEffectUID(chargeUID, flag);
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) const CGPCourseEffectParam* sGame::getChargeEffectUID(u32 chargeUID) const {
@@ -864,18 +947,11 @@ bool sGame::isFadeEnd() {
 
 bool sGame::isFadeOut() {
     if (mpFade != nullptr) {
-        if (mpFade->isEnd()) {
-            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpFade) + 84)) <= 1) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return false;
+        if (mpFade->isEnd() && mpFade->isFadeOut()) {
+            return true;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 void sGame::eraseFade() {
@@ -888,18 +964,11 @@ void sGame::eraseFade() {
 
 bool sGame::isFadeBlack() {
     if (mpFade != nullptr) {
-        if (mpFade->isEnd()) {
-            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpFade) + 84)) <= 1) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return false;
+        if (mpFade->isEnd() && mpFade->isFadeOut()) {
+            return true;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 bool sGame::isFadeIn() {
@@ -1045,9 +1114,13 @@ __attribute__((weak)) void sGame::sendPawnOrder() {
     /* stub */
 }
 
-__attribute__((weak)) u32 sGame::getPartnerPawnPersonality() const {
-    DDON_STUB("sGame::getPartnerPawnPersonality")
-    return {};
+u32 sGame::getPartnerPawnPersonality() const {
+    cContextInstHm* pContext = sContextManager::getInstance()->getMyPawnContext(mPartnerPawnId, 0u);
+    if (pContext != nullptr) {
+        return cContextInterface::getPawnPersonality(pContext);
+    } else {
+        return mPartnerPawnPersonality;
+    }
 }
 
 void sGame::setPartnerPawnPersonality(u32 personality) {
@@ -1350,7 +1423,7 @@ u32 sGame::getAreaIndexFromId(u32 AreaId) {
     if (mpAreaInfo == nullptr) {
         v2_0 = 0;
     } else {
-        const u32 area_num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpAreaInfo) + 120);
+        const u32 area_num = mpAreaInfo->mAreaInfo.mLength;
         if (area_num == 0) {
             v2_0 = 0;
         } else {
@@ -1567,14 +1640,28 @@ void sGame::setClanPoint(u32 cp) {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->setMyMoneyClanPoint(cp);
 }
 
-__attribute__((weak)) u32 sGame::getFromJobToRole(nHuman::JOB_ENUM jobId) {
-    DDON_STUB("sGame::getFromJobToRole")
-    return {};
+u32 sGame::getFromJobToRole(nHuman::JOB_ENUM jobId) {
+    return RoleAllocation[nHuman::getJobArrayIndex(jobId)];
 }
 
-__attribute__((weak)) const u32* sGame::getFromRoleToJob(nHuman::ROLE_ENUM roleId, u32* num) {
-    DDON_STUB("sGame::getFromRoleToJob")
-    return nullptr;
+const u32* sGame::getFromRoleToJob(nHuman::ROLE_ENUM roleId, u32* num) {
+    if (roleId != nHuman::ROLE_ID_03) {
+        if (roleId == nHuman::ROLE_ID_02) {
+            *num = 3;
+            return RoleHealer;
+        } else {
+            if (roleId == nHuman::ROLE_ID_TOP) {
+                *num = 5;
+                return RoleDps;
+            } else {
+                *num = 0;
+                return nullptr;
+            }
+        }
+    } else {
+        *num = 2;
+        return RoleTank;
+    }
 }
 
 bool sGame::isEnableLobbyLanternShadow() const {

@@ -9,6 +9,7 @@
 #include "../MT/MtObject.h"
 #include "../MT/MtPerformance.h"
 #include "../MT/MtProfiler.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
 #include "../MT/MtStream.h"
@@ -61,9 +62,13 @@ MtUI* sMain::createUI(MtProperty& prop) {
     return this->cSystem::createUI(prop);
 }
 
-__attribute__((weak)) void sMain::createMenu(MtPropertyList& s) {
-    DDON_STUB("sMain::createMenu")
-    /* stub */
+void sMain::createMenu(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "mPause", reinterpret_cast<MT_MFUNC>(&::sMain::isPausePrivate), reinterpret_cast<MT_MFUNC>(&::sMain::setPausePrivate), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "Skip", static_cast<MT_MFUNC>(&::sMain::skip), 10u);
+    if ((sApp::mpInstance) != nullptr) {
+        (sApp::mpInstance)->createMenu(s);
+    }
+    s << MtProperty(static_cast<MtObject*>(this), "Exit", static_cast<MT_MFUNC>(&::sMain::exit), 10u);
 }
 
 __attribute__((weak)) JOBHANDLE sMain::addDelayJob(MtObject* pthis, MT_MFUNC32 pfunc, u32 param) {

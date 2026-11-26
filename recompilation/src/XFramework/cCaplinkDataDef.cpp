@@ -44,13 +44,24 @@ __attribute__((weak)) void nCaplink::cAchievementListInfo::operator delete(void*
     ::MtMemoryAllocator::getAllocator(::nCaplink::cAchievementListInfo::DTI)->memFree(p_addr);
 }
 
+inline nCaplink::cAchievementListInfo::cAchievementListInfo() {
+    mCount = -1;
+    mIndefinite = -1;
+    mBit = -1;
+    mId = -1;
+    mExtended = -1;
+    mCategory = -1;
+    mAlive = -1;
+    mDifficulty = -1;
+    ::memset(static_cast<void*>(&mDetail[0]), 0, 1069ul);
+}
+
 inline nCaplink::cAchievementListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nCaplink::cAchievementListInfo::MyDTI nCaplink::cAchievementListInfo::DTI("cAchievementListInfo", &::MtObject::DTI, 1096ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cAchievementListInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cAchievementListInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cAchievementListInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cAchievementListInfo;
 }
 
 const MtDTI& nCaplink::cAchievementRelationInfo::getDTI() const {
@@ -90,9 +101,8 @@ inline nCaplink::cAchievementRewardInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI
 
 nCaplink::cAchievementRewardInfo::MyDTI nCaplink::cAchievementRewardInfo::DTI("cAchievementRewardInfo", &::MtObject::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cAchievementRewardInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cAchievementRewardInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cAchievementRewardInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cAchievementRewardInfo;
 }
 
 const MtDTI& nCaplink::cChatGroupInfo::getDTI() const {
@@ -1397,9 +1407,8 @@ inline nCaplink::cChatGroupInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 nCaplink::cChatGroupInfo::MyDTI nCaplink::cChatGroupInfo::DTI("cChatGroupInfo", &::MtObject::DTI, 1672ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cChatGroupInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cChatGroupInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cChatGroupInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cChatGroupInfo;
 }
 
 const MtDTI& nCaplink::cChatUserInfo::getDTI() const {
@@ -1415,17 +1424,253 @@ __attribute__((weak)) void nCaplink::cChatUserInfo::operator delete(void* p_addr
 }
 
 nCaplink::cChatUserInfo::cChatUserInfo(s32 chat_id, MT_CTSTR unique_id, MT_CTSTR nickname, MT_CTSTR icon, s32 chat_type, MT_CTSTR message, s32 stamp_id, MT_CTSTR stamp, MT_CTSTR stamp_comment, MT_CTSTR image, MT_CTSTR image_pixel_size, MT_CTSTR position, s32 platform_id, MT_CTSTR content_id, MT_CTSTR create_at) {
-    DDON_STUB("nCaplink::cChatUserInfo::cChatUserInfo")
-    /* stub */
+    mChatId = chat_id;
+    mUniqueId[32] = 0;
+    mUniqueId[24] = 0;
+    mUniqueId[25] = 0;
+    mUniqueId[26] = 0;
+    mUniqueId[27] = 0;
+    mUniqueId[28] = 0;
+    mUniqueId[29] = 0;
+    mUniqueId[30] = 0;
+    mUniqueId[31] = 0;
+    mUniqueId[16] = 0;
+    mUniqueId[17] = 0;
+    mUniqueId[18] = 0;
+    mUniqueId[19] = 0;
+    mUniqueId[20] = 0;
+    mUniqueId[21] = 0;
+    mUniqueId[22] = 0;
+    mUniqueId[23] = 0;
+    mUniqueId[8] = 0;
+    mUniqueId[9] = 0;
+    mUniqueId[10] = 0;
+    mUniqueId[11] = 0;
+    mUniqueId[12] = 0;
+    mUniqueId[13] = 0;
+    mUniqueId[14] = 0;
+    mUniqueId[15] = 0;
+    mUniqueId[0] = 0;
+    mUniqueId[1] = 0;
+    mUniqueId[2] = 0;
+    mUniqueId[3] = 0;
+    mUniqueId[4] = 0;
+    mUniqueId[5] = 0;
+    mUniqueId[6] = 0;
+    mUniqueId[7] = 0;
+    size_t t0 = ::strlen(unique_id);
+    if (t0 <= 32ul) {
+        ::memcpy(static_cast<void*>(&mUniqueId[0]), static_cast<const void*>(unique_id), t0);
+    }
+    mNickname[80] = 0;
+    mNickname[72] = 0;
+    mNickname[73] = 0;
+    mNickname[74] = 0;
+    mNickname[75] = 0;
+    mNickname[76] = 0;
+    mNickname[77] = 0;
+    mNickname[78] = 0;
+    mNickname[79] = 0;
+    mNickname[64] = 0;
+    mNickname[65] = 0;
+    mNickname[66] = 0;
+    mNickname[67] = 0;
+    mNickname[68] = 0;
+    mNickname[69] = 0;
+    mNickname[70] = 0;
+    mNickname[71] = 0;
+    mNickname[56] = 0;
+    mNickname[57] = 0;
+    mNickname[58] = 0;
+    mNickname[59] = 0;
+    mNickname[60] = 0;
+    mNickname[61] = 0;
+    mNickname[62] = 0;
+    mNickname[63] = 0;
+    mNickname[48] = 0;
+    mNickname[49] = 0;
+    mNickname[50] = 0;
+    mNickname[51] = 0;
+    mNickname[52] = 0;
+    mNickname[53] = 0;
+    mNickname[54] = 0;
+    mNickname[55] = 0;
+    mNickname[40] = 0;
+    mNickname[41] = 0;
+    mNickname[42] = 0;
+    mNickname[43] = 0;
+    mNickname[44] = 0;
+    mNickname[45] = 0;
+    mNickname[46] = 0;
+    mNickname[47] = 0;
+    mNickname[32] = 0;
+    mNickname[33] = 0;
+    mNickname[34] = 0;
+    mNickname[35] = 0;
+    mNickname[36] = 0;
+    mNickname[37] = 0;
+    mNickname[38] = 0;
+    mNickname[39] = 0;
+    mNickname[24] = 0;
+    mNickname[25] = 0;
+    mNickname[26] = 0;
+    mNickname[27] = 0;
+    mNickname[28] = 0;
+    mNickname[29] = 0;
+    mNickname[30] = 0;
+    mNickname[31] = 0;
+    mNickname[16] = 0;
+    mNickname[17] = 0;
+    mNickname[18] = 0;
+    mNickname[19] = 0;
+    mNickname[20] = 0;
+    mNickname[21] = 0;
+    mNickname[22] = 0;
+    mNickname[23] = 0;
+    mNickname[8] = 0;
+    mNickname[9] = 0;
+    mNickname[10] = 0;
+    mNickname[11] = 0;
+    mNickname[12] = 0;
+    mNickname[13] = 0;
+    mNickname[14] = 0;
+    mNickname[15] = 0;
+    mNickname[0] = 0;
+    mNickname[1] = 0;
+    mNickname[2] = 0;
+    mNickname[3] = 0;
+    mNickname[4] = 0;
+    mNickname[5] = 0;
+    mNickname[6] = 0;
+    mNickname[7] = 0;
+    size_t t1 = ::strlen(nickname);
+    if (t1 <= 80ul) {
+        ::memcpy(static_cast<void*>(&mNickname[0]), static_cast<const void*>(nickname), t1);
+    }
+    ::memset(static_cast<void*>(&mIcon[0]), 0, 257ul);
+    size_t t2 = ::strlen(icon);
+    if (t2 <= 256ul) {
+        ::memcpy(static_cast<void*>(&mIcon[0]), static_cast<const void*>(icon), t2);
+    }
+    mChatType = chat_type;
+    ::memset(static_cast<void*>(&mMessage[0]), 0, 2049ul);
+    size_t t3 = ::strlen(message);
+    if (t3 <= 2048ul) {
+        ::memcpy(static_cast<void*>(&mMessage[0]), static_cast<const void*>(message), t3);
+    }
+    mStampId = stamp_id;
+    ::memset(static_cast<void*>(&mStamp[0]), 0, 257ul);
+    size_t t4 = ::strlen(stamp);
+    if (t4 <= 256ul) {
+        ::memcpy(static_cast<void*>(&mStamp[0]), static_cast<const void*>(stamp), t4);
+    }
+    ::memset(static_cast<void*>(&mStampComment[0]), 0, 1025ul);
+    size_t t5 = ::strlen(stamp_comment);
+    if (t5 <= 1024ul) {
+        ::memcpy(static_cast<void*>(&mStampComment[0]), static_cast<const void*>(stamp_comment), t5);
+    }
+    ::memset(static_cast<void*>(&mImage[0]), 0, 257ul);
+    size_t t6 = ::strlen(image);
+    if (t6 <= 256ul) {
+        ::memcpy(static_cast<void*>(&mImage[0]), static_cast<const void*>(image), t6);
+    }
+    mImagePixelSize[16] = 0;
+    mImagePixelSize[8] = 0;
+    mImagePixelSize[9] = 0;
+    mImagePixelSize[10] = 0;
+    mImagePixelSize[11] = 0;
+    mImagePixelSize[12] = 0;
+    mImagePixelSize[13] = 0;
+    mImagePixelSize[14] = 0;
+    mImagePixelSize[15] = 0;
+    mImagePixelSize[0] = 0;
+    mImagePixelSize[1] = 0;
+    mImagePixelSize[2] = 0;
+    mImagePixelSize[3] = 0;
+    mImagePixelSize[4] = 0;
+    mImagePixelSize[5] = 0;
+    mImagePixelSize[6] = 0;
+    mImagePixelSize[7] = 0;
+    size_t t7 = ::strlen(image_pixel_size);
+    if (t7 <= 16ul) {
+        ::memcpy(static_cast<void*>(&mImagePixelSize[0]), static_cast<const void*>(image_pixel_size), t7);
+    }
+    ::memset(static_cast<void*>(&mPosition[0]), 0, 2049ul);
+    size_t t8 = ::strlen(position);
+    if (t8 <= 2048ul) {
+        ::memcpy(static_cast<void*>(&mPosition[0]), static_cast<const void*>(position), t8);
+    }
+    mPlatform_id = platform_id;
+    mContentId[32] = 0;
+    mContentId[24] = 0;
+    mContentId[25] = 0;
+    mContentId[26] = 0;
+    mContentId[27] = 0;
+    mContentId[28] = 0;
+    mContentId[29] = 0;
+    mContentId[30] = 0;
+    mContentId[31] = 0;
+    mContentId[16] = 0;
+    mContentId[17] = 0;
+    mContentId[18] = 0;
+    mContentId[19] = 0;
+    mContentId[20] = 0;
+    mContentId[21] = 0;
+    mContentId[22] = 0;
+    mContentId[23] = 0;
+    mContentId[8] = 0;
+    mContentId[9] = 0;
+    mContentId[10] = 0;
+    mContentId[11] = 0;
+    mContentId[12] = 0;
+    mContentId[13] = 0;
+    mContentId[14] = 0;
+    mContentId[15] = 0;
+    mContentId[0] = 0;
+    mContentId[1] = 0;
+    mContentId[2] = 0;
+    mContentId[3] = 0;
+    mContentId[4] = 0;
+    mContentId[5] = 0;
+    mContentId[6] = 0;
+    mContentId[7] = 0;
+    size_t t9 = ::strlen(content_id);
+    if (t9 <= 32ul) {
+        ::memcpy(static_cast<void*>(&mContentId[0]), static_cast<const void*>(content_id), t9);
+    }
+    mCreatedAt[20] = 0;
+    mCreatedAt[16] = 0;
+    mCreatedAt[17] = 0;
+    mCreatedAt[18] = 0;
+    mCreatedAt[19] = 0;
+    mCreatedAt[8] = 0;
+    mCreatedAt[9] = 0;
+    mCreatedAt[10] = 0;
+    mCreatedAt[11] = 0;
+    mCreatedAt[12] = 0;
+    mCreatedAt[13] = 0;
+    mCreatedAt[14] = 0;
+    mCreatedAt[15] = 0;
+    mCreatedAt[0] = 0;
+    mCreatedAt[1] = 0;
+    mCreatedAt[2] = 0;
+    mCreatedAt[3] = 0;
+    mCreatedAt[4] = 0;
+    mCreatedAt[5] = 0;
+    mCreatedAt[6] = 0;
+    mCreatedAt[7] = 0;
+    size_t t10 = ::strlen(create_at);
+    if (t10 <= 20ul) {
+        ::memcpy(static_cast<void*>(&mCreatedAt[0]), static_cast<const void*>(create_at), t10);
+    }
 }
 
 inline nCaplink::cChatUserInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nCaplink::cChatUserInfo::MyDTI nCaplink::cChatUserInfo::DTI("cChatUserInfo", &::MtObject::DTI, 6112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cChatUserInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cChatUserInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cChatUserInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cChatUserInfo;
 }
 
 const MtDTI& nCaplink::cContentInfo::getDTI() const {
@@ -1444,9 +1689,8 @@ inline nCaplink::cContentInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 nCaplink::cContentInfo::MyDTI nCaplink::cContentInfo::DTI("cContentInfo", &::MtObject::DTI, 1928ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cContentInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cContentInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cContentInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cContentInfo;
 }
 
 const MtDTI& nCaplink::cContentInviteAvailableUserInfo::getDTI() const {
@@ -1465,9 +1709,8 @@ inline nCaplink::cContentInviteAvailableUserInfo::MyDTI::MyDTI(MT_CTSTR class_na
 
 nCaplink::cContentInviteAvailableUserInfo::MyDTI nCaplink::cContentInviteAvailableUserInfo::DTI("cContentInviteAvailableUserInfo", &::MtObject::DTI, 384ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cContentInviteAvailableUserInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cContentInviteAvailableUserInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cContentInviteAvailableUserInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cContentInviteAvailableUserInfo;
 }
 
 const MtDTI& nCaplink::cContentInviteUserInfo::getDTI() const {
@@ -2955,9 +3198,8 @@ inline nCaplink::cContentInviteUserInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI
 
 nCaplink::cContentInviteUserInfo::MyDTI nCaplink::cContentInviteUserInfo::DTI("cContentInviteUserInfo", &::MtObject::DTI, 952ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cContentInviteUserInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cContentInviteUserInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cContentInviteUserInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cContentInviteUserInfo;
 }
 
 const MtDTI& nCaplink::cContentTagInfo::getDTI() const {
@@ -2976,9 +3218,8 @@ inline nCaplink::cContentTagInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 nCaplink::cContentTagInfo::MyDTI nCaplink::cContentTagInfo::DTI("cContentTagInfo", &::MtObject::DTI, 584ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cContentTagInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cContentTagInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cContentTagInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cContentTagInfo;
 }
 
 const MtDTI& nCaplink::cFreeTagInfo::getDTI() const {
@@ -2997,9 +3238,8 @@ inline nCaplink::cFreeTagInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 nCaplink::cFreeTagInfo::MyDTI nCaplink::cFreeTagInfo::DTI("cFreeTagInfo", &::MtObject::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cFreeTagInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cFreeTagInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cFreeTagInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cFreeTagInfo;
 }
 
 const MtDTI& nCaplink::cFriendEntryInfo::getDTI() const {
@@ -4535,9 +4775,8 @@ inline nCaplink::cFriendEntryInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 
 nCaplink::cFriendEntryInfo::MyDTI nCaplink::cFriendEntryInfo::DTI("cFriendEntryInfo", &::MtObject::DTI, 944ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cFriendEntryInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cFriendEntryInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cFriendEntryInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cFriendEntryInfo;
 }
 
 const MtDTI& nCaplink::cFriendInfo::getDTI() const {
@@ -4600,17 +4839,216 @@ inline void nCaplink::cNotifyAppInfo::operator delete(void* p_addr) {
 }
 
 nCaplink::cNotifyAppInfo::cNotifyAppInfo(s32 notify_id, MT_CTSTR content_id, MT_CTSTR message, MT_CTSTR param, MT_CTSTR unique_id, MT_CTSTR nickname, MT_CTSTR icon, s32 notify_type, s32 view_type, MT_CTSTR update_at) {
-    DDON_STUB("nCaplink::cNotifyAppInfo::cNotifyAppInfo")
-    /* stub */
+    mNotifyId = notify_id;
+    mContentId[32] = 0;
+    mContentId[24] = 0;
+    mContentId[25] = 0;
+    mContentId[26] = 0;
+    mContentId[27] = 0;
+    mContentId[28] = 0;
+    mContentId[29] = 0;
+    mContentId[30] = 0;
+    mContentId[31] = 0;
+    mContentId[16] = 0;
+    mContentId[17] = 0;
+    mContentId[18] = 0;
+    mContentId[19] = 0;
+    mContentId[20] = 0;
+    mContentId[21] = 0;
+    mContentId[22] = 0;
+    mContentId[23] = 0;
+    mContentId[8] = 0;
+    mContentId[9] = 0;
+    mContentId[10] = 0;
+    mContentId[11] = 0;
+    mContentId[12] = 0;
+    mContentId[13] = 0;
+    mContentId[14] = 0;
+    mContentId[15] = 0;
+    mContentId[0] = 0;
+    mContentId[1] = 0;
+    mContentId[2] = 0;
+    mContentId[3] = 0;
+    mContentId[4] = 0;
+    mContentId[5] = 0;
+    mContentId[6] = 0;
+    mContentId[7] = 0;
+    size_t t0 = ::strlen(content_id);
+    if (t0 <= 32ul) {
+        ::memcpy(static_cast<void*>(&mContentId[0]), static_cast<const void*>(content_id), t0);
+    }
+    ::memset(static_cast<void*>(&mMessage[0]), 0, 513ul);
+    size_t t1 = ::strlen(message);
+    if (t1 <= 512ul) {
+        ::memcpy(static_cast<void*>(&mMessage[0]), static_cast<const void*>(message), t1);
+    }
+    ::memset(static_cast<void*>(&mParam[0]), 0, 513ul);
+    size_t t2 = ::strlen(param);
+    if (t2 <= 512ul) {
+        ::memcpy(static_cast<void*>(&mParam[0]), static_cast<const void*>(param), t2);
+    }
+    mUniqueId[32] = 0;
+    mUniqueId[24] = 0;
+    mUniqueId[25] = 0;
+    mUniqueId[26] = 0;
+    mUniqueId[27] = 0;
+    mUniqueId[28] = 0;
+    mUniqueId[29] = 0;
+    mUniqueId[30] = 0;
+    mUniqueId[31] = 0;
+    mUniqueId[16] = 0;
+    mUniqueId[17] = 0;
+    mUniqueId[18] = 0;
+    mUniqueId[19] = 0;
+    mUniqueId[20] = 0;
+    mUniqueId[21] = 0;
+    mUniqueId[22] = 0;
+    mUniqueId[23] = 0;
+    mUniqueId[8] = 0;
+    mUniqueId[9] = 0;
+    mUniqueId[10] = 0;
+    mUniqueId[11] = 0;
+    mUniqueId[12] = 0;
+    mUniqueId[13] = 0;
+    mUniqueId[14] = 0;
+    mUniqueId[15] = 0;
+    mUniqueId[0] = 0;
+    mUniqueId[1] = 0;
+    mUniqueId[2] = 0;
+    mUniqueId[3] = 0;
+    mUniqueId[4] = 0;
+    mUniqueId[5] = 0;
+    mUniqueId[6] = 0;
+    mUniqueId[7] = 0;
+    size_t t3 = ::strlen(unique_id);
+    if (t3 <= 32ul) {
+        ::memcpy(static_cast<void*>(&mUniqueId[0]), static_cast<const void*>(unique_id), t3);
+    }
+    mNickname[80] = 0;
+    mNickname[72] = 0;
+    mNickname[73] = 0;
+    mNickname[74] = 0;
+    mNickname[75] = 0;
+    mNickname[76] = 0;
+    mNickname[77] = 0;
+    mNickname[78] = 0;
+    mNickname[79] = 0;
+    mNickname[64] = 0;
+    mNickname[65] = 0;
+    mNickname[66] = 0;
+    mNickname[67] = 0;
+    mNickname[68] = 0;
+    mNickname[69] = 0;
+    mNickname[70] = 0;
+    mNickname[71] = 0;
+    mNickname[56] = 0;
+    mNickname[57] = 0;
+    mNickname[58] = 0;
+    mNickname[59] = 0;
+    mNickname[60] = 0;
+    mNickname[61] = 0;
+    mNickname[62] = 0;
+    mNickname[63] = 0;
+    mNickname[48] = 0;
+    mNickname[49] = 0;
+    mNickname[50] = 0;
+    mNickname[51] = 0;
+    mNickname[52] = 0;
+    mNickname[53] = 0;
+    mNickname[54] = 0;
+    mNickname[55] = 0;
+    mNickname[40] = 0;
+    mNickname[41] = 0;
+    mNickname[42] = 0;
+    mNickname[43] = 0;
+    mNickname[44] = 0;
+    mNickname[45] = 0;
+    mNickname[46] = 0;
+    mNickname[47] = 0;
+    mNickname[32] = 0;
+    mNickname[33] = 0;
+    mNickname[34] = 0;
+    mNickname[35] = 0;
+    mNickname[36] = 0;
+    mNickname[37] = 0;
+    mNickname[38] = 0;
+    mNickname[39] = 0;
+    mNickname[24] = 0;
+    mNickname[25] = 0;
+    mNickname[26] = 0;
+    mNickname[27] = 0;
+    mNickname[28] = 0;
+    mNickname[29] = 0;
+    mNickname[30] = 0;
+    mNickname[31] = 0;
+    mNickname[16] = 0;
+    mNickname[17] = 0;
+    mNickname[18] = 0;
+    mNickname[19] = 0;
+    mNickname[20] = 0;
+    mNickname[21] = 0;
+    mNickname[22] = 0;
+    mNickname[23] = 0;
+    mNickname[8] = 0;
+    mNickname[9] = 0;
+    mNickname[10] = 0;
+    mNickname[11] = 0;
+    mNickname[12] = 0;
+    mNickname[13] = 0;
+    mNickname[14] = 0;
+    mNickname[15] = 0;
+    mNickname[0] = 0;
+    mNickname[1] = 0;
+    mNickname[2] = 0;
+    mNickname[3] = 0;
+    mNickname[4] = 0;
+    mNickname[5] = 0;
+    mNickname[6] = 0;
+    mNickname[7] = 0;
+    size_t t4 = ::strlen(nickname);
+    if (t4 <= 80ul) {
+        ::memcpy(static_cast<void*>(&mNickname[0]), static_cast<const void*>(nickname), t4);
+    }
+    ::memset(static_cast<void*>(&mIcon[0]), 0, 257ul);
+    size_t t5 = ::strlen(icon);
+    if (t5 <= 256ul) {
+        ::memcpy(static_cast<void*>(&mIcon[0]), static_cast<const void*>(icon), t5);
+    }
+    mNotifyType = notify_type;
+    mViewType = view_type;
+    mUpdatedAt[20] = 0;
+    mUpdatedAt[16] = 0;
+    mUpdatedAt[17] = 0;
+    mUpdatedAt[18] = 0;
+    mUpdatedAt[19] = 0;
+    mUpdatedAt[8] = 0;
+    mUpdatedAt[9] = 0;
+    mUpdatedAt[10] = 0;
+    mUpdatedAt[11] = 0;
+    mUpdatedAt[12] = 0;
+    mUpdatedAt[13] = 0;
+    mUpdatedAt[14] = 0;
+    mUpdatedAt[15] = 0;
+    mUpdatedAt[0] = 0;
+    mUpdatedAt[1] = 0;
+    mUpdatedAt[2] = 0;
+    mUpdatedAt[3] = 0;
+    mUpdatedAt[4] = 0;
+    mUpdatedAt[5] = 0;
+    mUpdatedAt[6] = 0;
+    mUpdatedAt[7] = 0;
+    size_t t6 = ::strlen(update_at);
+    if (t6 <= 20ul) {
+        ::memcpy(static_cast<void*>(&mUpdatedAt[0]), static_cast<const void*>(update_at), t6);
+    }
 }
 
 inline nCaplink::cNotifyAppInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nCaplink::cNotifyAppInfo::MyDTI nCaplink::cNotifyAppInfo::DTI("cNotifyAppInfo", &::MtObject::DTI, 1480ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cNotifyAppInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cNotifyAppInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cNotifyAppInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cNotifyAppInfo;
 }
 
 const MtDTI& nCaplink::cResourceInfo::getDTI() const {
@@ -4629,9 +5067,8 @@ inline nCaplink::cResourceInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 nCaplink::cResourceInfo::MyDTI nCaplink::cResourceInfo::DTI("cResourceInfo", &::MtObject::DTI, 360ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cResourceInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cResourceInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cResourceInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cResourceInfo;
 }
 
 const MtDTI& nCaplink::cTagInfo::getDTI() const {
@@ -4650,9 +5087,8 @@ inline nCaplink::cTagInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t s
 
 nCaplink::cTagInfo::MyDTI nCaplink::cTagInfo::DTI("cTagInfo", &::MtObject::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cTagInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cTagInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cTagInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cTagInfo;
 }
 
 const MtDTI& nCaplink::cUserBaseInfo::getDTI() const {
@@ -4692,9 +5128,8 @@ inline nCaplink::cUserContentInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 
 nCaplink::cUserContentInfo::MyDTI nCaplink::cUserContentInfo::DTI("cUserContentInfo", &::MtObject::DTI, 1072ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cUserContentInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cUserContentInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cUserContentInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cUserContentInfo;
 }
 
 const MtDTI& nCaplink::cUserProfile::getDTI() const {
@@ -4735,8 +5170,7 @@ inline nCaplink::cWebsocketServerInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* 
 
 nCaplink::cWebsocketServerInfo::MyDTI nCaplink::cWebsocketServerInfo::DTI("cWebsocketServerInfo", &::MtObject::DTI, 304ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nCaplink::cWebsocketServerInfo::MyDTI::newInstance() const {
-    DDON_STUB("nCaplink::cWebsocketServerInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nCaplink::cWebsocketServerInfo::MyDTI::newInstance() const {
+    return new (16u) ::nCaplink::cWebsocketServerInfo;
 }
 

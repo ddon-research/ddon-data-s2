@@ -11,6 +11,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "cResource.h"
@@ -151,9 +152,10 @@ void rEffect2D::clear() {
     mAttr = 22;
 }
 
-__attribute__((weak)) void rEffect2D::createProperty(MtPropertyList& s) {
-    DDON_STUB("rEffect2D::createProperty")
-    /* stub */
+void rEffect2D::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mResourceSize", reinterpret_cast<MT_MFUNC>(&::rEffect2D::getResourceSize), reinterpret_cast<MT_MFUNC>(&::rEffect2D::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mListNum", reinterpret_cast<MT_MFUNC>(&::rEffect2D::getListNum), reinterpret_cast<MT_MFUNC>(&::rEffect2D::setDummyU32), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* rEffect2D::createUI(MtProperty& prop) {

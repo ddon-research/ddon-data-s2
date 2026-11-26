@@ -25,9 +25,13 @@ inline void cPushRate::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cPushRate::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cPushRate::createProperty(MtPropertyList& s) {
-    DDON_STUB("cPushRate::createProperty")
-    /* stub */
+void cPushRate::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Small", &mRate[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Middle", &mRate[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Large", &mRate[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "VeryLarge", &mRate[3], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Player", &mRate[4], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "NPC", &mRate[5], 0u, 0u);
 }
 
 inline cPushRate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

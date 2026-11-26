@@ -48,9 +48,8 @@ cpNpc::cpNpc(u32 npcId) {
 cpNpc::~cpNpc() {
 }
 
-__attribute__((weak)) void cpNpc::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpNpc::createProperty")
-    /* stub */
+void cpNpc::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mNpcId", &mNpcId, 0u, 0u);
 }
 
 inline cpNpc::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

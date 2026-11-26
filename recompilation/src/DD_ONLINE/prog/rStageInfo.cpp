@@ -8,6 +8,7 @@
 #include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../MT/MtString.h"
@@ -50,9 +51,61 @@ MT_CTSTR rStageInfo::getExt() const {
     return "sti";
 }
 
-__attribute__((weak)) void rStageInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageInfo::createProperty")
-    /* stub */
+void rStageInfo::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mprModel", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getScrScheduler), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setScrScheduler), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mprFilter", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getFltScheduler), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setFltScheduler), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mprScrSbc", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getScrSbc), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setScrSbc), 32u, reinterpret_cast<MT_MFUNC>(&::rStageInfo::getScrSbcNum), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setScrSbcNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mprEffSbc", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getEffSbc), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setEffSbc), 32u, reinterpret_cast<MT_MFUNC>(&::rStageInfo::getEffSbcNum), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setEffSbcNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mprNaviMesh", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getNaviMesh), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setNaviMesh), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mprWayPoint", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getWayPoint), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setWayPoint), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mprOCC", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getOCC), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setOCC), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mprStartPos", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getStartPos), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setStartPos), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mprCmrPrmLstFld", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getCmrPrmLstFld), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setCmrPrmLstFld), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mprCmrPrmLstEvt", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getCmrPrmLstEvt), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setCmrPrmLstEvt), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "LocationData", "resource", static_cast<void*>(&mprLocation), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAng", &mAng, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSceLoadFlag", &mSceLoadFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlag", &mFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPerformanceFlag", &mPerformanceFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGrassVisiblePercentMulValue", &mGrassVisiblePercentMulValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGrassFadeBeginDistance", &mGrassFadeBeginDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mGrassFadeEndDistance", &mGrassFadeEndDistance, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "WeatherStageInfo", "resource", static_cast<void*>(&mpWeatherStageInfo), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "WeatherParamInfoTbl", "resource", static_cast<void*>(&mpWeatherParamInfoTbl), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SkyWep", "resource", static_cast<void*>(&mpWeatherParamEfcInfo), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "RoomWep", "resource", static_cast<void*>(&mpWep), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSkyInfiniteLightGroupType", &mSkyInfiniteLightGroupType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "StageLightSchdl", "resource", static_cast<void*>(&mpStageLightSchdl), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Epv", "resource", static_cast<void*>(&mprEpv), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEpvIndexAlways", &mEpvIndexAlways, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEpvIndexDay", &mEpvIndexDay, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEpvIndexNight", &mEpvIndexNight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "EffectSchdl", "resource", static_cast<void*>(&mprEffectSchdl), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "LanternSchdl", "resource", static_cast<void*>(&mprLanternSchdl), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ZoneColor", "resource", static_cast<void*>(&mpZoneList[0]), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ZoneWind", "resource", static_cast<void*>(&mpZoneList[1]), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ZoneGene", "resource", static_cast<void*>(&mpZoneList[2]), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ZoneLight", "resource", static_cast<void*>(&mpZoneList[3]), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ZoneIndoor", "resource", static_cast<void*>(&mpZoneIndoorScr), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ZoneIndoor+ZoneSky", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getZoneIndoorScr), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setZoneIndoorScr), 8194u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "ZoneIndoorEfc", "resource", static_cast<void*>(&mpZoneIndoorEfc), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDayNightLightChgFrame", &mDayNightLightChgFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDayNightFogChgFrame", &mDayNightFogChgFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ZoneCtrlScrl", "resource", static_cast<void*>(&mpZoneUnitCtrl[2]), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ZoneCtrlOM", "resource", static_cast<void*>(&mpZoneUnitCtrl[0]), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ZoneCtrlLight", "resource", static_cast<void*>(&mpZoneUnitCtrl[1]), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ZoneWet", "resource", static_cast<void*>(&mpZoneStatus), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SndZoneOcclusion", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getSndZoneOcclusion), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setSndZoneOcclusion), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "SndZoneGenerator", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getSndZoneGenerator), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setSndZoneGenerator), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "SndZoneTrigger", "resource", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getSndZoneTrigger), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setSndZoneTrigger), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "EQLength", &mEqLength[0], 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "SoundAreaInfo", "resource", static_cast<void*>(&mprSoundInfo), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsCraftStage", &mIsCraftStage, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mAnotherMapName", reinterpret_cast<MT_MFUNC>(&::rStageInfo::getAnotherMapName), reinterpret_cast<MT_MFUNC>(&::rStageInfo::setAnotherMapName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "SystemFlag", &mFlag, 2u, 0u);
 }
 
 MtUI* rStageInfo::createUI(MtProperty& prop) {

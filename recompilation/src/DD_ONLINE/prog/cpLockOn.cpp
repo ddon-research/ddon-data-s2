@@ -98,7 +98,7 @@ void cpLockOn::update() {
         switch (mRequestLockOffAll) {
             case nLockOnTarget::STATE_NONE:
             {
-                unsigned int v8_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+                u32 v8_0 = mArray.mLength;
                 if (v8_0 != 0) {
                     MtObject* * v8_1 = mArray.getBuffer();
                     for (unsigned int i8_2 = 0;;) {
@@ -120,7 +120,7 @@ void cpLockOn::update() {
             }
             case nLockOnTarget::STATE_ALL_OFF:
             {
-                unsigned int v5_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+                u32 v5_0 = mArray.mLength;
                 if (v5_0 != 0) {
                     MtObject* * v5_1 = mArray.getBuffer();
                     for (unsigned int i5_2 = 0;;) {
@@ -138,7 +138,7 @@ void cpLockOn::update() {
             }
             case nLockOnTarget::STATE_ALL_REF_ON:
             {
-                unsigned int v2_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+                u32 v2_0 = mArray.mLength;
                 if (v2_0 != 0) {
                     MtObject* * v2_1 = mArray.getBuffer();
                     for (unsigned int i2_2 = 0;;) {
@@ -156,7 +156,7 @@ void cpLockOn::update() {
             }
             case nLockOnTarget::STATE_ALL_REF_OFF:
             {
-                unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+                u32 v0_0 = mArray.mLength;
                 if (v0_0 != 0) {
                     MtObject* * v0_1 = mArray.getBuffer();
                     for (unsigned int i0_2 = 0;;) {
@@ -269,7 +269,7 @@ cpLockOn::cLockOnTarget* cpLockOn::getLockOnTarget(u32 index) {
 }
 
 void cpLockOn::setGpCategory(s32 category) {
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+    u32 v0_0 = mArray.mLength;
     if (v0_0 != 0) {
         MtObject* * v0_1 = mArray.getBuffer();
         for (unsigned int i0_2 = 0;;) {
@@ -293,9 +293,10 @@ void cpLockOn::unregister() {
     sLockOnManager::getInstance()->unregisterLockOn(this);
 }
 
-__attribute__((weak)) void cpLockOn::createProperty(MtPropertyList& s) {
-    DDON_STUB("cpLockOn::createProperty")
-    /* stub */
+void cpLockOn::createProperty(MtPropertyList& s) {
+    this->cpComponent::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", reinterpret_cast<MT_MFUNC>(&::cpLockOn::getResource), reinterpret_cast<MT_MFUNC>(&::cpLockOn::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mArray", static_cast<MtObject*>(&mArray), 0u, 0u);
 }
 
 void cpLockOn::callbackRegisterLockOnTarget() {
@@ -334,7 +335,7 @@ void cpLockOn::requestLockOnTargetRefAll(bool flag) {
 }
 
 void cpLockOn::setLockOnTargetState(u32 jointInfoID, nLockOnTarget::LOCKON_TARGET_STATE state) {
-    u32 length = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+    u32 length = mArray.mLength;
     if (length != 0) {
         MtObject* * v0_4 = mArray.getBuffer();
         for (unsigned int i0_2 = 0;;) {

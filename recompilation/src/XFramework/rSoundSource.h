@@ -21,6 +21,7 @@ class MtProperty;
 class MtPropertyList;
 class MtStream;
 class MtUI;
+class rSoundSourceStreamAT9;
 class sSound;
 
 // Declarations
@@ -39,6 +40,7 @@ using u8 = unsigned char;
 
 class rSoundSource : public cResource
 {
+    friend class rSoundSourceStreamAT9;
     friend class sSound;
 public:
     enum Format

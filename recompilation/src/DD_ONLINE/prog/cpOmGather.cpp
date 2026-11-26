@@ -257,9 +257,55 @@ u32 cGatherItemList::getItemListPosId() {
     }
 }
 
-__attribute__((weak)) bool cGatherItemList::getItemList(u32 groupId, u32 layerNo, u32 posId, MT_CTSTR UID) {
-    DDON_STUB("cGatherItemList::getItemList")
-    return {};
+bool cGatherItemList::getItemList(u32 groupId, u32 layerNo, u32 posId, MT_CTSTR UID) {
+    mItemGetInfo[0].mID = 0;
+    mItemGetInfo[0].mItemID = 0;
+    mItemGetInfo[0].mNum = 0;
+    mItemGetInfo[1].mID = 0;
+    mItemGetInfo[1].mItemID = 0;
+    mItemGetInfo[1].mNum = 0;
+    mItemGetInfo[2].mID = 0;
+    mItemGetInfo[2].mItemID = 0;
+    mItemGetInfo[2].mNum = 0;
+    mItemGetInfo[3].mID = 0;
+    mItemGetInfo[3].mItemID = 0;
+    mItemGetInfo[3].mNum = 0;
+    mItemGetInfo[4].mID = 0;
+    mItemGetInfo[4].mItemID = 0;
+    mItemGetInfo[4].mNum = 0;
+    mItemGetInfo[5].mID = 0;
+    mItemGetInfo[5].mItemID = 0;
+    mItemGetInfo[5].mNum = 0;
+    mItemGetInfo[6].mID = 0;
+    mItemGetInfo[6].mItemID = 0;
+    mItemGetInfo[6].mNum = 0;
+    mItemGetInfo[7].mID = 0;
+    mItemGetInfo[7].mItemID = 0;
+    mItemGetInfo[7].mNum = 0;
+    mItemGetInfo[8].mID = 0;
+    mItemGetInfo[8].mItemID = 0;
+    mItemGetInfo[8].mNum = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 264) = 0;
+    mItemGetInfo[9].mNum = 0;
+    CDataStageLayoutID frame80(nLayout::createStageLayoutId(static_cast<u32>(sGame::getInstance()->getStageNo()), layerNo, groupId));
+    sGame* t0 = sGame::getInstance();
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(reinterpret_cast<char*>(t0) + t0->getSelfMemberIndex()) + 216)) != 0) {
+        if (mGatherType != 2) {
+            if (mGatherType == 1) {
+                return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getDropItemList(frame80, posId);
+            } else {
+                if (mGatherType == 0) {
+                    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGatheringItemList(frame80, posId, UID);
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getPawnExpeditionRewardDropItemList(sGame::getInstance()->getStageNo(), static_cast<s32>(groupId), static_cast<s32>(posId));
+        }
+    } else {
+        return false;
+    }
 }
 
 inline cGatherItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -404,9 +450,22 @@ u32 cpOmGather::getGatherStatus() {
     return 0;
 }
 
-__attribute__((weak)) void cpOmGather::setGatherStatus(u32 status) {
-    DDON_STUB("cpOmGather::setGatherStatus")
-    /* stub */
+void cpOmGather::setGatherStatus(u32 status) {
+    uOmModel* t0 = mpModel;
+    if (t0 == nullptr) {
+        return;
+    }
+    cOmControl* t1 = t0->mOmComp.mpOmControl;
+    if (t1 == nullptr) {
+        return;
+    }
+    t1->mLot.mListStat = status;
+    sSetManager* t2 = sSetManager::getInstance();
+    nLayout::stLayoutID frame64(t0->getLayoutId());
+    u32 t4 = frame64.mLayoutID;
+    uOmModel* t5 = mpModel;
+    s32 t6 = t5->getSetNo();
+    t2->setGatherItemStatus(t4 >> 10, static_cast<const u32>(t6), status);
 }
 
 __attribute__((weak)) void cpOmGather::setGatherEmpty() {

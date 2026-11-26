@@ -167,6 +167,11 @@ inline void* rShlParamList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline rShlParamList::rShlParamList() {
+    this->::cResource::mAttr = 18;
+    this->mParamList.mAutoDelete = true;
+}
+
 inline u32 rShlParamList::getGroupNum() const {
     return this->mParamList.mLength;
 }

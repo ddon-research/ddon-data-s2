@@ -58,3 +58,22 @@ inline MtEaseCurve::MtEaseCurve() {
 
 inline MtHermiteCurve::MtHermiteCurve() {
 }
+
+inline MtHermiteCurve::MtHermiteCurve(f32 x0, f32 y0, f32 x1, f32 y1, f32 x2, f32 y2, f32 x3, f32 y3, f32 x4, f32 y4, f32 x5, f32 y5, f32 x6, f32 y6, f32 x7, f32 y7) {
+    x[0] = x0;
+    y[0] = y0;
+    x[1] = x1;
+    y[1] = y1;
+    x[2] = x2;
+    y[2] = y2;
+    x[3] = x3;
+    y[3] = y3;
+    x[4] = x4;
+    y[4] = y4;
+    x[5] = x5;
+    y[5] = y5;
+    x[6] = x6;
+    y[6] = y6;
+    x[7] = x7;
+    y[7] = y7;
+}

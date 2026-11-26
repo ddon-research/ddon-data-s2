@@ -6,6 +6,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
 #include "cResource.h"
@@ -34,9 +35,9 @@ rSoundDirectionalCurveXml::~rSoundDirectionalCurveXml() {
     /* stub */
 }
 
-__attribute__((weak)) void rSoundDirectionalCurveXml::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundDirectionalCurveXml::createProperty")
-    /* stub */
+void rSoundDirectionalCurveXml::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mCurves", static_cast<MtObject*>(&mCurves), 0u, 0u);
 }
 
 MtUI* rSoundDirectionalCurveXml::createUI(MtProperty& prop) {
@@ -84,9 +85,11 @@ rSoundDirectionalCurveXml::Curve::~Curve() {
     /* stub */
 }
 
-__attribute__((weak)) void rSoundDirectionalCurveXml::Curve::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundDirectionalCurveXml::Curve::createProperty")
-    /* stub */
+void rSoundDirectionalCurveXml::Curve::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEnable", &mEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mZeroRadianValue", &mZeroRadianValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPiRadianValue", &mPiRadianValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mElements", static_cast<MtObject*>(&mElements), 0u, 0u);
 }
 
 inline rSoundDirectionalCurveXml::Curve::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -109,9 +112,9 @@ inline void rSoundDirectionalCurveXml::Element::operator delete(void* p_addr) {
 rSoundDirectionalCurveXml::Element::~Element() {
 }
 
-__attribute__((weak)) void rSoundDirectionalCurveXml::Element::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSoundDirectionalCurveXml::Element::createProperty")
-    /* stub */
+void rSoundDirectionalCurveXml::Element::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAngle", &mAngle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", &mValue, 0u, 0u);
 }
 
 inline rSoundDirectionalCurveXml::Element::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

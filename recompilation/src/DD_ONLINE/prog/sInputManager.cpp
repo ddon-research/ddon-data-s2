@@ -15,6 +15,7 @@
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
 #include "cKeyCustom.h"
+#include "cMenuBase.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
 #include "nDDOUtility.h"
@@ -173,9 +174,25 @@ void sInputManager::setDisableInputGameByPauseMenu(bool Disable) {
     mDisableInputGameByPauseMenu = Disable;
 }
 
-__attribute__((weak)) bool sInputManager::isDisableInputGameByPauseMenu() const {
-    DDON_STUB("sInputManager::isDisableInputGameByPauseMenu")
-    return {};
+bool sInputManager::isDisableInputGameByPauseMenu() const {
+    if (sMenu::getInstance() != nullptr) {
+        if (!sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mMenuCraftMenu), false)) {
+            if (!sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mPawnManageMenu), false)) {
+                if (!sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mMyPawnList), false)) {
+                    if (!sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mRentalPawnList), false)) {
+                        if (!sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mPartyManager), false)) {
+                            if (!sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(&sMenu::getInstance()->mMenuAreaMaster), false)) {
+                                return mDisableInputGameByPauseMenu;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    } else {
+        return mDisableInputGameByPauseMenu;
+    }
 }
 
 __attribute__((weak)) void sInputManager::setJobId(nHuman::JOB_ENUM job) {
@@ -274,14 +291,37 @@ __attribute__((weak)) void sInputManager::readData(MtDataReader& r, u32 CurrentV
     /* stub */
 }
 
-__attribute__((weak)) void sInputManager::editApply(cKeyCustomManager& cmn, u32 categoryNo) {
-    DDON_STUB("sInputManager::editApply")
-    /* stub */
+void sInputManager::editApply(cKeyCustomManager& cmn, u32 categoryNo) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    mCommonKeyCustomManager[categoryNo] = cmn;
+    static_cast<sGUIExt*>(sGUI::getInstance())->updateFKeyPaletteGuide();
+    static_cast<sGUIExt*>(sGUI::getInstance())->noticeUpdateButtonGuide();
+    mCommonKeyCustomManager[categoryNo].setSoloExcludeModifierKey();
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
+    }
 }
 
-__attribute__((weak)) void sInputManager::editCancel(cKeyCustomManager& cmn, u32 categoryNo) {
-    DDON_STUB("sInputManager::editCancel")
-    /* stub */
+void sInputManager::editCancel(cKeyCustomManager& cmn, u32 categoryNo) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    cmn = mCommonKeyCustomManager[categoryNo];
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
+    }
 }
 
 bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, bool isCheckName) {

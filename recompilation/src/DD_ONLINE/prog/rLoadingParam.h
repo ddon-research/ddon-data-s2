@@ -160,3 +160,16 @@ inline rLoadingParam::cData::cData() {
     this->mMsgIdx = 0;
     this->mImgId = 0;
 }
+
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rLoadingParam::cDataList::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rLoadingParam::cDataList::DTI)->memAlloc(sz, align, rLoadingParam::cDataList::DTI.getID());
+}
+
+inline rLoadingParam::cDataList::cDataList() {
+    mAreaNo = 0;
+    mList.setAutoDelete(true);
+    mList.reserve(5u);
+}

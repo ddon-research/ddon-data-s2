@@ -6,6 +6,7 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -255,9 +256,27 @@ __attribute__((weak)) void cSoundMultiBandEQ::setHighUnit(bool enable, cSoundMul
     /* stub */
 }
 
-__attribute__((weak)) void cSoundMultiBandEQ::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSoundMultiBandEQ::createProperty")
-    /* stub */
+void cSoundMultiBandEQ::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Bypass", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getBypass), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setBypass), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Enable", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getEnable), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "LowEnable", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getLowEnable), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setLowEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "LowType", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getLowType), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setLowType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "LowFreq", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getLowFreq), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setLowFreq), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "LowQ", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getLowQ), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setLowQ), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "LowGain", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getLowGain), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setLowGain), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "MidLowEnable", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getMidLowEnable), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setMidLowEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "MidLowFreq", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getMidLowFreq), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setMidLowFreq), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "MidLowQ", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getMidLowQ), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setMidLowQ), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "MidLowGain", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getMidLowGain), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setMidLowGain), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "MidHighEnable", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getMidHighEnable), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setMidHighEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "MidHighFreq", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getMidHighFreq), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setMidHighFreq), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "MidHighQ", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getMidHighQ), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setMidHighQ), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "MidHighGain", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getMidHighGain), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setMidHighGain), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "HighEnable", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getHighEnable), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setHighEnable), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "HighType", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getHighType), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setHighType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "HighFreq", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getHighFreq), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setHighFreq), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "HighQ", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getHighQ), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setHighQ), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "HighGain", reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::getHighGain), reinterpret_cast<MT_MFUNC>(&::cSoundMultiBandEQ::setHighGain), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* cSoundMultiBandEQ::createUI(MtProperty& prop) {

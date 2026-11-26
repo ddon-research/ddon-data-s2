@@ -49,6 +49,10 @@ const MtDTI& cCaptrophyContentData::getDTI() const {
     return cCaptrophyContentData::DTI;
 }
 
+inline void* cCaptrophyContentData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cCaptrophyContentData::DTI)->memAlloc(sz, align, cCaptrophyContentData::DTI.getID());
+}
+
 inline void cCaptrophyContentData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCaptrophyContentData::DTI)->memFree(p_addr);
 }
@@ -57,9 +61,8 @@ inline cCaptrophyContentData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 
 cCaptrophyContentData::MyDTI cCaptrophyContentData::DTI("cCaptrophyContentData", &::cUIObject::DTI, 608ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCaptrophyContentData::MyDTI::newInstance() const {
-    DDON_STUB("cCaptrophyContentData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCaptrophyContentData::MyDTI::newInstance() const {
+    return new (16u) cCaptrophyContentData;
 }
 
 const MtDTI& cCaptrophyData::getDTI() const {
@@ -131,8 +134,11 @@ inline void uGUICaplinkTopMenu::operator delete(void* p_addr) {
 }
 
 uGUICaplinkTopMenu::~uGUICaplinkTopMenu() {
-    DDON_STUB("uGUICaplinkTopMenu::~uGUICaplinkTopMenu")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 void uGUICaplinkTopMenu::createProperty(MtPropertyList& s) {
@@ -258,7 +264,7 @@ __attribute__((weak)) void uGUICaplinkTopMenu::setChatInfo(s32 id_type, MT_CTSTR
 }
 
 cCaptrophyData* uGUICaplinkTopMenu::getCaptrophyData(s32 id) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 3384)) != 0) {
+    if (mCaptrophyData.mLength != 0) {
         u32 i = 0;
         do {
             if (mCaptrophyData.getBuffer()[static_cast<int>(i)] != nullptr) {
@@ -267,7 +273,7 @@ cCaptrophyData* uGUICaplinkTopMenu::getCaptrophyData(s32 id) {
                 }
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 3384)));
+        } while (i < mCaptrophyData.mLength);
     }
     return nullptr;
 }
@@ -326,12 +332,12 @@ void uGUICaplinkTopMenu::getCaptrophyCompleteNum(const cCaptrophyContentData* pC
     }
     u32 i = 0;
     do {
-        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(pContent) + 32)) + (static_cast<unsigned long>(i) * 8)) + 0)) != 0) {
+        if (pContent->mTrophy.mpArray[i] != nullptr) {
             out_total = (out_total) + 1u;
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(pContent) + 32)) + (static_cast<unsigned long>(i) * 8)) + 0)) + 805)) == 1) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pContent->mTrophy.mpArray[i]) + 805)) == 1) {
                 out_num = (out_num) + 1u;
             }
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(pContent) + 32)) + (static_cast<unsigned long>(i) * 8)) + 0)) + 806)) == 1) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pContent->mTrophy.mpArray[i]) + 806)) == 1) {
                 out_receive = (out_receive) + 1u;
             }
         }

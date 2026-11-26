@@ -75,7 +75,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cPlActWpnBowBase();
-    virtual ~cPlActWpnBowBase();
+    virtual ~cPlActWpnBowBase() {}
     virtual void init();  // vtable slot 7
     virtual void move();  // vtable slot 8
     virtual void final();  // vtable slot 9
@@ -263,7 +263,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cPlActWpnBow();
-    virtual ~cPlActWpnBow();
+    virtual ~cPlActWpnBow() {}
     virtual void init();  // vtable slot 7
     virtual void move();  // vtable slot 8
     virtual void final();  // vtable slot 9

@@ -25,6 +25,7 @@ class MtVector3;
 class cDraw;
 class cEffectJoint;
 class cEffectTransparency;
+class cParticleGenerator;
 class cParticleManager;
 class cUnit;
 namespace nPrim { struct Material; }
@@ -48,6 +49,7 @@ using u64 = __uint64_t;
 class uBaseEffect : public uCoord
 {
     friend class cEffectJoint;
+    friend class cParticleGenerator;
     friend class cParticleManager;
     friend class sEffectExt;
 public:
@@ -336,6 +338,14 @@ inline void uBaseEffect::setEndType(u32 EndType) {
 
 inline rEffectList* uBaseEffect::getEffectList() {
     return this->mpEffectList;
+}
+
+inline MtVector3 uBaseEffect::getOfs() const {
+    return this->mOfs;
+}
+
+inline MtVector3 uBaseEffect::getDir() const {
+    return this->mDir;
 }
 
 inline u32 uBaseEffect::getParticleVolume() const {

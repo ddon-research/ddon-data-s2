@@ -7,7 +7,7 @@
 #include "../../MT/MtDTI.h"
 #include "nCastUtility.h"
 #include "../../generated/shared/nEnemy.h"
-#include "../../generated/shared/nEnemyID.h"
+#include "nEnemyID.h"
 #include "sUnitManager.h"
 
 // Forward declarations
@@ -32,6 +32,7 @@ class rHumanEnemyPreset;
 class uBaseModel;
 class uCharacter;
 class uDDOModel;
+class uEffectExt;
 class uPlayer;
 
 // Declarations
@@ -48,6 +49,7 @@ using u32 = unsigned int;
 
 class sEnemyManager : public sUnitManager
 {
+    friend class uEffectExt;
 public:
     class MyDTI;
     class cEnemyDistanceInfo;
@@ -154,4 +156,8 @@ inline sEnemyManager* sEnemyManager::getInstance() {
 }
 
 inline sEnemyManager::cEnemyDistanceInfo::~cEnemyDistanceInfo() {
+}
+
+inline f32 sEnemyManager::cEnemyDistanceInfo::getNearestDistanceSuperErosion() {
+    return this->mNearestDistanceSuperErosion;
 }

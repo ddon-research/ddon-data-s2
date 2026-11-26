@@ -19,6 +19,10 @@ const MtDTI& nNetwork::TagChecker::getDTI() const {
     return nNetwork::TagChecker::DTI;
 }
 
+inline void* nNetwork::TagChecker::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::TagChecker::DTI)->memAlloc(sz, align, ::nNetwork::TagChecker::DTI.mID);
+}
+
 nNetwork::TagChecker::TagChecker() {
     mInit = false;
     mDst = 128;
@@ -70,9 +74,8 @@ inline nNetwork::TagChecker::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 
 nNetwork::TagChecker::MyDTI nNetwork::TagChecker::DTI("nNetwork::TagChecker", &::MtObject::DTI, 112ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nNetwork::TagChecker::MyDTI::newInstance() const {
-    DDON_STUB("nNetwork::TagChecker::MyDTI::newInstance")
-    return nullptr;
+MtObject* nNetwork::TagChecker::MyDTI::newInstance() const {
+    return new (16u) ::nNetwork::TagChecker;
 }
 
 const MtDTI& nNetwork::TagChecker::RpcSyncReq::getDTI() const {

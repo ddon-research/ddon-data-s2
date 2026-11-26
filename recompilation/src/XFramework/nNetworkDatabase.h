@@ -20,6 +20,7 @@ class MtNetUniqueId;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
+namespace nNetwork { class Match; }
 namespace nNetwork { class Member; }
 namespace nNetwork { class Route; }
 namespace nNetwork { class SearchResultListPtr; }
@@ -42,6 +43,7 @@ using u8 = unsigned char;
 namespace nNetwork {
     class SessionDatabase : public ::MtObject
     {
+        friend class nNetwork::Match;
         friend class nNetwork::SessionDriver;
     public:
         enum

@@ -101,6 +101,8 @@
 #include "cpScrCollision.h"
 #include "cpSequenceCtrl.h"
 #include "cpShakeCtrl.h"
+#include "cpShlCondition.h"
+#include "cpShlConditionJob10.h"
 #include "cpShlShotCtrl.h"
 #include "cpSlave.h"
 #include "cpStateManager.h"
@@ -205,7 +207,12 @@
 #include "uOmModel.h"
 #include "uPlayer.h"
 #include "uShlBase.h"
+#include "uShlComponentCtrl.h"
 #include "uShlCondition.h"
+#include "uShlCustomCondition.h"
+#include "uShlEnchant.h"
+#include "uShlFriendSupport.h"
+#include "uShlShortCharge.h"
 #include "../../XFramework/uSimSoftBody.h"
 #include "uWeapon.h"
 #ifndef DDON_STUB
@@ -452,7 +459,7 @@ void uHuman::setupContextParam() {
         return;
     }
     cContextPlayerInfo* t1 = mpContextPlayerInfo;
-    u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 40)));
+    u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(t1->mCurrentJob_pri));
     u32 t3 = t1->mFinalJobInfoList.elems[(t2 <= 9u) ? t2 : 0u].mConstitution_pri;
     t0->mBlowInfo.mEnduranceMax = static_cast<float>(t3);
     t0->mShrinkInfo.mEnduranceMax = static_cast<float>(t3);
@@ -548,12 +555,12 @@ void uHuman::callbackReplaceHitInfo_Atk(cHitInfo* pHitInfo) {
     if (mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
             if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                 if (mpContextPlayerInfo != nullptr) {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->callbackReplaceHitInfo_Atk(pHitInfo);
                 } else {
                     u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
@@ -568,12 +575,12 @@ void uHuman::callbackReplaceHitInfo_Def(cHitInfo* pHitInfo) {
     if (mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
             if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                 if (mpContextPlayerInfo != nullptr) {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->callbackReplaceHitInfo_Def(pHitInfo);
                 } else {
                     u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
@@ -620,12 +627,12 @@ void uHuman::callbackAttack(cHitInfo* pHitInfo) {
     mIsBeforeAttackHit = true;
     searchCorepoint(pHitInfo);
     if (mpContextPlayerInfo != nullptr) {
-        if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+        if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+            if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                 if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                     if (mpContextPlayerInfo != nullptr) {
-                        u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                        u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                         mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->callbackAttack(pHitInfo);
                         sAIPawnSys::getInstance()->setPawnOwnerTarget(static_cast<uDDOModel*>(this), pHitInfo->mpDfdModel);
                     } else {
@@ -669,12 +676,12 @@ void uHuman::callbackDamageAfter(cHitInfoAfter* pHitInfo) {
                             pHitInfo->mLocalInfo.mHitStopFlag = 2;
                             this->uDDOModel::callbackDamageAfter(pHitInfo);
                             if (mpContextPlayerInfo != nullptr) {
-                                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-                                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                                        u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                                if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+                                    if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                                        u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                                         if (mJobCompArray.elems[(t2 <= 9u) ? t2 : 0u] != nullptr) {
                                             if (mpContextPlayerInfo != nullptr) {
-                                                u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                                                u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                                                 mJobCompArray.elems[(t3 <= 9u) ? t3 : 0u]->callbackDamageAfter(pHitInfo);
                                                 calcWhiteGage(pHitInfo);
                                             } else {
@@ -700,12 +707,12 @@ void uHuman::callbackDamageAfter(cHitInfoAfter* pHitInfo) {
                             pHitInfo->mLocalInfo.mHitStopFlag = 2;
                             this->uDDOModel::callbackDamageAfter(pHitInfo);
                             if (mpContextPlayerInfo != nullptr) {
-                                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-                                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                                        u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                                if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+                                    if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                                        u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                                         if (mJobCompArray.elems[(t2 <= 9u) ? t2 : 0u] != nullptr) {
                                             if (mpContextPlayerInfo != nullptr) {
-                                                u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                                                u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                                                 mJobCompArray.elems[(t3 <= 9u) ? t3 : 0u]->callbackDamageAfter(pHitInfo);
                                                 calcWhiteGage(pHitInfo);
                                             } else {
@@ -732,12 +739,12 @@ void uHuman::callbackDamageAfter(cHitInfoAfter* pHitInfo) {
                         pHitInfo->mLocalInfo.mHitStopFlag = 2;
                         this->uDDOModel::callbackDamageAfter(pHitInfo);
                         if (mpContextPlayerInfo != nullptr) {
-                            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-                                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                                    u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                            if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+                                if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                                    u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                                     if (mJobCompArray.elems[(t2 <= 9u) ? t2 : 0u] != nullptr) {
                                         if (mpContextPlayerInfo != nullptr) {
-                                            u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                                            u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                                             mJobCompArray.elems[(t3 <= 9u) ? t3 : 0u]->callbackDamageAfter(pHitInfo);
                                             calcWhiteGage(pHitInfo);
                                         } else {
@@ -761,12 +768,12 @@ void uHuman::callbackDamageAfter(cHitInfoAfter* pHitInfo) {
                 } else {
                     this->uDDOModel::callbackDamageAfter(pHitInfo);
                     if (mpContextPlayerInfo != nullptr) {
-                        if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                                u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                        if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+                            if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                                u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                                 if (mJobCompArray.elems[(t2 <= 9u) ? t2 : 0u] != nullptr) {
                                     if (mpContextPlayerInfo != nullptr) {
-                                        u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                                        u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                                         mJobCompArray.elems[(t3 <= 9u) ? t3 : 0u]->callbackDamageAfter(pHitInfo);
                                         calcWhiteGage(pHitInfo);
                                     } else {
@@ -790,12 +797,12 @@ void uHuman::callbackDamageAfter(cHitInfoAfter* pHitInfo) {
             } else {
                 this->uDDOModel::callbackDamageAfter(pHitInfo);
                 if (mpContextPlayerInfo != nullptr) {
-                    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                            u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+                        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                            u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                             if (mJobCompArray.elems[(t2 <= 9u) ? t2 : 0u] != nullptr) {
                                 if (mpContextPlayerInfo != nullptr) {
-                                    u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                                    u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                                     mJobCompArray.elems[(t3 <= 9u) ? t3 : 0u]->callbackDamageAfter(pHitInfo);
                                     calcWhiteGage(pHitInfo);
                                 } else {
@@ -819,12 +826,12 @@ void uHuman::callbackDamageAfter(cHitInfoAfter* pHitInfo) {
         } else {
             this->uDDOModel::callbackDamageAfter(pHitInfo);
             if (mpContextPlayerInfo != nullptr) {
-                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                        u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+                    if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                        u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                         if (mJobCompArray.elems[(t2 <= 9u) ? t2 : 0u] != nullptr) {
                             if (mpContextPlayerInfo != nullptr) {
-                                u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                                u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                                 mJobCompArray.elems[(t3 <= 9u) ? t3 : 0u]->callbackDamageAfter(pHitInfo);
                                 calcWhiteGage(pHitInfo);
                             } else {
@@ -848,12 +855,12 @@ void uHuman::callbackDamageAfter(cHitInfoAfter* pHitInfo) {
     } else {
         this->uDDOModel::callbackDamageAfter(pHitInfo);
         if (mpContextPlayerInfo != nullptr) {
-            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                    u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+            if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+                if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                    u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     if (mJobCompArray.elems[(t2 <= 9u) ? t2 : 0u] != nullptr) {
                         if (mpContextPlayerInfo != nullptr) {
-                            u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                            u32 t3 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                             mJobCompArray.elems[(t3 <= 9u) ? t3 : 0u]->callbackDamageAfter(pHitInfo);
                             calcWhiteGage(pHitInfo);
                         } else {
@@ -943,12 +950,12 @@ bool uHuman::callbackHealedAfter_apply_slave(cHitInfoAfter* pHitInfo) {
 
 void uHuman::makeHealedAttackInfo(cHitInfoAfter* pHitInfo) {
     if (mpContextPlayerInfo != nullptr) {
-        if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+        if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+            if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                 if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                     if (mpContextPlayerInfo != nullptr) {
-                        u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                        u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                         mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->makeHealedAttackInfo(pHitInfo);
                         adjustAbilityHealAttackInfo(pHitInfo);
                     } else {
@@ -975,12 +982,12 @@ void uHuman::callbackDamageAfter_make(cHitInfoAfter* pHitInfo) {
         return;
     }
     if (mpContextPlayerInfo != nullptr) {
-        if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+        if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+            if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                 if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                     if (mpContextPlayerInfo != nullptr) {
-                        u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                        u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                         mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->callbackDamageAfter_make(pHitInfo);
                         this->uCharacter::callbackDamageAfter_make(pHitInfo);
                     } else {
@@ -1111,12 +1118,12 @@ void uHuman::callbackAttackTest(cHitInfo* pHitInfo) {
     if (mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
             if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                 if (mpContextPlayerInfo != nullptr) {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->callbackAttackTest(pHitInfo);
                 } else {
                     u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
@@ -1131,12 +1138,12 @@ void uHuman::callbackAttackTest_ShlNotify(cHitInfo* pHitInfo) {
     if (mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
             if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                 if (mpContextPlayerInfo != nullptr) {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->callbackAttackTest_ShlNotify(pHitInfo);
                 } else {
                     u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
@@ -1183,12 +1190,12 @@ void uHuman::callbackCatch(cHitInfo* pHitInfo) {
     if (mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
             if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                 if (mpContextPlayerInfo != nullptr) {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->callbackCatch(pHitInfo);
                 } else {
                     u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
@@ -1204,12 +1211,12 @@ void uHuman::callbackCatch_Shl(cShlNotifyInfo* pInfo) {
     if (mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
             if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                 if (mpContextPlayerInfo != nullptr) {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->callbackCatch_Shl(pInfo);
                 } else {
                     u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
@@ -1360,12 +1367,12 @@ void uHuman::callbackCreateShl(uShlBase* pShl) {
     if (mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
             if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                 if (mpContextPlayerInfo != nullptr) {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->callbackCreateShl(pShl);
                 } else {
                     u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
@@ -1397,12 +1404,12 @@ void uHuman::callbackOcdSeal() {
     if (mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
             if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                 if (mpContextPlayerInfo != nullptr) {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->callbackOcdSeal();
                 } else {
                     u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
@@ -1426,14 +1433,14 @@ void uHuman::callbackEquip(nCharacterData::EQUIP_SLOT_TYPE category, nCharacterD
     cParentRegionStatus* t0 = getHpDamageCtrlPtr()->getParentRegion(0u);
     if (t0 != nullptr) {
         cContextPlayerInfo* t1 = mpContextPlayerInfo;
-        u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 40)));
+        u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(t1->mCurrentJob_pri));
         u32 t3 = t1->mFinalJobInfoList.elems[(t2 <= 9u) ? t2 : 0u].mConstitution_pri;
         t0->mBlowInfo.mEnduranceMax = static_cast<float>(t3);
         t0->mShrinkInfo.mEnduranceMax = static_cast<float>(t3);
         if (mpContextPlayerInfo != nullptr) {
-            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                    u32 t4 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+            if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+                if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                    u32 t4 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     cpJobBase* pJobComp = mJobCompArray.elems[(t4 <= 9u) ? t4 : 0u];
                     if (pJobComp != nullptr) {
                         pJobComp->callbackEquipJob(category);
@@ -1443,9 +1450,9 @@ void uHuman::callbackEquip(nCharacterData::EQUIP_SLOT_TYPE category, nCharacterD
         }
     } else {
         if (mpContextPlayerInfo != nullptr) {
-            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                    u32 t4 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+            if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+                if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                    u32 t4 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     cpJobBase* pJobComp = mJobCompArray.elems[(t4 <= 9u) ? t4 : 0u];
                     if (pJobComp != nullptr) {
                         pJobComp->callbackEquipJob(category);
@@ -1461,12 +1468,12 @@ void uHuman::notifyDeleteShell(s32 work) {
     if (mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
             if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                 if (mpContextPlayerInfo != nullptr) {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->notifyDeleteShell(work);
                 } else {
                     u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
@@ -1734,9 +1741,8 @@ bool uHuman::checkGuardCharge() {
     }
 }
 
-__attribute__((weak)) bool uHuman::isFootWork() const {
-    DDON_STUB("uHuman::isFootWork")
-    return {};
+bool uHuman::isFootWork() const {
+    return getActMgrPtr()->getActionNo() <= 2u;
 }
 
 __attribute__((weak)) bool uHuman::isLimitedHealingCircle(nKeyCommand::stGenericParam& param) {
@@ -2036,12 +2042,12 @@ void uHuman::checkReplaceInfo(cHitInfoAfter& HitInfo) {
     if (mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
             if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                 if (mpContextPlayerInfo != nullptr) {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->checkReplaceInfo(HitInfo);
                 } else {
                     u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
@@ -2563,9 +2569,9 @@ __attribute__((weak)) u32 uHuman::getCustomEffectEpvIndex(nHuman::CUSTOM_SKILL_E
 
 cpJobBase* uHuman::getJobComponent() const {
     if (mpContextPlayerInfo != nullptr) {
-        if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                u32 index = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+        if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+            if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                u32 index = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                 return mJobCompArray.elems[(index <= 9u) ? index : 0u];
             }
         }
@@ -2666,9 +2672,13 @@ __attribute__((weak)) uDDOModel* uHuman::getClimbEnemy() const {
     return nullptr;
 }
 
-__attribute__((weak)) void uHuman::initEnemyClimbInfo() {
-    DDON_STUB("uHuman::initEnemyClimbInfo")
-    /* stub */
+void uHuman::initEnemyClimbInfo() {
+    mEnemyClimbInfo.init();
+    mEnemyClimbInfo.mTgtPos = mPos;
+    mEnemyClimbInfo.mTgtQuat.x = mQuat.x;
+    mEnemyClimbInfo.mTgtQuat.y = mQuat.y;
+    mEnemyClimbInfo.mTgtQuat.z = mQuat.z;
+    mEnemyClimbInfo.mTgtQuat.w = mQuat.w;
 }
 
 __attribute__((weak)) bool uHuman::checkCliffHang() {
@@ -3348,9 +3358,8 @@ bool uHuman::checkSeqCntMotionEnd(u32 type) {
     }
 }
 
-__attribute__((weak)) bool uHuman::isHajikareNow() const {
-    DDON_STUB("uHuman::isHajikareNow")
-    return {};
+bool uHuman::isHajikareNow() const {
+    return (getActMgrPtr()->getActionNo() - 170u) <= 7u;
 }
 
 void uHuman::setFingerMotion() {
@@ -3412,12 +3421,12 @@ void uHuman::makeBlowShrinkAttackInfo(cBlowShrinkDmInfo* pInfo, uDDOModel* pAtta
     if (mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+    if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+        if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+            u32 t0 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
             if (mJobCompArray.elems[(t0 <= 9u) ? t0 : 0u] != nullptr) {
                 if (mpContextPlayerInfo != nullptr) {
-                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u]->makeBlowShrinkAttackInfo(pInfo, pAttacker, pDefender, atkAdjustUniqueId);
                 } else {
                     u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
@@ -3471,12 +3480,12 @@ void uHuman::makeOcdAttackInfoShl(cHitInfoAfter* pHitInfo) {
         makeOcdWepAttackInfo(pHitInfo);
         decideAttacklElemnt(pHitInfo);
         if (mpContextPlayerInfo != nullptr) {
-            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) + 1) > 1) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)) <= 10) {
-                    u32 t6 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+            if (static_cast<unsigned char>(mpContextPlayerInfo->mCurrentJob_pri + 1) > 1) {
+                if (mpContextPlayerInfo->mCurrentJob_pri <= 10) {
+                    u32 t6 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                     if (mJobCompArray.elems[(t6 <= 9u) ? t6 : 0u] != nullptr) {
                         if (mpContextPlayerInfo != nullptr) {
-                            u32 t7 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpContextPlayerInfo) + 40)));
+                            u32 t7 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(mpContextPlayerInfo->mCurrentJob_pri));
                             mJobCompArray.elems[(t7 <= 9u) ? t7 : 0u]->makeOcdAttackInfoShl(pHitInfo);
                             adjustAbilityElementAttackInfo(pHitInfo);
                         } else {
@@ -4403,7 +4412,7 @@ __attribute__((weak)) bool uHuman::isEventEndWaitSet() {
 
 bool uHuman::isEventBusy() const {
     if (!sFlag::getInstance()->isHumanEventBusy()) {
-        if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) != 0) && ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 672)) != 0)) {
+        if ((sArea::getInstance()->mpArea[2] != nullptr) && static_cast<aStage*>(sArea::getInstance()->mpArea[2])->mEventBusy) {
             return true;
         }
         return false;
@@ -4850,6 +4859,12 @@ uHuman::MyDTI uHuman::DTI("uHuman", &::uCharacter::DTI, 14192ul, 0u, 0u);
 
 alignas(16) unsigned char uHuman_mScrCapsuleUnder_bytes[16] __asm__("_ZN6uHuman16mScrCapsuleUnderE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
+alignas(4) unsigned char uHuman_mAbilityVsEnemyAttackTable_bytes[128] __asm__("_ZN6uHuman26mAbilityVsEnemyAttackTableE") = {0x01, 0x00, 0x00, 0x00, 0x17, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xc8, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x32, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x49, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x4b, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x7d, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0xad, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x94, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0xaf, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00, 0x96, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00, 0xdf, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x00, 0x00, 0xe1, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x00, 0x00, 0x92, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0xac, 0x01, 0x00, 0x00};
+
+alignas(4) unsigned char uHuman_mAbilityVsEnemyDefenceTable_bytes[128] __asm__("_ZN6uHuman27mAbilityVsEnemyDefenceTableE") = {0x01, 0x00, 0x00, 0x00, 0x16, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xc7, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x31, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x48, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x4a, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0x2f, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0x7c, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0xac, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x93, 0x00, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0xae, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x00, 0x95, 0x00, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00, 0xde, 0x00, 0x00, 0x00, 0x0e, 0x00, 0x00, 0x00, 0xe0, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x00, 0x00, 0x91, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0xab, 0x01, 0x00, 0x00};
+
+alignas(4) unsigned char uHuman_mAbilitySkillupTable_bytes[1344] __asm__("_ZN6uHuman20mAbilitySkillupTableE") = {0x28, 0x01, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x29, 0x01, 0x00, 0x00, 0x1a, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x2b, 0x01, 0x00, 0x00, 0x1b, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x2c, 0x01, 0x00, 0x00, 0x1c, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x2e, 0x01, 0x00, 0x00, 0x19, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x2f, 0x01, 0x00, 0x00, 0x1a, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x31, 0x01, 0x00, 0x00, 0x1b, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x32, 0x01, 0x00, 0x00, 0x1c, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x34, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x35, 0x01, 0x00, 0x00, 0x1e, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x37, 0x01, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x38, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x3a, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x3b, 0x01, 0x00, 0x00, 0x1e, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x3d, 0x01, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x3e, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x40, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x41, 0x01, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x43, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x44, 0x01, 0x00, 0x00, 0x24, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x46, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x47, 0x01, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x49, 0x01, 0x00, 0x00, 0x23, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x4a, 0x01, 0x00, 0x00, 0x24, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x4c, 0x01, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x4d, 0x01, 0x00, 0x00, 0x26, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x4f, 0x01, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x4f, 0x01, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x50, 0x01, 0x00, 0x00, 0x28, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x52, 0x01, 0x00, 0x00, 0x25, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x53, 0x01, 0x00, 0x00, 0x26, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x55, 0x01, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x55, 0x01, 0x00, 0x00, 0x15, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x56, 0x01, 0x00, 0x00, 0x28, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x58, 0x01, 0x00, 0x00, 0x29, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x59, 0x01, 0x00, 0x00, 0x2a, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x5b, 0x01, 0x00, 0x00, 0x2b, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x5c, 0x01, 0x00, 0x00, 0x2c, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x5e, 0x01, 0x00, 0x00, 0x29, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x5f, 0x01, 0x00, 0x00, 0x2a, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x61, 0x01, 0x00, 0x00, 0x2b, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x62, 0x01, 0x00, 0x00, 0x2c, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x64, 0x01, 0x00, 0x00, 0x2d, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x65, 0x01, 0x00, 0x00, 0x2e, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x67, 0x01, 0x00, 0x00, 0x2d, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x68, 0x01, 0x00, 0x00, 0x2f, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x6a, 0x01, 0x00, 0x00, 0x2e, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x6b, 0x01, 0x00, 0x00, 0x2f, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x6d, 0x01, 0x00, 0x00, 0x2e, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x6e, 0x01, 0x00, 0x00, 0x2f, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x70, 0x01, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x71, 0x01, 0x00, 0x00, 0x31, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x73, 0x01, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x73, 0x01, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x74, 0x01, 0x00, 0x00, 0x32, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x76, 0x01, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x77, 0x01, 0x00, 0x00, 0x31, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x79, 0x01, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x79, 0x01, 0x00, 0x00, 0x0b, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x7a, 0x01, 0x00, 0x00, 0x32, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x7c, 0x01, 0x00, 0x00, 0x33, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x7d, 0x01, 0x00, 0x00, 0x34, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x7f, 0x01, 0x00, 0x00, 0x35, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x80, 0x01, 0x00, 0x00, 0x36, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x82, 0x01, 0x00, 0x00, 0x33, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x83, 0x01, 0x00, 0x00, 0x34, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x85, 0x01, 0x00, 0x00, 0x35, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x86, 0x01, 0x00, 0x00, 0x36, 0x00, 0x00, 0x00, 0x07, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x88, 0x01, 0x00, 0x00, 0x37, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x89, 0x01, 0x00, 0x00, 0x38, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x8b, 0x01, 0x00, 0x00, 0x39, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x8c, 0x01, 0x00, 0x00, 0x3a, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x8e, 0x01, 0x00, 0x00, 0x37, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x8f, 0x01, 0x00, 0x00, 0x38, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x91, 0x01, 0x00, 0x00, 0x39, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x92, 0x01, 0x00, 0x00, 0x3a, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xad, 0x01, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xae, 0x01, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xaf, 0x01, 0x00, 0x00, 0x41, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xb0, 0x01, 0x00, 0x00, 0x42, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xb3, 0x01, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xb4, 0x01, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xb5, 0x01, 0x00, 0x00, 0x41, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xb6, 0x01, 0x00, 0x00, 0x42, 0x00, 0x00, 0x00, 0x0a, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff};
+
 __attribute__((weak)) MtObject* uHuman::MyDTI::newInstance() const {
     DDON_STUB("uHuman::MyDTI::newInstance")
     return nullptr;
@@ -5010,9 +5025,16 @@ uModel::Motion* uHuman::cBlendMotionCtrl::getBlendMotion(uHuman& Owner) {
     return &Owner.mMotion[1];
 }
 
-__attribute__((weak)) bool uHuman::cBlendMotionCtrl::getMotionParam(uHuman& Owner, u32& motNo, u32& attr, f32& frame, f32& speed) {
-    DDON_STUB("uHuman::cBlendMotionCtrl::getMotionParam")
-    return {};
+bool uHuman::cBlendMotionCtrl::getMotionParam(uHuman& Owner, u32& motNo, u32& attr, f32& frame, f32& speed) {
+    if (mIsActive) {
+        motNo = Owner.mMotion[1].mMotionNo;
+        attr = Owner.mMotion[1].getAttr();
+        frame = Owner.mMotion[1].getFrame();
+        speed = Owner.mMotion[1].mSpeed;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 inline uHuman::cBlendMotionCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

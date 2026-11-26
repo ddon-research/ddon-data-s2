@@ -27,6 +27,7 @@
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #include "cBVHCollision.h"
@@ -71,9 +72,9 @@ __attribute__((noinline)) sCollision::~sCollision() {
     /* stub */
 }
 
-__attribute__((weak)) void sCollision::createProperty(MtPropertyList& s) {
-    DDON_STUB("sCollision::createProperty")
-    /* stub */
+void sCollision::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Show Model", reinterpret_cast<MT_MFUNC>(&::sCollision::getDebugDisp), reinterpret_cast<MT_MFUNC>(&::sCollision::setDebugDisp), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "Show Model Triangle", reinterpret_cast<MT_MFUNC>(&::sCollision::getDebugDispTriangle), reinterpret_cast<MT_MFUNC>(&::sCollision::setDebugDispTriangle), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) void sCollision::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
@@ -594,9 +595,33 @@ u32 sCollision::getSbcGroupByIndexFromHandle(sCollision::SBC_HANDLE TargetSbcHan
     return 0;
 }
 
-__attribute__((weak)) bool sCollision::isTargetPolygon(u32 TargetPolygonAttribute, const rCollision::MaterialInfo& RSbcPolygonMaterial, u32 scr_type) {
-    DDON_STUB("sCollision::isTargetPolygon")
-    return {};
+bool sCollision::isTargetPolygon(u32 TargetPolygonAttribute, const rCollision::MaterialInfo& RSbcPolygonMaterial, u32 scr_type) {
+    if ((TargetPolygonAttribute & 0x40000000u) != 0) {
+        if ((RSbcPolygonMaterial.attribute & 0x40000000u) != 0) {
+            if (((TargetPolygonAttribute & RSbcPolygonMaterial.attribute) & 0x3FFFFFFFu) == 0) {
+                return false;
+            }
+        } else {
+            if (((TargetPolygonAttribute & RSbcPolygonMaterial.attribute) & 0x3FFFFFFFu) != 0) {
+                return false;
+            }
+        }
+        return true;
+    } else {
+        if ((RSbcPolygonMaterial.attribute & 0x40000000u) != 0) {
+            if (((TargetPolygonAttribute & RSbcPolygonMaterial.attribute) & 0x3FFFFFFFu) != 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            if (((TargetPolygonAttribute & RSbcPolygonMaterial.attribute) & 0x3FFFFFFFu) != 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }
 
 sCollision::cSbcHeightField::cHeightField* sCollision::getSbcHeightFieldByIndex(u32 SbcHeightFieldIndex) {
@@ -611,14 +636,16 @@ u32 sCollision::getSbcHeightFieldNum() {
     return static_cast<const sCollision::cSbcHeightField&>(mSbcHeightField).getArrayLength();
 }
 
-__attribute__((weak)) MtColor sCollision::getDrawColorTriangleEdge(rCollision* pRSbc, const rCollision::PartsInfo* pRPartsInfo, const rCollision::Triangle* pTriangle) {
-    DDON_STUB("sCollision::getDrawColorTriangleEdge")
-    __builtin_unreachable();
+MtColor sCollision::getDrawColorTriangleEdge(rCollision* pRSbc, const rCollision::PartsInfo* pRPartsInfo, const rCollision::Triangle* pTriangle) {
+    MtColor result;
+    result.rgba = MtColor::Gray.rgba;
+    return result;
 }
 
-__attribute__((weak)) MtColor sCollision::getDrawColorTriangleFill(rCollision* pRSbc, const rCollision::PartsInfo* pRPartsInfo, const rCollision::Triangle* pTriangle) {
-    DDON_STUB("sCollision::getDrawColorTriangleFill")
-    __builtin_unreachable();
+MtColor sCollision::getDrawColorTriangleFill(rCollision* pRSbc, const rCollision::PartsInfo* pRPartsInfo, const rCollision::Triangle* pTriangle) {
+    MtColor result;
+    result.rgba = 0x3FFFFFFF;
+    return result;
 }
 
 __attribute__((weak)) void sCollision::setDebugDisp(bool bDisp) {
@@ -877,9 +904,8 @@ __attribute__((weak)) u32 sCollision::testCapsuleResetFunc(MtGeometry* pTraverse
     return {};
 }
 
-__attribute__((weak)) bool sCollision::enumNodeContactIntersect(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumNodeContactIntersect")
-    return {};
+bool sCollision::enumNodeContactIntersect(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return enumNodeContactCommon(pTraverseGeometry, MyTraverseInfo, ScrGeometry, CollisionInfo, static_cast<MtObject*>(this), static_cast<ENUMNODECONTACTCOMMON_CALLBACK>(&::sCollision::enumNodeContactIntersectCore));
 }
 
 __attribute__((weak)) bool sCollision::enumNodeContactIntersectCore(sCollision::TraverseInfo& MyTraverseInfo, sCollision::SbcInfo& info, const MtGeomConvex& TargetConvex, sCollision::ScrCollisionInfoBase& CollisionInfo, uScrollCollisionGeometry& ScrGeometry, u32 GeometryIndex) {
@@ -937,9 +963,8 @@ __attribute__((weak)) u32 sCollision::enumLineResetFunc(MtGeometry* pTraverseGeo
     return {};
 }
 
-__attribute__((weak)) bool sCollision::enumNodeContactFind(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumNodeContactFind")
-    return {};
+bool sCollision::enumNodeContactFind(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return enumNodeContactCommon(pTraverseGeometry, MyTraverseInfo, ScrGeometry, CollisionInfo, static_cast<MtObject*>(this), static_cast<ENUMNODECONTACTCOMMON_CALLBACK>(&::sCollision::enumNodeContactFindCore));
 }
 
 __attribute__((weak)) bool sCollision::enumNodeContactFindCore(sCollision::TraverseInfo& MyTraverseInfo, sCollision::SbcInfo& info, const MtGeomConvex& TargetConvex, sCollision::ScrCollisionInfoBase& CollisionInfo, uScrollCollisionGeometry& ScrGeometry, u32 GeometryIndex) {
@@ -977,9 +1002,8 @@ __attribute__((weak)) u32 sCollision::enumRayYResetFunc(MtGeometry* pNoUseCallba
     return {};
 }
 
-__attribute__((weak)) bool sCollision::enumNodeContactFindRayY(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumNodeContactFindRayY")
-    return {};
+bool sCollision::enumNodeContactFindRayY(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return enumNodeContactCommon(pTraverseGeometry, MyTraverseInfo, ScrGeometry, CollisionInfo, static_cast<MtObject*>(this), static_cast<ENUMNODECONTACTCOMMON_CALLBACK>(&::sCollision::enumNodeContactFindRayYCore));
 }
 
 __attribute__((weak)) bool sCollision::enumNodeContactFindRayYCore(sCollision::TraverseInfo& MyTraverseInfo, sCollision::SbcInfo& info, const MtGeomConvex& TargetConvex, sCollision::ScrCollisionInfoBase& CollisionInfo, uScrollCollisionGeometry& ScrGeometry, u32 GeometryIndex) {
@@ -1168,9 +1192,8 @@ __attribute__((weak)) u32 sCollision::enumAABBResetFunc(MtGeometry* pTraverseGeo
     return {};
 }
 
-__attribute__((weak)) bool sCollision::enumNodeContactCast(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumNodeContactCast")
-    return {};
+bool sCollision::enumNodeContactCast(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return enumNodeContactCommon(pTraverseGeometry, MyTraverseInfo, ScrGeometry, CollisionInfo, static_cast<MtObject*>(this), static_cast<ENUMNODECONTACTCOMMON_CALLBACK>(&::sCollision::enumNodeContactCastCore));
 }
 
 __attribute__((weak)) bool sCollision::enumNodeContactCastCore(sCollision::TraverseInfo& MyTraverseInfo, sCollision::SbcInfo& info, const MtGeomConvex& TargetConvex, sCollision::ScrCollisionInfoBase& CollisionInfo, uScrollCollisionGeometry& ScrGeometry, u32 GeometryIndex) {
@@ -1178,9 +1201,14 @@ __attribute__((weak)) bool sCollision::enumNodeContactCastCore(sCollision::Trave
     return {};
 }
 
-__attribute__((weak)) u32 sCollision::enumSphereWithLS_TriangleFunc(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumSphereWithLS_TriangleFunc")
-    return {};
+u32 sCollision::enumSphereWithLS_TriangleFunc(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    const u32 retDefault = enumSphereTriangleFunc(info, CollisionInfo);
+    const MtDTI& t0 = CollisionInfo.getDTI();
+    if (t0.mID == sCollision::ScrCollisionInfoAdjustPosition::DTI.mID) {
+        return retDefault | static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisLSHitCheckProgram(info);
+    } else {
+        return retDefault;
+    }
 }
 
 u32 sCollision::enumSphereWithLS_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
@@ -1195,14 +1223,24 @@ u32 sCollision::enumSphereWithLS_ResetFunc(MtGeometry* pGeom, const sCollision::
     return 0;
 }
 
-__attribute__((weak)) u32 sCollision::enumSphereWithLS_HeightFieldFunc(sCollision::TraverseInfo* pCallback, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumSphereWithLS_HeightFieldFunc")
-    return {};
+u32 sCollision::enumSphereWithLS_HeightFieldFunc(sCollision::TraverseInfo* pCallback, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    const u32 retDefault = enumSphereHeightFieldFunc(pCallback, CollisionInfo);
+    const MtDTI& t0 = CollisionInfo.getDTI();
+    if (t0.mID == sCollision::ScrCollisionInfoAdjustPosition::DTI.mID) {
+        return retDefault | static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisLSHitCheckProgram(*pCallback->mpSbcInfo);
+    } else {
+        return retDefault;
+    }
 }
 
-__attribute__((weak)) u32 sCollision::enumCapsuleWithLS_TriangleFunc(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumCapsuleWithLS_TriangleFunc")
-    return {};
+u32 sCollision::enumCapsuleWithLS_TriangleFunc(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    const u32 retDefault = enumCapsuleTriangleFunc(info, CollisionInfo);
+    const MtDTI& t0 = CollisionInfo.getDTI();
+    if (t0.mID == sCollision::ScrCollisionInfoAdjustPosition::DTI.mID) {
+        return retDefault | static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisLSHitCheckProgram(info);
+    } else {
+        return retDefault;
+    }
 }
 
 u32 sCollision::enumCapsuleWithLS_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
@@ -1217,14 +1255,18 @@ u32 sCollision::enumCapsuleWithLS_ResetFunc(MtGeometry* pGeom, const sCollision:
     return 0;
 }
 
-__attribute__((weak)) u32 sCollision::enumCapsuleWithLS_HeightFieldFunc(sCollision::TraverseInfo* pCallback, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumCapsuleWithLS_HeightFieldFunc")
-    return {};
+u32 sCollision::enumCapsuleWithLS_HeightFieldFunc(sCollision::TraverseInfo* pCallback, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    const u32 retDefault = enumCapsuleHeightFieldFunc(pCallback, CollisionInfo);
+    const MtDTI& t0 = CollisionInfo.getDTI();
+    if (t0.mID == sCollision::ScrCollisionInfoAdjustPosition::DTI.mID) {
+        return retDefault | static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisLSHitCheckProgram(*pCallback->mpSbcInfo);
+    } else {
+        return retDefault;
+    }
 }
 
-__attribute__((weak)) bool sCollision::enumNodeContactCastWithLS(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumNodeContactCastWithLS")
-    return {};
+bool sCollision::enumNodeContactCastWithLS(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return enumNodeContactCommon(pTraverseGeometry, MyTraverseInfo, ScrGeometry, CollisionInfo, static_cast<MtObject*>(this), static_cast<ENUMNODECONTACTCOMMON_CALLBACK>(&::sCollision::enumNodeContactCastWithLSCore));
 }
 
 __attribute__((weak)) bool sCollision::enumNodeContactCastWithLSCore(sCollision::TraverseInfo& MyTraverseInfo, sCollision::SbcInfo& info, const MtGeomConvex& TargetConvex, sCollision::ScrCollisionInfoBase& CollisionInfo, uScrollCollisionGeometry& ScrGeometry, u32 GeometryIndex) {
@@ -1232,9 +1274,14 @@ __attribute__((weak)) bool sCollision::enumNodeContactCastWithLSCore(sCollision:
     return {};
 }
 
-__attribute__((weak)) u32 sCollision::enumSphereWithSphere_TriangleFunc(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumSphereWithSphere_TriangleFunc")
-    return {};
+u32 sCollision::enumSphereWithSphere_TriangleFunc(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    const u32 retDefault = enumSphereTriangleFunc(info, CollisionInfo);
+    const MtDTI& t0 = CollisionInfo.getDTI();
+    if (t0.mID == sCollision::ScrCollisionInfoAdjustPosition::DTI.mID) {
+        return retDefault | static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisSphereHitCheckProgram(info);
+    } else {
+        return retDefault;
+    }
 }
 
 u32 sCollision::enumSphereWithSphere_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
@@ -1249,14 +1296,24 @@ u32 sCollision::enumSphereWithSphere_ResetFunc(MtGeometry* pGeom, const sCollisi
     return 0;
 }
 
-__attribute__((weak)) u32 sCollision::enumSphereWithSphere_HeightFieldFunc(sCollision::TraverseInfo* pCallback, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumSphereWithSphere_HeightFieldFunc")
-    return {};
+u32 sCollision::enumSphereWithSphere_HeightFieldFunc(sCollision::TraverseInfo* pCallback, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    const u32 retDefault = enumSphereHeightFieldFunc(pCallback, CollisionInfo);
+    const MtDTI& t0 = CollisionInfo.getDTI();
+    if (t0.mID == sCollision::ScrCollisionInfoAdjustPosition::DTI.mID) {
+        return retDefault | static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisSphereHitCheckProgram(*pCallback->mpSbcInfo);
+    } else {
+        return retDefault;
+    }
 }
 
-__attribute__((weak)) u32 sCollision::enumCapsuleWithSphere_TriangleFunc(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumCapsuleWithSphere_TriangleFunc")
-    return {};
+u32 sCollision::enumCapsuleWithSphere_TriangleFunc(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    const u32 retDefault = enumCapsuleTriangleFunc(info, CollisionInfo);
+    const MtDTI& t0 = CollisionInfo.getDTI();
+    if (t0.mID == sCollision::ScrCollisionInfoAdjustPosition::DTI.mID) {
+        return retDefault | static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisSphereHitCheckProgram(info);
+    } else {
+        return retDefault;
+    }
 }
 
 u32 sCollision::enumCapsuleWithSphere_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
@@ -1271,14 +1328,18 @@ u32 sCollision::enumCapsuleWithSphere_ResetFunc(MtGeometry* pGeom, const sCollis
     return 0;
 }
 
-__attribute__((weak)) u32 sCollision::enumCapsuleWithSphere_HeightFieldFunc(sCollision::TraverseInfo* pCallback, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumCapsuleWithSphere_HeightFieldFunc")
-    return {};
+u32 sCollision::enumCapsuleWithSphere_HeightFieldFunc(sCollision::TraverseInfo* pCallback, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    const u32 retDefault = enumCapsuleHeightFieldFunc(pCallback, CollisionInfo);
+    const MtDTI& t0 = CollisionInfo.getDTI();
+    if (t0.mID == sCollision::ScrCollisionInfoAdjustPosition::DTI.mID) {
+        return retDefault | static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisSphereHitCheckProgram(*pCallback->mpSbcInfo);
+    } else {
+        return retDefault;
+    }
 }
 
-__attribute__((weak)) bool sCollision::enumNodeContactCastWithSphere(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumNodeContactCastWithSphere")
-    return {};
+bool sCollision::enumNodeContactCastWithSphere(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return enumNodeContactCommon(pTraverseGeometry, MyTraverseInfo, ScrGeometry, CollisionInfo, static_cast<MtObject*>(this), static_cast<ENUMNODECONTACTCOMMON_CALLBACK>(&::sCollision::enumNodeContactCastWithSphereCore));
 }
 
 __attribute__((weak)) bool sCollision::enumNodeContactCastWithSphereCore(sCollision::TraverseInfo& MyTraverseInfo, sCollision::SbcInfo& info, const MtGeomConvex& TargetConvex, sCollision::ScrCollisionInfoBase& CollisionInfo, uScrollCollisionGeometry& ScrGeometry, u32 GeometryIndex) {
@@ -1306,9 +1367,8 @@ __attribute__((weak)) u32 sCollision::getAreaPolygonsConvexResetFunc(MtGeometry&
     return {};
 }
 
-__attribute__((weak)) bool sCollision::enumNodeContactGetPoly(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumNodeContactGetPoly")
-    return {};
+bool sCollision::enumNodeContactGetPoly(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return enumNodeContactCommon(pTraverseGeometry, MyTraverseInfo, ScrGeometry, CollisionInfo, static_cast<MtObject*>(this), static_cast<ENUMNODECONTACTCOMMON_CALLBACK>(&::sCollision::enumNodeContactGetPolyCore));
 }
 
 __attribute__((weak)) bool sCollision::enumNodeContactGetPolyCore(sCollision::TraverseInfo& MyTraverseInfo, sCollision::SbcInfo& info, const MtGeomConvex& TargetConvex, sCollision::ScrCollisionInfoBase& CollisionInfo, uScrollCollisionGeometry& ScrGeometry, u32 GeometryIndex) {
@@ -1346,9 +1406,8 @@ __attribute__((weak)) u32 sCollision::originalScrCollisionConvexResetFunc(MtGeom
     return {};
 }
 
-__attribute__((weak)) bool sCollision::enumNodeContactOrgScrCollision(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumNodeContactOrgScrCollision")
-    return {};
+bool sCollision::enumNodeContactOrgScrCollision(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return enumNodeContactCommon(pTraverseGeometry, MyTraverseInfo, ScrGeometry, CollisionInfo, static_cast<MtObject*>(this), static_cast<ENUMNODECONTACTCOMMON_CALLBACK>(&::sCollision::enumNodeContactOrgScrCollisionCore));
 }
 
 __attribute__((weak)) bool sCollision::enumNodeContactOrgScrCollisionCore(sCollision::TraverseInfo& MyTraverseInfo, sCollision::SbcInfo& info, const MtGeomConvex& TargetConvex, sCollision::ScrCollisionInfoBase& CollisionInfo, uScrollCollisionGeometry& ScrGeometry, u32 GeometryIndex) {
@@ -1371,9 +1430,8 @@ __attribute__((weak)) u32 sCollision::correctTraverseResetFunc(MtGeometry& Defau
     return {};
 }
 
-__attribute__((weak)) bool sCollision::correctTraverseNodeFunc(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::correctTraverseNodeFunc")
-    return {};
+bool sCollision::correctTraverseNodeFunc(const MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, uScrollCollisionGeometry& ScrGeometry, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return enumNodeContactCommon(pTraverseGeometry, MyTraverseInfo, ScrGeometry, CollisionInfo, static_cast<MtObject*>(this), static_cast<ENUMNODECONTACTCOMMON_CALLBACK>(&::sCollision::correctTraverseNodeFuncCore));
 }
 
 __attribute__((weak)) bool sCollision::correctTraverseNodeFuncCore(sCollision::TraverseInfo& MyTraverseInfo, sCollision::SbcInfo& info, const MtGeomConvex& TargetConvex, sCollision::ScrCollisionInfoBase& CollisionInfo, uScrollCollisionGeometry& ScrGeometry, u32 GeometryIndex) {
@@ -1516,9 +1574,37 @@ __attribute__((weak)) void sCollision::cSbcArrayBP::runReserveInfoRCollisionMatr
     /* stub */
 }
 
-__attribute__((weak)) void sCollision::cSbcArrayBP::runReserveInfoRCollisionMatrixIdentity(const sCollision::cSbcMoveResetReserveInfo& RegistResetMatrixInfo) {
-    DDON_STUB("sCollision::cSbcArrayBP::runReserveInfoRCollisionMatrixIdentity")
-    /* stub */
+void sCollision::cSbcArrayBP::runReserveInfoRCollisionMatrixIdentity(const sCollision::cSbcMoveResetReserveInfo& RegistResetMatrixInfo) {
+    Sbc::Parts* pTargetParts = RegistResetMatrixInfo.mpTargetParts;
+    if (!pTargetParts->mMatrixInfo.mFlgMoveEnable) {
+        return;
+    }
+    Sbc* pTargetSbc = RegistResetMatrixInfo.mpTargetSbc;
+    cDynamicBVHCollision::Node* pPartsDBVTNode = pTargetParts->mpDBVTNode;
+    bool t0 = pTargetParts->mMatrixInfo.mFlgMatResetSet;
+    const u32 DBVTTypeOld = pTargetParts->mDBVTType;
+    u8 t1 = pTargetSbc->mScrFilter.mScrGroupIndex;
+    if (pTargetParts->mPartsIndex < pTargetSbc->mPartsArrayNum) {
+        if ((&pTargetSbc->mpPartsArray[pTargetParts->mPartsIndex]) != nullptr) {
+            if (pTargetSbc->mpRSbc != nullptr) {
+                if (pTargetSbc->mActive) {
+                    pTargetSbc->mpPartsArray[pTargetParts->mPartsIndex].mMatrixInfo.setMatrixForGame(static_cast<const MtMatrix*>(nullptr), true, true);
+                }
+            } else {
+                pTargetSbc->mpPartsArray[pTargetParts->mPartsIndex].mMatrixInfo.setMatrixForGame(static_cast<const MtMatrix*>(nullptr), true, true);
+            }
+        }
+    }
+    if (pPartsDBVTNode != nullptr) {
+        if (t0) {
+            mDBVTStopSbcParts[t1].removeLeaf(pPartsDBVTNode);
+        } else {
+            mDBVTMoveSbcParts[t1].removeLeaf(pPartsDBVTNode);
+        }
+        pTargetParts->mpDBVTNode = nullptr;
+        pTargetParts->mDBVTType = 0xFFFFFFFF;
+    }
+    updateSbcPartsMoveNum(*pTargetSbc, 0xFFFFFFFFu, DBVTTypeOld);
 }
 
 void sCollision::cSbcArrayBP::runReserveInfoRegistRCollisionResource(sCollision::cSbcRegistReserveInfo& RegistResourceInfo) {
@@ -1625,6 +1711,10 @@ void sCollision::cSbcMoveReserveInfo::operator delete[](void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfo::DTI)->memFree(p_addr);
 }
 
+inline void* sCollision::cSbcMoveReserveInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfo::DTI)->memAlloc(sz, align, sCollision::cSbcMoveReserveInfo::DTI.mID);
+}
+
 inline void sCollision::cSbcMoveReserveInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfo::DTI)->memFree(p_addr);
 }
@@ -1649,9 +1739,8 @@ inline sCollision::cSbcMoveReserveInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI*
 
 sCollision::cSbcMoveReserveInfo::MyDTI sCollision::cSbcMoveReserveInfo::DTI("sCollision::cSbcMoveReserveInfo", &::MtObject::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sCollision::cSbcMoveReserveInfo::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::cSbcMoveReserveInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::cSbcMoveReserveInfo::MyDTI::newInstance() const {
+    return new (16u) sCollision::cSbcMoveReserveInfo;
 }
 
 const MtDTI& sCollision::Sbc::getDTI() const {
@@ -1668,8 +1757,9 @@ sCollision::Sbc::~Sbc() {
 }
 
 __attribute__((weak)) void sCollision::Sbc::setGroupByBit(u32 GroupBit) {
-    DDON_STUB("sCollision::Sbc::setGroupByBit")
-    /* stub */
+    u8 t0 = mScrFilter.mScrGroupIndex;
+    mScrFilter.setScrGroupByBit(GroupBit);
+    (sCollision::mpInstance)->mSbcArray.sCollision::cSbcArrayBP::moveSbcGroupDBVT(*this, t0, mScrFilter.mScrGroupIndex);
 }
 
 __attribute__((weak)) void sCollision::Sbc::setResource(rCollision* pResource) {
@@ -1774,6 +1864,10 @@ const MtDTI& sCollision::cSbcMoveResetReserveInfo::getDTI() const {
     return sCollision::cSbcMoveResetReserveInfo::DTI;
 }
 
+inline void* sCollision::cSbcMoveResetReserveInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::cSbcMoveResetReserveInfo::DTI)->memAlloc(sz, align, sCollision::cSbcMoveResetReserveInfo::DTI.mID);
+}
+
 inline void sCollision::cSbcMoveResetReserveInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::cSbcMoveResetReserveInfo::DTI)->memFree(p_addr);
 }
@@ -1799,9 +1893,8 @@ inline sCollision::cSbcMoveResetReserveInfo::MyDTI::MyDTI(MT_CTSTR class_name, M
 
 sCollision::cSbcMoveResetReserveInfo::MyDTI sCollision::cSbcMoveResetReserveInfo::DTI("sCollision::cSbcMoveResetReserveInfo", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sCollision::cSbcMoveResetReserveInfo::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::cSbcMoveResetReserveInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::cSbcMoveResetReserveInfo::MyDTI::newInstance() const {
+    return new (16u) sCollision::cSbcMoveResetReserveInfo;
 }
 
 const MtDTI& sCollision::cSbcRegistReserveInfo::getDTI() const {
@@ -1814,6 +1907,10 @@ void* sCollision::cSbcRegistReserveInfo::operator new[](size_t sz, u32 align) {
 
 void sCollision::cSbcRegistReserveInfo::operator delete[](void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::cSbcRegistReserveInfo::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::cSbcRegistReserveInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::cSbcRegistReserveInfo::DTI)->memAlloc(sz, align, sCollision::cSbcRegistReserveInfo::DTI.mID);
 }
 
 sCollision::cSbcRegistReserveInfo::cSbcRegistReserveInfo() {
@@ -1844,18 +1941,24 @@ bool sCollision::cSbcRegistReserveInfo::registReserveInfo(rCollision* pRSbc, sCo
     }
 }
 
-__attribute__((weak)) const sCollision::cSbcRegistReserveInfo& sCollision::cSbcRegistReserveInfo::operator=(const sCollision::cSbcRegistReserveInfo& src) {
-    DDON_STUB("sCollision::cSbcRegistReserveInfo::operator=")
-    __builtin_unreachable();
+const sCollision::cSbcRegistReserveInfo& sCollision::cSbcRegistReserveInfo::operator=(const sCollision::cSbcRegistReserveInfo& src) {
+    rCollision* t0 = src.mpRSbc;
+    mpRSbc = t0;
+    mpOutputHandle = src.mpOutputHandle;
+    mRegistType = src.mRegistType;
+    mRegistGroup = src.mRegistGroup;
+    if (mpRSbc != nullptr) {
+        t0->addRef();
+    }
+    return *this;
 }
 
 inline sCollision::cSbcRegistReserveInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sCollision::cSbcRegistReserveInfo::MyDTI sCollision::cSbcRegistReserveInfo::DTI("sCollision::cSbcRegistReserveInfo", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sCollision::cSbcRegistReserveInfo::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::cSbcRegistReserveInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::cSbcRegistReserveInfo::MyDTI::newInstance() const {
+    return new (16u) sCollision::cSbcRegistReserveInfo;
 }
 
 const MtDTI& sCollision::cSbcMoveReserveInfoAll::getDTI() const {
@@ -1868,6 +1971,10 @@ void* sCollision::cSbcMoveReserveInfoAll::operator new[](size_t sz, u32 align) {
 
 void sCollision::cSbcMoveReserveInfoAll::operator delete[](void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfoAll::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::cSbcMoveReserveInfoAll::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfoAll::DTI)->memAlloc(sz, align, sCollision::cSbcMoveReserveInfoAll::DTI.mID);
 }
 
 inline void sCollision::cSbcMoveReserveInfoAll::operator delete(void* p_addr) {
@@ -1894,9 +2001,8 @@ inline sCollision::cSbcMoveReserveInfoAll::MyDTI::MyDTI(MT_CTSTR class_name, MtD
 
 sCollision::cSbcMoveReserveInfoAll::MyDTI sCollision::cSbcMoveReserveInfoAll::DTI("sCollision::cSbcMoveReserveInfoAll", &::MtObject::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sCollision::cSbcMoveReserveInfoAll::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::cSbcMoveReserveInfoAll::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::cSbcMoveReserveInfoAll::MyDTI::newInstance() const {
+    return new (16u) sCollision::cSbcMoveReserveInfoAll;
 }
 
 const MtDTI& sCollision::cSbcMoveResetReserveInfoAll::getDTI() const {
@@ -2014,6 +2120,10 @@ const MtDTI& sCollision::SbcObject::cRegisterInfo::getDTI() const {
     return sCollision::SbcObject::cRegisterInfo::DTI;
 }
 
+inline void* sCollision::SbcObject::cRegisterInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::SbcObject::cRegisterInfo::DTI)->memAlloc(sz, align, sCollision::SbcObject::cRegisterInfo::DTI.mID);
+}
+
 inline void sCollision::SbcObject::cRegisterInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::SbcObject::cRegisterInfo::DTI)->memFree(p_addr);
 }
@@ -2029,9 +2139,8 @@ inline sCollision::SbcObject::cRegisterInfo::MyDTI::MyDTI(MT_CTSTR class_name, M
 
 sCollision::SbcObject::cRegisterInfo::MyDTI sCollision::SbcObject::cRegisterInfo::DTI("sCollision::SbcObject::cRegisterInfo", &::MtObject::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sCollision::SbcObject::cRegisterInfo::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::SbcObject::cRegisterInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::SbcObject::cRegisterInfo::MyDTI::newInstance() const {
+    return new (16u) sCollision::SbcObject::cRegisterInfo;
 }
 
 const MtDTI& sCollision::cSbcSkinMesh::getDTI() const {
@@ -2173,6 +2282,10 @@ const MtDTI& sCollision::cSbcSkinMesh::cRegisterInfo::getDTI() const {
     return sCollision::cSbcSkinMesh::cRegisterInfo::DTI;
 }
 
+inline void* sCollision::cSbcSkinMesh::cRegisterInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::cSbcSkinMesh::cRegisterInfo::DTI)->memAlloc(sz, align, sCollision::cSbcSkinMesh::cRegisterInfo::DTI.mID);
+}
+
 inline void sCollision::cSbcSkinMesh::cRegisterInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::cSbcSkinMesh::cRegisterInfo::DTI)->memFree(p_addr);
 }
@@ -2184,9 +2297,8 @@ inline sCollision::cSbcSkinMesh::cRegisterInfo::MyDTI::MyDTI(MT_CTSTR class_name
 
 sCollision::cSbcSkinMesh::cRegisterInfo::MyDTI sCollision::cSbcSkinMesh::cRegisterInfo::DTI("sCollision::cSbcSkinMesh::cRegisterInfo", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sCollision::cSbcSkinMesh::cRegisterInfo::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::cSbcSkinMesh::cRegisterInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::cSbcSkinMesh::cRegisterInfo::MyDTI::newInstance() const {
+    return new (16u) sCollision::cSbcSkinMesh::cRegisterInfo;
 }
 
 const MtDTI& sCollision::cSbcHeightField::getDTI() const {
@@ -2493,9 +2605,9 @@ void sCollision::Node::startCallback(sCollision::CALLBACK_MODE mode, sCollision:
 sCollision::Node::~Node() {
 }
 
-__attribute__((weak)) void sCollision::Node::registOwner(MtObject* pOwner, sCollision::OBJ_FUNC pCallbackFunc) {
-    DDON_STUB("sCollision::Node::registOwner")
-    /* stub */
+void sCollision::Node::registOwner(MtObject* pOwner, sCollision::OBJ_FUNC pCallbackFunc) {
+    mpOwner = pOwner;
+    mpCallbackFromRequest = pCallbackFunc;
 }
 
 inline sCollision::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2511,14 +2623,16 @@ const MtDTI& sCollision::TriangleInfo::getDTI() const {
     return sCollision::TriangleInfo::DTI;
 }
 
+inline void sCollision::TriangleInfo::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sCollision::TriangleInfo::DTI)->memFree(p_addr);
+}
+
 sCollision::TriangleInfo::TriangleInfo() {
     DDON_STUB("sCollision::TriangleInfo::TriangleInfo")
     /* stub */
 }
 
 sCollision::TriangleInfo::~TriangleInfo() {
-    DDON_STUB("sCollision::TriangleInfo::~TriangleInfo")
-    /* stub */
 }
 
 __attribute__((weak)) sCollision::TriangleInfo& sCollision::TriangleInfo::operator=(const sCollision::SbcInfo& info) {
@@ -2646,9 +2760,8 @@ __attribute__((weak)) void sCollision::SbcInfo::getDynamicSbcTriangle(MtVector3&
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 sCollision::SbcInfo::getDynamicSbcNormal() const {
-    DDON_STUB("sCollision::SbcInfo::getDynamicSbcNormal")
-    __builtin_unreachable();
+MtVector3 sCollision::SbcInfo::getDynamicSbcNormal() const {
+    return pHitDSbc->getTriangleNormal(PartsNo, DSbcBvhID, RTriNo);
 }
 
 __attribute__((weak)) u32 sCollision::SbcInfo::getDynamicSbcAttribute() const {
@@ -2661,19 +2774,16 @@ __attribute__((weak)) u32 sCollision::SbcInfo::getDynamicSbcUserAttribute(u32 At
     return {};
 }
 
-__attribute__((weak)) const MtGeomConvex* sCollision::SbcInfo::getBasicCollisionHitConvex() const {
-    DDON_STUB("sCollision::SbcInfo::getBasicCollisionHitConvex")
-    return nullptr;
+const MtGeomConvex* sCollision::SbcInfo::getBasicCollisionHitConvex() const {
+    return pHitScrGeometry->getGeometry(HitNodeGeomID);
 }
 
-__attribute__((weak)) u32 sCollision::SbcInfo::getBasicCollisionAttribute() const {
-    DDON_STUB("sCollision::SbcInfo::getBasicCollisionAttribute")
-    return {};
+u32 sCollision::SbcInfo::getBasicCollisionAttribute() const {
+    return pHitScrGeometry->getGeometryMaterial(HitNodeGeomID)->attribute;
 }
 
-__attribute__((weak)) u32 sCollision::SbcInfo::getBasicCollisionUserAttribute(u32 AttributeID) const {
-    DDON_STUB("sCollision::SbcInfo::getBasicCollisionUserAttribute")
-    return {};
+u32 sCollision::SbcInfo::getBasicCollisionUserAttribute(u32 AttributeID) const {
+    return pHitScrGeometry->getGeometryMaterial(HitNodeGeomID)->attr[AttributeID];
 }
 
 __attribute__((weak)) MtObject* sCollision::SbcInfo::getHitTargetOwner() {
@@ -2694,6 +2804,10 @@ const MtDTI& sCollision::SbcInfoBase::getDTI() const {
     return sCollision::SbcInfoBase::DTI;
 }
 
+inline void* sCollision::SbcInfoBase::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::SbcInfoBase::DTI)->memAlloc(sz, align, sCollision::SbcInfoBase::DTI.mID);
+}
+
 inline void sCollision::SbcInfoBase::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::SbcInfoBase::DTI)->memFree(p_addr);
 }
@@ -2708,9 +2822,18 @@ void sCollision::SbcInfoBase::clearHitInfo() {
     FlgHitDynamicSbc = false;
 }
 
-__attribute__((weak)) sCollision::SbcInfoBase& sCollision::SbcInfoBase::operator=(const sCollision::SbcInfo& info) {
-    DDON_STUB("sCollision::SbcInfoBase::operator=")
-    __builtin_unreachable();
+sCollision::SbcInfoBase& sCollision::SbcInfoBase::operator=(const sCollision::SbcInfo& info) {
+    SbcHandle = info.SbcHandle;
+    SbcNo = info.SbcNo;
+    PartsNo = info.PartsNo;
+    HitLeafIndex = info.HitLeafIndex;
+    RTriNo = info.RTriNo;
+    pHitScrGeometry = info.pHitScrGeometry;
+    HitHeightFieldHandle = info.HitHeightFieldHandle;
+    HitHeightFieldU = info.HitHeightFieldU;
+    HitHeightFieldV = info.HitHeightFieldV;
+    HitHeightFieldTriID = info.HitHeightFieldTriID;
+    return *this;
 }
 
 void sCollision::SbcInfoBase::copy(const sCollision::SbcInfoBase& src) {
@@ -2738,13 +2861,16 @@ inline sCollision::SbcInfoBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 sCollision::SbcInfoBase::MyDTI sCollision::SbcInfoBase::DTI("sCollision::SbcInfoBase", &::MtObject::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sCollision::SbcInfoBase::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::SbcInfoBase::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::SbcInfoBase::MyDTI::newInstance() const {
+    return new (16u) sCollision::SbcInfoBase;
 }
 
 const MtDTI& sCollision::ColliderPassiveNodeInfo::getDTI() const {
     return sCollision::ColliderPassiveNodeInfo::DTI;
+}
+
+inline void* sCollision::ColliderPassiveNodeInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::ColliderPassiveNodeInfo::DTI)->memAlloc(sz, align, sCollision::ColliderPassiveNodeInfo::DTI.mID);
 }
 
 inline void sCollision::ColliderPassiveNodeInfo::operator delete(void* p_addr) {
@@ -2758,18 +2884,19 @@ inline sCollision::ColliderPassiveNodeInfo::MyDTI::MyDTI(MT_CTSTR class_name, Mt
 
 sCollision::ColliderPassiveNodeInfo::MyDTI sCollision::ColliderPassiveNodeInfo::DTI("sCollision::ColliderPassiveNodeInfo", &::MtObject::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sCollision::ColliderPassiveNodeInfo::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::ColliderPassiveNodeInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::ColliderPassiveNodeInfo::MyDTI::newInstance() const {
+    return new (16u) sCollision::ColliderPassiveNodeInfo;
 }
 
 const MtDTI& sCollision::ColliderActiveNodeInfo::getDTI() const {
     return sCollision::ColliderActiveNodeInfo::DTI;
 }
 
+inline void sCollision::ColliderActiveNodeInfo::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sCollision::ColliderActiveNodeInfo::DTI)->memFree(p_addr);
+}
+
 sCollision::ColliderActiveNodeInfo::~ColliderActiveNodeInfo() {
-    DDON_STUB("sCollision::ColliderActiveNodeInfo::~ColliderActiveNodeInfo")
-    /* stub */
 }
 
 inline sCollision::ColliderActiveNodeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2785,6 +2912,10 @@ const MtDTI& sCollision::ActiveNodeInfo::getDTI() const {
     return sCollision::ActiveNodeInfo::DTI;
 }
 
+inline void* sCollision::ActiveNodeInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::ActiveNodeInfo::DTI)->memAlloc(sz, align, sCollision::ActiveNodeInfo::DTI.mID);
+}
+
 inline void sCollision::ActiveNodeInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::ActiveNodeInfo::DTI)->memFree(p_addr);
 }
@@ -2796,9 +2927,8 @@ inline sCollision::ActiveNodeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 
 sCollision::ActiveNodeInfo::MyDTI sCollision::ActiveNodeInfo::DTI("sCollision::ActiveNodeInfo", &::MtObject::DTI, 80ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sCollision::ActiveNodeInfo::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::ActiveNodeInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::ActiveNodeInfo::MyDTI::newInstance() const {
+    return new (16u) sCollision::ActiveNodeInfo;
 }
 
 const MtDTI& sCollision::NodeList::getDTI() const {
@@ -3132,14 +3262,16 @@ const MtDTI& sCollision::ScrCollisionInfo::getDTI() const {
     return sCollision::ScrCollisionInfo::DTI;
 }
 
+inline void sCollision::ScrCollisionInfo::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfo::DTI)->memFree(p_addr);
+}
+
 sCollision::ScrCollisionInfo::ScrCollisionInfo(const MtVector3& _cpos, const MtVector3& _cspeed, MtGeometry* _pGeomOrg, MtGeometry* _pGeomTrans) {
     DDON_STUB("sCollision::ScrCollisionInfo::ScrCollisionInfo")
     /* stub */
 }
 
 sCollision::ScrCollisionInfo::~ScrCollisionInfo() {
-    DDON_STUB("sCollision::ScrCollisionInfo::~ScrCollisionInfo")
-    /* stub */
 }
 
 __attribute__((weak)) void sCollision::ScrCollisionInfo::getBoundingAABBByOrg(MtAABB& aabb_out) {
@@ -3214,12 +3346,19 @@ sCollision::PreTraverseInfo::PreTraverseInfo() {
 }
 
 sCollision::PreTraverseInfo::~PreTraverseInfo() {
-    DDON_STUB("sCollision::PreTraverseInfo::~PreTraverseInfo")
-    /* stub */
+    if ((sCollision::mpInstance) == nullptr) {
+        return;
+    }
+    (sCollision::mpInstance)->mPreTraverseAllocator.MtCollisionUtil::MtLocalBlockAllocator::memFree(static_cast<void*>(pData));
+    DataNum = 0;
 }
 
 const MtDTI& sCollision::ScrCollisionInfoFind::getDTI() const {
     return sCollision::ScrCollisionInfoFind::DTI;
+}
+
+inline void sCollision::ScrCollisionInfoFind::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoFind::DTI)->memFree(p_addr);
 }
 
 sCollision::ScrCollisionInfoFind::ScrCollisionInfoFind(const MtVector3& _cpos, const MtVector3& _cspeed, MtGeometry* _pGeomOrg, MtGeometry* _pGeomTrans, sCollision::TriangleInfo* _pTriangleInfo) {
@@ -3228,8 +3367,6 @@ sCollision::ScrCollisionInfoFind::ScrCollisionInfoFind(const MtVector3& _cpos, c
 }
 
 sCollision::ScrCollisionInfoFind::~ScrCollisionInfoFind() {
-    DDON_STUB("sCollision::ScrCollisionInfoFind::~ScrCollisionInfoFind")
-    /* stub */
 }
 
 __attribute__((weak)) MtVector3 sCollision::ScrCollisionInfoFind::getHitNormalWorld(const sCollision::SbcInfo& info) const {
@@ -3250,6 +3387,10 @@ const MtDTI& sCollision::ScrCollisionInfoCastConvex::getDTI() const {
     return sCollision::ScrCollisionInfoCastConvex::DTI;
 }
 
+inline void sCollision::ScrCollisionInfoCastConvex::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoCastConvex::DTI)->memFree(p_addr);
+}
+
 sCollision::ScrCollisionInfoCastConvex::ScrCollisionInfoCastConvex() {
     DDON_STUB("sCollision::ScrCollisionInfoCastConvex::ScrCollisionInfoCastConvex")
     /* stub */
@@ -3261,8 +3402,6 @@ sCollision::ScrCollisionInfoCastConvex::ScrCollisionInfoCastConvex(const MtVecto
 }
 
 sCollision::ScrCollisionInfoCastConvex::~ScrCollisionInfoCastConvex() {
-    DDON_STUB("sCollision::ScrCollisionInfoCastConvex::~ScrCollisionInfoCastConvex")
-    /* stub */
 }
 
 void sCollision::ScrCollisionInfoCastConvex::initCastConvexCollisionParam() {
@@ -3404,14 +3543,16 @@ const MtDTI& sCollision::ScrCollisionInfoOriginal::getDTI() const {
     return sCollision::ScrCollisionInfoOriginal::DTI;
 }
 
+inline void sCollision::ScrCollisionInfoOriginal::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoOriginal::DTI)->memFree(p_addr);
+}
+
 sCollision::ScrCollisionInfoOriginal::ScrCollisionInfoOriginal(MtObject* _pCallbackOwnerObj, sCollision::CONTACT_CALLBACK_ORGFUNC _pScrHitCallback, sCollision::CONTACT_CALLBACK_ORGFUNC_PARTS _pScrPartsHitCallback, uintptr _CallbackParam) {
     DDON_STUB("sCollision::ScrCollisionInfoOriginal::ScrCollisionInfoOriginal")
     /* stub */
 }
 
 sCollision::ScrCollisionInfoOriginal::~ScrCollisionInfoOriginal() {
-    DDON_STUB("sCollision::ScrCollisionInfoOriginal::~ScrCollisionInfoOriginal")
-    /* stub */
 }
 
 __attribute__((weak)) u32 sCollision::ScrCollisionInfoOriginal::runCallback(const sCollision::SbcInfo& info, u32 GeometryIndex) {
@@ -3442,14 +3583,16 @@ const MtDTI& sCollision::ScrCollisionInfoPreTraverse::getDTI() const {
     return sCollision::ScrCollisionInfoPreTraverse::DTI;
 }
 
+inline void sCollision::ScrCollisionInfoPreTraverse::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoPreTraverse::DTI)->memFree(p_addr);
+}
+
 sCollision::ScrCollisionInfoPreTraverse::ScrCollisionInfoPreTraverse() {
     DDON_STUB("sCollision::ScrCollisionInfoPreTraverse::ScrCollisionInfoPreTraverse")
     /* stub */
 }
 
 sCollision::ScrCollisionInfoPreTraverse::~ScrCollisionInfoPreTraverse() {
-    DDON_STUB("sCollision::ScrCollisionInfoPreTraverse::~ScrCollisionInfoPreTraverse")
-    /* stub */
 }
 
 inline sCollision::ScrCollisionInfoPreTraverse::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -3465,9 +3608,11 @@ const MtDTI& sCollision::ScrCollisionInfoFind4::getDTI() const {
     return sCollision::ScrCollisionInfoFind4::DTI;
 }
 
+inline void sCollision::ScrCollisionInfoFind4::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoFind4::DTI)->memFree(p_addr);
+}
+
 sCollision::ScrCollisionInfoFind4::~ScrCollisionInfoFind4() {
-    DDON_STUB("sCollision::ScrCollisionInfoFind4::~ScrCollisionInfoFind4")
-    /* stub */
 }
 
 inline sCollision::ScrCollisionInfoFind4::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -3556,9 +3701,11 @@ const MtDTI& sCollision::SbcLockInfo::getDTI() const {
     return sCollision::SbcLockInfo::DTI;
 }
 
+inline void sCollision::SbcLockInfo::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(sCollision::SbcLockInfo::DTI)->memFree(p_addr);
+}
+
 sCollision::SbcLockInfo::~SbcLockInfo() {
-    DDON_STUB("sCollision::SbcLockInfo::~SbcLockInfo")
-    /* stub */
 }
 
 inline sCollision::SbcLockInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

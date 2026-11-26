@@ -82,6 +82,7 @@ namespace cAcquirement { class cNormalSkillData; }
 namespace cAcquirement { class cSkillDataBase; }
 class cArcLoaderBase;
 class cContextInstHm;
+class cGUIContentsExecutor;
 class cGUIExtNetMgr;
 class cGUIFloorManager;
 class cGUIKeepString;
@@ -96,6 +97,7 @@ class cTbl2ChatMacro;
 class cTexturePNG;
 class cUnit;
 class cWarpLocation;
+class cpJob02;
 class cpOmBase;
 namespace nGUI { struct ICON_INFO; }
 namespace nGUIExt { struct stMsgAnalyzerWork; }
@@ -157,11 +159,13 @@ class uGUIJobMaster;
 class uGUIKeyConfig;
 class uGUILoading;
 class uGUIMap;
+class uGUIMapMini;
 class uGUIMenuComm;
 class uGUIMouseOverCursor;
 class uGUIMousePointer;
 class uGUINewspaper;
 class uGUINpcWindow;
+class uGUIOption;
 class uGUIPSStore;
 class uGUIPhoto;
 class uGUIPick01;
@@ -174,6 +178,7 @@ class uGUIQuestBoard;
 class uGUIQuestDelivery;
 class uGUIQuestInfo;
 class uGUIQueueAnnounce;
+class uGUIRetry;
 class uGUIShakeEnemy;
 class uGUIShakeStick;
 class uGUIShopBuy;
@@ -229,7 +234,9 @@ using u8 = unsigned char;
 
 class sGUIExt : public sGUI
 {
+    friend class cGUIContentsExecutor;
     friend class cMenuMatchingProfile;
+    friend class cpJob02;
     friend class cpOmBase;
     friend class nGUIItem::cItem;
     friend class sGame;
@@ -240,9 +247,11 @@ class sGUIExt : public sGUI
     friend class uGUIBrowserBG;
     friend class uGUIChat;
     friend class uGUICommunityList;
+    friend class uGUIGauge;
     friend class uGUIItemBase01;
     friend class uGUIKeyConfig;
     friend class uGUINewspaper;
+    friend class uGUIOption;
     friend class uGUIPhoto;
     friend class uGUIPick01;
     friend class uGUIShopBuy;
@@ -577,6 +586,7 @@ public:
     {
         friend class sGUIExt;
         friend class uGUIPSStore;
+        friend class uGUISkill;
     public:
         enum
         {
@@ -1134,6 +1144,7 @@ public:
     {
         friend class sGUIExt;
         friend class uGUIMap;
+        friend class uGUIMapMini;
     public:
         enum
         {
@@ -1538,6 +1549,7 @@ public:
     {
         friend class uGUIMap;
         friend class uGUIMenuComm;
+        friend class uGUIRetry;
     public:
         enum
         {
@@ -3352,6 +3364,10 @@ inline rSoundRequest* sGUIExt::getSndReqCmn() const {
     return this->mpSndReqCmn;
 }
 
+inline rStageMap* sGUIExt::getStageMap() const {
+    return this->mpStageMap;
+}
+
 inline f32 sGUIExt::getGainInfoNullOffsetPosY() {
     return this->mNullGainPosYOffset;
 }
@@ -3392,6 +3408,14 @@ inline void sGUIExt::clearOnlineStatusAFK() {
 
 inline void* sGUIExt::cMousePointer::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline bool sGUIExt::cMousePointer::isMouseMode() {
+    return this->mIsMouseMode;
+}
+
+inline bool sGUIExt::cMousePointer::isActiveMouse() {
+    return this->mIsActiveMouse;
 }
 
 inline void* sGUIExt::cPrioHandle::operator new(size_t sz, void* p_addr) {
@@ -3440,6 +3464,18 @@ inline void* sGUIExt::cMap::operator new(size_t sz, void* p_addr) {
 
 inline uGUIMap* sGUIExt::cMap::getGUIMap() {
     return this->mpGUIMap;
+}
+
+inline u32 sGUIExt::cMap::getTargetStage() {
+    return this->mTargetStage;
+}
+
+inline u8 sGUIExt::cMap::getRno0() {
+    return this->mRno0;
+}
+
+inline bool sGUIExt::cMap::isStayPlPos() {
+    return this->mIsStayPlPos;
 }
 
 inline void* sGUIExt::cMap::cMarkerSave::operator new(size_t sz, void* p_addr) {

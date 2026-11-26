@@ -101,9 +101,24 @@ __attribute__((weak)) s32 uGUIEntryBoard::getSMenuCursorX() {
     return {};
 }
 
-__attribute__((weak)) s32 uGUIEntryBoard::getSMenuCursorY() {
-    DDON_STUB("uGUIEntryBoard::getSMenuCursorY")
-    return {};
+s32 uGUIEntryBoard::getSMenuCursorY() {
+    if (mpVCtrl != nullptr) {
+        if (mpHCtrl != nullptr) {
+            if (mpVCtrl->getCurrentPos() == (mpVCtrl->getItemNum() - 1)) {
+                if (mpHCtrl->mCurrentPos != 0) {
+                    return (sMenu::mpInstance)->mMenuEntryBoardItemList.cMenuBase::getConvertCursorIdx(8);
+                } else {
+                    return (sMenu::mpInstance)->mMenuEntryBoardItemList.cMenuBase::getConvertCursorIdx(7);
+                }
+            } else {
+                return (sMenu::mpInstance)->mMenuEntryBoardItemList.cMenuBase::getConvertCursorIdx(mpVCtrl->getCurrentPos());
+            }
+        } else {
+            return uGUIBase::DISABLE_IDX;
+        }
+    } else {
+        return uGUIBase::DISABLE_IDX;
+    }
 }
 
 __attribute__((weak)) void uGUIEntryBoard::moveInput() {

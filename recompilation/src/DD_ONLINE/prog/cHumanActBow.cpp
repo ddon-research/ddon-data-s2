@@ -71,6 +71,10 @@
 #include "uDDOModel.h"
 #include "uHuman.h"
 #include "../../XFramework/uModel.h"
+#include "uShlArrowRainCtrl.h"
+#include "uShlBase.h"
+#include "uShlDividedCalled.h"
+#include "uShlGenerator.h"
 #include "uWeapon.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -104,11 +108,6 @@ const MtDTI& cPlActWpnBow::getDTI() const {
 
 inline void cPlActWpnBow::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cPlActWpnBow::DTI)->memFree(p_addr);
-}
-
-cPlActWpnBow::~cPlActWpnBow() {
-    DDON_STUB("cPlActWpnBow::~cPlActWpnBow")
-    /* stub */
 }
 
 __attribute__((weak)) void cPlActWpnBow::init() {
@@ -252,9 +251,24 @@ __attribute__((weak)) void cPlActWpnBow::moveLow_Wait() {
         }
 }
 
-__attribute__((weak)) void cPlActWpnBow::initLow_Turn() {
-    DDON_STUB("cPlActWpnBow::initLow_Turn")
-    /* stub */
+void cPlActWpnBow::initLow_Turn() {
+    if (mTurnType != TURN_LEFT) {
+        mpHuman->setDDOMotion(MOT_BASE, static_cast<u32>(static_cast<unsigned long>(getActParam()->motTurnR) | 1024), true, 0u, 10.0f, 0.0f, 1.0f);
+        mTurnFrame = mpHuman->getMotionFrame(0u);
+        MtVector3 frame56(mpHuman->getAngle());
+        mTurnNow = frame56.y;
+        if (!mpHuman->isMaster()) {
+            mpHuman->getSlavePtr()->setInterpolateType(7u);
+        }
+    } else {
+        mpHuman->setDDOMotion(MOT_BASE, static_cast<u32>(static_cast<unsigned long>(getActParam()->motTurnL) | 1024), true, 0u, 10.0f, 0.0f, 1.0f);
+        mTurnFrame = mpHuman->getMotionFrame(0u);
+        MtVector3 frame56(mpHuman->getAngle());
+        mTurnNow = frame56.y;
+        if (!mpHuman->isMaster()) {
+            mpHuman->getSlavePtr()->setInterpolateType(7u);
+        }
+    }
 }
 
 __attribute__((weak)) void cPlActWpnBow::moveLow_Turn() {
@@ -355,9 +369,31 @@ void cPlActWpnBow::initLow_Fall() {
 __attribute__((weak)) void cPlActWpnBow::moveLow_Fall() {
 }
 
-__attribute__((weak)) void cPlActWpnBow::initLow_Land() {
-    DDON_STUB("cPlActWpnBow::initLow_Land")
-    /* stub */
+void cPlActWpnBow::initLow_Land() {
+    f32 t0 = getMoveSpeed();
+    MtVector3 frame56(nDDOMath::calcVelocityXZ(t0, mMoveRadian));
+    mpHuman->setDDOMotion(MOT_BASE, static_cast<u32>(static_cast<unsigned long>(getActParam()->motJumpEnd[mJumpType]) | 1024), true, 0u, 10.0f, 0.0f, 1.0f);
+    mpHuman->mVelocity.x = MtVector3::Zero.x;
+    mpHuman->mVelocity.y = MtVector3::Zero.y;
+    mpHuman->mVelocity.z = MtVector3::Zero.z;
+    mpHuman->mVelocity.pad_ = 0.0f;
+    mpHuman->mAcceleration.x = MtVector3::Zero.x;
+    mpHuman->mAcceleration.y = MtVector3::Zero.y;
+    mpHuman->mAcceleration.z = MtVector3::Zero.z;
+    mpHuman->mAcceleration.pad_ = 0.0f;
+    mIdealAccurate = getActParam()->accurateRun;
+    if (!mpHuman->isMaster()) {
+        mpHuman->getSlavePtr()->setInterpolateType(7u);
+    }
+    if (!mpHuman->isMaster()) {
+        return;
+    }
+    if (mpHuman->getContextPlayerInfo() == nullptr) {
+        return;
+    }
+    if (0.0f >= mpHuman->getContextPlayerInfo()->mBaseInfo.mStamina_pri) {
+        mpHuman->getActionRequestPtr()->mRequestActionReq = 28;
+    }
 }
 
 __attribute__((weak)) void cPlActWpnBow::moveLow_Land() {
@@ -577,9 +613,60 @@ bool cPlActWpnBow::canSetShl() {
     return mUpActNo != UP_ACT_END;
 }
 
-__attribute__((weak)) void cPlActWpnBow::setShlSubAfter(uShlBase* pShl) {
-    DDON_STUB("cPlActWpnBow::setShlSubAfter")
-    /* stub */
+void cPlActWpnBow::setShlSubAfter(uShlBase* pShl) {
+    if (pShl != nullptr) {
+        const MtDTI& t0 = pShl->getDTI();
+        MT_CTSTR v0_1 = uShlArrowRainCtrl::DTI.mName;
+        const MtDTI* v0_0 = &t0;
+        const MtDTI* v1_0;
+        for (;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    const MtDTI& t1 = pShl->getDTI();
+                    MT_CTSTR v1_1 = uShlGenerator::DTI.mName;
+                    v1_0 = &t1;
+                    for (;;) {
+                        if (v1_1 != v1_0->mName) {
+                            if (v1_0->mpParent != nullptr) {
+                                v1_0 = v1_0->mpParent;
+                            } else {
+                                goto loop_22a2ca_end;
+                            }
+                        } else {
+                            uShlGenerator* pShlGen = static_cast<uShlGenerator*>(pShl);
+                            pShlGen->mShlSetLimit = mUseArrowNum;
+                            goto loop_22a2ca_end;
+                        }
+                    }
+                    break;
+                }
+            } else {
+                uShlArrowRainCtrl* pArrowRainCtrl = static_cast<uShlArrowRainCtrl*>(pShl);
+                pArrowRainCtrl->mUseArrowNum = mUseArrowNum;
+                break;
+            }
+        }
+        loop_22a2ca_end:;
+        if (getActParam()->customId == 11) {
+            const MtDTI& t2 = pShl->getDTI();
+            MT_CTSTR v3_1 = uShlDividedCalled::DTI.mName;
+            for (const MtDTI* v3_0 = &t2;;) {
+                if (v3_1 != v3_0->mName) {
+                    if (v3_0->mpParent != nullptr) {
+                        v3_0 = v3_0->mpParent;
+                    } else {
+                        break;
+                    }
+                } else {
+                    uShlDividedCalled* pShlDiv = static_cast<uShlDividedCalled*>(pShl);
+                    pShlDiv->mDivideValue = static_cast<u32>(mBowNetBit & 240);
+                    return;
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) const nHumanBow::cBowActParam* cPlActWpnBow::searchBowActParam(s32 actIndex) {
@@ -796,9 +883,6 @@ const MtDTI& cPlActWpnBowBase::getDTI() const {
 
 inline void cPlActWpnBowBase::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cPlActWpnBowBase::DTI)->memFree(p_addr);
-}
-
-cPlActWpnBowBase::~cPlActWpnBowBase() {
 }
 
 __attribute__((weak)) void cPlActWpnBowBase::init() {

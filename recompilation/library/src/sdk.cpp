@@ -15,6 +15,13 @@
 
 extern "C" int scePthreadMutexLock(pthread_mutex**) { return 0; }
 extern "C" int scePthreadMutexUnlock(pthread_mutex**) { return 0; }
+extern "C" int scePthreadMutexInit(pthread_mutex**, pthread_mutexattr* const*, const char*) {
+    return 0;
+}
+extern "C" int scePthreadMutexDestroy(pthread_mutex**) { return 0; }
+extern "C" int scePthreadMutexattrInit(pthread_mutexattr**) { return 0; }
+extern "C" int scePthreadMutexattrSettype(pthread_mutexattr**, int) { return 0; }
+extern "C" int scePthreadMutexattrDestroy(pthread_mutexattr**) { return 0; }
 
 // The time-stamp counter as a monotonic clock in nanoseconds.
 extern "C" uint64_t sceKernelReadTsc(void) {

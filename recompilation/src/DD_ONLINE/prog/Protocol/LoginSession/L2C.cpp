@@ -481,9 +481,8 @@ inline nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::MyDTI::MyDTI(MT_CTSTR
 
 nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::MyDTI nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::DTI("CPacket_L2C_NEXT_CONNECT_SERVER_NTC", &::CPacketDataBase::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::MyDTI::newInstance() const {
+    return new (16u) ::nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC;
 }
 
 const MtDTI& nLoginSession::CPacket_L2C_PING_RES::getDTI() const {

@@ -9,7 +9,9 @@
 #include "MtGeometry3D.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtPrimitive3D.h"
+#include "MtProperty.h"
 #include "MtPropertyList.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -51,9 +53,9 @@ void MtGeomCylinder::save(MtDataWriter& fout) {
     fout.writeF32(mCylinder.r);
 }
 
-__attribute__((weak)) void MtGeomCylinder::createProperty(MtPropertyList& s) {
-    DDON_STUB("MtGeomCylinder::createProperty")
-    /* stub */
+void MtGeomCylinder::createProperty(MtPropertyList& s) {
+    this->MtGeomConvex::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mCylinder", &mCylinder, 0u, 0u);
 }
 
 bool MtGeomCylinder::isIntersect(const MtVector3& pos) const {

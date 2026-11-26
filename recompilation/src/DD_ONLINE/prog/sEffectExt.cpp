@@ -96,9 +96,15 @@ inline void cVfxLightInfluence::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cVfxLightInfluence::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cVfxLightInfluence::createProperty(MtPropertyList& s) {
-    DDON_STUB("cVfxLightInfluence::createProperty")
-    /* stub */
+void cVfxLightInfluence::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mLightIntensity", &mLightIntensity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCustom1", &mCustom1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCustom2", &mCustom2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCustom3", &mCustom3, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCustom4", &mCustom4, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mCustom6", &mCustom6, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnv1", &mEnv1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnv2", &mEnv2, 0u, 0u);
 }
 
 inline cVfxLightInfluence::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -175,9 +181,9 @@ __attribute__((noinline)) sEffectExt::~sEffectExt() {
     /* stub */
 }
 
-__attribute__((weak)) void sEffectExt::createProperty(MtPropertyList& s) {
-    DDON_STUB("sEffectExt::createProperty")
-    /* stub */
+void sEffectExt::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mbHitWorld", &mbHitWorld, 0u, 0u);
+    this->sEffect::createProperty(s);
 }
 
 __attribute__((weak)) void sEffectExt::move() {
@@ -287,14 +293,32 @@ __attribute__((weak)) void sEffectExt::setEffectConstParam(uEffectExt* pEffectUn
     /* stub */
 }
 
-__attribute__((weak)) uEffectExt* sEffectExt::setEffectStayQuat(rEffectList* pResource, uDDOModel* pParent, const MtQuaternion& Quat, const MtVector3& Pos, uDDOModel* pActor, u32 group, u32 material, u32 custom, MOVE_LINE MoveLine) {
-    DDON_STUB("sEffectExt::setEffectStayQuat")
-    return nullptr;
+uEffectExt* sEffectExt::setEffectStayQuat(rEffectList* pResource, uDDOModel* pParent, const MtQuaternion& Quat, const MtVector3& Pos, uDDOModel* pActor, u32 group, u32 material, u32 custom, MOVE_LINE MoveLine) {
+    uEffectExt* pEffectUnit = static_cast<uEffectExt*>(newEffect());
+    if (pEffectUnit != nullptr) {
+        pEffectUnit->setParam(pResource, group, material, Quat, Pos, 4u);
+        pEffectUnit->setParentActor(pActor, true, true);
+        sUnit::getInstance()->addBottom(MoveLine, static_cast<cUnit*>(pEffectUnit), static_cast<u64>(((custom & 0x10000u) == 0) ? ((static_cast<unsigned long>(sUnitExt::GPT_EFFECT) | static_cast<unsigned long>((custom & 1024u) * 0u)) | static_cast<unsigned long>((custom & 4096u) * 0u)) : (((static_cast<unsigned long>(sUnitExt::GPT_EFFECT) | static_cast<unsigned long>((custom & 1024u) * 0u)) | static_cast<unsigned long>((custom & 4096u) * 0u)) & 0xF9FFFFFFFFFFFFFFul)));
+        MtVector3 frame72(pEffectUnit->getAngle());
+        pEffectUnit->setAngle(frame72);
+        return pEffectUnit;
+    } else {
+        return pEffectUnit;
+    }
 }
 
-__attribute__((weak)) uEffectExt* sEffectExt::setEffectStayDir(rEffectList* pResource, uDDOModel* pParent, const MtVector3& Dir, const MtVector3& Pos, u32 AxisType, u32 Order, uDDOModel* pActor, u32 group, u32 material, u32 custom, MOVE_LINE MoveLine) {
-    DDON_STUB("sEffectExt::setEffectStayDir")
-    return nullptr;
+uEffectExt* sEffectExt::setEffectStayDir(rEffectList* pResource, uDDOModel* pParent, const MtVector3& Dir, const MtVector3& Pos, u32 AxisType, u32 Order, uDDOModel* pActor, u32 group, u32 material, u32 custom, MOVE_LINE MoveLine) {
+    uEffectExt* pEffectUnit = static_cast<uEffectExt*>(newEffect());
+    if (pEffectUnit != nullptr) {
+        pEffectUnit->setParam(pResource, group, material, Dir, Pos, Order, AxisType);
+        pEffectUnit->setParentActor(pActor, true, true);
+        sUnit::getInstance()->addBottom(MoveLine, static_cast<cUnit*>(pEffectUnit), static_cast<u64>(((custom & 0x10000u) == 0) ? ((static_cast<unsigned long>(sUnitExt::GPT_EFFECT) | static_cast<unsigned long>((custom & 1024u) * 0u)) | static_cast<unsigned long>((custom & 4096u) * 0u)) : (((static_cast<unsigned long>(sUnitExt::GPT_EFFECT) | static_cast<unsigned long>((custom & 1024u) * 0u)) | static_cast<unsigned long>((custom & 4096u) * 0u)) & 0xF9FFFFFFFFFFFFFFul)));
+        MtVector3 frame72(pEffectUnit->getAngle());
+        pEffectUnit->setAngle(frame72);
+        return pEffectUnit;
+    } else {
+        return pEffectUnit;
+    }
 }
 
 __attribute__((weak)) void sEffectExt::setDeadEffect(uDDOModel* pDie, MtTypedArray<cEfcHandle>* pEffects) {
@@ -527,9 +551,66 @@ void sEffectExt::endEffect(cEfcHandle* pHandle, u32 endType) {
     }
 }
 
-__attribute__((weak)) void sEffectExt::endEffect(MtTypedArray<cEfcHandle>* pEffects, u32 endType) {
-    DDON_STUB("sEffectExt::endEffect")
-    /* stub */
+void sEffectExt::endEffect(MtTypedArray<cEfcHandle>* pEffects, u32 endType) {
+    u32 v2_0;
+    if (pEffects->mLength == 0) {
+        v2_0 = 0;
+    } else {
+        for (unsigned int i0_3 = 0;;) {
+            MtObject* t0 = pEffects->mpArray[i0_3];
+            if (t0 != nullptr) {
+                if (t0->isKindOf(cEfcHandle::DTI)) {
+                    if (static_cast<cEfcHandle*>(t0)->getUnitType() != 3) {
+                        if (static_cast<cEfcHandle*>(t0)->getUnitType() == 1) {
+                            removeEffect2D(static_cast<cEfcHandle*>(t0), 0u, endType);
+                            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 96) = 0;
+                        } else {
+                            if (static_cast<cEfcHandle*>(t0)->getUnitType() == 0) {
+                                removeEffect(static_cast<cEfcHandle*>(t0), endType);
+                                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 96) = 0;
+                            }
+                        }
+                    } else {
+                        removeCameraEffect(static_cast<cEfcHandle*>(t0), endType);
+                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 96) = 0;
+                    }
+                }
+            }
+            if ((i0_3 + 1u) < pEffects->mLength) {
+                i0_3 += 1u;
+            } else {
+                v2_0 = pEffects->mLength;
+                break;
+            }
+        }
+    }
+    if (pEffects->mAutoDelete) {
+        u32 v6_0;
+        if (v2_0 != 0) {
+            u32 v3_0 = v2_0;
+            unsigned int i3_3 = 0;
+            u32 v4_0;
+            for (;;) {
+                if (pEffects->mpArray[i3_3] == nullptr) {
+                    v4_0 = v3_0;
+                } else {
+                    delete pEffects->mpArray[i3_3];
+                    v4_0 = pEffects->mLength;
+                }
+                if ((i3_3 + 1u) < v4_0) {
+                    v3_0 = v4_0;
+                    i3_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+            v6_0 = v4_0;
+        } else {
+            v6_0 = 0;
+        }
+        memset(static_cast<void*>(pEffects->mpArray), 0, static_cast<size_t>(v6_0) * 8);
+    }
+    pEffects->mLength = 0;
 }
 
 __attribute__((weak)) bool sEffectExt::isInvalidHandle(cEfcHandle* pHandle) {
@@ -1303,6 +1384,10 @@ const MtDTI& sEffectExt::cEfcCameraQuakeDataLarge::getDTI() const {
     return sEffectExt::cEfcCameraQuakeDataLarge::DTI;
 }
 
+inline void* sEffectExt::cEfcCameraQuakeDataLarge::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataLarge::DTI)->memAlloc(sz, align, sEffectExt::cEfcCameraQuakeDataLarge::DTI.getID());
+}
+
 inline void sEffectExt::cEfcCameraQuakeDataLarge::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataLarge::DTI)->memFree(p_addr);
 }
@@ -1311,13 +1396,16 @@ inline sEffectExt::cEfcCameraQuakeDataLarge::MyDTI::MyDTI(MT_CTSTR class_name, M
 
 sEffectExt::cEfcCameraQuakeDataLarge::MyDTI sEffectExt::cEfcCameraQuakeDataLarge::DTI("sEffectExt::cEfcCameraQuakeDataLarge", &::sEffectExt::cEfcCameraQuakeData::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sEffectExt::cEfcCameraQuakeDataLarge::MyDTI::newInstance() const {
-    DDON_STUB("sEffectExt::cEfcCameraQuakeDataLarge::MyDTI::newInstance")
-    return nullptr;
+MtObject* sEffectExt::cEfcCameraQuakeDataLarge::MyDTI::newInstance() const {
+    return new (16u) sEffectExt::cEfcCameraQuakeDataLarge;
 }
 
 const MtDTI& sEffectExt::cEfcCameraQuakeDataMiddle::getDTI() const {
     return sEffectExt::cEfcCameraQuakeDataMiddle::DTI;
+}
+
+inline void* sEffectExt::cEfcCameraQuakeDataMiddle::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataMiddle::DTI)->memAlloc(sz, align, sEffectExt::cEfcCameraQuakeDataMiddle::DTI.getID());
 }
 
 inline void sEffectExt::cEfcCameraQuakeDataMiddle::operator delete(void* p_addr) {
@@ -1328,13 +1416,16 @@ inline sEffectExt::cEfcCameraQuakeDataMiddle::MyDTI::MyDTI(MT_CTSTR class_name, 
 
 sEffectExt::cEfcCameraQuakeDataMiddle::MyDTI sEffectExt::cEfcCameraQuakeDataMiddle::DTI("sEffectExt::cEfcCameraQuakeDataMiddle", &::sEffectExt::cEfcCameraQuakeData::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sEffectExt::cEfcCameraQuakeDataMiddle::MyDTI::newInstance() const {
-    DDON_STUB("sEffectExt::cEfcCameraQuakeDataMiddle::MyDTI::newInstance")
-    return nullptr;
+MtObject* sEffectExt::cEfcCameraQuakeDataMiddle::MyDTI::newInstance() const {
+    return new (16u) sEffectExt::cEfcCameraQuakeDataMiddle;
 }
 
 const MtDTI& sEffectExt::cEfcCameraQuakeDataSmall::getDTI() const {
     return sEffectExt::cEfcCameraQuakeDataSmall::DTI;
+}
+
+inline void* sEffectExt::cEfcCameraQuakeDataSmall::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataSmall::DTI)->memAlloc(sz, align, sEffectExt::cEfcCameraQuakeDataSmall::DTI.getID());
 }
 
 inline void sEffectExt::cEfcCameraQuakeDataSmall::operator delete(void* p_addr) {
@@ -1345,9 +1436,8 @@ inline sEffectExt::cEfcCameraQuakeDataSmall::MyDTI::MyDTI(MT_CTSTR class_name, M
 
 sEffectExt::cEfcCameraQuakeDataSmall::MyDTI sEffectExt::cEfcCameraQuakeDataSmall::DTI("sEffectExt::cEfcCameraQuakeDataSmall", &::sEffectExt::cEfcCameraQuakeData::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sEffectExt::cEfcCameraQuakeDataSmall::MyDTI::newInstance() const {
-    DDON_STUB("sEffectExt::cEfcCameraQuakeDataSmall::MyDTI::newInstance")
-    return nullptr;
+MtObject* sEffectExt::cEfcCameraQuakeDataSmall::MyDTI::newInstance() const {
+    return new (16u) sEffectExt::cEfcCameraQuakeDataSmall;
 }
 
 __attribute__((weak)) void sEffectExt::EfcParam::setLocalPos(uDDOModel* pParent, s32 jointNo, const MtVector3& pos) {

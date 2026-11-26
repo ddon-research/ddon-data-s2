@@ -378,6 +378,80 @@ public:
     static const MtSizeF Zero;
 };
 
+inline const MtPoint& MtPoint::operator=(const MtPoint& p) {
+    this->x = p.x;
+    this->y = p.y;
+    return *this;
+}
+
+inline const MtSize& MtSize::operator=(const MtSize& p) {
+    this->w = p.w;
+    this->h = p.h;
+    return *this;
+}
+
+inline MtPointF::MtPointF(const MtPointF& p) {
+    this->x = p.x;
+    this->y = p.y;
+}
+
+inline const MtPointF& MtPointF::operator=(const MtPointF& p) {
+    this->x = p.x;
+    this->y = p.y;
+    return *this;
+}
+
+inline const MtSizeF& MtSizeF::operator=(const MtSizeF& p) {
+    this->w = p.w;
+    this->h = p.h;
+    return *this;
+}
+
+inline MtRect::MtRect(const MtRect& rt) {
+    this->l = rt.l;
+    this->t = rt.t;
+    this->r = rt.r;
+    this->b = rt.b;
+}
+
+inline const MtRect& MtRect::operator=(const MtRect& p) {
+    this->l = p.l;
+    this->t = p.t;
+    this->r = p.r;
+    this->b = p.b;
+    return *this;
+}
+
+inline MtRectF::MtRectF(const MtRectF& rt) {
+    this->l = rt.l;
+    this->t = rt.t;
+    this->r = rt.r;
+    this->b = rt.b;
+}
+
+inline const MtRectF& MtRectF::operator=(const MtRectF& p) {
+    this->l = p.l;
+    this->t = p.t;
+    this->r = p.r;
+    this->b = p.b;
+    return *this;
+}
+
+inline MtRange::MtRange(const MtRange& range) {
+    this->s = range.s;
+    this->r = range.r;
+}
+
+inline MtRangeF::MtRangeF(const MtRangeF& range) {
+    this->s = range.s;
+    this->r = range.r;
+}
+
+inline MtRangeU16::MtRangeU16(const MtRangeU16& range) {
+    this->s = range.s;
+    this->r = range.r;
+}
+
 inline MtPoint::MtPoint() {
 }
 

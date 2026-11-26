@@ -25,9 +25,9 @@ inline void cQuestSequence::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cQuestSequence::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cQuestSequence::createProperty(MtPropertyList& s) {
-    DDON_STUB("cQuestSequence::createProperty")
-    /* stub */
+void cQuestSequence::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mSeqNo", &mSeqNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQstId", &mQstId, 0u, 0u);
 }
 
 inline cQuestSequence::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -90,9 +90,9 @@ __attribute__((noinline)) rWaypoint::~rWaypoint() {
     mRouteList.mLength = 0;
 }
 
-__attribute__((weak)) void rWaypoint::createProperty(MtPropertyList& s) {
-    DDON_STUB("rWaypoint::createProperty")
-    /* stub */
+void rWaypoint::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPointList", static_cast<MtObject*>(&mPointList), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRouteList", static_cast<MtObject*>(&mRouteList), 0u, 0u);
 }
 
 bool rWaypoint::load(MtStream& in) {
@@ -166,9 +166,9 @@ rWaypoint::cPoint::cPoint() {
 rWaypoint::cPoint::~cPoint() {
 }
 
-__attribute__((weak)) void rWaypoint::cPoint::createProperty(MtPropertyList& s) {
-    DDON_STUB("rWaypoint::cPoint::createProperty")
-    /* stub */
+void rWaypoint::cPoint::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRadius", &mRadius, 0u, 0u);
 }
 
 MtUI* rWaypoint::cPoint::createUI(MtProperty& prop) {
@@ -208,9 +208,9 @@ inline void rWaypoint::cRoute::operator delete(void* p_addr) {
 rWaypoint::cRoute::~cRoute() {
 }
 
-__attribute__((weak)) void rWaypoint::cRoute::createProperty(MtPropertyList& s) {
-    DDON_STUB("rWaypoint::cRoute::createProperty")
-    /* stub */
+void rWaypoint::cRoute::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPointIdx", &mPointIdx[0], 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWeight", &mWeight[0], 32u, 4u);
 }
 
 MtUI* rWaypoint::cRoute::createUI(MtProperty& prop) {

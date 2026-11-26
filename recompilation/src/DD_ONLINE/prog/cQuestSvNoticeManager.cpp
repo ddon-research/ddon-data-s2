@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "cQuestSvNoticeManager.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -45,9 +46,25 @@ __attribute__((weak)) cQuestSvNoticeManager& cQuestSvNoticeManager::addCallbackF
     __builtin_unreachable();
 }
 
-__attribute__((weak)) cQuestSvNoticeManager& cQuestSvNoticeManager::pushNotice(cQuestSvNotice* pSvNot) {
-    DDON_STUB("cQuestSvNoticeManager::pushNotice")
-    __builtin_unreachable();
+cQuestSvNoticeManager& cQuestSvNoticeManager::pushNotice(cQuestSvNotice* pSvNot) {
+    u32 t0 = mNoticeList.mLength;
+    u32 t1 = mNoticeList.mBufsiz;
+    if (t0 < t1) {
+        mNoticeList.mLength = t0 + 1u;
+        mNoticeList.mpArray[t0] = static_cast<MtObject*>(pSvNot);
+        return *this;
+    } else {
+        void* t2 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t1 + 32u) * 8, 16u);
+        memset(t2, 0, static_cast<size_t>(t1 + 32u) * 8);
+        memcpy(t2, static_cast<const void*>(mNoticeList.mpArray), static_cast<size_t>(mNoticeList.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNoticeList.mpArray));
+        mNoticeList.mpArray = static_cast<MtObject* *>(t2);
+        mNoticeList.mBufsiz = t1 + 32u;
+        u32 t3 = mNoticeList.mLength;
+        mNoticeList.mLength = t3 + 1u;
+        mNoticeList.mpArray[t3] = static_cast<MtObject*>(pSvNot);
+        return *this;
+    }
 }
 
 __attribute__((weak)) void cQuestSvNoticeManager::updateNotice() {

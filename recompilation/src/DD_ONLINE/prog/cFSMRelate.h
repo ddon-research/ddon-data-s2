@@ -72,3 +72,11 @@ public:
 inline void* cFSMRelate::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline void cFSMRelate::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cFSMRelate::DTI)->memFree(p_addr);
+}
+
+inline MT_CTSTR cFSMRelate::getName() const {
+    return mFSMName.ptr();
+}

@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
@@ -36,9 +37,16 @@ uCnsLookAt::~uCnsLookAt() {
     /* stub */
 }
 
-__attribute__((weak)) void uCnsLookAt::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsLookAt::createProperty")
-    /* stub */
+void uCnsLookAt::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCnsLookAtRes", "resource", reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::getResource), reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "Joint", reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::getJoint), reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::setJointForProperty), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "mDir", reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::getDirection), reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::setDirection), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "mUp", reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::getUpvector), reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::setUpvector), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpTargetModel", reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::getTargetModel), reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::setTargetModel), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "mpTargetJoint", reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::getTargetJoint), reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::setTargetJoint), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetPos", &mTargetPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "TargetWPos", reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::getTargetWPos), reinterpret_cast<MT_MFUNC>(&::uCnsLookAt::setTargetWPos), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* uCnsLookAt::createUI(MtProperty& prop) {

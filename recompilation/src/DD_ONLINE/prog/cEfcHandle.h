@@ -24,7 +24,19 @@ class uHuman;
 class uHumanEnemy;
 class uPlayer;
 class uShlAlchemy;
+class uShlAlchemyObj;
+class uShlArrow;
 class uShlBakuensen;
+class uShlBreath;
+class uShlElementCover;
+class uShlFriendSupport;
+class uShlJob04CS14;
+class uShlJob06CS12;
+class uShlJob06CS13;
+class uShlJob06CS14;
+class uShlLaser;
+class uShlMeteo;
+class uShlRenmadanCtrl;
 class uStageRevivalPawn;
 
 // Declarations
@@ -55,7 +67,19 @@ class cEfcHandle : public MtObject
     friend class uHumanEnemy;
     friend class uPlayer;
     friend class uShlAlchemy;
+    friend class uShlAlchemyObj;
+    friend class uShlArrow;
     friend class uShlBakuensen;
+    friend class uShlBreath;
+    friend class uShlElementCover;
+    friend class uShlFriendSupport;
+    friend class uShlJob04CS14;
+    friend class uShlJob06CS12;
+    friend class uShlJob06CS13;
+    friend class uShlJob06CS14;
+    friend class uShlLaser;
+    friend class uShlMeteo;
+    friend class uShlRenmadanCtrl;
     friend class uStageRevivalPawn;
 public:
     enum EFC_UNIT_TYPE

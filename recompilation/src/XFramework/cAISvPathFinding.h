@@ -424,8 +424,26 @@ inline void* cAISvNavPathFinding::navCell::operator new(size_t sz, void* p_addr)
     return p_addr;
 }
 
+inline cAISvNavPathFinding::navCell::navCell() {
+    this->mIndex = 0;
+    this->mNumberOfIndex = 0;
+    this->mpPortal = nullptr;
+    this->mpVertexIndex = nullptr;
+}
+
 inline void* cAISvNavPathFinding::NavArea::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cAISvNavPathFinding::NavArea::NavArea() {
+    this->mpParent = nullptr;
+    this->mpChild = nullptr;
+    this->mpLink = nullptr;
+    this->mFirst = 0;
+    this->mMiddle = 0;
+    this->mLast = 0;
+    this->mNumberOfLink = 0;
+    this->mNumberOfChild = 0;
 }
 
 inline void* cAISvPathFinding::operator new(size_t sz, void* p_addr) {

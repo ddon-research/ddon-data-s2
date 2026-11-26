@@ -44,9 +44,11 @@ cScenarioData::~cScenarioData() {
     mpArg = nullptr;
 }
 
-__attribute__((weak)) void cScenarioData::createProperty(MtPropertyList& s) {
-    DDON_STUB("cScenarioData::createProperty")
-    /* stub */
+void cScenarioData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "Param", reinterpret_cast<MtObject* *>(&mpParam), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Shape", reinterpret_cast<MtObject* *>(&mpShape), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Arg", reinterpret_cast<MtObject* *>(&mpArg), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 1u, 0u);
 }
 
 inline cScenarioData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -109,9 +111,9 @@ MT_CTSTR rScenario::getName() const {
     return "rScenario";
 }
 
-__attribute__((weak)) void rScenario::createProperty(MtPropertyList& s) {
-    DDON_STUB("rScenario::createProperty")
-    /* stub */
+void rScenario::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mArray", static_cast<MtObject*>(&mArray), 0u, 0u);
 }
 
 MtUI* rScenario::createUI(MtProperty& prop) {

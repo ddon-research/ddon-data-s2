@@ -300,9 +300,24 @@ void uGUISystemMsg::setFocusForActiveBar(bool IsActive) {
     mActiveBarObjects.elems[2]->cGUIObject::setVisible(IsActive);
 }
 
-__attribute__((weak)) bool uGUISystemMsg::evCtrlScrollList(cControl::Message* msg) {
-    DDON_STUB("uGUISystemMsg::evCtrlScrollList")
-    return {};
+bool uGUISystemMsg::evCtrlScrollList(cControl::Message* msg) {
+    if (msg != nullptr) {
+        if (msg->reason == nGUIExt::MOUSE_LCLICK) {
+            if (static_cast<unsigned int>(msg->current) < mScrollList.mInfoArray.mLength) {
+                if (mScrollList.mInfoArray.mpArray[msg->current] != nullptr) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mScrollList.mInfoArray.mpArray[msg->current]) + 36)) != 0) {
+                        msg->changeSE = 20;
+                        setInputEvent(13u);
+                        if (msg->pData != nullptr) {
+                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(msg->pData) + 656) = 1;
+                        }
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    return true;
 }
 
 __attribute__((weak)) void uGUISystemMsg::initScrollList() {

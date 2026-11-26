@@ -5,12 +5,22 @@
 
 namespace {
 using Root = ::rSoundSubMixer;
-// `newInstance` is a stub in the bundle: host storage instead.
+// As the engine creates a resource: through its class's DTI,
+// called non-virtually (the DTI is zeroed storage), with the class's
+// own `operator new`.
 void* create() {
-    void* memory = ddon_host_alloc(sizeof(Root), alignof(Root));
-    return ::new (memory) Root;
+    ::MtObject* object = Root::DTI.Root::MyDTI::newInstance();
+    if (!object) {
+        ddon_trap("rSoundSubMixer::MyDTI::newInstance() returned null");
+    }
+    return static_cast<Root*>(object);
 }
-void destroy(void* root) { static_cast<Root*>(root)->~Root(); }
+// Through the virtual (deleting) destructor: the class's own
+// `operator delete` frees it.
+void destroy(void* root) {
+    ::MtObject* object = static_cast<Root*>(root);
+    delete object;
+}
 bool load(void* root, MtStream& in) { return static_cast<Root*>(root)->load(in); }
 // Its own `save`, through `cResource`'s virtual slot as
 // `cResource::saveAs` calls it.

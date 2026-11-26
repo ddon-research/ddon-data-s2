@@ -1178,8 +1178,18 @@ inline void* uGUIGPShop::cScrollTicketDispList::operator new(size_t sz, void* p_
     return p_addr;
 }
 
+inline uGUIGPShop::cScrollTicketDispList::cScrollTicketDispList() {
+    this->mpNum = nullptr;
+    this->mpName = nullptr;
+    this->mpInst = nullptr;
+}
+
 inline void* uGUIGPShop::cScrollStatusDispBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIGPShop::cScrollStatusDispBase::cScrollStatusDispBase() {
+    this->mIndex = -1;
 }
 
 inline void* uGUIGPShop::cScrollStatusDispList::operator new(size_t sz, void* p_addr) {

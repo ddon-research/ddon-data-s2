@@ -63,14 +63,14 @@ __attribute__((weak)) void uGUIServerUIBase::initServerUI(cServerUIClientControl
 }
 
 CDataUIListCommand* uGUIServerUIBase::getCommnadInfo(u32 commnadId) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2288)) != 0) {
+    if (mCommandList.mLength != 0) {
         u32 i = 0;
         do {
             if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommandList.getBuffer()[static_cast<int>(i)]) + 8)) == commnadId) {
                 return static_cast<CDataUIListCommand*>(mCommandList.getBuffer()[static_cast<int>(i)]);
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2288)));
+        } while (i < mCommandList.mLength);
     }
     return nullptr;
 }

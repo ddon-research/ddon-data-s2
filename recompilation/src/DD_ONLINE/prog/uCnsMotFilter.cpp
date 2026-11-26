@@ -5,9 +5,9 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
-#include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
 #include "cpMotionFilter.h"
 #include "../../XFramework/uConstraint.h"
@@ -33,8 +33,10 @@ inline void uCnsMotFilter::operator delete(void* p_addr) {
 }
 
 uCnsMotFilter::uCnsMotFilter() {
-    DDON_STUB("uCnsMotFilter::uCnsMotFilter")
-    /* stub */
+    mJoint = 0;
+    mMulMode = 0;
+    mpMotFlt = nullptr;
+    mSleep = false;
 }
 
 uCnsMotFilter::~uCnsMotFilter() {
@@ -61,9 +63,12 @@ void uCnsMotFilter::update() {
 __attribute__((weak)) void uCnsMotFilter::draw(cDraw* pDraw) {
 }
 
-__attribute__((weak)) void uCnsMotFilter::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsMotFilter::createProperty")
-    /* stub */
+void uCnsMotFilter::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "Joint", reinterpret_cast<MT_MFUNC>(&::uCnsMotFilter::getJoint), reinterpret_cast<MT_MFUNC>(&::uCnsMotFilter::setJoint), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mMulMode", &mMulMode, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpMotFlt", reinterpret_cast<MtObject* *>(&mpMotFlt), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSleep", &mSleep, 0u, 0u);
 }
 
 MtUI* uCnsMotFilter::createUI(MtProperty& prop) {
@@ -94,8 +99,7 @@ inline uCnsMotFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 uCnsMotFilter::MyDTI uCnsMotFilter::DTI("uCnsMotFilter", &::uConstraint::DTI, 176ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uCnsMotFilter::MyDTI::newInstance() const {
-    DDON_STUB("uCnsMotFilter::MyDTI::newInstance")
-    return nullptr;
+MtObject* uCnsMotFilter::MyDTI::newInstance() const {
+    return new (16u) uCnsMotFilter;
 }
 

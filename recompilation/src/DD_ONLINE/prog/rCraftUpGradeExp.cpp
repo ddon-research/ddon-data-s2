@@ -25,9 +25,8 @@ inline void cCraftUpGradeExpData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCraftUpGradeExpData::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cCraftUpGradeExpData::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCraftUpGradeExpData::createProperty")
-    /* stub */
+void cCraftUpGradeExpData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mExpMax", &mExpMax, 0u, 0u);
 }
 
 inline cCraftUpGradeExpData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

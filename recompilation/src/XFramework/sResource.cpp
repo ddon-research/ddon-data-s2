@@ -57,9 +57,27 @@ __attribute__((weak)) void sResource::setup() {
 __attribute__((weak)) void sResource::move() {
 }
 
-__attribute__((weak)) void sResource::createProperty(MtPropertyList& s) {
-    DDON_STUB("sResource::createProperty")
-    /* stub */
+void sResource::createProperty(MtPropertyList& s) {
+    this->cSystem::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mAutoUpdate", &mAutoUpdate, 256u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOptimizeEnable", &mOptimizeEnable, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mForceHDDCache", &mForceHDDCache, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mForceBackGround", &mForceBackGround, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Build Archive", static_cast<MT_MFUNC>(&::sResource::buildArchive), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "mBuildComplete", &mBuildComplete, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRootDirectory", &mRootDirectory, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResourceFolder", &mResourceFolder, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNativeFolder", &mNativeFolder, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResourcePath", &mResourcePath, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNativePath", &mNativePath, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRemoteConvert", &mRemoteConvert, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTypeInfo", static_cast<MtObject*>(&mTypeInfo[0]), 35u, mTypeInfoNum);
+    s << MtProperty(static_cast<MtObject*>(this), "mResourceNum", &mResourceNum, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRModelDataReaderBufferSizeKB", &mRModelDataReaderBufferSizeKB, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRTextureDataReaderBufferSizeKB", &mRTextureDataReaderBufferSizeKB, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRGrassDataReaderBufferSizeKB", &mRGrassDataReaderBufferSizeKB, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRCollisionDataReaderBufferSizeKB", &mRCollisionDataReaderBufferSizeKB, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRNavigationMeshDataReaderBufferSizeKB", &mRNavigationMeshDataReaderBufferSizeKB, 0u, 0u);
 }
 
 __attribute__((weak)) void sResource::buildArchive() {
@@ -93,8 +111,29 @@ __attribute__((weak)) cResource* sResource::create(u64 id) {
 }
 
 __attribute__((weak)) cResource* sResource::createNative(cResource* psrc, u32 mode) {
-    DDON_STUB("sResource::createNative")
-    return nullptr;
+        if (psrc == nullptr || !(psrc->mAttr & 8)) {
+            return nullptr;
+        }
+        const MtDTI* pdti = &psrc->getDTI();
+        do {
+            pdti = pdti->mpParent;
+        } while (pdti != nullptr && (pdti->mAttr & 1));
+        if (pdti != nullptr) {
+            TypeInfo* pi = nullptr;
+            for (u32 i = 0; i < mTypeInfoNum; i++) {
+                if (mTypeInfo[i].mpDTI == pdti) {
+                    pi = &mTypeInfo[i];
+                    break;
+                }
+            }
+            if (pi != nullptr && (pi->mAttr & 16)) {
+                cResource* pdst = create(*pdti, psrc->mPath, mode);
+                if (pdst != nullptr) {
+                    return pdst;
+                }
+            }
+        }
+        return nullptr;
 }
 
 __attribute__((weak)) u64 sResource::makeID(const MtDTI& dti, MT_CTSTR path) {
@@ -103,13 +142,27 @@ __attribute__((weak)) u64 sResource::makeID(const MtDTI& dti, MT_CTSTR path) {
 }
 
 __attribute__((weak)) void sResource::setupDecode(MtStream& in) {
-    DDON_STUB("sResource::setupDecode")
-    /* stub */
+        mDecodeWork.pin = &in;
+        mDecodeWork.parc = nullptr;
+        memset(mDecodeWork.rwork, 0, sizeof(mDecodeWork.rwork));
+        mDecodeWork.rcomplete = 0;
+        mDecodeWork.cancel = 0;
+        mDecodeWork.rnum = 0;
+        mDecodeWork.rrequest = 0;
+        mDecodeWork.readpt = 0;
+        mDecodeWork.writept = 0;
 }
 
 __attribute__((weak)) cResource* sResource::entryDecode(MT_CTSTR path, const MtDTI& dti, u32 offset, u32 datasize, u32 orgsize, cResource::QUALITY quality) {
-    DDON_STUB("sResource::entryDecode")
-    return nullptr;
+        RESOURCEWORK* prwk = &mDecodeWork.rwork[mDecodeWork.rnum++];
+        prwk->presource = precreate(dti, path, orgsize, quality);
+        prwk->datasize = datasize;
+        prwk->offset = offset;
+        prwk->readsize = 0;
+        prwk->complete = 0;
+        prwk->loaded = 0;
+        prwk->orgsize = orgsize;
+        return prwk->presource;
 }
 
 __attribute__((weak)) bool sResource::executeDecode(rArchive* parc) {
@@ -118,13 +171,46 @@ __attribute__((weak)) bool sResource::executeDecode(rArchive* parc) {
 }
 
 __attribute__((weak)) void sResource::getFullPath(MT_STR dst, cResource* pr) {
-    DDON_STUB("sResource::getFullPath")
-    /* stub */
+        if (dst != nullptr) {
+            if (pr != nullptr) {
+                MT_CTSTR root;
+                if (pr->mAttr & cResource::ATTR_NATIVE) {
+                    root = mNativePath.value != nullptr ? reinterpret_cast<MT_CTSTR>(mNativePath.value->str) : "";
+                } else {
+                    root = mResourcePath.value != nullptr ? reinterpret_cast<MT_CTSTR>(mResourcePath.value->str) : "";
+                }
+                sprintf(dst, "%s\\%s.%s", root, pr->mPath, pr->getExt());
+                if (mpPathFilter != nullptr) {
+                    mpPathFilter(dst, mpPathFilterAdr);
+                }
+            } else {
+                *dst = 0;
+            }
+        }
 }
 
 __attribute__((weak)) void sResource::getFullPath(MT_STR dst, const MtDTI& dti, MT_CTSTR path) {
-    DDON_STUB("sResource::getFullPath")
-    /* stub */
+        if (dst != nullptr && !(dti.mAttr & 1)) {
+            TypeInfo* pi = nullptr;
+            for (u32 i = 0; i < mTypeInfoNum; i++) {
+                if (mTypeInfo[i].mpDTI == &dti) {
+                    pi = &mTypeInfo[i];
+                    break;
+                }
+            }
+            if (pi != nullptr) {
+                MT_CTSTR root;
+                if (pi->mAttr & cResource::ATTR_NATIVE) {
+                    root = mNativePath.value != nullptr ? reinterpret_cast<MT_CTSTR>(mNativePath.value->str) : "";
+                } else {
+                    root = mResourcePath.value != nullptr ? reinterpret_cast<MT_CTSTR>(mResourcePath.value->str) : "";
+                }
+                sprintf(dst, "%s\\%s.%s", root, path, pi->mExt);
+                if (mpPathFilter != nullptr) {
+                    mpPathFilter(dst, mpPathFilterAdr);
+                }
+            }
+        }
 }
 
 __attribute__((weak)) void sResource::setRootDirectory(MT_CTSTR root_directory) {
@@ -201,8 +287,17 @@ __attribute__((weak)) cResource* sResource::loadAsync(const MtDTI& dti, MT_CTSTR
 }
 
 __attribute__((weak)) cResource* sResource::findTable(u64 id, u32 shift) {
-    DDON_STUB("sResource::findTable")
-    return nullptr;
+        cResource** ptbl = &mpTable[((id >> shift) & 0x7ff) * 8];
+        for (s32 i = 0; i < 8; i++) {
+            cResource* pr = ptbl[i];
+            if (pr != nullptr && pr->mID == id) {
+                return pr;
+            }
+        }
+        if (shift < 16) {
+            return findTable(id, shift + 1);
+        }
+        return nullptr;
 }
 
 __attribute__((weak)) void sResource::createTypeInfo(const MtDTI& dti) {
@@ -326,13 +421,38 @@ MT_CTSTR sResource::Property::getName() {
 }
 
 __attribute__((weak)) u32 sResource::Property::getParam(MtProperty* pp, MtProperty::Custom::PARAM* params) {
-    DDON_STUB("sResource::Property::getParam")
-    return {};
+    cResource* pr = static_cast<cResource*>(pp->getClass());
+    params[0].name = "rtype";
+    params[1].name = "path";
+    if (pr != nullptr) {
+        params[0].value = pr->getDTI().mName;
+        params[1].value = pr->mPath;
+    } else {
+        params[0].value = "null";
+        params[1].value = "";
+    }
+    return 2u;
 }
 
 __attribute__((weak)) void sResource::Property::setParam(MtProperty* pp, const MtProperty::Custom::PARAM* params, u32 num) {
-    DDON_STUB("sResource::Property::setParam")
-    /* stub */
+    const MtDTI* pdti = MtDTI::from(params[0].value, cResource::DTI);
+    cResource* pr = nullptr;
+    if (pdti != nullptr) {
+        u32 t1 = sResource::MODE_BLOCKING | ((pp->getAttr() & MtProperty::ATTR_AUTO_CREATE) ? sResource::MODE_CREATE : 0);
+        pr = sResource::getInstance()->create(*pdti, params[1].value, t1);
+    }
+    if (pp->isDynamic()) {
+        pp->setClass(pr);
+        if (pr != nullptr) {
+            pr->release();
+        }
+    } else {
+        cResource* ppr = static_cast<cResource*>(pp->getClass());
+        if (ppr != nullptr) {
+            ppr->release();
+        }
+        pp->setClass(pr);
+    }
 }
 
 const MtDTI& sResource::RemoteInfo::getDTI() const {
@@ -367,9 +487,10 @@ inline sResource::RemoteInfo::RemoteInfo() {
     mFolderNameLen = 0;
 }
 
-__attribute__((weak)) void sResource::RemoteInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("sResource::RemoteInfo::createProperty")
-    /* stub */
+void sResource::RemoteInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEnable", &mEnable, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CSTRING, "mPCName", reinterpret_cast<MT_MFUNC>(&::sResource::RemoteInfo::getPCName), reinterpret_cast<MT_MFUNC>(&::sResource::RemoteInfo::setPCName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CSTRING, "mFolderName", reinterpret_cast<MT_MFUNC>(&::sResource::RemoteInfo::getFolderName), reinterpret_cast<MT_MFUNC>(&::sResource::RemoteInfo::setFolderName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 static auto ddon_emit_0x01ba6c20 __attribute__((used)) = &sResource::RemoteInfo::getPCName;

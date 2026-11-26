@@ -8,6 +8,7 @@
 #include "../MT/MtNetObject.h"
 #include "../MT/MtNetP2p.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
 #ifndef DDON_STUB
@@ -28,9 +29,25 @@ nNetwork::Route::~Route() {
     /* stub */
 }
 
-__attribute__((weak)) void nNetwork::Route::createProperty(MtPropertyList& s) {
-    DDON_STUB("nNetwork::Route::createProperty")
-    /* stub */
+void nNetwork::Route::createProperty(MtPropertyList& s) {
+    s << ::MtProperty(static_cast<MtObject*>(this), "mPeerId", &mPeerId, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mMemberIndex", &mMemberIndex, 1u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mSendSequence", &mSendSequence, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mSendElapse", &mSendElapse, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SendInterval", &mSendRate.mIval, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SendRate", &mSendRate.mRate, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mRecvSequence", &mRecvSequence, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mRecvElapse", &mRecvElapse, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "RecvInterval", &mRecvRate.mIval, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "RecvRate", &mRecvRate.mRate, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "RttQ3", &mRtt.mRttQ3, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Rtt", &mRtt.mRtt, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "Iqr", &mRtt.mIqr, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "RecvLoss", &mRecvLoss.mLoss, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "SendLoss", &mSendLoss.mLoss, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "BaseLoss", &mSendLoss.mBase, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mQueueDelay", &mQueueDelay, 0u, 0u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "mBandwidth", &mBandwidth, 0u, 0u);
 }
 
 __attribute__((weak)) void nNetwork::Route::clear() {

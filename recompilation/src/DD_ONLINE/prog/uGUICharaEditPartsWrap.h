@@ -128,6 +128,7 @@ public:
     class cPartsBase : public uGUIBase::cSupportBase
     {
         friend class uGUICharaEditPartsWrap;
+        friend class uGUICharacterEdit;
     public:
         enum
         {
@@ -263,7 +264,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cReferenceUIEditSliderExt();
-        virtual ~cReferenceUIEditSliderExt();
+        virtual ~cReferenceUIEditSliderExt() {}
         virtual void setMsgNumStr(s32 n, bool bInit);  // vtable slot 19
         void setEditType(nCharacterEdit::EDIT_TYPE type);
         void setOwner(uGUICharaEditPartsWrap::cPartsBase* pParts, uGUICharacterEdit* pGuiCharaEdit, uCharacterEdit* pCharacterEdit);
@@ -665,7 +666,7 @@ public:
         static void operator delete(void* p_addr, u32 align);
         static void operator delete[](void* p_addr, u32 align);
         cReferenceUIRadioButtonExt();
-        virtual ~cReferenceUIRadioButtonExt();
+        virtual ~cReferenceUIRadioButtonExt() {}
         void setIsSelectForbit(bool flag);
         bool isSelectForbit() const;
     protected:
@@ -1012,7 +1013,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     uGUICharaEditPartsWrap();
-    virtual ~uGUICharaEditPartsWrap();
+    virtual ~uGUICharaEditPartsWrap() {}
     virtual void setup();  // vtable slot 6
     virtual void move();  // vtable slot 9
     virtual void kill();  // vtable slot 16

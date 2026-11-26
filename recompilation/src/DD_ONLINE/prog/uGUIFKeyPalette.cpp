@@ -89,8 +89,11 @@ inline void uGUIFKeyPalette::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIFKeyPalette::~uGUIFKeyPalette() {
-    DDON_STUB("uGUIFKeyPalette::~uGUIFKeyPalette")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 bool uGUIFKeyPalette::loadResource() {

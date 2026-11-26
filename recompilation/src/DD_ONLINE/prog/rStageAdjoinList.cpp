@@ -201,9 +201,11 @@ rStageAdjoinList::cAdjoinInfo::~cAdjoinInfo() {
     mIndex.mLength = 0;
 }
 
-__attribute__((weak)) void rStageAdjoinList::cAdjoinInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageAdjoinList::cAdjoinInfo::createProperty")
-    /* stub */
+void rStageAdjoinList::cAdjoinInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mDestinationStageNo", &mDestinationStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNextStageNo", &mNextStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", static_cast<MtObject*>(&mIndex), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPriority", &mPriority, 0u, 0u);
 }
 
 inline rStageAdjoinList::cAdjoinInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -222,9 +224,8 @@ inline void rStageAdjoinList::cAdjoinInfo::cIndex::operator delete(void* p_addr)
     MtMemoryAllocator::getAllocator(rStageAdjoinList::cAdjoinInfo::cIndex::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rStageAdjoinList::cAdjoinInfo::cIndex::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageAdjoinList::cAdjoinInfo::cIndex::createProperty")
-    /* stub */
+void rStageAdjoinList::cAdjoinInfo::cIndex::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 0u, 0u);
 }
 
 void rStageAdjoinList::cAdjoinInfo::cIndex::load(MtDataReader& r) {
@@ -254,9 +255,10 @@ inline void rStageAdjoinList::cJumpPosition::operator delete(void* p_addr) {
 rStageAdjoinList::cJumpPosition::~cJumpPosition() {
 }
 
-__attribute__((weak)) void rStageAdjoinList::cJumpPosition::createProperty(MtPropertyList& s) {
-    DDON_STUB("rStageAdjoinList::cJumpPosition::createProperty")
-    /* stub */
+void rStageAdjoinList::cJumpPosition::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlagId", &mFlagId, 0u, 0u);
 }
 
 inline rStageAdjoinList::cJumpPosition::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

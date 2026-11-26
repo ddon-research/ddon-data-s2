@@ -29,6 +29,14 @@ inline void sCollisionExt::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollisionExt::DTI)->memFree(p_addr);
 }
 
+sCollisionExt::sCollisionExt(sCollision::cSystemInitializeParam* pInitializeParam) : sCollision(true, pInitializeParam) {
+    mDefaultMaterial = 0x20000000;
+    mTriangleAttributeForceGround = 0x10000;
+    mTriangleAttributeForceWall = 0x20000;
+    setSlopeDegree(45.0f);
+    setWallDegree(45.0f);
+}
+
 sCollisionExt::~sCollisionExt() {
 }
 

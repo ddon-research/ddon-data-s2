@@ -207,9 +207,18 @@ inline void rEditStageParam::Info::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rEditStageParam::Info::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rEditStageParam::Info::createProperty(MtPropertyList& s) {
-    DDON_STUB("rEditStageParam::Info::createProperty")
-    /* stub */
+void rEditStageParam::Info::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mModelSdl", reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::getModelName), reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::setModelName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mFilterSdl", reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::getFilterName), reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::setFilterName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mLightSdl", reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::getLightName), reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::setLightName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mOmListSdl", reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::getOmListName), reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::setOmListName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mReverb", &mReverb, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPlPos", &mPlPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPlRotY", &mPlRotY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mWeatherStageInfo", reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::getWeatherStageInfoName), reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::setWeatherStageInfoName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mWeatherParamInfo", reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::getWeatherParamInfoName), reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::setWeatherParamInfoName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mWeatherData", static_cast<MtObject*>(&mWeatherData[0]), 32u, 2u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlag", &mFlag, 0u, 0u);
 }
 
 MtUI* rEditStageParam::Info::createUI(MtProperty& prop) {
@@ -357,9 +366,10 @@ inline void rEditStageParam::Info::WeatherData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rEditStageParam::Info::WeatherData::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rEditStageParam::Info::WeatherData::createProperty(MtPropertyList& s) {
-    DDON_STUB("rEditStageParam::Info::WeatherData::createProperty")
-    /* stub */
+void rEditStageParam::Info::WeatherData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mWeatherID", &mWeatherID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHour", &mHour, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMinite", &mMinite, 0u, 0u);
 }
 
 MtUI* rEditStageParam::Info::WeatherData::createUI(MtProperty& prop) {
@@ -382,9 +392,8 @@ inline void rEditStageParam::List::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rEditStageParam::List::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rEditStageParam::List::createProperty(MtPropertyList& s) {
-    DDON_STUB("rEditStageParam::List::createProperty")
-    /* stub */
+void rEditStageParam::List::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S8, "mListTbl", reinterpret_cast<MT_MFUNC>(&::rEditStageParam::List::getListNo), reinterpret_cast<MT_MFUNC>(&::rEditStageParam::List::setListNo), 160u, reinterpret_cast<MT_MFUNC>(&::rEditStageParam::List::getListNoNum), reinterpret_cast<MT_MFUNC>(&::rEditStageParam::List::setListNoNum));
 }
 
 static auto ddon_emit_0x01a85330 __attribute__((used)) = &rEditStageParam::List::getListNo;

@@ -5,6 +5,7 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "../../MT/MtStream.h"
 #include "../../XFramework/cResource.h"
 #include "cpCharacterEdit.h"
 #include "cpEquip.h"
@@ -47,9 +48,18 @@ void rPlPartsInfo::clear() {
     mpHeader = nullptr;
 }
 
-__attribute__((weak)) bool rPlPartsInfo::load(MtStream& in) {
-    DDON_STUB("rPlPartsInfo::load")
-    return {};
+bool rPlPartsInfo::load(MtStream& in) {
+    u32 size = in.getLength();
+    void* t0 = MtMemoryAllocator::getAllocator(rPlPartsInfo::DTI)->memAlloc(size, 16u);
+    mpHeader = static_cast<HEADER*>(t0);
+    in.read(t0, size);
+    if (mpHeader->magic == 0x495350) {
+        if (mpHeader->version == 1) {
+            mpHeader->parts = reinterpret_cast<s16*>(reinterpret_cast<char*>(mpHeader) + reinterpret_cast<long>(mpHeader->parts));
+            return true;
+        }
+    }
+    return false;
 }
 
 MT_CTSTR rPlPartsInfo::getExt() const {

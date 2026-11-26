@@ -52,7 +52,7 @@ public:
         virtual MtObject* newInstance() const;  // vtable slot 2
     };
 public:
-    struct HEADER
+    struct alignas(16) HEADER
     {
     public:
         u32 Magic;  // offset: 0x0

@@ -31,9 +31,14 @@ inline void uGUIsMenuBase::operator delete(void* p_addr) {
 uGUIsMenuBase::~uGUIsMenuBase() {
 }
 
-__attribute__((weak)) void uGUIsMenuBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGUIsMenuBase::createProperty")
-    /* stub */
+void uGUIsMenuBase::createProperty(MtPropertyList& s) {
+    this->uGUI::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mSwitch", &mSwitch, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMoveNum", &mMoveNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVAR_sw", &mVAR_sw, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVAR_change_flow", &mVAR_change_flow, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReserveSwitch", &mReserveSwitch, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsReserveForce", &mIsReserveForce, 1u, 0u);
 }
 
 bool uGUIsMenuBase::changeFlow(u32 sw, bool force) {

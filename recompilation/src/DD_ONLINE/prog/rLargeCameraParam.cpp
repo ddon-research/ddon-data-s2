@@ -25,9 +25,12 @@ inline void cLargeCameraParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cLargeCameraParam::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cLargeCameraParam::createProperty(MtPropertyList& s) {
-    DDON_STUB("cLargeCameraParam::createProperty")
-    /* stub */
+void cLargeCameraParam::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "EmId", &mEmId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Range1", &mRange1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Range2", &mRange2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Camera", &mCamera, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Group", &mGroup, 0u, 0u);
 }
 
 inline cLargeCameraParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

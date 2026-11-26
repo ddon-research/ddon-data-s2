@@ -175,9 +175,10 @@ __attribute__((weak)) void uGUIJobSelect::updateWait() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIJobSelect::updateExit() {
-    DDON_STUB("uGUIJobSelect::updateExit")
-    /* stub */
+void uGUIJobSelect::updateExit() {
+    if ((mAttr & 1u) == 0) {
+        end();
+    }
 }
 
 u32 uGUIJobSelect::evCtrlVMove(cControl::Message* msg) {
@@ -381,6 +382,8 @@ void uGUIJobSelect::moveDialog() {
 inline uGUIJobSelect::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIJobSelect::MyDTI uGUIJobSelect::DTI("uGUIJobSelect", &::uGUIsMenuBase::DTI, 2736ul, 0u, 0u);
+
+alignas(4) unsigned char uGUIJobSelect_JOB_ID_LIST_bytes[16] __asm__("_ZN13uGUIJobSelect11JOB_ID_LISTE") = {0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00};
 
 __attribute__((weak)) MtObject* uGUIJobSelect::MyDTI::newInstance() const {
     DDON_STUB("uGUIJobSelect::MyDTI::newInstance")

@@ -54,9 +54,10 @@ cEnemyGroup::~cEnemyGroup() {
     mEmList.mLength = 0;
 }
 
-__attribute__((weak)) void cEnemyGroup::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEnemyGroup::createProperty")
-    /* stub */
+void cEnemyGroup::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEnemyGroupId", &mEnemyGroupId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMsgIndex", &mMsgIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEmList", static_cast<MtObject*>(&mEmList), 0u, 0u);
 }
 
 inline cEnemyGroup::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -79,9 +80,8 @@ inline void cEnemyGroup::cEmList::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cEnemyGroup::cEmList::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cEnemyGroup::cEmList::createProperty(MtPropertyList& s) {
-    DDON_STUB("cEnemyGroup::cEmList::createProperty")
-    /* stub */
+void cEnemyGroup::cEmList::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mEmId", &mEmId, 0u, 0u);
 }
 
 inline cEnemyGroup::cEmList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

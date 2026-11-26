@@ -56,7 +56,7 @@ public:
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
     cpWallMaria();
-    virtual ~cpWallMaria();
+    virtual ~cpWallMaria() {}
     virtual void setup();  // vtable slot 6
     virtual void after();  // vtable slot 15
     virtual void kill();  // vtable slot 8

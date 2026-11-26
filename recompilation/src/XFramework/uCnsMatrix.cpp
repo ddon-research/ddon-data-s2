@@ -5,6 +5,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
@@ -36,9 +37,11 @@ uCnsMatrix::~uCnsMatrix() {
     /* stub */
 }
 
-__attribute__((weak)) void uCnsMatrix::createProperty(MtPropertyList& s) {
-    DDON_STUB("uCnsMatrix::createProperty")
-    /* stub */
+void uCnsMatrix::createProperty(MtPropertyList& s) {
+    this->uConstraint::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mpCnsMatrixRes", "resource", reinterpret_cast<MT_MFUNC>(&::uCnsMatrix::getResource), reinterpret_cast<MT_MFUNC>(&::uCnsMatrix::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "Joint", reinterpret_cast<MT_MFUNC>(&::uCnsMatrix::getJoint), reinterpret_cast<MT_MFUNC>(&::uCnsMatrix::setJointForProperty), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mMat", &mMat, 0u, 0u);
 }
 
 MtUI* uCnsMatrix::createUI(MtProperty& prop) {

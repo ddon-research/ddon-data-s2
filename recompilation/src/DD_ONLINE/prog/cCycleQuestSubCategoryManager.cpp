@@ -82,9 +82,8 @@ __attribute__((weak)) nQuest::SCHEDULE_ID cCycleQuestSubCategoryManager::getCycl
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void cCycleQuestSubCategoryManager::setCycleContentsScheduleId(nQuest::SCHEDULE_ID scheduleId) {
-    DDON_STUB("cCycleQuestSubCategoryManager::setCycleContentsScheduleId")
-    /* stub */
+void cCycleQuestSubCategoryManager::setCycleContentsScheduleId(nQuest::SCHEDULE_ID scheduleId) {
+    mCycleContentsScheduleId.mScheduleId = scheduleId.mScheduleId;
 }
 
 nQuest::CYCLE_CONTENTS_PERIOD cCycleQuestSubCategoryManager::getCycleContentsPeriod() const {
@@ -118,9 +117,47 @@ __attribute__((weak)) void cCycleQuestSubCategoryManager::registTask(const RaidB
     /* stub */
 }
 
-__attribute__((weak)) void cCycleQuestSubCategoryManager::deleteTaskWithoutMainTask() {
-    DDON_STUB("cCycleQuestSubCategoryManager::deleteTaskWithoutMainTask")
-    /* stub */
+void cCycleQuestSubCategoryManager::deleteTaskWithoutMainTask() {
+    const u32 taskNum = mQuestTask.mLength;
+    if (taskNum != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mQuestTask.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                if (mQuestTask.getBuffer()[static_cast<int>(i0_3)] != mpMainTask) {
+                    static_cast<cQuestTask*>(mQuestTask.getBuffer()[static_cast<int>(i0_3)])->forceDelete();
+                }
+            }
+            if (taskNum != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mSituationInfo.mLength != 0) {
+        u32 v3_0 = mSituationInfo.mLength;
+        unsigned int i3_3 = 0;
+        u32 v4_0;
+        for (;;) {
+            if (mSituationInfo.mpArray[i3_3] == nullptr) {
+                v4_0 = v3_0;
+            } else {
+                delete mSituationInfo.mpArray[i3_3];
+                v4_0 = mSituationInfo.mLength;
+            }
+            if ((i3_3 + 1u) < v4_0) {
+                v3_0 = v4_0;
+                i3_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mSituationInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSituationInfo.mpArray));
+    }
+    mSituationInfo.mpArray = nullptr;
+    mSituationInfo.mBufsiz = 0;
+    mSituationInfo.mLength = 0;
 }
 
 __attribute__((weak)) void cCycleQuestSubCategoryManager::registSituationInfo(const QuestContentsSituationInfoDetailVec& list) {

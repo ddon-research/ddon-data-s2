@@ -74,8 +74,9 @@ inline void cSplitBase::operator delete(void* p_addr) {
 }
 
 __attribute__((weak)) void cSplitBase::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSplitBase::createProperty")
-    /* stub */
+    s << MtProperty(static_cast<MtObject*>(this), "mStatus", &mStatus, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "M(z)", &mIdZ, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "N(x)", &mIdX, 1u, 0u);
 }
 
 inline cSplitBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -125,9 +126,9 @@ cSplitLot::~cSplitLot() {
     sSetManager::getInstance()->releaseSplitPartsSet(rLayout::TYPE_ENEMY, static_cast<u32>(getZ()));
 }
 
-__attribute__((weak)) void cSplitLot::createProperty(MtPropertyList& s) {
-    DDON_STUB("cSplitLot::createProperty")
-    /* stub */
+void cSplitLot::createProperty(MtPropertyList& s) {
+    this->cSplitBase::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "LotSet(XSI)", static_cast<MtObject*>(&mLotSet), 0u, 0u);
 }
 
 void cSplitLot::eraseWait() {

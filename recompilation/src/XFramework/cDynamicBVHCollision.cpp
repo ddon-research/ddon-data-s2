@@ -11,6 +11,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "nCollision.h"
 #ifndef DDON_STUB
@@ -43,9 +44,13 @@ MtUI* cDynamicBVHCollision::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void cDynamicBVHCollision::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDynamicBVHCollision::createProperty")
-    /* stub */
+void cDynamicBVHCollision::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpRoot", reinterpret_cast<MtObject* *>(&mpRoot), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLeafNum", &mLeafNum, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUpdateBackNum", &mUpdateBackNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mNoUseNodeArray", static_cast<MtObject*>(&mNoUseNodeArray), 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReservedNodeNoUseNum", &mReservedNodeNoUseNum, 3u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mReservedNodeNoUseMax", &mReservedNodeNoUseMax, 3u, 0u);
 }
 
 bool cDynamicBVHCollision::isEnableRoot() const {
@@ -351,9 +356,10 @@ cDynamicBVHCollision::Node::~Node() {
     /* stub */
 }
 
-__attribute__((weak)) void cDynamicBVHCollision::Node::createProperty(MtPropertyList& s) {
-    DDON_STUB("cDynamicBVHCollision::Node::createProperty")
-    /* stub */
+void cDynamicBVHCollision::Node::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mpParent", reinterpret_cast<MtObject* *>(&mpParent), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpChild", reinterpret_cast<MtObject* *>(&(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 16))), 32u, 2u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAABB", &mAABB, 0u, 0u);
 }
 
 inline cDynamicBVHCollision::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

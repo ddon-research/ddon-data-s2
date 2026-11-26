@@ -6,6 +6,7 @@
 #include "../../MT/MtEaseCurve.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -46,9 +47,25 @@ void* cCamExParamTps::operator new(size_t sz, u32 align) {
     return cCamExParamTps::getAllocator()->memAlloc(sz, align, cCamExParamTps::DTI.getID());
 }
 
-__attribute__((weak)) void cCamExParamTps::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCamExParamTps::createProperty")
-    /* stub */
+inline void cCamExParamTps::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(cCamExParamTps::DTI)->memFree(p_addr);
+}
+
+void cCamExParamTps::createProperty(MtPropertyList& s) {
+    createPropertyCommon(s);
+    createPropertyCameraTarget(s);
+    createPropertyCoord(s);
+    createPropertyInterporate(s);
+    createPropertyCtrl(s);
+    createPropertyChangeInterporate(s);
+    createPropertyAdjust(s);
+    createPropertyEx(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsResetAngle", &mIsResetAngle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ctrlSpeed", &ctrlSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isUseLimit", &isUseLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "limitDeg", &limitDeg, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isFollowAngle", &isFollowAngle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isNoHeightCorrect", &isNoHeightCorrect, 0u, 0u);
 }
 
 cCamExParamTps::~cCamExParamTps() {
@@ -69,8 +86,7 @@ inline cCamExParamTps::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 cCamExParamTps::MyDTI cCamExParamTps::DTI("cCamExParamTps", &::cCamExParam::DTI, 496ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cCamExParamTps::MyDTI::newInstance() const {
-    DDON_STUB("cCamExParamTps::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cCamExParamTps;
 }
 
 const MtDTI& cCamExParamTps2::getDTI() const {
@@ -85,9 +101,29 @@ void* cCamExParamTps2::operator new(size_t sz, u32 align) {
     return cCamExParamTps2::getAllocator()->memAlloc(sz, align, cCamExParamTps2::DTI.getID());
 }
 
-__attribute__((weak)) void cCamExParamTps2::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCamExParamTps2::createProperty")
-    /* stub */
+inline void cCamExParamTps2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(cCamExParamTps2::DTI)->memFree(p_addr);
+}
+
+void cCamExParamTps2::createProperty(MtPropertyList& s) {
+    createPropertyCommon(s);
+    createPropertyCameraTarget(s);
+    createPropertyCoord(s);
+    createPropertyInterporate(s);
+    createPropertyCtrl(s);
+    createPropertyChangeInterporate(s);
+    createPropertyAdjust(s);
+    createPropertyEx(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsResetAngle", &mIsResetAngle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsResetAngleDetail", &mIsResetAngleDetail, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResetDetailAngX", &mResetDetailAngX, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mResetDetailAngY", &mResetDetailAngY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ctrlSpeed", &ctrlSpeed, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isUseLimit", &isUseLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "limitDeg", &limitDeg, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isFollowAngle", &isFollowAngle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "isNoHeightCorrect", &isNoHeightCorrect, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnableLargeCorrect", &mEnableLargeCorrect, 0u, 0u);
 }
 
 cCamExParamTps2::~cCamExParamTps2() {
@@ -108,8 +144,7 @@ inline cCamExParamTps2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 cCamExParamTps2::MyDTI cCamExParamTps2::DTI("cCamExParamTps2", &::cCamExParamTps::DTI, 496ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cCamExParamTps2::MyDTI::newInstance() const {
-    DDON_STUB("cCamExParamTps2::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) cCamExParamTps2;
 }
 
 const MtDTI& cCamImpTps::getDTI() const {

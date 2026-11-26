@@ -336,9 +336,8 @@ __attribute__((weak)) void aStage::final() {
     /* stub */
 }
 
-__attribute__((weak)) const MtDTI& aStage::getParentType() {
-    DDON_STUB("aStage::getParentType")
-    __builtin_unreachable();
+const MtDTI& aStage::getParentType() {
+    return aGame::DTI;
 }
 
 void aStage::createProperty(MtPropertyList& s) {
@@ -1212,14 +1211,14 @@ void aStage::setStageFeature(const CommonU32Vec& featureVec) {
     mStageFeature[3] = 0;
     mStageFeature[0] = 0;
     mStageFeature[1] = 0;
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&featureVec) + 8)) != 0) {
+    if (featureVec.mLength != 0) {
         u32 i = 0;
         do {
             if (i <= 4u) {
-                mStageFeature[i] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&featureVec) + 24)) + (static_cast<unsigned long>(i) * 8)) + 0)) + 8);
+                mStageFeature[i] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(featureVec.mpArray[i]) + 8);
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&featureVec) + 8)));
+        } while (i < featureVec.mLength);
     }
 }
 
@@ -1240,9 +1239,67 @@ __attribute__((weak)) void aStage::initPlantTree(rPlantTree* pRes) {
     /* stub */
 }
 
-__attribute__((weak)) bool aStage::isHouse(s32 stgNo) {
-    DDON_STUB("aStage::isHouse")
-    return {};
+bool aStage::isHouse(s32 stgNo) {
+    static s32 keep_stage_list[48] = {
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        310,
+        311,
+        312,
+        313,
+        314,
+        315,
+        320,
+        321,
+        322,
+        330,
+        331,
+        360,
+        361,
+        362,
+        363,
+        364,
+        365,
+        370,
+        371,
+        372,
+        373,
+        380,
+        381,
+        600,
+        601,
+        602,
+        610,
+        620,
+        622,
+        625,
+        905,
+        910,
+        911,
+        912,
+        913,
+        914,
+        920,
+        921,
+        930,
+    };
+    u32 i = 0;
+    int* p2 = keep_stage_list;
+    do {
+        if ((*p2) == stgNo) {
+            return true;
+        }
+        i += 1u;
+        p2 += static_cast<int>(1);
+    } while (i <= 47u);
+    return false;
 }
 
 __attribute__((weak)) bool aStage::isKeepArchive() {

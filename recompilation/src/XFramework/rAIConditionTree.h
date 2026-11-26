@@ -797,6 +797,10 @@ inline void* rAIConditionTree::VariableNode::VariableInfo::operator new(size_t s
     return p_addr;
 }
 
+inline rAIConditionTree::VariableNode::VariableInfo::VariableInfo() {
+    this->mIsSingletonOwner = false;
+}
+
 inline void* rAIConditionTree::ConstS32Node::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

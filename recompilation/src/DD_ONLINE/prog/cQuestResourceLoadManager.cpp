@@ -29,11 +29,11 @@ inline void cQuestResourceLoadManager::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cQuestResourceLoadManager::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cQuestResourceLoadManager::addQuestId(cQuestResourceLoadManager::cLoadTask* pTask, nQuest::QUEST_ID questId) {
-        if (pTask == nullptr) {
-            return;
-        }
-        pTask->addQuestId(questId);
+void cQuestResourceLoadManager::addQuestId(cQuestResourceLoadManager::cLoadTask* pTask, nQuest::QUEST_ID questId) {
+    if (pTask == nullptr) {
+        return;
+    }
+    pTask->addQuestId(questId);
 }
 
 void cQuestResourceLoadManager::setClass(cQuestResourceLoadManager::cLoadTask* pTask, MtObject* pClass) {
@@ -43,14 +43,18 @@ void cQuestResourceLoadManager::setClass(cQuestResourceLoadManager::cLoadTask* p
     pTask->mpClass = pClass;
 }
 
-__attribute__((weak)) void cQuestResourceLoadManager::setCallbackFunc(cQuestResourceLoadManager::cLoadTask* pTask, cQuestResourceLoadManager::PCALLBACK_FUNC pCallbackFunc) {
-    DDON_STUB("cQuestResourceLoadManager::setCallbackFunc")
-    /* stub */
+void cQuestResourceLoadManager::setCallbackFunc(cQuestResourceLoadManager::cLoadTask* pTask, cQuestResourceLoadManager::PCALLBACK_FUNC pCallbackFunc) {
+    if (pTask == nullptr) {
+        return;
+    }
+    pTask->mpCallbackFunc = pCallbackFunc;
 }
 
-__attribute__((weak)) void cQuestResourceLoadManager::setCallbackFunc(cQuestResourceLoadManager::cLoadTask* pTask, cQuestResourceLoadManager::PCALLBACK_FUNC_WITH_LIST pCallbackFunc) {
-    DDON_STUB("cQuestResourceLoadManager::setCallbackFunc")
-    /* stub */
+void cQuestResourceLoadManager::setCallbackFunc(cQuestResourceLoadManager::cLoadTask* pTask, cQuestResourceLoadManager::PCALLBACK_FUNC_WITH_LIST pCallbackFunc) {
+    if (pTask == nullptr) {
+        return;
+    }
+    pTask->mpCallbackFuncWithList = pCallbackFunc;
 }
 
 __attribute__((weak)) cQuestResourceLoadManager::cLoadTask* cQuestResourceLoadManager::createNewTask() {

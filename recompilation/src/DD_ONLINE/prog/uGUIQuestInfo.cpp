@@ -54,8 +54,15 @@ inline void uGUIQuestInfo::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIQuestInfo::~uGUIQuestInfo() {
-    DDON_STUB("uGUIQuestInfo::~uGUIQuestInfo")
-    /* stub */
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
+    }
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 __attribute__((weak)) void uGUIQuestInfo::createProperty(MtPropertyList& s) {
@@ -151,9 +158,35 @@ __attribute__((weak)) void uGUIQuestInfo::moveInput() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIQuestInfo::moveEvent() {
-    DDON_STUB("uGUIQuestInfo::moveEvent")
-    /* stub */
+void uGUIQuestInfo::moveEvent() {
+    if (getInputEvent() != 68) {
+        if (getInputEvent() == 67) {
+            if (mFlowId == 2) {
+                if (mIsWaitOrderProgress) {
+                    mIsWaitOrderProgress = false;
+                    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+                    t0->cancelReqQuestOrder(mIndexData.getScheduleId());
+                    mIsMove = false;
+                    setFlowId(1u);
+                    mQuestInfoResult = 2;
+                    clearFocus();
+                } else {
+                    mIsMove = false;
+                    setFlowId(1u);
+                    mQuestInfoResult = 2;
+                    clearFocus();
+                }
+            }
+        } else {
+            if (getInputEvent() == 66) {
+                eventDecide();
+            }
+        }
+    } else {
+        if (mFlowId == 2) {
+            adjustCursor();
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIQuestInfo::updateMove() {
@@ -241,8 +274,22 @@ __attribute__((weak)) void uGUIQuestInfo::updateItemDetail() {
 }
 
 __attribute__((weak)) void uGUIQuestInfo::eventDecide() {
-    DDON_STUB("uGUIQuestInfo::eventDecide")
-    /* stub */
+    if (mFlowId != 2) {
+        return;
+    }
+    if (mIsWaitOrderProgress) {
+        return;
+    }
+    mIsWaitOrderProgress = true;
+    sQuestManagerExt* t0 = sQuestManagerExt::getInstance();
+    t0->reqQuestOrder(mIndexData.getScheduleId());
+    sQuestManagerExt* t2 = sQuestManagerExt::getInstance();
+    bool t3 = t2->isQuestOrderProgress(mIndexData.getScheduleId());
+    if (!t3) {
+        return;
+    }
+    order();
+    mIsWaitOrderProgress = false;
 }
 
 __attribute__((weak)) u32 uGUIQuestInfo::evCtrlDecide(cControl::Message* msg) {

@@ -45,9 +45,16 @@ inline void uGUIPopRmcQuestInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIPopRmcQuestInfo::DTI)->memFree(p_addr);
 }
 
-__attribute__((noinline)) uGUIPopRmcQuestInfo::~uGUIPopRmcQuestInfo() {
-    DDON_STUB("uGUIPopRmcQuestInfo::~uGUIPopRmcQuestInfo")
-    /* stub */
+uGUIPopRmcQuestInfo::~uGUIPopRmcQuestInfo() {
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
+    }
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 void uGUIPopRmcQuestInfo::createProperty(MtPropertyList& s) {
@@ -83,9 +90,24 @@ __attribute__((weak)) void uGUIPopRmcQuestInfo::updateInit() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIPopRmcQuestInfo::updateWait() {
-    DDON_STUB("uGUIPopRmcQuestInfo::updateWait")
-    /* stub */
+void uGUIPopRmcQuestInfo::updateWait() {
+    if (mMain.mIsChangePage) {
+        mMain.mTimer = mMain.mTimer - mDeltaTime;
+        if (0.0f >= mMain.mTimer) {
+            setupItem();
+        }
+    }
+    for (unsigned int i0_3 = 0; i0_3 <= 5u; i0_3 += 1u) {
+        if (mMain.mItem[i0_3].mpInstNull == nullptr) {
+            break;
+        } else {
+            if ((mMain.mItem[i0_3].mpInstNull->mAttr & 1u) == 0) {
+                break;
+            } else {
+                mMain.mItem[i0_3].mCharge.uGUIBase::cReferenceUIChargesInfo::update();
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIPopRmcQuestInfo::setupItem() {

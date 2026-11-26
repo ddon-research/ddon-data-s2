@@ -16,6 +16,8 @@
 #include "../../XFramework/cUnit.h"
 #include "../../XFramework/nZone.h"
 #include "rOccluderExt.h"
+
+#include "../../XFramework/rOccluder.h"
 #include "../../XFramework/sArea.h"
 #include "../../XFramework/sCamera.h"
 #include "../../XFramework/sOccluder.h"
@@ -133,13 +135,19 @@ inline void sOccluderEx::Area::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) sOccluderEx::Area::~Area() {
-    DDON_STUB("sOccluderEx::Area::~Area")
-    /* stub */
+    if (mprOCC != nullptr) {
+        mprOCC->release();
+        mprOCC = nullptr;
+    }
+    mShapeList.deleteAll(true);
 }
 
-__attribute__((weak)) void sOccluderEx::Area::createProperty(MtPropertyList& s) {
-    DDON_STUB("sOccluderEx::Area::createProperty")
-    /* stub */
+void sOccluderEx::Area::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mAreaName", &mAreaName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPrio", &mPrio, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mbOCC", &mbOCC, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mShapeList", static_cast<MtObject*>(&mShapeList), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mprOCC", "resource", static_cast<void*>(&mprOCC), 0u, 0u);
 }
 
 MtUI* sOccluderEx::Area::createUI(MtProperty& prop) {
@@ -192,9 +200,10 @@ sOccluderEx::Shape::~Shape() {
     mpZShape = nullptr;
 }
 
-__attribute__((weak)) void sOccluderEx::Shape::createProperty(MtPropertyList& s) {
-    DDON_STUB("sOccluderEx::Shape::createProperty")
-    /* stub */
+void sOccluderEx::Shape::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mbEnable", &mbEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "mType", reinterpret_cast<MT_MFUNC>(&::sOccluderEx::Shape::getShapeType), reinterpret_cast<MT_MFUNC>(&::sOccluderEx::Shape::setShapeType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpZShape", reinterpret_cast<MT_MFUNC>(&::sOccluderEx::Shape::getZone), reinterpret_cast<MT_MFUNC>(&::sOccluderEx::Shape::setZone), 132u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 MtUI* sOccluderEx::Shape::createUI(MtProperty& prop) {
@@ -206,17 +215,57 @@ nZone::ShapeInfoBase::SHAPE_TYPE sOccluderEx::Shape::getShapeType() {
 }
 
 __attribute__((weak)) void sOccluderEx::Shape::setShapeType(nZone::ShapeInfoBase::SHAPE_TYPE type) {
-    DDON_STUB("sOccluderEx::Shape::setShapeType")
-    /* stub */
+    if (mType == type) {
+        return;
+    }
+    mType = type;
+    nZone::ShapeInfoBase* ps = nullptr;
+    switch (type) {
+    case nZone::ShapeInfoBase::SHAPE_TYPE_AREA:
+        ps = new (16u) nZone::ShapeInfoArea;
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_AABB:
+        ps = new (16u) nZone::ShapeInfoAABB;
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_OBB:
+        ps = new (16u) nZone::ShapeInfoOBB;
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_SPHERE:
+        ps = new (16u) nZone::ShapeInfoSphere;
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_CAPSULE:
+        ps = new (16u) nZone::ShapeInfoCapsule;
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_CYLINDER:
+        ps = new (16u) nZone::ShapeInfoCylinder;
+        break;
+    case nZone::ShapeInfoBase::SHAPE_TYPE_PANEL:
+        ps = new (16u) nZone::ShapeInfoPanel;
+        break;
+    default:
+        break;
+    }
+    if (mpZShape != ps) {
+        if (mpZShape != nullptr) {
+            delete mpZShape;
+            mpZShape = nullptr;
+        }
+        mpZShape = ps;
+    }
 }
 
 nZone::ShapeInfoBase* sOccluderEx::Shape::getZone() {
     return mpZShape;
 }
 
-__attribute__((weak)) void sOccluderEx::Shape::setZone(nZone::ShapeInfoBase* pInfo) {
-    DDON_STUB("sOccluderEx::Shape::setZone")
-    /* stub */
+void sOccluderEx::Shape::setZone(nZone::ShapeInfoBase* pInfo) {
+    if (mpZShape != pInfo) {
+        if (mpZShape != nullptr) {
+            delete mpZShape;
+            mpZShape = nullptr;
+        }
+        mpZShape = pInfo;
+    }
 }
 
 inline sOccluderEx::Shape::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

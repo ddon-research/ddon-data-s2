@@ -126,9 +126,19 @@ void uGUIMap::kill() {
     mpGUIRes = nullptr;
 }
 
-__attribute__((weak)) void uGUIMap::draw(cDraw* pDraw) {
-    DDON_STUB("uGUIMap::draw")
-    /* stub */
+void uGUIMap::draw(cDraw* pDraw) {
+    mIsDrawMap = false;
+    if ((mFuncF & 2u) == 0) {
+        if (mpInstNull_ofst != nullptr) {
+            if (static_cast<unsigned char>(static_cast<sGUIExt*>(sGUI::getInstance())->mMap.getRno0() + 252) <= 2) {
+                mpInstNull_ofst->setVisible(!static_cast<sGUIExt*>(sGUI::getInstance())->mMap.mIsTexReleaseWait);
+            } else {
+                mpInstNull_ofst->setVisible(false);
+            }
+        }
+        mIsDrawMap = true;
+        this->uGUIBase::draw(pDraw);
+    }
 }
 
 void uGUIMap::updatePtr() {
@@ -156,9 +166,11 @@ void uGUIMap::updatePtr() {
     }
 }
 
-__attribute__((weak)) MtSize uGUIMap::getMapTexSize() {
-    DDON_STUB("uGUIMap::getMapTexSize")
-    __builtin_unreachable();
+MtSize uGUIMap::getMapTexSize() {
+    MtSize result;
+    result.w = 512;
+    result.h = 512;
+    return result;
 }
 
 __attribute__((weak)) void uGUIMap::setupCommon() {
@@ -508,8 +520,34 @@ __attribute__((weak)) void uGUIMap::zoomInput() {
 }
 
 __attribute__((weak)) void uGUIMap::markerInput() {
-    DDON_STUB("uGUIMap::markerInput")
-    /* stub */
+    if (isEnableControlExecution()) {
+        if (sInputManager::getInstance()->getKeyCommon(nKeyCustom::KEY_CUSTOM_UI_MAP_FREEMARKER, nKeyCustom::GET_TRG, nKeyCustom::MODE_CUSTOM, 0u) == 0) {
+            return;
+        } else {
+            if (static_cast<sGUIExt*>(sGUI::getInstance())->mMouse.isMouseMode()) {
+                const MtDTI& t0 = getDTI();
+                MT_CTSTR v0_1 = uGUIMapMini::DTI.mName;
+                for (const MtDTI* v0_0 = &t0;;) {
+                    if (v0_1 == v0_0->mName) {
+                        setInputEvent(66u);
+                        return;
+                    } else {
+                        if (v0_0->mpParent != nullptr) {
+                            v0_0 = v0_0->mpParent;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                if (!isMouseOverMenuMap()) {
+                    return;
+                }
+            }
+        }
+    } else {
+        return;
+    }
+    setInputEvent(66u);
 }
 
 __attribute__((weak)) u32 uGUIMap::evCtrlZoomMove(cControl::Message* msg) {
@@ -680,6 +718,10 @@ const MtDTI& uGUIMap::cMarkerUpdInfo::getDTI() const {
     return uGUIMap::cMarkerUpdInfo::DTI;
 }
 
+inline void* uGUIMap::cMarkerUpdInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIMap::cMarkerUpdInfo::DTI)->memAlloc(sz, align, uGUIMap::cMarkerUpdInfo::DTI.getID());
+}
+
 inline void uGUIMap::cMarkerUpdInfo::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMap::cMarkerUpdInfo::DTI)->memFree(p_addr);
 }
@@ -704,13 +746,16 @@ inline uGUIMap::cMarkerUpdInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 uGUIMap::cMarkerUpdInfo::MyDTI uGUIMap::cMarkerUpdInfo::DTI("uGUIMap::cMarkerUpdInfo", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIMap::cMarkerUpdInfo::MyDTI::newInstance() const {
-    DDON_STUB("uGUIMap::cMarkerUpdInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIMap::cMarkerUpdInfo::MyDTI::newInstance() const {
+    return new (16u) uGUIMap::cMarkerUpdInfo;
 }
 
 const MtDTI& uGUIMap::cMarkerLandInfo::getDTI() const {
     return uGUIMap::cMarkerLandInfo::DTI;
+}
+
+inline void* uGUIMap::cMarkerLandInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIMap::cMarkerLandInfo::DTI)->memAlloc(sz, align, uGUIMap::cMarkerLandInfo::DTI.getID());
 }
 
 inline void uGUIMap::cMarkerLandInfo::operator delete(void* p_addr) {
@@ -732,9 +777,8 @@ inline uGUIMap::cMarkerLandInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 uGUIMap::cMarkerLandInfo::MyDTI uGUIMap::cMarkerLandInfo::DTI("uGUIMap::cMarkerLandInfo", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIMap::cMarkerLandInfo::MyDTI::newInstance() const {
-    DDON_STUB("uGUIMap::cMarkerLandInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIMap::cMarkerLandInfo::MyDTI::newInstance() const {
+    return new (16u) uGUIMap::cMarkerLandInfo;
 }
 
 const MtDTI& uGUIMap::cPointerCursor::getDTI() const {
@@ -771,17 +815,29 @@ const MtDTI& uGUIMap::cQuestMarkerData::getDTI() const {
     return uGUIMap::cQuestMarkerData::DTI;
 }
 
+inline void* uGUIMap::cQuestMarkerData::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGUIMap::cQuestMarkerData::DTI)->memAlloc(sz, align, uGUIMap::cQuestMarkerData::DTI.getID());
+}
+
 inline void uGUIMap::cQuestMarkerData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(uGUIMap::cQuestMarkerData::DTI)->memFree(p_addr);
+}
+
+inline uGUIMap::cQuestMarkerData::cQuestMarkerData() {
+    mScheduleId = 0;
+    mPrio = 0;
+    mIndex = -1;
+    mDist.x = MtVector2::Zero.x;
+    mDist.y = MtVector2::Zero.y;
+    mDefFloor = false;
 }
 
 inline uGUIMap::cQuestMarkerData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIMap::cQuestMarkerData::MyDTI uGUIMap::cQuestMarkerData::DTI("uGUIMap::cQuestMarkerData", &::MtObject::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIMap::cQuestMarkerData::MyDTI::newInstance() const {
-    DDON_STUB("uGUIMap::cQuestMarkerData::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIMap::cQuestMarkerData::MyDTI::newInstance() const {
+    return new (16u) uGUIMap::cQuestMarkerData;
 }
 
 template MtTypedArray<uGUIMap::cLandId>::~MtTypedArray();

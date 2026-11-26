@@ -8,6 +8,7 @@
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtStream.h"
 #include "../MT/MtTime.h"
@@ -45,9 +46,14 @@ rSwingModel::~rSwingModel() {
     mpVertexBuffer = nullptr;
 }
 
-__attribute__((weak)) void rSwingModel::createProperty(MtPropertyList& s) {
-    DDON_STUB("rSwingModel::createProperty")
-    /* stub */
+void rSwingModel::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mSwingMode", &mSwingMode, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mFrequencyFactor", &mFrequencyFactor, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAdjustPosition", &mAdjustPosition, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAdjustNormalTangent", &mAdjustNormalTangent, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseWorldPosition", &mUseWorldPosition, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mHighPrecisionMode", &mHighPrecisionMode, 1u, 0u);
 }
 
 bool rSwingModel::save(MtStream& out) {

@@ -139,14 +139,14 @@ __attribute__((weak)) void cKeyCustomManager::checkOverlap() {
 }
 
 bool cKeyCustomManager::isExistOverlap() {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24)) != 0) {
+    if (mCustomArray.mLength != 0) {
         u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 40)) + static_cast<unsigned long>(i * 8u)) + 0)) + 40)) != 0) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCustomArray.mpArray[i]) + 40)) != 0) {
                 return true;
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24)));
+        } while (i < mCustomArray.mLength);
     }
     return false;
 }

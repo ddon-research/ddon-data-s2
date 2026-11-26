@@ -111,9 +111,17 @@ inline void rFieldMapData::Data::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rFieldMapData::Data::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rFieldMapData::Data::createProperty(MtPropertyList& s) {
-    DDON_STUB("rFieldMapData::Data::createProperty")
-    /* stub */
+void rFieldMapData::Data::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mMessId", &mMessId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mSpotMessId", &mSpotMessId, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mID", &mID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPoint", &mPoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mWorldPos", &mWorldPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mDispWideMap", &mDispWideMap, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVersion", &mVersion, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
 }
 
 bool rFieldMapData::Data::load(MtDataReader& r) {

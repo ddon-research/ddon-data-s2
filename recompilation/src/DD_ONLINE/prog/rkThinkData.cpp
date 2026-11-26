@@ -126,18 +126,56 @@ inline void rkThinkData::operator delete(void* p_addr) {
 }
 
 rkThinkData::~rkThinkData() {
-    DDON_STUB("rkThinkData::~rkThinkData")
-    /* stub */
+    destruct();
 }
 
 __attribute__((weak)) bool rkThinkData::load(MtStream& in) {
-    DDON_STUB("rkThinkData::load")
-    return {};
+    MtDataReader r(in, 4096);
+    if (r.readU32() != 0x6e6570) {
+        return false;
+    }
+    if (r.readU32() != DATA_VERSION) {
+        return false;
+    }
+    mArrayListNum = r.readU32();
+    for (u32 type = 0; type < mArrayListNum; ++type) {
+        const u32 nInfoNum = r.readU32();
+        const u32 nSizeBinary = r.readU32();
+        if (nSizeBinary != 0) {
+            void* pBinaryInfo = MtMemoryAllocator::getAllocator(rkThinkData::DTI)->memAlloc(nSizeBinary, 16);
+            u8* pBinaryCursor = static_cast<u8*>(pBinaryInfo);
+            for (u32 i = 0; i < nInfoNum; ++i) {
+                kTHINKDATA* pSource = new (pBinaryCursor) kTHINKDATA;
+                pSource->load(r);
+                pBinaryCursor += sizeof(kTHINKDATA);
+            }
+            mpArray[type] = static_cast<kTHINKDATA*>(pBinaryInfo);
+        } else {
+            mpArray[type] = nullptr;
+        }
+        mArrayNum[type] = nInfoNum;
+    }
+    return true;
 }
 
 __attribute__((weak)) bool rkThinkData::save(MtStream& out) {
-    DDON_STUB("rkThinkData::save")
-    return {};
+    MtDataWriter w(out, 4096, 4096);
+    w.writeU32(0x6e6570);
+    w.writeU32(DATA_VERSION);
+    w.writeU32(mArrayListNum);
+    for (u32 type = 0; type < mArrayListNum; ++type) {
+        const u32 nInfoNum = rkThinkData::getInfoNum(type);
+        w.writeU32(nInfoNum);
+        u32 nSizeBinary = (nInfoNum * sizeof(kTHINKDATA) + 15) & ~15;
+        w.writeU32(nSizeBinary);
+        for (u32 i = 0; i < nInfoNum; ++i) {
+            kTHINKDATA* pBinary = rkThinkData::getInfo(type, i);
+            if (pBinary != nullptr) {
+                pBinary->save(w);
+            }
+        }
+    }
+    return true;
 }
 
 MT_CTSTR rkThinkData::getExt() const {
@@ -166,7 +204,6 @@ inline rkThinkData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u3
 rkThinkData::MyDTI rkThinkData::DTI("rkThinkData", &::cResource::DTI, 1656ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* rkThinkData::MyDTI::newInstance() const {
-    DDON_STUB("rkThinkData::MyDTI::newInstance")
-    return nullptr;
+    return new (16u) rkThinkData;
 }
 

@@ -26,9 +26,13 @@ inline void cCraftCapPassData::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cCraftCapPassData::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cCraftCapPassData::createProperty(MtPropertyList& s) {
-    DDON_STUB("cCraftCapPassData::createProperty")
-    /* stub */
+void cCraftCapPassData::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mRecipeId", &mRecipeId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStartLv", &mStartLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLvCap", &mLvCap, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mVer", &mVer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRound", &mRound, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
 }
 
 inline cCraftCapPassData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

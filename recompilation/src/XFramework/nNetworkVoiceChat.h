@@ -56,6 +56,7 @@ namespace nNetwork {
     public:
         class Talker : public ::MtObject
         {
+            friend class nNetwork::VoiceChat;
         public:
             enum
             {
@@ -204,6 +205,14 @@ inline bool nNetwork::VoiceChat::isMicMute() {
 
 inline f32 nNetwork::VoiceChat::getSpeakerVolume() {
     return this->mSpeakerVolume;
+}
+
+inline nNetwork::VoiceChat::Talker::Talker() {
+    this->mInit = false;
+    this->mLoopback = false;
+    this->mDst = 0;
+    this->mTask = 0;
+    this->mUpdateTime = 0;
 }
 
 inline void* nNetwork::VoiceChat::Talker::operator new(size_t sz, void* p_addr) {

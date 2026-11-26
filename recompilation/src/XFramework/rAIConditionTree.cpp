@@ -7,6 +7,7 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSerializer.h"
 #include "../MT/MtString.h"
@@ -26,14 +27,16 @@ inline void* cAIDEnum::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAIDEnum::DTI)->memAlloc(sz, align, cAIDEnum::DTI.mID);
 }
 
-cAIDEnum::~cAIDEnum() {
-    DDON_STUB("cAIDEnum::~cAIDEnum")
-    /* stub */
+inline void cAIDEnum::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(cAIDEnum::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cAIDEnum::createProperty(MtPropertyList& s) {
-    DDON_STUB("cAIDEnum::createProperty")
-    /* stub */
+cAIDEnum::~cAIDEnum() {
+}
+
+void cAIDEnum::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mElementName", &mElementName, 8192u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
 }
 
 inline cAIDEnum::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -90,9 +93,9 @@ rAIConditionTree::~rAIConditionTree() {
     mpTreeList = nullptr;
 }
 
-__attribute__((weak)) void rAIConditionTree::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::createProperty")
-    /* stub */
+void rAIConditionTree::createProperty(MtPropertyList& s) {
+    this->cResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpTreeList", reinterpret_cast<MT_MFUNC>(&::rAIConditionTree::getTree), reinterpret_cast<MT_MFUNC>(&::rAIConditionTree::setTree), 160u, reinterpret_cast<MT_MFUNC>(&::rAIConditionTree::getTreeNum), reinterpret_cast<MT_MFUNC>(&::rAIConditionTree::setTreeNum));
 }
 
 MT_CTSTR rAIConditionTree::getExt() const {
@@ -307,23 +310,30 @@ const MtDTI& rAIConditionTree::TreeInfo::getDTI() const {
     return rAIConditionTree::TreeInfo::DTI;
 }
 
-rAIConditionTree::TreeInfo::~TreeInfo() {
-    DDON_STUB("rAIConditionTree::TreeInfo::~TreeInfo")
-    /* stub */
+inline void rAIConditionTree::TreeInfo::operator delete(void* p_addr) {
+    MtMemoryAllocator::getAllocator(rAIConditionTree::TreeInfo::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void rAIConditionTree::TreeInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::TreeInfo::createProperty")
-    /* stub */
+rAIConditionTree::TreeInfo::~TreeInfo() {
+    delete mpRootNode;
+    mpRootNode = nullptr;
+}
+
+void rAIConditionTree::TreeInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mName", static_cast<MtObject*>(&mName), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpRootNode", reinterpret_cast<MtObject* *>(&mpRootNode), 0u, 0u);
 }
 
 inline rAIConditionTree::TreeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rAIConditionTree::TreeInfo::MyDTI rAIConditionTree::TreeInfo::DTI("rAIConditionTree::TreeInfo", &::MtObject::DTI, 40ul, 0u, 0u);
 
+inline rAIConditionTree::TreeInfo::TreeInfo() {
+    mpRootNode = nullptr;
+}
+
 __attribute__((weak)) MtObject* rAIConditionTree::TreeInfo::MyDTI::newInstance() const {
-    DDON_STUB("rAIConditionTree::TreeInfo::MyDTI::newInstance")
-    return nullptr;
+    return new (MtMemoryAllocator::getAllocator(rAIConditionTree::TreeInfo::DTI)->memAlloc(sizeof(rAIConditionTree::TreeInfo), 16u, rAIConditionTree::TreeInfo::DTI.getID())) rAIConditionTree::TreeInfo;
 }
 
 const MtDTI& rAIConditionTree::OperationNode::getDTI() const {
@@ -334,14 +344,13 @@ inline void rAIConditionTree::OperationNode::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rAIConditionTree::OperationNode::DTI)->memFree(p_addr);
 }
 
-rAIConditionTree::OperationNode::~OperationNode() {
-    DDON_STUB("rAIConditionTree::OperationNode::~OperationNode")
-    /* stub */
+__attribute__((noinline)) rAIConditionTree::OperationNode::~OperationNode() {
 }
 
-__attribute__((weak)) void rAIConditionTree::OperationNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::OperationNode::createProperty")
-    /* stub */
+void rAIConditionTree::OperationNode::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpChildList", reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChild), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChild), 160u, reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChildNum), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChildNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mOperator", &mOperator, 0u, 0u);
 }
 
 rAIConditionTreeNode::VALUE_TYPE rAIConditionTree::OperationNode::getValueType() {
@@ -353,9 +362,8 @@ __attribute__((weak)) void rAIConditionTree::OperationNode::copy(rAIConditionTre
     /* stub */
 }
 
-__attribute__((weak)) const MtDTI& rAIConditionTree::OperationNode::getWorkNodeClassDTI() const {
-    DDON_STUB("rAIConditionTree::OperationNode::getWorkNodeClassDTI")
-    __builtin_unreachable();
+const MtDTI& rAIConditionTree::OperationNode::getWorkNodeClassDTI() const {
+    return cAIConditionTree::OperationWorkNode::DTI;
 }
 
 MT_CTSTR rAIConditionTree::OperationNode::getUIClassName() const {
@@ -366,9 +374,18 @@ inline rAIConditionTree::OperationNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI*
 
 rAIConditionTree::OperationNode::MyDTI rAIConditionTree::OperationNode::DTI("rAIConditionTree::OperationNode", &::rAIConditionTreeNode::DTI, 72ul, 0u, 0u);
 
+inline rAIConditionTreeNode::rAIConditionTreeNode() {
+    mChildNum = 0;
+    mpChildList = nullptr;
+    mpParent = nullptr;
+}
+
+inline rAIConditionTree::OperationNode::OperationNode() {
+    mOperator = 0;
+}
+
 __attribute__((weak)) MtObject* rAIConditionTree::OperationNode::MyDTI::newInstance() const {
-    DDON_STUB("rAIConditionTree::OperationNode::MyDTI::newInstance")
-    return nullptr;
+    return new (MtMemoryAllocator::getAllocator(rAIConditionTree::OperationNode::DTI)->memAlloc(sizeof(rAIConditionTree::OperationNode), 16u, rAIConditionTree::OperationNode::DTI.getID())) rAIConditionTree::OperationNode;
 }
 
 const MtDTI& rAIConditionTree::StateNode::getDTI() const {
@@ -384,9 +401,10 @@ rAIConditionTree::StateNode::~StateNode() {
     /* stub */
 }
 
-__attribute__((weak)) void rAIConditionTree::StateNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::StateNode::createProperty")
-    /* stub */
+void rAIConditionTree::StateNode::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpChildList", reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChild), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChild), 160u, reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChildNum), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChildNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mState", &mState, 0u, 0u);
 }
 
 rAIConditionTreeNode::VALUE_TYPE rAIConditionTree::StateNode::getValueType() {
@@ -402,9 +420,8 @@ __attribute__((weak)) void rAIConditionTree::StateNode::copy(rAIConditionTreeNod
     /* stub */
 }
 
-__attribute__((weak)) const MtDTI& rAIConditionTree::StateNode::getWorkNodeClassDTI() const {
-    DDON_STUB("rAIConditionTree::StateNode::getWorkNodeClassDTI")
-    __builtin_unreachable();
+const MtDTI& rAIConditionTree::StateNode::getWorkNodeClassDTI() const {
+    return cAIConditionTree::ConstWorkNode::DTI;
 }
 
 MT_CTSTR rAIConditionTree::StateNode::getUIClassName() const {
@@ -429,13 +446,19 @@ inline void rAIConditionTree::VariableNode::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) rAIConditionTree::VariableNode::~VariableNode() {
-    DDON_STUB("rAIConditionTree::VariableNode::~VariableNode")
-    /* stub */
 }
 
-__attribute__((weak)) void rAIConditionTree::VariableNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::VariableNode::createProperty")
-    /* stub */
+void rAIConditionTree::VariableNode::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpChildList", reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChild), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChild), 160u, reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChildNum), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChildNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mVariable", static_cast<MtObject*>(&mVariable), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsBitNo", &mIsBitNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsArray", &mIsArray, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsDynamicIndex", &mIsDynamicIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndexVariable", static_cast<MtObject*>(&mIndexVariable), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mUseEnumIndex", &mUseEnumIndex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIndexEnum", static_cast<MtObject*>(&mIndexEnum), 0u, 0u);
 }
 
 rAIConditionTreeNode::VALUE_TYPE rAIConditionTree::VariableNode::getValueType() {
@@ -447,9 +470,8 @@ __attribute__((weak)) void rAIConditionTree::VariableNode::copy(rAIConditionTree
     /* stub */
 }
 
-__attribute__((weak)) const MtDTI& rAIConditionTree::VariableNode::getWorkNodeClassDTI() const {
-    DDON_STUB("rAIConditionTree::VariableNode::getWorkNodeClassDTI")
-    __builtin_unreachable();
+const MtDTI& rAIConditionTree::VariableNode::getWorkNodeClassDTI() const {
+    return cAIConditionTree::VariableWorkNode::DTI;
 }
 
 MT_CTSTR rAIConditionTree::VariableNode::getUIClassName() const {
@@ -477,32 +499,42 @@ inline rAIConditionTree::VariableNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* 
 
 rAIConditionTree::VariableNode::MyDTI rAIConditionTree::VariableNode::DTI("rAIConditionTree::VariableNode", &::rAIConditionTreeNode::DTI, 200ul, 0u, 0u);
 
+inline rAIConditionTree::VariableNode::VariableNode() {
+    mIsBitNo = false;
+    mIsArray = false;
+    mIsDynamicIndex = false;
+    mIndex = 0;
+    mUseEnumIndex = false;
+    mpOwnerInstance = nullptr;
+}
+
 __attribute__((weak)) MtObject* rAIConditionTree::VariableNode::MyDTI::newInstance() const {
-    DDON_STUB("rAIConditionTree::VariableNode::MyDTI::newInstance")
-    return nullptr;
+    return new (MtMemoryAllocator::getAllocator(rAIConditionTree::VariableNode::DTI)->memAlloc(sizeof(rAIConditionTree::VariableNode), 16u, rAIConditionTree::VariableNode::DTI.getID())) rAIConditionTree::VariableNode;
 }
 
 const MtDTI& rAIConditionTree::VariableNode::VariableInfo::getDTI() const {
     return rAIConditionTree::VariableNode::VariableInfo::DTI;
 }
 
-rAIConditionTree::VariableNode::VariableInfo::~VariableInfo() {
-    DDON_STUB("rAIConditionTree::VariableNode::VariableInfo::~VariableInfo")
-    /* stub */
+inline void* rAIConditionTree::VariableNode::VariableInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rAIConditionTree::VariableNode::VariableInfo::DTI)->memAlloc(sz, align, rAIConditionTree::VariableNode::VariableInfo::DTI.mID);
 }
 
-__attribute__((weak)) void rAIConditionTree::VariableNode::VariableInfo::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::VariableNode::VariableInfo::createProperty")
-    /* stub */
+rAIConditionTree::VariableNode::VariableInfo::~VariableInfo() {
+}
+
+void rAIConditionTree::VariableNode::VariableInfo::createProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mPropertyName", &mPropertyName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mOwnerName", &mOwnerName, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsSingletonOwner", &mIsSingletonOwner, 0u, 0u);
 }
 
 inline rAIConditionTree::VariableNode::VariableInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rAIConditionTree::VariableNode::VariableInfo::MyDTI rAIConditionTree::VariableNode::VariableInfo::DTI("rAIConditionTree::VariableNode::VariableInfo", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rAIConditionTree::VariableNode::VariableInfo::MyDTI::newInstance() const {
-    DDON_STUB("rAIConditionTree::VariableNode::VariableInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* rAIConditionTree::VariableNode::VariableInfo::MyDTI::newInstance() const {
+    return new (16u) rAIConditionTree::VariableNode::VariableInfo;
 }
 
 const MtDTI& rAIConditionTree::ConstS32Node::getDTI() const {
@@ -518,9 +550,11 @@ MtUI* rAIConditionTree::ConstS32Node::createUI(MtProperty& prop) {
     return this->cAIResource::createUI(prop);
 }
 
-__attribute__((weak)) void rAIConditionTree::ConstS32Node::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::ConstS32Node::createProperty")
-    /* stub */
+void rAIConditionTree::ConstS32Node::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpChildList", reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChild), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChild), 160u, reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChildNum), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChildNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", &mValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsBitNo", &mIsBitNo, 0u, 0u);
 }
 
 rAIConditionTreeNode::VALUE_TYPE rAIConditionTree::ConstS32Node::getValueType() {
@@ -556,18 +590,16 @@ __attribute__((weak)) void rAIConditionTree::ConstS32Node::copy(rAIConditionTree
     /* stub */
 }
 
-__attribute__((weak)) const MtDTI& rAIConditionTree::ConstS32Node::getWorkNodeClassDTI() const {
-    DDON_STUB("rAIConditionTree::ConstS32Node::getWorkNodeClassDTI")
-    __builtin_unreachable();
+const MtDTI& rAIConditionTree::ConstS32Node::getWorkNodeClassDTI() const {
+    return cAIConditionTree::ConstWorkNode::DTI;
 }
 
 MT_CTSTR rAIConditionTree::ConstS32Node::getUIClassName() const {
     return "cAIConditionTreeExpressionFormBase::Parameter";
 }
 
-__attribute__((weak)) void rAIConditionTree::ConstS32Node::createEditProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::ConstS32Node::createEditProperty")
-    /* stub */
+void rAIConditionTree::ConstS32Node::createEditProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", &mValue, 0u, 0u);
 }
 
 inline rAIConditionTree::ConstS32Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -630,9 +662,8 @@ __attribute__((weak)) void rAIConditionTree::ConstS64Node::copy(rAIConditionTree
     /* stub */
 }
 
-__attribute__((weak)) const MtDTI& rAIConditionTree::ConstS64Node::getWorkNodeClassDTI() const {
-    DDON_STUB("rAIConditionTree::ConstS64Node::getWorkNodeClassDTI")
-    __builtin_unreachable();
+const MtDTI& rAIConditionTree::ConstS64Node::getWorkNodeClassDTI() const {
+    return cAIConditionTree::ConstWorkNode::DTI;
 }
 
 MT_CTSTR rAIConditionTree::ConstS64Node::getUIClassName() const {
@@ -661,14 +692,13 @@ inline void rAIConditionTree::ConstF32Node::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rAIConditionTree::ConstF32Node::DTI)->memFree(p_addr);
 }
 
-rAIConditionTree::ConstF32Node::~ConstF32Node() {
-    DDON_STUB("rAIConditionTree::ConstF32Node::~ConstF32Node")
-    /* stub */
+__attribute__((noinline)) rAIConditionTree::ConstF32Node::~ConstF32Node() {
 }
 
-__attribute__((weak)) void rAIConditionTree::ConstF32Node::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::ConstF32Node::createProperty")
-    /* stub */
+void rAIConditionTree::ConstF32Node::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpChildList", reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChild), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChild), 160u, reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChildNum), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChildNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", &mValue, 0u, 0u);
 }
 
 rAIConditionTreeNode::VALUE_TYPE rAIConditionTree::ConstF32Node::getValueType() {
@@ -688,27 +718,28 @@ __attribute__((weak)) void rAIConditionTree::ConstF32Node::copy(rAIConditionTree
     /* stub */
 }
 
-__attribute__((weak)) const MtDTI& rAIConditionTree::ConstF32Node::getWorkNodeClassDTI() const {
-    DDON_STUB("rAIConditionTree::ConstF32Node::getWorkNodeClassDTI")
-    __builtin_unreachable();
+const MtDTI& rAIConditionTree::ConstF32Node::getWorkNodeClassDTI() const {
+    return cAIConditionTree::ConstWorkNode::DTI;
 }
 
 MT_CTSTR rAIConditionTree::ConstF32Node::getUIClassName() const {
     return "cAIConditionTreeExpressionFormBase::Parameter";
 }
 
-__attribute__((weak)) void rAIConditionTree::ConstF32Node::createEditProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::ConstF32Node::createEditProperty")
-    /* stub */
+void rAIConditionTree::ConstF32Node::createEditProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", &mValue, 0u, 0u);
 }
 
 inline rAIConditionTree::ConstF32Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rAIConditionTree::ConstF32Node::MyDTI rAIConditionTree::ConstF32Node::DTI("rAIConditionTree::ConstF32Node", &::rAIConditionTreeNode::DTI, 72ul, 0u, 0u);
 
+inline rAIConditionTree::ConstF32Node::ConstF32Node() {
+    mValue = 0.0f;
+}
+
 __attribute__((weak)) MtObject* rAIConditionTree::ConstF32Node::MyDTI::newInstance() const {
-    DDON_STUB("rAIConditionTree::ConstF32Node::MyDTI::newInstance")
-    return nullptr;
+    return new (MtMemoryAllocator::getAllocator(rAIConditionTree::ConstF32Node::DTI)->memAlloc(sizeof(rAIConditionTree::ConstF32Node), 16u, rAIConditionTree::ConstF32Node::DTI.getID())) rAIConditionTree::ConstF32Node;
 }
 
 const MtDTI& rAIConditionTree::ConstF64Node::getDTI() const {
@@ -724,9 +755,10 @@ rAIConditionTree::ConstF64Node::~ConstF64Node() {
     /* stub */
 }
 
-__attribute__((weak)) void rAIConditionTree::ConstF64Node::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::ConstF64Node::createProperty")
-    /* stub */
+void rAIConditionTree::ConstF64Node::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpChildList", reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChild), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChild), 160u, reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChildNum), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChildNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", &mValue, 0u, 0u);
 }
 
 rAIConditionTreeNode::VALUE_TYPE rAIConditionTree::ConstF64Node::getValueType() {
@@ -746,18 +778,16 @@ __attribute__((weak)) void rAIConditionTree::ConstF64Node::copy(rAIConditionTree
     /* stub */
 }
 
-__attribute__((weak)) const MtDTI& rAIConditionTree::ConstF64Node::getWorkNodeClassDTI() const {
-    DDON_STUB("rAIConditionTree::ConstF64Node::getWorkNodeClassDTI")
-    __builtin_unreachable();
+const MtDTI& rAIConditionTree::ConstF64Node::getWorkNodeClassDTI() const {
+    return cAIConditionTree::ConstWorkNode::DTI;
 }
 
 MT_CTSTR rAIConditionTree::ConstF64Node::getUIClassName() const {
     return "cAIConditionTreeExpressionFormBase::Parameter";
 }
 
-__attribute__((weak)) void rAIConditionTree::ConstF64Node::createEditProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::ConstF64Node::createEditProperty")
-    /* stub */
+void rAIConditionTree::ConstF64Node::createEditProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", &mValue, 0u, 0u);
 }
 
 inline rAIConditionTree::ConstF64Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -778,9 +808,10 @@ rAIConditionTree::ConstStringNode::~ConstStringNode() {
     /* stub */
 }
 
-__attribute__((weak)) void rAIConditionTree::ConstStringNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::ConstStringNode::createProperty")
-    /* stub */
+void rAIConditionTree::ConstStringNode::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpChildList", reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChild), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChild), 160u, reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChildNum), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChildNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", &mValue, 0u, 0u);
 }
 
 rAIConditionTreeNode::VALUE_TYPE rAIConditionTree::ConstStringNode::getValueType() {
@@ -797,18 +828,16 @@ __attribute__((weak)) void rAIConditionTree::ConstStringNode::copy(rAIConditionT
     /* stub */
 }
 
-__attribute__((weak)) const MtDTI& rAIConditionTree::ConstStringNode::getWorkNodeClassDTI() const {
-    DDON_STUB("rAIConditionTree::ConstStringNode::getWorkNodeClassDTI")
-    __builtin_unreachable();
+const MtDTI& rAIConditionTree::ConstStringNode::getWorkNodeClassDTI() const {
+    return cAIConditionTree::ConstWorkNode::DTI;
 }
 
 MT_CTSTR rAIConditionTree::ConstStringNode::getUIClassName() const {
     return "cAIConditionTreeExpressionFormBase::Parameter";
 }
 
-__attribute__((weak)) void rAIConditionTree::ConstStringNode::createEditProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::ConstStringNode::createEditProperty")
-    /* stub */
+void rAIConditionTree::ConstStringNode::createEditProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", &mValue, 0u, 0u);
 }
 
 inline rAIConditionTree::ConstStringNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -833,9 +862,11 @@ MtUI* rAIConditionTree::ConstEnumNode::createUI(MtProperty& prop) {
     return this->cAIResource::createUI(prop);
 }
 
-__attribute__((weak)) void rAIConditionTree::ConstEnumNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::ConstEnumNode::createProperty")
-    /* stub */
+void rAIConditionTree::ConstEnumNode::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpChildList", reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChild), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChild), 160u, reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChildNum), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChildNum));
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", static_cast<MtObject*>(&mValue), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mIsBitNo", &mIsBitNo, 0u, 0u);
 }
 
 rAIConditionTreeNode::VALUE_TYPE rAIConditionTree::ConstEnumNode::getValueType() {
@@ -863,18 +894,16 @@ __attribute__((weak)) void rAIConditionTree::ConstEnumNode::copy(rAIConditionTre
     /* stub */
 }
 
-__attribute__((weak)) const MtDTI& rAIConditionTree::ConstEnumNode::getWorkNodeClassDTI() const {
-    DDON_STUB("rAIConditionTree::ConstEnumNode::getWorkNodeClassDTI")
-    __builtin_unreachable();
+const MtDTI& rAIConditionTree::ConstEnumNode::getWorkNodeClassDTI() const {
+    return cAIConditionTree::ConstEnumWorkNode::DTI;
 }
 
 MT_CTSTR rAIConditionTree::ConstEnumNode::getUIClassName() const {
     return "cAIConditionTreeExpressionFormBase::Parameter";
 }
 
-__attribute__((weak)) void rAIConditionTree::ConstEnumNode::createEditProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTree::ConstEnumNode::createEditProperty")
-    /* stub */
+void rAIConditionTree::ConstEnumNode::createEditProperty(MtPropertyList& s) {
+    s << MtProperty(static_cast<MtObject*>(this), "mValue", static_cast<MtObject*>(&mValue), 0u, 0u);
 }
 
 bool rAIConditionTree::ConstEnumNode::openEdit() {
@@ -902,14 +931,23 @@ inline void rAIConditionTreeNode::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(rAIConditionTreeNode::DTI)->memFree(p_addr);
 }
 
-rAIConditionTreeNode::~rAIConditionTreeNode() {
-    DDON_STUB("rAIConditionTreeNode::~rAIConditionTreeNode")
-    /* stub */
+__attribute__((noinline)) rAIConditionTreeNode::~rAIConditionTreeNode() {
+    if (mpChildList != nullptr) {
+        for (u32 i = 0; i < mChildNum; ++i) {
+            if (mpChildList != nullptr && mpChildList[i] != nullptr) {
+                delete mpChildList[i];
+                mpChildList[i] = nullptr;
+            }
+        }
+        MtMemoryAllocator::getAllocator(rAIConditionTreeNode::DTI)->memFree(mpChildList);
+    }
+    mChildNum = 0;
+    mpChildList = nullptr;
 }
 
-__attribute__((weak)) void rAIConditionTreeNode::createProperty(MtPropertyList& s) {
-    DDON_STUB("rAIConditionTreeNode::createProperty")
-    /* stub */
+void rAIConditionTreeNode::createProperty(MtPropertyList& s) {
+    this->cAIResource::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "mpChildList", reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChild), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChild), 160u, reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::getChildNum), reinterpret_cast<MT_MFUNC>(&::rAIConditionTreeNode::setChildNum));
 }
 
 __attribute__((weak)) bool rAIConditionTreeNode::createChildList(u32 num) {
@@ -1025,9 +1063,8 @@ bool rAIConditionTreeNode::closeEdit() {
     return true;
 }
 
-__attribute__((weak)) const MtDTI& rAIConditionTreeNode::getWorkNodeClassDTI() const {
-    DDON_STUB("rAIConditionTreeNode::getWorkNodeClassDTI")
-    __builtin_unreachable();
+const MtDTI& rAIConditionTreeNode::getWorkNodeClassDTI() const {
+    return cAIConditionTreeNode::DTI;
 }
 
 MT_CTSTR rAIConditionTreeNode::getUIClassName() const {

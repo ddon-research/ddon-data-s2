@@ -27,6 +27,8 @@ DdonInnerTrial trial(const DdonInnerKey&, int (*)(void*), void*, char* wall, std
 
 int rerun(int (*rerun)(void* context), void* context) { return rerun(context); }
 
+bool replays() { return false; }
+
 bool in_child() { return false; }
 
 void wall(const char*) {}

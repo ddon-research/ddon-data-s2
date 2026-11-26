@@ -18,7 +18,6 @@
 #include "../../XFramework/rGUI.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
-#include "sIMEPS4.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -41,8 +40,11 @@ inline void uGUIInputText::operator delete(void* p_addr) {
 }
 
 uGUIInputText::~uGUIInputText() {
-    DDON_STUB("uGUIInputText::~uGUIInputText")
-    /* stub */
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 bool uGUIInputText::loadResource() {

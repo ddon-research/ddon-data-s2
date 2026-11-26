@@ -87,7 +87,7 @@ rAIPawnAutoMotionTbl::~rAIPawnAutoMotionTbl() {
 }
 
 bool rAIPawnAutoMotionTbl::isMatchMotType(u32 motGroup, u32 motType) {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) != 0) {
+    if (mArray.mLength != 0) {
         u32 i = 0;
         do {
             if (mArray.getBuffer()[static_cast<int>(i)] != nullptr) {
@@ -98,7 +98,7 @@ bool rAIPawnAutoMotionTbl::isMatchMotType(u32 motGroup, u32 motType) {
                 }
             }
             i += 1u;
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)));
+        } while (i < mArray.mLength);
     }
     return false;
 }

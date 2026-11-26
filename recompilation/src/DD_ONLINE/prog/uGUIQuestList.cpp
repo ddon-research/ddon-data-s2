@@ -17,6 +17,7 @@
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
 #include "cGUIUtility.h"
+#include "cLightQuestManager.h"
 #include "cNetGameServer.h"
 #include "cQuestSvRequest.h"
 #include "cQuestSvRequestManager.h"
@@ -73,13 +74,21 @@ inline void uGUIQuestList::operator delete(void* p_addr) {
 }
 
 __attribute__((noinline)) uGUIQuestList::~uGUIQuestList() {
-    DDON_STUB("uGUIQuestList::~uGUIQuestList")
-    /* stub */
+    static_cast<sGUIExt*>(sGUI::getInstance())->setMapMapType(0u, 0u);
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
+    }
+    if (mpGUIRes == nullptr) {
+        return;
+    }
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
-__attribute__((weak)) void uGUIQuestList::createProperty(MtPropertyList& s) {
-    DDON_STUB("uGUIQuestList::createProperty")
-    /* stub */
+void uGUIQuestList::createProperty(MtPropertyList& s) {
+    this->uGUI::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mFlowId", &mFlowId, 1u, 0u);
 }
 
 bool uGUIQuestList::loadResource() {
@@ -147,9 +156,21 @@ void uGUIQuestList::setupMenuItem(uGUIQuestList::stMenuIcon& menu, cGUIInstance*
     menu.mpInstAnim->setColorControl(0u);
 }
 
-__attribute__((weak)) void uGUIQuestList::setupProgressItem(uGUIQuestList::stProgress& progress, cGUIInstance* pInst, cGUIInstance* pInstHeader) {
-    DDON_STUB("uGUIQuestList::setupProgressItem")
-    /* stub */
+void uGUIQuestList::setupProgressItem(uGUIQuestList::stProgress& progress, cGUIInstance* pInst, cGUIInstance* pInstHeader) {
+    if (pInst != nullptr) {
+        progress.mpInstAnim = static_cast<cGUIInstAnimation*>(pInst);
+        setInstanceExecuteTree(pInst, true);
+        setInstanceVisible(static_cast<cGUIInstance*>(progress.mpInstAnim), false);
+        progress.mpObjMsg = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(progress.mpInstAnim), 7u));
+        progress.mpObjMsgAdvance = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(progress.mpInstAnim), 10u));
+        progress.mpObjNull = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(progress.mpInstAnim), 21u));
+        progress.mDefaultAdvanceColor.rgba = ((progress.mpObjMsgAdvance == nullptr) ? (&sGUIExt::FONT_COLOR_DEFAULT) : (&progress.mpObjMsgAdvance->mColor))->rgba;
+    }
+    if (pInstHeader == nullptr) {
+        return;
+    }
+    progress.mpObjMsgHeader = static_cast<cGUIObjMessage*>(getObjectFromId(pInstHeader, 2u));
+    progress.mpObjTexIcon = static_cast<cGUIObjTexture*>(getObjectFromId(pInstHeader, 3u));
 }
 
 __attribute__((weak)) void uGUIQuestList::setFlowId(u32 flow_id) {
@@ -167,9 +188,25 @@ __attribute__((weak)) void uGUIQuestList::moveEvent() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIQuestList::updateInit() {
-    DDON_STUB("uGUIQuestList::updateInit")
-    /* stub */
+void uGUIQuestList::updateInit() {
+    if (mIsOpenPartyList) {
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->isPartyLarge()) {
+            mRequestScheduleId.mScheduleId = nQuest::INVALID_SCHEDULE_ID.mScheduleId;
+            mIsOpenPartyList = false;
+            setFlowId(1u);
+        } else {
+            if (mIsOpenPartyList) {
+                mList.mToggle.setValue(static_cast<u8>(1));
+                setFlowId(3u);
+            } else {
+                setFlowId(1u);
+            }
+        }
+    } else {
+        setFlowId(1u);
+    }
+    mIsOpenPartyList = false;
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIQuestList::updateMove);
 }
 
 __attribute__((weak)) void uGUIQuestList::updateMove() {
@@ -474,9 +511,18 @@ __attribute__((weak)) void uGUIQuestList::updateDetail() {
     /* stub */
 }
 
-__attribute__((weak)) bool uGUIQuestList::questListSort(const nQuest::cGUIListData* pA, const nQuest::cGUIListData* pB, u32 param) {
-    DDON_STUB("uGUIQuestList::questListSort")
-    return {};
+bool uGUIQuestList::questListSort(const nQuest::cGUIListData* pA, const nQuest::cGUIListData* pB, u32 param) {
+    u32 t0 = pA->getBaseLevel();
+    if (t0 == pB->getBaseLevel()) {
+        nQuest::SCHEDULE_ID frame72(pA->getScheduleId());
+        u32 t2 = frame72.toU32();
+        nQuest::SCHEDULE_ID frame88(pB->getScheduleId());
+        u32 t3 = frame88.toU32();
+        return t3 < t2;
+    } else {
+        u32 t4 = pA->getBaseLevel();
+        return pB->getBaseLevel() < t4;
+    }
 }
 
 __attribute__((weak)) MtObject* uGUIQuestList::MyDTI::newInstance() const {

@@ -34,9 +34,115 @@ inline void cGUIExtNetMgr::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cGUIExtNetMgr::DTI)->memFree(p_addr);
 }
 
-__attribute__((weak)) void cGUIExtNetMgr::clearReceiveFlags() {
-    DDON_STUB("cGUIExtNetMgr::clearReceiveFlags")
-    /* stub */
+void cGUIExtNetMgr::clearReceiveFlags() {
+    mData.ReceiveAbilityParam = 0;
+    mData.ReceiveSetCustomSkill = 0;
+    mData.ReceivePawnDogmaOrb = false;
+    mData.ReceivePawnSetCustomSkill = 0;
+    mData.ReceiveDogmaOrb = false;
+    mData.ReceivePresetAbility = false;
+    mData.ReceiveAbilityCost = false;
+    mData.ReceiveCustomSkill = false;
+    mData.ReceiveNormalSkill = false;
+    mData.ReceiveAbility = false;
+    mData.ReceiveSetAbility = false;
+    mData.ReceiveGetCogId = false;
+    mData.ReceivePawnAbilityCost = false;
+    mData.ReceivePresetEquip = false;
+    mData.ReceivePawnCustomSkill = false;
+    mData.ReceivePawnNormalSkill = false;
+    mData.ReceivePawnAbility = false;
+    mData.ReceivePawnSetAbility = false;
+    u32 idx = 0;
+    u32 v1_0;
+    unsigned int i1_3;
+    u32 v2_0;
+    u32 v4_0;
+    unsigned int i4_7;
+    u32 v5_0;
+    u32 v7_0;
+    unsigned int i7_3;
+    u32 v8_0;
+    for (;;) {
+        mData.ReceiveCustomSkillParam[idx] = false;
+        if (mData.CustomSkillParam[idx].mLength != 0) {
+            v1_0 = mData.CustomSkillParam[idx].mLength;
+            i1_3 = 0;
+            for (;;) {
+                if (mData.CustomSkillParam[idx].mpArray[i1_3] == nullptr) {
+                    v2_0 = v1_0;
+                } else {
+                    delete mData.CustomSkillParam[idx].mpArray[i1_3];
+                    v2_0 = mData.CustomSkillParam[idx].mLength;
+                }
+                if ((i1_3 + 1u) < v2_0) {
+                    v1_0 = v2_0;
+                    i1_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (mData.CustomSkillParam[idx].mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mData.CustomSkillParam[idx].mpArray));
+        }
+        mData.CustomSkillParam[idx].mpArray = nullptr;
+        mData.CustomSkillParam[idx].mBufsiz = 0;
+        mData.CustomSkillParam[idx].mLength = 0;
+        if (mData.SetCustomSkill[idx].mLength != 0) {
+            v4_0 = mData.SetCustomSkill[idx].mLength;
+            i4_7 = 0;
+            for (;;) {
+                if (mData.SetCustomSkill[idx].mpArray[i4_7] == nullptr) {
+                    v5_0 = v4_0;
+                } else {
+                    delete mData.SetCustomSkill[idx].mpArray[i4_7];
+                    v5_0 = mData.SetCustomSkill[idx].mLength;
+                }
+                if ((i4_7 + 1u) < v5_0) {
+                    v4_0 = v5_0;
+                    i4_7 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (mData.SetCustomSkill[idx].mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mData.SetCustomSkill[idx].mpArray));
+        }
+        mData.SetCustomSkill[idx].mpArray = nullptr;
+        mData.SetCustomSkill[idx].mBufsiz = 0;
+        mData.SetCustomSkill[idx].mLength = 0;
+        if (mData.PawnSetCustomSkill[idx].mLength != 0) {
+            v7_0 = mData.PawnSetCustomSkill[idx].mLength;
+            i7_3 = 0;
+            for (;;) {
+                if (mData.PawnSetCustomSkill[idx].mpArray[i7_3] == nullptr) {
+                    v8_0 = v7_0;
+                } else {
+                    delete mData.PawnSetCustomSkill[idx].mpArray[i7_3];
+                    v8_0 = mData.PawnSetCustomSkill[idx].mLength;
+                }
+                if ((i7_3 + 1u) < v8_0) {
+                    v7_0 = v8_0;
+                    i7_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        if (mData.PawnSetCustomSkill[idx].mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mData.PawnSetCustomSkill[idx].mpArray));
+        }
+        mData.PawnSetCustomSkill[idx].mpArray = nullptr;
+        mData.PawnSetCustomSkill[idx].mBufsiz = 0;
+        mData.PawnSetCustomSkill[idx].mLength = 0;
+        if ((idx + 1u) != 10) {
+            idx = idx + 1u;
+        } else {
+            break;
+        }
+    }
 }
 
 const SkillParamVec& cGUIExtNetMgr::getCustomSkillParam(u32 JobId) {
@@ -55,33 +161,33 @@ const cGUIExtNetMgr::BasicAbilityInfo& cGUIExtNetMgr::getAbilityParam(u32 abilit
     }
 }
 
-__attribute__((weak)) const LearnedAcquirementParamVec& cGUIExtNetMgr::getLearnedCustomSkill() {
-    DDON_STUB("cGUIExtNetMgr::getLearnedCustomSkill")
-    __builtin_unreachable();
+const LearnedAcquirementParamVec& cGUIExtNetMgr::getLearnedCustomSkill() {
+    const nUserSession::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetLearnedSkillListPacket();
+    return *((pData == nullptr) ? (&dummy_learned_custom_skill) : (&pData->m_LearnedAcquirementParamList));
 }
 
-__attribute__((weak)) const NormalSkillParamVec& cGUIExtNetMgr::getLearnedNormalSkill() {
-    DDON_STUB("cGUIExtNetMgr::getLearnedNormalSkill")
-    __builtin_unreachable();
+const NormalSkillParamVec& cGUIExtNetMgr::getLearnedNormalSkill() {
+    const nUserSession::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetLearnedNormalSkillListPacket();
+    return *((pData == nullptr) ? (&dummy_learned_normal_skill) : (&pData->m_NormalSkillParamList));
 }
 
-__attribute__((weak)) const LearnedAcquirementParamVec& cGUIExtNetMgr::getLearnedAbility() {
-    DDON_STUB("cGUIExtNetMgr::getLearnedAbility")
-    __builtin_unreachable();
+const LearnedAcquirementParamVec& cGUIExtNetMgr::getLearnedAbility() {
+    const nUserSession::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetLearnedAbilityList();
+    return *((pData == nullptr) ? (&dummy_learned_ability) : (&pData->m_LearnedAcquirementParamList));
 }
 
 const SetAcquirementParamVec& cGUIExtNetMgr::getSetCustomSkill(u32 JobId) {
     return mData.SetCustomSkill[nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
 }
 
-__attribute__((weak)) const SetAcquirementParamVec& cGUIExtNetMgr::getSetAbility() {
-    DDON_STUB("cGUIExtNetMgr::getSetAbility")
-    __builtin_unreachable();
+const SetAcquirementParamVec& cGUIExtNetMgr::getSetAbility() {
+    const nUserSession::CPacket_S2C_GET_SET_ABILITY_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetSetAbilityList();
+    return *((pData == nullptr) ? (&dummy_set_ability) : (&pData->m_SetAcquirementParamList));
 }
 
-__attribute__((weak)) const PresetAbilityParamVec& cGUIExtNetMgr::getPresetAbility() {
-    DDON_STUB("cGUIExtNetMgr::getPresetAbility")
-    __builtin_unreachable();
+const PresetAbilityParamVec& cGUIExtNetMgr::getPresetAbility() {
+    const nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getPresetAbilityListPacket();
+    return *((pData == nullptr) ? (&dummy_preset_ability) : (&pData->m_PresetAbilityParamList));
 }
 
 u32 cGUIExtNetMgr::getAbilityCost() {
@@ -93,19 +199,19 @@ u32 cGUIExtNetMgr::getAbilityCost() {
     }
 }
 
-__attribute__((weak)) const JobChangeInfoVec& cGUIExtNetMgr::getJobChangeList() {
-    DDON_STUB("cGUIExtNetMgr::getJobChangeList")
-    __builtin_unreachable();
+const JobChangeInfoVec& cGUIExtNetMgr::getJobChangeList() {
+    const nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetJobChangeListPacket();
+    return *((pData == nullptr) ? (&dummy_jobchange_list) : (&pData->m_JobChangeInfo));
 }
 
-__attribute__((weak)) const JobChangeInfoVec& cGUIExtNetMgr::getJobReleaseList() {
-    DDON_STUB("cGUIExtNetMgr::getJobReleaseList")
-    __builtin_unreachable();
+const JobChangeInfoVec& cGUIExtNetMgr::getJobReleaseList() {
+    const nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetJobChangeListPacket();
+    return *((pData == nullptr) ? (&dummy_jobchange_list) : (&pData->m_JobReleaseInfo));
 }
 
-__attribute__((weak)) const PawnJobChangeInfoVec& cGUIExtNetMgr::getPawnJobChangeList() {
-    DDON_STUB("cGUIExtNetMgr::getPawnJobChangeList")
-    __builtin_unreachable();
+const PawnJobChangeInfoVec& cGUIExtNetMgr::getPawnJobChangeList() {
+    const nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetJobChangeListPacket();
+    return *((pData == nullptr) ? (&dummy_pawn_jobchange_list) : (&pData->m_PawnJobChangeInfoList));
 }
 
 u32 cGUIExtNetMgr::getDogmaOrbPageParcent(u32 Page) const {
@@ -130,28 +236,28 @@ u32 cGUIExtNetMgr::checkAfterRequest(u32 ReqID1, u32 ReqID2) {
     return (ReqID2 < ReqID1) ? ReqID1 : ReqID2;
 }
 
-__attribute__((weak)) const LearnedAcquirementParamVec& cGUIExtNetMgr::getPawnLearnedCustomSkill() {
-    DDON_STUB("cGUIExtNetMgr::getPawnLearnedCustomSkill")
-    __builtin_unreachable();
+const LearnedAcquirementParamVec& cGUIExtNetMgr::getPawnLearnedCustomSkill() {
+    const nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetPawnLearnedSkillListPacket();
+    return *((pData == nullptr) ? (&dummy_learned_custom_skill) : (&pData->m_LearnedAcquirementParamList));
 }
 
-__attribute__((weak)) const NormalSkillParamVec& cGUIExtNetMgr::getPawnLearnedNormalSkill() {
-    DDON_STUB("cGUIExtNetMgr::getPawnLearnedNormalSkill")
-    __builtin_unreachable();
+const NormalSkillParamVec& cGUIExtNetMgr::getPawnLearnedNormalSkill() {
+    const nUserSession::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetPawnLearnedNormalSkillListPacket();
+    return *((pData == nullptr) ? (&dummy_learned_normal_skill) : (&pData->m_NormalSkillParamList));
 }
 
-__attribute__((weak)) const LearnedAcquirementParamVec& cGUIExtNetMgr::getPawnLearnedAbility() {
-    DDON_STUB("cGUIExtNetMgr::getPawnLearnedAbility")
-    __builtin_unreachable();
+const LearnedAcquirementParamVec& cGUIExtNetMgr::getPawnLearnedAbility() {
+    const nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetPawnLearnedAbilityList();
+    return *((pData == nullptr) ? (&dummy_learned_ability) : (&pData->m_LearnedAcquirementParamList));
 }
 
 const SetAcquirementParamVec& cGUIExtNetMgr::getPawnSetCustomSkill(u32 JobId) {
     return mData.PawnSetCustomSkill[nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
 }
 
-__attribute__((weak)) const SetAcquirementParamVec& cGUIExtNetMgr::getPawnSetAbility() {
-    DDON_STUB("cGUIExtNetMgr::getPawnSetAbility")
-    __builtin_unreachable();
+const SetAcquirementParamVec& cGUIExtNetMgr::getPawnSetAbility() {
+    const nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetPawnSetAbilityList();
+    return *((pData == nullptr) ? (&dummy_set_ability) : (&pData->m_SetAcquirementParamList));
 }
 
 u32 cGUIExtNetMgr::getPawnAbilityCost() {

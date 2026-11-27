@@ -87,6 +87,7 @@ public:
     void setAutoBackCheck(bool on);
     const MtVector3& getTargetRealPos();
     void setRouteForceUpdateOn();
+    template <typename T> void setLinkEvaluationFunc(T func, MtObject* obj);
 protected:
     uDDOModel* mpModel;  // offset: 0x50
     cAINavPathTrace* mpNavTrace;  // offset: 0x58

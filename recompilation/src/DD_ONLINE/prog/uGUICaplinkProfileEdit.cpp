@@ -718,9 +718,6 @@ const MtDTI& uGUICaplinkProfileEdit::cPulldownContent::getDTI() const {
     return uGUICaplinkProfileEdit::cPulldownContent::DTI;
 }
 
-uGUICaplinkProfileEdit::cPulldownContent::~cPulldownContent() {
-}
-
 inline uGUICaplinkProfileEdit::cPulldownContent::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICaplinkProfileEdit::cPulldownContent::MyDTI uGUICaplinkProfileEdit::cPulldownContent::DTI("uGUICaplinkProfileEdit::cPulldownContent", &::uGUICaplinkProfileEdit::cContentItemBase::DTI, 1680ul, 0u, 0u);

@@ -138,6 +138,7 @@ namespace nPhysics {
             nPhysics::Math::Vector3 transformNormal(const nPhysics::Math::Matrix3& value) const;
             nPhysics::Math::Vector3 transformCoord(const nPhysics::Math::Matrix& value) const;
             bool isNull() const;
+            template <unsigned int INDEX> s32 getS32() const;
         private:
             union
             {

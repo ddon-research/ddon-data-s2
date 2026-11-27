@@ -79,10 +79,6 @@ void cBakeModel::initialize() {
     mQuantPosScale = 1.0f;
 }
 
-cBakeModel::~cBakeModel() {
-    this->cBakeModel::finalize();
-}
-
 __attribute__((weak)) void cBakeModel::finalize() {
     if (mpModel != nullptr) {
         mpModel->release();

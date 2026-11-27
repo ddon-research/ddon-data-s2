@@ -354,6 +354,9 @@ namespace nPhysics {
     private:
         static void* memAlloc(size_t size, u32 alignment);
         static void memFree(void* address);
+        template <unsigned int VARIANCE> void quantize_aabb_function(nPhysics::IoSPU::QUANTIZE_AABB& io);
+        template <unsigned int VARIANCE> void detect_phantom_pair_function(nPhysics::IoSPU::DETECT_PHANTOM_PAIR& io);
+        template <unsigned int VARIANCE> void detect_pair_function(nPhysics::IoSPU::DETECT_PAIR& io);
     protected:
         nPhysics::RigidBody* mRigidBodyInstance;  // offset: 0x18
         nPhysics::CURRENT_RIGID_BODY_DATA* mCurrentRigidBodyData;  // offset: 0x20

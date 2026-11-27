@@ -549,9 +549,58 @@ s32 uGUICharacterEdit::getSliderPosFromVal(nCharacterEdit::EDIT_TYPE type, u32 d
     }
 }
 
-__attribute__((weak)) void uGUICharacterEdit::initBottunCtrl_PrSub(cControl* & pCtrlSub) {
-    DDON_STUB("uGUICharacterEdit::initBottunCtrl_PrSub")
-    /* stub */
+void uGUICharacterEdit::initBottunCtrl_PrSub(cControl* & pCtrlSub) {
+    cControl* v0_3 = pCtrlSub;
+    if (v0_3 != nullptr) {
+        u32 v0_0 = mControls.mLength;
+        if (v0_0 != 0) {
+            MtObject* * v0_1 = mControls.mpArray;
+            unsigned int i0_2 = 0;
+            u32 v3_0;
+            unsigned int v3_9;
+            unsigned int v4_1;
+            u32 v4_2;
+            unsigned int v4_3;
+            for (;;) {
+                if (v0_3 == v0_1[i0_2]) {
+                    if (!mControls.mAutoDelete) {
+                        v3_0 = v0_0;
+                    } else {
+                        delete v0_3;
+                        v3_0 = mControls.mLength;
+                    }
+                    v3_9 = i0_2 + 1u;
+                    if (v3_9 < v3_0) {
+                        v4_1 = v3_9;
+                        v4_2 = v3_0;
+                        v4_3 = i0_2;
+                        for (;;) {
+                            mControls.mpArray[v4_3] = mControls.mpArray[v4_1];
+                            if (v4_2 != (v4_1 + 1u)) {
+                                v4_3 = v4_1;
+                                v4_1 = v4_1 + 1u;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    mControls.mLength = v3_0 - 1u;
+                    break;
+                } else {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        delete v0_3;
+    }
+    if ((pCtrlSub = this->uGUIBase::createControl<cControl>(static_cast<s32>(mIndexArray.size()), static_cast<const u32*>(nullptr), 1)) != nullptr) {
+        (pCtrlSub)->setFocus(true);
+        return;
+    }
 }
 
 bool uGUICharacterEdit::isOpenParts() const {

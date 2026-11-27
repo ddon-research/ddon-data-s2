@@ -243,6 +243,8 @@ private:
     virtual u32 _callbackDiscardItem(MtObject* pCaller, MtObject* pData);  // vtable slot 128
     virtual u32 _callbackDiscardItems(MtObject* pCaller, MtObject* pData);  // vtable slot 129
     virtual u32 _callbackSellItems(MtObject* pCaller, MtObject* pData);  // vtable slot 130
+public:
+    template <typename T> void clearZero(T& data);
 protected:
     nItem::E_STORAGE_TYPE mFromBag;  // offset: 0x958
     nItem::E_STORAGE_TYPE mToBag;  // offset: 0x95c

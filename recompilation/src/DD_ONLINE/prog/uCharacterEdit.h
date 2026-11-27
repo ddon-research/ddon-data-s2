@@ -273,6 +273,7 @@ protected:
     void setMode(MODE mode);
     void setProc(s32 pr);
     bool isProcInit();
+    template <typename cT, typename cS> static void applyCast(cT& pDest, cS pSrc);
 protected:
     MODE mMode;  // offset: 0x48
     MtVector3 mCamPosFar;  // offset: 0x50
@@ -789,6 +790,8 @@ protected:
     bool isCompleteRegistParamList() const;
     void completeRegistParamList();
     void initEditCommon();
+    template <typename T> s32 getDataNum(T* p);
+    template <typename T> void applyPaletteNum(nCharacterEdit::PALETTE idx, MT_CTSTR palette_name);
 public:
     nNet::PAWN_SHARE_RANGE mShareRange;  // offset: 0x270
     cParlorParam mPalorParam;  // offset: 0x278

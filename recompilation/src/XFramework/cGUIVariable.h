@@ -77,6 +77,8 @@ protected:
     void setUpdateFlag(bool flag);
 private:
     void setDynamic(bool v);
+protected:
+    template <typename T> T getRangeValue(const T& value, const T& minValue, const T& maxValue) const;
 private:
     u32 mId;  // offset: 0x8
     u32 mAttr : 16;  // offset: 0xc

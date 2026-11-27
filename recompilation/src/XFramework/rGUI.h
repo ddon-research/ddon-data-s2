@@ -506,6 +506,8 @@ private:
     nGUI::MESSAGE* getMessageAdrs() const;
     void createFontFilter();
 protected:
+    template <typename T> T* tryLoad(MT_CTSTR defaultPath, MT_CTSTR ext, bool platform);
+protected:
     HEADER* mpHeader;  // offset: 0x70
     u32 mAttr;  // offset: 0x78
     u32 mIsSetData : 1;  // offset: 0x7c

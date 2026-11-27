@@ -167,6 +167,7 @@ protected:
     void clearString();
     void setOwnerChatInfo(s32 id_type, MT_CTSTR id);
     void callPointer();
+    template <unsigned int NUM> void initSubMenu(stSubMenuInfo(&info_list)[NUM]);
 protected:
     u32 mRnoSubMenu;  // offset: 0x8c8
     u32 mCmdSelect;  // offset: 0x8cc

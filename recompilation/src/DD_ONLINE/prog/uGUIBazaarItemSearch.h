@@ -520,6 +520,9 @@ inline uGUIBazaarItemSearch::cItemData::cItemData() {
     this->mpInstItemData = nullptr;
 }
 
+inline uGUIBazaarItemSearch::cItemData::~cItemData() {
+}
+
 inline void* uGUIBazaarItemSearch::cCategoryBigData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

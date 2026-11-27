@@ -1083,6 +1083,9 @@ inline void* cMenuCreateEntryBoardItem::operator new(size_t sz, void* p_addr) {
 inline cMenuCreateEntryBoardItem::cMenuCreateEntryBoardItem() {
 }
 
+inline cMenuCreateEntryBoardItem::~cMenuCreateEntryBoardItem() {
+}
+
 inline void* cMenuEditCommentEntryBoardItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -1116,6 +1119,9 @@ inline void* cMenuEntryBoardItemList::operator new(size_t sz, void* p_addr) {
 inline cMenuEntryBoardItemList::cMenuEntryBoardItemList() {
 }
 
+inline cMenuEntryBoardItemList::~cMenuEntryBoardItemList() {
+}
+
 inline void* cMenuEntryBoardMember::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -1128,6 +1134,9 @@ inline void* cMenuEntryBoardRecruit::operator new(size_t sz, void* p_addr) {
 }
 
 inline cMenuEntryBoardRecruit::cMenuEntryBoardRecruit() {
+}
+
+inline cMenuEntryBoardRecruit::~cMenuEntryBoardRecruit() {
 }
 
 inline void* cMenuExtendEntryBoardItem::operator new(size_t sz, void* p_addr) {

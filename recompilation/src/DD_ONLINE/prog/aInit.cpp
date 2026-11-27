@@ -28,9 +28,6 @@ const MtDTI& aInit::getDTI() const {
     return aInit::DTI;
 }
 
-aInit::~aInit() {
-}
-
 __attribute__((weak)) bool aInit::load() {
     DDON_STUB("aInit::load")
     return {};

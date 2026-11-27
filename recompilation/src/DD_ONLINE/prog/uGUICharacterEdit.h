@@ -511,6 +511,9 @@ public:
 public:
     class cListHelper
     {
+    public:
+        template <typename T> static void setupOpenList(T& arrayObj, s32 size, s32 frame);
+        template <typename T> static void setupCloseList(T& arrayObj, s32 size, s32 frame);
     };
 public:
     static MtDTI* getMyDTIPtr();
@@ -745,6 +748,10 @@ private:
     void clearInitWarnType();
     bool isOffline();
     bool isRewardRelease(nCharacter::E_EDIT_PALETTE_PARAM_TYPE rewardType, u32 rewardID) const;
+    template <typename T> uGUICharaEditPartsWrap::cPartsRadioButton* createPartsRadioButton(uGUICharaEditPartsWrap::cPartsBase* pParentParts, s32 editType, T& msgList, s32 addOffset);
+    template <typename T> T* createParts(uGUICharaEditPartsWrap::cPartsBase* pParentParts, s32 editType, T* & p);
+public:
+    template <typename T> void _deleteDuplicateInstance(T* pMtArray);
 public:
     nDDOUtility::cArray<bool, 10> mIsHelperDefaultActive;  // offset: 0x958
     MtTypedArray<cListStage> mListStageArray;  // offset: 0x968

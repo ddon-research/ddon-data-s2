@@ -298,6 +298,9 @@ inline void* uGUIBazaarDealSheet::cDealData::operator new(size_t sz, void* p_add
     return p_addr;
 }
 
+inline uGUIBazaarDealSheet::cDealData::~cDealData() {
+}
+
 inline void* uGUIBazaarDealSheet::cListData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

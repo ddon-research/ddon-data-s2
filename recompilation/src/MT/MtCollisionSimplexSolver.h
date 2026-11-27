@@ -52,6 +52,7 @@ namespace MtCollisionUtil {
         u32 closestTriangleForTest(bool FlgRegisterDelete, MtVector3& NextSeparateAxis, const MtVector3& p0, const MtVector3& p1, const MtVector3& p2);
         bool closestTetrahedron(MtVector3& NextSeparateAxis, const MtVector3& p0, const MtVector3& p1, const MtVector3& p2, const MtVector3& p3);
         bool isOutsideOriginTriangularPyramid(const MtVector3& p0, const MtVector3& p1, const MtVector3& p2, const MtVector3& p3);
+        template <bool FLG_REGIST_DELETE> u32 closestTriangle(MtVector3& NextSeparateAxis, const MtVector3& p0, const MtVector3& p1, const MtVector3& p2);
     protected:
         u32 mSimplexType;  // offset: 0x0
         MtVector3 mSimplexVec[6];  // offset: 0x10

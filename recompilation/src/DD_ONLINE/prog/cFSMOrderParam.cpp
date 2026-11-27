@@ -804,9 +804,6 @@ const MtVector3 cFSMOrderParamSetEnemy::cSetEmInfo::getAngleZXY() const {
     return mMat.eulerAngleZXY();
 }
 
-cFSMOrderParamSetEnemy::cSetEmInfo::~cSetEmInfo() {
-}
-
 void cFSMOrderParamSetEnemy::cSetEmInfo::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mEnemyId", &mEnemyId, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mMat", &mMat, 0u, 0u);

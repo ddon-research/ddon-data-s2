@@ -324,6 +324,9 @@ inline void* uGUICaplinkTrophyReceive::cListItem::operator new(size_t sz, void* 
 inline uGUICaplinkTrophyReceive::cListItem::cListItem() : mpObjMsgStatus(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgTrophyName(static_cast<cGUIObjMessage*>(nullptr)), mpInstAnimStatus(static_cast<cGUIInstAnimation*>(nullptr)), mpInstAnimStatusIcon(static_cast<cGUIInstAnimation*>(nullptr)) {
 }
 
+inline uGUICaplinkTrophyReceive::cListItem::~cListItem() {
+}
+
 inline void* uGUICaplinkTrophyReceive::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

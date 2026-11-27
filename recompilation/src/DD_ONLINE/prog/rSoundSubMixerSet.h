@@ -90,6 +90,8 @@ public:
         void setResource6(rSoundSubMixer* res);
         rSoundSubMixer* getResource7() const;
         void setResource7(rSoundSubMixer* res);
+    private:
+        template <typename T> void setResourceTmplate(T* res, T* & dst);
     public:
         u32 mID;  // offset: 0x8
         rSoundSubMixer* mpResource0;  // offset: 0x10

@@ -251,6 +251,8 @@ namespace nNetMsg {
         void setMsgGroup(u8 group);
         void setMsgId(u8 id);
     protected:
+        template <typename T> void push(T& val);
+    protected:
         MtMemoryStream* mpStream;  // offset: 0x10
         nNetMsg::cCoder mCod;  // offset: 0x18
         nNetMsg::cDecoder mDec;  // offset: 0x28

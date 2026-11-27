@@ -162,6 +162,7 @@ private:
     void updateEnd();
     void updateExit();
     void drawInfo(uPlayer* player);
+    template <typename T> void setCurrentFrame(T* pObj, f32 frame, bool fix);
 private:
     DATA mData;  // offset: 0x8c8
     rGUI* mpGUIRes;  // offset: 0x958

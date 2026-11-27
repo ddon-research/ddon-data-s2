@@ -82,6 +82,9 @@ inline void* aInit::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline aInit::~aInit() {
+}
+
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"

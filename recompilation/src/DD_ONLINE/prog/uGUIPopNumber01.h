@@ -138,6 +138,8 @@ private:
     u32 evCtrlNumStartMenu(cControl::Message* msg);
     u32 evCtrlMove(cControl::Message* msg);
     u32 evCtrlNumDecide(cControl::Message* msg);
+public:
+    template <typename T> void setFunc(uGUIBase* pUnit, T pFunc, MtObject* pParam);
 private:
     rGUI* mpGUIRes;  // offset: 0x988
     END mFlowEndType;  // offset: 0x990

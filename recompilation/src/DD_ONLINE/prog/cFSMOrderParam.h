@@ -1540,6 +1540,9 @@ inline void* cFSMOrderParamSetEnemy::cSetEmInfo::operator new(size_t sz, void* p
     return p_addr;
 }
 
+inline cFSMOrderParamSetEnemy::cSetEmInfo::~cSetEmInfo() {
+}
+
 inline void* cFSMOrderParamSetFade::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

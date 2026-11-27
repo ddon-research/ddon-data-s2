@@ -934,6 +934,10 @@ private:
     Cell* hash_get(u32 _crc);
     void hash_del(u32 _crc);
     void hash_clear();
+public:
+    template <typename Key> bool add(const Key* _key, MtObject* pobj);
+    template <typename Key> MtObject* pop(const Key* _key);
+    template <typename Key> void erase(const Key* _key);
 private:
     Cell* mpHashTable[256];  // offset: 0x8
     u32 mList[4096];  // offset: 0x808

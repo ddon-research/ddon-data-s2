@@ -67,6 +67,7 @@ public:
     cQuestSvNoticeManager();
     virtual ~cQuestSvNoticeManager();
     virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    template <typename _NoticeClass, typename _PacketClass> static cQuestSvNotice* pushNoticePacket(_PacketClass* pPacket);
 protected:
     MtTypedArray<cQuestSvNoticeCallback> mCallbackList;  // offset: 0x8
     MtTypedArray<cQuestSvNotice> mNoticeList;  // offset: 0x28

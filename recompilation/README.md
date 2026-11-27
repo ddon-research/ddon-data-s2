@@ -27,13 +27,13 @@ resource classes' load and save graph, with the types they reach.
 
 How much of the binary this reconstruction holds, counted when the export was made.
 
-- **Methods:** 54,558 of the 72,425 methods the sources define are rendered, with a body (75%); the binary has 81,692 functions with code. Rendered is the sum of the first five counts:
-  - proven: 26,907, equal to the binary by recompiling them with the game's own compiler release;
-  - approximate: 6,376, rendered from the binary but not proven equal to it;
+- **Methods:** 54,573 of the 72,426 methods the sources define are rendered, with a body (75%); the binary has 81,692 functions with code. Rendered is the sum of the first five counts:
+  - proven: 26,918, equal to the binary by recompiling them with the game's own compiler release;
+  - approximate: 6,379, rendered from the binary but not proven equal to it;
   - recorded: 1,098, written by hand and checked against the binary or by loading their resources' files;
   - empty: 2,415, where the binary's is a single return;
-  - no code in the binary: 17,762 (inline bodies checked where they are inlined, and saves derived from a load);
-  - without a body: 17,867, of them 17,312 stubs and 555 not written.
+  - no code in the binary: 17,763 (inline bodies checked where they are inlined, and saves derived from a load);
+  - without a body: 17,853, of them 17,298 stubs and 555 not written.
 - **Classes:** of the 10,697 classes with methods in the sources, 5,851 are complete (every method has a body, 54%), 2,902 partial and 1,944 left; the binary defines 19,734 classes.
 - **Resources:** 92 of the 93 resource classes tested load every file of theirs (98%), of the 291 the sources hold; 60,626 of their 60,638 files load whole (99%). 20,551 files save back byte for byte through their class's own save, and 41,847 through a save derived from its load.
 

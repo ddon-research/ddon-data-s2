@@ -1225,9 +1225,6 @@ const MtDTI& uGUIArisenCard::cScrollDispSkillList::getDTI() const {
     return uGUIArisenCard::cScrollDispSkillList::DTI;
 }
 
-uGUIArisenCard::cScrollDispSkillList::~cScrollDispSkillList() {
-}
-
 inline uGUIArisenCard::cScrollDispSkillList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIArisenCard::cScrollDispSkillList::MyDTI uGUIArisenCard::cScrollDispSkillList::DTI("uGUIArisenCard::cScrollDispSkillList", &::uGUIBase::cScrollListItemBase::DTI, 288ul, 0u, 0u);
@@ -1238,9 +1235,6 @@ MtObject* uGUIArisenCard::cScrollDispSkillList::MyDTI::newInstance() const {
 
 const MtDTI& uGUIArisenCard::cScrollDispAbilityList::getDTI() const {
     return uGUIArisenCard::cScrollDispAbilityList::DTI;
-}
-
-uGUIArisenCard::cScrollDispAbilityList::~cScrollDispAbilityList() {
 }
 
 inline uGUIArisenCard::cScrollDispAbilityList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

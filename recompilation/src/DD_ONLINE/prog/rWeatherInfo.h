@@ -547,6 +547,9 @@ inline void* cWeatherInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cWeatherInfo::~cWeatherInfo() {
+}
+
 inline void* cWeatherParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

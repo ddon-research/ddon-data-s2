@@ -36,10 +36,13 @@ using JOBHANDLE = u64;
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
+using __uintptr_t = __uint64_t;
+using u32 = unsigned int;
+using uintptr = __uintptr_t;
+namespace nCollision { using TRAVERSE_CALLBACK = u32(MtObject::*)(uintptr, u32, uintptr); }
 using s32 = int;
 using size_t = _Sizet;
 using u16 = unsigned short;
-using u32 = unsigned int;
 using u8 = unsigned char;
 
 class cBVHCollision : public MtObject
@@ -97,6 +100,10 @@ public:
         void memFree(void*);
         size_t memSize(void*);
         static MtAllocator* getAllocator();
+        template <typename CAST_TYPE> CAST_TYPE* getRegistNode(EREGIST_NODE_ID NodeID);
+        template <unsigned int GEOM_TYPE> void initializeBinaryOptimize(cBVHCollision::NodeBinaryOptimize& node, const MtGeometry& TraverseConvex);
+        template <unsigned int GEOM_TYPE> void initializeQuad(cBVHCollision::NodeQuad* _pNodeOpt, const MtGeometry& TraverseConvex);
+        template <unsigned int GEOM_TYPE> void initializeBinary(cBVHCollision::NodeBinaryBasic* _pNode, const MtGeometry& TraverseConvex);
     public:
         MtCollisionUtil::MtVectorU4 aFlgHitAll;  // offset: 0x0
         union
@@ -328,6 +335,8 @@ public:
         void memFree(void*);
         size_t memSize(void*);
         static MtAllocator* getAllocator();
+        template <unsigned int GEOM_TYPE_ID> bool isIntersectTemplate(u32 cid, const MtGeometry& geom) const;
+        template <unsigned int GEOM_TYPE_ID> bool isIntersectTemplate(const MtGeometry& geom) const;
     public:
         MtAABB ThisAABB;  // offset: 0x0
         cBVHCollision::NodeBinaryCommon NodeCommon;  // offset: 0x20
@@ -353,6 +362,7 @@ public:
         void* memAlloc(u32);
         void memFree(void*);
         size_t memSize(void*);
+        template <unsigned int GEOM_TYPE_ID> MtCollisionUtil::MtVectorU4 isIntersectAll(const MtGeometry& geom) const;
     public:
         MtAABB4 NodeAABB;  // offset: 0x10
     };
@@ -396,6 +406,11 @@ protected:
 public:
     void* memAlloc(u32 size);
     void memFree(void* p_addr);
+protected:
+    template <unsigned int GEOM_TYPE, bool FLG_HITEND> u32 traverseBinaryOptimizeCore(const MtGeometry& TraverseConvex, MtObject* pOwner, nCollision::TRAVERSE_CALLBACK pCallback, uintptr CallbackParam, const u32 ThreadIndex);
+    template <unsigned int GEOM_TYPE, bool FLG_HITEND> u32 traverseQuadCore(const MtGeometry& TraverseConvex, MtObject* pOwner, nCollision::TRAVERSE_CALLBACK pCallback, uintptr CallbackParam, const u32 ThreadIndex);
+    template <unsigned int GEOM_TYPE, bool FLG_HITEND> u32 traverseQuadCore_Recurcive(NodeQuad* pNowNode, const MtGeometry& TraverseConvex, MtObject* pOwner, nCollision::TRAVERSE_CALLBACK pCallback, uintptr CallbackParam);
+    template <unsigned int GEOM_TYPE, bool FLG_HITEND> u32 traverseBinaryCore(const MtGeometry& TraverseConvex, MtObject* pOwner, nCollision::TRAVERSE_CALLBACK pCallback, uintptr CallbackParam, const u32 ThreadIndex);
 protected:
     Header mHeader;  // offset: 0x10
     NodeBinaryBasic* mpRootNodeBinary;  // offset: 0x50

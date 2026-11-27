@@ -334,6 +334,7 @@ public:
     u32 getShieldStaggerTotal() const;
     bool isSafeJobCheck(nHuman::JOB_ENUM job) const;
     bool isSafeJobCheck(u8 checkJob) const;
+    template <typename T> T getCorrectParam(const T& target, s32 correctType, s32 correctParam);
 private:
     uHuman* mpOwner;  // offset: 0x20
     u8 mCurrentJob_pri;  // offset: 0x28

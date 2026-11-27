@@ -23,13 +23,20 @@ class BitWriter;
 class CDataC2SChangeCharacterEquipInfo;
 class CDataCommonU32;
 class CDataCommonU8;
+class CDataCraftColorant;
+class CDataCraftElement;
+class CDataCraftMaterial;
+class CDataCraftSupportPawnID;
 class CDataEquipElementParam;
 class CDataEquipItemInfo;
+class CDataGatheringItemGetRequest;
+class CDataGetRewardBoxItem;
 class CDataItemList;
 class CDataItemUIDList;
 class CDataItemUpdateResult;
 class CDataJewelryEquipLimit;
 class CDataMoveItemUIDFromTo;
+class CDataStorageItemUIDList;
 class MtAllocator;
 class MtCriticalSection;
 class MtDTI;
@@ -46,6 +53,7 @@ class rGUIMessage;
 class rItemList;
 class rShopGoods;
 class sCraftManager;
+class uGUIAreaMaster;
 class uGUIPick01;
 
 // Declarations
@@ -57,12 +65,19 @@ using CItemList = CDataItemList;
 using CItemUpdateResult = CDataItemUpdateResult;
 using CommonU32Vec = MtTypedArray<CDataCommonU32>;
 using CommonU8Vec = MtTypedArray<CDataCommonU8>;
+using CraftColorantVec = MtTypedArray<CDataCraftColorant>;
+using CraftElementVec = MtTypedArray<CDataCraftElement>;
+using CraftMaterialVec = MtTypedArray<CDataCraftMaterial>;
+using CraftSupportPawnIDVec = MtTypedArray<CDataCraftSupportPawnID>;
 using EquipItemInfoVec = MtTypedArray<CDataEquipItemInfo>;
+using GatheringItemGetRequestVec = MtTypedArray<CDataGatheringItemGetRequest>;
+using GetRewardBoxItemVec = MtTypedArray<CDataGetRewardBoxItem>;
 using ItemUIDListVec = MtTypedArray<CDataItemUIDList>;
 using ItemUpdateResultVec = MtTypedArray<CDataItemUpdateResult>;
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using MoveItemUIDFromToVec = MtTypedArray<CDataMoveItemUIDFromTo>;
+using StorageItemUIDListVec = MtTypedArray<CDataStorageItemUIDList>;
 using TICKET = cArcLoaderBase*;
 using _Sizet = long unsigned int;
 using __int64_t = long int;
@@ -243,6 +258,9 @@ public:
         bool canBuy(u32 goodsIndex);
         bool canBuy(cShopGoods* pGoods);
         nCharacter::E_WALLET_POINT_TYPE getPointType();
+        template <typename T> sItemManager::stRequest* sellItemReq(StorageItemUIDListVec& list, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* buyGoodsReq(u32 targetNo, u32 goodsIndex, u32 dealNum, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* getGoodsListReq(u32 ShopNo, void(T::*ptr)(void*), void* arg);
     private:
         bool mIsBusy;  // offset: 0x8
         s32 mResult;  // offset: 0xc
@@ -991,6 +1009,7 @@ public:
     public:
         class cAreaMasterSuppyData : public MtObject
         {
+            friend class uGUIAreaMaster;
         public:
             class MyDTI;
         public:
@@ -1169,6 +1188,32 @@ public:
         void setItemListNum(u32 num);
         void addItemListNum(u32);
         void sortSpaceSlot(u32 cateIdx);
+    public:
+        template <typename T> sItemManager::stRequest* getItemListReq(void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* getRewardBoxItemsReq(u32 listNo, GetRewardBoxItemVec& list, u32 type, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* changeJobReq(sItemManager::cChangeJob* jobParam, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* useItemReq(MT_CTSTR UID, u32 Num, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* deleteItemReq(StorageItemUIDListVec& list, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* slotControlItemReq(u32 targetNo, MoveItemUIDFromToVec& slotData, u32 type, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* moveItemsReq(u32 targetNo, MoveItemUIDFromToVec& list, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* addDropItemsReq(cGatheringItemData& statusData, GatheringItemGetRequestVec& list, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* addPawnExpeditionRewardDropItemsReq(cGatheringItemData& statusData, GatheringItemGetRequestVec& list, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* addGatheringItemsReq(cGatheringItemData& statusData, GatheringItemGetRequestVec& list, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* setEquipItemReq(sItemManager::cEquipList* pList, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* updateHideEquipReq(sItemManager::cHideEquip* pData, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* urocoStaminaLevelUpReq(u32 targetLv, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* urocoLostTimerLevelUpReq(u32 targetLv, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* urocoHPLevelUpReq(u32 targetLv, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* getCraftItemReq(u32 pawnId, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* startCraftReq(cCraftStartData& craftData, CraftMaterialVec& materialList, CraftSupportPawnIDVec& supportList, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* startCraftUpGradeReq(cCraftUpGradeData& craftData, CraftMaterialVec& materialList, CraftSupportPawnIDVec& supportList, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* startCraftAttachElementReq(cCraftUpGradeData& craftData, CraftElementVec& elementList, CraftSupportPawnIDVec& supportList, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* startCraftDetachElementReq(cCraftUpGradeData& craftData, CraftElementVec& elementList, CraftSupportPawnIDVec& supportList, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* startCraftColorChangeReq(cCraftColorChange& craftData, CraftColorantVec& materialList, CraftSupportPawnIDVec& supportList, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* checkItemReq(MT_CTSTR UID, u32 Num, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* getAreaMasterSupplyReq(cAreaMasterSuppyData& supplyData, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* deliverItemsReq(u32 scheduleId, ItemUIDListVec& list, u16 processNo, void(T::*ptr)(void*), void* arg);
+        template <typename T> sItemManager::stRequest* useItemsReq(u32 ticket, void(T::*ptr)(void*), void* arg);
     private:
         bool mIsEffective;  // offset: 0x8
         MtTypedArray<cItemParam> mItem[7];  // offset: 0x10
@@ -1372,6 +1417,10 @@ private:
     u32 getUpGradeItemToPawnId();
     u8 getUpGradeItemToCharType();
     void setSortBinary(nCharacterData::ITEM_BAG_TYPE bagType, cItemBag::ITEM_CATEGORY category, u8 sortType, MtTypedArray<cItemParam>& list, bool isOverWrite);
+    template <typename T> stRequest* request(EXEC_METHOD pMethod, RECV_FUNC2 pRecv, RECV_FUNC3 pResult, void(T::*ptr)(void*), void* arg, void* arg2, MtObject* p0, MtObject* p1, MtObject* p2, MtObject* p3);
+public:
+    template <typename T> stRequest* changeJobReq(cChangeJob* jobParam, void(T::*ptr)(void*), void* arg);
+    template <typename T> stRequest* usePointForPlayerStatusReq(u32 type, u32 targetLv, void(T::*ptr)(void*), void* arg);
 public:
     TICKET mShopArcTicket;  // offset: 0x18
     cShop* mActiveShop;  // offset: 0x20
@@ -1413,6 +1462,10 @@ inline void* sItemManager::operator new(size_t sz, void* p_addr) {
 
 inline sItemManager* sItemManager::getInstance() {
     return ::sItemManager::mpInstance;
+}
+
+inline sItemManager::cShop* sItemManager::getActiveShop() {
+    return this->mActiveShop;
 }
 
 inline void sItemManager::setGold(u64 Gold) {

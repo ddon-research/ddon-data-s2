@@ -77,6 +77,13 @@ public:
 protected:
     void testDrawSolverVertex(MtCollisionUtil::MtSimplexSolver& solver, u32 LoopCount, const MtVector3& s);
 public:
+    template <typename MINKOWDKI_DIFF> bool calcTOICoreTemplate(MINKOWDKI_DIFF& convex, const MtVector3& RBase, MtContact* pContact0, MtContact* pContact1);
+    template <typename MINKOWDKI_DIFF> bool calcTOICoreTemplate(MINKOWDKI_DIFF& convex, const MtVector3& RBase, MtCollisionUtil::MtSimplexSolver& solver, MtContact* pContact0, MtContact* pContact1);
+    template <typename CONVEX0, typename CONVEX1> bool intersect(const CONVEX0& Geom0, const CONVEX1& Geom1);
+    template <typename CONVEX0, typename CONVEX1> bool closest(const CONVEX0& Geom0, const CONVEX1& Geom1, MtContact* pContact0, MtContact* pContact1);
+    template <typename CONVEX0, typename CONVEX1> bool find(const CONVEX0& Geom0, const CONVEX1& Geom1, const MtVector3& v0, MtContact* pContact0, MtContact* pContact1, bool FlgEnableNoHitClosest);
+    template <typename CONVEX0, typename CONVEX1> bool calcTOITemplateV1(const CONVEX0& Geom0, const CONVEX1& Geom1, const MtVector3& v0, MtContact* pContact0, MtContact* pContact1);
+public:
     MtCollisionUtil::MtSimplexSolver mSolver;  // offset: 0x10
     u32 mIteration;  // offset: 0x190
     f32 mEpsilon;  // offset: 0x194

@@ -318,6 +318,9 @@ inline void* uStagePartsMdl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uStagePartsMdl::~uStagePartsMdl() {
+}
+
 inline s32 uStagePartsMdl::getAreaIdx() const {
     return this->mAreaIdx;
 }

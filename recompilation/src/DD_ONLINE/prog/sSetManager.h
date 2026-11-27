@@ -641,6 +641,10 @@ private:
 public:
     bool isLayoutBurst() const;
 private:
+    template <typename Mgr> void moveParallelAreaHitSet(Mgr& mgr);
+    template <typename Mgr> cGroupParam* getGroupParam(Mgr& mgr, u32 group);
+    template <typename Mgr> void execParallelAreaHitSet(uintptr info);
+private:
     cUnitData mUnitDataEnemy[20];  // offset: 0x18
     bool mIsSetup;  // offset: 0x338
     bool mIsSetRequestEmLot;  // offset: 0x339

@@ -147,6 +147,8 @@ protected:
     void clearStateFactory();
 private:
     void popState(MtArray* pArray, StateBase* state, f32 easeTime);
+public:
+    template <typename YState> void registerStateFactory(StateKey key);
 private:
     MtMap mStateFactoryMap;  // offset: 0x8
     MtArray mNextStateList;  // offset: 0x4820

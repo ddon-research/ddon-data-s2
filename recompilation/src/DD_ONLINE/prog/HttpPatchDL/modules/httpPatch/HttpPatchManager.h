@@ -152,6 +152,8 @@ namespace via {
                 void makeStringU64toDecimal(u64 num, char* buff, s32 bufferSize);
                 void _waring_remove();
                 const via::module::http_patch::HttpPatchManager& operator=(const via::module::http_patch::HttpPatchManager&);
+                template <typename T> T* createResult();
+                template <typename T> void deleteResult(T* ptr);
             public:
                 MtCriticalSection mMutex_Period_HttpClientInit;  // offset: 0x28
                 s32 mHttpClientInit_Count;  // offset: 0x30

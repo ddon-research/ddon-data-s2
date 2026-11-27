@@ -727,14 +727,12 @@ __attribute__((weak)) u32 sCollision::enumContactPolygon(MtAABB& aabb, sCollisio
     return {};
 }
 
-__attribute__((weak)) u32 sCollision::enumContactPolygonNormal(MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo) {
-    DDON_STUB("sCollision::enumContactPolygonNormal")
-    return {};
+u32 sCollision::enumContactPolygonNormal(MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo) {
+    return this->sCollision::enumContactPolygonCore<false>(pTraverseGeometry, MyTraverseInfo);
 }
 
-__attribute__((weak)) u32 sCollision::enumContactPolygonHitEnd(MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo) {
-    DDON_STUB("sCollision::enumContactPolygonHitEnd")
-    return {};
+u32 sCollision::enumContactPolygonHitEnd(MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo) {
+    return this->sCollision::enumContactPolygonCore<true>(pTraverseGeometry, MyTraverseInfo);
 }
 
 __attribute__((weak)) u32 sCollision::enumContactPolygonCached(MtGeometry* pTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo) {
@@ -747,19 +745,53 @@ __attribute__((weak)) u32 sCollision::enumContactPolygonOneCached(MtGeometry* pT
     return {};
 }
 
-__attribute__((weak)) u32 sCollision::enumSbcContactCallbackNormal(MtGeometry* pTraverseGeometry, MtObject* pSbc, void* pUserPtr) {
-    DDON_STUB("sCollision::enumSbcContactCallbackNormal")
-    return {};
+u32 sCollision::enumSbcContactCallbackNormal(MtGeometry* pTraverseGeometry, MtObject* pSbc, void* pUserPtr) {
+    return this->sCollision::enumSbcContactCallback<false>(pTraverseGeometry, pSbc, pUserPtr);
 }
 
-__attribute__((weak)) u32 sCollision::enumSbcContactCallbackOneHitEnd(MtGeometry* pTraverseGeometry, MtObject* pSbc, void* pUserPtr) {
-    DDON_STUB("sCollision::enumSbcContactCallbackOneHitEnd")
-    return {};
+u32 sCollision::enumSbcContactCallbackOneHitEnd(MtGeometry* pTraverseGeometry, MtObject* pSbc, void* pUserPtr) {
+    return this->sCollision::enumSbcContactCallback<true>(pTraverseGeometry, pSbc, pUserPtr);
 }
 
-__attribute__((weak)) u32 sCollision::enumPartsContact2MovingCoreNormal(MtGeomConvex& geom, sCollision::Sbc& sbc, u32 PartsID, sCollision::TraverseInfo& MyTraverseInfo, u32 ThreadIndex) {
-    DDON_STUB("sCollision::enumPartsContact2MovingCoreNormal")
-    return {};
+u32 sCollision::enumPartsContact2MovingCoreNormal(MtGeomConvex& geom, sCollision::Sbc& sbc, u32 PartsID, sCollision::TraverseInfo& MyTraverseInfo, u32 ThreadIndex) {
+    if (static_cast<int>(geom.mType) <= 20) {
+        switch (geom.mType - 2u) {
+            case 0:
+            {
+                return this->sCollision::enumPartsContact2MovingCore<false, 2>(geom, sbc, PartsID, MyTraverseInfo, ThreadIndex);
+            }
+            case 1:
+            {
+                return this->sCollision::enumPartsContact2MovingCore<false, 3>(geom, sbc, PartsID, MyTraverseInfo, ThreadIndex);
+            }
+            case 3:
+            {
+                return this->sCollision::enumPartsContact2MovingCore<false, 5>(geom, sbc, PartsID, MyTraverseInfo, ThreadIndex);
+            }
+            case 4:
+            {
+                return this->sCollision::enumPartsContact2MovingCore<false, 6>(geom, sbc, PartsID, MyTraverseInfo, ThreadIndex);
+            }
+            case 5:
+            {
+                return this->sCollision::enumPartsContact2MovingCore<false, 7>(geom, sbc, PartsID, MyTraverseInfo, ThreadIndex);
+            }
+            case 6:
+            {
+                return this->sCollision::enumPartsContact2MovingCore<false, 8>(geom, sbc, PartsID, MyTraverseInfo, ThreadIndex);
+            }
+            default:
+            {
+                return 0;
+            }
+        }
+    } else {
+        if (geom.mType == 21) {
+            return this->sCollision::enumPartsContact2MovingCore<false, 21>(geom, sbc, PartsID, MyTraverseInfo, ThreadIndex);
+        } else {
+            return 0;
+        }
+    }
 }
 
 __attribute__((weak)) u32 sCollision::enumContactScrObject(MtGeometry& DefaultTraverseGeometry, sCollision::TraverseInfo& MyTraverseInfo, u32 ThreadIndex) {
@@ -957,34 +989,28 @@ __attribute__((weak)) void sCollision::findIntersection_BeforeFunc(sCollision::T
     /* stub */
 }
 
-__attribute__((weak)) u32 sCollision::enumLineFuncForPairPolygonBackCheck(sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumLineFuncForPairPolygonBackCheck")
-    return {};
+u32 sCollision::enumLineFuncForPairPolygonBackCheck(sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return this->sCollision::enumLineFuncForPairPolygon<true>(info, CollisionInfo);
 }
 
-__attribute__((weak)) u32 sCollision::enumLineFuncForPairPolygonAllHit(sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumLineFuncForPairPolygonAllHit")
-    return {};
+u32 sCollision::enumLineFuncForPairPolygonAllHit(sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return this->sCollision::enumLineFuncForPairPolygon<false>(info, CollisionInfo);
 }
 
-__attribute__((weak)) u32 sCollision::enumLineFuncBackCheck(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumLineFuncBackCheck")
-    return {};
+u32 sCollision::enumLineFuncBackCheck(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return this->sCollision::enumLineFunc<true, false>(info, CollisionInfo);
 }
 
-__attribute__((weak)) u32 sCollision::enumLineFuncAllHit(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumLineFuncAllHit")
-    return {};
+u32 sCollision::enumLineFuncAllHit(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return this->sCollision::enumLineFunc<false, false>(info, CollisionInfo);
 }
 
-__attribute__((weak)) u32 sCollision::enumLineFuncBackCheckWithEdge(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumLineFuncBackCheckWithEdge")
-    return {};
+u32 sCollision::enumLineFuncBackCheckWithEdge(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return this->sCollision::enumLineFunc<true, true>(info, CollisionInfo);
 }
 
-__attribute__((weak)) u32 sCollision::enumLineFuncAllHitWithEdge(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    DDON_STUB("sCollision::enumLineFuncAllHitWithEdge")
-    return {};
+u32 sCollision::enumLineFuncAllHitWithEdge(const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
+    return this->sCollision::enumLineFunc<false, true>(info, CollisionInfo);
 }
 
 __attribute__((weak)) u32 sCollision::enumLineMoveFunc(MtGeometry* pTraverseGeometry, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {

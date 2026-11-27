@@ -551,9 +551,6 @@ inline uGUIBazaarDealSheet::cDealData::cDealData() : mpInstDealNull(static_cast<
     memset(static_cast<void*>(&mpInstAnimDealList), 0, 156ul);
 }
 
-uGUIBazaarDealSheet::cDealData::~cDealData() {
-}
-
 inline uGUIBazaarDealSheet::cDealData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBazaarDealSheet::cDealData::MyDTI uGUIBazaarDealSheet::cDealData::DTI("uGUIBazaarDealSheet::cDealData", &::MtObject::DTI, 560ul, 0u, 0u);

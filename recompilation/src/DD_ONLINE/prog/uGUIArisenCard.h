@@ -643,11 +643,17 @@ inline void* uGUIArisenCard::cScrollDispSkillList::operator new(size_t sz, void*
 inline uGUIArisenCard::cScrollDispSkillList::cScrollDispSkillList() : mpPlate(static_cast<cGUIInstAnimation*>(nullptr)) {
 }
 
+inline uGUIArisenCard::cScrollDispSkillList::~cScrollDispSkillList() {
+}
+
 inline void* uGUIArisenCard::cScrollDispAbilityList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline uGUIArisenCard::cScrollDispAbilityList::cScrollDispAbilityList() : mpPlate(static_cast<cGUIInstAnimation*>(nullptr)) {
+}
+
+inline uGUIArisenCard::cScrollDispAbilityList::~cScrollDispAbilityList() {
 }
 
 inline void* uGUIArisenCard::cScrollSkillList::operator new(size_t sz, void* p_addr) {

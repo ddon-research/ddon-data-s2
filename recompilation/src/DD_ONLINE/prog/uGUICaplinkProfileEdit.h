@@ -475,6 +475,9 @@ inline uGUICaplinkProfileEdit::cPulldownContent::cPulldownContent() {
     this->mIndex = 0;
 }
 
+inline uGUICaplinkProfileEdit::cPulldownContent::~cPulldownContent() {
+}
+
 inline void* uGUICaplinkProfileEdit::cBtnContent::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

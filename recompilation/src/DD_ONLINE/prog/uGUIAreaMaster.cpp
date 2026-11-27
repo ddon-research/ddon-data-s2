@@ -661,8 +661,26 @@ __attribute__((weak)) void uGUIAreaMaster::initSuppliesReceive() {
 }
 
 __attribute__((weak)) void uGUIAreaMaster::decideSuppliesReceive() {
-    DDON_STUB("uGUIAreaMaster::decideSuppliesReceive")
-    /* stub */
+    if (mpGUIGiveAndTake != nullptr) {
+        u32 t0 = mpGUIGiveAndTake->mItemInfoList.mLength;
+        sItemManager::cItemBag* pBag = sItemManager::getInstance()->setLinkItem(static_cast<nCharacterData::ITEM_BAG_TYPE>(mpGUIGiveAndTake->mBagRefF == 1));
+        if (pBag != nullptr) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->mSupplyData.mAreaID = mAreaId;
+            static_cast<sGUIExt*>(sGUI::getInstance())->mSupplyData.mIsCancel = t0 == 0;
+            pBag->sItemManager::cItemBag::getAreaMasterSupplyReq<sGUIExt>(static_cast<sGUIExt*>(sGUI::getInstance())->mSupplyData, &::sGUIExt::callbackSuppliesReceive, static_cast<void*>(sGUI::getInstance()));
+            static_cast<sGUIExt*>(sGUI::getInstance())->mItemCBF = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sGUI::getInstance()) + 8792)) | 512u;
+        }
+        if (t0 != 0) {
+            static_cast<sSoundExt*>(sSound::getInstance())->requestSe(mpSeRes, 1u, reinterpret_cast<uintptr>(this), 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+        } else {
+            static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 230u);
+        }
+        mpGUIGiveAndTake->resetItemInfo();
+        mpGUIGiveAndTake->mSleep = true;
+        setFlowId(19u);
+    } else {
+        setFlowId(19u);
+    }
 }
 
 void uGUIAreaMaster::clearListHeader() {
@@ -1431,9 +1449,6 @@ const MtDTI& uGUIAreaMaster::cSuppliesItem::getDTI() const {
     return uGUIAreaMaster::cSuppliesItem::DTI;
 }
 
-uGUIAreaMaster::cSuppliesItem::~cSuppliesItem() {
-}
-
 inline uGUIAreaMaster::cSuppliesItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIAreaMaster::cSuppliesItem::MyDTI uGUIAreaMaster::cSuppliesItem::DTI("uGUIAreaMaster::cSuppliesItem", &::uGUIBase::cScrollListItemBase::DTI, 480ul, 0u, 0u);
@@ -1472,9 +1487,6 @@ __attribute__((weak)) MtObject* uGUIAreaMaster::cDetailInfo::MyDTI::newInstance(
 
 const MtDTI& uGUIAreaMaster::cListInfo::getDTI() const {
     return uGUIAreaMaster::cListInfo::DTI;
-}
-
-uGUIAreaMaster::cListInfo::~cListInfo() {
 }
 
 inline uGUIAreaMaster::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

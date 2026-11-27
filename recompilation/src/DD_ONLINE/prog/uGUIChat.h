@@ -708,6 +708,7 @@ private:
     void evFilterDecide();
 protected:
     virtual bool onKeyEvent(const nInputTextKeyboardHook::Keycode& keycode);  // vtable slot 90
+    template <typename T> void setNextFunc(void(T::*ptr)());
 private:
     rGUI* mpGUIRes;  // offset: 0x8c8
     cGUIInstance* mpInstNull_all;  // offset: 0x8d0
@@ -893,6 +894,9 @@ inline void* uGUIChat::cPopWndwAddCh::operator new(size_t sz, void* p_addr) {
 inline uGUIChat::cPopWndwAddCh::cPopWndwAddCh() {
     this->mpObjMsg = nullptr;
     this->mpInstNull = nullptr;
+}
+
+inline uGUIChat::cPopWndwAddCh::~cPopWndwAddCh() {
 }
 
 inline void* uGUIChat::cCheckList::operator new(size_t sz, void* p_addr) {

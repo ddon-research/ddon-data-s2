@@ -1591,9 +1591,6 @@ const MtDTI& uGUIBazaarItemSearch::cItemData::getDTI() const {
     return uGUIBazaarItemSearch::cItemData::DTI;
 }
 
-uGUIBazaarItemSearch::cItemData::~cItemData() {
-}
-
 inline uGUIBazaarItemSearch::cItemData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBazaarItemSearch::cItemData::MyDTI uGUIBazaarItemSearch::cItemData::DTI("uGUIBazaarItemSearch::cItemData", &::MtObject::DTI, 448ul, 0u, 0u);

@@ -66,6 +66,8 @@ public:
     virtual void setFatal(const MtNetError* err);  // vtable slot 9
     virtual void setFatal(s32 no, s32 cause, s32 native);  // vtable slot 10
     s32 setPointer(s32 idx, void* ptr);
+    template <typename T> T getArgument(s32 idx) const;
+    template <typename U> U* getPointer(s32 idx);
 private:
     s32 mId;  // offset: 0x24
     u32 mSequence;  // offset: 0x28

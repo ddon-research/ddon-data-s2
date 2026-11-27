@@ -7,6 +7,7 @@
 #include "../../MT/MtDTI.h"
 #include "cControl.h"
 #include "cUIObject.h"
+#include "nGUIExt.h"
 #include "uGUIBase.h"
 
 // Forward declarations
@@ -193,6 +194,11 @@ private:
     void afterChildExecute(stControl& Control);
     void registOrder(u32 MgrId);
     void releaseOrder(u32 MgrId);
+public:
+    template <typename T> void setEvent(u32 MgrId, u32(T::*ptr)(cControl::Message*), nGUIExt::MSG_REASON mr, MtObject* pData, u32 SeId);
+    template <typename T> void setEvent(u32 MgrId, u32(T::*ptr)(cControl::Message*), nGUIExt::MSG_REASON mr, MtObject* pData);
+    template <typename T> void setEvent(u32 MgrId, u32(T::*ptr)(cControl::Message*), nGUIExt::MSG_REASON mr, u32 SeId);
+    template <typename T> void setMsgEventFunc(u32 MgrId, bool(T::*ptr)(cControl::Message*));
 private:
     uGUIBase* mpParent;  // offset: 0x8
     bool mIsPrioritizeEarlyEvent;  // offset: 0x10

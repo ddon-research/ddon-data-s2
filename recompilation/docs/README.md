@@ -4,16 +4,16 @@
 
 1551 headers and 1487 units reconstructed from DWARF and the ELF: every class's declaration, layout and virtual table as DWARF records them, and each method's body where it could be rendered.
 
-- **Reconstructed:** 54558 methods have a body, of the 72425 the bundle defines (54663 with code in the ELF, 17615 inline with none of their own, 147 derived saves):
-  - 26907 bodies rendered from the ELF and proven equal to it by recompiling with the game's own compiler release (SDK 2.500), and 6376 rendered bodies marked approximate;
+- **Reconstructed:** 54573 methods have a body, of the 72426 the bundle defines (54663 with code in the ELF, 17616 inline with none of their own, 147 derived saves):
+  - 26918 bodies rendered from the ELF and proven equal to it by recompiling with the game's own compiler release (SDK 2.500), and 6379 rendered bodies marked approximate;
   - 890 recorded bodies, written apart from the rendered ones and proven equal to the ELF by the same recompile;
   - 158 recorded bodies the recompile does not prove, kept because every file of their resource loads (and saves back byte for byte where it saves) with them;
   - 47 instances of recorded generics and 3 recorded inline bodies with the ELF's copy;
   - 2415 empty bodies, where the ELF's is a single `ret`;
-  - 17615 inline bodies with no code of their own, checked where they are inlined;
+  - 17616 inline bodies with no code of their own, checked where they are inlined;
   - 147 saves derived by inverting a root's load, for roots whose game code has none (the bundle's `derived/`, which this project does not ship).
 - **Not written:** 555 instances of generics no unit writes.
-- **Stubs:** 17312 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
+- **Stubs:** 17298 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
 
 The reconstruction's notes (its inferences, rulings, addresses, refusals and oracle verdicts) are stripped; only comments a reader of the source needs stay (file sections, member offsets, vtable slots, namespace ends, stub markers).
 

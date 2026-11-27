@@ -7,6 +7,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "cControl.h"
 #include "cUIObject.h"
+#include "nGUIExt.h"
 #include "uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

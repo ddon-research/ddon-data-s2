@@ -156,6 +156,7 @@ public:
     u32 getLodDistDataNum();
     void setLodDistDataNum(u32);
     virtual void setLODDist(uBaseModel* bm) {}  // vtable slot 21
+    template <typename T> T* getUnit(u32 index);
 protected:
     MtTypedArray<uBaseModel> mRefArray;  // offset: 0x18
     MtTypedArray<uBaseModel> mAddArray;  // offset: 0x38

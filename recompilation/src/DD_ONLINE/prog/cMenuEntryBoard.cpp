@@ -86,9 +86,6 @@ const MtDTI& cMenuCreateEntryBoardItem::getDTI() const {
     return cMenuCreateEntryBoardItem::DTI;
 }
 
-cMenuCreateEntryBoardItem::~cMenuCreateEntryBoardItem() {
-}
-
 void cMenuCreateEntryBoardItem::exitMenu() {
     nNet::resetEntryBoardInfo(mBoardInfo);
     this->cMenuBase::exitMenu();
@@ -264,9 +261,6 @@ const MtDTI& cMenuEntryBoardItemList::getDTI() const {
     return cMenuEntryBoardItemList::DTI;
 }
 
-cMenuEntryBoardItemList::~cMenuEntryBoardItemList() {
-}
-
 void cMenuEntryBoardItemList::initEntryBoardItemList(u64 boardId, bool solo) {
     initMenu();
     mMenuRno[0] = 0;
@@ -392,9 +386,6 @@ MtObject* cMenuEntryBoardMember::MyDTI::newInstance() const {
 
 const MtDTI& cMenuEntryBoardRecruit::getDTI() const {
     return cMenuEntryBoardRecruit::DTI;
-}
-
-cMenuEntryBoardRecruit::~cMenuEntryBoardRecruit() {
 }
 
 __attribute__((weak)) void cMenuEntryBoardRecruit::initEntryBoardRecruit(MtTypedArray<CDataEntryRecruitData>& RecruitList, u32 num, s32 start) {

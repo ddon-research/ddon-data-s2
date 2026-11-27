@@ -1018,9 +1018,6 @@ const MtDTI& uGUIChat::cPopWndwAddCh::getDTI() const {
     return uGUIChat::cPopWndwAddCh::DTI;
 }
 
-uGUIChat::cPopWndwAddCh::~cPopWndwAddCh() {
-}
-
 inline uGUIChat::cPopWndwAddCh::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIChat::cPopWndwAddCh::MyDTI uGUIChat::cPopWndwAddCh::DTI("uGUIChat::cPopWndwAddCh", &::MtObject::DTI, 1344ul, 0u, 0u);

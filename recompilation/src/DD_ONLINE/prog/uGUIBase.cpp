@@ -2659,9 +2659,6 @@ uGUIBase::cScrollList::cScrollList() {
     /* stub */
 }
 
-uGUIBase::cScrollList::~cScrollList() {
-}
-
 void uGUIBase::cScrollList::clearInfo() {
     if (mInfoArray.mAutoDelete) {
         if (mInfoArray.mLength != 0) {
@@ -3817,9 +3814,6 @@ uGUIBase::cReferenceUITab::cReferenceUITab() {
     /* stub */
 }
 
-uGUIBase::cReferenceUITab::~cReferenceUITab() {
-}
-
 __attribute__((weak)) void uGUIBase::cReferenceUITab::setup(uGUIBase* pParentGUI, cGUIInstance* pInst, u32 uNum, f32 fDist, uGUIBase::cReferenceUITab::ALIGN align) {
     DDON_STUB("uGUIBase::cReferenceUITab::setup")
     /* stub */
@@ -4093,9 +4087,6 @@ const MtDTI& uGUIBase::cReferenceUIBtnGuide::getDTI() const {
 uGUIBase::cReferenceUIBtnGuide::cReferenceUIBtnGuide() {
     DDON_STUB("uGUIBase::cReferenceUIBtnGuide::cReferenceUIBtnGuide")
     /* stub */
-}
-
-uGUIBase::cReferenceUIBtnGuide::~cReferenceUIBtnGuide() {
 }
 
 __attribute__((weak)) void uGUIBase::cReferenceUIBtnGuide::setup(uGUIBase* pParentGUI, cGUIInstance* pInst, f32 fWidth) {
@@ -6305,9 +6296,6 @@ uGUIBase::cReferenceUICheckList::cReferenceUICheckList() {
     /* stub */
 }
 
-uGUIBase::cReferenceUICheckList::~cReferenceUICheckList() {
-}
-
 __attribute__((weak)) void uGUIBase::cReferenceUICheckList::setup(uGUIBase* pBase, s32 num, s32 col, u32 topNullID, u32 nullCheckboxID, u32 checkboxID, u32 msg_checkID, u32 msg_titleID, u32 windowID, u32 window_frameID, u32 msg_btnID, u32 msg_cancel_btnID) {
     DDON_STUB("uGUIBase::cReferenceUICheckList::setup")
     /* stub */
@@ -7153,9 +7141,6 @@ uGUIBase::cReferenceUIPageDot::cReferenceUIPageDot() {
     mDispPageNum = 0;
     mEnable = true;
     mFocus = true;
-}
-
-uGUIBase::cReferenceUIPageDot::~cReferenceUIPageDot() {
 }
 
 __attribute__((weak)) void uGUIBase::cReferenceUIPageDot::setup(uGUIBase* pParentGUI, cGUIInstance* pInstPoint, cGUIInstance* pInstPager, u32 uPageMax, u32 uDispPageNum) {

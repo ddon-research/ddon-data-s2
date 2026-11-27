@@ -83,6 +83,9 @@ public:
     BitReader& operator>>(f64&);
     BitReader& operator>>(MtTime&);
     BitReader& operator>>(MtString&);
+    template <typename T> T deltaDecode();
+private:
+    template <typename T> T readNumber(u32 nBits);
 private:
     MtStream& mStream;  // offset: 0x0
     u32 mBitPos;  // offset: 0x8
@@ -146,6 +149,10 @@ private:
     u32 bitcount(u64 v);
     void alphaEncode(u32 v);
     void gammaEncode(u32 v);
+    template <typename T> u32 bitcount(T v);
+    template <typename T> void writeNumber(T val, u32 nBits);
+public:
+    template <typename T> void deltaEncode(T v);
 private:
     MtStream& mStream;  // offset: 0x0
     u32 mBitPos;  // offset: 0x8

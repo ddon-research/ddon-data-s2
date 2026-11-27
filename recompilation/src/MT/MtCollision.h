@@ -596,6 +596,7 @@ public:
     static bool getAABBEdge(MtLineSegment& edge, const MtAABB& aabb, u32 VoronoiID);
     static u32 getAABBEdgeList(MtLineSegment* edge, const MtAABB& aabb, u32 VoronoiID);
     static bool getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiID);
+    template <typename GEOM_TYPE0, typename GEOM_TYPE1> static bool contactTemplate(const GEOM_TYPE0& geom0, const GEOM_TYPE1& geom1, const MtVector3& v0, const MtVector3& v1, f32* t, MtContact* pContact0, MtContact* pContact1);
 public:
     static const u32 AXIS_X = 0;
     static const u32 AXIS_Y = 1;

@@ -557,6 +557,7 @@ namespace cThinkMgrName {
         s32 checkFunctionExe(const kTHINKDATA& tbl, u32 functype, u32 funcno, u32 value);
         static u32 getNexOffsetAdd(u32 tbltype);
         cThinkMgrName::cThinkTblList* getThinkTblList();
+        template <typename T> kTHINKDATA* castTblData(T* pointer);
     public:
         bool mbCheck[32];  // offset: 0x8
         f32 mfUserParam[5];  // offset: 0x28

@@ -26,9 +26,6 @@ const MtDTI& cGroundAttrInfo::getDTI() const {
     return cGroundAttrInfo::DTI;
 }
 
-cGroundAttrInfo::~cGroundAttrInfo() {
-}
-
 __attribute__((weak)) void cGroundAttrInfo::createProperty(MtPropertyList& s) {
 }
 

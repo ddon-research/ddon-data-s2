@@ -77,6 +77,8 @@ public:
 private:
     f32 calcLineLength(const MtVector3& BasePos, f32 AngleY, const MtVector3& TargetPos);
 public:
+    template <typename T> cpLockOn::cLockOnTarget* getLockOnTargetCustomFunc(uDDOModel* pModel, const MtVector3& basePos, f32 dist, f32 range, T* pOwner, bool(T::*func)(cpLockOn::cLockOnTarget*), s32 category, uDDOModel* pTargetOnly);
+public:
     MtTypedArray<cpLockOn::cLockOnTarget> mTargetArray;  // offset: 0x18
     cDelegate_0<void> callbackRegisterLockOnTarget;  // offset: 0x38
     static MyDTI DTI;

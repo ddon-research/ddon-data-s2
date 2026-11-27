@@ -22,6 +22,7 @@ class CDataCharacterName;
 class CDataJobChangeInfo;
 class CDataNormalSkillParam;
 class MtColor;
+struct MtFloat2;
 class MtString;
 class MtTime;
 class MtVector2;
@@ -42,6 +43,7 @@ class cGUIObject;
 class cHitInfoAfter;
 class cItemParam;
 class cUnit;
+namespace nCharacterData { struct stCharacterName; }
 namespace nGUIExt { struct HeadUiInfo; }
 namespace nGUIExt { struct JobParam; }
 namespace nGUIExt { class OcdIconInterface; }
@@ -64,6 +66,7 @@ class cGUIUtility;
 
 // Type aliases from DWARF
 using CCharacterName = CDataCharacterName;
+using CHAR_NAME = nCharacterData::stCharacterName;
 using CJobChangeInfo = CDataJobChangeInfo;
 using JobChangeInfoVec = MtTypedArray<CDataJobChangeInfo>;
 using MT_CHAR = char;
@@ -363,6 +366,22 @@ private:
     static bool copyParameterCheck(cGUIInstance* pDest, cGUIInstance* pOrg, s32 flag);
     static bool copyParameterLoop(cGUIInstance* pDest, cGUIInstance* pOrg, s32 flag);
     static f32 adjustResolutionScaleNum(f32 OrgScale);
+public:
+    template <typename T> static void setSizeX(T p, f32 val);
+    template <int T> static MT_CTSTR getNumberString(MtStringEx<T>& tmp, s32 n);
+    template <typename T> static MtFloat2 getSize(const T* p);
+    template <typename T> static void setSize(T p, MtFloat2 val);
+    template <typename T> static void setSizeY(T p, f32 val);
+    template <typename T> static MtColor getColor(T* p);
+    template <typename T> static void setClanRankIcon(T* pIcon, u32 Rank);
+    template <int size> static MT_CTSTR makeCharName(MtStringEx<size>& rStr, MT_CTSTR firstName, MT_CTSTR lastName);
+    template <int size> static MT_CTSTR makeCharName(MtStringEx<size>& rStr, const CHAR_NAME& name);
+    template <int size> static MT_CTSTR makeCharName(MtStringEx<size>& rStr, const CCharacterName& name);
+    template <typename T> static void copyParameter(T& obj, u32 flag);
+    template <int _size> static MT_CTSTR getServerLobbyStr(MtStringEx<_size>& tmp, u32 server, u32 lobby, u8 onlineStatus);
+    template <int SIZE> static void makeTotalClanPoint(MtStringEx<SIZE>& out, u32 totalClanPoint, u32 nextClanPoint);
+    template <typename T> static u32 getPriority(T* p);
+    template <typename T> static void setPriority(T* p, u32 prio);
 public:
     static const MT_CTSTR DefaultEllipsis;
     static const u32 FLAG_COPY_PRM_SEQ = 1;

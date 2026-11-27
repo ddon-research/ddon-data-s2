@@ -197,6 +197,8 @@ private:
     void evDecide();
     void evCancel();
     void evMove();
+public:
+    template <typename T> void addItem(uGUIBase* pUnit, MT_CTSTR title, T pFunc, MtObject* pParam, uGUIPopBase::MODE mode, s32 errMsg);
 private:
     rGUI* mpGUIRes;  // offset: 0x988
     MtObject* mpSMenuObj;  // offset: 0x990

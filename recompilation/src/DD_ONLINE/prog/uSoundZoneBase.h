@@ -93,6 +93,7 @@ public:
     bool isOutToInZoneHit() const;
     bool isInToOutZoneHit() const;
     const nZone::ShapeInfoBase* getOriginalShape();
+    template <typename CONTENTS_TYPE> s32 checkGetContentsIndex(nZone::cLayoutElement& TargetLayout) const;
 protected:
     u32 mZoneHit;  // offset: 0x10
 public:

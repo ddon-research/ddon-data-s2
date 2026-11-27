@@ -217,6 +217,8 @@ public:
         bool isOpenParts() const;
         rSoundRequest* getSoundRes();
     public:
+        template <typename T> T* addParts(T* p);
+    public:
         uGUIBase::cDupliInstNull mInst;  // offset: 0x18
         cControl* mpBottunCtrl_PrSub;  // offset: 0x40
     protected:

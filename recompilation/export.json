@@ -1,14 +1,14 @@
 {
   "bundle": {
-    "golden": "golden/031-t639",
-    "name": "output_2026-11-27_031_merge639",
-    "rendered": 54558
+    "golden": "golden/031-t642",
+    "name": "output_2026-11-27_031_merge642",
+    "rendered": 54573
   },
   "census": {
-    "approximate": 6376,
+    "approximate": 6379,
     "includes_to_regroup": 0,
-    "proven": 26907,
-    "stubs": 17312
+    "proven": 26918,
+    "stubs": 17298
   },
   "files": [
     {
@@ -18256,16 +18256,16 @@
       "with_methods": 10697
     },
     "methods": {
-      "approximate": 6376,
-      "defined": 72425,
+      "approximate": 6379,
+      "defined": 72426,
       "empty": 2415,
-      "no_code": 17762,
+      "no_code": 17763,
       "no_code_by_source": {
         "derived_save": 147,
-        "inline": 17615
+        "inline": 17616
       },
       "not_written": 555,
-      "proven": 26907,
+      "proven": 26918,
       "recorded": 1098,
       "recorded_by_source": {
         "by_load": 158,
@@ -18273,7 +18273,7 @@
         "inline": 3,
         "proven": 890
       },
-      "rendered": 54558,
+      "rendered": 54573,
       "rendered_sums": [
         "proven",
         "approximate",
@@ -18281,8 +18281,8 @@
         "empty",
         "no_code"
       ],
-      "stubs": 17312,
-      "without_body": 17867
+      "stubs": 17298,
+      "without_body": 17853
     },
     "resources": {
       "derived_round_trips": 41847,
@@ -18295,19 +18295,75 @@
     }
   },
   "rendered": {
-    "approximate": 6376,
-    "definitions": 72425,
+    "approximate": 6379,
+    "definitions": 72426,
     "derived_save": 147,
     "empty": 2415,
-    "inline_no_code": 17615,
+    "inline_no_code": 17616,
     "methods_with_code": 54663,
-    "proven": 26907,
+    "proven": 26918,
     "recorded": 890,
     "recorded_by_load": 158,
     "recorded_generic": 47,
     "recorded_inline": 3,
-    "rendered": 54558,
-    "stubs": 17312,
+    "rendered": 54573,
+    "stubs": 17298,
     "undefined": 555
+  },
+  "verification": {
+    "canary": {
+      "file": "base/scr/stage_list.slt",
+      "root": "rStageList"
+    },
+    "date": "2026-11-27",
+    "elf_sha256": "4236f598acc8f15893181455ed195e39dfa4dbfda4eeda8b56fcbd82312c63c0",
+    "generator_commit": "521b21ffd5840c819f1fb49d87a89c9a834f9d96",
+    "golden": "golden/031-t642",
+    "routes": [
+      {
+        "compiler": "Clang 23.1.5 (C:/msys64/clang64/bin/clang++.exe)",
+        "exit": 0,
+        "route": "openorbis",
+        "tests": null
+      },
+      {
+        "canary": "passed",
+        "compiler": "Clang 23.1.5 (C:/msys64/clang64/bin/clang++.exe)",
+        "exit": 0,
+        "route": "windows",
+        "tests": {
+          "failed": 0,
+          "passed": 4,
+          "skipped": 0
+        }
+      },
+      {
+        "compiler": "clang version 18.1.6 (PS4 clang version 12.00.0.543 480f10f9 selfhost)",
+        "exit": 0,
+        "route": "ps4",
+        "tests": null
+      },
+      {
+        "compiler": "Clang 22.1.8 (/usr/bin/clang++-22)",
+        "exit": 0,
+        "route": "wsl",
+        "tests": {
+          "failed": 0,
+          "passed": 2,
+          "skipped": 2
+        }
+      },
+      {
+        "canary": "passed",
+        "compiler": "Clang 23.1.5 (/usr/sbin/clang++)",
+        "exit": 0,
+        "route": "linux",
+        "tests": {
+          "failed": 0,
+          "passed": 4,
+          "skipped": 0
+        }
+      }
+    ]
   }
 }

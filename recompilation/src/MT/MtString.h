@@ -171,6 +171,8 @@ protected:
     void release();
     s32 compare(STRING* a, STRING* b) const;
     STRING* concat(STRING* a, STRING* b);
+public:
+    template <int _s1> MtString(const MtStringEx<_s1>& str);
 protected:
     STRING* value;  // offset: 0x0
 private:

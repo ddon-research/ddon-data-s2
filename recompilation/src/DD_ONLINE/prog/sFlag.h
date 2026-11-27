@@ -161,6 +161,7 @@ public:
 private:
     void setFlag(u32 Type, u32 FlagNo, bool Set, bool IsHost, bool IsRecv);
     void resetFlag(u32 Type, u32 StartFlagNo);
+    template <unsigned int BIT_NUM> void setFlagNoSync(nDDOUtility::cBitSet<BIT_NUM>& Flag, u32 FlagNo, bool Set);
 private:
     nDDOUtility::cBitSet<32> mSystemFixFlag;  // offset: 0x14
     nDDOUtility::cBitSet<32> mSystemFlag;  // offset: 0x18

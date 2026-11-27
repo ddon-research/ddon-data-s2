@@ -75,6 +75,8 @@ public:
     void setGUIParent(uGUIBase*);
 protected:
     u32 evCtrlDummy(cControl::Message*);
+public:
+    template <typename T> void clearZero(T& data);
 protected:
     u32 mOutsidePriorty;  // offset: 0x958
 private:

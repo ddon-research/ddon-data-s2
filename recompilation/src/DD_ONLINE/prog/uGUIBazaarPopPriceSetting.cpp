@@ -403,9 +403,6 @@ const MtDTI& uGUIBazaarPopPriceSetting::cItemData::getDTI() const {
     return uGUIBazaarPopPriceSetting::cItemData::DTI;
 }
 
-uGUIBazaarPopPriceSetting::cItemData::~cItemData() {
-}
-
 inline uGUIBazaarPopPriceSetting::cItemData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBazaarPopPriceSetting::cItemData::MyDTI uGUIBazaarPopPriceSetting::cItemData::DTI("uGUIBazaarPopPriceSetting::cItemData", &::MtObject::DTI, 416ul, 0u, 0u);

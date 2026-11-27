@@ -610,6 +610,12 @@ public:
         void setInstanceVisible(cGUIInstance* pInst, bool visible);
         void setObjectMessageColor(cGUIObject* pObj, MT_CTSTR msg, const MtColor color, u32 uGenderType, bool bAutoWrap);
         void setSequenceId(cGUIInstAnimation* pInstAnim, u32 uSeqId, bool bReset);
+        template <typename cT> static void kindCast(cT* & pDest, MtObject* pSrc);
+    public:
+        template <typename cT> void applyObjectFromId(cT& pDest, cGUIInstance* pInst, u32 objId);
+        template <typename cT> void applyObjectFromId(cT& pDest, u32 instId, u32 objId);
+        template <typename cT> void applyObjectFromId(cT& pDest, cGUIObjChildAnimationRoot* pInst, u32 objId);
+        template <typename cT> void applyInstance(cT& pDest, u32 id);
     protected:
         bool mAutoClear;  // offset: 0x8
         uGUIBase* mpUnit;  // offset: 0x10
@@ -5259,6 +5265,7 @@ public:
         void setAutoSetVisibleSize(bool isAutoSet);
         s32 getClickVol() const;
         void setClickVol(s32 Vol);
+        template <typename T> void setMsgEventFunc(bool(T::*ptr)(cControl::Message*));
     protected:
         uGUIBase* mpOwner;  // offset: 0xe8
         MtTypedArray<uGUIBase::cScrollListItemBase> mItemArray;  // offset: 0xf0
@@ -6072,6 +6079,26 @@ public:
     cInputTextKeyboardHook* getInputTextKeyboardHook();
 protected:
     virtual bool onKeyEvent(const nInputTextKeyboardHook::Keycode& keycode);  // vtable slot 90
+public:
+    template <typename cT> static void kindCast(cT* & pDest, MtObject* pSrc);
+    template <typename T> T* createControl(s32 item_num, const u32* tags, s32 visible_size);
+    template <typename cT> void getCastInstance(cT& pDest, u32 idx);
+    template <typename cT> void getCastInstance(cT& pDest, u32 id, cGUIInstance* pRootInst);
+    template <typename cMatrix> cMatrix* createControl(s32 num, s32 col, const u32* tags, s32 w, s32 h);
+protected:
+    template <typename T> void setNextFunc(void(T::*ptr)());
+public:
+    template <typename T> void setReactiveWindowFunc(void(T::*ptr)());
+    template <typename cT> void getCastObjectMessage(cT& pDest, u32 instIdx, u32 objIdx, MT_CTSTR str);
+    template <typename cT> void getCastObjectMessage(cT& pDest, cGUIInstance* pInst, u32 objIdx, MT_CTSTR str);
+protected:
+    template <typename T> bool cmpCurrentFunc(void(T::*ptr)()) const;
+    template <typename T> void setCheckExitGUIFunc(bool(T::*pFunc)());
+    template <int NUM> void setObjectMessageFit(cGUIObjMessage* pObjMsg, const MT_CHAR(&msg)[NUM]);
+    template <int NUM> void setObjectMessageFit(cGUIObjMessage* pObjMsg, const MtStringEx<NUM>& msg);
+    template <typename T> void setNextFuncWithClearRoutine(void(T::*ptr)());
+public:
+    template <typename cT> void getCastDupliInstance(cT& pDest, cGUIInstance* pOrgInst);
 protected:
     u32 mBtnGuideTouchInputBit;  // offset: 0x438
     MtTypedArray<cControl> mBtnGuideCtrl;  // offset: 0x440
@@ -6411,6 +6438,9 @@ inline f32 uGUIBase::cReferenceUIVlCursor::getDistY() {
     return this->mDistY;
 }
 
+inline uGUIBase::cScrollList::~cScrollList() {
+}
+
 inline u32 uGUIBase::cScrollList::getListPos() const {
     return this->mListPos;
 }
@@ -6478,6 +6508,9 @@ inline void* uGUIBase::cReferenceUITab::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUIBase::cReferenceUITab::~cReferenceUITab() {
+}
+
 inline u32 uGUIBase::cReferenceUITab::getVisibleNum() {
     return this->mVisibleNum;
 }
@@ -6488,6 +6521,9 @@ inline void* uGUIBase::cReferenceUITab::cTabWork::operator new(size_t sz, void* 
 
 inline void* uGUIBase::cReferenceUIBtnGuide::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIBase::cReferenceUIBtnGuide::~cReferenceUIBtnGuide() {
 }
 
 inline void* uGUIBase::cReferenceUIBtnGuide::cWork::operator new(size_t sz, void* p_addr) {
@@ -6701,6 +6737,9 @@ inline void* uGUIBase::cReferenceUICheckList::operator new(size_t sz, void* p_ad
     return p_addr;
 }
 
+inline uGUIBase::cReferenceUICheckList::~cReferenceUICheckList() {
+}
+
 inline void* uGUIBase::cReferenceUICheckListForClan::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -6746,6 +6785,9 @@ inline s32 uGUIBase::cReferenceUINumBox::getCurrentNum() const {
 
 inline void* uGUIBase::cReferenceUIPageDot::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIBase::cReferenceUIPageDot::~cReferenceUIPageDot() {
 }
 
 inline void* uGUIBase::cReferenceUIPageDot::cPageDotWork::operator new(size_t sz, void* p_addr) {

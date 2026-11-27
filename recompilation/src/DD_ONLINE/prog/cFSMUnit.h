@@ -18,6 +18,7 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 class MtVector3;
+class uDDOModel;
 class uEnemy;
 class uHuman;
 class uNpc;
@@ -1368,6 +1369,9 @@ public:
     virtual void move();  // vtable slot 6
 protected:
     virtual void createPropertyFSM(MtPropertyList& s);  // vtable slot 9
+public:
+    template <typename Tx> Tx* getOwnerUnit() const;
+    template <typename Tx> Tx* getComponent(const uDDOModel* pModel) const;
 protected:
     u32 mStatus;  // offset: 0xb4
     u32 mStartFrame;  // offset: 0xb8

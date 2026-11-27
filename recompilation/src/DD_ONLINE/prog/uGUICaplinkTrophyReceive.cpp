@@ -423,9 +423,6 @@ const MtDTI& uGUICaplinkTrophyReceive::cListItem::getDTI() const {
     return uGUICaplinkTrophyReceive::cListItem::DTI;
 }
 
-uGUICaplinkTrophyReceive::cListItem::~cListItem() {
-}
-
 inline uGUICaplinkTrophyReceive::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICaplinkTrophyReceive::cListItem::MyDTI uGUICaplinkTrophyReceive::cListItem::DTI("uGUICaplinkTrophyReceive::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 1280ul, 0u, 0u);

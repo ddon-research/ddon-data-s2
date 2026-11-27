@@ -605,6 +605,9 @@ inline void* uGUIMyRoomPopup::cList::cItem::operator new(size_t sz, void* p_addr
     return p_addr;
 }
 
+inline uGUIMyRoomPopup::cList::cItem::~cItem() {
+}
+
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"

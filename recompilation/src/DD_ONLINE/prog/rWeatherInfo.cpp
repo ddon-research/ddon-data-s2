@@ -108,9 +108,6 @@ cWeatherInfo::cWeatherInfo() {
     mWaterLRate = 1.0f;
 }
 
-cWeatherInfo::~cWeatherInfo() {
-}
-
 inline cWeatherInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cWeatherInfo::MyDTI cWeatherInfo::DTI("cWeatherInfo", &::cWeatherObjectRes::DTI, 304ul, 0u, 0u);

@@ -436,6 +436,9 @@ public:
     static void registCustom(Custom* pcustom);
     static Custom* getCustom(MT_CTSTR name);
     static Custom* getCustom(TYPE type);
+    template <typename T> T get() const;
+    template <typename T> void setNumeric(T value);
+    template <typename T> void set(const T& value);
 private:
     MT_CTSTR mName;  // offset: 0x0
     u32 mType : 16;  // offset: 0x8

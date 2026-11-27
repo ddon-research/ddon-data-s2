@@ -406,6 +406,7 @@ protected:
     void setListCursor(s32 cursorPos);
     cMenuSupportList* getSupportList();
     void changeMenu(cMenuSupportMenu* pMenu);
+    template <typename T> T* createSupport();
 protected:
     s32 mMenuRno[6];  // offset: 0x8
     s32 mMenuCursor[7];  // offset: 0x20
@@ -9305,6 +9306,9 @@ inline cMenuDispStatus::cMenuDispStatus() {
     this->mContext.::cContext::mId = 7;
 }
 
+inline cMenuDispStatus::~cMenuDispStatus() {
+}
+
 inline const cCharacterData* cMenuDispStatus::getCharData() {
     return this->mpRefCharData;
 }
@@ -9464,6 +9468,9 @@ inline void* cMenuGroupChatMemberList::operator new(size_t sz, void* p_addr) {
 }
 
 inline cMenuGroupChatMemberList::cMenuGroupChatMemberList() {
+}
+
+inline cMenuGroupChatMemberList::~cMenuGroupChatMemberList() {
 }
 
 inline void* cMenuInvite::operator new(size_t sz, void* p_addr) {
@@ -9767,6 +9774,9 @@ inline void* cMenuPawnSearch::operator new(size_t sz, void* p_addr) {
 inline cMenuPawnSearch::cMenuPawnSearch() {
 }
 
+inline cMenuPawnSearch::~cMenuPawnSearch() {
+}
+
 inline void* cMenuPawnSetPartner::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -9864,6 +9874,9 @@ inline void* cMenuSearchFilter::operator new(size_t sz, void* p_addr) {
 }
 
 inline cMenuSearchFilter::cMenuSearchFilter() {
+}
+
+inline cMenuSearchFilter::~cMenuSearchFilter() {
 }
 
 inline void* cMenuServerList::operator new(size_t sz, void* p_addr) {

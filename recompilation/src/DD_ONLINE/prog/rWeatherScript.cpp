@@ -309,9 +309,6 @@ __attribute__((weak)) void cWeatherScriptIO::operator delete(void* p_addr) {
     cWeatherScriptIO::getAllocator()->memFree(p_addr);
 }
 
-cWeatherScriptIO::~cWeatherScriptIO() {
-}
-
 void cWeatherScriptIO::updatePtr() {
     u32 num = mWSCParams.mLength;
     if (num != 0) {

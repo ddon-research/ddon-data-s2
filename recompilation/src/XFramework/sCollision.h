@@ -1698,6 +1698,8 @@ public:
         bool initialize(const sCollision::TriangleInfo& info, const MtQuaternion& qt);
         bool calcNowPos(MtVector3& OutNowPos);
         bool calcNowPos(MtVector3& OutNowPos, MtQuaternion& OutNowQt);
+    private:
+        template <bool FLG_QT_ENABLE> bool calcNowPosCore(MtVector3& OutNowPos, MtQuaternion& OutNowQt);
     public:
         MtFloat3 mOffset;  // offset: 0x0
         sCollision::SBC_HANDLE_HALF mHitSbcHandle;  // offset: 0xc
@@ -2538,6 +2540,11 @@ public:
         void setWorkU32(u32 param, u32 WorkBufferIndex);
         MtObject* getWorkPtr(u32 WorkBufferIndex);
         void setWorkPtr(MtObject* ptr, u32 WorkBufferIndex);
+        template <typename FUNC_HIT> void registCallbackHit(FUNC_HIT func);
+        template <typename FUNC_RESET> void registCallbackReset(FUNC_RESET func);
+        template <typename FUNC_HIT_NODE> void registCallbackHitBasicScr(FUNC_HIT_NODE func);
+        template <typename FUNC_HIT_HEIGHTFIELD> void registCallbackHitHeightField(FUNC_HIT_HEIGHTFIELD func);
+        template <typename FUNC_HIT> void registCallbackHitPairPolygon(FUNC_HIT func);
     protected:
         MtObject* mpOwnerObj;  // offset: 0x0
         sCollision::CallbackInfoQueue mCallbackStack[3];  // offset: 0x8
@@ -2751,6 +2758,10 @@ public:
         void getBoundingAABBByTrans(MtAABB& aabb_out, const MtSphere& sphere);
         void getBoundingAABBByOrg(MtAABB& aabb_out, const MtCapsule& capsule);
         void getBoundingAABBByTrans(MtAABB& aabb_out, const MtCapsule& capsule);
+    public:
+        template <typename GEOMETRY_TYPE> GEOMETRY_TYPE* getGeometryOriginalBy() const;
+        template <typename GEOMETRY_TYPE> GEOMETRY_TYPE* getGeometryTransformBy() const;
+        template <typename GEOMETRY_TYPE> GEOMETRY_TYPE* getGeometryUseBy() const;
     protected:
         MtGeometry* pGeomOrg;  // offset: 0x138
         MtGeometry* pGeomTrans;  // offset: 0x140
@@ -3837,6 +3848,19 @@ protected:
     void callUsage();
 public:
     static sCollision* getInstance();
+protected:
+    template <unsigned int CONVEX_TYPE> u32 getAreaPolygonsCore(MtGeometry& CheckArea, ScrCollisionInfoGetAreaPoly& MyCollisionInfo, const Param& param, CONTACT_CALLBACK pMainFunc);
+    template <typename CONVEX_TYPE> u32 adjustPositionAntiTrembling(MtVector3& pos, const MtVector3& old, const CONVEX_TYPE& convex, const Param& param, u32 LastCorrectNum, f32 DirDivision);
+    template <typename CONVEX_TYPE> u32 isEnableMoveScrForConvex(const MtVector3& pos, const MtVector3& old, const CONVEX_TYPE& convex, const Param& param);
+    template <typename CONVEX_TYPE> u32 adjustPositionAntiTrembling_mv(MtVector3& pos, const MtVector3& old, const CONVEX_TYPE& convex, const Param& param, u32 LastCorrectNum, f32 DirDivision);
+    template <bool FLG_ONE_HIT_END> u32 enumSbcContact(MtGeometry* pTraverseGeometry, TraverseInfo& MyTraverseInfo);
+    template <bool FLG_ONE_HIT_END> u32 enumContactPolygonCore(MtGeometry* pTraverseGeometry, TraverseInfo& MyTraverseInfo);
+    template <bool FLG_ONE_HIT_END> u32 enumSbcContactCallback(MtGeometry* pTraverseGeometry, MtObject* pSbcObject, void* pUserPtr);
+    template <bool FLG_ONE_HIT_END, unsigned int GEOM_TYPE_ID> u32 enumPartsContact2MovingCore(MtGeomConvex& geom, Sbc& TargetSbc, u32 PartsID, TraverseInfo& MyTraverseInfo, u32 ThreadIndex);
+    template <bool FLG_ONE_HIT_END> u32 enumAllMoveSbcContactByTree(MtGeometry* pTraverseGeometry, TraverseInfo& MyTraverseInfo, u32 ThreadIndex);
+    template <bool FLG_ONE_HIT_END> u32 enumPartsContactByTree(MtGeometry* pTraverseGeometry, TraverseInfo& MyTraverseInfo, u32 ThreadIndex);
+    template <bool FRONT_CHECK> u32 enumLineFuncForPairPolygon(SbcInfo& info, ScrCollisionInfoBase& CollisionInfo);
+    template <bool FRONT_CHECK, bool FLAT_CHECK> u32 enumLineFunc(const SbcInfo& info, ScrCollisionInfoBase& CollisionInfo);
 protected:
     rCollision::MaterialList* mpMaterialList;  // offset: 0x18
     u32 mDefaultMaterial;  // offset: 0x20

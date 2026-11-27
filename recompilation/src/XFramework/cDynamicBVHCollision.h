@@ -176,6 +176,10 @@ private:
     static void initializeDBVTSystemBuffer();
     static void releaseDBVTSystemBuffer();
     static void releaseDBVTSystemWorkBuffer();
+    template <typename type, unsigned int _GeometryType, bool _FlgOneHitEnd> u32 traverseByRecursiveCore(Node* pNowNode, MtGeometry& TraverseGeometryOrg, const type& TraverseGeometry, MtObject* pCallbackOwner, TRAVERSE_CALLBACK pCalbackFunc, void* pUserPtr);
+    template <typename type, unsigned int _GeometryType, bool _FlgOneHitEnd> u32 traverseByRecursiveConstCore(Node* pNowNode, const MtGeometry& TraverseGeometryOrg, const type& TraverseGeometry, MtObject* pCallbackOwner, TRAVERSE_CALLBACK_CONST pCalbackFunc, const void* pUserPtr);
+    template <typename type, unsigned int _GeometryType, bool _FlgOneHitEnd> u32 traverseCore(MtGeometry& TraverseGeometryOrg, const type& TraverseGeometry, MtObject* pCallbackOwner, TRAVERSE_CALLBACK pCallbackFunc, void* pUserPtr, u32 ThreadIndex);
+    template <typename type, unsigned int _GeometryType, bool _FlgOneHitEnd> u32 traverseConstCore(const MtGeometry& TraverseGeometryOrg, const type& TraverseGeometry, MtObject* pCallbackOwner, TRAVERSE_CALLBACK_CONST pCallbackFunc, const void* pUserPtr, u32 ThreadIndex);
 protected:
     Node* mpRoot;  // offset: 0x8
     s32 mUpdateBackNum;  // offset: 0x10

@@ -40,6 +40,7 @@ class rGUIIconInfo;
 class rItemList;
 class uCharacterEdit;
 class uGUI;
+class uGUIAreaMaster;
 class uGUIBrowserBG;
 class uGUICharacterEditPopCard;
 class uGUIGPConfirm;
@@ -71,6 +72,7 @@ class sGUI : public cSystem
     friend class cGUIObjTexture;
     friend class rItemList;
     friend class uCharacterEdit;
+    friend class uGUIAreaMaster;
     friend class uGUIBrowserBG;
     friend class uGUICharacterEditPopCard;
     friend class uGUIGPConfirm;

@@ -214,6 +214,9 @@ inline cGroundAttrInfo::cGroundAttrInfo() {
     this->mIsUpCheck = false;
 }
 
+inline cGroundAttrInfo::~cGroundAttrInfo() {
+}
+
 inline void* cpScrCollision::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

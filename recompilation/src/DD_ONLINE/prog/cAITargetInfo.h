@@ -59,6 +59,7 @@ public:
     bool isEnableHitInfo() const;
     const MtVector3& getAITargetInfoOfsPos() const;
     f32 getAITargetInfRadius() const;
+    template <typename T> T* getTargetUnit();
 public:
     uDDOModel* mpTargetUnit;  // offset: 0x8
     cGeneralPointPtr mpTargetPoint;  // offset: 0x10
@@ -93,6 +94,10 @@ private:
     uDDOModel* getHitUnitCore(u32 idx);
     f32 calcEnvMinMax(f32 eva);
     static bool sortFunc(const cAITargetInfo* pA, const cAITargetInfo* pB, u32);
+public:
+    template <typename T> void setCheckFunc(MtObject* pFuncOwner, T func, void* pParam);
+    template <typename T> void setEvaFunc(MtObject* pFuncOwner, T func, void* pParam);
+    template <typename T> T* getHitUnit(u32 idx);
 private:
     MtObject* mpChkFuncOwner;  // offset: 0x20
     CheckFunc mCheckFunc;  // offset: 0x28

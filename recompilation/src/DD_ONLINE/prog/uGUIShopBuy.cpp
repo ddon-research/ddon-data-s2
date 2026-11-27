@@ -978,8 +978,23 @@ __attribute__((weak)) void uGUIShopBuy::setDecide() {
 }
 
 __attribute__((weak)) void uGUIShopBuy::setBuy() {
-    DDON_STUB("uGUIShopBuy::setBuy")
-    /* stub */
+    sItemManager::cShop* pshop = sItemManager::getInstance()->getActiveShop();
+    if (pshop == nullptr) {
+        return;
+    }
+    if (mNumBox0.getNum() != 0) {
+        setUseIItemMangerNetFunc(pshop->sItemManager::cShop::buyGoodsReq<uGUIShopBuy>(1u, mBuyGoodsIdx, static_cast<u32>(mNumBox0.getNum()), &::uGUIShopBuy::announceCallBack, static_cast<void*>(this)));
+        static_cast<sGUIExt*>(sGUI::getInstance())->mItemCBF = static_cast<sGUIExt*>(sGUI::getInstance())->mItemCBF | 8192u;
+    }
+    if (mNumBox1.getNum() != 0) {
+        if (mNumBox0.mCurrentNum != 0) {
+            setUseIItemMangerNetFunc(pshop->sItemManager::cShop::buyGoodsReq<uGUIShopBuy>(0u, mBuyGoodsIdx, static_cast<u32>(mNumBox1.getNum()), &::uGUIShopBuy::dummyCallBack, static_cast<void*>(this)));
+        } else {
+            setUseIItemMangerNetFunc(pshop->sItemManager::cShop::buyGoodsReq<uGUIShopBuy>(0u, mBuyGoodsIdx, static_cast<u32>(mNumBox1.getNum()), &::uGUIShopBuy::announceCallBack1, static_cast<void*>(this)));
+        }
+        static_cast<sGUIExt*>(sGUI::getInstance())->mItemCBF = static_cast<sGUIExt*>(sGUI::getInstance())->mItemCBF | 8192u;
+    }
+    setGUIMove(false);
 }
 
 __attribute__((weak)) void uGUIShopBuy::setSell() {

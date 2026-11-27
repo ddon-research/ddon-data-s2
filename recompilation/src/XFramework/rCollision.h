@@ -354,6 +354,7 @@ protected:
 public:
     void* memAlloc(u32 size);
     void memFree(void* p_addr);
+    template <typename _type> _type* memAllocBy(u32 num);
 protected:
     Header mHeader;  // offset: 0x70
     cBVHCollision* mpBvh;  // offset: 0xc0

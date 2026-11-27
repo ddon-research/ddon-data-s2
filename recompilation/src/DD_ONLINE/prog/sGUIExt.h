@@ -133,6 +133,7 @@ class uGUI;
 class uGUIActionPalette;
 class uGUIAim;
 class uGUIAnnounce;
+class uGUIAreaMaster;
 class uGUIBase;
 class uGUIBrowserBG;
 class uGUICaplinkImageSelect;
@@ -248,6 +249,7 @@ class sGUIExt : public sGUI
     friend class sTalkManager;
     friend class uCharacterEdit;
     friend class uGUIAnnounce;
+    friend class uGUIAreaMaster;
     friend class uGUIBase;
     friend class uGUIBrowserBG;
     friend class uGUICaplinkImageSelect;
@@ -3005,6 +3007,7 @@ private:
 public:
     void setUseDLCInfo(bool isNoUse);
     bool isNoUseDLC();
+    template <typename T> sItemManager::stRequest* _reqOrbPowerUp(sItemManager::USE_POINT_FOR type, u32 targetLv, T func, u32 flag);
 private:
     nDDOUtility::cArray<stGatheringData, 4> mGatheringDataArray;  // offset: 0x190
 public:

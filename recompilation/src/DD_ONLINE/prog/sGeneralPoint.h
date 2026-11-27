@@ -43,6 +43,8 @@ public:
     cGeneralPoint* getGeneralPoint();
 private:
     void findCurrent();
+public:
+    template <typename T> T* getGpCast();
 private:
     s32 mCurIdx;  // offset: 0x0
     cGpCategoryFlag mCategoryFlag;  // offset: 0x4
@@ -99,6 +101,7 @@ public:
     void addPtr(cGeneralPointPtr* pPtr);
     void erasePtr(cGeneralPointPtr* pPtr);
     static sGeneralPoint* getInstance();
+    template <typename T> T* createPoint();
 public:
     nDDOUtility::cArray<cGeneralPoint*, 2048> mPointRefArray;  // offset: 0x18
     s32 mPointRefNum;  // offset: 0x4018

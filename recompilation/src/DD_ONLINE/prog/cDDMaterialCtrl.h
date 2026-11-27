@@ -483,6 +483,7 @@ public:
         virtual MtFloat4 getEndValueVector(const nDraw::Animation::PARAM_VECTOR* ParamVector, cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index);  // vtable slot 24
         virtual void setAnimation(cDDMaterialCtrl::TitleMaterial* pm, s32 AnimIndex, MT_CTSTR AnimName, f32 StartFrame);  // vtable slot 25
         const nDraw::Material* getResMaterial(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index);
+        template <typename T> T calcCBValue(const T& valueEnd, const T& valueNow, f32 CostFrame);
     private:
         MtTypedArray<cAnimData> mAnimData;  // offset: 0x28
     public:

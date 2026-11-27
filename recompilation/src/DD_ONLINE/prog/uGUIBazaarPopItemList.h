@@ -228,6 +228,9 @@ inline uGUIBazaarPopItemList::cItemData::cItemData() {
     this->mpInstItemData = nullptr;
 }
 
+inline uGUIBazaarPopItemList::cItemData::~cItemData() {
+}
+
 inline void* uGUIBazaarPopItemList::cItemPrice::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }

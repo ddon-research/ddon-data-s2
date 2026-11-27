@@ -122,6 +122,7 @@ public:
     void shotShl(const MtVector3& pos);
     bool isSingleBed();
     void moveHead();
+    template <typename T> T* getComponent();
 public:
     cOmComponent mOmComp;  // offset: 0x2470
     cDDMaterialCtrl mMatCtrl;  // offset: 0x2550
@@ -214,6 +215,7 @@ public:
     virtual u32 getHitLightToModel();  // vtable slot 36
     virtual void applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset);  // vtable slot 15
     void reqKill();
+    template <typename T> T* getComponent();
 public:
     cOmControl* mpCtrl;  // offset: 0x2470
     bool mbReqKill;  // offset: 0x2478

@@ -568,9 +568,6 @@ const MtDTI& uGUIMyRoomPopup::cList::cItem::getDTI() const {
     return uGUIMyRoomPopup::cList::cItem::DTI;
 }
 
-uGUIMyRoomPopup::cList::cItem::~cItem() {
-}
-
 __attribute__((weak)) void uGUIMyRoomPopup::cList::cItem::setup(uGUIMyRoomPopup& owner, cGUIInstNull* inst_null_list03) {
     DDON_STUB("uGUIMyRoomPopup::cList::cItem::setup")
     /* stub */

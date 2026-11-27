@@ -1879,9 +1879,6 @@ const MtDTI& cMenuDispStatus::getDTI() const {
     return cMenuDispStatus::DTI;
 }
 
-cMenuDispStatus::~cMenuDispStatus() {
-}
-
 __attribute__((weak)) void cMenuDispStatus::initDispStatus(s32 dispType, const cContextInstHm& context, u32 prio, bool isChatSubMenu) {
     DDON_STUB("cMenuDispStatus::initDispStatus")
     /* stub */
@@ -2684,9 +2681,6 @@ MtObject* cMenuGetRecentList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuGroupChatMemberList::getDTI() const {
     return cMenuGroupChatMemberList::DTI;
-}
-
-cMenuGroupChatMemberList::~cMenuGroupChatMemberList() {
 }
 
 __attribute__((weak)) void cMenuGroupChatMemberList::initGroupChatMemberList() {
@@ -4923,9 +4917,6 @@ const MtDTI& cMenuPawnSearch::getDTI() const {
     return cMenuPawnSearch::DTI;
 }
 
-cMenuPawnSearch::~cMenuPawnSearch() {
-}
-
 __attribute__((weak)) void cMenuPawnSearch::initPawnSearch() {
     DDON_STUB("cMenuPawnSearch::initPawnSearch")
     /* stub */
@@ -5979,9 +5970,6 @@ MtObject* cMenuResetCraftPoint::MyDTI::newInstance() const {
 
 const MtDTI& cMenuSearchFilter::getDTI() const {
     return cMenuSearchFilter::DTI;
-}
-
-cMenuSearchFilter::~cMenuSearchFilter() {
 }
 
 __attribute__((weak)) void cMenuSearchFilter::initSearchFilter(s32 type, cCharacterData::stSearchFilterSetting& setting, uGUIBase* pParentGUI, uGUIBase* pRefGUI) {

@@ -1175,6 +1175,9 @@ inline uGUIAreaMaster::cSuppliesItem::cSuppliesItem() : mpObjMsg(static_cast<cGU
     this->::uGUIBase::cScrollListItemBase::mItemType = 4;
 }
 
+inline uGUIAreaMaster::cSuppliesItem::~cSuppliesItem() {
+}
+
 inline uGUIAreaMaster::stMonsterItem::stMonsterItem() {
 }
 
@@ -1193,6 +1196,9 @@ inline void* uGUIAreaMaster::cDetailInfo::operator new(size_t sz, void* p_addr) 
 
 inline void* uGUIAreaMaster::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIAreaMaster::cListInfo::~cListInfo() {
 }
 
 inline void* uGUIAreaMaster::cPointInfo::operator new(size_t sz, void* p_addr) {

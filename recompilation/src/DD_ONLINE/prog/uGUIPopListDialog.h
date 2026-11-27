@@ -241,6 +241,8 @@ private:
     u32 evCtrlAdjustButtonCursor(cControl::Message* msg);
     u32 evCtrlMouseClick(cControl::Message* msg);
     void _setFunc(uGUIBase* pUnit, DATA_FUNC pFunc, MtObject* pParam);
+public:
+    template <typename T> void setFunc(uGUIBase* pUnit, T pFunc, MtObject* pParam);
 private:
     rGUI* mpGUIRes;  // offset: 0x8c8
     u32 mFlowId;  // offset: 0x8d0

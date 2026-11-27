@@ -438,6 +438,9 @@ public:
 protected:
     void setFocusSub(bool flag);
     bool isEnableLimitLeft() const;
+public:
+    template <typename T> void setMessageEvent(u32(T::*ptr)(Message*), nGUIExt::MSG_REASON mr, void* pData);
+    template <typename T> void setMessageEventOOMT(u32(T::*ptr)(Message*), nGUIExt::MSG_REASON mr, void* pData);
 private:
     u32(MtObject::*messageEvent[46])(Message*);  // offset: 0x8
     u32(MtObject::*messageEventOOMT[46])(Message*);  // offset: 0x2e8

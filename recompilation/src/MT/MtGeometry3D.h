@@ -40,6 +40,7 @@ class MtTriangle;
 class MtVector3;
 namespace nCollision { class cGeometry; }
 class rGeometry2;
+class sCollision;
 class uScrollCollisionGeometry;
 
 // Declarations
@@ -58,6 +59,7 @@ class MtGeometry : public MtObject
 {
     friend class nCollision::cGeometry;
     friend class rGeometry2;
+    friend class sCollision;
     friend class uScrollCollisionGeometry;
 public:
     enum Type

@@ -19,6 +19,7 @@ class MtObject;
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
+using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
 
@@ -50,6 +51,7 @@ public:
     static MtDTI* getMyDTIPtr();
     MtObject* cast(const MtDTI& target_type);
     const MtObject* cast(const MtDTI& target_type) const;
+    template <typename T> void setProp(MT_CTSTR name, const T& val, s32 index);
 public:
     static const u32 INITIAL_ALLOCATOR = 0;
     static MyDTI DTI;

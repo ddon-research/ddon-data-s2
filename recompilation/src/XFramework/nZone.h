@@ -1013,6 +1013,10 @@ namespace nZone {
         bool isEnableForUI() const;
         void setContentsPoolGroupIDForUI(s32 groupID);
         s32 getContentsPoolGroupIDForUI() const;
+    public:
+        template <typename CONTENTS_TYPE> CONTENTS_TYPE* getContentsEx(u32 SearchStartIndex) const;
+        template <typename CONTENTS_TYPE> u32 getContentsIndexEx(u32 SearchStartIndex) const;
+        template <typename CONTENTS_TYPE> CONTENTS_TYPE* getContentsOf(u32 index) const;
     protected:
         cZoneLayout* mpOwner;  // offset: 0x8
         s32 mPriority;  // offset: 0x10

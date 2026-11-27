@@ -227,6 +227,7 @@ protected:
     void showListItemMember(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index);
     void hideListItemMember(uGUIBase::cScrollListItemBase* pItemBase);
     void updateDispMember();
+    template <long unsigned int N> void setColumnNames(const ColumnParam(&columnParam)[N]);
 protected:
     rGUI* mpGUIRes;  // offset: 0x8c8
     cGUIInstAnimation* mpINST_scr_bar;  // offset: 0x8d0

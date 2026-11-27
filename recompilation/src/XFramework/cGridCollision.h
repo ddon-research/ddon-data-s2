@@ -95,6 +95,7 @@ public:
         void memFree(void* padr);
         size_t memSize(void*);
         static MtAllocator* getAllocator();
+        template <typename _TYPE> _TYPE* memAllocBy(size_t num);
     protected:
         void* mpArrayData;  // offset: 0x0
         u16 mArrayRegisterNum;  // offset: 0x8

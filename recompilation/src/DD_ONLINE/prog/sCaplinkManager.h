@@ -464,6 +464,8 @@ public:
         void copy(MtTime& t);
         void set(MT_CTSTR date);
         u64 getSortVal() const;
+        template <int NUM> MT_CTSTR makeStr(MtStringEx<NUM>& str) const;
+        template <int NUM> MT_CTSTR makeStrYMDHM(MtStringEx<NUM>& str) const;
     public:
         u16 mYear;  // offset: 0x0
         u8 mMonth;  // offset: 0x2

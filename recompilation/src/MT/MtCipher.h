@@ -121,6 +121,8 @@ private:
     void setModuloQP_1_Private(const MtBigInt& NewValue);
     void getAesKey_Private(MT_CHAR* output) const;
     void setAesKey_Private(const MT_CHAR* NewValue);
+public:
+    template <typename T, int SZ> static void BLOCK_XOR(T* dst, T* src, T* iv);
 private:
     MT_CHAR mTransKey_Guard[56];  // offset: 0x8
     u32 mKeyLength_Guard;  // offset: 0x40

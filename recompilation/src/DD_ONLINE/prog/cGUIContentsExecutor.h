@@ -136,6 +136,7 @@ private:
     bool isOnStatus(u32 Status);
     void settingEntryboardInfoEnableCtrl(bool flg);
     bool isOpenFlag(u32 flag) const;
+    template <typename T> T* craeteUnit(T* & pUnit);
 private:
     PR mProc;  // offset: 0x8
     PR mOldProc;  // offset: 0xc

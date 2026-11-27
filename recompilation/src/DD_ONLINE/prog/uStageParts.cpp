@@ -487,9 +487,6 @@ const MtDTI& uStagePartsMdl::getDTI() const {
     return uStagePartsMdl::DTI;
 }
 
-uStagePartsMdl::~uStagePartsMdl() {
-}
-
 __attribute__((weak)) void uStagePartsMdl::setup() {
     DDON_STUB("uStagePartsMdl::setup")
     /* stub */

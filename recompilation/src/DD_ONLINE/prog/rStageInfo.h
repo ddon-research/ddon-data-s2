@@ -190,6 +190,7 @@ private:
     rZone* getZoneWind();
     rZone* getZoneGene();
     rZone* getZoneLight();
+    template <typename T> void setResourceTmplate(T* res, T* & dst);
 public:
     s32 mStageNo;  // offset: 0x70
     rScheduler* mprModel;  // offset: 0x78
